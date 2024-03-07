@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
-import { AtlasApiService } from '../../core/atlas-api.service';
+import { AtlasApiService, LappiStatsResponseElement } from '../../core/atlas-api.service';
 import { TableColumn } from '@achimha/ngx-datatable';
 import { map } from 'rxjs/operators';
 import { LappiModalComponent } from './lappi-modal.component';
@@ -7,6 +7,24 @@ import { Subscription } from 'rxjs';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
+
+interface LappiTableRowData extends LappiStatsResponseElement {
+  index: number;
+  ykjString: string;
+  targetMetString: string;
+}
+
+/**
+ * Accesses DOM directly, do not run in SSR
+ */
+const downloadWithFilename = (encodedUri: string, filename: string) => {
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
 @Component({
   selector: 'ba-society-lappi',
@@ -20,7 +38,7 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
 
   lappiStats$ = this.atlasApi.getLappiStats().pipe(
     map(a => a.map((e, i) => (
-      {
+      <LappiTableRowData>{
         ...e,
         index: i + 1,
         ykjString: `${e.latMin}:${e.lonMin}-${e.latMax}:${e.lonMax}`,
@@ -99,5 +117,27 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.hideModalSubscription?.unsubscribe();
+  }
+
+  onExportCsv(data: LappiTableRowData[]) {
+    const cols = [
+      'Suurruutu', 'Tyydyttävästi selvitetyt ruudut', 'YKJ-ruudun koordinaatit',
+      'Nimi', 'Pesimävarmuussumma', 'Selvitysaste'
+    ].join(',');
+
+    const rows: string[] = [];
+    data.forEach(bigSquare => {
+      bigSquare.grids.forEach(smallSquare => {
+        rows.push(
+          [
+            bigSquare.index, Math.round(bigSquare.targetPercentage * 10) / 10, smallSquare.coordinates,
+            `"${smallSquare.name}"`, smallSquare.atlasClassSum, smallSquare.activityCategory.value
+          ].join(',')
+        );
+      });
+    });
+
+    const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + [cols, ...rows].join('\n'));
+    downloadWithFilename(encodedUri, 'lapin-selvitysasteet.csv');
   }
 }

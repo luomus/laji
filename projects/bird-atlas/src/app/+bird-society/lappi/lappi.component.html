@@ -3,6 +3,9 @@
   <img class="d-block mb-4" src="https://cdn.laji.fi/images/bird-society-lappi.png" alt="Suurruudut">
   <p>Lintuatlaksessa tavoitteena on, että Pohjois-Lapin (YKJ 740 ja siitä pohjoiseen) jokaisen 50 km × 50 km suurruudun atlasruuduista vähintään 75 % tutkitaan tyydyttävästi.</p>
   <p>Lapissa tarvitaan koko maan lintuharrastajien apua. Käy kesällä Lapissa, pysähtele usein ja ilmoita kaikista lajeista atlashavainto. Tärkeimmät puutealueet mainitaan <a href='https://www.birdlife.fi/suojelu/seuranta/lintuatlas/lapin-suurruutujen-retkeily/' target="_blank">Lapin suurruutujen retkeilysivulla</a>.</p>
+  <div class="d-flex justify-end">
+    <button class="btn btn-default mb-3" (click)="onExportCsv(stats)">Lataa .csv</button>
+  </div>
   <ngx-datatable
     class="material mb-8"
     [rows]="stats"
@@ -10,6 +13,8 @@
     [selectionType]="'single'"
     (select)="onTableRowSelect($event)"
   ></ngx-datatable>
+  <hr>
+  <ng-container *ngTemplateOutlet="description"></ng-container>
 </div>
 <ng-template #loading>
   <div class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
@@ -22,4 +27,52 @@
 </ng-template>
 <ng-template #percentageCell let-value="value">
   <div style="text-align: right;">{{ round(value) }} %</div>
+</ng-template>
+
+<ng-template #description>
+  <h2>Lapin suurruuduilla vaadittava työmäärä retkipäivinä arvioituna</h2>
+  <p>Teksti ja laskelmat: Risto Willamo</p>
+  <p>Tilanne 13.11.2023:</p>
+  <img src="/assets/images/suurruudut.png" alt="suurruudut">
+  <p>Kuvassa on esitetty suurruuduittain punaisilla numeroilla karkea arvio 
+    tarvittavien retkipäivien määrästä, jotta kukin suurruutu saavuttaa atlaksen 
+    tavoitteen (eli vähintään 75 % suurruudun atlasruuduista on vähintään 
+    tyydyttävästi selvitetty).</p>
+  <p>Suuntaa antava arvio pohjautuu Risto ja Teemu Willamon Lapissa 2022–2023 
+    tekemien atlaskartoitusten kokemuksiin ja laskelmiin, joiden mukaan 
+    atlasruudun selvitysasteen nosto yhdellä pykälällä (esim. välttävästä 
+    tyydyttäväksi) edellyttää yhtä tehokasta atlasretkipäivää. Todellisuudessa 
+    tarvittavaan työmäärään vaikuttavat esimerkiksi kunkin atlasruudun 
+    lähtötilanne, ruutujen saavutettavuus autoillen tai se, onnistutaanko
+    haastattelemaan linnut hyvin tuntevia paikallisia ihmisiä. Tarkempia käytännön
+    vinkkejä Lapin atlaskartoituksiin on koottu atlasretkikokemusten sivulle (ks. 
+    Willamo ym.). Työtä joka tapauksessa riittää!</p>
+    <p>Laskelma on tehty näin:</p>
+    <ol>
+      <li>Laskettu, montako atlasruutua on 75 % tietyn suurruudun atlasruuduista.
+          Pyöristetty aina ylöspäin, eli esim. 12,3 --> 13. Tuo 75 %:n lukumäärä on 
+          alla = X atlasruutua.</li>
+      <li>Laskettu, moniko suurruudun atlasruutu on jo tyydyttävästi, hyvin tai 
+          erinomaisesti selvitetty. Olkoon tuo = Y atlasruutua. Vähennetty X − Y = 
+          Z. Eli Z atlasruutua pitää vielä työstää vähintään tyydyttäväksi.</li>
+      <li>Laskettu helpoin tapa päästä tähän. Jos suurruudulla on Z kpl välttävästi 
+        selvitettyjä atlasruutuja, on ajateltu, että ne nostetaan tyydyttäviksi. Jos 
+        välttäviä ei ole riittävästi, otetaan seuraavaksi satunnaishavaintoja 
+        sisältäviä atlasruutuja. Jos tuokaan ei riitä, otetaan loput tarvittavat 
+        nollaruuduista (selvitysaste = ei havaintoja).</li>
+      <li>Jokaiselle tarvittavalle nostolle on annettu pistemäärä. Nosto välttävä &rarr; 
+        tyydyttävä = 1 piste, satunnainen &rarr; tyydyttävä = 2 pistettä ja ei 
+        havaintoja &rarr; tyydyttävä = 3 pistettä. Kukin piste vaatii noin yhden 
+        tehokkaan retkeilypäivän sopivaan vuodenaikaan. Kertyneet pisteet 
+        yhteenlaskettuna on saatu lopullinen summa eli punainen luku kullekin 
+        suurruudulle.</li>
+    </ol>
+    <p>Esimerkki: Lounaisimmalla suurruudulla numero 1 on 22 atlasruutua. Niistä 
+      0,75 × 22 = 16,5 ≈ 17. Eli 17 atlasruutua pitäisi saada vähintään tyydyttäviksi.
+      Tarkastelutilanteessa 2 atlasruutua on jo erinomaisesti ja 2 tyydyttävästi 
+      selvitetty. Jää siis 13 atlasruutua, joiden selvitysastetta pitäisi vielä nostaa. 
+      Suurruudulla on 5 välttävästi selvitettyä atlasruutua, joiden nostaminen tuottaa
+      summaan 5 × 1 p = 5 pistettä. Loput 8 atlasruutua pitää nostaa 
+      satunnaishavaintojen tilasta eli summaan tulee lisää 8 × 2 p = 16 pistettä. 
+      Yhteensä 5 p + 16 p = 21 p.</p>
 </ng-template>
