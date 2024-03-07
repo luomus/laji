@@ -1,14 +1,14 @@
 import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, Renderer2, ViewContainerRef, Inject, ChangeDetectorRef } from '@angular/core';
 import { TooltipComponent } from './tooltip.component';
 import { DOCUMENT } from '@angular/common';
-import { PopoverPlacement, positionPopoverInBody } from '../popover/popover.directive';
+import { Placement, PlacementService } from '../placement/placement.service';
 
 @Directive({
   selector: '[luTooltip]'
 })
 export class TooltipDirective implements OnDestroy {
   @Input() luTooltip: string;
-  @Input() placement: PopoverPlacement = 'top';
+  @Input() placement: Placement = 'top';
   @Input() isDisabled = false; // note this is unnecessary, but required for ngx-bootstrap compat
 
   private compRef: ComponentRef<TooltipComponent> | undefined;
@@ -18,7 +18,8 @@ export class TooltipDirective implements OnDestroy {
     private viewContainerRef: ViewContainerRef,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document
+    private placementService: PlacementService,
+    @Inject(DOCUMENT) private document: Document,
   ) {}
 
   @HostListener('mouseenter')
@@ -29,15 +30,16 @@ export class TooltipDirective implements OnDestroy {
     this.compRef = this.viewContainerRef.createComponent(TooltipComponent);
     this.compRef.instance.content = this.luTooltip;
 
-    positionPopoverInBody(
-      this.compRef.location.nativeElement, this.el.nativeElement,
-      this.document, this.renderer, this.placement
+    this.placementService.attach(
+      this.compRef.location.nativeElement, this.el.nativeElement, this.placement,
+      { renderer: this.renderer, window, document: this.document }
     );
   }
 
   @HostListener('mouseleave')
   unload() {
     if (!this.compRef) { return; }
+    this.placementService.detach(this.compRef.location.nativeElement);
     this.compRef.destroy();
     this.compRef = undefined;
     this.cdr.detectChanges();
