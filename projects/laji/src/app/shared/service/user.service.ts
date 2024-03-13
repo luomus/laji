@@ -4,11 +4,13 @@ import {
   filter,
   map,
   share,
+  skipUntil,
   startWith,
+  switchMap,
   take,
   tap
 } from 'rxjs/operators';
-import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
+import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subject, Subscription, throwError } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
@@ -119,7 +121,8 @@ export class UserService implements OnDestroy {
     settings: {},
     allUsers: {}
   });
-  private state$ = this.store.asObservable();
+  private loading = false;
+  private state$ = this.store.asObservable().pipe(filter(() => !this.loading));
   private currentRouteData = new ReplaySubject<any>(1);
   private currentRouteData$ = this.currentRouteData.asObservable();
 
@@ -149,10 +152,12 @@ export class UserService implements OnDestroy {
     if (this.store.value.token === token || !this.platformService.isBrowser) {
       return of(true);
     }
+    this.loading = true;
     return this.personApi.personFindByToken(token).pipe(
       tap(person => {
         // if person is valid, we have succesfully logged in
         this.persistentState = { ...this.persistentState, token};
+        this.loading = false;
         this.store.next({
           ...this.store.value, ...this.persistentState, user: person,
           settings: this.storage.retrieve(personsCacheKey(person.id))
