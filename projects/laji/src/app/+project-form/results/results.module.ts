@@ -54,6 +54,9 @@ import { TaxonSelectModule } from '../../shared-modules/taxon-select/taxon-selec
 import { LajiMapModule } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.module';
 import {LajiLegendModule} from '../../shared-modules/legend/legend.module';
 import {YearSliderModule} from '../../shared-modules/year-slider/year-slider.module';
+import { BiomonResultComponent } from './biomon-result/biomon-result.component';
+import { BiomonResultStatisticsComponent } from './biomon-result/biomon-result-statistics/biomon-result-statistics.component';
+import { BiomonResultMapComponent } from './biomon-result/biomon-result-map/biomon-result-map.component';
 
 @NgModule({
   imports: [
@@ -107,7 +110,10 @@ import {YearSliderModule} from '../../shared-modules/year-slider/year-slider.mod
     SykeInsectAllResultsComponent,
     InvasiveSpeciesControlResultComponent,
     InvasiveSpeciesControlResultStatisticsComponent,
-    InvasiveSpeciesControlResultMapComponent
+    InvasiveSpeciesControlResultMapComponent,
+    BiomonResultComponent,
+    BiomonResultStatisticsComponent,
+    BiomonResultMapComponent
   ],
   providers: [
     WbcResultService,

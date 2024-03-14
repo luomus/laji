@@ -4,7 +4,7 @@ import { Observable, of, of as ObservableOf, throwError } from 'rxjs';
 import { FormPermission } from '../model/FormPermission';
 import { Person } from '../model/Person';
 import { Form } from '../model/Form';
-import { UserService } from './user.service';
+import { isIctAdmin, UserService } from './user.service';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { FormService } from './form.service';
 import { PlatformService } from '../../root/platform.service';
@@ -114,7 +114,7 @@ export class FormPermissionService {
         edit: true,
         view: true,
         admin: false,
-        ictAdmin: UserService.isIctAdmin(user)
+        ictAdmin: isIctAdmin(user)
       } : notLoggedIn));
     }
     return this.userService.isLoggedIn$.pipe(
@@ -139,7 +139,7 @@ export class FormPermissionService {
             view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === RestrictAccess.restrictAccessLoose,
             edit: this.isEditAllowed(formPermission, person, form),
             admin: this.isAdmin(formPermission, person),
-            ictAdmin: UserService.isIctAdmin(person)
+            ictAdmin: isIctAdmin(person)
           } : notLoggedIn)),
           catchError(() => ObservableOf(notLoggedIn))
         );

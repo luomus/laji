@@ -15,7 +15,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { FormApiClient } from '../../../../shared/api/FormApiClient';
-import { IUserSettings, UserService } from '../../../../shared/service/user.service';
+import { UserSettings, UserService } from '../../../../shared/service/user.service';
 import { Logger } from '../../../../shared/logger/logger.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import { concatMap, map, take } from 'rxjs/operators';
@@ -65,7 +65,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   static BOTTOM_OFFSET = 53.5;
   @Input() form: Form.SchemaForm;
   @Input() formData: any = {};
-  @Input() settingsKey: keyof IUserSettings = 'formDefault';
+  @Input() settingsKey: keyof UserSettings = 'formDefault';
   @Input() showShortcutButton = true;
 
   @Output() dataSubmit = new EventEmitter();

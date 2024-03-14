@@ -37,7 +37,6 @@
               ]
             },
             "scripts": [],
-            "webWorkerTsConfig": "tsconfig.worker.json",
             "allowedCommonJsDependencies": [
               "graphql-tag",
               "zen-observable",

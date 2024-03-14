@@ -123,6 +123,26 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
+  onExportSquares() {
+    const cols = [
+      'YKJ-ruudun koordinaatit', 'Nimi', 'Pesimävarmuussumma',
+      'Selvitysaste', 'Selvitysasteiden raja-arvot'
+    ].join(',');
+
+    const rows: string[] = [];
+    this.birdSociety.gridSquares.forEach(square => {
+      rows.push([
+        square.coordinates, `"${square.name}"`, square.atlasClassSum,
+        square.activityCategory.value, `"${[
+          square.level1, square.level2, square.level3, square.level4, square.level5
+        ].join(',')}"`
+      ].join(','));
+    });
+
+    const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + [cols, ...rows].join('\n'));
+    window.open(encodedUri);
+  }
+
   ngOnDestroy(): void {
     this.popstateService.setPathData({selectedDataIdx: this.selectedDataIdx});
   }

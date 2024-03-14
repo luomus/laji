@@ -6,6 +6,18 @@ import { InformationItem } from '../../shared/model/InformationItem';
 import { MultiLanguage } from '../../shared/model/MultiLanguage';
 import { Subscription } from 'rxjs';
 
+const filterParentsAboveId = (excludeIds: string[], parents: any[]): any[] => {
+  const out = [];
+  for (let i = 0; i < parents.length; i++) {
+    const elem = parents[parents.length - 1 - i];
+    if (excludeIds.includes(elem.id)) {
+      break;
+    }
+    out.push(elem);
+  }
+  return out.reverse();
+};
+
 @Component({
   selector: 'laji-info-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,8 +34,9 @@ export class InfoPageComponent implements OnChanges, OnDestroy {
   loadingContent = false;
   _rootPage?: MultiLanguage;
 
-  @Input()
-  page?: string;
+  // filter out parents above excludeParentId in the hierarchy
+  @Input() excludeParentIds?: string[];
+  @Input() page?: string;
 
   @Output()
   parents = new EventEmitter<InformationItem[]>();
@@ -87,7 +100,7 @@ export class InfoPageComponent implements OnChanges, OnDestroy {
     this.contentSub = this.lajiApiService.get(LajiApi.Endpoints.information, this.lastFromPath(page), {}).pipe(
       tap(result => {
         this.title.emit(result.title);
-        this.parents.emit(result.parents);
+        this.parents.emit(this.excludeParentIds ? filterParentsAboveId(this.excludeParentIds, result.parents) : result.parents);
         this.subPages.emit(result.children || []);
       }),
       map(result => (result.content || '').trim()),
