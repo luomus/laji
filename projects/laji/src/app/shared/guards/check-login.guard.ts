@@ -34,7 +34,7 @@ export class CheckLoginGuard  {
 
     this.userService.login(route.queryParams['token']).subscribe();
 
-    if (this.userService.hasReturnUrl()) {
+    if (route.queryParams['token'] && this.userService.hasReturnUrl()) {
       return this.router.parseUrl(this.userService.getReturnUrl());
     }
 
