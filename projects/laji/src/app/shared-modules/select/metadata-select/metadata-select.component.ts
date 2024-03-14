@@ -17,6 +17,7 @@ import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { SelectOptions } from '../select-subcategories/select-subcategories.component';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
+import { SelectOption } from '../select/select.component';
 
 export enum SelectStyle {
   basic,
@@ -49,6 +50,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   @Input() pick: MetadataSelectPick;
   @Input() options: string[];
   @Input() useFilter = true;
+  @Input() filterProperties: (keyof SelectOption)[] | undefined;
   @Input() firstOptions = [];
   @Input() info: string;
   @Input() whiteList: string[];

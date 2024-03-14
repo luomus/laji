@@ -1,4 +1,10 @@
 @import '../../../styles/variables';
+@import 'vars';
+
+$bg: $primary-6;
+$hover: lighten($primary-6, 5%);
+$active: lighten($primary-6, 5%);
+$text-color: $primary-2;
 
 .navbar-collapse {
   flex: none;
@@ -47,8 +53,9 @@
 
 .navbar {
   margin-bottom: 0;
-  background-color: $color-main;
-  border-color: darken($color-main, 10%);
+  background: $bg;
+  box-shadow: 0 1px 4px rgba(black, 0.3);
+  border: none;
 }
 
 .navbar .navbar-nav {
@@ -58,12 +65,11 @@
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li.open > a,
 .navbar-inverse .navbar-brand:hover {
-  background-color: darken($color-main, 10%);
+  background-color: $hover;
 }
 
 .navbar-inverse .navbar-toggle:focus, .navbar-inverse .navbar-toggle:hover {
-  background-color: darken($color-main, 10%);
-  border-color: darken($color-main, 10%);
+  background-color: $hover;
 }
 
 .navbar-inverse .dropdown-menu li[role="menuitem"] {
@@ -74,11 +80,7 @@
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:focus,
 .navbar-inverse .navbar-nav > .active > a:hover {
-  background-color: darken($color-main, 10%);
-}
-
-.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-  border-color: darken($color-main, 10%);
+  background-color: $hover;
 }
 
 .navbar-text {
@@ -87,32 +89,28 @@
 }
 
 .navbar-text .navbar-link {
-  color: #fff;
-}
-
-.navbar-toggle {
-  border-color: darken($color-main, 10%)
+  color: $text-color;
 }
 
 .navbar-brand {
-  color: #ffffff;
+  color: $text-color;
   font-weight: 700;
   letter-spacing: 2px;
 }
 
 .navbar-collapse .navbar-nav > .active > a {
-  color: #ffffff;
+  color: $text-color;
   font-weight: 500;
-  background-color: darken($color-main, 10%);
+  background-color: $active;
 }
 
 .navbar-collapse a {
-  color: #ffffff;
+  color: $text-color;
   font-weight: 500;
 }
 
 .navbar-link, .navbar-profile .language-toggle {
-  color: #ffffff;
+  color: $text-color;
   background: none;
 }
 
@@ -168,9 +166,7 @@
 .red-theme.navbar-inverse .navbar-form,
 .red-theme.navbar-inverse .navbar-collapse,
 .red-theme.navbar-inverse .navbar-form {
-  border-left-color: $neutral-3;
-  border-right-color: $neutral-3;
-  border-bottom-color: $neutral-3;
+  border-color: $neutral-3;
 }
 .red-theme.navbar {
   box-shadow: 0 2px 4px rgba(0,0,0,.15);
@@ -184,11 +180,19 @@
 }
 
 .navbar-collapse .lu-dropdown a {
-  color: #333;
+  color: $neutral-8;
   @media only screen and (max-width: 900px) {
     color: $neutral-1;
   }
 }
+
+@media only screen and (max-width: 900px) {
+  .navbar-collapse .lu-dropdown.user-dropdown, .navbar-collapse .lu-dropdown.lang-dropdown {
+    background-color: $primary-6;
+    position: relative;
+  }
+}
+
 
 @media only screen and (max-width: 900px) {
   .red-theme.navbar .navbar-collapse {
@@ -215,9 +219,11 @@
       float: none;
       width: auto;
       margin-top: 0;
-      background-color: transparent;
       border: 0;
       box-shadow: none;
+      & > li > a:hover {
+        background-color: darken($color-main, 10%);
+      }
     }
   }
 

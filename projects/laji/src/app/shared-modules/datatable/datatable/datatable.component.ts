@@ -144,6 +144,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     }
 
     this.sortRows(this.sorts);
+
+    // fixes the horizontal scroll of column headers and rows being unsynced
+    // when rows are updated after horizontally scrolling the datatable
+    setTimeout(() => this.scrollTo());
   }
 
   @Input() set page(page: number) {

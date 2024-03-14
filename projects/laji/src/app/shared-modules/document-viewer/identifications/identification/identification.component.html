@@ -1,6 +1,9 @@
 <div>
   <span>
-    <i>{{identification.taxon}}</i> {{ identification.author }} 
+    <i>{{identification.taxon}}</i> {{ identification.author }}
+    <span *ngIf="identification.taxonSpecifier || identification.taxonSpecifierAuthor">
+      <i>{{identification.taxonSpecifier}}</i> {{ identification.taxonSpecifierAuthor}}
+    </span>
     <span *ngIf="identification.det || identification.detDate">
       det. {{identification.det || ''}} {{ identification.detDate || '' }}
     </span>

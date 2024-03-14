@@ -4,10 +4,9 @@ import { Observable, of, of as ObservableOf, throwError } from 'rxjs';
 import { FormPermission } from '../model/FormPermission';
 import { Person } from '../model/Person';
 import { Form } from '../model/Form';
-import { UserService } from './user.service';
+import { isIctAdmin, UserService } from './user.service';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { FormService } from './form.service';
-import { TranslateService } from '@ngx-translate/core';
 import { PlatformService } from '../../root/platform.service';
 import RestrictAccess = Form.RestrictAccess;
 import { HttpErrorResponse } from '@angular/common/http';
@@ -30,7 +29,6 @@ export class FormPermissionService {
     private formPermissionApi: FormPermissionApi,
     private formService: FormService,
     private userService: UserService,
-    private translateService: TranslateService,
     private platformService: PlatformService
   ) {}
 
@@ -44,7 +42,7 @@ export class FormPermissionService {
       switchMap(permission => of(permission.admins.includes(collectionID) || permission.editors.includes(collectionID)))
     );
 
-    return this.formService.getAllForms(this.translateService.currentLang).pipe(
+    return this.formService.getAllForms().pipe(
       map(forms => forms.find(f => f.id === formID)),
       switchMap(form => (!form || !form.collectionID || !form.options?.restrictAccess)
         ? of(true)
@@ -73,7 +71,7 @@ export class FormPermissionService {
     return this.formPermissionApi.findByCollectionID(collectionID, personToken).pipe(
       catchError((err: HttpErrorResponse) => {
         if (err.status === 404) {
-          return of({ id: undefined, collectionID, admins: [], editors: [], permissionRequests: [] });
+          return of({ id: '', collectionID, admins: [], editors: [], permissionRequests: [] });
         }
         return throwError(err);
       }),
@@ -116,7 +114,7 @@ export class FormPermissionService {
         edit: true,
         view: true,
         admin: false,
-        ictAdmin: UserService.isIctAdmin(user)
+        ictAdmin: isIctAdmin(user)
       } : notLoggedIn));
     }
     return this.userService.isLoggedIn$.pipe(
@@ -141,7 +139,7 @@ export class FormPermissionService {
             view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === RestrictAccess.restrictAccessLoose,
             edit: this.isEditAllowed(formPermission, person, form),
             admin: this.isAdmin(formPermission, person),
-            ictAdmin: UserService.isIctAdmin(person)
+            ictAdmin: isIctAdmin(person)
           } : notLoggedIn)),
           catchError(() => ObservableOf(notLoggedIn))
         );

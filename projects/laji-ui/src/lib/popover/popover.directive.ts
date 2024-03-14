@@ -4,48 +4,10 @@ import { PopoverContainerComponent } from './popover-container.component';
 import { DOCUMENT } from '@angular/common';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, debounceTime, filter } from 'rxjs/operators';
+import { Placement, PlacementService } from '../placement/placement.service';
 
-export type PopoverPlacement = 'left' | 'right' | 'top' | 'bottom';
 export type PopoverMode = 'hover' | 'click' | 'disabled';
 export type PopoverRootElement = 'component' | 'body';
-
-const getAbsoluteOffset = (d: Document, w: Window, el: HTMLElement) => {
-  const rect = el.getBoundingClientRect();
-  const scrollX = w.scrollX || d.documentElement.scrollLeft;
-  const scrollY = w.scrollY  || d.documentElement.scrollTop;
-  const x = rect.left + scrollX;
-  const y = rect.top + scrollY;
-  return { x, y };
-};
-
-const getPopoverBodyOffset = (d: Document, w: Window, el: HTMLElement, popover: HTMLElement, placement: PopoverPlacement) => {
-  const {x, y} = getAbsoluteOffset(d, w, el);
-  const elRect = el.getBoundingClientRect();
-  const popoverRect = popover.getBoundingClientRect();
-  if (placement === 'left') {
-    return {x: x - popoverRect.width, y};
-  } else if (placement === 'right') {
-    return {x: x + elRect.width, y};
-  } else if (placement === 'top') {
-    return {x, y: y - popoverRect.height};
-  } else { // bottom
-    return {x, y: y + elRect.height};
-  }
-};
-
-export const positionPopoverInBody = (
-  popoverEl: any, relativeEl: any, document: Document,
-  renderer: Renderer2, placement: PopoverPlacement
-) => {
-  renderer.appendChild(document.body, popoverEl);
-  // temporarily hide until the element is moved to the correct location
-  renderer.setStyle(popoverEl, 'opacity', '0');
-  setTimeout(() => { // we need to let angular render before the popover gets sane width/height values
-    const {x, y} = getPopoverBodyOffset(document, window, relativeEl, popoverEl, placement);
-    renderer.setStyle(popoverEl, 'transform', `translate(${x}px, ${y}px)`);
-    renderer.setStyle(popoverEl, 'opacity', '1');
-  });
-};
 
 @Directive({
   selector: '[luPopover]'
@@ -53,7 +15,7 @@ export const positionPopoverInBody = (
 export class PopoverDirective implements AfterViewInit, OnDestroy {
   @Input() luPopover: TemplateRef<null>;
   @Input() popoverTitle = '';
-  @Input() placement: PopoverPlacement = 'bottom';
+  @Input() placement: Placement = 'bottom';
   /* Inserting the popover at body, rather than as a child of the
      component is necessary when the css stacking context is messy
      (and the popover would otherwise be obscured by other elements).
@@ -80,7 +42,8 @@ export class PopoverDirective implements AfterViewInit, OnDestroy {
     private injector: Injector,
     private envInjector: EnvironmentInjector,
     private cdr: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    private placementService: PlacementService
   ) {}
 
   ngAfterViewInit(): void {
@@ -158,9 +121,9 @@ export class PopoverDirective implements AfterViewInit, OnDestroy {
     this.renderer.addClass(this.popoverRef.location.nativeElement, this.placement);
 
     if (this.rootElement === 'body') {
-      positionPopoverInBody(
+      this.placementService.attach(
         this.popoverRef.location.nativeElement, this.el.nativeElement,
-        this.document, this.renderer, this.placement
+        this.placement, { renderer: this.renderer, window, document: this.document }
       );
     } else {
       this.renderer.appendChild(this.el.nativeElement, this.popoverRef.location.nativeElement);
@@ -170,7 +133,13 @@ export class PopoverDirective implements AfterViewInit, OnDestroy {
   }
 
   private unloadContainer() {
-    this.popoverRef?.destroy(); this.popoverRef = undefined;
+    if (this.popoverRef) {
+      if (this.rootElement === 'body') {
+        this.placementService.detach(this.popoverRef.location.nativeElement);
+      }
+      this.popoverRef.destroy();
+      this.popoverRef = undefined;
+    }
     this.projectedContentRef?.destroy(); this.projectedContentRef = undefined;
     this.popoverListenerDestructors.forEach(d => d());
   }

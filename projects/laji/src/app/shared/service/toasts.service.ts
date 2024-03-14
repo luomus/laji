@@ -11,19 +11,19 @@ export class ToastsService {
     private platformService: PlatformService
   ) {}
 
-  showSuccess(message: string, title?: string, options?: Partial<IndividualConfig>): ActiveToast<any> {
+  showSuccess(message: string, title?: string, options?: Partial<IndividualConfig>): ActiveToast<any> | undefined {
     return this.toast('success', message, title, options);
   }
 
-  showError(message: string, title?: string, options?: Partial<IndividualConfig>): ActiveToast<any> {
+  showError(message: string, title?: string, options?: Partial<IndividualConfig>): ActiveToast<any> | undefined {
     return this.toast('error', message, title, options);
   }
 
-  showWarning(message: string, title?: string, options?: Partial<IndividualConfig>): ActiveToast<any> {
+  showWarning(message: string, title?: string, options?: Partial<IndividualConfig>): ActiveToast<any> | undefined {
     return this.toast('warning', message, title, options);
   }
 
-  showInfo(message: string, title?: string, options?: Partial<IndividualConfig>): ActiveToast<any> {
+  showInfo(message: string, title?: string, options?: Partial<IndividualConfig>): ActiveToast<any> | undefined {
     return this.toast('info', message, title, options);
   }
 
@@ -34,7 +34,7 @@ export class ToastsService {
     this.toastr.clear(toastId);
   }
 
-  private toast(type: 'success' | 'error' | 'warning' | 'info', message: string, title?: string, options?: Partial<IndividualConfig>): ActiveToast<any> {
+  private toast(type: 'success' | 'error' | 'warning' | 'info', message: string, title?: string, options?: Partial<IndividualConfig>): ActiveToast<any> | undefined {
     if (!this.platformService.isBrowser) {
       return undefined;
     }

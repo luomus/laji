@@ -71,7 +71,9 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
             atlasGrid: { opacity: .6, visible: true }
           }
         },
-        controls: true,
+        controls: {
+          fullscreen: true
+        },
         lang: Lang.fi,
         center: [64.8, 25],
         zoom: 1.6

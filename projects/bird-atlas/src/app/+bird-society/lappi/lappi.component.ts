@@ -14,6 +14,18 @@ interface LappiTableRowData extends LappiStatsResponseElement {
   targetMetString: string;
 }
 
+/**
+ * Accesses DOM directly, do not run in SSR
+ */
+const downloadWithFilename = (encodedUri: string, filename: string) => {
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 @Component({
   selector: 'ba-society-lappi',
   templateUrl: './lappi.component.html',
@@ -118,14 +130,14 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
       bigSquare.grids.forEach(smallSquare => {
         rows.push(
           [
-            bigSquare.index, bigSquare.targetPercentage, smallSquare.coordinates,
-            smallSquare.name, smallSquare.atlasClassSum, smallSquare.activityCategory.value
+            bigSquare.index, Math.round(bigSquare.targetPercentage * 10) / 10, smallSquare.coordinates,
+            `"${smallSquare.name}"`, smallSquare.atlasClassSum, smallSquare.activityCategory.value
           ].join(',')
         );
       });
     });
 
     const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + [cols, ...rows].join('\n'));
-    window.open(encodedUri);
+    downloadWithFilename(encodedUri, 'lapin-selvitysasteet.csv');
   }
 }

@@ -196,13 +196,27 @@ export class WarehouseApi {
   }
 
   /**
+   * Aggregates based on gatherings
+   * @param query to make to the warehouse
+   * @param aggregateBy Define fields to aggregate by. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
+   * @param orderBy Define order of fields. Defaults to count of units (desc). Give number of the column, first is 1. aggregateBy -fields are first, followed by count of units, individual count sum and maximum and min and max date. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
+   * @param pageSize Set number of results in one page.
+   * @param page Set current page.
+   * @param geoJSON returns data as geojson.
+   * @param onlyCount return only count in result items (default true).
+   */
+  public warehouseQueryGatheringAggregateGet(query: WarehouseQueryInterface = {}, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
+    const target = this.subPath === WarehouseSubPath.sample ? 'aggregate' : 'gathering/aggregate';
+    return this.warehouseQueryGet(target, query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
+  }
+
+  /**
    * Aggregates based on documents
    *
    */
   public warehouseQueryDocumentAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     return this.warehouseQueryGet('document/aggregate', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
-
 
   /**
    * Aggregates based on annotations

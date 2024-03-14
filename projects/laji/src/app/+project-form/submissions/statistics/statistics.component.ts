@@ -20,7 +20,7 @@ export class StatisticsComponent implements OnInit {
 
   document: Document;
   ns: any;
-  form: Form.SchemaForm;
+  form: Form.List;
   loaded = false;
 
   constructor(
@@ -37,7 +37,7 @@ export class StatisticsComponent implements OnInit {
     if (this.route.snapshot.params.documentID) {
       this.documentApi.findById(this.route.snapshot.params.documentID, this.userService.getToken()).pipe(
         switchMap((document: Document) => ObservableForkJoin(
-          this.formService.getForm(document.formID, 'fi'),
+          this.formService.getFormInListFormat(document.formID),
           document.namedPlaceID ?
             this.namedPlacesService
               .getNamedPlace(document.namedPlaceID, this.userService.getToken()).pipe(
