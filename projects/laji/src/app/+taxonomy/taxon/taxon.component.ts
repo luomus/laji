@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestro
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { catchError, concat, delay, filter, retryWhen, take, tap } from 'rxjs/operators';
+import { map, catchError, concat, delay, filter, retryWhen, take, tap, switchMap } from 'rxjs/operators';
 import { Taxonomy } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Logger } from '../../shared/logger';
@@ -20,20 +20,16 @@ import { getDescription, HeaderService } from '../../shared/service/header.servi
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonComponent implements OnInit, OnDestroy {
-  taxon: Taxonomy;
+  taxon: Taxonomy | null;
   isFromMasterChecklist: boolean;
-
   infoCardContext: string;
   infoCardTab: InfoCardTabType;
-
   showTree = false;
   canShowTree = true;
-
   showHidden = false;
-
   loading = false;
-  private initTaxonSub: Subscription;
 
+  private initTaxonSub: Subscription;
   private subParam: Subscription;
 
   constructor(
@@ -44,32 +40,49 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private logger: Logger,
     private translate: TranslateService,
     private footerService: FooterService,
-    private cd: ChangeDetectorRef,
-    private cacheService: CacheService,
-    private headerService: HeaderService,
-    @Inject(DOCUMENT) private document: Document
+    private cdr: ChangeDetectorRef,
+    private headerService: HeaderService
   ) { }
 
   ngOnInit() {
     this.footerService.footerVisible = false;
-    this.subParam = combineLatest(this.route.params, this.route.queryParams).subscribe(data => {
-      this.infoCardTab = data[0]['tab'] || 'overview';
-      this.infoCardContext = data[1]['context'] || 'default';
-      this.showTree = data[1]['showTree'] === 'true';
-      this.showHidden = data[1]['showHidden'] === 'true';
-      this.cd.markForCheck();
+    this.subParam = combineLatest(
+      [this.route.params, this.route.queryParams]
+    ).pipe(
+      tap(params => {
+        this.infoCardTab = params[0]['tab'] || 'overview';
+        this.infoCardContext = params[1]['context'] || 'default';
+        this.showTree = params[1]['showTree'] === 'true';
+        this.showHidden = params[1]['showHidden'] === 'true';
+        this.cdr.markForCheck();
+      }),
+      map(params => params[0]['id']),
+      filter(id => !this.taxon || id !== this.taxon.id),
+      tap(_ => this.loading = true),
+      switchMap(id => this.getTaxon(id)),
+      catchError(error => (
+        // if the error was a 404 we don't need to retry
+        error.status === 404 ? of(null) : throwError(error)
+      )),
+      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), )),
+      catchError(error => {
+        this.logger.warn('Failed to fetch taxon by id', error);
+        return of(null);
+      }),
+      tap(taxon => {
+        this.taxon = taxon;
+        this.loading = false;
+        this.cdr.markForCheck();
 
-      if (!this.taxon || data[0]['id'] !== this.taxon.id) {
-        if (this.initTaxonSub) {
-          this.initTaxonSub.unsubscribe();
+        if (taxon === null) {
+          return;
         }
-        this.loading = true;
-        this.initTaxonSub = this.initTaxon(data[0]['id']).subscribe(() => {
-          this.loading = false;
-          this.cd.markForCheck();
-        });
-      }
-    });
+
+        this.isFromMasterChecklist = this.getIsFromMasterChecklist();
+        this.canShowTree = this.taxon.hasParent || this.taxon.hasChildren;
+        this.setHeaders(taxon);
+      })
+    ).subscribe();
   }
 
   ngOnDestroy() {
@@ -114,21 +127,12 @@ export class TaxonComponent implements OnInit, OnDestroy {
     );
   }
 
-  private initTaxon(taxonId: string): Observable<Taxonomy> {
-    return this.getTaxon(taxonId).pipe(
-      filter(taxon => taxon !== null),
-      tap(taxon => {
-        this.taxon = taxon;
-        this.isFromMasterChecklist = this.getIsFromMasterChecklist();
-        this.canShowTree = this.taxon.hasParent || this.taxon.hasChildren;
-
-        const d = taxon?.descriptions?.[0]?.groups?.[0]?.variables?.[0]?.content[this.translate.currentLang];
-        this.headerService.setHeaders({
-          description: d ? getDescription(d) : undefined,
-          image: taxon?.multimedia?.[0]?.thumbnailURL
-        });
-      })
-    );
+  private setHeaders(taxon: Taxonomy) {
+    const d = taxon?.descriptions?.[0]?.groups?.[0]?.variables?.[0]?.content[this.translate.currentLang];
+    this.headerService.setHeaders({
+      description: d ? getDescription(d) : undefined,
+      image: taxon?.multimedia?.[0]?.thumbnailURL
+    });
   }
 
   private getTaxon(id: string): Observable<Taxonomy> {
@@ -136,13 +140,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
       includeMedia: true,
       includeDescriptions: true,
       includeRedListEvaluations: true,
-    }).pipe(
-      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), )),
-      catchError(err => {
-        this.logger.warn('Failed to fetch taxon by id', err);
-        return of(null);
-      })
-    );
+    });
   }
 
   private getIsFromMasterChecklist() {

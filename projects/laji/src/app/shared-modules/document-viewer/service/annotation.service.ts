@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Annotation } from '../../../shared/model/Annotation';
-import { UserService } from '../../../shared/service/user.service';
+import { isIctAdmin, UserService } from '../../../shared/service/user.service';
 import { IdService } from '../../../shared/service/id.service';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
@@ -63,7 +63,7 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
           return [Annotation.AnnotationRoleEnum.owner];
         }
         const roles = [((user && user.roleAnnotation) || Annotation.AnnotationRoleEnum.basic)];
-        if (UserService.isIctAdmin(user)) {
+        if (isIctAdmin(user)) {
           roles.push(Annotation.AnnotationRoleEnum.ictAdmin);
         }
         return roles;

@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 export const LAST_LANG_KEY = 'last-lang';
 
 export const DEFAULT_LANG = (environment as any).defaultLang ?? 'fi';
-export const LANGUAGES = (environment as any).languages ?? ['fi', 'en', 'sv'];
+export const LANGUAGES: string[] = (environment as any).languages ?? ['fi', 'en', 'sv'];
 
 @Injectable()
 export class LocalizeRouterService {

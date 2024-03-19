@@ -1,0 +1,76 @@
+@import 'vars';
+
+:host {
+  display: block;
+  z-index: 1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.header-image::before {
+  content: '';
+  background: rgba(#000, .3);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.header-image-content {
+  max-width: 1200px;
+  flex-grow: 1;
+  z-index: 100;
+  color: $neutral-1;
+  padding: $sp-6 $sp-3;
+}
+
+.logo {
+  max-width: 250px;
+}
+
+.some-link svg {
+  height: 20px;
+  width: 20px;
+}
+
+.fmnh {
+  color: $neutral-5;
+}
+
+laji-omni-search {
+  display: block;
+  max-width: 400px;
+}
+
+.stats-container {
+  margin-right: $sp-8;
+
+  laji-observation-count {
+    font-size: $fs-8;
+    color: $neutral-2;
+  }
+  .stats-label {
+    margin-top: -10px;
+    font-size: $fs-5;
+    color: $neutral-4;
+  }
+}
+
+.img-responsive {
+  margin: 45px 0
+}
+
+.header-image {
+  position: relative;
+  background-clip: border-box;
+  background-position: center;
+  background-size: cover;
+}
+
+.header-image {
+  min-height: 300px;
+}
+
+.text-container {
+  margin-top: 20px;
+}

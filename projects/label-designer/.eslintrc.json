@@ -1,6 +1,6 @@
 {
   "extends": [
-    "../../.eslintrc.json"
+    "../../.eslintrc.js"
   ],
   "rules": {
     "@angular-eslint/component-selector": [

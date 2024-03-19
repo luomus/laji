@@ -13,7 +13,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { IUserSettings, UserService } from '../../shared/service/user.service';
+import { UserSettings, UserService } from '../../shared/service/user.service';
 import { of, Observable, Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import type { Options, Lang, TileLayersOptions } from '@luomus/laji-map/lib/defs';
@@ -96,7 +96,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   ) { }
 
   @Input() options: Options;
-  @Input() settingsKey: keyof IUserSettings;
+  @Input() settingsKey: keyof UserSettings;
 
   ngOnDestroy() {
     try {

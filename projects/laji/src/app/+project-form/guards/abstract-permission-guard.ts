@@ -16,8 +16,6 @@ export abstract class AbstractPermissionGuard  {
               private formService: FormService,
               private formPermissionService: FormPermissionService,
               private router: Router,
-              private route: ActivatedRoute,
-              private translate: TranslateService,
               private platformService: PlatformService,
               private localizeRouteService: LocalizeRouterService
 ) { }
@@ -42,7 +40,7 @@ export abstract class AbstractPermissionGuard  {
       return EMPTY;
     }
 
-    return this.formService.getForm(formID, this.translate.currentLang).pipe(
+    return this.formService.getForm(formID).pipe(
       take(1),
       tap(form => {
         if (!form) {

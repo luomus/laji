@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 import { Global } from '../../../environments/global';
 import { BrowserService } from '../../shared/service/browser.service';
 import { FormService } from '../../shared/service/form.service';
@@ -16,8 +15,6 @@ export class NotFoundComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
-    private translate: TranslateService,
     private browserService: BrowserService,
     private formService: FormService
   ) { }
@@ -32,7 +29,7 @@ export class NotFoundComponent implements OnInit {
     const redirectionBase = `/project/${formID}`;
     let redirectionSubRoute = '';
     if (subRoute === '/instructions') {
-      this.formService.getForm(formID, this.translate.currentLang).pipe(
+      this.formService.getForm(formID).pipe(
         take(1),
         map(form => form.options?.instructions ? '/instructions' : '/about')
       ).subscribe(sub => {
