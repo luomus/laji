@@ -9,11 +9,8 @@ node {
     }
     stage('Run integration tests') {
       sh 'rsync -r /home/node/config/beta.laji.fi/ $WORKSPACE'
-      sh 'PLAYWRIGHT_JUNIT_OUTPUT_NAME=test-results.xml npm test'
-      sh './node_modules/.bin/webdriver-manager update --versions.chrome=$(google-chrome --version | awk \'{print $3}\')'
-      catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-        sh 'export NODE_OPTIONS=--max-old-space-size=4096 && npm run e2e:ci -- --webdriver-update=false'
-      }
+      sh 'npm run test:docker -- --project chromium --project firefox --reporter junit'
+      sh 'docker cp $(docker ps -alq):/app/test-results.xml test-results.xml'
       junit allowEmptyResults: true, testResults: 'test-results.xml'
     }
     stage('Build beta') {
