@@ -1,4 +1,4 @@
-{
+module.exports = {
   "root": true,
   "ignorePatterns": [
     "projects/laji/src/test.ts",
@@ -10,6 +10,7 @@
         "*.ts"
       ],
       "parserOptions": {
+        "tsconfigRootDir": __dirname,
         "project": [
           "tsconfig.json",
           "projects/laji/e2e/tsconfig.e2e.json"

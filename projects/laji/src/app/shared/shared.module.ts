@@ -68,7 +68,6 @@ import { WarehousePipe } from './pipe/warehouse.pipe';
 import { DateCutoffFuturePipe } from './pipe/date-cutoff-future.pipe';
 import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
 import { IncludesPipe } from './pipe/includes.pipe';
-import { SsrDisableDirective } from './directive/ssr-disable.directive';
 import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.component';
 import { QualityUrlPipe } from './pipe/quality-url.pipe';
 import { ConfirmModalComponent } from './service/confirm-modal.component';
@@ -118,7 +117,6 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
         WarehousePipe,
         DateCutoffFuturePipe,
         IncludesPipe,
-        SsrDisableDirective,
         QualityUrlPipe,
         ConfirmModalComponent,
         CheckboxValuePipe,
@@ -166,7 +164,6 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
         FactNotInPipe, CapitalizePipe, CoordinatePipe,
         FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe, IncludesPipe,
         UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule,
-        SsrDisableDirective,
         NotFoundComponent,
         QualityUrlPipe,
         InfoModule,

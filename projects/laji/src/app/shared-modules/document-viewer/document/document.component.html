@@ -54,7 +54,7 @@
             <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors[0] && document.linkings.editors[0].fullName">
               {{ document.linkings.editors | values:', ':'fullName' }}
             </laji-row>
-            <laji-row [title]="'test title'" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
+            <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
             <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
             <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
           </ng-template>
@@ -76,12 +76,22 @@
           </button>
           <div style="margin-top: 35px;">
             <lu-alert [type]="document.secured ?  'warning' : 'info'">
-              <span *ngIf="document.partial">
-                {{ 'viewer.secured.partial' | translate }}
+              <span *ngIf="document.partial && !document.secured; else partial">
+                {{ 'viewer.secured.removed' | translate }}
               </span>
-              <span *ngIf="!document.secured; else isSecured">
-                {{ 'viewer.secured.none' | translate }}
-              </span>
+
+              <ng-template #partial>
+                <span *ngIf="document.partial; else notSecured">
+                  {{ 'viewer.secured.partial' | translate }}
+                </span>
+              </ng-template>
+
+              <ng-template #notSecured>
+                <span *ngIf="!document.secured; else isSecured">
+                  {{ 'viewer.secured.none' | translate }}
+                </span>
+              </ng-template>
+
               <ng-template #isSecured>
                 <span *ngIf="document.public">
                   {{ 'viewer.secured.secured' | translate }}
@@ -95,6 +105,7 @@
                   </ng-container>
                 </span>
               </ng-template>
+
               <div *ngIf="document.secured">
                 <laji-secure-info
                   [secureLevel]="document.secureLevel"

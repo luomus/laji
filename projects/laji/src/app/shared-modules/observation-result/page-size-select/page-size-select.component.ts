@@ -4,7 +4,7 @@ import { toHtmlSelectElement } from '../../../shared/service/html-element.servic
 @Component({
   selector: 'laji-page-size-select',
   templateUrl: './page-size-select.component.html',
-  styleUrls: ['./page-size-select.component.css'],
+  styleUrls: ['./page-size-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PageSizeSelectComponent {

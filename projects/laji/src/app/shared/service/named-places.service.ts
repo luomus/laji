@@ -14,7 +14,7 @@ export class NamedPlacesService {
 
   private cache: NamedPlace[] = [];
   private cacheKey = '';
-  private idCache: Record<string, Observable<NamedPlace | null>> = {};
+  private idCache: Record<string, Observable<NamedPlace | undefined>> = {};
 
   private deletedIds: Record<string, boolean> = {};
 
@@ -52,9 +52,9 @@ export class NamedPlacesService {
     );
   }
 
-  getNamedPlace(id: string, userToken?: string, includeUnits = false): Observable<NamedPlace | null> {
+  getNamedPlace(id: string, userToken?: string, includeUnits = false): Observable<NamedPlace | undefined> {
     if (!id) {
-      return ObservableOf(null);
+      return ObservableOf(undefined);
     }
     const key = [id, userToken, includeUnits].join(':');
     if (!this.idCache[key]) {
@@ -65,7 +65,7 @@ export class NamedPlacesService {
               ? 'observation.form.placeNotFound'
               : 'haseka.form.genericError';
             this.toastService.showWarning(this.translateService.instant(msgKey));
-            return of(null);
+            return of(undefined);
           }),
           shareReplay(1)
         );

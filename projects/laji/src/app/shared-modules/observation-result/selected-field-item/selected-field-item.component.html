@@ -1,12 +1,12 @@
-<div *ngIf="idx && idx[0] > -1">
-  <button (click)="moveFieldUp(field, $event)" class="btn btn-xs">&#x25C0;</button>
-  <span>
-    <ng-container *ngFor="let col of field; let last = last; let i = index">
-      {{ idx[i] + 1 }}.{{ last ? '' : ',' }}
-    </ng-container>
-  </span>
-  <button (click)="moveFieldDown(field, $event)" class="btn btn-xs">&#x25B6;</button>
+<div class="d-flex flex-nowrap justify-between flex-gap-3">
+  <div>{{ label }} <span class="glyphicon glyphicon-asterisk required" *ngIf="required"></span></div>
+  <div class="d-flex flex-nowrap flex-gap-2" *ngIf="idx && idx[0] > -1">
+    <div><button (click)="moveFieldUp(field, $event)" class="btn btn-xs">&#x25C0;</button></div>
+    <div class="d-flex flex-wrap">
+      <div class="idx-element basis-5" *ngFor="let col of field; let last = last; let i = index">
+        {{ idx[i] + 1 }}.{{ last ? '' : ',' }}
+      </div>
+    </div>
+    <div><button (click)="moveFieldDown(field, $event)" class="btn btn-xs">&#x25B6;</button></div>
+  </div>
 </div>
-<ng-container>
-  {{ label }} <span class="required" *ngIf="required">*</span>
-</ng-container>

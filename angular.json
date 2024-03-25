@@ -37,7 +37,6 @@
               ]
             },
             "scripts": [],
-            "webWorkerTsConfig": "tsconfig.worker.json",
             "allowedCommonJsDependencies": [
               "graphql-tag",
               "zen-observable",
@@ -185,6 +184,26 @@
                 }
               ]
             },
+            "local-prod": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.local-prod.ts"
+                }
+              ]
+            },
             "strict": {
               "tsConfig": "tsconfig.app-strict.json",
               "budgets": [
@@ -243,6 +262,10 @@
             },
             "local-beta": {
               "browserTarget": "laji:build:local-beta",
+              "port": 3000
+            },
+            "local-prod": {
+              "browserTarget": "laji:build:local-prod",
               "port": 3000
             },
             "strict": {
@@ -381,6 +404,20 @@
                 }
               ],
               "buildOptimizer": true
+            },
+            "local-prod": {
+              "outputHashing": "media",
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.local-prod.ts"
+                }
+              ],
+              "buildOptimizer": true
             }
           },
           "defaultConfiguration": ""
@@ -399,6 +436,10 @@
             "local-beta": {
               "browserTarget": "laji:build:local-beta",
               "serverTarget": "laji:server:local-beta"
+            },
+            "local-prod": {
+              "browserTarget": "laji:build:local-prod",
+              "serverTarget": "laji:server:local-prod"
             }
           }
         },

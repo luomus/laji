@@ -10,14 +10,14 @@ import { IdService } from '../../service/id.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotificationComponent {
-  targetPath: string;
+  targetPath!: string;
   targetQuery: any;
-  target: string;
-  by: string;
-  type: 'annotation'|'annotationCommented'|'friendRequest'|'friendRequestAccepted';
+  target!: string | undefined;
+  by!: string | undefined;
+  type!: 'annotation'|'annotationCommented'|'friendRequest'|'friendRequestAccepted';
 
-  private _notification: Notification;
-  @Input() set notification(notification: Notification) {
+  private _notification!: Notification;
+  @Input({required: true}) set notification(notification: Notification) {
     this._notification = notification;
     this.initTargets();
   }
@@ -55,7 +55,7 @@ export class NotificationComponent {
     }
   }
 
-  onRemove(notification) {
+  onRemove(notification: Notification) {
     this.removeNotification.emit(notification);
     this.changeDetectorRef.markForCheck();
   }

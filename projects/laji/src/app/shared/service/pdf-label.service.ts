@@ -115,7 +115,7 @@ export class PdfLabelService {
   }
 
   allPossibleFields(): Observable<ILabelField[]> {
-    return this.formService.getForm(Global.forms.default, this.translateService.currentLang).pipe(
+    return this.formService.getForm(Global.forms.default).pipe(
       map(form => form
         ? this.schemaService.schemaToAvailableFields(form.schema, [...this.defaultFields], { skip: this.skipFields, special: this.specialFields })
         : []
@@ -123,15 +123,15 @@ export class PdfLabelService {
     );
   }
 
-  private getTransformGeometryDataFunction(path: string): (data: any) => Record<string, string[]> {
+  private getTransformGeometryDataFunction(path: string): (data: any) => Record<string, string | string[]> {
     return (geometryData) => {
-      const result = {};
+      const result: Record<string, string | string[]> = {};
 
       const coordinateVerbatim = [];
       if (geometryData.coordinateVerbatim) {
         coordinateVerbatim.push(geometryData.coordinateVerbatim);
       }
-      geometryData.geometries?.forEach(geometry => {
+      geometryData.geometries?.forEach((geometry: any) => {
         if (geometry.coordinateVerbatim) {
           coordinateVerbatim.push(geometry.coordinateVerbatim);
         }

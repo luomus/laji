@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, of, from, EMPTY } from 'rxjs';
+import { BehaviorSubject, Observable, of, from, EMPTY } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, tap, take, concatMap, toArray, filter, catchError } from 'rxjs/operators';
 import { GraphQLService } from '../../../graph-ql/service/graph-ql.service';
 import gql from 'graphql-tag';
@@ -139,7 +139,7 @@ export class NotificationsFacade {
     });
   }
 
-  loadNotifications(page) {
+  loadNotifications(page: number) {
     this.loadingReducer(true);
     this.lajiApi.getList(LajiApi.Endpoints.notifications, {
       personToken: this.userService.getToken(),
@@ -202,7 +202,7 @@ export class NotificationsFacade {
 
   remove(notification: Notification) {
     if (!notification || !notification.id) {
-      console.warn('Notification not provided.');
+      throw new Error('Notification not provided.');
     }
     if (!notification.seen) {
       this.localUnseenCountReducer();

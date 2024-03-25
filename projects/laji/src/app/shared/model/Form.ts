@@ -18,7 +18,8 @@ export namespace Form {
     winterbirdCount = 'MHL.resultServiceTypeWinterBirdCount',
     nafi = 'MHL.resultServiceTypeNafi',
     sykeInsect = 'MHL.resultServiceTypeSykeInsectProjects',
-    invasiveSpeciesControl = 'MHL.resultServiceTypeInvasiveControl'
+    invasiveSpeciesControl = 'MHL.resultServiceTypeInvasiveControl',
+    completeLists = 'MHL.resultServiceTypeCompleteLists'
   }
   export enum RestrictAccess {
     restrictAccessStrict = 'MHL.restrictAccessStrict',
@@ -58,6 +59,7 @@ export namespace Form {
 
   interface ListOptions {
     prepopulateWithInformalTaxonGroups?: string[];
+    prepopulateWithTaxonSets?: string[];
     emptyOnNoCount?: boolean;
     allowExcel?: boolean;
     excludeFromGlobalExcel?: boolean;

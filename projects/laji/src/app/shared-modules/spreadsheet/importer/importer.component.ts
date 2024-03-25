@@ -206,7 +206,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
       this.cdr.markForCheck();
       return;
     }
-    this.formService.getForm(this.formID, this.translateService.currentLang)
+    this.formService.getForm(this.formID)
       .subscribe(form => {
         const baseFields = [{
           parent: '',
