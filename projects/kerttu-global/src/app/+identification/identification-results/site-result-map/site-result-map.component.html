@@ -2,6 +2,7 @@
   <laji-map
     [loading]="!sites || !siteStats"
     [options]="mapOptions"
+    (loaded)="onMapLoaded()"
   >
     <div class="map-color-legend">
       <span class="map-color-legend-cnt capitalize">

@@ -10,8 +10,8 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { IGlobalSite } from '../../../../kerttu-global-shared/models';
-import { DatatableColumn } from '../../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
+import { IGlobalSite } from '../../../../../kerttu-global-shared/models';
+import { DatatableColumn } from '../../../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 
 @Component({
   selector: 'bsg-site-table',

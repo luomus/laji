@@ -9,9 +9,9 @@ import {
   ViewChildren,
   QueryList
 } from '@angular/core';
-import { IGlobalRecording, IGlobalSpeciesWithAnnotation } from '../../../../kerttu-global-shared/models';
+import { IGlobalRecording, IGlobalSpeciesWithAnnotation } from '../../../../../kerttu-global-shared/models';
 import { IdentificationPanelComponent } from './identification-panel/identification-panel.component';
-import { ISpectrogramConfig } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
+import { ISpectrogramConfig } from '../../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 @Component({
   selector: 'bsg-identification-table',

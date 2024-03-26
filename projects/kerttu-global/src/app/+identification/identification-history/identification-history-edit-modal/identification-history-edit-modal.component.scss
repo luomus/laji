@@ -1,3 +1,5 @@
+@import '../../../../../../laji-ui/src/lib/vars';
+
 :host {
   max-height: 100%;
   display: flex;
@@ -24,5 +26,11 @@
 
   .btn + .btn {
     margin-left: 5px;
+  }
+}
+
+@media only screen and (min-width: map-get($map: $breakpoints, $key: "sm")) {
+  bsg-identification-view {
+    margin: -20px -40px;
   }
 }
