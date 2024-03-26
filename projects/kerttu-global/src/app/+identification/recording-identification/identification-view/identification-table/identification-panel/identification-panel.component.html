@@ -10,7 +10,7 @@
         </a>
         <laji-info (click)="stopPropagation($event)" [html]="'identification.createTemplates.info' | translate" [showOnHover]="true"></laji-info>
       </div>
-      <button class="btn btn-danger btn-sm" (click)="onDeleteClick($event)" [disabled]="buttonsDisabled">x</button>
+      <button class="btn btn-danger btn-sm" (click)="onDeleteClick($event)" [disabled]="buttonsDisabled">✕</button>
     </div>
   </div>
 </ng-template>
@@ -61,7 +61,7 @@
               class="btn btn-danger btn-sm"
               [disabled]="buttonsDisabled"
               (click)="deleteBoxClick.emit(i)"
-            >x</button>
+            >✕</button>
           </td>
         </tr>
       </table>

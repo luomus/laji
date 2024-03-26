@@ -4,7 +4,7 @@ export type AlertType = 'info' | 'warning' | 'success' | 'danger';
 
 @Component({
   selector: 'lu-alert',
-  template: `<ng-content></ng-content><button *ngIf="dismissible" class="dismiss" (click)="dismiss()">x</button>`,
+  template: `<ng-content></ng-content><button *ngIf="dismissible" class="dismiss" (click)="dismiss()">✕</button>`,
   styleUrls: ['./alert.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
