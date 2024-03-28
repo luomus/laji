@@ -1,0 +1,8 @@
+<div class="container-fluid">
+  <laji-project-form-header [form]="form"></laji-project-form-header>
+  <ng-container *ngIf="state$ | async as state">
+    <laji-result-map [collections]="collections" [taxon]="state.taxon" (taxonChange)="onTaxonChange($event)"
+      [taxonOptions$]="taxonOptions$" [mapQuery]="mapQuery">
+    </laji-result-map>
+  </ng-container>
+</div>

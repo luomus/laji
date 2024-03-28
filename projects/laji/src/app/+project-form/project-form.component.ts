@@ -86,7 +86,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
-      case ResultServiceType.winterbirdCount:
+      case ResultServiceType.winterBirdCount:
         return [
           {
             link: ['stats'],

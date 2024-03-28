@@ -56,7 +56,9 @@ import {LajiLegendModule} from '../../shared-modules/legend/legend.module';
 import {YearSliderModule} from '../../shared-modules/year-slider/year-slider.module';
 import { BiomonResultComponent } from './biomon-result/biomon-result.component';
 import { BiomonResultStatisticsComponent } from './biomon-result/biomon-result-statistics/biomon-result-statistics.component';
-import { BiomonResultMapComponent } from './biomon-result/biomon-result-map/biomon-result-map.component';
+import { BirdPointCountResultComponent } from './bird-point-count-result/bird-point-count-result.component';
+import { WaterBirdCountResultComponent } from './water-bird-count-result/water-bird-count-result.component';
+import { ResultMapComponent } from './common/result-map/result-map.component';
 
 @NgModule({
   imports: [
@@ -113,7 +115,9 @@ import { BiomonResultMapComponent } from './biomon-result/biomon-result-map/biom
     InvasiveSpeciesControlResultMapComponent,
     BiomonResultComponent,
     BiomonResultStatisticsComponent,
-    BiomonResultMapComponent
+    WaterBirdCountResultComponent,
+    BirdPointCountResultComponent,
+    ResultMapComponent
   ],
   providers: [
     WbcResultService,
