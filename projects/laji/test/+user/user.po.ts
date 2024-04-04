@@ -1,14 +1,14 @@
 import { Page, expect, Response } from '@playwright/test';
 
-// use this as default when you just need to set the user as logged in
+// use this as default as it's faster than the manual login
 export const loginWithPermanentToken = async (page: Page) => {
-  if (!process.env.PERSON_TOKEN) {
-    throw new Error('Missing PERSON_TOKEN');
+  if (!process.env.E2E_PERSON_TOKEN) {
+    throw new Error('Missing E2E_PERSON_TOKEN');
   }
 
   const currentPath = new URL(page.url()).pathname;
   await page.goto(
-    `http://localhost:3000/user/login?token=${process.env.PERSON_TOKEN}&next=${currentPath}`
+    `http://localhost:3000/user/login?token=${process.env.E2E_PERSON_TOKEN}&next=${currentPath}`
   );
 
   await page.locator('#logged-in-user').waitFor({timeout: 15000});

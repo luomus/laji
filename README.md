@@ -28,7 +28,7 @@ npm start
 ## Running end-to-end tests
 1. Create an empty `.env` file at the root of the repository:
 ```
-PERSON_TOKEN=
+E2E_PERSON_TOKEN=
 E2E_USER=
 E2E_PASS=
 ```
