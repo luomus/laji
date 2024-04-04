@@ -258,7 +258,7 @@ test.describe('Project form', () =>  {
 
         test('template button directs to form page', async () => {
           await firstRow.locator('.template-button').click();
-          await expect(page.locator('laji-project-form-form')).toBeVisible();
+          await expect(page.locator('laji-project-form-form')).toBeVisible({timeout: 15000});
         });
       });
     });

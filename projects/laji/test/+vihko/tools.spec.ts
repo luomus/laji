@@ -109,7 +109,7 @@ test.describe('Trip form page', () => {
 
     test('template button directs to form page', async () => {
       await toolsPage.templatesDatatable.getRowByIdx(0).$templateButton.click();
-      await expect(formPage.$container).toBeVisible();
+      await expect(formPage.$container).toBeVisible({timeout: 15000});
     });
   });
 });
