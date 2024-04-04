@@ -1,6 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
-import { DatasetsPage } from "./datasets.po";
-import { login } from '../../+user/user.po';
+import { DatasetsPage } from './datasets.po';
+import { loginWithPermanentToken } from '../../+user/user.po';
 
 test.describe('Datasets page', () => {
   test.describe.configure({ mode: 'serial' });
@@ -10,7 +10,7 @@ test.describe('Datasets page', () => {
 
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage();
-    await login(page);
+    await loginWithPermanentToken(page);
     datasetsPage = new DatasetsPage(page);
     await datasetsPage.navigateTo();
   });

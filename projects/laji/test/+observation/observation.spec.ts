@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { login } from '../+user/user.po';
+import { loginWithPermanentToken } from '../+user/user.po';
 import { ObservationPage } from './observation.po';
 import { MapPageObject } from '@luomus/laji-map/test-export/test-utils';
 
@@ -118,7 +118,7 @@ test.describe('Observation list', () => {
       });
 
       test('enabled when logged in', async () => {
-        await login(observationPage.page);
+        await loginWithPermanentToken(observationPage.page);
         await observationPage.page.locator('#navbar').getByRole('link', { name: 'Selaa havaintoja' }).click();
         await observationPage.placePanel.open();
         await expect(observationPage.$drawPolygonBtn).not.toBeDisabled();
@@ -126,7 +126,7 @@ test.describe('Observation list', () => {
 
       test.describe('click', () => {
         test.beforeEach(async () => {
-          await login(observationPage.page);
+          await loginWithPermanentToken(observationPage.page);
           await observationPage.page.locator('#navbar').getByRole('link', { name: 'Selaa havaintoja' }).click();
           await observationPage.placePanel.open();
           await observationPage.$drawPolygonBtn.click();

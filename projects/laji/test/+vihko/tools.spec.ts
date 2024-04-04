@@ -2,7 +2,7 @@ import * as path from 'path';
 import { SpreadsheetPage } from '../shared/spreadsheet.po';
 import { ToolsPage } from './tools.po';
 import { expect, test } from '@playwright/test';
-import { login } from '../+user/user.po';
+import { loginWithPermanentToken } from '../+user/user.po';
 import { DocumentFormView, TripFormPage } from './trip-form.po';
 import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
 
@@ -13,7 +13,7 @@ test.describe('Trip form page', () => {
 
   test.beforeAll(async ({ browser }) => {
     const page = await browser.newPage();
-    await login(page);
+    await loginWithPermanentToken(page);
 
     toolsPage = new ToolsPage(page);
     spreadsheet = new SpreadsheetPage(page);

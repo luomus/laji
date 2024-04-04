@@ -1,5 +1,5 @@
 import test, { Page, expect, Locator } from '@playwright/test';
-import { expectToBeOnLajiAuthLogin, lajiAuthLogin, lajiFiLogin, login } from '../+user/user.po';
+import { expectToBeOnLajiAuthLogin, lajiAuthLogin, loginWithPermanentToken } from '../+user/user.po';
 
 const FORM_WITH_SIMPLE_HAS_NO_CATEGORY = 'JX.519';
 const FORM_WITH_SIMPLE_HAS_CATEGORY = 'MHL.25';
@@ -87,7 +87,7 @@ test.describe('Project form', () =>  {
 
       test('after login is on form page', async () => {
         await lajiAuthLogin(page);
-        await expect(page.locator('laji-project-form-form')).toBeVisible();
+        await expect(page.locator('laji-project-form-form')).toBeVisible({timeout: 15000});
       });
     });
 
@@ -104,7 +104,7 @@ test.describe('Project form', () =>  {
 
     test.beforeAll(async ({ browser }) => {
       page = await browser.newPage();
-      await login(page);
+      await loginWithPermanentToken(page);
     });
 
     test.describe('and has simple option,', () => {

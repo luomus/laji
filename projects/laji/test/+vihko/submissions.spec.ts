@@ -1,6 +1,6 @@
 import { SubmissionsPage } from './submissions.po'
 import { test, expect } from '@playwright/test';
-import { login } from '../+user/user.po';
+import { loginWithPermanentToken } from '../+user/user.po';
 
 test.describe('Trip form page', () => {
   test.describe.configure({mode: 'serial'});
@@ -9,7 +9,7 @@ test.describe('Trip form page', () => {
 
   test.beforeAll(async ({ browser }) => {
     const page = await browser.newPage();
-    await login(page);
+    await loginWithPermanentToken(page);
     submissionsPage = new SubmissionsPage(page);
     await submissionsPage.navigateTo();
     await submissionsPage.datatable.waitUntilLoaded();

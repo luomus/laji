@@ -1,4 +1,18 @@
-import { Page, expect } from '@playwright/test';
+import { Page, expect, Response } from '@playwright/test';
+
+// use this as default when you just need to set the user as logged in
+export const loginWithPermanentToken = async (page: Page) => {
+  if (!process.env.PERSON_TOKEN) {
+    throw new Error('Missing PERSON_TOKEN');
+  }
+
+  const currentPath = new URL(page.url()).pathname;
+  await page.goto(
+    `http://localhost:3000/user/login?token=${process.env.PERSON_TOKEN}&next=${currentPath}`
+  );
+
+  await page.locator('#logged-in-user').waitFor({timeout: 15000});
+};
 
 // use this when page is expected to be on the laji-auth page
 export const lajiAuthLogin = async (page: Page) => {
@@ -15,20 +29,8 @@ export const lajiFiLogin = async (page: Page) => {
 };
 
 export const login = async (page: Page) => {
-  const currentPath = new URL(page.url()).pathname;
-
-  // use PERSON_TOKEN based login if possible
-  if (process.env.PERSON_TOKEN) {
-    await page.goto(
-      `http://localhost:3000/user/login?token=${process.env.PERSON_TOKEN}&next=${currentPath}`
-    );
-    return;
-  }
-
-  // fallback to manual login
-
   // first navigate to the app on a fresh page instance
-  // eg. a fresh page instance has url "about:blank" in chromium
+  // e.g. a fresh page instance has url "about:blank" in chromium
   if (!page.url().match(/http.*/)) {
     await page.goto('/');
   }
@@ -43,6 +45,21 @@ export const login = async (page: Page) => {
 };
 
 export const logout = async (page: Page) => {
+  // get the person token by navigating to the front page and
+  // looking for a request to the /api/person/<token> endpoint
+  let token: string;
+  page.on('response', (resp: Response) => {
+    const match = resp.url().match(/^.*api\/person\/([^\/]+)$/);
+    if (match) {
+      token = match[1];
+    }
+  });
+  await page.goto('/');
+
+  if (token && token === process.env.PERSON_TOKEN) {
+    throw Error('Can\'t log out when using the permanent person token');
+  }
+
   await page.locator('#logged-in-user').click();
   await page.locator('a[href="/user/logout"]').click();
 };

@@ -1,5 +1,5 @@
 import { expect, Page, test } from '@playwright/test';
-import { login } from '../+user/user.po';
+import { loginWithPermanentToken } from '../+user/user.po';
 import { VihkoHomePage } from './home.po';
 import { TripFormPage } from './trip-form.po';
 import { NavPage } from '../shared/nav.po';
@@ -19,7 +19,7 @@ test.describe('Trip form page', () => {
 
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage();
-    await login(page);
+    await loginWithPermanentToken(page);
 
     tripFormPage = new TripFormPage(page);
     vihkoHome = new VihkoHomePage(page);
