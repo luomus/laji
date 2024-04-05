@@ -328,6 +328,13 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       return of(null);
     }
 
+    if (query.municipality === 'all') {
+      delete query.municipality;
+    }
+    if (query.birdAssociationArea === 'all') {
+      delete query.birdAssociationArea;
+    }
+
     return this.namedPlaceService.getAllNamePlaces(query)
       .pipe(
         catchError(() => throwError(this.translate.instant('np.loadError')))
