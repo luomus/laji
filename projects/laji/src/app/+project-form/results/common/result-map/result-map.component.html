@@ -1,5 +1,5 @@
 <div class="mb-4">
-  <label>{{ 'biomon.stats.map.taxon.label' | translate }}</label>
+  <label>{{ 'result.map.taxon.label' | translate }}</label>
   <ng-container class="container mb-8" *ngIf="taxonOptions$ | async; let taxonOptions; else taxonLoading">
     <select class="form-control" (change)="onTaxonChange(toHtmlSelectElement($event.target).value)"
       [(ngModel)]="defaultTaxon">
@@ -10,7 +10,8 @@
 <div [style.position]="'relative'">
   <laji-map [ngStyle]="{display: 'block', height: '80vh'}" [loading]="loading" [options]="{controls: true}"
     [data]="mapData$ | async" [options]="mapOptions"></laji-map>
-  <laji-legend [visualization]="visualization" [mode]="'completeListPrevalence'"></laji-legend>
+  <laji-legend [visualization]="visualization" [mode]="visualizationMode"
+    (modeChange)="onVisualizationModeChange($event)"></laji-legend>
 </div>
 
 <ng-template #taxonLoading>

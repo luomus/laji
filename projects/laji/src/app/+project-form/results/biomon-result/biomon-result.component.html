@@ -14,7 +14,7 @@
     <div *ngIf="isMapState(state)">
       <laji-result-map [collections]="[state.collection ? state.collection : this.form.collectionID]"
         [taxon]="state.taxon" (taxonChange)="onTaxonChange($event)" [taxonOptions$]="taxonOptions$"
-        [mapQuery]="mapQuery">
+        [mapQuery]="mapQuery" gatheringCountLabel="laji-map.legend.mode.biomonGatheringCount">
       </laji-result-map>
     </div>
   </ng-container>

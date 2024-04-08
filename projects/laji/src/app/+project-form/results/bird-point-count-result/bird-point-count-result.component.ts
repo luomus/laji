@@ -20,8 +20,8 @@ export class BirdPointCountResultComponent implements OnInit {
   @Input() form: Form.SchemaForm;
 
   state$: Observable<State>;
-  taxonOptions$: Observable<{label: string; value: string }[]>;
   collections = ['HR.157'];
+  taxonOptions$: Observable<{label: string; value: string }[]>;
   mapQuery = {
     includeSubCollections: false,
     gatheringCounts: true, cache: true, countryId: ['ML.206']

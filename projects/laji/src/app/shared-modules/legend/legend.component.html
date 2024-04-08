@@ -6,7 +6,7 @@
         aria-controls="dropdownMenu">{{ visualization[mode].label | translate}} <span class="caret"></span></a>
       <ul id="dropdownMenu" luDropdownMenu class="dropdown-menu dropdown-menu-right"
           aria-labelledby="dropdownToggle">
-        <li *ngFor="let l of getModes()"><a (click)="switchMode(l)">{{ 'laji-map.legend.mode.' + l | translate}}</a></li>
+        <li *ngFor="let l of getModes()"><a (click)="switchMode(l)">{{ visualization[l].label | translate}}</a></li>
       </ul>
     </div>
     <button [class]="hidden ? 'hide-btn glyphicon glyphicon-plus-sign' : 'hide-btn glyphicon glyphicon-remove-sign'" (click)="hidden = !hidden"></button>
