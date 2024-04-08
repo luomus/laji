@@ -9,6 +9,7 @@ import { HeaderService } from '../../shared/service/header.service';
 import { PlatformService } from '../../root/platform.service';
 import { HistoryService } from '../../shared/service/history.service';
 import { Util } from '../../shared/service/util.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 declare const ga: (eventName: string, hitType: string, data: string) => void;
 
@@ -32,8 +33,10 @@ export class AppComponent {
     location: Location,
     viewContainerRef: ViewContainerRef,
     headerService: HeaderService,
-    historyService: HistoryService
+    historyService: HistoryService,
+    apiClient: LajiApiClientBService
   ) {
+    apiClient.setBaseUrl(environment.base + environment.apiBase);
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.type === Global.type.embedded;

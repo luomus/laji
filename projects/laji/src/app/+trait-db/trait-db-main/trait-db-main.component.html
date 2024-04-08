@@ -1,0 +1,50 @@
+<div class="laji-page">
+  <img src="https://placehold.co/800x300"/>
+  <h1>FinBIF Trait Database</h1>
+  <div class="d-flex flex-gap-5 mb-6" *ngIf="counts$ | async; else loading; let counts">
+    <div class="counts-item"><strong>{{ counts.entries }}</strong> trait entries</div>
+    <div class="counts-item"><strong>{{ counts.traits }}</strong> traits</div>
+    <div class="counts-item"><strong>{{ counts.datasets }}</strong> datasets</div>
+  </div>
+
+  <laji-trait-db-my-datasets></laji-trait-db-my-datasets>
+
+  <div class="my-9">
+    <div class="d-flex flex-nowrap flex-gap-4 my-7">
+      <img height="50px" width="50px" src="https://cdn.laji.fi/images/informalGroups/MVL.2.svg"/>
+      <div>
+        <h3>Browse</h3>
+        <p>Browse, search, and download trait data published on the FinBIF Trait Database. </p>
+      </div>
+    </div>
+
+    <div class="d-flex flex-nowrap flex-gap-4 my-7">
+      <img height="50px" width="50px" src="https://cdn.laji.fi/images/informalGroups/MVL.2.svg"/>
+      <div>
+        <h3>Datasets</h3>
+        <p>See list of published datasets, including details on sampling protocols, methods, data origins, and authors. Create your own dataset and share your trait data with the community. </p>
+      </div>
+    </div>
+
+    <div class="d-flex flex-nowrap flex-gap-4 my-7">
+      <img height="50px" width="50px" src="https://cdn.laji.fi/images/informalGroups/MVL.2.svg"/>
+      <div>
+        <h3>Traits</h3>
+        <p>Explore the traits defined by our experts, along with their measurement methods, and create your own traits. </p>
+      </div>
+    </div>
+
+    <div class="d-flex flex-nowrap flex-gap-4 my-7">
+      <img height="50px" width="50px" src="https://cdn.laji.fi/images/informalGroups/MVL.2.svg"/>
+      <div>
+        <h3>About</h3>
+        <p>Find documentation, instructions, data policy details, API access, and more information about the database. </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <laji-spinner class="d-block m-6"></laji-spinner>
+</ng-template>
+

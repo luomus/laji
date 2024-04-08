@@ -1,0 +1,26 @@
+<h3>Trait Datasets</h3>
+<p>Browse published datasets, including details on sampling protocols, methods, data origins, and authors. Create your own dataset and share your trait data with the community. </p>
+
+<laji-trait-db-my-datasets></laji-trait-db-my-datasets>
+
+<table *ngIf="datasets$ | async; let datasets; else loading">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Taxonomic coverage</th>
+    <th>Owner</th>
+    <th>Citation</th>
+  </tr>
+  <tr *ngFor="let dataset of datasets">
+    <td><a [routerLink]="[dataset.id]">{{ dataset.name }}</a></td>
+    <td>{{ dataset.description }}</td>
+    <td>{{ dataset.taxonomicCoverage }}</td>
+    <td>{{ dataset.intellectualOwner }}</td>
+    <td>{{ dataset.citation }}</td>
+  </tr>
+</table>
+
+<ng-template #loading>
+  <laji-spinner class="d-block m-6"></laji-spinner>
+</ng-template>
+

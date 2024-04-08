@@ -1,0 +1,20 @@
+<lu-sidebar>
+  <nav class="mt-4">
+    <lu-sidebar-link [link]="['main'] | localize" routerLinkActive>
+      main
+    </lu-sidebar-link>
+    <lu-sidebar-link [link]="['browse'] | localize" routerLinkActive>
+      browse
+    </lu-sidebar-link>
+    <lu-sidebar-link [link]="['datasets'] | localize" routerLinkActive>
+      datasets
+    </lu-sidebar-link>
+    <lu-sidebar-link [link]="['traits'] | localize" routerLinkActive>
+      traits
+    </lu-sidebar-link>
+    <lu-sidebar-link [link]="['about'] | localize" routerLinkActive>
+      about
+    </lu-sidebar-link>
+  </nav>
+  <main class="d-flex laji-page"><router-outlet></router-outlet></main>
+</lu-sidebar>

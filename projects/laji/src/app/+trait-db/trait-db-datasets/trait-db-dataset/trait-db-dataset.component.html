@@ -1,0 +1,46 @@
+<ng-container *ngIf="data$ | async; let data; else loading">
+  <div>{{ data.dataset?.name }}</div>
+  <div>{{ data.dataset?.description }}</div>
+
+  <ng-container *ngIf="data.perms !== undefined; else loading">
+    <button *ngIf="data.perms !== null" class="btn btn-default">edit</button>
+  </ng-container>
+
+  <div>citation: {{ data.dataset?.citation }}</div>
+  <div>intellectual owner: {{ data.dataset?.intellectualOwner}}</div>
+  <div>person responsible: {{ data.dataset?.personResponsible }}</div>
+  <div>contact email: {{ data.dataset?.contactEmail }}</div>
+  <div *ngIf="data.dataset?.institutionCode">institution code: {{ data.dataset.institutionCode }}</div>
+  <div>methods: {{ data.dataset?.methods }}</div>
+  <div>taxonomic coverage: {{ data.dataset?.taxonomicCoverage}}</div>
+  <div>temporal coverage: {{ data.dataset?.temporalCoverage }}</div>
+  <div>geographic coverage: {{ data.dataset?.geographicCoverage }}</div>
+  <div>coverage basis: {{ data.dataset?.coverageBasis }}</div>
+  <div *ngIf="data.dataset?.finbifDOI">FinBIF DOI: {{ data.dataset.finbifDOI }}</div>
+  <div *ngIf="data.dataset?.gbifDOI">GBIF DOI: {{ data.dataset.gbifDOI }}</div>
+  <div>additional identifiers: {{ data.dataset?.additionalIdentifiers }}</div>
+  <div>published: {{ data.dataset?.published }}</div>
+
+  <ng-container *ngIf="data.perms; else loading">
+    <ng-container *ngIf="data.perms !== null">
+      <button class="btn btn-default">upload trait data</button>
+      <button class="btn btn-default">modify existing trait data</button>
+
+      <h3>Permissions</h3>
+      <ul>
+        <li *ngFor="let userId of data.perms.userIds">{{ userId }}</li>
+      </ul>
+      <button class="btn btn-default">Edit permissions</button>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="data.dataset?.published">
+    <h3>Browse traits</h3>
+    table
+  </ng-container>
+</ng-container>
+
+<ng-template #loading>
+  <laji-spinner class="d-block m-6"></laji-spinner>
+</ng-template>
+
