@@ -21,7 +21,7 @@
   <div>additional identifiers: {{ data.dataset?.additionalIdentifiers }}</div>
   <div>published: {{ data.dataset?.published }}</div>
 
-  <ng-container *ngIf="data.perms; else loading">
+  <ng-container *ngIf="data.perms !== undefined; else loading">
     <ng-container *ngIf="data.perms !== null">
       <button class="btn btn-default">upload trait data</button>
       <button class="btn btn-default">modify existing trait data</button>
