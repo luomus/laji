@@ -94,9 +94,9 @@ const observationProbabilityToVisCategory: Record<ObservationProbabilityType, { 
 })
 export class ResultMapComponent implements OnInit {
   readonly collections$ = new BehaviorSubject<string[]>([]);
-  readonly taxon$ = new BehaviorSubject<string>('');
+  readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
   @Input() set collections(v: string[]) { this.collections$.next(v); };
-  @Input() set taxon(v: string) { this.taxon$.next(v); };
+  @Input() set taxon(v: string | undefined) { this.taxon$.next(v); };
   @Input() taxonOptions$: Observable<{ label: string; value: string }[]>;
   @Input() visualizationOptions: ResultVisualizationMode[];
   @Input() mapQuery: WarehouseQueryInterface;
@@ -122,7 +122,7 @@ export class ResultMapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.defaultTaxon = this.taxon$.getValue();
+    this.defaultTaxon = this.taxon$.getValue() !== undefined ? this.taxon$.getValue() : '';
     this.mapData$ = this.gatheringCountMapData$();
 
     this.visualization = {

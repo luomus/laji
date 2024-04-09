@@ -1536,6 +1536,7 @@
   "result.load.thanksRequest": "Kiitos, saat ohjeita sähköpostitse.",
   "result.load.titleSimple": "Havainnot: yksinkertainen taulukko",
   "result.map.taxon.label": "Rajaa lajilla",
+  "result.map.taxon.empty.label": "Kaikki lajit",
   "result.newestRecord": "Uusin",
   "result.notOwnDocuments": "Annetuilla hakuehdoilla ei löytynyt yhtään omaa havaintoerää.",
   "result.oldestRecord": "Vanhin",

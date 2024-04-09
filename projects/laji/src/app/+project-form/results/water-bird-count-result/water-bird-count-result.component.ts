@@ -53,7 +53,7 @@ export class WaterBirdCountResultComponent implements OnInit {
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),
         value: t.id
       }))),
-      map(pairs => [{ label: '', value: '' }].concat(pairs))
+      map(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs))
     );
   }
 

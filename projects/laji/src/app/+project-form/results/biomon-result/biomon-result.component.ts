@@ -101,7 +101,7 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),
         value: t.id
       }))),
-      rxjsMap(pairs => [{ label: '', value: '' }].concat(pairs)),
+      rxjsMap(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs)),
     );
   }
 
