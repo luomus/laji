@@ -1,3 +1,9 @@
-<div class="container mt-5 mb-9" *ngIf="homeContent$ | async; let information">
+<div class="hero-img"></div>
+<div class="d-flex justify-end">
+  <div class="hero-caption">Kuusitiainen ruokaa nokassaan on varman pesinnän havainto (pesimävarmuusindeksi 74). Kuva: Aleksi Lehikoinen.</div>
+</div>
+
+<div class="container mb-9" *ngIf="homeContent$ | async; let information">
   <main [innerHtml]="information?.content"></main>
 </div>
+
