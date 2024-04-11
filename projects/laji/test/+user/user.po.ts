@@ -45,18 +45,12 @@ export const login = async (page: Page) => {
 };
 
 export const logout = async (page: Page) => {
-  // get the person token by navigating to the front page and
-  // looking for a request to the /api/person/<token> endpoint
-  let token: string;
-  page.on('response', (resp: Response) => {
-    const match = resp.url().match(/^.*api\/person\/([^\/]+)$/);
-    if (match) {
-      token = match[1];
-    }
-  });
-  await page.goto('/');
+  const token = await getCurrentPersonToken(page);
 
-  if (token && token === process.env.PERSON_TOKEN) {
+  if (!token) {
+    throw Error('The person token can\'t be fetched from the local storage');
+  }
+  if (token === process.env.PERSON_TOKEN) {
     throw Error('Can\'t log out when using the permanent person token');
   }
 
@@ -66,4 +60,15 @@ export const logout = async (page: Page) => {
 
 export const expectToBeOnLajiAuthLogin = async (page: Page) => {
   await expect(page.locator('#local-login'), 'Wasn\'t on external login page').toBeVisible();
+};
+
+const getCurrentPersonToken = async (page: Page): Promise<string|undefined> => {
+  const userStateJson = await page.evaluate(() => localStorage.getItem('laji-userstate'));
+  if (!userStateJson) {
+    return;
+  }
+
+  try {
+    return JSON.parse(userStateJson)['token'];
+  } catch (e) {}
 };
