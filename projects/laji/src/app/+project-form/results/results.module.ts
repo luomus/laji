@@ -57,6 +57,7 @@ import {YearSliderModule} from '../../shared-modules/year-slider/year-slider.mod
 import { BiomonResultComponent } from './biomon-result/biomon-result.component';
 import { BiomonResultStatisticsComponent } from './biomon-result/biomon-result-statistics/biomon-result-statistics.component';
 import { BirdPointCountResultComponent } from './bird-point-count-result/bird-point-count-result.component';
+import { BirdPointCountResultChartComponent } from './bird-point-count-result/bird-point-count-result-chart/bird-point-count-result-chart.component';
 import { WaterBirdCountResultComponent } from './water-bird-count-result/water-bird-count-result.component';
 import { ResultMapComponent } from './common/result-map/result-map.component';
 
@@ -115,8 +116,9 @@ import { ResultMapComponent } from './common/result-map/result-map.component';
     InvasiveSpeciesControlResultMapComponent,
     BiomonResultComponent,
     BiomonResultStatisticsComponent,
-    WaterBirdCountResultComponent,
     BirdPointCountResultComponent,
+    BirdPointCountResultChartComponent,
+    WaterBirdCountResultComponent,
     ResultMapComponent
   ],
   providers: [

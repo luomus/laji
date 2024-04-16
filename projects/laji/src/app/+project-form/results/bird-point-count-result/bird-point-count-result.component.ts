@@ -1,14 +1,26 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Form } from '../../../shared/model/Form';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
-import { map } from 'rxjs/operators';
+import { map as rxjsMap } from 'rxjs/operators';
 
-interface State {
+enum Tabs {
+  chart = 'chart',
+  map = 'map'
+}
+
+interface ChartState {
+  tab: Tabs.chart;
+}
+
+interface MapState {
+  tab: Tabs.map;
   taxon: string | undefined;
 }
+
+type State = ChartState | MapState;
 
 @Component({
   selector: 'laji-bird-point-count-result',
@@ -16,16 +28,21 @@ interface State {
   styleUrls: ['./bird-point-count-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BirdPointCountResultComponent implements OnInit {
+export class BirdPointCountResultComponent implements OnInit, OnDestroy {
   @Input() form: Form.SchemaForm;
 
+  Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
   state$: Observable<State>;
   collections = ['HR.157'];
   taxonOptions$: Observable<{label: string; value: string }[]>;
+  isChartState = (state: State): state is ChartState => state.tab === Tabs.chart;
+  isMapState = (state: State): state is MapState => state.tab === Tabs.map;
   mapQuery = {
     includeSubCollections: false,
     gatheringCounts: true, cache: true, countryId: ['ML.206']
   };
+
+  private defaultTabSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +54,16 @@ export class BirdPointCountResultComponent implements OnInit {
   ngOnInit(): void {
     this.state$ = this.route.queryParams as Observable<State>;
     this.taxonOptions$ = this.getTaxonOptions$();
+    this.state$ = this.route.queryParams as Observable<State>;
+    this.defaultTabSubscription = this.state$.subscribe(({ tab }) => {
+      if (!Tabs[tab]) {
+        this.router.navigate([], { queryParams: { tab: Tabs.chart } });
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.defaultTabSubscription.unsubscribe();
   }
 
   getTaxonOptions$(): Observable < { label: string; value: string }[] > {
@@ -50,18 +77,21 @@ export class BirdPointCountResultComponent implements OnInit {
         pageSize: 10000
       }
     ).pipe(
-      map(res => res.results),
-      map(taxa => taxa.map(t => ({
+      rxjsMap(res => res.results),
+      rxjsMap(taxa => taxa.map(t => ({
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),
         value: t.id
       }))),
-      map(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs))
+      rxjsMap(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs))
     );
   }
 
   updateState(query: any) {
     const currentState = this.route.snapshot.queryParams;
-    const nextState = { ...currentState, ...query };
+    let nextState = { ...currentState, ...query };
+    if (currentState.tab !== nextState.tab) { // Clear filters from state if tab changes.
+      nextState = { tab: nextState.tab };
+    }
     this.router.navigate([], { queryParams: nextState });
   }
 
