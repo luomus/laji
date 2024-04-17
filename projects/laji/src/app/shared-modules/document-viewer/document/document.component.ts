@@ -15,7 +15,7 @@ import {
   EventEmitter
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { interval as ObservableInterval, Observable, Subscription, throwError as observableThrowError } from 'rxjs';
+import { interval as ObservableInterval, Observable, Subscription, throwError as observableThrowError, of } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../../shared/service/id.service';
@@ -33,7 +33,7 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { HistoryService } from '../../../shared/service/history.service';
 import { DocumentPermissionService } from '../service/document-permission.service';
-
+import { FormService } from '../../../shared/service/form.service';
 
 @Component({
   selector: 'laji-document',
@@ -100,7 +100,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     private localizeRouterService: LocalizeRouterService,
     private deleteDocumentService: DeleteOwnDocumentService,
     private historyService: HistoryService,
-    private documentPermissionService: DocumentPermissionService
+    private documentPermissionService: DocumentPermissionService,
+    private formService: FormService
   ) { }
 
   ngOnInit() {
@@ -177,8 +178,21 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
 
     const docAndRights$ = findDoc$.pipe(
       switchMap(doc => this.documentPermissionService.getRightsToWarehouseDocument(doc).pipe(
-        map(rights => ({doc, rights}))
-      ))
+        map(rights => ({doc, rights})),
+      )),
+      switchMap(doc => doc.doc.formId
+        ? this.formService.getForm(IdService.getId(doc.doc.formId)).pipe(
+          map(form => {
+            console.log(form.options?.secondaryCopy);
+            const isSecondary = !!form.options?.secondaryCopy;
+            doc.rights.hasEditRights = !isSecondary;
+            doc.rights.hasDeleteRights = !isSecondary;
+
+            return doc;
+          })
+        )
+        : of(doc)
+      )
     );
 
     docAndRights$
