@@ -43,8 +43,7 @@ export class TraitDbDatasetComponent implements OnInit {
           ),
         )
       ])),
-      map(([dataset, perms]) => ({ dataset, perms })),
-      tap(console.log)
+      map(([dataset, perms]) => ({ dataset, perms }))
     );
   }
 }

@@ -7,6 +7,7 @@ import { tap } from 'rxjs/operators';
 type WithResponses<T> = T & { responses: unknown };
 type Parameters<T> = 'parameters' extends keyof T ? T['parameters'] : undefined;
 type ExtractContentIfExists<R> = R extends { content: { 'application/json': infer C } } ? C : null;
+type ExtractRequestBodyIfExists<R> = R extends { requestBody: { content: { 'application/json': infer C } } } ? C : never;
 type HttpSuccessCodes = 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226;
 type IntersectUnionTypes<A, B> = A extends B ? A : never;
 
@@ -54,6 +55,7 @@ export class LajiApiClientBService {
     endpoint: T,
     method: U,
     params: Parameters<paths[T][U]>,
+    requestBody?: ExtractRequestBodyIfExists<paths[T][U]>,
     cacheInvalidationMs = 86400000 // 1day in ms
   ): Observable<ExtractContentIfExists<Responses[IntersectUnionTypes<keyof Responses, HttpSuccessCodes>]>> {
     const hash = hashArgs(endpoint, method, params);
@@ -71,7 +73,7 @@ export class LajiApiClientBService {
       });
     }
 
-    return this.http.request(method, this.baseUrl + path, { params: (<any>params).query }).pipe(
+    return this.http.request(method, this.baseUrl + path, { params: (<any>params).query, body: requestBody }).pipe(
       tap(val => {
         this.cache[hash] = {
           val,
