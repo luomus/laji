@@ -13,6 +13,7 @@ enum Tabs {
 
 interface ChartState {
   tab: Tabs.chart;
+  taxon: string | undefined;
 }
 
 interface MapState {

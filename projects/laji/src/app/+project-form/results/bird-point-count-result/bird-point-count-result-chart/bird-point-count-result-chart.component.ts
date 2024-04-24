@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Chart, ChartDataset, ChartOptions, ChartType, Tooltip } from 'chart.js';
 import { PagedResult } from 'projects/laji-api-client/src/public-api';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { LineWithLine } from 'projects/laji/src/app/shared-modules/chart/line-with-line';
 import { TranslateService } from '@ngx-translate/core';
+import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 
 interface PairCountResults {
   aggregateBy: {
@@ -52,7 +53,14 @@ const tooltipPositionCursor = 'cursor' as any; // chart.js typings broken for cu
 })
 export class BirdPointCountResultChartComponent implements OnInit {
   readonly collections$ = new BehaviorSubject<string[]>([]);
+  readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
   @Input() set collections(v: string[]) { this.collections$.next(v); };
+  @Input() set taxon(v: string | undefined) { this.taxon$.next(v); };
+  @Input() taxonOptions$: Observable<{ label: string; value: string }[]>;
+
+  @Output() taxonChange = new EventEmitter<string>();
+
+  toHtmlSelectElement = toHtmlSelectElement;
 
   lineChartData: ChartDataset[] = [{ data: [], label: this.translate.instant('birdPointCount.stats.chart.y.title') }];
   lineChartLabels: string[] = [];
@@ -99,6 +107,8 @@ export class BirdPointCountResultChartComponent implements OnInit {
     }
   };
   chartType: ChartType = 'LineWithLine';
+
+  defaultTaxon: string;
   loading = true;
 
   constructor(
@@ -108,6 +118,7 @@ export class BirdPointCountResultChartComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.defaultTaxon = this.taxon$.getValue() !== undefined ? this.taxon$.getValue() : '';
     Chart.register(LineWithLine);
     (Tooltip.positioners as any).cursor = function(chartElements, coordinates) {
       return coordinates;
@@ -116,10 +127,10 @@ export class BirdPointCountResultChartComponent implements OnInit {
   }
 
   private getPairCounts$() {
-    return this.collections$.pipe(
-      switchMap((collections) => this.warehouseApi.warehouseQueryUnitStatisticsGet(
+    return combineLatest([this.collections$, this.taxon$]).pipe(
+      switchMap(([collections, taxon]) => this.warehouseApi.warehouseQueryUnitStatisticsGet(
         {
-          collectionId: collections, pairCounts: true, includeSubCollections: false, cache: true
+          collectionId: collections, taxonId: taxon, pairCounts: true, includeSubCollections: false, cache: true
         },
         [
           'gathering.conversions.year'
@@ -173,7 +184,7 @@ export class BirdPointCountResultChartComponent implements OnInit {
       tap(() => { this.loading = true; }),
       map(([pairCountArray, documentCountArray]) => {
         const currentYear = new Date().getFullYear();
-        const firstYear = pairCountArray[0].year;
+        const firstYear = documentCountArray[0].year;
         const years = Array.from({ length: currentYear - +firstYear + 1 }, (_, index) => (+firstYear + index).toString());
 
         const chartData = years.map(year => {
@@ -195,5 +206,9 @@ export class BirdPointCountResultChartComponent implements OnInit {
         this.cdr.markForCheck();
       }),
     );
+  }
+
+  onTaxonChange(taxon: string) {
+    this.taxonChange.emit(taxon);
   }
 }

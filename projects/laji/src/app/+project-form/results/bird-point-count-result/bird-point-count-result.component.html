@@ -8,13 +8,15 @@
   </div>
   <ng-container *ngIf="state$ | async as state">
     <div *ngIf="isChartState(state)">
-      <laji-bird-point-count-result-chart [collections]="collections">
+      <laji-bird-point-count-result-chart [collections]="collections" [taxon]="state.taxon"
+        (taxonChange)="onTaxonChange($event)" [taxonOptions$]="taxonOptions$">
       </laji-bird-point-count-result-chart>
     </div>
     <div *ngIf="isMapState(state)">
-    <laji-result-map [collections]="collections" [taxon]="state.taxon" (taxonChange)="onTaxonChange($event)"
-      [taxonOptions$]="taxonOptions$" [mapQuery]="mapQuery" gatheringCountLabel="laji-map.legend.mode.birdGatheringCount">
-    </laji-result-map>
+      <laji-result-map [collections]="collections" [taxon]="state.taxon" (taxonChange)="onTaxonChange($event)"
+        [taxonOptions$]="taxonOptions$" [mapQuery]="mapQuery"
+        gatheringCountLabel="laji-map.legend.mode.birdGatheringCount">
+      </laji-result-map>
     </div>
   </ng-container>
 </div>

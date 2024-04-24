@@ -1,6 +1,19 @@
+<div class="mb-4">
+  <label>{{ 'result.map.taxon.label' | translate }}</label>
+  <ng-container class="container mb-8" *ngIf="taxonOptions$ | async; let taxonOptions; else taxonLoading">
+    <select class="form-control" (change)="onTaxonChange(toHtmlSelectElement($event.target).value)"
+      [(ngModel)]="defaultTaxon">
+      <option *ngFor="let option of taxonOptions" [value]="option.value">{{ option.label }}</option>
+    </select>
+  </ng-container>
+</div>
 <laji-spinner [spinning]="loading" [overlay]="true">
   <div class="chart-container">
     <laji-chart #lineChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
       [legend]="false" [chartType]="chartType"></laji-chart>
   </div>
 </laji-spinner>
+
+<ng-template #taxonLoading>
+  <laji-spinner class="d-block m-6"></laji-spinner>
+</ng-template>
