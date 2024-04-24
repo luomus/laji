@@ -181,9 +181,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         map(rights => ({doc, rights})),
       )),
       switchMap(doc => doc.doc.formId
-        ? this.formService.getForm(IdService.getId(doc.doc.formId)).pipe(
+        ? this.formService.getFormInListFormat(IdService.getId(doc.doc.formId)).pipe(
           map(form => {
-            console.log(form.options?.secondaryCopy);
             const isSecondary = !!form.options?.secondaryCopy;
             doc.rights.hasEditRights = !isSecondary;
             doc.rights.hasDeleteRights = !isSecondary;
