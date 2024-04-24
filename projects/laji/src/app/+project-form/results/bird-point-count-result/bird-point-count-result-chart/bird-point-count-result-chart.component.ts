@@ -43,8 +43,6 @@ interface DocumentCountObject {
   documentCount: number;
 }
 
-const tooltipPositionCursor = 'cursor' as any; // chart.js typings broken for custom tooltip position so we define it as 'any'.
-
 @Component({
   selector: 'laji-bird-point-count-result-chart',
   templateUrl: './bird-point-count-result-chart.component.html',
@@ -101,7 +99,7 @@ export class BirdPointCountResultChartComponent implements OnInit {
     plugins: {
       tooltip: {
         mode: 'index',
-        position: tooltipPositionCursor,
+        position: 'nearest',
         intersect: false
       },
     }
@@ -120,7 +118,7 @@ export class BirdPointCountResultChartComponent implements OnInit {
   ngOnInit(): void {
     this.defaultTaxon = this.taxon$.getValue() !== undefined ? this.taxon$.getValue() : '';
     Chart.register(LineWithLine);
-    (Tooltip.positioners as any).cursor = function(chartElements, coordinates) {
+    Tooltip.positioners.nearest = function(chartElements, coordinates) {
       return coordinates;
     };
     this.getChartData$().subscribe();
