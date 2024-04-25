@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  template: `trait db browse component`
+  template: `trait db browse component`,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitDbBrowseComponent {}
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { of } from 'rxjs';
@@ -11,7 +11,8 @@ const cmsIds = { fi: '6491', sv: '6491', en: '6491' };
 <ng-container *ngIf="content$ | async; let information">
   <div [innerHtml]="information?.content"></div>
 </ng-container>
-`
+`,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitDbAboutComponent {
   content$ = this.translate.onLangChange.pipe(

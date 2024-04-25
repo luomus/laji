@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { tap, map, switchMap, filter } from 'rxjs/operators';
@@ -15,7 +15,8 @@ export type Dataset = components['schemas']['Dataset'];
 
 @Component({
   templateUrl: './trait-db-main.component.html',
-  styleUrls: ['./trait-db-main.component.scss']
+  styleUrls: ['./trait-db-main.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitDbMainComponent implements OnInit {
   counts$: Observable<Counts>;

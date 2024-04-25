@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
@@ -11,7 +11,8 @@ export type DatasetPermissions = components['schemas']['DatasetPermissions'];
 
 @Component({
   templateUrl: './trait-db-dataset.component.html',
-  styleUrls: ['./trait-db-dataset.component.scss']
+  styleUrls: ['./trait-db-dataset.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitDbDatasetComponent implements OnInit {
   // null represents a state where we are done querying the api so the loading indicator shouldnt be shown
