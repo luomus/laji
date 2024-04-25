@@ -35,7 +35,7 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
   Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
   state$: Observable<State>;
   collections = ['HR.157'];
-  taxonOptions$: Observable<{label: string; value: string }[]>;
+  taxonOptions$: Observable<{ label: string; value: string }[]>;
   isChartState = (state: State): state is ChartState => state.tab === Tabs.chart;
   isMapState = (state: State): state is MapState => state.tab === Tabs.map;
   mapQuery = {
@@ -67,7 +67,7 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
     this.defaultTabSubscription.unsubscribe();
   }
 
-  getTaxonOptions$(): Observable < { label: string; value: string }[] > {
+  getTaxonOptions$(): Observable<{ label: string; value: string }[]> {
     return this.taxonApi.taxonomyList(
       this.translate.currentLang,
       {

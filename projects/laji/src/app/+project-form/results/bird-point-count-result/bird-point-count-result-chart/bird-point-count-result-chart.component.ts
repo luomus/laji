@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Chart, ChartDataset, ChartOptions, ChartType, Tooltip } from 'chart.js';
 import { PagedResult } from 'projects/laji-api-client/src/public-api';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { LineWithLine } from 'projects/laji/src/app/shared-modules/chart/line-with-line';
 import { TranslateService } from '@ngx-translate/core';
@@ -49,7 +49,7 @@ interface DocumentCountObject {
   styleUrls: ['./bird-point-count-result-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BirdPointCountResultChartComponent implements OnInit {
+export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
   readonly collections$ = new BehaviorSubject<string[]>([]);
   readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
   @Input() set collections(v: string[]) { this.collections$.next(v); };
@@ -109,6 +109,8 @@ export class BirdPointCountResultChartComponent implements OnInit {
   defaultTaxon: string;
   loading = true;
 
+  private chartSub: Subscription;
+
   constructor(
     private warehouseApi: WarehouseApi,
     private cdr: ChangeDetectorRef,
@@ -121,7 +123,11 @@ export class BirdPointCountResultChartComponent implements OnInit {
     Tooltip.positioners.nearest = function(chartElements, coordinates) {
       return coordinates;
     };
-    this.getChartData$().subscribe();
+    this.chartSub = this.setChartData$().subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.chartSub.unsubscribe();
   }
 
   private getPairCounts$() {
@@ -177,7 +183,7 @@ export class BirdPointCountResultChartComponent implements OnInit {
     );
   }
 
-  private getChartData$() {
+  private setChartData$(): Observable<void> {
     return combineLatest([this.getPairCounts$(), this.getDocumentCounts$()]).pipe(
       tap(() => { this.loading = true; }),
       map(([pairCountArray, documentCountArray]) => {

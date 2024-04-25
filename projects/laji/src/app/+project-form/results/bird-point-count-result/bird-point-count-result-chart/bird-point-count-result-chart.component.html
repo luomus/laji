@@ -7,7 +7,7 @@
     </select>
   </ng-container>
 </div>
-<laji-spinner [spinning]="loading" [overlay]="true">
+<laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
   <div class="chart-container">
     <laji-chart #lineChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
       [legend]="false" [chartType]="chartType"></laji-chart>
