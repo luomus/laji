@@ -1,0 +1,43 @@
+<h1>Traits</h1>
+<p>Explore the traits defined by our experts, along with their measurement methods, and create your own traits. </p>
+
+<div *ngIf="{ val: loggedIn$ | async } as loggedIn; else loading">
+  <div *ngIf="loggedIn.val; else notLoggedIn">
+    <button>create new trait</button>
+    <button>create new trait group</button>
+  </div>
+</div>
+<ng-template #loading>
+  <laji-spinner class="d-block m-6"></laji-spinner>
+</ng-template>
+<ng-template #notLoggedIn>
+  Please sign in...
+</ng-template>
+
+<p>Traits – Click on a trait to access detailed information about it and browse its contained trait data.</p>
+
+<div>
+  <label for="trait-group-select">Filter by trait group:</label>
+  <select id="trait-group-select" (change)="onSelectedGroupChange($event)">
+    <option [value]="''">All</option>
+    <option *ngFor="let group of (traitGroups | keyvalue)" [value]="group.value.id">{{ group.value.name }}</option>
+  </select>
+</div>
+
+<table>
+  <tr>
+    <th>Group</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Reference</th>
+    <th>External Identifiers</th>
+  </tr>
+  <tr *ngFor="let trait of (filteredTraits$ | async)">
+    <td>{{ traitGroups[trait.group]?.name }}</td>
+    <td>{{ trait.name }}</td>
+    <td>{{ trait.description }}</td>
+    <td>{{ trait.reference }}</td>
+    <td>{{ trait.identifiers }}</td>
+  </tr>
+</table>
+
