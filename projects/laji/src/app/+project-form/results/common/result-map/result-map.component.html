@@ -1,6 +1,6 @@
 <div class="mb-4">
   <label>{{ 'result.map.taxon.label' | translate }}</label>
-  <ng-container class="container mb-8" *ngIf="taxonOptions$ | async; let taxonOptions; else taxonLoading">
+  <ng-container *ngIf="taxonOptions$ | async; let taxonOptions; else taxonLoading">
     <select class="form-control" (change)="onTaxonChange(toHtmlSelectElement($event.target).value)"
       [(ngModel)]="defaultTaxon">
       <option *ngFor="let option of taxonOptions" [value]="option.value">{{ option.label }}</option>
