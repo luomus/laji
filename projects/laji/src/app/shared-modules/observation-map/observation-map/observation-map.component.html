@@ -12,6 +12,7 @@
           (tileLayersChange)="onTileLayersChange($event)"
           (move)="onMapPanOrZoom($event)"
           (visualizationModeChange)="onVisualizationModeChange($any($event))"
+          data-testid="observation-map"
   >
     <div class="loading-map loading" *ngIf="loading"></div>
     <laji-legend

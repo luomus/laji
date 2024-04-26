@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from '../../shared/service/footer.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PlatformService } from '../../root/platform.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 
@@ -13,6 +13,7 @@ export class UserLoginComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private footerService: FooterService,
     private router: Router,
+    private route: ActivatedRoute,
     private platformService: PlatformService,
     private localizeRouterService: LocalizeRouterService
   ) {
@@ -24,8 +25,9 @@ export class UserLoginComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     if (this.platformService.isBrowser) {
+      const next = this.route.snapshot.queryParams['next'] || '/';
       this.router.navigate(
-        this.localizeRouterService.translateRoute(['/'])
+        this.localizeRouterService.translateRoute([next])
       );
     }
   }

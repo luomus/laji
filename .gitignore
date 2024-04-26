@@ -49,3 +49,8 @@ settings.json
 Thumbs.db
 
 .angular
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+.env

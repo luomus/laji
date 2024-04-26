@@ -144,7 +144,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     }
     setTimeout(() => {
       this.results.observationMap.drawToMap(type);
-    }, 120);
+    }, 0);
   }
 
   updateTmpQuery(query: WarehouseQueryInterface, showSidebarOnMobile = false) {
