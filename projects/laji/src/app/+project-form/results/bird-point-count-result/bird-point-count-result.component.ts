@@ -1,50 +1,46 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Form } from '../../../shared/model/Form';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { Form } from '../../../shared/model/Form';
-import { FormService } from '../../../shared/service/form.service';
-import { map as rxjsMap, switchMap } from 'rxjs/operators'; // "map" reserved for tab logic
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
+import { map as rxjsMap } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
-export type CompleteListPrevalence = 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
-
 enum Tabs {
-  statistics = 'statistics',
+  chart = 'chart',
   map = 'map'
 }
 
-interface StatisticsState {
-  tab: Tabs.statistics;
-  collection: string | undefined;
+interface ChartState {
+  tab: Tabs.chart;
+  taxon: string | undefined;
 }
 
 interface MapState {
   tab: Tabs.map;
-  collection: string | undefined;
   taxon: string | undefined;
 }
 
-type State = StatisticsState | MapState;
+type State = ChartState | MapState;
 
 @Component({
-  selector: 'laji-biomon-result',
-  templateUrl: './biomon-result.component.html',
-  styleUrls: ['./biomon-result.component.scss'],
+  selector: 'laji-bird-point-count-result',
+  templateUrl: './bird-point-count-result.component.html',
+  styleUrls: ['./bird-point-count-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BiomonResultComponent implements OnInit, OnDestroy {
-
+export class BirdPointCountResultComponent implements OnInit, OnDestroy {
   @Input() form: Form.SchemaForm;
 
   Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
   state$: Observable<State>;
+  collections: string[] = ['HR.157'];
   taxonOptions$: Observable<{ label: string; value: string }[]>;
-  isStatisticsState = (state: State): state is StatisticsState => state.tab === Tabs.statistics;
+  isChartState = (state: State): state is ChartState => state.tab === Tabs.chart;
   isMapState = (state: State): state is MapState => state.tab === Tabs.map;
   mapQuery: WarehouseQueryInterface = {
-    completeListType: ['MY.completeListTypeCompleteWithBreedingStatus,MY.completeListTypeComplete'],
+    includeSubCollections: false,
     gatheringCounts: true, cache: true, countryId: ['ML.206']
   };
 
@@ -53,19 +49,19 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private formApi: FormService,
     private taxonApi: TaxonomyApi,
     private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
     this.state$ = this.route.queryParams as Observable<State>;
+    this.taxonOptions$ = this.getTaxonOptions$();
+    this.state$ = this.route.queryParams as Observable<State>;
     this.defaultTabSubscription = this.state$.subscribe(({ tab }) => {
       if (!Tabs[tab]) {
-        this.router.navigate([], { queryParams: { tab: Tabs.statistics } });
+        this.router.navigate([], { queryParams: { tab: Tabs.chart } });
       }
     });
-    this.taxonOptions$ = this.getTaxonOptions$();
   }
 
   ngOnDestroy(): void {
@@ -73,27 +69,14 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
   }
 
   getTaxonOptions$(): Observable<{ label: string; value: string }[]> {
-    return this.state$.pipe(switchMap(state => (
-      this.formApi.getAllForms().pipe(
-        rxjsMap(forms =>
-          forms
-            .filter(f => (f.collectionID !== undefined && f.options.prepopulateWithTaxonSets !== undefined))
-            .map(f => ({ collectionID: f.collectionID, taxonSet: f.options.prepopulateWithTaxonSets }))
-        ),
-        switchMap(pairs => {
-          const taxonSet = pairs.find(p => p.collectionID === (state.collection ? state.collection : this.form.collectionID)).taxonSet;
-          return this.getOptionsByTaxonSet$(taxonSet);
-        })
-      )
-    )));
-  }
-
-  getOptionsByTaxonSet$(taxonSet: string[]): Observable<{ label: string; value: string }[]> {
     return this.taxonApi.taxonomyList(
       this.translate.currentLang,
       {
         selectedFields: 'id,vernacularName,scientificName',
-        taxonSets: taxonSet
+        informalGroupFilters: 'MVL.1',
+        taxonRanks: 'MX.species',
+        onlyFinnish: true,
+        pageSize: 10000
       }
     ).pipe(
       rxjsMap(res => res.results),
@@ -101,7 +84,7 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),
         value: t.id
       }))),
-      rxjsMap(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs)),
+      rxjsMap(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs))
     );
   }
 

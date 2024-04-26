@@ -15,11 +15,13 @@ export namespace Form {
   }
   export enum ResultServiceType {
     lineTransect = 'MHL.resultServiceTypeLineTransect',
-    winterbirdCount = 'MHL.resultServiceTypeWinterBirdCount',
+    winterBirdCount = 'MHL.resultServiceTypeWinterBirdCount',
     nafi = 'MHL.resultServiceTypeNafi',
     sykeInsect = 'MHL.resultServiceTypeSykeInsectProjects',
     invasiveSpeciesControl = 'MHL.resultServiceTypeInvasiveControl',
-    completeLists = 'MHL.resultServiceTypeCompleteLists'
+    completeLists = 'MHL.resultServiceTypeCompleteLists',
+    waterBirdCount = 'MHL.resultServiceTypeWaterBirdCount',
+    birdPointCount = 'MHL.resultServiceTypeBirdPointCount'
   }
   export enum RestrictAccess {
     restrictAccessStrict = 'MHL.restrictAccessStrict',
