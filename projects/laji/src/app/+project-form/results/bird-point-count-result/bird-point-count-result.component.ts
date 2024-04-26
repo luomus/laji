@@ -5,6 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
 import { map as rxjsMap } from 'rxjs/operators';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
 enum Tabs {
   chart = 'chart',
@@ -34,11 +35,11 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
 
   Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
   state$: Observable<State>;
-  collections = ['HR.157'];
+  collections: string[] = ['HR.157'];
   taxonOptions$: Observable<{ label: string; value: string }[]>;
   isChartState = (state: State): state is ChartState => state.tab === Tabs.chart;
   isMapState = (state: State): state is MapState => state.tab === Tabs.map;
-  mapQuery = {
+  mapQuery: WarehouseQueryInterface = {
     includeSubCollections: false,
     gatheringCounts: true, cache: true, countryId: ['ML.206']
   };

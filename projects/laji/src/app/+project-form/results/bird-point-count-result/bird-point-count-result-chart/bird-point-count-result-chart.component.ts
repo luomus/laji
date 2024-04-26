@@ -119,10 +119,10 @@ export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.defaultTaxon = this.taxon$.getValue() !== undefined ? this.taxon$.getValue() : '';
+
     Chart.register(LineWithLine);
-    Tooltip.positioners.nearest = function(chartElements, coordinates) {
-      return coordinates;
-    };
+    Tooltip.positioners.nearest = (chartElements, coordinates) => coordinates;
+
     this.chartSub = this.setChartData$().subscribe();
   }
 
@@ -130,7 +130,7 @@ export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
     this.chartSub.unsubscribe();
   }
 
-  private getPairCounts$() {
+  private getPairCounts$(): Observable<PairCountObject[]> {
     return combineLatest([this.collections$, this.taxon$]).pipe(
       switchMap(([collections, taxon]) => this.warehouseApi.warehouseQueryUnitStatisticsGet(
         {
@@ -151,7 +151,7 @@ export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
     );
   }
 
-  private getDocumentCounts$() {
+  private getDocumentCounts$(): Observable<DocumentCountObject[]> {
     return this.collections$.pipe(
       switchMap((collections) => this.warehouseApi.warehouseQueryGatheringStatisticsGet(
         {

@@ -97,7 +97,7 @@ export class ResultMapComponent implements OnInit {
   readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
   @Input() set collections(v: string[]) { this.collections$.next(v); };
   @Input() set taxon(v: string | undefined) { this.taxon$.next(v); };
-  @Input() taxonOptions$: Observable<{ label: string; value: string }[]>;
+  @Input() taxonOptions: { label: string; value: string }[];
   @Input() visualizationOptions: ResultVisualizationMode[];
   @Input() mapQuery: WarehouseQueryInterface;
   @Input() gatheringCountLabel: string;

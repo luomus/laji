@@ -1,21 +1,35 @@
 <div class="container-fluid">
   <laji-project-form-header [form]="form"></laji-project-form-header>
   <div class="row">
-    <laji-navigation-thumbnail name="birdPointCount.stats.chart.title" icon="chart" iconType="svg"
-      [query]="{tab: Tabs.chart}"></laji-navigation-thumbnail>
+    <laji-navigation-thumbnail
+      name="birdPointCount.stats.chart.title"
+      icon="chart"
+      iconType="svg"
+      [query]="{tab: Tabs.chart}"
+    >
+    </laji-navigation-thumbnail>
     <laji-navigation-thumbnail name="birdPointCount.stats.map.title" icon="wb_icon_map_2" iconType="png"
       [query]="{tab: Tabs.map}"></laji-navigation-thumbnail>
   </div>
   <ng-container *ngIf="state$ | async as state">
     <div *ngIf="isChartState(state)">
-      <laji-bird-point-count-result-chart [collections]="collections" [taxon]="state.taxon"
-        (taxonChange)="onTaxonChange($event)" [taxonOptions$]="taxonOptions$">
+      <laji-bird-point-count-result-chart
+        [collections]="collections"
+        [taxon]="state.taxon"
+        (taxonChange)="onTaxonChange($event)"
+        [taxonOptions$]="taxonOptions$"
+      >
       </laji-bird-point-count-result-chart>
     </div>
     <div *ngIf="isMapState(state)">
-      <laji-result-map [collections]="collections" [taxon]="state.taxon" (taxonChange)="onTaxonChange($event)"
-        [taxonOptions$]="taxonOptions$" [mapQuery]="mapQuery"
-        gatheringCountLabel="laji-map.legend.mode.birdGatheringCount">
+      <laji-result-map
+        [collections]="collections"
+        [taxon]="state.taxon"
+        (taxonChange)="onTaxonChange($event)"
+        [taxonOptions]="taxonOptions$ | async"
+        [mapQuery]="mapQuery"
+        gatheringCountLabel="laji-map.legend.mode.birdGatheringCount"
+      >
       </laji-result-map>
     </div>
   </ng-container>

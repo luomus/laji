@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs/operators';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
 interface State {
   taxon: string | undefined;
@@ -20,9 +21,9 @@ export class WaterBirdCountResultComponent implements OnInit {
   @Input() form: Form.SchemaForm;
 
   state$: Observable<State>;
-  collections = ['HR.62', 'HR.3991', 'HR.3992'];
-  taxonOptions$: Observable<{label: string; value: string }[]>;
-  mapQuery = {
+  collections: string[] = ['HR.62', 'HR.3991', 'HR.3992'];
+  taxonOptions$: Observable<{ label: string; value: string }[]>;
+  mapQuery: WarehouseQueryInterface = {
     includeSubCollections: false,
     gatheringCounts: true, cache: true, countryId: ['ML.206']
   };
@@ -39,7 +40,7 @@ export class WaterBirdCountResultComponent implements OnInit {
     this.taxonOptions$ = this.getTaxonOptions$();
   }
 
-  getTaxonOptions$(): Observable < { label: string; value: string }[] > {
+  getTaxonOptions$(): Observable<{ label: string; value: string }[]> {
     return this.taxonApi.taxonomyList(
       this.translate.currentLang,
       {

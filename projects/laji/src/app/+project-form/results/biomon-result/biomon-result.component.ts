@@ -6,6 +6,7 @@ import { FormService } from '../../../shared/service/form.service';
 import { map as rxjsMap, switchMap } from 'rxjs/operators'; // "map" reserved for tab logic
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
 export type CompleteListPrevalence = 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
 
@@ -42,7 +43,7 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
   taxonOptions$: Observable<{ label: string; value: string }[]>;
   isStatisticsState = (state: State): state is StatisticsState => state.tab === Tabs.statistics;
   isMapState = (state: State): state is MapState => state.tab === Tabs.map;
-  mapQuery = {
+  mapQuery: WarehouseQueryInterface = {
     completeListType: ['MY.completeListTypeCompleteWithBreedingStatus,MY.completeListTypeComplete'],
     gatheringCounts: true, cache: true, countryId: ['ML.206']
   };
@@ -72,20 +73,19 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
   }
 
   getTaxonOptions$(): Observable<{ label: string; value: string }[]> {
-    return this.formApi.getAllForms().pipe(
-      rxjsMap(forms =>
-        forms
-          .filter(f => (f.collectionID !== undefined && f.options.prepopulateWithTaxonSets !== undefined))
-          .map(f => ({ collectionID: f.collectionID, taxonSet: f.options.prepopulateWithTaxonSets }))
-      ),
-      switchMap(pairs => {
-        let taxonSet: string[];
-        this.state$.pipe(
-          rxjsMap(state => pairs.find(p => p.collectionID === (state.collection ? state.collection : this.form.collectionID)).taxonSet),
-        ).subscribe(set => taxonSet = set);
-        return this.getOptionsByTaxonSet$(taxonSet);
-      })
-    );
+    return this.state$.pipe(switchMap(state => (
+      this.formApi.getAllForms().pipe(
+        rxjsMap(forms =>
+          forms
+            .filter(f => (f.collectionID !== undefined && f.options.prepopulateWithTaxonSets !== undefined))
+            .map(f => ({ collectionID: f.collectionID, taxonSet: f.options.prepopulateWithTaxonSets }))
+        ),
+        switchMap(pairs => {
+          const taxonSet = pairs.find(p => p.collectionID === (state.collection ? state.collection : this.form.collectionID)).taxonSet;
+          return this.getOptionsByTaxonSet$(taxonSet);
+        })
+      )
+    )));
   }
 
   getOptionsByTaxonSet$(taxonSet: string[]): Observable<{ label: string; value: string }[]> {
