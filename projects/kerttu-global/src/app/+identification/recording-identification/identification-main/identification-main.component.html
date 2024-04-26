@@ -1,0 +1,30 @@
+<laji-spinner [spinning]="loading" [overlay]="true">
+  <div class="identification-view-container">
+    <bsg-identification-nav
+      [hasPreviousRecording]="recordingLoaderService.hasPreviousRecording()"
+      [buttonsDisabled]="loading"
+      [saveDisabled]="hasError || allRecordingsAnnotated"
+      [taxonType]="recording?.taxonType"
+      [fileNameFilter]="fileNameFilter"
+      (nextRecordingClick)="getNextRecording()"
+      (previousRecordingClick)="getPreviousRecording()"
+      (saveClick)="save()"
+      (skipClick)="skipRecording()"
+      (backToSiteSelectionClick)="onBackToSiteSelectionClick()"
+      (fileNameFilterChange)="onFileNameFilterChange($event)"
+    ></bsg-identification-nav>
+
+    <div *ngIf="hasError || allRecordingsAnnotated" class="identification-alert-container">
+      <lu-alert type="danger" [dismissible]="false" *ngIf="hasError">{{ 'identification.genericError' | translate }}</lu-alert>
+      <lu-alert type="success" [dismissible]="false" *ngIf="allRecordingsAnnotated">{{ 'identification.allRecordingsAnnotated' | translate }}</lu-alert>
+    </div>
+
+    <bsg-identification-view
+      *ngIf="recording && annotation && !hasError && !allRecordingsAnnotated"
+      [recording]="recording"
+      [(annotation)]="annotation"
+      [buttonsDisabled]="loading"
+      (annotationChange)="onAnnotationChange()"
+    ></bsg-identification-view>
+  </div>
+</laji-spinner>

@@ -12,6 +12,7 @@ import {
   Output,
   Renderer2,
   SimpleChanges,
+  TemplateRef,
   ViewChild
 } from '@angular/core';
 import {
@@ -22,28 +23,29 @@ import {
   IGlobalSpeciesWithAnnotation,
   SpeciesAnnotationEnum,
   TaxonTypeEnum
-} from '../../../kerttu-global-shared/models';
+} from '../../../../kerttu-global-shared/models';
 import {
   AudioViewerMode,
   IAudioViewerArea,
   IAudioViewerRectangle,
   ISpectrogramConfig
-} from '../../../../../../laji/src/app/shared-modules/audio-viewer/models';
+} from '../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 import { map } from 'rxjs/operators';
-import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
+import { KerttuGlobalApi } from '../../../../kerttu-global-shared/service/kerttu-global-api';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { KerttuGlobalUtil } from '../../../kerttu-global-shared/service/kerttu-global-util.service';
+import { KerttuGlobalUtil } from '../../../../kerttu-global-shared/service/kerttu-global-util.service';
 import { IdentificationTableComponent } from './identification-table/identification-table.component';
-import { defaultSpectrogramConfig } from '../../../../../../laji/src/app/shared-modules/audio-viewer/variables';
+import { defaultSpectrogramConfig } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/variables';
 import {
   defaultAudioSampleRate,
   defaultBatAudioSampleRate,
   defaultInsectAudioSampleRate,
   lowAudioSampleRate
-} from '../../../kerttu-global-shared/variables';
+} from '../../../../kerttu-global-shared/variables';
 import { DOCUMENT } from '@angular/common';
-import { AudioViewerComponent } from '../../../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer/audio-viewer.component';
+import { AudioViewerComponent } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer/audio-viewer.component';
+import { ModalRef } from '../../../../../../../laji-ui/src/lib/modal/modal.service';
 
 
 @Component({
@@ -59,9 +61,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
   @Input() recording: IGlobalRecording;
   @Input() annotation: IGlobalRecordingAnnotation;
-  @Input() hasPreviousRecording = false;
   @Input() buttonsDisabled = false;
-  @Input() showTopBar = true;
 
   selectedSpecies: IGlobalSpeciesWithAnnotation[] = [];
   loadingSpecies = false;
@@ -87,18 +87,12 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
   topContentHeight = 265;
 
-  @Output() nextRecordingClick = new EventEmitter();
-  @Output() previousRecordingClick = new EventEmitter();
-  @Output() saveClick = new EventEmitter();
-  @Output() skipClick = new EventEmitter();
   @Output() annotationChange = new EventEmitter<IGlobalRecordingAnnotation>();
-  @Output() backToSiteSelectionClick = new EventEmitter();
 
   private selectedSpeciesSub: Subscription;
   private nonBirdLabel = '';
 
   private topContentMinHeight = 180;
-  private dragging = false;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -222,7 +216,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
         ...defaultSpectrogramConfig,
         sampleRate: defaultBatAudioSampleRate,
         targetWindowLengthInSeconds: 0.004,
-        minFrequency: 14000
+        minFrequency: this.showWholeFrequencyRange ? 0 : 14000
       };
     } else if (this.recording?.taxonType === TaxonTypeEnum.insect) {
       this.spectrogramConfig = {
@@ -238,7 +232,6 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   }
 
   onDragStart() {
-    this.dragging = true;
     this.destroyDragListeners();
     this.destroyDragMoveListener = this.renderer.listen(this.document, 'mousemove', this.onDrag.bind(this));
     this.destroyDragEndListener = this.renderer.listen(this.document, 'mouseup', this.onDragEnd.bind(this));
@@ -315,7 +308,6 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private onDragEnd() {
-    this.dragging = false;
     this.destroyDragListeners();
     this.audioViewer.resize();
   }

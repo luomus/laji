@@ -12,9 +12,9 @@ import {
   IGlobalSpeciesWithAnnotation,
   SpeciesAnnotationEnum,
   TaxonTypeEnum
-} from '../../../../../kerttu-global-shared/models';
-import { KerttuGlobalUtil } from '../../../../../kerttu-global-shared/service/kerttu-global-util.service';
-import { ISpectrogramConfig } from '../../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
+} from '../../../../../../kerttu-global-shared/models';
+import { KerttuGlobalUtil } from '../../../../../../kerttu-global-shared/service/kerttu-global-util.service';
+import { ISpectrogramConfig } from '../../../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 @Component({
   selector: 'bsg-identification-panel',

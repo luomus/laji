@@ -1,56 +1,4 @@
 <ng-container *lajiRequiresAudioSupport="sampleRate">
-  <div class="top-bar" *ngIf="showTopBar">
-    <div class="pull-right button-container">
-      <div>
-        <button
-          class="btn btn-default"
-          [disabled]="buttonsDisabled || loadingSpecies"
-          (click)="backToSiteSelectionClick.emit()"
-        >
-          {{ 'identification.backToSiteSelection' | translate }}
-        </button>
-      </div>
-      <div>
-        <button
-          class="btn btn-default"
-          [disabled]="buttonsDisabled || loadingSpecies"
-          (click)="skipClick.emit()"
-        >
-          {{ 'identification.skip' | translate }}
-        </button>
-      </div>
-      <div>
-        <button
-          class="btn btn-default"
-          [disabled]="!hasPreviousRecording || buttonsDisabled || loadingSpecies"
-          (click)="previousRecordingClick.emit()"
-        >
-          {{ 'identification.previousRecording' | translate }}
-        </button>
-        <laji-info [html]="'identification.previousRecording.info' | translate" [showOnHover]="true"></laji-info>
-      </div>
-      <div>
-        <button
-          class="btn btn-default"
-          [disabled]="buttonsDisabled || loadingSpecies"
-          (click)="saveClick.emit()"
-        >
-          {{ 'save' | translate }}
-        </button>
-        <laji-info [html]="'identification.saveRecording.info' | translate" [showOnHover]="true"></laji-info>
-      </div>
-      <div>
-        <button
-          class="btn btn-success"
-          [disabled]="buttonsDisabled || loadingSpecies"
-          (click)="nextRecordingClick.emit()"
-        >
-          {{ 'identification.nextRecording' | translate }}
-        </button>
-        <laji-info [html]="(recording.taxonType === taxonTypeEnum.insect ? 'identification.nextRecordingInsect.info' : 'identification.nextRecording.info') | translate" [showOnHover]="true"></laji-info>
-      </div>
-    </div>
-  </div>
   <div class="top-content" [style.height]="topContentHeight + 'px'" #topContent>
     <laji-audio-viewer
       [audio]="recording"
@@ -66,28 +14,24 @@
       [adaptToContainerHeight]="true"
       [spectrogramConfig]="spectrogramConfig"
       [audioInfoTpl]="audioInfo"
-      [customControlsTpl]="recording.taxonType !== taxonTypeEnum.bird ? batAndInsectAudioCustomControls : audioCustomControls"
+      [customControlsTpl]="audioCustomControls"
       (drawEnd)="drawEnd($event)"
       (modeChange)="onAudioViewerModeChange()"
     ></laji-audio-viewer>
     <ng-template #audioCustomControls>
       <laji-audio-viewer-simple-settings
+        [enableSlowDownAudioSetting]="recording.taxonType === taxonTypeEnum.bat || recording.taxonType === taxonTypeEnum.insect"
+        [enableShowWholeFrequencyRangeSetting]="recording.taxonType === taxonTypeEnum.bird || recording.taxonType === taxonTypeEnum.bat"
+        [enableShowWholeTimeRangeSetting]="recording.taxonType !== taxonTypeEnum.bat"
+        [(slowDownAudio)]="slowDownAudio"
         [(showWholeFrequencyRange)]="showWholeFrequencyRange"
         [(showWholeTimeRange)]="showWholeTimeRange"
         (showWholeFrequencyRangeChange)="updateSpectrogramConfig()"
-        [showWholeFrequencyRangeLabel]="'identification.highFrequencies' | translate"
+        [showWholeFrequencyRangeLabel]="(recording.taxonType === taxonTypeEnum.bat ? 'identification.lowFrequencies' : 'identification.highFrequencies') | translate"
         [showWholeTimeRangeLabel]="'identification.timeBuffer' | translate"
-        [showWholeFrequencyRangeInfo]="'identification.highFrequencies.info' | translate"
+        [showWholeFrequencyRangeInfo]="(recording.taxonType === taxonTypeEnum.bat ? 'identification.lowFrequencies.info' : 'identification.highFrequencies.info') | translate"
         [showWholeTimeRangeInfo]="'identification.timeBuffer.info' | translate"
       ></laji-audio-viewer-simple-settings>
-    </ng-template>
-    <ng-template #batAndInsectAudioCustomControls>
-      <laji-audio-viewer-bat-settings
-        [(slowDownAudio)]="slowDownAudio"
-        [(showWholeTimeRange)]="showWholeTimeRange"
-        [showWholeTimeRangeLabel]="'identification.timeBuffer' | translate"
-        [showWholeTimeRangeInfo]="'identification.timeBuffer.info' | translate"
-      ></laji-audio-viewer-bat-settings>
     </ng-template>
     <ng-template #audioInfo let-audio="audio">
       <ng-container *ngIf="audio.targetSpecies">

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, NgZone, ViewChild, SimpleChanges, OnChanges } from '@angular/core';
-import { IGlobalSite } from '../../../../kerttu-global-shared/models';
-import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
+import { IGlobalSite } from '../../../../../kerttu-global-shared/models';
+import { LajiMapComponent } from '../../../../../../../../laji/src/app/shared-modules/laji-map/laji-map.component';
 import { Polygon } from 'geojson';
 import { GetPopupOptions, LajiMapCreateEvent, DataOptions, Options, TileLayerName } from '@luomus/laji-map/lib/defs';
 import { TranslateService } from '@ngx-translate/core';
@@ -32,6 +32,7 @@ export class SiteSelectionMapComponent implements OnChanges {
   @Output() selectedSitesChange = new EventEmitter<number[]>();
 
   private data: LajiMapData;
+  private dataInitialized = false;
 
   constructor(
     private translate: TranslateService,
@@ -40,23 +41,9 @@ export class SiteSelectionMapComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.sites) {
-      const data = this.getData(this.sites);
-      this.lajiMap?.setData(data || {});
-
-      this.lajiMap?.map?.zoomToData({ padding: [40, 40] });
-
-      const lajiMapData = this.lajiMap?.map?.getData();
-      if (lajiMapData?.length > 0) {
-        this.data = lajiMapData[0];
-        this.data.groupContainer.on('clusterclick', (event) => {
-          this.ngZone.run(() => {
-            const markers = event.layer.getAllChildMarkers();
-            const siteIds = markers.map(marker => marker.feature.properties.id);
-            this.addOrRemoveSites(siteIds);
-          });
-        });
-      } else {
-        this.data = null;
+      if (this.lajiMap?.map) {
+        this.updateMapData();
+        this.dataInitialized = true;
       }
     } else if (changes.selectedSites) {
       this.data?.groupContainer.refreshClusters();
@@ -80,6 +67,33 @@ export class SiteSelectionMapComponent implements OnChanges {
       const sites = this.getSitesInsideRectangle(rect);
       this.addOrRemoveSites(sites.map(site => site.id));
       this.abortDrawing();
+    }
+  }
+
+  onMapLoaded() {
+    if (!this.dataInitialized) {
+      this.updateMapData();
+      this.dataInitialized = true;
+    }
+  }
+
+  private updateMapData() {
+    const data = this.getData(this.sites);
+    this.lajiMap?.setData(data || {});
+    this.lajiMap?.map?.zoomToData({ padding: [40, 40] });
+
+    const lajiMapData = this.lajiMap?.map?.getData();
+    if (lajiMapData?.length > 0) {
+      this.data = lajiMapData[0];
+      this.data.groupContainer.on('clusterclick', (event) => {
+        this.ngZone.run(() => {
+          const markers = event.layer.getAllChildMarkers();
+          const siteIds = markers.map(marker => marker.feature.properties.id);
+          this.addOrRemoveSites(siteIds);
+        });
+      });
+    } else {
+      this.data = null;
     }
   }
 

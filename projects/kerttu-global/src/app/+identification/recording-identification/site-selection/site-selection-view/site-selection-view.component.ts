@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { IGlobalSite } from '../../../kerttu-global-shared/models';
+import { IGlobalSite } from '../../../../kerttu-global-shared/models';
 import { SiteSelectionMapComponent } from './site-selection-map/site-selection-map.component';
 
 @Component({
