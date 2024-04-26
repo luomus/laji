@@ -102,7 +102,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
 
   onYearChartBarClick({ index }) {
     this.activeMonthIdx = index;
-    this.monthChartLabels = this.getMonthChartLabels(index);
+    this.monthChartLabels = this.getMonthChartLabels(index + 1);
     this.modal.show();
   }
 
