@@ -17,7 +17,7 @@
         [collections]="collections"
         [taxon]="state.taxon"
         (taxonChange)="onTaxonChange($event)"
-        [taxonOptions$]="taxonOptions$"
+        [taxonOptions]="taxonOptions$ | async"
       >
       </laji-bird-point-count-result-chart>
     </div>
