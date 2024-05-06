@@ -14,13 +14,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TraitDbNewDatasetComponent } from './trait-db-datasets/trait-db-new-dataset/trait-db-new-dataset.component';
 import { TraitDbAboutComponent } from './trait-db-about/trait-db-about.component';
 import { TraitDbTraitsComponent } from './trait-db-traits/trait-db-traits.component';
+import { TraitDbTraitComponent } from './trait-db-traits/trait-db-trait/trait-db-trait.component';
 
 @NgModule({
   imports: [ routing, CommonModule, SharedModule, LajiUiModule, ReactiveFormsModule ],
   declarations: [
     TraitDbComponent, TraitDbMainComponent, TraitDbBrowseComponent,
     TraitDbMyDatasetsComponent, TraitDbDatasetsComponent, TraitDbDatasetComponent,
-    TraitDbNewDatasetComponent, TraitDbAboutComponent, TraitDbTraitsComponent
+    TraitDbNewDatasetComponent, TraitDbAboutComponent, TraitDbTraitsComponent,
+    TraitDbTraitComponent
   ]
 })
 export class TraitDbModule {}

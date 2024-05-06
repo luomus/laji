@@ -1,0 +1,20 @@
+<ng-container *ngIf="trait$ | async; let trait; else loading">
+  <div *ngIf="{ val: loggedIn$ | async } as loggedIn; else loading">
+    <ng-container *ngIf="loggedIn.val">
+      <button class="btn btn-default" [routerLink]="['edit']">Edit</button>
+    </ng-container>
+  </div>
+
+  <div>Group: {{ trait.group }}</div>
+  <div>Data entry name: {{ trait.dataEntryName }}</div>
+  <div>Example values: {{ trait.exampleValues }}</div>
+  <div>Range: {{ trait.range | label }}</div>
+  <div>Base unit of measurement: {{ trait.baseUnit | label }}</div>
+  <div>Reference: {{ trait.reference }}</div>
+  <div>Identifiers: {{ trait.identifiers | values }}</div>
+</ng-container>
+
+<ng-template #loading>
+  <laji-spinner class="d-block m-6"></laji-spinner>
+</ng-template>
+

@@ -34,7 +34,7 @@
   </tr>
   <tr *ngFor="let trait of (filteredTraits$ | async)">
     <td>{{ traitGroups[trait.group]?.name }}</td>
-    <td>{{ trait.name }}</td>
+    <td><a [routerLink]="[trait.id]">{{ trait.name }}</a></td>
     <td>{{ trait.description }}</td>
     <td>{{ trait.reference }}</td>
     <td>{{ trait.identifiers }}</td>

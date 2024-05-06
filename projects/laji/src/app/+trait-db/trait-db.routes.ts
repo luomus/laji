@@ -6,6 +6,7 @@ import { TraitDbDatasetComponent } from './trait-db-datasets/trait-db-dataset/tr
 import { TraitDbDatasetsComponent } from './trait-db-datasets/trait-db-datasets.component';
 import { TraitDbNewDatasetComponent } from './trait-db-datasets/trait-db-new-dataset/trait-db-new-dataset.component';
 import { TraitDbMainComponent } from './trait-db-main/trait-db-main.component';
+import { TraitDbTraitComponent } from './trait-db-traits/trait-db-trait/trait-db-trait.component';
 import { TraitDbTraitsComponent } from './trait-db-traits/trait-db-traits.component';
 import { TraitDbComponent } from './trait-db.component';
 
@@ -22,7 +23,10 @@ export const routes: Routes = [
         { path: 'new', component: TraitDbNewDatasetComponent },
         { path: ':id', component: TraitDbDatasetComponent }
       ] },
-      { path: 'traits', component: TraitDbTraitsComponent },
+      { path: 'traits', children: [
+        { path: '', pathMatch: 'full', component: TraitDbTraitsComponent },
+        { path: ':id', component: TraitDbTraitComponent }
+      ] },
       { path: 'about', component: TraitDbAboutComponent },
     ]
   }
