@@ -1,70 +1,70 @@
-<form [formGroup]="datasetForm">
+<form [formGroup]="datasetForm" (submit)="onSubmit()">
   <div>
     <label for="name">Name*:</label>
-    <input class="form-control" formControlName="name" type="text">
+    <input id="name" class="form-control" formControlName="name" type="text">
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'name' }"></ng-container>
   </div>
   <div>
     <label for="description">Description*:</label>
-    <input class="form-control" formControlName="description" type="text">
+    <input id="description" class="form-control" formControlName="description" type="text">
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'description' }"></ng-container>
   </div>
   <div>
     <label for="citation">Citation*:</label>
-    <input class="form-control" formControlName="citation" type="text">
+    <input id="citation" class="form-control" formControlName="citation" type="text">
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'citation' }"></ng-container>
   </div>
   <div>
     <label for="intellectualOwner">Intellectual Owner*:</label>
-    <input class="form-control" formControlName="intellectualOwner" type="text">
+    <input id="intellectualOwner" class="form-control" formControlName="intellectualOwner" type="text">
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'intellectualOwner' }"></ng-container>
   </div>
   <div>
     <label for="personResponsible">Person Responsible*:</label>
-    <input class="form-control" formControlName="personResponsible" type="text">
+    <input id="personResponsible" class="form-control" formControlName="personResponsible" type="text">
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'personResponsible' }"></ng-container>
   </div>
   <div>
     <label for="contactEmail">Contact Email*:</label>
-    <input class="form-control" formControlName="contactEmail" type="text">
+    <input id="contactEmail" class="form-control" formControlName="contactEmail" type="text">
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'contactEmail' }"></ng-container>
   </div>
   <div>
     <label for="institutionCode">Institution Code:</label>
-    <input class="form-control" formControlName="institutionCode" type="text">
+    <input id="institutionCode" class="form-control" formControlName="institutionCode" type="text">
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'institutionCode' }"></ng-container>
   </div>
   <div>
     <label for="methods">Methods*:</label>
-    <textarea class="form-control" formControlName="methods"></textarea>
+    <textarea id="methods" class="form-control" formControlName="methods"></textarea>
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'methods' }"></ng-container>
   </div>
   <div>
     <label for="taxonomicCoverage">Taxonomic Coverage*:</label>
-    <input class="form-control" formControlName="taxonomicCoverage" type="text">
+    <input id="taxonomicCoverage" class="form-control" formControlName="taxonomicCoverage" type="text">
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'taxonomicCoverage' }"></ng-container>
   </div>
   <div>
     <label for="temporalCoverage">Temporal Coverage*:</label>
-    <input class="form-control" formControlName="temporalCoverage" type="text">
+    <input id="temporalCoverage" class="form-control" formControlName="temporalCoverage" type="text">
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'temporalCoverage' }"></ng-container>
   </div>
   <div>
     <label for="geographicCoverage">Geographic Coverage*:</label>
-    <input class="form-control" formControlName="geographicCoverage" type="text">
+    <input id="geographicCoverage" class="form-control" formControlName="geographicCoverage" type="text">
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'geographicCoverage' }"></ng-container>
   </div>
   <div>
     <label for="coverageBasis">Coverage Basis*:</label>
-    <input class="form-control" formControlName="coverageBasis" type="text">
+    <input id="coverageBasis" class="form-control" formControlName="coverageBasis" type="text">
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'coverageBasis' }"></ng-container>
   </div>
   <div>
     <label for="additionalIdentifiers">Additional Identifiers:</label>
-    <input class="form-control" formControlName="additionalIdentifiers" type="text">
+    <lu-form-string-list id="additionalIdentifiers" formControlName="additionalIdentifiers"></lu-form-string-list>
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'additionalIdentifiers' }"></ng-container>
   </div>
-  <button type="submit" class="btn btn-default" (click)="onSubmit()" [disabled]="externalValidationInProgress">Submit</button>
+  <button type="submit" class="btn btn-default" [disabled]="externalValidationInProgress">Submit</button>
   <div *ngIf="externalValidationInProgress">Server is validating...</div>
   <div *ngIf="uploadInProgress">Creating dataset...</div>
 </form>

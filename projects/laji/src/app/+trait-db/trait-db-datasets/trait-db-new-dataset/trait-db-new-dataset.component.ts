@@ -15,18 +15,18 @@ type ValidationResponse = components['schemas']['ValidationResponse'];
 })
 export class TraitDbNewDatasetComponent {
   datasetForm = this.fb.group({
-    name: ['', Validators.required],
-    description: ['', Validators.required],
-    citation: ['', Validators.required],
-    intellectualOwner: ['', Validators.required],
-    personResponsible: ['', Validators.required],
-    contactEmail: ['', Validators.required],
+    name: [''],
+    description: [''],
+    citation: [''],
+    intellectualOwner: [''],
+    personResponsible: [''],
+    contactEmail: [''],
     institutionCode: [''],
-    methods: ['', Validators.required],
-    taxonomicCoverage: ['', Validators.required],
-    temporalCoverage: ['', Validators.required],
-    geographicCoverage: ['', Validators.required],
-    coverageBasis: ['', Validators.required],
+    methods: [''],
+    taxonomicCoverage: [''],
+    temporalCoverage: [''],
+    geographicCoverage: [''],
+    coverageBasis: [''],
     additionalIdentifiers: [[]],
   });
 
