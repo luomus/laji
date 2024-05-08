@@ -51,3 +51,8 @@ projects/laji-api-client-b/node_modules
 Thumbs.db
 
 .angular
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+.env

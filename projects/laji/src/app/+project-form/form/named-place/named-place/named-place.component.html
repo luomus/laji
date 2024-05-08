@@ -71,7 +71,7 @@
           <laji-np-choose [namedPlaces]="data.namedPlaces"
                           [documentForm]="data.documentForm"
                           [placeForm]="data.placeForm"
-                          [userID]="data.user.id"
+                          [userID]="data.user?.id"
                           [activeNP]="data.activeNP?.id"
                           [formRights]="data.formRights"
                           (activePlaceChange)="onActivePlaceChange($event)"></laji-np-choose>

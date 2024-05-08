@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'laji-result-service',
   template: `
     <div [ngSwitch]="(form$ | async).options?.resultServiceType" lajiFormOption="options.resultServiceType">
-      <div *ngSwitchCase="ResultServiceType.winterbirdCount">
+      <div *ngSwitchCase="ResultServiceType.winterBirdCount">
         <laji-wbc-result [form]="form$ | async"></laji-wbc-result>
       </div>
       <div *ngSwitchCase="ResultServiceType.lineTransect">
@@ -26,6 +26,12 @@ import { ActivatedRoute } from '@angular/router';
       </div>
       <div *ngSwitchCase="ResultServiceType.completeLists">
         <laji-biomon-result [form]="(form$ | async)"></laji-biomon-result>
+      </div>
+      <div *ngSwitchCase="ResultServiceType.waterBirdCount">
+        <laji-water-bird-count-result [form]="(form$ | async)"></laji-water-bird-count-result>
+      </div>
+      <div *ngSwitchCase="ResultServiceType.birdPointCount">
+        <laji-bird-point-count-result [form]="(form$ | async)"></laji-bird-point-count-result>
       </div>
     </div>
   `,

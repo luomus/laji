@@ -15,6 +15,7 @@ export class RecordingLoaderService implements OnDestroy {
   private nextLimit = 5; // how many next recordings are loaded to memory
 
   @LocalStorage('selected_sites') private selectedSites: number[];
+  private fileNameFilter = '';
 
   @LocalStorage('previous_recordings') private previous: number[];
   @LocalStorage('current_recording') private current: number|null;
@@ -23,7 +24,7 @@ export class RecordingLoaderService implements OnDestroy {
   private dataByRecordingId: Record<number, IGlobalRecordingWithAnnotation> = {};
 
   private preloadNextRecordingIsActive = false;
-  private preloadNextRecordingSubject = new Subject<number>();
+  private preloadNextRecordingSubject = new Subject<number|null>();
   private preloadNextRecording$: Observable<IGlobalRecordingWithAnnotation>;
   private preloadNextRecordingSub: Subscription;
   private preloadAudioSub?: Subscription;
@@ -46,12 +47,16 @@ export class RecordingLoaderService implements OnDestroy {
 
   setSelectedSites(selectedSites: number[]) {
     if (!Util.equalsArray(this.selectedSites, selectedSites)) {
-      this.previous = [];
-      this.current = null;
-      this.next = [];
-      this.pruneCache();
+      this.selectedSites = selectedSites;
+      this.clearLoadedRecordings(true);
     }
-    this.selectedSites = selectedSites;
+  }
+
+  setFileNameFilter(fileNameFilter: string) {
+    if (this.fileNameFilter !== fileNameFilter) {
+      this.fileNameFilter = fileNameFilter;
+      this.clearLoadedRecordings(false);
+    }
   }
 
   hasPreviousRecording(): boolean {
@@ -131,7 +136,7 @@ export class RecordingLoaderService implements OnDestroy {
       switchMap(previousId => {
         const excludedIds = this.current != null ? [this.current, ...this.next] : [...this.next];
         return this.kerttuGlobalApi.getNewIdentificationRecording(
-          this.userService.getToken(), this.translate.currentLang, this.selectedSites, previousId, excludedIds
+          this.userService.getToken(), this.translate.currentLang, this.selectedSites, previousId, excludedIds, this.fileNameFilter
         );
       }),
       tap(result => {
@@ -164,11 +169,28 @@ export class RecordingLoaderService implements OnDestroy {
 
   private startPreloadingRecordings() {
     if (!this.preloadNextRecordingIsActive && this.next.length < this.nextLimit) {
-      const previousRecordingId = this.current === null ? this.previous[this.previous.length - 1] :
-        (this.next.length === 0 ? this.current : this.next[this.next.length - 1]);
-      this.preloadNextRecordingSubject.next(previousRecordingId);
+      this.preloadNextRecordingSubject.next(this.getPreviousRecordingId());
       this.preloadNextRecordingIsActive = true;
     }
+  }
+
+  private restartPreloadingRecordingsIfActive() {
+    if (this.preloadNextRecordingIsActive && this.next.length < this.nextLimit) {
+      this.preloadAudioSub?.unsubscribe();
+      this.preloadNextRecordingSubject.next(this.getPreviousRecordingId());
+    }
+  }
+
+  private clearLoadedRecordings(clearAll = false) {
+    if (clearAll) {
+      this.previous = [];
+      this.current = null;
+    }
+
+    this.next = [];
+    this.pruneCache();
+
+    this.restartPreloadingRecordingsIfActive();
   }
 
   private pruneCache() {
@@ -182,6 +204,13 @@ export class RecordingLoaderService implements OnDestroy {
         delete this.dataByRecordingId[unusedId];
       }
     }
+  }
+
+  private getPreviousRecordingId(): number|null {
+    const recordingId = this.current === null ? this.previous[this.previous.length - 1] :
+      (this.next.length === 0 ? this.current : this.next[this.next.length - 1]);
+
+    return this.undefinedToNull(recordingId);
   }
 
   private undefinedToNull(value?: number) {
