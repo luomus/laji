@@ -322,6 +322,16 @@ export class SpectrogramChartComponent implements OnChanges {
   ) {
     const drawData = this.getRectangleDrawData(this.rectangles);
 
+    for (const line of drawData.lines) {
+      svg.append('line')
+        .attr('x1', line.coordinates[0].x)
+        .attr('x2', line.coordinates[1].x)
+        .attr('y1', line.coordinates[0].y)
+        .attr('y2', line.coordinates[1].y)
+        .attr('stroke-width', strokeWidth)
+        .attr('stroke', line.color || '#d98026');
+    }
+
     for (const data of drawData.rectangles) {
       const { x, width, y, height } = data.dimensions;
       svg.append('rect')
@@ -346,16 +356,6 @@ export class SpectrogramChartComponent implements OnChanges {
             .text(data.label[i] + (last ? '' : ' '));
         }
       }
-    }
-
-    for (const line of drawData.lines) {
-      svg.append('line')
-        .attr('x1', line.coordinates[0].x)
-        .attr('x2', line.coordinates[1].x)
-        .attr('y1', line.coordinates[0].y)
-        .attr('y2', line.coordinates[1].y)
-        .attr('stroke-width', strokeWidth)
-        .attr('stroke', line.color || '#d98026');
     }
   }
 
