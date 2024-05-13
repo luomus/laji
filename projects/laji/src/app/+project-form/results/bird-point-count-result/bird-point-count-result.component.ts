@@ -55,13 +55,13 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.state$ = this.route.queryParams as Observable<State>;
-    this.taxonOptions$ = this.getTaxonOptions$();
     this.state$ = this.route.queryParams as Observable<State>;
     this.defaultTabSubscription = this.state$.subscribe(({ tab }) => {
       if (!Tabs[tab]) {
         this.router.navigate([], { queryParams: { tab: Tabs.chart } });
       }
     });
+    this.taxonOptions$ = this.getTaxonOptions$();
   }
 
   ngOnDestroy(): void {

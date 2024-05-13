@@ -73,19 +73,17 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
   }
 
   getTaxonOptions$(): Observable<{ label: string; value: string }[]> {
-    return this.state$.pipe(switchMap(state => (
-      this.formApi.getAllForms().pipe(
-        rxjsMap(forms =>
-          forms
-            .filter(f => (f.collectionID !== undefined && f.options.prepopulateWithTaxonSets !== undefined))
-            .map(f => ({ collectionID: f.collectionID, taxonSet: f.options.prepopulateWithTaxonSets }))
-        ),
-        switchMap(pairs => {
-          const taxonSet = pairs.find(p => p.collectionID === (state.collection ? state.collection : this.form.collectionID)).taxonSet;
-          return this.getOptionsByTaxonSet$(taxonSet);
-        })
-      )
-    )));
+    return this.formApi.getAllForms().pipe(
+      rxjsMap(forms =>
+        forms
+          .filter(f => (f.collectionID !== undefined && f.options.prepopulateWithTaxonSets !== undefined))
+          .map(f => ({ collectionID: f.collectionID, taxonSet: f.options.prepopulateWithTaxonSets }))
+      ),
+      switchMap(pairs => {
+        const taxonSet = pairs.find(p => p.collectionID === this.form.collectionID).taxonSet;
+        return this.getOptionsByTaxonSet$(taxonSet);
+      })
+    );
   }
 
   getOptionsByTaxonSet$(taxonSet: string[]): Observable<{ label: string; value: string }[]> {
