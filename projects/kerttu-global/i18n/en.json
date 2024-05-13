@@ -73,6 +73,7 @@
   "identification.boxes": "Boxes",
   "identification.boxes.info": "It's recommended to label sounds with boxes if it is easy i.e. recording has clear vocalizations. It is not mandatory. Don't get stuck with labelling all distant or overlapping sounds.",
   "identification.boxes.new": "Draw a new box",
+  "identification.boxes.newRelated": "Add a related box",
   "identification.boxes.overlapsWithOthers": "Overlaps with other species",
   "identification.containsBirdsNotOnList": "Recording contains birds that are not on the list",
   "identification.containsBirdsNotOnList.info": "Free-text field for species that are not found in the 2019 eBird/Clements taxonomy list. For example Maghreb Owl (<i>Strix [aluco] mauritanica<i>).",

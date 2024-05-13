@@ -1,3 +1,39 @@
+@import 'projects/laji-ui/src/lib/vars';
+
 .identification-heading {
   overflow: auto;
+}
+
+.table > tbody > tr > td {
+  border: none;
+  vertical-align: middle;
+}
+
+.table > tbody + tbody {
+  border: none;
+}
+
+.box-group {
+  position: relative;
+
+  &:after {
+    content: "";
+    border-left: 2px solid $primary-5;
+    border-top: 2px solid $primary-5;
+    border-bottom: 2px solid $primary-5;
+    border-radius: 3px 0 0 3px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 12px;
+  }
+}
+
+.box-group + .box-group {
+  &:after {
+    border-top: none;
+    border-top-left-radius: 0;
+    top: -2px;
+  }
 }

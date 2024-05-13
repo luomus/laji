@@ -10,11 +10,17 @@ import {
 import {
   IGlobalRecording,
   IGlobalSpeciesWithAnnotation,
+  isBoxGroup,
   SpeciesAnnotationEnum,
   TaxonTypeEnum
 } from '../../../../../../kerttu-global-shared/models';
 import { KerttuGlobalUtil } from '../../../../../../kerttu-global-shared/service/kerttu-global-util.service';
 import { ISpectrogramConfig } from '../../../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
+
+interface BoxClickEvent {
+  idx: number;
+  groupIdx?: number;
+}
 
 @Component({
   selector: 'bsg-identification-panel',
@@ -25,13 +31,17 @@ import { ISpectrogramConfig } from '../../../../../../../../../laji/src/app/shar
 export class IdentificationPanelComponent {
   @ViewChild('toggleDrawBtn', { static: false }) toggleDrawBtn: ElementRef;
 
+  @Input() componentId = '';
+  @Input() speciesIdx?: number;
+
   @Input() recording: IGlobalRecording;
   @Input() identification: IGlobalSpeciesWithAnnotation;
+
   @Input() buttonsDisabled = false;
   @Input() drawBoxActive = false;
+  @Input() drawRelatedBoxActive: boolean[] = [];
   @Input() open = true;
-  @Input() idx?: number;
-  @Input() componentId = '';
+
   @Input() birdRectangleColor = 'white';
   @Input() overlappingBirdRectangleColor = 'orange';
   @Input() spectrogramConfig: ISpectrogramConfig;
@@ -39,12 +49,14 @@ export class IdentificationPanelComponent {
   speciesAnnotationEnum = SpeciesAnnotationEnum;
   taxonTypeEnum = TaxonTypeEnum;
 
+  isBoxGroup = isBoxGroup;
   numberToLetter = KerttuGlobalUtil.numberToLetter;
 
   @Output() identificationChange = new EventEmitter<IGlobalSpeciesWithAnnotation>();
   @Output() deleteClick = new EventEmitter();
   @Output() drawBoxClick = new EventEmitter();
-  @Output() deleteBoxClick = new EventEmitter<number>();
+  @Output() drawRelatedBoxClick = new EventEmitter<BoxClickEvent>();
+  @Output() deleteBoxClick = new EventEmitter<BoxClickEvent>();
   @Output() openChange = new EventEmitter<boolean>();
 
   annotationTypeChange(value: number) {

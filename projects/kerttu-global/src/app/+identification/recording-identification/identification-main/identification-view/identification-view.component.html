@@ -131,6 +131,7 @@
       [spectrogramConfig]="spectrogramConfig"
       [drawActive]="drawBirdActive"
       (drawBoxClick)="onDrawBirdClick($event)"
+      (drawRelatedBoxClick)="onDrawRelatedBirdClick($event)"
       (deleteBoxClick)="removeDrawing($event)"
       (identificationsChange)="updateSpectrogramAndAnnotation()"
     ></bsg-identification-table>

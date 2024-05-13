@@ -1,7 +1,7 @@
 <ng-template #headingTemplate>
   <div class="identification-heading">
     <strong class="panel-title">
-      <ng-container *ngIf="idx != null">{{ idx + 1 }}. </ng-container><bsg-species-name [species]="identification"></bsg-species-name>
+      <ng-container *ngIf="speciesIdx != null">{{ speciesIdx + 1 }}. </ng-container><bsg-species-name [species]="identification"></bsg-species-name>
     </strong>
     <div class="pull-right">
       <div class="d-inline mr-3" *ngIf="identification.hasAudio">
@@ -36,42 +36,67 @@
     </div>
     <div class="table-responsive" *ngIf="identification?.annotation?.boxes?.length > 0">
       <table class="table table-condensed mt-0 mb-0">
-        <tr *ngFor="let box of identification.annotation.boxes; let i=index">
-          <td style="width: 50px">{{ numberToLetter(i + 1) }}.</td>
-          <td style="width: 200px">
-            <laji-small-audio-viewer
-              [audio]="recording"
-              [area]="box.area"
-              [spectrogramWidth]="130"
-              [spectrogramHeight]="50"
-              [spectrogramConfig]="spectrogramConfig"
-              [areaColor]="box.overlapsWithOtherSpecies ? overlappingBirdRectangleColor: birdRectangleColor"
-            ></laji-small-audio-viewer>
-          </td>
-          <td style="width: 240px">
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" [(ngModel)]="box.overlapsWithOtherSpecies" (ngModelChange)="identificationChange.emit(identification)">
-                {{ 'identification.boxes.overlapsWithOthers' | translate }}
-              </label>
-            </div>
-          </td>
-          <td>
-            <button
-              class="btn btn-danger btn-sm"
-              [disabled]="buttonsDisabled"
-              (click)="deleteBoxClick.emit(i)"
-            >✕</button>
-          </td>
-        </tr>
+        <tbody *ngFor="let box of identification.annotation.boxes; let i=index" [ngClass]="{ 'box-group': isBoxGroup(box) }">
+          <ng-template #boxRow let-box="box" let-groupIdx="groupIdx" let-hideDrawRelatedBtn="hideDrawRelatedBtn">
+            <tr>
+              <td style="width: 50px">{{ numberToLetter(i + 1) + (groupIdx != null ? '-' + (groupIdx + 1) : '' )}}.</td>
+              <td style="width: 200px">
+                <laji-small-audio-viewer
+                  [audio]="recording"
+                  [area]="box.area"
+                  [spectrogramWidth]="130"
+                  [spectrogramHeight]="50"
+                  [spectrogramConfig]="spectrogramConfig"
+                  [areaColor]="box.overlapsWithOtherSpecies ? overlappingBirdRectangleColor: birdRectangleColor"
+                ></laji-small-audio-viewer>
+              </td>
+              <td style="width: 240px">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" [(ngModel)]="box.overlapsWithOtherSpecies" (ngModelChange)="identificationChange.emit(identification)">
+                    {{ 'identification.boxes.overlapsWithOthers' | translate }}
+                  </label>
+                </div>
+              </td>
+              <td>
+                <button
+                  class="btn btn-danger btn-sm"
+                  [disabled]="buttonsDisabled"
+                  (click)="deleteBoxClick.emit({ idx: i, groupIdx })"
+                >✕</button>
+              </td>
+              <td>
+                <button
+                  *ngIf="!hideDrawRelatedBtn"
+                  class="btn btn-default"
+                  [ngClass]="{
+                    'active': drawRelatedBoxActive[i]
+                  }"
+                  (click)="drawRelatedBoxClick.emit({ idx: i, groupIdx })"
+                  [disabled]="buttonsDisabled"
+                >
+                  <i class="glyphicon glyphicon-plus"></i> {{ 'identification.boxes.newRelated' | translate }}
+                </button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-container *ngIf="isBoxGroup(box) else normalBox">
+            <ng-container *ngFor="let b of box.boxes; let groupIdx=index; let last=last">
+              <ng-container *ngTemplateOutlet="boxRow; context: { box: b, groupIdx, hideDrawRelatedBtn: !last }"></ng-container>
+            </ng-container>
+          </ng-container>
+          <ng-template #normalBox>
+            <ng-container *ngTemplateOutlet="boxRow; context: { box: box }"></ng-container>
+          </ng-template>
+        </tbody>
       </table>
     </div>
     <button
       #toggleDrawBtn
-      class="btn btn-primary d-block"
+      class="btn btn-primary d-block mt-1"
       [ngClass]="{
-      'active': drawBoxActive
-    }"
+        'active': drawBoxActive
+      }"
       (click)="drawBoxClick.emit()"
       [disabled]="buttonsDisabled"
     >

@@ -22,26 +22,31 @@ import { ISpectrogramConfig } from '../../../../../../../../laji/src/app/shared-
 export class IdentificationTableComponent implements OnChanges {
   @ViewChildren(IdentificationPanelComponent) identificationPanels: QueryList<IdentificationPanelComponent>;
 
+  @Input() componentId = 0;
   @Input() recording: IGlobalRecording;
   @Input() identifications: IGlobalSpeciesWithAnnotation[];
+
   @Input() loading = false;
   @Input() buttonsDisabled = false;
-  @Input() componentId = 0;
   @Input() drawActive = false;
+
   @Input() birdRectangleColor = 'white';
   @Input() overlappingBirdRectangleColor = 'orange';
   @Input() spectrogramConfig: ISpectrogramConfig;
 
-  drawBoxClickedByIdx = [];
+  drawBoxActive: boolean[] = [];
+  drawRelatedBoxActive: boolean[][] = [];
   panelOpenById: Record<string, boolean> = {};
 
   @Output() identificationsChange = new EventEmitter<IGlobalSpeciesWithAnnotation[]>();
   @Output() drawBoxClick = new EventEmitter<{drawClicked: boolean; rowIndex: number}>();
-  @Output() deleteBoxClick = new EventEmitter<{rowIndex: number; boxIndex: number}>();
+  @Output() drawRelatedBoxClick = new EventEmitter<{drawClicked: boolean; rowIndex: number; boxIndex: number}>();
+  @Output() deleteBoxClick = new EventEmitter<{rowIndex: number; boxIndex: number; boxGroupIndex: number}>();
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.identifications || !this.drawActive) {
-      this.drawBoxClickedByIdx = this.identifications.map(() => false);
+      this.drawBoxActive = this.identifications.map(() => false);
+      this.drawRelatedBoxActive = this.identifications.map(identification => identification.annotation.boxes.map(() => false));
 
       const prevLength = Object.keys(this.panelOpenById).length;
       const currLength = this.identifications?.length || 0;
@@ -68,13 +73,25 @@ export class IdentificationTableComponent implements OnChanges {
   }
 
   toggleDrawBox(rowIndex: number) {
-    this.drawBoxClickedByIdx = this.drawBoxClickedByIdx.map((value, idx) => {
+    this.drawRelatedBoxActive = this.drawRelatedBoxActive.map(value => value.map(() => false));
+    this.drawBoxActive = this.drawBoxActive.map((value, idx) => {
       if (idx === rowIndex) {
         return !value;
       }
       return false;
     });
-    this.drawBoxClick.emit({drawClicked: this.drawBoxClickedByIdx[rowIndex], rowIndex});
+    this.drawBoxClick.emit({drawClicked: this.drawBoxActive[rowIndex], rowIndex});
+  }
+
+  toggleDrawRelatedBox(rowIndex: number, boxIndex: number) {
+    this.drawBoxActive = this.drawBoxActive.map(() => false);
+    this.drawRelatedBoxActive = this.drawRelatedBoxActive.map((value, idx) => value.map((v, i) => {
+      if (idx === rowIndex && boxIndex === i) {
+        return !v;
+      }
+      return false;
+    }));
+    this.drawRelatedBoxClick.emit({drawClicked: true, rowIndex, boxIndex});
   }
 
   scrollDrawButtonIntoView(rowIndex: number) {
