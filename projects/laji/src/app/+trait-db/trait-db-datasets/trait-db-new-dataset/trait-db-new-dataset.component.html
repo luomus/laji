@@ -64,9 +64,38 @@
     <lu-form-string-list id="additionalIdentifiers" formControlName="additionalIdentifiers"></lu-form-string-list>
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'additionalIdentifiers' }"></ng-container>
   </div>
+
+  <ng-container *ngIf="datasetForm.get('id').value">
+    <ng-container *ngIf="datasetForm.get('published') as published">
+      <div *ngIf="(published.valueChanges | async) === true; else notPublished">
+        This dataset is published.
+        <button (click)="onUnpublish($event)">Unpublish dataset</button>
+        <p>If you unpublish the dataset, it is no-longer available publicly on the search. </p>
+      </div>
+      <ng-template #notPublished><div>
+        <p>This dataset is not published. Trait data entered to this dataset is not shared publicly.</p>
+        <button (click)="onPublish($event)">Publish dataset</button>
+      </div></ng-template>
+    </ng-container>
+
+    <div *ngIf="datasetForm.get('shareToFinBIF')">
+      <p>We can generate occurrences from your trait data. If your dataset is not derived from individuals or specimens published in occurrence databases (e.g., Kotka collection management system) and you wish to publish this data as occurrences on FinBIF occurrence search, please indicate ‘YES’.</p>
+      <label for="shareToFinBIF">Share to FinBIF:</label>
+      <input id="shareToFinBIF" class="form-control" formControlName="shareToFinBIF" type="checkbox">
+    </div>
+
+    <div *ngIf="datasetForm.get('shareToGBIF')">
+      <p>If you have opted for occurrences to be generated on FinBIF, you can also specify here whether you would like these occurrences to be shared with https://GBIF.org. If you wish to share the occurrences with GBIF, please indicate ‘YES’.</p>
+      <label for="shareToGBIF">Share to GBIF:</label>
+      <input id="shareToGBIF" class="form-control" formControlName="shareToGBIF" type="checkbox" [disabled]="(datasetForm.get('shareToFinBIF').valueChanges | async) === false">
+    </div>
+
+    <button class="d-block" (click)="onDelete()">DELETE DATASET</button>
+  </ng-container>
+
   <button type="submit" class="btn btn-default" [disabled]="externalValidationInProgress">Submit</button>
   <div *ngIf="externalValidationInProgress">Server is validating...</div>
-  <div *ngIf="uploadInProgress">Creating dataset...</div>
+  <div *ngIf="uploadInProgress">Uploading dataset...</div>
 </form>
 
 <ng-template #errorsTmp let-prop>

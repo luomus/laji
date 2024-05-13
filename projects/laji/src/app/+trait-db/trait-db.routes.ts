@@ -21,6 +21,7 @@ export const routes: Routes = [
       { path: 'datasets', children: [
         { path: '', pathMatch: 'full', component: TraitDbDatasetsComponent },
         { path: 'new', component: TraitDbNewDatasetComponent },
+        { path: ':id/edit', component: TraitDbNewDatasetComponent },
         { path: ':id', component: TraitDbDatasetComponent }
       ] },
       { path: 'traits', children: [
