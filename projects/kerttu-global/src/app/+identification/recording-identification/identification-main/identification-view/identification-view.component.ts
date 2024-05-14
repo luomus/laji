@@ -183,7 +183,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
       selectedSpecies[this.drawBirdIndex].annotation.boxes = boxes;
       this.selectedSpecies = selectedSpecies;
-      this.scrollDrawButtonIntoView(this.drawBirdIndex);
+      this.scrollDrawButtonIntoView(this.drawBirdIndex, this.drawBirdRelatedBoxIndex >= 0 ? this.drawBirdRelatedBoxIndex : undefined);
     } else {
       this.annotation.nonBirdArea = area;
     }
@@ -328,10 +328,10 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
-  private scrollDrawButtonIntoView(idx: number) {
+  private scrollDrawButtonIntoView(idx: number, boxIdx?: number) {
     // timeout ensures that the view is rendered before scrolling
     setTimeout(() => {
-      this.identificationTable.scrollDrawButtonIntoView(idx);
+      this.identificationTable.scrollDrawButtonIntoView(idx, boxIdx);
     }, 0);
   }
 

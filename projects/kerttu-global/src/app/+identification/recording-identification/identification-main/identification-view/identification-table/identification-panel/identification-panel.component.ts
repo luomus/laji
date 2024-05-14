@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter,
   ViewChild,
-  ElementRef
+  ElementRef, ViewChildren, QueryList
 } from '@angular/core';
 import {
   IGlobalRecording,
@@ -30,6 +30,7 @@ interface BoxClickEvent {
 })
 export class IdentificationPanelComponent {
   @ViewChild('toggleDrawBtn', { static: false }) toggleDrawBtn: ElementRef;
+  @ViewChildren('toggleDrawRelatedBtn') toggleDrawRelatedBtn: QueryList<ElementRef>;
 
   @Input() componentId = '';
   @Input() speciesIdx?: number;
@@ -73,7 +74,8 @@ export class IdentificationPanelComponent {
     e.stopPropagation();
   }
 
-  scrollDrawButtonIntoView() {
-    this.toggleDrawBtn.nativeElement.scrollIntoView({behavior: 'smooth'});
+  scrollDrawButtonIntoView(boxIndex?: number) {
+    const elem = boxIndex != null ? this.toggleDrawRelatedBtn.toArray()[boxIndex] : this.toggleDrawBtn;
+    elem.nativeElement.scrollIntoView({behavior: 'smooth'});
   }
 }

@@ -94,7 +94,7 @@ export class IdentificationTableComponent implements OnChanges {
     this.drawRelatedBoxClick.emit({drawClicked: this.drawRelatedBoxActive[rowIndex][boxIndex], rowIndex, boxIndex});
   }
 
-  scrollDrawButtonIntoView(rowIndex: number) {
-    this.identificationPanels.get(rowIndex).scrollDrawButtonIntoView();
+  scrollDrawButtonIntoView(rowIndex: number, boxIndex?: number) {
+    this.identificationPanels.get(rowIndex).scrollDrawButtonIntoView(boxIndex);
   }
 }
