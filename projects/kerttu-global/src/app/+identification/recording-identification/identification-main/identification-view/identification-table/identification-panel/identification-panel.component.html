@@ -39,7 +39,7 @@
         <tbody *ngFor="let box of identification.annotation.boxes; let i=index" [ngClass]="{ 'box-group': isBoxGroup(box) }">
           <ng-template #boxRow let-box="box" let-groupIdx="groupIdx" let-hideDrawRelatedBtn="hideDrawRelatedBtn">
             <tr>
-              <td style="width: 50px">{{ numberToLetter(i + 1) + (groupIdx != null ? '-' + (groupIdx + 1) : '' )}}.</td>
+              <td style="width: 50px">{{ getBoxLabel(speciesIdx, i, groupIdx) }}.</td>
               <td style="width: 200px">
                 <laji-small-audio-viewer
                   [audio]="recording"
@@ -58,7 +58,7 @@
                   </label>
                 </div>
               </td>
-              <td>
+              <td style="width: 50px">
                 <button
                   class="btn btn-danger btn-sm"
                   [disabled]="buttonsDisabled"

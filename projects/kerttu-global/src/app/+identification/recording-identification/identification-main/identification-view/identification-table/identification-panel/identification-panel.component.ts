@@ -51,7 +51,7 @@ export class IdentificationPanelComponent {
   taxonTypeEnum = TaxonTypeEnum;
 
   isBoxGroup = isBoxGroup;
-  numberToLetter = KerttuGlobalUtil.numberToLetter;
+  getBoxLabel = KerttuGlobalUtil.getBoxLabel;
 
   @Output() identificationChange = new EventEmitter<IGlobalSpeciesWithAnnotation>();
   @Output() deleteClick = new EventEmitter();

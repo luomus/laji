@@ -300,7 +300,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
   private updateSpectrogramRectangles() {
     const boxToRectangle = (box: IGlobalSpeciesAnnotationBox, speciesIdx: number, idx: number, groupIdx?: number) => ({
-      label: (speciesIdx + 1) + KerttuGlobalUtil.numberToLetter(idx + 1) + (groupIdx != null ? '-' + (groupIdx + 1) : ''),
+      label: KerttuGlobalUtil.getBoxLabel(speciesIdx, idx, groupIdx),
       area: box.area,
       color: box.overlapsWithOtherSpecies ? this.overlappingBirdRectangleColor : this.birdRectangleColor
     });
