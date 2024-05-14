@@ -148,17 +148,10 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     this.scrollDrawButtonIntoView(this.selectedSpecies.length - 1);
   }
 
-  onDrawBirdClick(data: {drawClicked: boolean; rowIndex: number}) {
+  onDrawBirdClick(data: {drawClicked: boolean; rowIndex: number; boxIndex?: number}) {
     this.drawBirdActive = data.drawClicked;
     this.drawBirdIndex = data.rowIndex;
-    this.drawNonBirdActive = false;
-    this.audioViewerMode = this.drawBirdActive ? 'draw' : 'default';
-  }
-
-  onDrawRelatedBirdClick(data: {drawClicked: boolean; rowIndex: number; boxIndex: number}) {
-    this.drawBirdActive = data.drawClicked;
-    this.drawBirdIndex = data.rowIndex;
-    this.drawBirdRelatedBoxIndex = data.boxIndex;
+    this.drawBirdRelatedBoxIndex = data.boxIndex != null ? data.boxIndex : -1;
     this.drawNonBirdActive = false;
     this.audioViewerMode = this.drawBirdActive ? 'draw' : 'default';
   }
@@ -166,6 +159,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   toggleDrawNonBird() {
     this.drawBirdActive = false;
     this.drawBirdIndex = -1;
+    this.drawBirdRelatedBoxIndex = -1;
     this.drawNonBirdActive = !this.drawNonBirdActive;
     this.audioViewerMode = this.drawNonBirdActive ? 'draw' : 'default';
   }
