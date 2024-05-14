@@ -35,6 +35,8 @@
   "ba.grid-info.mapPrint": "Tulostettava ruutu karttapalvelussa",
   "ba.grid-info.mapFullScreen": "Kartta koko ruudun kokoisena",
   "ba.grid-info.havistin": "Tulostettava maastolomake",
+  "ba.grid-info.havistin2": "Puutelista",
+  "ba.grid-info.havistin3": "Puutelista puhelimessa",
   "ba.grid-info.observations": "Havainnot tältä ruudulta",
   "ba.bird-society-info.activityCategoryTable": "Ruutujen selvitysasteet",
   "ba.bird-society-info.activityCategoryTable.cat": "Luokka",
