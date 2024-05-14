@@ -91,7 +91,7 @@ export class IdentificationTableComponent implements OnChanges {
       }
       return false;
     }));
-    this.drawRelatedBoxClick.emit({drawClicked: true, rowIndex, boxIndex});
+    this.drawRelatedBoxClick.emit({drawClicked: this.drawRelatedBoxActive[rowIndex][boxIndex], rowIndex, boxIndex});
   }
 
   scrollDrawButtonIntoView(rowIndex: number) {
