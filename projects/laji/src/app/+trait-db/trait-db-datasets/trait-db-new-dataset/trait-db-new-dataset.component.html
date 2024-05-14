@@ -96,12 +96,10 @@
   <button type="submit" class="btn btn-default" [disabled]="externalValidationInProgress">Submit</button>
   <div *ngIf="externalValidationInProgress">Server is validating...</div>
   <div *ngIf="uploadInProgress">Uploading dataset...</div>
+  <div *ngIf="deletionInProgress">Deleting dataset...</div>
 </form>
 
 <ng-template #errorsTmp let-prop>
-  <!-- <div *ngIf="datasetForm.get(prop)?.errors; let fbErrors">
-    <span *ngIf="fbErrors.required">{{ 'trait-db.new-dataset.'+prop+'.required' | translate }}</span>
-</div> -->
   <div class="alert alert-danger" role="alert" *ngIf="errors?.[prop]">{{ errors[prop]}}</div>
 </ng-template>
 

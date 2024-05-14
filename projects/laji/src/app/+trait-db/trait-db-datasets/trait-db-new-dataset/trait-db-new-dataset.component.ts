@@ -7,7 +7,6 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { Subscription } from 'rxjs';
 import { tap, filter, switchMap, map } from 'rxjs/operators';
 import { DialogService } from '../../../shared/service/dialog.service';
-import { UserService } from '../../../shared/service/user.service';
 
 export type Dataset = components['schemas']['Dataset'];
 type ValidationResponse = components['schemas']['ValidationResponse'];
@@ -51,6 +50,7 @@ export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
 
   externalValidationInProgress = false;
   uploadInProgress = false;
+  deletionInProgress = false;
   errors: ValidationResponse['errors'] | undefined;
   subscription = new Subscription();
 
@@ -104,19 +104,24 @@ export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
   }
 
   onDelete() {
-    // TODO add loader
+    this.deletionInProgress = true;
     const form = filterNullValues(this.datasetForm.value) as Dataset;
     this.datasetForm.disable();
     this.api.fetch('/trait/datasets/validate-delete/{id}', 'post', { path: { id: form.id } }).pipe(
       tap(res => {
-        // TODO indicate if dataset can't be deleted
+        this.errors = res.pass ? undefined : res.errors;
         this.datasetForm.enable();
+        this.cdr.markForCheck();
       }),
       filter(res => res.pass),
       tap(_ => { this.datasetForm.disable(); }),
       switchMap(_ => this.api.fetch('/trait/datasets/{id}', 'delete', { path: { id: form.id } }))
     ).subscribe(_ => {
       this.router.navigate(['../../'], { relativeTo: this.route });
+    }, () => {
+      this.deletionInProgress = false;
+      this.datasetForm.enable();
+      this.cdr.markForCheck();
     });
   }
 
