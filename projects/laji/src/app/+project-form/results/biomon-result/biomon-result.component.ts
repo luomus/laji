@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Form } from '../../../shared/model/Form';
 import { FormService } from '../../../shared/service/form.service';
-import { map as rxjsMap, switchMap } from 'rxjs/operators'; // "map" reserved for tab logic
+import { map, switchMap } from 'rxjs/operators'; // "map" reserved for tab logic
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
@@ -12,6 +12,7 @@ export type CompleteListPrevalence = 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED
 
 enum Tabs {
   statistics = 'statistics',
+  // eslint-disable-next-line
   map = 'map'
 }
 
@@ -74,7 +75,7 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
 
   getTaxonOptions$(): Observable<{ label: string; value: string }[]> {
     return this.formApi.getAllForms().pipe(
-      rxjsMap(forms =>
+      map(forms =>
         forms
           .filter(f => (f.collectionID !== undefined && f.options.prepopulateWithTaxonSets !== undefined))
           .map(f => ({ collectionID: f.collectionID, taxonSet: f.options.prepopulateWithTaxonSets }))
@@ -94,12 +95,12 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
         taxonSets: taxonSet
       }
     ).pipe(
-      rxjsMap(res => res.results),
-      rxjsMap(taxa => taxa.map(t => ({
+      map(res => res.results),
+      map(taxa => taxa.map(t => ({
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),
         value: t.id
       }))),
-      rxjsMap(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs)),
+      map(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs)),
     );
   }
 
