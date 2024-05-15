@@ -14,9 +14,9 @@ type ObservationProbabilityType = 'ZERO' | 'OVER_ZERO' | 'OVER_TWENTY' | 'OVER_F
 
 type ResultVisualizationMode = 'gatheringCount' | 'observationProbability';
 
-type CountMap = Map<string, {lat: string; lon: string; count: number}>;
+type CountMap = Map<string, { lat: string; lon: string; count: number }>;
 type CountArray = { lat: string; lon: string; count: number }[];
-type RatioMap = Map<string, {lat: string; lon: string; ratio: number}>;
+type RatioMap = Map<string, { lat: string; lon: string; ratio: number }>;
 type RatioArray = { lat: string; lon: string; ratio: number }[];
 
 interface QueryResult {
@@ -217,25 +217,24 @@ export class ResultMapComponent implements OnInit {
   }
 
   private gatheringCountsFromAllLocations(query1: QueryResult, query2: QueryResult): CountArray {
-    const countMap: CountMap = new Map();
-
-    // Populate countMap with query2 locations, init counts to zero
+    const allLocations: CountMap = new Map();
     query2.results.forEach(result => {
       const { aggregateBy } = result;
       const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
       const key = `${lat},${lon}`;
-      countMap.set(key, { lat, lon, count: 0 });
+      allLocations.set(key, { lat, lon, count: 0 });
     });
 
-    // Overwrite counts with query1 counts
+    const gatheringCounts: CountMap = new Map();
     query1.results.forEach(result => {
       const { aggregateBy, gatheringCount } = result;
       const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
       const key = `${lat},${lon}`;
-      countMap.set(key, { lat, lon, count: gatheringCount });
+      gatheringCounts.set(key, { lat, lon, count: gatheringCount });
     });
 
-    const counts: CountArray = Array.from(countMap.values());
+    const populatedMap: CountMap = new Map([...allLocations, ...gatheringCounts]);
+    const counts: CountArray = Array.from(populatedMap.values());
     return counts;
   }
 
@@ -293,9 +292,6 @@ export class ResultMapComponent implements OnInit {
 
   private gatheringCountRatios(query1: QueryResult, query2: QueryResult): RatioArray {
     const countMap: CountMap = new Map();
-    const ratioMap: RatioMap = new Map();
-
-    // Populate countMap with query1 locations and counts
     query1.results.forEach(result => {
       const { aggregateBy, gatheringCount } = result;
       const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
@@ -303,7 +299,7 @@ export class ResultMapComponent implements OnInit {
       countMap.set(key, { lat, lon, count: gatheringCount });
     });
 
-    // Populate ratioMap with query2 locations and calculate query1/query2 gatheringCount ratio
+    const ratioMap: RatioMap = new Map();
     query2.results.forEach(result => {
       const { aggregateBy, gatheringCount } = result;
       const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
