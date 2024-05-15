@@ -9,12 +9,13 @@ import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-e
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
-type GatheringCountType = 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
+type GatheringCountType = 'ZERO' | 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
 type ObservationProbabilityType = 'ZERO' | 'OVER_ZERO' | 'OVER_TWENTY' | 'OVER_FORTY' | 'OVER_SIXTY' | 'OVER_EIGHTY' | 'HUNDRED';
 
 type ResultVisualizationMode = 'gatheringCount' | 'observationProbability';
 
 type CountMap = Map<string, {lat: string; lon: string; count: number}>;
+type CountArray = { lat: string; lon: string; count: number }[];
 type RatioMap = Map<string, {lat: string; lon: string; ratio: number}>;
 type RatioArray = { lat: string; lon: string; ratio: number }[];
 
@@ -29,6 +30,10 @@ interface QueryResult {
 }
 
 const gatheringCountToVisCategory: Record<GatheringCountType, { color: string; label: string }> = {
+  ZERO: {
+    color: '#E6E6E6',
+    label: '0'
+  },
   ONE: {
     color: '#EE82EE',
     label: '1-4'
@@ -160,21 +165,21 @@ export class ResultMapComponent implements OnInit {
   }
 
   private gatheringCountMapData$(): Observable<DataOptions> {
-    return this.getGatheringCounts$().pipe(
+    return combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)]).pipe(
       tap(() => { this.loading = true; }),
-      map((response: QueryResult) => ({
+      map(([query1, query2]) => ({
         marker: {
           icon: getPointIconAsCircle
         },
         getFeatureStyle: this.gatheringCountFeatureStyle,
         featureCollection: {
           type: 'FeatureCollection' as const,
-          features: response.results.reduce((_features, item) => {
+          features: this.gatheringCountsFromAllLocations(query1, query2).reduce((_features, item) => {
             _features.push(
               convertYkjToGeoJsonFeature(
-                +item.aggregateBy['gathering.conversions.ykj10kmCenter.lat'],
-                +item.aggregateBy['gathering.conversions.ykj10kmCenter.lon'],
-                { gatheringCount: item.gatheringCount }
+                +item.lat,
+                +item.lon,
+                { count: item.count }
               )
             );
             return _features;
@@ -186,27 +191,52 @@ export class ResultMapComponent implements OnInit {
   }
 
   private gatheringCountFeatureStyle({ feature }: GetFeatureStyleOptions) {
-    const { gatheringCount } = feature.properties;
+    const { count } = feature.properties;
 
     let prevalence: GatheringCountType;
 
-    if (gatheringCount >= 1 && gatheringCount < 5) {
+    if (count === 0) {
+      prevalence = 'ZERO';
+    } else if (count >= 1 && count < 5) {
       prevalence = 'ONE';
-    } else if (gatheringCount >= 5 && gatheringCount < 10) {
+    } else if (count >= 5 && count < 10) {
       prevalence = 'FIVE';
-    } else if (gatheringCount >= 10 && gatheringCount < 50) {
+    } else if (count >= 10 && count < 50) {
       prevalence = 'TEN';
-    } else if (gatheringCount >= 50 && gatheringCount < 100) {
+    } else if (count >= 50 && count < 100) {
       prevalence = 'FIFTY';
-    } else if (gatheringCount >= 100 && gatheringCount < 500) {
+    } else if (count >= 100 && count < 500) {
       prevalence = 'HUNDRED';
-    } else if (gatheringCount >= 500) {
+    } else if (count >= 500) {
       prevalence = 'FIVE_HUNDRED';
     }
 
     return {
       color: gatheringCountToVisCategory[prevalence].color
     };
+  }
+
+  private gatheringCountsFromAllLocations(query1: QueryResult, query2: QueryResult): CountArray {
+    const countMap: CountMap = new Map();
+
+    // Populate countMap with query2 locations, init counts to zero
+    query2.results.forEach(result => {
+      const { aggregateBy } = result;
+      const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
+      const key = `${lat},${lon}`;
+      countMap.set(key, { lat, lon, count: 0 });
+    });
+
+    // Overwrite counts with query1 counts
+    query1.results.forEach(result => {
+      const { aggregateBy, gatheringCount } = result;
+      const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
+      const key = `${lat},${lon}`;
+      countMap.set(key, { lat, lon, count: gatheringCount });
+    });
+
+    const counts: CountArray = Array.from(countMap.values());
+    return counts;
   }
 
   private observationProbabilityMapData(): Observable<DataOptions> {
