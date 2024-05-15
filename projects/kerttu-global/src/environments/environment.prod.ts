@@ -14,7 +14,7 @@ export const environment = {
   selfPage: 'https://login.laji.fi/self',
   kerttuApi: 'https://kerttu-backend.laji.fi',
   protaxApi: 'https://protax-api.rahtiapp.fi',
-  geoserver: 'https://geoserver.laji.fi',
+  geoserver: 'https://geoserver.laji.fi/geoserver',
   dashboardUrl: 'https://dashboard.laji.fi',
   defaultLang: 'en',
   languages: ['en', 'es', 'fr'],
