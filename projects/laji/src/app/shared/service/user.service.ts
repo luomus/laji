@@ -166,7 +166,10 @@ export class UserService implements OnDestroy {
       map(_ => true),
       httpOkError(404, false),
       retryWithBackoff(300),
-      catchError(_ => of(false))
+      catchError(_ => {
+        this.loading = false;
+        return of(false);
+      })
     );
   }
 
