@@ -46,7 +46,7 @@ export class IdentificationTableComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.identifications || !this.drawActive) {
       this.drawBoxActive = this.identifications.map(() => false);
-      this.drawRelatedBoxActive = this.identifications.map(identification => identification.annotation.boxes.map(() => false));
+      this.drawRelatedBoxActive = this.identifications.map(identification => (identification.annotation.boxes || []).map(() => false));
 
       const prevLength = Object.keys(this.panelOpenById).length;
       const currLength = this.identifications?.length || 0;
