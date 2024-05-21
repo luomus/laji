@@ -1,0 +1,13 @@
+diff --git a/node_modules/@achimha/ngx-datatable/fesm2020/achimha-ngx-datatable.mjs b/node_modules/@achimha/ngx-datatable/fesm2020/achimha-ngx-datatable.mjs
+index 664a020..37634d2 100644
+--- a/node_modules/@achimha/ngx-datatable/fesm2020/achimha-ngx-datatable.mjs
++++ b/node_modules/@achimha/ngx-datatable/fesm2020/achimha-ngx-datatable.mjs
+@@ -1582,7 +1582,7 @@ function getVendorPrefixedName(property) {
+ }
+ 
+ // browser detection and prefixing tools
+-const transform = typeof window !== 'undefined' ? getVendorPrefixedName('transform') : undefined;
++const transform = typeof window !== 'undefined' ? 'transform' : undefined;
+ const backfaceVisibility = typeof window !== 'undefined' ? getVendorPrefixedName('backfaceVisibility') : undefined;
+ const hasCSSTransforms = typeof window !== 'undefined' ? !!getVendorPrefixedName('transform') : undefined;
+ const hasCSS3DTransforms = typeof window !== 'undefined' ? !!getVendorPrefixedName('perspective') : undefined;
