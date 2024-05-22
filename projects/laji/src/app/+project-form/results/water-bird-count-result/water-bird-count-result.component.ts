@@ -45,7 +45,7 @@ export class WaterBirdCountResultComponent implements OnInit {
       this.translate.currentLang,
       {
         selectedFields: 'id,vernacularName,scientificName',
-        taxonSets: ['MX.taxonSetWaterbirdWaterbirds'],
+        taxonSets: 'MX.taxonSetWaterbirdWaterbirds,MX.taxonSetWaterbirdWaders,MX.taxonSetWaterbirdGulls,MX.taxonSetWaterbirdPasserines',
         pageSize: 10000
       }
     ).pipe(

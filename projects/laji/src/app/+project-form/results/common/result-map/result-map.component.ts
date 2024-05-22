@@ -8,6 +8,7 @@ import { WarehouseQueryInterface } from 'projects/laji/src/app/shared/model/Ware
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
+import G from 'geojson';
 
 type GatheringCountType = 'ZERO' | 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
 type ObservationProbabilityType = 'ZERO' | 'OVER_ZERO' | 'OVER_TWENTY' | 'OVER_FORTY' | 'OVER_SIXTY' | 'OVER_EIGHTY' | 'HUNDRED';
@@ -31,7 +32,7 @@ interface QueryResult {
 
 const gatheringCountToVisCategory: Record<GatheringCountType, { color: string; label: string }> = {
   ZERO: {
-    color: '#E6E6E6',
+    color: '#A9A9A9',
     label: '0'
   },
   ONE: {
@@ -57,12 +58,12 @@ const gatheringCountToVisCategory: Record<GatheringCountType, { color: string; l
   FIVE_HUNDRED: {
     color: '#DC143C',
     label: '500'
-  },
+  }
 };
 
 const observationProbabilityToVisCategory: Record<ObservationProbabilityType, { color: string; label: string }> = {
   ZERO: {
-    color: '#E6E6E6',
+    color: '#A9A9A9',
     label: '0%'
   },
   OVER_ZERO: {
@@ -88,7 +89,7 @@ const observationProbabilityToVisCategory: Record<ObservationProbabilityType, { 
   HUNDRED: {
     color: '#DC143C',
     label: '100%'
-  },
+  }
 };
 
 @Component({
@@ -174,7 +175,7 @@ export class ResultMapComponent implements OnInit {
         getFeatureStyle: this.gatheringCountFeatureStyle,
         featureCollection: {
           type: 'FeatureCollection' as const,
-          features: this.gatheringCountsFromAllLocations(query1, query2).reduce((_features, item) => {
+          features: this.gatheringCountsFromAllLocations(query1, query2).reduce((_features: G.Feature<G.Polygon>[], item) => {
             _features.push(
               convertYkjToGeoJsonFeature(
                 +item.lat,
@@ -184,6 +185,7 @@ export class ResultMapComponent implements OnInit {
             );
             return _features;
           }, [])
+          .sort((a, b) => a.properties.count - b.properties.count)
         }
       })),
       tap(() => { this.loading = false; })
@@ -212,7 +214,8 @@ export class ResultMapComponent implements OnInit {
     }
 
     return {
-      color: gatheringCountToVisCategory[prevalence].color
+      color: gatheringCountToVisCategory[prevalence].color,
+      weight: 1
     };
   }
 
@@ -258,6 +261,7 @@ export class ResultMapComponent implements OnInit {
             );
             return _features;
           }, [])
+          .sort((a, b) => a.properties.ratio - b.properties.ratio)
         }
       })),
       tap(() => { this.loading = false; })
@@ -286,7 +290,8 @@ export class ResultMapComponent implements OnInit {
     }
 
     return {
-      color: observationProbabilityToVisCategory[percentage].color
+      color: observationProbabilityToVisCategory[percentage].color,
+      weight: 1
     };
   }
 
