@@ -13,7 +13,7 @@ export class NamedPlaceLinkerWrapperComponent implements OnInit {
     private browserService: BrowserService
   ) {}
   ngOnInit() {
-    this.documentID = this.route.snapshot.params['document'];
+    this.documentID = this.route.snapshot.params['document'] || this.route.snapshot.params['formOrDocument'];
   }
 
   linked() {

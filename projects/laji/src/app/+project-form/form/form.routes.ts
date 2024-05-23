@@ -108,6 +108,11 @@ export const routes: Routes = [
 
   },
   {
+    path: ':formOrDocument/link', component: NamedPlaceLinkerWrapperComponent,
+    data: {displayFeedback: false},
+    pathMatch: 'prefix'
+  },
+  {
     path: ':formOrDocument/:document', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
     data: {displayFeedback: false},
@@ -131,12 +136,6 @@ export const routes: Routes = [
     path: ':formOrDocument/template', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
     data: {displayFeedback: false, template: true},
-    pathMatch: 'prefix'
-
-  },
-  {
-    path: ':formOrDocument/link', component: NamedPlaceLinkerWrapperComponent,
-    data: {displayFeedback: false},
     pathMatch: 'prefix'
 
   },
