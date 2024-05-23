@@ -4,11 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
-import { map as rxjsMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
 enum Tabs {
   chart = 'chart',
+  // eslint-disable-next-line
   map = 'map'
 }
 
@@ -55,13 +56,13 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.state$ = this.route.queryParams as Observable<State>;
-    this.taxonOptions$ = this.getTaxonOptions$();
     this.state$ = this.route.queryParams as Observable<State>;
     this.defaultTabSubscription = this.state$.subscribe(({ tab }) => {
       if (!Tabs[tab]) {
         this.router.navigate([], { queryParams: { tab: Tabs.chart } });
       }
     });
+    this.taxonOptions$ = this.getTaxonOptions$();
   }
 
   ngOnDestroy(): void {
@@ -79,12 +80,12 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
         pageSize: 10000
       }
     ).pipe(
-      rxjsMap(res => res.results),
-      rxjsMap(taxa => taxa.map(t => ({
+      map(res => res.results),
+      map(taxa => taxa.map(t => ({
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),
         value: t.id
       }))),
-      rxjsMap(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs))
+      map(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs))
     );
   }
 
