@@ -27,6 +27,7 @@ export class IdentificationTableComponent implements OnChanges {
   @Input() identifications: IGlobalSpeciesWithAnnotation[];
 
   @Input() loading = false;
+  @Input() showDrawRelatedBoxBtn = true;
   @Input() buttonsDisabled = false;
   @Input() drawActive = false;
 

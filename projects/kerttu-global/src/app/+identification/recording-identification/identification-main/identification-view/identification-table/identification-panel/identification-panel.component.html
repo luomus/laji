@@ -68,7 +68,7 @@
               <td>
                 <button
                   #toggleDrawRelatedBtn
-                  *ngIf="!hideDrawRelatedBtn"
+                  *ngIf="showDrawRelatedBoxBtn && !hideDrawRelatedBtn"
                   class="btn btn-default scroll-margin-top"
                   [ngClass]="{
                     'active': drawRelatedBoxActive[i]

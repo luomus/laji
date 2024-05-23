@@ -38,6 +38,7 @@ export class IdentificationPanelComponent {
   @Input() recording: IGlobalRecording;
   @Input() identification: IGlobalSpeciesWithAnnotation;
 
+  @Input() showDrawRelatedBoxBtn = true;
   @Input() buttonsDisabled = false;
   @Input() drawBoxActive = false;
   @Input() drawRelatedBoxActive: boolean[] = [];

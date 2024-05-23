@@ -125,6 +125,7 @@
       [recording]="recording"
       [(identifications)]="selectedSpecies"
       [loading]="loadingSpecies"
+      [showDrawRelatedBoxBtn]="recording.taxonType === taxonTypeEnum.insect"
       [buttonsDisabled]="buttonsDisabled || loadingSpecies"
       [birdRectangleColor]="birdRectangleColor"
       [overlappingBirdRectangleColor]="overlappingBirdRectangleColor"
