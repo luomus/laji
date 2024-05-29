@@ -1,36 +1,20 @@
-<lu-alert type="danger" [dismissible]="false" *ngIf="hasError">{{ 'identification.genericError' | translate }}</lu-alert>
-<lu-alert type="success" [dismissible]="false" *ngIf="allRecordingsAnnotated">{{ 'identification.allRecordingsAnnotated' | translate }}</lu-alert>
-
-<laji-spinner *ngIf="!hasError && !allRecordingsAnnotated" [spinning]="expertiseMissing == null">
+<laji-spinner [spinning]="expertiseMissing == null">
   <ng-container *ngIf="expertiseMissing != null">
     <ng-container *ngIf="!expertiseMissing else expertiseMissingText">
-      <bsg-site-selection-view
-        *ngIf="(!selectedSites || selectedSites.length === 0) else identificationView"
-        [sites]="sites$ | async"
+      <bsg-site-selection
+        *ngIf="(!selectedSites || selectedSites.length === 0) else identification"
         (siteSelect)="onSiteSelect($event)"
-      ></bsg-site-selection-view>
-
-      <ng-template #identificationView>
-        <laji-spinner [spinning]="loading" [overlay]="true">
-          <bsg-identification-view
-            *ngIf="recording && annotation"
-            [recording]="recording"
-            [(annotation)]="annotation"
-            [hasPreviousRecording]="recordingLoaderService.hasPreviousRecording()"
-            [buttonsDisabled]="loading"
-            (nextRecordingClick)="getNextRecording()"
-            (previousRecordingClick)="getPreviousRecording()"
-            (saveClick)="save()"
-            (skipClick)="skipRecording()"
-            (annotationChange)="onAnnotationChange()"
-            (backToSiteSelectionClick)="goBackToSiteSelection()"
-          ></bsg-identification-view>
-        </laji-spinner>
+      ></bsg-site-selection>
+      <ng-template #identification>
+        <bsg-identification-main
+          [selectedSites]="selectedSites"
+          (goBackToSiteSelection)="onSiteSelect([])"
+        ></bsg-identification-main>
       </ng-template>
     </ng-container>
   </ng-container>
-
-  <ng-template #expertiseMissingText>
-    <div [innerHTML]="'identification.taxonExpertiseMissing' | translate"></div>
-  </ng-template>
 </laji-spinner>
+
+<ng-template #expertiseMissingText>
+  <div [innerHTML]="'identification.taxonExpertiseMissing' | translate"></div>
+</ng-template>

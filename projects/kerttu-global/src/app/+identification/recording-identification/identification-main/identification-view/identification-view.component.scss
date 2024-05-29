@@ -1,0 +1,72 @@
+@import '../../../../../../../laji-ui/src/lib/vars';
+
+.top-content {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  laji-audio-viewer {
+    flex: 1 1 100%;
+  }
+
+  laji-audio-viewer-simple-settings, laji-audio-viewer-bat-settings {
+    margin-top: -10px;
+    margin-left: 4px;
+    vertical-align: bottom;
+  }
+
+  .info-sign {
+    color: $neutral-6;
+    &:hover {
+      color: $neutral-5;
+    }
+  }
+
+  .dragbar {
+    position: absolute;
+    height: 3px;
+    cursor: row-resize;
+    user-select: none;
+    top: unset;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+.bottom-content {
+  .general-annotation-section {
+    .checkbox > label {
+      display: inline;
+      font-size: $fs-2;
+      font-weight: bold;
+    }
+  }
+}
+
+@media only screen and (min-width: map-get($map: $breakpoints, $key: "sm")) {
+  :host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .top-content {
+      flex: 0 0 auto;
+      padding: 0 40px $sp-3;
+      background-color: #dde1e3;
+      box-shadow: 0 4px 2px -2px $neutral-5;
+      z-index: 1;
+    }
+
+    .bottom-content {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      position: relative;
+      padding: 20px 40px;
+    }
+  }
+}
+
+:host ::ng-deep laji-audio-not-supported-error {
+  padding: 20px 40px;
+}
