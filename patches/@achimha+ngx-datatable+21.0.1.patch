@@ -1,29 +1,3 @@
-diff --git a/node_modules/@achimha/ngx-datatable/esm2020/lib/utils/translate.mjs b/node_modules/@achimha/ngx-datatable/esm2020/lib/utils/translate.mjs
-index 1bc8c8d..a5fa576 100644
---- a/node_modules/@achimha/ngx-datatable/esm2020/lib/utils/translate.mjs
-+++ b/node_modules/@achimha/ngx-datatable/esm2020/lib/utils/translate.mjs
-@@ -1,7 +1,7 @@
- import { getVendorPrefixedName } from './prefixes';
- import { camelCase } from './camel-case';
- // browser detection and prefixing tools
--const transform = typeof window !== 'undefined' ? getVendorPrefixedName('transform') : undefined;
-+const transform = typeof window !== 'undefined' ? 'transform' : undefined;
- const backfaceVisibility = typeof window !== 'undefined' ? getVendorPrefixedName('backfaceVisibility') : undefined;
- const hasCSSTransforms = typeof window !== 'undefined' ? !!getVendorPrefixedName('transform') : undefined;
- const hasCSS3DTransforms = typeof window !== 'undefined' ? !!getVendorPrefixedName('perspective') : undefined;
-diff --git a/node_modules/@achimha/ngx-datatable/fesm2015/achimha-ngx-datatable.mjs b/node_modules/@achimha/ngx-datatable/fesm2015/achimha-ngx-datatable.mjs
-index 1240458..8595e5a 100644
---- a/node_modules/@achimha/ngx-datatable/fesm2015/achimha-ngx-datatable.mjs
-+++ b/node_modules/@achimha/ngx-datatable/fesm2015/achimha-ngx-datatable.mjs
-@@ -1586,7 +1586,7 @@ function getVendorPrefixedName(property) {
- }
- 
- // browser detection and prefixing tools
--const transform = typeof window !== 'undefined' ? getVendorPrefixedName('transform') : undefined;
-+const transform = typeof window !== 'undefined' ? 'transform' : undefined;
- const backfaceVisibility = typeof window !== 'undefined' ? getVendorPrefixedName('backfaceVisibility') : undefined;
- const hasCSSTransforms = typeof window !== 'undefined' ? !!getVendorPrefixedName('transform') : undefined;
- const hasCSS3DTransforms = typeof window !== 'undefined' ? !!getVendorPrefixedName('perspective') : undefined;
 diff --git a/node_modules/@achimha/ngx-datatable/fesm2020/achimha-ngx-datatable.mjs b/node_modules/@achimha/ngx-datatable/fesm2020/achimha-ngx-datatable.mjs
 index 664a020..37634d2 100644
 --- a/node_modules/@achimha/ngx-datatable/fesm2020/achimha-ngx-datatable.mjs
