@@ -1,7 +1,7 @@
-import { Component, OnChanges, ChangeDetectionStrategy, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, OnChanges, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
 import { IGlobalSite, IIdentificationSiteStat } from '../../../kerttu-global-shared/models';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
-import type { DivIcon, Point } from 'leaflet';
+import type { DivIcon } from 'leaflet';
 import { DataOptions, Options, TileLayerName, GetPopupOptions } from '@luomus/laji-map/lib/defs';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -30,6 +30,8 @@ export class SiteResultMapComponent implements OnChanges {
   private legendLabels = ['0', '1-', '10-', '100-', '1000-'];
   private legendColors = ['rgb(169, 169, 169, 0.6)', 'rgba(241, 128, 23, 0.6)', 'rgba(240, 194, 12, 0.6)', 'rgba(110, 204, 57, 0.6)', 'rgba(137, 94, 213, 0.6)'];
 
+  private dataInitialized = false;
+
   constructor(
     private translate: TranslateService
   ) {
@@ -39,14 +41,28 @@ export class SiteResultMapComponent implements OnChanges {
     }));
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.sites && this.siteStats) {
       this.countByLegend = this.getCountByLegend(this.sites, this.siteStats);
 
-      const data = this.getData(this.sites, this.siteStats);
-      this.lajiMap.setData(data || {});
-      this.lajiMap.map.zoomToData({ padding: [40, 40] });
+      if (this.lajiMap?.map) {
+        this.updateMapData();
+        this.dataInitialized = true;
+      }
     }
+  }
+
+  onMapLoaded() {
+    if (!this.dataInitialized) {
+      this.updateMapData();
+      this.dataInitialized = true;
+    }
+  }
+
+  private updateMapData() {
+    const data = this.getData(this.sites, this.siteStats);
+    this.lajiMap.setData(data || {});
+    this.lajiMap.map.zoomToData({ padding: [40, 40] });
   }
 
   private getCountByLegend(sites: IGlobalSite[], siteStats: IIdentificationSiteStat[]): Record<string, number> {

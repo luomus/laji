@@ -1,0 +1,11 @@
+@import '../../../../../../../laji-ui/src/lib/vars';
+
+
+@media only screen and (min-width: map-get($map: $breakpoints, $key: "sm")) {
+  .map-container {
+    padding-right: 0;
+  }
+  .table-container {
+    padding-left: 0;
+  }
+}

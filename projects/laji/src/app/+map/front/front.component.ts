@@ -128,6 +128,7 @@ export class FrontComponent implements OnInit, OnDestroy {
 
   private printModeSideEffects() {
     this.cdr.detectChanges();
+    this.lajiMap.map.map.invalidateSize();
 
     const printControlsElem = this.printControls.nativeElement;
     const lajiMapPrintControl = document.querySelector('.laji-map .glyphicon-print').parentElement;

@@ -80,7 +80,7 @@ export const environment = {
       en: ''
     },
   },
-  geoserver: 'https://geoserver.laji.fi',
+  geoserver: 'https://geoserver.laji.fi/geoserver',
   observationMapOptions: {availableOverlayNameBlacklist: []},
   displayDevRibbon: false
 };

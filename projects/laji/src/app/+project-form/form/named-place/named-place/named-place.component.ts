@@ -260,8 +260,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   onActivePlaceChange(activeNP: string) {
-    this.vm$.pipe(take(1)).subscribe(({activeNP: _activeNP}) => {
-      if (activeNP && activeNP === _activeNP?.id) {
+    this.vm$.pipe(take(1)).subscribe(({activeNP: currentActiveNP}) => {
+      if (activeNP && activeNP === currentActiveNP?.id) {
         this.infoView?.npClick();
       }
       this.activeIdChange.emit(activeNP);
@@ -314,6 +314,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (documentForm.options?.restrictAccess && selected.indexOf('reserve') === -1) {
       selected.push('reserve');
     }
+    selected.push('id');
 
     const query: NamedPlaceQuery = {
       collectionID: documentForm.collectionID,
@@ -326,6 +327,13 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
     if (this.npRequirementsNotMet(documentForm, query.municipality, query.birdAssociationArea)) {
       return of(null);
+    }
+
+    if (query.municipality === 'all') {
+      delete query.municipality;
+    }
+    if (query.birdAssociationArea === 'all') {
+      delete query.birdAssociationArea;
     }
 
     return this.namedPlaceService.getAllNamePlaces(query)

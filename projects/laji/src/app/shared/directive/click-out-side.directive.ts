@@ -26,7 +26,7 @@ export class ClickOutSideDirective implements OnInit, OnDestroy {
       const initTime = new Date().getTime();
       this.sub = (observableFromEvent(this.platformService.window.document, 'click') as Observable<MouseEvent>).subscribe((e: MouseEvent) => {
         const clickTime = new Date().getTime();
-        if (!this.clickOutSideActive || !e.target || (clickTime - initTime) < 100) {
+        if (!this.clickOutSideActive || !e.target || (clickTime - initTime) < 300) {
           return;
         }
         if (!this._elementRef.nativeElement.contains(e.target)) {
