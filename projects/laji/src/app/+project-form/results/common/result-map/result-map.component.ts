@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DataOptions, GetFeatureStyleOptions, Options } from '@luomus/laji-map';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { getPointIconAsCircle } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
@@ -6,7 +6,7 @@ import { LajiMapVisualization } from 'projects/laji/src/app/shared-modules/legen
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from 'projects/laji/src/app/shared/model/WarehouseQueryInterface';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import G from 'geojson';
 
@@ -112,6 +112,62 @@ export class ResultMapComponent implements OnInit {
 
   toHtmlSelectElement = toHtmlSelectElement;
 
+  private gatheringCountMapData$: Observable<DataOptions> = of([this.getGatheringCounts$(), this.getGatheringCounts$(true)]).pipe(
+    tap(() => {
+      this.loading = true;
+      this.changeDetectorRef.markForCheck();
+    }),
+    switchMap(_ => combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)])),
+    map(([selectedTaxonGatheringCounts, allGatheringCounts]) => ({
+      marker: {
+        icon: getPointIconAsCircle
+      },
+      getFeatureStyle: this.gatheringCountFeatureStyle,
+      featureCollection: {
+        type: 'FeatureCollection' as const,
+        features: this.gatheringCountsFromAllLocations(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features: G.Feature<G.Polygon>[], item) => {
+          _features.push(
+            convertYkjToGeoJsonFeature(
+              +item.lat,
+              +item.lon,
+              { count: item.count }
+            )
+          );
+          return _features;
+        }, []).sort((a, b) => a.properties.count - b.properties.count)
+      }
+    })),
+    tap(() => { this.loading = false; })
+  );
+
+  private observationProbabilityMapData$: Observable<DataOptions> = of([this.getGatheringCounts$(), this.getGatheringCounts$(true)]).pipe(
+    tap(() => {
+      this.loading = true;
+      this.changeDetectorRef.markForCheck();
+    }),
+    switchMap(_ => combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)])),
+    map(([selectedTaxonGatheringCounts, allGatheringCounts]) => ({
+      marker: {
+        icon: getPointIconAsCircle
+      },
+      getFeatureStyle: this.observationProbabilityFeatureStyle,
+      featureCollection: {
+        type: 'FeatureCollection' as const,
+        features: this.gatheringCountRatios(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features, item) => {
+          _features.push(
+            convertYkjToGeoJsonFeature(
+              +item.lat,
+              +item.lon,
+              { ratio: item.ratio }
+            )
+          );
+          return _features;
+        }, []).sort((a, b) => a.properties.ratio - b.properties.ratio)
+      }
+    })),
+    tap(() => { this.loading = false; })
+  );
+
   mapData$: Observable<DataOptions>;
   mapOptions: Options;
   visualization: LajiMapVisualization<ResultVisualizationMode>;
@@ -120,6 +176,7 @@ export class ResultMapComponent implements OnInit {
   loading = true;
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private warehouseApi: WarehouseApi
   ) {
     this.mapOptions = {
@@ -129,7 +186,7 @@ export class ResultMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.defaultTaxon = this.taxon$.getValue() !== undefined ? this.taxon$.getValue() : '';
-    this.mapData$ = this.gatheringCountMapData$();
+    this.mapData$ = this.gatheringCountMapData$;
 
     this.visualization = {
       gatheringCount: {
@@ -165,33 +222,6 @@ export class ResultMapComponent implements OnInit {
     );
   }
 
-  private gatheringCountMapData$(): Observable<DataOptions> {
-    return combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)]).pipe(
-      tap(() => { this.loading = true; }),
-      map(([query1, query2]) => ({
-        marker: {
-          icon: getPointIconAsCircle
-        },
-        getFeatureStyle: this.gatheringCountFeatureStyle,
-        featureCollection: {
-          type: 'FeatureCollection' as const,
-          features: this.gatheringCountsFromAllLocations(query1, query2).reduce((_features: G.Feature<G.Polygon>[], item) => {
-            _features.push(
-              convertYkjToGeoJsonFeature(
-                +item.lat,
-                +item.lon,
-                { count: item.count }
-              )
-            );
-            return _features;
-          }, [])
-          .sort((a, b) => a.properties.count - b.properties.count)
-        }
-      })),
-      tap(() => { this.loading = false; })
-    );
-  }
-
   private gatheringCountFeatureStyle({ feature }: GetFeatureStyleOptions) {
     const { count } = feature.properties;
 
@@ -199,15 +229,15 @@ export class ResultMapComponent implements OnInit {
 
     if (count === 0) {
       prevalence = 'ZERO';
-    } else if (count >= 1 && count < 5) {
+    } else if (count < 5) {
       prevalence = 'ONE';
-    } else if (count >= 5 && count < 10) {
+    } else if (count < 10) {
       prevalence = 'FIVE';
-    } else if (count >= 10 && count < 50) {
+    } else if (count < 50) {
       prevalence = 'TEN';
-    } else if (count >= 50 && count < 100) {
+    } else if (count < 100) {
       prevalence = 'FIFTY';
-    } else if (count >= 100 && count < 500) {
+    } else if (count < 500) {
       prevalence = 'HUNDRED';
     } else if (count >= 500) {
       prevalence = 'FIVE_HUNDRED';
@@ -219,9 +249,9 @@ export class ResultMapComponent implements OnInit {
     };
   }
 
-  private gatheringCountsFromAllLocations(query1: QueryResult, query2: QueryResult): CountArray {
+  private gatheringCountsFromAllLocations(selectedTaxonGatheringCounts: QueryResult, allGatheringCounts: QueryResult): CountArray {
     const allLocations: CountMap = new Map();
-    query2.results.forEach(result => {
+    allGatheringCounts.results.forEach(result => {
       const { aggregateBy } = result;
       const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
       const key = `${lat},${lon}`;
@@ -229,7 +259,7 @@ export class ResultMapComponent implements OnInit {
     });
 
     const gatheringCounts: CountMap = new Map();
-    query1.results.forEach(result => {
+    selectedTaxonGatheringCounts.results.forEach(result => {
       const { aggregateBy, gatheringCount } = result;
       const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
       const key = `${lat},${lon}`;
@@ -241,33 +271,6 @@ export class ResultMapComponent implements OnInit {
     return counts;
   }
 
-  private observationProbabilityMapData(): Observable<DataOptions> {
-    return combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)]).pipe(
-      tap(() => { this.loading = true; }),
-      map(([query1, query2]) => ({
-        marker: {
-          icon: getPointIconAsCircle
-        },
-        getFeatureStyle: this.observationProbabilityFeatureStyle,
-        featureCollection: {
-          type: 'FeatureCollection' as const,
-          features: this.gatheringCountRatios(query1, query2).reduce((_features, item) => {
-            _features.push(
-              convertYkjToGeoJsonFeature(
-                +item.lat,
-                +item.lon,
-                { ratio: item.ratio }
-              )
-            );
-            return _features;
-          }, [])
-          .sort((a, b) => a.properties.ratio - b.properties.ratio)
-        }
-      })),
-      tap(() => { this.loading = false; })
-    );
-  }
-
   private observationProbabilityFeatureStyle({ feature }: GetFeatureStyleOptions) {
     const { ratio } = feature.properties;
 
@@ -275,15 +278,15 @@ export class ResultMapComponent implements OnInit {
 
     if (ratio === 0) {
       percentage = 'ZERO';
-    } else if (ratio > 0 && ratio < 0.2) {
+    } else if (ratio < 0.2) {
       percentage = 'OVER_ZERO';
-    } else if (ratio >= 0.2 && ratio < 0.4) {
+    } else if (ratio < 0.4) {
       percentage = 'OVER_TWENTY';
-    } else if (ratio >= 0.4 && ratio < 0.6) {
+    } else if (ratio < 0.6) {
       percentage = 'OVER_FORTY';
-    } else if (ratio >= 0.6 && ratio < 0.8) {
+    } else if (ratio < 0.8) {
       percentage = 'OVER_SIXTY';
-    } else if (ratio >= 0.8 && ratio < 1) {
+    } else if (ratio < 1) {
       percentage = 'OVER_EIGHTY';
     } else if (ratio >= 1) {
       percentage = 'HUNDRED';
@@ -295,9 +298,9 @@ export class ResultMapComponent implements OnInit {
     };
   }
 
-  private gatheringCountRatios(query1: QueryResult, query2: QueryResult): RatioArray {
+  private gatheringCountRatios(selectedTaxonGatheringCounts: QueryResult, allGatheringCounts: QueryResult): RatioArray {
     const countMap: CountMap = new Map();
-    query1.results.forEach(result => {
+    selectedTaxonGatheringCounts.results.forEach(result => {
       const { aggregateBy, gatheringCount } = result;
       const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
       const key = `${lat},${lon}`;
@@ -305,7 +308,7 @@ export class ResultMapComponent implements OnInit {
     });
 
     const ratioMap: RatioMap = new Map();
-    query2.results.forEach(result => {
+    allGatheringCounts.results.forEach(result => {
       const { aggregateBy, gatheringCount } = result;
       const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
       const key = `${lat},${lon}`;
@@ -325,9 +328,9 @@ export class ResultMapComponent implements OnInit {
   onVisualizationModeChange(mode: string) {
     this.visualizationMode = <ResultVisualizationMode>mode;
     if (this.visualizationMode === 'gatheringCount') {
-      this.mapData$ = this.gatheringCountMapData$();
+      this.mapData$ = this.gatheringCountMapData$;
     } else if (this.visualizationMode === 'observationProbability') {
-      this.mapData$ = this.observationProbabilityMapData();
+      this.mapData$ = this.observationProbabilityMapData$;
     }
   }
 
