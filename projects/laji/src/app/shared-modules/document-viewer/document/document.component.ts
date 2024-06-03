@@ -198,7 +198,6 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       .subscribe(({doc, rights}) => {
           this.hasEditRights = rights.hasEditRights;
           this.hasDeleteRights = rights.hasDeleteRights;
-        console.log(rights);
           this.parseDoc(doc, doc);
         },
         () => this.parseDoc(undefined, false)

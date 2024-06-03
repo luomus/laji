@@ -50,7 +50,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
     this.lajiFormBuilderUpdateSub?.unsubscribe();
   }
 
-  lajiFormBuilderImport = from(import('@luomus/laji-form-builder')).pipe(tap(() => console.log('mport')), map(p => (p as any).default), shareReplay()) as Observable<any>;
+  lajiFormBuilderImport = from(import('@luomus/laji-form-builder')).pipe( map(p => (p as any).default), shareReplay()) as Observable<any>;
 
   private mount() {
     this.ngZone.runOutsideAngular(() => {
