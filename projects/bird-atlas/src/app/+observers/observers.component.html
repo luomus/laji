@@ -1,0 +1,13 @@
+<div class="container mt-5 mb-9" *ngIf="rows$ | async; else loading; let rows">
+  <ngx-datatable
+    class="material"
+    [rows]="rows"
+    [columns]="cols"
+    [sorts]="[{ prop: 'all', dir: 'desc' }]"
+  ></ngx-datatable>
+</div>
+
+<ng-template #loading>
+  <div class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
+</ng-template>
+
