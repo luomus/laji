@@ -130,7 +130,7 @@ export class ResultMapComponent implements OnInit {
       clickBeforeZoomAndPan: true
     };
 
-    this.gatheringCountMapData$ = of([this.getGatheringCounts$(), this.getGatheringCounts$(true)]).pipe(
+    this.gatheringCountMapData$ = of([]).pipe(
       tap(() => {
         this.loading = true;
         this.changeDetectorRef.markForCheck();
@@ -158,7 +158,7 @@ export class ResultMapComponent implements OnInit {
       tap(() => { this.loading = false; })
     );
 
-    this.observationProbabilityMapData$ = of([this.getGatheringCounts$(), this.getGatheringCounts$(true)]).pipe(
+    this.observationProbabilityMapData$ = of([]).pipe(
       tap(() => {
         this.loading = true;
         this.changeDetectorRef.markForCheck();
