@@ -4,6 +4,7 @@ import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 import { forkJoin, Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
+import { AtlasApiService } from '../core/atlas-api.service';
 
 interface Teams {
   [name: string]: { all: number; B: number; C: number; D: number };
@@ -32,7 +33,8 @@ export class ObserversComponent implements OnInit {
   ];
   loading = true;
 
-  constructor(private warehouseApi: WarehouseApi, private cdr: ChangeDetectorRef) {}
+  constructor(private warehouseApi: WarehouseApi, private atlasApi: AtlasApiService, private cdr: ChangeDetectorRef) {}
+
   ngOnInit() {
     this.loading = true;
     this.cdr.markForCheck();
@@ -65,6 +67,11 @@ export class ObserversComponent implements OnInit {
       }),
       tap(_ => this.loading = false)
     );
+
+    // key: id
+    // value: name
+    // TODO ...
+    this.atlasApi.getBirdSocieties().subscribe(console.log);
   }
 }
 
