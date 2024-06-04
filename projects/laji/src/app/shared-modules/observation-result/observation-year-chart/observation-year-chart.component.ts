@@ -192,7 +192,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       this.barChartLabels = this.allBarChartsLabel;
     } else {
       this.newData[0].data = this.allDataNew[0].data.slice(this.splitIdx, this.allDataNew[0].data.length);
-      this.newData[0].backgroundColor = this.allDataNew[0].backgroundColor.slice(this.splitIdx, this.allDataNew[0].data.length);
+      this.newData[0].backgroundColor = this.allDataNew[0].backgroundColor?.slice(this.splitIdx, this.allDataNew[0].data.length);
       this.barChartLabels = this.allBarChartsLabel.slice(this.splitIdx, this.allBarChartsLabel.length);
     }
   }
