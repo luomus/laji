@@ -112,61 +112,8 @@ export class ResultMapComponent implements OnInit {
 
   toHtmlSelectElement = toHtmlSelectElement;
 
-  private gatheringCountMapData$: Observable<DataOptions> = of([this.getGatheringCounts$(), this.getGatheringCounts$(true)]).pipe(
-    tap(() => {
-      this.loading = true;
-      this.changeDetectorRef.markForCheck();
-    }),
-    switchMap(_ => combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)])),
-    map(([selectedTaxonGatheringCounts, allGatheringCounts]) => ({
-      marker: {
-        icon: getPointIconAsCircle
-      },
-      getFeatureStyle: this.gatheringCountFeatureStyle,
-      featureCollection: {
-        type: 'FeatureCollection' as const,
-        features: this.gatheringCountsFromAllLocations(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features: G.Feature<G.Polygon>[], item) => {
-          _features.push(
-            convertYkjToGeoJsonFeature(
-              +item.lat,
-              +item.lon,
-              { count: item.count }
-            )
-          );
-          return _features;
-        }, []).sort((a, b) => a.properties.count - b.properties.count)
-      }
-    })),
-    tap(() => { this.loading = false; })
-  );
-
-  private observationProbabilityMapData$: Observable<DataOptions> = of([this.getGatheringCounts$(), this.getGatheringCounts$(true)]).pipe(
-    tap(() => {
-      this.loading = true;
-      this.changeDetectorRef.markForCheck();
-    }),
-    switchMap(_ => combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)])),
-    map(([selectedTaxonGatheringCounts, allGatheringCounts]) => ({
-      marker: {
-        icon: getPointIconAsCircle
-      },
-      getFeatureStyle: this.observationProbabilityFeatureStyle,
-      featureCollection: {
-        type: 'FeatureCollection' as const,
-        features: this.gatheringCountRatios(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features, item) => {
-          _features.push(
-            convertYkjToGeoJsonFeature(
-              +item.lat,
-              +item.lon,
-              { ratio: item.ratio }
-            )
-          );
-          return _features;
-        }, []).sort((a, b) => a.properties.ratio - b.properties.ratio)
-      }
-    })),
-    tap(() => { this.loading = false; })
-  );
+  private gatheringCountMapData$: Observable<DataOptions>;
+  private observationProbabilityMapData$: Observable<DataOptions>;
 
   mapData$: Observable<DataOptions>;
   mapOptions: Options;
@@ -182,6 +129,62 @@ export class ResultMapComponent implements OnInit {
     this.mapOptions = {
       clickBeforeZoomAndPan: true
     };
+
+    this.gatheringCountMapData$ = of([this.getGatheringCounts$(), this.getGatheringCounts$(true)]).pipe(
+      tap(() => {
+        this.loading = true;
+        this.changeDetectorRef.markForCheck();
+      }),
+      switchMap(_ => combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)])),
+      map(([selectedTaxonGatheringCounts, allGatheringCounts]) => ({
+        marker: {
+          icon: getPointIconAsCircle
+        },
+        getFeatureStyle: this.gatheringCountFeatureStyle,
+        featureCollection: {
+          type: 'FeatureCollection' as const,
+          features: this.gatheringCountsFromAllLocations(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features: G.Feature<G.Polygon>[], item) => {
+            _features.push(
+              convertYkjToGeoJsonFeature(
+                +item.lat,
+                +item.lon,
+                { count: item.count }
+              )
+            );
+            return _features;
+          }, []).sort((a, b) => a.properties.count - b.properties.count)
+        }
+      })),
+      tap(() => { this.loading = false; })
+    );
+
+    this.observationProbabilityMapData$ = of([this.getGatheringCounts$(), this.getGatheringCounts$(true)]).pipe(
+      tap(() => {
+        this.loading = true;
+        this.changeDetectorRef.markForCheck();
+      }),
+      switchMap(_ => combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)])),
+      map(([selectedTaxonGatheringCounts, allGatheringCounts]) => ({
+        marker: {
+          icon: getPointIconAsCircle
+        },
+        getFeatureStyle: this.observationProbabilityFeatureStyle,
+        featureCollection: {
+          type: 'FeatureCollection' as const,
+          features: this.gatheringCountRatios(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features, item) => {
+            _features.push(
+              convertYkjToGeoJsonFeature(
+                +item.lat,
+                +item.lon,
+                { ratio: item.ratio }
+              )
+            );
+            return _features;
+          }, []).sort((a, b) => a.properties.ratio - b.properties.ratio)
+        }
+      })),
+      tap(() => { this.loading = false; })
+    );
   }
 
   ngOnInit(): void {
