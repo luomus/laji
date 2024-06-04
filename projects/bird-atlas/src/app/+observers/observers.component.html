@@ -1,18 +1,20 @@
-<div class="container mt-5 mb-9" *ngIf="rows$ | async; else loading; let rows">
-  <select>
-    <option>Kaikki</option>
-    <option>a</option>
-    <option>b</option>
+<div class="container mt-5 mb-9">
+  <select class="form-control mb-4" *ngIf="societies$ | async; let societies; else loading" [formControl]="areaControl">
+    <option value="all">Koko Suomi</option>
+    <option *ngFor="let society of societies" [value]="society.key">{{ society.value }}</option>
   </select>
-  <ngx-datatable
-    class="material"
-    [rows]="rows"
-    [columns]="cols"
-    [sorts]="[{ prop: 'all', dir: 'desc' }]"
-  ></ngx-datatable>
+  <ng-container *ngIf="rows$ | async; let rows; else loading">
+    <ngx-datatable
+      *ngIf="!loadingRows; else loading"
+      class="material"
+      [rows]="rows"
+      [columns]="cols"
+      [sorts]="[{ prop: 'all', dir: 'desc' }]"
+    ></ngx-datatable>
+  </ng-container>
 </div>
 
 <ng-template #loading>
-  <div class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
+  <div><laji-spinner class="d-block m-6"></laji-spinner></div>
 </ng-template>
 

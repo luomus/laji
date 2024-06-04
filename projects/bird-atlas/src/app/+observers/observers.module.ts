@@ -6,6 +6,7 @@ import { routing } from './observers.routes';
 import { ObserversComponent } from './observers.component';
 import { NgxDatatableModule } from '@achimha/ngx-datatable';
 import { SpinnerModule } from 'projects/laji/src/app/shared-modules/spinner/spinner.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ObserversComponent],
@@ -14,7 +15,8 @@ import { SpinnerModule } from 'projects/laji/src/app/shared-modules/spinner/spin
     CommonModule,
     TranslateModule,
     NgxDatatableModule,
-    SpinnerModule
+    SpinnerModule,
+    ReactiveFormsModule
   ]
 })
 export class ObserversModule { }
