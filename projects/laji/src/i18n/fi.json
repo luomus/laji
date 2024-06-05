@@ -964,6 +964,7 @@
   "navigation.information": "Lajitietokeskus",
   "navigation.invasive": "Vieraslajit",
   "navigation.invasiveSpecies": "Vieraslajit",
+  "navigation.lehtisammaleet": "Suomen lehtisammalet – määrityskaavat",
   "navigation.linetransect": "Maalintujen linjalaskenta",
   "navigation.lolife": "Liito-oravien seuranta",
   "navigation.map": "Karttapalvelu",
@@ -1970,6 +1971,7 @@
   "theme.kerttu.speciesMissing.description.part1": "Laji",
   "theme.kerttu.speciesMissing.description.part2": "puuttuu niiden lajien joukosta, jotka olet määritellyt <em>Kirjaa asiantuntijuutesi</em> -osiossa. Haluatko lisätä sen?",
   "theme.kerttu.taxonExpertiseMissing": "Kirjaa ensin asiantuntijuutesi <strong>Kirjaa asiantuntijuutesi</strong> -osiossa.",
+  "theme.lehtisammaleet.intro": "Lehtisammalten sukuihin johtavat määrityskaavat.",
   "theme.linetransect.intro": "Maalintujen linjalaskennoilla voidaan nopeasti saada edustava kuva seudun pesimälinnustosta. Tutustu tuloksiin, varaa laskentareitti ja kirjaa laskentatulokset.",
   "theme.lolife.about": "Tietoa",
   "theme.lolife.intro": "Asiantuntijoille: Perusta liito-oravien seurantapaikka, lisää siihen aluerajauksia, liitä havaintoja liito-oravasta, pesistä, jäljistä ja papanoista.",
@@ -2154,7 +2156,5 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä",
-  "navigation.lehtisammaleet": "Suomen lehtisammalet – määrityskaavat",
-  "theme.lehtisammaleet.intro": "Lehtisammalten sukuihin johtavat määrityskaavat."
+  "yes": "Kyllä"
 }
