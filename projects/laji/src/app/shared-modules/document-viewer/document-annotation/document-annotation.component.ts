@@ -76,8 +76,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   documentID: string;
   personID: string;
   isEditor = false;
-  hasEditRights = false;
-  hasDeleteRights = false;
   personRoleAnnotation: Annotation.AnnotationRoleEnum;
   activeGathering: any;
   mapData: any = [];
@@ -236,8 +234,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     docAndRights$
       .subscribe(({doc, rights}) => {
         this.isEditor = rights.isEditor;
-        this.hasEditRights = rights.hasEditRights;
-        this.hasDeleteRights = rights.hasDeleteRights;
         this.parseDoc(doc, doc);
       },
         () => this.parseDoc(undefined, false)
