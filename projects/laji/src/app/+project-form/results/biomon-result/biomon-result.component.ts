@@ -92,7 +92,7 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
       this.translate.currentLang,
       {
         selectedFields: 'id,vernacularName,scientificName',
-        taxonSets: taxonSet
+        taxonSets: taxonSet.join(',')
       }
     ).pipe(
       map(res => res.results),

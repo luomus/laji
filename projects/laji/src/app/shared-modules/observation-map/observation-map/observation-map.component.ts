@@ -170,8 +170,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   private pointGeometryPageSize = 10000;
   private activeZoomThresholdLevel = 0;
   private activeZoomThresholdBounds?: any;
-  private dataFetchSubscription: Subscription;
   private mapMoveSubscription: Subscription;
+  private mapDataSubscription?: Subscription;
   private activeGeometryHash: string;
 
   constructor(
@@ -214,8 +214,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.dataFetchSubscription?.unsubscribe();
     this.mapMoveSubscription?.unsubscribe();
+    this.mapDataSubscription?.unsubscribe();
   }
 
   onCreate(e) {
@@ -436,14 +436,19 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   private updateMap() {
     const bounds = this.activeZoomThresholdBounds;
     const query = this.prepareQuery(bounds);
+
     const hash = JSON.stringify(query) + this.useFinnishMap;
     if (hash === this.previousQueryHash) { return; }
     this.previousQueryHash = hash;
-    forkJoin({
+
+    this.mapDataSubscription?.unsubscribe();
+
+    this.mapDataSubscription = forkJoin({
       drawData: this.getDrawData$(query),
       dataOptions: this.getDataOptions$(query, bounds)
     }).subscribe(({drawData, dataOptions}) => {
       this.mapData = [drawData, dataOptions];
+      this.cdr.markForCheck();
     });
   }
 
