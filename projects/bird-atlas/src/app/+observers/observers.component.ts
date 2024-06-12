@@ -55,14 +55,14 @@ export class ObserversComponent implements OnInit {
             atlasClass: [atlasClass],
             needsCheck: false,
             birdAssociationAreaId: area !== 'all' ? [area] : undefined
-          }, ['gathering.team']).pipe(map(res => res.results))
+          }, ['gathering.team.memberName']).pipe(map(res => res.results))
         ))
       ),
       map(arr => {
         const teams: Teams = {};
         const updateTeam = (res: any[], atlasClass: 'B' | 'C' | 'D') =>
           res.forEach(entry => {
-            const team: string = entry['aggregateBy']['gathering.team'];
+            const team: string = entry['aggregateBy']['gathering.team.memberName'];
             if (!(team in teams)) {
               teams[team] = { all: 0, B: 0, C: 0, D: 0 };
             }
