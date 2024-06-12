@@ -1,4 +1,5 @@
 <div class="container mt-5 mb-9">
+  <p>Määrät perustuvat Lajitietokeskukseen tallennettuihin havaintoihin. Tiiran havainnoijatilastoja kannattaa kysyä BirdLife Suomesta.</p>
   <select class="form-control mb-4" *ngIf="societies$ | async; let societies; else loading" [formControl]="areaControl">
     <option value="all">Koko Suomi</option>
     <option *ngFor="let society of societies" [value]="society.key">{{ society.value }}</option>
