@@ -75,6 +75,7 @@ export class ObserversComponent implements OnInit {
         updateTeam(arr[0], 'B');
         return <Row[]>Object.entries(teams).map(([name, attrs]) => ({ name, ...attrs }));
       }),
+      map(rows => rows.sort((a, b) => b.all - a.all).slice(0, 100)),
       tap(_ => this.loadingRows = false)
     );
 
