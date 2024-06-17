@@ -47,6 +47,7 @@ export class ObserversComponent implements OnInit {
       switchMap(area =>
         forkJoin(['MY.atlasClassEnumB', 'MY.atlasClassEnumC', 'MY.atlasClassEnumD'].map(
           atlasClass => this.warehouseApi.warehouseQueryAggregateGet({
+            cache: true,
             collectionId: ['HR.1747', 'HR.3211', 'HR.48', 'HR.173'],
             informalTaxonGroupId: ['MVL.1'],
             countryId: ['ML.206'],
@@ -55,7 +56,7 @@ export class ObserversComponent implements OnInit {
             atlasClass: [atlasClass],
             needsCheck: false,
             birdAssociationAreaId: area !== 'all' ? [area] : undefined
-          }, ['gathering.team.memberName']).pipe(map(res => res.results))
+          }, ['gathering.team.memberName'], undefined, 10000).pipe(map(res => res.results))
         ))
       ),
       map(arr => {
