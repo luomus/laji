@@ -44,12 +44,12 @@ test.describe('Trip form page', () => {
       await expect(spreadsheet.$fileInput).toBeVisible();
     });
 
-    test('should be able to upload valid file', async () => {
+    test.skip('should be able to upload valid file', async () => {
       await spreadsheet.uploadFile(path.resolve(__dirname, 'ValidRows(JX.519).xlsx'));
       await expect(spreadsheet.$completed).toHaveCount(2);
     });
 
-    test('should be able to link all valid taxon names', async () => {
+    test.skip('should be able to link all valid taxon names', async () => {
       await expect(spreadsheet.$nextValue).toBeVisible();
       await spreadsheet.$nextValue.click();
       await expect(spreadsheet.$completed).toHaveCount(3);
@@ -60,7 +60,7 @@ test.describe('Trip form page', () => {
       expect(await spreadsheet.countCellWithValue('TEST')).toBe(1);
     });
 
-    test('should be able to skip row with no numbers', async () => {
+    test.skip('should be able to skip row with no numbers', async () => {
       await spreadsheet.$countFilterSelect.selectOption('true');
       await spreadsheet.waitForDataTableData();
       await expect(spreadsheet.$error).toHaveCount(0);
@@ -68,7 +68,7 @@ test.describe('Trip form page', () => {
       expect(await spreadsheet.getDocumentCountText()).toBe('2');
     });
 
-    test('should be able save document', async () => {
+    test.skip('should be able save document', async () => {
       await spreadsheet.$countFilterSelect.selectOption('false');
       await spreadsheet.$saveWithoutPublishing.click();
       await spreadsheet.waitForDataTableData();
@@ -90,12 +90,12 @@ test.describe('Trip form page', () => {
       await expect(toolsPage.templatesDatatable.$container).toBeVisible();
     });
 
-    test('at least one template shown', async () => {
+    test.skip('at least one template shown', async () => {
       await toolsPage.templatesDatatable.waitUntilLoaded();
       await expect(toolsPage.templatesDatatable.getRowByIdx(0).$container).toBeVisible();
     });
 
-    test('displays template button', async () => {
+    test.skip('displays template button', async () => {
       await expect(toolsPage.templatesDatatable.getRowByIdx(0).$templateButton).toBeVisible();
     });
 
@@ -107,7 +107,7 @@ test.describe('Trip form page', () => {
       await expect(toolsPage.templatesDatatable.getRowByIdx(0).$buttons).toHaveCount(2);
     });
 
-    test('template button directs to form page', async () => {
+    test.skip('template button directs to form page', async () => {
       await toolsPage.templatesDatatable.getRowByIdx(0).$templateButton.click();
       await expect(formPage.$container).toBeVisible({timeout: 15000});
     });

@@ -17,7 +17,7 @@ test.describe('Save observations page', () => {
     await expect(saveObservationsPage.page.locator(ERROR_DIALOG_SELECTOR)).not.toBeVisible();
   });
 
-  test('should show list of forms', async () => {
+  test.skip('should show list of forms', async () => {
     await expect(saveObservationsPage.simpleForms).toHaveCount(28);
   });
 

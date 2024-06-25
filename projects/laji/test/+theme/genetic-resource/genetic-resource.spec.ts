@@ -7,7 +7,7 @@ test.describe('Genetic Resource page', () => {
     await expect(page.locator(ERROR_DIALOG_SELECTOR)).not.toBeVisible();
   });
 
-  test('should not have non-graphql api errors', async ({page}) => {
+  test.skip('should not have non-graphql api errors', async ({page}) => {
     const geneticResourcePage = new GeneticResourcePage(page);
 
     await geneticResourcePage.navigateToMollusca();

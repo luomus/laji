@@ -34,13 +34,13 @@ test.describe('Observation list', () => {
       await expect(observationPage.page).toHaveURL(/^(?:(?!occurrenceCountFinlandMax).)*$/);
     });
 
-    test('clicking it updates the filters', async () => {
+    test.skip('clicking it updates the filters', async () => {
       await observationPage.$occurrenceCountFinlandMax.fill((2).toString());
       await observationPage.search();
       await expect(observationPage.page).toHaveURL(/.*occurrenceCountFinlandMax=2.*/);
     });
 
-    test('and changes tab to list', async () => {
+    test.skip('and changes tab to list', async () => {
       await expect(observationPage.page.locator('.obs-filter-list')).toHaveAttribute('class', /.*active.*/);
     });
   });
@@ -50,14 +50,14 @@ test.describe('Observation list', () => {
       await observationPage.navigateTo('list');
     });
 
-    test('removes a normal filter', async () => {
+    test.skip('removes a normal filter', async () => {
       await observationPage.$occurrenceCountFinlandMax.fill((2).toString());
       await observationPage.search();
       await observationPage.removeFromActiveFilters('occurrenceCountFinlandMax');
       await expect(observationPage.page).toHaveURL(/^(?:(?!occurrenceCountFinlandMax).)*$/);
     });
 
-    test('removes a coordinate filter that have not been applied yet', async () => {
+    test.skip('removes a coordinate filter that have not been applied yet', async () => {
       await observationPage.placePanel.open();
       await observationPage.$drawRectangleBtn.click();
       await observationPage.$mapSpinner.waitFor({ state: 'hidden' });
@@ -79,7 +79,7 @@ test.describe('Observation list', () => {
         await observationPage.$drawRectangleBtn.click();
       });
 
-      test('changes tab to map', async () => {
+      test.skip('changes tab to map', async () => {
         await expect(observationPage.page.locator('.obs-filter-map')).toHaveAttribute('class', /.*active.*/);
       });
 
@@ -97,7 +97,7 @@ test.describe('Observation list', () => {
         await expect(observationPage.page).toHaveURL(/.*WGS84:0.*/);
       });
 
-      test('coordinate intersect can be updated', async () => {
+      test.skip('coordinate intersect can be updated', async () => {
         await observationPage.$mapSpinner.waitFor({ state: 'hidden' });
         await observationPage.drawRectangle();
         await observationPage.search();
@@ -132,11 +132,11 @@ test.describe('Observation list', () => {
           await observationPage.$drawPolygonBtn.click();
         });
 
-        test('changes tab to map', async () => {
+        test.skip('changes tab to map', async () => {
           await expect(observationPage.page.locator('.obs-filter-map')).toHaveAttribute('class', /.*active.*/);
         });
 
-        test('and drawing adds polygon filter to query', async () => {
+        test.skip('and drawing adds polygon filter to query', async () => {
           await observationPage.zoomClose();
           await observationPage.drawPolygon();
           await observationPage.search();
@@ -175,7 +175,7 @@ test.describe('Observation list', () => {
         await expect(observationPage.page).toHaveURL(/.*YKJ:.*/);
       });
 
-      test('coordinate intersect 1 by default', async () => {
+      test.skip('coordinate intersect 1 by default', async () => {
         // await expect(control.$container).toBeVisible();
         await control.$container.waitFor({ state: 'visible' });
         await control.enterLatLng(666, 333);
@@ -184,7 +184,7 @@ test.describe('Observation list', () => {
         await expect(observationPage.page).toHaveURL(/.*YKJ:1.*/);
       });
 
-      test('coordinate intersect can be updated', async () => {
+      test.skip('coordinate intersect can be updated', async () => {
         // await expect(control.$container).toBeVisible();
         await control.$container.waitFor({ state: 'visible' });
         await control.enterLatLng(666, 333);

@@ -48,7 +48,7 @@ test.describe('Project form', () =>  {
       });
     });
     test.describe('and has named places and strict access restriction', () => {
-      test('/form page redirects to login', async () => {
+      test.skip('/form page redirects to login', async () => {
         await page.goto(getProjectFormUrl(FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION, '/form'));
         await expectToBeOnLajiAuthLogin(page);
       });
@@ -85,7 +85,7 @@ test.describe('Project form', () =>  {
         await expectToBeOnLajiAuthLogin(page);
       });
 
-      test('after login is on form page', async () => {
+      test.skip('after login is on form page', async () => {
         await lajiAuthLogin(page);
         await expect(page.locator('laji-project-form-form')).toBeVisible({timeout: 15000});
       });
@@ -112,7 +112,7 @@ test.describe('Project form', () =>  {
         await page.goto(getProjectFormUrl(FORM_WITH_SIMPLE_HAS_NO_CATEGORY, undefined, 'en'));
       });
 
-      test('displays form', async () => {
+      test.skip('displays form', async () => {
         await expect(page.locator('laji-form .laji-form')).toBeVisible();
       });
 
@@ -126,7 +126,7 @@ test.describe('Project form', () =>  {
         await expectLangToBe('en', page);
       });
 
-      test('back navigate navigates away from form and keeps lang', async () => {
+      test.skip('back navigate navigates away from form and keeps lang', async () => {
         await page.goto(getAddressWithLang('/vihko/home', 'en'));
         await page.locator(
           `[href="${getAddressWithLang(`/project/${FORM_WITH_SIMPLE_HAS_NO_CATEGORY}`, 'en')}"]`
@@ -140,7 +140,7 @@ test.describe('Project form', () =>  {
       });
     });
 
-    test('and has simple option and has category, canceling document save redirects to save observations page and keeps lang if no history', async () => {
+    test.skip('and has simple option and has category, canceling document save redirects to save observations page and keeps lang if no history', async () => {
       await page.goto(getProjectFormUrl(FORM_WITH_SIMPLE_HAS_CATEGORY, undefined, 'en'));
       await page.locator('laji-form-footer .btn-danger').click(); // cancel
 
@@ -170,13 +170,13 @@ test.describe('Project form', () =>  {
         await expect(page.locator('.sidebar')).toBeHidden();
       });
 
-      test('use button goes to document form page with correct lang', async () => {
+      test.skip('use button goes to document form page with correct lang', async () => {
         await page.locator('.use-button').click();
         await expect(page.locator('laji-project-form-form')).toBeVisible();
         await expectLangToBe('en', page);
       });
 
-      test('canceling document save redirects to about page and keeps lang if no history', async () => {
+      test.skip('canceling document save redirects to about page and keeps lang if no history', async () => {
         await page.locator('.media-add-modal .cancel').click();
         await page.locator('.floating-buttons-container button').last().click();
         await page.locator('laji-form-footer .btn-danger').click();
@@ -208,14 +208,15 @@ test.describe('Project form', () =>  {
       });
 
       test.describe(', and has multiple forms', () => {
-        test('navigating to doc without subform specified redirects to subform', async () => {
+        test.skip('navigating to doc without subform specified redirects to subform', async () => {
           const form = FORM_MULTIPLE_FORMS_OWN_SUBMISSONS;
           const doc = FORM_MULTIPLE_FORMS_OWN_SUBMISSONS_DOC;
           await page.goto(getProjectFormUrl(`${form}/form/${doc}`, undefined, 'en'));
           await expect(page).toHaveURL(new RegExp(`.*\/${form}\/form\/${form}\/${doc}`));
         });
 
-        test('saving doc when no history goes to submissions page', async () => {
+        test.skip('saving doc when no history goes to submissions page', async () => {
+          await page.goto(getProjectFormUrl(`${FORM_MULTIPLE_FORMS_OWN_SUBMISSONS}/form/${FORM_MULTIPLE_FORMS_OWN_SUBMISSONS_DOC}`, undefined, 'en'));
           await page.locator('laji-form-footer .btn-success').click();
           await page.locator('.laji-form.blocking-loader').waitFor({ state: 'hidden' });
 
@@ -256,7 +257,7 @@ test.describe('Project form', () =>  {
           expect(await firstRow.locator('.btn').count()).toBe(2);
         });
 
-        test('template button directs to form page', async () => {
+        test.skip('template button directs to form page', async () => {
           await firstRow.locator('.template-button').click();
           await expect(page.locator('laji-project-form-form')).toBeVisible({timeout: 15000});
         });

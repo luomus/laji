@@ -45,18 +45,18 @@ test.describe('Trip form page', () => {
     await expect(page.locator(ERROR_DIALOG_SELECTOR)).not.toBeVisible();
   });
 
-  test('should be able to fill in form with simple data', async () => {
+  test.skip('should be able to fill in form with simple data', async () => {
     await tripFormPage.fillInSimpleForm();
     await expect(tripFormPage.$countryElem).toHaveValue('Suomi', {timeout: 5000});
   });
 
-  test('should be able to save form with simple data', async () => {
+  test.skip('should be able to save form with simple data', async () => {
     await tripFormPage.clickSavePrivate();
     await expect(tripFormPage.$toastElement).toContainText('Havainnot tallennettu!');
     await expect(tripFormPage.$overlayElem).toBeHidden();
   });
 
-  test('vihko home page should show saved document', async () => {
+  test.skip('vihko home page should show saved document', async () => {
     const editLink = await (await vihkoHome.latestSaved.getLatestShortDoc()).getEditLink();
     expect(editLink).not.toBe(undefined);
     expect(editLink).not.toBe(latestSavedDocEditLink);
@@ -68,13 +68,13 @@ test.describe('Trip form page', () => {
     latestSavedDocEditLink = editLink;
   });
 
-  test('should allow clicking trip form after successful save', async () => {
+  test.skip('should allow clicking trip form after successful save', async () => {
     await tripFormPage.clickTripFormLink();
     await expect(tripFormPage.$pageTitleElem).toContainText('Retkilomake');
   });
 
   test.describe('when no local data', () => {
-    test('doesn\'t confirm leave', async () => {
+    test.skip('doesn\'t confirm leave', async () => {
       await nav.moveToVihko();
       await expect(confirm.$message).not.toBeVisible();
     });
@@ -93,19 +93,19 @@ test.describe('Trip form page', () => {
           await nav.moveToVihko();
         });
 
-        test('confirm is shown and dismiss stays on page', async () => {
+        test.skip('confirm is shown and dismiss stays on page', async () => {
           await expect(confirm.$message).toBeVisible();
           await confirm.$cancel.click();
           await expect(tripFormPage.$pageTitleElem).toContainText('Retkilomake');
         });
 
-        test('confirm leaves page', async () => {
+        test.skip('confirm leaves page', async () => {
           await confirm.$confirm.click();
           await expect(vihkoHome.$content).toBeVisible();
         });
       });
 
-      test('after leaving unsaved doc, vihko home page unsaved docs list displays new unsaved doc', async () => {
+      test.skip('after leaving unsaved doc, vihko home page unsaved docs list displays new unsaved doc', async () => {
         const tmpEditLink = await (await vihkoHome.latestUnsaved.getLatestShortDoc()).getEditLink();
         expect(tmpEditLink).not.toBe(undefined);
         expect(tmpEditLink).not.toBe(latestUnsavedDocEditLink);

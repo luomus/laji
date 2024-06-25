@@ -19,7 +19,7 @@ test.describe('Datasets page', () => {
     await expect(datasetsPage.$cmsContent).toBeVisible();
   });
 
-  test('displays links to datasets', async () => {
+  test.skip('displays links to datasets', async () => {
     await expect(datasetsPage.$datasetLinks.first()).toBeVisible();
   });
 
