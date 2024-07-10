@@ -10,6 +10,18 @@
     </select>
   </ng-container>
 </div>
+<div class="mb-4">
+  <label>{{ 'result.map.year.label' | translate }}</label>
+  <ng-container *ngIf="years; else taxonLoading">
+    <select
+      class="form-control"
+      (change)="onYearChange(toHtmlSelectElement($event.target).value)"
+      [(ngModel)]="year"
+    >
+      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+    </select>
+  </ng-container>
+</div>
 <div [style.position]="'relative'">
   <laji-map
     [ngStyle]="{display: 'block', height: '80vh'}"

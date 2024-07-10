@@ -101,14 +101,17 @@ const observationProbabilityToVisCategory: Record<ObservationProbabilityType, { 
 export class ResultMapComponent implements OnInit {
   readonly collections$ = new BehaviorSubject<string[]>([]);
   readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
+  readonly year$ = new BehaviorSubject<string | undefined>(undefined);
   @Input() set collections(v: string[]) { this.collections$.next(v); };
   @Input() set taxon(v: string | undefined) { this.taxon$.next(v); };
+  @Input() set year(v: string | undefined) { this.year$.next(v); };
   @Input() taxonOptions: { label: string; value: string }[];
   @Input() visualizationOptions: ResultVisualizationMode[];
   @Input() mapQuery: WarehouseQueryInterface;
   @Input() gatheringCountLabel: string;
 
   @Output() taxonChange = new EventEmitter<string>();
+  @Output() yearChange = new EventEmitter<string>();
 
   toHtmlSelectElement = toHtmlSelectElement;
 
@@ -121,6 +124,7 @@ export class ResultMapComponent implements OnInit {
   visualizationMode: ResultVisualizationMode = 'gatheringCount';
   defaultTaxon: string;
   loading = true;
+  years: string[];
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -129,6 +133,9 @@ export class ResultMapComponent implements OnInit {
     this.mapOptions = {
       clickBeforeZoomAndPan: true
     };
+
+    const currentYear = new Date().getFullYear();
+    this.years = [''].concat(Array.from({ length: 5 }, (_, i) => (currentYear - i).toString()));
 
     this.gatheringCountMapData$ = of([]).pipe(
       tap(() => {
@@ -210,10 +217,12 @@ export class ResultMapComponent implements OnInit {
   }
 
   private getGatheringCounts$(allTaxa = false): Observable<QueryResult> {
-    return combineLatest([this.collections$, this.taxon$]).pipe(
-      switchMap(([collections, taxon]) => this.warehouseApi.warehouseQueryAggregateGet(
+    return combineLatest([this.collections$, this.taxon$, this.year$]).pipe(
+      switchMap(([collections, taxon, year]) => this.warehouseApi.warehouseQueryAggregateGet(
         {
-          collectionId: collections, taxonId: allTaxa ? '' : taxon, ...this.mapQuery
+          collectionId: collections,
+          taxonId: allTaxa ? undefined : taxon, ...this.mapQuery,
+          yearMonth: (year === undefined || year === '') ? undefined : [year + '/' + this.years[1]]
         },
         [
           'gathering.conversions.ykj10kmCenter.lat',
@@ -339,5 +348,9 @@ export class ResultMapComponent implements OnInit {
 
   onTaxonChange(taxon: string) {
     this.taxonChange.emit(taxon);
+  }
+
+  onYearChange(year: string) {
+    this.yearChange.emit(year);
   }
 }
