@@ -559,6 +559,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         }
         query.administrativeStatusId = administrativeStatusId;
       });
+
+    if (query.coordinateAccuracyMax) {
+      this.logCoordinateAccuracyMax = Math.log10(query.coordinateAccuracyMax);
+    }
+
     this.query = query;
   }
 
