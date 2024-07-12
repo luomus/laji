@@ -12,13 +12,13 @@
 </div>
 <div class="mb-4">
   <label>{{ 'result.map.year.label' | translate }}</label>
-  <ng-container *ngIf="years; else taxonLoading">
+  <ng-container *ngIf="yearOptions; else taxonLoading">
     <select
       class="form-control"
       (change)="onYearChange(toHtmlSelectElement($event.target).value)"
-      [(ngModel)]="year"
+      [(ngModel)]="defaultYear"
     >
-      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+      <option *ngFor="let option of yearOptions" [value]="option.value">{{ option.label }}</option>
     </select>
   </ng-container>
 </div>

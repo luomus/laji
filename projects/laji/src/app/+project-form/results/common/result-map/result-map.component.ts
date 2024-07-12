@@ -9,6 +9,7 @@ import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-e
 import { BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import G from 'geojson';
+import { TranslateService } from '@ngx-translate/core';
 
 type GatheringCountType = 'ZERO' | 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
 type ObservationProbabilityType = 'ZERO' | 'OVER_ZERO' | 'OVER_TWENTY' | 'OVER_FORTY' | 'OVER_SIXTY' | 'OVER_EIGHTY' | 'HUNDRED';
@@ -123,11 +124,13 @@ export class ResultMapComponent implements OnInit {
   visualization: LajiMapVisualization<ResultVisualizationMode>;
   visualizationMode: ResultVisualizationMode = 'gatheringCount';
   defaultTaxon: string;
+  defaultYear: string;
+  yearOptions: { label: string; value: string }[];
   loading = true;
-  years: string[];
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
+    private translate: TranslateService,
     private warehouseApi: WarehouseApi
   ) {
     this.mapOptions = {
@@ -135,7 +138,14 @@ export class ResultMapComponent implements OnInit {
     };
 
     const currentYear = new Date().getFullYear();
-    this.years = [''].concat(Array.from({ length: 5 }, (_, i) => (currentYear - i).toString()));
+    const yearValues = [''].concat(Array.from({ length: 5 }, (_, i) => (currentYear - i).toString()));
+    this.yearOptions = yearValues.map(v => {
+      if (v === '') {
+        return { label: this.translate.instant('result.map.taxon.empty.label'), value: '' };
+      } else {
+        return { label: v, value: v };
+      }
+    });
 
     this.gatheringCountMapData$ = of([]).pipe(
       tap(() => {
@@ -196,6 +206,7 @@ export class ResultMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.defaultTaxon = this.taxon$.getValue() !== undefined ? this.taxon$.getValue() : '';
+    this.defaultYear = this.year$.getValue() !== undefined ? this.year$.getValue() : '';
     this.mapData$ = this.gatheringCountMapData$;
 
     this.visualization = {
@@ -223,7 +234,7 @@ export class ResultMapComponent implements OnInit {
         {
           collectionId: collections,
           taxonId: allTaxa ? undefined : taxon, ...this.mapQuery,
-          yearMonth: (year === undefined || year === '') ? undefined : [year + '/' + this.years[1]]
+          yearMonth: (year === undefined || year === '') ? undefined : [year]
         },
         [
           'gathering.conversions.ykj10kmCenter.lat',
