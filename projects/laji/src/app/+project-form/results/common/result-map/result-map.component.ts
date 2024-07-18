@@ -9,6 +9,7 @@ import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-e
 import { BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import G from 'geojson';
+import { TranslateService } from '@ngx-translate/core';
 
 type GatheringCountType = 'ZERO' | 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
 type ObservationProbabilityType = 'ZERO' | 'OVER_ZERO' | 'OVER_TWENTY' | 'OVER_FORTY' | 'OVER_SIXTY' | 'OVER_EIGHTY' | 'HUNDRED';
@@ -101,14 +102,17 @@ const observationProbabilityToVisCategory: Record<ObservationProbabilityType, { 
 export class ResultMapComponent implements OnInit {
   readonly collections$ = new BehaviorSubject<string[]>([]);
   readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
+  readonly year$ = new BehaviorSubject<string | undefined>(undefined);
   @Input() set collections(v: string[]) { this.collections$.next(v); };
   @Input() set taxon(v: string | undefined) { this.taxon$.next(v); };
+  @Input() set year(v: string | undefined) { this.year$.next(v); };
   @Input() taxonOptions: { label: string; value: string }[];
   @Input() visualizationOptions: ResultVisualizationMode[];
   @Input() mapQuery: WarehouseQueryInterface;
   @Input() gatheringCountLabel: string;
 
   @Output() taxonChange = new EventEmitter<string>();
+  @Output() yearChange = new EventEmitter<string>();
 
   toHtmlSelectElement = toHtmlSelectElement;
 
@@ -120,15 +124,28 @@ export class ResultMapComponent implements OnInit {
   visualization: LajiMapVisualization<ResultVisualizationMode>;
   visualizationMode: ResultVisualizationMode = 'gatheringCount';
   defaultTaxon: string;
+  defaultYear: string;
+  yearOptions: { label: string; value: string }[];
   loading = true;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
+    private translate: TranslateService,
     private warehouseApi: WarehouseApi
   ) {
     this.mapOptions = {
       clickBeforeZoomAndPan: true
     };
+
+    const currentYear = new Date().getFullYear();
+    const yearValues = [''].concat(Array.from({ length: 5 }, (_, i) => (currentYear - i).toString()));
+    this.yearOptions = yearValues.map(v => {
+      if (v === '') {
+        return { label: this.translate.instant('result.map.taxon.empty.label'), value: '' };
+      } else {
+        return { label: v, value: v };
+      }
+    });
 
     this.gatheringCountMapData$ = of([]).pipe(
       tap(() => {
@@ -189,6 +206,7 @@ export class ResultMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.defaultTaxon = this.taxon$.getValue() !== undefined ? this.taxon$.getValue() : '';
+    this.defaultYear = this.year$.getValue() !== undefined ? this.year$.getValue() : '';
     this.mapData$ = this.gatheringCountMapData$;
 
     this.visualization = {
@@ -210,10 +228,13 @@ export class ResultMapComponent implements OnInit {
   }
 
   private getGatheringCounts$(allTaxa = false): Observable<QueryResult> {
-    return combineLatest([this.collections$, this.taxon$]).pipe(
-      switchMap(([collections, taxon]) => this.warehouseApi.warehouseQueryAggregateGet(
+    return combineLatest([this.collections$, this.taxon$, this.year$]).pipe(
+      tap(() => { this.loading = true; }),
+      switchMap(([collections, taxon, year]) => this.warehouseApi.warehouseQueryAggregateGet(
         {
-          collectionId: collections, taxonId: allTaxa ? '' : taxon, ...this.mapQuery
+          collectionId: collections,
+          taxonId: allTaxa ? undefined : taxon, ...this.mapQuery,
+          yearMonth: (year === undefined || year === '') ? undefined : [year]
         },
         [
           'gathering.conversions.ykj10kmCenter.lat',
@@ -221,7 +242,8 @@ export class ResultMapComponent implements OnInit {
         ],
         undefined,
         10000
-      ))
+      )),
+      tap(() => { this.loading = false; }),
     );
   }
 
@@ -339,5 +361,9 @@ export class ResultMapComponent implements OnInit {
 
   onTaxonChange(taxon: string) {
     this.taxonChange.emit(taxon);
+  }
+
+  onYearChange(year: string) {
+    this.yearChange.emit(year);
   }
 }

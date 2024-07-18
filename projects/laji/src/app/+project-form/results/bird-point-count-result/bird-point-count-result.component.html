@@ -34,6 +34,8 @@
         [taxon]="state.taxon"
         (taxonChange)="onTaxonChange($event)"
         [taxonOptions]="taxonOptions$ | async"
+        [year]="state.year"
+        (yearChange)="onYearChange($event)"
         [mapQuery]="mapQuery"
         gatheringCountLabel="laji-map.legend.mode.birdGatheringCount"
       >
