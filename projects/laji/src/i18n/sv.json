@@ -1136,7 +1136,7 @@
   "observation.active.sampleType": "Preparation/Sample type",
   "observation.active.samplingMethod": "Insamlingsmetod",
   "observation.active.season": "Observations årstid",
-  "observation.active.secured": "Salaus",
+  "observation.active.secured": "Döljande",
   "observation.active.secureLevel": "Nivån av hemlighållande",
   "observation.active.sex": "Kön",
   "observation.active.sourceId": "IT system",
