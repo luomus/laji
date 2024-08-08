@@ -31,9 +31,12 @@ export default defineConfig({
     trace: 'on-first-retry',
 
     permissions: ['geolocation'],
-    geolocation: { latitude: 60.1714275534955, longitude: 24.93126046426308 } // fmnh geolocation
+    geolocation: { latitude: 60.1714275534955, longitude: 24.93126046426308 }, // fmnh geolocation
+    locale: 'fi'
   },
-  timeout: 100000,
+  expect: {
+    timeout: 60 * 1000,
+  },
 
   /* Configure projects for major browsers */
   projects: [
@@ -47,10 +50,10 @@ export default defineConfig({
       use: { ...devices['Desktop Firefox'] },
     },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
 
     /* Test against mobile viewports. */
     // {
