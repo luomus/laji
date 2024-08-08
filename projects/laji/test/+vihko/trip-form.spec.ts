@@ -47,7 +47,7 @@ test.describe('Trip form page', () => {
 
   test('should be able to fill in form with simple data', async () => {
     await tripFormPage.fillInSimpleForm();
-    await expect(tripFormPage.$countryElem).toHaveValue('Suomi', {timeout: 5000});
+    await expect(tripFormPage.$countryElem).toHaveValue('Suomi');
   });
 
   test('should be able to save form with simple data', async () => {
@@ -85,7 +85,7 @@ test.describe('Trip form page', () => {
       test.beforeAll(async () => {
         await tripFormPage.navigateTo();
         await tripFormPage.fillInSimpleForm();
-        await expect(tripFormPage.$countryElem).toHaveValue('Suomi', {timeout: 5000});
+        await expect(tripFormPage.$countryElem).toHaveValue('Suomi');
       });
 
       test.describe('confirm', () => {
