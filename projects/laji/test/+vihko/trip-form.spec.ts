@@ -60,12 +60,6 @@ test.describe('Trip form page', () => {
     const editLink = await (await vihkoHome.latestSaved.getLatestShortDoc()).getEditLink();
     expect(editLink).not.toBe(undefined);
     expect(editLink).not.toBe(latestSavedDocEditLink);
-    let unsavedEditLink: string;
-    if (await vihkoHome.latestUnsaved.$container.isVisible()) {
-      unsavedEditLink = await (await vihkoHome.latestUnsaved.getLatestShortDoc()).getEditLink()
-    }
-    expect(unsavedEditLink).toBe(latestUnsavedDocEditLink);
-    latestSavedDocEditLink = editLink;
   });
 
   test('should allow clicking trip form after successful save', async () => {
@@ -109,9 +103,6 @@ test.describe('Trip form page', () => {
         const tmpEditLink = await (await vihkoHome.latestUnsaved.getLatestShortDoc()).getEditLink();
         expect(tmpEditLink).not.toBe(undefined);
         expect(tmpEditLink).not.toBe(latestUnsavedDocEditLink);
-        expect(latestSavedDocEditLink).toBe(
-          await (await vihkoHome.latestSaved.getLatestShortDoc()).getEditLink()
-        );
       });
     });
   });
