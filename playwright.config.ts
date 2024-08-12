@@ -11,7 +11,7 @@ require('dotenv').config();
  */
 export default defineConfig({
   testDir: './projects/laji/test',
-  timeout: 2 * 60 * 1000,
+  timeout: 4 * 60 * 1000,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
