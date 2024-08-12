@@ -7,6 +7,10 @@ import { DocumentFormView, TripFormPage } from './trip-form.po';
 import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
 
 test.describe('Trip form page', () => {
+  test.use({
+    locale: 'fi' // tests sometimes seem to have wrong locale without this
+  });
+
   let toolsPage: ToolsPage;
   let spreadsheet: SpreadsheetPage;
   let formPage: DocumentFormView;
