@@ -138,8 +138,8 @@ export class ResultMapComponent implements OnInit {
     };
 
     const currentYear = new Date().getFullYear();
-    const yearValues = [''].concat(Array.from({ length: 5 }, (_, i) => (currentYear - i).toString()));
-    this.yearOptions = yearValues.map(v => {
+    const yearsFrom2019 = [''].concat(Array.from({ length: currentYear - 2019 + 1 }, (_, i) => (2019 + i).toString()));
+    this.yearOptions = yearsFrom2019.map(v => {
       if (v === '') {
         return { label: this.translate.instant('result.map.taxon.empty.label'), value: '' };
       } else {
