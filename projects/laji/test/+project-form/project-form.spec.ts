@@ -216,6 +216,7 @@ test.describe('Project form', () =>  {
         });
 
         test('saving doc when no history goes to submissions page', async () => {
+          await page.locator('laji-form').waitFor({state: 'visible'});
           await page.locator('laji-form-footer .btn-success').click();
           await page.locator('.laji-form.blocking-loader').waitFor({ state: 'hidden' });
 
