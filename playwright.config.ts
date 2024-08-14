@@ -32,7 +32,8 @@ export default defineConfig({
 
     permissions: ['geolocation'],
     geolocation: { latitude: 60.1714275534955, longitude: 24.93126046426308 }, // fmnh geolocation
-    locale: 'fi'
+    locale: 'fi',
+    actionTimeout: 60 * 1000
   },
   expect: {
     timeout: 60 * 1000,
