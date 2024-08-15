@@ -230,10 +230,10 @@ export class ResultMapComponent implements OnInit {
   private getGatheringCounts$(allTaxa = false): Observable<QueryResult> {
     return combineLatest([this.collections$, this.taxon$, this.year$]).pipe(
       tap(() => { this.loading = true; }),
-      switchMap(([collections, taxon, year]) => this.warehouseApi.warehouseQueryAggregateGet(
+      switchMap(([collections, taxon, year]) => this.warehouseApi.warehouseQueryAggregateGetCached(
         {
           collectionId: collections,
-          taxonId: allTaxa ? undefined : taxon, ...this.mapQuery,
+          taxonId: (allTaxa || taxon === '') ? undefined : taxon, ...this.mapQuery,
           yearMonth: (year === undefined || year === '') ? undefined : [year]
         },
         [
