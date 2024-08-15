@@ -152,27 +152,29 @@ export class ResultMapComponent implements OnInit {
         this.loading = true;
         this.changeDetectorRef.markForCheck();
       }),
-      switchMap(_ => combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)])),
-      map(([selectedTaxonGatheringCounts, allGatheringCounts]) => ({
-        marker: {
-          icon: getPointIconAsCircle
-        },
-        getFeatureStyle: this.gatheringCountFeatureStyle,
-        featureCollection: {
-          type: 'FeatureCollection' as const,
-          features: this.gatheringCountsFromAllLocations(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features: G.Feature<G.Polygon>[], item) => {
-            _features.push(
-              convertYkjToGeoJsonFeature(
-                +item.lat,
-                +item.lon,
-                { count: item.count }
-              )
-            );
-            return _features;
-          }, []).sort((a, b) => a.properties.count - b.properties.count)
-        }
-      })),
-      tap(() => { this.loading = false; })
+      switchMap(_ => this.getGatheringCounts$()),
+      switchMap(selectedTaxonGatheringCounts => this.getGatheringCounts$(true).pipe(
+        map((allGatheringCounts) => ({
+          marker: {
+            icon: getPointIconAsCircle
+          },
+          getFeatureStyle: this.gatheringCountFeatureStyle,
+          featureCollection: {
+            type: 'FeatureCollection' as const,
+            features: this.gatheringCountsFromAllLocations(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features: G.Feature<G.Polygon>[], item) => {
+              _features.push(
+                convertYkjToGeoJsonFeature(
+                  +item.lat,
+                  +item.lon,
+                  { count: item.count }
+                )
+              );
+              return _features;
+            }, []).sort((a, b) => a.properties.count - b.properties.count)
+          }
+        })),
+        tap(() => { this.loading = false; })
+      ))
     );
 
     this.observationProbabilityMapData$ = of([]).pipe(
