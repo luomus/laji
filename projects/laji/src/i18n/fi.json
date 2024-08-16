@@ -1548,6 +1548,7 @@
   "result.load.titleSimple": "Havainnot: yksinkertainen taulukko",
   "result.map.taxon.empty.label": "Kaikki lajit",
   "result.map.taxon.label": "Rajaa lajilla",
+  "result.map.year.empty.label": "Kaikki vuodet",
   "result.map.year.label": "Rajaa vuodella",
   "result.newestRecord": "Uusin",
   "result.notOwnDocuments": "Annetuilla hakuehdoilla ei löytynyt yhtään omaa havaintoerää.",

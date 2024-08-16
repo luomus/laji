@@ -230,7 +230,7 @@ export class ResultMapComponent implements OnInit {
 
     this.yearOptions = yearsFromStartYear.map(v => {
       if (v === '') {
-        return { label: this.translate.instant('result.map.taxon.empty.label'), value: '' };
+        return { label: this.translate.instant('result.map.year.empty.label'), value: '' };
       } else {
         return { label: v, value: v };
       }
