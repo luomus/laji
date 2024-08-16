@@ -221,9 +221,11 @@ export class ResultMapComponent implements OnInit {
       }
     };
 
-    const yearsFromStartYear = [''].concat(Array.from(
-      { length: this.currentYear - this.collectionStartYear + 1 },
-      (_, i) => (+this.collectionStartYear + i).toString())
+    const yearsFromStartYear = [''].concat(
+      Array.from(
+        { length: this.currentYear - this.collectionStartYear + 1 },
+        (_, i) => (+this.collectionStartYear + i).toString()
+      ).reverse()
     );
 
     this.yearOptions = yearsFromStartYear.map(v => {
