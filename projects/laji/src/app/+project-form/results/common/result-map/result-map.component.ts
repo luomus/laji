@@ -110,6 +110,7 @@ export class ResultMapComponent implements OnInit {
   @Input() visualizationOptions: ResultVisualizationMode[];
   @Input() mapQuery: WarehouseQueryInterface;
   @Input() gatheringCountLabel: string;
+  @Input() collectionStartYear: number;
 
   @Output() taxonChange = new EventEmitter<string>();
   @Output() yearChange = new EventEmitter<string>();
@@ -126,6 +127,7 @@ export class ResultMapComponent implements OnInit {
   defaultTaxon: string;
   defaultYear: string;
   yearOptions: { label: string; value: string }[];
+  currentYear: number;
   loading = true;
 
   constructor(
@@ -136,16 +138,6 @@ export class ResultMapComponent implements OnInit {
     this.mapOptions = {
       clickBeforeZoomAndPan: true
     };
-
-    const currentYear = new Date().getFullYear();
-    const yearsFrom2019 = [''].concat(Array.from({ length: currentYear - 2019 + 1 }, (_, i) => (2019 + i).toString()));
-    this.yearOptions = yearsFrom2019.map(v => {
-      if (v === '') {
-        return { label: this.translate.instant('result.map.taxon.empty.label'), value: '' };
-      } else {
-        return { label: v, value: v };
-      }
-    });
 
     this.gatheringCountMapData$ = of([]).pipe(
       tap(() => {
@@ -209,6 +201,7 @@ export class ResultMapComponent implements OnInit {
   ngOnInit(): void {
     this.defaultTaxon = this.taxon$.getValue() !== undefined ? this.taxon$.getValue() : '';
     this.defaultYear = this.year$.getValue() !== undefined ? this.year$.getValue() : '';
+    this.currentYear = new Date().getFullYear();
     this.mapData$ = this.gatheringCountMapData$;
 
     this.visualization = {
@@ -227,6 +220,19 @@ export class ResultMapComponent implements OnInit {
         ]), [])
       }
     };
+
+    const yearsFromStartYear = [''].concat(Array.from(
+      { length: this.currentYear - this.collectionStartYear + 1 },
+      (_, i) => (+this.collectionStartYear + i).toString())
+    );
+
+    this.yearOptions = yearsFromStartYear.map(v => {
+      if (v === '') {
+        return { label: this.translate.instant('result.map.taxon.empty.label'), value: '' };
+      } else {
+        return { label: v, value: v };
+      }
+    });
   }
 
   private getGatheringCounts$(allTaxa = false): Observable<QueryResult> {
@@ -235,8 +241,11 @@ export class ResultMapComponent implements OnInit {
       switchMap(([collections, taxon, year]) => this.warehouseApi.warehouseQueryAggregateGetCached(
         {
           collectionId: collections,
-          taxonId: (allTaxa || taxon === '') ? undefined : taxon, ...this.mapQuery,
-          yearMonth: (year === undefined || year === '') ? undefined : [year]
+          taxonId: (allTaxa || taxon === '') ? undefined : taxon,
+          ...this.mapQuery,
+          yearMonth: (year === undefined || year === '')
+            ? [this.collectionStartYear + '/' + this.currentYear]
+            : [year]
         },
         [
           'gathering.conversions.ykj10kmCenter.lat',
