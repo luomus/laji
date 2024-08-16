@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-12 col-sm-6">
-    <div class="panel no-box-shadow" *ngIf="images.length > 0 || ingress || description">
+    <div class="panel no-box-shadow" *ngIf="images.length > 0 || description">
       <div class="panel-body">
         <div class="image-container" *ngIf="images.length > 0" [ngClass]="{
             'image-grid-1': !taxon.species && images.length === 1,
@@ -15,19 +15,14 @@
             [showLinkToSpeciesCard]="!taxon.species"
           ></laji-image-gallery>
         </div>
-        <h4 *ngIf="ingress && contentHasLanguage" [innerHTML]="ingress | multiLang"></h4>
-        <span *ngIf="description && contentHasLanguage" [innerHTML]="description | multiLang"></span>
-        <div *ngIf="(ingress || description) && contentHasLanguage">
-          <laji-taxon-description-source [taxonDescription]="_taxonDescription[0]"></laji-taxon-description-source>
+        <div *ngIf="description.generalDescription as generalDescription">
+          <h4 *ngIf="generalDescription.title" [innerHTML]="generalDescription.title"></h4>
+          <span *ngIf="generalDescription.content" [innerHTML]="generalDescription.content"></span>
+          <laji-taxon-description-source [taxonDescription]="description.generalDescriptionSource"></laji-taxon-description-source>
         </div>
-        <div *ngIf="ylesta" [ngClass]="{ 'margin-top-25': contentHasLanguage, '': !contentHasLanguage }">
-          <laji-taxon-ylesta-fields [info]="ylesta"></laji-taxon-ylesta-fields>
-        </div>
-        <div *ngIf="ylesta[0].visible && ylesta[0].visible.indexOf(false) !== -1">
-          <strong>{{ 'taxonomy.source' | translate }}: </strong>{{ ylestaTitle | multiLang }}
-          <span style="margin: 0 7px; display: inline-block" *ngIf="ylesta && (ylestaTitle || ylestaSpeciesCardAuthors )">
-            <laji-license type="MZ.intellectualRightsCC-BY-4.0"></laji-license>
-          </span>
+        <div *ngIf="description.structureDescriptions as structureDescriptions" [ngClass]="{ 'margin-top-25': !!description.generalDescription }">
+          <laji-taxon-description-variables [variables]="structureDescriptions"></laji-taxon-description-variables>
+          <laji-taxon-description-source [taxonDescription]="description.structureDescriptionSource"></laji-taxon-description-source>
         </div>
       </div>
     </div>

@@ -1,13 +1,22 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
-import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
+import {
+  Taxonomy,
+  TaxonomyDescription,
+  TaxonomyDescriptionVariable
+} from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
-import { CheckLangService } from '../../service/check-lang.service';
 import { map } from 'rxjs/operators';
 
+interface TaxonOverviewDescription {
+  generalDescription?: TaxonomyDescriptionVariable;
+  generalDescriptionSource?: TaxonomyDescription;
+  structureDescriptions?: TaxonomyDescriptionVariable[];
+  structureDescriptionSource?: TaxonomyDescription;
+}
 
 @Component({
   selector: 'laji-taxon-overview',
@@ -23,20 +32,11 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   @Output() taxonSelect = new EventEmitter<string>();
 
   taxonChildren: Taxonomy[] = [];
-  ingress: any;
-  description: any;
-  ylesta: any;
-  ylestaTitle: any;
-  ylestaSpeciesCardAuthors: any;
-  _taxonDescription: TaxonomyDescription[];
-  groupTranslationChecklist: any[];
-  ylestaHasTranslation: any[];
+
+  description: TaxonOverviewDescription = {};
+
   isChildrenOnlySpecie = false;
   totalObservations = 0;
-  linkObservations: string;
-
-  contentHasLanguage: boolean;
-  currentLang: string;
 
   mapQuery: WarehouseQueryInterface;
   queryCount: WarehouseQueryInterface;
@@ -45,53 +45,33 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   private childrenSub: Subscription;
 
   @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
-    this.ingress = undefined;
-    this.description = undefined;
-    this.ylesta = undefined;
-    this.ylesta = [{text: undefined, visible: undefined}];
-    this.ylestaTitle = undefined;
-    this.ylestaSpeciesCardAuthors = undefined;
-    this.groupTranslationChecklist = [];
-    this.ylestaHasTranslation = [];
-    this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription : undefined;
-    if (this._taxonDescription && this._taxonDescription.length > 0) {
-      this.groupTranslationChecklist = this.checklang.createTranslationChecklist(this._taxonDescription);
-      this._taxonDescription.forEach((item, idx) => {
-        (item.groups || []).forEach(gruppo => {
-          if (gruppo.group === 'MX.SDVG1' && this.description === undefined && this.ingress === undefined) {
-            (gruppo.variables || []).forEach(variable => {
-              if (variable.variable === 'MX.descriptionText') {
-                this.description = variable.content;
-                this.ingress = variable.title;
-                this.contentHasLanguage = !!variable.content[this.translate.currentLang];
-              }
-            });
-          }
-          if (gruppo.group === 'MX.SDVG8' && this.ylesta[0].text === undefined && this.ylesta[0].visible === undefined) {
-            this.ylestaTitle = item.title;
-            this.ylestaSpeciesCardAuthors = item.speciesCardAuthors ? item.speciesCardAuthors : null;
-            this.ylesta[0].text = gruppo.variables;
+    this.description = {};
 
-            this.ylestaHasTranslation = this.groupTranslationChecklist[idx].groups.filter(el =>
-              el.id === 'MX.SDVG8'
-            );
-            this.ylesta[0].visible = this.ylestaHasTranslation.length > 0 ? this.ylestaHasTranslation[0].values : [];
-          }
-        });
-        return this.ylesta;
+    (taxonDescription || []).forEach((item, idx) => {
+      (item.groups || []).forEach(group => {
+        if (group.group === 'MX.SDVG1' && this.description.generalDescription === undefined) {
+          (group.variables || []).forEach(variable => {
+            if (variable.variable === 'MX.descriptionText' && (variable.title || variable.content)) {
+              this.description.generalDescription = variable;
+              this.description.generalDescriptionSource = item;
+            }
+          });
+        }
+        if (group.group === 'MX.SDVG8' && this.description.structureDescriptions === undefined) {
+          this.description.structureDescriptions = group.variables;
+          this.description.structureDescriptionSource = item;
+        }
       });
-    }
+    });
   }
 
   constructor(
     public translate: TranslateService,
     private taxonomyService: TaxonTaxonomyService,
-    private cd: ChangeDetectorRef,
-    private checklang: CheckLangService
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnChanges() {
-    this.currentLang = this.translate.currentLang;
     this.getChildren();
     this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
     this.queryCount = Object.keys(this.mapQuery).reduce((object, key) => {
