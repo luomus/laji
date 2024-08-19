@@ -63,17 +63,17 @@ interface PersistentState {
 
 namespace UserState {
   export interface Loading {
-    _tag: 'loading'
+    _tag: 'loading';
   }
 
   export interface Ready {
-    _tag: 'user_state'
-    person: Person | null,
-    settings: UserSettings
+    _tag: 'user_state';
+    person: Person | null;
+    settings: UserSettings;
   }
 
   export interface NotLoggedIn {
-    _tag: 'not_logged_in'
+    _tag: 'not_logged_in';
   }
 }
 
@@ -233,7 +233,7 @@ export class UserService implements OnDestroy {
 
   logout(cb?: () => void): void {
     if (this.persistentState.loginState._tag !== 'logged_in') {
-      console.warn('Attempted logout while not being logged in.')
+      console.warn('Attempted logout while not being logged in.');
       return;
     }
     this.subLogout = this.personApi.removePersonToken(this.persistentState.loginState.token).pipe(
@@ -255,7 +255,7 @@ export class UserService implements OnDestroy {
 
   getToken(): string {
     if (this.store.value.loginState._tag !== 'logged_in') {
-      console.warn("Attempted to get token while user is not logged in");
+      console.warn('Attempted to get token while user is not logged in');
       return '';
     }
     return this.store.value.loginState.token;
