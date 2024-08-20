@@ -8,8 +8,8 @@ import { WarehouseQueryInterface } from 'projects/laji/src/app/shared/model/Ware
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import G from 'geojson';
 import { TranslateService } from '@ngx-translate/core';
+import G from 'geojson';
 
 type GatheringCountType = 'ZERO' | 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
 type ObservationProbabilityType = 'ZERO' | 'OVER_ZERO' | 'OVER_TWENTY' | 'OVER_FORTY' | 'OVER_SIXTY' | 'OVER_EIGHTY' | 'HUNDRED';
@@ -139,61 +139,65 @@ export class ResultMapComponent implements OnInit {
       clickBeforeZoomAndPan: true
     };
 
-    this.gatheringCountMapData$ = of([]).pipe(
+    this.gatheringCountMapData$ = combineLatest([this.collections$, this.taxon$, this.year$]).pipe(
       tap(() => {
         this.loading = true;
         this.changeDetectorRef.markForCheck();
       }),
-      switchMap(_ => this.getGatheringCounts$()),
-      switchMap(selectedTaxonGatheringCounts => this.getGatheringCounts$(true).pipe(
-        map((allGatheringCounts) => ({
-          marker: {
-            icon: getPointIconAsCircle
-          },
-          getFeatureStyle: this.gatheringCountFeatureStyle,
-          featureCollection: {
-            type: 'FeatureCollection' as const,
-            features: this.gatheringCountsFromAllLocations(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features: G.Feature<G.Polygon>[], item) => {
-              _features.push(
-                convertYkjToGeoJsonFeature(
-                  +item.lat,
-                  +item.lon,
-                  { count: item.count }
-                )
-              );
-              return _features;
-            }, []).sort((a, b) => a.properties.count - b.properties.count)
-          }
-        })),
-        tap(() => { this.loading = false; })
-      ))
+      switchMap(([collections, taxon, year]) => this.getGatheringCounts$(collections, taxon, year).pipe(
+        switchMap((selectedTaxonGatheringCounts) => this.getGatheringCounts$(collections, taxon, year, true).pipe(
+          map((allGatheringCounts) => ({
+            marker: {
+              icon: getPointIconAsCircle
+            },
+            getFeatureStyle: this.gatheringCountFeatureStyle,
+            featureCollection: {
+              type: 'FeatureCollection' as const,
+              features: this.gatheringCountsFromAllLocations(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features: G.Feature<G.Polygon>[], item) => {
+                _features.push(
+                  convertYkjToGeoJsonFeature(
+                    +item.lat,
+                    +item.lon,
+                    { count: item.count }
+                  )
+                );
+                return _features;
+              }, []).sort((a, b) => a.properties.count - b.properties.count)
+            }
+          }))
+        ))
+      )),
+      tap(() => { this.loading = false; })
     );
 
-    this.observationProbabilityMapData$ = of([]).pipe(
+    this.observationProbabilityMapData$ = combineLatest([this.collections$, this.taxon$, this.year$]).pipe(
       tap(() => {
         this.loading = true;
         this.changeDetectorRef.markForCheck();
       }),
-      switchMap(_ => combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)])),
-      map(([selectedTaxonGatheringCounts, allGatheringCounts]) => ({
-        marker: {
-          icon: getPointIconAsCircle
-        },
-        getFeatureStyle: this.observationProbabilityFeatureStyle,
-        featureCollection: {
-          type: 'FeatureCollection' as const,
-          features: this.gatheringCountRatios(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features, item) => {
-            _features.push(
-              convertYkjToGeoJsonFeature(
-                +item.lat,
-                +item.lon,
-                { ratio: item.ratio }
-              )
-            );
-            return _features;
-          }, []).sort((a, b) => a.properties.ratio - b.properties.ratio)
-        }
-      })),
+      switchMap(([collections, taxon, year]) => this.getGatheringCounts$(collections, taxon, year).pipe(
+        switchMap((selectedTaxonGatheringCounts) => this.getGatheringCounts$(collections, taxon, year, true).pipe(
+          map((allGatheringCounts) => ({
+            marker: {
+              icon: getPointIconAsCircle
+            },
+            getFeatureStyle: this.observationProbabilityFeatureStyle,
+            featureCollection: {
+              type: 'FeatureCollection' as const,
+              features: this.gatheringCountRatios(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features, item) => {
+                _features.push(
+                  convertYkjToGeoJsonFeature(
+                    +item.lat,
+                    +item.lon,
+                    { ratio: item.ratio }
+                  )
+                );
+                return _features;
+              }, []).sort((a, b) => a.properties.ratio - b.properties.ratio)
+            }
+          }))
+        ))
+      )),
       tap(() => { this.loading = false; })
     );
   }
@@ -237,26 +241,22 @@ export class ResultMapComponent implements OnInit {
     });
   }
 
-  private getGatheringCounts$(allTaxa = false): Observable<QueryResult> {
-    return combineLatest([this.collections$, this.taxon$, this.year$]).pipe(
-      tap(() => { this.loading = true; }),
-      switchMap(([collections, taxon, year]) => this.warehouseApi.warehouseQueryAggregateGetCached(
-        {
-          collectionId: collections,
-          taxonId: (allTaxa || taxon === '') ? undefined : taxon,
-          ...this.mapQuery,
-          yearMonth: (year === undefined || year === '')
-            ? [this.collectionStartYear + '/' + this.currentYear]
-            : [year]
-        },
-        [
-          'gathering.conversions.ykj10kmCenter.lat',
-          'gathering.conversions.ykj10kmCenter.lon'
-        ],
-        undefined,
-        10000
-      )),
-      tap(() => { this.loading = false; }),
+  private getGatheringCounts$(collections: string[], taxon: string, year: string, allTaxa = false): Observable<QueryResult> {
+    return this.warehouseApi.warehouseQueryAggregateGetCached(
+      {
+        collectionId: collections,
+        taxonId: (allTaxa || taxon === '') ? undefined : taxon,
+        ...this.mapQuery,
+        yearMonth: (year === undefined || year === '')
+          ? [this.collectionStartYear + '/' + this.currentYear]
+          : [year]
+      },
+      [
+        'gathering.conversions.ykj10kmCenter.lat',
+        'gathering.conversions.ykj10kmCenter.lon'
+      ],
+      undefined,
+      10000
     );
   }
 
