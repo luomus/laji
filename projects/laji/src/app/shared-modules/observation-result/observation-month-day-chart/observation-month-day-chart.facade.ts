@@ -66,7 +66,7 @@ export class ObservationMonthDayChartFacade {
       if (lifeStage) {
         if (!yearChartDataByLifeStage[lifeStage]) { yearChartDataByLifeStage[lifeStage] = (new Array(12)).fill(0); }
         yearChartDataByLifeStage[lifeStage][month - 1] += count;
-        if (!monthChartDataArr[month - 1][lifeStage]) { monthChartDataByLifeStage[month - 1][lifeStage] = new Array(getNbrOfDaysInMonth(month - 1)).fill(0); }
+        if (!monthChartDataByLifeStage[month - 1][lifeStage]) { monthChartDataByLifeStage[month - 1][lifeStage] = new Array(getNbrOfDaysInMonth(month - 1)).fill(0); }
         monthChartDataByLifeStage[month - 1][lifeStage][day - 1] += count;
       }
     }
