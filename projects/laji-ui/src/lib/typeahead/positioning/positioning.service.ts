@@ -46,7 +46,7 @@ export interface PositioningOptions {
 export class PositioningService {
   private options?: Options;
   private update$$ = new Subject<null>();
-  private positionElements = new Map();
+  private positionElements = new Map<HTMLElement, PositioningOptions>();
   private triggerEvent$?: Observable<number|Event|null>;
   private isDisabled = false;
 
@@ -72,21 +72,9 @@ export class PositioningService {
             return;
           }
 
-          // We could call placementService.update here, but I don't think it's necessary
-          // The old ngx-bootstrap positioning logic has been entirely replaced
-          return;
-          this.positionElements
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .forEach((positionElement: any) => {
-              positionElements(
-                _getHtmlElement(positionElement.target),
-                _getHtmlElement(positionElement.element),
-                positionElement.attachment,
-                positionElement.appendToBody,
-                this.options,
-                rendererFactory.createRenderer(null, null)
-              );
-            });
+          for (let el of this.positionElements.keys()) {
+            this.placementService.update(el);
+          }
         });
       });
     }
@@ -116,7 +104,7 @@ export class PositioningService {
     const element: HTMLElement = options.element?.['nativeElement'] ?? options.element;
     const target: HTMLElement = options.target?.['nativeElement'] ?? options.target;
     this.placementService.attach(element, target, <Placement>options.attachment, {window, document: this.document, renderer: renderer})
-    //this.positionElements.set(_getHtmlElement(options.element), options);
+    this.positionElements.set(_getHtmlElement(options.element), options);
   }
 
   calcPosition(): void {
@@ -125,7 +113,7 @@ export class PositioningService {
 
   deletePositionElement(elRef: ElementRef): void {
     this.placementService.detach(elRef.nativeElement);
-    //this.positionElements.delete(_getHtmlElement(elRef));
+    this.positionElements.delete(_getHtmlElement(elRef));
   }
 
   setOptions(options: Options) {
