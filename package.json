@@ -70,7 +70,7 @@
     "test": "playwright test",
     "test:docker": "npm run test:docker:build && npm run test:docker:run --",
     "test:docker:build": "docker build -t laji-test -f test.Dockerfile .",
-    "test:docker:run": "docker run laji-test:latest",
+    "test:docker:run": "docker run -v test-results:/app/test-results laji-test:latest",
     "postinstall": "patch-package && node ./scripts/remove-extras.js",
     "package:label-designer": "npm run build:label-designer-electron && npm run prepare:package:label-designer",
     "package:label-designer-element": "npm run build:label-designer-element && cat ./dist/label-designer-element/runtime.js ./dist/label-designer-element/polyfills.js ./dist/label-designer-element/scripts.js ./dist/label-designer-element/main.js > ./dist/label-designer.js",
