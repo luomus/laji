@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DataOptions, GetFeatureStyleOptions, Options } from '@luomus/laji-map';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { getPointIconAsCircle } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
@@ -6,7 +6,7 @@ import { LajiMapVisualization } from 'projects/laji/src/app/shared-modules/legen
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from 'projects/laji/src/app/shared/model/WarehouseQueryInterface';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
-import { BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import G from 'geojson';
@@ -99,13 +99,10 @@ const observationProbabilityToVisCategory: Record<ObservationProbabilityType, { 
   styleUrls: ['./result-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResultMapComponent implements OnInit {
-  readonly collections$ = new BehaviorSubject<string[]>([]);
-  readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
-  readonly year$ = new BehaviorSubject<string | undefined>(undefined);
-  @Input() set collections(v: string[]) { this.collections$.next(v); };
-  @Input() set taxon(v: string | undefined) { this.taxon$.next(v); };
-  @Input() set year(v: string | undefined) { this.year$.next(v); };
+export class ResultMapComponent implements OnInit, OnChanges {
+  @Input() collections: string[];
+  @Input() taxon: string | undefined;
+  @Input() year: string | undefined;
   @Input() taxonOptions: { label: string; value: string }[];
   @Input() visualizationOptions: ResultVisualizationMode[];
   @Input() mapQuery: WarehouseQueryInterface;
@@ -119,6 +116,10 @@ export class ResultMapComponent implements OnInit {
 
   private gatheringCountMapData$: Observable<DataOptions>;
   private observationProbabilityMapData$: Observable<DataOptions>;
+
+  readonly collections$ = new BehaviorSubject<string[]>([]);
+  readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
+  readonly year$ = new BehaviorSubject<string | undefined>(undefined);
 
   mapData$: Observable<DataOptions>;
   mapOptions: Options;
@@ -145,7 +146,10 @@ export class ResultMapComponent implements OnInit {
         this.changeDetectorRef.markForCheck();
       }),
       switchMap(([collections, taxon, year]) => this.getGatheringCounts$(collections, taxon, year).pipe(
-        switchMap((selectedTaxonGatheringCounts) => this.getGatheringCounts$(collections, taxon, year, true).pipe(
+        map((selectedTaxonGatheringCounts) => ({ selectedTaxonGatheringCounts, collections, taxon, year })))
+      ),
+      switchMap(({ selectedTaxonGatheringCounts, collections, taxon, year }) =>
+        this.getGatheringCounts$(collections, taxon, year, true).pipe(
           map((allGatheringCounts) => ({
             marker: {
               icon: getPointIconAsCircle
@@ -165,8 +169,8 @@ export class ResultMapComponent implements OnInit {
               }, []).sort((a, b) => a.properties.count - b.properties.count)
             }
           }))
-        ))
-      )),
+        )
+      ),
       tap(() => { this.loading = false; })
     );
 
@@ -176,7 +180,10 @@ export class ResultMapComponent implements OnInit {
         this.changeDetectorRef.markForCheck();
       }),
       switchMap(([collections, taxon, year]) => this.getGatheringCounts$(collections, taxon, year).pipe(
-        switchMap((selectedTaxonGatheringCounts) => this.getGatheringCounts$(collections, taxon, year, true).pipe(
+        map((selectedTaxonGatheringCounts) => ({ selectedTaxonGatheringCounts, collections, taxon, year })))
+      ),
+      switchMap(({ selectedTaxonGatheringCounts, collections, taxon, year }) =>
+        this.getGatheringCounts$(collections, taxon, year, true).pipe(
           map((allGatheringCounts) => ({
             marker: {
               icon: getPointIconAsCircle
@@ -196,8 +203,8 @@ export class ResultMapComponent implements OnInit {
               }, []).sort((a, b) => a.properties.ratio - b.properties.ratio)
             }
           }))
-        ))
-      )),
+        )
+      ),
       tap(() => { this.loading = false; })
     );
   }
@@ -239,6 +246,18 @@ export class ResultMapComponent implements OnInit {
         return { label: v, value: v };
       }
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['collections']) {
+      this.collections$.next(changes['collections'].currentValue);
+    }
+    if (changes['taxon']) {
+      this.taxon$.next(changes['taxon'].currentValue);
+    }
+    if (changes['year']) {
+      this.year$.next(changes['year'].currentValue);
+    }
   }
 
   private getGatheringCounts$(collections: string[], taxon: string, year: string, allTaxa = false): Observable<QueryResult> {
@@ -363,7 +382,7 @@ export class ResultMapComponent implements OnInit {
     return ratios;
   }
 
-  onVisualizationModeChange(mode: string) {
+  onVisualizationModeChange(mode: string): void {
     this.visualizationMode = <ResultVisualizationMode>mode;
     if (this.visualizationMode === 'gatheringCount') {
       this.mapData$ = this.gatheringCountMapData$;
@@ -372,11 +391,13 @@ export class ResultMapComponent implements OnInit {
     }
   }
 
-  onTaxonChange(taxon: string) {
+  onTaxonChange(event: Event): void {
+    const taxon = this.toHtmlSelectElement(event.target).value;
     this.taxonChange.emit(taxon);
   }
 
-  onYearChange(year: string) {
+  onYearChange(event: Event): void {
+    const year = this.toHtmlSelectElement(event.target).value;
     this.yearChange.emit(year);
   }
 }
