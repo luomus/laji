@@ -149,29 +149,28 @@ export class ResultMapComponent implements OnInit, OnChanges {
       switchMap(([collections, taxon, year]) => this.getGatheringCounts$(collections, taxon, year).pipe(
         map((selectedTaxonGatheringCounts) => ({ selectedTaxonGatheringCounts, collections, year })))
       ),
-      switchMap(({ selectedTaxonGatheringCounts, collections, year }) =>
-        this.getGatheringCounts$(collections, undefined, year).pipe(
-          map((allGatheringCounts) => ({
-            marker: {
-              icon: getPointIconAsCircle
-            },
-            getFeatureStyle: this.gatheringCountFeatureStyle,
-            featureCollection: {
-              type: 'FeatureCollection' as const,
-              features: this.gatheringCountsFromAllLocations(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features: G.Feature<G.Polygon>[], item) => {
-                _features.push(
-                  convertYkjToGeoJsonFeature(
-                    +item.lat,
-                    +item.lon,
-                    { count: item.count }
-                  )
-                );
-                return _features;
-              }, []).sort((a, b) => a.properties.count - b.properties.count)
-            }
-          }))
-        )
+      switchMap(({ selectedTaxonGatheringCounts, collections, year }) => this.getGatheringCounts$(collections, undefined, year).pipe(
+        map((allGatheringCounts) => ({ selectedTaxonGatheringCounts, allGatheringCounts })))
       ),
+      map(({ selectedTaxonGatheringCounts, allGatheringCounts }) => ({
+        marker: {
+          icon: getPointIconAsCircle
+        },
+        getFeatureStyle: this.gatheringCountFeatureStyle,
+        featureCollection: {
+          type: 'FeatureCollection' as const,
+          features: this.gatheringCountsFromAllLocations(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features: G.Feature<G.Polygon>[], item) => {
+            _features.push(
+              convertYkjToGeoJsonFeature(
+                +item.lat,
+                +item.lon,
+                { count: item.count }
+              )
+            );
+            return _features;
+          }, []).sort((a, b) => a.properties.count - b.properties.count)
+        }
+      })),
       tap(() => { this.loading = false; })
     );
 
@@ -183,29 +182,29 @@ export class ResultMapComponent implements OnInit, OnChanges {
       switchMap(([collections, taxon, year]) => this.getGatheringCounts$(collections, taxon, year).pipe(
         map((selectedTaxonGatheringCounts) => ({ selectedTaxonGatheringCounts, collections, year })))
       ),
-      switchMap(({ selectedTaxonGatheringCounts, collections, year }) =>
-        this.getGatheringCounts$(collections, undefined, year).pipe(
-          map((allGatheringCounts) => ({
-            marker: {
-              icon: getPointIconAsCircle
-            },
-            getFeatureStyle: this.observationProbabilityFeatureStyle,
-            featureCollection: {
-              type: 'FeatureCollection' as const,
-              features: this.gatheringCountRatios(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features, item) => {
-                _features.push(
-                  convertYkjToGeoJsonFeature(
-                    +item.lat,
-                    +item.lon,
-                    { ratio: item.ratio }
-                  )
-                );
-                return _features;
-              }, []).sort((a, b) => a.properties.ratio - b.properties.ratio)
-            }
-          }))
-        )
+      switchMap(({ selectedTaxonGatheringCounts, collections, year }) => this.getGatheringCounts$(collections, undefined, year).pipe(
+        map((allGatheringCounts) => ({ selectedTaxonGatheringCounts, allGatheringCounts })))
       ),
+      map(({ selectedTaxonGatheringCounts, allGatheringCounts }) => ({
+        marker: {
+          icon: getPointIconAsCircle
+        },
+        getFeatureStyle: this.observationProbabilityFeatureStyle,
+        featureCollection: {
+          type: 'FeatureCollection' as const,
+          features: this.gatheringCountRatios(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features, item) => {
+            _features.push(
+              convertYkjToGeoJsonFeature(
+                +item.lat,
+                +item.lon,
+                { ratio: item.ratio }
+              )
+            );
+            return _features;
+          }, []).sort((a, b) => a.properties.ratio - b.properties.ratio)
+        }
+      }))
+      ,
       tap(() => { this.loading = false; })
     );
   }
