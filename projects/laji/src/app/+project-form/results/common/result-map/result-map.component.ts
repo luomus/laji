@@ -9,6 +9,7 @@ import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-e
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { cacheReturnObservable } from 'projects/bird-atlas/src/app/core/api.service';
 import G from 'geojson';
 
 type GatheringCountType = 'ZERO' | 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
@@ -146,10 +147,10 @@ export class ResultMapComponent implements OnInit, OnChanges {
         this.changeDetectorRef.markForCheck();
       }),
       switchMap(([collections, taxon, year]) => this.getGatheringCounts$(collections, taxon, year).pipe(
-        map((selectedTaxonGatheringCounts) => ({ selectedTaxonGatheringCounts, collections, taxon, year })))
+        map((selectedTaxonGatheringCounts) => ({ selectedTaxonGatheringCounts, collections, year })))
       ),
-      switchMap(({ selectedTaxonGatheringCounts, collections, taxon, year }) =>
-        this.getGatheringCounts$(collections, taxon, year, true).pipe(
+      switchMap(({ selectedTaxonGatheringCounts, collections, year }) =>
+        this.getGatheringCounts$(collections, undefined, year).pipe(
           map((allGatheringCounts) => ({
             marker: {
               icon: getPointIconAsCircle
@@ -180,10 +181,10 @@ export class ResultMapComponent implements OnInit, OnChanges {
         this.changeDetectorRef.markForCheck();
       }),
       switchMap(([collections, taxon, year]) => this.getGatheringCounts$(collections, taxon, year).pipe(
-        map((selectedTaxonGatheringCounts) => ({ selectedTaxonGatheringCounts, collections, taxon, year })))
+        map((selectedTaxonGatheringCounts) => ({ selectedTaxonGatheringCounts, collections, year })))
       ),
-      switchMap(({ selectedTaxonGatheringCounts, collections, taxon, year }) =>
-        this.getGatheringCounts$(collections, taxon, year, true).pipe(
+      switchMap(({ selectedTaxonGatheringCounts, collections, year }) =>
+        this.getGatheringCounts$(collections, undefined, year).pipe(
           map((allGatheringCounts) => ({
             marker: {
               icon: getPointIconAsCircle
@@ -260,13 +261,18 @@ export class ResultMapComponent implements OnInit, OnChanges {
     }
   }
 
-  private getGatheringCounts$(collections: string[], taxon: string, year: string, allTaxa = false): Observable<QueryResult> {
-    return this.warehouseApi.warehouseQueryAggregateGetCached(
+  private getGatheringCounts$(collections: string[], taxon: string | undefined, year: string | undefined): Observable<QueryResult> {
+    return this.getGatheringCountsCached(collections, taxon || '', year || '');
+  }
+
+  @cacheReturnObservable(120000)
+  private getGatheringCountsCached(collections: string[], taxon: string, year: string): Observable<QueryResult> {
+    return this.warehouseApi.warehouseQueryAggregateGet(
       {
         collectionId: collections,
-        taxonId: (allTaxa || taxon === '') ? undefined : taxon,
+        taxonId: taxon === '' ? undefined : taxon,
         ...this.mapQuery,
-        yearMonth: (year === undefined || year === '')
+        yearMonth: year === ''
           ? [this.collectionStartYear + '/' + this.currentYear]
           : [year]
       },

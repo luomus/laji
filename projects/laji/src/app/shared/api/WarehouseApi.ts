@@ -34,7 +34,6 @@ import { environment } from '../../../environments/environment';
 import { PlatformService } from '../../root/platform.service';
 import { EMPTY } from 'rxjs';
 import { geoJSONToWKT } from '@luomus/laji-map/lib/utils';
-import { cacheReturnObservable } from 'projects/bird-atlas/src/app/core/api.service';
 import G from 'geojson';
 
 /* eslint-disable no-unused-vars member-ordering */
@@ -192,13 +191,6 @@ export class WarehouseApi {
    * @param onlyCount return only count in result items (default true).
    */
   public warehouseQueryAggregateGet(query: WarehouseQueryInterface = {}, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
-    const target = this.subPath === WarehouseSubPath.sample ? 'aggregate' : 'unit/aggregate';
-    return this.warehouseQueryGet(target, query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
-  }
-
-  // query to unit/aggregate endpoint with front-end cache
-  @cacheReturnObservable(120000)
-  public warehouseQueryAggregateGetCached(query: WarehouseQueryInterface = {}, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     const target = this.subPath === WarehouseSubPath.sample ? 'aggregate' : 'unit/aggregate';
     return this.warehouseQueryGet(target, query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
