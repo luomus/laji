@@ -15,7 +15,7 @@ export interface ChartData {
 }
 
 export const getNbrOfDaysInMonth = (monthIdx: number): number => (
-  new Date(2000, monthIdx, 0).getDate()
+  new Date(2000, monthIdx + 1, 0).getDate()
 );
 
 @Injectable()
