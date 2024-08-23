@@ -1548,6 +1548,8 @@
   "result.load.titleSimple": "Observationer: enkel tabell",
   "result.map.taxon.empty.label": "Alla arter",
   "result.map.taxon.label": "Filtrera efter art",
+  "result.map.year.empty.label": "Kaikki vuodet",
+  "result.map.year.label": "Rajaa vuodella",
   "result.newestRecord": "Nyaste",
   "result.notOwnDocuments": "Inga egna observationspartier hittades med de angivna sökkriterierna.",
   "result.oldestRecord": "Oldest",

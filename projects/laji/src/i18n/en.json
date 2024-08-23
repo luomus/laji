@@ -1548,6 +1548,8 @@
   "result.load.titleSimple": "Observations: basic table",
   "result.map.taxon.empty.label": "Kaikki lajit",
   "result.map.taxon.label": "Rajaa lajilla",
+  "result.map.year.empty.label": "Kaikki vuodet",
+  "result.map.year.label": "Rajaa vuodella",
   "result.newestRecord": "Newest",
   "result.notOwnDocuments": "No own submissions found with given search parameters.",
   "result.oldestRecord": "Oldest",
