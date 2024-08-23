@@ -1,3 +1,8 @@
 .information-container {
   max-width: 1000px;
 }
+
+.information-wrapper {
+  max-width: 100%;
+}
+
