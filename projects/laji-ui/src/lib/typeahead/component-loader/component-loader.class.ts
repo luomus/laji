@@ -346,12 +346,13 @@ export class ComponentLoader<T> {
     }
 
     this.onShown.subscribe(() => {
+      if (!this._renderer) { console.warn("Component loader: expected renderer to exist"); return; }
       this._posService.position({
         element: this._componentRef?.location,
         target: this._elementRef,
         attachment: this.attachment,
         appendToBody: this.container === 'body'
-      });
+      }, this._renderer);
     });
 
     this._zoneSubscription = this._ngZone.onStable.subscribe(() => {

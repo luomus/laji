@@ -47,6 +47,11 @@ let nextWindowId = 0;
       overflow-y: auto;
       height: 100px;
     }
+
+    :host {
+      top: 0;
+      z-index: 10000 !important;
+    }
   `
   ],
   animations: [typeaheadAnimation]
