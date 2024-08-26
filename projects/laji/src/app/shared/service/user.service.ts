@@ -128,11 +128,11 @@ export const getLoginUrl = (next = '', lang = DEFAULT_LANG, base = '') => {
 
 export const isIctAdmin = (person: Person): boolean => person?.role?.includes('MA.admin') ?? false;
 
-const validateKeysRecursively = (validatee: Object, validator: Object): boolean => {
+const validateKeysRecursively = (validatee: any, validator: any): boolean => {
   if (!(typeof validatee  === 'object' && typeof validator === 'object')) {
     return false;
   }
-  for (let key of Object.keys(validator)) {
+  for (const key of Object.keys(validator)) {
     if (
       !validatee[key]
       || !validateKeysRecursively(validatee[key], validator[key])
