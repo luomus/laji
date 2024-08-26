@@ -67,7 +67,7 @@ namespace UserState {
   }
 
   export interface Ready {
-    _tag: 'user_state';
+    _tag: 'ready';
     person: Person | null;
     settings: UserSettings;
   }
@@ -128,6 +128,21 @@ export const getLoginUrl = (next = '', lang = DEFAULT_LANG, base = '') => {
 
 export const isIctAdmin = (person: Person): boolean => person?.role?.includes('MA.admin') ?? false;
 
+const validateKeysRecursively = (validatee: Object, validator: Object): boolean => {
+  if (!(typeof validatee  === 'object' && typeof validator === 'object')) {
+    return false;
+  }
+  for (let key of Object.keys(validator)) {
+    if (
+      !validatee[key]
+      || !validateKeysRecursively(validatee[key], validator[key])
+    ) {
+      return false;
+    }
+  }
+  return true;
+};
+
 const personsCacheKey = (personID: string): string => `users-${ personID || 'global' }-settings`;
 
 const defaultPersistentState: PersistentState = {
@@ -159,13 +174,13 @@ export class UserService implements OnDestroy {
     distinctUntilChanged()
   );
   settings$ = this.state$.pipe(
-    filter(state => state.user._tag === 'user_state'),
+    filter(state => state.user._tag === 'ready'),
     map(state => (<UserState.Ready>state.user).settings),
     distinctUntilChanged()
   );
   // TODO: this should probably be refactored to `person$`
   user$ = this.state$.pipe(
-    filter(state => state.user._tag === 'user_state'),
+    filter(state => state.user._tag === 'ready'),
     map(state => (<UserState.Ready>state.user).person),
     distinctUntilChanged()
   );
@@ -185,9 +200,14 @@ export class UserService implements OnDestroy {
    * returns true upon succesful login, false otherwise
    */
   login(userToken?: string): Observable<boolean> {
+    // Validate localStorage in case there's an old format
+    if(!validateKeysRecursively(this.persistentState, defaultPersistentState)) {
+      this.persistentState = { ...defaultPersistentState };
+    }
+
     if (
       ( this.persistentState.loginState._tag === 'logged_in'
-        && this.store.value.user._tag === 'user_state'
+        && this.store.value.user._tag === 'ready'
         && this.persistentState.loginState.token === userToken
       ) || !this.platformService.isBrowser) {
       return of(true);
@@ -210,7 +230,7 @@ export class UserService implements OnDestroy {
           ...this.store.value,
           ...this.persistentState,
           user: {
-            _tag: 'user_state',
+            _tag: 'ready',
             person,
             settings: this.storage.retrieve(personsCacheKey(person.id))
           }
@@ -278,7 +298,7 @@ export class UserService implements OnDestroy {
     if (this.store.value.allUsers[id]) {
       return pickValue(isObservable(this.store.value.allUsers[id]) ? this.store.value.allUsers[id] as Observable<Person> : of(this.store.value.allUsers[id] as Person));
     }
-    if (this.store.value.user._tag === 'user_state' && id === this.store.value.user.person.id) {
+    if (this.store.value.user._tag === 'ready' && id === this.store.value.user.person.id) {
       return pickValue(of(this.store.value.user.person));
     }
 
@@ -324,7 +344,7 @@ export class UserService implements OnDestroy {
   }
 
   setUserSetting<K extends keyof UserSettings>(key: K, value: UserSettings[K]): void {
-    if (this.store.value.user._tag !== 'user_state') {
+    if (this.store.value.user._tag !== 'ready') {
       console.warn('Attempted to set a user setting, but there\'s no existing user state.');
       return;
     }
@@ -358,9 +378,9 @@ export class UserService implements OnDestroy {
 
   private get persistentState() {
     if (this.platformService.isBrowser) {
-      return this.localStoragePersistentState ?? defaultPersistentState;
+      return this.localStoragePersistentState;
     } else {
-      return this.inMemoryPersistentState ?? defaultPersistentState;
+      return this.inMemoryPersistentState;
     }
   }
 }
