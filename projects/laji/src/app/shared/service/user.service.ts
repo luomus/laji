@@ -57,8 +57,12 @@ namespace LoginState {
 
 type LoginState = LoginState.Loading | LoginState.LoggedIn | LoginState.NotLoggedIn;
 
+// Update the version if PersistentState changes, such that the old version is thrown away from local storage
+const persistentStateVersion = 1;
+
 interface PersistentState {
   loginState: LoginState;
+  version: typeof persistentStateVersion;
 }
 
 namespace UserState {
@@ -128,31 +132,19 @@ export const getLoginUrl = (next = '', lang = DEFAULT_LANG, base = '') => {
 
 export const isIctAdmin = (person: Person): boolean => person?.role?.includes('MA.admin') ?? false;
 
-const validateKeysRecursively = (validatee: any, validator: any): boolean => {
-  if (!(typeof validatee  === 'object' && typeof validator === 'object')) {
-    return false;
-  }
-  for (const key of Object.keys(validator)) {
-    if (
-      !validatee[key]
-      || !validateKeysRecursively(validatee[key], validator[key])
-    ) {
-      return false;
-    }
-  }
-  return true;
-};
-
 const personsCacheKey = (personID: string): string => `users-${ personID || 'global' }-settings`;
 
 const defaultPersistentState: PersistentState = {
-  loginState: { _tag: 'loading' }
+  loginState: { _tag: 'loading' },
+  version: persistentStateVersion,
 };
+
+const isPersistentState = (state: unknown): state is PersistentState => typeof state === 'object' && state["version"] === persistentStateVersion;
 
 @Injectable({providedIn: 'root'})
 export class UserService implements OnDestroy {
   // Do not write to this variable in the server!
-  @LocalStorage('userState', defaultPersistentState) private localStoragePersistentState: PersistentState | undefined;
+  @LocalStorage('userState', defaultPersistentState) private localStoragePersistentState: unknown;
   private inMemoryPersistentState: PersistentState | undefined;
 
   @SessionStorage() private returnUrl: string | undefined;
@@ -200,11 +192,6 @@ export class UserService implements OnDestroy {
    * returns true upon succesful login, false otherwise
    */
   login(userToken?: string): Observable<boolean> {
-    // Validate localStorage in case there's an old format
-    if(!validateKeysRecursively(this.persistentState, defaultPersistentState)) {
-      this.persistentState = { ...defaultPersistentState };
-    }
-
     if (
       ( this.persistentState.loginState._tag === 'logged_in'
         && this.store.value.user._tag === 'ready'
@@ -376,9 +363,12 @@ export class UserService implements OnDestroy {
     }
   }
 
-  private get persistentState() {
+  private get persistentState(): PersistentState {
     if (this.platformService.isBrowser) {
-      return this.localStoragePersistentState;
+      if (!isPersistentState(this.localStoragePersistentState)) {
+        this.localStoragePersistentState = defaultPersistentState;
+      }
+      return <PersistentState>this.localStoragePersistentState;
     } else {
       return this.inMemoryPersistentState;
     }
