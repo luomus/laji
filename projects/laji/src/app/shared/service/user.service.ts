@@ -139,7 +139,7 @@ const defaultPersistentState: PersistentState = {
   version: persistentStateVersion,
 };
 
-const isPersistentState = (state: unknown): state is PersistentState => typeof state === 'object' && state["version"] === persistentStateVersion;
+const isPersistentState = (state: unknown): state is PersistentState => typeof state === 'object' && state['version'] === persistentStateVersion;
 
 @Injectable({providedIn: 'root'})
 export class UserService implements OnDestroy {
