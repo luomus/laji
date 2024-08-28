@@ -160,20 +160,20 @@ export class UserService implements OnDestroy {
   private currentRouteData = new ReplaySubject<any>(1);
   private currentRouteData$ = this.currentRouteData.asObservable();
 
-  isLoggedIn$ = this.state$.pipe(
+  isLoggedIn$: Observable<boolean> = this.state$.pipe(
     filter(state => state.loginState._tag !== 'loading'),
     map(state => state.loginState._tag === 'logged_in'),
     distinctUntilChanged()
   );
-  settings$ = this.state$.pipe(
-    filter(state => state.user._tag === 'ready'),
-    map(state => (<UserState.Ready>state.user).settings),
+  settings$: Observable<UserSettings | undefined> = this.state$.pipe(
+    filter(state => state.user._tag !== 'loading'),
+    map(state => state.user._tag === 'ready' ? (<UserState.Ready>state.user).settings : undefined),
     distinctUntilChanged()
   );
   // TODO: this should probably be refactored to `person$`
-  user$ = this.state$.pipe(
-    filter(state => state.user._tag === 'ready'),
-    map(state => (<UserState.Ready>state.user).person),
+  user$: Observable<Person | undefined> = this.state$.pipe(
+    filter(state => state.user._tag !== 'loading'),
+    map(state => state.user._tag === 'ready' ? (<UserState.Ready>state.user).person : undefined),
     distinctUntilChanged()
   );
 
@@ -201,11 +201,7 @@ export class UserService implements OnDestroy {
     }
     const token = userToken ?? (this.persistentState.loginState._tag === 'logged_in' ? this.persistentState.loginState.token : '') ?? '';
     if (!token) {
-      this.persistentState = { ...this.persistentState, loginState: { _tag: 'not_logged_in' }};
-      this.store.next({
-        ...this.store.value,
-        ...this.persistentState
-      });
+      this.setNotLoggedIn();
       return of(false);
     }
     this.store.next({ ...this.store.value, loginState: { _tag: 'loading' }, user: { _tag: 'loading' } });
@@ -227,12 +223,7 @@ export class UserService implements OnDestroy {
       httpOkError(404, false),
       retryWithBackoff(300),
       catchError(_ => {
-        this.persistentState = { ...this.persistentState, loginState: { _tag: 'not_logged_in' }};
-        this.store.next({
-          ...this.store.value,
-          ...this.persistentState,
-          user: { _tag: 'not_logged_in' }
-        });
+        this.setNotLoggedIn();
         return of(false);
       })
     );
@@ -251,11 +242,10 @@ export class UserService implements OnDestroy {
         return of(false);
       })
     ).subscribe(b => {
-      if (b === false) { return; }
-      this.persistentState = { ...this.persistentState, loginState: { _tag: 'not_logged_in' } };
-      this.store.next({
-        ...this.store.value, ...this.persistentState, user: { _tag: 'not_logged_in' }
-      });
+      if (b === false) {
+        return;
+      }
+      this.setNotLoggedIn();
       cb?.();
     });
   }
@@ -372,6 +362,15 @@ export class UserService implements OnDestroy {
     } else {
       return this.inMemoryPersistentState;
     }
+  }
+
+  private setNotLoggedIn() {
+      this.persistentState = { ...this.persistentState, loginState: { _tag: 'not_logged_in' }};
+      this.store.next({
+        ...this.store.value,
+        ...this.persistentState,
+        user: { _tag: 'not_logged_in' }
+      });
   }
 }
 
