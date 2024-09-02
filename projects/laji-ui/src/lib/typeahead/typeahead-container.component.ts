@@ -32,7 +32,6 @@ let nextWindowId = 0;
   host: {
     class: 'dropdown open bottom dropdown-menu',
     '[style.height]': `needScrollbar ? guiHeight: 'auto'`,
-    '[style.width]': `'600px'`,
     '[style.visibility]': `'inherit'`,
     '[class.dropup]': 'dropup',
     style: 'position: absolute;display: block;',
@@ -51,6 +50,7 @@ let nextWindowId = 0;
 
     :host {
       top: 0;
+      width: 600px;
       z-index: 10000 !important;
     }
   `

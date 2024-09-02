@@ -123,37 +123,39 @@ export class PlacementService {
     const elementRect = element.getBoundingClientRect();
     const targetRect = target.getBoundingClientRect();
     const {x: targetX, y: targetY} = getAbsoluteOffset(document, window, target);
+    const clientHeight = document.body.clientHeight;
+    const clientWidth = document.body.clientWidth;
 
     let x = 0;
     let y = 0;
-    let maxHeight = window.innerHeight;
-    let maxWidth = window.innerWidth;
+    let maxHeight = clientHeight;
+    let maxWidth = clientWidth;
 
     switch (placement) {
       case 'left':
         x = Math.max(targetX - elementRect.width, 0);
-        y = Math.min(targetY, window.innerHeight - elementRect.height);
-        maxHeight = window.innerHeight - y;
+        y = Math.min(targetY, clientHeight - elementRect.height);
+        maxHeight = clientHeight;
         maxWidth = x;
         break;
       case 'right':
         x = targetX + targetRect.width;
-        y = Math.min(targetY, window.innerHeight - elementRect.height);
-        maxHeight = window.innerHeight - y;
-        maxWidth = window.innerWidth - x;
+        y = Math.min(targetY, clientHeight - elementRect.height);
+        maxHeight = clientHeight;
+        maxWidth = clientWidth - x;
         break;
       case 'top':
-        x = Math.min(targetX, window.innerWidth - elementRect.width);
+        x = Math.min(targetX, clientWidth - elementRect.width);
         y = Math.max(targetY - elementRect.height, 0);
         maxHeight = targetY;
-        maxWidth = window.innerWidth - x;
+        maxWidth = clientWidth;
         break;
       case 'bottom':
       default:
-        x = Math.min(targetX, window.innerWidth - elementRect.width);
+        x = Math.min(targetX, clientWidth - elementRect.width);
         y = targetY + targetRect.height;
-        maxHeight = window.innerHeight - y;
-        maxWidth = window.innerWidth - x;
+        maxHeight = clientHeight - y;
+        maxWidth = clientWidth;
         break;
     }
 
