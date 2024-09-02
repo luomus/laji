@@ -126,27 +126,39 @@ export class PlacementService {
 
     let x = 0;
     let y = 0;
+    let maxHeight = window.innerHeight;
+    let maxWidth = window.innerWidth;
 
     switch (placement) {
       case 'left':
         x = Math.max(targetX - elementRect.width, 0);
         y = Math.min(targetY, window.innerHeight - elementRect.height);
+        maxHeight = window.innerHeight - y;
+        maxWidth = x;
         break;
       case 'right':
-        x = Math.min(targetX + targetRect.width, window.innerWidth - elementRect.width);
+        x = targetX + targetRect.width;
         y = Math.min(targetY, window.innerHeight - elementRect.height);
+        maxHeight = window.innerHeight - y;
+        maxWidth = window.innerWidth - x;
         break;
       case 'top':
         x = Math.min(targetX, window.innerWidth - elementRect.width);
         y = Math.max(targetY - elementRect.height, 0);
+        maxHeight = targetY;
+        maxWidth = window.innerWidth - x;
         break;
       case 'bottom':
       default:
         x = Math.min(targetX, window.innerWidth - elementRect.width);
-        y = Math.min(targetY + targetRect.height, window.innerHeight - elementRect.height);
+        y = targetY + targetRect.height;
+        maxHeight = window.innerHeight - y;
+        maxWidth = window.innerWidth - x;
         break;
     }
 
+    renderer.setStyle(element, 'max-height', `${maxHeight}px`);
+    renderer.setStyle(element, 'max-width', `${maxWidth}px`);
     renderer.setStyle(element, 'transform', `translate(${x}px, ${y}px)`);
   }
 }
