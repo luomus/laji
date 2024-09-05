@@ -142,9 +142,9 @@ export interface ObserverStatsParams {
 export interface ObserverStatsResponseElement {
   memberName: string;
   total: number;
-  "MY.atlasClassEnumB": number;
-  "MY.atlasClassEnumC": number,
-  "MY.atlasClassEnumD": number
+  'MY.atlasClassEnumB': number;
+  'MY.atlasClassEnumC': number;
+  'MY.atlasClassEnumD': number;
 }
 
 const BASE_URL = environment.atlasApiBasePath;
