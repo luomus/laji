@@ -3,6 +3,7 @@ import { SelectStyle } from '../select/metadata-select/metadata-select.component
 import { FileCrs, FileGeometry } from '../../shared/service/geo-convert.service';
 import { KeyValue } from '@angular/common';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
+import { DialogService } from '../../shared/service/dialog.service';
 
 export type FORMAT = 'csv'|'tsv'|'ods'|'xlsx'|'shp'|'gpkg';
 
@@ -45,7 +46,7 @@ export interface DownloadParams {
             <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">Excel (.xlsx)</label>
           </div>
           <div class="radio" *ngIf="_formats.indexOf('shp') > -1">
-            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="shp">Shapefile (.shp)</label>
+            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="shp" (click)="shpFormatClick()">Shapefile (.shp)</label>
           </div>
           <div class="radio" *ngIf="_formats.indexOf('gpkg') > -1">
             <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="gpkg">GeoPackage (.gpkg)</label>
@@ -125,7 +126,8 @@ export class DownloadComponent implements OnChanges {
   }
 
   constructor(
-    private modalService: ModalService
+    private modalService: ModalService,
+    private dialogService: DialogService
   ) { }
 
   ngOnChanges() {
@@ -160,4 +162,9 @@ export class DownloadComponent implements OnChanges {
       (this.showReason && (!this.reason || !this.reasonEnum));
   }
 
+  shpFormatClick() {
+    if (this.fileType !== 'shp') {
+      this.dialogService.alert('download.shpDeprecationWarning');
+    }
+  }
 }
