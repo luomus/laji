@@ -134,6 +134,19 @@ export interface TaxonStatsResponse {
   'MY.atlasClassEnumD': number;
 }
 
+export interface ObserverStatsParams {
+  birdAssociationId?: string;
+  limit: number;
+}
+
+export interface ObserverStatsResponseElement {
+  memberName: string;
+  total: number;
+  "MY.atlasClassEnumB": number;
+  "MY.atlasClassEnumC": number,
+  "MY.atlasClassEnumD": number
+}
+
 const BASE_URL = environment.atlasApiBasePath;
 
 @Injectable()
@@ -204,5 +217,12 @@ export class AtlasApiService {
   getTaxonStats(id: string): Observable<TaxonStatsResponse> {
     const url = `${BASE_URL}/taxon/${id}/gridStats`;
     return <Observable<TaxonStatsResponse>>this.http.get(url);
+  }
+
+  @cacheReturnObservable(60000) // 1 minute
+  getObserverStats(params: ObserverStatsParams): Observable<ObserverStatsResponseElement[]> {
+    const url = `${BASE_URL}/observer/stats`;
+    const options = { params: { ...params }};
+    return this.http.get<ObserverStatsResponseElement[]>(url, options);
   }
 }
