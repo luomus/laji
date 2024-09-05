@@ -3,10 +3,22 @@
   <ng-container *ngIf="taxonOptions; else taxonLoading">
     <select
       class="form-control"
-      (change)="onTaxonChange(toHtmlSelectElement($event.target).value)"
+      (change)="onTaxonChange($event)"
       [(ngModel)]="defaultTaxon"
     >
       <option *ngFor="let option of taxonOptions" [value]="option.value">{{ option.label }}</option>
+    </select>
+  </ng-container>
+</div>
+<div class="mb-4">
+  <label>{{ 'result.map.year.label' | translate }}</label>
+  <ng-container *ngIf="yearOptions; else taxonLoading">
+    <select
+      class="form-control"
+      (change)="onYearChange($event)"
+      [(ngModel)]="defaultYear"
+    >
+      <option *ngFor="let option of yearOptions" [value]="option.value">{{ option.label }}</option>
     </select>
   </ng-container>
 </div>
