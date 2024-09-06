@@ -1,11 +1,15 @@
-<ng-container *ngIf="taxonDescription && taxonDescription?.title">
-  <strong>{{ 'taxonomy.source' | translate }}:</strong> {{ taxonDescription?.title }}
+<ng-container *ngIf="taxonDescription && (taxonDescription.title || taxonDescription.speciesCardAuthors)">
+  <span class="mr-3">
+    <ng-container *ngIf="taxonDescription.title">
+      <strong>{{ 'taxonomy.source' | translate }}:</strong> {{ taxonDescription.title }}
+    </ng-container>
+    <ng-container *ngIf="taxonDescription.speciesCardAuthors">
+      <br>
+      <strong>{{ taxonDescription.speciesCardAuthors.title }}:</strong>
+      <span [innerHTML]="taxonDescription.speciesCardAuthors.content"></span>
+    </ng-container>
+  </span>
+  <span>
+    <laji-license type="MZ.intellectualRightsCC-BY-4.0"></laji-license>
+  </span>
 </ng-container>
-<ng-container *ngIf="taxonDescription?.speciesCardAuthors">
-  <br>
-  <strong>{{ taxonDescription?.speciesCardAuthors.title }}:</strong>
-  <span [innerHTML]="taxonDescription?.speciesCardAuthors.content"></span>
-</ng-container>
-<span style="margin: 0 7px" *ngIf="taxonDescription && (taxonDescription?.title || taxonDescription?.speciesCardAuthors)">
-  <laji-license type="MZ.intellectualRightsCC-BY-4.0"></laji-license>
-</span>
