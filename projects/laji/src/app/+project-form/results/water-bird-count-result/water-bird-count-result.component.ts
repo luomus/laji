@@ -9,6 +9,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 
 interface State {
   taxon: string | undefined;
+  year: string | undefined;
 }
 
 @Component({
@@ -45,7 +46,7 @@ export class WaterBirdCountResultComponent implements OnInit {
       this.translate.currentLang,
       {
         selectedFields: 'id,vernacularName,scientificName',
-        taxonSets: ['MX.taxonSetWaterbirdWaterbirds'],
+        taxonSets: 'MX.taxonSetWaterbirdWaterbirds',
         pageSize: 10000
       }
     ).pipe(
@@ -66,5 +67,9 @@ export class WaterBirdCountResultComponent implements OnInit {
 
   onTaxonChange(taxon: any) {
     this.updateState({ taxon });
+  }
+
+  onYearChange(year: any) {
+    this.updateState({ year });
   }
 }

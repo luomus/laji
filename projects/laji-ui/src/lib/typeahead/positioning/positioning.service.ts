@@ -1,10 +1,11 @@
-import { Injectable, ElementRef, RendererFactory2, Inject, PLATFORM_ID, NgZone } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable, ElementRef, RendererFactory2, Inject, PLATFORM_ID, NgZone, Renderer2 } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 import { positionElements } from './ng-positioning';
 
 import { fromEvent, merge, of, animationFrameScheduler, Subject, Observable } from 'rxjs';
 import { Options } from './models';
+import { Placement, PlacementService } from '../../placement/placement.service';
 
 
 export interface PositioningOptions {
@@ -45,14 +46,16 @@ export interface PositioningOptions {
 export class PositioningService {
   private options?: Options;
   private update$$ = new Subject<null>();
-  private positionElements = new Map();
+  private positionElements = new Map<HTMLElement, PositioningOptions>();
   private triggerEvent$?: Observable<number|Event|null>;
   private isDisabled = false;
 
   constructor(
     ngZone: NgZone,
     rendererFactory: RendererFactory2,
-    @Inject(PLATFORM_ID) platformId: number
+    @Inject(PLATFORM_ID) platformId: number,
+    private placementService: PlacementService,
+    @Inject(DOCUMENT) private document: Document
   ) {
 
     if (isPlatformBrowser(platformId)) {
@@ -69,25 +72,16 @@ export class PositioningService {
             return;
           }
 
-          this.positionElements
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .forEach((positionElement: any) => {
-              positionElements(
-                _getHtmlElement(positionElement.target),
-                _getHtmlElement(positionElement.element),
-                positionElement.attachment,
-                positionElement.appendToBody,
-                this.options,
-                rendererFactory.createRenderer(null, null)
-              );
-            });
+          for (let el of this.positionElements.keys()) {
+            this.placementService.update(el);
+          }
         });
       });
     }
   }
 
-  position(options: PositioningOptions): void {
-    this.addPositionElement(options);
+  position(options: PositioningOptions, renderer: Renderer2): void {
+    this.addPositionElement(options, renderer);
   }
 
   get event$(): Observable<number|Event|null>|undefined {
@@ -102,7 +96,14 @@ export class PositioningService {
     this.isDisabled = false;
   }
 
-  addPositionElement(options: PositioningOptions): void {
+  addPositionElement(options: PositioningOptions, renderer: Renderer2): void {
+    if (!options.element) { console.warn('Positioning service: expected element to exist'); return; }
+    if (!options.target) { console.warn('Positioning service: expected target to exist'); return; }
+    if (typeof options.element === 'string') { console.warn('Positioning service: expected element not to be string'); return; }
+    if (typeof options.target === 'string') { console.warn('Positioning service: expected element not to be string'); return; }
+    const element: HTMLElement = options.element?.['nativeElement'] ?? options.element;
+    const target: HTMLElement = options.target?.['nativeElement'] ?? options.target;
+    this.placementService.attach(element, target, <Placement>options.attachment, {window, document: this.document, renderer: renderer})
     this.positionElements.set(_getHtmlElement(options.element), options);
   }
 
@@ -111,6 +112,7 @@ export class PositioningService {
   }
 
   deletePositionElement(elRef: ElementRef): void {
+    this.placementService.detach(elRef.nativeElement);
     this.positionElements.delete(_getHtmlElement(elRef));
   }
 

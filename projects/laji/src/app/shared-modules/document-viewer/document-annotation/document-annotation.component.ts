@@ -76,8 +76,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   documentID: string;
   personID: string;
   isEditor = false;
-  hasEditRights = false;
-  hasDeleteRights = false;
   personRoleAnnotation: Annotation.AnnotationRoleEnum;
   activeGathering: any;
   mapData: any = [];
@@ -134,7 +132,13 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   ngOnInit() {
     this.annotationTags$ = this.annotationService.getAllTags(this.translate.currentLang);
     this.currentLang = this.translate.currentLang;
-    this.metaFetch = this.userService.user$.subscribe((person: Person) => {
+    this.metaFetch = this.userService.user$.subscribe(person => {
+      if (!person) {
+        this.personRoleAnnotation = Annotation.AnnotationRoleEnum.basic;
+        this.cd.markForCheck();
+        return;
+      }
+
       this.personID = person.id;
 
       if (isIctAdmin(person)) {
@@ -236,8 +240,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     docAndRights$
       .subscribe(({doc, rights}) => {
         this.isEditor = rights.isEditor;
-        this.hasEditRights = rights.hasEditRights;
-        this.hasDeleteRights = rights.hasDeleteRights;
         this.parseDoc(doc, doc);
       },
         () => this.parseDoc(undefined, false)

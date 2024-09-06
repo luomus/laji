@@ -21,6 +21,7 @@ interface ChartState {
 interface MapState {
   tab: Tabs.map;
   taxon: string | undefined;
+  year: string | undefined;
 }
 
 type State = ChartState | MapState;
@@ -55,7 +56,6 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.state$ = this.route.queryParams as Observable<State>;
     this.state$ = this.route.queryParams as Observable<State>;
     this.defaultTabSubscription = this.state$.subscribe(({ tab }) => {
       if (!Tabs[tab]) {
@@ -100,5 +100,9 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
 
   onTaxonChange(taxon: any) {
     this.updateState({ taxon });
+  }
+
+  onYearChange(year: any) {
+    this.updateState({ year });
   }
 }

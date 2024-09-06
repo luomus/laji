@@ -25,6 +25,7 @@ interface MapState {
   tab: Tabs.map;
   collection: string | undefined;
   taxon: string | undefined;
+  year: string | undefined;
 }
 
 type State = StatisticsState | MapState;
@@ -92,7 +93,7 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
       this.translate.currentLang,
       {
         selectedFields: 'id,vernacularName,scientificName',
-        taxonSets: taxonSet
+        taxonSets: taxonSet.join(',')
       }
     ).pipe(
       map(res => res.results),
@@ -115,5 +116,9 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
 
   onTaxonChange(taxon: any) {
     this.updateState({ taxon });
+  }
+
+  onYearChange(year: any) {
+    this.updateState({ year });
   }
 }
