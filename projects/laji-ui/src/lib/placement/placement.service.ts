@@ -86,7 +86,9 @@ export class PlacementService {
     resizeObserver.observe(element);
     resizeObserver.observe(target);
 
-    setTimeout(() => change$.next(), 100);
+    requestAnimationFrame(() => {
+      change$.next();
+    });
   }
 
   /**
@@ -159,9 +161,12 @@ export class PlacementService {
         break;
     }
 
-    renderer.setStyle(element, 'max-height', `${maxHeight}px`);
-    renderer.setStyle(element, 'max-width', `${maxWidth}px`);
     renderer.setStyle(element, 'transform', `translate(${x}px, ${y}px)`);
+
+    requestAnimationFrame(() => {
+      renderer.setStyle(element, 'max-height', `${maxHeight}px`);
+      renderer.setStyle(element, 'max-width', `${maxWidth}px`);
+    });
   }
 }
 
