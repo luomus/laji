@@ -11,12 +11,6 @@ import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQuery
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { map } from 'rxjs/operators';
 
-interface TaxonOverviewDescription {
-  generalDescription?: TaxonomyDescriptionVariable;
-  generalDescriptionSource?: TaxonomyDescription;
-  structureDescriptions?: TaxonomyDescriptionVariable[];
-  structureDescriptionSource?: TaxonomyDescription;
-}
 
 @Component({
   selector: 'laji-taxon-overview',
@@ -33,7 +27,8 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
 
   taxonChildren: Taxonomy[] = [];
 
-  description: TaxonOverviewDescription = {};
+  descriptionText?: TaxonomyDescriptionVariable[];
+  descriptionTextSource?: TaxonomyDescription;
 
   isChildrenOnlySpecie = false;
   totalObservations = 0;
@@ -45,24 +40,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   private childrenSub: Subscription;
 
   @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
-    this.description = {};
-
-    (taxonDescription || []).forEach((item, idx) => {
-      (item.groups || []).forEach(group => {
-        if (group.group === 'MX.SDVG1' && this.description.generalDescription === undefined) {
-          (group.variables || []).forEach(variable => {
-            if (variable.variable === 'MX.descriptionText' && (variable.title || variable.content)) {
-              this.description.generalDescription = variable;
-              this.description.generalDescriptionSource = item;
-            }
-          });
-        }
-        if (group.group === 'MX.SDVG8' && this.description.structureDescriptions === undefined) {
-          this.description.structureDescriptions = group.variables;
-          this.description.structureDescriptionSource = item;
-        }
-      });
-    });
+    this.updateDescriptionText(taxonDescription);
   }
 
   constructor(
@@ -108,5 +86,34 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
         this.isChildrenOnlySpecie = this.taxonChildren.filter(e => e.taxonRank === 'MX.species').length > 0;
         this.cd.markForCheck();
       });
+  }
+
+  private updateDescriptionText(taxonDescription?: TaxonomyDescription[]) {
+    this.descriptionText = undefined;
+    this.descriptionTextSource = undefined;
+
+    let generalDescriptionFound = false;
+
+    (taxonDescription || []).forEach(item => {
+      (item.groups || []).forEach(group => {
+        if (generalDescriptionFound) {
+          return;
+        }
+
+        // show the general description or if it's not found show the structure description
+        if (group.group === 'MX.SDVG1') {
+          (group.variables || []).forEach(variable => {
+            if (variable.variable === 'MX.descriptionText' && (variable.title || variable.content)) {
+              this.descriptionText = [variable];
+              this.descriptionTextSource = item;
+              generalDescriptionFound = true;
+            }
+          });
+        } else if (group.group === 'MX.SDVG8' && !this.descriptionText) {
+          this.descriptionText = group.variables;
+          this.descriptionTextSource = item;
+        }
+      });
+    });
   }
 }
