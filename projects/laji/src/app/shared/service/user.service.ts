@@ -4,9 +4,7 @@ import {
   filter,
   map,
   share,
-  skipUntil,
   startWith,
-  switchMap,
   take,
   tap
 } from 'rxjs/operators';
@@ -42,14 +40,52 @@ export interface UserSettings {
   [key: string]: any;
 }
 
-interface PersistentState {
-  token: string;
+namespace LoginState {
+  export interface Loading {
+    _tag: 'loading';
+  }
+
+  export interface LoggedIn {
+    _tag: 'logged_in';
+    token: string;
+  }
+
+  export interface NotLoggedIn {
+    _tag: 'not_logged_in';
+  }
 }
 
-export interface UserServiceState extends PersistentState {
-  user: Person | null;
-  settings: UserSettings;
-  allUsers: {[id: string]: Person|Observable<Person>};
+type LoginState = LoginState.Loading | LoginState.LoggedIn | LoginState.NotLoggedIn;
+
+// Update the version if PersistentState changes, such that the old version is thrown away from local storage
+const persistentStateVersion = 1;
+
+interface PersistentState {
+  loginState: LoginState;
+  version: typeof persistentStateVersion;
+}
+
+namespace UserState {
+  export interface Loading {
+    _tag: 'loading';
+  }
+
+  export interface Ready {
+    _tag: 'ready';
+    person: Person | null;
+    settings: UserSettings;
+  }
+
+  export interface NotLoggedIn {
+    _tag: 'not_logged_in';
+  }
+}
+
+type UserState = UserState.Loading | UserState.Ready | UserState.NotLoggedIn;
+
+interface UserServiceState extends PersistentState {
+  user: UserState;
+  allUsers: { [id: string]: Person | Observable<Person> };
 }
 
 export const prepareProfile = (profile: Profile | null, user: Person | null): Profile => {
@@ -99,15 +135,16 @@ export const isIctAdmin = (person: Person): boolean => person?.role?.includes('M
 const personsCacheKey = (personID: string): string => `users-${ personID || 'global' }-settings`;
 
 const defaultPersistentState: PersistentState = {
-  token: ''
+  loginState: { _tag: 'loading' },
+  version: persistentStateVersion,
 };
 
+const isPersistentState = (state: unknown): state is PersistentState => typeof state === 'object' && state['version'] === persistentStateVersion;
 
 @Injectable({providedIn: 'root'})
 export class UserService implements OnDestroy {
-
   // Do not write to this variable in the server!
-  @LocalStorage('userState', defaultPersistentState) private localStoragePersistentState: PersistentState | undefined;
+  @LocalStorage('userState', defaultPersistentState) private localStoragePersistentState: unknown;
   private inMemoryPersistentState: PersistentState | undefined;
 
   @SessionStorage() private returnUrl: string | undefined;
@@ -116,19 +153,29 @@ export class UserService implements OnDestroy {
 
   private store = new BehaviorSubject<UserServiceState>({
     ...defaultPersistentState,
-    token: '',
-    user: null,
-    settings: {},
+    user: { _tag: 'loading' },
     allUsers: {}
   });
-  private loading = false;
-  private state$ = this.store.asObservable().pipe(filter(() => !this.loading));
+  private state$ = this.store.asObservable();
   private currentRouteData = new ReplaySubject<any>(1);
   private currentRouteData$ = this.currentRouteData.asObservable();
 
-  isLoggedIn$ = this.state$.pipe(map((state) => !!state.token), distinctUntilChanged());
-  settings$   = this.state$.pipe(map((state) => state.settings), distinctUntilChanged());
-  user$       = this.state$.pipe(map((state) => state.user), distinctUntilChanged());
+  isLoggedIn$: Observable<boolean> = this.state$.pipe(
+    filter(state => state.loginState._tag !== 'loading'),
+    map(state => state.loginState._tag === 'logged_in'),
+    distinctUntilChanged()
+  );
+  settings$: Observable<UserSettings | undefined> = this.state$.pipe(
+    filter(state => state.user._tag !== 'loading'),
+    map(state => state.user._tag === 'ready' ? (<UserState.Ready>state.user).settings : undefined),
+    distinctUntilChanged()
+  );
+  // TODO: this should probably be refactored to `person$`
+  user$: Observable<Person | undefined> = this.state$.pipe(
+    filter(state => state.user._tag !== 'loading'),
+    map(state => state.user._tag === 'ready' ? (<UserState.Ready>state.user).person : undefined),
+    distinctUntilChanged()
+  );
 
   constructor(
     private personApi: PersonApi,
@@ -145,54 +192,70 @@ export class UserService implements OnDestroy {
    * returns true upon succesful login, false otherwise
    */
   login(userToken?: string): Observable<boolean> {
-    const token = userToken ?? this.persistentState.token;
-    if (!token) {
-      return of(false);
-    }
-    if (this.store.value.token === token || !this.platformService.isBrowser) {
+    if (
+      ( this.persistentState.loginState._tag === 'logged_in'
+        && this.store.value.user._tag === 'ready'
+        && this.persistentState.loginState.token === userToken
+      ) || !this.platformService.isBrowser) {
       return of(true);
     }
-    this.loading = true;
+    const token = userToken ?? (this.persistentState.loginState._tag === 'logged_in' ? this.persistentState.loginState.token : '') ?? '';
+    if (!token) {
+      this.setNotLoggedIn();
+      return of(false);
+    }
+    this.store.next({ ...this.store.value, loginState: { _tag: 'loading' }, user: { _tag: 'loading' } });
     return this.personApi.personFindByToken(token).pipe(
       tap(person => {
         // if person is valid, we have succesfully logged in
-        this.persistentState = { ...this.persistentState, token};
-        this.loading = false;
+        this.persistentState = { ...this.persistentState, loginState: { _tag: 'logged_in', token }};
         this.store.next({
-          ...this.store.value, ...this.persistentState, user: person,
-          settings: this.storage.retrieve(personsCacheKey(person.id))
+          ...this.store.value,
+          ...this.persistentState,
+          user: {
+            _tag: 'ready',
+            person,
+            settings: this.storage.retrieve(personsCacheKey(person.id))
+          }
         });
       }),
       map(_ => true),
       httpOkError(404, false),
       retryWithBackoff(300),
       catchError(_ => {
-        this.loading = false;
+        this.setNotLoggedIn();
         return of(false);
       })
     );
   }
 
   logout(cb?: () => void): void {
-    this.subLogout = this.personApi.removePersonToken(this.store.value.token).pipe(
+    if (this.persistentState.loginState._tag !== 'logged_in') {
+      console.warn('Attempted logout while not being logged in.');
+      return;
+    }
+    this.subLogout = this.personApi.removePersonToken(this.persistentState.loginState.token).pipe(
       httpOkError([404, 400], false),
       retryWithBackoff(300),
       catchError((err) => {
         this.logger.warn('Failed to logout', err);
         return of(false);
       })
-    ).subscribe(() => {
-      this.subLogout = undefined;
-      this.persistentState = { ...this.persistentState, token: '' };
-      this.store.next({
-        ...this.store.value, ...this.persistentState, user: {}, settings: {}
-      });
+    ).subscribe(b => {
+      if (b === false) {
+        return;
+      }
+      this.setNotLoggedIn();
       cb?.();
     });
   }
 
   getToken(): string {
-    return this.store.value.token;
+    if (this.store.value.loginState._tag !== 'logged_in') {
+      console.warn('Attempted to get token while user is not logged in');
+      return '';
+    }
+    return this.store.value.loginState.token;
   }
 
   getPersonInfo(id: string, info?: 'fullName' | 'fullNameWithGroup'): Observable<string>;
@@ -212,8 +275,8 @@ export class UserService implements OnDestroy {
     if (this.store.value.allUsers[id]) {
       return pickValue(isObservable(this.store.value.allUsers[id]) ? this.store.value.allUsers[id] as Observable<Person> : of(this.store.value.allUsers[id] as Person));
     }
-    if (this.store.value.user && id === this.store.value.user.id) {
-      return pickValue(of(this.store.value.user));
+    if (this.store.value.user._tag === 'ready' && id === this.store.value.user.person.id) {
+      return pickValue(of(this.store.value.user.person));
     }
 
     this.store.value.allUsers[id] = this.personApi.personFindByUserId(id).pipe(
@@ -258,9 +321,13 @@ export class UserService implements OnDestroy {
   }
 
   setUserSetting<K extends keyof UserSettings>(key: K, value: UserSettings[K]): void {
-    const personID = this.store.value.user?.id ?? '';
-    const settings = {...this.store.value.settings, [key]: value};
-    this.store.next({ ...this.store.value, settings });
+    if (this.store.value.user._tag !== 'ready') {
+      console.warn('Attempted to set a user setting, but there\'s no existing user state.');
+      return;
+    }
+    const personID = this.store.value.user.person.id ?? '';
+    const settings = {...this.store.value.user.settings, [key]: value};
+    this.store.next({ ...this.store.value, user: { ...this.store.value.user, settings }});
     this.storage.store(personsCacheKey(personID), settings);
   }
 
@@ -269,7 +336,7 @@ export class UserService implements OnDestroy {
       this.personApi.personFindProfileByToken(this.getToken()),
       this.user$
     ]).pipe(
-      map(([profile, user]) => prepareProfile(profile, user)),
+      map(([profile, person]) => prepareProfile(profile, person)),
       take(1)
     );
   }
@@ -278,7 +345,7 @@ export class UserService implements OnDestroy {
     this.subLogout?.unsubscribe();
   }
 
-  private set persistentState(state: PersistentState | undefined) {
+  private set persistentState(state: PersistentState) {
     if (this.platformService.isBrowser) {
       this.localStoragePersistentState = state;
     } else {
@@ -286,12 +353,24 @@ export class UserService implements OnDestroy {
     }
   }
 
-  private get persistentState() {
+  private get persistentState(): PersistentState {
     if (this.platformService.isBrowser) {
-      return this.localStoragePersistentState;
+      if (!isPersistentState(this.localStoragePersistentState)) {
+        this.localStoragePersistentState = defaultPersistentState;
+      }
+      return <PersistentState>this.localStoragePersistentState;
     } else {
       return this.inMemoryPersistentState;
     }
+  }
+
+  private setNotLoggedIn() {
+      this.persistentState = { ...this.persistentState, loginState: { _tag: 'not_logged_in' }};
+      this.store.next({
+        ...this.store.value,
+        ...this.persistentState,
+        user: { _tag: 'not_logged_in' }
+      });
   }
 }
 

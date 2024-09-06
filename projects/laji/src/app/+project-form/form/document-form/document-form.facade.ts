@@ -442,6 +442,7 @@ export class DocumentFormFacade {
 
     let removeList = [
       ...(form.excludeFromCopy),
+      '$.editors',
       '$.gatheringEvent.leg'
     ];
     if (form.options?.namedPlaceOptions?.includeUnits) {
