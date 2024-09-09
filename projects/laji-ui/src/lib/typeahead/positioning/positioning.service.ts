@@ -41,6 +41,16 @@ export interface PositioningOptions {
   appendToBody?: boolean;
 }
 
+const attachmentToLajiUiPlacement = (attachment: string): Placement => {
+  const [vert, horiz] = attachment.split(' ');
+  return vert === 'top'
+    ? 'top'
+    : vert === 'bottom' || !horiz
+      ? 'bottom'
+      : horiz === 'left'
+        ? 'left'
+        : 'right';
+};
 
 @Injectable({providedIn: 'root'})
 export class PositioningService {
@@ -103,7 +113,7 @@ export class PositioningService {
     if (typeof options.target === 'string') { console.warn('Positioning service: expected element not to be string'); return; }
     const element: HTMLElement = options.element?.['nativeElement'] ?? options.element;
     const target: HTMLElement = options.target?.['nativeElement'] ?? options.target;
-    this.placementService.attach(element, target, <Placement>options.attachment, {window, document: this.document, renderer: renderer})
+    this.placementService.attach(element, target, attachmentToLajiUiPlacement(options.attachment), {window, document: this.document, renderer: renderer})
     this.positionElements.set(_getHtmlElement(options.element), options);
   }
 
