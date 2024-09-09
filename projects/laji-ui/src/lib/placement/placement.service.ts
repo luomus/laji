@@ -137,7 +137,7 @@ export class PlacementService {
         x = Math.max(targetX - elementRect.width, 0);
         y = Math.min(targetY, window.innerHeight - elementRect.height);
         maxHeight = window.innerHeight;
-        maxWidth = x - window.scrollX;
+        maxWidth = targetX - window.scrollX;
         break;
       case 'right':
         x = targetX + targetRect.width;
