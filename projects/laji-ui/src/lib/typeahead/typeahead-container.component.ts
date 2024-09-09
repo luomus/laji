@@ -50,6 +50,7 @@ let nextWindowId = 0;
 
     :host {
       top: 0;
+      width: 600px;
       z-index: 10000 !important;
     }
   `
