@@ -1843,6 +1843,8 @@
   "taxonomy.vernacular.names": "Yleiskieliset nimet",
   "taxonomy.vernacularNames": "Yleiskieliset nimet",
   "taxonomy.ymparisto": "Elinympäristöt on pääasiassa määritetty Suomen lajien uhanalaisuusarvioinnin yhteydessä vuonna 2019 ja noudattavat kansallista elinympäristöluokitusta. Lue lisää:<a href=\"https://punainenkirja.laji.fi/about/r-49\">Punaisen kirjan verkkopalvelu – Elinympäristöluokitus</a>",
+  "taxonomy.protected": "Rauhoitettu",
+  "taxonomy.protectedUnderNatureConservationAct": "Rauhoitettu luonnonsuojelulain (LSL 2023/9) nojalla",
   "taxonVerbatim": "Alkuperäinen nimi",
   "technical": "tekninen",
   "technicalNews.error": "Palvelussa näyttää olevan jotain vialla. Voit tarkistaa onko asiasta tiedotetta <a href='http://foorumi.laji.fi/' target='_blank'>Foorumeilla</a> tai <a href='https://twitter.com/lajitieto' target='_blank'>Twitterissä</a>.",
