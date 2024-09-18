@@ -57,6 +57,7 @@ export class TaxonInfoComponent implements OnChanges {
   private updateProtectedStatus() {
     this.protectedUnderNatureConservationAct = (
       this.taxon.species &&
+      this.taxon.finnish &&
       !this.taxon.invasiveSpecies &&
       this.protectedSpeciesGroups.some(speciesGroup => this.taxon.parents?.includes(speciesGroup)) &&
       !this.unprotectedAdminStatuses.some(status => this.taxon.administrativeStatuses?.includes(status))

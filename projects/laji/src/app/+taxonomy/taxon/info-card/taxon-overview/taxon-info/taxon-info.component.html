@@ -37,6 +37,7 @@
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="protectedUnderNatureConservationAct" [label]="'taxonomy.protected' | translate">
   {{ 'taxonomy.protectedUnderNatureConservationAct' | translate }}
+  <laji-info [html]="'taxonomy.protectedUnderNatureConservationAct.info' | translate"></laji-info>
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.invasiveSpecies && taxon.species" [keyTextContentGhost]="false">
   <ng-template #label>
