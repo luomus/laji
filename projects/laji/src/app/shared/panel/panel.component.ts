@@ -1,6 +1,7 @@
 /* eslint-disable @angular-eslint/component-selector */
-import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { Inject, PLATFORM_ID, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, OnChanges, Output, TemplateRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: '[laji-panel]',
@@ -14,7 +15,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
     ])
   ]
 })
-export class PanelComponent {
+export class PanelComponent implements AfterViewInit {
   @Input() title?: string;
   @Input() headingTemplate?: TemplateRef<any>;
   @Input() index?: number;
@@ -23,6 +24,25 @@ export class PanelComponent {
   @Input() headerLink = true;
   @Output() activate = new EventEmitter();
   public hideInside = true;
+
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: number,
+  ) {}
+
+  ngAfterViewInit() {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    // This hack force triggers angular animation state transition.
+    // For some reason hydration+animations don't play together well
+    // and the animation system thinks that the state transition was already executed
+    // by the time we load in
+    const open = this.open;
+    this.open = false;
+    setTimeout(() => {
+      this.open = open;
+    });
+  }
 
   activateCurrent() {
     if (this.autoToggle) {

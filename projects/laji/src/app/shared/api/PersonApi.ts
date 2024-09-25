@@ -260,7 +260,8 @@ export class PersonApi {
       return EMPTY;
     }
     const url = this.basePath + `/person-token/${token}`;
-    return this.http.delete(url, {observe: 'response'});
+    // expecting 200 "ok"
+    return this.http.delete(url, {observe: 'body', responseType: 'text'});
   }
 
 }

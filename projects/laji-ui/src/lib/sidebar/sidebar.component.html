@@ -6,7 +6,7 @@
     'margin-right': position === 'right' ? sidebarMinWidth : 'unset'
   }">
   <div class="lu-overlay" [ngClass]="mobile && open ? 'lu-overlay-in': 'lu-overlay-out'"></div>
-  <lu-button tabindex="0" *ngIf="mobile" class="open-btn-mobile" (click)="onSwitchOpen()">
+  <lu-button tabindex="0" *ngIf="mobile && displayNav" class="open-btn-mobile" (click)="onSwitchOpen()">
     <!-- Open menu -->
     {{ menuTitle }}
     <lu-icon type="menu"></lu-icon>
