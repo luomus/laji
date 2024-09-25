@@ -376,7 +376,7 @@ export class WarehouseApi {
 
     this.addQueryToQueryParams(this.queryWithMetaData(query, selected, orderBy, pageSize, page), queryParameters);
 
-    return this.http.get<PagedResult<any>>(path, {params: queryParameters});
+    return this.http.get<PagedResult<any>>(path, {params: queryParameters, headers: { timeout: "60000" }});
   }
 
   //Get filter to use in selection filters
