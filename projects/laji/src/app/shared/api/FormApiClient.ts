@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
 
 const AUTOCOMPLETE_TAXON_RESOURCE = '/autocomplete/taxon';
+const MEDIA_RESOURCES = ['/images', '/audio'];
 
 @Injectable()
 export class FormApiClient {
@@ -67,11 +68,16 @@ export class FormApiClient {
         queryParameters['excludeNameTypes'] = 'MX.hasMisappliedName';
     }
 
+    let timeout = '120000';
+    if (MEDIA_RESOURCES.includes(resource) && options['method'] === 'POST') {
+      timeout = '3600000';
+    }
+
     return this.http.request(
       options['method'] || 'GET',
       path,
       {
-        headers: {...options['headers'], timeout: '120000'},
+        headers: {...options['headers'], timeout},
         params: queryParameters,
         body: options['body'] || undefined,
         observe: 'response'

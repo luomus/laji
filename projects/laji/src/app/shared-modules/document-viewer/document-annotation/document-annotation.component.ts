@@ -132,7 +132,13 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   ngOnInit() {
     this.annotationTags$ = this.annotationService.getAllTags(this.translate.currentLang);
     this.currentLang = this.translate.currentLang;
-    this.metaFetch = this.userService.user$.subscribe((person: Person) => {
+    this.metaFetch = this.userService.user$.subscribe(person => {
+      if (!person) {
+        this.personRoleAnnotation = Annotation.AnnotationRoleEnum.basic;
+        this.cd.markForCheck();
+        return;
+      }
+
       this.personID = person.id;
 
       if (isIctAdmin(person)) {

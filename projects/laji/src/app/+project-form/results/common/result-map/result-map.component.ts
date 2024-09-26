@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DataOptions, GetFeatureStyleOptions, Options } from '@luomus/laji-map';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { getPointIconAsCircle } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
@@ -6,8 +6,10 @@ import { LajiMapVisualization } from 'projects/laji/src/app/shared-modules/legen
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from 'projects/laji/src/app/shared/model/WarehouseQueryInterface';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
-import { BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { cacheReturnObservable } from 'projects/bird-atlas/src/app/core/api.service';
 import G from 'geojson';
 
 type GatheringCountType = 'ZERO' | 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
@@ -98,45 +100,59 @@ const observationProbabilityToVisCategory: Record<ObservationProbabilityType, { 
   styleUrls: ['./result-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResultMapComponent implements OnInit {
-  readonly collections$ = new BehaviorSubject<string[]>([]);
-  readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
-  @Input() set collections(v: string[]) { this.collections$.next(v); };
-  @Input() set taxon(v: string | undefined) { this.taxon$.next(v); };
+export class ResultMapComponent implements OnInit, OnChanges {
+  @Input() collections: string[];
+  @Input() taxon: string | undefined;
+  @Input() year: string | undefined;
   @Input() taxonOptions: { label: string; value: string }[];
   @Input() visualizationOptions: ResultVisualizationMode[];
   @Input() mapQuery: WarehouseQueryInterface;
   @Input() gatheringCountLabel: string;
+  @Input() collectionStartYear: number;
 
   @Output() taxonChange = new EventEmitter<string>();
+  @Output() yearChange = new EventEmitter<string>();
 
   toHtmlSelectElement = toHtmlSelectElement;
 
   private gatheringCountMapData$: Observable<DataOptions>;
   private observationProbabilityMapData$: Observable<DataOptions>;
 
+  readonly collections$ = new BehaviorSubject<string[]>([]);
+  readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
+  readonly year$ = new BehaviorSubject<string | undefined>(undefined);
+
   mapData$: Observable<DataOptions>;
   mapOptions: Options;
   visualization: LajiMapVisualization<ResultVisualizationMode>;
   visualizationMode: ResultVisualizationMode = 'gatheringCount';
   defaultTaxon: string;
+  defaultYear: string;
+  yearOptions: { label: string; value: string }[];
+  currentYear: number;
   loading = true;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
+    private translate: TranslateService,
     private warehouseApi: WarehouseApi
   ) {
     this.mapOptions = {
       clickBeforeZoomAndPan: true
     };
 
-    this.gatheringCountMapData$ = of([]).pipe(
+    this.gatheringCountMapData$ = combineLatest([this.collections$, this.taxon$, this.year$]).pipe(
       tap(() => {
         this.loading = true;
         this.changeDetectorRef.markForCheck();
       }),
-      switchMap(_ => combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)])),
-      map(([selectedTaxonGatheringCounts, allGatheringCounts]) => ({
+      switchMap(([collections, taxon, year]) => this.getGatheringCounts$(collections, taxon, year).pipe(
+        map((selectedTaxonGatheringCounts) => ({ selectedTaxonGatheringCounts, collections, year })))
+      ),
+      switchMap(({ selectedTaxonGatheringCounts, collections, year }) => this.getGatheringCounts$(collections, undefined, year).pipe(
+        map((allGatheringCounts) => ({ selectedTaxonGatheringCounts, allGatheringCounts })))
+      ),
+      map(({ selectedTaxonGatheringCounts, allGatheringCounts }) => ({
         marker: {
           icon: getPointIconAsCircle
         },
@@ -158,13 +174,18 @@ export class ResultMapComponent implements OnInit {
       tap(() => { this.loading = false; })
     );
 
-    this.observationProbabilityMapData$ = of([]).pipe(
+    this.observationProbabilityMapData$ = combineLatest([this.collections$, this.taxon$, this.year$]).pipe(
       tap(() => {
         this.loading = true;
         this.changeDetectorRef.markForCheck();
       }),
-      switchMap(_ => combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)])),
-      map(([selectedTaxonGatheringCounts, allGatheringCounts]) => ({
+      switchMap(([collections, taxon, year]) => this.getGatheringCounts$(collections, taxon, year).pipe(
+        map((selectedTaxonGatheringCounts) => ({ selectedTaxonGatheringCounts, collections, year })))
+      ),
+      switchMap(({ selectedTaxonGatheringCounts, collections, year }) => this.getGatheringCounts$(collections, undefined, year).pipe(
+        map((allGatheringCounts) => ({ selectedTaxonGatheringCounts, allGatheringCounts })))
+      ),
+      map(({ selectedTaxonGatheringCounts, allGatheringCounts }) => ({
         marker: {
           icon: getPointIconAsCircle
         },
@@ -182,13 +203,16 @@ export class ResultMapComponent implements OnInit {
             return _features;
           }, []).sort((a, b) => a.properties.ratio - b.properties.ratio)
         }
-      })),
+      }))
+      ,
       tap(() => { this.loading = false; })
     );
   }
 
   ngOnInit(): void {
     this.defaultTaxon = this.taxon$.getValue() !== undefined ? this.taxon$.getValue() : '';
+    this.defaultYear = this.year$.getValue() !== undefined ? this.year$.getValue() : '';
+    this.currentYear = new Date().getFullYear();
     this.mapData$ = this.gatheringCountMapData$;
 
     this.visualization = {
@@ -207,21 +231,56 @@ export class ResultMapComponent implements OnInit {
         ]), [])
       }
     };
+
+    const yearsFromStartYear = [''].concat(
+      Array.from(
+        { length: this.currentYear - this.collectionStartYear + 1 },
+        (_, i) => (+this.collectionStartYear + i).toString()
+      ).reverse()
+    );
+
+    this.yearOptions = yearsFromStartYear.map(v => {
+      if (v === '') {
+        return { label: this.translate.instant('result.map.year.empty.label'), value: '' };
+      } else {
+        return { label: v, value: v };
+      }
+    });
   }
 
-  private getGatheringCounts$(allTaxa = false): Observable<QueryResult> {
-    return combineLatest([this.collections$, this.taxon$]).pipe(
-      switchMap(([collections, taxon]) => this.warehouseApi.warehouseQueryAggregateGet(
-        {
-          collectionId: collections, taxonId: allTaxa ? '' : taxon, ...this.mapQuery
-        },
-        [
-          'gathering.conversions.ykj10kmCenter.lat',
-          'gathering.conversions.ykj10kmCenter.lon'
-        ],
-        undefined,
-        10000
-      ))
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['collections']) {
+      this.collections$.next(changes['collections'].currentValue);
+    }
+    if (changes['taxon']) {
+      this.taxon$.next(changes['taxon'].currentValue);
+    }
+    if (changes['year']) {
+      this.year$.next(changes['year'].currentValue);
+    }
+  }
+
+  private getGatheringCounts$(collections: string[], taxon: string | undefined, year: string | undefined): Observable<QueryResult> {
+    return this.getGatheringCountsCached(collections, taxon || '', year || '');
+  }
+
+  @cacheReturnObservable(120000)
+  private getGatheringCountsCached(collections: string[], taxon: string, year: string): Observable<QueryResult> {
+    return this.warehouseApi.warehouseQueryAggregateGet(
+      {
+        collectionId: collections,
+        taxonId: taxon === '' ? undefined : taxon,
+        ...this.mapQuery,
+        yearMonth: year === ''
+          ? [this.collectionStartYear + '/' + this.currentYear]
+          : [year]
+      },
+      [
+        'gathering.conversions.ykj10kmCenter.lat',
+        'gathering.conversions.ykj10kmCenter.lon'
+      ],
+      undefined,
+      10000
     );
   }
 
@@ -328,7 +387,7 @@ export class ResultMapComponent implements OnInit {
     return ratios;
   }
 
-  onVisualizationModeChange(mode: string) {
+  onVisualizationModeChange(mode: string): void {
     this.visualizationMode = <ResultVisualizationMode>mode;
     if (this.visualizationMode === 'gatheringCount') {
       this.mapData$ = this.gatheringCountMapData$;
@@ -337,7 +396,13 @@ export class ResultMapComponent implements OnInit {
     }
   }
 
-  onTaxonChange(taxon: string) {
+  onTaxonChange(event: Event): void {
+    const taxon = this.toHtmlSelectElement(event.target).value;
     this.taxonChange.emit(taxon);
+  }
+
+  onYearChange(event: Event): void {
+    const year = this.toHtmlSelectElement(event.target).value;
+    this.yearChange.emit(year);
   }
 }
