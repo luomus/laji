@@ -221,7 +221,7 @@
       [(ngModel)]="query.area">
   </div>
 
-  <hr>
+  <hr id="coordSeparator">
 
   <div>
     <div>
@@ -304,7 +304,7 @@
       </div>
     </div>
 
-    <hr>
+    <hr id="coordSeparator">
 
     <div>
       <div>
@@ -329,7 +329,7 @@
                 max="5"
                 list="accuracyPowers"
                 (click)="enableAccuracySlider()"
-                (change)="onAccuracySliderChange()"
+                (input)="onAccuracySliderChange()"
                 [(ngModel)]="logCoordinateAccuracyMax">
         <datalist id="accuracyPowers">
           <option value="0">
