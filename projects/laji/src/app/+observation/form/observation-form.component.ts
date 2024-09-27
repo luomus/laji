@@ -474,6 +474,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       timeStart = time[0];
       timeEnd = time[1];
     }
+    if (query.coordinateAccuracyMax) {
+      this.logCoordinateAccuracyMax = Math.log10(query.coordinateAccuracyMax);
+    }
     return {
       taxon: '',
       timeStart: this.getValidDate(timeStart),
@@ -559,10 +562,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         }
         query.administrativeStatusId = administrativeStatusId;
       });
-
-    if (query.coordinateAccuracyMax) {
-      this.logCoordinateAccuracyMax = Math.log10(query.coordinateAccuracyMax);
-    }
 
     this.query = query;
   }
