@@ -371,11 +371,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   enableAccuracySlider() {
     if (!this.query.coordinateAccuracyMax) {
       this.query.coordinateAccuracyMax = 1000;
-      this.onAccuracySliderChange();
+      this.onAccuracySliderInput();
     }
   }
 
-  onAccuracySliderChange() {
+  onAccuracySliderInput() {
     this.query.coordinateAccuracyMax = Math.pow(10, this.logCoordinateAccuracyMax);
     this.onQueryChange();
   }
