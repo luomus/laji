@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderService } from '../../../shared/service/header.service';
-import { TaxonDescriptionLangService } from './shared/service/taxon-description-lang.service';
+import { multiLangDescriptionToLang } from './shared/service/taxon-description-utils';
 
 const TAB_ORDER = [ 'overview', 'images', 'identification', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];
@@ -114,7 +114,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
         }
         return img;
       });
-      this.taxonDescription = TaxonDescriptionLangService.multiLangDescriptionToLang(
+      this.taxonDescription = multiLangDescriptionToLang(
         this.taxon.descriptions || [], this.translate.currentLang
       ).reduce((prev, current) => {
         if (current.title) {
