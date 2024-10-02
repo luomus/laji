@@ -559,11 +559,11 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   @HostListener('document:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
       if (e.keyCode === 84 && e.altKey) { // alt + t --> focus input taxon
-          this.taxonElement.nativeElement.focus();
+          this.taxonElement?.nativeElement.focus();
       }
 
       if (e.keyCode === 67 && e.altKey) { // alt + c --> focus comment textarea
-          this.commentElement.nativeElement.focus();
+          this.commentElement?.nativeElement.focus();
       }
 
       if (this.expert && e.keyCode === 49 && e.altKey) { // alt + 1 --> add convincing

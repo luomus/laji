@@ -186,7 +186,7 @@
   "datasets.accessNone": "Du har inte tillgång till någon dataset.",
   "datasets.accessTo": "Dataseten som du har tillgång till",
   "datasets.generic.instructions": "Databankinstruktioner (på finska)",
-  "datasets.intro": "Vie oma havaintoaineistosi Lajitietokeskukseen primääri tai sekundääridatana. (<a href=\"/about/1289\">Lue lisää: Näin liitätä aineistosi</a>)",
+  "datasets.intro": "Vie oma havaintoaineistosi Lajitietokeskukseen primääri tai sekundääridatana.",
   "datasets.label": "Databank",
   "datasets.new.help": "Du kan begära åtkomst till dataseten från en kontaktperson i din organisation eller grupp.",
   "datasets.new.intro": "Här kan du begära att ett ny dataset skapas i Databanken för din organisation eller grupp. Begäran kommer att behandlas i Artdatacentret så snart som möjligt, vanligtvis inom några dagar.",

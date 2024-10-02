@@ -32,4 +32,16 @@ export class GridIndexComponent implements OnInit {
   onSelectYKJ(ykj: string) {
     this.router.navigate([ykj], { relativeTo: this.route });
   }
+
+  onDownloadCsv(grid: AtlasGridResponse) {
+    const cols = [
+      'YKJ-ruudun koordinaatit', 'Nimi', 'Pesimävarmuussumma', 'Selvitysaste'
+    ];
+    const rows = grid.gridSquares.map(square => [
+      square.coordinates, `"${square.name}"`, square.atlasClassSum, square.activityCategory.value
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [cols.join(','), ...rows].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    window.open(encodedUri);
+  }
 }

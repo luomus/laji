@@ -300,3 +300,25 @@ $basis: (
     }
   }
 }
+
+/**
+ * MISC
+ */
+
+.text-align-left {
+  text-align: left !important;
+}
+.text-align-right {
+  text-align: right !important;
+}
+@each $breakpoint, $px in $breakpoints {
+  @media only screen and (max-width: $px) {
+    .#{$breakpoint}\:text-align-left {
+      text-align: left !important;
+    }
+    .#{$breakpoint}\:text-align-right {
+      text-align: right !important;
+    }
+  }
+}
+

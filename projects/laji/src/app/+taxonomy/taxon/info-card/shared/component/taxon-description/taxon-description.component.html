@@ -1,16 +1,11 @@
 <ng-container *ngIf="descriptionGroup">
   <div class="panel panel-default description-panel"
        laji-panel
-       [title]="title ? title : descriptionGroup.title | multiLang"
+       [title]="title ? title : descriptionGroup.title"
        [open]="true"
        [autoToggle]="true"
   >
-    <div *ngFor="let variable of descriptionGroup.variables">
-      <h4>
-        {{ variable.title | multiLang }}
-      </h4>
-      <span [innerHTML]="variable.content | multiLang"></span>
-    </div>
+    <laji-taxon-description-variables [variables]="descriptionGroup.variables"></laji-taxon-description-variables>
   </div>
   <div class="panel panel-default"
          laji-panel
@@ -20,5 +15,5 @@
          [autoToggle]="true"
   >
     <laji-taxon-description-source [taxonDescription]="taxonDescription"></laji-taxon-description-source>
-  </div>  
+  </div>
 </ng-container>

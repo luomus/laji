@@ -87,7 +87,7 @@ test.describe('Project form', () =>  {
 
       test('after login is on form page', async () => {
         await lajiAuthLogin(page);
-        await expect(page.locator('laji-project-form-form')).toBeVisible({timeout: 15000});
+        await expect(page.locator('laji-project-form-form')).toBeVisible();
       });
     });
 
@@ -216,6 +216,7 @@ test.describe('Project form', () =>  {
         });
 
         test('saving doc when no history goes to submissions page', async () => {
+          await page.locator('laji-form').waitFor({state: 'visible'});
           await page.locator('laji-form-footer .btn-success').click();
           await page.locator('.laji-form.blocking-loader').waitFor({ state: 'hidden' });
 
@@ -258,7 +259,7 @@ test.describe('Project form', () =>  {
 
         test('template button directs to form page', async () => {
           await firstRow.locator('.template-button').click();
-          await expect(page.locator('laji-project-form-form')).toBeVisible({timeout: 15000});
+          await expect(page.locator('laji-project-form-form')).toBeVisible();
         });
       });
     });
