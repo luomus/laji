@@ -10,7 +10,7 @@ export class FileNamePipe implements PipeTransform {
     if (Array.isArray(value)) {
       return value.map(v => this.transform(v));
     }
-    return value?.split('/').pop() || '';
+    return new URL(value).pathname.split('/').pop();
   }
 
 }

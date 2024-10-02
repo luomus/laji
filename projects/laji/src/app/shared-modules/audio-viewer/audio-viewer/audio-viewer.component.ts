@@ -15,7 +15,14 @@ import {
 } from '@angular/core';
 import { AudioService } from '../service/audio.service';
 import { Subscription } from 'rxjs';
-import { AudioViewerMode, IAudio, IAudioViewerArea, IAudioViewerRectangle, ISpectrogramConfig } from '../models';
+import {
+  AudioViewerMode,
+  IAudio,
+  IAudioViewerArea,
+  IAudioViewerRectangle,
+  IAudioViewerRectangleGroup,
+  ISpectrogramConfig
+} from '../models';
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
 import { defaultSpectrogramConfig } from '../variables';
@@ -35,7 +42,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() highlightFocusArea = false;
   @Input() focusAreaColor?: string;
 
-  @Input() rectangles: IAudioViewerRectangle[];
+  @Input() rectangles: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[];
 
   @Input() zoomTime = false;
   @Input() timePaddingOnZoom = 1;

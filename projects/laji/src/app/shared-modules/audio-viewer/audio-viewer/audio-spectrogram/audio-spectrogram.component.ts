@@ -13,7 +13,13 @@ import {
   HostBinding
 } from '@angular/core';
 
-import { AudioViewerMode, IAudioViewerArea, IAudioViewerRectangle, ISpectrogramConfig } from '../../models';
+import {
+  AudioViewerMode,
+  IAudioViewerArea,
+  IAudioViewerRectangle,
+  IAudioViewerRectangleGroup,
+  ISpectrogramConfig
+} from '../../models';
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { AudioViewerUtils } from '../../service/audio-viewer-utils';
@@ -38,7 +44,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Input() focusAreaColor?: string;
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
-  @Input() rectangles: IAudioViewerRectangle[];
+  @Input() rectangles: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[];
 
   @Input() pregeneratedSpectrogramUrl?: string;
   @Input() config: ISpectrogramConfig;
