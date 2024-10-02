@@ -69,6 +69,6 @@ const getCurrentPersonToken = async (page: Page): Promise<string|undefined> => {
   }
 
   try {
-    return JSON.parse(userStateJson)['token'];
+    return JSON.parse(userStateJson)['loginState']['token'];
   } catch (e) {}
 };
