@@ -87,9 +87,7 @@ export class ExcelGeneratorComponent {
       return;
     }
     if (this.selected.indexOf(field.key) === -1) {
-      this.selected = this.fields.filter(
-        f => this.selected.includes(f.key) || f.key === field.key
-      ).map(f => f.key);
+      this.selected = this.selected.concat(field.key);
     } else {
       this.selected = this.selected.filter(val => val !== field.key || field.required);
     }
