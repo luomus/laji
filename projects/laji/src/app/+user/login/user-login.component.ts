@@ -25,10 +25,8 @@ export class UserLoginComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     if (this.platformService.isBrowser) {
-      const next = this.route.snapshot.queryParams['next'] || '/';
-      this.router.navigate(
-        this.localizeRouterService.translateRoute([next])
-      );
+      const next = this.route.snapshot.queryParams['next'] || this.localizeRouterService.translateRoute('/');
+      this.router.navigateByUrl(next);
     }
   }
 
