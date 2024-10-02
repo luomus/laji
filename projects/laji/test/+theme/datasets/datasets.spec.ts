@@ -21,6 +21,7 @@ test.describe('Datasets page', () => {
 
   test('displays links to datasets', async () => {
     await expect(datasetsPage.$datasetLinks.first()).toBeVisible();
+    await expect(datasetsPage.$datasetLinks.first()).toHaveText(/Test collection*/);
   });
 
   test('navigating to dataset link lands on project form page', async ({ baseURL }) => {
