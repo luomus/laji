@@ -103,7 +103,7 @@ export class FormPermissionService {
 
   getRights(form: Form.List): Observable<Rights> {
     const {collectionID} = form;
-    const notLoggedIn$ = this.getFormPermission(collectionID).pipe(map(permissions => ({
+    const notLoggedInRights$ = this.getFormPermission(collectionID).pipe(map(permissions => ({
       edit: false,
       admin: false,
       ictAdmin: false,
@@ -116,13 +116,13 @@ export class FormPermissionService {
         view: true,
         admin: false,
         ictAdmin: isIctAdmin(user)
-      }) : notLoggedIn$));
+      }) : notLoggedInRights$));
     }
     return this.userService.isLoggedIn$.pipe(
       take(1),
       switchMap(loggedIn => {
         if (!loggedIn || this.platformService.isServer) {
-          return notLoggedIn$;
+          return notLoggedInRights$;
         }
         return this.userService.user$.pipe(
           take(1),
@@ -140,8 +140,8 @@ export class FormPermissionService {
             edit: this.isEditAllowed(formPermission, person, form),
             admin: this.isAdmin(formPermission, person),
             ictAdmin: isIctAdmin(person)
-          }) : notLoggedIn$),
-          catchError(() => notLoggedIn$)
+          }) : notLoggedInRights$),
+          catchError(() => notLoggedInRights$)
         );
       })
     );
