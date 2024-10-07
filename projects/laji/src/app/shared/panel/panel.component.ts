@@ -33,6 +33,7 @@ export class PanelComponent implements AfterViewInit {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
+
     // This hack force triggers angular animation state transition.
     // For some reason hydration+animations don't play together well
     // and the animation system thinks that the state transition was already executed
@@ -63,6 +64,15 @@ export class PanelComponent implements AfterViewInit {
   animationDone(event: any) {
     if (event.toState === 'in') {
       this.hideInside = false;
+    }
+
+    // Another hack related to hydration+animations not working together.
+    // SSR outputs the following html:
+    // <div ... role="tabpanel" aria-labelledby class="panel-collapse ... ng-trigger ng-trigger-visibilityState" style="height: *;">
+    // but `height: *` is not valid html, which is probably causing issues.
+    // Here we are sending a resize event when height has an actual sensible value which allows the children heights to be recalculated:
+    if (isPlatformBrowser(this.platformId)) {
+      window.dispatchEvent(new Event('resize'));
     }
   }
 }
