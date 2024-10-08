@@ -131,6 +131,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   vm$: Observable<ISpreadsheetState>;
 
+  private coordinateField = 'gatherings[*].geometry';
   private externalLabel = [
     'editors[*]',
     'gatheringEvent.leg[*]'
@@ -379,6 +380,26 @@ export class ImporterComponent implements OnInit, OnDestroy {
     return path.replace(/\[[0-9]+]/g, '[*]');
   }
 
+  addMissingGeometryToMapping(data) {
+    let coordinateCol;
+    Object.keys(this.colMap).forEach(col => {
+      if (this.colMap[col] === this.coordinateField) {
+        coordinateCol = col;
+      }
+    });
+
+    const geometry = data.source?.document?.gatherings[0]?.geometry
+
+    Object.keys(data.source.rows).forEach(key => {
+      if (!this.mappedData[key][coordinateCol] && geometry) {
+        this.mappedData[key] = {
+          ...this.mappedData[key],
+          [coordinateCol]: geometry
+        };
+      }
+    });
+  }
+
   removeInvalidFromUserMapping(errors) {
     const userMappings = this.mappingService.getUserMappings();
 
@@ -451,6 +472,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
               });
 
               this.removeInvalidFromUserMapping(data.result._error);
+            } else {
+              this.addMissingGeometryToMapping(data);
             }
           }
           this.mappedData = [...this.mappedData];
