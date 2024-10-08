@@ -1,5 +1,5 @@
 /* eslint-disable @angular-eslint/component-selector */
-import {Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 
 @Component({
   selector: '[laji-panel]',
