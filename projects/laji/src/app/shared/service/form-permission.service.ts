@@ -103,12 +103,6 @@ export class FormPermissionService {
 
   getRights(form: Form.List): Observable<Rights> {
     const {collectionID} = form;
-    const notLoggedInRights$ = this.getFormPermission(collectionID).pipe(map(permissions => ({
-      edit: false,
-      admin: false,
-      ictAdmin: false,
-      view: permissions.restrictAccess !== RestrictAccess.restrictAccessStrict
-    })));
 
     if (!collectionID) {
       return this.userService.user$.pipe(switchMap(user => user ? of({
@@ -116,8 +110,18 @@ export class FormPermissionService {
         view: true,
         admin: false,
         ictAdmin: isIctAdmin(user)
-      }) : notLoggedInRights$));
+      }) : of({ edit: false, admin: false, ictAdmin: false, view: true })));
     }
+
+    const notLoggedInRights$ = this.getFormPermission(collectionID).pipe(
+      map(permissions => ({
+        edit: false,
+        admin: false,
+        ictAdmin: false,
+        view: permissions.restrictAccess !== RestrictAccess.restrictAccessStrict
+      }))
+    );
+
     return this.userService.isLoggedIn$.pipe(
       take(1),
       switchMap(loggedIn => {
