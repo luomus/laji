@@ -388,7 +388,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
       }
     });
 
-    const geometry = data.source?.document?.gatherings[0]?.geometry
+    const geometry = data.source?.document?.gatherings[0]?.geometry;
 
     Object.keys(data.source.rows).forEach(key => {
       if (!this.mappedData[key][coordinateCol] && geometry) {
