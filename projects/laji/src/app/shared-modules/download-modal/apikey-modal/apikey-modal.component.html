@@ -3,7 +3,7 @@
 	{{ 'observation.download.api' | translate }}
 </button>
 
-<lu-modal size="sm" #modal>
+<lu-modal [size]="modalSize" #modal>
   <ng-container *ngIf="modalShown">
     <ng-container *ngTemplateOutlet="modalContent"></ng-container>
   </ng-container>

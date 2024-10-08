@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
+import { VirGeoapiService } from '../../../service/vir-geoapi.service';
 
 @Component({
   selector: 'vir-usage-by-collection',
@@ -16,6 +17,7 @@ export class UsageDownloadsComponent {
   @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
   downloadRequests$: Observable<DownloadRequest[]>;
   apiKeys$: Observable<DownloadRequest[]>;
+  geoapiKeys$: Observable<any[]>;
 
   selectedRequest?: DownloadRequest;
 
@@ -23,7 +25,8 @@ export class UsageDownloadsComponent {
 
   constructor(
       private modalService: ModalService,
-      private virDownloadRequestsService: VirDownloadRequestsService
+      private virDownloadRequestsService: VirDownloadRequestsService,
+      private geoapiService: VirGeoapiService
   ) {
     this.collectionSelect(undefined);
   }
@@ -37,6 +40,9 @@ export class UsageDownloadsComponent {
       map(downloads => col ? downloads.filter(d => d?.collectionSearch.includes(col)) : downloads),
       map(downloads => downloads.sort((a, b) => moment(b.requested).diff(moment(a.requested)))),
       map(res => res.map(a => ({...a, collectionIds: a.collections?.map(c => c.id) || []})))
+    );
+    this.geoapiKeys$ = this.geoapiService.findApiKeys().pipe(
+      map(downloads => downloads.sort((a, b) => moment(b.requested).diff(moment(a.requested))))
     );
   }
 

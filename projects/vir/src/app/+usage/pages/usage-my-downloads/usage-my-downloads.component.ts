@@ -5,6 +5,7 @@ import { finalize, map, take } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
+import { VirGeoapiService } from '../../../service/vir-geoapi.service';
 
 @Component({
   selector: 'vir-usage-my-downloads',
@@ -22,20 +23,29 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
           class="d-block my-5"
         ></vir-data-table>
       </laji-spinner>
-      <ng-container>
-        <laji-spinner [spinning]="keysTableLoading" [overlay]="true">
-          <h3 translate>usage.apikeys</h3>
-          <vir-data-table
-            type="userKeys"
-            [height]="'50vh'"
-            [data]="apiKeys$ | async"
-            [showDownloadMenu]="false"
-            [showRowAsLink]="true"
-            (rowSelect)="openDownloadModal($event.row)"
-            class="d-block my-5"
-          ></vir-data-table>
-        </laji-spinner>
-      </ng-container>
+      <laji-spinner [spinning]="keysTableLoading" [overlay]="true">
+        <h3 translate>usage.apikeys</h3>
+        <vir-data-table
+          type="userKeys"
+          [height]="'50vh'"
+          [data]="apiKeys$ | async"
+          [showDownloadMenu]="false"
+          [showRowAsLink]="true"
+          (rowSelect)="openDownloadModal($event.row)"
+          class="d-block my-5"
+        ></vir-data-table>
+      </laji-spinner>
+      <laji-spinner [spinning]="geoapiKeysTableLoading" [overlay]="true">
+        <h3 translate>usage.geoapiKeys</h3>
+        <vir-data-table
+          type="userGeoapiKeys"
+          [height]="'50vh'"
+          [data]="geoapiKeys$ | async"
+          [showDownloadMenu]="false"
+          [showRowAsLink]="false"
+          class="d-block my-5"
+        ></vir-data-table>
+      </laji-spinner>
     </div>
     <ng-template #downloadModal>
       <vir-download-request-modal
@@ -53,9 +63,11 @@ export class UsageMyDownloadsComponent {
 
   requestsTableLoading = false;
   keysTableLoading = false;
+  geoapiKeysTableLoading = false;
 
   downloadRequests$: Observable<DownloadRequest[]>;
   apiKeys$: Observable<DownloadRequest[]>;
+  geoapiKeys$: Observable<any[]>;
 
   selectedRequest?: DownloadRequest;
 
@@ -64,6 +76,7 @@ export class UsageMyDownloadsComponent {
   constructor(
     private modalService: ModalService,
     private virDownloadRequestsService: VirDownloadRequestsService,
+    private geoapiService: VirGeoapiService,
     private cdr: ChangeDetectorRef
   ) {
     this.requestsTableLoading = true;
@@ -82,6 +95,13 @@ export class UsageMyDownloadsComponent {
       take(1),
       finalize(() => {
         this.keysTableLoading = false;
+        this.cdr.markForCheck();
+      })
+    );
+    this.geoapiKeys$ = this.geoapiService.findMyApiKeys().pipe(
+      map(downloads => downloads.sort((a, b) => moment(b.requested).diff(moment(a.requested)))),
+      finalize(() => {
+        this.geoapiKeysTableLoading = false;
         this.cdr.markForCheck();
       })
     );

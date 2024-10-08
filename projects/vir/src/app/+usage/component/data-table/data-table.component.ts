@@ -5,7 +5,7 @@ import { ExportService } from '../../../../../../laji/src/app/shared/service/exp
 import { BookType } from 'xlsx';
 import { SelectionType } from '@achimha/ngx-datatable';
 
-type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin';
+type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin'|'geoapiKeys'|'userGeoapiKeys';
 
 @Component({
   selector: 'vir-data-table',
@@ -186,6 +186,10 @@ export class DataTableComponent implements AfterViewInit {
         return this.getCols(['apiKeyExpires', 'collectionIds', 'dataUsePurpose', 'apiKey']);
       case 'apiKeys':
         return this.getCols(['apiKeyExpires', 'personId', 'collectionIds', 'dataUsePurpose']);
+      case 'geoapiKeys':
+        return this.getCols(['apiKeyExpires', 'personId', 'dataUsePurpose']);
+      case 'userGeoapiKeys':
+        return this.getCols(['apiKeyExpires', 'dataUsePurpose', 'apiKey']);
     }
   }
 

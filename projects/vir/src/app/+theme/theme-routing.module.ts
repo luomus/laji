@@ -8,6 +8,10 @@ const routes: Routes = [
     path: 'dataset-metadata',
     loadChildren: () => import('../../../../laji/src/app/shared-modules/dataset-metadata/dataset-metadata.module').then(m => m.DatasetMetadataModule)
   },
+  {
+    path: 'geoapi',
+    loadChildren: () => import('../+geoapi/geoapi.module').then(m => m.GeoapiModule)
+  },
 ];
 
 @NgModule({

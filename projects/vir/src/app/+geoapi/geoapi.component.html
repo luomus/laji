@@ -1,0 +1,10 @@
+<div class="container laji-page mt-6 mb-6">
+  <h1>Geoapi</h1>
+  <laji-info-page [page]="{'fi': '8392', 'en': '8395', 'sv': '8397'} | multiLang"></laji-info-page>
+  <laji-apikey-modal
+    [modalSize]="'lg'"
+    [apiKey]="apiKey"
+    [loading]="apiKeyLoading"
+    (request)="onApiKeyRequest($event)"
+  ></laji-apikey-modal>
+</div>
