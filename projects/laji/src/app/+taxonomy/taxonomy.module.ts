@@ -48,7 +48,6 @@ import { TaxonDescriptionSourceComponent } from './taxon/info-card/shared/compon
 import { TaxonOccurrenceComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence.component';
 import { TaxonTaxonomyService } from './taxon/service/taxon-taxonomy.service';
 import { TaxonAutocompleteService } from '../shared/service/taxon-autocomplete.service';
-import { CheckLangService } from './taxon/service/check-lang.service';
 import { GbifMapModule } from '../shared-modules/gbif-map/gbif-map.module';
 import { InfoCardHeaderComponent } from './taxon/info-card/info-card-header/info-card-header.component';
 import { TaxonSpecimensComponent } from './taxon/info-card/taxon-specimens/taxon-specimens.component';
@@ -65,7 +64,7 @@ import { LajiUiModule } from '../../../../laji-ui/src/public-api';
 import { LicenseModule } from '../shared-modules/license/license.module';
 import { TableColumnService } from '../shared-modules/datatable/service/table-column.service';
 import { ObservationTableColumnService } from '../shared-modules/datatable/service/observation-table-column.service';
-import { TaxonYlestaFieldsComponent } from './taxon/info-card/shared/component/taxon-ylesta-fields/taxon-ylesta-fields.component';
+import { TaxonDescriptionVariablesComponent } from './taxon/info-card/shared/component/taxon-description-variables/taxon-description-variables.component';
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { ChartModule } from '../shared-modules/chart/chart.module';
@@ -91,7 +90,6 @@ import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
     InformalTaxonGroupApi,
     TaxonomySearchQuery,
     TaxonTaxonomyService,
-    CheckLangService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
     TaxonAutocompleteService,
     LabelPipe,
@@ -122,7 +120,7 @@ import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
     TaxonInfoRowComponent,
     TaxonOccurrenceMapComponent,
     AdministrativeStatusComponent,
-    TaxonYlestaFieldsComponent,
+    TaxonDescriptionVariablesComponent,
     TaxonIdentificationComponent,
     IdentificationListComponent
   ],

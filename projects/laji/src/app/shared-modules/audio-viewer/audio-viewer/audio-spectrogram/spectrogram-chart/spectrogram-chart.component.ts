@@ -5,7 +5,39 @@ import { Selection, select, event, clientPoint } from 'd3-selection';
 import { ScaleLinear, scaleLinear } from 'd3-scale';
 import { drag } from 'd3-drag';
 import { brush } from 'd3-brush';
-import { AudioViewerMode, IAudioViewerArea, IAudioViewerRectangle } from '../../../models';
+import {
+  AudioViewerMode,
+  IAudioViewerArea,
+  IAudioViewerRectangle,
+  IAudioViewerRectangleGroup,
+  isRectangleGroup
+} from '../../../models';
+
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface RectangleDimensions extends Point {
+  width: number;
+  height: number;
+}
+
+interface RectangleDrawData {
+  dimensions: RectangleDimensions;
+  color: string[];
+  label: string[];
+}
+
+interface LineDrawData {
+  coordinates: Point[];
+  color: string;
+}
+
+interface RectanglesWithLinesDrawData {
+  rectangles: RectangleDrawData[];
+  lines: LineDrawData[];
+}
 
 @Component({
   selector: 'laji-spectrogram-chart',
@@ -24,7 +56,7 @@ export class SpectrogramChartComponent implements OnChanges {
   @Input() focusAreaColor?: string;
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
-  @Input() rectangles: IAudioViewerRectangle[];
+  @Input() rectangles: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[];
 
   @Input() currentTime = 0;
 
@@ -141,8 +173,8 @@ export class SpectrogramChartComponent implements OnChanges {
     let [brushAreaX, brushAreaY, brushAreaWidth, brushAreaHeight] = [0, 0, this.width, this.height];
     const needToDrawFocusArea = this.focusArea && !this.areaIsInsideAnotherArea(this.view, this.focusArea);
     if (needToDrawFocusArea) {
-      let [areaX, areaY, areaWidth, areaHeight] = this.drawFocusArea(svg, startTime, endTime, startFreq, endFreq, strokeWidth);
-      [areaX, areaY, areaWidth, areaHeight] = [Math.max(areaX, 0), Math.max(areaY, 0), Math.min(areaWidth, this.width), Math.min(areaHeight, this.height)];
+      const area = this.drawFocusArea(svg, startTime, endTime, startFreq, endFreq, strokeWidth);
+      const [areaX, areaY, areaWidth, areaHeight] = [Math.max(area.x, 0), Math.max(area.y, 0), Math.min(area.width, this.width), Math.min(area.height, this.height)];
       if (this.onlyFocusAreaClickable) {
         [clickAreaX, clickAreaY, clickAreaWidth, clickAreaHeight] = [areaX, areaY, areaWidth, areaHeight];
       }
@@ -222,13 +254,14 @@ export class SpectrogramChartComponent implements OnChanges {
 
   private drawFocusArea(
     svg: Selection<SVGSVGElement, any, any, any>, startTime: number, endTime: number, startFreq: number, endFreq: number, strokeWidth: number
-  ): number[] {
+  ): RectangleDimensions {
     const xRangeBuffer = this.xScale.invert(strokeWidth);
     const yRangeBuffer = this.yScale.invert(this.height - strokeWidth) * 1000;
     const xRange = this.focusArea?.xRange || [startTime - xRangeBuffer, endTime + xRangeBuffer];
     const yRange = this.focusArea?.yRange || [startFreq - yRangeBuffer, endFreq + yRangeBuffer];
 
-    const [rectX, rectWidth, rectY, rectHeight] = this.getRectangleDimensions(xRange, yRange);
+    const dimensions = this.getRectangleDimensions(xRange, yRange);
+    const { x, width, y, height } = dimensions;
 
     if (this.highlightFocusArea) {
       // highlight focus area by darkening other areas by drawing semi-transparent black rectangles around it
@@ -236,36 +269,36 @@ export class SpectrogramChartComponent implements OnChanges {
         .attr('fill', 'black')
         .attr('opacity', 0.4);
 
-      if (rectX > 0) {
+      if (x > 0) {
         group.append('rect')
           .attr('x', 0)
           .attr('y', 0)
-          .attr('width', rectX)
+          .attr('width', x)
           .attr('height', this.height);
       }
 
-      const rightRectWidth = this.width - (rectX + rectWidth);
+      const rightRectWidth = this.width - (x + width);
       if (rightRectWidth > 0) {
         group.append('rect')
-          .attr('x', rectX + rectWidth)
+          .attr('x', x + width)
           .attr('y', 0)
           .attr('width', rightRectWidth)
           .attr('height', this.height);
       }
 
-      if (rectY > 0) {
+      if (y > 0) {
         group.append('rect')
           .attr('x', 0)
           .attr('y', 0)
           .attr('width', this.width)
-          .attr('height', rectY);
+          .attr('height', y);
       }
 
-      const bottomRectHeight = this.height - (rectY + rectHeight);
+      const bottomRectHeight = this.height - (y + height);
       if (bottomRectHeight > 0) {
         group.append('rect')
           .attr('x', 0)
-          .attr('y', rectY + rectHeight)
+          .attr('y', y + height)
           .attr('width', this.width)
           .attr('height', bottomRectHeight);
       }
@@ -273,15 +306,15 @@ export class SpectrogramChartComponent implements OnChanges {
 
     // draw focus area with a rectangle
     svg.append('rect')
-      .attr('x', rectX)
-      .attr('y', rectY)
-      .attr('width', rectWidth)
-      .attr('height', rectHeight)
+      .attr('x', x)
+      .attr('y', y)
+      .attr('width', width)
+      .attr('height', height)
       .attr('stroke-width', strokeWidth)
       .attr('stroke', this.focusAreaColor || 'white')
       .attr('fill', 'none');
 
-    return [rectX, rectY, rectWidth, rectHeight];
+    return dimensions;
   }
 
   private drawRectangles(
@@ -289,21 +322,31 @@ export class SpectrogramChartComponent implements OnChanges {
   ) {
     const drawData = this.getRectangleDrawData(this.rectangles);
 
-    for (const data of drawData) {
-      const [rectX, rectWidth, rectY, rectHeight] = data.dimensions;
+    for (const line of drawData.lines) {
+      svg.append('line')
+        .attr('x1', line.coordinates[0].x)
+        .attr('x2', line.coordinates[1].x)
+        .attr('y1', line.coordinates[0].y)
+        .attr('y2', line.coordinates[1].y)
+        .attr('stroke-width', strokeWidth)
+        .attr('stroke', line.color || '#d98026');
+    }
+
+    for (const data of drawData.rectangles) {
+      const { x, width, y, height } = data.dimensions;
       svg.append('rect')
-      .attr('x', rectX)
-      .attr('y', rectY)
-      .attr('width', rectWidth)
-      .attr('height', rectHeight)
+      .attr('x', x)
+      .attr('y', y)
+      .attr('width', width)
+      .attr('height', height)
       .attr('stroke-width', strokeWidth)
       .attr('stroke', data.color[data.color.length - 1] || '#d98026')
       .attr('fill', 'none');
 
-      if (data.label.length > 0 && this.rectangleIsCompletelyVisible(rectX, rectWidth, rectY, rectHeight)) {
+      if (data.label.length > 0 && this.rectangleIsCompletelyVisible(x, width, y, height)) {
         const text = svgWithOverflow.append('text')
-        .attr('x', rectX + (rectWidth / 2))
-        .attr('y', rectY - 5)
+        .attr('x', x + (width / 2))
+        .attr('y', y - 5)
         .attr('text-anchor', 'middle');
 
         for (let i = 0; i < data.label.length; i++) {
@@ -334,47 +377,85 @@ export class SpectrogramChartComponent implements OnChanges {
     svg.selectAll('*').remove();
   }
 
-  private getRectangleDimensions(xRange: number[], yRange: number[]): number[] {
+  private getRectangleDimensions(xRange: number[], yRange: number[]): RectangleDimensions {
     const startTime = this.view.xRange[0];
     const endFreq = this.view.yRange[1];
 
-    const rectX = this.xScale(xRange[0]);
-    const rectWidth = this.xScale(xRange[1] - xRange[0] + startTime);
-    const rectY = this.yScale(yRange[1] / 1000);
-    const rectHeight = this.yScale((endFreq - (yRange[1] - yRange[0])) / 1000);
+    const x = this.xScale(xRange[0]);
+    const width = this.xScale(xRange[1] - xRange[0] + startTime);
+    const y = this.yScale(yRange[1] / 1000);
+    const height = this.yScale((endFreq - (yRange[1] - yRange[0])) / 1000);
 
-    return [rectX, rectWidth, rectY, rectHeight];
+    return { x, width, y, height };
   }
 
-  private getRectangleDrawData(rectangles: IAudioViewerRectangle[]): { dimensions: number[]; color: string[]; label: string[] }[] {
-    return (rectangles || []).reduce((result, current) => {
-      const dim = this.getRectangleDimensions(current.area.xRange, current.area.yRange);
-      const duplicates = result.filter(value => this.rectanglesAreSame(value.dimensions, dim));
+  private getRectangleDrawData(rectangles: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[]): RectanglesWithLinesDrawData {
+    const rectangleDrawData: RectangleDrawData[] = [];
+    const lineDrawData: LineDrawData[] = [];
+
+    const addRectangleDrawData = (rect: IAudioViewerRectangle): RectangleDrawData => {
+      const dim = this.getRectangleDimensions(rect.area.xRange, rect.area.yRange);
+      const duplicates = rectangleDrawData.filter(value => this.rectanglesAreSame(value.dimensions, dim));
+
       if (duplicates.length > 0) {
         const duplicate = duplicates[0];
-        duplicate.color.push(current.color);
-        if (current.label) {
-          duplicate.label.push(current.label);
+        duplicate.color.push(rect.color);
+        if (rect.label) {
+          duplicate.label.push(rect.label);
         }
+        return duplicate;
       } else {
-        result.push({
+        const result = {
           dimensions: dim,
-          color: [current.color],
-          label: current.label ? [current.label] : []
-        });
+          color: [rect.color],
+          label: rect.label ? [rect.label] : []
+        };
+        rectangleDrawData.push(result);
+        return result;
       }
-      return result;
-    }, []);
+    };
+
+    (rectangles || []).forEach(data => {
+      if (isRectangleGroup(data)) {
+        let lineStartingPoint: Point;
+
+        data.rectangles.forEach(rect => {
+          const result = addRectangleDrawData({ ...rect, color: rect.color || data.color });
+          const points = this.getRectangleLeftAndRightSideMiddlePoints(result.dimensions);
+
+          if (lineStartingPoint) {
+            lineDrawData.push({
+              coordinates: [lineStartingPoint, points[0]],
+              color: data.color
+            });
+          }
+
+          lineStartingPoint = points[1];
+        });
+      } else {
+        addRectangleDrawData(data);
+      }
+    });
+
+    return { rectangles: rectangleDrawData, lines: lineDrawData };
   }
 
-  private rectanglesAreSame(dim1: number[], dim2: number[]): boolean {
-    for (let i = 0; i < dim1.length; i++) {
-      if (dim1[i] !== dim2[i]) {
+  private rectanglesAreSame(dim1: RectangleDimensions, dim2: RectangleDimensions): boolean {
+    for (const key of Object.keys(dim1)) {
+      if (dim1[key] !== dim2[key]) {
         return false;
       }
     }
     return true;
   }
+
+  private getRectangleLeftAndRightSideMiddlePoints(dim: RectangleDimensions): Point[] {
+    const y = (dim.y + dim.y + dim.height) / 2;
+    const x1 = dim.x;
+    const x2 = dim.x + dim.width;
+
+    return [{ x: x1, y }, { x: x2, y }];
+  };
 
   private rectangleIsCompletelyVisible(rectX: number, rectWidth: number, rectY: number, rectHeight: number, precision = 0.001): boolean {
     return (

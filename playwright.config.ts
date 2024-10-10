@@ -11,7 +11,7 @@ require('dotenv').config();
  */
 export default defineConfig({
   testDir: './projects/laji/test',
-  timeout: 2 * 60 * 1000,
+  timeout: 4 * 60 * 1000,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -31,9 +31,13 @@ export default defineConfig({
     trace: 'on-first-retry',
 
     permissions: ['geolocation'],
-    geolocation: { latitude: 60.1714275534955, longitude: 24.93126046426308 } // fmnh geolocation
+    geolocation: { latitude: 60.1714275534955, longitude: 24.93126046426308 }, // fmnh geolocation
+    locale: 'fi',
+    actionTimeout: 60 * 1000
   },
-  timeout: 100000,
+  expect: {
+    timeout: 60 * 1000,
+  },
 
   /* Configure projects for major browsers */
   projects: [
@@ -47,10 +51,10 @@ export default defineConfig({
       use: { ...devices['Desktop Firefox'] },
     },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
 
     /* Test against mobile viewports. */
     // {

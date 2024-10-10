@@ -20,7 +20,7 @@
     </table>
   </ng-container>
   <laji-spinner [spinning]="loading$ | async" [overlay]="true">
-      <ng-container *ngIf="!tmpOnly">
+      <ng-container *ngIf="!tmpOnly && !firstLoad">
         <ng-container *ngIf="latest$ | async; let latest">
           <h4 *ngIf="latest.length > 0">{{ 'haseka.users.latest' | translate }}</h4>
           <div class="row">

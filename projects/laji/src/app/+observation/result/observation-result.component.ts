@@ -214,7 +214,7 @@ export class ObservationResultComponent implements OnChanges {
     return this.warehouseApi.registerPolygon(polygon, this.userService.getToken(), 'WGS84').pipe(
       map((response: any) => '' + response.id),
       catchError(e => {
-        const error = e.error?.error;
+        const { error } = e;
         const {message, localizedMessage} = error;
         if (error.status >= 400 && message || localizedMessage) {
           const localizedError = localizedMessage?.[this.translate.currentLang];

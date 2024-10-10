@@ -240,6 +240,11 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.onTouchedCallback = fn;
   }
 
+  toggleEvent(e: MouseEvent) {
+    e.stopPropagation(); // the calendar sometimes closes as soon as it is opened without this (lajiClickOutSide directive closes it)
+    this.toggle();
+  }
+
   toggle() {
     if (!this.opened) {
       this.generateCalendar();

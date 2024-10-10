@@ -1,5 +1,5 @@
 import { switchMap } from 'rxjs/operators';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Profile } from '../../shared/model/Profile';
 import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
@@ -12,7 +12,7 @@ import { of as ObservableOf } from 'rxjs';
   selector: 'laji-friends',
   templateUrl: './friends.component.html'
 })
-export class FriendsComponent implements OnInit {
+export class FriendsComponent implements OnInit, OnChanges {
 
   @Input() profile: Profile;
   @Input() usersProfile: Profile;
@@ -20,6 +20,7 @@ export class FriendsComponent implements OnInit {
   public user;
   public requestSend = false;
   public friends = [];
+  private lastId: string;
 
   constructor(private userService: UserService,
               private personService: PersonApi,
@@ -31,6 +32,14 @@ export class FriendsComponent implements OnInit {
 
   ngOnInit() {
     this.requestSend = false;
+    this.lastId = this.profile.userID;
+  }
+
+  ngOnChanges() {
+    if (this.lastId && this.lastId !== this.profile.userID) {
+      this.lastId = this.profile.userID;
+      this.requestSend = false;
+    }
   }
 
   hasProfile() {

@@ -1,21 +1,12 @@
 /* eslint-disable @angular-eslint/component-selector */
-import { Inject, PLATFORM_ID, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, OnChanges, Output, TemplateRef } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 
 @Component({
   selector: '[laji-panel]',
   templateUrl: './panel.component.html',
   styleUrls: ['./panel.component.scss'],
-  animations: [
-    trigger('visibilityState', [
-      state('in' , style({ height: '*' })),
-      state('out', style({ height: 0 })),
-      transition('in <=> out', animate('100ms'))
-    ])
-  ]
 })
-export class PanelComponent implements AfterViewInit {
+export class PanelComponent {
   @Input() title?: string;
   @Input() headingTemplate?: TemplateRef<any>;
   @Input() index?: number;
@@ -23,26 +14,6 @@ export class PanelComponent implements AfterViewInit {
   @Input() autoToggle = false;
   @Input() headerLink = true;
   @Output() activate = new EventEmitter();
-  public hideInside = true;
-
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: number,
-  ) {}
-
-  ngAfterViewInit() {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-    // This hack force triggers angular animation state transition.
-    // For some reason hydration+animations don't play together well
-    // and the animation system thinks that the state transition was already executed
-    // by the time we load in
-    const open = this.open;
-    this.open = false;
-    setTimeout(() => {
-      this.open = open;
-    });
-  }
 
   activateCurrent() {
     if (this.autoToggle) {
@@ -52,17 +23,5 @@ export class PanelComponent implements AfterViewInit {
       value: this.index,
       open: this.open
     });
-  }
-
-  animationStart(event: any) {
-    if (event.toState === 'out') {
-      this.hideInside = true;
-    }
-  }
-
-  animationDone(event: any) {
-    if (event.toState === 'in') {
-      this.hideInside = false;
-    }
   }
 }

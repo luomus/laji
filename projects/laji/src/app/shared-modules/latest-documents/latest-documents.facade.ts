@@ -113,7 +113,10 @@ export class LatestDocumentsFacade implements OnDestroy {
   private updateRemote() {
     if (this.updateSub && this.updateSubKey === this.getSubKey()) {
       return;
+    } else if (this.updateSub) {
+      this.updateSub.unsubscribe();
     }
+
     this.updateSubKey = this.getSubKey();
     this.updateState({..._state, loading: true});
     this.updateSub = this.documentApi.findAll(this.userService.getToken(), '1', '10', { collectionID: this.collectionID }).pipe(
