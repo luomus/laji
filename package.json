@@ -212,7 +212,6 @@
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-rxjs": "^5.0.2",
     "globby": "^11.1.0",
-    "husky": "^4.3.8",
     "jszip": "^3.10.1",
     "ng-packagr": "^16.2.3",
     "ngx-bootstrap": "^6.2.0",
@@ -239,11 +238,6 @@
     "url": "git+https://bitbucket.org:luomus/laji.fi-front.git"
   },
   "homepage": "https://bitbucket.org/luomus/laji.fi-front",
-  "husky": {
-    "hooks": {
-      "pre-push": "npm --silent run msg-a && npm --silent run lint:all"
-    }
-  },
   "volta": {
     "node": "16.20.2"
   }
