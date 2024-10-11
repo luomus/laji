@@ -24,7 +24,7 @@ export class AppComponent {
   public isEmbedded: boolean;
   public onFrontPage = false;
   public displayFeedback = true;
-  private currentRoute: string;
+  private currentRoute: string
 
   constructor(
     platformService: PlatformService,
