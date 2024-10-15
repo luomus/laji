@@ -1808,7 +1808,7 @@
   "taxonomy.overview": "Yleiskuvaus",
   "taxonomy.protected": "Rauhoitettu",
   "taxonomy.protectedUnderNatureConservationAct": "Rauhoitettu luonnonsuojelulain (LSL 2023/9) nojalla",
-  "taxonomy.protectedUnderNatureConservationAct.info": "Lajin rauhoittamisesta säädetään luonnonsuojelulailla paitsi, jos laji on ihmisen avustamana levinnyt vieraslaji tai se kuuluu riistanisäkkäisiin, riistalintuihin, rauhoittamattomiin lajeihin tai kaloihin mukaan lukien rustokalat ja ravut (kalastuslaki viitteeksi).<br>Ahvenanmaan maakunnassa on voimassa oma lainsäädäntönsä eikä tämä rauhoitus koske maakunnan alueella esiintyviä yksilöitä.",
+  "taxonomy.protectedUnderNatureConservationAct.info": "Lajin rauhoittamisesta säädetään luonnonsuojelulailla paitsi, jos laji on ihmisen avustamana levinnyt vieraslaji tai se kuuluu riistanisäkkäisiin, riistalintuihin, rauhoittamattomiin lajeihin tai kaloihin mukaan lukien rustokalat ja ravut (kalastuslaki 2015/379).<br>Ahvenanmaan maakunnassa on voimassa oma lainsäädäntönsä eikä tämä rauhoitus koske maakunnan alueella esiintyviä yksilöitä.",
   "taxonomy.rank": "Taksonominen taso",
   "taxonomy.redListStatus2010Finland": "Uhanalaisuus Suomessa",
   "taxonomy.scientific.name": "Tieteellinen nimi",
