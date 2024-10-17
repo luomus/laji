@@ -1,4 +1,4 @@
-import { map, shareReplay, switchMap, take, tap } from 'rxjs/operators';
+import { map, shareReplay, switchMap, take, tap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';
@@ -157,6 +157,10 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
       }
 
     }).pipe(
+      catchError((err, caught) => {
+        console.error('GraphQL error when getting collections tree: ', err, caught);
+        return of({data: { collection: [] }});
+      }),
       map(({data}) => data),
       map(({collection}) => collection)
     );
