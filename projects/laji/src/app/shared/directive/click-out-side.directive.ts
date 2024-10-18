@@ -7,7 +7,7 @@ import { PlatformService } from '../../root/platform.service';
 })
 export class ClickOutSideDirective implements OnInit, OnDestroy {
 
-  private sub: Subscription;
+  private sub?: Subscription;
 
   @Input() clickOutSideActive = true;
   @Output() lajiClickOutSide = new EventEmitter<MouseEvent>();

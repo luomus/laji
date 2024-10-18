@@ -41,10 +41,10 @@ export class FormPermissionApi {
     public acceptRequest(collectionID: string, personID: string, personToken: string, type?: FormPermission.Type, extraHttpRequestParams?: any): Observable<FormPermission> {
         return this.acceptRequestWithHttpInfo(collectionID, personID, personToken, type, extraHttpRequestParams).pipe(
             map((response: HttpResponse<FormPermission>) => {
-                if (response.status === 204) {
-                    return undefined;
+                if (response.status === 204) { // Comment by Olli: The api never returns 204. We can probably remove this, but I'm just forcing the strict TS config to pass so no runtime changes...
+                    return undefined as unknown as FormPermission;
                 } else {
-                    return response.body;
+                    return response.body as FormPermission;
                 }
             }));
     }
@@ -58,11 +58,11 @@ export class FormPermissionApi {
     public findByCollectionID(collectionID: string, personToken?: string, extraHttpRequestParams?: any): Observable<FormPermission> {
         return this.findByCollectionIDWithHttpInfo(collectionID, personToken, extraHttpRequestParams).pipe(
             map((response: HttpResponse<FormPermission>) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.body;
-                }
+              if (response.status === 204) { // Comment by Olli: The api never returns 204. We can probably remove this, but I'm just forcing the strict TS config to pass so no runtime changes...
+                return undefined as unknown as FormPermission;
+              } else {
+                return response.body as FormPermission;
+              }
             }));
     }
 
@@ -75,11 +75,11 @@ export class FormPermissionApi {
     public requestAccess(collectionID: string, personToken: string, extraHttpRequestParams?: any): Observable<FormPermission> {
         return this.requestAccessWithHttpInfo(collectionID, personToken, extraHttpRequestParams).pipe(
             map((response: HttpResponse<FormPermission>) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.body;
-                }
+              if (response.status === 204) { // Comment by Olli: The api never returns 204. We can probably remove this, but I'm just forcing the strict TS config to pass so no runtime changes...
+                return undefined as unknown as FormPermission;
+              } else {
+                return response.body as FormPermission;
+              }
             }));
     }
 
@@ -93,11 +93,11 @@ export class FormPermissionApi {
     public revokeAccess(collectionID: string, personID: string, personToken: string, extraHttpRequestParams?: any): Observable<FormPermission> {
         return this.revokeAccessWithHttpInfo(collectionID, personID, personToken, extraHttpRequestParams).pipe(
             map((response: HttpResponse<FormPermission>) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.body;
-                }
+              if (response.status === 204) { // Comment by Olli: The api never returns 204. We can probably remove this, but I'm just forcing the strict TS config to pass so no runtime changes...
+                return undefined as unknown as FormPermission;
+              } else {
+                return response.body as FormPermission;
+              }
             }));
     }
 

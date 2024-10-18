@@ -33,10 +33,10 @@ const licenseLinkMap: Record<ImageModel.IntellectualRightsEnum, string> = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageModalOverlayComponent {
-  public img: Image;
-  public currentImageIndex: number;
-  public modalImages: Image[];
-  public showLinkToSpeciesCard: boolean;
+  public img!: Image;
+  public currentImageIndex!: number;
+  public modalImages!: Image[];
+  public showLinkToSpeciesCard!: boolean;
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() showModal = new EventEmitter<boolean>();
 
@@ -45,7 +45,7 @@ export class ImageModalOverlayComponent {
   ) { }
 
   getLicenseLink(license: string): string {
-    return licenseLinkMap[license.match(/(MZ\..*)/)[1]];
+    return (licenseLinkMap as any)[(license as any).match(/(MZ\..*)/)[1]];
   }
 
   closeGallery() {
@@ -70,7 +70,7 @@ export class ImageModalOverlayComponent {
     this.showImage(this.currentImageIndex);
   }
 
-  showImage(index) {
+  showImage(index: number) {
     if (!index) {
       this.currentImageIndex = 1;
     }

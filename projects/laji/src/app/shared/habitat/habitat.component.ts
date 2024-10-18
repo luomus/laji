@@ -9,9 +9,9 @@ import { Habitat } from '../model/Taxonomy';
 })
 export class HabitatComponent {
 
-  isMany: boolean;
-  _habitat: Habitat;
-  _habitats: Habitat[];
+  isMany!: boolean;
+  _habitat!: Habitat;
+  _habitats!: Habitat[];
 
   @Input() set habitat(habitat: Habitat | Habitat[]) {
     if (Array.isArray(habitat)) {

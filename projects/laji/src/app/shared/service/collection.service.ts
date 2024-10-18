@@ -201,8 +201,8 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
       take(1),
       tap(loggedIn => {
         ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
-          if (cacheQuery[key] === ObservationFacade.PERSON_TOKEN) {
-            cacheQuery[key] = loggedIn ? this.userService.getToken() : undefined;
+          if ((cacheQuery as any)[key] === ObservationFacade.PERSON_TOKEN) {
+            (cacheQuery as any)[key] = loggedIn ? this.userService.getToken() : undefined;
           }
         });
       }),

@@ -67,10 +67,10 @@ export class WarehouseApi {
   public static isEmptyQuery(query: WarehouseQueryInterface = {}) {
     const keys = Object.keys(query);
     for (const key of keys) {
-      if (typeof query[key] === 'undefined') {
+      if (typeof (query as any)[key] === 'undefined') {
         continue;
       } else if (key === 'countryId') {
-        if (query.countryId.length === 0 || (query.countryId.length === 1 && query.countryId.indexOf('ML.206') > -1)) {
+        if ((query as any).countryId.length === 0 || ((query as any).countryId.length === 1 && (query as any).countryId.indexOf('ML.206') > -1)) {
           continue;
         }
         return false;
@@ -97,7 +97,7 @@ export class WarehouseApi {
   public warehouseQueryAggregateGetCsv(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, onlyCount?: boolean): Observable<HttpResponse<any>> {
     const path = this.basePath + this.subPath + 'aggregate';
 
-    const queryParameters = {};
+    const queryParameters: any = {};
 
     this.addQueryToQueryParams(this.queryWithMetaData(query, aggregateBy, orderBy, pageSize, page), queryParameters);
 
@@ -157,7 +157,7 @@ export class WarehouseApi {
     }
     const path = this.basePath + `${this.subPath}${target}`;
 
-    let queryParameters = {};
+    let queryParameters: any = {};
 
     if (WarehouseApi.isEmptyQuery(query) && typeof query.cache === 'undefined') {
       query = {...query, cache: true};
@@ -251,7 +251,7 @@ export class WarehouseApi {
   public downloadApprovalRequest(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, description: string): Observable<string> {
     const path = this.basePath + '/warehouse/private-query/downloadApprovalRequest';
 
-    const queryParameters = {};
+    const queryParameters: any = {};
 
     if (userToken === null || userToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling warehouse download.');

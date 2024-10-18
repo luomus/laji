@@ -10,12 +10,12 @@ let OpenSeadragon: any; // eslint-disable-line @typescript-eslint/naming-convent
 })
 export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
 
-  @Input() src: string;
+  @Input() src!: string;
   @Input() showNavigator = true;
   @Output() loading = new EventEmitter<boolean>();
 
   private osd: any;
-  private current: string;
+  private current!: string;
   private loaded = false;
 
   constructor(

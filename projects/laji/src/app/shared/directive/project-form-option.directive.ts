@@ -9,7 +9,7 @@ import { Directive, ElementRef, Input } from '@angular/core';
 })
 export class ProjectFormOptionDirective {
 
-  private _formOption: string[];
+  private _formOption?: string[];
 
   constructor(private el: ElementRef) {
   }

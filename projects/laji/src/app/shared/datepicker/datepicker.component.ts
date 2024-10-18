@@ -41,9 +41,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
 
 export interface CalendarDate {
-  day: string;
-  month: string;
-  year: string;
+  day: string | null;
+  month: string | null;
+  year: string | null;
   today: boolean;
   selected: boolean;
 }
@@ -66,24 +66,24 @@ const VIEW_FORMAT = 'D.M.YYYY'; // Allows e.g. '01.9.2022" and "1.09.2022".
 })
 export class DatePickerComponent implements ControlValueAccessor {
   @Input() toLastOfYear = false;
-  @Input() addonText: string;
+  @Input() addonText!: string;
   @Input() popoverAlign: 'right' | 'left' = 'right';
   @Output() dateSelect = new EventEmitter();
 
-  @ViewChild('dateInput') dateInput: ElementRef;
+  @ViewChild('dateInput') dateInput?: ElementRef;
 
   public moment = moment;
   public validDate = true;
   public viewValue= '';
-  public calendarUIValue = ''; // The active calendar date in ISO-8601 format.
-  public date: moment.Moment;
+  public calendarUIValue? = ''; // The active calendar date in ISO-8601 format.
+  public date!: moment.Moment;
   public days: CalendarDate[] = [];
   public opened = false;
 
   private value: string | undefined;
   private readonly el: Element;
-  private onTouchedCallback: () => void;
-  private onChangeCallback: (_: any) => void;
+  private onTouchedCallback?: () => void;
+  private onChangeCallback?: (_: any) => void;
 
   constructor(
     viewContainerRef: ViewContainerRef
@@ -91,7 +91,7 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.el = viewContainerRef.element.nativeElement;
   }
 
-  keyEvent(e, value) {
+  keyEvent(e: any, value: any) {
     const viewFormMoment = moment(value, VIEW_FORMAT, true);
     if (viewFormMoment.isValid()) {
       this.validDate = true;
@@ -99,7 +99,7 @@ export class DatePickerComponent implements ControlValueAccessor {
     }
   }
 
-  onInputValueChange(viewFormatValue: string) {
+  onInputValueChange(viewFormatValue: string): any {
     if (viewFormatValue) {
       // First try formatting with default view format.
       let viewFormMoment = moment(viewFormatValue, VIEW_FORMAT, true);
@@ -151,7 +151,7 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.generateCalendar();
   }
 
-  closeEvent(e) {
+  closeEvent(e: any) {
     if (!this.opened || !e.target) {
       return;
     }

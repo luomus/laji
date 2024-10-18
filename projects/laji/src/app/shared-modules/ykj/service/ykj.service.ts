@@ -18,9 +18,9 @@ type Grid = '100kmCenter'
 export class YkjService {
 
   private key: undefined;
-  private data: any[];
-  private pending: Observable<any>;
-  private pendingKey: string;
+  private data?: any[];
+  private pending?: Observable<any>;
+  private pendingKey?: string;
 
   constructor(
     private warehouseApi: WarehouseApi
@@ -47,11 +47,11 @@ export class YkjService {
           observer.next(res);
           observer.complete();
         };
-        this.pending.subscribe((data) => { onComplete(data); });
+        (this.pending as any).subscribe((data: any) => { onComplete(data); });
       });
     }
     this.pendingKey = key;
-    const sourceMethod: (query, aggregate, orderBy, pageSize, page, geoJson, onlyCount) => Observable<any> = zeroObservations
+    const sourceMethod: (query: any, aggregate: any, orderBy: any, pageSize: any, page: any, geoJson: any, onlyCount: any) => Observable<any> = zeroObservations
       ? this.warehouseApi.warehouseQueryGatheringStatisticsGet.bind(this.warehouseApi) : useStatistics
       ? this.warehouseApi.warehouseQueryStatisticsGet.bind(this.warehouseApi)
       : this.warehouseApi.warehouseQueryAggregateGet.bind(this.warehouseApi);

@@ -41,7 +41,7 @@ export class DocumentStorage extends LocalDb<Document> {
     );
   }
 
-  getItem(key: string, person?: string | Person): Observable<Document> {
+  getItem(key: string, person?: string | Person): Observable<Document | null> {
     if (person) {
       return super.getItem(DocumentStorage.key(key, person));
     }
@@ -74,7 +74,7 @@ export class DocumentStorage extends LocalDb<Document> {
     );
   }
 
-  getAll(person: string | Person, type?: 'onlyTmp'|'onlyDoc'): Observable<Document[]> {
+  getAll(person: string | Person, type?: 'onlyTmp'|'onlyDoc'): Observable<(Document | null)[]> {
     return this.getAllKeys(person, type).pipe(
       switchMap(keys => from(keys)),
       mergeMap((key) => this.getItem(key)),

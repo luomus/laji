@@ -136,7 +136,7 @@ export class FormPermissionService {
                 collectionID,
                 admins: [],
                 editors: []
-              } as FormPermission)),
+              } as unknown as FormPermission)),
               map((formPermission: FormPermission) => ({person, formPermission}))
               )),
           switchMap(({person, formPermission}) => person ? of({
