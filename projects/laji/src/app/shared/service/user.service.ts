@@ -72,7 +72,7 @@ namespace UserState {
 
   export interface Ready {
     _tag: 'ready';
-    person: Person | null;
+    person: Person;
     settings: UserSettings;
   }
 
@@ -139,14 +139,13 @@ const defaultPersistentState: PersistentState = {
   version: persistentStateVersion,
 };
 
-const isPersistentState = (state: unknown): state is PersistentState => typeof state === 'object' && (state as any)['version'] === persistentStateVersion;
+const isPersistentState = (state: unknown): state is PersistentState =>
+  typeof state === 'object' && 'version' in state && state['version'] === persistentStateVersion;
 
 @Injectable({providedIn: 'root'})
 export class UserService implements OnDestroy {
-  // Do not write to this variable in the server!
   @LocalStorage('userState', defaultPersistentState) private localStoragePersistentState: unknown;
-  // private inMemoryPersistentState: PersistentState | undefined;
-  private inMemoryPersistentState: any;
+  private inMemoryPersistentState: PersistentState = { ...defaultPersistentState };
 
   @SessionStorage() private returnUrl: string | undefined;
 
@@ -172,7 +171,7 @@ export class UserService implements OnDestroy {
     distinctUntilChanged()
   );
   // TODO: this should probably be refactored to `person$`
-  user$: Observable<Person | undefined | null> = this.state$.pipe(
+  user$: Observable<Person | undefined> = this.state$.pipe(
     filter(state => state.user._tag !== 'loading'),
     map(state => state.user._tag === 'ready' ? (<UserState.Ready>state.user).person : undefined),
     distinctUntilChanged()
