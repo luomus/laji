@@ -227,7 +227,8 @@ export enum KerttuGlobalErrorEnum {
 export enum TaxonTypeEnum {
   bird = 0,
   bat = 1,
-  insect = 2
+  insect = 2,
+  frog = 3
 }
 
 export enum AnnotationStatusEnum {
