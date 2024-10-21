@@ -57,7 +57,7 @@ export class UsageMyDownloadsComponent {
   downloadRequests$: Observable<DownloadRequest[]>;
   apiKeys$: Observable<DownloadRequest[]>;
 
-  selectedRequest?: DownloadRequest;
+  selectedRequest: DownloadRequest | null = null;
 
   private modal: ModalRef;
 
