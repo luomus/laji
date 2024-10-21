@@ -21,7 +21,7 @@
     <ng-template #audioCustomControls>
       <laji-audio-viewer-simple-settings
         [enableSlowDownAudioSetting]="recording.taxonType === taxonTypeEnum.bat || recording.taxonType === taxonTypeEnum.insect"
-        [enableShowWholeFrequencyRangeSetting]="recording.taxonType === taxonTypeEnum.bird || recording.taxonType === taxonTypeEnum.bat"
+        [enableShowWholeFrequencyRangeSetting]="recording.taxonType !== taxonTypeEnum.insect"
         [enableShowWholeTimeRangeSetting]="recording.taxonType !== taxonTypeEnum.bat"
         [(slowDownAudio)]="slowDownAudio"
         [(showWholeFrequencyRange)]="showWholeFrequencyRange"
