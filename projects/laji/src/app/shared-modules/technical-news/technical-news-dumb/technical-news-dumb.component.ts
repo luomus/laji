@@ -9,14 +9,24 @@ import { News } from '../../../shared/model/News';
 })
 export class TechnicalNewsDumbComponent {
   @Input() set news(news: News[] | null) {
-    this.technicalNews = news?.filter(newsItem => {
-      const days = 1;
-      const isNew = Date.now() - parseInt(newsItem.posted, 10) < (days * 86400000); // number of milliseconds in a day
-      const isTechnical = newsItem.tag === 'technical';
-      return isTechnical && isNew;
-    });
-  }
-  @Input() absoluteLink: string;
+    if (news) {
+      this.technicalNews = news?.filter(newsItem => {
+        const days = 1;
 
-  technicalNews: News[];
+        let isNew = false;
+        if (newsItem.posted) {
+          isNew = Date.now() - parseInt(newsItem.posted, 10) < (days * 86400000); // number of milliseconds in a day
+        }
+
+        const isTechnical = newsItem.tag === 'technical';
+        return isTechnical && isNew;
+      });
+    } else {
+      this.technicalNews = null;
+    }
+  }
+
+  @Input() absoluteLink = '';
+
+  technicalNews: News[] | null = null;
 }
