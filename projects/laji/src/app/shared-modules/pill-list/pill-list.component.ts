@@ -40,6 +40,4 @@ export class PillListComponent {
       return null;
     }
   }
-
-
 }

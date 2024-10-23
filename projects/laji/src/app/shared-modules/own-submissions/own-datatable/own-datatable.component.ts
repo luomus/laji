@@ -146,12 +146,12 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   displayMode = 'medium';
   defaultSort: any;
 
-  usersId = '';
+  usersId?: string;
   usersIdSub!: Subscription;
 
   subscriptionDeleteOwnDocument!: Subscription;
 
-  downloadedDocumentId = '';
+  downloadedDocumentId?: string;
   fileType = 'csv';
 
   _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'gatheringsCount', 'unitCount', 'observer', 'form', 'id', 'publicityRestrictions'];
@@ -216,9 +216,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     this.updateDisplayMode();
     this.usersIdSub = this.userService.user$.pipe(
       map(user => user?.id)
-    ).subscribe(id => {
-      if (id) { this.usersId = id; }
-    });
+    ).subscribe(id => this.usersId = id);
 
     this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(id => {
       if (id !== null) {
