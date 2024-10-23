@@ -72,6 +72,11 @@ export interface LabelEvent {
   filter: LabelFilter;
 }
 
+export interface OwnDatatableColumn {
+  prop: string;
+  mode: string;
+}
+
 @Component({
   selector: 'laji-own-datatable',
   templateUrl: './own-datatable.component.html',
@@ -93,7 +98,7 @@ export interface LabelEvent {
   ]
 })
 export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestroy {
-  @Input() year: string;
+  @Input() year = '';
   @Input() loadError = '';
   @Input() showDownloadAll = true;
   @Input() showPrintLabels = true;
@@ -115,8 +120,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
 
   totalMessage = '';
   publicity = Document.PublicityRestrictionsEnum;
-  useColumns = [];
-  allColumns = [
+  useColumns: OwnDatatableColumn[] = [];
+  allColumns: OwnDatatableColumn[] = [
     {prop: 'templateName', mode: 'small'},
     {prop: 'templateDescription', mode: 'small'},
     {prop: 'dateEdited', mode: 'small'},
@@ -132,31 +137,31 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     {prop: 'publicityRestrictions', mode: 'large'}
   ];
   allRows: RowDocument[] = [];
-  visibleRows: RowDocument[];
-  filterBy: string;
+  visibleRows: RowDocument[] = [];
+  filterBy = '';
   selectionType: SelectionType;
-  selectedLabel: string;
+  selectedLabel = '';
   labelLoading = false;
 
-  displayMode: string;
+  displayMode = 'medium';
   defaultSort: any;
 
-  usersId: string;
-  usersIdSub: Subscription;
+  usersId?: string;
+  usersIdSub!: Subscription;
 
-  subscriptionDeleteOwnDocument: Subscription;
+  subscriptionDeleteOwnDocument!: Subscription;
 
-  downloadedDocumentId: string;
+  downloadedDocumentId?: string;
   fileType = 'csv';
 
   _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'gatheringsCount', 'unitCount', 'observer', 'form', 'id', 'publicityRestrictions'];
   _goToStartAfterViewCheck = false;
   private lastSort: any;
 
-  @ViewChild(DatatableComponent) table: DatatableComponent;
-  @ViewChild('chooseFileTypeModal', { static: true }) public modal: ModalComponent;
-  @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalComponent;
-  @ViewChild('deleteModal', { static: true }) public deleteModal: ModalComponent;
+  @ViewChild(DatatableComponent) table!: DatatableComponent;
+  @ViewChild('chooseFileTypeModal', { static: true }) public modal!: ModalComponent;
+  @ViewChild('saveAsTemplate', { static: true }) public templateModal!: ModalComponent;
+  @ViewChild('deleteModal', { static: true }) public deleteModal!: ModalComponent;
 
   labelFilter$: Observable<LabelFilter>;
   forms$: Observable<{[id: string]: Form.List}>;
@@ -210,7 +215,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
 
     this.updateDisplayMode();
     this.usersIdSub = this.userService.user$.pipe(
-      map(user => user.id)
+      map(user => user?.id)
     ).subscribe(id => this.usersId = id);
 
     this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(id => {
@@ -373,7 +378,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   private initColumns() {
-    const useCols = [];
+    const useCols: OwnDatatableColumn[] = [];
     this._columns.map(col => {
       const column = this.allColumns.find((value) => value.prop === col);
       if (column) {
