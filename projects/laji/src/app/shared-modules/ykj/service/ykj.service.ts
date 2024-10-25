@@ -70,11 +70,11 @@ export class YkjService {
     return this.pending;
   }
 
-  combineGeoJsons(geoJson, zeroObsGeoJson) {
+  combineGeoJsons(geoJson: any[], zeroObsGeoJson: any[]) {
     const grids = geoJson.map(g => (g.properties.grid));
-    const filteredGeoJson = [];
+    const filteredGeoJson: any[] = [];
 
-    const filteredZeroObsGeoJson = zeroObsGeoJson.filter(z => {
+    const filteredZeroObsGeoJson = zeroObsGeoJson.filter((z: any) => {
       if (z.properties.lineLengthSum === 0) {
         return false;
       }
@@ -91,9 +91,9 @@ export class YkjService {
     return filteredGeoJson.concat(filteredZeroObsGeoJson);
   }
 
-  resultToGeoJson(data, grid, zeroObservations = false) {
-    const features = [];
-    data.map(result => {
+  resultToGeoJson(data: any[], grid: string, zeroObservations = false) {
+    const features: any[] = [];
+    data.map((result: any) => {
       features.push(this.convertYkjToGeoJsonFeature(
         result.aggregateBy[`gathering.conversions.ykj${grid}.lat`],
         result.aggregateBy[`gathering.conversions.ykj${grid}.lon`],
@@ -142,7 +142,7 @@ export class YkjService {
     return MapUtil.convertLatLng(latLng, 'EPSG:2393', 'WGS84').reverse() as [number, number];
   }
 
-  private pad(value) {
+  private pad(value: any) {
     value = '' + value;
     return value + '0000000'.slice(value.length);
   }

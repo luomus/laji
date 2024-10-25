@@ -34,22 +34,22 @@ export interface TreeOptionsChangeEvent {
 export class TreeSelectComponent {
   @Input() includedOptions: string[] = [];
   @Input() excludedOptions: string[] = [];
-  @Input() optionsTree$: Observable<TreeOptionsNode[]>;
-  @Input() options: SelectedOption[];
-  @Input() modalButtonLabel: string;
-  @Input() modalTitle: string;
-  @Input() browseTitle: string;
-  @Input() selectedTitle: string;
-  @Input() includedTitle: string;
-  @Input() excludedTitle: string;
-  @Input() okButtonLabel: string;
-  @Input() clearButtonLabel: string;
+  @Input() optionsTree$!: Observable<TreeOptionsNode[]>;
+  @Input() options!: SelectedOption[];
+  @Input() modalButtonLabel!: string;
+  @Input() modalTitle!: string;
+  @Input() browseTitle!: string;
+  @Input() selectedTitle!: string;
+  @Input() includedTitle!: string;
+  @Input() excludedTitle!: string;
+  @Input() okButtonLabel!: string;
+  @Input() clearButtonLabel!: string;
   @Input() includeCount = false;
   @Input() includeLink = false;
   @Output() selectedOptionsChange = new EventEmitter<TreeOptionsChangeEvent>();
 
-  lang: string;
-  modalRef: ModalRef<TreeSelectModalComponent>;
+  lang!: string;
+  modalRef!: ModalRef<TreeSelectModalComponent>;
 
   constructor(
     private modalService: ModalService,
@@ -70,10 +70,11 @@ export class TreeSelectComponent {
       includeLink: this.includeLink,
     };
     this.modalRef = this.modalService.show(TreeSelectModalComponent, { size: 'lg', contentClass: 'tree-select-modal-content', initialState });
-    this.modalRef.content.emitConfirm.subscribe(result => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.modalRef.content!.emitConfirm.subscribe(result => {
       this.modalRef.hide();
-      const includeToReturn = [];
-      const excludeToReturn = [];
+      const includeToReturn: string[] = [];
+      const excludeToReturn: string[] = [];
 
       this.options = result;
 

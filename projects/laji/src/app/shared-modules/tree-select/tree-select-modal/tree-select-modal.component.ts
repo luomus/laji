@@ -12,19 +12,20 @@ import { TreeSelectorComponent } from '../tree-selector/tree-selector.component'
 })
 
 export class TreeSelectModalComponent {
-  @Input() selectedOptions: SelectedOption[];
-  @Input() optionsTree$: Observable<TreeOptionsNode[]>;
-  @Input() modalTitle: string;
-  @Input() browseTitle: string;
-  @Input() selectedTitle: string;
-  @Input() includedTitle: string;
-  @Input() excludedTitle: string;
-  @Input() okButtonLabel: string;
-  @Input() clearButtonLabel: string;
-  @Input() includeCount: boolean;
-  @Input() includeLink: boolean;
-  @Input() useVirtualScroll: boolean;
-  @ViewChild('treeSelector') treeSelectorComponent: TreeSelectorComponent;
+  @Input() selectedOptions!: SelectedOption[];
+  @Input() optionsTree$!: Observable<TreeOptionsNode[]>;
+  @Input() modalTitle!: string;
+  @Input() browseTitle!: string;
+  @Input() selectedTitle!: string;
+  @Input() includedTitle!: string;
+  @Input() excludedTitle!: string;
+  @Input() okButtonLabel!: string;
+  @Input() clearButtonLabel!: string;
+  @Input() includeCount!: boolean;
+  @Input() includeLink!: boolean;
+  @Input() useVirtualScroll!: boolean;
+  @ViewChild('treeSelector')
+  treeSelectorComponent!: TreeSelectorComponent;
   @Output() emitConfirm = new EventEmitter<SelectedOption[]>();
 
   constructor(

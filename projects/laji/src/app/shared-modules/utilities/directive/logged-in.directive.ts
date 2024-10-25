@@ -8,10 +8,10 @@ import { tap } from 'rxjs/operators';
 })
 export class LoggedInDirective implements OnInit, OnDestroy {
 
-  @Input() lajiLoggedIn: boolean;
+  @Input() lajiLoggedIn: boolean | null | undefined;
 
   private visible = false;
-  private userActions: Subscription;
+  private userActions?: Subscription;
 
   constructor(
     private templateRef: TemplateRef<any>,

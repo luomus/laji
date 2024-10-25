@@ -7,7 +7,7 @@ import { environment } from '../../../../../environments/environment';
 export class ForTypesDirective implements OnChanges {
 
   @Input() lajiForTypesExclude = false;
-  @Input() lajiForTypes = [];
+  @Input() lajiForTypes: string[] = [];
 
   constructor(
     private templateRef: TemplateRef<any>,

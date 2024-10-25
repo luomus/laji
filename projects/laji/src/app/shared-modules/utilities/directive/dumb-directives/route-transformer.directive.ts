@@ -14,7 +14,7 @@ export class RouteTransformerDirective {
 
   @HostListener('click', ['$event'])
   public onClick(event: MouseEvent) {
-    const href: string = this.getLinkHRef(event.target);
+    const href = this.getLinkHRef(event.target);
 
     if (href) {
       let target;
@@ -41,7 +41,7 @@ export class RouteTransformerDirective {
     }
   }
 
-  private getLinkHRef(target: any): string {
+  private getLinkHRef(target: any): string | null {
     if (target instanceof HTMLElement) {
       if (target.tagName === 'A') {
         return this.openInSameWindow(target) ?  target.getAttribute('href') : '';
@@ -53,7 +53,8 @@ export class RouteTransformerDirective {
   }
 
   private openInSameWindow(element: HTMLElement) {
-    return !(element.hasAttribute('target') && element.getAttribute('target').toLocaleLowerCase() === '_blank');
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return !(element.hasAttribute('target') && element.getAttribute('target')!.toLocaleLowerCase() === '_blank');
   }
 
 }
