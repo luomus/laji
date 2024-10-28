@@ -16,6 +16,13 @@
         [query]="{tab: Tabs.map, taxon: state.taxon}"
       >
       </laji-navigation-thumbnail>
+      <laji-navigation-thumbnail
+        name="birdPointCount.stats.censuses.title"
+        icon="wb_icon_laskennat"
+        iconType="png"
+        [query]="{tab: Tabs.censuses}"
+      >
+      </laji-navigation-thumbnail>
     </ng-container>
   </div>
   <ng-container *ngIf="state$ | async as state">
@@ -41,6 +48,10 @@
         [collectionStartYear]="2019"
       >
       </laji-result-map>
+    </div>
+    <div *ngIf="isCensusesState(state)">
+      <laji-bird-point-count-result-censuses>
+      </laji-bird-point-count-result-censuses>
     </div>
   </ng-container>
 </div>

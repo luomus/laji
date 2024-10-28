@@ -10,7 +10,8 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 enum Tabs {
   chart = 'chart',
   // eslint-disable-next-line
-  map = 'map'
+  map = 'map',
+  censuses = 'censuses'
 }
 
 interface ChartState {
@@ -24,7 +25,12 @@ interface MapState {
   year: string | undefined;
 }
 
-type State = ChartState | MapState;
+interface CensusesState {
+  tab: Tabs.censuses;
+  year: string | undefined;
+}
+
+type State = ChartState | MapState | CensusesState;
 
 @Component({
   selector: 'laji-bird-point-count-result',
@@ -41,6 +47,7 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
   taxonOptions$: Observable<{ label: string; value: string }[]>;
   isChartState = (state: State): state is ChartState => state.tab === Tabs.chart;
   isMapState = (state: State): state is MapState => state.tab === Tabs.map;
+  isCensusesState = (state: State): state is CensusesState => state.tab === Tabs.censuses;
   mapQuery: WarehouseQueryInterface = {
     includeSubCollections: false,
     gatheringCounts: true, cache: true, countryId: ['ML.206']
