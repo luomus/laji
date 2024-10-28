@@ -36,7 +36,7 @@
       <p class="mt-5" translate>vir.home.agreement</p>
       <lu-button anchor="https://cdn.laji.fi/files/vir/vir_mallisopimus.pdf" target="_blank"><i class="glyphicon glyphicon-file"></i> {{ "vir.home.agreement.btn" | translate }}</lu-button>
       <p class="mt-5" translate>vir.home.changelog</p>
-      <lu-button [anchor]="['/about/6669'] | localize" target="_self"><i class="glyphicon glyphicon-file"></i> {{ "vir.home.changelog.btn" | translate }}</lu-button>
+      <lu-button [anchor]="'infoLinks.changelog' | translate" target="_blank"><i class="glyphicon glyphicon-file"></i> {{ "vir.home.changelog.btn" | translate }}</lu-button>
     </div>
     <div class="flex-grow-2 d-flex flex-col justify-center items-center instructions-info">
       <i class="glyphicon glyphicon-info-sign"></i>
@@ -46,7 +46,7 @@
   <div class="mb-6">
     <h3 translate>vir.home.links</h3>
     <div class="d-flex flex-wrap ext-links">
-      <a class="quality mb-4 mr-6" [routerLink]="['/about/772']">
+      <a class="quality mb-4 mr-6" [href]="'infoLinks.dataQuality' | translate" target="_blank">
         <h1 translate>vir.home.quality</h1>
         <p translate>vir.home.quality.desc</p>
       </a>
@@ -54,7 +54,7 @@
         <h1 translate>vir.home.redbook<span class="glyphicon glyphicon-new-window"></span></h1>
         <p translate>vir.home.redbook.desc</p>
       </a>
-      <a class="lajifi" href="https://laji.fi/about/709" target="_blank">
+      <a class="lajifi" [href]="'infoLinks.sensitiveData' | translate" target="_blank">
         <h1 translate>vir.home.sensitive<span class="glyphicon glyphicon-new-window"></span></h1>
         <p translate>vir.home.sensitive.desc</p>
       </a>

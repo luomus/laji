@@ -2174,5 +2174,11 @@
   "infoLinks.rPackage": "https://info.laji.fi/en/frontpage/services-and-instructions/api-technical/r-package/",
   "infoLinks.coordinateSystems": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/paikkatieto/muut-paikkatieto-ohjeet/koordinaattijarjestelmat/",
   "infoLinks.checklist": "https://info.laji.fi/etusivu/tiedonhallinta/taksonomian-hallinta/lajiluettelo/",
-  "infoLinks.changelog": "https://info.laji.fi/etusivu/suomen-lajitietokeskus/palvelujen-esittely/uutta-lajitietokeskuksen-palveluissa/"
+  "infoLinks.changelog": "https://info.laji.fi/etusivu/suomen-lajitietokeskus/palvelujen-esittely/uutta-lajitietokeskuksen-palveluissa/",
+  "infoLinks.connectData": "https://info.laji.fi/etusivu/tiedonhallinta/nain-liitat-aineistosi/",
+  "infoLinks.primaryAndSecondaryData": "https://info.laji.fi/etusivu/tiedonhallinta/nain-liitat-aineistosi/primaari-ja-sekundaaritieto/",
+  "infoLinks.dataQuality": "https://info.laji.fi/etusivu/tiedonhallinta/laadunvalvonta/",
+  "infoLinks.sensitiveData": "https://info.laji.fi/etusivu/tiedonhallinta/sensitiivinen-lajitieto/",
+  "infoLinks.excelImport": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/laji-fi/tiedostojen-vienti-exceliin/",
+  "infoLinks.arcGISImport": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/paikkatieto/muut-paikkatieto-ohjeet/tiedoston-vienti-arcgis-paikkatieto-ohjelmaan/"
 }
