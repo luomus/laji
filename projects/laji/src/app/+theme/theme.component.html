@@ -100,8 +100,8 @@
 
   <h4><span class="glyphicon glyphicon-list"></span> {{ 'theme.names.title' | translate }}</h4>
   <div class="d-flex flex-wrap">
-    <a [routerLink]="[({fi: '/lajiluettelo', sv: '/artlistan', en: '/checklist'} | multiLang)]" class="navbox">
-      <h5>{{ 'navigation.checklist' | translate }}</h5>
+    <a [href]="'infoLinks.checklist' | translate" target="_blank" rel="noopener" class="navbox">
+      <h5>{{ 'navigation.checklist' | translate }} <i class="glyphicon glyphicon-new-window"></i></h5>
       <p>{{ 'theme.checklist.intro' | translate }}</p>
     </a>
   </div>
@@ -112,12 +112,12 @@
       <h5>{{ 'navigation.map' | translate }}</h5>
       <p>{{ 'theme.map.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/about/5310'] | localize" class="navbox">
-      <h5>{{ 'navigation.ykj' | translate }}</h5>
+    <a [href]="'infoLinks.ykj' | translate" target="_blank" rel="noopener" class="navbox">
+      <h5>{{ 'navigation.ykj' | translate }} <i class="glyphicon glyphicon-new-window"></i></h5>
       <p>{{ 'theme.ykj.intro' | translate }}</p>
     </a>
-    <a [routerLink]="[({fi: '/about/5719', sv:  '/about/5719', en: '/about/3061'} | multiLang) | localize]" class="navbox">
-      <h5>{{ 'navigation.emk' | translate }}</h5>
+    <a [href]="'infoLinks.biogeographicalProvinces' | translate" target="_blank" rel="noopener" class="navbox">
+      <h5>{{ 'navigation.emk' | translate }} <i class="glyphicon glyphicon-new-window"></i></h5>
       <p>{{ 'theme.emk.intro' | translate }}</p>
     </a>
     <a [routerLink]="['/about/5138'] | localize" class="navbox">
@@ -148,8 +148,8 @@
       <h5>{{ 'finbif-bib.title' | translate }}</h5>
       <p>{{ 'finbif-bib.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/about/3123c1'] | localize" class="navbox">
-      <h5>{{ 'finbif-r.title' | translate }}</h5>
+    <a [href]="'infoLinks.rPackage' | translate" target="_blank" rel="noopener" class="navbox">
+      <h5>{{ 'finbif-r.title' | translate }} <i class="glyphicon glyphicon-new-window"></i></h5>
       <p>{{ 'finbif-r.intro' | translate }}</p>
     </a>
   </div>

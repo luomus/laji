@@ -2167,5 +2167,12 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä"
+  "yes": "Kyllä",
+  "infoLinks.notebook": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/havaintopalvelut/vihko-havaintojarjestelma/",
+  "infoLinks.ykj": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/paikkatieto/paikkatietotuotteet/yhtenaiskoordinaatisto-ykj/",
+  "infoLinks.biogeographicalProvinces": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/paikkatieto/paikkatietotuotteet/eliomaakunnat/",
+  "infoLinks.rPackage": "https://info.laji.fi/en/frontpage/services-and-instructions/api-technical/r-package/",
+  "infoLinks.coordinateSystems": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/paikkatieto/muut-paikkatieto-ohjeet/koordinaattijarjestelmat/",
+  "infoLinks.checklist": "https://info.laji.fi/etusivu/tiedonhallinta/taksonomian-hallinta/lajiluettelo/",
+  "infoLinks.changelog": "https://info.laji.fi/etusivu/suomen-lajitietokeskus/palvelujen-esittely/uutta-lajitietokeskuksen-palveluissa/"
 }
