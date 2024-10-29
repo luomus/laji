@@ -98,7 +98,7 @@ export interface OwnDatatableColumn {
   ]
 })
 export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestroy {
-  @Input() year = '';
+  @Input() year?: string;
   @Input() loadError = '';
   @Input() showDownloadAll = true;
   @Input() showPrintLabels = true;
@@ -137,13 +137,13 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     {prop: 'publicityRestrictions', mode: 'large'}
   ];
   allRows: RowDocument[] = [];
-  visibleRows: RowDocument[] = [];
-  filterBy = '';
-  selectionType: SelectionType;
-  selectedLabel = '';
+  visibleRows?: RowDocument[];
+  filterBy?: string;
+  selectionType?: SelectionType;
+  selectedLabel?: string;
   labelLoading = false;
 
-  displayMode = 'medium';
+  displayMode?: string;
   defaultSort: any;
 
   usersId?: string;
@@ -260,8 +260,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     this.updateDisplayMode();
   }
 
-  updateFilter(event) {
-    this.filterBy = event.target.value.toLowerCase();
+  updateFilter(event: Event) {
+    const element = event.target as HTMLInputElement;
+    this.filterBy = element.value.toLowerCase();
     this.updateFilteredRows();
   }
 

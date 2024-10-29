@@ -12,10 +12,10 @@ export class PillListComponent {
   @Input() separator = ',';
   @Input() isLabel = false;
   @Input() isTaxonAutocomplete = false;
-  @Input() selectedTaxonNames: Array<string> = [];
+  @Input() selectedTaxonNames?: Array<string>;
   @Output() updateList = new EventEmitter();
 
-  _list: Array<string> = [];
+  _list?: Array<string>;
 
   @Input()
   set list(data: Array<string> | string) {
@@ -29,13 +29,16 @@ export class PillListComponent {
   }
 
   remove(item: string) {
-    this.updateList.emit(this._list.filter(value => value !== item));
+    this.updateList.emit(this._list?.filter(value => value !== item));
   }
 
   findIndexValue(item: string) {
-    if (this.selectedTaxonNames.length > 0) {
-      const index = this.selectedTaxonNames.findIndex(i => i['id'] === item);
-      return index > -1 ? this.selectedTaxonNames[index]['value'] : null;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (this.selectedTaxonNames!.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const index = this.selectedTaxonNames!.findIndex(i => i['id'] === item);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return index > -1 ? this.selectedTaxonNames![index]['value'] : null;
     } else {
       return null;
     }
