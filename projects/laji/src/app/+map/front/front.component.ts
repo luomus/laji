@@ -43,12 +43,6 @@ export class FrontComponent implements OnInit, OnDestroy {
     }]
   };
 
-  readonly instructions = {
-    fi: '/about/1785',
-    sv: '/about/1809',
-    en: '/about/1807'
-  };
-
   drawData: any = {
     editable: true,
     featureCollection: {

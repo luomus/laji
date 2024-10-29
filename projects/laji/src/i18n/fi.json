@@ -2180,5 +2180,6 @@
   "infoLinks.dataQuality": "https://info.laji.fi/etusivu/tiedonhallinta/laadunvalvonta/",
   "infoLinks.sensitiveData": "https://info.laji.fi/etusivu/tiedonhallinta/sensitiivinen-lajitieto/",
   "infoLinks.excelImport": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/laji-fi/tiedostojen-vienti-exceliin/",
-  "infoLinks.arcGISImport": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/paikkatieto/muut-paikkatieto-ohjeet/tiedoston-vienti-arcgis-paikkatieto-ohjelmaan/"
+  "infoLinks.arcGISImport": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/paikkatieto/muut-paikkatieto-ohjeet/tiedoston-vienti-arcgis-paikkatieto-ohjelmaan/",
+  "infoLinks.map": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/laji-fi/lajitietokeskuksen-karttapalvelu/"
 }

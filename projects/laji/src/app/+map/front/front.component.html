@@ -1,6 +1,6 @@
 <div class="map-wrap" [ngClass]="{'page': printMode}">
   <div class="info no-print">
-    <a [routerLink]="instructions[translate.currentLang] | localize" [luTooltip]="'haseka.instructions' | translate" placement="left" target="_blank" rel="noopener noreferrer">
+    <a [href]="'infoLinks.map' | translate" [luTooltip]="'haseka.instructions' | translate" placement="left" target="_blank" rel="noopener noreferrer">
       <i class="glyphicon glyphicon-info-sign"></i>
     </a>
   </div>
