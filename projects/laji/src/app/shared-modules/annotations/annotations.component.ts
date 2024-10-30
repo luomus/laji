@@ -28,7 +28,7 @@ import { AnnotationTag } from '../../shared/model/AnnotationTag';
 export class AnnotationsComponent implements OnInit, OnDestroy {
   @Input({ required: true }) rootID!: string;
   @Input() targetID?: string;
-  @Input({ required: true }) documentID!: string;
+  @Input() documentID?: string;
   @Input() isEditor?: boolean;
   @Input() personID?: string;
   @Input() personRoleAnnotation?: Annotation.AnnotationRoleEnum;
@@ -196,7 +196,8 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   showDocument() {
     this.documentViewerFacade.showDocumentID({
       highlight: this.unit.unitId,
-      document: this.documentID,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      document: this.documentID!,
       openAnnotation: true,
       result: undefined
     });
