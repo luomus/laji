@@ -12,10 +12,10 @@ export class SmallAudioViewerComponent {
   @Input() audio?: IAudio;
   @Input() area?: IAudioViewerArea;
   @Input() areaColor?: string;
-  @Input() spectrogramConfig?: ISpectrogramConfig = defaultSpectrogramConfig;
+  @Input() spectrogramConfig: ISpectrogramConfig = defaultSpectrogramConfig;
   @Input() label?: string;
   @Input() highlight = false;
-  @Input() highlightType: 'default'|'warning'|'danger';
+  @Input() highlightType?: 'default'|'warning'|'danger';
 
   @Input() width = '20%';
   @Input() spectrogramWidth?: number;

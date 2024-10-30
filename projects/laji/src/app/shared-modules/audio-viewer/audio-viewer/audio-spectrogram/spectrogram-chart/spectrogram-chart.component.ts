@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import { Component, OnChanges, ChangeDetectionStrategy, ViewChild, ElementRef, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { Selection, select, event, clientPoint } from 'd3-selection';
-import { ScaleLinear, scaleLinear } from 'd3-scale';
+import { NumberValue, ScaleLinear, scaleLinear } from 'd3-scale';
 import { drag } from 'd3-drag';
 import { brush } from 'd3-brush';
 import {
@@ -25,18 +27,22 @@ interface RectangleDimensions extends Point {
 
 interface RectangleDrawData {
   dimensions: RectangleDimensions;
-  color: string[];
+  color: (string|undefined)[];
   label: string[];
 }
 
 interface LineDrawData {
   coordinates: Point[];
-  color: string;
+  color: string|undefined;
 }
 
 interface RectanglesWithLinesDrawData {
   rectangles: RectangleDrawData[];
   lines: LineDrawData[];
+}
+
+interface LinearNumberScale extends ScaleLinear<number, number> {
+  (value: NumberValue): number;
 }
 
 @Component({
@@ -46,25 +52,25 @@ interface RectanglesWithLinesDrawData {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpectrogramChartComponent implements OnChanges {
-  @ViewChild('chart', {static: true}) chartRef: ElementRef<SVGElement>;
+  @ViewChild('chart', {static: true}) chartRef!: ElementRef<SVGElement>;
 
-  @Input() view: IAudioViewerArea;
-  @Input() focusArea: IAudioViewerArea;
+  @Input() view?: IAudioViewerArea;
+  @Input() focusArea?: IAudioViewerArea;
   @Input() highlightFocusArea = false;
   @Input() onlyFocusAreaClickable = false;
   @Input() onlyFocusAreaDrawable = false;
   @Input() focusAreaColor?: string;
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
-  @Input() rectangles: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[];
+  @Input() rectangles?: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[];
 
-  @Input() currentTime = 0;
+  @Input() currentTime? = 0;
 
-  @Input() width: number;
-  @Input() height: number;
-  @Input() margin: { top: number; bottom: number; left: number; right: number };
+  @Input({ required: true }) width!: number;
+  @Input({ required: true }) height!: number;
+  @Input({ required: true }) margin!: { top: number; bottom: number; left: number; right: number };
 
-  @Input() mode: AudioViewerMode = 'default';
+  @Input() mode?: AudioViewerMode = 'default';
 
   @Output() dragStart = new EventEmitter();
   @Output() dragEnd = new EventEmitter<number>();
@@ -73,9 +79,9 @@ export class SpectrogramChartComponent implements OnChanges {
   @Output() zoomEnd = new EventEmitter<IAudioViewerArea>();
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
 
-  private xScale: ScaleLinear<number, number>;
-  private yScale: ScaleLinear<number, number>;
-  private scrollLine: Selection<SVGLineElement, any, any, any>;
+  private xScale?: LinearNumberScale;
+  private yScale?: LinearNumberScale;
+  private scrollLine?: Selection<SVGLineElement, any, any, any>;
 
   constructor(
     private translate: TranslateService,
@@ -105,8 +111,8 @@ export class SpectrogramChartComponent implements OnChanges {
       return;
     }
 
-    this.xScale = scaleLinear().domain([this.view.xRange[0], this.view.xRange[1]]).range([0, this.width]);
-    this.yScale = scaleLinear().domain([this.view.yRange[1] / 1000, this.view.yRange[0] / 1000]).range([0, this.height]);
+    this.xScale = scaleLinear().domain([this.view!.xRange![0], this.view!.xRange![1]]).range([0, this.width]) as LinearNumberScale;
+    this.yScale = scaleLinear().domain([this.view!.yRange![1] / 1000, this.view!.yRange![0] / 1000]).range([0, this.height]) as LinearNumberScale;
 
     const xAxis = axisBottom(this.xScale);
     xAxis.ticks(this.width / 100);
@@ -141,7 +147,7 @@ export class SpectrogramChartComponent implements OnChanges {
     }
 
     let svgWithOverflow: Selection<SVGSVGElement, any, any, any>;
-    if (this.rectangles?.length > 0) {
+    if (this.rectangles?.length as any > 0) {
       // allow rectangle labels overflow the chart
       svgWithOverflow = svg.append('svg')
         .attr('x', this.margin.left)
@@ -157,8 +163,8 @@ export class SpectrogramChartComponent implements OnChanges {
       .attr('width', this.width)
       .attr('height', this.height);
 
-    if (this.rectangles?.length > 0) {
-      this.drawRectangles(innerSvg, svgWithOverflow, 1);
+    if (this.rectangles?.length as any > 0) {
+      this.drawRectangles(innerSvg, svgWithOverflow!, 1);
     }
 
     this.drawInnerChart(innerSvg);
@@ -166,12 +172,12 @@ export class SpectrogramChartComponent implements OnChanges {
 
   private drawInnerChart(svg: Selection<SVGSVGElement, any, any, any>) {
     const strokeWidth = 2;
-    const [startTime, endTime] = this.view.xRange;
-    const [startFreq, endFreq] = this.view.yRange;
+    const [startTime, endTime] = this.view!.xRange!;
+    const [startFreq, endFreq] = this.view!.yRange!;
 
     let [clickAreaX, clickAreaY, clickAreaWidth, clickAreaHeight] = [0, 0, this.width, this.height];
     let [brushAreaX, brushAreaY, brushAreaWidth, brushAreaHeight] = [0, 0, this.width, this.height];
-    const needToDrawFocusArea = this.focusArea && !this.areaIsInsideAnotherArea(this.view, this.focusArea);
+    const needToDrawFocusArea = this.focusArea && !this.areaIsInsideAnotherArea(this.view!, this.focusArea);
     if (needToDrawFocusArea) {
       const area = this.drawFocusArea(svg, startTime, endTime, startFreq, endFreq, strokeWidth);
       const [areaX, areaY, areaWidth, areaHeight] = [Math.max(area.x, 0), Math.max(area.y, 0), Math.min(area.width, this.width), Math.min(area.height, this.height)];
@@ -236,8 +242,8 @@ export class SpectrogramChartComponent implements OnChanges {
           const yMax = Math.min(Math.max(y0, y1), brushAreaY + brushAreaHeight);
 
           const area = {
-            xRange: [this.xScale.invert(xMin), this.xScale.invert(xMax)],
-            yRange: [this.yScale.invert(yMax) * 1000, this.yScale.invert(yMin) * 1000]
+            xRange: [this.xScale!.invert(xMin), this.xScale!.invert(xMax)],
+            yRange: [this.yScale!.invert(yMax) * 1000, this.yScale!.invert(yMin) * 1000]
           };
           if (this.mode === 'zoom') {
             this.zoomEnd.emit(area);
@@ -255,8 +261,8 @@ export class SpectrogramChartComponent implements OnChanges {
   private drawFocusArea(
     svg: Selection<SVGSVGElement, any, any, any>, startTime: number, endTime: number, startFreq: number, endFreq: number, strokeWidth: number
   ): RectangleDimensions {
-    const xRangeBuffer = this.xScale.invert(strokeWidth);
-    const yRangeBuffer = this.yScale.invert(this.height - strokeWidth) * 1000;
+    const xRangeBuffer = this.xScale!.invert(strokeWidth);
+    const yRangeBuffer = this.yScale!.invert(this.height - strokeWidth) * 1000;
     const xRange = this.focusArea?.xRange || [startTime - xRangeBuffer, endTime + xRangeBuffer];
     const yRange = this.focusArea?.yRange || [startFreq - yRangeBuffer, endFreq + yRangeBuffer];
 
@@ -320,7 +326,7 @@ export class SpectrogramChartComponent implements OnChanges {
   private drawRectangles(
     svg: Selection<SVGSVGElement, any, any, any>, svgWithOverflow: Selection<SVGSVGElement, any, any, any>, strokeWidth: number
   ) {
-    const drawData = this.getRectangleDrawData(this.rectangles);
+    const drawData = this.getRectangleDrawData(this.rectangles!);
 
     for (const line of drawData.lines) {
       svg.append('line')
@@ -360,16 +366,16 @@ export class SpectrogramChartComponent implements OnChanges {
   }
 
   private getTimeFromPosition(x: number): number {
-    const time = this.xScale.invert(x);
-    const minTime = this.onlyFocusAreaClickable ? this.focusArea?.xRange[0] : this.view.xRange[0];
-    const maxTime = this.onlyFocusAreaClickable ? this.focusArea?.xRange[1] : this.view.xRange[1];
+    const time = this.xScale!.invert(x);
+    const minTime = this.onlyFocusAreaClickable ? this.focusArea?.xRange![0]! : this.view!.xRange![0];
+    const maxTime = this.onlyFocusAreaClickable ? this.focusArea?.xRange![1]! : this.view!.xRange![1];
     return Math.min(Math.max(time, minTime), maxTime);
   }
 
   private updateScrollLinePosition() {
-    const position = this.xScale(this.currentTime);
-    this.scrollLine.attr('x1', position);
-    this.scrollLine.attr('x2', position);
+    const position: number = this.xScale!(this.currentTime!);
+    this.scrollLine!.attr('x1', position);
+    this.scrollLine!.attr('x2', position);
   }
 
   private clearChart() {
@@ -378,13 +384,13 @@ export class SpectrogramChartComponent implements OnChanges {
   }
 
   private getRectangleDimensions(xRange: number[], yRange: number[]): RectangleDimensions {
-    const startTime = this.view.xRange[0];
-    const endFreq = this.view.yRange[1];
+    const startTime = this.view!.xRange![0];
+    const endFreq = this.view!.yRange![1];
 
-    const x = this.xScale(xRange[0]);
-    const width = this.xScale(xRange[1] - xRange[0] + startTime);
-    const y = this.yScale(yRange[1] / 1000);
-    const height = this.yScale((endFreq - (yRange[1] - yRange[0])) / 1000);
+    const x = this.xScale!(xRange[0]);
+    const width = this.xScale!(xRange[1] - xRange[0] + startTime);
+    const y = this.yScale!(yRange[1] / 1000);
+    const height = this.yScale!((endFreq - (yRange[1] - yRange[0])) / 1000);
 
     return { x, width, y, height };
   }
@@ -394,7 +400,7 @@ export class SpectrogramChartComponent implements OnChanges {
     const lineDrawData: LineDrawData[] = [];
 
     const addRectangleDrawData = (rect: IAudioViewerRectangle): RectangleDrawData => {
-      const dim = this.getRectangleDimensions(rect.area.xRange, rect.area.yRange);
+      const dim = this.getRectangleDimensions(rect.area.xRange!, rect.area.yRange!);
       const duplicates = rectangleDrawData.filter(value => this.rectanglesAreSame(value.dimensions, dim));
 
       if (duplicates.length > 0) {
@@ -405,7 +411,7 @@ export class SpectrogramChartComponent implements OnChanges {
         }
         return duplicate;
       } else {
-        const result = {
+        const result: RectangleDrawData = {
           dimensions: dim,
           color: [rect.color],
           label: rect.label ? [rect.label] : []
@@ -442,7 +448,8 @@ export class SpectrogramChartComponent implements OnChanges {
 
   private rectanglesAreSame(dim1: RectangleDimensions, dim2: RectangleDimensions): boolean {
     for (const key of Object.keys(dim1)) {
-      if (dim1[key] !== dim2[key]) {
+      const _key = key as keyof RectangleDimensions;
+      if (dim1[_key] !== dim2[_key]) {
         return false;
       }
     }

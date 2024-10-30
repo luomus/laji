@@ -31,30 +31,30 @@ import { AudioViewerUtils } from '../../service/audio-viewer-utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
-  @ViewChild('container', {static: true}) containerRef: ElementRef<HTMLDivElement>;
+  @ViewChild('container', {static: true}) containerRef!: ElementRef<HTMLDivElement>;
 
-  @Input() buffer: AudioBuffer;
-  @Input() view: IAudioViewerArea;
-  @Input() defaultView: IAudioViewerArea;
+  @Input() buffer?: AudioBuffer;
+  @Input() view?: IAudioViewerArea;
+  @Input() defaultView?: IAudioViewerArea;
 
-  @Input() focusArea: IAudioViewerArea;
+  @Input() focusArea?: IAudioViewerArea;
   @Input() highlightFocusArea = false;
   @Input() onlyFocusAreaClickable = false;
   @Input() onlyFocusAreaDrawable = false;
   @Input() focusAreaColor?: string;
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
-  @Input() rectangles: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[];
+  @Input() rectangles?: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[];
 
   @Input() pregeneratedSpectrogramUrl?: string;
-  @Input() config: ISpectrogramConfig;
+  @Input() config?: ISpectrogramConfig;
 
-  @Input() currentTime: number;
-  @Input() mode: AudioViewerMode;
+  @Input() currentTime?: number;
+  @Input() mode?: AudioViewerMode;
 
-  @Input() width: number;
-  @Input() height: number;
-  @Input() margin: { top: number; bottom: number; left: number; right: number };
+  @Input() width?: number;
+  @Input() height?: number;
+  @Input() margin?: { top: number; bottom: number; left: number; right: number };
   @Input() adaptToContainerHeight = false;
 
   @Output() spectrogramLoading = new EventEmitter<boolean>();
@@ -65,9 +65,9 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Output() zoomEnd = new EventEmitter<IAudioViewerArea>();
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
 
-  _width: number;
-  _height: number;
-  _margin: { top: number; bottom: number; left: number; right: number };
+  _width!: number;
+  _height!: number;
+  _margin!: { top: number; bottom: number; left: number; right: number };
 
   @HostBinding('class.audio-spectrogram-responsive') get audioSpectrogramResponsiveClass() {
     return this.adaptToContainerHeight;
