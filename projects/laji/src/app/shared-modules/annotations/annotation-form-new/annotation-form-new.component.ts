@@ -291,7 +291,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.currentLang).pipe(
       map(
         data => data.filter(
-          tag => this.labelPipe.transform((this.unit.interpretations.effectiveTags || []), 'warehouse').indexOf(tag['name']) !== -1 )
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          tag => this.labelPipe.transform((this.unit.interpretations.effectiveTags || []), 'warehouse').indexOf(tag['name']!) !== -1 )
         )
       );
   }

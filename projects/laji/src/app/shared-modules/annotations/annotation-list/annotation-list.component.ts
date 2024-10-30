@@ -22,27 +22,25 @@ import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
 })
 export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
 
-  @Input() annotations: Annotation[];
-  @Input() personID: string;
+  @Input({ required: true }) annotations!: Annotation[];
+  @Input() personID?: string;
   @Input() showLinks = true;
-  @Input() lastAnnotationAddedId: string;
-  @Input() effectiveTags: Annotation[];
-  @Input() annotationTags: AnnotationTag[];
+  @Input() lastAnnotationAddedId?: string;
+  @Input() effectiveTags?: Annotation[];
+  @Input() annotationTags?: AnnotationTag[];
   @Output() remove = new EventEmitter<Annotation>();
 
   types = Annotation.TypeEnum;
-  changingLocale = false;
-  lastFalse: number;
-  hasNextTrue: boolean;
-  open: boolean[] = undefined;
-  showItem: boolean[];
-  annotationRole = Annotation.AnnotationRoleEnum;
+  lastFalse?: number;
+  hasNextTrue?: boolean;
+  open?: boolean[] = undefined;
+  showItem?: boolean[];
   tagsConverted: any = {};
 
   ngOnInit() {
     (this.annotationTags || []).forEach(element => {
       const key = element.id;
-      const obj = {};
+      const obj: Record<string, AnnotationTag> = {};
       obj[key] = element;
       this.tagsConverted = Object.assign(this.tagsConverted, obj);
     });
@@ -50,17 +48,20 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges() {
     this.lastFalse = this.findLastIndex(this.annotations.reverse(), 'valid', false);
-    this.hasNextTrue = this.annotations.reverse()[this.lastFalse + 1] && this.annotations.reverse()[this.lastFalse + 1].valid;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.hasNextTrue = this.annotations.reverse()[this.lastFalse! + 1] && this.annotations.reverse()[this.lastFalse! + 1].valid;
     this.open = [...Array(this.annotations.length)].fill(false);
     this.populateArrayShowItem(this.annotations);
   }
 
-  toggleAnnotation(index) {
-    this.showItem[index] = !this.showItem[index];
+  toggleAnnotation(index: number) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.showItem![index] = !this.showItem![index];
   }
 
-  readMore(index) {
-    this.open[index] = !this.open[index];
+  readMore(index: number) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.open![index] = !this.open![index];
   }
 
   ngOnDestroy() {
@@ -68,19 +69,21 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
     this.populateArrayShowItem(this.annotations);
   }
 
-  populateArrayShowItem(array) {
-    this.showItem = [];
+  populateArrayShowItem(array: Annotation[]) {
+    const showItem: boolean[] = [];
     array.forEach(element => {
       if (element['deleted'] || !element['valid']) {
-        this.showItem.push(false);
+        showItem.push(false);
       } else {
-        this.showItem.push(true);
+        showItem.push(true);
       }
     });
+    this.showItem = showItem;
   }
 
-  findLastIndex(annotation, field, value) {
-    annotation.sort((a, b) => (a.created > b.created) ? 1 : -1);
+  findLastIndex(annotation: Annotation[], field: keyof Annotation, value: any) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    annotation.sort((a, b) => (a.created! > b.created!) ? 1 : -1);
     const index = annotation.slice().reverse().findIndex(x => (x[field] === value && x['deleted'] === false));
     const count = annotation.length - 1;
     return index >= 0 ? count - index : index;

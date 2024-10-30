@@ -1,7 +1,7 @@
 <div class="annotations">
   <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
     <div class="annotation">
-      <div class="deleted" *ngIf="((!annotation.valid || annotation.deleted) && !showItem[i])">
+      <div class="deleted" *ngIf="((!annotation.valid || annotation.deleted) && !showItem?.[i])">
         <span *ngIf="annotation.deleted; else notValid">{{ 'annotation.deleted' | translate }}</span>
         <ng-template #notValid><span>{{ 'annotation.notValid' | translate }}</span></ng-template>
         <button
@@ -23,7 +23,7 @@
               (click)="remove.emit(annotation)"
               [luTooltip]="'annotation.deleteComment' | translate"
               placement="right"
-              *ngIf="(annotation.annotationByPerson | toQName) === personID && !annotation.deleted && showItem[i]"
+              *ngIf="(annotation.annotationByPerson | toQName) === personID && !annotation.deleted && showItem?.[i]"
               >
               <i class="glyphicon glyphicon-trash"></i>
             </button>
@@ -33,7 +33,7 @@
               (click)="toggleAnnotation(i)"
               [luTooltip]="!annotation.valid ? (annotation.deleted ? ('annotation.hideDeletedComment' | translate) : ('annotation.hideInvalidComment' | translate)  ) : (annotation.deleted ? ('annotation.hideDeletedComment' | translate) : '')"
               placement="right"
-              *ngIf="((annotation.deleted || !annotation.valid ) && showItem[i])"
+              *ngIf="((annotation.deleted || !annotation.valid ) && showItem?.[i])"
             >
             <i class="glyphicon glyphicon-eye-close"></i>
             </button>
@@ -48,7 +48,7 @@
           </ng-template>
         </div>
       </div>
-      <div class="content-show-hide" *ngIf="showItem[i]; else dots">
+      <div class="content-show-hide" *ngIf="showItem?.[i]; else dots">
         <div class="tags" *ngIf="annotation.addedTags">
            <div class="row no-padding">
              <div class="col-xs-4" style="font-weight: bold;">{{ 'MAN.addedTags' | label }}:</div>
@@ -110,11 +110,11 @@
               <b>Comment:</b>
             </div>
             <div class="col-xs-8 long-text">
-              <div [ngClass]="{'': (annotation.notes.length <= 250 || open[i]), 'closed': (annotation.notes.length > 250 && !open[i]) }">
+              <div [ngClass]="{'': (annotation.notes.length <= 250 || open?.[i]), 'closed': (annotation.notes.length > 250 && !open?.[i]) }">
                 {{ annotation.notes }}
               </div>
-              <span class="read-more" *ngIf="(annotation.notes.length > 250 && !open[i])" (click)="readMore(i)" role="button" luKeyboardClickable tabindex="0">Read more</span>
-              <span class="read-more" *ngIf="open[i]" (click)="readMore(i)" role="button" luKeyboardClickable tabindex="0">Hide</span>
+              <span class="read-more" *ngIf="(annotation.notes.length > 250 && !open?.[i])" (click)="readMore(i)" role="button" luKeyboardClickable tabindex="0">Read more</span>
+              <span class="read-more" *ngIf="open?.[i]" (click)="readMore(i)" role="button" luKeyboardClickable tabindex="0">Hide</span>
             </div>
           </div>
         </div>
@@ -122,8 +122,8 @@
       <ng-template #dots>
         <i class="glyphicon glyphicon-option-horizontal"></i>
       </ng-template>
-      <span class="small-deleted" *ngIf="(annotation.deleted && showItem[i])">{{ 'annotation.deleted' | translate }}</span>
-      <span class="small-deleted" *ngIf="(!annotation.deleted && !annotation.valid && showItem[i])">{{ 'annotation.notValid' | translate }}</span>
+      <span class="small-deleted" *ngIf="(annotation.deleted && showItem?.[i])">{{ 'annotation.deleted' | translate }}</span>
+      <span class="small-deleted" *ngIf="(!annotation.deleted && !annotation.valid && showItem?.[i])">{{ 'annotation.notValid' | translate }}</span>
     </div>
     <div *ngIf="lastFalse!==-1 && i===lastFalse && hasNextTrue">
       <laji-occurrence-at-time-of-annotation [occurrence]="annotations[i+1].occurrenceAtTimeOfAnnotation"></laji-occurrence-at-time-of-annotation>
