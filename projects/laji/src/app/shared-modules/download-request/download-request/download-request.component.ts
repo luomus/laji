@@ -7,6 +7,10 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 import { switchMap, map, tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
+export const getDownloadRequestType = (downloadRequest: DownloadRequest): DownloadRequestType => (
+  [ 'AUTHORITIES_API_KEY', 'APPROVED_API_KEY_REQUEST'].includes(downloadRequest.downloadType) ? 'apiKey' : 'basic'
+);
+
 @Component({
   selector: 'laji-download-request',
   templateUrl: './download-request.component.html',
@@ -51,10 +55,7 @@ export class DownloadRequestComponent implements OnChanges {
       this.collectionIds$.next(
         (this.downloadRequest?.collections || []).map(col => col.id)
       );
-      this.downloadRequestType = [
-        'AUTHORITIES_API_KEY',
-        'APPROVED_API_KEY_REQUEST'
-      ].includes(this.downloadRequest?.downloadType) ? 'apiKey' : 'basic';
+      this.downloadRequestType = this.downloadRequest ? getDownloadRequestType(this.downloadRequest) : 'basic';
     }
   }
 
