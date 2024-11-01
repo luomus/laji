@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ImporterComponent } from '../../../shared-modules/spreadsheet/importer/importer.component';
-import { ImportService } from '../../../shared-modules/spreadsheet/service/import.service';
+import { ImportService } from '../../../shared-modules/spreadsheet/service/ImportService';
 
 @Component({
   selector: 'laji-sheet-importer',

@@ -24,7 +24,7 @@ import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mappi
 import { CanSplitToPipe } from './excel-generator/pipes/can-split-to.pipe';
 import { SpreadsheetService } from './service/spreadsheet.service';
 import { MappingService } from './service/mapping.service';
-import { ImportService } from './service/import.service';
+import { ImportService } from './service/ImportService';
 import { GeneratorService } from './service/generator.service';
 import { AugmentService } from './service/augment.service';
 import { SharedModule } from '../../shared/shared.module';

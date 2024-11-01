@@ -73,10 +73,10 @@ export class GeneratorService {
       map((data) => ({person: data[0], namedPlaces: data[1], informalTaxonGroups: data[2]}))
     )
       .subscribe((data) => {
-        const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels, data));
+        const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels, data as any));
         const book = XLSX.utils.book_new();
 
-        const validationSheet = this.addMetaDataToSheet(fields, sheet, data, useLabels);
+        const validationSheet = this.addMetaDataToSheet(fields, sheet, data as any, useLabels);
         validationSheet['!protect'] = {password: '¡secret!'};
 
         XLSX.utils.book_append_sheet(book, sheet, this.translateService.instant(this.sheetNames.base));
@@ -105,22 +105,22 @@ export class GeneratorService {
       }
 
       if (useLabels && field.enum && field.default) {
-        value = field.enum.find(item => item.const === field.default).title;
+        value = field.enum.find(item => item.const === field.default)!.title;
       } else if (field.type === 'boolean') {
         value = this.mappingService.reverseMap(value, field);
       }
       if (field.splitType) {
         const labels = this.getSplitFieldLabels(field.fullLabel, field.label, field.splitType);
         labels.forEach((label, i) => {
-          result[0][idx] = label;
-          result[1][idx] = '';
+          (result as any)[0][idx] = label;
+          (result as any)[1][idx] = '';
           if (i !== labels.length - 1) {
             idx++;
           }
         });
       } else {
-        result[0][idx] = field.fullLabel;
-        result[1][idx] = value;
+        (result as any)[0][idx] = field.fullLabel;
+        (result as any)[1][idx] = value;
       }
     });
     return result;
@@ -132,8 +132,8 @@ export class GeneratorService {
     extra: {person: Person; namedPlaces: string[]; informalTaxonGroups: InformalTaxonGroup[]},
     useLabels: boolean
   ) {
-    const validation = [];
-    const vSheet = [];
+    const validation: any[] = [];
+    const vSheet: any[] = [];
     const cache = {};
     let vColumn = 0;
     let idx = -1;
@@ -141,24 +141,24 @@ export class GeneratorService {
       idx++;
       let dataRange = XLSX.utils.encode_range({r: 1, c: idx}, {r: 1000, c: idx});
       const special = this.mappingService.getSpecial(field);
-      let validValues;
+      let validValues: any;
 
       const addValidator = (skipSort = false) => {
         if (validValues) {
           const cacheKey = JSON.stringify(validValues);
-          if (!cache[cacheKey]) {
+          if (!(cache as any)[cacheKey]) {
             if (!skipSort) {
               validValues.sort();
             }
             this.addToValidationSheetData(validValues, vColumn, vSheet);
-            cache[cacheKey] = this.translateService.instant(this.sheetNames.vars) + '!' + this.makeExactRange(
+            (cache as any)[cacheKey] = this.translateService.instant(this.sheetNames.vars) + '!' + this.makeExactRange(
               XLSX.utils.encode_range({r: 0, c: vColumn}, {r: validValues.length - 1, c: vColumn})
             );
             vColumn++;
           }
           validation.push({
             sqref: dataRange,
-            sqtarget: cache[cacheKey]
+            sqtarget: (cache as any)[cacheKey]
           });
         }
       };
@@ -234,7 +234,8 @@ export class GeneratorService {
         let instruction = '';
         if (col.isArray) {
           instruction = (instruction ? instruction + ' ' : '') + this.translateService.instant('excel.info.array', {
-            separators: col.separators.join('')
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            separators: col.separators!.join('')
           });
         }
         if (label.length > labelColLen) {
@@ -260,11 +261,11 @@ export class GeneratorService {
     return sheet;
   }
 
-  private makeExactRange(range) {
+  private makeExactRange(range: string) {
     return range.split(':').map(cell => cell.replace(/^([A-Z]+)([0-9]+)$/, '$$$1$$$2')).join(':');
   }
 
-  private addToValidationSheetData(valid: string[], vColumn, vSheet) {
+  private addToValidationSheetData(valid: string[], vColumn: number, vSheet: any[]) {
     let current = 0;
     for (const validItem of valid) {
       if (!vSheet[current]) {

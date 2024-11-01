@@ -10,7 +10,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { IFormField } from '../../model/excel';
-import { ImportService } from '../../service/import.service';
+import { ImportService } from '../../service/ImportService';
 import { MappingService, SpecialTypes } from '../../service/mapping.service';
 
 @Component({
@@ -21,7 +21,7 @@ import { MappingService, SpecialTypes } from '../../service/mapping.service';
 })
 export class CellValueMappingComponent implements OnInit, OnChanges {
 
-  @Input() formID: string;
+  @Input() formID?: string;
   @Input() data: any[] = [];
   @Input() fields: {[key: string]: IFormField} = {};
   @Input() colMapping: {[key: string]: string} = {};
@@ -29,12 +29,12 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
 
   @Output() done = new EventEmitter<{[key: string]: {[value: string]: string}}>();
   specials = SpecialTypes;
-  special = null;
-  cols: string[];
+  special: SpecialTypes | null = null;
+  cols!: string[];
   invalid: string[] = [];
-  currentKey: string;
+  currentKey?: string;
   allMapped = false;
-  field: IFormField;
+  field!: IFormField;
 
   constructor(
     private importService: ImportService,
@@ -65,8 +65,8 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
     }
     this.field = this.fields[this.colMapping[current]];
     this.special = this.mappingService.getSpecial(this.field);
-    const invalidValues = {};
-    const analyzed = {};
+    const invalidValues: Record<string, any> = {};
+    const analyzed: Record<string, any> = {};
     this.data.map(row => {
       if (row[current] === undefined || analyzed[row[current]]) {
         return;
@@ -98,7 +98,7 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
     this.valueMap[this.field.key] = {};
   }
 
-  onMapping(mapping) {
+  onMapping(mapping: Record<string, unknown>) {
     this.valueMap[this.field.key] = mapping;
     const mapped = Object.keys(mapping);
     const intersection = this.invalid.filter((val) => mapped.indexOf(val) === -1);

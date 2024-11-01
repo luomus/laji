@@ -17,13 +17,13 @@ import * as Hash from 'object-hash';
 import { catchError, delay, switchMap } from 'rxjs/operators';
 import { ArrayType } from '@angular/compiler';
 
-interface IData {
+export interface IData {
   rowIdx: number;
   hash: string;
   data: Record<string, string>;
 }
 
-interface ILevelData {
+export interface ILevelData {
   [parent: string]: IData;
 }
 
@@ -44,7 +44,7 @@ export interface IDocumentData {
   };
 }
 
-interface JobStatus {
+export interface JobStatus {
   total: number;
   processed: number;
   percentage: number;
@@ -137,7 +137,7 @@ export class ImportService {
     return this.rowsToDocument(data, mapping, fields, formID, ignoreRowsWithNoCount, combineBy);
   }
 
-  hasValue(value): boolean {
+  hasValue(value: any): boolean {
     if (Array.isArray(value)) {
       value = value.filter(this.hasValue);
       return value.filter(this.hasValue).length !== 0;
@@ -149,7 +149,7 @@ export class ImportService {
     if (combineBy === CombineToDocument.none) {
       return LEVEL_DOCUMENT;
     }
-    const result = this.newToParent[field.parent] ? this.newToParent[field.parent] : field.parent;
+    const result = (this.newToParent as any)[field.parent] ? (this.newToParent as any)[field.parent] : field.parent;
     if (combineBy === CombineToDocument.gathering && result === LEVEL_GATHERING) {
       return LEVEL_DOCUMENT;
     }
@@ -176,11 +176,11 @@ export class ImportService {
     return this.findLevelHash(row, LEVEL_DOCUMENT);
   }
 
-  private findLevelHash(row: ILevelData, level) {
+  private findLevelHash(row: ILevelData, level: string) {
     return row[level] ? row[level].hash : '';
   }
 
-  private findDocumentData(data: ILevelData[]): IData {
+  private findDocumentData(data: ILevelData[]): IData | null {
     const l = (data || []).length;
     for (let i = 0; i < l; i++) {
       if (data[i].document) {
@@ -195,14 +195,14 @@ export class ImportService {
     mapping: {[col: string]: string},
     fields: {[key: string]: IFormField},
     formID: string,
-    ignoreRowsWithNoCount,
+    ignoreRowsWithNoCount: boolean,
     combineBy: CombineToDocument
   ): IDocumentData[] {
     const cols = Object.keys(mapping);
-    const allLevels = [];
+    const allLevels: any[] = [];
 
     // Fetch all columns that are not marked and IGNORE
-    const allCols = [];
+    const allCols: any[] = [];
     cols.map(col => {
       const field = fields[mapping[col]];
       if (field.key === VALUE_IGNORE) {
@@ -289,33 +289,33 @@ export class ImportService {
       if (!docs[hash]) {
         docs[hash] = {document: {formID}, ref: {[hash]: {}}, rows: {}, skipped: []};
         const docData = this.findDocumentData(documents[hash]);
-        docs[hash].rows[docData.rowIdx] = true;
-        if (ignoreRowsWithNoCount && !this.hasCountValue(docData.data) && combineBy === CombineToDocument.none) {
-          docs[hash].skipped.push(docData.rowIdx);
-          docs[hash].document = null;
+        docs[hash].rows[(docData as any).rowIdx] = true;
+        if (ignoreRowsWithNoCount && !this.hasCountValue((docData as any).data) && combineBy === CombineToDocument.none) {
+          docs[hash].skipped.push((docData as any).rowIdx);
+          (docs as any)[hash].document = null;
           return;
         }
         this.valuesToDocument(
-          this.relativePathToAbsolute(docData.data),
+          this.relativePathToAbsolute((docData as any).data),
           docs[hash].document
         );
       }
       documents[hash].forEach(row => {
         [LEVEL_GATHERING, LEVEL_TAXON_CENSUS, LEVEL_UNIT].forEach(level => {
           const levelHash = this.findLevelHash(row, level);
-          if ((!docs[hash].ref[levelHash] || level === LEVEL_UNIT) && row[level] && row[level].data) {
+          if ((!(docs as any)[hash].ref[levelHash] || level === LEVEL_UNIT) && row[level] && row[level].data) {
             if (ignoreRowsWithNoCount && level === LEVEL_UNIT && !this.hasCountValue(row[level].data)) {
               docs[hash].skipped.push(row[level].rowIdx);
               delete docs[hash].rows[row[level].rowIdx];
               return;
             }
             const parentHash = this.findParentHash(row, level);
-            if (!docs[hash].ref[parentHash]) {
-              docs[hash].ref[parentHash] = {};
+            if (!(docs as any)[hash].ref[parentHash]) {
+              (docs as any)[hash].ref[parentHash] = {};
             }
-            const parentRef = docs[hash].ref[parentHash];
+            const parentRef = (docs as any)[hash].ref[parentHash];
             parentRef[level] = typeof parentRef[level] === 'undefined' ? 0 : parentRef[level] + 1;
-            docs[hash].ref[levelHash] = {...parentRef};
+            (docs as any)[hash].ref[levelHash] = {...parentRef};
             docs[hash].rows[row[level].rowIdx] = true;
             this.valuesToDocument(this.relativePathToAbsolute(row[level].data, parentRef), docs[hash].document);
           }
@@ -323,7 +323,7 @@ export class ImportService {
       });
 
       if (Object.keys(docs[hash].rows).length === 0) {
-        docs[hash].document = null;
+        (docs as any)[hash].document = null;
       }
     });
 
@@ -348,13 +348,15 @@ export class ImportService {
       const re = /[.(\[\])]/;
       const parts = path.split(re).filter(value => value !== '');
       let pointer = document;
-      let now: string|number = parts.shift();
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      let now: string|number = parts.shift()!;
       while (parts.length > 0) {
         if (typeof pointer[now] === 'undefined') {
           pointer[now] = this.isNumber(parts[0]) ? [] : {};
         }
         pointer = pointer[now];
-        now = parts.shift();
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        now = parts.shift()!;
       }
       pointer[now] = values[path];
     });
@@ -385,7 +387,7 @@ export class ImportService {
         targetKey = targetKey.slice(0, -3);
       }
       targetKey = targetKey.replace(/\[\*]/g, '[0]');
-      result[targetKey] = values[key];
+      (result as any)[targetKey] = values[key];
     });
     return result;
   }
