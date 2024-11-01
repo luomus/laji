@@ -5,7 +5,7 @@ import { finalize, map, take } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
-import { VirGeoapiService } from '../../../service/vir-geoapi.service';
+import { GeoapiKeyRequest, VirGeoapiService } from '../../../service/vir-geoapi.service';
 
 @Component({
   selector: 'vir-usage-my-downloads',
@@ -42,7 +42,8 @@ import { VirGeoapiService } from '../../../service/vir-geoapi.service';
           [height]="'50vh'"
           [data]="geoapiKeys$ | async"
           [showDownloadMenu]="false"
-          [showRowAsLink]="false"
+          [showRowAsLink]="true"
+          (rowSelect)="openGeoapiKeyModal($event.row)"
           class="d-block my-5"
         ></vir-data-table>
       </laji-spinner>
@@ -52,14 +53,23 @@ import { VirGeoapiService } from '../../../service/vir-geoapi.service';
         [downloadRequest]="selectedRequest"
         [showPerson]="false"
         [showFileDownload]="true"
-        (close)="closeDownloadModal()"
+        (close)="closeModal()"
       ></vir-download-request-modal>
+    </ng-template>
+    <ng-template #geoapiKeyModal>
+      <vir-geoapi-key-request-modal
+        [geoapiKeyRequest]="selectedGeoapiKeyRequest"
+        [showPerson]="false"
+        [showFileDownload]="true"
+        (close)="closeModal()"
+      ></vir-geoapi-key-request-modal>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsageMyDownloadsComponent {
   @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
+  @ViewChild('geoapiKeyModal', { static: true }) geoapiKeyModal: TemplateRef<any>;
 
   requestsTableLoading = false;
   keysTableLoading = false;
@@ -67,9 +77,10 @@ export class UsageMyDownloadsComponent {
 
   downloadRequests$: Observable<DownloadRequest[]>;
   apiKeys$: Observable<DownloadRequest[]>;
-  geoapiKeys$: Observable<any[]>;
+  geoapiKeys$: Observable<GeoapiKeyRequest[]>;
 
   selectedRequest?: DownloadRequest;
+  selectedGeoapiKeyRequest?: GeoapiKeyRequest;
 
   private modal: ModalRef;
 
@@ -112,8 +123,14 @@ export class UsageMyDownloadsComponent {
     this.modal = this.modalService.show(this.downloadModal);
   }
 
-  closeDownloadModal() {
+  openGeoapiKeyModal(request: GeoapiKeyRequest) {
+    this.selectedGeoapiKeyRequest = request;
+    this.modal = this.modalService.show(this.geoapiKeyModal);
+  }
+
+  closeModal() {
     this.modal?.hide();
     this.selectedRequest = null;
+    this.selectedGeoapiKeyRequest = null;
   }
 }

@@ -27,6 +27,7 @@
   "result.load.titleSimple": "Havainnot: yksinkertainen taulukko",
   "search.result.load": "Lataa aineisto",
   "select.organisation": "Valitse organisaation",
+  "downloadRequest.geoapiKey": "Geoapi-avain",
   "theme.geoapi": "Geoapi",
   "theme.geoapi.desc": "Geoapi kuvaus",
   "theme.arcgis": "Paikkatieto",

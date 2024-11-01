@@ -22,6 +22,7 @@ import { UsageAdminComponent } from './pages/usage-admin/usage-admin.component';
 import { FindPersonModule } from 'projects/laji/src/app/shared-modules/find-person/find-person.module';
 import { SelectModule } from 'projects/laji/src/app/shared-modules/select/select.module';
 import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
+import { GeoapiKeyRequestModalComponent } from './component/geoapi-key-request-modal/geoapi-key-request-modal.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
     CollectionSelectComponent,
     DataTableComponent,
     DownloadRequestModalComponent,
+    GeoapiKeyRequestModalComponent,
     UsageAdminComponent
   ],
   imports: [

@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
-import { VirGeoapiService } from '../../../service/vir-geoapi.service';
+import { GeoapiKeyRequest, VirGeoapiService } from '../../../service/vir-geoapi.service';
 
 @Component({
   selector: 'vir-usage-by-collection',
@@ -15,11 +15,13 @@ import { VirGeoapiService } from '../../../service/vir-geoapi.service';
 })
 export class UsageDownloadsComponent {
   @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
+  @ViewChild('geoapiKeyModal', { static: true }) geoapiKeyModal: TemplateRef<any>;
   downloadRequests$: Observable<DownloadRequest[]>;
   apiKeys$: Observable<DownloadRequest[]>;
-  geoapiKeys$: Observable<any[]>;
+  geoapiKeys$: Observable<GeoapiKeyRequest[]>;
 
   selectedRequest?: DownloadRequest;
+  selectedGeoapiKeyRequest?: GeoapiKeyRequest;
 
   private modal: ModalRef;
 
@@ -46,20 +48,19 @@ export class UsageDownloadsComponent {
     );
   }
 
-  onRowClick(event: any) {
-    this.openDownloadModal(event.row);
-  }
-
-  private closeSub: Subscription;
-
   openDownloadModal(request: DownloadRequest) {
     this.selectedRequest = request;
-    this.closeSub?.unsubscribe();
     this.modal = this.modalService.show(this.downloadModal);
-    this.closeSub = this.modal.onHide.subscribe(() => this.closeDownloadModal);
   }
 
-  closeDownloadModal() {
+  openGeoapiKeyModal(request: GeoapiKeyRequest) {
+    this.selectedGeoapiKeyRequest = request;
+    this.modal = this.modalService.show(this.geoapiKeyModal);
+  }
+
+  closeModal() {
+    this.modal?.hide();
     this.selectedRequest = null;
+    this.selectedGeoapiKeyRequest = null;
   }
 }

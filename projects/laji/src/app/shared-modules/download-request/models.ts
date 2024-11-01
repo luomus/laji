@@ -1,3 +1,5 @@
+export type DownloadRequestType = 'apiKey' | 'basic';
+
 export type DownloadRequestResponse = DownloadRequest | DownloadRequestNotFound;
 
 export interface DownloadRequest {
