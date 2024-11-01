@@ -1,0 +1,21 @@
+<ng-container>
+  <label for="year">{{ 'birdPointCount.stats.censuses.year' | translate }}</label>
+  <select
+    id="year"
+    (change)="onYearChange($event)"
+    [(ngModel)]="defaultYear"
+    name="year"
+    class="form-control"
+    style="width: 150px">
+    <option *ngFor="let option of yearOptions" [value]="option.value">{{ option.label }}</option>
+  </select>
+  <laji-wbc-routes-list
+    [rows]="rows"
+    [selected]="selected"
+    [sorts]="sorts"
+    [showNameAsLink]="false"
+    [loading]="loading"
+    [countLabel]="'wbc.stats.route.count'"
+  >
+  </laji-wbc-routes-list>
+</ng-container>

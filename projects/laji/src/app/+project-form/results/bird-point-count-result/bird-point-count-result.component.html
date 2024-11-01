@@ -50,7 +50,12 @@
       </laji-result-map>
     </div>
     <div *ngIf="isCensusesState(state)">
-      <laji-bird-point-count-result-censuses>
+      <laji-bird-point-count-result-censuses
+        [collections]="collections"
+        [collectionStartYear]="2012"
+        [year]="state.year"
+        (yearChange)="onYearChange($event)"
+      >
       </laji-bird-point-count-result-censuses>
     </div>
   </ng-container>

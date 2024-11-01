@@ -4,6 +4,7 @@ import { forkJoin, Observable, of } from 'rxjs';
 import {map, share, switchMap, tap} from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { PagedResult } from '../../../shared/model/PagedResult';
+import { ResultService } from '../common/service/result.service';
 
 export type SEASON = 'spring'|'fall'|'winter';
 
@@ -34,7 +35,8 @@ export class WbcResultService {
   private speciesListCache: any[];
 
   constructor(
-    private warehouseApi: WarehouseApi
+    private warehouseApi: WarehouseApi,
+    private resultService: ResultService
   ) { }
 
   getFilterParams(year?: number|number[], season?: SEASON, birdAssociationArea?: string, taxonId?: string|string[]): WarehouseQueryInterface {
@@ -157,7 +159,7 @@ export class WbcResultService {
       return of(this.speciesListCache);
     }
 
-    return this.getList(
+    return this.resultService.getListWithUnitStats(
       this.warehouseApi.warehouseQueryStatisticsGet(
         this.getFilterParams(year, season, birdAssociationArea, [this.birdId, this.mammalId]),
         ['unit.linkings.taxon.speciesId', 'unit.linkings.taxon.speciesNameFinnish', 'unit.linkings.taxon.speciesScientificName',
@@ -172,7 +174,7 @@ export class WbcResultService {
   }
 
   getRouteList(): Observable<any[]> {
-    return this.getList(
+    return this.resultService.getListWithUnitStats(
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
         this.getFilterParams(),
         ['document.namedPlace.id', 'document.namedPlace.name', 'document.namedPlace.ykj10km.lat',
@@ -190,7 +192,7 @@ export class WbcResultService {
   getCensusList(year?: number, season?: SEASON): Observable<any[]> {
     const query = this.getFilterParams(year, season);
 
-    return this.getList(
+    return this.resultService.getListWithUnitStats(
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
         query,
         ['document.documentId', 'document.namedPlace.name', 'document.namedPlace.municipalityDisplayName',
@@ -203,14 +205,14 @@ export class WbcResultService {
         true
       )
     ).pipe(
-      switchMap(result => this.addUnitStatsToResults(result, query))
+      switchMap(result => this.resultService.addUnitStatsToResults(result, query))
     );
   }
 
   getCensusListForRoute(routeId: string): Observable<any[]> {
     const query = {...this.getFilterParams(), namedPlaceId: [routeId]};
 
-    return this.getList(
+    return this.resultService.getListWithUnitStats(
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
         query,
         ['document.documentId', 'gathering.eventDate.begin'],
@@ -221,7 +223,7 @@ export class WbcResultService {
         true
       )
     ).pipe(
-      switchMap(result => this.addUnitStatsToResults(result, query))
+      switchMap(result => this.resultService.addUnitStatsToResults(result, query))
     );
   }
 
@@ -270,41 +272,6 @@ export class WbcResultService {
       this.addCounts(data[0].results, 'censusCount', result, true);
       return result;
     }));
-  }
-
-  private addUnitStatsToResults(result: any[], query: WarehouseQueryInterface) {
-    return this.getList(
-      this.warehouseApi.warehouseQueryStatisticsGet(
-        query,
-        ['document.documentId'],
-        undefined,
-        10000,
-        1,
-        undefined,
-        false
-      )
-    ).pipe(
-      map(list => {
-        const statsByDocumentId = {};
-        list.map(l => {
-          statsByDocumentId[l['document.documentId']] = l;
-        });
-        return statsByDocumentId;
-      }),
-      map(statsByDocumentId => {
-        for (const r of result) {
-          if (statsByDocumentId[r['document.documentId']]) {
-            const stats = statsByDocumentId[r['document.documentId']];
-            r.count = stats.count;
-            r.individualCountSum = stats.individualCountSum;
-          } else {
-            r.count = 0;
-            r.individualCountSum = 0;
-          }
-        }
-        return result;
-      })
-    );
   }
 
   private getCensusesForRoute(routeId: string): Observable<Censuses> {
@@ -498,13 +465,6 @@ export class WbcResultService {
     } else if (obj[key].indexOf(item) === -1) {
       obj[key].push(item);
     }
-  }
-
-  private getList(obs: Observable<PagedResult<any>>): Observable<any[]> {
-    return obs.pipe(
-      map(res => res.results),
-      map(res => res.map(r => ({...r, aggregateBy: undefined, ...r.aggregateBy})))
-    );
   }
 
   private getCensusStartYear(year: number, month: number) {

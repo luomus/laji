@@ -94,6 +94,7 @@
   "biomon.stats.statistics.table.cols.observer": "Havainnoija",
   "biomon.stats.statistics.title": "Tilastot",
   "birdPointCount.stats.censuses.title": "Laskennat",
+  "birdPointCount.stats.censuses.year": "Vuosi",
   "birdPointCount.stats.chart.description": "Tältä sivulta löydät tilastoja pistelaskennoista. Kuvaajalla näkyy parimäärät per laskenta vuosittain. Voit valita kaikki lajit tai rajata lajilla.",
   "birdPointCount.stats.chart.title": "Tilastot",
   "birdPointCount.stats.chart.x.title": "Vuodet",

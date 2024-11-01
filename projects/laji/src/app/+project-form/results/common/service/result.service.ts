@@ -5,6 +5,7 @@ import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 import { convertYkjToGeoJsonFeature } from '../../../../root/coordinate-utils';
 import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
+import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 
 @Injectable()
 export class ResultService {
@@ -113,6 +114,48 @@ export class ResultService {
         ).pipe(
         map(data => data.results),
         map(data => this._resultToGeoJson(data)), )
+    );
+  }
+
+  getListWithUnitStats(obs: Observable<PagedResult<any>>): Observable<any[]> {
+    return obs.pipe(
+      map(res => res.results),
+      map(res => res.map(r => ({...r, aggregateBy: undefined, ...r.aggregateBy})))
+    );
+  }
+
+  addUnitStatsToResults(result: any[], query: WarehouseQueryInterface) {
+    return this.getListWithUnitStats(
+      this.warehouseApi.warehouseQueryStatisticsGet(
+        query,
+        ['document.documentId'],
+        undefined,
+        10000,
+        1,
+        undefined,
+        false
+      )
+    ).pipe(
+      map(list => {
+        const statsByDocumentId = {};
+        list.map(l => {
+          statsByDocumentId[l['document.documentId']] = l;
+        });
+        return statsByDocumentId;
+      }),
+      map(statsByDocumentId => {
+        for (const r of result) {
+          if (statsByDocumentId[r['document.documentId']]) {
+            const stats = statsByDocumentId[r['document.documentId']];
+            r.count = stats.count;
+            r.individualCountSum = stats.individualCountSum;
+          } else {
+            r.count = 0;
+            r.individualCountSum = 0;
+          }
+        }
+        return result;
+      })
     );
   }
 
