@@ -40,7 +40,7 @@ export class ObserversComponent implements OnInit {
         this.cdr.markForCheck();
       }),
       switchMap(area => {
-        const observerStatsOptions: ObserverStatsParams = { limit: 100 };
+        const observerStatsOptions: ObserverStatsParams = { limit: 1000 };
         if (area && area !== 'all') {
           observerStatsOptions.birdAssociationId = area;
         }
