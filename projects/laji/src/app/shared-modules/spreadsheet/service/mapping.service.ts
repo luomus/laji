@@ -296,7 +296,7 @@ export class MappingService {
     return this.translationService.instant(value ? this.booleanMap.true : this.booleanMap.false);
   }
 
-  mapUnitTaxon(value: string) {
+  mapUnitTaxon(value: any) {
     if (value === VALUE_IGNORE || (typeof value === 'object' && value[MappingService.mergeKey])) {
       return value;
     }
