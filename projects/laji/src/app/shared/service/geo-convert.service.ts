@@ -4,7 +4,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { switchMap, concatMap, map, catchError, takeWhile } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
-export const GEO_CONVERT_LIMIT = 500000;
 export type GeoConversionStatus = 'pending'|'complete';
 
 export enum FileFormat {
