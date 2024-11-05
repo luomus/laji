@@ -231,8 +231,10 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {
-    const allowExcel = this.projectFormService.getExcelFormIDs(projectForm).length;
-    const {form, subForms} = projectForm;
+    const excelFormOptions = this.projectFormService.getExcelFormOptions(projectForm);
+    const allowExcel = excelFormOptions.length;
+    const allowExcelGeneration = excelFormOptions.some(options => options.allowGenerate);
+    const { form, subForms } = projectForm;
     return [
       {
         link: ['about'],
@@ -255,7 +257,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         label: 'excel.import',
         lajiFormOption: 'options.allowExcel'
       },
-      rights.edit && allowExcel && {
+      rights.edit && allowExcelGeneration && {
         link: ['generate'],
         label: 'excel.generate',
         lajiFormOption: 'options.allowExcel'
