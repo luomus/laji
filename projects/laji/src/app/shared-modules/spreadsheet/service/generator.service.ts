@@ -105,6 +105,7 @@ export class GeneratorService {
       }
 
       if (useLabels && field.enum && field.default) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         value = field.enum.find(item => item.const === field.default)!.title;
       } else if (field.type === 'boolean') {
         value = this.mappingService.reverseMap(value, field);
