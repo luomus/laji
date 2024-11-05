@@ -11,7 +11,7 @@ export const LANGUAGES: string[] = (environment as any).languages ?? ['fi', 'en'
 @Injectable()
 export class LocalizeRouterService {
 
-  static translatePath(path: string, lang): string {
+  static translatePath(path: string, lang: string): string {
     const reg = new RegExp('^\/(in|' + LANGUAGES.join('|') + ')\\b'); // /^\/(in|en|sv|fi)\b/
 
     if (path.match(reg)) {
@@ -40,7 +40,8 @@ export class LocalizeRouterService {
     const result: any[] = [];
     (query as Array<any>).forEach((segment: any, index: number) => {
       if (index === 0 && typeof segment === 'string' && segment.startsWith('/')) {
-        result.push(LocalizeRouterService.translatePath(segment, lang));
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        result.push(LocalizeRouterService.translatePath(segment, lang!));
       } else {
         result.push(segment);
       }

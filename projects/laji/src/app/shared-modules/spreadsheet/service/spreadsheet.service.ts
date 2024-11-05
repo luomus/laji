@@ -364,7 +364,7 @@ export class SpreadsheetService {
     lastLabel = '',
     required = []
   ) {
-    if (!schema || !schema.type || (schema.options && schema.options.excludeFromSpreadSheet)) {
+    if (!schema || !schema.type) {
       return;
     }
     const label = schema.title || lastLabel;
