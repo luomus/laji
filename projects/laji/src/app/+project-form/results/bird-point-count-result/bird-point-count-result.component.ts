@@ -33,12 +33,12 @@ type State = ChartState | MapState;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdPointCountResultComponent implements OnInit, OnDestroy {
-  @Input() form: Form.SchemaForm;
+  @Input() form!: Form.SchemaForm;
 
   Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
-  state$: Observable<State>;
+  state$!: Observable<State>;
   collections: string[] = ['HR.157'];
-  taxonOptions$: Observable<{ label: string; value: string }[]>;
+  taxonOptions$!: Observable<{ label: string; value: string }[]>;
   isChartState = (state: State): state is ChartState => state.tab === Tabs.chart;
   isMapState = (state: State): state is MapState => state.tab === Tabs.map;
   mapQuery: WarehouseQueryInterface = {
@@ -46,7 +46,7 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
     gatheringCounts: true, cache: true, countryId: ['ML.206']
   };
 
-  private defaultTabSubscription: Subscription;
+  private defaultTabSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -83,7 +83,7 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
       map(res => res.results),
       map(taxa => taxa.map(t => ({
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),
-        value: t.id
+        value: t.id ?? ''
       }))),
       map(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs))
     );
