@@ -25,7 +25,6 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Util } from '../service/util.service';
 import { Profile } from '../model/Profile';
 import { Person } from '../model/Person';
 import { environment } from '../../../environments/environment';
@@ -47,25 +46,11 @@ export class PersonApi {
    * @param token User token
    * @param userId Accept this user as a person
    */
-  public personAcceptFriendRequest(token: string, userId: string, extraHttpRequestParams?: any): Observable<Profile> {
+  public personAcceptFriendRequest(token: string, userId: string): Observable<Profile> {
     if (this.platformService.isServer) {
       return EMPTY;
     }
-    const path = this.basePath + '/person/{token}/friends/{userId}'
-        .replace('{' + 'token' + '}', String(token))
-        .replace('{' + 'userId' + '}', String(userId));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'token' is not null or undefined
-    if (token === null || token === undefined) {
-      throw new Error('Required parameter token was null or undefined when calling personAcceptFriendRequest.');
-    }
-    // verify required parameter 'userId' is not null or undefined
-    if (userId === null || userId === undefined) {
-      throw new Error('Required parameter userId was null or undefined when calling personAcceptFriendRequest.');
-    }
-
-    return this.http.put(path, undefined, {params: queryParameters});
+    return this.http.put<Profile>(`${this.basePath}/person/${token}/friends/${userId}`, undefined);
   }
 
   /**
@@ -74,24 +59,12 @@ export class PersonApi {
    * @param token User token
    * @param friendPersonID Friend's person ID who is asked be your friend
    */
-  public personAddFriendRequest(token: string, friendPersonID: string, extraHttpRequestParams?: any): Observable<unknown> {
+  public personAddFriendRequest(token: string, friendPersonID: string): Observable<unknown> {
     if (this.platformService.isServer) {
       return EMPTY;
     }
 
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'token' is not null or undefined
-    if (token === null || token === undefined) {
-      throw new Error('Required parameter token was null or undefined when calling personAddFriendRequest.');
-    }
-    // verify required parameter 'friendPersonID' is not null or undefined
-    if (friendPersonID === null || friendPersonID === undefined) {
-      throw new Error('Required parameter friendPersonID was null or undefined when calling personAddFriendRequest.');
-    }
-
-    const path = `${this.basePath}/person/${token}/friends/${friendPersonID}`;
-
-    return this.http.post(path, undefined, {params: queryParameters});
+    return this.http.post(`${this.basePath}/person/${token}/friends/${friendPersonID}`, undefined);
   }
 
   /**
@@ -100,23 +73,11 @@ export class PersonApi {
    * @param profile object to be updated
    * @param token users personToken
    */
-  public personCreateProfileByToken(profile: Profile, token: string, extraHttpRequestParams?: any): Observable<Profile> {
+  public personCreateProfileByToken(profile: Profile, token: string): Observable<Profile> {
     if (this.platformService.isServer) {
       return EMPTY;
     }
-    const path = this.basePath + '/person/{token}/profile'
-        .replace('{' + 'token' + '}', String(token));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'profile' is not null or undefined
-    if (profile === null || profile === undefined) {
-      throw new Error('Required parameter profile was null or undefined when calling personCreateProfileByToken.');
-    }
-    // verify required parameter 'token' is not null or undefined
-    if (token === null || token === undefined) {
-      throw new Error('Required parameter token was null or undefined when calling personCreateProfileByToken.');
-    }
-    return this.http.post(path, profile, {params: queryParameters});
+    return this.http.post<Profile>(`${this.basePath}/person/${token}/profile`, profile);
   }
 
   /**
@@ -124,20 +85,11 @@ export class PersonApi {
    *
    * @param token users personToken
    */
-  public personFindByToken(token: string, extraHttpRequestParams?: any): Observable<Person> {
+  public personFindByToken(token: string): Observable<Person> {
     if (this.platformService.isServer) {
       return EMPTY;
     }
-    const path = this.basePath + '/person/{token}'
-        .replace('{' + 'token' + '}', String(token));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'token' is not null or undefined
-    if (token === null || token === undefined) {
-      throw new Error('Required parameter token was null or undefined when calling personFindByToken.');
-    }
-
-    return this.http.get(path, {params: queryParameters});
+    return this.http.get(`${this.basePath}/person/${token}`);
   }
 
   /**
@@ -145,17 +97,8 @@ export class PersonApi {
    *
    * @param id users id
    */
-  public personFindByUserId(id: string, extraHttpRequestParams?: any): Observable<Person> {
-    const path = this.basePath + '/person/by-id/{id}'
-        .replace('{' + 'id' + '}', String(id));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'id' is not null or undefined
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling personFindByUserId.');
-    }
-
-    return this.http.get(path, {params: queryParameters});
+  public personFindByUserId(id: string): Observable<Person> {
+    return this.http.get(`${this.basePath}/person/by-id/${id}`);
   }
 
   /**
@@ -163,17 +106,8 @@ export class PersonApi {
    *
    * @param id users id
    */
-  public personFindProfileByUserId(id: string, extraHttpRequestParams?: any): Observable<Profile> {
-    const path = this.basePath + '/person/by-id/{id}/profile'
-        .replace('{' + 'id' + '}', String(id));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'id' is not null or undefined
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling personFindByUserId.');
-    }
-
-    return this.http.get(path, {params: queryParameters});
+  public personFindProfileByUserId(id: string): Observable<Profile> {
+    return this.http.get(`${this.basePath}/person/by-id/${id}/profile`);
   }
 
   /**
@@ -181,20 +115,11 @@ export class PersonApi {
    *
    * @param token users personToken
    */
-  public personFindProfileByToken(token: string, extraHttpRequestParams?: any): Observable<Profile> {
+  public personFindProfileByToken(token: string): Observable<Profile> {
     if (this.platformService.isServer) {
       return EMPTY;
     }
-    const path = this.basePath + '/person/{token}/profile'
-        .replace('{' + 'token' + '}', String(token));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'token' is not null or undefined
-    if (token === null || token === undefined) {
-      throw new Error('Required parameter token was null or undefined when calling personFindProfileByToken.');
-    }
-
-    return this.http.get(path, {params: queryParameters});
+    return this.http.get(`${this.basePath}/person/${token}/profile`);
   }
 
   /**
@@ -204,28 +129,11 @@ export class PersonApi {
    * @param userId Accept this user as a person
    * @param block if the removed person should be blocked also
    */
-  public personRemoveFriend(token: string, userId: string, block: boolean = false, extraHttpRequestParams?: any): Observable<Profile> {
+  public personRemoveFriend(token: string, userId: string, block: boolean = false): Observable<Profile> {
     if (this.platformService.isServer) {
       return EMPTY;
     }
-    const path = this.basePath + '/person/{token}/friends/{userId}'
-        .replace('{' + 'token' + '}', String(token))
-        .replace('{' + 'userId' + '}', String(userId));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'token' is not null or undefined
-    if (token === null || token === undefined) {
-      throw new Error('Required parameter token was null or undefined when calling personRemoveFriend.');
-    }
-    // verify required parameter 'userId' is not null or undefined
-    if (userId === null || userId === undefined) {
-      throw new Error('Required parameter userId was null or undefined when calling personRemoveFriend.');
-    }
-    if (block !== undefined) {
-      queryParameters['block'] = block;
-    }
-
-    return this.http.delete(path, {params: queryParameters});
+    return this.http.delete(`${this.basePath}/person/${token}/friends/${userId}`, {params: { block }});
   }
 
   /**
@@ -234,33 +142,18 @@ export class PersonApi {
    * @param profile users profile object
    * @param token users personToken
    */
-  public personUpdateProfileByToken(profile: Profile, token: string, extraHttpRequestParams?: any): Observable<Profile> {
+  public personUpdateProfileByToken(profile: Profile, token: string): Observable<Profile> {
     if (this.platformService.isServer) {
       return EMPTY;
     }
-    const path = this.basePath + '/person/{token}/profile'
-        .replace('{' + 'token' + '}', String(token));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'profile' is not null or undefined
-    if (profile === null || profile === undefined) {
-      throw new Error('Required parameter profile was null or undefined when calling personUpdateProfileByToken.');
-    }
-    // verify required parameter 'token' is not null or undefined
-    if (token === null || token === undefined) {
-      throw new Error('Required parameter token was null or undefined when calling personUpdateProfileByToken.');
-    }
-
-    return this.http.put(path, profile, {params: queryParameters});
+    return this.http.put(`${this.basePath}/person/${token}/profile`, profile);
   }
 
   public removePersonToken(token: string) {
     if (this.platformService.isServer) {
       return EMPTY;
     }
-    const url = this.basePath + `/person-token/${token}`;
-    // expecting 200 "ok"
+    const url = `${this.basePath}/person-token/${token}`;
     return this.http.delete(url, {observe: 'body', responseType: 'text'});
   }
-
 }
