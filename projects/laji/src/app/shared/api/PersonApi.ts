@@ -72,25 +72,24 @@ export class PersonApi {
    * Request person to be your friend
    *
    * @param token User token
-   * @param profileKey profile key
+   * @param friendPersonID Friend's person ID who is asked be your friend
    */
-  public personAddFriendRequest(token: string, profileKey: string, extraHttpRequestParams?: any): Observable<unknown> {
+  public personAddFriendRequest(token: string, friendPersonID: string, extraHttpRequestParams?: any): Observable<unknown> {
     if (this.platformService.isServer) {
       return EMPTY;
     }
-    const path = this.basePath + '/person/{token}/friends/{profileKey}'
-        .replace('{' + 'token' + '}', String(token))
-        .replace('{' + 'profileKey' + '}', String(profileKey));
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personAddFriendRequest.');
     }
-    // verify required parameter 'profileKey' is not null or undefined
-    if (profileKey === null || profileKey === undefined) {
-      throw new Error('Required parameter profileKey was null or undefined when calling personAddFriendRequest.');
+    // verify required parameter 'friendPersonID' is not null or undefined
+    if (friendPersonID === null || friendPersonID === undefined) {
+      throw new Error('Required parameter friendPersonID was null or undefined when calling personAddFriendRequest.');
     }
+
+    const path = `${this.basePath}/person/${token}/friends/${friendPersonID}`;
 
     return this.http.post(path, undefined, {params: queryParameters});
   }

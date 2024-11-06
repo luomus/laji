@@ -53,10 +53,10 @@ export class FriendsComponent implements OnInit, OnChanges {
     return this.usersProfile.friends && this.usersProfile.friends.indexOf(this.profile.userID!) > -1;
   }
 
-  sendFriendRequest(profileKy: string) {
+  sendFriendRequest(friendPersonID: string) {
     this.personService.personAddFriendRequest(
       this.userService.getToken(),
-      profileKy
+      friendPersonID
     ).subscribe(
       () => this.requestSend = true,
       () => this.requestSend = true

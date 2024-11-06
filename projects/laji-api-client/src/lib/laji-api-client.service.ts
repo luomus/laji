@@ -1696,7 +1696,7 @@ export namespace LajiApiClient {
     /**
      * profile key
      */
-    profileKey: string;
+    friendPersonID: string;
 
     /**
      * Person token
