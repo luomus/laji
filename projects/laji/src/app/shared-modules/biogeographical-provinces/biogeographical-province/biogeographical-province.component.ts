@@ -45,7 +45,7 @@ export class BiogeographicalProvinceComponent {
 
   borderColor = '#000';
   loading = false;
-  results$: Observable<BiogeographicalArea>;
+  results$?: Observable<BiogeographicalArea>;
 
   private colorPalette = [
     '#f7fcfd',
@@ -73,12 +73,12 @@ export class BiogeographicalProvinceComponent {
       100,
       1
     ).pipe(
-      map((result) => result.results.map(aggr => ({
+      map((result) => result.results.map((aggr: any) => ({
         count: aggr.count,
         key: IdService.getId(aggr.aggregateBy['gathering.interpretations.biogeographicalProvince'])
       }))),
       tap(counts => this.initFillColors(counts)),
-      map(result => result.reduce((cumulative, current) => {
+      map(result => result.reduce((cumulative: any, current: any) => {
         if (cumulative[current.key]) {
           cumulative[current.key] += current.count;
         } else {
@@ -90,12 +90,12 @@ export class BiogeographicalProvinceComponent {
   }
 
   private initFillColors(result: {count: number; key: string}[]) {
-    const colors = {};
+    const colors: BiogeographicalArea = {};
     result.forEach(res => {
       if (res.count > 1000) {
-        colors[res.key] = this.colorPalette[this.colorPalette.length - 1];
+        colors[res.key as keyof BiogeographicalArea] = this.colorPalette[this.colorPalette.length - 1];
       } else {
-        colors[res.key] = this.colorPalette[Math.floor(res.count / 10) % 10];
+        colors[res.key as keyof BiogeographicalArea] = this.colorPalette[Math.floor(res.count / 10) % 10];
       }
     });
     this.fill = colors;
