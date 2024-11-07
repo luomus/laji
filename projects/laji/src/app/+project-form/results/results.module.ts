@@ -8,6 +8,7 @@ import { ChartModule } from '../../shared-modules/chart/chart.module';
 import { YkjModule } from '../../shared-modules/ykj/ykj.module';
 import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 import { ResultsComponent } from './results.component';
+import { RoutesListComponent } from './common/routes-list/routes-list.component';
 import { DatatableModule } from '../../shared-modules/datatable/datatable.module';
 import { WbcRoutesMapComponent } from './wbc-result/wbc-routes/wbc-routes-map/wbc-routes-map.component';
 import { LineTransectResultComponent } from './line-transect-result/line-transect-result.component';
@@ -24,7 +25,6 @@ import { WbcSpeciesLinechartsComponent } from './wbc-result/wbc-species-charts/w
 import { WbcRouteComponent } from './wbc-result/wbc-route/wbc-route.component';
 import { WbcRouteTableComponent } from './wbc-result/wbc-route-table/wbc-route-table.component';
 import { WbcTableFilterComponent } from './wbc-result/wbc-table-filter/wbc-table-filter.component';
-import { WbcRoutesListComponent } from './wbc-result/wbc-routes/wbc-routes-list/wbc-routes-list.component';
 import { ThemeResultComponent } from './common/theme-result/theme-result.component';
 import { ThemeObservationListComponent } from './common/theme-observation-list/theme-observation-list.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -87,6 +87,7 @@ import { ResultMapComponent } from './common/result-map/result-map.component';
   ],
   declarations: [
     ResultsComponent,
+    RoutesListComponent,
     LineTransectResultComponent,
     LineTransectResultChartComponent,
     WbcResultComponent,
@@ -101,7 +102,6 @@ import { ResultMapComponent } from './common/result-map/result-map.component';
     WbcRouteComponent,
     WbcRouteTableComponent,
     WbcTableFilterComponent,
-    WbcRoutesListComponent,
     WbcRoutesMapComponent,
     ThemeResultComponent,
     ThemeObservationListComponent,

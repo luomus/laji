@@ -27,12 +27,12 @@ export class BirdPointCountResultCensusesComponent implements OnInit, OnChanges 
     'document.namedPlace.municipalityDisplayName',
     'document.namedPlace.birdAssociationAreaDisplayName',
     'gathering.eventDate.begin',
+    'document.modifiedDate',
     'count',
     'individualCountSum'
   ];
   sorts: {prop: string; dir: 'asc'|'desc'}[] = [
-    {prop: 'document.namedPlace.birdAssociationAreaDisplayName', dir: 'asc'},
-    {prop: 'gathering.eventDate.begin', dir: 'desc'},
+    {prop: 'document.modifiedDate', dir: 'desc'}
   ];
   yearOptions: { label: string; value: string }[];
   defaultYear: string;

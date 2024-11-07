@@ -15,7 +15,7 @@
 
 <ng-container *ngIf="!season">
   <h4>{{ 'wbc.stats.route.censuses' | translate }}</h4>
-  <laji-wbc-routes-list
+  <laji-routes-list
     [showFilter]="false"
     [rows]="rows"
     [loading]="!rows"
@@ -25,7 +25,7 @@
     [selected]="selected"
     [countLabel]="'wbc.stats.route.count'"
     (rowSelect)="openViewer($event['document.documentId'])"
-  ></laji-wbc-routes-list>
+  ></laji-routes-list>
 </ng-container>
 
 <laji-wbc-route-table *ngIf="season"

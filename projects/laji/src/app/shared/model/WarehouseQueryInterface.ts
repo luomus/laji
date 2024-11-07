@@ -256,6 +256,7 @@ export interface WarehouseQueryInterface {
   sensitive?: boolean;
   primarySpecimen?: boolean;
   hasValue?: string;
+  createdDateYear?: number;
 }
 
 

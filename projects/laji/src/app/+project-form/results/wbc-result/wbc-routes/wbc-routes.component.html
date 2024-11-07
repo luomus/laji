@@ -7,13 +7,13 @@
   <lu-tabs [selectedIndex]="activeIndex" (selectedChange)="setActive($event)">
     <lu-tab [heading]="'np.list' | translate">
       <ng-container *ngIf="loadedTabs.isLoaded('list')">
-        <laji-wbc-routes-list
+        <laji-routes-list
           [rows]="data"
           [loading]="!data"
           [selected]="selected"
           [sorts]="sorts"
           (rowSelect)="rowSelect($event)"
-        ></laji-wbc-routes-list>
+        ></laji-routes-list>
       </ng-container>
     </lu-tab>
     <lu-tab [heading]="'np.map' | translate">

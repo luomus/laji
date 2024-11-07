@@ -1,15 +1,15 @@
 import {Component, EventEmitter, Input, NgZone, OnChanges, Output, TemplateRef, ViewChild} from '@angular/core';
-import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
+import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IdService } from '../../../../../shared/service/id.service';
+import { IdService } from '../../../../shared/service/id.service';
 import { ColumnMode } from '@achimha/ngx-datatable';
 
 @Component({
-  selector: 'laji-wbc-routes-list',
-  templateUrl: './wbc-routes-list.component.html',
-  styleUrls: ['./wbc-routes-list.component.scss']
+  selector: 'laji-routes-list',
+  templateUrl: './routes-list.component.html',
+  styleUrls: ['./routes-list.component.scss']
 })
-export class WbcRoutesListComponent implements OnChanges {
+export class RoutesListComponent implements OnChanges {
   @Input() rows: any[] = [];
   @Input() height = 'calc(80vh - 100px)';
   @Input() columnMode: ColumnMode | keyof typeof ColumnMode = 'standard';
@@ -40,6 +40,10 @@ export class WbcRoutesListComponent implements OnChanges {
     {
       name: 'gathering.eventDate.begin',
       label: 'wbc.stats.route.begin'
+    },
+    {
+      name: 'document.modifiedDate',
+      label: 'wbc.stats.route.modifiedDate'
     },
     {
       name: 'oldestRecord',

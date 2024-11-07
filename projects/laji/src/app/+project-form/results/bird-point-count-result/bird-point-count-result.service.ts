@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { ResultService } from '../common/service/result.service';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
 @Injectable()
 export class BirdPointCountResultService {
@@ -34,6 +35,42 @@ export class BirdPointCountResultService {
       )
     ).pipe(
       switchMap(result => this.resultService.addUnitStatsToResults(result, query))
+    ).pipe(
+      switchMap(result => this.addModifiedDateToResults(result, query))
+    );
+  }
+
+  addModifiedDateToResults(result: any[], query: WarehouseQueryInterface) {
+    return this.resultService.getListWithUnitStats(
+      this.warehouseApi.warehouseQueryDocumentAggregateGet(
+        {
+          formId: 'MHL.75',
+          createdDateYear: Number(query.yearMonth[0])
+        },
+        ['document.documentId', 'document.modifiedDate'],
+        undefined,
+        10000,
+        1,
+        undefined,
+        false
+      )
+    ).pipe(
+      map(list => {
+        const statsByDocumentId = {};
+        list.map(l => {
+          statsByDocumentId[l['document.documentId']] = l;
+        });
+        return statsByDocumentId;
+      }),
+      map(statsByDocumentId => {
+        for (const r of result) {
+          if (statsByDocumentId[r['document.documentId']]) {
+            const stats = statsByDocumentId[r['document.documentId']];
+            r['document.modifiedDate'] = stats['document.modifiedDate'];
+          }
+        }
+        return result;
+      })
     );
   }
 }
