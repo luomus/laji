@@ -1,7 +1,7 @@
 <div class="mt-5">
   <laji-datatable
-    [rows]="rows$ | async"
-    [loading]="loading$ | async"
+    [rows]="(rows$ | async) ?? []"
+    [loading]="(loading$ | async) ?? true"
     [columns]="columns"
     [clientSideSorting]="true"
     [virtualScrolling]="false"

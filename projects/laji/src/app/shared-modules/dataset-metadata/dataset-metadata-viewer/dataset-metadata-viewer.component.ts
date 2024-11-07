@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { Collection } from '../../../shared/model/Collection';
-import { ICollectionCounts } from '../../../shared/service/collection.service';
+import { ICollection, ICollectionCounts } from '../../../shared/service/collection.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,15 +9,13 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatasetMetadataViewerComponent {
-  @Input() collection$: Observable<Collection>;
-  @Input() collectionCounts$: Observable<ICollectionCounts>;
+  @Input() collection$!: Observable<ICollection>;
+  @Input() collectionCounts$!: Observable<ICollectionCounts>;
 
-  collection: Collection;
-  collectionCounts: ICollectionCounts;
   dataLoading = false;
   countLoading = false;
 
-  isInternalLink(collection) {
+  isInternalLink(collection: ICollection) {
     return /^HR\.\d+$/g.test(collection.id);
   }
 }

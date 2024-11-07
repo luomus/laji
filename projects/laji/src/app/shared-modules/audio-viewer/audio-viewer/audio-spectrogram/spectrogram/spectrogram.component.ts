@@ -13,14 +13,14 @@ import { SpectrogramService } from '../../../service/spectrogram.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpectrogramComponent implements OnChanges {
-  @ViewChild('canvas', { static: true }) canvasRef: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
 
-  @Input() buffer: AudioBuffer;
-  @Input() startTime: number;
-  @Input() endTime: number;
-  @Input() config: ISpectrogramConfig;
+  @Input() buffer?: AudioBuffer;
+  @Input() startTime?: number;
+  @Input() endTime?: number;
+  @Input() config?: ISpectrogramConfig;
 
-  @Input() view: IAudioViewerArea;
+  @Input() view?: IAudioViewerArea;
 
   @Input() width = 0;
   @Input() height = 0;
@@ -29,7 +29,7 @@ export class SpectrogramComponent implements OnChanges {
 
   @Output() spectrogramLoading = new EventEmitter<boolean>();
 
-  private imageData?: ImageData;
+  private imageData?: ImageData|null;
   private imageDataSub?: Subscription;
 
   constructor(
@@ -51,7 +51,7 @@ export class SpectrogramComponent implements OnChanges {
       }
 
       if (this.buffer && this.startTime != null && this.endTime != null) {
-        const observable = this.pregeneratedSpectrogramUrl ? of(null) : this.createSpectrogram(
+        const observable: Observable<null> = this.pregeneratedSpectrogramUrl ? of(null) : this.createSpectrogram(
           this.buffer, this.startTime, this.endTime
         );
         // has a timeout because otherwise the changes caused by this.spectrogramLoading.emit() are not always detected
@@ -78,10 +78,13 @@ export class SpectrogramComponent implements OnChanges {
       return true;
     }
 
-    return Object.keys(currConfig).some(key => key !== 'sampleRate' && currConfig[key] !== prevConfig[key]);
+    return Object.keys(currConfig).some(key => {
+      const _key = key as keyof ISpectrogramConfig;
+      return _key !== 'sampleRate' && currConfig[_key] !== prevConfig[_key];
+    });
   }
 
-  private createSpectrogram(buffer: AudioBuffer, startTime: number, endTime: number): Observable<void> {
+  private createSpectrogram(buffer: AudioBuffer, startTime: number, endTime: number): Observable<null> {
     buffer = this.processBuffer(buffer, startTime, endTime);
     return this.createSpectrogramFromProcessedBuffer(buffer);
   }
@@ -93,7 +96,7 @@ export class SpectrogramComponent implements OnChanges {
     return buffer;
   }
 
-  private createSpectrogramFromProcessedBuffer(buffer: AudioBuffer): Observable<void> {
+  private createSpectrogramFromProcessedBuffer(buffer: AudioBuffer): Observable<null> {
     return this.spectrogramService.getSpectrogramImageData(buffer, this.config)
       .pipe(
         tap(result => {
@@ -105,13 +108,17 @@ export class SpectrogramComponent implements OnChanges {
   }
 
   private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
-    const maxTime = this.endTime - this.startTime;
-    const maxFreq = AudioViewerUtils.getMaxFreq(this.buffer.sampleRate);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const maxTime = this.endTime! - this.startTime!;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const maxFreq = AudioViewerUtils.getMaxFreq(this.buffer!.sampleRate);
 
-    const startTime = this.view?.xRange[0] ? this.view?.xRange[0] - this.startTime : 0;
-    const endTime = this.view?.xRange[1] ? this.view?.xRange[1] - this.startTime : maxTime;
-    const startFreq = this.view?.yRange[0] || 0;
-    const endFreq = this.view?.yRange[1] || maxFreq;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const startTime = this.view?.xRange?.[0] ? this.view.xRange[0] - this.startTime! : 0;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const endTime = this.view?.xRange?.[1] ? this.view.xRange[1] - this.startTime! : maxTime;
+    const startFreq = this.view?.yRange?.[0] || 0;
+    const endFreq = this.view?.yRange?.[1] || maxFreq;
 
     const ratioX1 = startTime / maxTime;
     const ratioX2 = endTime / maxTime;
@@ -125,12 +132,12 @@ export class SpectrogramComponent implements OnChanges {
     canvas.height = data.height * (ratioY2 - ratioY1);
 
     const ctx = canvas.getContext('2d');
-    ctx.putImageData(data, -startX, -startY, startX, startY, canvas.width, canvas.height);
+    ctx?.putImageData(data, -startX, -startY, startX, startY, canvas.width, canvas.height);
   }
 
   private clearCanvas() {
     const canvas = this.canvasRef.nativeElement;
     const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx?.clearRect(0, 0, canvas.width, canvas.height);
   }
 }

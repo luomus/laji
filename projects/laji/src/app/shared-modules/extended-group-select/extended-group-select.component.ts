@@ -1,22 +1,23 @@
 /* tslint:disable:no-use-before-declare */
-import { map, shareReplay, switchMap } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { ChangeDetectorRef, EventEmitter, Input, OnInit, OnChanges, Output, Directive } from '@angular/core';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { Observable, of } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Group } from '../../shared/model/Group';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree-select/tree-select.component';
 import { Util } from '../../shared/service/util.service';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { RedListTaxonGroup } from '../../shared/model/RedListTaxonGroup';
 
 export interface InformalGroupEvent {
   [key: string]: string[];
 }
 
 @Directive()
-export abstract class ExtendedGroupSelectComponent<T extends Group> implements OnInit, OnChanges {
-  @Input() query: Record<string, any>;
+export abstract class ExtendedGroupSelectComponent<T extends RedListTaxonGroup|InformalTaxonGroup> implements OnInit, OnChanges {
+  @Input() query!: WarehouseQueryInterface;
   @Input() modalButtonLabel = '';
   @Input() modalTitle = '';
   @Input() browseTitle = '';
@@ -30,8 +31,8 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
 
   redList = false;
 
-  groupsTree$: Observable<TreeOptionsNode[]>;
-  groups$: Observable<SelectedOption[]>;
+  groupsTree$!: Observable<TreeOptionsNode[]>;
+  groups$!: Observable<SelectedOption[]>;
 
   includedOptions: string[] = [];
   excludedOptions: string[] = [];
@@ -57,9 +58,9 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
     }
   }
 
-  abstract findByIds(groupIds, lang): Observable<PagedResult<T>>;
+  abstract findByIds(groupIds: string[], lang: string): Observable<PagedResult<T>>;
   abstract convertToInformalTaxonGroup(group: T): InformalTaxonGroup;
-  abstract getTree(lang): Observable<PagedResult<T>>;
+  abstract getTree(lang: string): Observable<PagedResult<T>>;
   abstract getOptions(query: Record<string, any>): string[][];
   abstract prepareEmit(includedOptions: string[], excludedOptions?: string[]): InformalGroupEvent;
 
@@ -70,8 +71,8 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
     );
   }
 
-  buildGroupTree(trees: any[]): TreeOptionsNode[] {
-    const groupsWithChildren = [];
+  buildGroupTree(trees: T[]): TreeOptionsNode[] {
+    const groupsWithChildren: TreeOptionsNode[] = [];
 
     trees.forEach(tree => {
       const prunedTree = this.buildTree(this.convertToInformalTaxonGroup(tree));
@@ -84,19 +85,30 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
     return groupsWithChildren;
   }
 
-  buildTree(tree): TreeOptionsNode {
+  buildTree(tree: InformalTaxonGroup): TreeOptionsNode {
     if (!!tree.hasSubGroup) {
-      const children = tree.hasSubGroup.map(subTree => this.buildTree(this.convertToInformalTaxonGroup(subTree)));
+      const children: TreeOptionsNode[] = [];
+      tree.hasSubGroup.forEach(subTree => {
+        if (typeof subTree === 'string') {
+          return;
+        }
+
+        const child = this.buildTree(this.convertToInformalTaxonGroup(subTree as T));
+
+        if (child) {
+          children.push(child);
+        }
+      });
 
       return {
         id: tree.id,
-        name: tree.name,
+        name: tree.name ?? tree.id,
         children,
         };
     } else {
       return {
         id: tree.id,
-        name: tree.name,
+        name: tree.name ?? tree.id,
       };
     }
   }
@@ -115,13 +127,13 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
             if (includedOptions.includes(item.id)) {
               toReturn.push({
                 id: item.id,
-                value: item.name,
+                value: item.name ?? item.id,
                 type: 'included'
               });
             } else if (excludedOptions.includes(item.id)) {
               toReturn.push({
                 id: item.id,
-                value: item.name,
+                value: item.name ?? item.id,
                 type: 'excluded'
               });
             }
@@ -133,8 +145,8 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   }
 
   selectedOptionsChange($event: TreeOptionsChangeEvent) {
-    this.includedOptions = $event.selectedId;
-    this.excludedOptions = $event.selectedIdNot;
+    this.includedOptions = $event.selectedId ?? [];
+    this.excludedOptions = $event.selectedIdNot ?? [];
     this.select.emit(this.prepareEmit(this.includedOptions, this.excludedOptions));
   }
 }

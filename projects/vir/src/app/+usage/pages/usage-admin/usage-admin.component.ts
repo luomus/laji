@@ -17,7 +17,7 @@ import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.compo
 })
 export class UsageAdminComponent {
 
-  @ViewChild('addUser', { static: true }) public addUserModal: ModalComponent;
+  @ViewChild('addUser', { static: true }) public addUserModal!: ModalComponent;
 
   private organization$ = new BehaviorSubject<string | undefined>(undefined);
   private addUserEvent$ = new Subject<string>();

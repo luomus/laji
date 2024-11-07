@@ -10,13 +10,13 @@ import { FriendService } from '../../../../../shared/service/friend.service';
 })
 export class SpecialFriendComponent implements OnInit {
 
-  @Input() invalidValues: string[];
-  _field: IFormField;
+  @Input() invalidValues!: string[];
+  _field?: IFormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
-  _mapping: {[value: string]: any};
-  validValues = [];
-  validIds = [];
-  currentValues;
+  _mapping?: {[value: string]: any};
+  validValues: string[] = [];
+  validIds: string[] = [];
+  currentValues?: any;
 
   constructor(
     private friendsService: FriendService,
@@ -56,11 +56,11 @@ export class SpecialFriendComponent implements OnInit {
     }
 
     let hasMapping = false;
-    const values = {};
+    const values: Record<string, string> = {};
     const mapping = {...this._mapping};
     this.invalidValues.forEach(value => {
       const idx = this.validValues.indexOf(value);
-      const keyIdx = this.validIds.indexOf(this._mapping[value]);
+      const keyIdx = this.validIds.indexOf(this._mapping?.[value]);
       if (mapping[value] && keyIdx > -1) {
         hasMapping = true;
         values[value] = this.validValues[keyIdx];
@@ -80,7 +80,7 @@ export class SpecialFriendComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
-  valueMapped(value, to) {
+  valueMapped(value: any, to: any) {
     const mapping = {...this._mapping};
 
     if (to === VALUE_IGNORE) {

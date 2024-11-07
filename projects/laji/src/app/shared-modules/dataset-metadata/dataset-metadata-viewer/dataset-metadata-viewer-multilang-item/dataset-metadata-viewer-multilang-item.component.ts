@@ -8,5 +8,5 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
 })
 
 export class DatasetMetadataViewerMultilangItemComponent {
-  @Input() values = [];
+  @Input() values: string[] = [];
 }

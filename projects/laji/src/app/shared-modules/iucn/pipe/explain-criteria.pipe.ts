@@ -15,7 +15,7 @@ export class ExplainCriteriaPipe implements PipeTransform {
   transform(value: any, args?: string): any {
     if (typeof value === 'string') {
       const parts = value.split(';');
-      const explain = [];
+      const explain: string[] = [];
 
       parts.forEach(criteria => {
         const trimmedCriteria = criteria.trim();
@@ -35,7 +35,7 @@ export class ExplainCriteriaPipe implements PipeTransform {
     return value;
   }
 
-  private addTranslation(criteria, key, content: string[]) {
+  private addTranslation(criteria: string, key: string, content: string[]) {
     const translateKey = 'criteria.' + key;
     const translation = this.translateService.instant(translateKey);
     content.push(translateKey === translation ?

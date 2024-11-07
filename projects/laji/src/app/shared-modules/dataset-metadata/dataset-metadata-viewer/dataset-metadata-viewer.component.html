@@ -84,7 +84,7 @@
       [open]="true"
       [autoToggle]="true"
     >
-      <laji-dataset-metadata-viewer-item [title]="'collection.intellectualRights' | translate" [value]="collection.intellectualRights | label">
+      <laji-dataset-metadata-viewer-item *ngIf="collection.intellectualRights" [title]="'collection.intellectualRights' | translate" [value]="collection.intellectualRights | label">
       </laji-dataset-metadata-viewer-item>
       <laji-dataset-metadata-viewer-item *ngIf="collection.intellectualDescription" [title]="'collection.intellectualDescription' | translate">
         <laji-dataset-metadata-viewer-multilang-item [values]="collection.intellectualDescription | multiLangRows">
@@ -204,7 +204,7 @@
     >
       <laji-dataset-metadata-viewer-item [title]="'collection.metadataCreator' | translate" [value]="collection.metadataCreator">
       </laji-dataset-metadata-viewer-item>
-      <laji-dataset-metadata-viewer-item [title]="'collection.metadataStatus' | translate" [value]="collection.metadataStatus | label">
+      <laji-dataset-metadata-viewer-item *ngIf="collection.metadataStatus" [title]="'collection.metadataStatus' | translate" [value]="collection.metadataStatus | label">
       </laji-dataset-metadata-viewer-item>
       <laji-dataset-metadata-viewer-item [title]="'collection.dateCreated' | translate" [value]="collection.dateCreated | amDateFormat:'DD.MM.YYYY HH:mm'">
       </laji-dataset-metadata-viewer-item>

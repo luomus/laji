@@ -40,13 +40,15 @@ export class DocumentService {
 
   create(document: Document) {
     return this.documentApi.create(document, this.userService.getToken()).pipe(tap(d => {
-      this.cache[this.getCacheKey(d.id)] = of(d);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.cache[this.getCacheKey(d.id!)] = of(d);
     }));
   }
 
   update(id: string, document: Document) {
     return this.documentApi.update(id, document, this.userService.getToken()).pipe(tap(d => {
-      this.cache[this.getCacheKey(d.id)] = of(d);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.cache[this.getCacheKey(d.id!)] = of(d);
     }));
   }
 
@@ -61,8 +63,10 @@ export class DocumentService {
   }
 
   saveTemplate(templateData: TemplateForm): Observable<Document> {
-    return this.formService.getForm(templateData.document.formID).pipe(switchMap(form => {
-      const template: Document = this.removeMeta(templateData.document, form.excludeFromCopy);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.formService.getForm(templateData.document!.formID!).pipe(switchMap(form => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const template: Document = this.removeMeta(templateData.document, form!.excludeFromCopy);
       template.isTemplate = true;
       template.templateName = templateData.name;
       template.templateDescription = templateData.description;
@@ -70,7 +74,7 @@ export class DocumentService {
     }));
   }
 
-  removeMeta(document: any, remove = []): any {
+  removeMeta(document: any, remove: string[] = []): any {
     document = Util.clone(document);
 
     if (['$.id', '$..id'].every(idField => remove.indexOf(idField) === -1)) {
@@ -85,7 +89,7 @@ export class DocumentService {
     removeAtRecursively(document);
     return document;
 
-    function removeAtRecursively(_document: any) {
+    function removeAtRecursively(_document: any): any {
       if (Array.isArray(_document)) {
         return _document.map(removeAtRecursively);
       } else if (typeof _document === 'object') {

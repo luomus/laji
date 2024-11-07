@@ -49,7 +49,7 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsageMyDownloadsComponent {
-  @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
+  @ViewChild('downloadModal', { static: true }) downloadModal!: TemplateRef<any>;
 
   requestsTableLoading = false;
   keysTableLoading = false;
@@ -59,7 +59,7 @@ export class UsageMyDownloadsComponent {
 
   selectedRequest: DownloadRequest | null = null;
 
-  private modal: ModalRef;
+  private modal: ModalRef | undefined;
 
   constructor(
     private modalService: ModalService,
@@ -78,7 +78,8 @@ export class UsageMyDownloadsComponent {
     );
     this.apiKeys$ = this.virDownloadRequestsService.findMyApiKeys().pipe(
       map(downloads => downloads.sort((a, b) => moment(b.requested).diff(moment(a.requested)))),
-      map(res => res.map(a => ({...a, collectionIds: a.collections.map(c => c.id)}))),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      map(res => res.map(a => ({...a, collectionIds: a.collections!.map(c => c.id)}))),
       take(1),
       finalize(() => {
         this.keysTableLoading = false;

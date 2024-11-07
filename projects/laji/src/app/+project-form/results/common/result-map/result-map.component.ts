@@ -10,7 +10,7 @@ import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { cacheReturnObservable } from 'projects/bird-atlas/src/app/core/api.service';
-import G from 'geojson';
+import G, { Feature, GeoJsonProperties, Polygon } from 'geojson';
 
 type GatheringCountType = 'ZERO' | 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
 type ObservationProbabilityType = 'ZERO' | 'OVER_ZERO' | 'OVER_TWENTY' | 'OVER_FORTY' | 'OVER_SIXTY' | 'OVER_EIGHTY' | 'HUNDRED';
@@ -22,6 +22,8 @@ type CountArray = { lat: string; lon: string; count: number }[];
 type RatioMap = Map<string, { lat: string; lon: string; ratio: number }>;
 type RatioArray = { lat: string; lon: string; ratio: number }[];
 
+interface Category { color: string; label: string };
+
 interface QueryResult {
   results: {
     aggregateBy: {
@@ -32,7 +34,7 @@ interface QueryResult {
   }[];
 }
 
-const gatheringCountToVisCategory: Record<GatheringCountType, { color: string; label: string }> = {
+const gatheringCountToVisCategory: Record<GatheringCountType, Category> = {
   ZERO: {
     color: '#A9A9A9',
     label: '0'
@@ -63,7 +65,7 @@ const gatheringCountToVisCategory: Record<GatheringCountType, { color: string; l
   }
 };
 
-const observationProbabilityToVisCategory: Record<ObservationProbabilityType, { color: string; label: string }> = {
+const observationProbabilityToVisCategory: Record<ObservationProbabilityType, Category> = {
   ZERO: {
     color: '#A9A9A9',
     label: '0%'
@@ -101,14 +103,14 @@ const observationProbabilityToVisCategory: Record<ObservationProbabilityType, { 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ResultMapComponent implements OnInit, OnChanges {
-  @Input() collections: string[];
+  @Input() collections!: string[];
   @Input() taxon: string | undefined;
   @Input() year: string | undefined;
-  @Input() taxonOptions: { label: string; value: string }[];
-  @Input() visualizationOptions: ResultVisualizationMode[];
-  @Input() mapQuery: WarehouseQueryInterface;
-  @Input() gatheringCountLabel: string;
-  @Input() collectionStartYear: number;
+  @Input() taxonOptions!: { label: string; value: string }[] | null;
+  @Input() visualizationOptions!: ResultVisualizationMode[];
+  @Input() mapQuery!: WarehouseQueryInterface;
+  @Input() gatheringCountLabel!: string;
+  @Input() collectionStartYear!: number;
 
   @Output() taxonChange = new EventEmitter<string>();
   @Output() yearChange = new EventEmitter<string>();
@@ -122,14 +124,14 @@ export class ResultMapComponent implements OnInit, OnChanges {
   readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
   readonly year$ = new BehaviorSubject<string | undefined>(undefined);
 
-  mapData$: Observable<DataOptions>;
+  mapData$!: Observable<DataOptions>;
   mapOptions: Options;
-  visualization: LajiMapVisualization<ResultVisualizationMode>;
+  visualization!: LajiMapVisualization<ResultVisualizationMode>;
   visualizationMode: ResultVisualizationMode = 'gatheringCount';
-  defaultTaxon: string;
-  defaultYear: string;
-  yearOptions: { label: string; value: string }[];
-  currentYear: number;
+  defaultTaxon?: string;
+  defaultYear?: string;
+  yearOptions!: { label: string; value: string }[];
+  currentYear!: number;
   loading = true;
 
   constructor(
@@ -168,7 +170,8 @@ export class ResultMapComponent implements OnInit, OnChanges {
               )
             );
             return _features;
-          }, []).sort((a, b) => a.properties.count - b.properties.count)
+            /* eslint-disable @typescript-eslint/no-non-null-assertion */
+          }, []).sort((a, b) => a.properties!.count - b.properties!.count)
         }
       })),
       tap(() => { this.loading = false; })
@@ -192,7 +195,7 @@ export class ResultMapComponent implements OnInit, OnChanges {
         getFeatureStyle: this.observationProbabilityFeatureStyle,
         featureCollection: {
           type: 'FeatureCollection' as const,
-          features: this.gatheringCountRatios(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features, item) => {
+          features: this.gatheringCountRatios(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features: Feature<Polygon, GeoJsonProperties>[], item) => {
             _features.push(
               convertYkjToGeoJsonFeature(
                 +item.lat,
@@ -201,7 +204,8 @@ export class ResultMapComponent implements OnInit, OnChanges {
               )
             );
             return _features;
-          }, []).sort((a, b) => a.properties.ratio - b.properties.ratio)
+            /* eslint-disable @typescript-eslint/no-non-null-assertion */
+          }, []).sort((a, b) => a.properties!.ratio - b.properties!.ratio)
         }
       }))
       ,
@@ -218,16 +222,16 @@ export class ResultMapComponent implements OnInit, OnChanges {
     this.visualization = {
       gatheringCount: {
         label: this.gatheringCountLabel,
-        categories: Object.keys(gatheringCountToVisCategory).reduce((_categories, prevalence) => ([
+        categories: Object.keys(gatheringCountToVisCategory).reduce((_categories: Category[], prevalence) => ([
           ..._categories,
-          gatheringCountToVisCategory[prevalence]
+          gatheringCountToVisCategory[prevalence as GatheringCountType]
         ]), [])
       },
       observationProbability: {
         label: 'laji-map.legend.mode.observationProbability',
-        categories: Object.keys(observationProbabilityToVisCategory).reduce((_categories, percentage) => ([
+        categories: Object.keys(observationProbabilityToVisCategory).reduce((_categories: Category[], percentage) => ([
           ..._categories,
-          observationProbabilityToVisCategory[percentage]
+          observationProbabilityToVisCategory[percentage as ObservationProbabilityType]
         ]), [])
       }
     };
@@ -285,9 +289,9 @@ export class ResultMapComponent implements OnInit, OnChanges {
   }
 
   private gatheringCountFeatureStyle({ feature }: GetFeatureStyleOptions) {
-    const { count } = feature.properties;
+    const { count } = feature!.properties!;
 
-    let prevalence: GatheringCountType;
+    let prevalence: GatheringCountType = 'ZERO';
 
     if (count === 0) {
       prevalence = 'ZERO';
@@ -334,9 +338,9 @@ export class ResultMapComponent implements OnInit, OnChanges {
   }
 
   private observationProbabilityFeatureStyle({ feature }: GetFeatureStyleOptions) {
-    const { ratio } = feature.properties;
+    const { ratio } = feature!.properties!;
 
-    let percentage: ObservationProbabilityType;
+    let percentage: ObservationProbabilityType = 'ZERO';
 
     if (ratio === 0) {
       percentage = 'ZERO';
@@ -375,7 +379,7 @@ export class ResultMapComponent implements OnInit, OnChanges {
       const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
       const key = `${lat},${lon}`;
       if (countMap.has(key)) {
-        const { count } = countMap.get(key);
+        const { count } = countMap.get(key)!;
         const ratio = count / gatheringCount;
         ratioMap.set(key, { lat, lon, ratio });
       } else {

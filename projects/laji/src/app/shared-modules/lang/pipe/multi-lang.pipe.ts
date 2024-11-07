@@ -9,10 +9,10 @@ import { Subscription } from 'rxjs';
 })
 export class MultiLangPipe implements PipeTransform, OnDestroy {
 
-  public static lang;
+  public static lang: any;
   public value = '';
 
-  onLangChange: Subscription;
+  onLangChange?: Subscription;
 
   constructor(private translate: TranslateService,
               private _ref: ChangeDetectorRef) {
@@ -44,7 +44,7 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
     }
   }
 
-  private pickLang(value, useFallback, lang?: string, fallbackFormat = '%value% (%lang%)') {
+  private pickLang(value: any, useFallback: boolean, lang?: string, fallbackFormat = '%value% (%lang%)') {
     lang = lang || this.translate.currentLang;
     const hasLang = MultiLangService.hasValue(value, lang);
     if (!hasLang && !useFallback) {

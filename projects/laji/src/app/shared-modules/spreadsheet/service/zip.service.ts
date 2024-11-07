@@ -18,7 +18,8 @@ export class ZipService<T> {
 
   load(event: Event): Observable<T> {
     const target = <HTMLInputElement> event.target;
-    return from(JSZip.loadAsync(target.files[0]).then(content => content.files['data.json'].async('text'))).pipe(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return from(JSZip.loadAsync(target.files![0]).then(content => content.files['data.json'].async('text'))).pipe(
       catchError(() => throwError(ZipService.ERROR_LOADING)),
       map(jsonString => JSON.parse(jsonString as string) as T),
       catchError(() => throwError(ZipService.ERROR_INVALID_CONTENT)),

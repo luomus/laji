@@ -6,7 +6,7 @@
       </laji-dataset-metadata-browser>
     </nav>
     <main>
-      <laji-dataset-metadata-viewer *ngIf="collectionId" [collection$]="collection$" [collectionCounts$]="collectionCounts$">
+      <laji-dataset-metadata-viewer *ngIf="collectionId && collection$ && collectionCounts$" [collection$]="collection$" [collectionCounts$]="collectionCounts$">
       </laji-dataset-metadata-viewer>
     </main>
   </lu-sidebar>

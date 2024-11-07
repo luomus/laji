@@ -1,4 +1,4 @@
-import { Component, OnChanges, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
+import { Component, OnChanges, ChangeDetectionStrategy, Input } from '@angular/core';
 
 const EMPTY_VALUE = ' ';
 
@@ -9,9 +9,8 @@ const EMPTY_VALUE = ' ';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatasetMetadataViewerItemComponent implements OnChanges {
-  @ViewChild('valueRow') valueRow;
-  @Input() title: string;
-  @Input() value = EMPTY_VALUE;
+  @Input() title!: string;
+  @Input() value: string|undefined = EMPTY_VALUE;
   @Input() showWithoutValue = false;
   @Input() hideValue = false;
 

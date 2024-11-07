@@ -14,7 +14,7 @@ export class AudioViewerSettingsComponent {
   @Input() defaultXRangePadding = 1;
 
   @Input() displayInline = false;
-  @Input() setDefaultSettingsInfoText: string;
+  @Input() setDefaultSettingsInfoText?: string;
 
   @Output() zoomedChange = new EventEmitter<boolean>();
   @Output() xRangePaddingChange = new EventEmitter<number>();

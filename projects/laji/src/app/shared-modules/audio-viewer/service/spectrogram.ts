@@ -4,16 +4,24 @@ import { ISpectrogramConfig } from '../models';
 import { AudioViewerUtils } from './audio-viewer-utils';
 import { defaultSpectrogramConfig } from '../variables';
 
+interface CompleteSpectrogramConfig extends ISpectrogramConfig {
+  nbrOfRowsRemovedFromStart: number;
+  maxNbrOfColsForNoiseEstimation: number;
+  noiseReductionParam: number;
+  logRange: number;
+  minFrequency: number;
+}
+
 const defaultConfig: ISpectrogramConfig = defaultSpectrogramConfig;
 
-export function getSpectrogramImageData(buffer: AudioBuffer, colormap: any, config?: ISpectrogramConfig): ImageData {
+export function getSpectrogramImageData(buffer: AudioBuffer, colormap: number[][], config?: ISpectrogramConfig): ImageData {
   config = config ? {...defaultConfig, ...config} : defaultConfig;
 
-  const {spectrogram, width, height} = computeSpectrogram(buffer, config);
+  const {spectrogram, width, height} = computeSpectrogram(buffer, config as CompleteSpectrogramConfig);
   return spectrogramToImageData(spectrogram, width, height, colormap);
 }
 
-function spectrogramToImageData(spect: Float32Array, width: number, height: number, colormap: any): ImageData {
+function spectrogramToImageData(spect: Float32Array, width: number, height: number, colormap: number[][]): ImageData {
   const {minValue, maxValue} = findMinAndMaxValue(spect);
   const data = new Uint8ClampedArray(spect.length * 4);
 
@@ -31,7 +39,7 @@ function spectrogramToImageData(spect: Float32Array, width: number, height: numb
   return new ImageData(data, width, height);
 }
 
-function computeSpectrogram(buffer: AudioBuffer, config: ISpectrogramConfig): {
+function computeSpectrogram(buffer: AudioBuffer, config: CompleteSpectrogramConfig): {
   spectrogram: Float32Array; width: number; height: number;
 } {
   const {data, sumByColumn} = getData(buffer, config);
@@ -54,7 +62,7 @@ function getData(buffer: AudioBuffer, config: ISpectrogramConfig): {data: Float3
   const {nperseg, noverlap} = getSegmentSizeAndOverlap(config, buffer.sampleRate);
 
   const chanData = buffer.getChannelData(0);
-
+  // @ts-ignore
   const fft = new FFT(nperseg, buffer.sampleRate, 'hann');
 
   const data = [];
@@ -83,7 +91,7 @@ function getData(buffer: AudioBuffer, config: ISpectrogramConfig): {data: Float3
   return {data, sumByColumn};
 }
 
-function getMeanNoiseColumn(data: Float32Array[], sumByColumn: number[], config: ISpectrogramConfig): Float32Array {
+function getMeanNoiseColumn(data: Float32Array[], sumByColumn: number[], config: CompleteSpectrogramConfig): Float32Array {
   const nbrOfColumns = Math.min(sumByColumn.length, config.maxNbrOfColsForNoiseEstimation);
   const indexArray = [...Array(nbrOfColumns).keys()];
   indexArray.sort((a, b) => sumByColumn[a] < sumByColumn[b] ? -1 : sumByColumn[a] > sumByColumn[b] ? 1 : 0);
@@ -102,7 +110,7 @@ function getMeanNoiseColumn(data: Float32Array[], sumByColumn: number[], config:
   return meanByRow;
 }
 
-function filterNoiseAndFindMaxValue(data: Float32Array[], meanNoise: Float32Array, config: ISpectrogramConfig): number {
+function filterNoiseAndFindMaxValue(data: Float32Array[], meanNoise: Float32Array, config: CompleteSpectrogramConfig): number {
   let maxValue = 0;
   const columnLength = data[0].length;
   const minColumn = Math.floor(config.minFrequency / ((config.sampleRate / 2) / columnLength));
@@ -127,7 +135,7 @@ function filterNoiseAndFindMaxValue(data: Float32Array[], meanNoise: Float32Arra
   return maxValue;
 }
 
-function scaleSpectrogram(data: Float32Array[], maxValue: number, config: ISpectrogramConfig) {
+function scaleSpectrogram(data: Float32Array[], maxValue: number, config: CompleteSpectrogramConfig) {
   const logRange = config.logRange;
 
   for (const item of data) {
@@ -150,7 +158,7 @@ function flattenData(data: Float32Array[]): Float32Array {
 }
 
 function findMinAndMaxValue(data: Float32Array): {minValue: number; maxValue: number} {
-  let minValue: number, maxValue: number;
+  let minValue: number|undefined, maxValue: number|undefined;
   for (const value of data) {
     if (minValue == null || value < minValue) {
       minValue = value;
@@ -160,7 +168,7 @@ function findMinAndMaxValue(data: Float32Array): {minValue: number; maxValue: nu
     }
   }
 
-  return {minValue, maxValue};
+  return {minValue: minValue as number, maxValue: maxValue as number};
 }
 
 function convertRange(input: number, inputRange: number[], outputRange: number[]): number {
