@@ -28,9 +28,9 @@ import { SelectedOption } from '../tree-select.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectedTreeNodesComponent implements OnChanges {
-  @Input() selectedOptions!: SelectedOption[];
-  @Input() includedTitle!: string;
-  @Input() excludedTitle!: string;
+  @Input({required: true}) selectedOptions!: SelectedOption[];
+  @Input({required: true}) includedTitle!: string;
+  @Input({required: true}) excludedTitle!: string;
   @Output() selectedOptionsChange = new EventEmitter<string>();
 
   checkboxType = CheckboxType.excluded;
