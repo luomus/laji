@@ -39,7 +39,7 @@ export class DocumentExportService {
     ).subscribe(() => {});
   }
 
-  public downloadDocument(doc$: Observable<Document>, type: string) {
+  public downloadDocument(doc$: Observable<Document & { id: string }>, type: string) {
     doc$.pipe(
       switchMap(doc =>
         this._downloadDocuments([doc], type, this.translate.instant('haseka.submissions.submission') + '_' + doc.id.split('.')[1])
@@ -47,7 +47,7 @@ export class DocumentExportService {
     ).subscribe(() => {});
   }
 
-  private _downloadDocuments(docs: Document[], type: string, filename): Observable<void> {
+  private _downloadDocuments(docs: Document[], type: string, filename: string): Observable<void> {
     return this.getAoa(docs).pipe(
       switchMap(aoa => this.exportService.export(aoa, type as BookType, filename))
     );
@@ -59,7 +59,7 @@ export class DocumentExportService {
         switchMap(jsonForms => this.getAllFields(jsonForms)
             .pipe(
               switchMap(({fields, fieldStructure}) => {
-                const dataObservables = [];
+                const dataObservables: any[] = [];
                 docs.reduce((arr: Observable<any>[], doc: any) => {
                   if (!this.isEmpty('', doc, jsonForms[doc.formID])) {
                     arr.push(this.getData(Util.clone(doc), jsonForms[doc.formID], fieldStructure));
@@ -80,12 +80,13 @@ export class DocumentExportService {
       );
   }
 
-  private getJsonForms(docs: Document[], jsonForms = {}, idx = 0): Observable<{[formID: string]: Form.JsonForm}> {
+  private getJsonForms(docs: Document[], jsonForms: Record<string, Form.JsonForm>= {}, idx = 0): Observable<{[formID: string]: Form.JsonForm}> {
     if (idx >= docs.length) {
       return ObservableOf(jsonForms);
     }
 
-    const formId = docs[idx].formID;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const formId = docs[idx].formID!;
 
     if (jsonForms[formId]) {
       return this.getJsonForms(docs, jsonForms, idx + 1);
@@ -103,7 +104,7 @@ export class DocumentExportService {
   private convertDataToAoA(fields: DocumentField[], data: any) {
     if (fields.length < 1) { return []; }
 
-    const aoa = [[]];
+    const aoa: any[][] = [[]];
 
     for (const field of fields) {
       aoa[0].push(field['label']);
@@ -122,15 +123,15 @@ export class DocumentExportService {
   }
 
   private getData(obj: any, form: Form.JsonForm, fieldData: DocumentField, path = ''): Observable<any> {
-    const observables = [];
+    const observables: Observable<never>[] = [];
     let unwindKey: string;
 
     if (Array.isArray(obj)) {
       for (const item of obj) {
         this.processData(item, form, fieldData, path, observables);
       }
-      if (obj.length > fieldData['@multipleBy']) {
-        fieldData['@multipleBy'] = obj.length;
+      if (obj.length > (fieldData as any)['@multipleBy']) {
+        (fieldData as any)['@multipleBy'] = obj.length;
       }
     } else {
       unwindKey = this.processData(obj, form, fieldData, path, observables);
@@ -146,7 +147,7 @@ export class DocumentExportService {
               for (const item of obj[unwindKey]) {
                 if (!this.isEmpty(path + unwindKey, item, form)) {
                   getDataObservables.push(
-                    this.getData(item, form, fieldData[unwindKey], path + unwindKey + '.')
+                    this.getData(item, form, (fieldData as any)[unwindKey], path + unwindKey + '.')
                   );
                 }
               }
@@ -185,7 +186,7 @@ export class DocumentExportService {
         continue;
       }
 
-      const field = fieldData[key];
+      const field = (fieldData as any)[key];
 
       if (field) {
         if (field['value'] === fieldName) {
@@ -204,7 +205,8 @@ export class DocumentExportService {
       }
     }
 
-    return unwindKey;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return unwindKey!;
   }
 
   private unwind(key: string, obj: any): any {
@@ -212,8 +214,8 @@ export class DocumentExportService {
       return [obj];
     }
 
-    return obj[key].map(child => {
-      const res = {};
+    return obj[key].map((child: any) => {
+      const res: Record<string, any> = {};
 
       for (const j in obj) {
         if (obj.hasOwnProperty(j) && j !== key) {
@@ -230,14 +232,14 @@ export class DocumentExportService {
     const result: DocumentField[] = [];
 
     fields.reduce((arr: DocumentField[], field: DocumentField) => {
-      if (field['@multipleBy']) {
-        for (let i = 0; i < field['@multipleBy']; i++) {
+      if ((field as any)['@multipleBy']) {
+        for (let i = 0; i < (field as any)['@multipleBy']; i++) {
           for (const key in field) {
-            if (field.hasOwnProperty(key) && field[key]['used']) {
-              const lastIdx = field[key].value.lastIndexOf('.');
+            if (field.hasOwnProperty(key) && (field as any)[key]['used']) {
+              const lastIdx = (field as any)[key].value.lastIndexOf('.');
               arr.push({
-                value: field[key].value.substring(0, lastIdx + 1) + i + field[key].value.substring(lastIdx),
-                label: field['@multipleBy'] > 1 ? field[key].label + ' (' + (i + 1) + ')' : field[key].label,
+                value: (field as any)[key].value.substring(0, lastIdx + 1) + i + (field as any)[key].value.substring(lastIdx),
+                label: (field as any)['@multipleBy'] > 1 ? (field as any)[key].label + ' (' + (i + 1) + ')' : (field as any)[key].label,
                 used: true
               });
             }
@@ -391,9 +393,9 @@ export class DocumentExportService {
   }
 
   private getFieldLabel(fieldName: string): Observable<string> {
-    if (this.classPrefixes[fieldName]) {
+    if ((this.classPrefixes as any)[fieldName]) {
       return this.labelService
-        .get(this.classPrefixes[fieldName] + '.' + fieldName, this.translate.currentLang)
+        .get((this.classPrefixes as any)[fieldName] + '.' + fieldName, this.translate.currentLang)
         .pipe(
           map((label) => label || fieldName)
         );
