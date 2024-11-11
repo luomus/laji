@@ -12,7 +12,7 @@ export class PillListComponent {
   @Input() separator = ',';
   @Input() isLabel = false;
   @Input() isTaxonAutocomplete = false;
-  @Input() selectedTaxonNames?: Array<string>;
+  @Input() selectedTaxonNames?: Array<any>;
   @Output() updateList = new EventEmitter();
 
   _list?: Array<string>;
