@@ -17,13 +17,13 @@ enum Tabs {
 })
 export class WbcResultComponent implements OnInit, OnDestroy {
 
-  @Input() form: Form.SchemaForm;
+  @Input() form!: Form.SchemaForm;
 
-  tab$: Observable<keyof typeof Tabs>;
+  tab$!: Observable<keyof typeof Tabs>;
 
   Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
 
-  defaultTabSubscription: Subscription;
+  defaultTabSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,

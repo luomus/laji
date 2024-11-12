@@ -11,12 +11,12 @@
   [filterBy]="filterBy"
   [height]="height"
   [virtualScrolling]="true"
-  [rows]="rows"
+  [rows]="rows ? rows : []"
   [loading]="loading"
   [columnMode]="columnMode"
   [totalMessage]="'haseka.submissions.total' | translate"
   [columns]="columns"
-  [count]="rows?.length">
+  [count]=" rows ? rows.length : 0">
 </laji-datatable>
 
 <ng-template let-value="value" let-row="row" #routeLink>

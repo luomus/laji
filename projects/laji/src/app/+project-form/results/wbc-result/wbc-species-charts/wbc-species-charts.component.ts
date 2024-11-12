@@ -11,21 +11,21 @@ import { IdService } from '../../../../shared/service/id.service';
   styleUrls: ['./wbc-species-charts.component.css']
 })
 export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
-  activeSpeciesId: string;
+  activeSpeciesId?: string;
   activeSpecies: any;
   isMammal = false;
 
-  speciesList: any[];
+  speciesList!: any[];
 
-  activeYear: number;
-  activeSeason: SEASON;
-  activeBirdAssociationArea: string;
+  activeYear!: number;
+  activeSeason!: SEASON;
+  activeBirdAssociationArea!: string;
 
   showSeasonComparison = true;
   loading = false;
 
   mammals = 'MX.37612';
-  private routeSub: Subscription;
+  private routeSub!: Subscription;
 
   constructor(
     private route: ActivatedRoute,

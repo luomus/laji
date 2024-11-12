@@ -13,8 +13,8 @@ import { LineWithLine } from '../../../../../shared-modules/chart/line-with-line
   styleUrls: ['./wbc-species-linecharts.component.css']
 })
 export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
-  @Input() taxonId: string;
-  @Input() taxonCensus = undefined;
+  @Input() taxonId: string | undefined;
+  @Input() taxonCensus: string | undefined = undefined;
   @Input() birdAssociationArea: string;
 
   counts: any;
