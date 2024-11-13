@@ -13,7 +13,7 @@ export class RowComponent implements OnChanges {
   @ViewChild('valueRow') valueRow;
   @Input() title: string;
   @Input() field: string;
-  @Input() value: string = EMPTY_VALUE;
+  @Input() value?: string = EMPTY_VALUE;
   @Input() noTitleSpace = false;
   @Input() noRow = false;
   @Input() showWithoutValue = false;

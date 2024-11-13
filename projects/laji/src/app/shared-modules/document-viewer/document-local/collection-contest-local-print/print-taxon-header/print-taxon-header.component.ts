@@ -9,9 +9,9 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
   styleUrls: ['./print-taxon-header.component.css']
 })
 export class PrintTaxonHeaderComponent implements OnInit {
-  @Input() taxonVerbatim: string;
-  @Input() autocompleteTaxonId: string;
-  taxon: Taxonomy;
+  @Input() taxonVerbatim?: string;
+  @Input() autocompleteTaxonId?: string;
+  taxon?: Taxonomy;
 
   constructor(
     private translate: TranslateService,

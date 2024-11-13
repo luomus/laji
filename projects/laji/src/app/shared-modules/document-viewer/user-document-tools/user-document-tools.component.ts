@@ -31,8 +31,8 @@ export class UserDocumentToolsComponent implements OnInit {
     description: ''
   };
   @Input() onlyTemplates = false;
-  @Input() hasEditRights = false;
-  @Input() hasDeleteRights = false;
+  @Input() hasEditRights? = false;
+  @Input() hasDeleteRights? = false;
 
   @Output() documentDeleted = new EventEmitter<string>();
 
@@ -65,13 +65,13 @@ export class UserDocumentToolsComponent implements OnInit {
   ) { }
 
   @Input()
-  set documentID(documentID: string) {
+  set documentID(documentID: string|undefined) {
     this._documentID = IdService.getId(documentID);
     this.updateLink();
   }
 
   @Input()
-  set formID(formID: string) {
+  set formID(formID: string|undefined) {
     this._formID = IdService.getId(formID);
     this.updateLink();
   }
