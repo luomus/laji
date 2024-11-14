@@ -126,7 +126,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       })
     );
 
-    const byOptions$ = of(this.options || [] as SelectOption[]).pipe(
+    const byOptions$ = of(this.options || [] as string[]).pipe(
       map(options => options?.map(option => ({id: option, value: option} as SelectOption)))
     );
 
