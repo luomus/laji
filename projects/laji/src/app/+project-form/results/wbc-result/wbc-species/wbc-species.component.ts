@@ -11,15 +11,15 @@ import { Observable } from 'rxjs';
   styleUrls: ['./wbc-species.component.css']
 })
 export class WbcSpeciesComponent implements OnInit {
-  activeYear: number;
-  activeSeason: SEASON;
-  activeBirdAssociationArea: string;
-  filterBy: string;
+  activeYear!: number;
+  activeSeason!: SEASON;
+  activeBirdAssociationArea!: string;
+  filterBy!: string;
 
   onlyCommonSpecies = true;
   showStatistics = false;
 
-  species$: Observable<string>;
+  species$!: Observable<string>;
 
   constructor(
     private router: Router,

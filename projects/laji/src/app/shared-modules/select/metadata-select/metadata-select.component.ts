@@ -1,5 +1,5 @@
-import { catchError, concatMap, filter, map, switchMap, toArray, tap } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy } from '@angular/core';
+import { catchError, concatMap, filter, map, switchMap, toArray } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { from, Observable, of, Subscription } from 'rxjs';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
@@ -15,9 +15,8 @@ import { BaseDataService } from '../../../graph-ql/service/base-data.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { Annotation } from '../../../shared/model/Annotation';
-import { SelectOptions } from '../select-subcategories/select-subcategories.component';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { SelectOption } from '../select/select.component';
+import { IdType, SelectOption } from '../select/select.component';
 
 export enum SelectStyle {
   basic,
@@ -41,21 +40,21 @@ export const METADATA_SELECT_VALUE_ACCESSOR: any = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlValueAccessor {
-  @Input() field: string;
-  @Input() alt: string;
-  @Input() name: string;
+  @Input() field?: string;
+  @Input() alt?: string;
+  @Input() name?: string;
   @Input() multiple = true;
   @Input() placeholder = 'select';
   @Input() mapToWarehouse = false;
-  @Input() pick: MetadataSelectPick;
-  @Input() options: string[];
+  @Input() pick?: MetadataSelectPick;
+  @Input() options?: string[];
   @Input() useFilter = true;
   @Input() filterProperties: (keyof SelectOption)[] | undefined;
-  @Input() firstOptions = [];
-  @Input() info: string;
-  @Input() whiteList: string[];
-  @Input() skip: string[];
-  @Input() skipBefore: string;
+  @Input() firstOptions: IdType[] = [];
+  @Input() info?: string;
+  @Input() whiteList?: string[];
+  @Input() skip?: string[];
+  @Input() skipBefore?: string;
   @Input() open = false;
   @Input() disabled = false;
   @Input() labelAsValue = false;
@@ -63,13 +62,13 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   @Input() useFilterApi = false;
 
   selectStyles = SelectStyle;
-  lang: string;
-  active = [];
+  lang!: string;
+  active: IdType[] = [];
   selectedTitle = '';
   _shouldSort = false;
-  _options: SelectOptions[] = null;
+  _options: SelectOption[]|null = null;
 
-  protected subOptions: Subscription;
+  protected subOptions?: Subscription;
   protected innerValue = '';
 
   onChange = (_: any) => { };
@@ -103,7 +102,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
   onTouched = () => {};
 
-  ngOnChanges(changes) {
+  ngOnChanges(changes: SimpleChanges) {
     this.lang = this.translate.currentLang;
     this.initOptions();
   }
@@ -122,13 +121,13 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     const byField$ = this.getDataObservable().pipe(
       map(result => this.pickValue(result)),
       catchError(err => {
-        this.logger.warn('Metadata select errorl', { field: this.field, alt: this.alt, lang: this.lang, err });
-        return of([]);
+        this.logger.warn('Metadata select error', { field: this.field, alt: this.alt, lang: this.lang, err });
+        return of([] as SelectOption[]);
       })
     );
 
-    const byOptions$ = of(this.options).pipe(
-      map(options => options.map(option => ({id: option, value: option})))
+    const byOptions$ = of(this.options || [] as SelectOption[]).pipe(
+      map(options => options?.map(option => ({id: option, value: option} as SelectOption)))
     );
 
     this.subOptions = (this.options ? byOptions$ : byField$).pipe(
@@ -152,14 +151,14 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       return;
     }
     if (typeof this.value === 'string') {
-      this.active = this._options.reduce((cumulative, current) => {
+      this.active = this._options.reduce<IdType[]>((cumulative, current) => {
         if (this.value === current.id) {
           cumulative.push(current.id);
         }
         return cumulative;
       }, []);
     } else {
-      this.active = this._options.reduce((cumulative, current) => {
+      this.active = this._options.reduce<IdType[]>((cumulative, current) => {
         if (this.value.indexOf(current.id) > -1) {
           cumulative.push(current.id);
         }
@@ -200,15 +199,15 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     this.onTouched = fn;
   }
 
-  trackingBy(idx, item) {
+  trackingBy(idx: number, item: SelectOption) {
     return item.id ?? idx;
   }
 
-  protected setOptions(options: SelectOptions[]): void {
+  protected setOptions(options: SelectOption[]): void {
     this._options = options;
   }
 
-  protected optionsToWarehouseID(options: SelectOptions[]): Observable<SelectOptions[]> {
+  protected optionsToWarehouseID(options: SelectOption[]): Observable<SelectOption[]> {
     return from(options).pipe(
       concatMap(option => this.warehouseMapper.getWarehouseKey(option.id).pipe(
         filter(warehouseID => warehouseID !== option.id),
@@ -218,11 +217,11 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     );
   }
 
-  protected getDataObservable(): Observable<any> {
-    if (this.useFilterApi) {
+  protected getDataObservable(): Observable<SelectOption[]> {
+    if (this.useFilterApi && this.name) {
       return this.warehouseApi.warehouseQueryFilterGet(this.name).pipe(
         map(data => data.enumerations),
-        map(options => options.map(o => ({id: o.name, value: MultiLangService.getValue(o.label as any, this.lang)}))),
+        map(options => options.map((o: any) => ({id: o.name, value: MultiLangService.getValue(o.label as any, this.lang)}))),
       );
     }
 
@@ -250,7 +249,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
           return this.areaService.getProvinces(this.lang);
         case 'KE.informationSystem':
           return this.sourceService.getAllAsLookUp(this.lang).pipe(
-            map(system => Object.keys(system).reduce((total, current) => {
+            map(system => Object.keys(system).reduce<SelectOption[]>((total, current) => {
               total.push({id: current, value: system[current]});
               return total;
             }, [])));
@@ -263,13 +262,13 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       map(data => data.alts || []),
       map(alts => alts.find(alt => alt.id === this.alt)),
       map(alt => (alt && alt.options || []).map(option => ({id: option.id, value: option.label, info: this.addOptionInfo(option)}))),
-      map(options => this.whiteList ? options.filter(option => this.whiteList.includes(option.id)) : options),
-      map(options => this.skip ? options.filter(option => this.skip.indexOf(option.id) === -1) : options),
+      map(options => this.whiteList ? options.filter(option => this.whiteList?.includes(option.id)) : options),
+      map(options => this.skip ? options.filter(option => this.skip?.indexOf(option.id) === -1) : options),
       map(options => this.skipBefore ? options.slice(options.findIndex(o => o.id === this.skipBefore)) : options)
     );
   }
 
-  protected sortOptionsByAnotherList(options: SelectOptions[]): SelectOptions[] {
+  protected sortOptionsByAnotherList(options: SelectOption[]): SelectOption[] {
     return options.sort((a, b) => {
       const hasA = this.firstOptions.includes(a.id);
       const hasB = this.firstOptions.includes(b.id);
@@ -284,19 +283,19 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     });
   }
 
-  protected pickValue(data) {
+  protected pickValue(data: SelectOption[]) {
     if (!this.pick) {
-      return data.map(value => ({id: value.id, value: value.value, info: value.info}));
+      return data.map(value => ({id: value.id, value: value.value, info: value.info} as SelectOption));
     }
-    return data.reduce((total, item) => {
-      if (typeof this.pick[item.id] !== 'undefined' && this.pick[item.id] === '') {
+    return data.reduce<SelectOption[]>((total, item) => {
+      if (typeof this.pick?.[item.id as number|string] !== 'undefined' && this.pick?.[item.id as number|string] === '') {
         total.push({id: item.id, value: item.value, info: item.info});
       }
       return total;
     }, []);
   }
 
-  protected addOptionInfo(option) {
+  protected addOptionInfo(option: any) {
     if (this.alt === 'MX.adminStatusEnum') {
       return this.adminStatusInfoPipe.transform(option);
     }

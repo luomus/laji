@@ -18,7 +18,7 @@ import { isPlatformBrowser } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BetaPopupComponent implements OnInit {
-  @LocalStorage('betapopup', true) betaPopup;
+  @LocalStorage('betapopup', true) betaPopup!: boolean;
   open = false;
 
   constructor(

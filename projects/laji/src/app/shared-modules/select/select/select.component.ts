@@ -6,7 +6,7 @@ import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
 import { CheckboxType } from '../checkbox/checkbox.component';
 
-type IdType = string|number|boolean;
+export type IdType = string|number|boolean;
 export interface SelectOption {
   id: IdType;
   value: string;
@@ -28,27 +28,27 @@ export interface SelectOption {
 export class SelectComponent<T extends IdType|SelectOption = string> implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
   private unsubscribe$ = new Subject<null>();
 
-  @Input() options: SelectOption[];
-  @Input() title: string;
+  @Input({required: true}) options!: SelectOption[];
+  @Input() title?: string;
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
   @Input() filterProperties: (keyof SelectOption)[] | undefined;
-  @Input() selected: T[] = [];
+  @Input() selected?: T[] = [];
   @Input() open = false;
   @Input() disabled = false;
   @Input() multiple = true;
-  @Input() info: string;
+  @Input() info?: string;
   @Input() loading = false;
   @Input() checkboxType = CheckboxType.basic;
   @Input() classes: {options?: string; optionContainer?: string; menuContainer?: string} = {};
 
   @Output() selectedChange = new EventEmitter<T[]>();
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild('filter') filter!: ElementRef<HTMLInputElement>;
 
   selectedOptions: SelectOption[] = [];
   unselectedOptions: SelectOption[] = [];
   filterInput = new Subject<string>();
-  filterBy: string;
+  filterBy = '';
   selectedIdx = -1;
 
   private onChange?: (_: any) => void;
@@ -101,7 +101,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     this.unsubscribe$.complete();
   }
 
-  toggleValue(id: IdType, event) {
+  toggleValue(id: IdType, event: boolean|undefined) {
     const selected = this.selectedOptions.find(option => option.id === id);
     if (!selected || (this.isSelectOptions(selected) && selected.checkboxValue !== true)) {
       this.add(id, event);
@@ -110,9 +110,14 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     }
   }
 
-  add(id: IdType, event) {
-    const option = this.options.find((item: SelectOption) => item.id === id);
+  add(id: IdType, event: any) {
+    const option = this.options?.find((item: SelectOption) => item.id === id);
     const isBasic = this.checkboxType === CheckboxType.basic;
+
+    if (!option) {
+      return;
+    }
+
     if (this.multiple) {
       if (!Array.isArray(this.selected)) {
         this.selected = [];
@@ -136,21 +141,26 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     this.selectedChange.emit(this.selected);
   }
 
-  remove(id: IdType, event) {
+  remove(id: IdType, event: any) {
     if (this.checkboxType !== CheckboxType.basic) {
-      const select = this.selected.find(item => this.isSelectOptions(item) && item.id === id);
+      const select = this.selected?.find(item => this.isSelectOptions(item) && item.id === id);
+
+      if (!select) {
+        return;
+      }
+
       if (this.isSelectOptions(select) && select.checkboxValue === false) {
         return this.add(id, true);
       }
     }
-    this.selected = this.selected.filter(value => this.isSelectOptions(value) ? value.id !== id : value !== id);
+    this.selected = this.selected?.filter(value => this.isSelectOptions(value) ? value.id !== id : value !== id);
     this.selectedIdx = -1;
     this.initOptions(this.selected);
     this.selectedChange.emit(this.selected);
   }
 
-  toggle(event, el) {
-    if (event.target.classList.contains('no-propagation')) {
+  toggle(event: MouseEvent, el: ElementRef<HTMLInputElement>) {
+    if ((event.target as HTMLElement).classList.contains('no-propagation')) {
       return;
     }
     this.open = !this.open;
@@ -159,19 +169,19 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
         .subscribe(() => {
           try {
             // No IE support
-            el.focus();
+            el.nativeElement.focus();
           } catch (e) { }
         });
     }
   }
 
-  labelClick(event) {
-    if (event.target.classList.contains('no-propagation')) {
+  labelClick(event: MouseEvent) {
+    if ((event.target as HTMLLabelElement).classList.contains('no-propagation')) {
       event.preventDefault();
     }
   }
 
-  onFilterChange(event: KeyboardEvent, value) {
+  onFilterChange(event: KeyboardEvent, value: string) {
     switch (event.key) {
       case 'Esc':
         this.filterBy = '';
@@ -210,25 +220,25 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     this.filterInput.next(value);
   }
 
-  track(idx, item) {
+  track(idx: number, item: SelectOption) {
     return item.id;
   }
 
-  private initOptions(selected = []) {
+  private initOptions(selected: T[] = []) {
     if (!this.options) {
       return;
     }
 
-    const selectedOptions = [];
-    const unselectedOptions = [];
+    const selectedOptions: SelectOption[] = [];
+    const unselectedOptions: SelectOption[] = [];
 
     this.options.forEach(option => {
       const selectedItem = selected.find(select =>
-        (option.id === select) ||
-        (option.id === select?.id && (select.checkboxValue === true || select.checkboxValue === false))
+        (option.id === select as IdType) ||
+        (option.id === (select as SelectOption)?.id && ((select as SelectOption).checkboxValue === true || (select as SelectOption).checkboxValue === false))
       );
       const targetOptions = selectedItem !== undefined ? selectedOptions : unselectedOptions;
-      const checkboxValue = selectedItem?.checkboxValue ?? selectedItem !== undefined;
+      const checkboxValue = (selectedItem as SelectOption)?.checkboxValue ?? selectedItem !== undefined;
 
       targetOptions.push({
         ...option,

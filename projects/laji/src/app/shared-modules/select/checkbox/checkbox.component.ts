@@ -15,16 +15,16 @@ export enum CheckboxType {
 })
 export class CheckboxComponent {
 
-  @ViewChild('checkbox', { static: true }) checkbox: ElementRef<HTMLInputElement>;
+  @ViewChild('checkbox', { static: true }) checkbox!: ElementRef<HTMLInputElement>;
 
   @Input() checkboxType = CheckboxType.basic;
-  @Output() valueChange = new EventEmitter();
+  @Output() valueChange = new EventEmitter<boolean|undefined>();
 
-  _value: boolean;
+  _value?: boolean;
   stateClass = 'clear';
 
   @Input()
-  set value(value) {
+  set value(value: boolean|undefined) {
     this._value = value;
     if (value === true) {
       this.checkbox.nativeElement.checked = true;

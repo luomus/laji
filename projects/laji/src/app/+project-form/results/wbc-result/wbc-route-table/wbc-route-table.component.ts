@@ -12,10 +12,10 @@ import { BookType } from 'xlsx';
   styleUrls: ['./wbc-route-table.component.scss']
 })
 export class WbcRouteTableComponent implements OnInit {
-  @Input() routeId: string;
-  @Input() season: SEASON;
+  @Input() routeId!: string;
+  @Input() season!: SEASON;
 
-  rows: any[];
+  rows: any[] | undefined;
   columns: DatatableColumn[] = [];
 
   _getRowClass: (data: any) => string = this.getRowClass.bind(this);
@@ -23,10 +23,10 @@ export class WbcRouteTableComponent implements OnInit {
 
   downloadLoading = false;
 
-  @LocalStorage() showWbcRouteTableInfo;
+  @LocalStorage() showWbcRouteTableInfo!: boolean | null;
 
-  @ViewChild('textOrTranslationKey', { static: true }) textOrTranslationKeyTpl: TemplateRef<any>;
-  @ViewChild('numberOrDocumentIds', { static: true }) numberOrDocumentIdsTpl: TemplateRef<any>;
+  @ViewChild('textOrTranslationKey', { static: true }) textOrTranslationKeyTpl!: TemplateRef<any>;
+  @ViewChild('numberOrDocumentIds', { static: true }) numberOrDocumentIdsTpl!: TemplateRef<any>;
 
   @Output() documentClick = new EventEmitter<string>();
 
@@ -58,18 +58,18 @@ export class WbcRouteTableComponent implements OnInit {
     this.showWbcRouteTableInfo = !this.showWbcRouteTableInfo;
   }
 
-  onSort(event) {
-    const speciesStats = this.rows.slice(0, -3);
-    const otherStats = this.rows.slice(-3);
-    event.sorts.forEach((sort) => {
+  onSort(event: any) {
+    const speciesStats = this.rows?.slice(0, -3);
+    const otherStats = this.rows?.slice(-3);
+    event.sorts.forEach((sort: any) => {
       const comparator = this.getSortingComparator(sort.prop);
       const dir = sort.dir === 'asc' ? 1 : -1;
-      speciesStats.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]));
+      speciesStats?.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]));
     });
-    this.rows = speciesStats.concat(otherStats);
+    this.rows = speciesStats?.concat(otherStats);
   }
 
-  setColumns(data) {
+  setColumns(data: any) {
     this.columns = [{
       name: 'name',
       label: 'result.unit.taxonVerbatim',
@@ -116,15 +116,16 @@ export class WbcRouteTableComponent implements OnInit {
   }
 
   private getAoa(): string[][] {
-    const aoa = [[]];
+    const aoa: any[] = [[]];
 
     for (const col of this.columns) {
-      aoa[0].push(this.translate.instant(col.label));
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      aoa[0].push(this.translate.instant(col.label!));
     }
-    for (let i = 0; i < this.rows.length; i++) {
+    for (let i = 0; i < (this.rows ? this.rows.length : 0); i++) {
       aoa.push([]);
       for (let j = 0; j < this.columns.length; j++) {
-        let value = this.rows[i][this.columns[j].name];
+        let value = this.rows![i][this.columns[j].name!];
         if (j === 0 && this.isLastRowName(value)) {
           value = this.translate.instant('wbc.stats.route.' + value);
         }
@@ -172,7 +173,7 @@ export class WbcRouteTableComponent implements OnInit {
     return name.indexOf('SpeciesCount') > -1 || name.indexOf('IndividualCount') > -1 || name === 'documentIds';
   }
 
-  private getSortingComparator(prop: string): (a, b) => number {
+  private getSortingComparator(prop: string): (a: any, b: any) => number {
     if (prop === 'name') {
       return (a, b) => (a).localeCompare(b);
     }

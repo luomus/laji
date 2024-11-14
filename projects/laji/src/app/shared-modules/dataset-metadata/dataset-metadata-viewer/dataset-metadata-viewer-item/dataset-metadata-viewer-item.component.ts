@@ -9,7 +9,7 @@ const EMPTY_VALUE = ' ';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatasetMetadataViewerItemComponent implements OnChanges {
-  @Input() title!: string;
+  @Input({required: true}) title!: string;
   @Input() value: string|undefined = EMPTY_VALUE;
   @Input() showWithoutValue = false;
   @Input() hideValue = false;
