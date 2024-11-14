@@ -116,15 +116,15 @@ export class ProjectFormService {
     return this.getProjectRootRoute$(route).pipe(map(_route => _route.snapshot.params['projectID']));
   }
 
-  getExcelFormOptions(projectForm: ProjectForm): ExcelFormOptions[] {
+  getExcelFormOptions(projectForm: ProjectForm, isAdmin: boolean): ExcelFormOptions[] {
     const getExcelOptions = (form: Form.SchemaForm | Form.List) => form.options?.allowExcel
-      ? { formID: form.id, allowGenerate: form.options.allowExcelGeneration !== false }
+      ? { formID: form.id, allowGenerate: isAdmin || form.options.allowExcelGeneration !== false }
       : undefined;
     return [getExcelOptions(projectForm.form), ...projectForm.subForms.map(getExcelOptions)].filter(f => f);
   }
 
-  getExcelFormIDs(projectForm: ProjectForm): string[] {
-    return this.getExcelFormOptions(projectForm).map(f => f.formID);
+  getExcelFormIDs(projectForm: ProjectForm, isAdmin: boolean): string[] {
+    return this.getExcelFormOptions(projectForm, isAdmin).map(f => f.formID);
   }
 
   getSubmissionsPageTitle(form: Form.SchemaForm, isAdmin: boolean) {

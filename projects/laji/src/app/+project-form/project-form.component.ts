@@ -231,7 +231,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {
-    const excelFormOptions = this.projectFormService.getExcelFormOptions(projectForm);
+    const excelFormOptions = this.projectFormService.getExcelFormOptions(projectForm, rights.admin);
     const allowExcel = excelFormOptions.length;
     const allowExcelGeneration = excelFormOptions.some(options => options.allowGenerate);
     const { form, subForms } = projectForm;
