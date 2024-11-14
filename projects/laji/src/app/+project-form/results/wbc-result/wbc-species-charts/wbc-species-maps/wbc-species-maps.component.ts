@@ -21,13 +21,13 @@ import { TileLayerName } from '@luomus/laji-map/lib/defs';
   styleUrls: ['./wbc-species-maps.component.css']
 })
 export class WbcSpeciesMapsComponent implements OnChanges {
-  @ViewChildren('maps') mapComponents: QueryList<YkjMapComponent>;
-  @Input() taxonId: string;
-  @Input() taxonCensus = undefined;
+  @ViewChildren('maps') mapComponents!: QueryList<YkjMapComponent>;
+  @Input() taxonId: string | undefined;
+  @Input() taxonCensus: string | undefined = undefined;
   @Input() showSeasonComparison = true;
-  @Input() year: number;
-  @Input() season: SEASON;
-  @Input() birdAssociationArea: string;
+  @Input() year?: number;
+  @Input() season!: SEASON;
+  @Input() birdAssociationArea!: string;
 
   layers = TileLayerName;
   querys: WarehouseQueryInterface[] = [];
@@ -35,7 +35,7 @@ export class WbcSpeciesMapsComponent implements OnChanges {
   data: any = [];
   loading = false;
   bounds = [];
-  lastZoomedArea: string;
+  lastZoomedArea?: string;
 
   private epsilon = Math.pow(2, -52);
   breaks = [0, this.epsilon, 2, 8, 32, 128, 512];
@@ -45,7 +45,7 @@ export class WbcSpeciesMapsComponent implements OnChanges {
   differenceLabels = ['≤ -50%', '≤ -1%', '~0%', '≥ 1%', '≥ 100%'];
   differenceColorRange = ['blue', '#9999ff', 'white', '#ff9999', 'red'];
 
-  private maps: any[];
+  private maps?: any[];
 
   constructor(
     private resultService: WbcResultService,

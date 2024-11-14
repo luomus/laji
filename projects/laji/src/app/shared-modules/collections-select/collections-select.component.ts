@@ -13,17 +13,17 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
   styleUrls: ['./collections-select.component.scss']
 })
 export class CollectionsSelectComponent implements OnInit, OnChanges {
-  @Input() title!: string;
-  @Input() query!: WarehouseQueryInterface;
-  @Input() info!: string;
-  @Input() modalButtonLabel!: string;
-  @Input() modalTitle!: string;
-  @Input() browseTitle!: string;
-  @Input() selectedTitle!: string;
-  @Input() includedTitle!: string;
-  @Input() excludedTitle!: string;
-  @Input() okButtonLabel!: string;
-  @Input() clearButtonLabel!: string;
+  @Input({required: true}) title!: string;
+  @Input({required: true}) query!: WarehouseQueryInterface;
+  @Input({required: true}) info!: string;
+  @Input({required: true}) modalButtonLabel!: string;
+  @Input({required: true}) modalTitle!: string;
+  @Input({required: true}) browseTitle!: string;
+  @Input({required: true}) selectedTitle!: string;
+  @Input({required: true}) includedTitle!: string;
+  @Input({required: true}) excludedTitle!: string;
+  @Input({required: true}) okButtonLabel!: string;
+  @Input({required: true}) clearButtonLabel!: string;
   @Input() open = false;
   @Output() collectionIdChange = new EventEmitter<{
     collectionId?: string[];

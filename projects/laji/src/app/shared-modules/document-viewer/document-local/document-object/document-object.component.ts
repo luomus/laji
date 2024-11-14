@@ -13,23 +13,23 @@ export class DocumentObjectComponent implements OnChanges {
   @Input() showUnitId = false;
   @Input() showLinks = true;
 
-  templates = {};
+  templates: Record<string, any> = {};
   hasFacts = false;
 
-  @ViewChild('checkbox', { static: true }) checkboxTpl: TemplateRef<any>;
-  @ViewChild('select', { static: true }) selectTpl: TemplateRef<any>;
-  @ViewChild('taxonCensus', { static: true }) taxonCensusTpl: TemplateRef<any>;
-  @ViewChild('fieldset', { static: true }) fieldsetTpl: TemplateRef<any>;
-  @ViewChild('facts', { static: true }) factsTpl: TemplateRef<any>;
-  @ViewChild('default', { static: true }) defaultTpl: TemplateRef<any>;
-  @ViewChild('taxonID', { static: true }) taxonIDTpl: TemplateRef<any>;
+  @ViewChild('checkbox', { static: true }) checkboxTpl!: TemplateRef<any>;
+  @ViewChild('select', { static: true }) selectTpl!: TemplateRef<any>;
+  @ViewChild('taxonCensus', { static: true }) taxonCensusTpl!: TemplateRef<any>;
+  @ViewChild('fieldset', { static: true }) fieldsetTpl!: TemplateRef<any>;
+  @ViewChild('facts', { static: true }) factsTpl!: TemplateRef<any>;
+  @ViewChild('default', { static: true }) defaultTpl!: TemplateRef<any>;
+  @ViewChild('taxonID', { static: true }) taxonIDTpl!: TemplateRef<any>;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.fields || changes.object) {
-      this.fields.map(field => {
-        this.templates[field.name] = this[field.name + 'Tpl'] ? this[field.name + 'Tpl'] : (
+      this.fields.map((field: any) => {
+        this.templates[field.name] = (this as any)[field.name + 'Tpl'] ? (this as any)[field.name + 'Tpl'] : (
           field.type === 'fieldset' && field.name.slice(-4) === 'Fact' ? this.factsTpl : (
-          this[field.type + 'Tpl'] ? this[field.type + 'Tpl'] : this.defaultTpl));
+            (this as any)[field.type + 'Tpl'] ? (this as any)[field.type + 'Tpl'] : this.defaultTpl));
 
         if (this.templates[field.name] === this.factsTpl) {
           this.updateHasFacts(this.object[field.name], field.fields);

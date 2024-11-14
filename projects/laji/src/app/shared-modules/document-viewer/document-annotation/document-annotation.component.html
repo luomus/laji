@@ -74,7 +74,7 @@
                 <div>
                   <div *ngIf="activeGathering">
                     <div *ngFor="let unit of activeGathering?.units">
-                       <ng-container *ngIf="!document.secured && unit.unitId === highlight && unit.annotations && unit.annotations[0].occurrenceAtTimeOfAnnotation">
+                       <ng-container *ngIf="!document.secured && $any(unit).unitId === highlight && $any(unit).annotations && $any(unit).annotations[0].occurrenceAtTimeOfAnnotation">
                          <lu-alert type="info">
                            {{ 'viewer.secured.none' | translate }}
                          </lu-alert>

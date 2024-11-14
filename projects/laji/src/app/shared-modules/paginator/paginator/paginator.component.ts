@@ -8,10 +8,10 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class PaginatorComponent {
 
-  @Input() pagerLeftArrowIcon: string;
-  @Input() pagerRightArrowIcon: string;
-  @Input() pagerPreviousIcon: string;
-  @Input() pagerNextIcon: string;
+  @Input() pagerLeftArrowIcon?: string;
+  @Input() pagerRightArrowIcon?: string;
+  @Input() pagerPreviousIcon?: string;
+  @Input() pagerNextIcon?: string;
 
   @Input()
   set size(val: number) {

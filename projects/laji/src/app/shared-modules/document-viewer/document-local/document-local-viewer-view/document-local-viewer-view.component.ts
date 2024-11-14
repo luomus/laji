@@ -11,21 +11,21 @@ import { Observable } from 'rxjs';
   styleUrls: ['./document-local-viewer-view.component.css']
 })
 export class DocumentLocalViewerViewComponent implements OnChanges {
-  @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
+  @ViewChild(ViewerMapComponent) map?: ViewerMapComponent;
 
-  @Input() document: Document;
+  @Input() document?: Document;
   @Input() fields: any;
   @Input() mapData: any[] = [];
   @Input() imageData: {[key: string]: any} = {};
   @Input() useWorldMap = true;
-  @Input() zoomToData = false;
+  @Input() zoomToData? = false;
 
   @Output() documentDeleted = new EventEmitter();
 
   publicity = Document.PublicityRestrictionsEnum;
   active = 0;
 
-  rights$: Observable<DocumentRights>;
+  rights$!: Observable<DocumentRights>;
 
   @SessionStorage() showFacts = false;
 
@@ -42,14 +42,14 @@ export class DocumentLocalViewerViewComponent implements OnChanges {
     }
   }
 
-  setActive(i) {
+  setActive(i: number) {
     this.active = i;
     if (this.map) {
       this.map.setActiveIndex(i);
     }
   }
 
-  onDocumentDeleted(e) {
+  onDocumentDeleted(e: string) {
     if (e) {
       this.documentDeleted.emit();
     }
