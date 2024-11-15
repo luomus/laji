@@ -15,7 +15,7 @@ export class SpecialNamedPlacesComponent implements OnInit {
   @Input() invalidValues!: string[];
   @Input() mapping: {[value: string]: any} = {};
   @Input() field!: IFormField;
-  @Input() formID?: string;
+  @Input() formID!: string;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
 
   namedPlaces$!: Observable<string[]>;

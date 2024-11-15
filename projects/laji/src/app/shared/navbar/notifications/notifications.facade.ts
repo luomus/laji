@@ -8,14 +8,16 @@ import { UserService } from '../../service/user.service';
 import { LajiApi, LajiApiService } from '../../service/laji-api.service';
 import { Notification } from '../../model/Notification';
 
+type LoosePagedResult<T> = Omit<PagedResult<T>, 'lastPage' | 'nextPage' | 'prevPage'>;
+
 interface State {
-  notifications: PagedResult<Notification>;
+  notifications: LoosePagedResult<Notification>;
   unseenCount: number;
   loading: boolean;
 }
 
 interface IRefreshDataResult {
-  notifications: PagedResult<Notification>;
+  notifications: LoosePagedResult<Notification>;
   unseenCount: {
     total: number;
   };
@@ -51,7 +53,7 @@ export class NotificationsFacade {
   });
 
   state$: Observable<State> = this.store$.asObservable();
-  notifications$: Observable<PagedResult<Notification>> = this.state$.pipe(
+  notifications$: Observable<LoosePagedResult<Notification>> = this.state$.pipe(
     map(state => state.notifications),
     distinctUntilChanged()
   );

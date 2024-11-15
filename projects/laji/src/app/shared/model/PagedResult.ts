@@ -4,13 +4,13 @@ export interface PagedResult<T> {
 
   currentPage: number;
 
-  lastPage?: number;
+  lastPage: number;
 
-  nextPage?: number;
+  nextPage: number;
 
   pageSize: number;
 
-  prevPage?: number;
+  prevPage: number;
 
   results: T[];
 
