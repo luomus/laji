@@ -6,11 +6,11 @@ export interface PagedResult<T> {
 
   lastPage: number;
 
-  nextPage: number;
+  nextPage?: number;
 
   pageSize: number;
 
-  prevPage: number;
+  prevPage?: number;
 
   results: T[];
 
