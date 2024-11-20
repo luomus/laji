@@ -23,21 +23,21 @@ import { Global } from '../../../../environments/global';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentPrintComponent implements AfterViewInit, OnChanges, OnDestroy {
-  @Input() uri: string;
-  @Input() own: boolean;
+  @Input() uri?: string;
+  @Input() own?: boolean;
   @Input() showFacts = false;
 
-  externalViewUrl: string;
+  externalViewUrl?: string;
   document: any;
-  documentID: string;
-  hasDoc: boolean;
+  documentID?: string;
+  hasDoc?: boolean;
 
   mapData: any = [];
 
   isViewInited = false;
 
   private readonly recheckIterval = 10000; // check every 10sec if document not found
-  private interval: Subscription;
+  private interval?: Subscription;
 
   constructor(
     private warehouseApi: WarehouseApi,
@@ -79,18 +79,18 @@ export class DocumentPrintComponent implements AfterViewInit, OnChanges, OnDestr
       );
   }
 
-  private parseDoc(doc, found) {
+  private parseDoc(doc: any, found: boolean) {
     this.hasDoc = found;
     if (found) {
       this.document = doc;
-      const mapData = [];
-      this.externalViewUrl = Global.externalViewers[doc.sourceId] ?
-        Global.externalViewers[doc.sourceId].replace('%uri%', doc.documentId) : '';
+      const mapData: any[] = [];
+      this.externalViewUrl = (Global.externalViewers as any)[doc.sourceId] ?
+        (Global.externalViewers as any)[doc.sourceId].replace('%uri%', doc.documentId) : '';
       if (doc.documentId) {
         this.documentID = IdService.getId(doc.documentId);
       }
       if (doc && doc.gatherings) {
-        doc.gatherings.map((gathering, idx) => {
+        doc.gatherings.map((gathering: any, idx: number) => {
           if (gathering.conversions && gathering.conversions.wgs84Geo) {
             mapData[idx] = gathering.conversions.wgs84Geo;
           }

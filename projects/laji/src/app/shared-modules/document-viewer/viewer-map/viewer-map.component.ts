@@ -10,8 +10,8 @@ import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewerMapComponent implements OnInit, OnChanges {
-  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
-  @Input() data: {
+  @ViewChild(LajiMapComponent, { static: true }) lajiMap!: LajiMapComponent;
+  @Input() data?: {
     geoJSON: any;
     wgs84: any;
     ykj: any;
@@ -28,11 +28,11 @@ export class ViewerMapComponent implements OnInit, OnChanges {
   @Input() active = 0;
   @Input() useWorldMap = true;
   @Input() settingsKey: any;
-  @Input() hideCoordinates: boolean;
+  @Input() hideCoordinates?: boolean;
   @Input() zoomToData? = false;
 
   _data: any;
-  mapOptions: Options;
+  mapOptions!: Options;
 
   constructor(
     public translate: TranslateService
@@ -104,7 +104,7 @@ export class ViewerMapComponent implements OnInit, OnChanges {
     if (data.features) {
       return {
         type: data.type,
-        features: data.features.map(feat => ({
+        features: data.features.map((feat: any) => ({
           type: feat.type,
           geometry: feat.geometry,
           properties: {}

@@ -9,7 +9,7 @@ export class SampleComponent {
 
   private _sample: any;
   @Input() showFacts = false;
-  @Input() highlight: string;
+  @Input() highlight?: string;
   pickFacts = [
     'http://tun.fi/MF.preparationType',
     'http://tun.fi/MF.material',
@@ -20,9 +20,9 @@ export class SampleComponent {
 
   @Input() set sample(sample: any) {
     this._sample = sample;
-    const facts = {};
+    const facts: Record<string, any[]> = {};
     if (sample && Array.isArray(sample.facts)) {
-      sample.facts.forEach(fact => {
+      sample.facts.forEach((fact: any) => {
         if (this.pickFacts.includes(fact.fact)) {
           if (!facts[fact.fact]) {
             facts[fact.fact] = [];

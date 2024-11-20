@@ -7,6 +7,6 @@ import { Image } from '../../../shared/model/Image';
   styleUrls: ['./print-images.component.css']
 })
 export class PrintImagesComponent {
-  @Input() images: Image[];
+  @Input() images?: Image[];
 
 }

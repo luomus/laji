@@ -18,10 +18,10 @@ export class GatheringComponent implements OnInit, OnDestroy {
   @Input() visible = true;
   @Input() showFacts = false;
   @Input() unitCnt?: number;
-  @Input() identifying: boolean;
-  @Input() openAnnotation: boolean;
-  @Input() showAnnotation: boolean;
-  @Input() showOnlyHighlighted: boolean;
+  @Input() identifying?: boolean;
+  @Input() openAnnotation?: boolean;
+  @Input() showAnnotation?: boolean;
+  @Input() showOnlyHighlighted?: boolean;
   @Input() annotationTags?: AnnotationTag[]|null;
   @Output() showAllUnits = new EventEmitter();
 
