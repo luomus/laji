@@ -10,22 +10,22 @@ import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.compo
 })
 export class SelectFieldsModalGearComponent {
 
-  @Input() defaultFields: ISelectFields[];
+  @Input() defaultFields!: ISelectFields[];
   @Input() selectedFields: ISelectFields[] = [];
   @Input() allSelectableFields: ISelectFields[] = [];
 
-  @Input() btnClass: string;
-  @Input() modalTitle: string;
-  @Input() selectedFieldsTitle: string;
-  @Input() allSelectableFieldsTitle: string;
+  @Input() btnClass?: string;
+  @Input() modalTitle?: string;
+  @Input() selectedFieldsTitle?: string;
+  @Input() allSelectableFieldsTitle?: string;
   @Input() labelOpen = 'open';
   @Input() labelClose = 'close';
   @Input() labelReset = 'reset';
 
   @Output() selectedFieldsChange = new EventEmitter<ISelectFields[]>();
-  selectedCache: ISelectFields[];
+  selectedCache?: ISelectFields[];
 
-  @ViewChild('modal') fieldsModal: ModalComponent;
+  @ViewChild('modal') fieldsModal!: ModalComponent;
 
   constructor(private cdr: ChangeDetectorRef) { this.selectedFieldsChange.subscribe(v => console.log(v));}
 

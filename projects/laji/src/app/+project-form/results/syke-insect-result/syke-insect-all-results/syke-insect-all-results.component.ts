@@ -14,28 +14,27 @@ import { ResultService } from '../../common/service/result.service';
 })
 export class SykeInsectAllResultsComponent implements OnInit, OnDestroy {
 
-  @Input() collectionId: string;
+  @Input() collectionId!: string;
 
-  page;
-  query: WarehouseQueryInterface;
-  mapQuery: WarehouseQueryInterface;
-  resultQuery: WarehouseQueryInterface;
-  taxon$: Observable<Taxonomy>;
+  page!: number;
+  query!: WarehouseQueryInterface;
+  mapQuery!: WarehouseQueryInterface;
+  resultQuery!: WarehouseQueryInterface;
+  taxon$!: Observable<Taxonomy> | Observable<null>;
 
   year;
   currentMonth;
   currentYear;
   startMonth = 3;
-  fromYear;
-  fromMonth;
+  fromYear!: string;
+  fromMonth!: string;
   allTime = '';
 
-  private subQuery: Subscription;
+  private subQuery!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private translate: TranslateService,
     private resultService: ResultService,
     private cdr: ChangeDetectorRef
   ) {
@@ -104,11 +103,11 @@ export class SykeInsectAllResultsComponent implements OnInit, OnDestroy {
     return this.year;
   }
 
-  private clone(obj) {
+  private clone(obj: WarehouseQueryInterface) {
     return JSON.parse(JSON.stringify(obj));
   }
 
-  private parseDateTimeRange(date) {
+  private parseDateTimeRange(date: any) {
     if (!date || typeof date !== 'string') {
       return date;
     }
@@ -122,7 +121,7 @@ export class SykeInsectAllResultsComponent implements OnInit, OnDestroy {
     return date;
   }
 
-  private parseDateTime(date): {year: string; month: string} {
+  private parseDateTime(date: any): {year: string; month: string} {
     if (date.length === '4') {
       return {year: date, month: ''};
     }

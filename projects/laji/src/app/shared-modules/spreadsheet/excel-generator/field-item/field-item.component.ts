@@ -9,12 +9,12 @@ import { toHtmlSelectElement } from '../../../../shared/service/html-element.ser
 })
 export class FieldItemComponent implements OnChanges {
 
-  @Input() field: IFormField;
-  @Input() selected: string[];
+  @Input({required: true}) field!: IFormField;
+  @Input({required: true}) selected!: string[];
 
   @Output() selectedChange = new EventEmitter<string[]>();
 
-  idx: number;
+  idx!: number;
   toHtmlSelectElement = toHtmlSelectElement;
 
   ngOnChanges(changes: SimpleChanges): void {

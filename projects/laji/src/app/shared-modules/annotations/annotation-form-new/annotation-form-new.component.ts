@@ -4,7 +4,6 @@ Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener,
 ChangeDetectionStrategy, AfterContentChecked } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Annotation } from '../../../shared/model/Annotation';
-import { MetadataService } from '../../../shared/service/metadata.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { Observable, Subscription } from 'rxjs';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -19,6 +18,23 @@ import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { LoadingElementsService } from '../../document-viewer/loading-elements.service';
 import { CheckFocusService } from '../../document-viewer/check-focus.service';
 import { TaxonAutocompleteService } from '../../../shared/service/taxon-autocomplete.service';
+import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
+import { TypeaheadMatch } from '../../../../../../laji-ui/src/lib/typeahead/typeahead-match.class';
+
+export interface AnnotationFormAnnotation extends Annotation {
+  identification: Annotation.Identification;
+  addedTags: string[];
+  removedTags: string[];
+}
+
+interface AnnotationTaxonomy {
+  id: string|null;
+  qname: string|null;
+  cursiveName: boolean;
+  scientificName: string|null;
+  vernacularName: string|null;
+  scientificNameAuthorship: string|null;
+}
 
 
 @Component({
@@ -43,45 +59,40 @@ import { TaxonAutocompleteService } from '../../../shared/service/taxon-autocomp
 export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterContentChecked {
   static readonly lang = ['en', 'fi', 'sv'];
 
-  @Input() isEditor: boolean;
-  @Input() personID: string;
-  @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
-  @Input() annotations: Annotation[];
-  @Input() annotation: Annotation;
-  @Input() identifying: boolean;
-  @Input() expert: boolean;
-  @Input() visible: boolean;
-  @Input() hidden: boolean;
+  @Input() isEditor?: boolean;
+  @Input() personID?: string;
+  @Input() personRoleAnnotation?: Annotation.AnnotationRoleEnum;
+  @Input() annotations?: Annotation[];
+  @Input({ required: true }) annotation!: AnnotationFormAnnotation;
+  @Input() identifying?: boolean;
+  @Input({ required: true }) expert!: boolean;
+  @Input() visible?: boolean;
+  @Input() hidden?: boolean;
   @Input() unit: any;
   @Output() save = new EventEmitter<Annotation>();
   @Output() loading = new EventEmitter<boolean>();
   @Output() cancel = new EventEmitter<any>();
 
-  @ViewChild('taxon') taxonElement: ElementRef;
-  @ViewChild('comment') commentElement: ElementRef;
-  taxonAutocomplete: Observable<any>;
+  @ViewChild('taxon') taxonElement!: ElementRef;
+  @ViewChild('comment') commentElement!: ElementRef;
+  taxonAutocomplete?: Observable<any>;
   error: any;
   unIdentifyable = false;
   sending = false;
-  infoModal = true;
-  needsAck: boolean;
-  tagsAdd: Array<AnnotationTag>;
-  tagsRemove: Array<AnnotationTag>;
-  annotationAddadableTags$: Observable<AnnotationTag[]>;
-  annotationRemovableTags$: Observable<AnnotationTag[]>;
-  annotationTaxonMatch$: Observable<LajiTaxonSearch>;
-  annotationAddadableTags: Subscription;
-  annotationSub: Subscription;
-  alertNotSpamVerified: boolean;
+  needsAck?: boolean;
+  annotationAddadableTags$!: Observable<AnnotationTag[]>;
+  annotationRemovableTags$!: Observable<AnnotationTag[]>;
+  annotationTaxonMatch$?: Observable<LajiTaxonSearch>;
+  annotationSub?: Subscription;
+  alertNotSpamVerified?: boolean;
   typeaheadLoading = false;
   types = Annotation.TypeEnum;
   selectedOptions: string[] = [];
-  deletedOptions: string[] = [];
-  tmpTags: Annotation[];
+  tmpTags?: Annotation[];
   isFocusedTaxonComment: any;
   inputType: any;
   inputName: any;
-  taxonomy = {
+  taxonomy: AnnotationTaxonomy = {
     id: null,
     qname: null,
     cursiveName: true,
@@ -90,19 +101,17 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     scientificNameAuthorship: null
   };
 
-  annotationTagsObservation = Global.annotationTags;
+  annotationTagsObservation: Record<string, { value: string; quality: string; type: string }> = Global.annotationTags;
   annotationRole = Annotation.AnnotationRoleEnum;
 
 
   constructor(
-    private metadataService: MetadataService,
     private annotationService: AnnotationService,
     private loggerService: Logger,
     private lajiApi: LajiApiService,
     private taxonApi: TaxonomyApi,
     private translate: TranslateService,
     private cd: ChangeDetectorRef,
-    private el: ElementRef,
     private labelPipe: LabelPipe,
     private loadingElements: LoadingElementsService,
     private focus: CheckFocusService,
@@ -119,9 +128,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     );
   }
 
-  ngonChanges() {
-  }
-
   ngAfterContentChecked() {
     this.cd.detectChanges();
   }
@@ -133,10 +139,10 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       includePayload: true,
       lang: this.translate.currentLang
     }).pipe(
-      map(data => data.map(item => {
+      map(data => data.map((item: any) => {
         let groups = '';
         if (item.payload && item.payload.informalTaxonGroups) {
-          groups = item.payload.informalTaxonGroups.reduce((prev, curr) => prev + ' ' + curr.id, groups);
+          groups = item.payload.informalTaxonGroups.reduce((prev: string, curr: InformalTaxonGroup) => prev + ' ' + curr.id, groups);
         }
         item['groups'] = groups;
         return item;
@@ -146,7 +152,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   public getMatchTaxon(taxonomy: string) {
     this.annotationTaxonMatch$ = this.taxonApi.taxonomySearch(taxonomy, '5', undefined, {matchType: 'exact'} );
     this.annotationSub = this.annotationTaxonMatch$.subscribe((result: any) => {
-      result.forEach(taxon => {
+      result.forEach((taxon: any) => {
         if (taxon.matchingName.toLowerCase() === taxonomy.toLowerCase()) {
           this.annotation.identification.taxonID = taxon.id;
           this.taxonomy = taxon;
@@ -161,7 +167,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.initAnnotation();
   }
 
-  select(event) {
+  select(event: TypeaheadMatch) {
     this.annotation.identification.taxonID = event.item.key;
     this.annotation.identification.taxon = event.item.autocompleteSelectedName;
     if (this.annotationSub) {
@@ -187,19 +193,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       this.getMatchTaxon(this.annotation.identification.taxon);
     }
     this.cd.detectChanges();
-  }
-
-  deleteSelected(id) {
-    this.cd.detectChanges();
-    if (this.expert) {
-      this.cleanForm();
-    } else {
-      const index = this.annotation.addedTags.indexOf(id);
-      this.annotation.addedTags.splice(index, 1);
-      if (this.annotation.addedTags.length === 0) {
-        this.cleanForm();
-      }
-    }
   }
 
   cleanForm() {
@@ -234,10 +227,10 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   // add tags and filter after add a positive or negative tag
-  findFirstTagNegativePositive(tags): any {
+  findFirstTagNegativePositive(tags: string[]): any {
     for (const tag of tags) {
-      if (Global.annotationTags[tag].quality !== 'MMAN.typeCheck' && Global.annotationTags[tag].quality !== 'MMAN.typeInfo'
-      && Global.annotationTags[tag].quality !== 'MMAN.typeInvasive' && (Global.annotationTags[tag].quality !== 'MMAN.typeAdmin' ||  tag === 'MMAN.3')) {
+      if (this.annotationTagsObservation[tag].quality !== 'MMAN.typeCheck' && this.annotationTagsObservation[tag].quality !== 'MMAN.typeInfo'
+      && this.annotationTagsObservation[tag].quality !== 'MMAN.typeInvasive' && (this.annotationTagsObservation[tag].quality !== 'MMAN.typeAdmin' ||  tag === 'MMAN.3')) {
         return tag;
       } else {
       }
@@ -266,7 +259,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     }
   }
 
-  getLangCurrentTaxon(value, unit, currentLang) {
+  getLangCurrentTaxon(value: any, unit: any, currentLang: string) {
     if (value) {
       if (value[currentLang]) {
         return value[currentLang];
@@ -284,15 +277,13 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     }
   }
 
-
-
   initAnnotationTags() {
     this.annotationAddadableTags$ = this.annotationService.getAllAddableTags(this.translate.currentLang).pipe(
       map(data => data.map(element => {
           if (element['id'] === 'MMAN.3') {
-            return { id: element['id'], quality: element['type'], position: 1 };
+            return { id: element['id'], quality: element['type'] as any, position: 1 };
           } else {
-            return { id: element['id'], quality: element['type'], position: 0 };
+            return { id: element['id'], quality: element['type'] as any, position: 0 };
           }
         }))
     );
@@ -300,7 +291,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.currentLang).pipe(
       map(
         data => data.filter(
-          tag => this.labelPipe.transform((this.unit.interpretations.effectiveTags || []), 'warehouse').indexOf(tag['name']) !== -1 )
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          tag => this.labelPipe.transform((this.unit.interpretations.effectiveTags || []), 'warehouse').indexOf(tag['name']!) !== -1 )
         )
       );
   }
@@ -343,7 +335,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       .save(this.annotation)
       .subscribe(
         annotation => {
-          this.annotation = annotation;
+          this.annotation = annotation as AnnotationFormAnnotation;
           this.save.emit(annotation);
           this.sending = false;
         },
@@ -358,7 +350,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
 
-  addToAddTags(value) {
+  addToAddTags(value: { id: string; quality: string }) {
     if ( value.quality === 'MMAN.typePositiveQuality' || value.quality === 'MMAN.typeNegativeQuality' || value.id === 'MMAN.3') {
       const index = this.annotation.addedTags.indexOf(
         this.findFirstTagNegativePositive(this.annotation.addedTags)
@@ -371,7 +363,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
       if (indexSame === -1 ) {
         this.annotation.addedTags.push(value.id);
-        if (value === 'MMAN.3') {
+        if ((value as any) === 'MMAN.3') { // TODO should be value.id ?
           this.removeAllTagsByCategory(this.annotation.addedTags, 'MMAN.typeCheck');
         }
       } else {
@@ -393,7 +385,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.annotation.addedTags = [...this.annotation.addedTags];
   }
 
-  checkInsideRemovableTags(value) {
+  checkInsideRemovableTags(value: { id: string; quality: string }) {
     this.annotationRemovableTags$.subscribe(data => {
       this.tmpTags = data;
       if (this.annotation.addedTags.indexOf('MMAN.5') === -1 && this.annotation.addedTags.indexOf('MMAN.8') === -1
@@ -411,32 +403,35 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
         }
         if (value.id === 'MMAN.3' || value.id === 'MMAN.5') {
           this.tmpTags.forEach(tag => {
-            if (this.annotationTagsObservation[tag.id].type === 'check' || this.annotationTagsObservation[tag.id].type === 'info') {
-                this.addToRemoveTags(tag.id);
+            const tagId = tag.id as string;
+            if (this.annotationTagsObservation[tagId].type === 'check' || this.annotationTagsObservation[tagId].type === 'info') {
+                this.addToRemoveTags(tagId);
             }
           });
         }
 
       } else {
         this.tmpTags.forEach(tag => {
-          if (tag.id !== value.id) {
-            if ((tag.id === 'MMAN.5' || tag.id === 'MMAN.8' || tag.id === 'MMAN.9' || tag.id === 'MMAN.3'
-            || tag.id === 'MMAN.50' || tag.id === 'MMAN.51')
+          const tagId = tag.id as string;
+          if (tagId !== value.id) {
+            if ((tagId === 'MMAN.5' || tagId === 'MMAN.8' || tagId === 'MMAN.9' || tagId === 'MMAN.3'
+            || tagId === 'MMAN.50' || tagId === 'MMAN.51')
             && this.annotationTagsObservation[value.id].type !== 'check' && this.annotationTagsObservation[value.id].type !== 'info'
-            && this.annotation.removedTags.indexOf(tag.id) === -1 && this.annotation.addedTags.indexOf(tag.id) === -1) {
-              this.addToRemoveTags(tag.id);
+            && this.annotation.removedTags.indexOf(tagId) === -1 && this.annotation.addedTags.indexOf(tagId) === -1) {
+              this.addToRemoveTags(tagId);
             }
-            if ((this.annotationTagsObservation[tag.id].type === 'check' || this.annotationTagsObservation[tag.id].type === 'info' )
-            && (value.id === 'MMAN.5' || value.id === 'MMAN.3') && this.annotation.removedTags.indexOf(tag.id) === -1) {
-              this.addToRemoveTags(tag.id);
+            if ((this.annotationTagsObservation[tagId].type === 'check' || this.annotationTagsObservation[tagId].type === 'info' )
+            && (value.id === 'MMAN.5' || value.id === 'MMAN.3') && this.annotation.removedTags.indexOf(tagId) === -1) {
+              this.addToRemoveTags(tagId);
             }
           }
         });
         if (this.annotation.addedTags.indexOf('MMAN.5') !== -1 || this.annotation.addedTags.indexOf('MMAN.3') !== -1) {
           this.tmpTags.forEach(tag => {
-            if ((this.annotationTagsObservation[tag.id].type === 'check' || this.annotationTagsObservation[tag.id].type === 'info' )
-            && this.annotation.removedTags.indexOf(tag.id) === -1) {
-              this.addToRemoveTags(tag.id);
+            const tagId = tag.id as string;
+            if ((this.annotationTagsObservation[tagId].type === 'check' || this.annotationTagsObservation[tagId].type === 'info' )
+            && this.annotation.removedTags.indexOf(tagId) === -1) {
+              this.addToRemoveTags(tagId);
             }
           });
         } else {
@@ -445,7 +440,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
         if (this.annotation.removedTags.indexOf(value.id) !== -1 &&
         (this.annotationTagsObservation[value.id].type === 'positive' || this.annotationTagsObservation[value.id].type === 'negative'
-        || this.annotationTagsObservation[value.id] === 'admin' )) {
+        || (this.annotationTagsObservation[value.id] as any) === 'admin' )) { // TODO should be this.annotationTagsObservation[value.id].type ?
           this.addToRemoveTags(value.id);
         }
       }
@@ -454,7 +449,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
 
-  removeAllTagsByCategory(array, category) {
+  removeAllTagsByCategory(array: string[], category: string) {
     let index = array.length - 1;
     while (index >= 0) {
       if (this.annotationTagsObservation[this.annotation.addedTags[index]].quality === category) {
@@ -466,7 +461,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   }
 
-  addToRemoveTags(value) {
+  addToRemoveTags(value: string) {
     const index = this.annotation.removedTags.indexOf(value);
     if (index > -1) {
       this.annotation.removedTags.splice(index, 1);
@@ -475,11 +470,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     }
 
     this.annotation.removedTags = [...this.annotation.removedTags];
-  }
-
-
-  checkAddTags(id) {
-    return (this.expert && this.annotation.addedTags.length > 0) || (!this.expert && this.annotation.addedTags.indexOf(id) !== -1);
   }
 
   disableSend(): boolean {
@@ -520,28 +510,24 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     return count > 0;
   }
 
-  onFocus(event) {
+  onFocus(event: Event) {
     if (event) {
        this.inputType = event.type;
-       this.inputName = event.target.name;
+       this.inputName = (event.target as HTMLInputElement).name;
        this.isFocusedTaxonComment = event.target;
        this.focus.emitChildEvent(true);
     }
     this.cd.detectChanges();
   }
 
-  onBlur(event) {
+  onBlur(event: Event) {
     if (event) {
       this.inputType = event.type;
-      this.inputName = event.target.name;
+      this.inputName = (event.target as HTMLInputElement).name;
       this.isFocusedTaxonComment = null;
       this.focus.emitChildEvent(false);
    }
    this.cd.detectChanges();
-  }
-
-  protected makeLabel(value) {
-    return this.labelPipe.transform(value, 'warehouse');
   }
 
   initElements() {

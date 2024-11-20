@@ -13,12 +13,12 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class SpecialInformalTaxonGroupsComponent implements OnInit {
 
-  @Input() invalidValues: string[];
+  @Input() invalidValues?: string[];
   @Input() mapping: {[value: string]: any} = {};
-  @Input() field: IFormField;
+  @Input() field?: IFormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
 
-  informalTaxonGroups: string[];
+  informalTaxonGroups?: string[];
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -38,7 +38,7 @@ export class SpecialInformalTaxonGroupsComponent implements OnInit {
       });
   }
 
-  valueMapped(value, to) {
+  valueMapped(value: any, to: any) {
     const mapping = {...this.mapping};
 
     if (to === undefined && mapping[value]) {

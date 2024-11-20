@@ -38,7 +38,7 @@ export class ObservationExtendedGroupSelectComponent extends ExtendedGroupSelect
     return [this.query?.informalTaxonGroupId || [], this.query.informalTaxonGroupIdNot || []];
   }
 
-  findByIds(groupIds, lang): Observable<PagedResult<RedListTaxonGroup>> {
+  findByIds(groupIds: string[], lang: string): Observable<PagedResult<RedListTaxonGroup>> {
     return this.informalTaxonService.informalTaxonGroupFind(lang, undefined, undefined, {idIn: groupIds});
   }
 
@@ -46,14 +46,14 @@ export class ObservationExtendedGroupSelectComponent extends ExtendedGroupSelect
     return {...group};
   }
 
-  getTree(lang): Observable<PagedResult<InformalTaxonGroup>> {
+  getTree(lang: string): Observable<PagedResult<InformalTaxonGroup>> {
     return this.informalTaxonService.informalTaxonGroupGetTree(lang);
   }
 
   prepareEmit(includedOptions: string[], excludedOptions?: string[]): InformalGroupEvent {
     return {
       informalTaxonGroupId: includedOptions,
-      informalTaxonGroupIdNot: excludedOptions,
+      informalTaxonGroupIdNot: excludedOptions ?? [],
     };
   }
 }

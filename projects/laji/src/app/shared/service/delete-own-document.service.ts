@@ -6,9 +6,9 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class DeleteOwnDocumentService {
 
-  private childGenerateEvent = new BehaviorSubject<string | null>(null);
+  private childGenerateEvent = new BehaviorSubject<string | null | undefined>(null);
 
-  emitChildEvent(value: string) {
+  emitChildEvent(value: string|null|undefined) {
      this.childGenerateEvent.next(value);
   }
 

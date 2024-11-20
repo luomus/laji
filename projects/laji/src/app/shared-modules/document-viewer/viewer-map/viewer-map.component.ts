@@ -29,7 +29,7 @@ export class ViewerMapComponent implements OnInit, OnChanges {
   @Input() useWorldMap = true;
   @Input() settingsKey: any;
   @Input() hideCoordinates: boolean;
-  @Input() zoomToData = false;
+  @Input() zoomToData? = false;
 
   _data: any;
   mapOptions: Options;

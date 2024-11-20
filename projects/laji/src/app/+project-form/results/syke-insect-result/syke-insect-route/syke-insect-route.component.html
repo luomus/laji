@@ -24,9 +24,9 @@
   <div *ngFor="let taxonSet of observationStats[0]['taxonSets']" class="taxonSet">
     <laji-syke-insect-route-table
     (documentClick)="openViewer($event)"
-    [data]="observationStats[0]['dataSets'][taxonSet]"
+    [data]="observationStats[0]['dataSets']![taxonSet]"
     [routeId]="routeId"
-    [season]="activeDate"
+    [season]="activeDate!"
     [sorts]="sorts"
     [year]="activeYear ? activeYear.toString() : undefined"
     [taxonSet]="taxonSet.includes('Bumblebee') ? (taxonSet | toQName | translate) : (taxonSet | toQName | label)"

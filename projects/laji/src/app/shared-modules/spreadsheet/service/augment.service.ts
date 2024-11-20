@@ -20,8 +20,8 @@ export class AugmentService {
   ) { }
 
   augmentDocument(document: Document, excluded: string[] = []): Observable<Document> {
-    const namedPlaces = [];
-    const idxLookup = {};
+    const namedPlaces: string[] = [];
+    const idxLookup: Record<string, any> = {};
     if (document && document.gatherings) {
       document.gatherings.forEach((gathering, idx) => {
         if (gathering.namedPlaceID) {
@@ -54,7 +54,8 @@ export class AugmentService {
     ) {
       idxs[id].forEach(idx => {
         if (document.gatherings && document.gatherings[idx]) {
-          this.augment(document.gatherings[idx], this.documentService.removeMeta(namedPlace.prepopulatedDocument.gatherings[0], excluded));
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          this.augment(document.gatherings[idx], this.documentService.removeMeta(namedPlace.prepopulatedDocument!.gatherings![0], excluded));
         }
       });
     }

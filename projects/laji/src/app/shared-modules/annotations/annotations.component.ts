@@ -4,7 +4,10 @@ import { AnnotationService } from '../document-viewer/service/annotation.service
 import { Annotation } from '../../shared/model/Annotation';
 import { IdService } from '../../shared/service/id.service';
 import { DocumentViewerFacade } from '../document-viewer/document-viewer.facade';
-import { AnnotationFormNewComponent } from './annotation-form-new/annotation-form-new.component';
+import {
+  AnnotationFormAnnotation,
+  AnnotationFormNewComponent
+} from './annotation-form-new/annotation-form-new.component';
 import {map, switchMap } from 'rxjs/operators';
 import { Subscription, timer } from 'rxjs';
 import { PagedResult } from '../../shared/model/PagedResult';
@@ -23,33 +26,33 @@ import { AnnotationTag } from '../../shared/model/AnnotationTag';
 
 })
 export class AnnotationsComponent implements OnInit, OnDestroy {
-  @Input() rootID: string;
-  @Input() targetID: string;
-  @Input() documentID: string;
-  @Input() isEditor: boolean;
-  @Input() personID: string;
-  @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
+  @Input({ required: true }) rootID!: string;
+  @Input() targetID?: string;
+  @Input() documentID?: string;
+  @Input() isEditor?: boolean;
+  @Input() personID?: string;
+  @Input() personRoleAnnotation?: Annotation.AnnotationRoleEnum;
   @Input() identifying = false;
   @Input() unit: any;
   @Input() gathering: any;
   @Input() annotations: Annotation[] = [];
-  @Input() formVisible: boolean;
-  @Input() listVisible: boolean;
-  @Input() annotationTags: AnnotationTag[];
+  @Input() formVisible?: boolean;
+  @Input() listVisible?: boolean;
+  @Input() annotationTags?: AnnotationTag[];
   @Output() annotationsClose = new EventEmitter<any>();
   @Output() annotationChange = new EventEmitter<Annotation>();
   @Output() loadingForm = new EventEmitter<any>();
 
 
-  @ViewChild('formAnnotation') formAnnotation: AnnotationFormNewComponent;
+  @ViewChild('formAnnotation') formAnnotation!: AnnotationFormNewComponent;
   error = false;
   adding = false;
   expert = true;
-  type: Annotation.TypeEnum;
-  annotation: Annotation = {};
+  type?: Annotation.TypeEnum;
+  annotation!: AnnotationFormAnnotation;
   annotationRole = Annotation.AnnotationRoleEnum;
   loading = false;
-  lastAnnotationAddedId: string;
+  lastAnnotationAddedId?: string;
   result: PagedResult<any> = {
     currentPage: 1,
     lastPage: 1,
@@ -57,13 +60,13 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     total: 0,
     pageSize: 0
   };
-  randomKeyBefore: string;
-  randomKeyAfter: string;
+  randomKeyBefore?: string;
+  randomKeyAfter?: string;
   page = 1;
-  subscribeRefreshedAnnotations: Subscription;
-  subscribeRefreshedAnnotations1: Subscription;
+  subscribeRefreshedAnnotations?: Subscription;
+  subscribeRefreshedAnnotations1?: Subscription;
   query: WarehouseQueryInterface = {};
-  activeTags: Annotation[];
+  activeTags?: Annotation[];
   deleting = false;
   statusAction = {
     status: false,
@@ -104,7 +107,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscribeRefreshedAnnotations?.unsubscribe();
-    this.subscribeRefreshedAnnotations1.unsubscribe();
+    this.subscribeRefreshedAnnotations1?.unsubscribe();
   }
 
   initEmptyAnnotation() {
@@ -193,7 +196,8 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   showDocument() {
     this.documentViewerFacade.showDocumentID({
       highlight: this.unit.unitId,
-      document: this.documentID,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      document: this.documentID!,
       openAnnotation: true,
       result: undefined
     });
@@ -214,7 +218,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
         map(data => data.results)
       ).subscribe(
         data => {
-          data.forEach(r => {
+          data.forEach((r: any) => {
             this.randomKeyAfter = r.aggregateBy['document.randomKey'];
           });
         this.cd.markForCheck();
@@ -222,19 +226,19 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
         this.countCall++;
 
         if (this.countCall > 4) {
-          this.subscribeRefreshedAnnotations.unsubscribe();
+          this.subscribeRefreshedAnnotations?.unsubscribe();
           this.loadingElements.emitChildEvent(true);
         }
 
         if (this.randomKeyAfter === undefined) {
-          this.subscribeRefreshedAnnotations.unsubscribe();
+          this.subscribeRefreshedAnnotations?.unsubscribe();
           this.taxonTagEffective.emitChildEvent(false);
           this.loadingElements.emitChildEvent(false);
           this.loadingForm.emit(false);
         }
 
         if (this.randomKeyAfter !== this.randomKeyBefore) {
-          this.subscribeRefreshedAnnotations.unsubscribe();
+          this.subscribeRefreshedAnnotations?.unsubscribe();
           this.taxonTagEffective.emitChildEvent(true);
           this.loadingElements.emitChildEvent(true);
           this.countCall = 0;
@@ -253,7 +257,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
             map(data => data.results)
           ).subscribe(
             data => {
-              data.forEach(r => {
+              data.forEach((r: any) => {
                 this.randomKeyBefore = r.aggregateBy['document.randomKey'];
               });
             this.cd.markForCheck();

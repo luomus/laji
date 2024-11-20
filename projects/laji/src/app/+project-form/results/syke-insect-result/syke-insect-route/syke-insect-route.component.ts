@@ -12,9 +12,9 @@ import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer
 })
 export class SykeInsectRouteComponent implements OnInit, OnDestroy {
 
-  @Input() collectionId: string;
+  @Input() collectionId!: string;
 
-  routeId: string;
+  routeId!: string;
 
   rows: any;
   selected = ['unit.linkings.taxon.scientificName', 'individualCountSum'];
@@ -23,17 +23,21 @@ export class SykeInsectRouteComponent implements OnInit, OnDestroy {
     {prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}
   ];
 
-  observationStats = [{dataSets: []}];
-  activeYear: number;
-  activeDate: string;
-  onlySections: boolean;
+  observationStats: {
+    dataSets?: any[];
+    yearsDays?: any[];
+    taxonSets?: any[];
+  }[] = [{dataSets: []}];
+  activeYear?: number;
+  activeDate?: string;
+  onlySections!: boolean;
 
   loading = false;
-  queryKey: string;
-  resultSub: Subscription;
+  queryKey!: string;
+  resultSub!: Subscription;
   filterBy = '';
 
-  private routeSub: Subscription;
+  private routeSub!: Subscription;
 
   constructor(
     private resultService: SykeInsectResultService,
@@ -81,7 +85,8 @@ export class SykeInsectRouteComponent implements OnInit, OnDestroy {
       }
 
       this.loading = true;
-      this.resultSub = this.resultService.getUnitStats(this.activeYear, this.activeDate, this.routeId, this.activeDate ? true : typeof this.onlySections === 'string'
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      this.resultSub = this.resultService.getUnitStats(this.activeYear, this.activeDate!, this.routeId, this.activeDate ? true : typeof this.onlySections === 'string'
       ? JSON.parse(this.onlySections) : this.onlySections, this.collectionId)
         .subscribe(list => {
           this.observationStats = list;
@@ -94,8 +99,9 @@ export class SykeInsectRouteComponent implements OnInit, OnDestroy {
     }
   }
 
-  censusListForRoute(routeId) {
-    this.resultService.getUnitStats(this.activeYear, this.activeDate, routeId, this.activeDate ? true : typeof this.onlySections === 'string'
+  censusListForRoute(routeId: string) {
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    this.resultService.getUnitStats(this.activeYear, this.activeDate!, routeId, this.activeDate ? true : typeof this.onlySections === 'string'
     ? JSON.parse(this.onlySections) : this.onlySections, this.collectionId)
       .subscribe(censuses => {
         this.observationStats = censuses;

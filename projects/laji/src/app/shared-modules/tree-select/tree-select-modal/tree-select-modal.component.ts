@@ -12,19 +12,20 @@ import { TreeSelectorComponent } from '../tree-selector/tree-selector.component'
 })
 
 export class TreeSelectModalComponent {
-  @Input() selectedOptions: SelectedOption[];
-  @Input() optionsTree$: Observable<TreeOptionsNode[]>;
-  @Input() modalTitle: string;
-  @Input() browseTitle: string;
-  @Input() selectedTitle: string;
-  @Input() includedTitle: string;
-  @Input() excludedTitle: string;
-  @Input() okButtonLabel: string;
-  @Input() clearButtonLabel: string;
-  @Input() includeCount: boolean;
-  @Input() includeLink: boolean;
-  @Input() useVirtualScroll: boolean;
-  @ViewChild('treeSelector') treeSelectorComponent: TreeSelectorComponent;
+  @Input({required: true}) selectedOptions!: SelectedOption[];
+  @Input({required: true}) optionsTree$!: Observable<TreeOptionsNode[]>;
+  @Input({required: true}) modalTitle!: string;
+  @Input({required: true}) browseTitle!: string;
+  @Input({required: true}) selectedTitle!: string;
+  @Input({required: true}) includedTitle!: string;
+  @Input({required: true}) excludedTitle!: string;
+  @Input({required: true}) okButtonLabel!: string;
+  @Input({required: true}) clearButtonLabel!: string;
+  @Input() includeCount = false;
+  @Input() includeLink = false;
+  @Input() useVirtualScroll = true;
+  @ViewChild('treeSelector')
+  treeSelectorComponent!: TreeSelectorComponent;
   @Output() emitConfirm = new EventEmitter<SelectedOption[]>();
 
   constructor(

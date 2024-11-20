@@ -12,6 +12,17 @@ import { Collection } from '../model/Collection';
 import { CollectionApi } from '../api/CollectionApi';
 import { UserService } from './user.service';
 import { ObservationFacade } from '../../+observation/observation.facade';
+import { TreeOptionsNode } from '../../shared-modules/tree-select/tree-select.component';
+
+export interface ICollection extends Collection {
+  id: string;
+  collectionType: string;
+  collectionQuality: string;
+};
+
+export interface CollectionTreeOptionsNode extends TreeOptionsNode {
+  count: number;
+}
 
 export interface ICollectionRange {
   id: string;

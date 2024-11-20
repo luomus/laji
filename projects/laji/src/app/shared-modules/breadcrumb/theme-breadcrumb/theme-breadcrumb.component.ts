@@ -15,10 +15,10 @@ export interface Breadcrumb {
 })
 export class ThemeBreadcrumbComponent {
 
-  @Input() breadcrumb: Breadcrumb[];
+  @Input() breadcrumb?: Breadcrumb[];
   @Input() set navLinks(links: Breadcrumb[]) {
     this.active = links.find(l => l.active === true);
   }
 
-  active: Breadcrumb;
+  active?: Breadcrumb;
 }

@@ -18,8 +18,8 @@ import { environment } from '../../../environments/environment';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
 
-  currentProfile: Profile;
-  userProfile: Profile;
+  currentProfile!: Profile;
+  userProfile!: Profile;
 
   public isCurrentUser = false;
   public userId = '';
@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public loading = true;
   public personSelfUrl = '/';
 
-  private subProfile: Subscription;
+  private subProfile!: Subscription;
   intellectualRightsArray: Profile.IntellectualRights[] = [
     Profile.IntellectualRights.intellectualRightsCCBYSA4,
     Profile.IntellectualRights.intellectualRightsCCBYNC4,
@@ -64,10 +64,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
         const null$ = ObservableOf(null);
         const userProfile$ = this.personService.personFindProfileByToken(this.userService.getToken()).pipe(catchError(() => null$));
         return ObservableForkJoin(
-          currentUser.id
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          currentUser!.id
             ? userProfile$
             : empty$,
-          currentUser.id === id
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          currentUser!.id === id
             ? userProfile$
             : this.personService.personFindProfileByUserId(id).pipe(catchError(() => empty$))
         ).pipe(
@@ -81,7 +83,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       })
     ).subscribe(
       ({id, currentUser, userProfile, currentProfile}) => {
-          this.isCurrentUser = id === currentUser.id;
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          this.isCurrentUser = id === currentUser!.id;
           this.userId = id;
           this.isCreate = !userProfile;
           this.currentProfile = prepareProfile(currentProfile, currentUser);
@@ -146,10 +149,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
       settings: {
         ...this.userProfile.settings,
         defaultMediaMetadata: {
-          ...this.userProfile.settings.defaultMediaMetadata,
-          capturerVerbatim: this.currentProfile?.settings?.defaultMediaMetadata?.capturerVerbatim,
-          intellectualOwner: this.currentProfile?.settings?.defaultMediaMetadata?.intellectualOwner,
-          intellectualRights: this.currentProfile?.settings?.defaultMediaMetadata?.intellectualRights
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          ...this.userProfile.settings!.defaultMediaMetadata,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          capturerVerbatim: this.currentProfile?.settings?.defaultMediaMetadata?.capturerVerbatim!,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          intellectualOwner: this.currentProfile?.settings?.defaultMediaMetadata?.intellectualOwner!,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          intellectualRights: this.currentProfile?.settings?.defaultMediaMetadata?.intellectualRights!
         }
       }
     };
