@@ -71,7 +71,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
 
   chartData?: ChartData;
   yearChartLabels = this.getYearChartLabels();
-  monthChartLabels: number[] = [];
+  monthChartLabels: string[] = [];
   barChartOptions = BAR_CHART_OPTIONS;
   activeMonthIdx?: number;
   monthFormatting = this.getMonthLabel.bind(this);
@@ -114,7 +114,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     return data;
   }
 
-  private getMonthChartLabels(monthIdx: number): number[] {
+  private getMonthChartLabels(monthIdx: number): string[] {
     const days = [];
     for (let i = 0; i < getNbrOfDaysInMonth(monthIdx); i++) {
       days[i] = i + 1;
