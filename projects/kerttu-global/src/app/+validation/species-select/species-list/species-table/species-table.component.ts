@@ -9,7 +9,7 @@ import { IGlobalSpeciesListResult } from '../../../../kerttu-global-shared/model
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesTableComponent implements OnInit {
-  @Input() data: IGlobalSpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0 };
+  @Input() data: IGlobalSpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0, lastPage: 0 };
   @Input() loading = false;
   @Input() sorts: DatatableSort[] = [];
 
