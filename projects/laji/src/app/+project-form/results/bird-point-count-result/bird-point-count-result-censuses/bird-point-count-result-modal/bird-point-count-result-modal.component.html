@@ -1,0 +1,19 @@
+
+<h4>{{'wbc.stats.censuses' | translate}}</h4>
+<ng-container *ngIf="link">
+  <p>
+    <a href="{{ link }}" target="_blank" translate>{{ link }}</a>
+  </p>
+</ng-container>
+<laji-datatable
+  #dataTable
+  [clientSideSorting]="true"
+  [showHeader]="true"
+  [virtualScrolling]="true"
+  [rows]="rows ? rows : []"
+  [loading]="loading"
+  [totalMessage]="'haseka.submissions.total' | translate"
+  [columns]="columns"
+  [count]=" rows ? rows.length : 0"
+  [height]="height">
+</laji-datatable>

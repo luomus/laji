@@ -5,6 +5,17 @@ import { map, switchMap } from 'rxjs/operators';
 import { ResultService } from '../common/service/result.service';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
+export interface BirdPointCountFact {
+  documentId: string;
+  pairCountInner: number;
+  pairCountOuter: number;
+  vernacularName: {
+    fi: string;
+    sv: string;
+    en: string;
+  };
+}
+
 @Injectable()
 export class BirdPointCountResultService {
 
@@ -70,6 +81,48 @@ export class BirdPointCountResultService {
           }
         }
         return result;
+      })
+    );
+  }
+
+  getDocumentFacts(documentId: string): Observable<BirdPointCountFact[]> {
+    return this.warehouseApi.warehouseQueryListGet(
+      {
+        documentId: [documentId]
+      },
+      [
+        'unit.facts',
+        'unit.linkings.taxon.vernacularName',
+        'unit.linkings.taxon.scientificName'
+      ],
+      undefined,
+      10000,
+      1,
+      undefined
+    ).pipe(
+      map(result => {
+        const facts = result.results.map(item => {
+          let pairCountInner = 0;
+          let pairCountOuter = 0;
+          item?.unit?.facts.forEach((f: any) => {
+            if (f.fact === 'http://tun.fi/MY.pairCountInner') {
+              pairCountInner = f.integerValue;
+            }
+            if (f.fact === 'http://tun.fi/MY.pairCountOuter') {
+              pairCountOuter = f.integerValue;
+            }
+          });
+          const vernacularName = item?.unit?.linkings?.taxon?.vernacularName
+            ? item.unit.linkings.taxon.vernacularName
+            : { fi: '', sv: '', en: '' };
+          return {
+            documentId,
+            pairCountInner,
+            pairCountOuter,
+            vernacularName
+          };
+        });
+        return facts;
       })
     );
   }

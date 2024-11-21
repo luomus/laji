@@ -59,6 +59,7 @@ import { BiomonResultStatisticsComponent } from './biomon-result/biomon-result-s
 import { BirdPointCountResultComponent } from './bird-point-count-result/bird-point-count-result.component';
 import { BirdPointCountResultChartComponent } from './bird-point-count-result/bird-point-count-result-chart/bird-point-count-result-chart.component';
 import { BirdPointCountResultCensusesComponent } from './bird-point-count-result/bird-point-count-result-censuses/bird-point-count-result-censuses.component';
+import { BirdPointCountResultModalComponent } from './bird-point-count-result/bird-point-count-result-censuses/bird-point-count-result-modal/bird-point-count-result-modal.component';
 import { BirdPointCountResultService } from './bird-point-count-result/bird-point-count-result.service';
 import { WaterBirdCountResultComponent } from './water-bird-count-result/water-bird-count-result.component';
 import { ResultMapComponent } from './common/result-map/result-map.component';
@@ -121,6 +122,7 @@ import { ResultMapComponent } from './common/result-map/result-map.component';
     BirdPointCountResultComponent,
     BirdPointCountResultChartComponent,
     BirdPointCountResultCensusesComponent,
+    BirdPointCountResultModalComponent,
     WaterBirdCountResultComponent,
     ResultMapComponent
   ],

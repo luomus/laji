@@ -4,6 +4,8 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { map, switchMap } from 'rxjs/operators';
 import { BirdPointCountResultService } from '../bird-point-count-result.service';
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
+import { BirdPointCountResultModalComponent } from './bird-point-count-result-modal/bird-point-count-result-modal.component';
 
 @Component({
   selector: 'laji-bird-point-count-result-censuses',
@@ -34,6 +36,7 @@ export class BirdPointCountResultCensusesComponent implements OnInit, OnChanges 
   sorts: {prop: string; dir: 'asc'|'desc'}[] = [
     {prop: 'document.modifiedDate', dir: 'desc'}
   ];
+  modalRef!: ModalRef<BirdPointCountResultModalComponent>;
   yearOptions: { label: string; value: string }[];
   defaultYear: string;
   loading = false;
@@ -42,6 +45,7 @@ export class BirdPointCountResultCensusesComponent implements OnInit, OnChanges 
 
   constructor(
     private resultService: BirdPointCountResultService,
+    private modalService: ModalService,
     private cd: ChangeDetectorRef,
     private translate: TranslateService
   ) { }
@@ -82,14 +86,19 @@ export class BirdPointCountResultCensusesComponent implements OnInit, OnChanges 
     this.loading = true;
 
     this.resultSub = this.year$.pipe(
-      switchMap((year) => this.resultService.getCensusList(year ? +year : undefined).pipe(
-        map((list) => {
-          this.rows = list;
-          this.loading = false;
-          this.cd.markForCheck();
-        })
-      ))
-    ).subscribe();
+      switchMap((year) => this.resultService.getCensusList(year ? +year : undefined))
+    ).subscribe(list => {
+      this.rows = list;
+      this.loading = false;
+      this.cd.markForCheck();
+    });
+  }
+
+  openModal(document: any) {
+    const initialState = {
+      documentFacts$: this.resultService.getDocumentFacts(document['document.documentId'])
+    };
+    this.modalRef = this.modalService.show(BirdPointCountResultModalComponent, { size: 'md', initialState });
   }
 
   onYearChange(event: Event): void {

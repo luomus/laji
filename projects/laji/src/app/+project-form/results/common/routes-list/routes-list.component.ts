@@ -9,7 +9,7 @@ import { ColumnMode } from '@achimha/ngx-datatable';
   templateUrl: './routes-list.component.html',
   styleUrls: ['./routes-list.component.scss']
 })
-export class WbcRoutesListComponent implements OnChanges {
+export class RoutesListComponent implements OnChanges {
   @Input() rows: any[] | undefined = [];
   @Input() height = 'calc(80vh - 100px)';
   @Input() columnMode: ColumnMode | keyof typeof ColumnMode = 'standard';

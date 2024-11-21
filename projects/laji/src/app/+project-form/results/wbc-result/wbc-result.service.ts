@@ -274,41 +274,6 @@ export class WbcResultService {
     }));
   }
 
-  private addUnitStatsToResults(result: any[], query: WarehouseQueryInterface) {
-    return this.getList(
-      this.warehouseApi.warehouseQueryStatisticsGet(
-        query,
-        ['document.documentId'],
-        undefined,
-        10000,
-        1,
-        undefined,
-        false
-      )
-    ).pipe(
-      map(list => {
-        const statsByDocumentId: any = {};
-        list.map(l => {
-          statsByDocumentId[l['document.documentId']] = l;
-        });
-        return statsByDocumentId;
-      }),
-      map(statsByDocumentId => {
-        for (const r of result) {
-          if (statsByDocumentId[r['document.documentId']]) {
-            const stats = statsByDocumentId[r['document.documentId']];
-            r.count = stats.count;
-            r.individualCountSum = stats.individualCountSum;
-          } else {
-            r.count = 0;
-            r.individualCountSum = 0;
-          }
-        }
-        return result;
-      })
-    );
-  }
-
   private getCensusesForRoute(routeId: string): Observable<Censuses> {
     return this.warehouseApi.warehouseQueryGatheringStatisticsGet(
       {...this.getFilterParams(), namedPlaceId: [routeId]},
