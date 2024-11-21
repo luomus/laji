@@ -9,6 +9,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 
 interface State {
   taxon: string | undefined;
+  year: string | undefined;
 }
 
 @Component({
@@ -18,11 +19,11 @@ interface State {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WaterBirdCountResultComponent implements OnInit {
-  @Input() form: Form.SchemaForm;
+  @Input() form!: Form.SchemaForm;
 
-  state$: Observable<State>;
+  state$!: Observable<State>;
   collections: string[] = ['HR.62', 'HR.3991', 'HR.3992'];
-  taxonOptions$: Observable<{ label: string; value: string }[]>;
+  taxonOptions$!: Observable<{ label: string; value: string }[]>;
   mapQuery: WarehouseQueryInterface = {
     includeSubCollections: false,
     gatheringCounts: true, cache: true, countryId: ['ML.206']
@@ -52,7 +53,7 @@ export class WaterBirdCountResultComponent implements OnInit {
       map(res => res.results),
       map(taxa => taxa.map(t => ({
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),
-        value: t.id
+        value: t.id ?? ''
       }))),
       map(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs))
     );
@@ -66,5 +67,9 @@ export class WaterBirdCountResultComponent implements OnInit {
 
   onTaxonChange(taxon: any) {
     this.updateState({ taxon });
+  }
+
+  onYearChange(year: any) {
+    this.updateState({ year });
   }
 }

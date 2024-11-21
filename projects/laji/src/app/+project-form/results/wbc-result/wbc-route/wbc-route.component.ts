@@ -10,9 +10,9 @@ import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer
   styleUrls: ['./wbc-route.component.css']
 })
 export class WbcRouteComponent implements OnInit, OnDestroy {
-  routeId: string;
+  routeId!: string;
 
-  rows: any[];
+  rows?: any[];
   selected = ['gathering.eventDate.begin', 'count', 'individualCountSum'];
   sorts: {prop: string; dir: 'asc'|'desc'}[] = [
     {prop: 'gathering.eventDate.begin', dir: 'desc'},
@@ -21,10 +21,10 @@ export class WbcRouteComponent implements OnInit, OnDestroy {
   loadingCensusList = false;
   loadingObservationStats = false;
 
-  season: SEASON;
+  season!: SEASON;
   observationStats: any;
 
-  private routeSub: Subscription;
+  private routeSub!: Subscription;
 
   constructor(
     private resultService: WbcResultService,

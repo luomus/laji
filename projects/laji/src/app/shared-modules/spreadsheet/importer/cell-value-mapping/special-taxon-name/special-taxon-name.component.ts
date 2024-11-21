@@ -10,9 +10,9 @@ import { MappingService } from '../../../service/mapping.service';
 })
 export class SpecialTaxonNameComponent {
 
-  @Input() invalidValues: string[];
+  @Input() invalidValues!: string[];
   @Input() mapping: {[value: string]: any} = {};
-  @Input() field: IFormField;
+  @Input() field?: IFormField;
   @Input() addTaxonIDTo = 'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID';
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
 
@@ -29,7 +29,7 @@ export class SpecialTaxonNameComponent {
     }
     this.linkedVisible = !this.linkedVisible;
     if (!this.linkedVisible) {
-      const hide = {};
+      const hide: Record<string, true> = {};
       this.invalidValues.forEach(value => {
         if (this.mapping[value]) {
           hide[value] = true;
@@ -41,7 +41,7 @@ export class SpecialTaxonNameComponent {
     }
   }
 
-  lajiValue(value) {
+  lajiValue(value: string | number) {
     if (
       this.mapping &&
       this.field &&
@@ -54,7 +54,7 @@ export class SpecialTaxonNameComponent {
     return '';
   }
 
-  onTaxonSelect(value, to) {
+  onTaxonSelect(value: any, to: any) {
     const mapping = {...this.mapping};
 
     if (to === VALUE_IGNORE) {
@@ -62,7 +62,8 @@ export class SpecialTaxonNameComponent {
     } else if (typeof to !== 'undefined' && typeof to.key !== 'undefined' && to.value) {
       if (this.addTaxonIDTo) {
         const newValue = to.value.toLowerCase() === (value || '').toLowerCase() ? value : to.value;
-        mapping[value] = {[this.mergeKey]: {[this.field.key]: newValue, [this.addTaxonIDTo]: to.key}};
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        mapping[value] = {[this.mergeKey]: {[this.field!.key]: newValue, [this.addTaxonIDTo]: to.key}};
       } else {
         mapping[value] = to;
       }

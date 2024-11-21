@@ -10,21 +10,20 @@ import { Annotation } from '../../../shared/model/Annotation';
 })
 export class UnitAnnotationComponent implements OnInit {
 
-  @Input() editors: string[];
-  @Input() personID: string;
-  @Input() documentID: string;
+  @Input() editors?: string[];
+  @Input() personID?: string;
+  @Input() documentID?: string;
   @Input() unit: any;
-  @Input() highlight: string;
-  @Input() identifying: boolean;
-  @Input() openAnnotation: boolean;
+  @Input() highlight?: string;
+  @Input() identifying?: boolean;
+  @Input() openAnnotation?: boolean;
   @Input() showFacts = false;
-  @Input() showAnnotation: boolean;
+  @Input() showAnnotation?: boolean;
 
   annotationVisible = false;
-  annotationIcon: string;
   annotations: Annotation[] = [];
 
-  unitID: string;
+  unitID?: string;
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
 
   constructor(
@@ -37,7 +36,7 @@ export class UnitAnnotationComponent implements OnInit {
         this.unit.linkings.taxonId = this.toQname.transform(this.unit.linkings.taxon.qname);
       }
       if (Array.isArray(this.unit.facts)) {
-        this.unit.facts = this.unit.facts.reduce((cumulative, current) => {
+        this.unit.facts = this.unit.facts.reduce((cumulative: any[], current: any) => {
           if (this.skipFacts.indexOf(current.fact) !== -1) {
             return cumulative;
           }

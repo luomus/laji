@@ -26,8 +26,8 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CitableDownloadComponent implements OnInit {
-  downloadRequest$: Observable<DownloadRequestResponse>;
-  id: string;
+  downloadRequest$!: Observable<DownloadRequestResponse>;
+  id: string | undefined;
 
   isDownloadRequest = isDownloadRequest;
   asDownloadRequest = asDownloadRequest;

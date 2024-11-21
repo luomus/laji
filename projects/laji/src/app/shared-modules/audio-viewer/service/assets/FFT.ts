@@ -38,7 +38,7 @@
 type WindowFunction = 'bartlett'|'bartlettHann'|'blackman'|'cosine'|'gauss'|'hamming'|'hann'|'lanczoz'|'rectangular'|'triangular';
 
 /* eslint-disable no-bitwise */
-export const FFT = function(bufferSize: number, sampleRate: number, windowFunc: WindowFunction, alpha: number = undefined) {
+export const FFT = function(this: any, bufferSize: number, sampleRate: number, windowFunc: WindowFunction, alpha: number|undefined = undefined) {
   this.bufferSize = bufferSize;
   this.sampleRate = sampleRate;
   this.bandwidth = (2 / bufferSize) * (sampleRate / 2);
@@ -152,7 +152,7 @@ export const FFT = function(bufferSize: number, sampleRate: number, windowFunc: 
     this.cosTable[i] = Math.cos(-Math.PI / i);
   }
 
-  this.calculateSpectrum = function(buffer) {
+  this.calculateSpectrum = function(buffer: Float32Array) {
     // Locally scope variables for speed up
     bufferSize = this.bufferSize;
     const cosTable = this.cosTable,

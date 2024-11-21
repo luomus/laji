@@ -38,7 +38,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   navId: string;
 
   notificationsNotSeen = 0;
-  notificationsTotal$: Observable<number>;
+  notificationsTotal$!: Observable<number>;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -60,7 +60,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   @HostListener('document:click', ['$event'])
-  click(event) {
+  click(event: any) {
     if (this.openMenu && !this.elementRef.nativeElement.contains(event.target)) {
       this.toggleMenu();
     }
@@ -104,7 +104,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     ).subscribe(this.checkScreenWidth.bind(this));
   }
 
-  checkScreenWidth(event?) {
+  checkScreenWidth(event?: any) {
     const isMobile = this.platformService.window.innerWidth < 900;
     this.mobile = isMobile;
     this.cdr.detectChanges();

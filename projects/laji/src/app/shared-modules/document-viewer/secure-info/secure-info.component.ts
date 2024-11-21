@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class SecureInfoComponent {
 
-  @Input() secureLevel: string;
-  @Input() secureReasons: string[];
+  @Input() secureLevel?: string;
+  @Input() secureReasons?: string[];
 
 }

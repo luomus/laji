@@ -10,18 +10,18 @@ import { SpreadsheetService } from '../../service/spreadsheet.service';
 })
 export class MappingSelectComponent {
 
-  @Input() options: string[];
+  @Input() options?: string[];
   @Input() disabledWhenNoOptions = false;
-  _value: string;
+  _value?: string;
   @Input() disabled = false;
   @Output() selected = new EventEmitter<string>();
   skipValue = VALUE_IGNORE;
   asIsValue = VALUE_AS_IS;
 
   fieldGroups: string[] = [];
-  groups: {[group: string]: string[]};
+  groups?: {[group: string]: string[]};
   fieldGroupsLabel: {[group: string]: string} = {};
-  _fields: {[key: string]: IFormField};
+  _fields?: {[key: string]: IFormField};
 
   @Input()
   set value(value: string) {
@@ -37,12 +37,12 @@ export class MappingSelectComponent {
     this._fields = fields;
     const groups = {};
     Object.keys(fields).forEach(key => {
-      if (!groups[fields[key].parent]) {
-        groups[fields[key].parent] = [];
+      if (!(groups as any)[fields[key].parent]) {
+        (groups as any)[fields[key].parent] = [];
         const parts = fields[key].fullLabel.split(SpreadsheetService.nameSeparator);
-        this.fieldGroupsLabel[fields[key].parent] = parts.pop();
+        (this.fieldGroupsLabel as any)[fields[key].parent] = parts.pop();
       }
-      groups[fields[key].parent].push(key);
+      (groups as any)[fields[key].parent].push(key);
     });
     this.fieldGroups = Object.keys(groups);
     this.groups = groups;

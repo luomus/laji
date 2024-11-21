@@ -7,10 +7,10 @@ import { Document } from '../../../../shared/model/Document';
   styleUrls: ['./collection-contest-print.scss']
 })
 export class CollectionContestPrintComponent {
-  @Input() document: Document;
+  @Input({ required: true }) document!: Document;
   @Input() fields: any;
   @Input() mapData: any[] = [];
   @Input() imageData: {[key: string]: any} = {};
-  @Input() formLogo: string;
+  @Input() formLogo?: string;
 
 }

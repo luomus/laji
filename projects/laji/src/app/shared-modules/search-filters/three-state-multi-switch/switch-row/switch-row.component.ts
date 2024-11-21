@@ -11,13 +11,13 @@ export class SwitchRowComponent implements OnChanges {
 
   value = false;
 
-  @Input() option: {id: string; value: string};
-  @Input() trueValue: string[];
-  @Input() falseValue: string[];
+  @Input() option?: {id: string; value: string};
+  @Input() trueValue?: string[];
+  @Input() falseValue?: string[];
 
   @Output() update = new EventEmitter<{id: string; value: any}>();
 
-  state;
+  state?: boolean;
   typeCheckbox = CheckboxType.excluded;
 
   ngOnChanges() {
@@ -34,7 +34,8 @@ export class SwitchRowComponent implements OnChanges {
   }
 
   updateValue() {
-    this.update.emit({id: this.option.id, value: this.state});
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.update.emit({id: this.option!.id, value: this.state});
   }
 
 }

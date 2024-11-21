@@ -15,7 +15,7 @@ export interface ChartData {
 }
 
 export const getNbrOfDaysInMonth = (monthIdx: number): number => (
-  new Date(2000, monthIdx, 0).getDate()
+  new Date(2000, monthIdx + 1, 0).getDate()
 );
 
 @Injectable()
@@ -66,7 +66,7 @@ export class ObservationMonthDayChartFacade {
       if (lifeStage) {
         if (!yearChartDataByLifeStage[lifeStage]) { yearChartDataByLifeStage[lifeStage] = (new Array(12)).fill(0); }
         yearChartDataByLifeStage[lifeStage][month - 1] += count;
-        if (!monthChartDataArr[month - 1][lifeStage]) { monthChartDataByLifeStage[month - 1][lifeStage] = new Array(getNbrOfDaysInMonth(month - 1)).fill(0); }
+        if (!monthChartDataByLifeStage[month - 1][lifeStage]) { monthChartDataByLifeStage[month - 1][lifeStage] = new Array(getNbrOfDaysInMonth(month - 1)).fill(0); }
         monthChartDataByLifeStage[month - 1][lifeStage][day - 1] += count;
       }
     }
@@ -81,7 +81,7 @@ export class ObservationMonthDayChartFacade {
       });
     });
 
-    return forkJoin(labelObservables).pipe(defaultIfEmpty(null), map(_ => ({yearChartData, monthChartDataArr})));
+    return forkJoin(labelObservables).pipe(defaultIfEmpty(null) as any, map(_ => ({yearChartData, monthChartDataArr})));
   }
 
   private getLifeStageLabel(lifeStage: string): Observable<string> {

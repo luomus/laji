@@ -46,7 +46,7 @@ export class FormSelectComponent {
     this.initForms();
   }
 
-  get forms() {
+  get forms(): string[] {
     return this._forms;
   }
 
@@ -60,8 +60,10 @@ export class FormSelectComponent {
         switchMap(form => this.formPermissionService.hasAccessToForm(id).pipe(
           catchError(() => of(false)),
           map(permission => ({
-            id: form.id,
-            title: form.title,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            id: form!.id,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            title: form!.title,
             disabled: !permission
           }))
         ))
@@ -78,7 +80,7 @@ export class FormSelectComponent {
     );
   }
 
-  formSelected(id) {
+  formSelected(id: string) {
     this.selected.emit(id);
   }
 

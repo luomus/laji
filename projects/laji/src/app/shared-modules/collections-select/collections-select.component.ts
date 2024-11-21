@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, OnChanges, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
-import { CollectionService } from '../../shared/service/collection.service';
+import { CollectionService, CollectionTreeOptionsNode, ICollectionAggregate, ICollectionsTreeNode } from '../../shared/service/collection.service';
 import { BehaviorSubject, Observable, zip, of } from 'rxjs';
-import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree-select/tree-select.component';
+import { SelectedOption, TreeOptionsChangeEvent } from '../tree-select/tree-select.component';
 import { Util } from '../../shared/service/util.service';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 @Component({
   selector: 'laji-collections-select',
@@ -12,31 +13,31 @@ import { Util } from '../../shared/service/util.service';
   styleUrls: ['./collections-select.component.scss']
 })
 export class CollectionsSelectComponent implements OnInit, OnChanges {
-  @Input() title: string;
-  @Input() query: Record<string, any>;
-  @Input() info: string;
-  @Input() modalButtonLabel: string;
-  @Input() modalTitle: string;
-  @Input() browseTitle: string;
-  @Input() selectedTitle: string;
-  @Input() includedTitle: string;
-  @Input() excludedTitle: string;
-  @Input() okButtonLabel: string;
-  @Input() clearButtonLabel: string;
+  @Input({required: true}) title!: string;
+  @Input({required: true}) query!: WarehouseQueryInterface;
+  @Input({required: true}) info!: string;
+  @Input({required: true}) modalButtonLabel!: string;
+  @Input({required: true}) modalTitle!: string;
+  @Input({required: true}) browseTitle!: string;
+  @Input({required: true}) selectedTitle!: string;
+  @Input({required: true}) includedTitle!: string;
+  @Input({required: true}) excludedTitle!: string;
+  @Input({required: true}) okButtonLabel!: string;
+  @Input({required: true}) clearButtonLabel!: string;
   @Input() open = false;
   @Output() collectionIdChange = new EventEmitter<{
     collectionId?: string[];
     collectionIdNot?: string[];
   }>();
 
-  collectionsTree$: Observable<TreeOptionsNode[]>;
-  collections$: Observable<SelectedOption[]>;
+  collectionsTree$!: Observable<CollectionTreeOptionsNode[]>;
+  collections$!: Observable<SelectedOption[]>;
 
   includedOptions: string[] = [];
   excludedOptions: string[] = [];
 
-  private filterQuery$: Record<string, any>|undefined;
-  private filterQuerySubject = new BehaviorSubject<Record<string, any>|undefined>(undefined);
+  private filterQuery$: Observable<WarehouseQueryInterface|undefined>;
+  private filterQuerySubject = new BehaviorSubject<WarehouseQueryInterface|undefined>(undefined);
 
   constructor(
     private collectionService: CollectionService,
@@ -71,16 +72,16 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
     this.filterQuerySubject.next(query);
   }
 
-  toggle(event) {
-    if (event.target.classList.contains('no-propagation')) {
+  toggle(event: Event) {
+    if ((event.target as HTMLElement)?.classList.contains('no-propagation')) {
       return;
     }
     this.open = !this.open;
   }
 
   selectedOptionsChange($event: TreeOptionsChangeEvent) {
-    this.includedOptions = $event.selectedId;
-    this.excludedOptions = $event.selectedIdNot;
+    this.includedOptions = $event.selectedId ?? [];
+    this.excludedOptions = $event.selectedIdNot ?? [];
 
     this.collectionIdChange.emit({
       collectionId: this.includedOptions,
@@ -105,8 +106,8 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
     );
   }
 
-  buildCollectionTree(trees: any[], allAggregates: any[], filteredAggragates: any[]) {
-    const collectionsWithChildren = [];
+  buildCollectionTree(trees: ICollectionsTreeNode[], allAggregates: ICollectionAggregate[], filteredAggragates: ICollectionAggregate[]) {
+    const collectionsWithChildren: CollectionTreeOptionsNode[] = [];
 
     trees.forEach(tree => {
       const prunedTree = this.buildTree(tree, allAggregates, filteredAggragates);
@@ -121,12 +122,12 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
     return collectionsWithChildren;
   }
 
-  buildTree(tree, allAggregates, filteredAggragates): TreeOptionsNode {
+  buildTree(tree: ICollectionsTreeNode, allAggregates: ICollectionAggregate[], filteredAggragates: ICollectionAggregate[]): CollectionTreeOptionsNode|undefined {
     const allAggregate = allAggregates.find(elem => elem.id === tree.id);
     const filteredAggragate = filteredAggragates.find(elem => elem.id === tree.id);
 
     if (tree.hasChildren) {
-      const children = [];
+      const children: CollectionTreeOptionsNode[] = [];
       let childCount = 0;
       tree.children?.forEach(child => {
         const childTree = this.buildTree(child, allAggregates, filteredAggragates);

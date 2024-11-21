@@ -20,7 +20,8 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
   }
 
   delete(annotation: Annotation): Observable<any> {
-    return this.lajiApi.remove(LajiApi.Endpoints.annotations, IdService.getId(annotation.id), {personToken: this.userService.getToken()});
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.lajiApi.remove(LajiApi.Endpoints.annotations, IdService.getId(annotation.id!), {personToken: this.userService.getToken()});
   }
 
   save(annotation: Annotation): Observable<Annotation> {
@@ -29,7 +30,8 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
 
   getTag(id: string, lang: string): Observable<AnnotationTag> {
     return this.getAllTags(lang).pipe(
-      map(tags => tags.find(t => t.id === id))
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      map(tags => tags.find(t => t.id === id)!)
     );
   }
 
@@ -53,8 +55,8 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
 
   private annotatorsTags(
     type: keyof Pick<AnnotationTag, 'requiredRolesAdd' | 'requiredRolesRemove'>,
-    lang,
-    own
+    lang: string,
+    own: boolean
   ): Observable<AnnotationTag[]> {
     return this.userService.user$.pipe(
       take(1),
@@ -69,7 +71,8 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
         return roles;
       }),
       switchMap(annotatorsRole => this.getAllTags(lang).pipe(
-        map(tags => tags.filter(tag => tag[type] && tag[type].some(r => annotatorsRole.includes(r))))
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        map(tags => tags.filter(tag => tag[type] && tag[type]!.some(r => annotatorsRole.includes(r))))
       ))
     );
   }

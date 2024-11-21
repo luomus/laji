@@ -17,8 +17,8 @@ export class FooterComponent implements OnInit {
 
   @Input() onFrontPage = false;
 
-  public tree$: Observable<any>;
-  public headerImage: HeaderImage;
+  public tree$!: Observable<any>;
+  public headerImage!: HeaderImage;
 
   constructor(
     public footerService: FooterService,

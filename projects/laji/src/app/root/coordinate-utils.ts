@@ -51,7 +51,7 @@ export const getGeometryFromFeatureCollection = (featureCollection: any) => {
     }
     return {
       type: 'GeometryCollection',
-      geometries: featureCollection.features.map(feature => feature.geometry)
+      geometries: featureCollection.features.map((feature: any) => feature.geometry)
     };
   }
   return undefined;
@@ -104,7 +104,7 @@ export const convertEtrsToWgs = (lat: any, lng: any) => (
   MapUtil.convertLatLng([lat, lng], 'EPSG:3067', 'WGS84')
 );
 
-const pad = (value) => {
+const pad = (value: any) => {
   value = '' + value;
   return value + '0000000'.slice(value.length);
 };

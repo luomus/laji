@@ -34,23 +34,23 @@ export class ObservationGroupSelectComponent extends GroupSelectComponent<Inform
   }
 
 
-  findById(groupId, lang): Observable<InformalTaxonGroup> {
+  findById(groupId: string, lang: string | undefined): Observable<InformalTaxonGroup> {
     return this.informalTaxonService.informalTaxonGroupFindById(groupId, lang);
   }
 
-  findByIds(groupIds, lang): Observable<PagedResult<RedListTaxonGroup>> {
+  findByIds(groupIds: string[], lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
     return this.informalTaxonService.informalTaxonGroupFind(lang, undefined, undefined, {idIn: groupIds});
   }
 
-  getWithSiblings(groupId, lang): Observable<PagedResult<RedListTaxonGroup>> {
+  getWithSiblings(groupId: string, lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
     return this.informalTaxonService.informalTaxonGroupGetWithSiblings(groupId, lang);
   }
 
-  getChildren(groupId, lang): Observable<PagedResult<RedListTaxonGroup>> {
+  getChildren(groupId: string, lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
     return this.informalTaxonService.informalTaxonGroupGetChildren(groupId, lang);
   }
 
-  findRoots(lang): Observable<PagedResult<RedListTaxonGroup>> {
+  findRoots(lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
     return this.informalTaxonService.informalTaxonGroupFindRoots(lang);
   }
 

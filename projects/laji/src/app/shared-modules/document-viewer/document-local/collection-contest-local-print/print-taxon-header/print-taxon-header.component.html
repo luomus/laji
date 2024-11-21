@@ -5,7 +5,7 @@
   </div>
 </ng-container>
 <ng-template #noVernacularName>
-  <h3 [class.cursive]="taxon.cursiveName" class="taxon-header">{{ taxon.scientificName }}</h3>
+  <h3 [class.cursive]="taxon!.cursiveName" class="taxon-header">{{ taxon!.scientificName }}</h3>
 </ng-template>
 <ng-template #noTaxon>
   <h3 class="taxon-header">{{ taxonVerbatim | capitalize }}</h3>

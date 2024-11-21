@@ -29,7 +29,7 @@ export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
     });
   }
 
-  transform(value: string): any {
+  transform(value?: string): any {
     if (!value || value.length === 0) {
       return value;
     }

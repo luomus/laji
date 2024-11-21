@@ -20,7 +20,7 @@
   [showFooter]="false"
   [height]="'calc(80vh - 40px)'"
   [virtualScrolling]="true"
-  [rows]="rows"
+  [rows]="rows ? rows : []"
   [loading]="!rows"
   [columnMode]="'standard'"
   [totalMessage]="'haseka.submissions.total' | translate"

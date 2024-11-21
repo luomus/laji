@@ -36,11 +36,11 @@ interface Settings {[key: string]: DatatableColumn }
 })
 export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('dataTable') public datatable: NgxDatatableComponent;
-  @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates: DatatableTemplatesComponent;
+  @ViewChild('dataTable') public datatable?: NgxDatatableComponent;
+  @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates!: DatatableTemplatesComponent;
 
   @Input() loading = false;
-  @Input() pageSize: number;
+  @Input({ required: true }) pageSize!: number;
   @Input() showHeader = true;
   @Input() showFooter = true;
   @Input() sortType: SortType = SortType.multi;
@@ -54,12 +54,12 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
   @Input() rowHeight = 35;
   @Input() sorts: {prop: string; dir: 'asc'|'desc'}[] = [];
   @Input() actions: string[] | [] = ['edit', 'view'];
-  @Input() getRowClass: (row: any) => any;
-  @Input() selectionType: SelectionType;
+  @Input() getRowClass?: (row: any) => any;
+  @Input() selectionType?: SelectionType;
 
   // Initialize datatable row selection with some index
   _preselectedRowIndex = -1;
-  _filterBy: FilterByType;
+  _filterBy?: FilterByType;
   _height = '100%';
   _isFixedHeight = false;
 
@@ -68,22 +68,22 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
   @Output() reorder = new EventEmitter<any>();
   @Output() rowSelect = new EventEmitter<any>();
 
-  filterByChange: Subscription;
+  filterByChange?: Subscription;
 
-  _originalRows: any[];
-  _rows: RowDocument[];
-  _page: number;
-  _count: number;
-  _offset: number;
+  _originalRows!: any[];
+  _rows!: RowDocument[];
+  _page!: number;
+  _count!: number;
+  _offset!: number;
   _columns: any[] = []; // This needs to be initialized so that the data table would do initial sort!
   @Input() selected: any[] = [];
 
   initialized = false;
-  displayMode: string;
+  displayMode?: string;
   private filterChange$ = new Subject();
   allColumns: ObservationTableColumn[];
   private lastSort: any;
-  @LocalStorage('data-table-settings', {}) private dataTableSettings: Settings;
+  @LocalStorage('data-table-settings', {}) private dataTableSettings!: Settings;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -103,7 +103,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
     this._isFixedHeight = height.substr(height.length - 2, 2).includes('px');
   }
 
-  @Input() set count(cnt: number) {
+  @Input({ required: true }) set count(cnt: number) {
     this._count = typeof cnt === 'number' ? cnt  : 0;
   }
 
@@ -111,7 +111,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
     this._columns = columns;
   }
 
-  @Input() set rows(rows: any[]) {
+  @Input({ required: true }) set rows(rows: any[]) {
     this._originalRows = rows || [];
 
     // record the original indexes of each row element so that when the table is sorted
@@ -130,7 +130,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
     }
   }
 
-  @Input() set page(page: number) {
+  @Input({ required: true }) set page(page: number) {
     this._page = page;
     this._offset = page - 1;
   }
@@ -173,13 +173,13 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
     }
   }
 
-  onSort(event) {
+  onSort(event: any) {
     this.lastSort = event;
     const rows = [...this._rows];
-    event.sorts.forEach((sort) => {
+    event.sorts.forEach((sort: any) => {
       const comparator = this.comparator(sort.prop);
       const dir = sort.dir === 'asc' ? 1 : -1;
-      rows.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]));
+      rows.sort((a, b) => dir * comparator(a[sort.prop as keyof RowDocument], b[sort.prop as keyof RowDocument]));
     });
     this._rows = rows;
   }
@@ -189,15 +189,15 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
    *
    * @returns any
    */
-  comparator(prop) {
+  comparator(prop: string) {
     if (prop === 'dateObserved') {
-      return (a, b) => {
+      return (a: any, b: any) => {
         a = (a || '').split('-')[0].trim().split('.').reverse().join('');
         b = (b || '').split('-')[0].trim().split('.').reverse().join('');
         return b - a;
       };
     } else if (prop === 'dateEdited') {
-      return (a, b) => {
+      return (a: any, b: any) => {
         a = (a || '').split(' ');
         b = (b || '').split(' ');
         a = a.length > 1 ?
@@ -209,12 +209,12 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
         return b - a;
       };
     } else if (prop === 'unitCount') {
-      return (a, b) => b - a;
+      return (a: any, b: any) => b - a;
     }
-    return (a, b) => ('' + a).localeCompare('' + b);
+    return (a: any, b: any) => ('' + a).localeCompare('' + b);
   }
 
-  onRowSelect(event) {
+  onRowSelect(event: any) {
     if (event.type === 'click' || event.type === 'dblClick') {
       this.zone.run(() => {
         this.rowSelect.emit(event);
@@ -222,7 +222,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
     }
   }
 
-  onPage(event) {
+  onPage(event: any) {
     if (this.loading) {
       return;
     }
@@ -246,7 +246,8 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
   }
 
   toggleExpandRow(row: RowDocument) {
-    this.datatable.rowDetail.toggleExpandRow(row);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.datatable!.rowDetail.toggleExpandRow(row);
   }
 
   private updateFilteredRows() {

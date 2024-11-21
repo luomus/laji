@@ -28,9 +28,9 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   newData: ChartDataset[] = [{data: [],  label: this.translate.instant('all')}];
   splitIdx = 0;
 
-  allSubData: number[];
-  allDataNew: any[];
-  barChartLabels: string[];
+  allSubData!: number[];
+  allDataNew!: any[];
+  barChartLabels!: string[];
   barChartOptionsYear: ChartOptions = {
     animation: {
       duration: 500
@@ -38,12 +38,12 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   };
 
 
-  private allSubBackground: string[];
-  private getDataSub: Subscription;
-  private subBarChartLabels: string[];
-  private allBarChartsLabel: string[];
+  private allSubBackground!: string[];
+  private getDataSub?: Subscription;
+  private subBarChartLabels!: string[];
+  private allBarChartsLabel!: string[];
   resultList: any[] = [];
-  @LocalStorage('onlycount') onlyCount;
+  @LocalStorage('onlycount') onlyCount?: any;
 
 
   @Output() hasData = new EventEmitter<boolean>();
@@ -57,7 +57,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
 
 
   ngOnInit() {
-      (Tooltip.positioners as any).cursor = function(chartElements, coordinates) {
+      (Tooltip.positioners as any).cursor = function(chartElements: any, coordinates: any) {
         return coordinates;
       };
       this.localSt.observe('onlycount')
@@ -143,7 +143,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       this.allDataNew = [{data: [], label: this.translate.instant('all') }];
       let prevYear: number;
 
-      res.map(r => {
+      res.map((r: any) => {
         const year = parseInt(r.aggregateBy['gathering.conversions.year'], 10);
         const count = r.count;
         const individual = r.individualCountSum;
@@ -197,7 +197,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
     }
   }
 
-  initializeArrays(list) {
+  initializeArrays(list: any) {
     this.allSubData = [];
     this.allSubBackground = [];
     this.barChartLabels = [];
@@ -209,9 +209,9 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
     this.fillDataGraph(list);
   }
 
-  fillDataGraph(list) {
+  fillDataGraph(list: any) {
     this.splitIdx = 0;
-    list.map(r =>  {
+    list.map((r: any) =>  {
       this.allSubData.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
       this.subBarChartLabels.push('' + r.year);
       if (r.year < 1970) {

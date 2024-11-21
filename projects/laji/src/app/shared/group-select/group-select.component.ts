@@ -11,17 +11,17 @@ import { PagedResult } from '../model/PagedResult';
 @Directive()
 export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges {
   @Input() position: 'right'|'left' = 'right';
-  @Input() rootGroups: string[];
+  @Input() rootGroups!: string[];
   @Output() select = new EventEmitter(); // eslint-disable-line @angular-eslint/no-output-native
 
   lang: string;
   public groups: InformalTaxonGroup[] = [];
-  public activeGroup: InformalTaxonGroup;
+  public activeGroup: InformalTaxonGroup | undefined;
   public open = false;
   public innerValue = '';
-  public currentValue: string;
-  public label = '';
-  public range: number[];
+  public currentValue: string | undefined;
+  public label: string | undefined = '';
+  public range!: number[];
 
   protected subLabel: any;
 
@@ -152,18 +152,18 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     }
   }
 
-  getRoot(lang): Observable<PagedResult<T>> {
+  getRoot(lang: string): Observable<PagedResult<T>> {
     if (this.rootGroups) {
       return this.findByIds(this.rootGroups, lang);
     }
     return this.findRoots(lang);
   }
 
-  abstract findById(groupId, lang): Observable<T>;
-  abstract findByIds(groupIds, lang): Observable<PagedResult<T>>;
-  abstract getWithSiblings(groupId, lang): Observable<PagedResult<T>>;
-  abstract getChildren(groupId, lang): Observable<PagedResult<T>>;
-  abstract findRoots(lang): Observable<PagedResult<T>>;
+  abstract findById(groupId: string, lang: string): Observable<T>;
+  abstract findByIds(groupIds: string[], lang: any): Observable<PagedResult<T>>;
+  abstract getWithSiblings(groupId: any, lang: string): Observable<PagedResult<T>>;
+  abstract getChildren(groupId: any, lang: string): Observable<PagedResult<T>>;
+  abstract findRoots(lang: any): Observable<PagedResult<T>>;
   abstract convertToInformalTaxonGroup(group: T): InformalTaxonGroup;
 
   empty() {

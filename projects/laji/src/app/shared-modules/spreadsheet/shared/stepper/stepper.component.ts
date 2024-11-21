@@ -10,11 +10,11 @@ import { Step } from '../../spreadsheet.facade';
 })
 export class StepperComponent implements OnInit, OnChanges {
 
-  active: number;
+  active!: number;
   @Output() activate = new EventEmitter<number>();
   @Output() title = new EventEmitter<string>();
 
-  @Input() state: Step;
+  @Input() state!: Step;
 
   @Input() mapping = {
     [Step.empty]: 'file',
@@ -65,13 +65,13 @@ export class StepperComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.state) {
-      const mappedState = this.mapping[this.state] || 'file';
+      const mappedState = (this.mapping as any)[this.state] || 'file';
       this.active = this.steps.findIndex((item) => item.name === mappedState);
       this.sendActive();
     }
   }
 
-  backTo(idx) {
+  backTo(idx: number) {
     if (idx < this.active) {
       this.activate.emit(this.steps[idx].returnState);
     }

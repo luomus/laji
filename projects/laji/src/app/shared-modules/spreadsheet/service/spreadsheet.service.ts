@@ -111,7 +111,7 @@ export class SpreadsheetService {
 
   formToFlatFieldsLookUp(form: Form.SchemaForm, base: IFormField[] = []): {[key: string]: IFormField} {
     return this.formToFlatFields(form, base).reduce((result, field) => {
-      result[field.key] = field;
+      (result as any)[field.key] = field;
       return result;
     }, {});
   }
@@ -135,7 +135,7 @@ export class SpreadsheetService {
     return this.combineSplittedFields(sheetData);
   }
 
-  setDateFormat(sheet: XLSX.WorkSheet, hasWorkbook) {
+  setDateFormat(sheet: XLSX.WorkSheet, hasWorkbook: any) {
     for (const i in sheet) {
       if (!sheet.hasOwnProperty(i) || !sheet[i].t || sheet[i].t !== 'd' || !(sheet[i].v instanceof Date)) {
         continue;
@@ -158,7 +158,7 @@ export class SpreadsheetService {
     Object.keys(sheet).forEach(key => {
       const valueKey = this.mappingService.colMap(this.normalizeHeader(sheet[key]));
       if (valueKey !== null) {
-        colMap[key] = valueKey;
+        (colMap as any)[key] = valueKey;
       }
     });
     return colMap;
@@ -181,7 +181,7 @@ export class SpreadsheetService {
     return data?.map(row => {
       const newRow = {};
       Object.keys(row).forEach(col => {
-        newRow[col] = typeof row[col] === 'string' ? row[col].trim() : row[col];
+        (newRow as any)[col] = typeof row[col] === 'string' ? row[col].trim() : row[col];
       });
       return newRow;
     });
@@ -200,7 +200,7 @@ export class SpreadsheetService {
 
     const splitRegExp = new RegExp(`(${matches.join('|')})\\b`);
 
-    const getGroup = (field: string): IColCombine => {
+    const getGroup = (field: string): IColCombine | null => {
       for (const col of combines) {
         if (col.field === field) {
           return col;
@@ -237,7 +237,7 @@ export class SpreadsheetService {
         const values = {};
         const combineTo = group[0].col;
         for (const col of group) {
-          values[col.type] = newRow[col.col];
+          (values as any)[col.type] = newRow[col.col];
           delete newRow[col.col];
         }
         if (index === 0) {
@@ -294,7 +294,7 @@ export class SpreadsheetService {
   }
 
   private getCombinedGroups(combines: IColCombine[]): {groupedCombines: IColCombine[][]; errors: string[]} {
-    const errors = [];
+    const errors: any[] = [];
     combines = this.checkCombinedHasRequiredColumns(combines, GroupTypeEnum.date, errors);
     combines = this.checkCombinedHasRequiredColumns(combines, GroupTypeEnum.coordinate, errors);
 
@@ -357,21 +357,21 @@ export class SpreadsheetService {
     schema: any,
     validators: any,
     result: IFormField[],
-    root,
-    parent,
+    root: any,
+    parent: any,
     unitSubGroups = {},
     lastKey = '',
     lastLabel = '',
     required = []
   ) {
-    if (!schema || !schema.type || (schema.options && schema.options.excludeFromSpreadSheet)) {
+    if (!schema || !schema.type) {
       return;
     }
     const label = schema.title || lastLabel;
     const getFieldData = () => ({
         type: schema.type,
         label,
-        fullLabel: label + SpreadsheetService.nameSeparator + (this.translations[parent] || parent),
+        fullLabel: label + SpreadsheetService.nameSeparator + ((this.translations as any)[parent] || parent),
         key: root,
         parent,
         isArray: root.endsWith('[*]'),
@@ -430,7 +430,7 @@ export class SpreadsheetService {
     }
   }
 
-  private hasRequiredValidator(formID: string, lastKey, validator, required, key) {
+  private hasRequiredValidator(formID: string, lastKey: any, validator: any, required: any, key: any) {
     if (this.requiredFields[formID] && typeof this.requiredFields[formID][key] !== 'undefined') {
       return this.requiredFields[formID][key];
     }
@@ -440,8 +440,8 @@ export class SpreadsheetService {
     return !!validator.presence || (validator.geometry && validator.geometry.requireShape) || required.indexOf(lastKey) > -1;
   }
 
-  analyzeSubGroup(path, parent, unitSubGroups): string {
-    const field = path.split('.').pop();
+  analyzeSubGroup(path: string, parent: string, unitSubGroups: { [x: string]: string | undefined }): string | undefined {
+    const field = path.split('.').pop() as string;
     if (parent === 'units') {
       if (unitSubGroups[field]) {
         return unitSubGroups[field];
@@ -455,7 +455,7 @@ export class SpreadsheetService {
            (this.hiddenFields[formID] && this.hiddenFields[formID].indexOf(field) > -1);
   }
 
-  private findUnitSubGroups(form) {
+  private findUnitSubGroups(form: any) {
     const subGroups = {};
     if (form &&
       form.gatherings &&
@@ -472,8 +472,8 @@ export class SpreadsheetService {
           return;
         }
         if (Array.isArray(groups[key].additionalFields)) {
-          groups[key].additionalFields.forEach(field => {
-            subGroups[field] = key;
+          groups[key].additionalFields.forEach((field: any) => {
+            (subGroups as any)[field] = key;
           });
         }
       });

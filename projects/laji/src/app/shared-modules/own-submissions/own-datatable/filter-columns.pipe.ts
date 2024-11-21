@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   pure: true
 })
 export class FilterColumnsPipe implements PipeTransform {
-  transform(columns: any[], displaySize, reverse = false): any[] {
+  transform(columns: any[], displaySize: string, reverse = false): any[] {
     if (!columns) {
       return columns;
     }

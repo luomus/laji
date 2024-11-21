@@ -54,7 +54,7 @@ export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
   readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
   @Input() set collections(v: string[]) { this.collections$.next(v); };
   @Input() set taxon(v: string | undefined) { this.taxon$.next(v); };
-  @Input() taxonOptions: { label: string; value: string }[];
+  @Input() taxonOptions!: { label: string; value: string }[] | null;
 
   @Output() taxonChange = new EventEmitter<string>();
 
@@ -106,10 +106,10 @@ export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
   };
   chartType: ChartType = 'LineWithLine';
 
-  defaultTaxon: string;
+  defaultTaxon?: string;
   loading = true;
 
-  private chartSub: Subscription;
+  private chartSub!: Subscription;
 
   constructor(
     private warehouseApi: WarehouseApi,

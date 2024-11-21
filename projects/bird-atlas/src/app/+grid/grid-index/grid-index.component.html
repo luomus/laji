@@ -1,25 +1,27 @@
 <div class="container mb-6">
   <h1 translate>ba.grid-index.title</h1>
   <div [innerHtml]="'ba.grid-index.p' | translate"></div>
-  <lu-tabs
-    *ngIf="grid$ | async; else loading; let grid"
-    (selectedChange)="loadedElementsStore.load($event)"
-  >
-    <lu-tab [heading]="'ba.grid-index.tabs.map' | translate">
-      <ba-grid-index-map
-        *ngIf="loadedElementsStore.isLoaded('map')"
-        [atlasGrid]="grid"
-        (selectYKJ)="onSelectYKJ($event)"
-      ></ba-grid-index-map>
-    </lu-tab>
-    <lu-tab [heading]="'ba.grid-index.tabs.table' | translate">
-      <ba-grid-index-table
-        *ngIf="loadedElementsStore.isLoaded('table')"
-        [atlasGrid]="grid.gridSquares"
-        (selectYKJ)="onSelectYKJ($event)"
-      ></ba-grid-index-table>
-    </lu-tab>
-  </lu-tabs>
+  <ng-container *ngIf="grid$ | async; else loading; let grid">
+    <div><button class="btn btn-default" (click)="onDownloadCsv(grid)">Lataa .csv tiedosto</button></div>
+    <lu-tabs
+      (selectedChange)="loadedElementsStore.load($event)"
+    >
+      <lu-tab [heading]="'ba.grid-index.tabs.map' | translate">
+        <ba-grid-index-map
+          *ngIf="loadedElementsStore.isLoaded('map')"
+          [atlasGrid]="grid"
+          (selectYKJ)="onSelectYKJ($event)"
+        ></ba-grid-index-map>
+      </lu-tab>
+      <lu-tab [heading]="'ba.grid-index.tabs.table' | translate">
+        <ba-grid-index-table
+          *ngIf="loadedElementsStore.isLoaded('table')"
+          [atlasGrid]="grid.gridSquares"
+          (selectYKJ)="onSelectYKJ($event)"
+        ></ba-grid-index-table>
+      </lu-tab>
+    </lu-tabs>
+  </ng-container>
 </div>
 
 <ng-template #loading>

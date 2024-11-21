@@ -7,13 +7,14 @@ import { of } from 'rxjs';
 import { TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
 
 const AUTOCOMPLETE_TAXON_RESOURCE = '/autocomplete/taxon';
+const MEDIA_RESOURCES = ['/images', '/audio'];
 
 @Injectable()
 export class FormApiClient {
   protected basePath = environment.apiBase;
-  private _lang: string;
-  private _personToken: string;
-  private _formID: string;
+  private _lang?: string;
+  private _personToken?: string;
+  private _formID?: string;
 
   constructor(protected http: HttpClient,
               private taxonAutocompleteService: TaxonAutocompleteService) {
@@ -52,7 +53,7 @@ export class FormApiClient {
 
     const queryParameters = {...Util.removeFromObject(query)};
 
-    ['lang', 'personToken', 'formID'].forEach(key => {
+    (['lang', 'personToken', 'formID'] as const).forEach(key => {
       if (this[key] !== undefined && !queryParameters.hasOwnProperty(key)) {
         queryParameters[key] = this[key];
       }
@@ -67,11 +68,16 @@ export class FormApiClient {
         queryParameters['excludeNameTypes'] = 'MX.hasMisappliedName';
     }
 
+    let timeout = '120000';
+    if (MEDIA_RESOURCES.includes(resource) && options['method'] === 'POST') {
+      timeout = '3600000';
+    }
+
     return this.http.request(
       options['method'] || 'GET',
       path,
       {
-        headers: {...options['headers'], timeout: '120000'},
+        headers: {...options['headers'], timeout},
         params: queryParameters,
         body: options['body'] || undefined,
         observe: 'response'
