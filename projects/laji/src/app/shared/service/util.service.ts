@@ -143,7 +143,7 @@ export class Util {
   public static isLocalNewestDocument(local: Document, remote: Document): boolean {
     if (remote && remote.dateEdited) {
       if (!local || !local.dateEdited ||
-        Util.getDateFromString(local.dateEdited) < Util.getDateFromString(remote.dateEdited)) {
+        new Date(local.dateEdited) < new Date(remote.dateEdited)) {
         return false;
       }
     }
@@ -163,19 +163,6 @@ export class Util {
 
   public static isObject(any: any): any is Record<string, unknown> {
     return typeof any === 'object' && any !== null && !Array.isArray(any);
-  }
-
-  private static getDateFromString(dateString: string) {
-    const reggie = /(\d{4})-(\d{2})-(\d{2})[T\s](\d{2}):(\d{2}):(\d{2})/;
-    const dateArray = reggie.exec(dateString) || [];
-    return new Date(
-      (+dateArray[1]),
-      (+dateArray[2]) - 1, // Careful, month starts at 0!
-      (+dateArray[3]),
-      (+dateArray[4]),
-      (+dateArray[5]),
-      (+dateArray[6])
-    );
   }
 
   private static mergeClone(value: any, options: any) {

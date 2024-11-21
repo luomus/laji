@@ -43,25 +43,25 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
   @Input() searchParams = {};
   @Input() name = 'target';
   @Input() placeholder = '';
-  @Input() typeaheadItemTemplate;
+  @Input() typeaheadItemTemplate: any;
   @Input() allowInvalid = true;
   @Input() convertIdToName = true;
-  @Input() container: string;
+  @Input() container?: string;
   @Input() class = 'form-control input-sm taxonomy-search';
   @Output() taxonIdChange = new EventEmitter<string>();
 
-  @ViewChild('typeahead', { static: true }) typeahead;
+  @ViewChild('typeahead', { static: true }) typeahead!: any;
 
-  private typeaheadMatch: {id: string; match: string};
-  private enteredValue: string;
+  private typeaheadMatch?: {id: string; match: string};
+  private enteredValue?: string;
 
-  public _taxonName: string;
+  public _taxonName!: string;
   public typeaheadLimit = 10;
   public typeaheadLoading = false;
-  public containerTypeAhead: string;
+  public containerTypeAhead?: string;
   public dataSource: Observable<any>;
-  currentLang: string;
-  public screenWidthSub: Subscription;
+  currentLang?: string;
+  public screenWidthSub?: Subscription;
 
   constructor(
     private lajiApi: LajiApiService,
@@ -130,7 +130,7 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
     this.typeaheadLoading = e;
   }
 
-  onTaxonSelect(event) {
+  onTaxonSelect(event: any) {
     if (event.item?.autocompleteSelectedName) {
       this._taxonName = event.item.autocompleteSelectedName;
     }
@@ -149,7 +149,7 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  private selectValue(key: string, blur?: boolean) {
+  private selectValue(key?: string, blur?: boolean) {
     this.taxonIdChange.emit(key);
     this._taxonName = (this.container === 'laji-taxonomy') ? '' : this._taxonName;
     if (blur) {

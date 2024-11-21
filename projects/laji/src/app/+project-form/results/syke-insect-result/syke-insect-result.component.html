@@ -35,9 +35,9 @@
   <hr style="width: 100%">
   <div [ngSwitch]="tab$ | async">
     <div *ngSwitchCase="Tabs.species">
-      <laji-syke-insect-all-results [collectionId]="collectionId"></laji-syke-insect-all-results>
+      <laji-syke-insect-all-results [collectionId]="collectionId!"></laji-syke-insect-all-results>
     </div>
     <div *ngSwitchCase="Tabs.routes">
-      <laji-syke-insect-routes [collectionId]="collectionId"></laji-syke-insect-routes>
+      <laji-syke-insect-routes [collectionId]="collectionId!"></laji-syke-insect-routes>
     </div>
 </div>

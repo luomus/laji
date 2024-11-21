@@ -20,7 +20,7 @@
         <laji-mapping-select
           [disabledWhenNoOptions]="true"
           [value]="mapping && mapping[value] || ''"
-          [options]="namedPlaces$ | async"
+          [options]="(namedPlaces$ | async) ?? []"
           (selected)="valueMapped(value, $event)"></laji-mapping-select>
       </td>
     </tr>

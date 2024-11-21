@@ -31,22 +31,22 @@ export class UserDocumentToolsComponent implements OnInit {
     description: ''
   };
   @Input() onlyTemplates = false;
-  @Input() hasEditRights = false;
-  @Input() hasDeleteRights = false;
+  @Input() hasEditRights? = false;
+  @Input() hasDeleteRights? = false;
 
   @Output() documentDeleted = new EventEmitter<string>();
 
   linkLocation = '';
-  _formID: string;
-  _documentID: string;
+  _formID?: string;
+  _documentID?: string;
 
   loading = false;
 
-  modalRef: ModalRef;
+  modalRef?: ModalRef;
   modalIsOpen = false;
 
-  @ViewChild('saveAsTemplate', { static: true }) public templateModal: TemplateRef<any>;
-  @ViewChild('deleteModal', { static: true }) public deleteModal: TemplateRef<any>;
+  @ViewChild('saveAsTemplate', { static: true }) public templateModal!: TemplateRef<any>;
+  @ViewChild('deleteModal', { static: true }) public deleteModal!: TemplateRef<any>;
 
   constructor(
     private formService: FormService,
@@ -65,13 +65,13 @@ export class UserDocumentToolsComponent implements OnInit {
   ) { }
 
   @Input()
-  set documentID(documentID: string) {
+  set documentID(documentID: string|undefined) {
     this._documentID = IdService.getId(documentID);
     this.updateLink();
   }
 
   @Input()
-  set formID(formID: string) {
+  set formID(formID: string|undefined) {
     this._formID = IdService.getId(formID);
     this.updateLink();
   }
@@ -86,7 +86,7 @@ export class UserDocumentToolsComponent implements OnInit {
     });
   }
 
-  modalHideSub: Subscription;
+  modalHideSub?: Subscription;
   onModalHide = new Subject<void>();
 
   makeTemplate() {
@@ -118,7 +118,8 @@ export class UserDocumentToolsComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.documentApi.findById(this._documentID!, this.userService.getToken()).pipe(
       switchMap(document => this.documentService.saveTemplate({...this.templateForm, document}))
     ).subscribe(
       () => {
@@ -146,7 +147,8 @@ export class UserDocumentToolsComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.documentService.deleteDocument(this._documentID)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.documentService.deleteDocument(this._documentID!)
       .subscribe(
         () => {
           this.translate.get('delete.success')
@@ -171,12 +173,8 @@ export class UserDocumentToolsComponent implements OnInit {
       );
   }
 
-  onClickOutside() {
-    this.closeModal();
-  }
-
-  showMakeTemplate(formID: string): boolean {
-    return formID && Global.canHaveTemplate.indexOf(formID) > -1;
+  showMakeTemplate(formID?: string): boolean {
+    return !!formID && Global.canHaveTemplate.indexOf(formID) > -1;
   }
 
   private updateLink() {

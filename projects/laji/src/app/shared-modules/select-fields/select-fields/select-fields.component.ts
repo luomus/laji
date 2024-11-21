@@ -17,8 +17,8 @@ export class SelectFieldsComponent {
   @Input() selectedFields: ISelectFields[] = [];
   @Input() allSelectableFields: ISelectFields[] = [];
 
-  @Input() selectedFieldsTitle: string;
-  @Input() allSelectableFieldsTitle: string;
+  @Input() selectedFieldsTitle?: string;
+  @Input() allSelectableFieldsTitle?: string;
 
   @Output() selectedFieldsChange = new EventEmitter<ISelectFields[]>();
 

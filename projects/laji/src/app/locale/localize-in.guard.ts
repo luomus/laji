@@ -12,7 +12,7 @@ import { GraphQLService } from '../graph-ql/service/graph-ql.service';
   providedIn: 'root'
 })
 export class LocalizeInGuard  {
-  @LocalStorage(LAST_LANG_KEY, 'en') protected lastLang;
+  @LocalStorage(LAST_LANG_KEY, 'en') protected lastLang: string | undefined;
 
   constructor(
     private router: Router,

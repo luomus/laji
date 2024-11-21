@@ -22,7 +22,7 @@ export abstract class LocalDb<T> {
     );
   }
 
-  getItem(key: string): Observable<T> {
+  getItem(key: string): Observable<T | null> {
     if (!this.isPlatformBrowser) {
       return ObservableOf(null);
     }

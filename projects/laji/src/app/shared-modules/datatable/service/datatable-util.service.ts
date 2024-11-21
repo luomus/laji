@@ -24,7 +24,7 @@ export class DatatableUtil {
     private warehouseValueMappingService: WarehouseValueMappingService
   ) { }
 
-  getVisibleValue(value, row, templateName: string): Observable<string> {
+  getVisibleValue(value: any, row: any, templateName: string): Observable<string> {
     if (value == null || (Array.isArray(value) && value.length === 0)) {
       if (['taxonHabitats', 'latestRedListEvaluationHabitats', 'redListStatus2010', 'redListStatus2015', 'taxonName', 'biogeographicalProvinceOccurrence']
         .indexOf(templateName) === -1) {
@@ -46,7 +46,7 @@ export class DatatableUtil {
       return ObservableOf(value.includes(area) ? 'RT' : '');
     } else if (templateName.startsWith('latestRedListEvaluation.occurrences_')) {
       const targetArea = templateName.split('_')[1];
-      const match = value.filter(val => val.area === targetArea);
+      const match = value.filter((val: any) => val.area === targetArea);
       return match.length > 0 ? this.getLabels(match[0].status) : ObservableOf(value);
     }
 
@@ -88,7 +88,7 @@ export class DatatableUtil {
       case 'redListStatus2010':
       case 'redListStatus2015':
         const year = templateName === 'redListStatus2010' ? 2010 : 2015;
-        (row.redListStatusesInFinland || []).forEach(status => {
+        (row.redListStatusesInFinland || []).forEach((status: any) => {
           if (status.year === year) {
             observable = this.getLabels(status.status);
           }
@@ -124,7 +124,7 @@ export class DatatableUtil {
     return observable || ObservableOf(value);
   }
 
-  private getBiogeographicalProvinceOccurence(occurrences): Observable<string> {
+  private getBiogeographicalProvinceOccurence(occurrences: any): Observable<string> {
     if (!occurrences) {
       return ObservableOf('');
     }
@@ -137,17 +137,17 @@ export class DatatableUtil {
     ), '; ');
   }
 
-  private getWarehouseLabels(values): Observable<string> {
+  private getWarehouseLabels(values: any): Observable<string> {
     return this.getArray(values, (value) => this.warehouseValueMappingService.getSchemaKey(value).pipe(
         concatMap(key => this.labelService.get(IdService.getId(key), this.translate.currentLang))
       ), '; ');
   }
 
-  private getLabels(values): Observable<string> {
+  private getLabels(values: any): Observable<string> {
     return this.getArray(values, (value) => this.labelService.get(IdService.getId(value), this.translate.currentLang), '; ');
   }
 
-  private getPublications(values): Observable<string> {
+  private getPublications(values: any): Observable<string> {
     if (!Array.isArray(values)) {
       values = [values];
     }
@@ -163,7 +163,7 @@ export class DatatableUtil {
     );
   }
 
-  private getHabitats(obj): Observable<string> {
+  private getHabitats(obj: any): Observable<string> {
     if (!obj.primaryHabitat) {
       return ObservableOf('');
     }
@@ -173,7 +173,7 @@ export class DatatableUtil {
     );
   }
 
-  private getArray(values: string|string[], getObservable: (string) => Observable<string>, separator: string): Observable<string> {
+  private getArray(values: string|string[], getObservable: (string: any) => Observable<string>, separator: string): Observable<string> {
     if (!Array.isArray(values)) {
       values = [values];
     }

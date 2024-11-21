@@ -22,27 +22,27 @@ enum Tabs {
 })
 export class SykeInsectResultComponent implements OnInit, OnDestroy {
 
-  @Input() form: Form.SchemaForm;
+  @Input() form!: Form.SchemaForm;
 
   informalTaxonGroup = 'MVL.181';
-  page;
-  query: WarehouseQueryInterface;
-  mapQuery: WarehouseQueryInterface;
-  resultQuery: WarehouseQueryInterface;
-  taxon$: Observable<Taxonomy>;
+  page!: number;
+  query!: WarehouseQueryInterface;
+  mapQuery!: WarehouseQueryInterface;
+  resultQuery!: WarehouseQueryInterface;
+  taxon$!: Observable<Taxonomy> | Observable<null>;
   Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
-  tab$: Observable<keyof typeof Tabs>;
+  tab$!: Observable<keyof typeof Tabs>;
   year;
   currentMonth;
   currentYear;
   startMonth = 3;
-  fromYear;
-  fromMonth;
+  fromYear?: string;
+  fromMonth?: string;
   allTime = '';
-  collectionId: string;
+  collectionId?: string;
   bumblebeeCollectionId = 'HR.3911';
 
-  private subQuery: Subscription;
+  private subQuery!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -62,7 +62,7 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
     this.collectionId = this.qName.transform(this.form.collectionID);
     this.tab$ = this.route.queryParams.pipe(map(paramMap => paramMap['tab']));
     this.subQuery = this.route.queryParams.subscribe(params => {
-      const tab = params['tab'];
+      const tab: Tabs.species | Tabs.routes = params['tab'];
       if (!Tabs[tab]) {
         this.router.navigate(
           [],
@@ -76,7 +76,8 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
       this.emptyTime();
       this.query = {
         yearMonth: time ===  'all' ? undefined : [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
-        collectionId: [this.form.collectionID],
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        collectionId: [this.form.collectionID!],
         informalTaxonGroupId: [this.informalTaxonGroup],
         countryId: ['ML.206']
       };
@@ -107,11 +108,11 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
     return this.year;
   }
 
-  private clone(obj) {
+  private clone(obj: WarehouseQueryInterface) {
     return JSON.parse(JSON.stringify(obj));
   }
 
-  private parseDateTimeRange(date) {
+  private parseDateTimeRange(date: any) {
     if (!date || typeof date !== 'string') {
       return date;
     }
@@ -125,7 +126,7 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
     return date;
   }
 
-  private parseDateTime(date): {year: string; month: string} {
+  private parseDateTime(date: any): {year: string; month: string} {
     if (date.length === '4') {
       return {year: date, month: ''};
     }

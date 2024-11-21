@@ -20,11 +20,11 @@ export class DataTableFooterComponent {
   @Input() top = false;
   @Output() pageChange = new EventEmitter<IPageChange>();
 
-  _count: number;
-  _pageSize: number;
-  _page: number;
-  _start: number;
-  _end: number;
+  _count!: number;
+  _pageSize!: number;
+  _page!: number;
+  _start!: number;
+  _end!: number;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -50,7 +50,7 @@ export class DataTableFooterComponent {
     this.cdr.detectChanges();
   }
 
-  onChange(event) {
+  onChange(event: any) {
     this.pageChange.emit({
       count: this._count,
       pageSize: this._pageSize,

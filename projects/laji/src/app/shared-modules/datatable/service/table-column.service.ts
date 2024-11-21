@@ -27,9 +27,10 @@ export abstract class TableColumnService<T extends DatatableColumn = DatatableCo
   }
 
   getRequiredFields(): Array<string> {
-    return this.allColumns.reduce((result, f) => {
+    return this.allColumns.reduce((result: string[], f) => {
       if (f.required) {
-        result.push(f.name);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        result.push(f.name!);
       }
       return result;
     }, []);
@@ -39,7 +40,7 @@ export abstract class TableColumnService<T extends DatatableColumn = DatatableCo
     return this.columnGroups;
   }
 
-  getColumn(name: string): T {
+  getColumn(name: string): T | undefined {
     const column = this.allColumns.find(col => col.name === name);
     return column ? this.prepareColumn(column) : undefined;
   }
@@ -59,11 +60,13 @@ export abstract class TableColumnService<T extends DatatableColumn = DatatableCo
   }
 
   getSelectFields(selected: string[], query?: any): string[] {
-    return this.getColumns(selected).map(col => (col as ObservationTableColumn).selectField || col.name);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.getColumns(selected).map(col => (col as ObservationTableColumn).selectField || col.name!);
   }
 
   getAllColumnLookup() {
-    return this.getAllColumns().reduce((prev, column) => { prev[column.name] = column; return prev; }, {});
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.getAllColumns().reduce((prev: Record<string, T>, column: T) => { prev[column.name!] = column; return prev; }, {});
   }
 
   protected prepareColumn(column: T): T {

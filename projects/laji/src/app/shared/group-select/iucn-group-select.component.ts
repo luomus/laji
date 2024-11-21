@@ -33,23 +33,23 @@ export class IucnGroupSelectComponent extends GroupSelectComponent<RedListTaxonG
     super(cd, logger, translate);
   }
 
-  findById(groupId, lang): Observable<InformalTaxonGroup> {
+  findById(groupId: string, lang: string | undefined): Observable<InformalTaxonGroup> {
     return this.redListTaxonGroupApi.redListTaxonGroupsFindById(groupId, lang);
   }
 
-  findByIds(groupIds, lang): Observable<PagedResult<RedListTaxonGroup>> {
+  findByIds(groupIds: string[], lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
     return this.redListTaxonGroupApi.redListTaxonGroupsFind(lang, undefined, undefined, {idIn: groupIds});
   }
 
-  getWithSiblings(groupId, lang): Observable<PagedResult<RedListTaxonGroup>> {
+  getWithSiblings(groupId: string, lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
     return this.redListTaxonGroupApi.redListTaxonGroupsGetWithSiblings(groupId, lang);
   }
 
-  getChildren(groupId, lang): Observable<PagedResult<RedListTaxonGroup>> {
+  getChildren(groupId: string, lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
     return this.redListTaxonGroupApi.redListTaxonGroupsGetChildren(groupId, lang);
   }
 
-  findRoots(lang): Observable<PagedResult<RedListTaxonGroup>> {
+  findRoots(lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
     return this.redListTaxonGroupApi.redListTaxonGroupsFindRoots(lang);
   }
 

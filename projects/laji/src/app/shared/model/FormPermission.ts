@@ -12,16 +12,12 @@
  */
 
 export interface FormPermission {
-    id: string;
-
-    collectionID?: string;
-
-    admins?: Array<string>;
-
-    editors?: Array<string>;
-
-    permissionRequests?: Array<string>;
-
+  collectionID: string;
+  admins: Array<string>;
+  editors: Array<string>;
+  permissionRequests: Array<string>;
+  restrictAccess?: 'MHL.restrictAccessLoose' | 'MHL.restrictAccessStrict';
+  hasAdmins?: boolean;
 }
 
 export namespace FormPermission {

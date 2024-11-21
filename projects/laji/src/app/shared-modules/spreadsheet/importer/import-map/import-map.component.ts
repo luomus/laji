@@ -25,7 +25,7 @@ export class ImportMapComponent implements OnChanges {
     popupOnHover: true
   };
 
-  mapData: DataOptions;
+  mapData!: DataOptions;
 
   private groupedData: {[key: string]: any}[][] = [];
   private popupColumns: string[] = [];
@@ -63,7 +63,7 @@ export class ImportMapComponent implements OnChanges {
         }))
       },
       getPopup: ({featureIdx, feature}, cb: (elem: string | HTMLElement) => void) => {
-        const data = this.groupedData[featureIdx];
+        const data = this.groupedData[featureIdx as any];
 
         return data.map(dataItem => {
           const label = '<strong>' + this.translateService.instant('excel.batch') + ' ' + dataItem._doc + ':</strong> ';
@@ -84,13 +84,13 @@ export class ImportMapComponent implements OnChanges {
         return;
       }
       const hash = Hash.sha1(geometry);
-      if (!groupedData[hash]) {
-        groupedData[hash] = [];
+      if (!(groupedData as any)[hash]) {
+        (groupedData as any)[hash] = [];
       }
-      groupedData[hash].push(dataItem);
+      (groupedData as any)[hash].push(dataItem);
     });
 
-    return Object.keys(groupedData).map(hash => groupedData[hash]);
+    return Object.keys(groupedData).map(hash => (groupedData as any)[hash]);
   }
 
   private getColumns(fields: string[]) {

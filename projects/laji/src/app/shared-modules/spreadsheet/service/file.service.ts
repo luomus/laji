@@ -44,11 +44,13 @@ export class FileService {
   load(event: Event, validTypes?: string[]): Observable<IFileLoad> {
     const target = <HTMLInputElement> event.target;
 
-    if (target.files.length !== 1) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (target.files!.length !== 1) {
       return throwError(FileService.ERROR_NO_FILE);
     }
 
-    return this.loadFile(target.files[0], validTypes);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.loadFile(target.files![0], validTypes);
   }
 
   loadFile(file: File, validTypes?: string[], options: LoadOptions = {type: 'arrayBuffer'}): Observable<IFileLoad> {

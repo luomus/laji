@@ -24,31 +24,31 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 })
 export class GatheringAnnotationComponent implements OnDestroy {
 
-  @Input() isEditor: boolean;
-  @Input() personID: string;
-  @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
-  @Input() documentID: string;
+  @Input() isEditor?: boolean;
+  @Input() personID?: string;
+  @Input() personRoleAnnotation?: Annotation.AnnotationRoleEnum;
+  @Input({ required: true }) documentID!: string;
   @Input() createdDate: any;
-  @Input() loadDate: string;
-  @Input() collectionId: string;
-  @Input() observerId: string;
+  @Input() loadDate?: string;
+  @Input() collectionId?: string;
+  @Input() observerId?: string;
   @Input() gathering: any;
-  @Input() highlight: string;
+  @Input() highlight?: string;
   @Input() visible = true;
   @Input() showFacts = false;
-  @Input() unitCnt: number;
-  @Input() identifying: boolean;
-  @Input() openAnnotation: boolean;
-  @Input() showOnlyHighlightedUnit: boolean;
-  @Input() showAnnotation: boolean;
-  @Input() annotationTags: AnnotationTag[];
+  @Input() unitCnt?: number;
+  @Input() identifying?: boolean;
+  @Input() openAnnotation?: boolean;
+  @Input() showOnlyHighlightedUnit?: boolean;
+  @Input() showAnnotation?: boolean;
+  @Input() annotationTags?: AnnotationTag[]|null;
   @Output() showAllUnits = new EventEmitter();
 
   annotationAddedDeleted = {
     status: false,
     action: undefined
   };
-  subscriptParent: Subscription;
+
   parentSubject: Subject<boolean> = new Subject();
 
   constructor(

@@ -6,7 +6,6 @@ import { Observable, of } from 'rxjs';
 import { FormPermissionService } from '../../../shared/service/form-permission.service';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { UserService } from '../../../shared/service/user.service';
-import { FormService } from '../../../shared/service/form.service';
 import { DocumentService } from '../../own-submissions/service/document.service';
 
 export interface DocumentRights {
@@ -20,7 +19,6 @@ export class DocumentPermissionService {
   constructor(
     private userService: UserService,
     private documentService: DocumentService,
-    private formService: FormService,
     private formPermissionService: FormPermissionService
   ) {}
 
@@ -33,7 +31,7 @@ export class DocumentPermissionService {
           return of(rights);
         }
 
-        const editors = doc.linkings?.editors?.map(editor => IdService.getId(editor.id)).filter(id => !!id) || [];
+        const editors = doc.linkings?.editors?.map((editor: any) => IdService.getId(editor.id)).filter((id: string|undefined) => !!id) || [];
         rights.isEditor = editors.includes(user.id);
         rights.hasEditRights = rights.isEditor;
 

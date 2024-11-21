@@ -37,10 +37,10 @@ export class IucnExtendedGroupSelectComponent extends ExtendedGroupSelectCompone
   redList = true;
 
   getOptions(): string[][] {
-    return [this.query?.redListGroup || [], []];
+    return [(this.query as any).redListGroup || [], []];
   }
 
-  findByIds(groupIds, lang): Observable<PagedResult<RedListTaxonGroup>> {
+  findByIds(groupIds: string[], lang: string): Observable<PagedResult<RedListTaxonGroup>> {
     return this.redListTaxonGroupApi.redListTaxonGroupsFind(lang, undefined, undefined, {idIn: groupIds});
   }
 

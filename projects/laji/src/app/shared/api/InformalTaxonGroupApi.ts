@@ -191,7 +191,7 @@ export class InformalTaxonGroupApi {
     return this.httpGet<InformalTaxonGroup>(path, queryParameters, lang, page, pageSize);
   }
 
-  private httpGet<T>(path: string, queryParameters: {}, lang: string, page: string, pageSize: string) {
+  private httpGet<T>(path: string, queryParameters: any, lang?: string, page?: string, pageSize?: string) {
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }

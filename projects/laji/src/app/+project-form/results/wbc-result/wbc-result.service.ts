@@ -29,9 +29,9 @@ export class WbcResultService {
     spring: [2, 3]
   };
 
-  private yearCache: number[];
-  private yearObs: Observable<number[]>;
-  private speciesListCache: any[];
+  private yearCache?: number[];
+  private yearObs?: Observable<number[]>;
+  private speciesListCache?: any[];
 
   constructor(
     private warehouseApi: WarehouseApi
@@ -41,7 +41,7 @@ export class WbcResultService {
     const yearMonth = year ? (Array.isArray(year) ? year : [year]).map(y => this.getYearMonthParam(y, season)) : [];
     return {
       collectionId: [this.collectionId],
-      birdAssociationAreaId: [birdAssociationArea],
+      birdAssociationAreaId: birdAssociationArea ? [birdAssociationArea] : undefined,
       yearMonth,
       taxonId: taxonId ? (Array.isArray(taxonId) ? taxonId : [taxonId]) : []
     };
@@ -249,14 +249,14 @@ export class WbcResultService {
   getCountsByYearForSpecies(taxonId: string, birdAssociationArea?: string, taxonCensus?: string): Observable<CountsPerYearForTaxon> {
     return forkJoin([
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-        {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonCensus: [taxonCensus]},
+        {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonCensus: taxonCensus ? [taxonCensus] : undefined},
         ['gathering.conversions.year', 'gathering.conversions.month'],
         undefined,
         10000,
         1
       ),
       this.warehouseApi.warehouseQueryStatisticsGet(
-        {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonId: [taxonId], taxonCensus: [taxonCensus]},
+        {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonId: [taxonId], taxonCensus: taxonCensus ? [taxonCensus] : undefined},
         ['gathering.conversions.year', 'gathering.conversions.month'],
         undefined,
         10000,
@@ -265,7 +265,7 @@ export class WbcResultService {
         false
       )
     ]).pipe(map(data => {
-      const result = {fall: {}, winter: {}, spring: {}};
+      const result: CountsPerYearForTaxon = {fall: {}, winter: {}, spring: {}};
       this.addCounts(data[1].results, 'count', result, false, 'individualCountSum');
       this.addCounts(data[0].results, 'censusCount', result, true);
       return result;
@@ -285,7 +285,7 @@ export class WbcResultService {
       )
     ).pipe(
       map(list => {
-        const statsByDocumentId = {};
+        const statsByDocumentId: any = {};
         list.map(l => {
           statsByDocumentId[l['document.documentId']] = l;
         });
@@ -383,7 +383,7 @@ export class WbcResultService {
   }
 
   private parseObservationStatsList(resultList: any[], result: ObservationStats, isMammal = false, isLoxia = false) {
-    const currentState = {};
+    const currentState: Record<string, { taxonId: string; foundYears: any[]; row: any }> = {};
     for (const season of ['fall', 'winter', 'spring']) {
       currentState[season] = {taxonId: '', foundYears: [], row: undefined};
     }
@@ -424,7 +424,7 @@ export class WbcResultService {
   }
 
   private addStatisticsToObservationStats(result: ObservationStats) {
-    const addStatisticsToObj = (obj, years) => {
+    const addStatisticsToObj = (obj: any, years: number[]) => {
       let min = Number.MAX_VALUE;
       let max = 0;
 
@@ -465,7 +465,7 @@ export class WbcResultService {
     }
   }
 
-  private addCounts(counts, key, result, addToExistingOnly = false, countKey = 'count') {
+  private addCounts(counts: any[], key: string, result: CountsPerYearForTaxon, addToExistingOnly = false, countKey = 'count') {
     counts.map(count => {
       const month = parseInt(count.aggregateBy['gathering.conversions.month'], 10);
       const year = parseInt(count.aggregateBy['gathering.conversions.year'], 10);
@@ -477,7 +477,7 @@ export class WbcResultService {
           if (addToExistingOnly) {
             return;
           }
-          result[season][startYear] = {};
+          result[season][startYear] = {} as any;
         }
 
         this.addCount(result[season][startYear], key, count[countKey]);
@@ -530,7 +530,7 @@ export class WbcResultService {
     return month < 10 ? '0' + month : '' + month;
   }
 
-  private getSeason(month: number): SEASON {
+  private getSeason(month: number): SEASON | undefined {
     if (this.monthIsInSeasonRange(month, 'fall')) {
       return 'fall';
     } else if (this.monthIsInSeasonRange(month, 'winter')) {
@@ -549,7 +549,7 @@ export class WbcResultService {
     return month >= this.seasonRanges[season][0] && month <= this.seasonRanges[season][1];
   }
 
-  private median(array) {
+  private median(array: any[]) {
     array.sort((a, b) => (a - b));
     const mid = array.length / 2;
     return mid % 1 ? array[mid - 0.5] : (array[mid - 1] + array[mid]) / 2;

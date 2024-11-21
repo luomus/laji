@@ -18,9 +18,9 @@ type Grid = '100kmCenter'
 export class YkjService {
 
   private key: undefined;
-  private data: any[];
-  private pending: Observable<any>;
-  private pendingKey: string;
+  private data?: any[];
+  private pending?: Observable<any>;
+  private pendingKey?: string;
 
   constructor(
     private warehouseApi: WarehouseApi
@@ -34,7 +34,7 @@ export class YkjService {
   }
 
   getList(query: WarehouseQueryInterface, grid: Grid = '10kmCenter', key?: string,
-             useStatistics = false, zeroObservations = false, selected = [], enableOnlyCount = false): Observable<any> {
+             useStatistics = false, zeroObservations = false, selected: any[] = [], enableOnlyCount = false): Observable<any> {
     if (!key) {
       key = JSON.stringify(query);
     }
@@ -47,11 +47,11 @@ export class YkjService {
           observer.next(res);
           observer.complete();
         };
-        this.pending.subscribe((data) => { onComplete(data); });
+        (this.pending as any).subscribe((data: any) => { onComplete(data); });
       });
     }
     this.pendingKey = key;
-    const sourceMethod: (query, aggregate, orderBy, pageSize, page, geoJson, onlyCount) => Observable<any> = zeroObservations
+    const sourceMethod: (query: any, aggregate: any, orderBy: any, pageSize: any, page: any, geoJson: any, onlyCount: any) => Observable<any> = zeroObservations
       ? this.warehouseApi.warehouseQueryGatheringStatisticsGet.bind(this.warehouseApi) : useStatistics
       ? this.warehouseApi.warehouseQueryStatisticsGet.bind(this.warehouseApi)
       : this.warehouseApi.warehouseQueryAggregateGet.bind(this.warehouseApi);
@@ -70,11 +70,11 @@ export class YkjService {
     return this.pending;
   }
 
-  combineGeoJsons(geoJson, zeroObsGeoJson) {
+  combineGeoJsons(geoJson: any[], zeroObsGeoJson: any[]) {
     const grids = geoJson.map(g => (g.properties.grid));
-    const filteredGeoJson = [];
+    const filteredGeoJson: any[] = [];
 
-    const filteredZeroObsGeoJson = zeroObsGeoJson.filter(z => {
+    const filteredZeroObsGeoJson = zeroObsGeoJson.filter((z: any) => {
       if (z.properties.lineLengthSum === 0) {
         return false;
       }
@@ -91,9 +91,9 @@ export class YkjService {
     return filteredGeoJson.concat(filteredZeroObsGeoJson);
   }
 
-  resultToGeoJson(data, grid, zeroObservations = false) {
-    const features = [];
-    data.map(result => {
+  resultToGeoJson(data: any[], grid: string, zeroObservations = false) {
+    const features: any[] = [];
+    data.map((result: any) => {
       features.push(this.convertYkjToGeoJsonFeature(
         result.aggregateBy[`gathering.conversions.ykj${grid}.lat`],
         result.aggregateBy[`gathering.conversions.ykj${grid}.lon`],
@@ -142,7 +142,7 @@ export class YkjService {
     return MapUtil.convertLatLng(latLng, 'EPSG:2393', 'WGS84').reverse() as [number, number];
   }
 
-  private pad(value) {
+  private pad(value: any) {
     value = '' + value;
     return value + '0000000'.slice(value.length);
   }

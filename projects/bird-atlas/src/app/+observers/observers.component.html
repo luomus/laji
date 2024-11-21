@@ -1,0 +1,22 @@
+<div class="container mt-5 mb-9">
+  <p>Määrät perustuvat Lajitietokeskukseen tallennettuihin havaintoihin.</p>
+  <select class="form-control mb-4" *ngIf="societies$ | async; let societies; else loading" [formControl]="areaControl">
+    <option value="all">Koko Suomi</option>
+    <option *ngFor="let society of societies" [value]="society.key">{{ society.value }}</option>
+  </select>
+  <ng-container *ngIf="rows$ | async; let rows; else loading">
+    <ngx-datatable
+      *ngIf="!loadingRows; else loading"
+      class="material"
+      [rows]="rows"
+      [columns]="cols"
+      [sorts]="[{ prop: 'all', dir: 'desc' }]"
+      [messages]="{emptyMessage: 'Ei havainnoijia.'}"
+    ></ngx-datatable>
+  </ng-container>
+</div>
+
+<ng-template #loading>
+  <div><laji-spinner class="d-block m-6"></laji-spinner></div>
+</ng-template>
+

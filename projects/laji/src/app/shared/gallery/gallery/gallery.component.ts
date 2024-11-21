@@ -25,7 +25,7 @@ import { ViewType } from '../image-gallery';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GalleryComponent implements OnChanges {
-  @Input() query: WarehouseQueryInterface;
+  @Input() query!: WarehouseQueryInterface;
   @Input() extendedInfo = false;
   @Input() pageSize = 50;
   @Input() limit = 1000;
@@ -38,9 +38,9 @@ export class GalleryComponent implements OnChanges {
   @Input() showOverlay = true;
   @Input() showExtraInfo = true;
   @Input() showLinkToSpeciesCard = false;
-  @Input() shortcut: boolean;
-  @Input() linkOptions: {tab: string; queryParams: any; queryParamsHandling: QueryParamsHandling};
-  @Input() sort: string[];
+  @Input() shortcut!: boolean;
+  @Input() linkOptions!: {tab: string; queryParams: any; queryParamsHandling: QueryParamsHandling};
+  @Input() sort!: string[];
   @Input() view: ViewType = 'compact';
   @Input() views: ViewType[] = ['compact', 'full'];
   @Output() selected = new EventEmitter<IImageSelectEvent>();
@@ -52,7 +52,7 @@ export class GalleryComponent implements OnChanges {
   loading = false;
   paginatorNeeded = false;
 
-  images$: Observable<TaxonomyImage[]>;
+  images$!: Observable<TaxonomyImage[]>;
 
   constructor(
     private logger: Logger,
@@ -73,7 +73,7 @@ export class GalleryComponent implements OnChanges {
     }
   }
 
-  pageChanged(event) {
+  pageChanged(event: { page: number }) {
     this.page = event.page;
     this.updateImages();
   }

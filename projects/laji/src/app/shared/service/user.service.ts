@@ -72,7 +72,7 @@ namespace UserState {
 
   export interface Ready {
     _tag: 'ready';
-    person: Person | null;
+    person: Person;
     settings: UserSettings;
   }
 
@@ -88,7 +88,7 @@ interface UserServiceState extends PersistentState {
   allUsers: { [id: string]: Person | Observable<Person> };
 }
 
-export const prepareProfile = (profile: Profile | null, user: Person | null): Profile => {
+export const prepareProfile = (profile: Profile | null, user: Person | null | undefined): Profile => {
   if (!profile) {
     profile = {};
   }
@@ -130,22 +130,22 @@ export const getLoginUrl = (next = '', lang = DEFAULT_LANG, base = '') => {
   return (url + params.join('&')).replace('%lang%', lang);
 };
 
-export const isIctAdmin = (person: Person): boolean => person?.role?.includes('MA.admin') ?? false;
+export const isIctAdmin = (person?: Person): boolean => person?.role?.includes('MA.admin') ?? false;
 
-const personsCacheKey = (personID: string): string => `users-${ personID || 'global' }-settings`;
+const personsCacheKey = (personID?: string): string => `users-${ personID || 'global' }-settings`;
 
 const defaultPersistentState: PersistentState = {
   loginState: { _tag: 'loading' },
   version: persistentStateVersion,
 };
 
-const isPersistentState = (state: unknown): state is PersistentState => typeof state === 'object' && state['version'] === persistentStateVersion;
+const isPersistentState = (state: unknown): state is PersistentState =>
+  typeof state === 'object' && 'version' in (state as any) && (state as any)['version'] === persistentStateVersion;
 
 @Injectable({providedIn: 'root'})
 export class UserService implements OnDestroy {
-  // Do not write to this variable in the server!
   @LocalStorage('userState', defaultPersistentState) private localStoragePersistentState: unknown;
-  private inMemoryPersistentState: PersistentState | undefined;
+  private inMemoryPersistentState: PersistentState = { ...defaultPersistentState };
 
   @SessionStorage() private returnUrl: string | undefined;
 
@@ -275,8 +275,8 @@ export class UserService implements OnDestroy {
     if (this.store.value.allUsers[id]) {
       return pickValue(isObservable(this.store.value.allUsers[id]) ? this.store.value.allUsers[id] as Observable<Person> : of(this.store.value.allUsers[id] as Person));
     }
-    if (this.store.value.user._tag === 'ready' && id === this.store.value.user.person.id) {
-      return pickValue(of(this.store.value.user.person));
+    if (this.store.value.user._tag === 'ready' && id === (this.store.value.user.person as any).id) {
+      return pickValue(of((this.store.value.user as any).person));
     }
 
     this.store.value.allUsers[id] = this.personApi.personFindByUserId(id).pipe(
@@ -325,7 +325,7 @@ export class UserService implements OnDestroy {
       console.warn('Attempted to set a user setting, but there\'s no existing user state.');
       return;
     }
-    const personID = this.store.value.user.person.id ?? '';
+    const personID = (this.store.value.user.person as any).id ?? '';
     const settings = {...this.store.value.user.settings, [key]: value};
     this.store.next({ ...this.store.value, user: { ...this.store.value.user, settings }});
     this.storage.store(personsCacheKey(personID), settings);

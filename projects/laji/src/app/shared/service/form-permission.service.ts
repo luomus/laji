@@ -71,7 +71,7 @@ export class FormPermissionService {
     return this.formPermissionApi.findByCollectionID(collectionID, personToken).pipe(
       catchError((err: HttpErrorResponse) => {
         if (err.status === 404) {
-          return of({ id: '', collectionID, admins: [], editors: [], permissionRequests: [] });
+          return of({ collectionID, admins: [], editors: [], permissionRequests: [] });
         }
         return throwError(err);
       }),
@@ -102,46 +102,50 @@ export class FormPermissionService {
   }
 
   getRights(form: Form.List): Observable<Rights> {
-    const notLoggedIn = {
-      edit: false,
-      admin: false,
-      ictAdmin: false,
-      view: form.options?.restrictAccess !== RestrictAccess.restrictAccessStrict
-    };
     const {collectionID} = form;
-    if (!collectionID || (!form.options?.restrictAccess && !form.options?.hasAdmins)) {
-      return this.userService.user$.pipe(map(user => user ? {
+
+    if (!collectionID) {
+      return this.userService.user$.pipe(switchMap(user => user ? of({
         edit: true,
         view: true,
         admin: false,
         ictAdmin: isIctAdmin(user)
-      } : notLoggedIn));
+      }) : of({ edit: false, admin: false, ictAdmin: false, view: true })));
     }
+
+    const notLoggedInRights$ = this.getFormPermission(collectionID).pipe(
+      map(permissions => ({
+        edit: false,
+        admin: false,
+        ictAdmin: false,
+        view: permissions.restrictAccess !== RestrictAccess.restrictAccessStrict
+      }))
+    );
+
     return this.userService.isLoggedIn$.pipe(
       take(1),
-      switchMap(login => {
-        if (!login || this.platformService.isServer) {
-          return ObservableOf(notLoggedIn);
+      switchMap(loggedIn => {
+        if (!loggedIn || this.platformService.isServer) {
+          return notLoggedInRights$;
         }
         return this.userService.user$.pipe(
           take(1),
           switchMap(person =>
               this.getFormPermission(collectionID, this.userService.getToken()).pipe(
               catchError(() => of({
-                id: '',
                 collectionID,
                 admins: [],
                 editors: []
-              } as FormPermission)),
+              } as unknown as FormPermission)),
               map((formPermission: FormPermission) => ({person, formPermission}))
               )),
-          switchMap(({person, formPermission}) => ObservableOf(person ? {
+          switchMap(({person, formPermission}) => person ? of({
             view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === RestrictAccess.restrictAccessLoose,
             edit: this.isEditAllowed(formPermission, person, form),
             admin: this.isAdmin(formPermission, person),
             ictAdmin: isIctAdmin(person)
-          } : notLoggedIn)),
-          catchError(() => ObservableOf(notLoggedIn))
+          }) : notLoggedInRights$),
+          catchError(() => notLoggedInRights$)
         );
       })
     );

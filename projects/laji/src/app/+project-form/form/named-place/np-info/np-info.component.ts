@@ -213,6 +213,9 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       return;
     }
     this.userService.user$.pipe(take(1)).subscribe(person => {
+      if (!person) {
+        return;
+      }
       this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1) || this.formRights.admin;
       this.formReservable = !!this.documentForm?.options?.namedPlaceOptions?.reservationUntil;
       this.useLocalDocumentViewer = this.documentForm?.options?.documentsViewableForAll;

@@ -11,16 +11,16 @@ import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 })
 export class SpecialTaxonIdComponent {
 
-  @Input() invalidValues: string[];
+  @Input() invalidValues?: string[];
   @Input() mapping: {[value: string]: any} = {};
-  @Input() field: IFormField;
+  @Input() field?: IFormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
 
-  dataSource: Observable<any>;
+  dataSource?: Observable<any>;
   limit = 20;
   taxon: {[key: string]: string} = {};
 
-  onTaxonSelect(value, to) {
+  onTaxonSelect(value: any, to: any) {
     const mapping = {...this.mapping};
 
     if (to === VALUE_IGNORE) {
