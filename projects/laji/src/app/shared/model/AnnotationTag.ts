@@ -22,5 +22,6 @@ export interface AnnotationTag {
     requiredRolesAdd?: Array<Annotation.AnnotationRoleEnum>;
     requiredRolesRemove?: Array<Annotation.AnnotationRoleEnum>;
     quality: string;
+    type?: Annotation.TypeEnum;
 }
 

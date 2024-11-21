@@ -46,15 +46,15 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin';
   `
 })
 export class DataTableComponent implements AfterViewInit {
-  @ViewChild(DatatableHeaderComponent) header: DatatableHeaderComponent;
+  @ViewChild(DatatableHeaderComponent) header!: DatatableHeaderComponent;
 
   @Input() showDownloadMenu = true;
   @Input() showRowAsLink = false;
   @Input() height = 'calc(90vh - 195px)';
-  @Input() data: any[];
+  @Input() data!: any[];
   @Input() exportFileName = 'export';
   @Input() selected: any = [];
-  @Input() selectionType: SelectionType;
+  @Input() selectionType!: SelectionType;
 
   @Output() rowSelect = new EventEmitter<any>();
   @Output() datatableSelect = new EventEmitter<any>();
@@ -144,7 +144,7 @@ export class DataTableComponent implements AfterViewInit {
     }
   ];
 
-  private _type: TableType;
+  private _type!: TableType;
 
   constructor(
     private exportService: ExportService
@@ -191,7 +191,8 @@ export class DataTableComponent implements AfterViewInit {
 
   private getCols(cols: string[]): DatatableColumn[] {
     return cols.map(c => (
-      this.allCols.find(col => c === col.name)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.allCols.find(col => c === col.name)!
     ));
   }
 }

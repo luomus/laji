@@ -7,7 +7,7 @@ import { Document } from '../../../../shared/model/Document';
   styleUrls: ['../../styles/document-print.scss']
 })
 export class DocumentLocalPrintViewComponent {
-  @Input() document: Document;
+  @Input({ required: true }) document!: Document;
   @Input() fields: any;
   @Input() mapData: any[] = [];
   @Input() imageData: {[key: string]: any} = {};

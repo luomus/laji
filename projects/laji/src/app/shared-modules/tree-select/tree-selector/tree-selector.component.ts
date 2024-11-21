@@ -14,7 +14,7 @@ import { SelectedOption, TreeOptionsNode } from '../tree-select.component';
 })
 export class TreeSelectorComponent implements OnInit {
   @Input() selectedOptions: SelectedOption[] = [];
-  @Input() optionsTree: TreeOptionsNode[];
+  @Input() optionsTree!: TreeOptionsNode[];
   @Input() multiselect = false;
   @Input() tristate = false;
   @Input() includeCheckbox = false;
@@ -23,15 +23,15 @@ export class TreeSelectorComponent implements OnInit {
   @Input() includeQualityIcon = false;
   @Input() openOnSelect = false;
   @Input() useVirtualScroll = true;
-  @ViewChild('tree') treeComponent: TreeComponent;
+  @ViewChild('tree') treeComponent!: TreeComponent;
   @Output() emitSelect = new EventEmitter<SelectedOption[]>();
 
-  treeModel: TreeModel;
-  checkboxType: CheckboxType;
+  treeModel!: TreeModel;
+  checkboxType!: CheckboxType;
   filterDebounce$ = new Subject<string>();
   toHtmlInputElement = toHtmlInputElement;
 
-  state: ITreeState;
+  state?: ITreeState;
   options: ITreeOptions = {
     useVirtualScroll: true,
     nodeHeight: 25,
@@ -39,7 +39,7 @@ export class TreeSelectorComponent implements OnInit {
     idField: 'id',
     allowDrag: false,
     scrollOnActivate: false,
-    nodeClass: (node: TreeNode) => {
+    nodeClass: (node: TreeNode): string => {
       const selected = this.selectedOptions.find(option => option.id === node.id);
       let nodeClass;
 
@@ -57,7 +57,7 @@ export class TreeSelectorComponent implements OnInit {
         return nodeClass + ' tree-active-focused';
       }
 
-      return nodeClass;
+      return nodeClass as string;
     },
     actionMapping: {
       mouse: {
@@ -99,11 +99,11 @@ export class TreeSelectorComponent implements OnInit {
     });
   }
 
-  onFilterChange(query) {
+  onFilterChange(query: any) {
     this.filterDebounce$.next(query);
   }
 
-  filterTree(query) {
+  filterTree(query: any) {
     if (query?.length > 0) {
       this.treeModel.filterNodes(query);
     } else {
@@ -287,7 +287,7 @@ export class TreeSelectorComponent implements OnInit {
 
   clear() {
     this.selectedOptions = [];
-    this.treeModel.doForAll(node => {
+    this.treeModel.doForAll((node: TreeNode) => {
       TREE_ACTIONS.DEACTIVATE(this.treeModel, node, null);
     });
     this.treeModel.collapseAll();

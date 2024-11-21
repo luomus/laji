@@ -21,7 +21,7 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
   styleUrls: ['./document-local.component.css']
 })
 export class DocumentLocalComponent implements OnChanges {
-  @Input() document: Document;
+  @Input({ required: true }) document!: Document;
   @Input() view: 'viewer'|'print' = 'viewer';
   @Input() showSpinner = false;
 
@@ -31,13 +31,13 @@ export class DocumentLocalComponent implements OnChanges {
 
   mapData: any[] = [];
   imageData: {[key: string]: any} = {};
-  fields = {};
-  formLogo: string;
-  gatheringGeometryJSONPath: string | string[];
-  zoomToData: boolean;
+  fields: Record<string, any[]> = {};
+  formLogo?: string;
+  gatheringGeometryJSONPath?: string | string[];
+  zoomToData?: boolean;
 
   loading = false;
-  private parseDocSub: Subscription;
+  private parseDocSub?: Subscription;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -84,7 +84,9 @@ export class DocumentLocalComponent implements OnChanges {
             try {
               const paths = this.gatheringGeometryJSONPath || '$.geometry';
               const geoData = {type: 'GeometryCollection', geometries:
-                (Array.isArray(paths)  ? paths : [paths]).reduce((geometries, path) => [...geometries, ...JSONPath({json: gathering, path})], []).filter(g => g)
+                (Array.isArray(paths)  ? paths : [paths]).reduce(
+                  (geometries: any[], path: string) => [...geometries, ...JSONPath({json: gathering, path})], []
+                ).filter(g => g)
               };
               if (geoData && geoData.geometries[0]) {
                 this.mapData[i] = {geoJSON: geoData};
@@ -112,7 +114,7 @@ export class DocumentLocalComponent implements OnChanges {
       );
   }
 
-  private getImages(obj): Observable<Image[]> {
+  private getImages(obj: any): Observable<Image[]> {
     return this.lajiApi.getList(LajiApi.Endpoints.images, {
       lang: this.translate.currentLang,
       page: 1,
@@ -127,7 +129,7 @@ export class DocumentLocalComponent implements OnChanges {
       );
   }
 
-  private getForm(formId: string): Observable<any> {
+  private getForm(formId?: string): Observable<any> {
     return this.formService.getFormInJSONFormat(formId)
       .pipe(tap((form: Form.JsonForm) => {
         this.setAllFields(
@@ -155,7 +157,7 @@ export class DocumentLocalComponent implements OnChanges {
   }
 
   private processFields(fields: any[], uiSchema: any, nextName?: string, forcedFields: string[] = []) {
-    let next;
+    let next: any;
 
     fields = fields.reduce((arr, field) => {
       if (field.name === nextName) {

@@ -35,7 +35,7 @@ export class ExcelToolService {
         selectedFields: selected.map(field => field.replace('$.', '')).join(',')
       }, selected).pipe(
         map(namedPlaces => namedPlaces.map(np => {
-          const values = selected.reduce((cumulative, current) => {
+          const values = selected.reduce<string[]>((cumulative, current) => {
             const value = JSONPath({json: np, path: current, wrap: false, flatten: true});
             if (typeof value !== 'undefined') {
               cumulative.push(Array.isArray(value) ? value.join(', ') : value);
@@ -50,7 +50,8 @@ export class ExcelToolService {
     };
 
     return this.formService.getForm(formID).pipe(
-      switchMap(form => form.options?.useNamedPlaces ? collection$(form) : usersNS$),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      switchMap(form => form!.options?.useNamedPlaces ? collection$(form!) : usersNS$),
       map(places => places.sort())
     );
   }

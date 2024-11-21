@@ -3,6 +3,7 @@ import { Document } from '../../../shared/model/Document';
 import { Observable } from 'rxjs';
 import { LatestDocumentsFacade } from '../latest-documents.facade';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
+import { tap } from 'rxjs/operators';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class UsersLatestComponent implements OnInit, OnDestroy {
 
   @Output() showViewer = new EventEmitter<Document>();
 
+  public firstLoad = true;
   public loading$: Observable<boolean>;
   public tmpDocuments$ = this.latestFacade.tmpDocuments$;
   public latest$ = this.latestFacade.latest$;
@@ -30,7 +32,11 @@ export class UsersLatestComponent implements OnInit, OnDestroy {
     private latestFacade: LatestDocumentsFacade,
     private deleteOwnDocument: DeleteOwnDocumentService
   ) {
-    this.loading$ = this.latestFacade.loading$;
+    this.loading$ = this.latestFacade.loading$.pipe(tap(loading => {
+      if (this.firstLoad && !loading) {
+        this.firstLoad = false;
+      }
+    }));
   }
 
   ngOnInit(): void {

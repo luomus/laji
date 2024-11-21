@@ -23,7 +23,7 @@ export class ConsoleLogger implements ILogger {
     this._log('log', message, meta);
   }
 
-  private _log(type, message: string, meta?: any): void {
+  private _log(type: any, message: string, meta?: any): void {
     if (console && console[type]) {
       console[type](message, meta);
     }

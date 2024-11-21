@@ -5,10 +5,12 @@ import { map, share, tap } from 'rxjs/operators';
 import { ISpectrogramConfig } from '../models';
 import { getSpectrogramImageData } from './spectrogram';
 
+type ColormapType = 'inferno' | 'viridis';
+
 @Injectable()
 export class SpectrogramService {
-  private colormaps = {};
-  private colormaps$ = {};
+  private colormaps: { [key in ColormapType]?: number[][] } = {};
+  private colormaps$: { [key in ColormapType]?: Observable<number[][]> } = {};
 
   constructor(
     private httpClient: HttpClient
@@ -20,13 +22,13 @@ export class SpectrogramService {
     );
   }
 
-  private getColormap(colormap: 'inferno' | 'viridis' = 'viridis'): Observable<any> {
+  private getColormap(colormap: ColormapType = 'viridis'): Observable<number[][]> {
     if (this.colormaps[colormap]) {
-      return of(this.colormaps[colormap]);
+      return of(this.colormaps[colormap] as number[][]);
     }
 
     if (!this.colormaps$[colormap]) {
-      this.colormaps$[colormap] = this.httpClient.get('/static/audio/' + colormap + '-colormap.json')
+      this.colormaps$[colormap] = this.httpClient.get<number[][]>('/static/audio/' + colormap + '-colormap.json')
         .pipe(
           tap(result => {
             this.colormaps[colormap] = result;
@@ -35,6 +37,6 @@ export class SpectrogramService {
         );
     }
 
-    return this.colormaps$[colormap];
+    return this.colormaps$[colormap] as Observable<number[][]>;
   }
 }

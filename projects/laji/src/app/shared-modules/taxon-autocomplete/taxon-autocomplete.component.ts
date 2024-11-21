@@ -44,21 +44,21 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() allowEmpty = false;
   @Input() renderButton = true;
   @Input() useValue = '';
-  @Input() whiteList: string[];
-  @Input() blackList: string[];
+  @Input() whiteList?: string[];
+  @Input() blackList?: string[];
   @Output() finish = new EventEmitter<void>();
   @Output() taxonSelect = new EventEmitter<Autocomplete>();
 
-  @ViewChild('input') inputEl: ElementRef;
+  @ViewChild('input') inputEl!: ElementRef;
 
   dataSource: Observable<any>;
   value: string | undefined = '';
-  result: Autocomplete;
+  result?: Autocomplete;
   loading = false;
-  taxonSub: Subscription;
+  taxonSub?: Subscription;
 
   private tokenMinLength = 3;
-  private destroyBlurListener: () => void;
+  private destroyBlurListener?: () => void;
 
   constructor(
     private lajiApi: LajiApiService,
@@ -73,7 +73,8 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
     this.dataSource = this.dataSource.pipe(
       distinctUntilChanged(),
       switchMap((token: string) => this.getTaxa(token)),
-      switchMap((taxa: any[]) => this.taxonAutocompleteService.getInfo(taxa, this.value)),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      switchMap((taxa: any[]) => this.taxonAutocompleteService.getInfo(taxa, this.value!)),
       switchMap((data) => {
         if (this.value) {
           return ObservableOf(data);
@@ -86,7 +87,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
     if (!this.renderButton && this.allowInvalid) {
       // emit empty string if input is deselected and value is empty
       this.destroyBlurListener = this.renderer.listen(this.inputEl.nativeElement, 'blur', () => {
-        if (this.value?.length < 1) {
+        if ((this.value?.length as any) < 1) {
           this.useCurrentValue();
         }
       });
@@ -131,10 +132,12 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
       })),
       map(data => {
         if (this.whiteList) {
-          data = data.filter(item => this.whiteList.includes(item.key));
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          data = data.filter(item => this.whiteList!.includes(item.key as any));
         }
         if (this.blackList) {
-          data = data.filter(item => !this.blackList.includes(item.key));
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          data = data.filter(item => !this.blackList!.includes(item.key as any));
         }
         if (onlyExact) {
           if (data[0] && data[0].payload.matchType && data[0].payload.matchType === 'exactMatches' && (
@@ -147,9 +150,9 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
         return data.map(item => {
           let groups = '';
           if (item.payload && item.payload.informalTaxonGroups) {
-            groups = item.payload.informalTaxonGroups.reduce((prev, curr) => prev + ' ' + curr.id, groups);
+            groups = item.payload.informalTaxonGroups.reduce((prev: string, curr: any) => prev + ' ' + curr.id, groups);
           }
-          item['groups'] = groups;
+          (item as any)['groups'] = groups;
           return item;
         });
       }),
@@ -178,7 +181,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  keyEvent(e) {
+  keyEvent(e: any) {
     if (e.keyCode === 13) {
       if (this.allowInvalid) {
         this.useCurrentValue();

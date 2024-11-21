@@ -25,6 +25,7 @@ interface MapState {
   tab: Tabs.map;
   collection: string | undefined;
   taxon: string | undefined;
+  year: string | undefined;
 }
 
 type State = StatisticsState | MapState;
@@ -37,11 +38,11 @@ type State = StatisticsState | MapState;
 })
 export class BiomonResultComponent implements OnInit, OnDestroy {
 
-  @Input() form: Form.SchemaForm;
+  @Input() form!: Form.SchemaForm;
 
   Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
-  state$: Observable<State>;
-  taxonOptions$: Observable<{ label: string; value: string }[]>;
+  state$!: Observable<State>;
+  taxonOptions$!: Observable<{ label: string; value: string }[]>;
   isStatisticsState = (state: State): state is StatisticsState => state.tab === Tabs.statistics;
   isMapState = (state: State): state is MapState => state.tab === Tabs.map;
   mapQuery: WarehouseQueryInterface = {
@@ -49,7 +50,7 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
     gatheringCounts: true, cache: true, countryId: ['ML.206']
   };
 
-  private defaultTabSubscription: Subscription;
+  private defaultTabSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -81,8 +82,9 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
           .map(f => ({ collectionID: f.collectionID, taxonSet: f.options.prepopulateWithTaxonSets }))
       ),
       switchMap(pairs => {
-        const taxonSet = pairs.find(p => p.collectionID === this.form.collectionID).taxonSet;
-        return this.getOptionsByTaxonSet$(taxonSet);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const taxonSet = pairs.find(p => p.collectionID === this.form.collectionID)!.taxonSet;
+        return this.getOptionsByTaxonSet$(taxonSet ? taxonSet : []);
       })
     );
   }
@@ -98,7 +100,7 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
       map(res => res.results),
       map(taxa => taxa.map(t => ({
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),
-        value: t.id
+        value: t.id ?? ''
       }))),
       map(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs)),
     );
@@ -115,5 +117,9 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
 
   onTaxonChange(taxon: any) {
     this.updateState({ taxon });
+  }
+
+  onYearChange(year: any) {
+    this.updateState({ year });
   }
 }

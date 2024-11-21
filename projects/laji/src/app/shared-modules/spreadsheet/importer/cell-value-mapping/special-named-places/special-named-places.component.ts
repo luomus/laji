@@ -12,13 +12,13 @@ import { Observable } from 'rxjs';
 })
 export class SpecialNamedPlacesComponent implements OnInit {
 
-  @Input() invalidValues: string[];
+  @Input() invalidValues!: string[];
   @Input() mapping: {[value: string]: any} = {};
-  @Input() field: IFormField;
-  @Input() formID: string;
+  @Input() field!: IFormField;
+  @Input() formID!: string;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
 
-  namedPlaces$: Observable<string[]>;
+  namedPlaces$!: Observable<string[]>;
 
   constructor(
     private excelToolService: ExcelToolService
@@ -31,7 +31,7 @@ export class SpecialNamedPlacesComponent implements OnInit {
     );
   }
 
-  valueMapped(value, to) {
+  valueMapped(value: any, to: any) {
     const mapping = {...this.mapping};
 
     if (to === undefined && mapping[value]) {

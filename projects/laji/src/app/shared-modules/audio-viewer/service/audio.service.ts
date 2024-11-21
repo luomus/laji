@@ -7,14 +7,14 @@ import { AudioPlayer } from './audio-player';
 
 @Injectable()
 export class AudioService {
-  private audioContext: AudioContext;
+  private audioContext?: AudioContext;
 
   private buffer$: { [url: string]: Observable<AudioBuffer> } = {};
   private buffer: { [url: string]: { buffer: AudioBuffer; time: number } } = {};
 
-  private activePlayer: AudioPlayer;
+  private activePlayer?: AudioPlayer;
 
-  private resumeContext$: Observable<void>;
+  private resumeContext$?: Observable<void>|null;
 
   private defaultSampleRate = 44100;
   private audioContextInitSampleRate?: number;
@@ -139,7 +139,7 @@ export class AudioService {
     return this.resumeContext$;
   }
 
-  public playAudio(buffer: AudioBuffer, playbackRate: number, frequencyRange: number[], startTime: number, player: AudioPlayer): AudioBufferSourceNode {
+  public playAudio(buffer: AudioBuffer, playbackRate: number, frequencyRange: number[]|undefined, startTime: number, player: AudioPlayer): AudioBufferSourceNode {
     const audioCtx = this.getAudioContext();
 
     if (this.activePlayer && this.activePlayer !== player) {
@@ -177,17 +177,17 @@ export class AudioService {
     return (this.getAudioContextTime() - startTime) * playbackRate;
   }
 
-  private addFrequencyFilters(audioNode: AudioNode, frequencyRange: number[], sampleRate: number, playbackRate: number): AudioNode {
+  private addFrequencyFilters(audioNode: AudioNode, frequencyRange: number[]|undefined, sampleRate: number, playbackRate: number): AudioNode {
     const nbrOfFilters = 7; // the more filters there are the greater effect they have
 
-    if (frequencyRange?.[0] > 0) {
+    if (frequencyRange?.[0] && frequencyRange[0] > 0) {
       for (let i = 0; i < nbrOfFilters; i++) {
         const filter = this.createFilter('highpass', frequencyRange[0] * playbackRate);
         audioNode.connect(filter);
         audioNode = filter;
       }
     }
-    if (frequencyRange?.[1] < sampleRate / 2) {
+    if (frequencyRange?.[1] && frequencyRange[1] < sampleRate / 2) {
       for (let i = 0; i < nbrOfFilters; i++) {
         const filter = this.createFilter('lowpass', frequencyRange[1] * playbackRate);
         audioNode.connect(filter);
@@ -255,16 +255,17 @@ export class AudioService {
   private getAudioContext(): AudioContext {
     if (!this.audioContext || this.defaultSampleRate !== this.audioContextInitSampleRate) {
       this.audioContextInitSampleRate = this.defaultSampleRate;
-      const window = this.platformService.window;
+      const window = this.platformService.window as any;
       this.audioContext = new (window['AudioContext'] || window['webkitAudioContext'])({
         sampleRate: this.defaultSampleRate
       });
     }
-    return this.audioContext;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.audioContext!;
   }
 
   private getNewOfflineAudioContext(sampleRate: number): OfflineAudioContext {
-    const window = this.platformService.window;
+    const window = this.platformService.window as any;
     return new (window['OfflineAudioContext'] || window['webkitOfflineAudioContext'])(1, 1, sampleRate);
   }
 }

@@ -13,10 +13,10 @@ export class WbcCensusesComponent implements OnInit  {
   activeIndex = 0;
   loadedTabs = new LoadedElementsStore(['list', 'map']);
 
-  activeYear: number;
-  activeSeason: SEASON;
+  activeYear?: number;
+  activeSeason?: SEASON;
 
-  rows: any[];
+  rows!: any[];
   selected = [
     'document.namedPlace.name',
     'document.namedPlace.municipalityDisplayName',
@@ -31,8 +31,8 @@ export class WbcCensusesComponent implements OnInit  {
   ];
 
   loading = false;
-  queryKey: string;
-  resultSub: Subscription;
+  queryKey!: string;
+  resultSub!: Subscription;
   filterBy = '';
 
   constructor(

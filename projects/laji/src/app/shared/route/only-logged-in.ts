@@ -8,7 +8,6 @@ import { take, tap } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class OnlyLoggedIn  {
-
   constructor(
     private userService: UserService,
     private platformService: PlatformService
@@ -21,10 +20,10 @@ export class OnlyLoggedIn  {
     return this.userService.isLoggedIn$.pipe(
       take(1),
       tap(isLoggedIn => {
- if (!isLoggedIn) {
-        this.userService.redirectToLogin(state.url, route.data);
-      }
-})
+        if (!isLoggedIn) {
+          this.userService.redirectToLogin(state.url, route.data);
+        }
+      })
     );
   }
 

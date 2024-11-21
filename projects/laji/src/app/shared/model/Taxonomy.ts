@@ -253,6 +253,8 @@ export interface Taxonomy {
 
   parent?: any;
 
+  parents?: string[];
+
   occurrenceInFinlandSpecimenURI?: string;
 
   typeSpecimenURI?: string;

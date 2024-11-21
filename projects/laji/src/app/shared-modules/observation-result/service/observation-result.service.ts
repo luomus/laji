@@ -37,11 +37,11 @@ export class ObservationResultService {
 
   public idFields = ['unit.unitId', 'document.documentId'];
 
-  private key: string;
-  private data: Observable<PagedResult<any>>;
+  private key?: string;
+  private data?: Observable<PagedResult<any>>;
 
-  private aggregateKey: string;
-  private aggregateData: Observable<PagedResult<any>>;
+  private aggregateKey?: string;
+  private aggregateData?: Observable<PagedResult<any>>;
   private removeAggregateFields =  ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCount'];
   private coordinatePipe = new CoordinatePipe();
 
@@ -139,7 +139,7 @@ export class ObservationResultService {
     sendDownloadMark = false,
     blockOnDownloadMarkFail = false,
     reason = ''
-  ): Observable<{id?: string; results: any[]}> {
+  ): Observable<{id: string | null; results: any[]}> {
 
     const all$ = this._getAll(
       query,
@@ -202,7 +202,7 @@ export class ObservationResultService {
   }
 
   private prepareFields(select: string[], useTrueFieldPath = true): string[] {
-    const exist = {};
+    const exist: Record<string, boolean> = {};
     return select.join(',').split(',').reduce((prev, val) => {
       if (useTrueFieldPath) {
         val = ObservationResultService.trueFieldPath(val);
@@ -212,10 +212,10 @@ export class ObservationResultService {
         prev.push(val);
       }
       return prev;
-    }, []);
+    }, [] as string[]);
   }
 
-  private convertAggregateResult(data) {
+  private convertAggregateResult(data: { results: any[] }) {
     data.results = data.results.map(result => {
       const aggregate = {
         count: result.count,
@@ -249,7 +249,7 @@ export class ObservationResultService {
     return data;
   }
 
-  private openValues(data, selected: string[]): Observable<any> {
+  private openValues(data: { results: any[] }, selected: string[]): Observable<any> {
     const transform: IInternalObservationTableColumn[] = [];
     const facts: ObservationTableColumn[] = [];
 
@@ -278,7 +278,7 @@ export class ObservationResultService {
     );
   }
 
-  private stringToObj(path, value, obj) {
+  private stringToObj(path: string, value: any, obj: any) {
     const parts = path.split('.');
     let part;
     while (true) {
@@ -311,9 +311,12 @@ export class ObservationResultService {
 
   private addFacts(document: any, cols: ObservationTableColumn[]) {
     cols.forEach(col => {
-      const paths = ObservationResultService.trueFieldPath(col.name).split('.');
-      const targetPaths = (col.name).split('.');
-      const facts = this.pickFacts(document, paths, col.fact);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const paths = ObservationResultService.trueFieldPath(col.name!).split('.');
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const targetPaths = (col.name!).split('.');
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const facts = this.pickFacts(document, paths, col.fact!);
       if (facts.length > 0) {
         this.setValue(document, targetPaths, facts);
       }
@@ -369,6 +372,7 @@ export class ObservationResultService {
   }
 
   private transformField(value: any, transforms: IInternalObservationTableColumn): Observable<any> {
-    return this.datatableUtil.getVisibleValue(value, null, transforms.transform);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.datatableUtil.getVisibleValue(value, null, transforms.transform!);
   }
 }

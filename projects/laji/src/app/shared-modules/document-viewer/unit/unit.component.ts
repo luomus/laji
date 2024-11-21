@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, Output,
 EventEmitter} from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
-import { AnnotationService } from '../service/annotation.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { DocumentViewerFacade } from '../document-viewer.facade';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
@@ -15,28 +14,26 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 })
 export class UnitComponent implements OnInit {
 
-  @Input() documentID: string;
-  @Input() unit: any;
-  @Input() highlight: string;
+  @Input() documentID?: string;
+  @Input() unit?: any;
+  @Input() highlight?: string;
   @Input() highlightParents: string[] = [];
-  @Input() identifying: boolean;
-  @Input() openAnnotation: boolean;
+  @Input() identifying?: boolean;
+  @Input() openAnnotation?: boolean;
   @Input() showFacts = false;
-  @Input() showAnnotation: boolean;
-  @Input() showOnlyHighlighted: boolean;
-  @Input() annotationTags: AnnotationTag[];
+  @Input() showAnnotation?: boolean;
+  @Input() showOnlyHighlighted?: boolean;
+  @Input() annotationTags?: AnnotationTag[]|null;
   @Output() annotationPending = new EventEmitter<boolean>();
 
   annotationVisible = false;
-  annotationIcon: string;
   annotations: Annotation[] = [];
 
-  unitID: string;
+  unitID?: string;
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
 
   constructor(
     private toQname: ToQNamePipe,
-    private annotationService: AnnotationService,
     private documentViewerFacade: DocumentViewerFacade
   ) { }
 
@@ -46,7 +43,7 @@ export class UnitComponent implements OnInit {
         this.unit.linkings.taxonId = this.toQname.transform(this.unit.linkings.taxon.id);
       }
       if (Array.isArray(this.unit.facts)) {
-        this.unit.facts = this.unit.facts.reduce((cumulative, current) => {
+        this.unit.facts = this.unit.facts.reduce((cumulative: any[], current: any) => {
           if (this.skipFacts.indexOf(current.fact) !== -1) {
             return cumulative;
           }
@@ -85,14 +82,11 @@ export class UnitComponent implements OnInit {
   showAnnotations() {
     this.documentViewerFacade.showDocumentID({
       highlight: this.unit.unitId,
-      document: this.documentID,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      document: this.documentID!,
       openAnnotation: true,
       result: undefined
     });
-  }
-
-  hideAnnotations() {
-    this.annotationVisible = false;
   }
 
   mediaHasFullResolutionAvailable(media: any[]) {

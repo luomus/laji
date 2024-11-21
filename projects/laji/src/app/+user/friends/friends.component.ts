@@ -1,5 +1,5 @@
 import { switchMap } from 'rxjs/operators';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Profile } from '../../shared/model/Profile';
 import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
@@ -12,14 +12,13 @@ import { of as ObservableOf } from 'rxjs';
   selector: 'laji-friends',
   templateUrl: './friends.component.html'
 })
-export class FriendsComponent implements OnInit {
+export class FriendsComponent implements OnInit, OnChanges {
+  @Input() profile!: Profile;
+  @Input() usersProfile!: Profile;
 
-  @Input() profile: Profile;
-  @Input() usersProfile: Profile;
-
-  public user;
   public requestSend = false;
   public friends = [];
+  private lastId: string | undefined;
 
   constructor(private userService: UserService,
               private personService: PersonApi,
@@ -31,6 +30,14 @@ export class FriendsComponent implements OnInit {
 
   ngOnInit() {
     this.requestSend = false;
+    this.lastId = this.profile.userID;
+  }
+
+  ngOnChanges() {
+    if (this.lastId && this.lastId !== this.profile.userID) {
+      this.lastId = this.profile.userID;
+      this.requestSend = false;
+    }
   }
 
   hasProfile() {
@@ -42,7 +49,8 @@ export class FriendsComponent implements OnInit {
   }
 
   alreadyFriends() {
-    return this.usersProfile.friends && this.usersProfile.friends.indexOf(this.profile.userID) > -1;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.usersProfile.friends && this.usersProfile.friends.indexOf(this.profile.userID!) > -1;
   }
 
   sendFriendRequest(profileKy: string) {
@@ -55,7 +63,7 @@ export class FriendsComponent implements OnInit {
     );
   }
 
-  removeFriend(userId, block = false) {
+  removeFriend(userId: string, block = false) {
     this.translateService.get(['friend.blockConfirm', 'friend.removeConfirm']).pipe(
       switchMap(translation => this.dialogService.confirm(block ? translation['friend.blockConfirm'] : translation['friend.removeConfirm'])),
       switchMap((confirm) => confirm ?
@@ -68,8 +76,9 @@ export class FriendsComponent implements OnInit {
       );
   }
 
-  removeBlock(userId) {
-    this.usersProfile.blocked = this.usersProfile.blocked.filter(id => id !== userId);
+  removeBlock(userId: string) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.usersProfile.blocked = this.usersProfile.blocked!.filter(id => id !== userId);
     this.personService.personUpdateProfileByToken(this.usersProfile, this.userService.getToken())
       .subscribe(
         profile => this.usersProfile = profile,

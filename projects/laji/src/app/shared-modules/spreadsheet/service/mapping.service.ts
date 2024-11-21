@@ -36,7 +36,7 @@ export class MappingService {
     false: 'no'
   };
 
-  private mapping = {
+  private mapping: { boolean: null | Record<string, any>; string: Record<string, any> } = {
     boolean: null,
     string: {}
   };
@@ -72,7 +72,7 @@ export class MappingService {
     'gatherings[*].observationMinutes': SpecialTypes.positiveInteger
   };
 
-  static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result = [], parent = ''): string[] {
+  static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result: string[] = [], parent = ''): string[] {
     groups.forEach(group => {
       const name = parent ? `${parent} — ${group.name}` : group.name;
       result.push(`${name} (${group.id})`);
@@ -102,7 +102,7 @@ export class MappingService {
     return value;
   }
 
-  addUserColMapping(mapping) {
+  addUserColMapping(mapping: any) {
     if (typeof mapping !== 'object' || Array.isArray(mapping) || Object.keys(mapping).length === 0) {
       return;
     }
@@ -112,7 +112,7 @@ export class MappingService {
     });
   }
 
-  addUserValueMapping(mapping) {
+  addUserValueMapping(mapping: any) {
     if (typeof mapping !== 'object' || Array.isArray(mapping)) {
       return;
     }
@@ -144,7 +144,7 @@ export class MappingService {
   }
 
   initColMap(fields: {[key: string]: IFormField}) {
-    const lookup = {};
+    const lookup: Record<string, string> = {};
     const simpleCols: {[label: string]: {cnt: number; key: string}} = {};
     Object.keys(fields).forEach((key) => {
       const label = fields[key].label.toLowerCase();
@@ -164,7 +164,7 @@ export class MappingService {
     this.colMapping = lookup;
   }
 
-  colMap(value: string): string {
+  colMap(value: string): string | null {
     if (!this.colMapping) {
       throw new ErrorEvent('Column map is not initialized!');
     }
@@ -199,13 +199,13 @@ export class MappingService {
   }
 
   getSpecial(field: IFormField): SpecialTypes|null {
-    if (field.key && this.specials[field.key]) {
-      return this.specials[field.key];
+    if (field.key && (this.specials as any)[field.key]) {
+      return (this.specials as any)[field.key];
     }
     return null;
   }
 
-  getLabel(value: any, field: IFormField) {
+  getLabel(value: any, field: IFormField): any {
     if (Array.isArray(value)) {
       return value.map((val) => this.getLabel(val, field));
     }
@@ -268,22 +268,23 @@ export class MappingService {
   }
 
   initStringMap(field: IFormField) {
-    if (!field.enum || this.mapping.string[field.key]) {
+    if (!field.enum || (this.mapping.string as any)[field.key]) {
       return;
     }
-    this.mapping.string[field.key] = {};
+    (this.mapping.string as any)[field.key] = {};
     field.enum.map((item) => {
       const value = item.const;
       if (value === '') {
         return;
       }
       const label = item.title.toLowerCase();
-      this.mapping.string[field.key][value.toLowerCase()] = value;
-      this.mapping.string[field.key][label.toLowerCase()] = value;
+      (this.mapping.string as any)[field.key][value.toLowerCase()] = value;
+      (this.mapping.string as any)[field.key][label.toLowerCase()] = value;
 
       if (this.getSpecial(field) === SpecialTypes.atlasCode) {
-        const code = value.match(/\d+/)[0];
-        this.mapping.string[field.key][code] = value;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const code = value.match(/\d+/)![0];
+        (this.mapping.string as any)[field.key][code] = value;
       }
     });
   }
@@ -295,7 +296,7 @@ export class MappingService {
     return this.translationService.instant(value ? this.booleanMap.true : this.booleanMap.false);
   }
 
-  mapUnitTaxon(value) {
+  mapUnitTaxon(value: any) {
     if (value === VALUE_IGNORE || (typeof value === 'object' && value[MappingService.mergeKey])) {
       return value;
     }
@@ -325,7 +326,7 @@ export class MappingService {
     return null;
   }
 
-  mapPositiveInteger(value: unknown ): number {
+  mapPositiveInteger(value: unknown ): number | null {
     const num = Number(('' + value).toLowerCase());
     if (isNaN(num)) {
       return null;
@@ -361,7 +362,7 @@ export class MappingService {
     return String(value || '');
   }
 
-  mapKeywords(value) {
+  mapKeywords(value: string) {
     return typeof value === 'string' ?
       value.split(new RegExp(MappingService.keywordSplitters.join('|'), 'g')).map(val => val.trim()) :
       value;
@@ -376,7 +377,7 @@ export class MappingService {
       } else if (value.length === 0) {
         return null;
       } else if (fieldType === SpecialTypes.keywords) {
-        value = value.reduce((a, b) => a.concat(b), []);
+        value = value.reduce((a: any, b: any) => a.concat(b), []);
       }
       return value;
     }
@@ -478,11 +479,11 @@ export class MappingService {
     switch (field.type) {
       case 'string':
         return this.getUserMappedValue(value, field) ||
-          (this.mapping.string[field.key] && this.mapping.string[field.key][value] || null);
+          ((this.mapping.string as any)[field.key] && (this.mapping.string as any)[field.key][value] || null);
       case 'boolean':
         const userValue = this.getUserMappedValue(value, field);
         return userValue !== null ?
-          userValue : (typeof this.mapping.boolean[value] !== 'undefined' ? this.mapping.boolean[value] : null);
+          userValue : (typeof (this.mapping.boolean as any)[value] !== 'undefined' ? (this.mapping.boolean as any)[value] : null);
     }
     return null;
   }

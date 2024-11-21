@@ -28,7 +28,7 @@ export class WbcRoutesComponent implements OnInit {
     {prop: 'document.namedPlace.name', dir: 'asc'}
   ];
 
-  route$: Observable<string>;
+  route$!: Observable<string>;
 
   constructor(
     private resultService: WbcResultService,

@@ -11,9 +11,9 @@ import { Subscription } from 'rxjs';
 })
 export class LocalizePipe implements PipeTransform, OnDestroy {
   private value: any = '';
-  private lastKey: string | any[];
-  private lastLanguage: string;
-  private subLang: Subscription;
+  private lastKey!: string | any[];
+  private lastLanguage: string | undefined;
+  private subLang: Subscription | undefined;
 
   constructor(
     private localizeRouterService: LocalizeRouterService,

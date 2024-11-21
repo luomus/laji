@@ -23,7 +23,7 @@
       </ng-container>
       <laji-row [title]="'MY.typif' | label" [value]="type.typif"></laji-row>
       <laji-row [title]="'MY.typifDate' | label" [value]="type.typifDate"></laji-row>
-      <laji-row [title]="'MY.typeVerification' | label" [value]="type.verification"></laji-row>
+      <laji-row [title]="'MY.typeVerification' | label" [value]="type.verification | toQName | label"></laji-row>
       <laji-row [title]="'MY.typePubl' | label" [value]="type.publication"></laji-row>
       <laji-row [title]="'MY.typeBasionymePubl' | label" [value]="type.basionymePublication"></laji-row>
     </div>

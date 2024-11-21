@@ -109,7 +109,7 @@ export class NamedPlaceApi {
   public findAll(query: NamedPlaceQuery, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<NamedPlace>> {
     const path = this.basePath + '/named-places';
 
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+    const queryParameters: any = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'personToken' is not null or undefined
     if (page !== undefined) {
       queryParameters['page'] = page;
@@ -118,8 +118,8 @@ export class NamedPlaceApi {
       queryParameters['pageSize'] = pageSize;
     }
 
-    Object.keys(query).forEach(key => {
-      if (typeof query[key] === 'string') {
+    (Object.keys(query) as (keyof NamedPlaceQuery)[]).forEach(key => {
+      if (typeof (query as any)[key] === 'string') {
         const targetKey = key === 'userToken' ? 'personToken' : key;
         queryParameters[targetKey] = query[key];
       } else if (typeof query[key] === 'boolean') {
@@ -187,7 +187,7 @@ export class NamedPlaceApi {
     const path = this.basePath + '/named-places/{id}/reservation'
       .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams as any)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
@@ -205,7 +205,7 @@ export class NamedPlaceApi {
     const path = this.basePath + '/named-places/{id}/reservation'
       .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {};
+    const queryParameters: any = {};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');

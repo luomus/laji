@@ -17,8 +17,8 @@
     [externalPaging]="true"
     [externalSorting]="true"
     [sortType]="sortType"
-    [count]="_rows.length"
-    [offset]="_offset"
+    [count]=" _rows?.length!"
+    [offset]="_offset!"
     [columns]="_columns"
     [columnMode]="columnMode"
     [scrollbarH]="true"
@@ -34,7 +34,7 @@
     [rowClass]="_getRowClass"
     (activate)="onRowSelect($event)"
     [selected]="selected"
-    [selectionType]="selectionType"
+    [selectionType]="selectionType!"
     [summaryRow]="summaryRow"
     [summaryPosition]="'bottom'"
     [summaryHeight]="38"
@@ -43,9 +43,9 @@
   <laji-data-table-footer
     *ngIf="showFooter"
     [totalMessage]="totalMessage"
-    [page]="_page"
-    [pageSize]="pageSize"
-    [count]="_count"
+    [page]="_page!"
+    [pageSize]="pageSize!"
+    [count]="_count!"
     (pageChange)="onPage($event)"
   ></laji-data-table-footer>
 </laji-spinner>

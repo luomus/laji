@@ -45,8 +45,6 @@
 
   <section class="d-flex flex-row flex-nowrap justify-end">
     <button class="btn btn-default btn-sm ml-2"
-         [luTooltip]="'result.showViewer' | translate"
-         [placement]="'bottom'"
          (click)="onShowViewer($event)"
          role="button" tabindex="0" luKeyboardClickable>
       <span class="glyphicon glyphicon-eye-open"></span>
@@ -54,8 +52,6 @@
     </button>
     <a class="btn btn-default btn-sm ml-2"
          [routerLink]="editDocumentRoute"
-         [luTooltip]="'result.editDocument' | translate"
-         [placement]="'bottom'"
          role="button" tabindex="0" luKeyboardClickable>
       <span class="glyphicon glyphicon-edit"></span>
       {{ 'haseka.submissions.edit' | translate }}

@@ -21,9 +21,9 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
   private unsubscribe$ = new Subject();
 
   message: any;
-  currentMessageId: string;
+  currentMessageId: string | undefined = undefined;
 
-  @LocalStorage('globalMessageClosed', {}) globalMessageClosed;
+  @LocalStorage('globalMessageClosed', {}) globalMessageClosed: any;
 
   constructor(
     private api: LajiApiService,
@@ -41,7 +41,7 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
           key => event.url.match(key)
         );
         const idsWithLang = Object.values(environment.globalMessageIds)[idx];
-        this.currentMessageId = idsWithLang?.[this.translate.currentLang];
+        this.currentMessageId = idsWithLang?.[<'fi' | 'sv' | 'en'>this.translate.currentLang];
         if (this.currentMessageId) {
           return this.api.get(LajiApi.Endpoints.information, this.currentMessageId, {lang: this.translate.currentLang});
         } else {
@@ -64,12 +64,18 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
   }
 
   private close() {
+    if (!this.currentMessageId) {
+      return;
+    }
     this.globalMessageClosed = {
       ...this.globalMessageClosed, [this.currentMessageId]: true
     };
   }
 
   private open() {
+    if (!this.currentMessageId) {
+      return;
+    }
     this.globalMessageClosed = {
       ...this.globalMessageClosed, [this.currentMessageId]: false
     };
