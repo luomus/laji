@@ -293,7 +293,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   private getAllDocuments(
     query: DocumentQuery = {},
     page = 1,
-    documents: Document & { id: string }[] = []
+    documents: (Document & { id: string })[] = []
   ): Observable<(Document & { id: string })[]> {
     const _query: any = {
       templates: query.onlyTemplates ? 'true' : undefined,

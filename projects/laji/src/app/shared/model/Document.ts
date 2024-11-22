@@ -151,7 +151,7 @@ export interface Document {
     /**
      * Id of the form that was used for the document
      */
-    formID?: string;
+    formID: string;
 
     /**
      * instance of gatheringEvent

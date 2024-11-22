@@ -1,6 +1,6 @@
 // for syntax highlighting of glsl literals
 // vscode glsl-literal plugin
-const glsl = x => x;
+const glsl = (x: TemplateStringsArray) => x as unknown as string;
 
 export const vertexShader =
 glsl`#version 300 es

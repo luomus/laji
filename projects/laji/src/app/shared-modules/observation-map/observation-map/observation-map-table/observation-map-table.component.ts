@@ -52,11 +52,11 @@ const visualizationModeColNames = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
   export class ObservationMapTableComponent implements OnInit, OnChanges {
-  @Input() query: WarehouseQueryInterface;
-  @Input() coordinates: Coordinates;
+  @Input() query!: WarehouseQueryInterface;
+  @Input() coordinates!: Coordinates;
   @Input() visualizationMode: ObservationVisualizationMode = 'obsCount';
   columns: ObservationTableColumn[] = [];
-  rows$: Observable<any>;
+  rows$?: Observable<any>;
   loading = false;
   pageSize = 100;
   initialized = false;
@@ -93,7 +93,7 @@ const visualizationModeColNames = {
     }
   }
 
-  onRowSelect(event) {
+  onRowSelect(event: any) {
     const row = event.row || {};
     if (row.document?.documentId && row.unit?.unitId) {
       this.documentViewerFacade.showDocumentID({
@@ -106,11 +106,11 @@ const visualizationModeColNames = {
     }
   }
 
-  onPageChange(event) {
+  onPageChange(event: any) {
     this.updateRows(event.page);
   }
 
-  onServerSort(event) {
+  onServerSort(event: any) {
     this.orderBy = getSortsFromCols(event, this.columns, this.translate.currentLang);
     this.updateRows();
   }
@@ -137,11 +137,14 @@ const visualizationModeColNames = {
           + ':'+ this.coordinates.square.lonMin
           + ':' + this.coordinates.square.lonMax + ':WGS84';
       } else {
-        query['wgs84CenterPoint'] = this.coordinates.coordinates[1]
-          + ':' +  this.coordinates.coordinates[0] + ':WGS84';
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        query['wgs84CenterPoint'] = this.coordinates.coordinates![1]
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          + ':' +  this.coordinates.coordinates![0] + ':WGS84';
       }
     } else {
-      const ykj = this.coordinates.coordinates[0] + ':' + this.coordinates.coordinates[1];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const ykj = this.coordinates.coordinates![0] + ':' + this.coordinates.coordinates![1];
       query['ykj10kmCenter'] = ykj;
     }
     this.loading = true;
@@ -157,7 +160,7 @@ const visualizationModeColNames = {
   }
 
   private updateColumns() {
-    const colNames = [...defaultColumnNames, ...visualizationModeColNames[this.visualizationMode] || []];
+    const colNames = [...defaultColumnNames, ...(visualizationModeColNames as any)[this.visualizationMode] || []];
     this.columns = colNames.map(colName => this.columnLookup[colName]);
     this.cdr.markForCheck();
   }

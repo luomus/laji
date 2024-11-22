@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FileDownloadComponent implements OnChanges, OnDestroy {
-  @Input() downloadRequest: DownloadRequest;
+  @Input() downloadRequest!: DownloadRequest;
 
   gisDownloadLimit = GEO_CONVERT_LIMIT;
   fileTypeEnum = FileType;
@@ -32,7 +32,8 @@ export class FileDownloadComponent implements OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
-    if (this.downloadRequest?.approximateMatches > this.gisDownloadLimit && this.downloadService.fileType === this.fileTypeEnum.gis) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (this.downloadRequest?.approximateMatches! > this.gisDownloadLimit && this.downloadService.fileType === this.fileTypeEnum.gis) {
       this.downloadService.fileType = this.fileTypeEnum.standard;
     }
   }

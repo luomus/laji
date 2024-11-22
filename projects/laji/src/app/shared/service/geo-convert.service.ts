@@ -56,7 +56,7 @@ export class GeoConvertService {
   ) {}
 
   public geoConvertFile(
-    fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs, personToken?: string
+    fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs, personToken?: string | null
   ): Observable<GeoConversionResponse> {
     return this.startGeoConversion(fileId, format, geometry, crs, personToken).pipe(
       switchMap(conversionId => this.getResponse(conversionId)),
@@ -74,7 +74,7 @@ export class GeoConvertService {
   }
 
   private startGeoConversion(
-    fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs, personToken?: string
+    fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs, personToken?: string | null
   ): Observable<string> {
     const queryParams: any = {
       outputFormat: format,

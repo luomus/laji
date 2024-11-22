@@ -56,7 +56,7 @@ export class FileDownloadService {
   }
 
   private getDownloadLink(
-    id: string, isPublic: boolean, type: FileType, format?: FileFormat, geometry?: FileGeometry, crs?: FileCrs
+    id: string, isPublic: boolean, type: FileType, format: FileFormat, geometry: FileGeometry, crs: FileCrs
   ): Observable<string> {
     const personToken = isPublic ? null : this.userService.getToken();
     if (type === FileType.gis) {
@@ -66,7 +66,8 @@ export class FileDownloadService {
           this.fileDownloadStateChangeSubject.next();
         }),
         first(response => response.status === 'complete'),
-        map(response => response.outputLink)
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        map(response => response.outputLink!)
       );
     } else {
       let downloadLink = environment.apiBase + '/warehouse/download/';

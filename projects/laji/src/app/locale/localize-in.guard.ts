@@ -27,7 +27,8 @@ export class LocalizeInGuard  {
       this.graphQLService.flushCache();
     }
     return this.router.parseUrl(
-      LocalizeRouterService.translatePath(state.url, this.lastLang)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      LocalizeRouterService.translatePath(state.url, this.lastLang!)
     );
   }
 }

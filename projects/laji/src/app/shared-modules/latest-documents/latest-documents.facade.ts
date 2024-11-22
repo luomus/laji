@@ -44,9 +44,9 @@ export class LatestDocumentsFacade implements OnDestroy {
   });
 
   private readonly localUpdateSub: Subscription;
-  private updateSub: Subscription;
+  private updateSub?: Subscription;
   private updateSubKey: string | undefined;
-  private remoteRefresh;
+  private remoteRefresh?: NodeJS.Timer;
 
   private collectionID: string | undefined;
 
@@ -97,17 +97,20 @@ export class LatestDocumentsFacade implements OnDestroy {
   private updateLocal() {
     this.userService.user$.pipe(
       take(1),
-      mergeMap(p => this.documentStorage.getAll(p, 'onlyTmp').pipe(
-        map(tmps => this.collectionID ? tmps.filter(tmp => this.collectionID === tmp.collectionID) : tmps),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      mergeMap(p => this.documentStorage.getAll(p!, 'onlyTmp').pipe(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        map(tmps => this.collectionID ? tmps.filter(tmp => this.collectionID === tmp!.collectionID) : tmps),
         mergeMap(tmps => this.getAllForms().pipe(
           map(forms => tmps.map(tmp => ({
             document: tmp,
-            form: forms[tmp.formID]
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            form: forms[tmp!.formID]
           })))
         ))
       )),
       catchError(() => of([]))
-    ).subscribe(tmpDocuments => this.updateState({..._state, tmpDocuments}));
+    ).subscribe(tmpDocuments => this.updateState({..._state, tmpDocuments: tmpDocuments as ILatestDocument[]}));
   }
 
   private updateRemote() {
@@ -142,22 +145,25 @@ export class LatestDocumentsFacade implements OnDestroy {
       map(forms => forms.reduce((cumulative, form) => {
         cumulative[form.id] = form;
         return cumulative;
-      }, {}))
+      }, {} as {[id: string]: Form.List}))
     );
   }
 
-  private checkForLocalData(documents: Document[]): Observable<ILatestDocument[]> {
+  private checkForLocalData(documents: (Document & { id: string })[]): Observable<ILatestDocument[]> {
     return this.getAllForms().pipe(
       mergeMap((forms) => from(documents).pipe(
         mergeMap(document => this.userService.user$.pipe(
           take(1),
           mergeMap(person => this.documentStorage.getItem(document.id, person).pipe(
             map(local => {
-              if (Util.isLocalNewestDocument(local, document)) {
-                return {document: local, form: forms[document.formID]};
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              if (Util.isLocalNewestDocument(local!, document)) {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                return {document: local!, form: forms[document.formID]};
               }
               if (local) {
-                this.documentStorage.removeItem(local.id, person);
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                this.documentStorage.removeItem(local!.id, person);
               }
               return {document, form: forms[document.formID]};
             })
