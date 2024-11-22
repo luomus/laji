@@ -14,16 +14,16 @@ import { BirdPointCountResultModalComponent } from './bird-point-count-result-mo
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdPointCountResultCensusesComponent implements OnInit, OnChanges {
-  @Input() collections: string[];
-  @Input() collectionStartYear: number;
+  @Input() collections!: string[];
+  @Input() collectionStartYear!: number;
   @Input() year: string | undefined;
 
   @Output() yearChange = new EventEmitter<string>();
 
   readonly year$ = new BehaviorSubject<string | undefined>(undefined);
 
-  resultSub: Subscription;
-  rows: any[];
+  resultSub!: Subscription;
+  rows!: any[];
   selected = [
     'document.namedPlace.name',
     'document.namedPlace.municipalityDisplayName',
@@ -37,8 +37,8 @@ export class BirdPointCountResultCensusesComponent implements OnInit, OnChanges 
     {prop: 'document.modifiedDate', dir: 'desc'}
   ];
   modalRef!: ModalRef<BirdPointCountResultModalComponent>;
-  yearOptions: { label: string; value: string }[];
-  defaultYear: string;
+  yearOptions!: { label: string; value: string }[];
+  defaultYear!: string;
   loading = false;
 
   toHtmlSelectElement = toHtmlSelectElement;
@@ -51,7 +51,8 @@ export class BirdPointCountResultCensusesComponent implements OnInit, OnChanges 
   ) { }
 
   ngOnInit() {
-    this.defaultYear = this.year$.getValue() !== undefined ? this.year$.getValue() : '';
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.defaultYear = this.year$.getValue() !== undefined ? this.year$.getValue()! : '';
     const currentYear = new Date().getFullYear();
 
     this.onFilterChange();

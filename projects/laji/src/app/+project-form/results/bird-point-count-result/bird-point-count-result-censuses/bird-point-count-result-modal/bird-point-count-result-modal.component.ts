@@ -12,10 +12,10 @@ import { BirdPointCountFact } from '../../bird-point-count-result.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdPointCountResultModalComponent implements OnInit {
-  @Input({ required: true }) documentFacts$: Observable<BirdPointCountFact[]>;
+  @Input({ required: true }) documentFacts$!: Observable<BirdPointCountFact[]>;
 
-  resultSub: Subscription;
-  rows: any[];
+  resultSub!: Subscription;
+  rows?: any[];
   columns: DatatableColumn[] = [
     {
       name: 'vernacularName',

@@ -56,7 +56,7 @@ export class BirdPointCountResultService {
       this.warehouseApi.warehouseQueryDocumentAggregateGet(
         {
           formId: 'MHL.75',
-          createdDateYear: Number(query.yearMonth[0])
+          createdDateYear: query.yearMonth ? Number(query.yearMonth[0]) : undefined
         },
         ['document.documentId', 'document.modifiedDate'],
         undefined,
@@ -67,7 +67,7 @@ export class BirdPointCountResultService {
       )
     ).pipe(
       map(list => {
-        const statsByDocumentId = {};
+        const statsByDocumentId: any = {};
         list.map(l => {
           statsByDocumentId[l['document.documentId']] = l;
         });
