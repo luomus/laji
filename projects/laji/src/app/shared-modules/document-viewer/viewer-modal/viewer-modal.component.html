@@ -3,7 +3,7 @@
     <ng-container *ngIf="vm.document">
         <laji-document-annotation *ngIf="!vm.forceLocal && vm.openAnnotation; else normal"
                                   [highlight]="vm.highlight"
-                                  [uri]="vm.document.id"
+                                  [uri]="vm.document.id!"
                                   [own]="vm.own"
                                   [result]="vm.result"
                                   [openAnnotation]="vm.openAnnotation"
@@ -16,7 +16,7 @@
           <laji-document
             *ngIf="!vm.forceLocal && vm.document?.publicityRestrictions === publicityRestrictionsPublic; else local"
             [highlight]="vm.highlight"
-            [uri]="vm.document.id"
+            [uri]="vm.document.id!"
             [own]="vm.own"
             [openAnnotation]="vm.openAnnotation"
             [identifying]="vm.identifying"

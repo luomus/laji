@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, Output, EventEmit
 import { SelectOption } from '../select/select.component';
 import { MetadataSelectComponent } from '../metadata-select/metadata-select.component';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { SelectOptions } from '../select-subcategories/select-subcategories.component';
 
 
 @Component({
@@ -14,13 +15,14 @@ export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComp
   @Input({required: true}) query!: WarehouseQueryInterface;
   @Input() subCategories: string[] = [];
   @Input() subTitleBase = '';
-  @Input() filtersName: string[] = [];
+  @Input() filtersName: (keyof WarehouseQueryInterface)[] = [];
   @Input() filtersValues: any[] = [];
 
   @Output() update = new EventEmitter<{id: string[] | string; category: string}>();
 
   categoryOptions:  {[key: string]: SelectOption[]} = {};
   queryToSelect: any[] = [];
+  _options: SelectOptions[] = [];
 
   ngOnChanges(changes: SimpleChanges) {
     super.ngOnChanges(changes);

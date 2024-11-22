@@ -4,7 +4,7 @@ export interface PagedResult<T> {
 
   currentPage: number;
 
-  lastPage?: number;
+  lastPage: number;
 
   nextPage?: number;
 

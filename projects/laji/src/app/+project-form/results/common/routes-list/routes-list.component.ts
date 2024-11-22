@@ -66,7 +66,7 @@ export class RoutesListComponent implements OnChanges {
 
   filterBy = '';
 
-  @Output() rowSelect = new EventEmitter<string>();
+  @Output() rowSelect = new EventEmitter<any>();
 
   @ViewChild('routeLink', { static: true }) routeLinkTpl!: TemplateRef<any>;
 

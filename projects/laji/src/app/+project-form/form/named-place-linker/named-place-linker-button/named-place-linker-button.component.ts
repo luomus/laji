@@ -2,11 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, Output, EventEmitter
 import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 import { combineLatest, EMPTY, Observable, of } from 'rxjs';
 import { FormService } from '../../../../shared/service/form.service';
-import { TranslateService } from '@ngx-translate/core';
-import { DialogService } from '../../../../shared/service/dialog.service';
-import { DocumentApi } from '../../../../shared/api/DocumentApi';
 import { UserService } from '../../../../shared/service/user.service';
-import { ToastsService } from '../../../../shared/service/toasts.service';
 import { FormPermissionService } from '../../../../shared/service/form-permission.service';
 import { DocumentService, Readonly } from '../../../../shared-modules/own-submissions/service/document.service';
 
@@ -33,19 +29,15 @@ interface ViewModel {
 })
 export class NamedPlaceLinkerButtonComponent implements OnInit {
 
-  @Input() documentID: string;
+  @Input() documentID?: string;
 
   @Output() link = new EventEmitter();
 
-  vm$: Observable<ViewModel>;
+  vm$!: Observable<ViewModel>;
 
   constructor(
     private formService: FormService,
-    private translate: TranslateService,
-    private dialogService: DialogService,
-    private documentApi: DocumentApi,
     private userService: UserService,
-    private toastsService: ToastsService,
     private formPermissionService: FormPermissionService,
     private documentService: DocumentService
   ) { }
@@ -61,7 +53,8 @@ export class NamedPlaceLinkerButtonComponent implements OnInit {
     );
     const form$ = document$.pipe(
       switchMap(document => this.formService.getAllForms().pipe(
-        map(forms => forms.find(f => f.id === document.formID))
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        map(forms => forms.find(f => f.id === document.formID)!)
       ))
     );
     const rights$ = form$.pipe(switchMap(form => this.formPermissionService.getRights(form)));
@@ -78,7 +71,8 @@ export class NamedPlaceLinkerButtonComponent implements OnInit {
     ));
 
     this.vm$ = combineLatest(isLinkable$, form$).pipe(
-      map(([isLinkable, form]) => ({isLinkable, formID: form.id, documentID: this.documentID})
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      map(([isLinkable, form]) => ({isLinkable, formID: form.id, documentID: this.documentID!})
     ));
   }
 }

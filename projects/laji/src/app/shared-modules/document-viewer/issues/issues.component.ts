@@ -16,7 +16,7 @@ export class IssuesComponent implements OnChanges {
 
   @Input() data: any;
   @Input() hideTooltips = false;
-  hasIssue: boolean;
+  hasIssue!: boolean;
 
   ngOnChanges() {
     this.initIssue();

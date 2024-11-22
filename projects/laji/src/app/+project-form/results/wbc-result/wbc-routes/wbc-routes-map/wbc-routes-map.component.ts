@@ -22,7 +22,7 @@ export class WbcRoutesMapComponent {
   colorRange = ['violet', 'blue', 'lime', 'yellow', 'orange'];
   layers = TileLayerName;
 
-  @Output() rowSelect = new EventEmitter<string>();
+  @Output() rowSelect = new EventEmitter<any>();
 
   @Input() set data(data: any) {
     this.geoJsons = [];

@@ -27,26 +27,26 @@ export interface SelectOptions extends SelectComponentOptions {
 export class SelectSubcategoriesComponent implements OnChanges {
 
   @Input() query!: WarehouseQueryInterface;
-  @Input() options!: SelectOptions[];
+  @Input() options!: SelectComponentOptions[];
   @Input() title?: string;
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
-  @Output() selectedChange = new EventEmitter<{ [key: string]: (SelectOptions | string)[] }>();
+  @Output() selectedChange = new EventEmitter<{ [key: string]: (SelectComponentOptions | string)[] }>();
   @Input() multiple = true;
   @Input() info?: string;
   @Input() loading = false;
   @Input() subCategories = [];
   @Input() subTitleBase = '';
-  @Input() filtersName = [];
-  @Input() filtersValues = [];
+  @Input() filtersName: (keyof WarehouseQueryInterface)[] = [];
+  @Input() filtersValues: string[] = [];
   @ViewChild('filter') filter?: ElementRef;
 
   @Output() update = new EventEmitter<{ id: string[] | string; category: string }>();
 
-  selectedOptions = <{ [key: string]: (SelectOptions | string)[] }>{};
-  unselectedOptions = <{ [key: string]: (SelectOptions | string)[] }>{};
-  tmpSelectedOption = <{ [key: string]: (SelectOptions | string)[] }>{};
+  selectedOptions = <{ [key: string]: (SelectComponentOptions | string)[] }>{};
+  unselectedOptions = <{ [key: string]: (SelectComponentOptions | string)[] }>{};
+  tmpSelectedOption = <{ [key: string]: (SelectComponentOptions | string)[] }>{};
   filterInput = new Subject<string>();
   filterBy?: string;
   selectedIdx: number[] = [];
@@ -160,7 +160,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
       let tmpSelectedOptions: any[] = [];
       let tmpUnselectedOptions: any[] = [];
       const countObj = this.selectedOptions[i].filter(
-        (item: SelectOptions | string) => typeof item !== 'string' && item.id !== undefined
+        (item: SelectComponentOptions | string) => typeof item !== 'string' && item.id !== undefined
       ).length;
       this.options.map(option => {
         if (countObj > 0) {
@@ -230,7 +230,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
   }
 
   private buildSelectedOptions() {
-    const tmpQueryParam = this.query[this.filtersName[0]] || this.query[this.filtersName[1]];
+    const tmpQueryParam = this.query[this.filtersName[0] as keyof WarehouseQueryInterface] || this.query[this.filtersName[1] as keyof WarehouseQueryInterface];
 
     const param = Array.isArray(tmpQueryParam) ? (tmpQueryParam as any).join() : (tmpQueryParam ? tmpQueryParam : undefined);
     if (this.options && Object.keys(this.options).length > 0) {
@@ -366,7 +366,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
           categoriesExcludeGlobal.forEach(item => {
             if (
               this.selectedOptions[item]?.indexOf(option.id) > -1
-              && this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions | string) => !(typeof x === 'string')
+              && this.selectedOptions['GLOBAL'].findIndex((x: SelectComponentOptions | string) => !(typeof x === 'string')
               && x.id === option.id) === -1
             ) {
               this.selectedOptions[item].splice(this.selectedOptions[item].indexOf(option.id), 1);
@@ -375,7 +375,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
               this.selectedOptions['GLOBAL']
                 .splice(this.selectedOptions['GLOBAL']
                 .findIndex(
-                  (x: SelectOptions | string) => !(typeof x === 'string') && x.id === option.id),
+                  (x: SelectComponentOptions | string) => !(typeof x === 'string') && x.id === option.id),
                   1
                 );
             }
@@ -385,10 +385,10 @@ export class SelectSubcategoriesComponent implements OnChanges {
             if (
               (this.selectedOptions[item] === undefined || this.selectedOptions[item]?.indexOf(option.id) === -1)
               && this.selectedOptions['GLOBAL'] !== undefined
-              && this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions | string) => !(typeof x === 'string')
+              && this.selectedOptions['GLOBAL'].findIndex((x: SelectComponentOptions | string) => !(typeof x === 'string')
               && x.id === option.id) > -1
               && (this.selectedOptions['GLOBAL'] as any)[this.selectedOptions['GLOBAL'].findIndex(
-                (x: SelectOptions | string) => !(typeof x === 'string') && x.id === option.id
+                (x: SelectComponentOptions | string) => !(typeof x === 'string') && x.id === option.id
               )]['checkboxValue'] === true
             ) {
               if (this.selectedOptions[item]) {
@@ -408,7 +408,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
         categoriesExcludeGlobal.forEach(cat => {
           if (this.selectedOptions[cat]?.indexOf(option.id) > -1 &&
             this.selectedOptions['GLOBAL'] !== undefined && !this.selectedOptions['GLOBAL'].length &&
-            this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions | string) => !(typeof x === 'string') && x.id === option.id) === -1
+            this.selectedOptions['GLOBAL'].findIndex((x: SelectComponentOptions | string) => !(typeof x === 'string') && x.id === option.id) === -1
           ) {
             countNoGlobal++;
           }
@@ -444,7 +444,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
 
   buildGlobalOptions(selectedOptions: any, categories: any, equals: any) {
     const oldGlobalOptions = [];
-    this.selectedOptions['GLOBAL']?.forEach((filter: SelectOptions | string) => {
+    this.selectedOptions['GLOBAL']?.forEach((filter: SelectComponentOptions | string) => {
       if (!(typeof filter === 'string') && filter.checkboxValue === true) {
         oldGlobalOptions.push(filter.id);
       }
