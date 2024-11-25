@@ -120,6 +120,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
         })
       ).subscribe()
     );
+    /*
     this.mainSubscription.add(
       combineLatest([
         this.observationFacade.showSearchButtonInfo$,
@@ -130,6 +131,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
         }
       })
     );
+    */
   }
 
   ngOnDestroy() {
