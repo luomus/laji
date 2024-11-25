@@ -32,6 +32,8 @@ export interface Units {
 
     ageNotes?: string;
 
+    local?: boolean;
+
     alive?: boolean;
 
     ankleInMillimeters?: Array<string>;
