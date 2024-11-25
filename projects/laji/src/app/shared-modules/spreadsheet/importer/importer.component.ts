@@ -105,6 +105,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   vm$: Observable<ISpreadsheetState>;
 
+  private coordinateField = 'gatherings[*].geometry';
+  private namedPlaceField = 'gatherings[*].namedPlaceID';
   private externalLabel = [
     'editors[*]',
     'gatheringEvent.leg[*]'
@@ -383,6 +385,38 @@ export class ImporterComponent implements OnInit, OnDestroy {
     return path.replace(/\[[0-9]+]/g, '[*]');
   }
 
+  addMissingNamedPlaceGeometryToMapping(data: any) {
+    let coordinateCol;
+    let namedPlaceCol;
+
+    Object.keys(this.colMap).forEach(col => {
+      if (this.colMap[col] === this.coordinateField) {
+        coordinateCol = col;
+      }
+
+      if (this.colMap[col] === this.namedPlaceField) {
+        namedPlaceCol = col;
+      }
+    });
+
+    const geometry = {};
+
+    data.source?.document?.gatherings?.forEach(gathering => {
+      if (gathering.namedPlaceID && gathering.geometry) {
+        geometry[gathering.namedPlaceID] = gathering.geometry;
+      }
+    });
+
+    Object.keys(data.source.rows).forEach(key => {
+      if (!this.mappedData[key][coordinateCol] && geometry[this.mappedData[key][namedPlaceCol]]) {
+        this.mappedData[key] = {
+          ...this.mappedData[key],
+          [coordinateCol]: geometry[this.mappedData[key][namedPlaceCol]]
+        };
+      }
+    });
+  }
+
   removeInvalidFromUserMapping(errors: any) {
     const userMappings = this.mappingService.getUserMappings();
 
@@ -455,6 +489,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
               });
 
               this.removeInvalidFromUserMapping(data.result._error);
+            } else {
+              this.addMissingNamedPlaceGeometryToMapping(data);
             }
           }
           this.mappedData = [...this.mappedData as any];
