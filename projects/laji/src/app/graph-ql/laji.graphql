@@ -1537,8 +1537,6 @@ type Profile {
   image: String
   "Profile description"
   profileDescription: String
-  "Profile key to link profiles"
-  profileKey: String
   "Settings for the user"
   settings: JSON
   "Settings for the user"
