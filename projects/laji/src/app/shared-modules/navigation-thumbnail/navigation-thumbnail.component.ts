@@ -7,12 +7,12 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationThumbnailComponent {
-  @Input() icon: string;
-  @Input() name: string;
-  @Input() path: string;
-  @Input() query: any;
-  @Input() info: string;
-  @Input() intro: string;
+  @Input() icon?: string;
+  @Input() name?: string;
+  @Input() path?: string;
+  @Input() query?: any;
+  @Input() info?: string;
+  @Input() intro?: string;
   @Input() iconType: 'svg'|'png' = 'svg';
-  @Input() bodyHeight: string;
+  @Input() bodyHeight?: string;
 }

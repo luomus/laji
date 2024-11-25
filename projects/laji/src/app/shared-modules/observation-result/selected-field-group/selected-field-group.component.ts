@@ -9,13 +9,13 @@ import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
 })
 export class SelectedFieldGroupComponent {
 
-  @Input() header: string;
+  @Input() header?: string;
   @Input() fields: string[] = [];
   @Input() selected: string[] = [];
   @Input() required: string[] = [];
   @Input() columnsLookup: any = {};
 
-  @Input() columnSelector: ColumnSelector;
+  @Input() columnSelector?: ColumnSelector;
 
   @Output() toggle = new EventEmitter<string>();
   @Output() moveUp = new EventEmitter<string>();
@@ -33,7 +33,8 @@ export class SelectedFieldGroupComponent {
         return;
       }
 
-      this.getFieldColumnArray(field).forEach(column => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.getFieldColumnArray(field)!.forEach(column => {
         if (this.columnSelector) {
           this.columnSelector.toggleSelectedField(column);
         }

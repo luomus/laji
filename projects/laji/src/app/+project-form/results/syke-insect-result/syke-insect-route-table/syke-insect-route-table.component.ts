@@ -14,16 +14,16 @@ import { DateFormatPipe } from 'ngx-moment';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
-  @Input() routeId: string;
-  @Input() season: string;
+  @Input() routeId!: string;
+  @Input() season!: string;
   @Input() sorts: {prop: string; dir: 'asc'|'desc'}[] = [];
-  @Input() year = '';
+  @Input() year? = '';
   @Input() filter = '';
-  @Input() taxonSet: string;
+  @Input() taxonSet!: string;
   @Input() loading = false;
   @Input() onlySections = true;
 
-  rows: any[];
+  rows?: any[];
   columns: DatatableColumn[] = [];
 
   _getRowClass: (data: any) => string = this.getRowClass.bind(this);
@@ -31,8 +31,8 @@ export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
 
   downloadLoading = false;
 
-  @ViewChild('textOrTranslationKey', { static: true }) textOrTranslationKeyTpl: TemplateRef<any>;
-  @ViewChild('numberOrDocumentIds', { static: true }) numberOrDocumentIdsTpl: TemplateRef<any>;
+  @ViewChild('textOrTranslationKey', { static: true }) textOrTranslationKeyTpl!: TemplateRef<any>;
+  @ViewChild('numberOrDocumentIds', { static: true }) numberOrDocumentIdsTpl!: TemplateRef<any>;
 
   @Output() documentClick = new EventEmitter<string>();
 
@@ -60,18 +60,20 @@ export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
     this.setColumns(this.rows);
   }
 
-  onSort(event) {
-    const speciesStats = this.rows.slice(0, -3);
-    const otherStats = this.rows.slice(-3);
-    event.sorts.forEach((sort) => {
+  onSort(event: any) {
+    const speciesStats = this.rows?.slice(0, -3);
+    const otherStats = this.rows?.slice(-3);
+    event.sorts.forEach((sort: any) => {
       const comparator = this.getSortingComparator(sort.prop);
       const dir = sort.dir === 'asc' ? 1 : -1;
-      speciesStats.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]));
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      speciesStats!.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]));
     });
-    this.rows = speciesStats.concat(otherStats);
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    this.rows = speciesStats!.concat(otherStats);
   }
 
-  setColumns(data) {
+  setColumns(data: any) {
     if (!this.rows || this.rows.length === 0) {
       return;
     }
@@ -104,11 +106,11 @@ export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
       this.columns.push(totalColumn);
     }
 
-    let otherCols = [];
+    let otherCols: any[] = [];
 
-    data.forEach(element => {
+    data.forEach((element: any) => {
       for (const key in element) {
-        if (key.startsWith('gathering') || key.startsWith('year') || (key.startsWith('day') && key.includes(this.year) )) {
+        if (key.startsWith('gathering') || key.startsWith('year') || (key.startsWith('day') && key.includes(this.year!) )) {
           otherCols.push(key.substring(key.indexOf('_') + 1));
         }
       }
@@ -152,15 +154,15 @@ export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
   }
 
   private getAoa(): string[][] {
-    const aoa = [[]];
+    const aoa: any[][] = [[]];
 
     for (const col of this.columns) {
-      aoa[0].push(this.translate.instant(col.label));
+      aoa[0].push(this.translate.instant(col.label!));
     }
-    for (let i = 0; i < this.rows.length; i++) {
+    for (let i = 0; i < this.rows!.length; i++) {
       aoa.push([]);
       for (let j = 0; j < this.columns.length; j++) {
-        const value = this.rows[i][this.columns[j].name];
+        const value = this.rows![i][this.columns[j].name!];
         const key = i + 1;
         aoa[key][j] = Array.isArray(value) ? value.join(', ') : value;
       }
@@ -205,7 +207,7 @@ export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
     return 'ciao';
   }
 
-  private getSortingComparator(prop: string): (a, b) => number {
+  private getSortingComparator(prop: string): (a: any, b: any) => number {
     if (prop === 'name') {
       return (a, b) => (a).localeCompare(b);
     }
@@ -221,7 +223,7 @@ export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
     return Math.round(value * 10 ) / 10;
   }
 
-  private sortDate(array) {
+  private sortDate(array: any) {
     array = array.map(this.reverseDate)
     .sort()
     .map(this.reverseDate);
@@ -229,7 +231,7 @@ export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
     return array;
   }
 
-  reverseDate(date) {
+  reverseDate(date: any) {
     const parts = date.split('-');
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }

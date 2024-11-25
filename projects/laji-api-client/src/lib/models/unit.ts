@@ -44,6 +44,7 @@ export interface Unit {
    * E.g. how age was determined, by whom and when.
    */
   ageNotes?: string;
+  local?: boolean;
   alive?: boolean;
   ankleInMillimeters?: Array<string>;
   /**

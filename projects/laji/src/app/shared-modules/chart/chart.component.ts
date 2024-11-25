@@ -28,15 +28,15 @@ import { ChartType, ChartDataset, ChartEvent, ChartData, Plugin, ChartOptions } 
 })
 export class ChartComponent {
 
-  @ViewChild(BaseChartDirective) public barChart: BaseChartDirective;
+  @ViewChild(BaseChartDirective) public barChart?: BaseChartDirective;
 
-  @Input() public data: ChartData;
-  @Input() public datasets: ChartDataset[];
-  @Input() public labels: string[];
+  @Input() public data?: ChartData;
+  @Input() public datasets?: ChartDataset[];
+  @Input() public labels?: string[];
   @Input() public options: ChartOptions<any> = {};
-  @Input() public chartType: ChartType;
-  @Input() public legend: boolean;
-  @Input() public plugins: Plugin<any, any>[];
+  @Input() public chartType?: ChartType;
+  @Input() public legend?: boolean;
+  @Input() public plugins: Plugin<any, any>[] = [];
 
   @Output() public barClick: EventEmitter<{ event?: ChartEvent; active?: any[]; index: number}> = new EventEmitter();
   @Output() public chartClick: EventEmitter<{ event?: ChartEvent; active?: any[] }> = new EventEmitter();
@@ -50,7 +50,7 @@ export class ChartComponent {
   }
 
   private onBarClick(event: { event?: ChartEvent; active?: object[] }) {
-    const barIndex = (event.active[0] as any)?.index;
+    const barIndex = (event.active?.[0] as any)?.index;
     if (barIndex >= 0) {
       this.barClick.emit({...event, index: barIndex});
     }

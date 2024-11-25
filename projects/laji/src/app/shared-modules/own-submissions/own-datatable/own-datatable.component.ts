@@ -67,8 +67,8 @@ export interface LabelFilter {
 
 export interface LabelEvent {
   documentIDs: string[];
-  year: string;
-  label: string;
+  year?: string;
+  label?: string;
   filter: LabelFilter;
 }
 
@@ -99,7 +99,7 @@ export interface OwnDatatableColumn {
 })
 export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestroy {
   @Input() year?: string;
-  @Input() loadError = '';
+  @Input() loadError? = '';
   @Input() showDownloadAll = true;
   @Input() showPrintLabels = true;
   @Input() admin = false;
@@ -186,7 +186,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   @Input()
-  set documents(docs: RowDocument[]) {
+  set documents(docs: RowDocument[]|null) {
     if (!docs) {
       this.allRows = [];
       this.visibleRows = [];
@@ -270,10 +270,10 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     const val = this.filterBy;
     const columns = this.useColumns;
 
-    this.visibleRows = this.allRows.reduce((cumulative, row, idx) => {
+    this.visibleRows = this.allRows.reduce<RowDocument[]>((cumulative, row, idx) => {
       for (const col of columns) {
-        const rowValue = String(row[col.prop]);
-        if (rowValue && (rowValue.toLowerCase().indexOf(val) !== -1 || !val)) {
+        const rowValue = String(row[col.prop as keyof RowDocument]);
+        if (rowValue && (!val || rowValue.toLowerCase().indexOf(val) !== -1)) {
           cumulative.push({...row, index: idx});
           break;
         }
@@ -323,9 +323,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     this.table.rowDetail.toggleExpandRow(row);
   }
 
-  onSort(event) {
+  onSort(event: {sorts: { prop: keyof RowDocument; dir: 'asc'|'desc' }[]}) {
     this.lastSort = event;
-    const rows = [...this.visibleRows];
+    const rows = this.visibleRows ? [...this.visibleRows] : [];
     event.sorts.forEach((sort) => {
       const comparator = this.comparator(sort.prop);
       const dir = sort.dir === 'asc' ? 1 : -1;
@@ -339,15 +339,15 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
    *
    * @returns any
    */
-  comparator(prop) {
+  comparator(prop: keyof RowDocument) {
     if (prop === 'dateObserved') {
-      return (a, b) => {
+      return (a: any, b: any) => {
         a = (a || '').split('-')[0].trim().split('.').reverse().join('');
         b = (b || '').split('-')[0].trim().split('.').reverse().join('');
         return b - a;
       };
     } else if (prop === 'dateEdited') {
-      return (a, b) => {
+      return (a: any, b: any) => {
         a = (a || '').split(' ');
         b = (b || '').split(' ');
         a = a.length > 1 ?
@@ -359,9 +359,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
         return b - a;
       };
     } else if (prop === 'unitCount') {
-      return (a, b) => b - a;
+      return (a: any, b: any) => b - a;
     }
-    return (a, b) => ('' + a).localeCompare('' + b);
+    return (a: any, b: any) => ('' + a).localeCompare('' + b);
   }
 
   getDefaultSort() {

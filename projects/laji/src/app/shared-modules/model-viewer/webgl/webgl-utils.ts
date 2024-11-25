@@ -5,7 +5,8 @@ export const getGlTypeFromArr = (gl: WebGLRenderingContext, arr: Uint16Array | U
 );
 
 export const createShader = (gl: WebGLRenderingContext, source: string, type: number): WebGLShader => {
-  const shader = gl.createShader(type);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const shader = gl.createShader(type)!;
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
 
@@ -17,7 +18,8 @@ export const createShader = (gl: WebGLRenderingContext, source: string, type: nu
 };
 
 export const createProgram = (gl: WebGLRenderingContext, vertex: WebGLShader, fragment: WebGLShader): WebGLProgram => {
-  const program = gl.createProgram();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const program = gl.createProgram()!;
   gl.attachShader(program, vertex);
   gl.attachShader(program, fragment);
   gl.linkProgram(program);
@@ -30,7 +32,8 @@ export const createProgram = (gl: WebGLRenderingContext, vertex: WebGLShader, fr
 };
 
 export const glInitializeProgram = (canvas: HTMLCanvasElement): [WebGL2RenderingContext, WebGLProgram] => {
-  const gl: WebGL2RenderingContext = canvas.getContext('webgl2');
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const gl: WebGL2RenderingContext = canvas.getContext('webgl2')!;
 
   // compile shader program
   const vs = createShader(gl, vertexShader, gl.VERTEX_SHADER);
@@ -41,7 +44,8 @@ export const glInitializeProgram = (canvas: HTMLCanvasElement): [WebGL2Rendering
 };
 
 export const bufferPositions = (gl: WebGL2RenderingContext, positionsLocation: number, positions: Float32Array, bufferRef: WebGLBuffer | void): WebGLBuffer => {
-  const ref = bufferRef === null ? gl.createBuffer() : <WebGLBuffer>bufferRef;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const ref = bufferRef === null ? gl.createBuffer()! : <WebGLBuffer>bufferRef;
   gl.bindBuffer(gl.ARRAY_BUFFER, ref);
   gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
   gl.enableVertexAttribArray(positionsLocation);
@@ -57,7 +61,8 @@ export const bufferPositions = (gl: WebGL2RenderingContext, positionsLocation: n
 };
 
 export const bufferNormals = (gl: WebGL2RenderingContext, normalsLocation: number, normals: Float32Array, bufferRef: WebGLBuffer | void): WebGLBuffer => {
-  const ref = bufferRef === null ? gl.createBuffer() : <WebGLBuffer>bufferRef;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const ref = bufferRef === null ? gl.createBuffer()! : <WebGLBuffer>bufferRef;
   gl.bindBuffer(gl.ARRAY_BUFFER, ref);
   gl.bufferData(gl.ARRAY_BUFFER, normals, gl.STATIC_DRAW);
   gl.enableVertexAttribArray(normalsLocation);
@@ -73,7 +78,8 @@ export const bufferNormals = (gl: WebGL2RenderingContext, normalsLocation: numbe
 };
 
 export const bufferIndices = (gl: WebGL2RenderingContext, indices: Uint32Array | Uint16Array, bufferRef: WebGLBuffer | void): WebGLBuffer => {
-  const ref = bufferRef === null ? gl.createBuffer() : <WebGLBuffer>bufferRef;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const ref = bufferRef === null ? gl.createBuffer()! : <WebGLBuffer>bufferRef;
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ref);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
   return ref;

@@ -10,8 +10,8 @@ const EMPTY_VALUE = ' ';
 })
 export class PrintRowComponent implements OnChanges {
 
-  @Input() title: string;
-  @Input() value: string = EMPTY_VALUE;
+  @Input() title?: string;
+  @Input() value?: string = EMPTY_VALUE;
 
   public _title = '';
   public show = false;

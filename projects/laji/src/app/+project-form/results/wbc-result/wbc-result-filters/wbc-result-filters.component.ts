@@ -18,9 +18,9 @@ export class WbcResultFiltersComponent implements OnInit, OnChanges {
   seasons: SEASON[] = ['fall', 'winter', 'spring'];
   areaTypes = Area.AreaType;
 
-  activeYear: number;
-  activeSeason: SEASON;
-  activeArea: string;
+  activeYear?: number;
+  activeSeason?: SEASON;
+  activeArea?: string;
   toHtmlSelectElement = toHtmlSelectElement;
 
   @Output() yearChange = new EventEmitter<number>();
@@ -58,7 +58,7 @@ export class WbcResultFiltersComponent implements OnInit, OnChanges {
     }
   }
 
-  onYearChange(newYear: string) {
+  onYearChange(newYear: string | undefined) {
     this.activeYear = newYear ? parseInt(newYear, 10) : undefined;
     this.yearChange.emit(this.activeYear);
     if (!this.activeYear) {
@@ -68,13 +68,13 @@ export class WbcResultFiltersComponent implements OnInit, OnChanges {
     }
   }
 
-  onSeasonChange(newSeason: string) {
+  onSeasonChange(newSeason: string | undefined) {
     this.activeSeason = newSeason as SEASON;
     this.seasonChange.emit(newSeason as SEASON);
     this.onFiltersChange();
   }
 
-  onAreaChange(newArea: string) {
+  onAreaChange(newArea: string | undefined) {
     if (newArea === 'all') {
       newArea = undefined;
     }

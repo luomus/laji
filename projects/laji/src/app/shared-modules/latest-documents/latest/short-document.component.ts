@@ -14,27 +14,27 @@ import { Form } from '../../../shared/model/Form';
   styleUrls: ['./short-document.component.scss']
 })
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() document: Document;
-  @Input() form: Form.List;
+  @Input() document!: Document & { id: string };
+  @Input() form!: Form.List;
   @Input() showFormName = true;
-  @Input() staticWidth: number = undefined;
+  @Input() staticWidth?: number = undefined;
   @Input() complainLocality = true;
   @Input() unsaved = false;
   @Output() discardTempDocument = new EventEmitter();
   @Output() showViewer = new EventEmitter<Document>();
 
-  public editDocumentRoute: string[];
-  public unitList = [];
-  public newUnitsLength: number;
-  public gatheringDates: {start: string; end: string};
+  public editDocumentRoute!: string[];
+  public unitList: string[] = [];
+  public newUnitsLength!: number;
+  public gatheringDates!: { start: string | null; end: string | null };
   public publicity = Document.PublicityRestrictionsEnum;
-  public locality: string;
+  public locality!: string;
 
   public showList = false;
   public changingLocale = true;
   public loading = false;
 
-  private subTrans: Subscription;
+  private subTrans!: Subscription;
 
   constructor(
     public formService: FormService,
@@ -76,16 +76,16 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     this.loading = false;
   }
 
-  getEditDocumentRoute(formId, documentId) {
+  getEditDocumentRoute(formId: string, documentId: string) {
     return this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, documentId)]);
   }
 
-  onShowViewer(event) {
+  onShowViewer(event: any) {
     event.stopPropagation();
     this.showViewer.emit(this.document);
   }
 
-  showUnitList(event) {
+  showUnitList(event: any) {
     event.stopPropagation();
     this.showList = !this.showList;
   }

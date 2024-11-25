@@ -11,8 +11,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./file-download.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class FileDownloadComponent implements OnDestroy {
-  @Input() downloadRequest: DownloadRequest;
+  @Input() downloadRequest!: DownloadRequest;
 
   fileTypeEnum = FileType;
   fileFormatEnum = FileFormat;

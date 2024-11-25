@@ -48,7 +48,7 @@ export class InfoPageComponent implements OnChanges, OnDestroy {
   hasContent = new EventEmitter<boolean>();
 
   private currentPage?: string;
-  private contentSub: Subscription;
+  private contentSub?: Subscription;
 
   constructor(
     private translateService: TranslateService,
@@ -100,7 +100,8 @@ export class InfoPageComponent implements OnChanges, OnDestroy {
     this.contentSub = this.lajiApiService.get(LajiApi.Endpoints.information, this.lastFromPath(page), {}).pipe(
       tap(result => {
         this.title.emit(result.title);
-        this.parents.emit(this.excludeParentIds ? filterParentsAboveId(this.excludeParentIds, result.parents) : result.parents);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.parents.emit(this.excludeParentIds ? filterParentsAboveId(this.excludeParentIds, result.parents!) : result.parents);
         this.subPages.emit(result.children || []);
       }),
       map(result => (result.content || '').trim()),

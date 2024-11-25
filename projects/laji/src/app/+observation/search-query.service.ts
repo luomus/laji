@@ -130,6 +130,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'includeSubTaxa',
     'annotated',
     'onlyNonStateLands',
+    'local',
     'alive',
     'higherTaxon',
     'sensitive'

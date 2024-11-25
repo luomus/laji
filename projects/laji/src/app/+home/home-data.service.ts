@@ -8,6 +8,8 @@ import { GraphQLService } from '../graph-ql/service/graph-ql.service';
 import { HistoryService } from '../shared/service/history.service';
 import { Image } from '../shared/gallery/image-gallery/image.interface';
 import { News } from '../shared/model/News';
+import { environment } from '../../environments/environment';
+import { Global } from '../../environments/global';
 
 export interface IHomeData {
   observations: {
@@ -48,6 +50,11 @@ export interface IHomeData {
   };
 }
 
+const NEWS_TAGS = ['release', 'taxonomy', 'technical', 'luke.fi', 'luomus.fi', 'syke.fi', 'vieraslajit.fi'];
+if (environment.type === Global.type.vir) {
+  NEWS_TAGS.push('viranomaiset');
+}
+
 /* eslint-disable max-len */
 const HOME_QUERY = gql`
   query($pageSize: Int = 5, $after: String = "", $week: String = "") {
@@ -84,7 +91,7 @@ const HOME_QUERY = gql`
         }
       }
     },
-    news(pageSize: $pageSize) {
+    news(pageSize: $pageSize, tag: "${NEWS_TAGS.join(',')}") {
       prevPage,
       nextPage,
       results {

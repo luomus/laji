@@ -8,7 +8,7 @@ import { catchError, map, mergeMap, switchMap, tap, toArray } from 'rxjs/operato
 import { FormService } from '../shared/service/form.service';
 
 @Injectable({providedIn: 'root'})
-export class DocumentStorage extends LocalDb<Document> {
+export class DocumentStorage extends LocalDb<Document & { id: string }> {
 
   private deletesSource = new Subject();
   deletes$ = this.deletesSource.asObservable();
@@ -41,14 +41,14 @@ export class DocumentStorage extends LocalDb<Document> {
     );
   }
 
-  getItem(key: string, person?: string | Person): Observable<Document | null> {
+  getItem(key: string, person?: string | Person): Observable<Document & { id: string } | null> {
     if (person) {
       return super.getItem(DocumentStorage.key(key, person));
     }
     return super.getItem(key);
   }
 
-  setItem(key: string, value: Document, person?: string | Person): Observable<Document> {
+  setItem(key: string, value: Document & { id: string }, person?: string | Person): Observable<Document & { id: string }> {
     if (person) {
       return super.setItem(DocumentStorage.key(key, person), value);
     }

@@ -21,16 +21,16 @@ import { DatatableColumn } from '../../../../../shared-modules/datatable/model/d
   styleUrls: ['./wbc-species-list.component.css']
 })
 export class WbcSpeciesListComponent implements OnInit, OnChanges {
-  @Input() year: number;
-  @Input() season: SEASON;
-  @Input() birdAssociationArea: string;
+  @Input() year!: number;
+  @Input() season!: SEASON;
+  @Input() birdAssociationArea!: string;
   @Input() onlyCommonSpecies = true;
   @Input() showStatistics = false;
   @Input() filterBy = '';
   @Output() rowSelect = new EventEmitter<string>();
 
-  @ViewChild('vernacularName', { static: true }) vernacularNameTpl: TemplateRef<any>;
-  @ViewChild('scientificName', { static: true }) scientificNameTpl: TemplateRef<any>;
+  @ViewChild('vernacularName', { static: true }) vernacularNameTpl!: TemplateRef<any>;
+  @ViewChild('scientificName', { static: true }) scientificNameTpl!: TemplateRef<any>;
 
   loading = true;
 
@@ -43,8 +43,8 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   private additionalColumns: DatatableColumn[] = [];
 
   private averageCounts: any;
-  private subList: Subscription;
-  private queryKey: string;
+  private subList!: Subscription;
+  private queryKey?: string;
 
   constructor(
     private resultService: WbcResultService,
@@ -128,7 +128,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
     this.rows = this.onlyCommonSpecies ? [...this.filteredRows] : [...this.allRows];
   }
 
-  onSort(event) {
+  onSort(event: any) {
     if (event.sorts.length < 1) {
       this.setRows();
     }
@@ -142,7 +142,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
       .pipe(
         map(data => {
           const yearCount = data[0].length;
-          const countBySpecies = data[1];
+          const countBySpecies = data[1] as any;
           for (const key in countBySpecies) {
             if (countBySpecies.hasOwnProperty(key)) {
               countBySpecies[key] = countBySpecies[key] / yearCount;
@@ -197,7 +197,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
           const routeCountBySpecies = data[0];
           const routeCount = data[1];
           const routeLengthSum = data[2] / 10000;
-          const individualCountBySpeciesPrevTenYears = data[3];
+          const individualCountBySpeciesPrevTenYears = data[3] as any;
           const routeLengthSumPrevTenYears = data[4] / 10000;
 
           list.map((l) => {

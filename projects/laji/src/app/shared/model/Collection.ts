@@ -33,7 +33,7 @@ export interface Collection {
    */
   hasChildren?: boolean;
 
-  id?: string;
+  id: string;
 
   /**
    * Name of the collection in different languages. (Not name of collection database.) If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
@@ -84,17 +84,17 @@ export interface Collection {
    * Short name for publisher
    */
   publisherShortname?: string[];
-  
+
   /**
    * Taxonomic coverage of the collection
    */
   taxonomicCoverage?: string;
-  
+
   /**
    * Collections language
    */
   language?: string;
-  
+
   /**
    * Collections abbreviation
    */
@@ -141,7 +141,7 @@ export interface Collection {
   methods?: string;
 
   /**
-   * Publicity restrictions of the data 
+   * Publicity restrictions of the data
    */
   publicityRestrictions?: string;
 
@@ -151,7 +151,7 @@ export interface Collection {
   internalUseOnly?: boolean;
 
   /**
-   * Is the physical collection available for public, used for botanical collections 
+   * Is the physical collection available for public, used for botanical collections
    */
   publicAccess?: boolean;
 

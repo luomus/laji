@@ -32,13 +32,13 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   @Input() isEditor?: boolean;
   @Input() personID?: string;
   @Input() personRoleAnnotation?: Annotation.AnnotationRoleEnum;
-  @Input() identifying = false;
+  @Input() identifying? = false;
   @Input() unit: any;
   @Input() gathering: any;
   @Input() annotations: Annotation[] = [];
   @Input() formVisible?: boolean;
   @Input() listVisible?: boolean;
-  @Input() annotationTags?: AnnotationTag[];
+  @Input() annotationTags?: AnnotationTag[]|null;
   @Output() annotationsClose = new EventEmitter<any>();
   @Output() annotationChange = new EventEmitter<Annotation>();
   @Output() loadingForm = new EventEmitter<any>();

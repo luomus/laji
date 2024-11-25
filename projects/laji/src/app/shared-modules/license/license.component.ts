@@ -117,9 +117,9 @@ const LICENSES: {[type: string]: ILicense} = {
 })
 export class LicenseComponent {
 
-  _type: string;
-  _sort: string;
-  _license: ILicense;
+  _type!: string;
+  _sort!: string;
+  _license!: ILicense;
 
   @Input()
   set type(type: string) {

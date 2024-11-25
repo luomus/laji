@@ -17,11 +17,11 @@ export class ViewerModalComponent implements OnDestroy {
 
   readonly vm$: Observable<IViewerState>;
 
-  @ViewChild('documentModal', { static: false }) private modal: ModalComponent;
+  @ViewChild('documentModal', { static: false }) private modal!: ModalComponent;
 
-  private subHidden: Subscription;
-  private open: boolean;
-  private annotationOpen: boolean;
+  private subHidden?: Subscription;
+  private open?: boolean;
+  private annotationOpen?: boolean;
 
   constructor(
     private viewerFacade: DocumentViewerFacade

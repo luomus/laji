@@ -26,7 +26,7 @@ const GRAPH_QL_STATE_KEY = makeStateKey<any>('graphql.state');
 })
 export class GraphQLModule {
   private readonly cache: InMemoryCache;
-  private currentLang;
+  private currentLang?: string;
 
   constructor(
     private apollo: Apollo,
@@ -69,7 +69,7 @@ export class GraphQLModule {
   private onBrowser() {
     const state = this.transferState.get<NormalizedCacheObject>(
       GRAPH_QL_STATE_KEY,
-      null,
+      null as any,
     );
     this.cache.restore(state);
     this.transferState.remove(GRAPH_QL_STATE_KEY);

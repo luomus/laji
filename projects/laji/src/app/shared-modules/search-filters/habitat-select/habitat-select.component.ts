@@ -10,11 +10,11 @@ export class HabitatSelectComponent implements OnChanges, OnDestroy {
   @Input() query: any;
   @Input() info: string | undefined;
 
-  habitat: string[];
-  habitatSpecific: string[];
-  onlyPrimary: boolean;
+  habitat?: string[];
+  habitatSpecific?: string[];
+  onlyPrimary?: boolean;
 
-  private subUpdate: Subscription;
+  private subUpdate?: Subscription;
 
   @Output() habitatSelect = new EventEmitter<{primaryHabitat?: string[]; anyHabitat?: string[]}>();
 
@@ -43,10 +43,12 @@ export class HabitatSelectComponent implements OnChanges, OnDestroy {
   }
 
   private getHabitatQuery(): string[] {
-    let habitatQuery = this.habitat;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    let habitatQuery = this.habitat!;
     if (this.habitatSpecific && this.habitatSpecific.length > 0) {
       const specific = this.habitatSpecific.join(',');
-      habitatQuery = this.habitat.map(hab => (hab + '[' + specific + ']'));
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      habitatQuery = this.habitat!.map(hab => (hab + '[' + specific + ']'));
     }
     return habitatQuery;
   }

@@ -20,7 +20,7 @@ import { Breadcrumb } from '../../shared-modules/breadcrumb/theme-breadcrumb/the
 export class DatasetsComponent {
 
   readonly breadcrumb$: Observable<Breadcrumb[]>;
-  readonly forms$: Observable<Form.List[]>;
+  readonly forms$: Observable<(Form.List | false)[]>;
   instructions: MultiLanguage = {
     fi: '3513',
     en: '3517',

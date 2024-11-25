@@ -390,6 +390,19 @@
   </div>
   <div>
     <laji-select
+      [selected]="[query.local]"
+      (selectedChange)="indirectQueryChange('local', $event[0])"
+      [multiple]="false"
+      [useFilter]="false"
+      [title]="'observation.form.local' | translate"
+      [info]="'observation.info.local' | translate"
+      [options]="[
+        {id: true, value: ('observation.form.local.true' | translate)},
+        {id: false, value: ('observation.form.local.false' | translate)}
+      ]"></laji-select>
+  </div>
+  <div>
+    <laji-select
       [selected]="[query.alive]"
       (selectedChange)="indirectQueryChange('alive', $event[0])"
       [multiple]="false"

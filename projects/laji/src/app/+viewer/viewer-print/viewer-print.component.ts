@@ -13,14 +13,13 @@ import { PlatformService } from '../../root/platform.service';
   styleUrls: ['./viewer-print.component.css']
 })
 export class ViewerPrintComponent implements OnInit, OnDestroy {
-  uri: string;
-  own: boolean;
+  uri: string | undefined;
+  own: boolean | undefined;
   showFacts = false;
-
-  document: Document;
+  document: Document | undefined;
 
   loading = false;
-  private subQuery: Subscription;
+  private subQuery!: Subscription;
 
   constructor(
     private platformService: PlatformService,

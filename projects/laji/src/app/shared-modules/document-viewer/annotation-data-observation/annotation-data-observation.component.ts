@@ -10,7 +10,7 @@ export class AnnotationDataObservationComponent implements OnInit {
   @Input() gathering: any;
   @Input() unit: any;
   @Input() createdDate: any;
-  @Input() collectionId: string;
+  @Input() collectionId?: string;
   @Input() hideTooltips = false;
 
   occurrence: any;
