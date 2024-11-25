@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { QualityService } from '../../service/quality.service';
-import { forkJoin as ObservableForkJoin, Subscription } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, Subscription } from 'rxjs';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { MostActiveUsersTable } from '../model/most-active-users-table';
 import * as moment from 'moment';
@@ -27,7 +27,7 @@ export class MostActiveUsersTableComponent implements OnInit, OnChanges {
 
   loading = true;
 
-  private fetchSub: Subscription;
+  private fetchSub!: Subscription;
 
   constructor(
     private qualityService: QualityService,
@@ -49,7 +49,7 @@ export class MostActiveUsersTableComponent implements OnInit, OnChanges {
       this.fetchSub.unsubscribe();
     }
 
-    const observables = [];
+    const observables: Observable<any>[] = [];
 
     this.tables.map((table) => {
       observables.push(

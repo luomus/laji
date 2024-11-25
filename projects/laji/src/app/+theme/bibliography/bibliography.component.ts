@@ -15,10 +15,8 @@ import { Observable } from 'rxjs';
   `,
 })
 
-
 export class BibliographyComponent implements OnInit {
-
-  publications$: Observable<Information>;
+  publications$!: Observable<Information>;
 
   constructor(
     private apiService: LajiApiService
@@ -27,5 +25,5 @@ export class BibliographyComponent implements OnInit {
   ngOnInit() {
     this.publications$ = this.apiService.get(LajiApi.Endpoints.information, 'finbif-bib-all', {});
   }
-
 }
+

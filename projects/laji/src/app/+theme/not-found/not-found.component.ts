@@ -22,7 +22,7 @@ export class NotFoundComponent implements OnInit {
   ngOnInit() {
     const [uri, queryParams] = this.browserService.getPathAndQueryFromUrl(this.router.url);
     const [, formName = '', subRoute = ''] = uri.match(/theme\/([^\/]+)(\/.+)?$/) || [];
-    const formID = Global.oldThemeRouting[formName];
+    const formID = Global.oldThemeRouting[<keyof typeof Global.oldThemeRouting>formName];
     if (!formID) {
       return;
     }
@@ -31,7 +31,7 @@ export class NotFoundComponent implements OnInit {
     if (subRoute === '/instructions') {
       this.formService.getForm(formID).pipe(
         take(1),
-        map(form => form.options?.instructions ? '/instructions' : '/about')
+        map(form => form?.options?.instructions ? '/instructions' : '/about')
       ).subscribe(sub => {
         this.router.navigate([`${redirectionBase}${sub}`], {queryParams});
       });
@@ -48,8 +48,9 @@ export class NotFoundComponent implements OnInit {
       const document = subRoute.replace('/statistics', '');
       redirectionSubRoute = `/submissions/${document}`;
     } else if (subRoute.startsWith('/places')) {
-      const subFormID = subRoute.match(/\/places\/[^/]+\/([^/]+)/)[1];
-      const parent = Global.oldThemeParents[subFormID];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const subFormID = subRoute.match(/\/places\/[^/]+\/([^/]+)/)![1];
+      const parent = Global.oldThemeParents[<keyof typeof Global.oldThemeParents>subFormID];
       if (parent) {
         redirectionSubRoute = `/form/${subFormID}/places`;
       } else {
