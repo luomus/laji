@@ -36,7 +36,7 @@ import { DownloadService } from '../../shared/service/download.service';
 import { ApiKeyRequest } from '../../shared-modules/download-modal/apikey-modal/apikey-modal.component';
 import { createActiveFiltersList } from '../../shared-modules/search-filters/active/observation-active.component';
 import { FORMAT } from '../../shared-modules/download-modal/download.component';
-import { GEO_CONVERT_LIMIT, FileFormat, GeoConvertService, isGeoConvertError } from '../../shared/service/geo-convert.service';
+import { FileFormat, GeoConvertService, isGeoConvertError } from '../../shared/service/geo-convert.service';
 import { DialogService } from '../../shared/service/dialog.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 import { PlatformService } from '../../root/platform.service';
@@ -90,8 +90,6 @@ export class ObservationDownloadComponent implements OnDestroy {
   linkTimeout: any;
 
   formats: FORMAT[] = ['tsv', 'ods', 'xlsx', 'shp', 'gpkg'];
-
-  gisDownloadLimit = GEO_CONVERT_LIMIT;
 
   private _originalSelected: string[];
   private _settings: UserSettingsResultList;
