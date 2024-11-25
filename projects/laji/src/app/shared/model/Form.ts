@@ -64,6 +64,7 @@ export namespace Form {
     prepopulateWithTaxonSets?: string[];
     emptyOnNoCount?: boolean;
     allowExcel?: boolean;
+    allowExcelGeneration?: boolean;
     excludeFromGlobalExcel?: boolean;
     allowTemplate?: boolean;
     forms?: string[];

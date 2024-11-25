@@ -31,6 +31,11 @@ export interface NamedPlacesRouteData extends NamedPlacesQueryModel {
   namedPlace?: NamedPlace;
 }
 
+export interface ExcelFormOptions {
+  formID: string;
+  allowGenerate: boolean;
+}
+
 @Injectable({providedIn: 'root'})
 export class ProjectFormService {
   constructor(
@@ -111,9 +116,15 @@ export class ProjectFormService {
     return this.getProjectRootRoute$(route).pipe(map(_route => _route.snapshot.params['projectID']));
   }
 
-  getExcelFormIDs(projectForm: ProjectForm): string[] {
-    const allowsExcel = (form: Form.SchemaForm | Form.List) => form.options?.allowExcel && form.id;
-    return [allowsExcel(projectForm.form), ...projectForm.subForms.map(allowsExcel)].filter(f => f) as string[];
+  getExcelFormOptions(projectForm: ProjectForm, isAdmin: boolean): ExcelFormOptions[] {
+    const getExcelOptions = (form: Form.SchemaForm | Form.List) => form.options?.allowExcel
+      ? { formID: form.id, allowGenerate: isAdmin || form.options.allowExcelGeneration !== false }
+      : undefined;
+    return [getExcelOptions(projectForm.form), ...projectForm.subForms.map(getExcelOptions)].filter(f => f);
+  }
+
+  getExcelFormIDs(projectForm: ProjectForm, isAdmin: boolean): string[] {
+    return this.getExcelFormOptions(projectForm, isAdmin).map(f => f.formID);
   }
 
   getSubmissionsPageTitle(form: Form.SchemaForm, isAdmin: boolean) {
