@@ -10,8 +10,8 @@ import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQuery
 })
 export class ThemeObservationListComponent {
 
-  @Input() query: WarehouseQueryInterface;
-  @Input() height;
+  @Input() query!: WarehouseQueryInterface;
+  @Input() height!: string;
   @Input() showSettings = false;
   @Input() selected = ['unit.linkings.taxon', 'unit.linkings.taxon.scientificName', 'unit.linkings.taxon.vernacularName', 'gathering.displayDateTime', 'gathering.team'];
   @Output() listClose = new EventEmitter<WarehouseQueryInterface>();
@@ -19,14 +19,14 @@ export class ThemeObservationListComponent {
 
   loading = false;
   results = {results: []};
-  current: string;
+  current!: string;
 
   constructor(
     public translate: TranslateService,
     private documentViewerFacade: DocumentViewerFacade
   ) { }
 
-  showDocument(event) {
+  showDocument(event: any) {
     const row = event.row || {};
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
       this.documentViewerFacade.showDocumentID({

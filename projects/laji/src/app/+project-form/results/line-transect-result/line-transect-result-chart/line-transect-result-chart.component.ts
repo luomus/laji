@@ -18,18 +18,18 @@ const tooltipPositionCursor = 'cursor' as any; // chart.js typings broken for cu
 })
 export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
-  @Input() informalTaxonGroup: string;
-  @Input() defaultTaxonId: string;
-  @Input() collectionId: string;
+  @Input() informalTaxonGroup?: string;
+  @Input() defaultTaxonId!: string;
+  @Input() collectionId!: string;
   @Input() showDefaultPeriodFilter = true;
 
   loading = false;
   areaTypes = Area.AreaType;
   birdAssociationAreas: string[] = [];
-  currentArea;
-  taxon: string;
-  taxonId: string;
-  fromYear: number;
+  currentArea?: string;
+  taxon?: string;
+  taxonId!: string;
+  fromYear?: number;
   result: PagedResult<any> = {
     currentPage: 1,
     lastPage: 1,
@@ -38,14 +38,14 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     pageSize: 0
   };
   private yearLineLengths: any;
-  minYear: number;
-  maxYear: number;
+  minYear?: number;
+  maxYear?: number;
   line: {name: string; series: {name: string; value: number}[]}[] = [];
   private afterBothFetched: any;
-  private subQuery: Subscription;
-  private fetchSub: Subscription;
-  @ViewChild('myCanvas') canvas: ElementRef;
-  context: CanvasRenderingContext2D;
+  private subQuery!: Subscription;
+  private fetchSub!: Subscription;
+  @ViewChild('myCanvas') canvas!: ElementRef;
+  context?: CanvasRenderingContext2D;
   public gradient: any;
   public lineChartData: ChartDataset[] = [{data: [], label: 'Parim./km'}];
   public lineChartLabels: string[] = [];
@@ -71,7 +71,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     },
     // Eslint disabled because it needs to be a function to have the correct 'this' reference.
     // eslint-disable-next-line object-shorthand
-    onHover: function(a, e, element) {
+    onHover: function(a, e, element: any) {
       let indexChart;
       if (element[0]) {
        indexChart = Number(element[0]['_index']);
@@ -79,11 +79,10 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
         indexChart = -1;
       }
 
-
-      const dataset = this.data.datasets[0].data;
+      const dataset = (this as any).data.datasets[0].data;
       if (element[0]) {
-        this.options.plugins.tooltip.callbacks.label = function(tooltipItem) {
-          const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+        (this as any).options.plugins.tooltip.callbacks.label = function(tooltipItem: any) {
+          const range = (start: number, end: number, step: number) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
           const activePoint = element[0]['_chart'].tooltip._active[0];
           const tooltipPosition = element[0].tooltipPosition();
           const x = Number((tooltipPosition.x).toFixed(0));
@@ -92,7 +91,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
           let empty = 0;
           if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
             if ( !dataset[Number(indexChart) + 1] || (indexChart === 0 && !dataset[Number(indexChart) + 1])) {
-              const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
+              const index = dataset.slice(indexChart + 1).findIndex((el: any) => el) + indexChart;
               const diff = index - Number(indexChart);
               if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
                 empty = -3 * diff;
@@ -100,7 +99,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             }
             if ( !dataset[Number(indexChart) - 1] || (indexChart === (dataset.length - 1) && !dataset[Number(indexChart) - 1])) {
               if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
+                const index = dataset.slice(0, indexChart).reverse().findIndex((el: any) => el);
                 const diff = Number(indexChart) - (Number(indexChart) - index);
                   empty = 3 * diff;
               }
@@ -118,10 +117,10 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
           return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
           }
         };
-        this.options.plugins.tooltip.callbacks.title = function(tooltipItem) {
+        (this as any).options.plugins.tooltip.callbacks.title = function(tooltipItem: any) {
           const year = element[0]['_chart'].config.data.labels[0] === '2006' ? 15 : 6;
           const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
-          const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+          const range = (start: number, end: number, step: number) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
           const activePoint = element[0]['_chart'].tooltip._active[0];
           const tooltipPosition = element[0].tooltipPosition();
           const x = Number((tooltipPosition.x).toFixed(0));
@@ -130,7 +129,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
           let empty = 0;
           if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
             if ( !dataset[Number(indexChart) + 1]) {
-              const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
+              const index = dataset.slice(indexChart + 1).findIndex((el: any) => el) + indexChart;
               const diff = index - Number(indexChart);
               if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
                   empty = -3 * diff;
@@ -138,7 +137,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             }
             if (!dataset[Number(indexChart) - 1]) {
               if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
+                const index = dataset.slice(0, indexChart).reverse().findIndex((el: any) => el);
                 const diff = Number(indexChart) - (Number(indexChart) - index);
                   empty = 3 * diff;
               }
@@ -192,7 +191,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     Chart.register(LineWithLine);
-    (Tooltip.positioners as any).cursor = function(chartElements, coordinates) {
+    (Tooltip.positioners as any).cursor = function(chartElements: any, coordinates: any) {
       return coordinates;
     };
 
@@ -211,7 +210,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     this.fetchSub?.unsubscribe();
   }
 
-  private navigate(taxonId: string, birdAssociationAreas: string[], fromYear: number) {
+  private navigate(taxonId: string, birdAssociationAreas: string[], fromYear: number | undefined) {
     this.router.navigate([], {queryParams: {
       taxonId,
       birdAssociationAreas: birdAssociationAreas.join(','),
@@ -259,8 +258,8 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       ).pipe(
           tap(data => {
             this.currentArea = currentSearch;
-            const yearLineLengths = {};
-            data.results.forEach(result => {
+            const yearLineLengths: any = {};
+            data.results.forEach((result: any) => {
               const {'gathering.conversions.year': year} = result.aggregateBy;
               if (!year) {
                 return;
@@ -275,10 +274,10 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     )
       .subscribe(data => {
         this.result = data;
-        const yearsToPairCounts = {};
+        const yearsToPairCounts: any = {};
         this.lineChartData[0].data = [];
         this.lineChartLabels = [];
-        data.results.forEach(result => {
+        data.results.forEach((result: any) => {
           const {'gathering.conversions.year': year} = result.aggregateBy;
           if (!year) {
             return;
@@ -308,12 +307,12 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       });
   }
 
-  updateBirdAssociationArea(value) {
+  updateBirdAssociationArea(value: any) {
     this.birdAssociationAreas = Array.isArray(value) ? value : [];
     this.update();
   }
 
-  onTaxonSelect(result) {
+  onTaxonSelect(result: any) {
     if (this.taxonId !== result.key) {
       this.taxonId = result.key;
       this.update();
@@ -325,12 +324,12 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     this.update();
   }
 
-  between(value, first, last) {
+  between(value: number, first: number, last: number) {
     const lower = Math.min(first, last) , upper = Math.max(first, last);
     return value >= lower &&  value <= upper ;
   }
 
-  private fromYearToYearMonth(year) {
+  private fromYearToYearMonth(year: any) {
     const years = ['' + year];
     const now = new Date();
     const currentYear = now.getFullYear();

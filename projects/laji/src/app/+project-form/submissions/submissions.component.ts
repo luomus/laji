@@ -21,8 +21,8 @@ interface ViewModel {
 })
 export class SubmissionsComponent implements OnInit {
 
-  collectionID: string;
-  vm$: Observable<ViewModel>;
+  collectionID!: string;
+  vm$!: Observable<ViewModel>;
 
   constructor(
     private formPermissionService: FormPermissionService,
@@ -43,7 +43,7 @@ export class SubmissionsComponent implements OnInit {
           })
         )
       ))
-    );
+    ) as Observable<ViewModel>;
   }
 
 }

@@ -33,26 +33,26 @@ export interface LineTransectChartTerms {
 })
 export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnDestroy {
 
-  @Input() xValue: number;
-  @Input() yValue: number;
-  @Input() terms: LineTransectChartTerms;
+  @Input() xValue?: number;
+  @Input() yValue?: number;
+  @Input() terms?: LineTransectChartTerms;
   @Input() xRange: [number, number] = [660, 780];
   @Input() yRange: [number, number] = [0, 100];
-  @Input() xLabel: string;
-  @Input() yLabel: string;
-  @Input() title: string;
+  @Input() xLabel?: string;
+  @Input() yLabel?: string;
+  @Input() title?: string;
   @Input() margin: { top: number; bottom: number; left: number; right: number} = { top: 30, bottom: 40, left: 40, right: 10};
-  @Input() xTickFormat: string;
-  @Input() yLabelAnchor: string;
+  @Input() xTickFormat?: string;
+  @Input() yLabelAnchor?: string;
 
   private readonly nativeElement: HTMLDivElement;
-  private svg: Selection<SVGElement, unknown, undefined, undefined>;
-  private chart: Selection<SVGElement, unknown, undefined, undefined>;
-  private width: number;
-  private height: number;
-  private xScale: ScaleLinear<number, number>;
-  private yScale: ScaleLinear<number, number>;
-  private xAxis: Selection<SVGElement, unknown, undefined, undefined>;
+  private svg!: Selection<SVGElement, unknown, undefined, undefined>;
+  private chart!: Selection<SVGElement, unknown, undefined, undefined>;
+  private width?: number;
+  private height?: number;
+  private xScale!: ScaleLinear<number, number>;
+  private yScale!: ScaleLinear<number, number>;
+  private xAxis?: Selection<SVGElement, unknown, undefined, undefined>;
 
   constructor(
     element: ElementRef,
@@ -93,7 +93,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     // chart plot area
     this.chart = svg.append<SVGElement>('g')
       .attr('class', 'drawing')
-      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
+      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`) as any;
 
     // create scales
     this.xScale = scaleLinear().domain([this.xRange[0], this.xRange[1]]).range([0, this.width]);
@@ -109,8 +109,10 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
 
     // create guide lines
     const line = d3Line()
-      .x((d) => this.xScale(d[0]) + this.margin.left)
-      .y((d) => this.yScale(d[1]) + this.margin.top);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .x((d) => this.xScale(d[0])! + this.margin.left)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .y((d) => this.yScale(d[1])! + this.margin.top);
 
     if (this.terms) {
       svg.append('path')
@@ -173,7 +175,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     this.xAxis = svg.append<SVGElement>('g')
       .attr('class', 'axis axis-x')
       .attr('transform', `translate(${this.margin.left},${(this.height + this.margin.top)})`)
-      .call(svgXAxis as any);
+      .call(svgXAxis as any) as any;
   }
 
   updateChart() {
@@ -200,7 +202,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
       .attr('stroke', 'black');
   }
 
-  styleGridlineNodes(axisNodes) {
+  styleGridlineNodes(axisNodes: any) {
     axisNodes.selectAll('.domain')
       .attr('fill', 'none')
       .attr('stroke', 'none');
