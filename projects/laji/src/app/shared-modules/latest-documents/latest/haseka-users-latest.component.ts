@@ -53,7 +53,7 @@ export class UsersLatestComponent implements OnInit, OnDestroy {
       this.subscriptionDeleteOwnDocument?.unsubscribe();
   }
 
-  discardTempDocument(document: { id: string }) {
+  discardTempDocument(document: Document & { id: string }) {
     this.latestFacade.discardTmpData(document.id);
   }
 

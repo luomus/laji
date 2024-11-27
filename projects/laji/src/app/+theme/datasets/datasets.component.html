@@ -18,12 +18,14 @@
           {{ 'datasets.accessNone' | translate }}
         </li>
         <li *ngFor="let form of forms">
-          <a [routerLink]="['/project/', form.id] | localize">
-            {{ form.collectionID | label }},
-            <ng-container *ngIf="form.options?.secondaryCopy; else primary">
-              {{ 'datasets.secondary' | translate }}
-            </ng-container>
-          </a>
+          <ng-container *ngIf="form !== false">
+            <a [routerLink]="['/project/', form?.id] | localize">
+              {{ form?.collectionID | label }},
+              <ng-container *ngIf="form?.options?.secondaryCopy; else primary">
+                {{ 'datasets.secondary' | translate }}
+              </ng-container>
+            </a>
+          </ng-container>
         </li>
         <ng-template #primary>
           {{ 'datasets.primary' | translate }}
