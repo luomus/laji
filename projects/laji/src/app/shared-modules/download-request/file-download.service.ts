@@ -60,7 +60,8 @@ export class FileDownloadService {
   ): Observable<string> {
     const personToken = isPublic ? null : this.userService.getToken();
     if (type === FileType.gis) {
-      return this.geoConvertService.geoConvertFile(id, format, geometry, crs, personToken).pipe(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.geoConvertService.geoConvertFile(id, format, geometry, crs, personToken!).pipe(
         tap(response => {
           this.progressPercentage = response.progressPercent;
           this.fileDownloadStateChangeSubject.next();

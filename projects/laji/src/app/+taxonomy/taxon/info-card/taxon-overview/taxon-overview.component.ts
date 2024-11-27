@@ -19,7 +19,7 @@ import { map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonOverviewComponent implements OnChanges, OnDestroy {
-  @Input() taxon: Taxonomy;
+  @Input({ required: true }) taxon!: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() images: any[];
 

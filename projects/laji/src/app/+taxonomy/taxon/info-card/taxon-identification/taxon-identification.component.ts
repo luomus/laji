@@ -64,7 +64,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
   private subscription: Subscription = new Subscription();
   private taxonChange$ = new BehaviorSubject<void>(undefined);
 
-  @Input() taxon: Taxonomy;
+  @Input({ required: true }) taxon!: Taxonomy;
 
   @ViewChild('loadMore') loadMoreElem: ElementRef;
 

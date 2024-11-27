@@ -162,7 +162,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
     data.every(row => {
       const entries = Object.entries(row);
       const isDelete = entries.some(([k,v]) =>
-        columnMap[k] === 'delete' && this.getMappedValue(v, this.fields[columnMap[k]]));
+        columnMap[k] === 'delete' && this.getMappedValue(v, this.fields![columnMap[k]]));
       const legIsPresent = entries.some(([k,v]) =>
           columnMap[k] === 'gatheringEvent.leg[*]');
       const placeIsPresent = entries.some(([k,v]) =>
@@ -386,32 +386,32 @@ export class ImporterComponent implements OnInit, OnDestroy {
   }
 
   addMissingNamedPlaceGeometryToMapping(data: any) {
-    let coordinateCol;
-    let namedPlaceCol;
+    let coordinateCol: string;
+    let namedPlaceCol: string;
 
-    Object.keys(this.colMap).forEach(col => {
-      if (this.colMap[col] === this.coordinateField) {
+    Object.keys(this.colMap!).forEach(col => {
+      if (this.colMap![col] === this.coordinateField) {
         coordinateCol = col;
       }
 
-      if (this.colMap[col] === this.namedPlaceField) {
+      if (this.colMap![col] === this.namedPlaceField) {
         namedPlaceCol = col;
       }
     });
 
-    const geometry = {};
+    const geometry: any = {};
 
-    data.source?.document?.gatherings?.forEach(gathering => {
+    data.source?.document?.gatherings?.forEach((gathering: any) => {
       if (gathering.namedPlaceID && gathering.geometry) {
         geometry[gathering.namedPlaceID] = gathering.geometry;
       }
     });
 
-    Object.keys(data.source.rows).forEach(key => {
-      if (!this.mappedData[key][coordinateCol] && geometry[this.mappedData[key][namedPlaceCol]]) {
-        this.mappedData[key] = {
-          ...this.mappedData[key],
-          [coordinateCol]: geometry[this.mappedData[key][namedPlaceCol]]
+    Object.keys(data.source.rows).forEach((key: any) => {
+      if (!this.mappedData![key][coordinateCol] && geometry[this.mappedData![key][namedPlaceCol]]) {
+        this.mappedData![key] = {
+          ...this.mappedData![key],
+          [coordinateCol]: geometry[this.mappedData![key][namedPlaceCol]]
         };
       }
     });
@@ -737,7 +737,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  private getMappedValue(rawValue, field) {
+  private getMappedValue(rawValue: any, field: IFormField) {
     return this.mappingService.map(this.mappingService.rawValueToArray(rawValue, field), field, true);
   }
 }

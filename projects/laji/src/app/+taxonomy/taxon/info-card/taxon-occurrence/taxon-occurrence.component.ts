@@ -10,14 +10,12 @@ import { InfoCardQueryService } from '../shared/service/info-card-query.service'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonOccurrenceComponent implements OnChanges {
-  @Input() taxon: Taxonomy;
+  @Input({ required: true }) taxon!: Taxonomy;
   @Input() taxonDescription: TaxonomyDescription[];
   @Input() isFromMasterChecklist: boolean;
 
   mapQuery: WarehouseQueryInterface;
   chartQuery: WarehouseQueryInterface;
-  observationQuery: WarehouseQueryInterface;
-  habitatQuery: WarehouseQueryInterface;
 
   hasMonthDayData: boolean;
   hasYearData: boolean;
@@ -25,7 +23,6 @@ export class TaxonOccurrenceComponent implements OnChanges {
   filterByLifeStageTotal: number;
   filterBySexTotal: number;
   filterByCollectionIdTotal: number;
-  filterByHabitatTotal: number;
   filterHabitats: Array<any> = [];
 
   ngOnChanges() {

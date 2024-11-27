@@ -13,7 +13,7 @@ import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonSpecimensComponent implements OnChanges {
-  @Input() taxon: Taxonomy;
+  @Input({ required: true }) taxon!: Taxonomy;
 
   typeSpecimenQuery: WarehouseQueryInterface;
   collectionSpecimenQuery: WarehouseQueryInterface;

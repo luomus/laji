@@ -120,7 +120,7 @@ export class ProjectFormService {
     const getExcelOptions = (form: Form.SchemaForm | Form.List) => form.options?.allowExcel
       ? { formID: form.id, allowGenerate: isAdmin || form.options.allowExcelGeneration !== false }
       : undefined;
-    return [getExcelOptions(projectForm.form), ...projectForm.subForms.map(getExcelOptions)].filter(f => f);
+    return [getExcelOptions(projectForm.form), ...projectForm.subForms.map(getExcelOptions)].filter(f => f) as ExcelFormOptions[];
   }
 
   getExcelFormIDs(projectForm: ProjectForm, isAdmin?: boolean): string[] {

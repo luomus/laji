@@ -32,7 +32,7 @@ import { MultiLanguage } from './MultiLanguage';
 
 export interface Taxonomy {
 
-  id?: string;
+  id: string;
 
   distributionMapFinland?: string;
 

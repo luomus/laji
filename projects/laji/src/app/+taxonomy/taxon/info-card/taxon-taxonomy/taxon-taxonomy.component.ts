@@ -14,7 +14,7 @@ import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
-  @Input() taxon: Taxonomy;
+  @Input({ required: true }) taxon!: Taxonomy;
   @Input() taxonDescription: TaxonomyDescription[];
 
   @Output() taxonSelect = new EventEmitter<string>();
