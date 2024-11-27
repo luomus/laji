@@ -43,9 +43,9 @@ export class LineTransectPrintComponent implements OnChanges {
   ) { }
 
   ngOnChanges() {
-    const baseDoc = this.namedPlace.acceptedDocument || this.namedPlace.prepopulatedDocument || {};
+    const baseDoc: any = this.namedPlace.acceptedDocument || this.namedPlace.prepopulatedDocument || {};
     if (
-      baseDoc.gatheringEvent && baseDoc.gatheringEvent.startDistanceFromNECorner
+      baseDoc.gatheringEvent?.startDistanceFromNECorner
     ) {
       this.neDistance = baseDoc.gatheringEvent.startDistanceFromNECorner;
     }
@@ -87,7 +87,7 @@ export class LineTransectPrintComponent implements OnChanges {
     if (!Array.isArray(geometries.coordinates)) {
       return;
     }
-    const baseDoc = this.namedPlace.acceptedDocument || this.namedPlace.prepopulatedDocument || {};
+    const baseDoc: any = this.namedPlace.acceptedDocument || this.namedPlace.prepopulatedDocument || {};
     const biotopes: {[distRow: number]: string[]} = {};
     const pages: number[][] = [];
     let total = 0;
@@ -122,7 +122,7 @@ export class LineTransectPrintComponent implements OnChanges {
         biotopes[biotopeSlot] = [];
       }
       let biotope = '_________';
-      if (baseDoc.gatherings && baseDoc.gatherings[idx] && baseDoc.gatherings[idx].habitatClassification) {
+      if (baseDoc.gatherings?.[idx]?.habitatClassification) {
         biotope = baseDoc.gatherings[idx].habitatClassification;
       }
       biotopes[biotopeSlot].unshift(biotope + (current !== dist[0] ?  ' (' + dist[0] + ' m)' : ''));

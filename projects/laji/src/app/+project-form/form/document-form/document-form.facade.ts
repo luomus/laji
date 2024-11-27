@@ -456,7 +456,7 @@ export class DocumentFormFacade {
     return form.id === Global.forms.privateCollection
       ? this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(map(profile =>
         typeof profile?.personalCollectionIdentifier === 'string'
-          ? {
+          ? <Document>{
             ...(data || {}),
             keywords: [...(data?.keywords || []), profile.personalCollectionIdentifier.trim()]
           }
