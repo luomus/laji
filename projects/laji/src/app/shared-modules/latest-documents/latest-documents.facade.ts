@@ -11,7 +11,7 @@ import { FormService } from '../../shared/service/form.service';
 import { Util } from '../../shared/service/util.service';
 
 export interface ILatestDocument {
-  document: Document;
+  document: Document & { id: string };
   form: Form.List;
 }
 

@@ -123,8 +123,8 @@ export class ProjectFormService {
     return [getExcelOptions(projectForm.form), ...projectForm.subForms.map(getExcelOptions)].filter(f => f);
   }
 
-  getExcelFormIDs(projectForm: ProjectForm, isAdmin: boolean): string[] {
-    return this.getExcelFormOptions(projectForm, isAdmin).map(f => f.formID);
+  getExcelFormIDs(projectForm: ProjectForm, isAdmin?: boolean): string[] {
+    return this.getExcelFormOptions(projectForm, !!isAdmin).map(f => f.formID);
   }
 
   getSubmissionsPageTitle(form: Form.SchemaForm, isAdmin: boolean) {
