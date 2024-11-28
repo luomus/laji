@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 })
 export class LevelComponent implements OnChanges {
 
-  @Input() item: Record<string, unknown>;
+  @Input() item: any;
   @Input() skip: string[] = [];
   @Input() subLevels: string[] = [];
   @Input() level = 'document';
@@ -20,7 +20,7 @@ export class LevelComponent implements OnChanges {
     this.initDocument();
   }
 
-  keyType(key) {
+  keyType(key: string) {
     if (this.subLevels.indexOf(key) > -1) {
       return Array.isArray(this.item[key]) ? 'subArray' : 'subObject';
     }
@@ -31,7 +31,7 @@ export class LevelComponent implements OnChanges {
     if (typeof this.item === 'object') {
       this.items = Object
         .keys(this.item)
-        .reduce((total, curr) => {
+        .reduce((total: ViewRow[], curr: string) => {
           if (this.skip.indexOf(curr) > -1) {
             return total;
           }

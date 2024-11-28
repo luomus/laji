@@ -6,7 +6,7 @@ export type FilterByType<
   T extends FilterBaseType = FilterBaseType,
   K extends string[] = string[]
 > = T | SearchRecordQuery<T, K>;
-export type SearchRecord<K extends string[]> = { [P in K[number]]? } & Record<string, any>;
+export type SearchRecord<K extends string[]> = { [P in K[number]]?: any } & Record<string, any>;
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +53,7 @@ export class FilterService {
     }
 
     return arr.filter(val => {
-      const contains = this.contains(needle as FilterBaseType, val, properties);
+      const contains = this.contains(needle as FilterBaseType, val, properties as any);
 
       return matching ? contains : !contains;
     });

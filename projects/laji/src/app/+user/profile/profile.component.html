@@ -2,10 +2,10 @@
   <h1>{{ 'navigation.user.profile' | translate }}</h1>
   <laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
     <ng-container *ngIf="currentProfile && userProfile">
-      <div class="row" *ngIf="!currentProfile.profileKey">
+      <div class="row" *ngIf="!currentProfile.userID">
         {{ 'profile.missing' | translate }}
       </div>
-      <div class="row" *ngIf="currentProfile.profileKey || isCurrentUser">
+      <div class="row" *ngIf="currentProfile.userID || isCurrentUser">
         <div class="col-md-8 col-xs-12 margin-bottom-5">
           <h3>{{ currentProfile.userID | users }}</h3>
           <div class="profile-image">

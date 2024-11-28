@@ -70,7 +70,7 @@
     "test": "playwright test",
     "test:docker": "npm run test:docker:build && npm run test:docker:run --",
     "test:docker:build": "docker build -t laji-test -f test.Dockerfile .",
-    "test:docker:run": "docker run laji-test:latest",
+    "test:docker:run": "docker run -v test-results:/app/test-results laji-test:latest",
     "postinstall": "patch-package && node ./scripts/remove-extras.js",
     "package:label-designer": "npm run build:label-designer-electron && npm run prepare:package:label-designer",
     "package:label-designer-element": "npm run build:label-designer-element && cat ./dist/label-designer-element/runtime.js ./dist/label-designer-element/polyfills.js ./dist/label-designer-element/scripts.js ./dist/label-designer-element/main.js > ./dist/label-designer.js",
@@ -114,9 +114,9 @@
     "@angular/router": "^16.2.5",
     "@apollo/client": "^3.6.9",
     "@luomus/label-designer": "^4.0.16",
-    "@luomus/laji-form": "^15.1.16",
+    "@luomus/laji-form": "^15.1.24",
     "@luomus/laji-form-builder": "^1.1.3",
-    "@luomus/laji-map": "^5.0.3",
+    "@luomus/laji-map": "^5.1.1",
     "@ng-select/ng-select": "^11.1.1",
     "@nguniversal/common": "^16.2.0",
     "@nguniversal/express-engine": "^16.2.0",
@@ -179,7 +179,7 @@
     "@angular/compiler-cli": "^16.2.5",
     "@angular/language-service": "^16.2.5",
     "@nguniversal/builders": "^16.2.0",
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.44.1",
     "@types/d3-axis": "^1.0.16",
     "@types/d3-brush": "^1.1.5",
     "@types/d3-drag": "^1.2.3",
@@ -213,7 +213,6 @@
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-rxjs": "^5.0.2",
     "globby": "^11.1.0",
-    "husky": "^4.3.8",
     "jszip": "^3.10.1",
     "ng-packagr": "^16.2.3",
     "ngx-bootstrap": "^6.2.0",
@@ -240,11 +239,6 @@
     "url": "git+https://bitbucket.org:luomus/laji.fi-front.git"
   },
   "homepage": "https://bitbucket.org/luomus/laji.fi-front",
-  "husky": {
-    "hooks": {
-      "pre-push": "npm --silent run msg-a && npm --silent run lint:all"
-    }
-  },
   "volta": {
     "node": "16.20.2"
   }

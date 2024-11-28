@@ -21,9 +21,18 @@ export interface IAudioViewerRectangle {
   label?: string;
 }
 
+export interface IAudioViewerRectangleGroup {
+  rectangles: IAudioViewerRectangle[];
+  color?: string;
+}
+
 export interface IAudioViewerArea {
   xRange?: number[];
   yRange?: number[];
 }
 
 export type AudioViewerMode = 'default' | 'zoom' | 'draw';
+
+export function isRectangleGroup(rectangle: IAudioViewerRectangle|IAudioViewerRectangleGroup): rectangle is IAudioViewerRectangleGroup {
+  return !!(rectangle as any).rectangles;
+}

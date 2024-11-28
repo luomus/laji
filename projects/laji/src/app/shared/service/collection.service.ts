@@ -1,4 +1,4 @@
-import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { map, shareReplay, switchMap, take, tap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';
@@ -10,6 +10,19 @@ import { gql } from 'apollo-angular';
 import { WarehouseQueryInterface } from '../model/WarehouseQueryInterface';
 import { Collection } from '../model/Collection';
 import { CollectionApi } from '../api/CollectionApi';
+import { UserService } from './user.service';
+import { ObservationFacade } from '../../+observation/observation.facade';
+import { TreeOptionsNode } from '../../shared-modules/tree-select/tree-select.component';
+
+export interface ICollection extends Collection {
+  id: string;
+  collectionType: string;
+  collectionQuality: string;
+};
+
+export interface CollectionTreeOptionsNode extends TreeOptionsNode {
+  count: number;
+}
 
 export interface ICollectionRange {
   id: string;
@@ -95,6 +108,7 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     private warehouseApi: WarehouseApi,
     private collectionApi: CollectionApi,
     private graphQlService: GraphQLService,
+    private userService: UserService
   ) {
     super();
   }
@@ -154,6 +168,10 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
       }
 
     }).pipe(
+      catchError((err, caught) => {
+        console.error('GraphQL error when getting collections tree: ', err, caught);
+        return of({data: { collection: [] }});
+      }),
       map(({data}) => data),
       map(({collection}) => collection)
     );
@@ -190,14 +208,24 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
       cacheQuery = { ...cacheQuery, ...query };
     }
 
-    return this.warehouseApi.warehouseQueryAggregateGet(cacheQuery, ['document.collectionId'], undefined, 1000, page).pipe(
+    return this.userService.isLoggedIn$.pipe(
+      take(1),
+      tap(loggedIn => {
+        ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
+          if ((cacheQuery as any)[key] === ObservationFacade.PERSON_TOKEN) {
+            (cacheQuery as any)[key] = loggedIn ? this.userService.getToken() : undefined;
+          }
+        });
+      }),
+      switchMap(_ => this.warehouseApi.warehouseQueryAggregateGet(cacheQuery, ['document.collectionId'], undefined, 1000, page)),
       tap(data => hasMore = data.lastPage && data.lastPage > page),
       map(data => (data.results || []) as any[]),
       map(data => data.map(d => ({
-          id: IdService.getId(d?.aggregateBy?.['document.collectionId']),
-          count: d.count
-        }))),
+        id: IdService.getId(d?.aggregateBy?.['document.collectionId']),
+        count: d.count
+      }))),
       map(cols => [...collections, ...cols]),
-      switchMap(cols => hasMore ? this.getCollectionsAggregate$(query, page + 1, cols) : of(cols)));
+      switchMap(cols => hasMore ? this.getCollectionsAggregate$(query, page + 1, cols) : of(cols))
+    );
   }
 }

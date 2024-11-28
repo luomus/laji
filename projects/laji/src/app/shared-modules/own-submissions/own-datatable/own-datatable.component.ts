@@ -67,9 +67,14 @@ export interface LabelFilter {
 
 export interface LabelEvent {
   documentIDs: string[];
-  year: string;
-  label: string;
+  year?: string;
+  label?: string;
   filter: LabelFilter;
+}
+
+export interface OwnDatatableColumn {
+  prop: string;
+  mode: string;
 }
 
 @Component({
@@ -93,8 +98,8 @@ export interface LabelEvent {
   ]
 })
 export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestroy {
-  @Input() year: string;
-  @Input() loadError = '';
+  @Input() year?: string;
+  @Input() loadError? = '';
   @Input() showDownloadAll = true;
   @Input() showPrintLabels = true;
   @Input() admin = false;
@@ -115,8 +120,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
 
   totalMessage = '';
   publicity = Document.PublicityRestrictionsEnum;
-  useColumns = [];
-  allColumns = [
+  useColumns: OwnDatatableColumn[] = [];
+  allColumns: OwnDatatableColumn[] = [
     {prop: 'templateName', mode: 'small'},
     {prop: 'templateDescription', mode: 'small'},
     {prop: 'dateEdited', mode: 'small'},
@@ -132,31 +137,31 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     {prop: 'publicityRestrictions', mode: 'large'}
   ];
   allRows: RowDocument[] = [];
-  visibleRows: RowDocument[];
-  filterBy: string;
-  selectionType: SelectionType;
-  selectedLabel: string;
+  visibleRows?: RowDocument[];
+  filterBy?: string;
+  selectionType?: SelectionType;
+  selectedLabel?: string;
   labelLoading = false;
 
-  displayMode: string;
+  displayMode?: string;
   defaultSort: any;
 
-  usersId: string;
-  usersIdSub: Subscription;
+  usersId?: string;
+  usersIdSub!: Subscription;
 
-  subscriptionDeleteOwnDocument: Subscription;
+  subscriptionDeleteOwnDocument!: Subscription;
 
-  downloadedDocumentId: string;
+  downloadedDocumentId?: string;
   fileType = 'csv';
 
   _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'gatheringsCount', 'unitCount', 'observer', 'form', 'id', 'publicityRestrictions'];
   _goToStartAfterViewCheck = false;
   private lastSort: any;
 
-  @ViewChild(DatatableComponent) table: DatatableComponent;
-  @ViewChild('chooseFileTypeModal', { static: true }) public modal: ModalComponent;
-  @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalComponent;
-  @ViewChild('deleteModal', { static: true }) public deleteModal: ModalComponent;
+  @ViewChild(DatatableComponent) table!: DatatableComponent;
+  @ViewChild('chooseFileTypeModal', { static: true }) public modal!: ModalComponent;
+  @ViewChild('saveAsTemplate', { static: true }) public templateModal!: ModalComponent;
+  @ViewChild('deleteModal', { static: true }) public deleteModal!: ModalComponent;
 
   labelFilter$: Observable<LabelFilter>;
   forms$: Observable<{[id: string]: Form.List}>;
@@ -181,7 +186,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   @Input()
-  set documents(docs: RowDocument[]) {
+  set documents(docs: RowDocument[]|null) {
     if (!docs) {
       this.allRows = [];
       this.visibleRows = [];
@@ -210,7 +215,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
 
     this.updateDisplayMode();
     this.usersIdSub = this.userService.user$.pipe(
-      map(user => user.id)
+      map(user => user?.id)
     ).subscribe(id => this.usersId = id);
 
     this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(id => {
@@ -255,8 +260,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     this.updateDisplayMode();
   }
 
-  updateFilter(event) {
-    this.filterBy = event.target.value.toLowerCase();
+  updateFilter(event: Event) {
+    const element = event.target as HTMLInputElement;
+    this.filterBy = element.value.toLowerCase();
     this.updateFilteredRows();
   }
 
@@ -264,10 +270,10 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     const val = this.filterBy;
     const columns = this.useColumns;
 
-    this.visibleRows = this.allRows.reduce((cumulative, row, idx) => {
+    this.visibleRows = this.allRows.reduce<RowDocument[]>((cumulative, row, idx) => {
       for (const col of columns) {
-        const rowValue = String(row[col.prop]);
-        if (rowValue && (rowValue.toLowerCase().indexOf(val) !== -1 || !val)) {
+        const rowValue = String(row[col.prop as keyof RowDocument]);
+        if (rowValue && (!val || rowValue.toLowerCase().indexOf(val) !== -1)) {
           cumulative.push({...row, index: idx});
           break;
         }
@@ -317,9 +323,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     this.table.rowDetail.toggleExpandRow(row);
   }
 
-  onSort(event) {
+  onSort(event: {sorts: { prop: keyof RowDocument; dir: 'asc'|'desc' }[]}) {
     this.lastSort = event;
-    const rows = [...this.visibleRows];
+    const rows = this.visibleRows ? [...this.visibleRows] : [];
     event.sorts.forEach((sort) => {
       const comparator = this.comparator(sort.prop);
       const dir = sort.dir === 'asc' ? 1 : -1;
@@ -333,15 +339,15 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
    *
    * @returns any
    */
-  comparator(prop) {
+  comparator(prop: keyof RowDocument) {
     if (prop === 'dateObserved') {
-      return (a, b) => {
+      return (a: any, b: any) => {
         a = (a || '').split('-')[0].trim().split('.').reverse().join('');
         b = (b || '').split('-')[0].trim().split('.').reverse().join('');
         return b - a;
       };
     } else if (prop === 'dateEdited') {
-      return (a, b) => {
+      return (a: any, b: any) => {
         a = (a || '').split(' ');
         b = (b || '').split(' ');
         a = a.length > 1 ?
@@ -353,9 +359,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
         return b - a;
       };
     } else if (prop === 'unitCount') {
-      return (a, b) => b - a;
+      return (a: any, b: any) => b - a;
     }
-    return (a, b) => ('' + a).localeCompare('' + b);
+    return (a: any, b: any) => ('' + a).localeCompare('' + b);
   }
 
   getDefaultSort() {
@@ -373,7 +379,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   private initColumns() {
-    const useCols = [];
+    const useCols: OwnDatatableColumn[] = [];
     this._columns.map(col => {
       const column = this.allColumns.find((value) => value.prop === col);
       if (column) {

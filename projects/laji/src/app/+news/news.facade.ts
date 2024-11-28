@@ -18,7 +18,7 @@ export interface INewsState {
 
 let _state: INewsState = {
   active: null,
-  list: { results: [], currentPage: 0, total: 0, pageSize: 5 },
+  list: { results: [], currentPage: 0, total: 0, pageSize: 5, lastPage: 0 },
 };
 
 @Injectable({providedIn: 'root'})

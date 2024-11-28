@@ -1,5 +1,5 @@
 <ng-container *ngIf="vm$ | async; let vm">
-  <h3>{{ vm.title | translate }}</h3>
+  <h3>{{ vm.title! | translate }}</h3>
   <laji-own-submissions
     [admin]="vm.rights.admin"
     [columns]="vm.columns"

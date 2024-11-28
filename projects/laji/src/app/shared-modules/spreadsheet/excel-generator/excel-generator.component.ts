@@ -16,7 +16,7 @@ export class ExcelGeneratorComponent {
 
   type: 'ods'|'xlsx' = 'xlsx';
   formID = '';
-  formTitle: string;
+  formTitle?: string;
   fields: IFormField[] = [];
   parents: string[] = [];
   selected: string[] = [];
@@ -51,11 +51,15 @@ export class ExcelGeneratorComponent {
     private cdr: ChangeDetectorRef
   ) { }
 
-  formSelected(event) {
+  formSelected(event: string) {
     const selected: string[] = [];
     this.formID = event;
     this.formService.getForm(this.formID)
       .subscribe((form) => {
+        if (!form) {
+          return;
+        }
+
         this.formTitle = form.title;
         this.parents = [];
         this.fields = this.spreadSheetService.formToFlatFields(form, []);
@@ -87,16 +91,14 @@ export class ExcelGeneratorComponent {
       return;
     }
     if (this.selected.indexOf(field.key) === -1) {
-      this.selected = this.fields.filter(
-        f => this.selected.includes(f.key) || f.key === field.key
-      ).map(f => f.key);
+      this.selected = this.selected.concat(field.key);
     } else {
       this.selected = this.selected.filter(val => val !== field.key || field.required);
     }
   }
 
   clearSelected() {
-    this.selected = this.fields.reduce((result, field) => {
+    this.selected = this.fields.reduce<string[]>((result, field) => {
       if (field.required) {
         result.push(field.key);
       }
@@ -112,11 +114,22 @@ export class ExcelGeneratorComponent {
     if (!this.formID || this.generating) {
       return;
     }
+
+    const generatedFields: IFormField[] = [];
+
+    this.selected.forEach(selectedField => {
+      const field = this.fields.find(f => f.key === selectedField);
+
+      if (field) {
+        generatedFields.push(field);
+      }
+    });
+
     this.generating = true;
     this.generatorService.generate(
       this.formID,
       'Laji - ' + this.formTitle + ' (' + this.formID + ')',
-      this.selected.map(field => this.fields.find(f => f.key === field)),
+      generatedFields,
       this.useLabels,
       this.type,
       () => {

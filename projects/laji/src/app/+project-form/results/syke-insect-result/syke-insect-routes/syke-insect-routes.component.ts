@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 })
 export class SykeInsectRoutesComponent implements OnInit {
 
-  @Input() collectionId: string;
+  @Input() collectionId!: string;
 
   data: any;
   selected = [
@@ -30,7 +30,7 @@ export class SykeInsectRoutesComponent implements OnInit {
     {prop: 'document.namedPlace.name', dir: 'asc'}
   ];
 
-  route$: Observable<string>;
+  route$!: Observable<string>;
 
   constructor(
     private resultService: SykeInsectResultService,

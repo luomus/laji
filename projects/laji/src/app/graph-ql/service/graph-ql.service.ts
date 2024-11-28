@@ -1,5 +1,5 @@
 import { Apollo, QueryRef } from 'apollo-angular';
-import { ApolloQueryResult, QueryOptions } from '@apollo/client/core';
+import { ApolloQueryResult, OperationVariables, QueryOptions } from '@apollo/client/core';
 import { Injectable } from '@angular/core';
 import { EmptyObject, WatchQueryOptions } from 'apollo-angular/types';
 import { Observable } from 'rxjs';
@@ -16,7 +16,7 @@ export class GraphQLService {
   }
 
 
-  watchQuery<TData, TVariables = EmptyObject>(options: WatchQueryOptions<TVariables, TData>): QueryRef<TData, TVariables> {
+  watchQuery<TData, TVariables extends OperationVariables = EmptyObject>(options: WatchQueryOptions<TVariables, TData>): QueryRef<TData, TVariables> {
     return this.apollo.watchQuery<TData, TVariables>(options);
   }
 

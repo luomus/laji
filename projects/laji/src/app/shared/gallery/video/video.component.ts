@@ -8,5 +8,5 @@ import { Image } from '../image-gallery/image.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageModalVideoComponent {
-  @Input() source: Image;
+  @Input() source!: Image;
 }

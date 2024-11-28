@@ -42,9 +42,9 @@ import { FormService } from '../../../shared/service/form.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
-  @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
-  @Input() uri: string;
-  @Input() own: boolean;
+  @ViewChild(ViewerMapComponent) map?: ViewerMapComponent;
+  @Input({ required: true }) uri!: string;
+  @Input() own?: boolean;
   @Input() showTitle = false;
   @Input() useWorldMap = true;
   @Input() openAnnotation = false;
@@ -55,31 +55,31 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
 
   collectionContestFormId = Global.forms.collectionContest;
 
-  externalViewUrl: string;
+  externalViewUrl?: string;
   document: any;
-  documentID: string;
-  hasEditRights: boolean;
-  hasDeleteRights: boolean;
+  documentID?: string;
+  hasEditRights?: boolean;
+  hasDeleteRights?: boolean;
   activeGathering: any;
   mapData: any = [];
   hasMapData = false;
-  hasDoc: boolean;
+  hasDoc?: boolean;
   active = 0;
-  unitCnt;
+  unitCnt?: number;
   isViewInited = false;
   showOnlyHighlighted = true;
   childEvent = false;
   documentToolsOpen = false;
-  childComunicationsubscription: Subscription;
+  childComunicationsubscription!: Subscription;
   highlightParents: string[] = [];
   @SessionStorage() showFacts = false;
-  private _highlight: string;
+  private _highlight?: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
-  private interval: Subscription;
-  subscriptParent: Subscription;
-  subscriptDocumentTools: Subscription;
-  annotationResolving: boolean;
-  annotationTags$: Observable<AnnotationTag[]>;
+  private interval?: Subscription;
+  subscriptParent!: Subscription;
+  subscriptDocumentTools!: Subscription;
+  annotationResolving?: boolean;
+  annotationTags$!: Observable<AnnotationTag[]>;
   templateForm: TemplateForm = {
     name: '',
     description: ''
@@ -183,10 +183,10 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       switchMap(doc => doc.doc.formId
         ? this.formService.getFormInListFormat(IdService.getId(doc.doc.formId)).pipe(
           map(form => {
-            const isSecondary = !!form.options?.secondaryCopy;
-            doc.rights.hasEditRights = !isSecondary;
-            doc.rights.hasDeleteRights = !isSecondary;
-
+            if (!!form.options?.secondaryCopy) {
+              doc.rights.hasEditRights = false;
+              doc.rights.hasDeleteRights = false;
+            }
             return doc;
           })
         )
@@ -204,7 +204,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       );
   }
 
-  shouldOnlyShowHighlighted(doc, highlight) {
+  shouldOnlyShowHighlighted(doc: any, highlight?: string) {
     if (!highlight) {
       return false;
     }
@@ -216,7 +216,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     let hasHighlight = false;
     ['gatherings', 'units', 'samples'].forEach(level => {
       if (Array.isArray(doc[level])) {
-        doc[level].forEach(subLevel => {
+        doc[level].forEach((subLevel: any) => {
           if (!hasHighlight) {
             hasHighlight = this.shouldOnlyShowHighlighted(subLevel, highlight);
             if (hasHighlight) {
@@ -229,7 +229,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     return hasHighlight;
   }
 
-  @Input() set highlight(id: string) {
+  @Input() set highlight(id: string|undefined) {
     this._highlight = IdService.getUri(id);
   }
 
@@ -257,7 +257,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     this.showOnlyHighlighted = !this.showOnlyHighlighted;
   }
 
-  private getId(doc): string {
+  private getId(doc: any): string {
     let id = '';
     ['documentId', 'gatheringId', 'unitId', 'sampleId'].forEach(field => {
       if (doc[field]) {
@@ -267,22 +267,22 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     return id;
   }
 
-  private parseDoc(doc, found) {
+  private parseDoc(doc: any, found: boolean) {
     this.cd.detectChanges();
     this.hasDoc = found;
     this.unitCnt = 0;
     if (found) {
       this.document = doc;
       this.hasMapData = false;
-      const mapData = [];
-      this.externalViewUrl = Global.externalViewers[doc.sourceId] ?
-        Global.externalViewers[doc.sourceId].replace('%uri%', doc.documentId) : '';
+      const mapData: any[] = [];
+      this.externalViewUrl = (Global.externalViewers as Record<string, string>)[doc.sourceId] ?
+        (Global.externalViewers as Record<string, string>)[doc.sourceId].replace('%uri%', doc.documentId) : '';
       if (doc.documentId) {
         this.documentID = IdService.getId(doc.documentId);
       }
       let activeGatheringIdx = 0;
       if (doc && doc.gatherings) {
-        doc.gatherings.map((gathering, gatheringIdx) => {
+        doc.gatherings.map((gathering: any, gatheringIdx: number) => {
           if (gathering.conversions && gathering.conversions.wgs84Geo) {
             mapData[gatheringIdx] = {
               ...gathering.conversions,
@@ -297,9 +297,9 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
           }
           if (gathering.units && this.highlight) {
             this.unitCnt += gathering.units.length;
-            gathering.units.forEach(unit => {
+            gathering.units.forEach((unit: any) => {
               if (unit.samples) {
-                unit.samples.forEach(sample => {
+                unit.samples.forEach((sample: any) => {
                   if (sample.sampleId === this.highlight) {
                     activeGatheringIdx = gatheringIdx;
                   }
@@ -331,7 +331,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     this.documentClose.emit(!this.documentToolsOpen);
   }
 
-  onDocumentDeleted(e) {
+  onDocumentDeleted(e: string) {
     if (e) {
       this.deleteDocumentService.emitChildEvent(e);
       this.closeDocument();

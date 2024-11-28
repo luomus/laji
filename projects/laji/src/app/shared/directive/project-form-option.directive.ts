@@ -1,11 +1,15 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 
+/**
+ * Mark elements to be selectable for the laji-form-builder element picker.
+ * The value is a the form option that the element is controlled by.
+ */
 @Directive({
   selector: '[lajiFormOption]'
 })
 export class ProjectFormOptionDirective {
 
-  private _formOption: string[];
+  private _formOption?: string[];
 
   constructor(private el: ElementRef) {
   }

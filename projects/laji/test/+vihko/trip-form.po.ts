@@ -3,7 +3,7 @@ import { MapPageObject } from '@luomus/laji-map/test-export/test-utils';
 
 export class TripFormPage {
   private $todayButton = this.page.locator('button  >> text="Tänään"');
-  private $tripFormLink = this.page.locator('a >> text="Retki"');
+  private $tripFormLink = this.page.locator('a >> text="Retkilomake"');
   public $countryElem = this.page.locator('#root_gatherings_0_country');
   public $toastElement = this.page.locator('#toast-container');
   public $pageTitleElem = this.page.locator('.form-header h3');

@@ -442,6 +442,7 @@ export class DocumentFormFacade {
 
     let removeList = [
       ...(form.excludeFromCopy),
+      '$.editors',
       '$.gatheringEvent.leg'
     ];
     if (form.options?.namedPlaceOptions?.includeUnits) {
@@ -455,7 +456,7 @@ export class DocumentFormFacade {
     return form.id === Global.forms.privateCollection
       ? this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(map(profile =>
         typeof profile?.personalCollectionIdentifier === 'string'
-          ? {
+          ? <Document>{
             ...(data || {}),
             keywords: [...(data?.keywords || []), profile.personalCollectionIdentifier.trim()]
           }

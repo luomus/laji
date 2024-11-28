@@ -13,16 +13,16 @@ import { IdService } from '../../../../shared/service/id.service';
 export class ThemeResultComponent {
 
   @Input() showSettings = false;
-  @Input() query: WarehouseQueryInterface;
-  @Input() height;
+  @Input() query!: WarehouseQueryInterface;
+  @Input() height!: string;
   @Input() fields = ['unit.linkings.species.vernacularName', 'unit.linkings.species.scientificName', 'individualCountSum'];
-  @Input() useStatistics;
+  @Input() useStatistics?: boolean;
   @Output() nameClick = new EventEmitter<WarehouseQueryInterface>();
   @Output() selectChange = new EventEmitter();
 
   constructor(public translate: TranslateService) { }
 
-  onRowSelect(event) {
+  onRowSelect(event: any) {
     const id = event.row
       && event.row.unit
       && event.row.unit.linkings

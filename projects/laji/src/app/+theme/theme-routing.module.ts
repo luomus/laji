@@ -16,7 +16,6 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { GeneticResourceLayoutComponent } from './genetic-resource/layout/genetic-resource-layout.component';
 import { GeneticResourceInstructionsComponent } from './genetic-resource/instructions/genetic-resource-instructions.component';
 import { KerttuClosedComponent } from './kerttu/kerttu-closed.component';
-import { DatasetMetadataComponent } from '../shared-modules/dataset-metadata/dataset-metadata.component';
 
 /* eslint-enable max-len */
 

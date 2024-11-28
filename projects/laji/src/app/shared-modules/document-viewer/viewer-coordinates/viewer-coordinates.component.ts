@@ -14,6 +14,6 @@ export class CoordinatesViewerComponent {
   @Input() ykj10kmCenter: any;
   @Input() wgs84: any;
   @Input() wgs84Center: any;
-  @Input() coordinateAccuracy: number;
-  @Input() visible: boolean;
+  @Input() coordinateAccuracy?: number;
+  @Input() visible?: boolean;
 }

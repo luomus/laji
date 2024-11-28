@@ -13,7 +13,7 @@ export class PageSizeSelectComponent {
 
   @Input() pageSizes = [50, 100, 500, 1000, 5000, 10000];
   @Output() pageSizeChange = new EventEmitter<number>();
-  _pageSize: number;
+  _pageSize?: number;
 
   @Input() set pageSize(val: any) {
     this._pageSize = +val;

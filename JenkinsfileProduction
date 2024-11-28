@@ -3,7 +3,7 @@ node {
      stage('Prepare environment') {
       cleanWs()
       git branch: 'master', url: 'https://github.com/luomus/laji.git'
-      sh 'npm ci # CI has too old python3 & g++ for node 16, so we load packages from Redhat SCL'
+      sh 'npm ci'
     }
     stage('Build embedded') {
       milestone()

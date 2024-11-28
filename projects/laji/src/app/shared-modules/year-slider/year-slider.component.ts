@@ -12,12 +12,12 @@ export interface YearInfoItem {
   styleUrls: ['./year-slider.component.css']
 })
 export class YearSliderComponent implements OnInit {
-  @Input() year: string;
-  @Input() yearInfo: YearInfoItem[];
+  @Input() year!: string;
+  @Input() yearInfo!: YearInfoItem[];
   @Input() showCounts = true;
 
-  pcsString: string;
-  pcString: string;
+  pcsString!: string;
+  pcString!: string;
 
   @Output() rangeChange = new EventEmitter<string>();
 

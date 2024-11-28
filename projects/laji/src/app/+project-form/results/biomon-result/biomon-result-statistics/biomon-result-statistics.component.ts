@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -30,7 +30,7 @@ export class BiomonResultStatisticsComponent implements OnInit {
 
   toHtmlSelectElement = toHtmlSelectElement;
 
-  rows$: Observable<Row[]>;
+  rows$!: Observable<Row[]>;
   loading$ = new BehaviorSubject(true);
 
   columns = [

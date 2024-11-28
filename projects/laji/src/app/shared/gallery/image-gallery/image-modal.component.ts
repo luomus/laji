@@ -60,7 +60,7 @@ import { DOCUMENT } from '@angular/common';
 
 export type ViewType = 'compact'|'annotation'|'full'|'full2'|'full3';
 
-const getAnnotationTmpFullImgUrl = (img: Image): string => {
+const getAnnotationTmpFullImgUrl = (img: Image): string | undefined => {
   switch (img.mediaType) {
     case 'MODEL':
     case 'VIDEO':
@@ -78,32 +78,32 @@ const getAnnotationTmpFullImgUrl = (img: Image): string => {
 })
 export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   public opened = false;
-  public img: Image;
+  public img!: Image;
   public loading = false;
   public showRepeat = false;
   @Input() eventOnClick = false;
   @Input() view: ViewType = 'compact';
   @Input() views: ViewType[] = ['compact', 'full'];
   @Input() showExtraInfo = true;
-  @Input() modalImages: Image[];
-  @Input() imagePointer: number;
-  @Input() showPaginator: number;
+  @Input() modalImages!: Image[];
+  @Input() imagePointer!: number;
+  @Input() showPaginator!: number;
   @Input() showViewSwitch = false;
   @Input() showPopover = false;
   @Input() showOverlay = true;
   @Input() showLinkToSpeciesCard = false;
-  @Input() shortcut: boolean;
-  @Input() linkOptions: {tab: string; queryParams: any; queryParamsHandling: QueryParamsHandling};
+  @Input() shortcut!: boolean;
+  @Input() linkOptions?: {tab: string; queryParams: any; queryParamsHandling: QueryParamsHandling};
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() imageSelect = new EventEmitter<IImageSelectEvent>();
   @Output() showModal = new EventEmitter<boolean>();
   @Output() viewChange = new EventEmitter<'compact'|'annotation'|'full'|'full2'|'full3'>();
-  public overlay: ComponentRef<ImageModalOverlayComponent>;
+  public overlay!: ComponentRef<ImageModalOverlayComponent>;
   // private _overlay: ComponentLoader<ImageModalOverlayComponent>;
-  private showModalSub: Subscription;
+  private showModalSub!: Subscription;
   private _isShown = false;
-  index: number;
-  annotationTmpSelectedImg: { url: string; index: number };
+  index!: number;
+  annotationTmpSelectedImg!: { url?: string; index: number };
 
   constructor(private viewContainerRef: ViewContainerRef,
               private _renderer: Renderer2,
@@ -142,7 +142,7 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
     };
   }
 
-  openImage(index) {
+  openImage(index: number) {
     if (this.eventOnClick) {
       if (this.modalImages[index]) {
         this.imageSelect.emit({

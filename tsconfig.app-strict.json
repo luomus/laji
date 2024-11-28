@@ -1,10 +1,44 @@
 {
-  "extends": "./tsconfig.app.json",
+  "compileOnSave": false,
   "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "paths": {
+      "laji-ui": [
+        "dist/laji-ui"
+      ],
+      "laji-ui/*": [
+        "dist/laji-ui/*"
+      ],
+      "laji-api-client": [
+        "dist/laji-api-client"
+      ],
+      "laji-api-client/*": [
+        "dist/laji-api-client/*"
+      ]
+    },
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "allowSyntheticDefaultImports": true,
+    "useDefineForClassFields": false,
+    "strict": true
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
@@ -12,3 +46,4 @@
     "strictTemplates": true
   }
 }
+

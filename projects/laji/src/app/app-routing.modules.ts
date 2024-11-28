@@ -50,16 +50,16 @@ const rootRouting = {
 };
 
 Object.keys(Global.oldThemeRouting).forEach(path => {
-  rootRouting[path] = `/project/${Global.oldThemeRouting[path]}`;
+  rootRouting[<keyof typeof rootRouting>path] = `/project/${Global.oldThemeRouting[<keyof typeof Global.oldThemeRouting>path]}`;
 });
 
 const redirectsEn: Routes = [];
 const redirectsSv: Routes = [];
 const redirectsFi: Routes = [];
 
-redirectsEn.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirectTo: `/en${rootRouting[path]}`, pathMatch: 'full'})));
-redirectsSv.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirectTo: `/sv${rootRouting[path]}`, pathMatch: 'full'})));
-redirectsFi.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirectTo: `${rootRouting[path]}`, pathMatch: 'full'})));
+redirectsEn.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirectTo: `/en${rootRouting[<keyof typeof rootRouting>path]}`, pathMatch: 'full'})));
+redirectsSv.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirectTo: `/sv${rootRouting[<keyof typeof rootRouting>path]}`, pathMatch: 'full'})));
+redirectsFi.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirectTo: `${rootRouting[<keyof typeof rootRouting>path]}`, pathMatch: 'full'})));
 
 const routesWithLang: Routes = [
   {path: 'in', children: [

@@ -16,8 +16,10 @@ interface Settings { [key: string]: DatatableColumn }
 
 interface DatatableRow {
   [key: string]: any;
-  preSortIndex?: number;
+  preSortIndex: number;
 }
+
+type DatatableTemplate = keyof DatatableTemplatesComponent;
 
 @Component({
   selector: 'laji-datatable',
@@ -26,11 +28,11 @@ interface DatatableRow {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
-  @ViewChild('dataTable') public datatable: NgxDatatableComponent;
-  @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates: DatatableTemplatesComponent;
+  @ViewChild('dataTable') public datatable?: NgxDatatableComponent;
+  @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates!: DatatableTemplatesComponent;
 
   @Input() loading = false;
-  @Input() pageSize: number;
+  @Input() pageSize?: number;
   @Input() showHeader = true;
   @Input() showFooter = true;
   @Input() sortType: SortType = SortType.multi;
@@ -43,14 +45,14 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   @Input() showRowAsLink = true;
   @Input() rowHeight: number | 'auto' | ((row?: any) => number) = 35;
   @Input() sorts: DatatableSort[] = [];
-  @Input() getRowClass: (row: DatatableRow) => any;
-  @Input() selectionType: SelectionType;
+  @Input() getRowClass?: (row: DatatableRow) => any;
+  @Input() selectionType?: SelectionType;
   @Input() summaryRow = false;
   @Input() striped = true;
 
   // Initialize datatable row selection with some index
   _preselectedRowIndex = -1;
-  _filterBy: FilterByType;
+  _filterBy?: FilterByType;
   _height = '100%';
   _isFixedHeight = false;
 
@@ -60,13 +62,13 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   @Output() datatableSelect = new EventEmitter<any>();
   @Output() rowSelect = new EventEmitter<any>();
 
-  filterByChange: Subscription;
+  filterByChange?: Subscription;
 
-  _originalRows: DatatableRow[];
-  _rows: DatatableRow[];
-  _page: number;
-  _count: number;
-  _offset: number;
+  _originalRows?: DatatableRow[];
+  _rows?: DatatableRow[];
+  _page?: number;
+  _count?: number;
+  _offset?: number;
   _columns: DatatableColumn[] = []; // This needs to be initialized so that the data table would do initial sort!
   @Input() selected: DatatableRow[] = [];
 
@@ -74,13 +76,13 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   sortLoading = false;
   private filterChange$ = new Subject();
 
-  private sortTemplates = {};
-  private sortValues = {};
-  private sortSub: Subscription;
+  private sortTemplates: Record<string, DatatableTemplate> = {};
+  private sortValues: Record<number, Record<string, any>> = {};
+  private sortSub?: Subscription;
 
-  @LocalStorage('data-table-settings', {}) private dataTableSettings: Settings;
+  @LocalStorage('data-table-settings', {}) private dataTableSettings!: Settings;
 
-  _getRowClass = (row) => {
+  _getRowClass = (row: any) => {
     if (this.getRowClass) {
       const rowClass = this.getRowClass(row);
       if (rowClass) {
@@ -122,12 +124,12 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     this._count = typeof cnt === 'number' ? cnt  : 0;
   }
 
-  @Input() set rows(rows: DatatableRow[]) {
-    this._originalRows = rows || [];
+  @Input() set rows(rows: Record<string, any>[]) {
+    this._originalRows = rows as any || [];
 
     // record the original indexes of each row element so that when the table is sorted
     // we can find out how the indexes were mapped
-    this._originalRows.forEach((element, idx) => {
+    this._originalRows?.forEach((element, idx) => {
       element.preSortIndex = idx;
     });
     this.sortValues = {};
@@ -164,20 +166,24 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
         column.prop = column.name;
       }
       if (typeof column.headerTemplate === 'string') {
-        column.headerTemplate = this.datatableTemplates[column.headerTemplate];
+        column.headerTemplate = this.datatableTemplates[column.headerTemplate as DatatableTemplate];
       }
       if (!column.headerTemplate) {
         column.headerTemplate = this.datatableTemplates.dafaultHeader;
       }
       if (typeof column.cellTemplate === 'string') {
-        this.sortTemplates[column.prop] = column.cellTemplate;
-        column.cellTemplate = this.datatableTemplates[column.cellTemplate];
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.sortTemplates[column.prop!] = column.cellTemplate as DatatableTemplate;
+        column.cellTemplate = this.datatableTemplates[column.cellTemplate as DatatableTemplate];
       }
       if (column.sortTemplate) {
-        this.sortTemplates[column.prop] = column.sortTemplate;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.sortTemplates[column.prop!] = column.sortTemplate as DatatableTemplate;
       }
-      if (settings && settings[column.name] && settings[column.name].width) {
-        column.width = settings[column.name].width;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      if (settings && settings[column.name!] && settings[column.name!].width) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        column.width = settings[column.name!].width;
       }
       if (this.resizable === false) {
         column.resizeable = false;
@@ -190,7 +196,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   @Input() set preselectedRowIndex(index: number) {
     this._preselectedRowIndex = index;
     const postSortIndex = (this._rows || []).findIndex((element) => element.preSortIndex === this._preselectedRowIndex);
-    this.selected = [this._rows[postSortIndex]] || [];
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.selected = [this._rows![postSortIndex]] || []; // TODO should be fixed
     if (!this.selected.length) {
       return;
     }
@@ -262,7 +269,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     }
   }
 
-  onRowSelect(event) {
+  onRowSelect(event: any) {
     if (event.type === 'click' || event.type === 'dblClick') {
       this.zone.run(() => {
         this.rowSelect.emit(event);
@@ -270,7 +277,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     }
   }
 
-  onPage(event) {
+  onPage(event: any) {
     if (this.loading) {
       return;
     }
@@ -284,13 +291,13 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     this.datatable.bodyComponent.onBodyScroll({scrollXPos: 0, scrollYPos: 0});
   }
 
-  onResize(event) {
+  onResize(event: any) {
     if (event && event.column && event.column.name && event.newValue) {
       this.dataTableSettings = {...this.dataTableSettings, [event.column.name]: {width: event.newValue}};
     }
   }
 
-  onSort(event) {
+  onSort(event: any) {
     this.sorts = this.updateSorts(event);
     this.sortRows(this.sorts);
     this.changeDetectorRef.detectChanges();
@@ -302,7 +309,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
 
   //This changes the sorting so that the last column added to sorting gets priority, but probably only as long as the
   //underlying ngx-datatable uses external sorting
-  private updateSorts(event) {
+  private updateSorts(event: any) {
     if (!event.newValue) {
       return this.sorts.filter(sort => sort.prop !== event.column.prop);
     }
@@ -331,8 +338,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   }
 
   private updateFilteredRows() {
-    this._rows = this._filterBy ? this.filterService.filter(this._originalRows, this._filterBy) : this._originalRows;
-    this._count = this._rows.length;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this._rows = this._filterBy ? this.filterService.filter(this._originalRows!, this._filterBy) : this._originalRows;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this._count = this._rows!.length;
     this._page = 1;
     this.scrollTo();
     this.sortRows(this.sorts);
@@ -385,7 +394,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   }
 
   private setSortValues(sorts: DatatableSort[], rows: DatatableRow[]): Observable<any[]> {
-    const observables = sorts.reduce((arr, sort) => {
+    const observables = sorts.reduce((arr: Observable<any>[], sort: DatatableSort) => {
       const template = this.sortTemplates[sort.prop];
       rows.forEach((row) => {
         if (!this.sortValues[row.preSortIndex]) {

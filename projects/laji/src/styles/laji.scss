@@ -1249,14 +1249,6 @@ typeahead-container button {
     text-align: left;
 }
 
-typeahead-container {
-  width: 600px;
-}
-
-typeahead-container ul {
-  width: 600px;
-}
-
 .autocomplete-small-flag {
   display: inline-block;
   width: 24px;
@@ -1365,4 +1357,22 @@ span.simple-option {
 
 .ljb-picker-highlighter {
   z-index: 1070 !important;
+}
+
+.home-main {
+  padding-right: $sp-6;
+  @include media-query-phone {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+
+.home-news-list {
+  max-width: 400px;
+  padding-left: $sp-6;
+  border-left: 1px solid $neutral-4;
+  @media only screen and (max-width: map-get($map: $breakpoints, $key: "xs")) {
+    border-left: none;
+    padding-left: unset;
+  }
 }

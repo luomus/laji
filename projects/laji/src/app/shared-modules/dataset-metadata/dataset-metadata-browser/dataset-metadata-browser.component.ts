@@ -1,9 +1,9 @@
-import { Component, ChangeDetectionStrategy, OnChanges, Output, Input, EventEmitter, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnChanges, Output, Input, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, zip } from 'rxjs';
+import { zip } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SelectedOption, TreeOptionsNode } from '../../tree-select/tree-select.component';
-import { CollectionService, ICollectionAggregate, ICollectionsTreeNode } from '../../../shared/service/collection.service';
+import { SelectedOption } from '../../tree-select/tree-select.component';
+import { CollectionService, CollectionTreeOptionsNode, ICollectionAggregate, ICollectionsTreeNode } from '../../../shared/service/collection.service';
 
 @Component({
   selector: 'laji-dataset-metadata-browser',
@@ -12,14 +12,14 @@ import { CollectionService, ICollectionAggregate, ICollectionsTreeNode } from '.
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatasetMetadataBrowserComponent implements OnChanges {
-  @Input() selected: string;
-  @Input() isMobile: boolean;
+  @Input() selected?: string;
+  @Input() isMobile?: boolean;
   @Output() selectedChange = new EventEmitter<string>();
 
   collectionsCount = 0;
-  _selected: string;
+  _selected?: string;
   selectedOption: SelectedOption[] = [];
-  optionsTree: TreeOptionsNode[] = [];
+  optionsTree: CollectionTreeOptionsNode[] = [];
   lang: string;
   showEmpty = false;
   loading = false;
@@ -72,7 +72,7 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
   }
 
   buildCollectionTree(trees: ICollectionsTreeNode[], aggregates: ICollectionAggregate[]) {
-    const collectionsWithChildren = [];
+    const collectionsWithChildren: CollectionTreeOptionsNode[] = [];
 
     if (this.selected) {
       const aggregate = aggregates.find(elem => elem.id === this.selected);
@@ -103,7 +103,7 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
     return collectionsWithChildren;
   }
 
-  buildTree(tree: ICollectionsTreeNode, aggregates: ICollectionAggregate[]): TreeOptionsNode | undefined {
+  buildTree(tree: ICollectionsTreeNode, aggregates: ICollectionAggregate[]): CollectionTreeOptionsNode|undefined {
     const aggregate = aggregates.find(elem => elem.id === tree.id);
 
     if (this.excludedTypes.includes(tree.collectionType)) {
@@ -119,7 +119,7 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
     }
 
     if (tree.hasChildren) {
-      const children = [];
+      const children: CollectionTreeOptionsNode[] = [];
       let childCount = 0;
       tree.children?.forEach(child => {
         const childTree = this.buildTree(child, aggregates);
@@ -183,7 +183,7 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
     return undefined;
   }
 
-  changeSelected(value) {
+  changeSelected(value: SelectedOption[]) {
     this.selected = value[0]?.id;
     this._selected = this.selected;
     this.selectedChange.emit(this.selected);

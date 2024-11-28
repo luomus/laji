@@ -4,11 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
-import { map as rxjsMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
 enum Tabs {
   chart = 'chart',
+  // eslint-disable-next-line
   map = 'map'
 }
 
@@ -20,6 +21,7 @@ interface ChartState {
 interface MapState {
   tab: Tabs.map;
   taxon: string | undefined;
+  year: string | undefined;
 }
 
 type State = ChartState | MapState;
@@ -31,12 +33,12 @@ type State = ChartState | MapState;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdPointCountResultComponent implements OnInit, OnDestroy {
-  @Input() form: Form.SchemaForm;
+  @Input() form!: Form.SchemaForm;
 
   Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
-  state$: Observable<State>;
+  state$!: Observable<State>;
   collections: string[] = ['HR.157'];
-  taxonOptions$: Observable<{ label: string; value: string }[]>;
+  taxonOptions$!: Observable<{ label: string; value: string }[]>;
   isChartState = (state: State): state is ChartState => state.tab === Tabs.chart;
   isMapState = (state: State): state is MapState => state.tab === Tabs.map;
   mapQuery: WarehouseQueryInterface = {
@@ -44,7 +46,7 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
     gatheringCounts: true, cache: true, countryId: ['ML.206']
   };
 
-  private defaultTabSubscription: Subscription;
+  private defaultTabSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,13 +57,12 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.state$ = this.route.queryParams as Observable<State>;
-    this.taxonOptions$ = this.getTaxonOptions$();
-    this.state$ = this.route.queryParams as Observable<State>;
     this.defaultTabSubscription = this.state$.subscribe(({ tab }) => {
       if (!Tabs[tab]) {
         this.router.navigate([], { queryParams: { tab: Tabs.chart } });
       }
     });
+    this.taxonOptions$ = this.getTaxonOptions$();
   }
 
   ngOnDestroy(): void {
@@ -79,12 +80,12 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
         pageSize: 10000
       }
     ).pipe(
-      rxjsMap(res => res.results),
-      rxjsMap(taxa => taxa.map(t => ({
+      map(res => res.results),
+      map(taxa => taxa.map(t => ({
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),
-        value: t.id
+        value: t.id ?? ''
       }))),
-      rxjsMap(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs))
+      map(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs))
     );
   }
 
@@ -99,5 +100,9 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
 
   onTaxonChange(taxon: any) {
     this.updateState({ taxon });
+  }
+
+  onYearChange(year: any) {
+    this.updateState({ year });
   }
 }

@@ -9,6 +9,6 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AbundanceRowComponent {
-  @Input() abundanceString: string;
-  @Input() abundanceUnit: string;
+  @Input() abundanceString?: string;
+  @Input() abundanceUnit?: string;
 }

@@ -64,16 +64,16 @@ const BAR_CHART_OPTIONS: ChartOptions = {
 export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, OnInit {
   private unsubscribe$ = new Subject<void>();
 
-  @ViewChild('modal', { static: true }) public modal: ModalComponent;
-  @Input() query: WarehouseQueryInterface;
+  @ViewChild('modal', { static: true }) public modal!: ModalComponent;
+  @Input() query!: WarehouseQueryInterface;
   @Input() useIndividualCount = false;
   @Output() hasData = new EventEmitter<boolean>();
 
-  chartData: ChartData;
+  chartData?: ChartData;
   yearChartLabels = this.getYearChartLabels();
-  monthChartLabels = [];
+  monthChartLabels: string[] = [];
   barChartOptions = BAR_CHART_OPTIONS;
-  activeMonthIdx: number;
+  activeMonthIdx?: number;
   monthFormatting = this.getMonthLabel.bind(this);
 
   constructor(
@@ -83,7 +83,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   ) { }
 
   ngOnInit() {
-    (Tooltip.positioners as any).cursor = (_, coords) => coords;
+    (Tooltip.positioners as any).cursor = (_: any, coords: any) => coords;
     this.facade.chartData$.pipe(takeUntil(this.unsubscribe$)).subscribe(chartData => {
       this.chartData = chartData;
       this.cdr.markForCheck();
@@ -100,9 +100,9 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     this.unsubscribe$.complete();
   }
 
-  onYearChartBarClick({ index }) {
+  onYearChartBarClick({ index }: { index: number }) {
     this.activeMonthIdx = index;
-    this.monthChartLabels = this.getMonthChartLabels(index + 1);
+    this.monthChartLabels = this.getMonthChartLabels(index).map(l => l + '');
     this.modal.show();
   }
 
@@ -114,7 +114,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     return data;
   }
 
-  private getMonthChartLabels(monthIdx: number): string[] {
+  private getMonthChartLabels(monthIdx: number): number[] {
     const days = [];
     for (let i = 0; i < getNbrOfDaysInMonth(monthIdx); i++) {
       days[i] = i + 1;

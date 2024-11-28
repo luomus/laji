@@ -15,12 +15,11 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
 export class AudioPlayerComponent implements OnInit {
    @Input() audioFiles: any;
 
-  @ViewChild('modalSpectrum', { static: true }) modalSpectrum: TemplateRef<any>;
-  @ViewChild('audio', {static: true}) audio: ElementRef;
-  @ViewChild('audioPopUp', {static: true}) audioPopUp: ElementRef;
-  public isPlaying: boolean[];
-  public audioContainer: HTMLAudioElement;
-  public audioContainerPopup: HTMLAudioElement;
+  @ViewChild('modalSpectrum', { static: true }) modalSpectrum!: TemplateRef<any>;
+  @ViewChild('audio', {static: true}) audio!: ElementRef;
+  @ViewChild('audioPopUp', {static: true}) audioPopUp!: ElementRef;
+  public isPlaying!: boolean[];
+  public audioContainer!: HTMLAudioElement;
   public nowplayingAudioId = -1;
 
 
@@ -37,9 +36,8 @@ export class AudioPlayerComponent implements OnInit {
   };
   public images: Image [] = [];
   public popupSpectrum = false;
-  public audioFile: Audio;
 
-  private modalRef: ModalRef;
+  private modalRef?: ModalRef;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -49,7 +47,7 @@ export class AudioPlayerComponent implements OnInit {
 
   ngOnInit(): void {
     this.nowplayingAudioId = 0;
-    this.listAudio = this.audioFiles.filter(audio => audio['mediaType'] === 'AUDIO' );
+    this.listAudio = this.audioFiles.filter((audio: any) => audio['mediaType'] === 'AUDIO' );
 
     this.listAudio.forEach((element, index) =>
        this.images.push({ id: 'a' + index, fullURL: element.fullURL , thumbnailURL: element.thumbnailURL, intellectualRights: element.licenseId })
@@ -61,7 +59,7 @@ export class AudioPlayerComponent implements OnInit {
     this.audioContainer.preload = 'auto';
   }
 
-  audioPlay(index): void {
+  audioPlay(index: number): void {
     this.playingAudio = this.listAudio[index];
     this.nowplayingAudioId = index;
 
@@ -86,12 +84,12 @@ export class AudioPlayerComponent implements OnInit {
   }
 
 
-  audioPause(index): void {
+  audioPause(index: number): void {
     this.isPlaying[index] = false;
     this.audioContainer.pause();
   }
 
-  nextAudio(index): void {
+  nextAudio(index: number): void {
     this.cd.markForCheck();
     if (this.nowplayingAudioId < this.listAudio.length) {
       this.nowplayingAudioId = index;
@@ -101,7 +99,7 @@ export class AudioPlayerComponent implements OnInit {
     }
   }
 
-  previousAudio(index): void {
+  previousAudio(index: number): void {
     this.cd.markForCheck();
     if (this.nowplayingAudioId > 0) {
       this.nowplayingAudioId = index;
@@ -111,7 +109,7 @@ export class AudioPlayerComponent implements OnInit {
     }
   }
 
-  onAudioEnded(index) {
+  onAudioEnded(index: number) {
     this.isPlaying[index] = false;
   }
 
@@ -128,7 +126,7 @@ export class AudioPlayerComponent implements OnInit {
   }
 
 
-  openSpectrumPopup(index) {
+  openSpectrumPopup(index: number) {
     this.cd.detectChanges();
     this.openModal();
     if (this.nowplayingAudioId !== -1 || this.nowplayingAudioId === undefined) {
@@ -142,7 +140,7 @@ export class AudioPlayerComponent implements OnInit {
     this.startPopupPlayer(index);
   }
 
-  startPopupPlayer(index) {
+  startPopupPlayer(index: number) {
     this.playingAudio = this.listAudio[index];
   }
 

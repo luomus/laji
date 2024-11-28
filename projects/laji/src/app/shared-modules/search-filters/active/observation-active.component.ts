@@ -56,6 +56,11 @@ export class ObservationActiveComponent {
     return this._query;
   }
 
+  toggleActiveListClick(e: MouseEvent) {
+    e.stopPropagation();
+    this.toggleActiveList();
+  }
+
   toggleActiveList() {
     if (!this.showList && this.active && this.active.length === 0) {
       return;

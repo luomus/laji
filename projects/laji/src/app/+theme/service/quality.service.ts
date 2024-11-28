@@ -4,9 +4,21 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 
+interface SubState {
+  key: string;
+  data: any[];
+  pending: Observable<any> | undefined;
+  pendingKey: string;
+}
+
+interface State {
+  annotations: SubState;
+  users: SubState;
+}
+
 @Injectable()
 export class QualityService {
-  private state = {
+  private state: State = {
     annotations: {
       key: '',
       data: [],
@@ -25,11 +37,11 @@ export class QualityService {
     private warehouseApi: WarehouseApi
   ) { }
 
-  getAnnotationList(page = 1, pageSize = 50, orderBy?, informalTaxonGroup?, timeStart?, timeEnd?): Observable<any> {
+  getAnnotationList(page = 1, pageSize = 50, orderBy?: string[], informalTaxonGroup?: string, timeStart?: string, timeEnd?: string): Observable<any> {
     const query: WarehouseQueryInterface = {cache: true};
     query.annotationType = ['USER_EFFECTIVE', 'COMMENT'];
     if (informalTaxonGroup) {
-      query.informalTaxonGroupId = informalTaxonGroup;
+      query.informalTaxonGroupId = <string[]><unknown>informalTaxonGroup;
     }
     if (timeStart) {
       query.annotatedSameOrAfter = timeStart;
@@ -51,7 +63,7 @@ export class QualityService {
     ));
   }
 
-  getMostActiveUsers(maxLength = 50, informalTaxonGroup?: string[], lastDate?): Observable<any> {
+  getMostActiveUsers(maxLength = 50, informalTaxonGroup?: string[], lastDate?: string): Observable<any> {
     const query: WarehouseQueryInterface = {cache: true};
     query.annotationType = ['USER_EFFECTIVE'];
     if (informalTaxonGroup) {
@@ -74,7 +86,7 @@ export class QualityService {
         true
     )).pipe(
       map(data => data.results),
-      map(data => data.map(row => {
+      map(data => data.map((row: any) => {
           row.userId = row.aggregateBy['unit.annotations.annotationByPersonName'] || '';
           return row;
         })), );
@@ -89,7 +101,8 @@ export class QualityService {
           observer.next(res);
           observer.complete();
         };
-        this.state[type].pending.subscribe(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.state[type].pending!.subscribe(
           (data) => { onComplete(data); }
         );
       });
@@ -101,6 +114,7 @@ export class QualityService {
         this.state[type].key  = cacheKey;
       })
     );
-    return this.state[type].pending ;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.state[type].pending!;
   }
 }

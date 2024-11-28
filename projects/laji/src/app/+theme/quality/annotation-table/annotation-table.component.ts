@@ -75,7 +75,7 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
   shownDocument = '';
   highlightId = '';
 
-  private fetchSub: Subscription;
+  private fetchSub: Subscription | undefined;
 
   private langMap = {
     fi: 'Finnish',
@@ -104,13 +104,13 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
     this.fetchPage();
   }
 
-  setPage(pageInfo) {
+  setPage(pageInfo: any) {
     this.page = pageInfo.offset + 1;
     this.fetchPage();
   }
 
-  onSort(event) {
-    this.orderBy = event.sorts.map(sort => {
+  onSort(event: any) {
+    this.orderBy = event.sorts.map((sort: any) => {
       const col = this.columns.filter(column => column.prop === sort.prop)[0];
       if (!col) {
         return '';
@@ -121,7 +121,7 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
     this.fetchPage();
   }
 
-  showDocument(event) {
+  showDocument(event: any) {
     const row: any = event.row || {};
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
       this.documentViewerFacade.showDocumentID({
@@ -133,7 +133,7 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
     }
   }
 
-  getRowHeight(row): number {
+  getRowHeight(row: any): number {
     if (!row) { return 37; }
 
     if (row.unit && row.unit.media && row.unit.media[0]) {
@@ -166,7 +166,7 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
 
   private setLangParams(value: string) {
     return (value || '')
-      .replace('%longLang%', this.langMap[this.translateService.currentLang] || 'Finnish');
+      .replace('%longLang%', this.langMap[<keyof typeof this.langMap>this.translateService.currentLang] || 'Finnish');
   }
 
 }

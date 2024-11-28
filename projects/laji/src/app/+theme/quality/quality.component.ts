@@ -10,7 +10,7 @@ export class QualityComponent {
   timeStart = '';
   timeEnd = '';
 
-  setFilters(filters) {
+  setFilters(filters: { group: string; timeStart: string; timeEnd: string }) {
     this.group = filters.group;
     this.timeStart = filters.timeStart;
     this.timeEnd = filters.timeEnd;

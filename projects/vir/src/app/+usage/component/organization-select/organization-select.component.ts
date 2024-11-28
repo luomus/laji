@@ -16,9 +16,9 @@ export class OrganizationSelectComponent implements OnInit {
    */
   @Input() filterByAdmin = false;
 
-  @Input() users$: Observable<IVirUser[]>;
+  @Input() users$!: Observable<IVirUser[]>;
 
-  organisations$: Observable<string[]>;
+  organisations$!: Observable<string[]>;
 
   // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() select = new EventEmitter<string>();

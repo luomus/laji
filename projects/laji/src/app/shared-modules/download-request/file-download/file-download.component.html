@@ -10,7 +10,6 @@
               name="fileType"
               [value]="option.value"
               [(ngModel)]="downloadService.fileType"
-              [disabled]="option.value === fileTypeEnum.gis && downloadRequest.approximateMatches > gisDownloadLimit"
             >
             {{ ('downloadRequest.fileDownload.type.' + option.value)  | translate }}
           </label>
@@ -20,6 +19,9 @@
     </div>
   </div>
   <div *ngIf="downloadService.fileType === fileTypeEnum.gis" class="row">
+    <div class="col-sm-12">
+      <div role="alert" class="alert alert-warning mb-3" [innerHTML]='"download.shpDeprecationWarning" | translate'></div>
+    </div>
     <div class="col-sm-4">
       <label for="format">{{ 'downloadRequest.fileDownload.format' | translate }}:</label>
       <select id="format" name="format" class="form-control" [(ngModel)]="downloadService.format">
@@ -39,7 +41,6 @@
       </select>
     </div>
   </div>
-  <span *ngIf="downloadRequest.approximateMatches > gisDownloadLimit" class="text text-warning"><i class="glyphicon glyphicon-alert"></i> {{ 'downloadRequest.fileDownload.gisDisabled' | translate }}</span>
 </div>
 <lu-button [loading]="downloadService.loading" [role]="'primary'" (click)="downloadFile()">
   <i class="glyphicon glyphicon-download-alt"></i>

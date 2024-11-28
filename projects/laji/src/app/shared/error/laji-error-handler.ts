@@ -13,9 +13,9 @@ let errorSent = false;
 @Injectable()
 export class LajiErrorHandler extends ErrorHandler {
 
-  private toastsService: ToastsService;
-  private translate: TranslateService;
-  private logger: Logger;
+  private toastsService?: ToastsService;
+  private translate?: TranslateService;
+  private logger?: Logger;
   private pause = false;
 
   constructor(
@@ -25,7 +25,7 @@ export class LajiErrorHandler extends ErrorHandler {
     super();
   }
 
-  handleError(error) {
+  handleError(error: { message: string | string[]; toString: () => any }) {
     if (this.pause || !error || (typeof error === 'object' && typeof error.message === 'string' && error.message.length === 0)) {
       return super.handleError(error);
     }

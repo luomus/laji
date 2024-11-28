@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DataOptions, GetFeatureStyleOptions, Options } from '@luomus/laji-map';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { getPointIconAsCircle } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
@@ -8,15 +8,21 @@ import { WarehouseQueryInterface } from 'projects/laji/src/app/shared/model/Ware
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { cacheReturnObservable } from 'projects/bird-atlas/src/app/core/api.service';
+import G, { Feature, GeoJsonProperties, Polygon } from 'geojson';
 
-type GatheringCountType = 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
+type GatheringCountType = 'ZERO' | 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
 type ObservationProbabilityType = 'ZERO' | 'OVER_ZERO' | 'OVER_TWENTY' | 'OVER_FORTY' | 'OVER_SIXTY' | 'OVER_EIGHTY' | 'HUNDRED';
 
 type ResultVisualizationMode = 'gatheringCount' | 'observationProbability';
 
-type CountMap = Map<string, {lat: string; lon: string; count: number}>;
-type RatioMap = Map<string, {lat: string; lon: string; ratio: number}>;
+type CountMap = Map<string, { lat: string; lon: string; count: number }>;
+type CountArray = { lat: string; lon: string; count: number }[];
+type RatioMap = Map<string, { lat: string; lon: string; ratio: number }>;
 type RatioArray = { lat: string; lon: string; ratio: number }[];
+
+interface Category { color: string; label: string };
 
 interface QueryResult {
   results: {
@@ -28,7 +34,11 @@ interface QueryResult {
   }[];
 }
 
-const gatheringCountToVisCategory: Record<GatheringCountType, { color: string; label: string }> = {
+const gatheringCountToVisCategory: Record<GatheringCountType, Category> = {
+  ZERO: {
+    color: '#A9A9A9',
+    label: '0'
+  },
   ONE: {
     color: '#EE82EE',
     label: '1-4'
@@ -52,12 +62,12 @@ const gatheringCountToVisCategory: Record<GatheringCountType, { color: string; l
   FIVE_HUNDRED: {
     color: '#DC143C',
     label: '500'
-  },
+  }
 };
 
-const observationProbabilityToVisCategory: Record<ObservationProbabilityType, { color: string; label: string }> = {
+const observationProbabilityToVisCategory: Record<ObservationProbabilityType, Category> = {
   ZERO: {
-    color: '#E6E6E6',
+    color: '#A9A9A9',
     label: '0%'
   },
   OVER_ZERO: {
@@ -83,7 +93,7 @@ const observationProbabilityToVisCategory: Record<ObservationProbabilityType, { 
   HUNDRED: {
     color: '#DC143C',
     label: '100%'
-  },
+  }
 };
 
 @Component({
@@ -92,134 +102,100 @@ const observationProbabilityToVisCategory: Record<ObservationProbabilityType, { 
   styleUrls: ['./result-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResultMapComponent implements OnInit {
-  readonly collections$ = new BehaviorSubject<string[]>([]);
-  readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
-  @Input() set collections(v: string[]) { this.collections$.next(v); };
-  @Input() set taxon(v: string | undefined) { this.taxon$.next(v); };
-  @Input() taxonOptions: { label: string; value: string }[];
-  @Input() visualizationOptions: ResultVisualizationMode[];
-  @Input() mapQuery: WarehouseQueryInterface;
-  @Input() gatheringCountLabel: string;
+export class ResultMapComponent implements OnInit, OnChanges {
+  @Input() collections!: string[];
+  @Input() taxon: string | undefined;
+  @Input() year: string | undefined;
+  @Input() taxonOptions!: { label: string; value: string }[] | null;
+  @Input() visualizationOptions!: ResultVisualizationMode[];
+  @Input() mapQuery!: WarehouseQueryInterface;
+  @Input() gatheringCountLabel!: string;
+  @Input() collectionStartYear!: number;
 
   @Output() taxonChange = new EventEmitter<string>();
+  @Output() yearChange = new EventEmitter<string>();
 
   toHtmlSelectElement = toHtmlSelectElement;
 
-  mapData$: Observable<DataOptions>;
+  private gatheringCountMapData$: Observable<DataOptions>;
+  private observationProbabilityMapData$: Observable<DataOptions>;
+
+  readonly collections$ = new BehaviorSubject<string[]>([]);
+  readonly taxon$ = new BehaviorSubject<string | undefined>(undefined);
+  readonly year$ = new BehaviorSubject<string | undefined>(undefined);
+
+  mapData$!: Observable<DataOptions>;
   mapOptions: Options;
-  visualization: LajiMapVisualization<ResultVisualizationMode>;
+  visualization!: LajiMapVisualization<ResultVisualizationMode>;
   visualizationMode: ResultVisualizationMode = 'gatheringCount';
-  defaultTaxon: string;
+  defaultTaxon?: string;
+  defaultYear?: string;
+  yearOptions!: { label: string; value: string }[];
+  currentYear!: number;
   loading = true;
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private translate: TranslateService,
     private warehouseApi: WarehouseApi
   ) {
     this.mapOptions = {
       clickBeforeZoomAndPan: true
     };
-  }
 
-  ngOnInit(): void {
-    this.defaultTaxon = this.taxon$.getValue() !== undefined ? this.taxon$.getValue() : '';
-    this.mapData$ = this.gatheringCountMapData$();
-
-    this.visualization = {
-      gatheringCount: {
-        label: this.gatheringCountLabel,
-        categories: Object.keys(gatheringCountToVisCategory).reduce((_categories, prevalence) => ([
-          ..._categories,
-          gatheringCountToVisCategory[prevalence]
-        ]), [])
-      },
-      observationProbability: {
-        label: 'laji-map.legend.mode.observationProbability',
-        categories: Object.keys(observationProbabilityToVisCategory).reduce((_categories, percentage) => ([
-          ..._categories,
-          observationProbabilityToVisCategory[percentage]
-        ]), [])
-      }
-    };
-  }
-
-  private getGatheringCounts$(allTaxa = false): Observable<QueryResult> {
-    return combineLatest([this.collections$, this.taxon$]).pipe(
-      switchMap(([collections, taxon]) => this.warehouseApi.warehouseQueryAggregateGet(
-        {
-          collectionId: collections, taxonId: allTaxa ? '' : taxon, ...this.mapQuery
-        },
-        [
-          'gathering.conversions.ykj10kmCenter.lat',
-          'gathering.conversions.ykj10kmCenter.lon'
-        ],
-        undefined,
-        10000
-      ))
-    );
-  }
-
-  private gatheringCountMapData$(): Observable<DataOptions> {
-    return this.getGatheringCounts$().pipe(
-      tap(() => { this.loading = true; }),
-      map((response: QueryResult) => ({
+    this.gatheringCountMapData$ = combineLatest([this.collections$, this.taxon$, this.year$]).pipe(
+      tap(() => {
+        this.loading = true;
+        this.changeDetectorRef.markForCheck();
+      }),
+      switchMap(([collections, taxon, year]) => this.getGatheringCounts$(collections, taxon, year).pipe(
+        map((selectedTaxonGatheringCounts) => ({ selectedTaxonGatheringCounts, collections, year })))
+      ),
+      switchMap(({ selectedTaxonGatheringCounts, collections, year }) => this.getGatheringCounts$(collections, undefined, year).pipe(
+        map((allGatheringCounts) => ({ selectedTaxonGatheringCounts, allGatheringCounts })))
+      ),
+      map(({ selectedTaxonGatheringCounts, allGatheringCounts }) => ({
         marker: {
           icon: getPointIconAsCircle
         },
         getFeatureStyle: this.gatheringCountFeatureStyle,
         featureCollection: {
           type: 'FeatureCollection' as const,
-          features: response.results.reduce((_features, item) => {
+          features: this.gatheringCountsFromAllLocations(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features: G.Feature<G.Polygon>[], item) => {
             _features.push(
               convertYkjToGeoJsonFeature(
-                +item.aggregateBy['gathering.conversions.ykj10kmCenter.lat'],
-                +item.aggregateBy['gathering.conversions.ykj10kmCenter.lon'],
-                { gatheringCount: item.gatheringCount }
+                +item.lat,
+                +item.lon,
+                { count: item.count }
               )
             );
             return _features;
-          }, [])
+            /* eslint-disable @typescript-eslint/no-non-null-assertion */
+          }, []).sort((a, b) => a.properties!.count - b.properties!.count)
         }
       })),
       tap(() => { this.loading = false; })
     );
-  }
 
-  private gatheringCountFeatureStyle({ feature }: GetFeatureStyleOptions) {
-    const { gatheringCount } = feature.properties;
-
-    let prevalence: GatheringCountType;
-
-    if (gatheringCount >= 1 && gatheringCount < 5) {
-      prevalence = 'ONE';
-    } else if (gatheringCount >= 5 && gatheringCount < 10) {
-      prevalence = 'FIVE';
-    } else if (gatheringCount >= 10 && gatheringCount < 50) {
-      prevalence = 'TEN';
-    } else if (gatheringCount >= 50 && gatheringCount < 100) {
-      prevalence = 'FIFTY';
-    } else if (gatheringCount >= 100 && gatheringCount < 500) {
-      prevalence = 'HUNDRED';
-    } else if (gatheringCount >= 500) {
-      prevalence = 'FIVE_HUNDRED';
-    }
-
-    return {
-      color: gatheringCountToVisCategory[prevalence].color
-    };
-  }
-
-  private observationProbabilityMapData(): Observable<DataOptions> {
-    return combineLatest([this.getGatheringCounts$(), this.getGatheringCounts$(true)]).pipe(
-      tap(() => { this.loading = true; }),
-      map(([query1, query2]) => ({
+    this.observationProbabilityMapData$ = combineLatest([this.collections$, this.taxon$, this.year$]).pipe(
+      tap(() => {
+        this.loading = true;
+        this.changeDetectorRef.markForCheck();
+      }),
+      switchMap(([collections, taxon, year]) => this.getGatheringCounts$(collections, taxon, year).pipe(
+        map((selectedTaxonGatheringCounts) => ({ selectedTaxonGatheringCounts, collections, year })))
+      ),
+      switchMap(({ selectedTaxonGatheringCounts, collections, year }) => this.getGatheringCounts$(collections, undefined, year).pipe(
+        map((allGatheringCounts) => ({ selectedTaxonGatheringCounts, allGatheringCounts })))
+      ),
+      map(({ selectedTaxonGatheringCounts, allGatheringCounts }) => ({
         marker: {
           icon: getPointIconAsCircle
         },
         getFeatureStyle: this.observationProbabilityFeatureStyle,
         featureCollection: {
           type: 'FeatureCollection' as const,
-          features: this.gatheringCountRatios(query1, query2).reduce((_features, item) => {
+          features: this.gatheringCountRatios(selectedTaxonGatheringCounts, allGatheringCounts).reduce((_features: Feature<Polygon, GeoJsonProperties>[], item) => {
             _features.push(
               convertYkjToGeoJsonFeature(
                 +item.lat,
@@ -228,58 +204,182 @@ export class ResultMapComponent implements OnInit {
               )
             );
             return _features;
-          }, [])
+            /* eslint-disable @typescript-eslint/no-non-null-assertion */
+          }, []).sort((a, b) => a.properties!.ratio - b.properties!.ratio)
         }
-      })),
+      }))
+      ,
       tap(() => { this.loading = false; })
     );
   }
 
-  private observationProbabilityFeatureStyle({ feature }: GetFeatureStyleOptions) {
-    const { ratio } = feature.properties;
+  ngOnInit(): void {
+    this.defaultTaxon = this.taxon$.getValue() !== undefined ? this.taxon$.getValue() : '';
+    this.defaultYear = this.year$.getValue() !== undefined ? this.year$.getValue() : '';
+    this.currentYear = new Date().getFullYear();
+    this.mapData$ = this.gatheringCountMapData$;
 
-    let percentage: ObservationProbabilityType;
+    this.visualization = {
+      gatheringCount: {
+        label: this.gatheringCountLabel,
+        categories: Object.keys(gatheringCountToVisCategory).reduce((_categories: Category[], prevalence) => ([
+          ..._categories,
+          gatheringCountToVisCategory[prevalence as GatheringCountType]
+        ]), [])
+      },
+      observationProbability: {
+        label: 'laji-map.legend.mode.observationProbability',
+        categories: Object.keys(observationProbabilityToVisCategory).reduce((_categories: Category[], percentage) => ([
+          ..._categories,
+          observationProbabilityToVisCategory[percentage as ObservationProbabilityType]
+        ]), [])
+      }
+    };
+
+    const yearsFromStartYear = [''].concat(
+      Array.from(
+        { length: this.currentYear - this.collectionStartYear + 1 },
+        (_, i) => (+this.collectionStartYear + i).toString()
+      ).reverse()
+    );
+
+    this.yearOptions = yearsFromStartYear.map(v => {
+      if (v === '') {
+        return { label: this.translate.instant('result.map.year.empty.label'), value: '' };
+      } else {
+        return { label: v, value: v };
+      }
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['collections']) {
+      this.collections$.next(changes['collections'].currentValue);
+    }
+    if (changes['taxon']) {
+      this.taxon$.next(changes['taxon'].currentValue);
+    }
+    if (changes['year']) {
+      this.year$.next(changes['year'].currentValue);
+    }
+  }
+
+  private getGatheringCounts$(collections: string[], taxon: string | undefined, year: string | undefined): Observable<QueryResult> {
+    return this.getGatheringCountsCached(collections, taxon || '', year || '');
+  }
+
+  @cacheReturnObservable(120000)
+  private getGatheringCountsCached(collections: string[], taxon: string, year: string): Observable<QueryResult> {
+    return this.warehouseApi.warehouseQueryAggregateGet(
+      {
+        collectionId: collections,
+        taxonId: taxon === '' ? undefined : taxon,
+        ...this.mapQuery,
+        yearMonth: year === ''
+          ? [this.collectionStartYear + '/' + this.currentYear]
+          : [year]
+      },
+      [
+        'gathering.conversions.ykj10kmCenter.lat',
+        'gathering.conversions.ykj10kmCenter.lon'
+      ],
+      undefined,
+      10000
+    );
+  }
+
+  private gatheringCountFeatureStyle({ feature }: GetFeatureStyleOptions) {
+    const { count } = feature!.properties!;
+
+    let prevalence: GatheringCountType = 'ZERO';
+
+    if (count === 0) {
+      prevalence = 'ZERO';
+    } else if (count < 5) {
+      prevalence = 'ONE';
+    } else if (count < 10) {
+      prevalence = 'FIVE';
+    } else if (count < 50) {
+      prevalence = 'TEN';
+    } else if (count < 100) {
+      prevalence = 'FIFTY';
+    } else if (count < 500) {
+      prevalence = 'HUNDRED';
+    } else if (count >= 500) {
+      prevalence = 'FIVE_HUNDRED';
+    }
+
+    return {
+      color: gatheringCountToVisCategory[prevalence].color,
+      weight: 1
+    };
+  }
+
+  private gatheringCountsFromAllLocations(selectedTaxonGatheringCounts: QueryResult, allGatheringCounts: QueryResult): CountArray {
+    const allLocations: CountMap = new Map();
+    allGatheringCounts.results.forEach(result => {
+      const { aggregateBy } = result;
+      const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
+      const key = `${lat},${lon}`;
+      allLocations.set(key, { lat, lon, count: 0 });
+    });
+
+    const gatheringCounts: CountMap = new Map();
+    selectedTaxonGatheringCounts.results.forEach(result => {
+      const { aggregateBy, gatheringCount } = result;
+      const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
+      const key = `${lat},${lon}`;
+      gatheringCounts.set(key, { lat, lon, count: gatheringCount });
+    });
+
+    const populatedMap: CountMap = new Map([...allLocations, ...gatheringCounts]);
+    const counts: CountArray = Array.from(populatedMap.values());
+    return counts;
+  }
+
+  private observationProbabilityFeatureStyle({ feature }: GetFeatureStyleOptions) {
+    const { ratio } = feature!.properties!;
+
+    let percentage: ObservationProbabilityType = 'ZERO';
 
     if (ratio === 0) {
       percentage = 'ZERO';
-    } else if (ratio > 0 && ratio < 0.2) {
+    } else if (ratio < 0.2) {
       percentage = 'OVER_ZERO';
-    } else if (ratio >= 0.2 && ratio < 0.4) {
+    } else if (ratio < 0.4) {
       percentage = 'OVER_TWENTY';
-    } else if (ratio >= 0.4 && ratio < 0.6) {
+    } else if (ratio < 0.6) {
       percentage = 'OVER_FORTY';
-    } else if (ratio >= 0.6 && ratio < 0.8) {
+    } else if (ratio < 0.8) {
       percentage = 'OVER_SIXTY';
-    } else if (ratio >= 0.8 && ratio < 1) {
+    } else if (ratio < 1) {
       percentage = 'OVER_EIGHTY';
     } else if (ratio >= 1) {
       percentage = 'HUNDRED';
     }
 
     return {
-      color: observationProbabilityToVisCategory[percentage].color
+      color: observationProbabilityToVisCategory[percentage].color,
+      weight: 1
     };
   }
 
-  private gatheringCountRatios(query1: QueryResult, query2: QueryResult): RatioArray {
+  private gatheringCountRatios(selectedTaxonGatheringCounts: QueryResult, allGatheringCounts: QueryResult): RatioArray {
     const countMap: CountMap = new Map();
-    const ratioMap: RatioMap = new Map();
-
-    // Populate countMap with query1 locations and counts
-    query1.results.forEach(result => {
+    selectedTaxonGatheringCounts.results.forEach(result => {
       const { aggregateBy, gatheringCount } = result;
       const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
       const key = `${lat},${lon}`;
       countMap.set(key, { lat, lon, count: gatheringCount });
     });
 
-    // Populate ratioMap with query2 locations and calculate query1/query2 gatheringCount ratio
-    query2.results.forEach(result => {
+    const ratioMap: RatioMap = new Map();
+    allGatheringCounts.results.forEach(result => {
       const { aggregateBy, gatheringCount } = result;
       const { 'gathering.conversions.ykj10kmCenter.lat': lat, 'gathering.conversions.ykj10kmCenter.lon': lon } = aggregateBy;
       const key = `${lat},${lon}`;
       if (countMap.has(key)) {
-        const { count } = countMap.get(key);
+        const { count } = countMap.get(key)!;
         const ratio = count / gatheringCount;
         ratioMap.set(key, { lat, lon, ratio });
       } else {
@@ -291,16 +391,22 @@ export class ResultMapComponent implements OnInit {
     return ratios;
   }
 
-  onVisualizationModeChange(mode: string) {
+  onVisualizationModeChange(mode: string): void {
     this.visualizationMode = <ResultVisualizationMode>mode;
     if (this.visualizationMode === 'gatheringCount') {
-      this.mapData$ = this.gatheringCountMapData$();
+      this.mapData$ = this.gatheringCountMapData$;
     } else if (this.visualizationMode === 'observationProbability') {
-      this.mapData$ = this.observationProbabilityMapData();
+      this.mapData$ = this.observationProbabilityMapData$;
     }
   }
 
-  onTaxonChange(taxon: string) {
+  onTaxonChange(event: Event): void {
+    const taxon = this.toHtmlSelectElement(event.target).value;
     this.taxonChange.emit(taxon);
+  }
+
+  onYearChange(event: Event): void {
+    const year = this.toHtmlSelectElement(event.target).value;
+    this.yearChange.emit(year);
   }
 }

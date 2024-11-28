@@ -1,0 +1,19 @@
+name: Lint
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 16.20.0
+        cache: 'npm'
+    - run: npm install cross-env eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser @angular-eslint/eslint-plugin @angular-eslint/eslint-plugin-template @angular-eslint/template-parser 
+    - run: npm run lint:all

@@ -16,8 +16,8 @@ export const environment = {
   systemID: 'KE.542',
   rootCollections: ['HR.128'],
   apiBase: 'https://dev.laji.fi/api',
-  loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
-  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
+  loginUrl: 'https://fmnh-ws-test-24.it.helsinki.fi/laji-auth/login',
+  selfPage: 'https://fmnh-ws-test-24.it.helsinki.fi/laji-auth/self',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi',
   globalMessageIds: {
     '\/observation.*': {
@@ -61,7 +61,7 @@ export const environment = {
       en: ''
     },
   },
-  geoserver: 'https://geoserver-dev.laji.fi',
+  geoserver: 'https://geoserver-dev.laji.fi/geoserver',
   observationMapOptions: {availableOverlayNameBlacklist: []},
   displayDevRibbon: true
 };

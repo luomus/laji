@@ -7,5 +7,5 @@ import { Form } from '../../shared/model/Form';
   styleUrls: ['./survey-box.component.scss']
 })
 export class SurveyBoxComponent {
-  @Input() form: Form.List;
+  @Input() form!: Form.List;
 }

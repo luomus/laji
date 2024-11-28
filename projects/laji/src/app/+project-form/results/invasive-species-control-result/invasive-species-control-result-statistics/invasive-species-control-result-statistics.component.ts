@@ -41,7 +41,7 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
 
   areaTypes = Area.AreaType;
 
-  rows$: Observable<Row[]>;
+  rows$!: Observable<Row[]>;
   loading$ = new BehaviorSubject(true);
 
   columns = [
@@ -67,7 +67,7 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
       10000
     )));
     this.rows$ = query$.pipe(map((response: InvasiveControlEffectivenessStatisticsQueryResult) => {
-      const byYear = response.results.reduce((_byYear, item) => {
+      const byYear: any = response.results.reduce((_byYear: any, item) => {
         const year = item.aggregateBy['gathering.conversions.year'];
         if (!_byYear[year]) {
           _byYear[year] = {year: +year, visits: 0, full: 0, partial: 0, noEffect: 0, notFound: 0};
@@ -90,13 +90,13 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
         entry.visits += item.count;
         return _byYear;
       }, {});
-      return Object.keys(byYear).reduce((rows, year) => {
+      return Object.keys(byYear).reduce((rows: any[], year) => {
         if (!year) { // There can be year "" for unknown reason. We agreed that it should be simply filtered out.
           return rows;
         }
         rows.push(byYear[year]);
         return rows;
-      }, []).sort((a, b) => b.year - a.year);
+      }, []).sort((a: any, b: any) => b.year - a.year);
     }),
     tap(() => {this.loading$.next(false);}),
     share());

@@ -79,8 +79,8 @@ const ACTIVE_COLOR = '#6ca31d';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
-  @ViewChild('mapContainer', { static: false }) mapContainerElem: ElementRef;
+  @ViewChild(LajiMapComponent) lajiMap!: LajiMapComponent;
+  @ViewChild('mapContainer', { static: false }) mapContainerElem!: ElementRef;
 
   @Input() visible = false;
   @Input() query: any;
@@ -117,7 +117,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
    * height > 0: set absolute height
    * else: height: 100%
    */
-  @Input() height;
+  @Input() height!: number;
   @Input() selectColor = '#00aa00';
   @Input() showLoadMore = true;
   @Input() settingsKey = 'observationMap';
@@ -145,8 +145,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   showingIndividualPoints = false;
   mapOptions: Options;
 
-  tableViewHeightOverride = -1;
-  selectedObservationCoordinates: Coordinates;
+  tableViewHeightOverride: number | undefined = -1;
+  selectedObservationCoordinates: Coordinates | undefined;
 
   private useFinnishMap = false;
   private drawData: DataOptions = {
@@ -163,16 +163,16 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
 
   private previousQueryHash = '';
   private boxFeatureCollectionCache = new BoxCache<FeatureCollection>();
-  private previousFeatureCollection: FeatureCollection;
+  private previousFeatureCollection!: FeatureCollection;
   private mapMoveEventSubject = new Subject<any>();
 
   private boxGeometryPageSize = 10000;
   private pointGeometryPageSize = 10000;
   private activeZoomThresholdLevel = 0;
   private activeZoomThresholdBounds?: any;
-  private dataFetchSubscription: Subscription;
-  private mapMoveSubscription: Subscription;
-  private activeGeometryHash: string;
+  private mapMoveSubscription!: Subscription;
+  private mapDataSubscription?: Subscription;
+  private activeGeometryHash!: string;
 
   constructor(
     private warehouseService: WarehouseApi,
@@ -214,11 +214,11 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.dataFetchSubscription?.unsubscribe();
     this.mapMoveSubscription?.unsubscribe();
+    this.mapDataSubscription?.unsubscribe();
   }
 
-  onCreate(e) {
+  onCreate(e: any) {
     this.create.emit(e);
   }
 
@@ -226,12 +226,12 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     this.lajiMap?.map?.clearDrawData();
   }
 
-  drawToMap(type) {
+  drawToMap(type: any) {
     this.lajiMap.drawToMap(type);
   }
 
   // mapMoveEventSubject is debounced such that certain double events from leaflet are eliminated
-  _onMapPanOrZoom(e) {
+  _onMapPanOrZoom(e: any) {
     const curActiveZoomThresholdLevel = this.activeZoomThresholdLevel;
     const len = this.zoomThresholds.length;
     this.activeZoomThresholdLevel = 0;
@@ -256,7 +256,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  onMapPanOrZoom(e) {
+  onMapPanOrZoom(e: any) {
     this.mapMoveEventSubject.next(e);
   }
 
@@ -360,9 +360,10 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private onAggregateDataClick(e: LeafletEvent, data: DataWrappedLeafletEventData) {
-    const coords = (data.feature.geometry as any).coordinates[0];
-    const lats = []; const lons = [];
-    coords.forEach(c => { lats.push(c[1]); lons.push(c[0]); });
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const coords = (data.feature!.geometry as any).coordinates[0];
+    const lats: number[] = []; const lons: number[] = [];
+    coords.forEach((c: any) => { lats.push(c[1]); lons.push(c[0]); });
     const latMin = Math.min(...lats); const lonMin = Math.min(...lons);
 
     let coordinates: Coordinates | undefined;
@@ -400,7 +401,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       )),
       map(allPages => ({
           type: 'FeatureCollection',
-          features: allPages.reduce((p, c) => { p.push(...c.features); return p; }, [])
+          features: allPages.reduce((p, c) => { p.push(...c.features); return p; }, [] as Feature<Geometry, GeoJsonProperties>[])
       }))
     );
   }
@@ -436,14 +437,19 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   private updateMap() {
     const bounds = this.activeZoomThresholdBounds;
     const query = this.prepareQuery(bounds);
+
     const hash = JSON.stringify(query) + this.useFinnishMap;
     if (hash === this.previousQueryHash) { return; }
     this.previousQueryHash = hash;
-    forkJoin({
+
+    this.mapDataSubscription?.unsubscribe();
+
+    this.mapDataSubscription = forkJoin({
       drawData: this.getDrawData$(query),
       dataOptions: this.getDataOptions$(query, bounds)
     }).subscribe(({drawData, dataOptions}) => {
       this.mapData = [drawData, dataOptions];
+      this.cdr.markForCheck();
     });
   }
 
@@ -466,8 +472,10 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
 
   private getDrawData$(query: WarehouseQueryInterface): Observable<DataOptions> {
     return forkJoin([
-      getFeaturesFromQueryCoordinates$(query.coordinates),
-      this.getFeaturesFromQueryPolygonId(query.polygonId)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      getFeaturesFromQueryCoordinates$(query.coordinates!),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.getFeaturesFromQueryPolygonId(query.polygonId!)
     ]).pipe(
       map(([f1, f2]) => ({
         type: 'FeatureCollection' as const,
@@ -481,10 +489,12 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   getFeatureStyle(params: GetFeatureStyleOptions) {
-    const style = this.visualization[this.visualizationMode].getFeatureStyle(params);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const style = this.visualization[this.visualizationMode].getFeatureStyle!(params);
 
     const {active, hovered} = params;
-    const isActiveBox = params.feature.geometry.type !== 'Point' && active;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const isActiveBox = params.feature!.geometry.type !== 'Point' && active;
     // Active point is styled with classname, boxes receive color in the style object.
     // This is because the Leaflet Path objects don't support updating the class name.
     const baseColor = isActiveBox
@@ -514,7 +524,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       onChange: (events) => {
         const [event] = events;
         if (event.type === 'active') {
-          this.activeGeometryHash = hash(event.layer.feature);
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          this.activeGeometryHash = hash(event.layer!.feature!);
         }
       },
       on: {
@@ -558,7 +569,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private getDataOptions$(query: WarehouseQueryInterface, bounds?: any): Observable<DataOptions> {
+  private getDataOptions$(query: WarehouseQueryInterface, bounds?: any): Observable<DataOptions | null> {
     this.loading = true;
     this.cdr.markForCheck();
 
@@ -568,7 +579,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
           return of({
             type: 'FeatureCollection' as const,
             features: []
-          });
+          } as FeatureCollection<Geometry, GeoJsonProperties>);
         } else if (res.total <= this.pointModeBreakpoint) {
           return this.getPoints$(query).pipe(tap(() => this.showingIndividualPoints = true));
         } else {
@@ -577,12 +588,13 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       }),
       // null is returned when we get a valid result, but don't have to do anything
       filter(d => d !== null),
-      tap(d => this.previousFeatureCollection = d),
+      tap(d => this.previousFeatureCollection = <FeatureCollection<Geometry, GeoJsonProperties>>d),
       // retry on timeout
       timeout(WarehouseApi.longTimeout * 3),
       delay(100),
       retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
-      map(this.featureCollectionToDataOptions.bind(this)),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      map(d => this.featureCollectionToDataOptions(d!)),
       // update the map
       tap(() => {
         this.loading = false;
@@ -598,7 +610,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   private getClusterIcon(cluster: MarkerCluster): L.DivIcon {
     let classNames = ['coordinate-accuracy-cluster'];
     const childMarkers = cluster.getAllChildMarkers();
-    const count = childMarkers.reduce((prev, marker) => prev + marker.feature.properties.count, 0);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const count = childMarkers.reduce((prev, marker) => prev + marker.feature!.properties.count, 0);
     const icon: DivIcon = (window.L).divIcon({
       className: classNames.join(' '),
       html: `<span>${count}</span>`
@@ -608,7 +621,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     const oldCreateFn = icon.createIcon;
     icon.createIcon = (oldIcon: any) => {
       const iconDomElem = oldCreateFn.bind(icon)(oldIcon);
-      iconDomElem.style['background-color'] = this.visualization[this.visualizationMode].getClusterColor(childMarkers) + opacityAsHexCode(this.opacity);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      (iconDomElem.style as any)['background-color'] = this.visualization[this.visualizationMode].getClusterColor!(childMarkers) + opacityAsHexCode(this.opacity);
       return iconDomElem;
     };
 
@@ -617,7 +631,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     // and the point markers get the updated styles described below
     (<any>icon).setStyle = (iconDomElem: HTMLElement, po: PathOptions) => {
       iconDomElem.classList.remove('coordinate-accuracy-cluster');
-      iconDomElem.style['background-color'] = po.color + opacityAsHexCode(this.opacity);
+      (iconDomElem.style as any)['background-color'] = po.color + opacityAsHexCode(this.opacity);
       const newClassNames = classNamesAsArr(po.className);
       classNames.forEach(c => iconDomElem.classList.remove(c));
       newClassNames.forEach(c => iconDomElem.classList.add(c));

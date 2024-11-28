@@ -55,11 +55,11 @@ import { DocumentPermissionService } from '../service/document-permission.servic
   ]
 })
 export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
-  @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
-  @Input() uri: string;
-  @Input() highlight: string;
-  @Input() own: boolean;
-  @Input() result: Array<any>;
+  @ViewChild(ViewerMapComponent) map?: ViewerMapComponent;
+  @Input({ required: true }) uri!: string;
+  @Input() highlight?: string;
+  @Input() own?: boolean;
+  @Input() result?: Array<any>;
   @Input() showTitle = false;
   @Input() useWorldMap = true;
   @Input() openAnnotation = false;
@@ -71,42 +71,40 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   collectionContestFormId = Global.forms.collectionContest;
 
-  externalViewUrl: string;
+  externalViewUrl?: string;
   document: any;
-  documentID: string;
-  personID: string;
+  documentID?: string;
+  personID?: string;
   isEditor = false;
-  hasEditRights = false;
-  hasDeleteRights = false;
-  personRoleAnnotation: Annotation.AnnotationRoleEnum;
+  personRoleAnnotation?: Annotation.AnnotationRoleEnum;
   activeGathering: any;
   mapData: any = [];
   hasMapData = false;
-  hasDoc: boolean;
+  hasDoc?: boolean;
   active = 0;
-  unitCnt: number;
+  unitCnt?: number;
   isViewInited = false;
   showOnlyHighlighted = true;
-  indexPagination: number;
+  indexPagination?: number;
   isNavigation = false;
   childEvent = false;
-  childComunicationsubscription: Subscription;
+  childComunicationsubscription!: Subscription;
   showShortcuts = false;
   documentToolsOpen = false;
   showCoordinates = true;
   @SessionStorage() showFacts = false;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
-  private interval: Subscription;
-  private metaFetch: Subscription;
-  annotationResolving: boolean;
-  subscriptParent: Subscription;
-  subscriptFocus: Subscription;
+  private interval?: Subscription;
+  private metaFetch!: Subscription;
+  annotationResolving?: boolean;
+  subscriptParent!: Subscription;
+  subscriptFocus!: Subscription;
   isfocusedCommentTaxon = false;
-  currentLang: string;
-  hasEditors: boolean;
-  unitOrImgExists: boolean;
-  subscriptDocumentTools: Subscription;
-  annotationTags$: Observable<AnnotationTag[]>;
+  currentLang!: string;
+  hasEditors?: boolean;
+  unitOrImgExists?: boolean;
+  subscriptDocumentTools!: Subscription;
+  annotationTags$!: Observable<AnnotationTag[]>;
   templateForm: TemplateForm = {
     name: '',
     description: ''
@@ -134,7 +132,13 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   ngOnInit() {
     this.annotationTags$ = this.annotationService.getAllTags(this.translate.currentLang);
     this.currentLang = this.translate.currentLang;
-    this.metaFetch = this.userService.user$.subscribe((person: Person) => {
+    this.metaFetch = this.userService.user$.subscribe(person => {
+      if (!person) {
+        this.personRoleAnnotation = Annotation.AnnotationRoleEnum.basic;
+        this.cd.markForCheck();
+        return;
+      }
+
       this.personID = person.id;
 
       if (isIctAdmin(person)) {
@@ -236,15 +240,13 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     docAndRights$
       .subscribe(({doc, rights}) => {
         this.isEditor = rights.isEditor;
-        this.hasEditRights = rights.hasEditRights;
-        this.hasDeleteRights = rights.hasDeleteRights;
         this.parseDoc(doc, doc);
       },
         () => this.parseDoc(undefined, false)
       );
   }
 
-  shouldOnlyShowHighlighted(doc, highlight) {
+  shouldOnlyShowHighlighted(doc: any, highlight?: string) {
     if (!highlight) {
       return false;
     }
@@ -259,7 +261,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     );
   }
 
-  setActive(i) {
+  setActive(i: number) {
     this.active = i;
     if (this.document && this.document?.gatherings) {
       this.activeGathering = this.document?.gatherings[i] || {};
@@ -286,7 +288,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.showOnlyHighlighted = !this.showOnlyHighlighted;
   }
 
-  private parseDoc(doc, found) {
+  private parseDoc(doc: any, found: boolean) {
     this.cd.detectChanges();
     this.hasDoc = found;
     this.hasEditors = false;
@@ -294,15 +296,15 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     if (found) {
       this.document = doc;
       this.hasMapData = false;
-      const mapData = [];
-      this.externalViewUrl = Global.externalViewers[doc.sourceId] ?
-        Global.externalViewers[doc.sourceId].replace('%uri%', doc.documentId) : '';
+      const mapData: any[] = [];
+      this.externalViewUrl = (Global.externalViewers as Record<string, string>)[doc.sourceId] ?
+        (Global.externalViewers as Record<string, string>)[doc.sourceId].replace('%uri%', doc.documentId) : '';
       if (doc.documentId) {
         this.documentID = IdService.getId(doc.documentId);
       }
       let activeIdx = 0;
       if (doc && doc.gatherings) {
-        doc.gatherings.map((gathering, idx) => {
+        doc.gatherings.map((gathering: any, idx: number) => {
           if (gathering.conversions && gathering.conversions.wgs84Geo) {
             mapData[idx] = {
               ...gathering.conversions,
@@ -317,7 +319,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
           }
           if (gathering.units) {
             this.unitCnt += gathering.units.length;
-            gathering.units.map(unit => {
+            gathering.units.map((unit: any) => {
               if (this.highlight && unit.unitId === this.highlight) {
                 activeIdx = idx;
               }
@@ -328,13 +330,13 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.mapData = mapData;
       this.setActive(activeIdx);
       if (this.document?.linkings && this.document?.linkings.editors &&
-        this.document?.linkings?.editors.filter(e => e.id !== undefined).length > 0) {
+        this.document?.linkings?.editors.filter((e: any) => e.id !== undefined).length > 0) {
         this.hasEditors = true;
       }
 
-      this.unitOrImgExists = this.document.gatherings?.some(({units}) =>
-        (units || []).some(unit =>
-          unit.unitId === this.highlight || (unit.media || []).some(media => media.fullURL === this.highlight)
+      this.unitOrImgExists = this.document.gatherings?.some(({units}: {units: any}) =>
+        (units || []).some((unit: any) =>
+          unit.unitId === this.highlight || (unit.media || []).some((media: any) => media.fullURL === this.highlight)
         )
       );
 
@@ -360,18 +362,20 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   next() {
     this.isNavigation = true;
-    this.indexPagination += 1;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.indexPagination! += 1;
     this.move();
   }
 
   previous() {
       this.isNavigation = true;
-      this.indexPagination -= 1;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.indexPagination! -= 1;
       this.move();
   }
 
   getIndexPagination() {
-    return this.result.findIndex(i => (i.fullURL === this.highlight || i.unit?.unitId === this.highlight));
+    return this.result?.findIndex(i => (i.fullURL === this.highlight || i.unit?.unitId === this.highlight));
   }
 
   closeDocument() {
@@ -386,7 +390,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.showShortcuts = !this.showShortcuts;
   }
 
-  onDocumentDeleted(e) {
+  onDocumentDeleted(e: any) {
     if (e) {
       this.deleteDocumentService.emitChildEvent(e);
       this.closeDocument();
@@ -406,14 +410,16 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   @HostListener('document:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
       if (e.keyCode === 37 && !this.childEvent && !this.isfocusedCommentTaxon && !this.documentToolsOpen) { // left
-        if (this.result && this.indexPagination > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        if (this.result && this.indexPagination! > 0) {
           e.preventDefault();
           this.previous();
         }
       }
 
       if (e.keyCode === 39 && !this.childEvent && !this.isfocusedCommentTaxon && !this.documentToolsOpen) { // right
-        if (this.result && this.indexPagination < this.result.length - 1) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        if (this.result && this.indexPagination! < this.result.length - 1) {
           e.preventDefault();
           this.next();
         }
@@ -432,7 +438,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   }
 
   private move() {
-    const documentOrImage = this.result[this.indexPagination];
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const documentOrImage = this.result![this.indexPagination!];
     this.uri = documentOrImage.documentId || documentOrImage.document?.documentId;
     this.highlight = documentOrImage.fullURL || documentOrImage.unit?.unitId;
     this.showShortcuts = false;

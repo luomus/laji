@@ -14,13 +14,13 @@ import { PlatformService } from '../../root/platform.service';
   selector: 'img[lajiLazyImage]'
 })
 export class LazyImageDirective implements AfterViewInit, OnDestroy {
-  @HostBinding('attr.src') srcAttr = '/static/images/empty.gif';
-  @Input() src: string;
+  @HostBinding('attr.src') srcAttr?: string = '/static/images/empty.gif';
+  @Input() src?: string;
   intersectionObsOptions = {
     rootMargin: '200px',
     threshold: 0
   };
-  intersectionObs: IntersectionObserver;
+  intersectionObs?: IntersectionObserver;
 
   constructor(
     private el: ElementRef,
