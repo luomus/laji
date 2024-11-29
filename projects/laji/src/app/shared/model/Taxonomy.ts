@@ -172,6 +172,10 @@ export interface Taxonomy {
 
   subjectiveSynonyms?: Array<Taxonomy>;
 
+  uncertainSynonyms?: Array<Taxonomy>;
+
+  alternativeNames?: Array<Taxonomy>;
+
   children?: Array<Taxonomy>;
 
   administrativeStatuses?: Array<string>;

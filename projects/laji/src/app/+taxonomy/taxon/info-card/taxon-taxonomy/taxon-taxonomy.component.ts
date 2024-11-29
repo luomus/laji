@@ -15,12 +15,12 @@ import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 })
 export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) taxon!: Taxonomy;
-  @Input() taxonDescription: TaxonomyDescription[];
+  @Input() taxonDescription?: TaxonomyDescription[];
 
   @Output() taxonSelect = new EventEmitter<string>();
 
-  synonymType: string;
-  synonymTypes = [
+  synonymType?: string;
+  synonymTypes: (keyof Taxonomy)[] = [
     'basionyms',
     'objectiveSynonyms',
     'subjectiveSynonyms',
@@ -34,9 +34,9 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
     'alternativeNames'
   ];
 
-  private synonymSub: Subscription;
+  private synonymSub?: Subscription;
   taxonChildren: Taxonomy[] = [];
-  private childrenSub: Subscription;
+  private childrenSub?: Subscription;
 
   constructor(
     private translate: TranslateService,
@@ -79,7 +79,7 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
     }
   }
 
-  private getSynonymType(taxon: Taxonomy): string {
+  private getSynonymType(taxon: Taxonomy): string | undefined {
     for (const synonymType of this.synonymTypes) {
       if (taxon[synonymType]) {
         for (const synonym of taxon[synonymType]) {
@@ -113,7 +113,7 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
       });
   }
 
-  taxonHasSynonymKey(taxon) {
+  taxonHasSynonymKey(taxon: Taxonomy) {
     for (const synonymType of this.synonymTypes) {
       if (taxon.hasOwnProperty(synonymType)) {
         return true;

@@ -15,16 +15,16 @@ import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer
 export class TaxonSpecimensComponent implements OnChanges {
   @Input({ required: true }) taxon!: Taxonomy;
 
-  typeSpecimenQuery: WarehouseQueryInterface;
-  collectionSpecimenQuery: WarehouseQueryInterface;
-  collectionQuery: WarehouseQueryInterface;
+  typeSpecimenQuery!: WarehouseQueryInterface;
+  collectionSpecimenQuery!: WarehouseQueryInterface;
+  collectionQuery!: WarehouseQueryInterface;
 
-  typeSpecimensTotal: number;
-  collectionsTotal: number;
+  typeSpecimensTotal?: number;
+  collectionsTotal?: number;
 
-  collectionId: string;
+  collectionId?: string;
 
-  documentId: string;
+  documentId?: string;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -37,7 +37,7 @@ export class TaxonSpecimensComponent implements OnChanges {
     this.collectionId = undefined;
   }
 
-  showDocument(event) {
+  showDocument(event: any) {
     const row = event.row || {};
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
       this.documentViewerFacade.showDocumentID({
@@ -49,7 +49,7 @@ export class TaxonSpecimensComponent implements OnChanges {
     }
   }
 
-  setCollectionId(event) {
+  setCollectionId(event: any) {
     const row = event.row || {};
     if (row.document && row.document.collectionId) {
       this.collectionId = IdService.getId(row.document.collectionId);

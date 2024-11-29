@@ -20,8 +20,8 @@ import { map } from 'rxjs/operators';
 })
 export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) taxon!: Taxonomy;
-  @Input() isFromMasterChecklist: boolean;
-  @Input() images: any[];
+  @Input() isFromMasterChecklist?: boolean;
+  @Input() images!: any[];
 
   @Output() taxonSelect = new EventEmitter<string>();
 
@@ -33,11 +33,11 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   isChildrenOnlySpecie = false;
   totalObservations = 0;
 
-  mapQuery: WarehouseQueryInterface;
-  queryCount: WarehouseQueryInterface;
+  mapQuery!: WarehouseQueryInterface;
+  queryCount!: WarehouseQueryInterface;
 
-  queryKeysDeleted = ['coordinateAccuracyMax', 'includeNonValidTaxa', 'cache'];
-  private childrenSub: Subscription;
+  queryKeysDeleted: (keyof WarehouseQueryInterface)[] = ['coordinateAccuracyMax', 'includeNonValidTaxa', 'cache'];
+  private childrenSub?: Subscription;
 
   @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
     this.updateDescriptionText(taxonDescription);
@@ -52,12 +52,12 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   ngOnChanges() {
     this.getChildren();
     this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
-    this.queryCount = Object.keys(this.mapQuery).reduce((object, key) => {
+    this.queryCount = (Object.keys(this.mapQuery) as (keyof WarehouseQueryInterface & string)[]).reduce((object, key) => {
       if (this.queryKeysDeleted.indexOf(key) === -1) {
-        object[key] = this.mapQuery[key];
+        (object as any)[key] = this.mapQuery[key];
       }
       return object;
-    }, {});
+    }, {} as WarehouseQueryInterface);
   }
 
   ngOnDestroy() {
