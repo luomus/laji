@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./administrative-status.component.scss']
 })
 export class AdministrativeStatusComponent implements OnChanges {
-  @Input() status: string;
+  @Input() status!: string;
   status$: any;
 
   constructor(

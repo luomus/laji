@@ -9,6 +9,6 @@ import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy
 })
 export class TaxonInvasiveComponent {
   @Input({ required: true }) taxon!: Taxonomy;
-  @Input() taxonDescription: TaxonomyDescription[];
+  @Input() taxonDescription!: TaxonomyDescription[];
 
 }

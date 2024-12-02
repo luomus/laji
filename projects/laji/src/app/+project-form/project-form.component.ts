@@ -56,6 +56,19 @@ interface BadgeTemplate {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectFormComponent implements OnInit, OnDestroy {
+  vm$!: Observable<ViewModel | NotFoundViewModel>;
+  formPermissions$!: Observable<FormPermission | null>;
+  showNav$!: Observable<boolean>;
+  isPrintPage$!: Observable<boolean>;
+  redirectionSubscription!: Subscription;
+  userToggledSidebar$: Subject<boolean | undefined> = new BehaviorSubject<boolean | undefined>(undefined);
+
+  isViewModel = isViewModel;
+  isNotFoundViewModel = isNotFoundViewModel;
+
+  formOptionToClassName = formOptionToClassName;
+
+  private titleSubscription: Subscription | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -68,21 +81,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     private browserService: BrowserService,
     private title: Title,
     private labelService: TriplestoreLabelService,
-) {}
-
-  vm$: Observable<ViewModel | NotFoundViewModel>;
-  formPermissions$: Observable<FormPermission>;
-  showNav$: Observable<boolean>;
-  isPrintPage$: Observable<boolean>;
-  redirectionSubscription: Subscription;
-  userToggledSidebar$: Subject<boolean> = new BehaviorSubject<boolean>(undefined);
-
-  isViewModel = isViewModel;
-  isNotFoundViewModel = isNotFoundViewModel;
-
-  formOptionToClassName = formOptionToClassName;
-
-  private titleSubscription: Subscription;
+  ) {}
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
@@ -156,9 +155,9 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
     this.vm$ = notFound$.pipe(
       switchMap(notFound => notFound
-        ? formID$.pipe(map(formID => ({formID})))
+        ? formID$.pipe(map(formID => (<NotFoundViewModel>{formID})))
         : combineLatest([projectForm$, rights$, this.route.queryParams]).pipe(
-          map(([projectForm, rights, queryParams]) => ({
+          map(([projectForm, rights, queryParams]) => (<ViewModel>{
               form: projectForm.form,
               navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
                 ? this.getNavLinks(projectForm, rights, queryParams)
@@ -173,7 +172,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
     const form$ = this.projectFormService.getFormFromRoute$(this.route);
     const initialFp$ = form$.pipe(
-      switchMap(form => this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken())),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      switchMap(form => this.formPermissionService.getFormPermission(form.collectionID!, this.userService.getToken())),
       take(1)
     );
 
@@ -227,7 +227,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.redirectionSubscription.unsubscribe();
-    this.titleSubscription.unsubscribe();
+    this.titleSubscription?.unsubscribe();
   }
 
   private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {
@@ -235,7 +235,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     const allowExcel = excelFormOptions.length;
     const allowExcelGeneration = excelFormOptions.some(options => options.allowGenerate);
     const { form, subForms } = projectForm;
-    return [
+    return <NavLink[]>[
       {
         link: ['about'],
         label: 'about'
@@ -330,7 +330,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       },
       {
         link: '.',
-        label: form.collectionID,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        label: form.collectionID!,
         isLabel: true
       }
     ];
@@ -340,11 +341,11 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     this.documentViewerFacade.showDocument({document, own: true});
   }
 
-  trackByLabel(index, link) {
+  trackByLabel(index: any, link: any) {
     return link.label;
   }
 
-  navBarToggled(event) {
+  navBarToggled(event: any) {
     this.userToggledSidebar$.next(event);
   }
 
@@ -360,7 +361,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
     if (form.options?.dataset) {
       title$ = forkJoin([
-        this.labelService.get(form.collectionID, this.translate.currentLang),
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.labelService.get(form.collectionID!, this.translate.currentLang),
         this.translate.get('datasets.label')
       ]).pipe(
         map((result: string[]) => result.filter(res => !!res).join(' | '))

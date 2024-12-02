@@ -8,14 +8,14 @@ export function multiLangDescriptionToLang(taxonDescription: TaxonomyDescription
   return taxonDescription.reduce((result: TaxonomyDescription[], description: TaxonomyDescription) => {
     const groups = multiLangDescriptionGroupsToLang(description.groups || [], lang);
 
-    let speciesCardAuthors: TaxonomyDescriptionVariable;
+    let speciesCardAuthors: TaxonomyDescriptionVariable | undefined;
     if (description.speciesCardAuthors) {
       const variable = description.speciesCardAuthors;
-      speciesCardAuthors = { ...variable, title: variable.title?.[lang] || '', content: variable.content[lang] };
+      speciesCardAuthors = { ...variable, title: variable.title?.[lang as any] || '', content: variable.content?.[lang as any] };
     }
 
     if (groups.length > 0) {
-      result.push({ ...description, title: description.title?.[lang] || '', groups, speciesCardAuthors });
+      result.push({ ...description, title: description.title?.[lang as any] || '', groups, speciesCardAuthors });
     }
 
     return result;
@@ -27,7 +27,7 @@ function multiLangDescriptionGroupsToLang(descriptionGroups: TaxonomyDescription
     const variables = multiLangGroupVariablesToLang(group.variables || [], lang);
 
     if (variables.length > 0) {
-      groups.push({ ...group, title: group.title?.[lang] || '', variables });
+      groups.push({ ...group, title: group.title?.[lang as any] || '', variables });
     }
 
     return groups;
@@ -36,8 +36,8 @@ function multiLangDescriptionGroupsToLang(descriptionGroups: TaxonomyDescription
 
 function multiLangGroupVariablesToLang(groupVariables: TaxonomyDescriptionVariable[], lang: string): TaxonomyDescriptionVariable[] {
   return groupVariables.reduce((variables: TaxonomyDescriptionVariable[], variable: TaxonomyDescriptionVariable) => {
-    if (variable.content?.[lang]) {
-      variables.push({ ...variable, title: variable.title?.[lang] || '', content: variable.content[lang] });
+    if (variable.content?.[lang as any]) {
+      variables.push({ ...variable, title: variable.title?.[lang as any] || '', content: variable.content[lang as any] });
     }
     return variables;
   }, []);

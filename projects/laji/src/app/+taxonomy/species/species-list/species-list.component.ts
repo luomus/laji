@@ -38,12 +38,12 @@ import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild(DatatableHeaderComponent) speciesDownload: DatatableHeaderComponent;
-  @ViewChild('settingsModal', { static: true }) settingsModal: SpeciesListOptionsModalComponent;
-  @ViewChild('dataTable', { static: true }) public datatable: DatatableComponent;
+  @ViewChild(DatatableHeaderComponent) speciesDownload!: DatatableHeaderComponent;
+  @ViewChild('settingsModal', { static: true }) settingsModal!: SpeciesListOptionsModalComponent;
+  @ViewChild('dataTable', { static: true }) public datatable!: DatatableComponent;
 
-  @Input() searchQuery: TaxonomySearchQuery;
-  @Input() visible: boolean;
+  @Input() searchQuery!: TaxonomySearchQuery;
+  @Input() visible!: boolean;
   @Input() showDownloadAndBrowse = true;
   @Input() countStartText = '';
   @Input() countEndText = '';
@@ -60,9 +60,9 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     pageSize: 0
   };
 
-  private lastQuery: string;
-  private subQueryUpdate: Subscription;
-  private subFetch: Subscription;
+  private lastQuery: string | undefined;
+  private subQueryUpdate: Subscription | undefined;
+  private subFetch: Subscription | undefined;
 
   private settingsLoaded = false;
 
@@ -113,7 +113,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  onRowSelect(event) {
+  onRowSelect(event: any) {
     if (event.row && event.row.id) {
       this.router.navigate(
         this.localizeRouterService.translateRoute(['/taxon', this.toQname.transform(event.row.id)])
@@ -121,17 +121,17 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  pageChanged(event) {
+  pageChanged(event: any) {
     this.searchQuery.listOptions.page = event.offset + 1;
     this.refreshSpeciesList();
   }
 
-  sortOrderChanged(event) {
+  sortOrderChanged(event: any) {
     this.searchQuery.listOptions.sortOrder = event;
     this.refreshSpeciesList();
   }
 
-  onReorder(event) {
+  onReorder(event: any) {
     if (
       !event.column ||
       !event.column.name ||
@@ -212,7 +212,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     this.refreshSpeciesList();
   }
 
-  private fetchAllPages(page = 1, data = []): Observable<any> {
+  private fetchAllPages(page = 1, data: any[] = []): Observable<any> {
     return this.fetchPage(page).pipe(
       switchMap(result => {
         data.push(...result.results);
@@ -249,8 +249,9 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
           if (data && Array.isArray(data.results)) {
             data.results = data.results.map(taxon => {
               if (taxon.parent && Array.isArray(taxon.nonHiddenParentsIncludeSelf)) {
-                return {...taxon, parent: Object.keys(taxon.parent).reduce((parent, level) => {
-                  if (taxon.nonHiddenParentsIncludeSelf.includes(taxon.parent[level].id)) {
+                return {...taxon, parent: Object.keys(taxon.parent).reduce((parent: any, level) => {
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  if (taxon.nonHiddenParentsIncludeSelf!.includes(taxon.parent[level].id)) {
                     parent[level] = taxon.parent[level];
                   }
                   return parent;
@@ -267,18 +268,18 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   private searchQueryToTaxaQuery() {
     const query = this.searchQuery.query;
     const target = query.target ? query.target : 'MX.37600';
-    const extraParameters = {...query};
+    const extraParameters: any = {...query};
     extraParameters['target'] = undefined;
     extraParameters['selectedFields'] = this.getSelectedFields();
 
     return {
       target,
-      extraParameters
+      extraParameters: extraParameters as typeof query & { selectedFields: string }
     };
   }
 
   private getSelectedFields() {
-    const selects = this.searchQuery.listOptions.selected.reduce((arr, field) => {
+    const selects = this.searchQuery.listOptions.selected.reduce((arr: any[], field) => {
       let addedField = field;
       if (this.columnService.columnLookup[field] && this.columnService.columnLookup[field].selectField) {
         addedField = this.columnService.columnLookup[field].selectField;

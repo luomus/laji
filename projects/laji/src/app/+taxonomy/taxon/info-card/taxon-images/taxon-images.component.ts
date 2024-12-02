@@ -12,8 +12,8 @@ import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQuery
 })
 export class TaxonImagesComponent implements OnChanges {
   @Input({ required: true }) taxon!: Taxonomy;
-  @Input() taxonImages: Array<Image>;
-  @Input() isFromMasterChecklist: boolean;
+  @Input() taxonImages!: Array<Image>;
+  @Input() isFromMasterChecklist!: boolean;
 
   imageSets: { title: string; hasData?: boolean; query: WarehouseQueryInterface }[] = [];
 

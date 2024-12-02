@@ -10,9 +10,9 @@ import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.compo
   styleUrls: ['./species-list-options-modal.component.css']
 })
 export class SpeciesListOptionsModalComponent {
-  @ViewChild('settingsModal', { static: true }) modalRef: ModalComponent;
+  @ViewChild('settingsModal', { static: true }) modalRef!: ModalComponent;
 
-  @Input() searchQuery: TaxonomySearchQuery;
+  @Input() searchQuery!: TaxonomySearchQuery;
   @Input() requiredFields: string[] = [];
 
   @Output() settingsChange = new EventEmitter();

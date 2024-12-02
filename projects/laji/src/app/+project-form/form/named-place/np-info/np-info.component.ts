@@ -35,20 +35,20 @@ import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.compo
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() namedPlace: NamedPlace;
-  @Input() placeForm: Form.SchemaForm;
-  @Input() documentForm: Form.SchemaForm;
-  @Input() collectionId: string;
-  @Input() editMode: boolean;
-  @Input() allowEdit: boolean;
-  @Input() loading: boolean;
-  @Input() accessRequested: boolean;
-  @Input() formRights: Rights;
-  @Input() useLabel: string;
+  @Input() namedPlace!: NamedPlace;
+  @Input() placeForm!: Form.SchemaForm;
+  @Input() documentForm!: Form.SchemaForm;
+  @Input() collectionId!: string;
+  @Input() editMode!: boolean;
+  @Input() allowEdit!: boolean;
+  @Input() loading!: boolean;
+  @Input() accessRequested!: boolean;
+  @Input() formRights!: Rights;
+  @Input() useLabel!: string;
   @Input() useDisabled = false;
-  @Input() reloadSubmissions$: Observable<void>;
+  @Input() reloadSubmissions$!: Observable<void>;
 
-  editButtonVisible: boolean;
+  editButtonVisible: boolean | undefined;
 
   @Output() editButtonClick = new EventEmitter();
   @Output() deleteButtonClick = new EventEmitter();
@@ -56,8 +56,8 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() reserveButtonClick = new EventEmitter();
   @Output() releaseButtonClick = new EventEmitter();
 
-  @ViewChild('infoModal', { static: true }) public modal: ModalComponent;
-  @ViewChild('infoBox', { static: true }) infoBox;
+  @ViewChild('infoModal', { static: true }) public modal!: ModalComponent;
+  @ViewChild('infoBox', { static: true }) infoBox!: any;
 
   publicity = Document.PublicityRestrictionsEnum;
 
@@ -66,10 +66,10 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   modalIsVisible = false;
   viewIsInitialized = false;
   resizeCanOpenModal = false;
-  useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther';
+  useButton!: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther';
   formReservable = false;
   useLocalDocumentViewer = false;
-  canDelete: boolean;
+  canDelete: boolean | undefined;
 
   public static getSchemaFromNPJsonPathPointer(placeForm: Form.SchemaForm, docForm: Form.SchemaForm, path: string) {
     let {schema} = placeForm;
@@ -91,7 +91,8 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     if (!form.options?.namedPlaceOptions?.infoFields) {
       const displayedById =
         placeForm.uiSchema['ui:options'].fieldScopes.collectionID;
-      displayed = (displayedById[form.collectionID] || displayedById['*'] || []).fields;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      displayed = (displayedById[form.collectionID!] || displayedById['*'] || []).fields;
     }
     displayed = displayed.filter((field) => field !== 'name');
 
@@ -216,10 +217,11 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       if (!person) {
         return;
       }
-      this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1) || this.formRights.admin;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id!) !== -1) || this.formRights.admin;
       this.formReservable = !!this.documentForm?.options?.namedPlaceOptions?.reservationUntil;
-      this.useLocalDocumentViewer = this.documentForm?.options?.documentsViewableForAll;
-      let btnStatus;
+      this.useLocalDocumentViewer = !!this.documentForm?.options?.documentsViewableForAll;
+      let btnStatus: typeof this.useButton;
       if (!this.formRights.edit) {
         btnStatus = 'nouse';
       } else if (this.formReservable) {
@@ -233,8 +235,10 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       } else {
         btnStatus = (
           this.namedPlace.public ||
-          (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1) ||
-          (this.namedPlace.editors && this.namedPlace.editors.indexOf(person.id) !== -1)
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id!) !== -1) ||
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          (this.namedPlace.editors && this.namedPlace.editors.indexOf(person.id!) !== -1)
         ) ? 'usable' : 'nouse';
       }
       this.useButton = btnStatus;

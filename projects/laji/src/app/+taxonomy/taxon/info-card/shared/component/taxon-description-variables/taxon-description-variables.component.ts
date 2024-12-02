@@ -8,6 +8,6 @@ import { TaxonomyDescriptionVariable } from '../../../../../../shared/model/Taxo
 })
 export class TaxonDescriptionVariablesComponent {
 
-  @Input() variables: TaxonomyDescriptionVariable[];
+  @Input() variables!: TaxonomyDescriptionVariable[];
 
 }
