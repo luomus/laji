@@ -11,10 +11,10 @@ import { Form } from '../../shared/model/Form';
 })
 export class ProjectFormHeaderComponent {
 
-  _form: Form.SchemaForm;
+  _form!: Form.SchemaForm;
 
   @Input() displayInstructions = true;
-  @Input() description: string;
+  @Input() description?: string;
   @Input() set form(form: Form.SchemaForm) {
     this._form = form;
     if (form.title) {

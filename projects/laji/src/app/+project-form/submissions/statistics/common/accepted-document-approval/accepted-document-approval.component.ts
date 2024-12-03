@@ -8,7 +8,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { of as ObservableOf } from 'rxjs';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { combineLatest, take } from 'rxjs/operators';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { UserService } from '../../../../../shared/service/user.service';
@@ -24,6 +24,8 @@ import { FormService } from '../../../../../shared/service/form.service';
 import { GeometryCollection } from 'geojson';
 import { NamedPlacesService } from '../../../../../shared/service/named-places.service';
 import { DocumentService } from '../../../../../shared-modules/own-submissions/service/document.service';
+import { FormPermission } from 'projects/laji/src/app/shared/model/FormPermission';
+import { Person } from 'projects/laji/src/app/shared/model/Person';
 
 @Component({
   selector: 'laji-accepted-document-approval',
@@ -71,7 +73,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       });
   }
 
-  initIsAdmin() {
+  initIsAdmin(): Observable<null | { formPermission: FormPermission; user: Person | undefined }> {
     if (!this.namedPlace || !this.namedPlace.collectionID) {
       return ObservableOf(null);
     }

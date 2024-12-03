@@ -12,5 +12,5 @@ import { AccessLevel } from '../request.component';
 export class RequestDescriptionComponent {
     AccessLevel = AccessLevel; // eslint-disable-line @typescript-eslint/naming-convention
 
-    @Input() accessLevel: AccessLevel;
+    @Input() accessLevel!: AccessLevel;
 }

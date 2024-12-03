@@ -31,7 +31,7 @@ export abstract class AbstractPermissionGuard  {
         formID = route.params.projectID;
         break;
       }
-      route = route.parent;
+      route = route.parent as ActivatedRouteSnapshot;
     } while (route);
 
     if (!formID) {
@@ -47,7 +47,7 @@ export abstract class AbstractPermissionGuard  {
           this.router.navigate(['/', 'project', formID]);
         }
       }),
-      flatMap(form => this.formPermissionService.getRights(form)),
+      flatMap(form => this.formPermissionService.getRights(form as any)),
       map(fp => this.checkPermission(fp)),
       tap((hasPermission) => {
         if (!hasPermission) {

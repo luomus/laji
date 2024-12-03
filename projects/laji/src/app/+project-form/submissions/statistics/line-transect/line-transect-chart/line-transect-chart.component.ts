@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { select , Selection } from 'd3-selection';
-import { scaleLinear, ScaleLinear } from 'd3-scale';
+import { NumberValue, scaleLinear, ScaleLinear } from 'd3-scale';
 import { line as d3Line } from 'd3-shape';
 import { format } from 'd3-format';
 
@@ -46,13 +46,13 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   @Input() yLabelAnchor?: string;
 
   private readonly nativeElement: HTMLDivElement;
-  private svg!: Selection<SVGElement, unknown, undefined, undefined>;
-  private chart!: Selection<SVGElement, unknown, undefined, undefined>;
+  private svg!: Selection<SVGElement, unknown, null, undefined>;
+  private chart!: Selection<SVGElement, unknown, null, undefined>;
   private width?: number;
   private height?: number;
   private xScale!: ScaleLinear<number, number>;
   private yScale!: ScaleLinear<number, number>;
-  private xAxis?: Selection<SVGElement, unknown, undefined, undefined>;
+  private xAxis?: Selection<SVGElement, unknown, null, undefined>;
 
   constructor(
     element: ElementRef,
@@ -187,16 +187,20 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
 
     // update existing bars
     this.chart.selectAll('.mark')
-      .attr('cx', (d) => this.xScale(d[0]))
-      .attr('cy', (d) => this.yScale(d[1]));
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .attr('cx', (d) => this.xScale((d as number[])[0])!)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .attr('cy', (d) => this.yScale((d as number[])[1])!);
 
     // add new bars
     update
       .enter()
       .append('circle')
       .attr('class', 'mark')
-      .attr('cx', (d) => this.xScale(d[0]))
-      .attr('cy', (d) => this.yScale(d[1]))
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .attr('cx', (d) => this.xScale(d[0] as NumberValue)!)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .attr('cy', (d) => this.yScale(d[1] as NumberValue)!)
       .attr('r', 3)
       .attr('fill', 'red')
       .attr('stroke', 'black');
