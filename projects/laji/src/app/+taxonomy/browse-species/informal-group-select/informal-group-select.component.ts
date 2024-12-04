@@ -10,7 +10,7 @@ import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
   styleUrls: ['./informal-group-select.component.scss']
 })
 export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() id: string;
+  @Input() id?: string;
   @Input() showBreadcrumb = true;
   @Input() showAll = false;
   @Output() informalGroupSelect = new EventEmitter<string>();

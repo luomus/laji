@@ -280,9 +280,10 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
 
   private getSelectedFields() {
     const selects = this.searchQuery.listOptions.selected.reduce((arr: any[], field) => {
-      let addedField = field;
+      let addedField: string|string[] = field;
       if (this.columnService.columnLookup[field] && this.columnService.columnLookup[field].selectField) {
-        addedField = this.columnService.columnLookup[field].selectField;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        addedField = this.columnService.columnLookup[field].selectField!;
       }
       ((Array.isArray(addedField) ? addedField : [addedField]) as string[]).forEach(f => {
         if (arr.indexOf(f) === -1) {

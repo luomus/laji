@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   NgZone,
@@ -17,9 +18,9 @@ import { NpInfoComponent } from '../../np-info/np-info.component';
 import { NpInfoRow } from '../../np-info/np-info-row/np-info-row.component';
 import { LabelPipe } from '../../../../../shared/pipe';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
-import { Logger } from '../../../../../shared/logger';
 import { Form } from '../../../../../shared/model/Form';
 import { LajiMapVisualization } from '../../../../../shared-modules/legend/laji-map-visualization';
+import { TileLayerName, OverlayName } from '@luomus/laji-map/lib/defs';
 
 @Component({
   selector: 'laji-np-map',
@@ -28,26 +29,26 @@ import { LajiMapVisualization } from '../../../../../shared-modules/legend/laji-
   providers: [ LabelPipe, AreaNamePipe ]
 })
 export class NpMapComponent implements OnInit, OnChanges {
-  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
-  @ViewChild('popup', { static: true }) popupComponent;
+  @ViewChild(LajiMapComponent, { static: true }) lajiMap!: LajiMapComponent;
+  @ViewChild('popup', { static: true }) popupComponent!: ElementRef<HTMLDivElement>;
   @Input() visible = false;
-  @Input() namedPlaces: ExtendedNamedPlace[];
-  @Input() activeNP: number;
-  @Input() height: string;
-  @Input() userID: string;
-  @Input() reservable: boolean;
+  @Input() namedPlaces?: ExtendedNamedPlace[];
+  @Input() activeNP?: number|null;
+  @Input() height?: string;
+  @Input() userID?: string;
+  @Input() reservable?: boolean;
   @Input() placeForm: any;
-  @Input() documentForm: Form.SchemaForm;
+  @Input({ required: true }) documentForm!: Form.SchemaForm;
   @Output() activePlaceChange = new EventEmitter<number>();
 
-  visualization: LajiMapVisualization<any>;
+  visualization?: LajiMapVisualization<any>;
   listItems: NpInfoRow[] = [];
-  tileLayerName;
-  overlayNames;
+  tileLayerName?: TileLayerName;
+  overlayNames?: OverlayName[];
   _data: any;
-  private _popupCallback: (elemOrString: HTMLElement | string) => void;
+  private _popupCallback?: (elemOrString: HTMLElement | string) => void;
   private _zoomOnNextTick = false;
-  private _lastVisibleActiveNP: number;
+  private _lastVisibleActiveNP?: number|null;
 
   private placeColor = '#5294cc';
   private placeActiveColor = '#375577';
@@ -60,9 +61,6 @@ export class NpMapComponent implements OnInit, OnChanges {
 
   constructor(
     public translate: TranslateService,
-    private logger: Logger,
-    private labelPipe: LabelPipe,
-    private areaNamePipe: AreaNamePipe,
     private cdr: ChangeDetectorRef,
     private zone: NgZone
   ) { }
@@ -119,8 +117,8 @@ export class NpMapComponent implements OnInit, OnChanges {
     }
 
     type Counts = {[status in ExtendedNamedPlace['_status'] | 'all']: number};
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const counts = this.namedPlaces?.reduce<Counts>((counts, np) => ({
+    // eslint-disable-next-line @typescript-eslint/no-shadow, @typescript-eslint/no-non-null-assertion
+    const counts = this.namedPlaces!.reduce<Counts>((counts, np) => ({
         ...counts,
         [np._status]: counts[np._status] + 1,
         all: counts.all + 1
@@ -162,8 +160,8 @@ export class NpMapComponent implements OnInit, OnChanges {
     this.initLegend();
 
     const {mapTileLayerName = 'maastokartta', mapOverlayNames, mapCluster = false} = this.documentForm.options?.namedPlaceOptions || {};
-    this.tileLayerName = mapTileLayerName;
-    this.overlayNames = mapOverlayNames;
+    this.tileLayerName = mapTileLayerName as TileLayerName;
+    this.overlayNames = mapOverlayNames as OverlayName[];
 
     try {
       this._data = {
@@ -183,8 +181,8 @@ export class NpMapComponent implements OnInit, OnChanges {
           }
           return style;
         },
-        onChange: (events) => {
-          events.forEach(e => {
+        onChange: (events: any) => {
+          events.forEach((e: any) => {
             if (e.type === 'active') {
               this.zone.run(() => {
                 this.activePlaceChange.emit(e.idx);
@@ -205,8 +203,9 @@ export class NpMapComponent implements OnInit, OnChanges {
             }
           }))
         },
-        getPopup: ({featureIdx, feature}, cb: (elem: string | HTMLElement) => void) => {
-          this.listItems = NpInfoComponent.getListItems(this.placeForm, this.namedPlaces[featureIdx], this.documentForm);
+        getPopup: ({featureIdx, feature}: {featureIdx: number; feature: string}, cb: (elem: string | HTMLElement) => void) => {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          this.listItems = NpInfoComponent.getListItems(this.placeForm, this.namedPlaces![featureIdx], this.documentForm);
           this._popupCallback = cb;
           this.cdr.markForCheck();
         },
@@ -220,7 +219,7 @@ export class NpMapComponent implements OnInit, OnChanges {
     this._popupCallback = undefined;
   }
 
-  private getFeatureColor(feature?, active?) {
+  private getFeatureColor(feature?: any, active?: any) {
     switch (feature?.properties?.reserved) {
       case 'sent':
         return active ? this.sentActiveColor : this.sentColor;

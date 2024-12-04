@@ -9,7 +9,7 @@ import { PlatformService } from '../../root/platform.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LegendComponent<T extends string> implements OnChanges, AfterViewInit {
-  @Input() visualization!: LajiMapVisualization<T>;
+  @Input() visualization?: LajiMapVisualization<T>;
   @Input() mode!: T;
   @Input() displayObservationAccuracy = false;
   @Output() modeChange = new EventEmitter<T>();
@@ -28,7 +28,8 @@ export class LegendComponent<T extends string> implements OnChanges, AfterViewIn
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.visualization?.currentValue) {
-      this.mode = <T>Object.keys(this.visualization)[0];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.mode = <T>Object.keys(this.visualization!)[0];
     }
   }
 

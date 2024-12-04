@@ -7,10 +7,10 @@ import { Component, ElementRef, HostListener, Input, OnChanges, OnInit } from '@
 })
 export class IUCNComponent implements OnInit, OnChanges {
   @Input() height = 60;
-  @Input() selected;
+  @Input() selected?: string;
 
-  public width;
-  public color;
+  public width!: number;
+  public color!: string;
   public plop = [
     {
       title: {first: 'Least', last: 'Concern'},

@@ -25,7 +25,7 @@ type BoldField = keyof (Pick<SpeciesFormQuery, 'onlyBold' | 'onlyNonBold'>);
 export class SpeciesFormComponent implements OnInit, OnDestroy {
   @Input() searchQuery!: TaxonomySearchQuery;
 
-  public taxonSelectFilters?: {
+  public taxonSelectFilters!: {
     informalTaxonGroup?: string;
     onlyFinnish?: boolean;
   };
@@ -134,7 +134,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  updateTypesOfOccurrence(event) {
+  updateTypesOfOccurrence(event: {true: string[]; false: string[]}) {
     this.searchQuery.query.typesOfOccurrenceFilters = event.true;
     this.searchQuery.query.typesOfOccurrenceNotFilters = event.false;
     this.onQueryChange();
@@ -297,7 +297,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.updateBoldSelected();
   }
 
-  private hasInMulti(multi: any, value: any, noOther = false) {
+  private hasInMulti(multi: any, value: any, noOther = false): boolean {
     if (Array.isArray(value)) {
       return value.filter(val => !this.hasInMulti(multi, val, noOther)).length === 0;
     }

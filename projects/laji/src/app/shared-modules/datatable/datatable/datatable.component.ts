@@ -226,7 +226,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
    *
    * Please note that this should not be used when external pagination is used!
    */
-  @Input() set filterBy(filterBy: FilterByType) {
+  @Input() set filterBy(filterBy: FilterByType|undefined) {
     this._filterBy = filterBy;
     this.filterChange$.next();
   }

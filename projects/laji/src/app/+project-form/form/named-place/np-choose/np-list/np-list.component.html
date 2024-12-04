@@ -27,9 +27,9 @@
     [sortType]="multisort ? sortType.multi : sortType.single"
     [page]="1"
     [pageSize]="data.length"
-    [columns]="columns"
+    [columns]="columns!"
     [selectionType]="selectionType.single"
-    [preselectedRowIndex]="activeNP"
+    [preselectedRowIndex]="activeNP!"
     >
   </laji-datatable>
   <div class="test"></div>

@@ -25,7 +25,7 @@ export abstract class AbstractPermissionGuard  {
       return of(true);
     }
 
-    let formID;
+    let formID: string|undefined;
     do {
       if (route.params?.projectID) {
         formID = route.params.projectID;
