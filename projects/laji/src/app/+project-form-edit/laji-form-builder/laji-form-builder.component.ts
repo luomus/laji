@@ -23,11 +23,11 @@ import { environment } from 'projects/laji/src/environments/environment';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
-  @Input() id: string;
+  @Input() id?: string;
 
-  @ViewChild('lajiFormBuilder', { static: true }) lajiFormBuilderRoot: ElementRef;
+  @ViewChild('lajiFormBuilder', { static: true }) lajiFormBuilderRoot!: ElementRef;
 
-  private lajiFormBuilder: LajiFormBuilder;
+  private lajiFormBuilder!: LajiFormBuilder;
 
   constructor(
     private ngZone: NgZone,
@@ -60,7 +60,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  lajiFormBuilderUpdateSub: Subscription;
+  lajiFormBuilderUpdateSub!: Subscription;
 
   updateLajiFormBuilder() {
     this.lajiFormBuilderUpdateSub?.unsubscribe();
@@ -80,10 +80,10 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
         onSelected: this.onSelected.bind(this),
         idToUri: this.idToUri.bind(this),
         notifier: {
-          success: msg => this.ngZone.run(() => this.toastsService.showSuccess(msg)),
-          info: msg => this.ngZone.run(() => this.toastsService.showInfo(msg)),
-          warning: msg => this.ngZone.run(() => this.toastsService.showWarning(msg)),
-          error: msg => this.ngZone.run(() => this.toastsService.showError(msg)),
+          success: (msg: any) => this.ngZone.run(() => this.toastsService.showSuccess(msg)),
+          info: (msg: any) => this.ngZone.run(() => this.toastsService.showInfo(msg)),
+          warning: (msg: any) => this.ngZone.run(() => this.toastsService.showWarning(msg)),
+          error: (msg: any) => this.ngZone.run(() => this.toastsService.showError(msg)),
         }
       });
     });

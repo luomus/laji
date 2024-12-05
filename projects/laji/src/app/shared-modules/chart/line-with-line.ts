@@ -8,17 +8,19 @@ export class LineWithLine extends LineController {
   draw() {
     super.draw();
     if ((this.chart.tooltip as any)._active?.length) {
-      const colWidth = Math.ceil((this['chart'].chartArea['right'] - this['chart'].chartArea['left']) / this['chart'].config.data.labels.length);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const colWidth = Math.ceil((this['chart'].chartArea['right'] - this['chart'].chartArea['left']) / this['chart'].config.data.labels!.length);
       const activePoint = (this.chart.tooltip as any)._active[0].element;
       const ctx = this.chart.ctx;
       const x = Number((activePoint.tooltipPosition().x).toFixed(0));
       const y = Number((activePoint.tooltipPosition().y).toFixed(0));
-      const topY = this.chart.legend.bottom;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const topY = this.chart.legend!.bottom;
       const bottomY = this.chart.chartArea.bottom;
       const gradient = ctx.createLinearGradient(0, 0, 0, 400);
       gradient.addColorStop(0, 'rgba(70,130,180,1)');
       gradient.addColorStop(0.8, 'rgba(70,130,180,0.1)');
-      const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+      const range = (start: number, end: number, step: number) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
 
       if (range(x - (colWidth / 2), x + ((colWidth / 2)), 1).indexOf((this.chart.tooltip as any)._eventPosition.x) === -1  &&
         range(y, y, 1).indexOf((this.chart.tooltip as any)._eventPosition.y) === -1) {

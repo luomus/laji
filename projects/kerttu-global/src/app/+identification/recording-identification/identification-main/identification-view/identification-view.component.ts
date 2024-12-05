@@ -12,7 +12,6 @@ import {
   Output,
   Renderer2,
   SimpleChanges,
-  TemplateRef,
   ViewChild
 } from '@angular/core';
 import {
@@ -20,7 +19,9 @@ import {
   IGlobalRecordingAnnotation,
   IGlobalSpecies,
   IGlobalSpeciesAnnotation,
+  IGlobalSpeciesAnnotationBox,
   IGlobalSpeciesWithAnnotation,
+  isBoxGroup,
   SpeciesAnnotationEnum,
   TaxonTypeEnum
 } from '../../../../kerttu-global-shared/models';
@@ -45,7 +46,7 @@ import {
 } from '../../../../kerttu-global-shared/variables';
 import { DOCUMENT } from '@angular/common';
 import { AudioViewerComponent } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer/audio-viewer.component';
-import { ModalRef } from '../../../../../../../laji-ui/src/lib/modal/modal.service';
+import { Util } from '../../../../../../../laji/src/app/shared/service/util.service';
 
 
 @Component({
@@ -77,6 +78,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
   drawBirdActive = false;
   drawBirdIndex?: number;
+  drawBirdRelatedBoxIndex?: number;
   drawNonBirdActive = false;
 
   birdRectangleColor = 'white';
@@ -146,9 +148,10 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     this.scrollDrawButtonIntoView(this.selectedSpecies.length - 1);
   }
 
-  onDrawBirdClick(data: {drawClicked: boolean; rowIndex: number}) {
+  onDrawBirdClick(data: {drawClicked: boolean; rowIndex: number; boxIndex?: number}) {
     this.drawBirdActive = data.drawClicked;
     this.drawBirdIndex = data.rowIndex;
+    this.drawBirdRelatedBoxIndex = data.boxIndex != null ? data.boxIndex : -1;
     this.drawNonBirdActive = false;
     this.audioViewerMode = this.drawBirdActive ? 'draw' : 'default';
   }
@@ -156,20 +159,31 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   toggleDrawNonBird() {
     this.drawBirdActive = false;
     this.drawBirdIndex = -1;
+    this.drawBirdRelatedBoxIndex = -1;
     this.drawNonBirdActive = !this.drawNonBirdActive;
     this.audioViewerMode = this.drawNonBirdActive ? 'draw' : 'default';
   }
 
   drawEnd(area: IAudioViewerArea) {
     if (this.drawBirdIndex >= 0) {
-      const species = this.selectedSpecies[this.drawBirdIndex];
-      if (!species.annotation.boxes) {
-        species.annotation.boxes = [];
-      }
-      species.annotation.boxes.push({area});
-      this.selectedSpecies = [...this.selectedSpecies];
+      const selectedSpecies = Util.clone(this.selectedSpecies);
+      const boxes = selectedSpecies[this.drawBirdIndex].annotation.boxes || [];
 
-      this.scrollDrawButtonIntoView(this.drawBirdIndex);
+      if (this.drawBirdRelatedBoxIndex >= 0) {
+        let boxGroup = boxes[this.drawBirdRelatedBoxIndex];
+        if (!isBoxGroup(boxGroup)) {
+          boxGroup = {boxes: [boxGroup]};
+        }
+        boxGroup.boxes.push({area});
+        boxGroup.boxes.sort((a: IGlobalSpeciesAnnotationBox, b: IGlobalSpeciesAnnotationBox) => a.area.xRange[0] - b.area.xRange[0]);
+        boxes[this.drawBirdRelatedBoxIndex] = boxGroup;
+      } else {
+        boxes.push({area});
+      }
+
+      selectedSpecies[this.drawBirdIndex].annotation.boxes = boxes;
+      this.selectedSpecies = selectedSpecies;
+      this.scrollDrawButtonIntoView(this.drawBirdIndex, this.drawBirdRelatedBoxIndex >= 0 ? this.drawBirdRelatedBoxIndex : undefined);
     } else {
       this.annotation.nonBirdArea = area;
     }
@@ -178,10 +192,22 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     this.updateSpectrogramAndAnnotation();
   }
 
-  removeDrawing(data?: {rowIndex: number; boxIndex: number}) {
+  removeDrawing(data?: {rowIndex: number; boxIndex: number; boxGroupIndex: number}) {
     if (data) {
-      this.selectedSpecies[data.rowIndex].annotation.boxes.splice(data.boxIndex, 1);
-      this.selectedSpecies = [...this.selectedSpecies];
+      const selectedSpecies = Util.clone(this.selectedSpecies);
+      const boxes = selectedSpecies[data.rowIndex].annotation.boxes;
+      const box = boxes[data.boxIndex];
+
+      if (isBoxGroup(box)) {
+        box.boxes.splice(data.boxGroupIndex, 1);
+        if (box.boxes.length === 1) {
+          boxes[data.boxIndex] = box.boxes[0];
+        }
+      } else {
+        boxes.splice(data.boxIndex, 1);
+      }
+
+      this.selectedSpecies = selectedSpecies;
     } else {
       this.annotation.nonBirdArea = null;
     }
@@ -273,13 +299,22 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private updateSpectrogramRectangles() {
+    const boxToRectangle = (box: IGlobalSpeciesAnnotationBox, speciesIdx: number, idx: number, groupIdx?: number) => ({
+      label: KerttuGlobalUtil.getBoxLabel(speciesIdx, idx, groupIdx),
+      area: box.area,
+      color: box.overlapsWithOtherSpecies ? this.overlappingBirdRectangleColor : this.birdRectangleColor
+    });
+
     this.audioViewerRectangles = this.selectedSpecies.reduce((rectangles, species, speciesIdx) => {
       (species.annotation.boxes || []).forEach((box, idx) => {
-        rectangles.push({
-          label: (speciesIdx + 1) + KerttuGlobalUtil.numberToLetter(idx + 1),
-          area: box.area,
-          color: box.overlapsWithOtherSpecies ? this.overlappingBirdRectangleColor : this.birdRectangleColor
-        });
+        if (isBoxGroup(box)) {
+          rectangles.push({
+            rectangles: box.boxes.map((b, i) => boxToRectangle(b, speciesIdx, idx, i)),
+            color: this.birdRectangleColor
+          });
+        } else {
+          rectangles.push(boxToRectangle(box, speciesIdx, idx));
+        }
       });
       return rectangles;
     }, []);
@@ -293,10 +328,10 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
-  private scrollDrawButtonIntoView(idx: number) {
+  private scrollDrawButtonIntoView(idx: number, boxIdx?: number) {
     // timeout ensures that the view is rendered before scrolling
     setTimeout(() => {
-      this.identificationTable.scrollDrawButtonIntoView(idx);
+      this.identificationTable.scrollDrawButtonIntoView(idx, boxIdx);
     }, 0);
   }
 

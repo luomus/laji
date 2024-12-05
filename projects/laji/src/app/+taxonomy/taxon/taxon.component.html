@@ -24,8 +24,8 @@
 
 <ng-template #infoCard>
   <laji-info-card
-    [taxon]="taxon"
-    [isFromMasterChecklist]="isFromMasterChecklist"
+    [taxon]="taxon!"
+    [isFromMasterChecklist]="isFromMasterChecklist!"
     [activeTab]="infoCardTab"
     [context]="infoCardContext"
     (routeUpdate)="updateRoute($event.id, $event.tab, $event.context, showTree, $event.replaceUrl)"

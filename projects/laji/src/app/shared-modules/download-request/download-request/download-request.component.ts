@@ -19,7 +19,7 @@ export const getDownloadRequestType = (downloadRequest: DownloadRequest): Downlo
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DownloadRequestComponent implements OnChanges {
-  @Input() downloadRequest: DownloadRequest;
+  @Input() downloadRequest!: DownloadRequest;
   @Input() showPerson = false;
   @Input() showDownload: 'always'|'publicOnly'|'never' = 'never';
   @Input() showTitle = false;
@@ -68,7 +68,7 @@ export class DownloadRequestComponent implements OnChanges {
     const idxById: Record<string, number> = sortedIds.reduce((result, id, idx) => {
       result[id] = idx;
       return result;
-    }, {});
+    }, {} as any);
 
     collections.sort((a, b) => idxById[a.id] - idxById[b.id]);
   }

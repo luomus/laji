@@ -6,8 +6,10 @@ export class ToastPO {
   constructor(private page: Page) { }
 
   async closeAll() {
-    (await this.$$closeBtns.all()).forEach(async ($btn) => {
-      await $btn.click();
-    });
+    for (const el of await this.$$closeBtns.elementHandles()) {
+      try {
+        await el.click();
+      } catch (e) {}
+    }
   }
 }

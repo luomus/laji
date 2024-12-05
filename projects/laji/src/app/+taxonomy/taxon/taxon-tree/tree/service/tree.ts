@@ -11,10 +11,10 @@ export class Tree {
   private getChildren: (id: string) => Observable<any[]>;
   private getParents: (id: string) => Observable<any[]>;
 
-  private skipParams: {key: string; values: string[] | boolean[]; isWhiteList?: boolean}[];
+  private skipParams: {key: string; values: string[] | boolean[]; isWhiteList?: boolean}[] | undefined;
 
-  private activeId: string;
-  private rootId: string;
+  private activeId: string | undefined;
+  private rootId: string | undefined;
 
   constructor(
     getData: (id: string) => Observable<any>,
@@ -72,7 +72,7 @@ export class Tree {
   private updateNodes(parentList: any[]): Observable<boolean> {
     const oldParentNodeList = this.parentNodeList;
     const newParentNodeList = [];
-    let lastParent: TreeNode;
+    let lastParent: TreeNode | undefined;
 
     for (let i = 0; i < parentList.length; i++) {
       const parent = parentList[i];
@@ -84,7 +84,8 @@ export class Tree {
       } else {
         node = {
           value: parent,
-          state: TreeStateService.getInitialState(parent, this.skipParams, lastParent)
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          state: TreeStateService.getInitialState(parent, this.skipParams!, lastParent)
         };
       }
 
@@ -96,7 +97,8 @@ export class Tree {
       }
     }
 
-    while (lastParent.state.isSkipped && lastParent.value.id !== this.activeId) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    while (lastParent!.state.isSkipped && lastParent!.value.id !== this.activeId) {
       newParentNodeList.pop();
       lastParent = newParentNodeList[newParentNodeList.length - 1];
     }
@@ -107,18 +109,21 @@ export class Tree {
     }
 
     this.parentNodeList = newParentNodeList;
-    this.rootId = lastParent.value.id;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.rootId = lastParent!.value.id;
     this.loadingParentNodeList = false;
 
-    return this.openNodes(lastParent, childIds);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.openNodes(lastParent!, childIds);
   }
 
   private openNodes(node: TreeNode, childIds: string[]): Observable<boolean> {
     return this.openNode(node)
       .pipe(switchMap(() => {
-        let foundNode: TreeNode;
+        let foundNode: TreeNode | undefined;
         if (childIds.length > 0) {
-          for (const child of node.children) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          for (const child of node.children!) {
             if (child.value.id === childIds[0]) {
               foundNode = child;
             }
@@ -157,7 +162,8 @@ export class Tree {
         map(children => {
           const nodes = children.map(child => ({
             value: child,
-            state: TreeStateService.getInitialState(child, this.skipParams, node)
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            state: TreeStateService.getInitialState(child, this.skipParams!, node)
           }));
 
           node.children = nodes;

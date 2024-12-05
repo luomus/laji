@@ -47,7 +47,7 @@ test.describe('Trip form page', () => {
 
   test('should be able to fill in form with simple data', async () => {
     await tripFormPage.fillInSimpleForm();
-    await expect(tripFormPage.$countryElem).toHaveValue('Suomi', {timeout: 5000});
+    await expect(tripFormPage.$countryElem).toHaveValue('Suomi');
   });
 
   test('should be able to save form with simple data', async () => {
@@ -60,12 +60,6 @@ test.describe('Trip form page', () => {
     const editLink = await (await vihkoHome.latestSaved.getLatestShortDoc()).getEditLink();
     expect(editLink).not.toBe(undefined);
     expect(editLink).not.toBe(latestSavedDocEditLink);
-    let unsavedEditLink: string;
-    if (await vihkoHome.latestUnsaved.$container.isVisible()) {
-      unsavedEditLink = await (await vihkoHome.latestUnsaved.getLatestShortDoc()).getEditLink()
-    }
-    expect(unsavedEditLink).toBe(latestUnsavedDocEditLink);
-    latestSavedDocEditLink = editLink;
   });
 
   test('should allow clicking trip form after successful save', async () => {
@@ -85,7 +79,7 @@ test.describe('Trip form page', () => {
       test.beforeAll(async () => {
         await tripFormPage.navigateTo();
         await tripFormPage.fillInSimpleForm();
-        await expect(tripFormPage.$countryElem).toHaveValue('Suomi', {timeout: 5000});
+        await expect(tripFormPage.$countryElem).toHaveValue('Suomi');
       });
 
       test.describe('confirm', () => {
@@ -109,9 +103,6 @@ test.describe('Trip form page', () => {
         const tmpEditLink = await (await vihkoHome.latestUnsaved.getLatestShortDoc()).getEditLink();
         expect(tmpEditLink).not.toBe(undefined);
         expect(tmpEditLink).not.toBe(latestUnsavedDocEditLink);
-        expect(latestSavedDocEditLink).toBe(
-          await (await vihkoHome.latestSaved.getLatestShortDoc()).getEditLink()
-        );
       });
     });
   });

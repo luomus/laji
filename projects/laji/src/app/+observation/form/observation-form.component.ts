@@ -373,11 +373,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   enableAccuracySlider() {
     if (!this.query.coordinateAccuracyMax) {
       this.query.coordinateAccuracyMax = 1000;
-      this.onAccuracySliderChange();
+      this.onAccuracySliderInput();
     }
   }
 
-  onAccuracySliderChange() {
+  onAccuracySliderInput() {
     this.query.coordinateAccuracyMax = Math.pow(10, this.logCoordinateAccuracyMax);
     this.onQueryChange();
   }
@@ -476,6 +476,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       timeStart = time[0];
       timeEnd = time[1];
     }
+    if (query.coordinateAccuracyMax) {
+      this.logCoordinateAccuracyMax = Math.log10(query.coordinateAccuracyMax);
+    }
     return {
       taxon: '',
       timeStart: this.getValidDate(timeStart),
@@ -561,6 +564,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         }
         query.administrativeStatusId = administrativeStatusId;
       });
+
     this.query = query;
   }
 

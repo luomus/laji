@@ -15,7 +15,8 @@ export class PlatformService {
     @Inject(PLATFORM_ID) private platformId: Object, // eslint-disable-line @typescript-eslint/ban-types
     @Inject(DOCUMENT) public document: Document,
   ) {
-    this.window = document.defaultView;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.window = document.defaultView!;
   }
 
   get isBrowser(): boolean {

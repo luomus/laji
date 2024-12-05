@@ -1694,9 +1694,9 @@ export namespace LajiApiClient {
   export interface PersonAddFriendRequestParams {
 
     /**
-     * profile key
+     * person ID who is asked to be a friend
      */
-    profileKey: string;
+    friendPersonID: string;
 
     /**
      * Person token

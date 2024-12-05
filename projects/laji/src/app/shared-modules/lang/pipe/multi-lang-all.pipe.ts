@@ -16,7 +16,7 @@ export class MultiLangAllPipe implements PipeTransform {
     return this.value;
   }
 
-  private langToString(value) {
+  private langToString(value: Record<string, unknown>) {
     return MultiLangService.valueToString(value);
   }
 }

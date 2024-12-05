@@ -62,8 +62,8 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
   @Output() yearChange = new EventEmitter<string>();
   @Output() taxonChange = new EventEmitter<string>();
 
-  mapData$: Observable<DataOptions>;
-  years$: Observable<YearInfoItem[]>;
+  mapData$!: Observable<DataOptions>;
+  years$!: Observable<YearInfoItem[]>;
   loading = true;
 
   visualization: LajiMapVisualization<'invasiveControlEffectiveness'> = {
@@ -71,8 +71,8 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
       label: 'invasiveSpeciesControl.stats.map.legend.title',
       categories: Object.keys(effectivenessToVisCategory).reduce((_categories, effectiveness) => ([
         ..._categories,
-        effectivenessToVisCategory[effectiveness]
-      ]), [])
+        (effectivenessToVisCategory as any)[effectiveness]
+      ] as any), [])
     }
   };
 
@@ -99,7 +99,7 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
         ...this.getDataOptions(),
         featureCollection: {
           type: 'FeatureCollection' as const,
-          features: response.results.reduce((_features, item) => {
+          features: response.results.reduce((_features: any[], item) => {
             _features.push({
               type: 'Feature',
               geometry: {
@@ -151,13 +151,14 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
   }
 
   getFeatureStyle({feature}: GetFeatureStyleOptions) {
-    let {effectiveness} = feature.properties;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    let {effectiveness} = feature!.properties as any;
     if (effectiveness === 'NOT_FOUND') { // Same colour as full since it means that the species was not present = good thing.
       effectiveness = 'FULL';
     }
 
     return {
-      color: effectivenessToVisCategory[effectiveness].color
+      color: (effectivenessToVisCategory as any)[effectiveness].color
     };
   }
 

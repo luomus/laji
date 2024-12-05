@@ -9,9 +9,9 @@ import { toHtmlSelectElement } from '../../../../shared/service/html-element.ser
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonBiologyComponent implements OnChanges {
-  @Input() taxon: Taxonomy;
-  @Input() taxonDescription: TaxonomyDescription[];
-  @Input() context: string;
+  @Input({ required: true }) taxon!: Taxonomy;
+  @Input({ required: true }) taxonDescription!: TaxonomyDescription[];
+  @Input({ required: true }) context!: string;
 
   activeDescription = 0;
 

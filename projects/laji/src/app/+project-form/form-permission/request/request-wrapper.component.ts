@@ -19,9 +19,9 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
     `]
 })
 export class RequestWrapperComponent implements OnInit, OnDestroy {
-    collectionId: string;
+    collectionId!: string;
 
-    subParams: Subscription;
+    subParams!: Subscription;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,

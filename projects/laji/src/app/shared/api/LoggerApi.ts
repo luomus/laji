@@ -40,16 +40,16 @@ export class LoggerApi {
   }
 
   protected serializer() {
-    const stack = [], keys = [];
+    const stack: any[] = [], keys: any[] = [];
 
-    const cycleReplacer = function(key, value) {
+    const cycleReplacer = function(key: any, value: any) {
       if (stack[0] === value) {
         return '[Circular ~]';
       }
       return '[Circular ~.' + keys.slice(0, stack.indexOf(value)).join('.') + ']';
     };
 
-    return function(key, value) {
+    return function(this: any, key: any, value: any) {
       if (stack.length > 0) {
         const thisPos = stack.indexOf(this);
         if (thisPos > -1) {

@@ -12,9 +12,9 @@ const MEDIA_RESOURCES = ['/images', '/audio'];
 @Injectable()
 export class FormApiClient {
   protected basePath = environment.apiBase;
-  private _lang: string;
-  private _personToken: string;
-  private _formID: string;
+  private _lang?: string;
+  private _personToken?: string;
+  private _formID?: string;
 
   constructor(protected http: HttpClient,
               private taxonAutocompleteService: TaxonAutocompleteService) {
@@ -53,7 +53,7 @@ export class FormApiClient {
 
     const queryParameters = {...Util.removeFromObject(query)};
 
-    ['lang', 'personToken', 'formID'].forEach(key => {
+    (['lang', 'personToken', 'formID'] as const).forEach(key => {
       if (this[key] !== undefined && !queryParameters.hasOwnProperty(key)) {
         queryParameters[key] = this[key];
       }

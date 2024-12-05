@@ -3,13 +3,10 @@
     <div class="col-sm-12">
       <h1>{{ 'navigation.identify' | translate }}</h1>
       <p>
-        {{ 'identify.intro' | translate }}
+        <span [innerHtml]="'identify.intro' | translate"></span>
       </p>
       <p>
-        {{ 'identify.reportIntro' | translate }}
-        <br/>
-        <a class="link btn btn-primary" [routerLink]="['/vihko/' + formId | localize]">{{ 'identify.report' | translate }}</a>
-        <span *lajiLoggedIn="false">({{ 'identify.requiresAuthentication' | translate }})</span>
+        <span [innerHtml]="'identify.reportIntro' | translate"></span>
       </p>
     </div>
   </div>

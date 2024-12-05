@@ -31,20 +31,20 @@ export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'indivi
 })
 export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild(LajiMapComponent, { static: true }) mapComponent: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: true }) mapComponent!: LajiMapComponent;
 
-  @Input() title: string;
-  @Input() titleInfo: string;
+  @Input() title?: string;
+  @Input() titleInfo?: string;
   @Input() height = '605px';
-  @Input() query: WarehouseQueryInterface;
-  @Input() zeroObservationQuery: WarehouseQueryInterface;
+  @Input() query!: WarehouseQueryInterface;
+  @Input() zeroObservationQuery?: WarehouseQueryInterface;
   @Input() data: any;
   @Input() type: MapBoxTypes = 'count';
   @Input() types: MapBoxTypes[] = ['count', 'individualCount', 'newest'];
   @Input() typeLabels: any = {};
   @Input() colorRange: string[] = ['violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
   @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', 'violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
-  @Input() individualBreak: number[] = [0, null, 1, 10, 100, 1000, 10000, 100000];
+  @Input() individualBreak: (number | null)[] = [0, null, 1, 10, 100, 1000, 10000, 100000];
   @Input() countBreak: number[] = [1, 10, 100, 1000, 10000, 100000];
   @Input() timeBreak: string[] = ['2020-01-01', '2015-01-01', '2010-01-01', '2005-01-01', '2000-01-01', '1991-01-01'];
   @Input() individualLabel: string[] = ['0', '1+', '1-', '10-', '100-', '1 000-', '10 000-', '100 000-'];
@@ -60,7 +60,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   get mapOptions() {
     return this._mapOptions;
   }
-  @Input() taxon: Taxonomy;
+  @Input() taxon?: Taxonomy;
   @Input() useStatistics = false;
   @Input() loading = false;
 
@@ -71,10 +71,10 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   count: {[k: string]: number} = {};
   legendList: {color: string; label: string}[] = [];
 
-  private currentColor;
-  private current;
-  private subQuery: Subscription;
-  private subLang: Subscription;
+  private currentColor: any;
+  private current: any;
+  private subQuery?: Subscription;
+  private subLang?: Subscription;
   private _mapOptions: Options = {
     center: [64.709804, 25],
     zoom: 2,
@@ -156,7 +156,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(geoJson => {
         this.mapComponent.setData({
           on: {
-            click: (event, data) => {
+            click: (event: any, data: any) => {
               try {
                 this.gridClick.emit({
                   ...(this.query || {}),
@@ -209,8 +209,8 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
         colorRange = [...this.individualColorRange];
     }
     this.legendList = [];
-    this[rangeSrc].map((breakPoint, idx) => this.legendList.push({
-      label: this[labelSrc][idx] || breakPoint,
+    (this as any)[rangeSrc].map((breakPoint: any, idx: any) => this.legendList.push({
+      label: (this as any)[labelSrc][idx] || breakPoint,
       color: colorRange[idx]
     }));
   }
@@ -221,7 +221,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
     if (!dataLayer) {
       return;
     }
-    let col;
+    let col: any;
     switch (this.type) {
       case 'individualCount':
       case 'individualCountSum':
@@ -242,14 +242,14 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
         col = this.countColor.bind(this);
         break;
     }
-    dataLayer.eachLayer((layer) => {
+    dataLayer.eachLayer((layer: any) => {
       const color = col(layer.feature);
       layer.setStyle({fillColor: color});
     });
     this.initLegend();
   }
 
-  newestColor(feature) {
+  newestColor(feature: any) {
     const cnt = feature.properties.newestRecord || '1991-01-01';
     const len = this.timeBreak.length;
     let newColor = '#ffffff';
@@ -268,20 +268,20 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
     return newColor;
   }
 
-  individualsColor(feature) {
+  individualsColor(feature: any) {
     return this.countColor(feature, 'individualCountSum', this.individualBreak, this.individualColorRange);
   }
 
-  individualsPer10kmColor(feature) {
+  individualsPer10kmColor(feature: any) {
     const divisor = feature.properties.lineLengthSum / 10000;
     return this.countColor(feature, 'individualCountSum', this.individualBreak, this.individualColorRange, divisor);
   }
 
-  pairCountColor(feature) {
+  pairCountColor(feature: any) {
     return this.countColor(feature, 'pairCountSum');
   }
 
-  countColor(feature, prop = 'count', breaks = this.countBreak, range = this.colorRange, divisor = 1) {
+  countColor(feature: any, prop = 'count', breaks: (number | null)[] = this.countBreak, range = this.colorRange, divisor = 1) {
     const isDefined = typeof feature.properties[prop] !== 'undefined';
     const cnt = (isDefined ? feature.properties[prop] : 1) / divisor;
     let newColor = '#ffffff';
@@ -294,7 +294,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
           newColor = range[idx];
           break;
         }
-      } else if (cnt >= breaks[idx]) {
+      } else if (cnt >= (breaks as any)[idx]) {
         newColor = range[idx];
       } else {
         break;

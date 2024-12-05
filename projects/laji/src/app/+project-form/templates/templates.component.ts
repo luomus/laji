@@ -13,9 +13,9 @@ import { map } from 'rxjs/operators';
 })
 export class TemplatesComponent implements OnInit {
 
-  collectionID$: Observable<string>;
+  collectionID$!: Observable<string | undefined>;
 
-  @LocalStorage() public showTemplateIntro;
+  @LocalStorage() public showTemplateIntro: any;
 
   constructor(
     private route: ActivatedRoute,

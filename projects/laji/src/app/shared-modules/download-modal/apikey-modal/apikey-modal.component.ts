@@ -29,7 +29,7 @@ export class ApikeyModalComponent implements OnChanges, OnInit {
   @Input() apiKey = '';
   @Input() modalSize: ModalSize = 'sm';
 
-  @ViewChild('modal', {static: true}) modal: ModalComponent;
+  @ViewChild('modal', {static: true}) modal!: ModalComponent;
 
   private _reason = '';
   private _reasonEnum = '';
@@ -65,7 +65,7 @@ export class ApikeyModalComponent implements OnChanges, OnInit {
     this.modal.show();
   }
 
-  onRadioInput(event, value: number) {
+  onRadioInput(event: any, value: number) {
     if (event.target?.checked) {
       this.expiration = value;
       this.cdr.markForCheck();

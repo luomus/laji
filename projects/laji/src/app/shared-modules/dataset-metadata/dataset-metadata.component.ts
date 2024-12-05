@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { Collection } from '../../shared/model/Collection';
-import { CollectionService, ICollectionCounts } from '../../shared/service/collection.service';
+import { CollectionService, ICollectionCounts, ICollection } from '../../shared/service/collection.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import {PlatformService} from '../../root/platform.service';
 
@@ -16,11 +14,11 @@ const mobileBreakpoint = 768;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewInit {
-  collectionId: string;
-  _collectionId: string;
-  collection$: Observable<Collection>;
-  collectionCounts$: Observable<ICollectionCounts>;
-  paramSub$: Subscription;
+  collectionId?: string;
+  _collectionId?: string;
+  collection$?: Observable<ICollection>;
+  collectionCounts$?: Observable<ICollectionCounts>;
+  paramSub$?: Subscription;
   showBrowser = true;
   isMobile = false;
 
@@ -70,7 +68,7 @@ export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewIni
 
   private setCollection(collectionId: string) {
     if (collectionId && this.collectionId !== collectionId) {
-      this.collection$ = this.collectionService.getById$(collectionId, 'multi');
+      this.collection$ = this.collectionService.getById$(collectionId, 'multi') as Observable<ICollection>;
       this.collectionCounts$ = this.collectionService.getCollectionSpecimenCounts$(collectionId);
     }
 
@@ -87,7 +85,7 @@ export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewIni
     this.router.navigate(url);
   }
 
-  changeCollection(collectionId) {
+  changeCollection(collectionId: string) {
     if (!collectionId || collectionId !== this.collectionId) {
       this.changeUrl(collectionId);
     }

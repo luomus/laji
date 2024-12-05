@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./line-transect-result.component.css']
 })
 export class LineTransectResultComponent {
-  public tab: string;
+  public tab?: string;
   informalTaxonGroup = 'MVL.1';
   defaultTaxonId = 'MX.37580';
   collectionId = 'HR.61,HR.2691';

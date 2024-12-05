@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, AfterViewIni
 
 @Component({
   template: `
-    <p class="laji-dialog-message">{{ message | translate }}</p>
+    <p class="laji-dialog-message" [innerHTML]="message | translate"></p>
     <input *ngIf="prompt" #prompt
            class="form-control"
            (keyup)="onPromptChange(prompt.value)"

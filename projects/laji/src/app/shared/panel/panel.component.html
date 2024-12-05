@@ -6,11 +6,7 @@
     <strong class="panel-title" [innerHtml]="title"></strong>
   </ng-template>
 </div>
-<div class="panel-collapse" [ngClass]="{closed: hideInside}"
-     (@visibilityState.done)="animationDone($event)"
-     (@visibilityState.start)="animationStart($event)"
-     [@visibilityState]="open ? 'in' : 'out'"
-     role="tabpanel" aria-labelledby="">
+<div class="panel-collapse" [ngStyle]="{display: open ? 'block' : 'none' }" role="tabpanel">
   <div class="panel-body">
     <ng-content></ng-content>
   </div>

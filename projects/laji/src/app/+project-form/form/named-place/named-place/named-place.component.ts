@@ -14,7 +14,6 @@ import { DialogService } from '../../../../shared/service/dialog.service';
 import { UserService } from '../../../../shared/service/user.service';
 import { FooterService } from '../../../../shared/service/footer.service';
 import { NamedPlaceQuery } from '../../../../shared/api/NamedPlaceApi';
-import { ProjectFormService } from '../../../../shared/service/project-form.service';
 import { NpInfoComponent } from '../np-info/np-info.component';
 import { FormService } from '../../../../shared/service/form.service';
 
@@ -85,7 +84,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private toastrService: ToastrService,
     private formPermissionService: FormPermissionService,
-    private projectFormService: ProjectFormService,
     private formService: FormService
   ) {}
   @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;

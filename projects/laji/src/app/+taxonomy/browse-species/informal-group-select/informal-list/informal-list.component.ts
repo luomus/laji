@@ -8,7 +8,7 @@ import { InformalTaxonGroup } from '../../../../shared/model/InformalTaxonGroup'
 
 })
 export class InformalListComponent {
-  @Input() informalTaxonGroups: InformalTaxonGroup[];
+  @Input() informalTaxonGroups!: InformalTaxonGroup[];
   @Input() showAll = false;
   @Output() informalGroupSelect = new EventEmitter<string>();
 

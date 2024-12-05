@@ -9,8 +9,8 @@ import { IFormField } from '../../model/excel';
 })
 export class FieldListComponent implements OnChanges {
 
-  @Input() parent: string;
-  @Input() fields: IFormField[];
+  @Input() parent?: string;
+  @Input() fields?: IFormField[];
   @Input() selected: string[] = [];
   @Input() title = '';
   @Input() showTitle = true;
@@ -18,8 +18,8 @@ export class FieldListComponent implements OnChanges {
   @Output() toggle = new EventEmitter<IFormField|IFormField[]>();
   @Output() selectedChange = new EventEmitter<string[]>();
 
-  idx: number;
-  visibleFields: {
+  idx?: number;
+  visibleFields!: {
     subGroup: string;
     fields: IFormField[];
   }[];
@@ -36,7 +36,7 @@ export class FieldListComponent implements OnChanges {
     }
   }
 
-  onSubGroupClick(subGroup) {
+  onSubGroupClick(subGroup: string) {
     this.visibleFields.forEach(group => {
       if (group.subGroup === subGroup) {
         this.toggle.emit(group.fields);
@@ -45,7 +45,7 @@ export class FieldListComponent implements OnChanges {
   }
 
   onTitleClick() {
-    const allVisible = [];
+    const allVisible: IFormField[] = [];
     this.visibleFields.forEach(group => {
       allVisible.push(...group.fields);
     });
@@ -73,7 +73,7 @@ export class FieldListComponent implements OnChanges {
       }
       fields[subGroup].fields.push(current);
       return fields;
-    }, {});
+    }, {} as any);
     this.visibleFields = Object.keys(visibleFields).map(key => visibleFields[key]);
   }
 }

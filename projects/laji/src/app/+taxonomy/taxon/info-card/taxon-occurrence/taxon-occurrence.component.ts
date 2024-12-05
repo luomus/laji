@@ -10,22 +10,19 @@ import { InfoCardQueryService } from '../shared/service/info-card-query.service'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonOccurrenceComponent implements OnChanges {
-  @Input() taxon: Taxonomy;
-  @Input() taxonDescription: TaxonomyDescription[];
-  @Input() isFromMasterChecklist: boolean;
+  @Input({ required: true }) taxon!: Taxonomy;
+  @Input() taxonDescription!: TaxonomyDescription[];
+  @Input() isFromMasterChecklist!: boolean;
 
-  mapQuery: WarehouseQueryInterface;
-  chartQuery: WarehouseQueryInterface;
-  observationQuery: WarehouseQueryInterface;
-  habitatQuery: WarehouseQueryInterface;
+  mapQuery: WarehouseQueryInterface | undefined;
+  chartQuery: WarehouseQueryInterface | undefined;
 
-  hasMonthDayData: boolean;
-  hasYearData: boolean;
-  filterByRecordBasisTotal: number;
-  filterByLifeStageTotal: number;
-  filterBySexTotal: number;
-  filterByCollectionIdTotal: number;
-  filterByHabitatTotal: number;
+  hasMonthDayData: boolean | undefined;
+  hasYearData: boolean | undefined;
+  filterByRecordBasisTotal: number | undefined;
+  filterByLifeStageTotal: number | undefined;
+  filterBySexTotal: number | undefined;
+  filterByCollectionIdTotal: number | undefined;
   filterHabitats: Array<any> = [];
 
   ngOnChanges() {
@@ -41,8 +38,5 @@ export class TaxonOccurrenceComponent implements OnChanges {
     this.filterByCollectionIdTotal = undefined;
 
     this.filterHabitats = this.taxon.habitatOccurrenceCounts ?? [];
-
-
   }
-
 }

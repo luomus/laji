@@ -59,7 +59,7 @@ export class SpreadsheetFacade implements OnDestroy {
 
   canDeactivateStatus = true;
 
-  private readonly formSub: Subscription;
+  private readonly formSub?: Subscription;
 
   constructor() {
     // canDeactiveStatus i.e. whether the user can leave the page without confirmation message

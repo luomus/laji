@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, ChangeDetectionStrategy, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { SykeInsectResultService } from '../syke-insect-result.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Area } from '../../../../shared/model/Area';
 import { toHtmlSelectElement } from '../../../../shared/service/html-element.service';
 
 
@@ -15,17 +14,17 @@ export class SykeInsectResultFiltersComponent implements OnInit, OnChanges {
 
   @Input() yearRequired = false;
   @Input() showDateFilter = true;
-  @Input() routeId;
+  @Input() routeId: any;
   @Input() showSections = true;
-  @Input() collectionId: string;
+  @Input() collectionId!: string;
 
   years: number[] = [];
   days: string[] = [];
 
-  activeYear: number;
-  activeDate: string;
-  activeArea: string;
-  onlySections: boolean;
+  activeYear?: number;
+  activeDate?: string;
+  activeArea?: string;
+  onlySections?: boolean;
 
   @Output() yearChange = new EventEmitter<number>();
   @Output() dateChange = new EventEmitter<string>();
@@ -76,7 +75,8 @@ export class SykeInsectResultFiltersComponent implements OnInit, OnChanges {
       .subscribe(
         years => {
           this.years = Object.keys(years).sort().reverse().map(el => parseInt(el, 10));
-          this.days = years[this.activeYear];
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          this.days = years[this.activeYear!];
           if (this.yearRequired && !this.activeYear) {
             this.onYearChange('' + years[0]);
           }
@@ -85,7 +85,7 @@ export class SykeInsectResultFiltersComponent implements OnInit, OnChanges {
       );
   }
 
-  onDateChange(newDate: string) {
+  onDateChange(newDate?: string) {
     this.activeDate = (newDate && newDate !== '0') ? newDate : undefined;
     this.onlySections = true;
     this.dateChange.emit(this.activeDate);

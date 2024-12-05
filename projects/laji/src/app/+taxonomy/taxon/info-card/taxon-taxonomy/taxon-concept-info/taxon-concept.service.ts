@@ -41,7 +41,7 @@ export class TaxonConceptService {
       .pipe(
         switchMap(xml => {
           const result: TaxonMatch = {id: path, scientificName: '', inScheme: '', inSchemeLabel: {}};
-          const variables = [
+          const variables: { name: keyof TaxonMatch; namespace: string }[] = [
             {name: 'scientificName', namespace: this.DWC},
             {name: 'scientificNameAuthorship', namespace: this.DWC},
             {name: 'inScheme', namespace: this.SKOS}
@@ -69,7 +69,7 @@ export class TaxonConceptService {
     return this.makeRdfRequest(path)
       .pipe(
         map(xml => {
-          const result = {};
+          const result: any = {};
           const matches = xml.getElementsByTagNameNS(this.RDFS, 'label');
 
           for (const match of matches) {

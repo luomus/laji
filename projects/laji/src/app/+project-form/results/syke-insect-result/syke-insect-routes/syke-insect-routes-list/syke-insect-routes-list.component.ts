@@ -19,7 +19,7 @@ export class SykeInsectRoutesListComponent implements OnChanges {
   @Input() columnMode: 'force' | 'standard' | ColumnMode | 'flex'  = 'standard';
   @Input() showFilter = true;
   @Input() showNameAsLink = true;
-  @Input() countLabel: string;
+  @Input() countLabel!: string;
   @Input() sorts: {prop: string; dir: 'asc'|'desc'}[] = [];
   @Input() loading = true;
   @Input() selected: string[] = [];
@@ -69,13 +69,13 @@ export class SykeInsectRoutesListComponent implements OnChanges {
       label: 'gathering.section'
     },
   ];
-  columns = [];
+  columns: any[] = [];
 
   filterBy = '';
 
   @Output() rowSelect = new EventEmitter<string>();
 
-  @ViewChild('routeLink', { static: true }) routeLinkTpl: TemplateRef<any>;
+  @ViewChild('routeLink', { static: true }) routeLinkTpl!: TemplateRef<any>;
 
   constructor(
     private ngZone: NgZone,
@@ -94,7 +94,8 @@ export class SykeInsectRoutesListComponent implements OnChanges {
       } else if (val.name === 'count') {
         val.label = this.countLabel || 'theme.count';
       }
-      return this.selected.indexOf(val.name) !== -1;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.selected.indexOf(val.name!) !== -1;
     });
   }
 

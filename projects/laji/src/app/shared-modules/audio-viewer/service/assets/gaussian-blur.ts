@@ -28,14 +28,14 @@
  * SOFTWARE.
  */
 
-export const gaussBlur_4 = function(scl, tcl, w, h, r) {
+export const gaussBlur_4 = function(scl: Float32Array, tcl: Float32Array, w: number, h: number, r: number) {
   const bxs = boxesForGauss(r, 3);
   boxBlur_4 (scl, tcl, w, h, (bxs[0] - 1) / 2);
   boxBlur_4 (tcl, scl, w, h, (bxs[1] - 1) / 2);
   boxBlur_4 (scl, tcl, w, h, (bxs[2] - 1) / 2);
 };
 
-function boxesForGauss(sigma, n) {
+function boxesForGauss(sigma: number, n: number) {
   const wIdeal = Math.sqrt((12 * sigma * sigma / n) + 1);  // Ideal averaging filter width
   let wl = Math.floor(wIdeal);  if (wl % 2 === 0) { wl--; }
   const wu = wl + 2;
@@ -47,12 +47,12 @@ function boxesForGauss(sigma, n) {
   const sizes = [];  for (let i = 0; i < n; i++) { sizes.push(i < m ? wl : wu); }
   return sizes;
 }
-function boxBlur_4(scl, tcl, w, h, r) {
+function boxBlur_4(scl: Float32Array, tcl: Float32Array, w: number, h: number, r: number) {
   for (let i = 0; i < scl.length; i++) { tcl[i] = scl[i]; }
   boxBlurH_4(tcl, scl, w, h, r);
   boxBlurT_4(scl, tcl, w, h, r);
 }
-function boxBlurH_4(scl, tcl, w, h, r) {
+function boxBlurH_4(scl: Float32Array, tcl: Float32Array, w: number, h: number, r: number) {
   const iarr = 1 / (r + r + 1);
   for (let i = 0; i < h; i++) {
     let ti = i * w, li = ti, ri = ti + r;
@@ -64,7 +64,7 @@ function boxBlurH_4(scl, tcl, w, h, r) {
     for (let j = w - r; j < w  ; j++) { val += lv        - scl[li++];   tcl[ti++] = val * iarr; }
   }
 }
-function boxBlurT_4(scl, tcl, w, h, r) {
+function boxBlurT_4(scl: Float32Array, tcl: Float32Array, w: number, h: number, r: number) {
   const iarr = 1 / (r + r + 1);
   for (let i = 0; i < w; i++) {
     let ti = i, li = ti, ri = ti + r * w;

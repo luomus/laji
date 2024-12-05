@@ -9,15 +9,15 @@ import { TreeSkipParameter } from './tree/model/tree.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonTreeComponent implements OnInit {
-  @Input() activeId: string;
-  @Input() activeTab: string;
-  @Input() showHidden: boolean;
+  @Input() activeId?: string;
+  @Input() activeTab?: string;
+  @Input() showHidden?: boolean;
   @Output() routeUpdate = new EventEmitter();
 
   getDataFunc = this.getData.bind(this);
   getChildrenFunc = this.getChildren.bind(this);
   getParentsFunc = this.getParents.bind(this);
-  skipParams: TreeSkipParameter[] = [{key: 'hiddenTaxon', isWhiteList: true, values: [false]}];
+  skipParams?: TreeSkipParameter[] = [{key: 'hiddenTaxon', isWhiteList: true, values: [false]}];
 
   showMainLevels = false;
 

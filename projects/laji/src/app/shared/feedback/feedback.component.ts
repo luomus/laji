@@ -29,9 +29,9 @@ export class FeedbackComponent {
     email: ''
   };
   public error = false;
-  private displayedModal: ModalRef;
+  private displayedModal!: ModalRef;
 
-  @ViewChild('childModal', { static: true }) public modal: TemplateRef<any>;
+  @ViewChild('childModal', { static: true }) public modal!: TemplateRef<any>;
 
   constructor(
 		private platformService: PlatformService,
@@ -70,14 +70,14 @@ export class FeedbackComponent {
       this.userService.user$).pipe(
         take(1)
     ).pipe(
-      switchMap((user: (Person | undefined)) => this.lajiApi.post(
+      switchMap((user: Person | undefined | null) => this.lajiApi.post(
         LajiApi.Endpoints.feedback,
         {
           subject,
           message: this.feedback.message + '\n\n---\n' + this.feedback.email,
           meta
         },
-        {personToken: user && user.emailAddress ? this.userService.getToken() : undefined}
+        {personToken: user && user.emailAddress ? this.userService.getToken() : undefined as any}
       ))
     ).subscribe({
       next: () => {
@@ -107,10 +107,10 @@ export class FeedbackComponent {
       + '\n' + agent;
   }
 
-  private sendMessage(type, msgKey) {
+  private sendMessage(type: string, msgKey: string | string[]) {
     this.translate.get(msgKey)
       .subscribe((msg) => {
-        this.toastsService[type](msg);
+        (this.toastsService as any)[type](msg);
       });
   }
 }

@@ -31,16 +31,16 @@ import { NpInfoComponent } from '../../np-info/np-info.component';
   providers: [ BoolToStringPipe, AreaNamePipe ]
 })
 export class NpListComponent implements OnDestroy {
-  _namedPlaces: NamedPlace[];
-  _fields: any[];
+  _namedPlaces?: NamedPlace[];
+  _fields?: any[];
   data: any[] = [];
-  columns: ObservationTableColumn[];
+  columns?: ObservationTableColumn[];
   sorts: {prop: string; dir: 'asc'|'desc'}[] = [];
   sortType = SortType;
   selectionType = SelectionType;
-  showLegendList = false;
-  multisort = false;
-  filterBy: string;
+  showLegendList? = false;
+  multisort? = false;
+  filterBy?: string;
   legendList = [
     {label: 'Vapaa', color: '#ffffff'},
     {label: 'Varattu', color: '#d1c400'},
@@ -48,23 +48,23 @@ export class NpListComponent implements OnDestroy {
     {label: 'Ilmoitettu', color: '#00aa00'}
   ];
   columnsMetaData: {[columnName: string]: DatatableColumn};
-  private _visible;
-  private _visibleTimeout: Timeout;
-  private _formRights: Rights;
-  private _documentForm: Form.SchemaForm;
-  private _placeForm: Form.SchemaForm;
+  private _visible?: boolean;
+  private _visibleTimeout?: Timeout;
+  private _formRights?: Rights;
+  private _documentForm!: Form.SchemaForm;
+  private _placeForm?: Form.SchemaForm;
 
-  @ViewChild('label', { static: true }) labelIDTpl: TemplateRef<any>;
-  @ViewChild('status', { static: true }) statusTpl: TemplateRef<any>;
-  @ViewChild('area') areaTpl: TemplateRef<any>;
-  @ViewChild('boolToStr', { static: true }) boolToStrTpl: TemplateRef<any>;
-  @ViewChild('dataTable', { static: true }) public datatable: DatatableComponent;
+  @ViewChild('label', { static: true }) labelIDTpl!: TemplateRef<any>;
+  @ViewChild('status', { static: true }) statusTpl!: TemplateRef<any>;
+  @ViewChild('area') areaTpl!: TemplateRef<any>;
+  @ViewChild('boolToStr', { static: true }) boolToStrTpl!: TemplateRef<any>;
+  @ViewChild('dataTable', { static: true }) public datatable!: DatatableComponent;
 
   @Output() activePlaceChange = new EventEmitter<number>();
 
-  @Input() activeNP: number;
-  @Input() height: string;
-  @Input() listColumnNameMapping: { [key: string]: string};
+  @Input() activeNP?: number|null;
+  @Input({ required: true }) height!: string;
+  @Input() listColumnNameMapping?: { [key: string]: string};
 
   constructor(private cd: ChangeDetectorRef,
               private areaNamePipe: AreaNamePipe
@@ -130,11 +130,11 @@ export class NpListComponent implements OnDestroy {
     };
   }
 
-  changeActivePlace(event) {
+  changeActivePlace(event: any) {
     this.activePlaceChange.emit(this.data.indexOf(event.row));
   }
 
-  getRowClass(row) {
+  getRowClass(row: any) {
     const status = row['$._status'];
     if (status !== 'free') { return status; }
   }
@@ -144,17 +144,17 @@ export class NpListComponent implements OnDestroy {
     this.initData();
   }
 
-  @Input() set formRights(formRights: Rights) {
+  @Input() set formRights(formRights: Rights|undefined) {
     this._formRights = formRights;
     this.initColumns();
   }
 
-  @Input() set documentForm(documentForm: Form.SchemaForm) {
+  @Input({ required: true }) set documentForm(documentForm: Form.SchemaForm) {
     this._documentForm = documentForm;
     this.initColumns();
   }
 
-  @Input() set placeForm(placeForm: Form.SchemaForm) {
+  @Input() set placeForm(placeForm: Form.SchemaForm|undefined) {
     this._placeForm = placeForm;
     this.initColumns();
   }
@@ -188,7 +188,7 @@ export class NpListComponent implements OnDestroy {
         label: this.listColumnNameMapping?.[path] ?? hardCodedCol.label ?? schema?.title ?? path,
       };
       if (col.cellTemplate) {
-        col.cellTemplate = this[col.cellTemplate];
+        col.cellTemplate = this[col.cellTemplate as keyof NpListComponent];
       }
       _cols.push(col);
 
@@ -201,7 +201,7 @@ export class NpListComponent implements OnDestroy {
     this.initData();
   }
 
-  @Input() set visible(visibility) {
+  @Input() set visible(visibility: boolean) {
     if (this._visible === false && visibility === true) {
       this._visibleTimeout = setTimeout(() => {
         this.datatable.showActiveRow();
@@ -211,7 +211,7 @@ export class NpListComponent implements OnDestroy {
     this._visible = visibility;
   }
 
-  updateFilter(event) {
+  updateFilter(event: any) {
     this.filterBy = event.target.value;
   }
 
@@ -219,7 +219,7 @@ export class NpListComponent implements OnDestroy {
     if (!this._fields || !this._namedPlaces) {
       return;
     }
-    const results = [];
+    const results: any[] = [];
     const municipalities$ = [];
     for (const namedPlace of this._namedPlaces) {
       const row: any = {};
@@ -236,7 +236,7 @@ export class NpListComponent implements OnDestroy {
       const municipality = row['$.municipality'];
       if (municipality && municipality.length) {
         municipalities$.push(forkJoin(
-          ...municipality.map(_muni => this.areaNamePipe.updateValue(_muni)
+          ...municipality.map((_muni: string) => this.areaNamePipe.updateValue(_muni)
             .pipe(take(1)))
         ).pipe(map(areaLabel => [row, areaLabel])));
       }
@@ -244,7 +244,7 @@ export class NpListComponent implements OnDestroy {
     }
     if (municipalities$.length) {
       forkJoin(...municipalities$).subscribe((municipalityTuples) => {
-        municipalityTuples.forEach(([row, municipalityLabel]) => {
+        municipalityTuples.forEach(([row, municipalityLabel]: [any, string[]]) => {
           row['$.municipality'] = municipalityLabel.join(', ');
         });
         this.data = results;

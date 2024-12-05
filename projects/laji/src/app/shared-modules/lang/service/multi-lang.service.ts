@@ -21,7 +21,7 @@ export class MultiLangService {
    *
    * @returns any
    */
-  static getValue(multi: unknown, lang: string, fallback = ''): string|any {
+  static getValue(multi: any, lang: string, fallback = ''): string|any {
     if (typeof multi !== 'object' || lang === 'multi' || multi === null) {
       return multi || '';
     }

@@ -15,7 +15,14 @@ import {
 } from '@angular/core';
 import { AudioService } from '../service/audio.service';
 import { Subscription } from 'rxjs';
-import { AudioViewerMode, IAudio, IAudioViewerArea, IAudioViewerRectangle, ISpectrogramConfig } from '../models';
+import {
+  AudioViewerMode,
+  IAudio,
+  IAudioViewerArea,
+  IAudioViewerRectangle,
+  IAudioViewerRectangleGroup,
+  ISpectrogramConfig
+} from '../models';
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
 import { defaultSpectrogramConfig } from '../variables';
@@ -29,13 +36,13 @@ import { AudioSpectrogramComponent } from './audio-spectrogram/audio-spectrogram
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioViewerComponent implements OnChanges, OnDestroy {
-  @Input() audio: IAudio;
+  @Input() audio?: IAudio;
 
-  @Input() focusArea: IAudioViewerArea;
+  @Input() focusArea?: IAudioViewerArea;
   @Input() highlightFocusArea = false;
   @Input() focusAreaColor?: string;
 
-  @Input() rectangles: IAudioViewerRectangle[];
+  @Input() rectangles?: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[];
 
   @Input() zoomTime = false;
   @Input() timePaddingOnZoom = 1;
@@ -57,38 +64,38 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() showPregeneratedSpectrogram = false;
   @Input() spectrogramConfig: ISpectrogramConfig = defaultSpectrogramConfig;
 
-  @Input() spectrogramWidth: number;
-  @Input() spectrogramHeight: number;
-  @Input() spectrogramMargin: { top: number; bottom: number; left: number; right: number };
+  @Input() spectrogramWidth?: number;
+  @Input() spectrogramHeight?: number;
+  @Input() spectrogramMargin?: { top: number; bottom: number; left: number; right: number };
 
   @Input() adaptToContainerHeight = false;
 
   @Input() mode: AudioViewerMode = 'default';
 
-  @Input() audioInfoTpl: TemplateRef<any>;
-  @Input() customControlsTpl: TemplateRef<any>;
+  @Input() audioInfoTpl?: TemplateRef<any>;
+  @Input() customControlsTpl?: TemplateRef<any>;
 
-  buffer: AudioBuffer;
+  buffer?: AudioBuffer;
   audioPlayer: AudioPlayer;
 
   loading = false;
   hasError = false;
 
-  view: IAudioViewerArea;
-  defaultView: IAudioViewerArea;
+  view?: IAudioViewerArea;
+  defaultView?: IAudioViewerArea;
 
   @Output() audioLoading = new EventEmitter<boolean>();
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
   @Output() spectrogramDblclick = new EventEmitter<number>();
   @Output() modeChange = new EventEmitter<AudioViewerMode>();
 
-  @ViewChild(AudioSpectrogramComponent) spectrogramComponent: AudioSpectrogramComponent;
+  @ViewChild(AudioSpectrogramComponent) spectrogramComponent!: AudioSpectrogramComponent;
 
   @HostBinding('class.audio-viewer-responsive') get audioViewerResponsiveClass() {
     return this.adaptToContainerHeight;
   }
 
-  private audioSub: Subscription;
+  private audioSub?: Subscription;
   private clicks = 0;
 
   constructor(
@@ -178,7 +185,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   onSpectrogramDrawEnd(area: IAudioViewerArea) {
     this.drawEnd.emit({
-      xRange: [area.xRange[0], area.xRange[1]],
+      xRange: area.xRange,
       yRange: area.yRange
     });
   }
@@ -197,7 +204,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
     this.audioLoading.emit(loading);
   }
 
-  setView(view: IAudioViewerArea) {
+  setView(view?: IAudioViewerArea) {
     this.view = view;
     this.audioPlayer.setPlayArea(this.getPlayArea());
   }
@@ -220,7 +227,8 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   private setDefaultView() {
     const minTime = 0;
-    const maxTime = this.buffer.duration;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const maxTime = this.buffer!.duration;
     const minFreq = this.spectrogramConfig.minFrequency || 0;
     const maxFreq = AudioViewerUtils.getMaxFreq(this.spectrogramConfig.sampleRate);
 
@@ -236,13 +244,13 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   }
 
   private getPlayArea(): IAudioViewerArea {
-    const xRange = this.highlightFocusArea && this.view === this.defaultView && this.focusArea ? this.focusArea.xRange : this.view.xRange;
-    const yRange = this.zoomFrequency && this.focusArea ? this.focusArea.yRange : this.view.yRange;
+    const xRange = this.highlightFocusArea && this.view === this.defaultView && this.focusArea ? this.focusArea.xRange : this.view?.xRange;
+    const yRange = this.zoomFrequency && this.focusArea ? this.focusArea.yRange : this.view?.yRange;
 
     return { xRange, yRange };
   }
 
-  private areaIsValid(buffer: AudioBuffer, area: IAudioViewerArea): boolean {
+  private areaIsValid(buffer: AudioBuffer, area?: IAudioViewerArea): boolean {
     const [minValue, maxValue] = [0, buffer.duration];
     return !(area?.xRange && this.rangeIsNotValid(area.xRange, minValue, maxValue));
   }

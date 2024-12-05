@@ -1,4 +1,8 @@
-import { IAudio, IAudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import {
+  IAudio,
+  IAudioViewerArea,
+  IAudioViewerRectangle, IAudioViewerRectangleGroup
+} from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 import { Point } from 'geojson';
 
@@ -130,12 +134,16 @@ export interface IGlobalRecordingAnnotation {
 export interface IGlobalSpeciesAnnotation {
   speciesId: number;
   occurrence: SpeciesAnnotationEnum;
-  boxes?: IGlobalSpeciesAnnotationBox[];
+  boxes?: (IGlobalSpeciesAnnotationBox|IGlobalSpeciesAnnotationBoxGroup)[];
 }
 
 export interface IGlobalSpeciesAnnotationBox {
   area: IAudioViewerArea;
   overlapsWithOtherSpecies?: boolean;
+}
+
+export interface IGlobalSpeciesAnnotationBoxGroup {
+  boxes: IGlobalSpeciesAnnotationBox[];
 }
 
 export interface IGlobalRecordingWithAnnotation {
@@ -226,4 +234,8 @@ export enum AnnotationStatusEnum {
   skipped = -1,
   notReady = 0,
   ready = 1
+}
+
+export function isBoxGroup(box: IGlobalSpeciesAnnotationBox|IGlobalSpeciesAnnotationBoxGroup): box is IGlobalSpeciesAnnotationBoxGroup {
+  return !!(box as any).boxes;
 }

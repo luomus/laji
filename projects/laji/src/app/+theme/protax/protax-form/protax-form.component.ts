@@ -15,17 +15,17 @@ enum Tab {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProtaxFormComponent implements OnChanges {
-  @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement>;
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   @Input() loading = false;
-  @Input() downloadProgress: number;
+  @Input() downloadProgress!: number;
 
   model: ProtaxModelEnum = ProtaxModelEnum.COIFull;
   probabilityThreshold = 0.1;
   minimumOverlap = 100;
 
-  sequenceData: string;
-  sequenceFile: File;
+  sequenceData: string | undefined;
+  sequenceFile: File | undefined | null;
 
   activeTab = Tab.textArea;
 
@@ -70,10 +70,10 @@ export class ProtaxFormComponent implements OnChanges {
 
     let sequenceData: Blob;
     if (this.activeTab === Tab.textArea) {
-      sequenceData = new Blob([this.sequenceData],
+      sequenceData = new Blob([<BlobPart><unknown>this.sequenceData],
         { type: 'text/plain;charset=utf-8' });
     } else {
-      sequenceData = this.sequenceFile;
+      sequenceData = <Blob><unknown>this.sequenceFile;
     }
 
     formData.append('data', sequenceData, 'input_data.fa');

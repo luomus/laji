@@ -22,7 +22,7 @@ const clampRange = (range: ListRange, min: number, max: number): ListRange => ({
 export class IdentificationChildrenDataSource extends DataSource<Taxonomy> {
   private unsubscribe$ = new Subject<void>();
 
-  private childCache = {};
+  private childCache: any = {};
 
   constructor(
     private taxonApi: TaxonomyApi,

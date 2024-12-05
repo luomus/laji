@@ -2,18 +2,18 @@
   <ng-container *ngIf="isViewModel(vm)">
     <ng-container *ngIf="!vm.disabled; else disabled">
       <lu-sidebar *ngIf="!vm.form.options?.simple && !vm.form.options?.mobile; else simpleContent"
-                  [open]="(showNav$ | async)"
-                  [noPrint]="isPrintPage$ | async"
+                  [open]="(showNav$ | async)!"
+                  [noPrint]="(isPrintPage$ | async)!"
                   [staticWidth]="300"
                   (toggled)="navBarToggled($event)"
                   [contentWrapperClass]="formOptionToClassName('options.simple options.mobile options.instructions options.resultServiceType options.allowExcel options.secondaryCopy options.allowTemplate options.hasAdmins')">
         <nav>
           <h5 lajiFormOption="title shortTitle collectionID options.shortTitleFromCollectionName options.secondaryCopy">
-            <span [innerHTML]="vm.form.options?.shortTitleFromCollectionName && (vm.form.collectionID | label) || vm.form.shortTitle || vm.form.title"></span>
+            <span [innerHTML]="vm.form.options.shortTitleFromCollectionName && (vm.form.collectionID! | label) || vm.form.shortTitle || vm.form.title"></span>
             <small *ngIf="vm.form.options?.secondaryCopy"><br>{{ 'datasets.secondary.subtitle' | translate }}</small>
           </h5>
           <ng-container *ngTemplateOutlet="sidebarLinks; context:{ $implicit: vm.navLinks}"></ng-container>
-          <laji-haseka-latest [collectionID]="vm.form.collectionID"
+          <laji-haseka-latest [collectionID]="vm.form.collectionID!"
                               [tmpOnly]="false"
                               (showViewer)="showDocumentViewer($event)"
                               [showFormNames]="false"
@@ -21,7 +21,7 @@
           </laji-haseka-latest>
         </nav>
         <main>
-          <laji-theme-breadcrumb *ngIf="vm.datasetsBreadcrumb?.length > 0" [breadcrumb]="vm.datasetsBreadcrumb"></laji-theme-breadcrumb>
+          <laji-theme-breadcrumb *ngIf="vm.datasetsBreadcrumb!.length > 0" [breadcrumb]="vm.datasetsBreadcrumb"></laji-theme-breadcrumb>
           <ng-container *ngTemplateOutlet="content"></ng-container>
         </main>
       </lu-sidebar>
@@ -71,7 +71,7 @@
 </ng-template>
 
 <ng-template #badge let-badge>
-  <ng-container *ngIf="formPermissions$ | async as formPermissions">
+  <ng-container *ngIf="$any(formPermissions$ | async) as formPermissions">
       <span
         *ngIf="formPermissions?.[badge.count]"
         class="badge pull-right">

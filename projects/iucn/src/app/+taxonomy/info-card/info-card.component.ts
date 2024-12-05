@@ -14,20 +14,19 @@ import { HeaderService } from 'projects/laji/src/app/shared/service/header.servi
   styleUrls: ['./info-card.component.css']
 })
 export class InfoCardComponent implements OnChanges, OnInit {
+  @Input() public year!: string;
+  @Input() public checklistId!: string;
+  @Input() private taxonId!: string;
 
-  public taxon: Taxonomy;
-  public latestStatus: RedListEvaluation;
-  public isEndangered: boolean;
-  public missing: boolean;
+  public taxon: Taxonomy | undefined;
+  public latestStatus: RedListEvaluation | undefined | null;
+  public isEndangered: boolean | undefined;
+  public missing: boolean | undefined;
 
-  @Input() public year: string;
-  @Input() public checklistId: string;
-  @Input() private taxonId: string;
+  years$!: Observable<{label: string; value: string}[]>;
+  species$: Observable<Taxonomy[]> | undefined;
 
-  years$: Observable<{label: string; value: string}[]>;
-  species$: Observable<Taxonomy[]>;
-
-  taxonSub: Subscription;
+  taxonSub: Subscription | undefined;
 
   constructor(
     private taxonService: TaxonService,
@@ -72,7 +71,8 @@ export class InfoCardComponent implements OnChanges, OnInit {
 
         if (taxon.hasLatestRedListEvaluation) {
           this.latestStatus = taxon.latestRedListEvaluation;
-          this.isEndangered = this.resultService.endangered.includes(this.latestStatus.redListStatus);
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          this.isEndangered = this.resultService.endangered.includes(this.latestStatus!.redListStatus!);
         } else {
           this.latestStatus = null;
           this.species$ = this.taxonService.getTaxonSpeciesWithLatestEvaluation(
@@ -94,15 +94,18 @@ export class InfoCardComponent implements OnChanges, OnInit {
   }
 
   private setTitle() {
-    let title = this.taxon.vernacularName;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    let title = this.taxon!.vernacularName;
     if (!title) {
-      title = this.taxon.scientificName;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      title = this.taxon!.scientificName;
     }
     if (this.isEndangered) {
       title += ' - ' + 'Uhanalainen:';
     }
     title += ' ' + (this.latestStatus ? this.translateService.instant('iucn.taxon.' + this.latestStatus.redListStatus) : '');
-    title = title.toLocaleLowerCase();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    title = title!.toLocaleLowerCase();
     title = title.charAt(0).toLocaleUpperCase() + title.slice(1);
     this.headerService.setHeaders({
       title: title + ' | ' + this.headerService.getInferred().title

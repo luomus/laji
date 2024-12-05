@@ -12,7 +12,7 @@ export class IucnHyphensPipe implements PipeTransform {
   };
 
   transform(value: any): any {
-    return this.map[value] || value;
+    return (this.map as any)[value] || value;
   }
 
 }

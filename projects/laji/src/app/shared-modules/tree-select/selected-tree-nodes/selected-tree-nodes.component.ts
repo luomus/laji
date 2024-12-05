@@ -28,15 +28,15 @@ import { SelectedOption } from '../tree-select.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectedTreeNodesComponent implements OnChanges {
-  @Input() selectedOptions: SelectedOption[];
-  @Input() includedTitle: string;
-  @Input() excludedTitle: string;
+  @Input({required: true}) selectedOptions!: SelectedOption[];
+  @Input({required: true}) includedTitle!: string;
+  @Input({required: true}) excludedTitle!: string;
   @Output() selectedOptionsChange = new EventEmitter<string>();
 
   checkboxType = CheckboxType.excluded;
 
-  excluded = [];
-  included = [];
+  excluded: SelectedOption[] = [];
+  included: SelectedOption[] = [];
 
   ngOnChanges() {
     this.included = [];
@@ -51,7 +51,7 @@ export class SelectedTreeNodesComponent implements OnChanges {
     });
   }
 
-  track(idx, item) {
+  track(idx: any, item: any) {
     return item.id;
   }
 

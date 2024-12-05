@@ -10,12 +10,12 @@ import { ColumnMode } from '@achimha/ngx-datatable';
   styleUrls: ['./wbc-routes-list.component.scss']
 })
 export class WbcRoutesListComponent implements OnChanges {
-  @Input() rows: any[] = [];
+  @Input() rows: any[] | undefined = [];
   @Input() height = 'calc(80vh - 100px)';
   @Input() columnMode: ColumnMode | keyof typeof ColumnMode = 'standard';
   @Input() showFilter = true;
   @Input() showNameAsLink = true;
-  @Input() countLabel: string;
+  @Input() countLabel?: string;
   @Input() sorts: {prop: string; dir: 'asc'|'desc'}[] = [];
   @Input() loading = true;
   @Input() selected: string[] = [];
@@ -58,13 +58,13 @@ export class WbcRoutesListComponent implements OnChanges {
       label: 'wbc.stats.route.individualCountSum'
     }
   ];
-  columns = [];
+  columns: DatatableColumn[] = [];
 
   filterBy = '';
 
-  @Output() rowSelect = new EventEmitter<string>();
+  @Output() rowSelect = new EventEmitter<any>();
 
-  @ViewChild('routeLink', { static: true }) routeLinkTpl: TemplateRef<any>;
+  @ViewChild('routeLink', { static: true }) routeLinkTpl!: TemplateRef<any>;
 
   constructor(
     private ngZone: NgZone,
@@ -83,7 +83,8 @@ export class WbcRoutesListComponent implements OnChanges {
       } else if (val.name === 'count') {
         val.label = this.countLabel || 'wbc.stats.routes.count';
       }
-      return this.selected.indexOf(val.name) !== -1;
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      return this.selected.indexOf(val.name!) !== -1;
     });
   }
 

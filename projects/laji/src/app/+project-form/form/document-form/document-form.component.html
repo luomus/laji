@@ -34,8 +34,8 @@
     <div class="row mt-3" *ngIf="vm.namedPlaceHeader.length">
       <div class="col-sm-12">
         <h3><span *ngFor="let field of vm.namedPlaceHeader; let i = index">
-            <ng-container *ngIf="vm.namedPlace[field] | area | values as val">
-              {{ val }}{{ vm.namedPlace[vm.namedPlaceHeader[i + 1]] ? ', ' : '' }}
+            <ng-container *ngIf="$any(vm.namedPlace)[field] | area | values as val">
+              {{ val }}{{ $any(vm.namedPlace)[vm.namedPlaceHeader[i + 1]] ? ', ' : '' }}
             </ng-container>
           </span></h3>
       </div>
@@ -46,7 +46,7 @@
         [form]="vm.form"
         [formData]="vm.formData"
         [settingsKey]="vm.form.id"
-        [showShortcutButton]="!vm.form.options?.mobile"
+        [showShortcutButton]="!vm.form.options.mobile"
         (dataChange)="onChange($event)"
         (dataSubmit)="onSubmit($event)"
         (validationError)="onValidationError($event)"
@@ -55,13 +55,13 @@
       <laji-form-footer
         [form]="vm.form"
         [dateEdited]="vm.formData.dateEdited"
-        [locked]="vm.locked"
+        [locked]="vm.locked!"
         [isAdmin]="vm.isAdmin"
         [status]="vm.hasChanges ? 'unsaved' : ''"
         [readonly]="vm.readonly"
         [edit]="!!documentID"
         [errors]="validationErrors"
-        [touchedCounter]="touchedCounter$ | async"
+        [touchedCounter]="(touchedCounter$ | async)!"
         [lajiForm]="lajiForm"
         [template]="template"
         (lock)="lock($event)"

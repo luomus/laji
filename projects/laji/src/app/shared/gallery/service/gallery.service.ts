@@ -12,7 +12,7 @@ export class GalleryService {
   constructor(private warehouseApi: WarehouseApi) {
   }
 
-  getList(rawQuery: WarehouseQueryInterface, sort: string[], pageSize: number, page: number): Observable<PagedResult<any>> {
+  getList(rawQuery: WarehouseQueryInterface, sort: string[]|undefined, pageSize: number, page: number): Observable<PagedResult<any>> {
     const query = {...rawQuery};
     if (WarehouseApi.isEmptyQuery(query)) {
       query.cache = true;
@@ -46,7 +46,7 @@ export class GalleryService {
 
   getImages(list: PagedResult<any>, limit = 1000): Image[] {
     const imgField = 'media';
-    const images = [];
+    const images: any[] = [];
     list.results?.forEach(items => {
       const group = (items['unit'] && items['unit']['reportedInformalTaxonGroup']) ? items['unit']['reportedInformalTaxonGroup'] : '';
       const verbatim = (items['unit'] && items['unit']['taxonVerbatim']) ? items['unit']['taxonVerbatim'] : '';

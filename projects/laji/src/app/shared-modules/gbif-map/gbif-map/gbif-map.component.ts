@@ -13,9 +13,9 @@ import { PlatformService } from '../../../root/platform.service';
   styleUrls: ['./gbif-map.component.scss']
 })
 export class GbifMapComponent implements OnChanges, OnDestroy {
-  @ViewChild(LajiMapComponent, { static: true }) mapComponent: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: true }) mapComponent?: LajiMapComponent;
 
-  @Input() taxon: Taxonomy;
+  @Input() taxon!: Taxonomy;
   @Input() height = '605px';
   @Input() set mapOptions(mapOptions: Options) {
     this._mapOptions = {
@@ -52,7 +52,7 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
     'style=classic.poly&bin=hex&taxonKey=';
   private speciesApiUrl = 'https://api.gbif.org/v1/species/match';
 
-  private getTaxonKeySub: Subscription;
+  private getTaxonKeySub?: Subscription;
 
   constructor(
     private http: HttpClient,
@@ -100,7 +100,7 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
         params: this.getTaxonSearchParams()
       })
         .pipe(
-          map(data => {
+          map((data: any) => {
             data = JSON.parse(data);
             if (data && data['matchType'] === 'EXACT') {
               return data['usageKey'];
@@ -109,7 +109,7 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
         )
         .subscribe(key => {
           if (key) {
-            this.layer = (window.L as any).tileLayer(
+            this.layer = (window as any).L.tileLayer(
               this.layerUrl + key,
               {
                 zIndex: 1000,
@@ -127,13 +127,13 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
   }
 
   private getTaxonSearchParams(): any {
-    const params = {
+    const params: any = {
       name: this.taxon.scientificName,
       strict: true
     };
 
     for (const parent of ['kingdom', 'phylum', 'class', 'order', 'family', 'genus']) {
-      if (this.taxon.parent && this.taxon.parent[parent]) {
+      if (this.taxon.parent?.[parent]) {
         params[parent] = this.taxon.parent[parent].scientificName;
       }
     }

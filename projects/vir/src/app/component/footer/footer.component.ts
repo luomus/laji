@@ -51,12 +51,7 @@ export class FooterComponent implements OnInit {
     public footerService: FooterService,
     private baseDataService: BaseDataService,
     private cdr: ChangeDetectorRef
-  ) {}
-
-  ngOnInit() {
-    this.footerService.footerVisible$.subscribe(() => {
-      this.cdr.markForCheck();
-    });
+  ) {
     this.tree$ = this.baseDataService.getBaseData().pipe(
       map(data => data.information && data.information.children || []),
       map(data => (
@@ -65,11 +60,17 @@ export class FooterComponent implements OnInit {
             ...information,
             children: [
               ...information.children.filter(child => informationWhitelist.some(w => w === child.id)),
-              ...(augment[information.id] ?? [])
+              ...((<any>augment)[information.id] ?? [])
             ]
           }
         ))
       ))
     );
+  }
+
+  ngOnInit() {
+    this.footerService.footerVisible$.subscribe(() => {
+      this.cdr.markForCheck();
+    });
   }
 }

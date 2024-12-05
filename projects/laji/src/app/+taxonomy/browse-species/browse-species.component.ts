@@ -13,7 +13,7 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
   activeIndex = 0;
   loadedTabs = new LoadedElementsStore(['images', 'list']);
 
-  private subQueryUpdate: Subscription;
+  private subQueryUpdate?: Subscription;
 
   constructor(
     public searchQuery: TaxonomySearchQuery,

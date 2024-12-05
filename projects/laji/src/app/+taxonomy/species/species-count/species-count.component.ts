@@ -10,15 +10,15 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesCountComponent implements OnInit, OnDestroy {
-  @Input() searchQuery: TaxonomySearchQuery;
-  @Input() hasMediaFilter: boolean;
+  @Input({ required: true }) searchQuery!: TaxonomySearchQuery;
+  @Input() hasMediaFilter?: boolean;
 
-  count: number;
+  count?: number;
   loading = false;
 
-  private subFetch: Subscription;
-  private subQueryUpdate: Subscription;
-  private lastQuery: string;
+  private subFetch?: Subscription;
+  private subQueryUpdate?: Subscription;
+  private lastQuery?: string;
 
   constructor(
     private taxonomyService: TaxonomyApi,

@@ -19,16 +19,17 @@ import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoCardHeaderComponent implements OnChanges {
-  @Input() taxon: Taxonomy;
-  @Input() activeTab: string;
-  parent: Taxonomy[];
-  siblings: Taxonomy[];
+  @Input() taxon!: Taxonomy;
+  @Input() activeTab!: string;
+
+  parent: Taxonomy[] | undefined;
+  siblings: Taxonomy[] | undefined;
 
   loadingParent = false;
   subParam: any;
 
-  private parentSub: Subscription;
-  private siblingSub: Subscription;
+  private parentSub: Subscription | undefined;
+  private siblingSub: Subscription | undefined;
 
   @Output() taxonSelect = new EventEmitter<string>();
 
@@ -46,22 +47,29 @@ export class InfoCardHeaderComponent implements OnChanges {
 
   selectRightSibling() {
     let idx = 0;
-    for (let i = 0; i < this.siblings.length - 1; i++) {
-      if (this.siblings[i].id === this.taxon.id) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    for (let i = 0; i < this.siblings!.length - 1; i++) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      if (this.siblings![i].id === this.taxon.id) {
         idx = i + 1;
       }
     }
-    this.taxonSelect.emit(this.siblings[idx].id);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.taxonSelect.emit(this.siblings![idx].id);
   }
 
   selectLeftSibling() {
-    let idx = this.siblings.length - 1;
-    for (let i = 1; i < this.siblings.length; i++) {
-      if (this.siblings[i].id === this.taxon.id) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    let idx = this.siblings!.length - 1;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    for (let i = 1; i < this.siblings!.length; i++) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      if (this.siblings![i].id === this.taxon.id) {
         idx = i - 1;
       }
     }
-    this.taxonSelect.emit(this.siblings[idx].id);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.taxonSelect.emit(this.siblings![idx].id);
   }
 
 

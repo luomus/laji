@@ -11,7 +11,7 @@ export const loginWithPermanentToken = async (page: Page) => {
     `http://localhost:3000/user/login?token=${process.env.E2E_PERSON_TOKEN}&next=${currentPath}`
   );
 
-  await page.locator('#logged-in-user').waitFor({timeout: 15000});
+  await page.locator('#logged-in-user').waitFor();
 };
 
 // use this when page is expected to be on the laji-auth page
@@ -41,7 +41,7 @@ export const login = async (page: Page) => {
     await lajiAuthLogin(page);
   }
 
-  await page.locator('#logged-in-user').waitFor({timeout: 15000});
+  await page.locator('#logged-in-user').waitFor();
 };
 
 export const logout = async (page: Page) => {
@@ -69,6 +69,6 @@ const getCurrentPersonToken = async (page: Page): Promise<string|undefined> => {
   }
 
   try {
-    return JSON.parse(userStateJson)['token'];
+    return JSON.parse(userStateJson)['loginState']['token'];
   } catch (e) {}
 };

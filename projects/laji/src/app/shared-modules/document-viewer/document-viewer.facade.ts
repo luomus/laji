@@ -26,7 +26,7 @@ export interface IDocumentParameters extends IParametersBase {
 }
 
 export interface IViewerState {
-  document?: Document;
+  document?: Document|null;
   highlight?: string;
   result?: Array<any>;
   own: boolean;

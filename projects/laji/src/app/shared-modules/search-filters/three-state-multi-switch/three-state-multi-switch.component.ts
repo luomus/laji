@@ -11,17 +11,17 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ThreeStateMultiSwitchComponent implements OnInit {
 
-  @Input() title;
-  @Input() info;
-  @Input() trueValue: string[];
-  @Input() falseValue: string[];
+  @Input() title?: string;
+  @Input() info?: string;
+  @Input() trueValue?: string[];
+  @Input() falseValue?: string[];
 
   @Output() update = new EventEmitter<{true: string[]; false: string[]}>();
 
 
-  lang: string;
-  options$: Observable<any>;
-  open = false;
+  lang!: string;
+  options$?: Observable<any>;
+  open? = false;
 
   constructor(
     private metadataService: MetadataService,
@@ -29,7 +29,7 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
 
   ngOnInit() {
     this.lang = this.translate.currentLang;
-    this.open =  this.trueValue?.length > 0 || this.falseValue?.length > 0 ? true : false;
+    this.open =  (this.trueValue?.length as any) > 0 || (this.falseValue?.length as any) > 0 ? true : false;
   }
 
   @Input()
@@ -39,7 +39,7 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
     );
   }
 
-  changeValue(event) {
+  changeValue(event: any) {
     const trueValues = (this.trueValue || []).filter(item => item !== event.id);
     const falseValues = (this.falseValue || []).filter(item => item !== event.id);
     if (event.value === true) {
@@ -51,7 +51,7 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
     this.update.emit({true: trueValues, false: falseValues});
   }
 
-  toggle(event) {
+  toggle(event: any) {
     if (event.target.classList.contains('no-propagation')) {
       return;
     }

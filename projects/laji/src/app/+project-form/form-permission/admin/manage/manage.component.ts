@@ -18,9 +18,9 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ManageComponent extends AbstractPermission implements OnInit, OnDestroy {
   disabled: {[personId: string]: boolean} = {};
-  type: string;
+  type!: string;
 
-  private subParam: Subscription;
+  private subParam!: Subscription;
 
   constructor(
     protected router: Router,

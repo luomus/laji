@@ -20,18 +20,18 @@ import { Tree } from './service/tree';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TreeComponent implements OnChanges, OnDestroy {
-  @Input() getData: (id: string) => Observable<any>;
-  @Input() getChildren: (id: string) => Observable<any[]>;
-  @Input() getParents: (id: string) => Observable<any[]>;
+  @Input() getData!: (id: string) => Observable<any>;
+  @Input() getChildren!: (id: string) => Observable<any[]>;
+  @Input() getParents!: (id: string) => Observable<any[]>;
 
-  @Input() skipParams: TreeSkipParameter[];
-  @Input() activeId: string;
+  @Input() skipParams!: TreeSkipParameter[];
+  @Input() activeId!: string;
 
-  @Input() labelTpl: TemplateRef<any>;
+  @Input() labelTpl!: TemplateRef<any>;
 
-  tree: Tree;
+  tree: Tree | undefined;
 
-  private initialViewSub: Subscription;
+  private initialViewSub: Subscription | undefined;
 
   constructor(
     private cd: ChangeDetectorRef
@@ -47,7 +47,8 @@ export class TreeComponent implements OnChanges, OnDestroy {
         this.initialViewSub.unsubscribe();
       }
 
-      this.initialViewSub = this.tree.setView(this.activeId, this.skipParams)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.initialViewSub = this.tree!.setView(this.activeId, this.skipParams)
         .subscribe(() => {
           this.cd.markForCheck();
         });
@@ -66,9 +67,11 @@ export class TreeComponent implements OnChanges, OnDestroy {
     }
 
     if (node.state.isExpanded) {
-      this.tree.hideNode(node);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.tree!.hideNode(node);
     } else {
-      this.tree.openNode(node)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.tree!.openNode(node)
         .subscribe(() => {
           this.cd.markForCheck();
         });

@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 })
 export class ThreeStateSwitchComponent {
 
-  _switchState: 'true'|'false'|'undefined';
+  _switchState: 'true' | 'false' | 'undefined' | undefined;
 
   @Input() offValue: any = false;
   @Input() offText = '';
@@ -40,7 +40,7 @@ export class ThreeStateSwitchComponent {
     }
   }
 
-  switch(value) {
+  switch(value?: 'true' | 'false' | 'undefined' | undefined) {
     if (this._switchState === value && !this.showUndefined) {
       this._switchState = undefined;
     } else {

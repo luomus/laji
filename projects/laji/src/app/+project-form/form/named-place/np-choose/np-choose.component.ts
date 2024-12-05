@@ -29,22 +29,22 @@ export class NpChooseComponent implements OnInit, OnChanges {
 
   height = '600px';
   _namedPlaces: ExtendedNamedPlace[] = [];
-  _documentForm: Form.SchemaForm;
-  _userID: string;
+  _documentForm!: Form.SchemaForm;
+  _userID?: string;
 
-  @Input() placeForm: Form.SchemaForm;
+  @Input() placeForm?: Form.SchemaForm;
   @Input() visible = true;
-  @Input() formRights: Rights;
+  @Input() formRights?: Rights;
 
   @Output() activePlaceChange = new EventEmitter<string>();
   @Output() tabChange = new EventEmitter();
 
   sent = this.isSent.bind(this);
 
-  private seasonStart;
-  private seasonEnd;
+  private seasonStart?: Date;
+  private seasonEnd?: Date;
 
-  _activeNP;
+  _activeNP?: string;
 
   formOptionToClassName = formOptionToClassName;
 
@@ -75,7 +75,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
     this.namedPlaces = [...this._namedPlaces];
   }
 
-  @Input() set namedPlaces(namedPlaces: NamedPlace[]) {
+  @Input({ required: true }) set namedPlaces(namedPlaces: NamedPlace[]) {
     const extendedNamedPlaces: ExtendedNamedPlace[] = [];
     for (const namedPlace of namedPlaces) {
       extendedNamedPlaces.push({...namedPlace, _status: this.getNamedPlaceStatus(namedPlace)});
@@ -83,7 +83,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
     this._namedPlaces = extendedNamedPlaces;
   }
 
-  @Input() set documentForm(documentForm: any) {
+  @Input({ required: true }) set documentForm(documentForm: any) {
     this._documentForm = documentForm;
     if (!this.seasonStart) {
       this.initEarliestAndLatest();
@@ -107,7 +107,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
     this.tabChange.emit(this.loadedTabs.getNameFromIdx(newActive));
   }
 
-  @Input() set activeNP(id: string) {
+  @Input() set activeNP(id: string|undefined) {
     this._activeNP = id;
   }
 
@@ -115,7 +115,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
     return this._namedPlaces[idx].id;
   }
 
-  findNPIndexById(id: string) {
+  findNPIndexById(id?: string) {
     if (!this._namedPlaces) {
       return null;
     }
@@ -153,7 +153,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
   }
 
   private initEarliestAndLatest() {
-    const season = this._documentForm.options?.season || {} as Form.SchemaForm['options']['season'];
+    const season = (this._documentForm.options?.season || {}) as Exclude<Form.SchemaForm['options']['season'], undefined>;
     if (season.start && season.end) {
       this.seasonStart = new Date(this.analyseData(season.start));
       this.seasonEnd = new Date(this.analyseData(season.end));

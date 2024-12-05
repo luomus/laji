@@ -9,7 +9,7 @@ import { DELETE_FIELD, IFormField, VALUE_IGNORE } from '../../model/excel';
 })
 export class ColMapperComponent implements OnChanges {
 
-  @Input() fields: {[key: string]: IFormField};
+  @Input() fields!: {[key: string]: IFormField};
   @Input() headers: {[key: string]: string} = {};
   @Input() colMapping: {[col: string]: string} = {};
   @Output() fieldSelected = new EventEmitter<{col: string; key: string; userValue: string}>();
@@ -25,7 +25,7 @@ export class ColMapperComponent implements OnChanges {
   init = false;
   linkedVisible = false;
 
-  cols: string[];
+  cols!: string[];
 
   ngOnChanges() {
     if (!this.headers) {
@@ -47,9 +47,9 @@ export class ColMapperComponent implements OnChanges {
   }
 
   initCols() {
-    const all = [];
-    const missing = [];
-    const hasMapping = {};
+    const all: string[] = [];
+    const missing: string[] = [];
+    const hasMapping: Record<string, boolean> = {};
     this.cols = Object.keys(this.headers);
     this.cols.map(col => {
       all.push(col);
@@ -72,7 +72,7 @@ export class ColMapperComponent implements OnChanges {
   }
 
   getDuplicates(): string[] {
-    const duplicates = Object.values(this.colMapping).reduce((result, value, i, array) => {
+    const duplicates = Object.values(this.colMapping).reduce<any[]>((result, value, i, array) => {
       if (array.indexOf(value) !== i && !result.includes(value)) {
         result.push(value);
       }

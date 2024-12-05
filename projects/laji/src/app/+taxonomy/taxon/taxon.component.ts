@@ -20,17 +20,17 @@ import { getDescription, HeaderService } from '../../shared/service/header.servi
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonComponent implements OnInit, OnDestroy {
-  taxon: Taxonomy | null;
-  isFromMasterChecklist: boolean;
-  infoCardContext: string;
-  infoCardTab: InfoCardTabType;
+  taxon: Taxonomy | null | undefined;
+  isFromMasterChecklist: boolean | undefined;
+  infoCardContext!: string;
+  infoCardTab!: InfoCardTabType;
   showTree = false;
   canShowTree = true;
   showHidden = false;
   loading = false;
 
-  private initTaxonSub: Subscription;
-  private subParam: Subscription;
+  private initTaxonSub: Subscription | undefined;
+  private subParam!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -79,7 +79,8 @@ export class TaxonComponent implements OnInit, OnDestroy {
         }
 
         this.isFromMasterChecklist = this.getIsFromMasterChecklist();
-        this.canShowTree = this.taxon.hasParent || this.taxon.hasChildren;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.canShowTree = this.taxon!.hasParent || this.taxon!.hasChildren!;
         this.setHeaders(taxon);
       })
     ).subscribe();
@@ -95,15 +96,15 @@ export class TaxonComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateRoute(id = this.taxon.id, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree, replaceUrl = false, showHidden = this.showHidden) {
+  updateRoute(id = this.taxon?.id, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree, replaceUrl = false, showHidden = this.showHidden) {
     const route = ['/taxon', id];
-    const params = {};
-    const extra = {};
+    const params: any = {};
+    const extra: any = {};
 
     if (tab !== 'overview') {
       route.push(tab);
     }
-    if (context !== 'default' && id === this.taxon.id) {
+    if (context !== 'default' && id === this.taxon?.id) {
       params['context'] = context;
     }
     if (showTree) {
@@ -153,5 +154,5 @@ export class TaxonComponent implements OnInit, OnDestroy {
     }
     return this.taxon.nameAccordingTo === masterChecklist;
   }
-
 }
+

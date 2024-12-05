@@ -23,26 +23,26 @@ import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
 import { DEFAULT_LANG } from '../../locale/localize-router.service';
 import type { PathOptions, DivIcon } from 'leaflet';
-import { Feature } from 'geojson';
+import { Feature, Point } from 'geojson';
 import { PlatformService } from '../../root/platform.service';
 
 const classNamesAsArr = (c?: string) => c?.split(' ') || [];
 
-export const getPointIconAsCircle = (po: PathOptions, feature: Feature): DivIcon => {
+export const getPointIconAsCircle = (po: PathOptions & { opacity: number }, feature: Feature<Point, { count: number }>): DivIcon => {
   let classNames = classNamesAsArr(po.className);
   const icon: DivIcon = (window as any).L.divIcon({
     className: ['laji-circle-marker-icon', ...classNames].join(' '),
     html: `<span>${feature.properties.count}</span>`
   });
-  (icon as any).setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
+  (icon as any).setStyle = (iconDomElem: HTMLElement, po2: PathOptions & { opacity: number }) => {
     const opacityAsHexCode = po2.opacity < 1 ? po2.opacity
       .toString(16) // Convert to hex.
       .padEnd(4, '0') // Pad with zeros to fix length.
       .substr(2, 2) : ''; // Leave whole number our, pick the two first decimals.
-    iconDomElem.style['background-color'] = po2.color + opacityAsHexCode;
+    (iconDomElem.style as any)['background-color'] = (po2.color + opacityAsHexCode);
     iconDomElem.style['height'] = '30px';
     iconDomElem.style['width'] = '30px';
-    iconDomElem.style['border-radius'] = '100%';
+    (iconDomElem.style as any)['border-radius'] = '100%';
     const newClassNames = classNamesAsArr(po2.className);
     classNames.forEach(c => iconDomElem.classList.remove(c));
     newClassNames.forEach(c => iconDomElem.classList.add(c));
@@ -67,24 +67,24 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   @Input() data: any = [];
   @Input() loading = false;
   @Input() showControls = true;
-  @Input() maxBounds: [[number, number], [number, number]];
-  @Input() onPopupClose: (elem: string | HTMLElement) => void;
+  @Input() maxBounds?: [[number, number], [number, number]];
+  @Input() onPopupClose?: (elem: string | HTMLElement) => void;
 
   @Output() loaded = new EventEmitter();
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();
   @Output() tileLayersChange = new EventEmitter();
-  @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
+  @ViewChild('lajiMap', { static: true }) elemRef!: ElementRef;
 
-  lang: string;
+  lang?: string;
   map: any;
   _options: Options = {};
-  @LocalStorage('onlycount') onlyCount;
+  @LocalStorage('onlycount') onlyCount?: any;
 
-  private updateSettingsSub: Subscription;
+  private updateSettingsSub?: Subscription;
   private userSettings: Options = {};
   private mapData: any;
-  private drawToMapType: string;
+  private drawToMapType?: string;
 
   constructor(
     private userService: UserService,
@@ -95,8 +95,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     private platformService: PlatformService
   ) { }
 
-  @Input() options: Options;
-  @Input() settingsKey: keyof UserSettings;
+  @Input() options!: Options;
+  @Input() settingsKey!: keyof UserSettings;
 
   ngOnDestroy() {
     try {
@@ -195,7 +195,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     });
   }
 
-  setData(data) {
+  setData(data: any) {
     if (!this.map) {
       this.mapData = data;
       return;
@@ -206,7 +206,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     this.map.setData(data);
   }
 
-  onChange(events) {
+  onChange(events: any) {
     this.zone.run(() => {
       this.create.emit(events);
     });
@@ -231,7 +231,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     if (!options.on) {
       options = {
         ...options, on: {
-          tileLayersChange: (event) => {
+          tileLayersChange: (event: any) => {
             this.zone.run(() => {
               this.tileLayersChange.emit((event as any).tileLayers);
             });
@@ -249,7 +249,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
         ...options,
         draw: {
           ...options.draw,
-          onChange: e => this.onChange(e)
+          onChange: (e: any) => this.onChange(e)
         }
       };
     }

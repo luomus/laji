@@ -10,7 +10,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'formattedNumber'
 })
 export class FormattedNumber implements PipeTransform {
-  transform(value: string|number, thousandSeparator: string = ''): string {
+  transform(value?: string|number, thousandSeparator: string = ''): string {
     if (typeof value !== 'number' && typeof value !== 'string') {
       return '';
     }

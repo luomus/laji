@@ -1,4 +1,4 @@
-import { map, shareReplay, switchMap, take, tap } from 'rxjs/operators';
+import { map, shareReplay, switchMap, take, tap, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';
@@ -12,6 +12,17 @@ import { Collection } from '../model/Collection';
 import { CollectionApi } from '../api/CollectionApi';
 import { UserService } from './user.service';
 import { ObservationFacade } from '../../+observation/observation.facade';
+import { TreeOptionsNode } from '../../shared-modules/tree-select/tree-select.component';
+
+export interface ICollection extends Collection {
+  id: string;
+  collectionType: string;
+  collectionQuality: string;
+};
+
+export interface CollectionTreeOptionsNode extends TreeOptionsNode {
+  count: number;
+}
 
 export interface ICollectionRange {
   id: string;
@@ -157,6 +168,10 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
       }
 
     }).pipe(
+      catchError((err, caught) => {
+        console.error('GraphQL error when getting collections tree: ', err, caught);
+        return of({data: { collection: [] }});
+      }),
       map(({data}) => data),
       map(({collection}) => collection)
     );
@@ -197,8 +212,8 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
       take(1),
       tap(loggedIn => {
         ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
-          if (cacheQuery[key] === ObservationFacade.PERSON_TOKEN) {
-            cacheQuery[key] = loggedIn ? this.userService.getToken() : undefined;
+          if ((cacheQuery as any)[key] === ObservationFacade.PERSON_TOKEN) {
+            (cacheQuery as any)[key] = loggedIn ? this.userService.getToken() : undefined;
           }
         });
       }),

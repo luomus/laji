@@ -13,14 +13,14 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsageDownloadsComponent {
-  @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
+  @ViewChild('downloadModal', { static: true }) downloadModal!: TemplateRef<any>;
 
-  downloadRequests$: Observable<DownloadRequest[]>;
-  apiKeys$: Observable<DownloadRequest[]>;
+  downloadRequests$!: Observable<DownloadRequest[]>;
+  apiKeys$!: Observable<DownloadRequest[]>;
 
-  selectedRequest?: DownloadRequest;
+  selectedRequest?: DownloadRequest | undefined | null;
 
-  private modal: ModalRef;
+  private modal: ModalRef | undefined;
 
   constructor(
       private modalService: ModalService,
@@ -29,13 +29,15 @@ export class UsageDownloadsComponent {
     this.collectionSelect(undefined);
   }
 
-  collectionSelect(col: string) {
+  collectionSelect(col: string | undefined) {
     this.downloadRequests$ = this.virDownloadRequestsService.findDownloadRequests().pipe(
-      map(downloads => col ? downloads.filter(d => d?.collectionSearch.includes(col)) : downloads),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      map(downloads => col ? downloads.filter(d => d?.collectionSearch!.includes(col)) : downloads),
       map(downloads => downloads.map(download => ({...download, collectionIds: download.collections?.map(collection => collection.id)})))
     );
     this.apiKeys$ = this.virDownloadRequestsService.findApiKeys().pipe(
-      map(downloads => col ? downloads.filter(d => d?.collectionSearch.includes(col)) : downloads),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      map(downloads => col ? downloads.filter(d => d?.collectionSearch!.includes(col)) : downloads),
       map(downloads => downloads.sort((a, b) => moment(b.requested).diff(moment(a.requested)))),
       map(res => res.map(a => ({...a, collectionIds: a.collections?.map(c => c.id) || []})))
     );

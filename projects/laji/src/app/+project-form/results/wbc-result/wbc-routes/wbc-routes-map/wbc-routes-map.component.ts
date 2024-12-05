@@ -13,23 +13,23 @@ export class WbcRoutesMapComponent {
   @Input() showNameAsLink = true;
   @Input() countLabel = 'wbc.stats.routeCount';
 
-  geoJsons: any[];
+  geoJsons!: any[];
   _data: any;
-  selectedGrid: string;
+  selectedGrid?: string;
 
   breaks = [1, 2, 5, 10, 20];
   labels = ['1', '2-4', '5-9', '10-19', '20-'];
   colorRange = ['violet', 'blue', 'lime', 'yellow', 'orange'];
   layers = TileLayerName;
 
-  @Output() rowSelect = new EventEmitter<string>();
+  @Output() rowSelect = new EventEmitter<any>();
 
-  @Input() set data(data) {
+  @Input() set data(data: any) {
     this.geoJsons = [];
     this._data = {};
     this.selectedGrid = undefined;
 
-    data.map(item => {
+    data.map((item: any) => {
       if (!item['document.namedPlace.ykj10km.lat'] || !item['document.namedPlace.ykj10km.lon']) {
         return;
       }
@@ -37,7 +37,7 @@ export class WbcRoutesMapComponent {
       + parseInt(item['document.namedPlace.ykj10km.lon'], 10);
       const geometry = this.ykjService.convertYkjToGeoJsonFeature(
         item['document.namedPlace.ykj10km.lat'], item['document.namedPlace.ykj10km.lon']
-      ).geometry;
+      )?.geometry;
 
       if (this._data[grid]) {
         this._data[grid].data.push(item);
@@ -55,7 +55,7 @@ export class WbcRoutesMapComponent {
     private cdr: ChangeDetectorRef
   ) { }
 
-  gridClick(grid) {
+  gridClick(grid: any) {
     this.selectedGrid = grid;
     this.cdr.detectChanges();
   }

@@ -7,7 +7,7 @@
          (keyup)="keyEvent($event, dateInput.value)"
          #dateInput>
   <span *ngIf="viewValue !== ''" class="input-group-addon link clear" (click)="onInputValueChange('')">✕</span>
-  <span class="input-group-addon link calendar-toggle" (click)="toggle()"><i class="glyphicon glyphicon-calendar"></i></span>
+  <span class="input-group-addon link calendar-toggle" (click)="toggleEvent($event)"><i class="glyphicon glyphicon-calendar"></i></span>
 </div>
 
 <div *ngIf="opened">

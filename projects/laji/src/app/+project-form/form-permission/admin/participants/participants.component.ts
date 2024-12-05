@@ -17,12 +17,12 @@ import { ProjectFormService } from '../../../../shared/service/project-form.serv
 })
 export class ParticipantsComponent implements OnInit, OnDestroy {
 
-  form: Form.SchemaForm;
+  form!: Form.SchemaForm;
   loaded = false;
   fetching = false;
 
-  participants$: Subscription;
-  form$: Subscription;
+  participants$!: Subscription;
+  form$!: Subscription;
 
   columns = [
     {

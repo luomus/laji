@@ -11,9 +11,9 @@ import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQuery
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonImagesComponent implements OnChanges {
-  @Input() taxon: Taxonomy;
-  @Input() taxonImages: Array<Image>;
-  @Input() isFromMasterChecklist: boolean;
+  @Input({ required: true }) taxon!: Taxonomy;
+  @Input() taxonImages!: Array<Image>;
+  @Input() isFromMasterChecklist!: boolean;
 
   imageSets: { title: string; hasData?: boolean; query: WarehouseQueryInterface }[] = [];
 

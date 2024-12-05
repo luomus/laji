@@ -70,7 +70,7 @@ export class ResultService {
       false
     )).pipe(
       map(data => data.results),
-      map(data => data.map(row => {
+      map(data => data.map((row: any) => {
           row.aggregateBy['vernacularName'] =
             row.aggregateBy['unit.linkings.taxon.nameFinnish'] ||
             row.aggregateBy['unit.linkings.taxon.nameEnglish'] ||
@@ -125,23 +125,24 @@ export class ResultService {
           observer.next(res);
           observer.complete();
         };
-        this.state[type].pending.subscribe(
-          (data) => { onComplete(data); }
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        (this.state[type]!.pending! as any).subscribe(
+          (data: any) => { onComplete(data); }
         );
       });
     }
     this.state[type].pendingKey = cacheKey;
-    this.state[type].pending    = request
+    (this.state[type].pending as any) = request
       .pipe(tap(data => {
         this.state[type].data = data;
         this.state[type].key  = cacheKey;
       }));
-    return this.state[type].pending ;
+    return this.state[type].pending as any;
   }
 
-  private _resultToGeoJson(data) {
-    const features = [];
-    data.map(result => {
+  private _resultToGeoJson(data: any) {
+    const features: any[] = [];
+    data.map((result: any) => {
       features.push(convertYkjToGeoJsonFeature(
         result.aggregateBy['gathering.conversions.ykj10kmCenter.lat'],
         result.aggregateBy['gathering.conversions.ykj10kmCenter.lon'],

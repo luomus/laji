@@ -12,7 +12,7 @@ import { GraphQLService } from '../graph-ql/service/graph-ql.service';
   providedIn: 'root'
 })
 export class LocalizeInGuard  {
-  @LocalStorage(LAST_LANG_KEY, 'en') protected lastLang;
+  @LocalStorage(LAST_LANG_KEY, 'en') protected lastLang: string | undefined;
 
   constructor(
     private router: Router,
@@ -27,7 +27,8 @@ export class LocalizeInGuard  {
       this.graphQLService.flushCache();
     }
     return this.router.parseUrl(
-      LocalizeRouterService.translatePath(state.url, this.lastLang)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      LocalizeRouterService.translatePath(state.url, this.lastLang!)
     );
   }
 }
