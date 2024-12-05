@@ -22,11 +22,13 @@
                 + (value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName ? ' &mdash; ': '')
                 + (value.linkings.taxon.scientificName ? value.linkings.taxon.scientificName : '')"
     >
-      {{ value.linkings.taxon.vernacularName | multiLang:false }}
-      <span class="inline" *ngIf="value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName && (value.linkings.taxon.vernacularName | multiLang:false)"> &mdash; </span>
-      <span style="display: inline" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
+      <a [href]="value.unitId" target="_blank">
+        {{ value.linkings.taxon.vernacularName | multiLang:false }}
+        <span class="inline" *ngIf="value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName && (value.linkings.taxon.vernacularName | multiLang:false)"> &mdash; </span>
+        <span style="display: inline" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
           {{ value.linkings.taxon.scientificName }}
-      </span>
+        </span>
+      </a>
       <a
         [luTooltip]="'showSpeciesCard' | translate"
         [placement]="'right'"
