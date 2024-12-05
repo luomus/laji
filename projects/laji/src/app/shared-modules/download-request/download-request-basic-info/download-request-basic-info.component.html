@@ -8,7 +8,7 @@
     </div>
   </ng-container>
   <div>
-    <label>{{ 'downloadRequest.' + (downloadRequestType === 'apiKey' ? 'apiKeyRequested' : 'requested') | translate }}:</label>
+    <label>{{ 'downloadRequest.' + (downloadRequestType === 'fileDownload' ? 'requested' : 'apiKeyRequested') | translate }}:</label>
   </div>
   <div>
     {{ downloadRequest.requested | amDateFormat:'D.M.YYYY' }}

@@ -14,6 +14,19 @@ import { UserService } from '../../shared/service/user.service';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 
+export const VIR_FILTER_SHORTCUT_QUERY_PARAMS = {
+  // eslint-disable-next-line max-len
+  administrativeStatusId: `MX.finlex160_1997_appendix4_2021,MX.finlex160_1997_appendix4_specialInterest_2021,MX.finlex160_1997_appendix2a,MX.finlex160_1997_appendix2b,MX.finlex160_1997_appendix3a,MX.finlex160_1997_appendix3b,MX.finlex160_1997_appendix3c,MX.finlex160_1997_largeBirdsOfPrey,MX.habitatsDirectiveAnnexII,MX.habitatsDirectiveAnnexIV,MX.birdsDirectiveStatusAppendix1,MX.birdsDirectiveStatusMigratoryBirds`,
+  redListStatusId: 'MX.iucnCR,MX.iucnEN,MX.iucnVU,MX.iucnNT',
+  countryId: 'ML.206',
+  time: '1990-01-01%2F',
+  // eslint-disable-next-line max-len
+  collectionAndRecordQuality: 'PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL,UNCERTAIN;HOBBYIST:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;',
+  taxonAdminFiltersOperator: 'OR',
+  individualCountMin: 0,
+  coordinateAccuracyMax: 1000
+};
+
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
   own?: Array<keyof WarehouseQueryInterface>;
@@ -100,18 +113,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   private _query: WarehouseQueryInterface;
 
-  virFilterShortcutQueryParams = {
-    // eslint-disable-next-line max-len
-    administrativeStatusId: `MX.finlex160_1997_appendix4_2021,MX.finlex160_1997_appendix4_specialInterest_2021,MX.finlex160_1997_appendix2a,MX.finlex160_1997_appendix2b,MX.finlex160_1997_appendix3a,MX.finlex160_1997_appendix3b,MX.finlex160_1997_appendix3c,MX.finlex160_1997_largeBirdsOfPrey,MX.habitatsDirectiveAnnexII,MX.habitatsDirectiveAnnexIV,MX.birdsDirectiveStatusAppendix1,MX.birdsDirectiveStatusMigratoryBirds`,
-    redListStatusId: 'MX.iucnCR,MX.iucnEN,MX.iucnVU,MX.iucnNT',
-    countryId: 'ML.206',
-    time: '1990-01-01%2F',
-    // eslint-disable-next-line max-len
-    collectionAndRecordQuality: 'PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL,UNCERTAIN;HOBBYIST:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;',
-    taxonAdminFiltersOperator: 'OR',
-    individualCountMin: 0,
-    coordinateAccuracyMax: 1000
-  };
+  virFilterShortcutQueryParams = VIR_FILTER_SHORTCUT_QUERY_PARAMS;
 
   birdAtlasFilterShortcutQueryParams = {
     informalTaxonGroupId: 'MVL.1',

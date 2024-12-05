@@ -1,5 +1,5 @@
 <ng-container *ngIf="downloadRequest">
-  <h3 *ngIf="showTitle">{{ (downloadRequestType === 'apiKey' ? 'downloadRequest.apiKey' : 'downloadRequest.fileDownload') | translate }} {{ downloadRequest.id | toFullUri }}</h3>
+  <h3 *ngIf="showTitle">{{ 'downloadRequest.' + downloadRequestType | translate }} {{ downloadRequest.id | toFullUri }}</h3>
   <laji-download-request-basic-info
     [downloadRequest]="downloadRequest"
     [showPerson]="showPerson"
@@ -7,7 +7,7 @@
   ></laji-download-request-basic-info>
 
   <ng-container *ngIf="showDownload === 'always' || (showDownload === 'publicOnly' && downloadRequest.publicDownload)">
-    <ng-container *ngIf="downloadRequestType !== 'apiKey' else apiKey">
+    <ng-container *ngIf="downloadRequestType === 'fileDownload' else apiKey">
       <h4>{{ 'downloadRequest.download' | translate }}</h4>
       <div
         *ngIf="showDownload === 'publicOnly' && downloadRequest.publicDownload"
@@ -58,7 +58,7 @@
       >
     </ng-container>
     <ng-template #downloadNotAllowedReason>
-      <h4 *ngIf="downloadRequestType !== 'apiKey'">
+      <h4 *ngIf="downloadRequestType === 'fileDownload'">
         {{ 'downloadRequest.downloadNotAllowedReason.' + (
           downloadRequest.downloadType === 'APPROVED_DATA_REQUEST' ? 'pyha' : (
           downloadRequest.downloadType === 'LIGHTWEIGHT' ? 'lightweight' : 'authorities'
@@ -79,6 +79,7 @@
   <ng-container *ngIf="downloadRequest.publicLink || downloadRequest.privateLink">
     {{ 'downloadRequest.link' | translate }}:
     <a
+      class="wrap-text"
       [href]="(downloadRequest.privateLink ? downloadRequest.privateLink : downloadRequest.publicLink) | multiLang"
       target="_blank"
     >

@@ -213,6 +213,7 @@
   "download.reason-required": "Sinun täytyy valita aineiston käytön syy ja kirjoittaa lisätiedot",
   "downloadRequest.accessed": "haettu",
   "downloadRequest.apiKey": "API-avain",
+  "downloadRequest.geoApiKey": "Geoapi-avain",
   "downloadRequest.apiKeyExpires": "Voimassaolon päättymispäivä",
   "downloadRequest.apiKeyRequested": "Luontipäivä",
   "downloadRequest.approximateMatches": "Osumien lkm",

@@ -9,7 +9,7 @@ import {
   template: `
     <ng-container *ngIf="downloadRequest">
       <h4>
-        {{ (getDownloadRequestType(downloadRequest) === 'apiKey' ? 'downloadRequest.apiKey' : 'downloadRequest.fileDownload') | translate }}
+        {{ 'downloadRequest.' + (getDownloadRequestType(downloadRequest)) | translate }}
         {{ downloadRequest.id | toFullUri }}
       </h4>
       <laji-download-request

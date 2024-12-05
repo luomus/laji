@@ -16,14 +16,6 @@
     [showRowAsLink]="true"
     (rowSelect)="openDownloadModal($event.row)"
     type="apiKeys"></vir-data-table>
-  <h3 translate>usage.geoapiKeys</h3>
-  <vir-data-table
-    class="d-block my-5"
-    [height]="'max(50vh, 300px)'"
-    [data]="geoapiKeys$ | async"
-    [showRowAsLink]="true"
-    (rowSelect)="openGeoapiKeyModal($event.row)"
-    type="geoapiKeys"></vir-data-table>
 </div>
 
 <ng-template #downloadModal>
@@ -33,12 +25,4 @@
     [showFileDownload]="false"
     (close)="closeModal()"
   ></vir-download-request-modal>
-</ng-template>
-<ng-template #geoapiKeyModal>
-  <vir-geoapi-key-request-modal
-    [geoapiKeyRequest]="selectedGeoapiKeyRequest"
-    [showPerson]="true"
-    [showFileDownload]="false"
-    (close)="closeModal()"
-  ></vir-geoapi-key-request-modal>
 </ng-template>

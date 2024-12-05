@@ -8,7 +8,8 @@ import { switchMap, map, tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
 export const getDownloadRequestType = (downloadRequest: DownloadRequest): DownloadRequestType => (
-  [ 'AUTHORITIES_API_KEY', 'APPROVED_API_KEY_REQUEST'].includes(downloadRequest.downloadType) ? 'apiKey' : 'basic'
+  [ 'AUTHORITIES_API_KEY', 'APPROVED_API_KEY_REQUEST'].includes(downloadRequest.downloadType) ? 'apiKey' :
+    ['AUTHORITIES_VIRVA_GEOAPI_KEY'].includes(downloadRequest.downloadType) ? 'geoApiKey' : 'fileDownload'
 );
 
 @Component({
@@ -23,7 +24,7 @@ export class DownloadRequestComponent implements OnChanges {
   @Input() showDownload: 'always'|'publicOnly'|'never' = 'never';
   @Input() showTitle = false;
 
-  downloadRequestType: DownloadRequestType = 'basic';
+  downloadRequestType: DownloadRequestType = 'fileDownload';
   collections$: Observable<Collection[]>;
   private collectionIds$ = new BehaviorSubject<string[]>([]);
 
@@ -55,7 +56,7 @@ export class DownloadRequestComponent implements OnChanges {
       this.collectionIds$.next(
         (this.downloadRequest?.collections || []).map(col => col.id)
       );
-      this.downloadRequestType = this.downloadRequest ? getDownloadRequestType(this.downloadRequest) : 'basic';
+      this.downloadRequestType = this.downloadRequest ? getDownloadRequestType(this.downloadRequest) : 'fileDownload';
     }
   }
 

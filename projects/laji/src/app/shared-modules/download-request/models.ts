@@ -1,4 +1,4 @@
-export type DownloadRequestType = 'apiKey' | 'basic';
+export type DownloadRequestType = 'apiKey' | 'geoApiKey' | 'fileDownload';
 
 export type DownloadRequestResponse = DownloadRequest | DownloadRequestNotFound;
 

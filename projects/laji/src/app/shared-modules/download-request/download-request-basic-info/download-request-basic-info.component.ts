@@ -10,5 +10,5 @@ import { DownloadRequest, DownloadRequestType } from '../models';
 export class DownloadRequestBasicInfoComponent {
   @Input() downloadRequest: Partial<DownloadRequest>;
   @Input() showPerson = false;
-  @Input() downloadRequestType: DownloadRequestType = 'basic';
+  @Input() downloadRequestType: DownloadRequestType = 'fileDownload';
 }

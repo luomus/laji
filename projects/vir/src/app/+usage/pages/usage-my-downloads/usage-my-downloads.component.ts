@@ -5,7 +5,6 @@ import { finalize, map, take } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
-import { GeoapiKeyRequest, VirGeoapiService } from '../../../service/vir-geoapi.service';
 
 @Component({
   selector: 'vir-usage-my-downloads',
@@ -35,18 +34,6 @@ import { GeoapiKeyRequest, VirGeoapiService } from '../../../service/vir-geoapi.
           class="d-block my-5"
         ></vir-data-table>
       </laji-spinner>
-      <laji-spinner [spinning]="geoapiKeysTableLoading" [overlay]="true">
-        <h3 translate>usage.geoapiKeys</h3>
-        <vir-data-table
-          type="userGeoapiKeys"
-          [height]="'50vh'"
-          [data]="geoapiKeys$ | async"
-          [showDownloadMenu]="false"
-          [showRowAsLink]="true"
-          (rowSelect)="openGeoapiKeyModal($event.row)"
-          class="d-block my-5"
-        ></vir-data-table>
-      </laji-spinner>
     </div>
     <ng-template #downloadModal>
       <vir-download-request-modal
@@ -56,38 +43,25 @@ import { GeoapiKeyRequest, VirGeoapiService } from '../../../service/vir-geoapi.
         (close)="closeModal()"
       ></vir-download-request-modal>
     </ng-template>
-    <ng-template #geoapiKeyModal>
-      <vir-geoapi-key-request-modal
-        [geoapiKeyRequest]="selectedGeoapiKeyRequest"
-        [showPerson]="false"
-        [showFileDownload]="true"
-        (close)="closeModal()"
-      ></vir-geoapi-key-request-modal>
-    </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsageMyDownloadsComponent {
   @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
-  @ViewChild('geoapiKeyModal', { static: true }) geoapiKeyModal: TemplateRef<any>;
 
   requestsTableLoading = false;
   keysTableLoading = false;
-  geoapiKeysTableLoading = false;
 
   downloadRequests$: Observable<DownloadRequest[]>;
   apiKeys$: Observable<DownloadRequest[]>;
-  geoapiKeys$: Observable<GeoapiKeyRequest[]>;
 
   selectedRequest?: DownloadRequest;
-  selectedGeoapiKeyRequest?: GeoapiKeyRequest;
 
   private modal: ModalRef;
 
   constructor(
     private modalService: ModalService,
     private virDownloadRequestsService: VirDownloadRequestsService,
-    private geoapiService: VirGeoapiService,
     private cdr: ChangeDetectorRef
   ) {
     this.requestsTableLoading = true;
@@ -109,28 +83,15 @@ export class UsageMyDownloadsComponent {
         this.cdr.markForCheck();
       })
     );
-    this.geoapiKeys$ = this.geoapiService.findMyApiKeys().pipe(
-      map(downloads => downloads.sort((a, b) => moment(b.requested).diff(moment(a.requested)))),
-      finalize(() => {
-        this.geoapiKeysTableLoading = false;
-        this.cdr.markForCheck();
-      })
-    );
   }
 
   openDownloadModal(request: DownloadRequest) {
     this.selectedRequest = request;
-    this.modal = this.modalService.show(this.downloadModal);
-  }
-
-  openGeoapiKeyModal(request: GeoapiKeyRequest) {
-    this.selectedGeoapiKeyRequest = request;
-    this.modal = this.modalService.show(this.geoapiKeyModal);
+    this.modal = this.modalService.show(this.downloadModal, { size: 'lg' });
   }
 
   closeModal() {
     this.modal?.hide();
     this.selectedRequest = null;
-    this.selectedGeoapiKeyRequest = null;
   }
 }
