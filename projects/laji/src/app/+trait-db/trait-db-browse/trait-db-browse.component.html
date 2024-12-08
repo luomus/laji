@@ -1,0 +1,49 @@
+<h1>Trait search</h1>
+<p>Browse, search and download trait data published on the FinBIF Trait Database.</p>
+
+<button>Download</button>
+<button>Filter</button>
+
+<div class="datatable-container">
+  <lu-datatable
+    [rows]="searchResult?.res.results ?? []"
+    [columns]="[
+      { title: 'Type', prop: 'subject.type', sortable: false },
+      { title: 'Taxon', prop: 'subjectFinBIFTaxon.scientificName', sortable: false },
+      { title: 'Life stage', prop: 'subject.lifeStage', sortable: false },
+      { title: 'Count', prop: 'subject.individualCount', sortable: false },
+      { title: 'Country', prop: 'subject.country', sortable: false },
+      { title: 'Date begin', prop: 'subject.dateBegin', sortable: false },
+      { title: 'Date end', prop: 'subject.dateEnd', sortable: false },
+      { title: 'Subject id', prop: 'subject.id', sortable: false },
+      { title: 'Kingdom', prop: 'subject.kingdom', sortable: false },
+      { title: 'Author', prop: 'subject.author', sortable: false },
+      { title: 'Functional group name', prop: 'subject.functionalGroupName', sortable: false },
+    ]"
+    [defaultColumns]="[0, 1, 2, 3, 4, 5, 6]"
+    [totalPages]="searchResult?.res.total ?? 1"
+    [currentPage]="currentPage"
+    [loading]="loading"
+    [sorts]="searchResult?.sorts ?? []"
+    (pageChange)="onLoadPage($event)"
+    (sortChange)="onSort($event)"
+  ></lu-datatable>
+</div>
+
+<!--
+<lu-datatable
+  [rows]="[
+    { a: 2, b: 'kvujhsear', c: 60, d: 'hnljrg' },
+    { a: 659, b: 'ioufgarhou', c: 2384, d: ',mg,m' },
+    { a: 234, b: 'houirgfa', c: 650, d: 'lhjkfg' },
+    { a: 16, b: 'o089iu342', c: 4059, d: 'lvfdj' }
+  ]"
+  [columns]="[{ title: 'A', prop: 'a' }, { title: 'B', prop: 'b' }, { title: 'C', prop: 'c' }, { title: 'D', prop: 'd' }]"
+  [defaultColumns]="[0, 1, 2]"
+  [totalPages]="1"
+  [currentPage]="currentPage"
+  [loading]="loading"
+  (pageChange)="onLoadPage($event)"
+  (sortChange)="onSort($event)"
+></lu-datatable>
+-->

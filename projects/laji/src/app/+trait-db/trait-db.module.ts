@@ -15,9 +15,10 @@ import { TraitDbNewDatasetComponent } from './trait-db-datasets/trait-db-new-dat
 import { TraitDbAboutComponent } from './trait-db-about/trait-db-about.component';
 import { TraitDbTraitsComponent } from './trait-db-traits/trait-db-traits.component';
 import { TraitDbTraitComponent } from './trait-db-traits/trait-db-trait/trait-db-trait.component';
+import { DatatableModule } from 'projects/laji-ui/src/lib/datatable/datatable.module';
 
 @NgModule({
-  imports: [ routing, CommonModule, SharedModule, LajiUiModule, ReactiveFormsModule ],
+  imports: [ routing, CommonModule, SharedModule, LajiUiModule, ReactiveFormsModule, DatatableModule ],
   declarations: [
     TraitDbComponent, TraitDbMainComponent, TraitDbBrowseComponent,
     TraitDbMyDatasetsComponent, TraitDbDatasetsComponent, TraitDbDatasetComponent,
