@@ -14,16 +14,16 @@ type IntersectUnionTypes<A, B> = A extends B ? A : never;
 // Example: type aliases can be exported like so:
 export type ApiUser = components['schemas']['ApiUser'];
 
-// TODO merge with bird atlas hash fn !!!
-//
-// hash fn source: https://stackoverflow.com/a/15710692
-// eslint-disable-next-line no-bitwise
-const hashCode = s => s.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a;},0);
-const concatObjProps = (obj) => concatArgs(Object.entries(obj).map(([k, v]) => k + v));
-const concatArgs = (...args): string => (
-  args.reduce((prev, curr) => {
+interface CacheElement<T> {
+  val: T | undefined;
+  lastRefresh: number;
+}
+
+const concatObjProps = (obj: any) => hashArgs(Object.entries(obj).map(([k, v]) => k + hashArgs(v)));
+const hashArgs = (...args: any): string => (
+  args.reduce((prev: string, curr: any) => {
     if (curr instanceof Array) {
-      return prev += concatArgs(...curr);
+      return prev += hashArgs(...curr);
     }
     if (curr instanceof Object) {
       return prev += concatObjProps(curr);
@@ -31,15 +31,26 @@ const concatArgs = (...args): string => (
     return prev += curr;
   }, '')
 );
-const hashArgs = (...args) => hashCode(concatArgs(...args));
+
+const getPath = <
+  T extends keyof paths & string,
+  U extends keyof paths[T] & string,
+>(endpoint: T, params: Parameters<paths[T][U]>): string => {
+  let path: string = endpoint;
+  if (params?.['path']) {
+    Object.entries(params['path']).forEach(([k, v]) => {
+      path = path.replace(`{${k}}`, <any>v);
+    });
+  }
+  return path;
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class LajiApiClientBService {
   private baseUrl = 'http://localhost:3000/api';
-
-  private cache = {};
+  private cache: Map<string, Map<string, CacheElement<any>>> = new Map();
 
   constructor(private http: HttpClient) { }
 
@@ -58,29 +69,61 @@ export class LajiApiClientBService {
     requestBody?: ExtractRequestBodyIfExists<paths[T][U]>,
     cacheInvalidationMs = 86400000 // 1day in ms
   ): Observable<ExtractContentIfExists<Responses[IntersectUnionTypes<keyof Responses, HttpSuccessCodes>]>> {
-    const hash = hashArgs(endpoint, method, params);
-    if (!this.cache[hash]) {
-      this.cache[hash] = { val: undefined, lastRefresh: 0 };
-    }
-    if (hash in this.cache && Date.now() - this.cache[hash].lastRefresh < cacheInvalidationMs) {
-      return of(this.cache[hash].val);
+    const path = getPath(endpoint, params);
+    const requestUrl = this.baseUrl + path;
+    const requestOptions = { params: (<any>params).query, body: requestBody };
+
+    if(method !== 'get') {
+      this.flush(endpoint);
+      return this.http.request(method, requestUrl, requestOptions) as any;
     }
 
-    let path: string = endpoint;
-    if (params['path']) {
-      Object.entries(params['path']).forEach(([k, v]) => {
-        path = path.replace(`{${k}}`, <any>v);
-      });
+    const pathHash = hashArgs(path);
+    if (!(this.cache.has(pathHash))) {
+      this.cache.set(pathHash, new Map());
     }
 
-    return this.http.request(method, this.baseUrl + path, { params: (<any>params).query, body: requestBody }).pipe(
+    const cachedPath = this.cache.get(pathHash);
+
+    const paramsHash = hashArgs(params);
+    console.log(pathHash, paramsHash);
+    if (!cachedPath.has(paramsHash)) {
+      cachedPath.set(paramsHash, { val: undefined, lastRefresh: 0 });
+    }
+
+    const cachedParams = cachedPath.get(paramsHash);
+
+    const cachedValueExists = cachedParams.val !== undefined;
+    const cacheIsValid = Date.now() - cachedParams.lastRefresh < cacheInvalidationMs;
+    if (cachedValueExists && cacheIsValid) {
+      return of(cachedParams.val);
+    }
+
+    return this.http.request(method, requestUrl, requestOptions).pipe(
       tap(val => {
-        this.cache[hash] = {
-          val,
-          lastRefresh: Date.now()
-        };
+        cachedParams.val = val;
+        cachedParams.lastRefresh = Date.now();
       })
     ) as any;
+  }
+
+  flush<
+    T extends keyof paths & string,
+    U extends keyof paths[T] & string,
+  >(endpoint: T, params?: Parameters<paths[T][U]>) {
+    const path = getPath(endpoint, params);
+
+    const pathHash = hashArgs(path);
+    if (!this.cache.has(pathHash)) {
+      return;
+    }
+
+    if (params !== undefined) {
+      const paramsHash = hashArgs(params);
+      this.cache.get(pathHash).delete(paramsHash);
+    } else {
+      this.cache.delete(pathHash);
+    }
   }
 }
 
