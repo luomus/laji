@@ -86,7 +86,6 @@ export class LajiApiClientBService {
     const cachedPath = this.cache.get(pathHash);
 
     const paramsHash = hashArgs(params);
-    console.log(pathHash, paramsHash);
     if (!cachedPath.has(paramsHash)) {
       cachedPath.set(paramsHash, { val: undefined, lastRefresh: 0 });
     }
