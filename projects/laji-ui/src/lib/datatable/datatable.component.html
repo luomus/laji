@@ -38,7 +38,14 @@
   </tr>
   <ng-container *ngIf="!loading else rowGhosts">
     <tr *ngFor="let row of rows">
-      <td *ngFor="let colIdx of selectedColumns" #rowRef> {{ getNestedValue(row, columns[colIdx].prop) }}</td>
+      <td *ngFor="let colIdx of selectedColumns" #rowRef>
+        <ng-container *ngIf="columnHasTemplate(columns[colIdx]); else defaultTemplate">
+          <ng-container *ngTemplateOutlet="columns[colIdx]['cellTemplate']; context: { $implicit: row }"></ng-container>
+        </ng-container>
+        <ng-template #defaultTemplate>
+          {{ getNestedValue(row, columns[colIdx]['prop']) }}
+        </ng-template>
+      </td>
     </tr>
   </ng-container>
   <tr></tr>
