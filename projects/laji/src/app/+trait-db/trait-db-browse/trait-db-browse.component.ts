@@ -19,7 +19,7 @@ interface SearchResult {
 })
 export class TraitDbBrowseComponent implements OnInit, OnDestroy {
   searchResult: SearchResult | undefined;
-  currentPage = 0;
+  currentPageIdx = 0;
   loading = false;
 
   private searchResult$: Observable<{ res: SearchResponse; sorts: Sort[] }>;
@@ -56,7 +56,7 @@ export class TraitDbBrowseComponent implements OnInit, OnDestroy {
       })
     );
     this.onSort([]);
-    this.onLoadPage(this.currentPage);
+    this.onLoadPage(this.currentPageIdx);
   }
 
   ngOnDestroy(): void {
@@ -64,8 +64,8 @@ export class TraitDbBrowseComponent implements OnInit, OnDestroy {
   }
 
   onLoadPage(pageIdx: number) {
-    this.currentPage = pageIdx;
-    this.loadPageSubject.next(this.currentPage);
+    this.currentPageIdx = pageIdx;
+    this.loadPageSubject.next(this.currentPageIdx);
   }
 
   onSort(sorts: Sort[]) {

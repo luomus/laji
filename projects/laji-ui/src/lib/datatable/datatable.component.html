@@ -28,8 +28,8 @@
       <span class="col-separator" (mousedown)="onResizeMouseDown($event)"></span>
     </th>
     <th *ngIf="columns.length > selectedColumns.length">
-      <input list="unselected-columns" name="add-column" placeholder="Add column..." (input)="onAddColumn($event)" />
-      <datalist id="unselected-columns">
+      <input [attr.list]="'unselected-columns-' + uid" name="add-column" placeholder="Add column..." (input)="onAddColumn($event)" />
+      <datalist [id]="'unselected-columns-' + uid">
         <option *ngFor="let colIdx of unselectedColumns" [value]="colIdx">
           {{ columns[colIdx].title }}
         </option>
@@ -43,8 +43,9 @@
   </ng-container>
   <tr></tr>
 </table>
+
 <ul *ngIf="totalPages > 1" class="paginator">
-  <ng-container *ngIf="totalPages <= 5; else truncatedPaginator">
+  <ng-container *ngIf="totalPages <= 7; else truncatedPaginator">
     <li *ngFor="let i of [].constructor(totalPages); let idx = index" (click)="onChangePage(idx)">
       {{ idx }}
     </li>
@@ -52,11 +53,33 @@
 </ul>
 
 <ng-template #truncatedPaginator>
-    <li *ngFor="let i of [].constructor(3); let idx = index" (click)="onChangePage(idx)">
-      {{ idx + 1 }}
-    </li>
+  <ng-container *ngIf="currentPageIdx < 4">
+    <li (click)="onChangePage(0)" [ngClass]="{active: currentPageIdx === 0}">1</li>
+    <li (click)="onChangePage(1)" [ngClass]="{active: currentPageIdx === 1}">2</li>
+    <li (click)="onChangePage(2)" [ngClass]="{active: currentPageIdx === 2}">3</li>
+    <li (click)="onChangePage(3)" [ngClass]="{active: currentPageIdx === 3}">4</li>
+    <li (click)="onChangePage(4)">5</li>
     <li class="three-dots">...</li>
     <li (click)="onChangePage(totalPages - 1)">{{ totalPages }}</li>
+  </ng-container>
+  <ng-container *ngIf="currentPageIdx >= 4 && currentPageIdx <= totalPages - 5">
+    <li (click)="onChangePage(0)">1</li>
+    <li class="three-dots">...</li>
+    <li (click)="onChangePage(currentPageIdx - 1)">{{ currentPageIdx }}</li>
+    <li (click)="onChangePage(currentPageIdx)" class="active">{{ currentPageIdx + 1 }}</li>
+    <li (click)="onChangePage(currentPageIdx + 1)">{{ currentPageIdx + 2 }}</li>
+    <li class="three-dots">...</li>
+    <li (click)="onChangePage(totalPages - 1)">{{ totalPages }}</li>
+  </ng-container>
+  <ng-container *ngIf="currentPageIdx > totalPages - 5">
+    <li (click)="onChangePage(0)">{{ 1 }}</li>
+    <li class="three-dots">...</li>
+    <li (click)="onChangePage(totalPages - 5)">{{ totalPages - 4 }}</li>
+    <li (click)="onChangePage(totalPages - 4)" [ngClass]="{active: currentPageIdx === totalPages - 4}">{{ totalPages - 3 }}</li>
+    <li (click)="onChangePage(totalPages - 3)" [ngClass]="{active: currentPageIdx === totalPages - 3}">{{ totalPages - 2 }}</li>
+    <li (click)="onChangePage(totalPages - 2)" [ngClass]="{active: currentPageIdx === totalPages - 2}">{{ totalPages - 1 }}</li>
+    <li (click)="onChangePage(totalPages - 1)" [ngClass]="{active: currentPageIdx === totalPages - 1}">{{ totalPages }}</li>
+  </ng-container>
 </ng-template>
 
 <ng-template #rowGhosts>

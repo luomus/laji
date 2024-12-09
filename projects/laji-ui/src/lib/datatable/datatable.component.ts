@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input,
-  OnChanges, OnInit, Output, QueryList, Renderer2, RendererStyleFlags2, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
+  OnChanges, OnInit, Output, QueryList, Renderer2, RendererStyleFlags2, SimpleChanges, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 
 type Keyable = string | number | symbol;
 export type DatatableRow<T extends Keyable> = Record<T, any>;
@@ -13,6 +13,7 @@ export interface DatatableColumn<T extends Keyable> {
    */
   sortFn?: <U>(a: U, b: U) => number;
   sortable?: boolean; // defaults to true
+  cellTemplate?: TemplateRef;
 }
 
 /**
@@ -44,7 +45,7 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
    */
   @Input() defaultColumns: number[] | null = null;
 
-  @Input() currentPage = 0;
+  @Input() currentPageIdx = 0;
   @Input() totalPages = 1;
   @Input() loading = false;
 
@@ -70,6 +71,7 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
 
   selectedColumns: number[] = [];
   unselectedColumns = new Set<number>();
+  uid = Math.random().toString(36).substring(2, 15);
 
   private draggedColumnHeaderIdx = 0;
 

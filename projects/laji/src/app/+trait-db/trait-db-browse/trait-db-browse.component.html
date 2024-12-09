@@ -22,7 +22,7 @@
     ]"
     [defaultColumns]="[0, 1, 2, 3, 4, 5, 6]"
     [totalPages]="searchResult?.res.total ?? 1"
-    [currentPage]="currentPage"
+    [currentPageIdx]="currentPageIdx"
     [loading]="loading"
     [sorts]="searchResult?.sorts ?? []"
     (pageChange)="onLoadPage($event)"
@@ -30,20 +30,18 @@
   ></lu-datatable>
 </div>
 
-<!--
+<h1>Test datatable example:</h1>
+
 <lu-datatable
   [rows]="[
-    { a: 2, b: 'kvujhsear', c: 60, d: 'hnljrg' },
-    { a: 659, b: 'ioufgarhou', c: 2384, d: ',mg,m' },
-    { a: 234, b: 'houirgfa', c: 650, d: 'lhjkfg' },
-    { a: 16, b: 'o089iu342', c: 4059, d: 'lvfdj' }
+    { a: '-', b: 'camel', c: 50, d: 4 },
+    { a: '-', b: 'alpaca', c: 18, d: 4 },
+    { a: '-', b: 'alpine ibex', c: 18, d: 4 },
+    { a: '-', b: 'kangaroo', c: 20, d: 2 }
   ]"
-  [columns]="[{ title: 'A', prop: 'a' }, { title: 'B', prop: 'b' }, { title: 'C', prop: 'c' }, { title: 'D', prop: 'd' }]"
+  [columns]="[{ title: 'non-sortable value', prop: 'a', sortable: false }, { title: 'animal', prop: 'b' }, { title: 'lifespan', prop: 'c' }, { title: 'number of legs', prop: 'd' }]"
   [defaultColumns]="[0, 1, 2]"
   [totalPages]="1"
-  [currentPage]="currentPage"
-  [loading]="loading"
-  (pageChange)="onLoadPage($event)"
-  (sortChange)="onSort($event)"
+  [currentPageIdx]="0"
+  [loading]="false"
 ></lu-datatable>
--->
