@@ -254,11 +254,12 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
   private performLocalSort() {
     for (const sort of [...this.sorts].reverse()) {
       const col = this.columns[sort.by];
-      if (!col.sortable) {
+      if (col.sortable === false) {
         return;
       }
       const sortFn = sortableColumnIsDefaultColumn(col)
-        ? (a, b) => a[col.prop] > b[col.prop] ? 1 : a[col.prop] < b[col.prop] ? -1 : 0
+        ? (a: DatatableRow<RowProp>, b: DatatableRow<RowProp>) =>
+          a[col.prop] > b[col.prop] ? 1 : a[col.prop] < b[col.prop] ? -1 : 0
         : col.sortFn; // col is sortable with template
       const sortDir = (a: DatatableRow<RowProp>, b: DatatableRow<RowProp>) => {
         if (sort.dir === 'DESC') {
