@@ -15,8 +15,13 @@
     <div class="d-flex flex-col items-center home-content-container section-2">
       <ng-container *ngTemplateOutlet="map"></ng-container>
     </div>
-    <div class="d-flex justify-center home-content-container section-3">
-      <ng-container *ngTemplateOutlet="iNaturalist"></ng-container>
+    <div class="section-3">
+      <div class="d-flex justify-center home-content-container">
+        <ng-container *ngTemplateOutlet="iNaturalist"></ng-container>
+      </div>
+      <div class="d-flex justify-center home-content-container">
+        <ng-container *ngTemplateOutlet="pinkka"></ng-container>
+      </div>
     </div>
     <div class="d-flex flex-col items-center flex-wrap home-content-container section-4">
       <ng-container *ngTemplateOutlet="some"></ng-container>
@@ -70,12 +75,24 @@
 
 <ng-template #iNaturalist>
   <div class="d-flex content-max-width xs:flex-wrap">
-    <div class="inat-img-container">
-      <img class="inat-img" src="/static/images/inat-sufi.png" alt="iNaturalist Suomi">
+    <div class="section-3-img-container">
+      <img class="section-3-img" src="/static/images/inat-sufi.png" alt="iNaturalist Suomi">
     </div>
-    <div class="inat-desc-container">
+    <div class="section-3-desc-container">
       <p translate>home.inat.desc</p>
-      <a class="btn btn-primary btn-lg inat-link" href="https://inaturalist.laji.fi/" target="_blank">{{ 'home.inat.btn' | translate }}</a>
+      <a class="btn btn-primary btn-lg section-3-link" href="https://inaturalist.laji.fi/" target="_blank">{{ 'home.inat.btn' | translate }}</a>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #pinkka>
+  <div class="d-flex content-max-width xs:flex-wrap">
+    <div class="section-3-img-container">
+      <img class="section-3-img" src="/static/images/pinkka-logo.png" alt="Pinkka">
+    </div>
+    <div class="section-3-desc-container">
+      <p translate>home.pinkka.desc</p>
+      <a class="btn btn-primary btn-lg section-3-link" href="https://pinkka.laji.fi/pinkat/" target="_blank">{{ 'home.pinkka.btn' | translate }}</a>
     </div>
   </div>
 </ng-template>
