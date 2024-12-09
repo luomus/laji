@@ -13,7 +13,7 @@ import { Area } from '../../../../shared/model/Area';
 })
 export class AreaSelectComponent implements OnInit {
 
-  @Input() field: string;
+  @Input() field: string | undefined;
   @Input() disabled = false;
   @Input() multiselect = false;
   @Input() value: string[] = [];
@@ -25,7 +25,7 @@ export class AreaSelectComponent implements OnInit {
   @Output() areaSelect = new EventEmitter<string>();
 
   options: {id: string; value: string; translate?: boolean}[] = [];
-  lang: string;
+  lang!: string;
 
   constructor(
     private collectionService: CollectionService,
@@ -52,7 +52,7 @@ export class AreaSelectComponent implements OnInit {
         if (!this.allOptionLast && !this.multiselect && this.allOptionEnabled) {
           options.push({id: 'all', value: this.allOptionLabel, translate: true});
         }
-        this.options = [...options, ...data.sort((a, b) => a.value.localeCompare(b.value))];
+        this.options = [...options, ...data.sort((a: any, b: any) => a.value.localeCompare(b.value))];
         if (this.allOptionLast && !this.multiselect && this.allOptionEnabled) {
           this.options.push({id: 'all', value: this.allOptionLabel, translate: true});
         }
