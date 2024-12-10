@@ -13,15 +13,15 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 })
 export class ObservationCountComponent implements OnChanges {
 
-  @Input() value: null | number | string; // If this is set this will be always used (null means that the value is loading)
-  @Input() field: string;
+  @Input() value!: null | number | string; // If this is set this will be always used (null means that the value is loading)
+  @Input() field!: string;
   @Input() pick: any;
   @Input() query: any;
-  @Input() overrideInQuery: WarehouseQueryInterface;
+  @Input() overrideInQuery!: WarehouseQueryInterface;
   @Input() lightLoader = false;
   @Input() loading = false;
 
-  public count$: Observable<string>;
+  public count$!: Observable<string>;
 
   private pageSize = 1000;
 
@@ -58,7 +58,7 @@ export class ObservationCountComponent implements OnChanges {
     );
   }
 
-  private normalCount(query: WarehouseQueryInterface): Observable<number> {
+  private normalCount(query: WarehouseQueryInterface): Observable<number | undefined> {
     return this.warehouseService.warehouseQueryCountGet(query).pipe(
       retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
       map(result => result.total)
@@ -77,8 +77,8 @@ export class ObservationCountComponent implements OnChanges {
       map(result => {
         if (this.pick && result.results) {
           return result.results
-            .filter(value => this.pick.indexOf(value.aggregateBy[this.field]) > -1)
-            .reduce((pre, cur) => pre + cur['count'], 0);
+            .filter((value: any) => this.pick.indexOf(value.aggregateBy[this.field]) > -1)
+            .reduce((pre: any, cur: any) => pre + cur['count'], 0);
         }
         return result.total || 0;
       })

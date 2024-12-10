@@ -149,7 +149,7 @@ export class DocumentFormFacade {
     );
 
     const namedPlace$: Observable<NamedPlace | FormError | null> = combineLatest([includeUnits$, existingDocument$, namedPlaceID$]).pipe(
-      map(([includeUnits, existingDocument, namedPlaceID]): [boolean, string] | null =>
+      map(([includeUnits, existingDocument, namedPlaceID]): [boolean, string] =>
         isFormError(includeUnits) || isFormError(existingDocument)
           ? [false, '']
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

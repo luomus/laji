@@ -18,11 +18,11 @@ interface DatasetStats {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatasetAboutComponent implements OnChanges {
-  @Input() form: Form.SchemaForm;
+  @Input() form!: Form.SchemaForm;
 
   stats$: Observable<DatasetStats>;
 
-  private collectionIdSubject = new BehaviorSubject<string>(null);
+  private collectionIdSubject = new BehaviorSubject<string | null>(null);
   private collectionId$ = this.collectionIdSubject.asObservable();
 
   constructor(
@@ -44,6 +44,7 @@ export class DatasetAboutComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.collectionIdSubject.next(this.form.collectionID);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.collectionIdSubject.next(this.form.collectionID!);
   }
 }

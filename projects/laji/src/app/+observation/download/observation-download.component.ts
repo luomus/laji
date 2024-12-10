@@ -56,19 +56,19 @@ enum RequestStatus {
 })
 export class ObservationDownloadComponent implements OnDestroy {
 
-  @ViewChild(ObservationTableSettingsComponent, { static: true }) public settingsModal: ObservationTableSettingsComponent;
-  @ViewChild(DownloadComponent) downloadTypeSelectModal: DownloadComponent;
-  @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
+  @ViewChild(ObservationTableSettingsComponent, { static: true }) public settingsModal!: ObservationTableSettingsComponent;
+  @ViewChild(DownloadComponent) downloadTypeSelectModal!: DownloadComponent;
+  @ViewChild('downloadModal', { static: true }) downloadModal!: TemplateRef<any>;
 
-  @Input() unitCount: number;
-  @Input() speciesCount: number;
+  @Input() unitCount!: number;
+  @Input() speciesCount!: number;
   @Input() taxaLimit = 3000;
   @Input() loadLimit = 2000000;
   @Input() maxSimpleDownload = Global.limit.simpleDownload;
 
   @Output() settingsChange = new EventEmitter<UserSettingsResultList>();
 
-  privateCount: number;
+  privateCount!: number;
   hasPersonalData = false;
   requests: {[place: string]: RequestStatus} = {};
   requestStatus = RequestStatus;
@@ -92,11 +92,11 @@ export class ObservationDownloadComponent implements OnDestroy {
   formats: FORMAT[] = ['tsv', 'ods', 'xlsx', 'shp', 'gpkg'];
 
   private _originalSelected: string[];
-  private _settings: UserSettingsResultList;
-  private modalRef: ModalRef;
-  private cntSub: Subscription;
-  private _query: WarehouseQueryInterface;
-  private _originalQuery: WarehouseQueryInterface;
+  private _settings!: UserSettingsResultList;
+  private modalRef!: ModalRef;
+  private cntSub!: Subscription;
+  private _query!: WarehouseQueryInterface;
+  private _originalQuery!: WarehouseQueryInterface;
   private taxaDownloadAggregateBy = {
     en: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
     fi: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
@@ -165,7 +165,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     let hasPersonalData = false;
     const warehouseQuery: WarehouseQueryInterface = {...query};
     ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
-      if (warehouseQuery[key]) {
+      if (warehouseQuery[key as keyof WarehouseQueryInterface]) {
         hasPersonalData = true;
       }
     });
@@ -192,7 +192,7 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   updateCsvLink() {
     const queryParams = this.searchQuery.getQueryObject(this.query);
-    queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang];
+    queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang as keyof { en: string; fi: string; sv: string }];
     queryParams['includeNonValidTaxa'] = 'false';
     queryParams['pageSize'] = '' + this.taxaLimit;
     queryParams['format'] = 'csv';
@@ -200,7 +200,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.csvParams = params.toString();
   }
 
-  updateQueryParamsDownloadTaxon(e) {
+  updateQueryParamsDownloadTaxon(e: any) {
     e.stopPropagation();
     const arrayParams = this.csvParams.split('&');
     ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
@@ -217,7 +217,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     }, 200);
   }
 
-  downloadSpecies(e) {
+  downloadSpecies(e: any) {
     this.speciesCsvLoading = true;
     this.cd.markForCheck();
     this.updateQueryParamsDownloadTaxon(e);
@@ -271,7 +271,7 @@ export class ObservationDownloadComponent implements OnDestroy {
         this.closeModal();
         this.cd.markForCheck();
       },
-      err => {
+      (err: any) => {
         this.requests[type] = RequestStatus.error;
         this.toastsService.showError(this.translate.instant(err?.status === 429 ?
           'observation.download.limitExceededException' :
@@ -380,10 +380,13 @@ export class ObservationDownloadComponent implements OnDestroy {
         }),
         switchMap(formData => this.geoConvertService.geoConvertData(
           formData,
-          data.id,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          data.id!,
           params.fileType as FileFormat,
-          params.geometry,
-          params.crs
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          params.geometry!,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          params.crs!
         )),
         tap(response => {
           this.downloadProgressPercent = response.progressPercent;
@@ -391,7 +394,8 @@ export class ObservationDownloadComponent implements OnDestroy {
         }),
         first(response => response.status === 'complete'),
         map(response => {
-          this.platformService.window.location.href = response.outputLink;
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          this.platformService.window.location.href = response.outputLink!;
         })
       );
     } else {
