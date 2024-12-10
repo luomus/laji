@@ -31,7 +31,7 @@ import { take } from 'rxjs/operators';
 })
 export class NamedPlaceWrapperComponent implements OnInit {
 
-  data$: Observable<NamedPlacesRouteData>;
+  data$!: Observable<NamedPlacesRouteData>;
 
   constructor(
     private projectFormService: ProjectFormService,

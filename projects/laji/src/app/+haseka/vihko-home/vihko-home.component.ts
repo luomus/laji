@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class VihkoHomeComponent implements OnInit {
 
-  currentLang: string;
+  currentLang!: string;
 
   constructor(
     public translate: TranslateService

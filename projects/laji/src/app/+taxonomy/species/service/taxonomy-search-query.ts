@@ -93,7 +93,7 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
         continue;
       }
       if (this.query[key] === '' || (Array.isArray(this.query[key]) && (this.query[key] as any[]).length === 0)) {
-        (this.query as SearchQueryInterface)[key] = undefined;
+        (this.query as SearchQueryInterface)[<keyof SearchQueryInterface>key] = undefined;
       }
 
       queryParams[key] = this.query[key];
