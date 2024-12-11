@@ -2,11 +2,11 @@ export interface ObservationFormQuery {
   taxon: string;
   taxonIncludeLower: boolean;
   taxonUseAnnotated: boolean;
-  timeStart: string;
-  timeEnd: string;
-  informalTaxonGroupId: string[];
-  informalTaxonGroupIdNot: string[];
-  includeOnlyValid: boolean;
+  timeStart?: string;
+  timeEnd?: string;
+  informalTaxonGroupId?: string[];
+  informalTaxonGroupIdNot?: string[];
+  includeOnlyValid?: boolean;
   euInvasiveSpeciesList: boolean;
   controllingRisksOfInvasiveAlienSpeciesGovernment: boolean;
   quarantinePlantPest: boolean;
@@ -20,6 +20,7 @@ export interface ObservationFormQuery {
   asObserver: boolean;
   asEditor: boolean;
   asNotEditorOrObserver: boolean;
-  coordinatesInSource: boolean;
-  taxonAdminFiltersOperator: 'AND' | 'OR';
+  coordinatesInSource?: boolean;
+  taxonAdminFiltersOperator?: 'AND' | 'OR';
+  zeroObservations?: boolean;
 }

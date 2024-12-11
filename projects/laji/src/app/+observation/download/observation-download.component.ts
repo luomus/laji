@@ -68,7 +68,7 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   @Output() settingsChange = new EventEmitter<UserSettingsResultList>();
 
-  privateCount!: number;
+  privateCount?: number|null;
   hasPersonalData = false;
   requests: {[place: string]: RequestStatus} = {};
   requestStatus = RequestStatus;
@@ -92,7 +92,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   formats: FORMAT[] = ['tsv', 'ods', 'xlsx', 'shp', 'gpkg'];
 
   private _originalSelected: string[];
-  private _settings!: UserSettingsResultList;
+  private _settings?: UserSettingsResultList|null;
   private modalRef!: ModalRef;
   private cntSub!: Subscription;
   private _query!: WarehouseQueryInterface;
@@ -145,7 +145,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     }
   }
 
-  @Input() set settings(settings: UserSettingsResultList) {
+  @Input() set settings(settings: UserSettingsResultList|null|undefined) {
     this._settings = settings;
     if (settings && settings.selected) {
       this._originalSelected = [...settings.selected];
@@ -244,7 +244,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     }
     this.requests[type] = RequestStatus.loading;
     this.userService.getToken();
-    this.warehouseService[type](
+    (this.warehouseService as any)[type](
       this.userService.getToken(),
       'TSV_FLAT',
       'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
@@ -370,7 +370,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.columnSelector.columns = this.tableColumnService.getDefaultFields();
   }
 
-  downloadData(data: {id?: string; results: any[]}, columns: ObservationTableColumn[], params: DownloadParams): Observable<void> {
+  downloadData(data: {id?: string|null; results: any[]}, columns: ObservationTableColumn[], params: DownloadParams): Observable<void> {
     if (this.isGisDownload(params.fileType)) {
       return this.exportService.getBlobFromData(data.results, columns, 'tsv', 'laji-data').pipe(
         map(blob => {

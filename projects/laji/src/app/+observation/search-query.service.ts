@@ -5,15 +5,19 @@ import { NavigationExtras, Router } from '@angular/router';
 import { SearchQueryInterface } from '../shared-modules/search-filters/search-query.interface';
 import { Util } from '../shared/service/util.service';
 
+interface WarehouseSearchQuery extends WarehouseQueryInterface {
+  [extraKey: string]: any;
+}
+
 @Injectable({providedIn: 'root'})
 export class SearchQueryService implements SearchQueryInterface {
   public queryType = 'observation';
   public queryUpdatedSource = new Subject<any>();
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
 
-  public query: WarehouseQueryInterface = {};
+  public query: WarehouseSearchQuery = {};
 
-  private readonly separator = {
+  private readonly separator: Record<string, string> = {
     teamMember: ';',
     anyHabitat: ';',
     primaryHabitat: ';',
@@ -177,7 +181,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'editorOrObserverIsNotPersonToken'
   ];
 
-  public static isEmpty(query: WarehouseQueryInterface, key: string) {
+  public static isEmpty(query: WarehouseSearchQuery, key: string) {
     return typeof query[key] === 'undefined' || query[key] === null || query[key] === '';
   }
 
@@ -201,8 +205,8 @@ export class SearchQueryService implements SearchQueryInterface {
     });
   }
 
-  public getQueryFromUrlQueryParams(params): WarehouseQueryInterface {
-    const result: WarehouseQueryInterface = {};
+  public getQueryFromUrlQueryParams(params: Record<string, any>): WarehouseQueryInterface {
+    const result: WarehouseSearchQuery = {};
 
     this.forEachType({cb: (type, key) => {
       if (typeof params[key] === 'undefined') {
@@ -251,7 +255,7 @@ export class SearchQueryService implements SearchQueryInterface {
     return result;
   }
 
-  public getQueryObject(query: WarehouseQueryInterface, skipParams: string[] = [], obscure = true) {
+  public getQueryObject(query: WarehouseSearchQuery, skipParams: string[] = [], obscure = true) {
     const result: {[field: string]: string | string[]}  = {};
     if (query) {
       this.forEachType({
@@ -269,7 +273,7 @@ export class SearchQueryService implements SearchQueryInterface {
                 query[key] = [query[key]];
               }
               const queries = query[key]
-                .filter(val => typeof val === 'string' && val.trim().length > 0)
+                .filter((val: any) => typeof val === 'string' && val.trim().length > 0)
                 .join(this.separator[key] || ',');
               if (queries.length > 0) {
                 result[key] = queries;
@@ -296,9 +300,9 @@ export class SearchQueryService implements SearchQueryInterface {
     return this.getQuery(result, query);
   }
 
-  public getQuery(result, query: WarehouseQueryInterface) {
+  public getQuery(result: any, query: WarehouseQueryInterface) {
     ['coordinates'].forEach(key => {
-      const last = query[key]?.[0]?.split(':').pop();
+      const last = (query as any)[key]?.[0]?.split(':').pop();
       if (result[key] && typeof query._coordinatesIntersection !== 'undefined' && last !== undefined && isNaN(last)) {
         result[key] += ':' + query._coordinatesIntersection / 100;
       }
@@ -332,7 +336,8 @@ export class SearchQueryService implements SearchQueryInterface {
     }
     const query = this.getQueryObject(dwQuery, skipParams, false);
     Object.keys(query).map((key) => {
-      queryParameters[key] = query[key];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      queryParameters![key] = query[key];
     });
 
     return queryParameters;
@@ -366,18 +371,18 @@ export class SearchQueryService implements SearchQueryInterface {
   }
 
   public static getDifferenceBetweenQueries(query1: WarehouseQueryInterface, query2: WarehouseQueryInterface): WarehouseQueryInterface {
-    const query1Keys = Object.keys(query1);
-    const query2Keys = Object.keys(query2);
+    const query1Keys = Object.keys(query1) as (keyof WarehouseQueryInterface)[];
+    const query2Keys = Object.keys(query2) as (keyof WarehouseQueryInterface)[];
     const uniqueKeys = Array.from(new Set(query1Keys.concat(query2Keys)));
 
-    return uniqueKeys.reduce((changed: WarehouseQueryInterface, key: string) => {
+    return uniqueKeys.reduce((changed: WarehouseQueryInterface, key: keyof WarehouseQueryInterface) => {
       const value1 = query1[key];
       const value2 = query2[key];
 
       if (SearchQueryService.hasValue(value1) || SearchQueryService.hasValue(value2)) {
         const areArrays = Array.isArray(value1) && Array.isArray(value2);
         if (!(value1 === value2 || (areArrays && Util.equalsArray(value1, value2)))) {
-          changed[key] = query2[key];
+          (changed as any)[key] = query2[key];
         }
       }
 

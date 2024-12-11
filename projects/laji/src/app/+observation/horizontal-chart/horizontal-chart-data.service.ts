@@ -18,7 +18,7 @@ export class HorizontalChartDataService {
     if (ids.length === 0) { return of({}); }
     const params: string[] = [];
     const queryParts: string[] = [];
-    const variables = {};
+    const variables: Record<string, string> = {};
     for (let i = 0; i < MAX_TAXA_SIZE; i++) {
       const key = `t${i}`;
       params.push(`$${key}: ID = ""`);

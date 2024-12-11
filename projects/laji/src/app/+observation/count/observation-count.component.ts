@@ -13,7 +13,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 })
 export class ObservationCountComponent implements OnChanges {
 
-  @Input() value!: null | number | string; // If this is set this will be always used (null means that the value is loading)
+  @Input() value?: null | number | string; // If this is set this will be always used (null means that the value is loading)
   @Input() field!: string;
   @Input() pick: any;
   @Input() query: any;

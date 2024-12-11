@@ -60,22 +60,22 @@ export class ObservationResultComponent implements OnChanges {
   ];
   @Input() resultBase: 'unit'|'sample' = 'unit';
   @Input() basePath = '/observation';
-  @Input() activeQuery: WarehouseQueryInterface = {};
-  @Input() tmpQuery: WarehouseQueryInterface = {};
+  @Input({ required: true }) activeQuery: WarehouseQueryInterface = {};
+  @Input({ required: true }) tmpQuery: WarehouseQueryInterface = {};
   @Input() lgScreen = true;
-  @Input() unitCount: number;
-  @Input() speciesCount: number;
-  @Input() loadingUnits: boolean;
-  @Input() loadingTaxa: boolean;
-  @Input() lang: string;
-  @Input() listSettings: UserSettingsResultList;
+  @Input({ required: true }) unitCount!: number;
+  @Input({ required: true }) speciesCount!: number;
+  @Input({ required: true }) loadingUnits!: boolean;
+  @Input({ required: true }) loadingTaxa!: boolean;
+  @Input({ required: true }) lang!: string;
+  @Input() listSettings?: UserSettingsResultList|null;
 
   @Output() activeQueryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() tmpQueryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() listSettingsChange = new EventEmitter<UserSettingsResultList>();
 
-  @ViewChild(ObservationMapComponent) observationMap: ObservationMapComponent;
-  @ViewChild(ObservationDownloadComponent, { static: true }) downloadModal: ObservationDownloadComponent;
+  @ViewChild(ObservationMapComponent) observationMap?: ObservationMapComponent;
+  @ViewChild(ObservationDownloadComponent, { static: true }) downloadModal!: ObservationDownloadComponent;
 
   /**
    * Prevent re-fetching data by keeping loaded pages in memory
@@ -86,9 +86,9 @@ export class ObservationResultComponent implements OnChanges {
   activeTab = 'list';
   loadedTabs: LoadedElementsStore = new LoadedElementsStore(tabOrder);
 
-  hasMonthDayData: boolean;
-  hasYearData: boolean;
-  hasTaxonData: boolean;
+  hasMonthDayData?: boolean;
+  hasYearData?: boolean;
+  hasTaxonData?: boolean;
 
   selectedTabIdx = 0; // stores which tab index was provided by @Input active
   onlyCount = this.storage.retrieve('onlycount') === null ? true : this.storage.retrieve('onlycount');
@@ -106,7 +106,7 @@ export class ObservationResultComponent implements OnChanges {
   ) { }
 
   @Input()
-  set active(value) {
+  set active(value: string) {
     if (value === 'finnish') {
       this.mode = 'finnish';
       this.loadedModes.load('finnish');
@@ -150,7 +150,7 @@ export class ObservationResultComponent implements OnChanges {
   }
 
   pickLocation(events: LajiMapEvent[]) {
-    let value: Pick<WarehouseQueryInterface, 'coordinates' | 'polygonId'>;
+    let value: Pick<WarehouseQueryInterface, 'coordinates' | 'polygonId'>|undefined;
 
     events.forEach(e => {
       let geometry: G.Geometry, layer: any;
@@ -162,8 +162,8 @@ export class ObservationResultComponent implements OnChanges {
         if (keys.length > 1) {
           throw new Error('Something wrong with map, there should never be multiple editable geometries');
         }
-        geometry = e.features[keys[0]].geometry;
-        layer = e.layers[keys[0]];
+        geometry = e.features[keys[0] as any].geometry;
+        layer = e.layers[keys[0] as any];
       } else if (e.type === 'delete') {
         if (e.features.length > 1) {
           throw new Error('Something wrong with map, there should never be multiple deletable geometries');
