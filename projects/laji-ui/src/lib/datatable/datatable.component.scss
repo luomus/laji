@@ -99,7 +99,7 @@ ul.paginator > li:last-child {
   border-right: none;
 }
 
-ul.paginator > li:not(.three-dots) {
+ul.paginator > li:not(.three-dots):not(.active) {
   cursor: pointer;
 
   &:hover {
@@ -109,6 +109,12 @@ ul.paginator > li:not(.three-dots) {
 
 ul.paginator > li.three-dots {
 
+}
+
+ul.paginator > li.active {
+  box-shadow: inset 1px 0px 3px 0px rgba($neutral-7, .2);
+  background-color: $neutral-2;
+  color: $neutral-6;
 }
 
 @keyframes ghost-anim {
