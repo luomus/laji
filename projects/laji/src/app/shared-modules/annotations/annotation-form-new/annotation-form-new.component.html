@@ -1,4 +1,50 @@
 <div [hidden]="!visible || hidden" *lajiLoggedIn="true">
+<ng-container *ngIf="!isEditor; else editorMessage">
+  <ng-container *ngIf="expert && unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1">
+    <button class="btn btn-default" (click)="verifyCurrentTaxon()">{{ 'annotation.observation.verifyCurrent' | translate }}: {{ currentTaxonName }}</button>
+  </ng-container>
+  <div class="mb-4">
+    <h5>{{(expert ? 'annotation.addIdentificationExpert' : 'annotation.addIdentificationBasic') | translate }}</h5>
+    <div class="d-flex flex-row flex-nowrap">
+      <input #taxon
+      [ngClass]="{loading: typeaheadLoading}"
+      type="text"
+      class="form-control input-sm taxon-input"
+      name="opinion"
+      [disabled]="unIdentifyable"
+      [required]="expert && (personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin' ) && (annotation.addedTags.length > 0)"
+      [(ngModel)]="annotation.identification.taxon"
+      [luTypeahead]="taxonAutocomplete"
+      [luTypeaheadOptionsLimit]="20"
+      [luTypeaheadWaitMs]="200"
+      [luTypeaheadMinLength]="3"
+      [luTypeaheadOptionField]="'autocompleteSelectedName'"
+      [luTypeaheadItemTemplate]="taxonItem"
+      autocomplete="off"
+      autocorrect="off"
+      (change)="saveTaxon()"
+      (luTypeaheadOnSelect)="select($event)"
+      (focus)="onFocus($event)"
+      (blur)="onBlur($event)"
+      >
+      <div class="taxon-remove d-flex flex-col justify-center" [luTooltip]="'annotation.delete' | translate" [class.disabled]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''"  (click)="cleanTaxon()" tabindex="0" role="button" luKeyboardClickable>
+        <i class="glyphicon glyphicon-remove d-block"></i>
+      </div>
+      <div class="taxon-agree d-flex flex-col justify-center" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1" (click)="copyCurrentTaxon()" tabindex="0" role="button" luKeyboardClickable>
+        <div>
+          {{ 'annotation.obsercation.agree' | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="taxon-name mt-2" *ngIf="annotation.identification.taxonID" [hidden]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''">
+      <laji-taxon-name [capitalizeName]="true" [taxon]="$any(taxonomy)"></laji-taxon-name>
+    </div>
+    <ng-template #taxonItem let-model="item">
+      <span class="autocomplete-container" [innerHtml]="model['autocompleteDisplayName' ]"></span>
+    </ng-template>
+  </div>
+</ng-container>
+
 <div class="lu tags-step-1" *ngIf="expert else checkTags">
   <label>{{ 'annotation.addTags' | translate }}</label>
   <div class="d-flex flex-row flex-wrap margin-top-10">
@@ -130,48 +176,7 @@
   In this type of annotation, you need to add at lest 1 check tag or a taxon
 </div>
 
-<ng-container *ngIf="!isEditor; else editorMessage">
-  <div class="mb-4">
-    <h5>{{(expert ? 'annotation.addIdentificationExpert' : 'annotation.addIdentificationBasic') | translate }}</h5>
-    <div class="d-flex flex-row flex-nowrap">
-      <input #taxon
-      [ngClass]="{loading: typeaheadLoading}"
-      type="text"
-      class="form-control input-sm taxon-input"
-      name="opinion"
-      [disabled]="unIdentifyable"
-      [required]="expert && (personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin' ) && (annotation.addedTags.length > 0)"
-      [(ngModel)]="annotation.identification.taxon"
-      [luTypeahead]="taxonAutocomplete"
-      [luTypeaheadOptionsLimit]="20"
-      [luTypeaheadWaitMs]="200"
-      [luTypeaheadMinLength]="3"
-      [luTypeaheadOptionField]="'autocompleteSelectedName'"
-      [luTypeaheadItemTemplate]="taxonItem"
-      autocomplete="off"
-      autocorrect="off"
-      (change)="saveTaxon()"
-      (luTypeaheadOnSelect)="select($event)"
-      (focus)="onFocus($event)"
-      (blur)="onBlur($event)"
-      >
-      <div class="taxon-remove d-flex flex-col justify-center" [luTooltip]="'annotation.delete' | translate" [class.disabled]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''"  (click)="cleanTaxon()" tabindex="0" role="button" luKeyboardClickable>
-        <i class="glyphicon glyphicon-remove d-block"></i>
-      </div>
-      <div class="taxon-agree d-flex flex-col justify-center" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1" (click)="copyCurrentTaxon()" tabindex="0" role="button" luKeyboardClickable>
-        <div>
-          {{ 'annotation.obsercation.agree' | translate }}
-        </div>
-      </div>
-    </div>
-    <div class="taxon-name mt-2" *ngIf="annotation.identification.taxonID" [hidden]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''">
-      <laji-taxon-name [capitalizeName]="true" [taxon]="$any(taxonomy)"></laji-taxon-name>
-    </div>
-    <ng-template #taxonItem let-model="item">
-      <span class="autocomplete-container" [innerHtml]="model['autocompleteDisplayName' ]"></span>
-    </ng-template>
-  </div>
-
+<ng-container *ngIf="!isEditor">
   <div class="mb-4" *ngIf="(personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
     <h5>{{ 'annotation.taxonSpecifier' | translate }} <laji-info>{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info></h5>
     <input
@@ -200,7 +205,7 @@
 </div>
 
 <!-- <button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{ 'feedback.cancel' | translate }}</button> -->
-<button class="btn btn-default" (click)="saveAnnotation()" [disabled]="disableSend()">{{ 'annotation.sendAnnotation' | translate }}</button>
+<button class="btn btn-default" (click)="trySavingAnnotation()" [disabled]="disableSend()">{{ 'annotation.sendAnnotation' | translate }}</button>
 
 </div>
 

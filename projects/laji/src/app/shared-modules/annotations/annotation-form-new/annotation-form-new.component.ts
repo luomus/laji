@@ -20,6 +20,7 @@ import { CheckFocusService } from '../../document-viewer/check-focus.service';
 import { TaxonAutocompleteService } from '../../../shared/service/taxon-autocomplete.service';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { TypeaheadMatch } from '../../../../../../laji-ui/src/lib/typeahead/typeahead-match.class';
+import { DialogService } from '../../../shared/service/dialog.service';
 
 export interface AnnotationFormAnnotation extends Annotation {
   identification: Annotation.Identification;
@@ -100,7 +101,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     vernacularName: null,
     scientificNameAuthorship: null
   };
-
+  currentTaxonName = '';
   annotationTagsObservation: Record<string, { value: string; quality: string; type: string }> = Global.annotationTags;
   annotationRole = Annotation.AnnotationRoleEnum;
 
@@ -115,11 +116,13 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     private labelPipe: LabelPipe,
     private loadingElements: LoadingElementsService,
     private focus: CheckFocusService,
-    private taxonAutocompleteService: TaxonAutocompleteService
+    private taxonAutocompleteService: TaxonAutocompleteService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
     this.initAnnotationTags();
+    this.initCurrentTaxonName();
     this.taxonAutocomplete = Observable.create((observer: any) => {
       observer.next(this.annotation.identification.taxon);
     }).pipe(
@@ -237,6 +240,21 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     }
   }
 
+  verifyCurrentTaxon() {
+    this.copyCurrentTaxon();
+    if (!this.annotation.addedTags.includes('MMAN.5')) {
+      this.addToAddTags({id: 'MMAN.5', quality: 'MMAN.typePositiveQuality'});
+    }
+  }
+
+  initCurrentTaxonName() {
+    if (this.unit.linkings && (this.unit.linkings.originalTaxon || this.unit.linkings.taxon)) {
+      const taxon = this.unit.linkings.taxon || this.unit.linkings.originalTaxon;
+
+      this.currentTaxonName = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.currentLang);
+    }
+  }
+
   copyCurrentTaxon() {
     if (this.unit.linkings && (this.unit.linkings.originalTaxon || this.unit.linkings.taxon)) {
       const taxon = this.unit.linkings.taxon || this.unit.linkings.originalTaxon;
@@ -309,6 +327,20 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       this.annotationTagsObservation[tag].type !== 'positive' && this.annotationTagsObservation[tag].type !== 'negative'
       && this.annotationTagsObservation[tag].type !== 'admin' && this.annotationTagsObservation[tag].type !== 'info'
     );
+  }
+
+  trySavingAnnotation() {
+    if (this.expert && this.annotation.addedTags.includes('MMAN.9')) {
+      this.dialogService.confirm(
+        this.translate.instant('annotation.confirmErroneus', { taxonName: this.annotation.identification.taxon })
+      ).subscribe(confirm => {
+        if (confirm) {
+          this.saveAnnotation();
+        }
+      });
+    } else {
+      this.saveAnnotation();
+    }
   }
 
   saveAnnotation() {
