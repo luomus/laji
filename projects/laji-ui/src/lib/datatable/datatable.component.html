@@ -1,55 +1,57 @@
-<table>
-  <tr>
-    <th
-      *ngFor="let colIdx of selectedColumns; let idx = index"
-      draggable="true"
-      (dragstart)="onTableHeaderDragStart($event, idx)"
-      (dragend)="onTableHeaderDragEnd($event)"
-      (dragover)="onTableHeaderDragOver($event)"
-      (drop)="onTableHeaderDrop($event)"
-      #headerRef
-    >
-      <span class="header-contents">
-        {{ columns[colIdx].title }} 
-        <div class="d-flex flex-row flex-nowrap">
-          <button
-            *ngIf="columns[colIdx].sortable === undefined || columns[colIdx].sortable"
-            class="sort-btn mr-2"
-            [ngClass]="{
-              'sort-btn mr-2': true,
-              'sorted': colSortType(colIdx) !== 'NONE'
-            }"
-            (click)="onToggleSort(colIdx)">
-            {{ getSortBtnChar(colIdx) }}
-          </button>
-          <button class="unselect-col-btn" (click)="onUnselectColumn(colIdx)">x</button>
-        </div>
-      </span>
-      <span class="col-separator" (mousedown)="onResizeMouseDown($event)"></span>
-    </th>
-    <th *ngIf="columns.length > selectedColumns.length">
-      <input [attr.list]="'unselected-columns-' + uid" name="add-column" placeholder="Add column..." (input)="onAddColumn($event)" />
-      <datalist [id]="'unselected-columns-' + uid">
-        <option *ngFor="let colIdx of unselectedColumns" [value]="colIdx">
-          {{ columns[colIdx].title }}
-        </option>
-      </datalist>
-    </th>
-  </tr>
-  <ng-container *ngIf="!loading else rowGhosts">
-    <tr *ngFor="let row of rows">
-      <td *ngFor="let colIdx of selectedColumns" #rowRef>
-        <ng-container *ngIf="columnHasTemplate(columns[colIdx]); else defaultTemplate">
-          <ng-container *ngTemplateOutlet="columns[colIdx]['cellTemplate']; context: { $implicit: row }"></ng-container>
-        </ng-container>
-        <ng-template #defaultTemplate>
-          {{ getNestedValue(row, columns[colIdx]['prop']) }}
-        </ng-template>
-      </td>
+<div class="table-wrapper">
+  <table>
+    <tr>
+      <th
+        *ngFor="let colIdx of selectedColumns; let idx = index"
+        draggable="true"
+        (dragstart)="onTableHeaderDragStart($event, idx)"
+        (dragend)="onTableHeaderDragEnd($event)"
+        (dragover)="onTableHeaderDragOver($event)"
+        (drop)="onTableHeaderDrop($event)"
+        #headerRef
+      >
+        <span class="header-contents">
+          {{ columns[colIdx].title }} 
+          <div class="d-flex flex-row flex-nowrap">
+            <button
+              *ngIf="columns[colIdx].sortable === undefined || columns[colIdx].sortable"
+              class="sort-btn mr-2"
+              [ngClass]="{
+                'sort-btn mr-2': true,
+                'sorted': colSortType(colIdx) !== 'NONE'
+              }"
+              (click)="onToggleSort(colIdx)">
+              {{ getSortBtnChar(colIdx) }}
+            </button>
+            <button class="unselect-col-btn" (click)="onUnselectColumn(colIdx)">x</button>
+          </div>
+        </span>
+        <span class="col-separator" (mousedown)="onResizeMouseDown($event)"></span>
+      </th>
+      <th *ngIf="columns.length > selectedColumns.length">
+        <input [attr.list]="'unselected-columns-' + uid" name="add-column" placeholder="Add column..." (input)="onAddColumn($event)" />
+        <datalist [id]="'unselected-columns-' + uid">
+          <option *ngFor="let colIdx of unselectedColumns" [value]="colIdx">
+            {{ columns[colIdx].title }}
+          </option>
+        </datalist>
+      </th>
     </tr>
-  </ng-container>
-  <tr></tr>
-</table>
+    <ng-container *ngIf="!loading else rowGhosts">
+      <tr *ngFor="let row of rows">
+        <td *ngFor="let colIdx of selectedColumns" #rowRef>
+          <ng-container *ngIf="columnHasTemplate(columns[colIdx]); else defaultTemplate">
+            <ng-container *ngTemplateOutlet="columns[colIdx]['cellTemplate']; context: { $implicit: row }"></ng-container>
+          </ng-container>
+          <ng-template #defaultTemplate>
+            {{ getNestedValue(row, columns[colIdx]['prop']) }}
+          </ng-template>
+        </td>
+      </tr>
+    </ng-container>
+    <tr></tr>
+  </table>
+</div>
 
 <ul *ngIf="totalPages > 1" class="paginator">
   <ng-container *ngIf="totalPages <= 7; else truncatedPaginator">

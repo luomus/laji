@@ -21,6 +21,7 @@ export class TraitDbBrowseComponent implements OnInit, OnDestroy {
   searchResult: SearchResult | undefined;
   currentPageIdx = 0;
   loading = false;
+  pageSize = 20;
 
   private searchResult$: Observable<{ res: SearchResponse; sorts: Sort[] }>;
   private loadPageSubject = new Subject<number>();
@@ -37,7 +38,7 @@ export class TraitDbBrowseComponent implements OnInit, OnDestroy {
         this.api.fetch('/trait/search', 'get', {
           query: {
             page: pageIdx + 1,
-            pageSize: 20,
+            pageSize: this.pageSize,
             // TODO filters
           }
         }).pipe(

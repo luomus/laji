@@ -5,10 +5,14 @@
   margin: $sp-6 0px;
 }
 
+.table-wrapper {
+  overflow-x: scroll;
+  margin-bottom: $sp-3;
+}
+
 table {
   width: max-content;
-  margin-top: 0;
-  margin-bottom: $sp-4;
+  margin: 0;
 }
 
 th {
@@ -118,8 +122,8 @@ ul.paginator > li.active {
 }
 
 @keyframes ghost-anim {
-  from {box-shadow: inset 0 -14px $neutral-4;}
-  to {box-shadow: inset 0 -14px lighten($neutral-4, 3);}
+  from {box-shadow: inset 0 -20px $neutral-4;}
+  to {box-shadow: inset 0 -20px lighten($neutral-4, 3);}
 }
 
 .cell-ghost {
@@ -128,7 +132,7 @@ ul.paginator > li.active {
   span {
     display: block;
     width: 100%;
-    height: 14px;
+    height: 20px;
 
     animation-name: ghost-anim;
     animation-duration: 500ms;
