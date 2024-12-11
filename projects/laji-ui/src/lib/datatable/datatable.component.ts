@@ -259,8 +259,10 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
       }
       const sortFn = sortableColumnIsDefaultColumn(col)
         ? (a: DatatableRow<RowProp>, b: DatatableRow<RowProp>) =>
-          a[col.prop] > b[col.prop] ? 1 : a[col.prop] < b[col.prop] ? -1 : 0
-        : col.sortFn; // col is sortable with template
+          col.sortFn // col doesn't have a celltemplate
+            ? col.sortFn(a, b)
+            : a[col.prop] > b[col.prop] ? 1 : a[col.prop] < b[col.prop] ? -1 : 0
+        : col.sortFn; // col has a celltemplate
       const sortDir = (a: DatatableRow<RowProp>, b: DatatableRow<RowProp>) => {
         if (sort.dir === 'DESC') {
           [b, a] = [a, b];
