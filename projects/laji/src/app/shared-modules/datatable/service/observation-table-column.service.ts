@@ -244,7 +244,8 @@ export const COLUMNS: IColumns = {
   'gathering.interpretations.biogeographicalProvinceDisplayname': {
     name: 'gathering.interpretations.biogeographicalProvinceDisplayname',
     label: 'result.gathering.biogeographicalProvince',
-    aggregateBy: 'gathering.interpretations.biogeographicalProvince,gathering.interpretations.biogeographicalProvinceDisplayname'
+    aggregateBy: 'gathering.interpretations.biogeographicalProvince,gathering.interpretations.biogeographicalProvinceDisplayname',
+    sortBy: 'gathering.interpretations.biogeographicalProvince'
   },
   'gathering.interpretations.municipalityDisplayname': {
     name: 'gathering.interpretations.municipalityDisplayname',
