@@ -27,8 +27,8 @@
   </div>
 	<div class="lu-modal-footer">
 		<laji-spinner [spinning]="loading" [overlay]="false" [hideContentWhileLoading]="true">
-			<div class="d-flex justify-end">
-				<div class="checkbox m-0">
+			<div class="d-flex justify-end items-center">
+				<div class="checkbox m-0 mr-4">
 					<label><input type="checkbox" [(ngModel)]="termsAccepted">{{ 'observation.download.api.terms.1' | translate }}<a href="https://cdn.laji.fi/files/vir/vir_apikey_kayttoehdot.pdf" target="_blank">{{ 'observation.download.api.terms.2' | translate }}</a></label>
 				</div>
 				<button type="button"
