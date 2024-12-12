@@ -46,7 +46,7 @@
     </div>
 </div>
 </ng-template>
-<div class="row removed-tags" *ngIf="(annotationRemovableTags$ | async)?.length > 0 && expert && (personRoleAnnotation === 'MMAN.expert' || personRoleAnnotation === 'MMAN.ictAdmin' ) && (unit.interpretations && unit.interpretations.effectiveTags && unit.interpretations.effectiveTags.length > 0)">
+<div class="row removed-tags" *ngIf="((annotationRemovableTags$ | async) ?? []).length > 0 && expert && (personRoleAnnotation === 'MMAN.expert' || personRoleAnnotation === 'MMAN.ictAdmin' ) && (unit.interpretations && unit.interpretations.effectiveTags && unit.interpretations.effectiveTags.length > 0)">
       <div class="col-sm-12">
          <label>{{ 'annotation.removeTags' | translate }}</label>
          <div *ngFor="let item of annotationRemovableTags$ | async " class="list-checkbox">
