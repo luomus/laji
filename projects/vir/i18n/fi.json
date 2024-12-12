@@ -28,7 +28,7 @@
   "search.result.load": "Lataa aineisto",
   "select.organisation": "Valitse organisaation",
   "theme.geoapi": "Geoapi",
-  "theme.geoapi.desc": "Geoapi kuvaus",
+  "theme.geoapi.desc": "Viranomaisrajausten karkeistamattomat havainnot OGC API - Features -rajapinnasta.",
   "theme.arcgis": "Paikkatieto",
   "theme.arcgis.desc": "Täältä löydät ohjeita mm. lajihavaintojen lataukseen ja käyttöön paikkatietomuodossa.",
   "theme.excel": "Tiedon vienti Exceliin",
