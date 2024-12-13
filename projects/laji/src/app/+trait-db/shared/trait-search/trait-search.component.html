@@ -4,6 +4,8 @@
 <button>Download</button>
 <button>Filter</button>
 
+<laji-trait-search-filters></laji-trait-search-filters>
+
 <lu-datatable
   [rows]="searchResult?.res.results ?? []"
   [columns]="[
@@ -53,3 +55,4 @@
     {{ data.a }}
   </div>
 </ng-template>
+
