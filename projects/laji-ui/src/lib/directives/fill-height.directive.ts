@@ -11,10 +11,10 @@ export interface IFillHeightOptions {
   selector: '[luFillHeight]'
 })
 export class FillHeightDirective implements OnDestroy, AfterViewInit, OnChanges {
-  @Input('luFillHeight') options: IFillHeightOptions;
+  @Input('luFillHeight') options!: IFillHeightOptions;
 
-  private destroyLoadListener: () => void;
-  private destroyResizeListener: () => void;
+  private destroyLoadListener?: () => void;
+  private destroyResizeListener?: () => void;
 
   constructor(private el: ElementRef,
     private renderer: Renderer2,
@@ -40,7 +40,7 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit, OnChanges 
     this.destroyResizeListener = this.renderer.listen(window, 'resize', this.onResize.bind(this));
   }
 
-  private onResize(event) {
+  private onResize(event: any) {
     if (event && event['ignore-fill-height']) {
       return;
     }
@@ -60,11 +60,11 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit, OnChanges 
     this.renderer.setStyle(this.el.nativeElement, 'height', h.toString() + 'px');
     try {
       const event = new Event('resize');
-      event['ignore-fill-height'] = true;
+      (event as any)['ignore-fill-height'] = true;
       window.dispatchEvent(event);
     } catch (e) {
       const evt = window.document.createEvent('UIEvents');
-      evt['ignore-fill-height'] = true;
+      (evt as any)['ignore-fill-height'] = true;
       // @ts-ignore
       evt.initUIEvent('resize', true, false, window, 0);
       window.dispatchEvent(evt);

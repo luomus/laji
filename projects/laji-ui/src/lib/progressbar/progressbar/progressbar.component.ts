@@ -12,8 +12,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class ProgressbarComponent {
 
-  @Input() max: number;
-  @Input() value: number;
+  @Input() max!: number;
+  @Input() value!: number;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   Math = Math;

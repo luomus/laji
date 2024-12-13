@@ -157,7 +157,7 @@ export class ComponentLoader<T> {
       //   .createComponent(this._componentFactory, 0, injector, this._contentRef.nodes);
       this.instance = this._componentRef.instance;
 
-      Object.assign(this._componentRef.instance, opts);
+      Object.assign(this._componentRef.instance as any, opts);
 
       if (this.container instanceof ElementRef) {
         this.container.nativeElement.appendChild(

@@ -12,7 +12,7 @@ export class TaxonNameComponent implements OnInit {
   _taxon: any;
   currentLang = this.transations.currentLang;
 
-  @Input() showImage: boolean;
+  @Input() showImage?: boolean;
   @Input() unit: any;
 
 

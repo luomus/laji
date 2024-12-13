@@ -112,7 +112,7 @@ export class ObservationFacade {
     this.updateState({..._state, ...this.persistentState});
   }
 
-  activeTab(tab: string) {
+  activeTab(tab?: string) {
     if (_state.activeTab !== tab) {
       this.updateState({..._state, activeTab: tab});
     }

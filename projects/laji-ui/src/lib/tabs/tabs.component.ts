@@ -31,7 +31,7 @@ import { Subject } from 'rxjs';
 export class TabsComponent implements AfterContentInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
-  private _tabComponents: QueryList<TabComponent>;
+  private _tabComponents!: QueryList<TabComponent>;
   @ContentChildren(TabComponent) set tabComponents(tabs: QueryList<TabComponent>) {
     this._tabComponents = tabs;
     this.reload();
