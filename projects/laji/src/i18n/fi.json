@@ -214,7 +214,7 @@
   "download.shpDeprecationWarning": "Tiedostolataus ESRI Shapefile (.shp) -muodossa loppuu 31.12.2024. Käytä sen sijaan Geopackage (.gpkg) -tiedostomuotoa. <a target='_blank' href='https://laji.fi/news/8363'>Lue lisää muutoksesta</a>.",
   "downloadRequest.accessed": "haettu",
   "downloadRequest.apiKey": "API-avain",
-  "downloadRequest.geoApiKey": "Geoapi-avain",
+  "downloadRequest.geoApiKey": "OGC API-avain",
   "downloadRequest.apiKeyExpires": "Voimassaolon päättymispäivä",
   "downloadRequest.apiKeyRequested": "Luontipäivä",
   "downloadRequest.approximateMatches": "Osumien lkm",

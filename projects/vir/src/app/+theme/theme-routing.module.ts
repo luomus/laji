@@ -9,7 +9,7 @@ const routes: Routes = [
     loadChildren: () => import('../../../../laji/src/app/shared-modules/dataset-metadata/dataset-metadata.module').then(m => m.DatasetMetadataModule)
   },
   {
-    path: 'geoapi',
+    path: 'ogcapi',
     loadChildren: () => import('../+geoapi/geoapi.module').then(m => m.GeoapiModule)
   },
 ];
