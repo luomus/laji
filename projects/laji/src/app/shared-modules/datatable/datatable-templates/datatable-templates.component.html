@@ -27,7 +27,7 @@
       <span style="display: inline" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
         {{ value.linkings.taxon.scientificName }}
       </span>
-      &mdash;
+      &nbsp;
       <a
         [routerLink]="['/taxon', ((value.linkings.taxon.id || value.linkings.taxon.qname) | toQName)] | localize"
         [luTooltip]="'showSpeciesCard' | translate"
@@ -38,7 +38,7 @@
         {{ 'result.taxon' | translate }}
         <i class="glyphicon glyphicon-tag"></i>
       </a>
-      &mdash;
+      &nbsp;
       <a
         [href]="value.unitId"
         [luTooltip]="'showObservation' | translate"
