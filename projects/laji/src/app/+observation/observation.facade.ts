@@ -65,7 +65,7 @@ export class ObservationFacade {
   static PERSON_TOKEN = 'true';
 
   @LocalStorage('observationState', _persistentState)
-  private persistentState: IPersistentState;
+  private persistentState!: IPersistentState;
 
   private store  = new BehaviorSubject<IObservationState>(_state);
   state$ = this.store.asObservable();
@@ -130,9 +130,11 @@ export class ObservationFacade {
       tap(loggedIn => {
         const query = {...this.emptyQuery, ...warehouseQuery};
 
-        ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
+        (
+          ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'] as (keyof WarehouseQueryInterface)[]
+        ).forEach(key => {
           if (query[key] === ObservationFacade.PERSON_TOKEN) {
-            query[key] =  loggedIn ? this.userService.getToken() : undefined;
+            (query as any)[key] =  loggedIn ? this.userService.getToken() : undefined;
           }
         });
 
@@ -172,7 +174,7 @@ export class ObservationFacade {
     this.updatePersistentState({...this.persistentState, showSearchButtonInfo: false});
   }
 
-  taxaAutocomplete(token: string, informalTaxonGroupId: string[], limit: number): Observable<ITaxonAutocomplete[]> {
+  taxaAutocomplete(token: string, informalTaxonGroupId: string[]|undefined, limit: number): Observable<ITaxonAutocomplete[]> {
     return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
       limit: '' + limit,
@@ -184,7 +186,7 @@ export class ObservationFacade {
       map<Autocomplete[], ITaxonAutocomplete[]>(data => data.map(item => {
         let groups = '';
         if (item.payload && item.payload.informalTaxonGroups) {
-          groups = item.payload.informalTaxonGroups.reduce((prev, curr) => prev + ' ' + curr.id, groups);
+          groups = item.payload.informalTaxonGroups.reduce((prev: string, curr: any) => prev + ' ' + curr.id, groups);
         }
         return {...item, groups};
       }))
@@ -201,14 +203,16 @@ export class ObservationFacade {
 
   private countUnits(query: WarehouseQueryInterface): Observable<number> {
     return this.observationDataService.getData(query).pipe(
-      map(data => data.unitsCount),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      map(data => data.unitsCount!),
       tap(countUnit => this.updateState({..._state, loadingUnits: false, countUnit})),
     );
   }
 
   private countTaxa(query: WarehouseQueryInterface): Observable<number> {
     return this.observationDataService.getData(query).pipe(
-      map(data => data.speciesCount),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      map(data => data.speciesCount!),
       tap(countTaxa => this.updateState({..._state, loadingTaxa: false, countTaxa})),
       tap(() => this.browserService.triggerResizeEvent())
     );

@@ -8,7 +8,7 @@ import { ImportService } from '../../../shared-modules/spreadsheet/service/impor
   styleUrls: ['./sheet-importer.component.scss']
 })
 export class SheetImporterComponent {
-  @ViewChild(ImporterComponent) importerComponent: ImporterComponent;
+  @ViewChild(ImporterComponent) importerComponent!: ImporterComponent;
 
   maxUnitsPerDocument = ImportService.maxPerDocument;
 

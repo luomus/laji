@@ -55,12 +55,12 @@ interface ISections {
 })
 export class ObservationFormComponent implements OnInit, OnDestroy {
 
-  @Input() invasiveStatuses: string[] = [];
+  @Input() invasiveStatuses: (keyof ObservationFormQuery)[] = [];
 
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() mapDraw = new EventEmitter<string>();
 
-  formQuery: ObservationFormQuery;
+  formQuery!: ObservationFormQuery;
 
   showPlace = false;
 
@@ -69,7 +69,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   typeaheadLoading = false;
   autocompleteLimit = 10;
   logCoordinateAccuracyMax = 4;
-  selectedNameTaxon = [];
+  selectedNameTaxon: { id: string; value: string }[] = [];
 
   visible: {[key in keyof ISections]?: boolean} = {};
 
@@ -106,12 +106,12 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   delayedSearch = new Subject();
   delayedSub: Subscription;
-  screenWidthSub: Subscription;
-  containerTypeAhead: string;
-  collectionAndRecordQualityString: string;
+  screenWidthSub?: Subscription;
+  containerTypeAhead?: string;
+  collectionAndRecordQualityString?: string;
   isLoggedIn$ = this.userService.isLoggedIn$;
 
-  private _query: WarehouseQueryInterface;
+  private _query!: WarehouseQueryInterface;
 
   virFilterShortcutQueryParams = VIR_FILTER_SHORTCUT_QUERY_PARAMS;
 
@@ -179,7 +179,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  @Input()
+  @Input({ required: true })
   set query(query: WarehouseQueryInterface) {
     this._query = query;
     this.formQuery = this.searchQueryToFormQuery(query);
@@ -193,7 +193,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.typeaheadLoading = e;
   }
 
-  togglePlace(event) {
+  togglePlace(event: any) {
     // IE triggers this event even when not given by the
     if (!event || !event.hasOwnProperty('value')) {
       return;
@@ -207,12 +207,12 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  onInvasiveCheckBoxToggle(field) {
+  onInvasiveCheckBoxToggle(field: (keyof ObservationFormQuery)|(keyof ObservationFormQuery)[]) {
     if (Array.isArray(field)) {
       this.formQuery.allInvasiveSpecies = !this.formQuery.allInvasiveSpecies;
-      field.map(status => {this.formQuery[status] = this.formQuery.allInvasiveSpecies; });
+      field.map(status => { (this.formQuery as any)[status] = this.formQuery.allInvasiveSpecies; });
     } else {
-      this.formQuery[field] = !this.formQuery[field];
+      (this.formQuery as any)[field] = !this.formQuery[field];
       if (!this.formQuery[field] && this.formQuery.allInvasiveSpecies) {
         this.formQuery.allInvasiveSpecies = false;
       }
@@ -226,7 +226,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     let cnt = 0;
     this.invasiveStatuses.map(key => {
       const realKey = 'MX.' + key;
-      this.formQuery[key] = admins && admins.indexOf(realKey) > -1;
+      (this.formQuery as any)[key] = admins && admins.indexOf(realKey) > -1;
       if (this.formQuery[key]) {
         cnt++;
       }
@@ -251,13 +251,13 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   onSystemIDChange() {
-    this.formQuery.onlyFromCollectionSystems = this.query.sourceId.length === 2
-      && this.query.sourceId.indexOf('KE.3') > -1
-      && this.query.sourceId.indexOf('KE.167') > -1;
+    this.formQuery.onlyFromCollectionSystems = this.query.sourceId?.length === 2
+      && this.query.sourceId?.indexOf('KE.3') > -1
+      && this.query.sourceId?.indexOf('KE.167') > -1;
     this.onQueryChange();
   }
 
-  onCheckBoxToggle(field, selectValue: any = true, isDirect = true) {
+  onCheckBoxToggle(field: any, selectValue: any = true, isDirect = true) {
     if (isDirect) {
       this.query[field] = typeof this.query[field] === 'undefined' || this.query[field] !== selectValue ? selectValue : undefined;
     } else {
@@ -273,25 +273,17 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.delayedQueryChange();
   }
 
-  onMaxCountFinlandChange() {
-    if (this.query.occurrenceCountFinlandMax > 100) {
-      this.query.occurrenceCountFinlandMax = 100;
-    }
-
-    this.delayedQueryChange();
-  }
-
   onSelectionIdChange(selections: {[key: string]: string[]}, target: 'query' | 'formQuery' = 'query') {
     if (target === 'query') {
       Object.keys(selections).forEach(key => {
-        this.query[key] = selections[key];
+        (this.query as any)[key] = selections[key];
       });
 
       this.onQueryChange();
 
     } else if (target === 'formQuery') {
       Object.keys(selections).forEach(key => {
-        this.formQuery[key] = selections[key];
+        (this.formQuery as any)[key] = selections[key];
       });
 
       this.onFormQueryChange();
@@ -345,7 +337,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  onTaxonSelect(event) {
+  onTaxonSelect(event: any) {
     if ((event.key === 'Enter' || (event.value && event.item)) && this.formQuery.taxon) {
       const target = event.item && event.item.key ? event.item.key : this.formQuery.taxon;
       this.query['target'] = this.query['target'] ? [...this.query['target'], target] : [target];
@@ -356,16 +348,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  onTaxonListChange(value) {
-    this.selectedNameTaxon = this.selectedNameTaxon.filter(item => {
-      if (value.indexOf(item.id) > -1) {
-        return item;
-      }
-    });
-    this.updateSearchQuery('target', value);
-  }
-
-  updateSearchQuery(field, value) {
+  updateSearchQuery(field: any, value: any) {
     this.query[field] = value;
     this.onQueryChange();
   }
@@ -383,16 +366,17 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   onAccuracyValueChange() {
-    this.logCoordinateAccuracyMax = Math.log10(this.query.coordinateAccuracyMax);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.logCoordinateAccuracyMax = Math.log10(this.query.coordinateAccuracyMax!);
     this.delayedQueryChange();
   }
 
-  indirectQueryChange(field, value) {
+  indirectQueryChange(field: any, value: any) {
     this.query[field] = value;
     this.onQueryChange();
   }
 
-  subCategoryChange(event) {
+  subCategoryChange(event: any) {
     this.query.collectionAndRecordQuality = undefined;
     this.query.recordQuality = undefined;
 
@@ -424,7 +408,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.delayedSearch.next();
   }
 
-  updateTypeOfOccurrence(event) {
+  updateTypeOfOccurrence(event: any) {
     this.query.typeOfOccurrenceId = event.true;
     this.query.typeOfOccurrenceIdNot = event.false;
     this.onQueryChange();
@@ -434,32 +418,32 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.updateVisible('sections', 'visible');
   }
 
-  private updateVisible(sectionKey: 'sections', visibilityKey: 'visible');
+  private updateVisible(sectionKey: 'sections', visibilityKey: 'visible'): void;
   private updateVisible(
     sectionKey: keyof Pick<this, 'sections'>,
     visibilityKey: keyof Pick<this, 'visible'>
   ) {
     Object.keys(this[sectionKey]).forEach(section => {
       let visible = false;
-      for (const key of this[sectionKey][section]) {
-        const value = this.query[key];
+      for (const key of (this as any)[sectionKey][section]) {
+        const value = this.query[key as keyof WarehouseQueryInterface];
         if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;
         }
       }
-      this[visibilityKey][section] = visible;
+      (this as any)[visibilityKey][section] = visible;
     });
   }
 
-  private hasInMulti(multi, value) {
+  private hasInMulti(multi: any, value: any): boolean {
     if (Array.isArray(value)) {
       return value.filter(val => !this.hasInMulti(multi, val)).length === 0;
     }
     return Array.isArray(multi) && multi.indexOf(value) > -1;
   }
 
-  private getValidDate(date) {
+  private getValidDate(date: string|false) {
     if (date && (moment(date, DATE_FORMAT, true).isValid() || isRelativeDate(date))) {
       return date;
     }
@@ -467,7 +451,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   protected searchQueryToFormQuery(query: WarehouseQueryInterface): ObservationFormQuery {
-    let timeStart, timeEnd;
+    let timeStart: string, timeEnd: string|false;
     if (query.time && query.time[0] && isRelativeDate(query.time[0])) {
       timeStart = query.time[0];
       timeEnd = false;
@@ -498,9 +482,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       otherPlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.otherPlantPest'),
       allInvasiveSpecies: this.invasiveStatuses.length > 0 && this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
       onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3'])
-        && query.sourceId.length === 2
+        && query.sourceId?.length === 2
         && this.hasInMulti(query.superRecordBasis, ['PRESERVED_SPECIMEN'])
-        && query.superRecordBasis.length === 1,
+        && query.superRecordBasis?.length === 1,
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
       asNotEditorOrObserver: !!query.editorOrObserverIsNotPersonToken,
@@ -520,7 +504,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     //const query = this.query;
 
     if (isRelativeDate(formQuery.timeStart) && !formQuery.timeEnd) {
-      query.time = [formQuery.timeStart];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      query.time = [formQuery.timeStart!];
     } else {
       const time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
       query.time = time.length > 0 ? [time] : undefined;
@@ -568,7 +553,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.query = query;
   }
 
-  private parseDate(start, end) {
+  private parseDate(start?: string, end?: string) {
     if (!start && !end) {
       return '';
     }
@@ -581,9 +566,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     return (start || '') + '/' + (end || '');
   }
 
-  updateTime(dates, startTarget?: 'time');
-  updateTime(dates, startTarget: keyof WarehouseTimeQueryInterface, endTarget: keyof WarehouseTimeQueryInterface );
-  updateTime(dates, startTarget: 'time' | keyof WarehouseTimeQueryInterface = 'time', endTarget?: keyof WarehouseTimeQueryInterface ) {
+  updateTime(dates: number, startTarget?: 'time'): void;
+  updateTime(dates: number, startTarget: keyof WarehouseTimeQueryInterface, endTarget: keyof WarehouseTimeQueryInterface ): void;
+  updateTime(dates: number, startTarget: 'time' | keyof WarehouseTimeQueryInterface = 'time', endTarget?: keyof WarehouseTimeQueryInterface ) {
     if (dates === 365) {
       const today = new Date();
       const oneJan = new Date(today.getFullYear(), 0, 1);
@@ -596,12 +581,13 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       this.onFormQueryChange();
     } else {
       this.query[startTarget] = now.subtract(dates, 'days').format('YYYY-MM-DD');
-      this.query[endTarget] = undefined;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.query[endTarget!] = undefined;
       this.onQueryChange();
     }
   }
 
-  private checkSubcategoriesExceptGlobalAreEquals(selected, categories) {
+  private checkSubcategoriesExceptGlobalAreEquals(selected: Record<string, any>, categories: string[]) {
     const keys = Object.keys(selected);
     const filteredKeys = keys.filter(item => item !== 'GLOBAL');
 
@@ -621,7 +607,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  private keepGlobalKey(array) {
+  private keepGlobalKey(array: any[]) {
     if (array.filter(item => item.checkboxValue === true).length > 0) {
       return array.filter(item => item.checkboxValue === true).map(a => a.id);
     } else {
