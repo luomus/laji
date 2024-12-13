@@ -7,8 +7,8 @@
                                 [displayInstructions]="false"
                                 lajiFormOption="logo title options.hideTES"
       ></laji-project-form-header>
-      <laji-info-page *ngIf="(data.form.options?.about | multiLang)"
-                      [page]="data.form.options?.about | multiLang: true:undefined:'%value%'"
+      <laji-info-page *ngIf="(data.form.options.about | multiLang)"
+                      [page]="data.form.options.about | multiLang: true:undefined:'%value%'"
                       lajiFormOption="options.about"
       ></laji-info-page>
     </ng-container>
@@ -17,7 +17,7 @@
     </ng-template>
     <ng-container *ngIf="data.loggedIn; else loginButton">
       <laji-request *ngIf="data.form.collectionID && data.rights === Rights.NotAllowed"
-                    [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription"
+                    [collectionId]="data.form.collectionID" [disableDescription]="data.form.options.disableRequestDescription!"
                     lajiFormOption="options.disableRequestDescription">
       </laji-request>
     </ng-container>
@@ -39,18 +39,18 @@
         {{ 'haseka.mobile.newObservation' | translate }}
       </button>
     </ng-container>
-    <laji-haseka-latest [collectionID]="data.form.collectionID"
+    <laji-haseka-latest [collectionID]="data.form.collectionID!"
                         [showFormNames]="false"
                         [complainLocality]="false"
                         (showViewer)="showDocumentViewer($event)"
     ></laji-haseka-latest>
     <br />
     <div *ngIf="data.form.options?.footer?.footerDescription || data.form.options?.footer?.footerLogos" lajiFormOption="options.footer.footerDescription options.footer.footerLogos">
-      <ng-container *ngIf="data.form.options.footer.footerDescription">
-        {{ data.form.options.footer.footerDescription }}
+      <ng-container *ngIf="data.form.options.footer!.footerDescription">
+        {{ data.form.options.footer!.footerDescription }}
       </ng-container>
       <ul class="form-footer">
-        <ng-container *ngFor="let logo of data.form.options.footer.footerLogos | keyvalue">
+        <ng-container *ngFor="let logo of data.form.options.footer!.footerLogos | keyvalue">
           <li>
             <a [href]="logo.value" target="_blank">
               <img lajiLazyImage [src]="logo.key">

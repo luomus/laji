@@ -12,25 +12,26 @@ export class MemberIdPillListComponent {
 
   @Output() updateList = new EventEmitter();
 
-  _list;
+  _list?: string[];
 
   constructor(private teamMemberService: TeamMemberService) { }
 
-  @Input() set list(data) {
+  @Input() set list(data: string|string[]) {
     if (typeof data === 'string') {
       this._list = data.split(',');
     } else if (Array.isArray(data)) {
-      const items = [];
+      const items: string[] = [];
       data.map(item => items.push(...item.split(',')));
       this._list = items;
     }
   }
 
-  remove(item) {
-    this.updateList.emit(this._list.filter(value => value !== item));
+  remove(item: string) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.updateList.emit(this._list!.filter(value => value !== item));
   }
 
-  getName(id) {
+  getName(id: string) {
     return this.teamMemberService.getName(id);
   }
 

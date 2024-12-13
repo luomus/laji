@@ -40,7 +40,7 @@ let _state: IVihkoState = {
 export class HasekaFacade implements OnDestroy {
 
   @LocalStorage('vihkoState', _persistentState)
-  private persistentState: IPersistentState;
+  private persistentState!: IPersistentState;
 
   private store  = new BehaviorSubject<IVihkoState>(_state);
   state$ = this.store.asObservable();
@@ -59,7 +59,7 @@ export class HasekaFacade implements OnDestroy {
     latestDocs: this.latestDocs$
   });
 
-  private userSub: Subscription;
+  private userSub?: Subscription;
 
   constructor(
     private browserService: BrowserService,

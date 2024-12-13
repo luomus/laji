@@ -16,12 +16,12 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HasekaComponent implements OnInit, OnDestroy {
 
-  public email: string;
+  public email?: string;
   public isFront = false;
   public showLatest = true;
   public publicity = Document.PublicityRestrictionsEnum;
 
-  private subRoute: Subscription;
+  private subRoute!: Subscription;
 
   constructor(
     public userService: UserService,

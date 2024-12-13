@@ -8,18 +8,18 @@ import { IdService } from '../../shared/service/id.service';
 })
 export class ObservationFiltersComponent {
 
-  @Input() query: WarehouseQueryInterface;
-  @Input() visible: boolean;
+  @Input({ required: true }) query!: WarehouseQueryInterface;
+  @Input({ required: true }) visible!: boolean;
   @Input() onlyCount = true;
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
 
-  onRecordBasis(event) {
+  onRecordBasis(event: any) {
     if (event.row && event.row.unit && event.row.unit.superRecordBasis) {
       this.collectionFilterSelect('superRecordBasis', event.row.unit.superRecordBasis);
     }
   }
 
-  onCollectionSelect(event) {
+  onCollectionSelect(event: any) {
     if (event.row && event.row.document && event.row.document.collectionId) {
       this.collectionFilterSelect('collectionId', IdService.getId(event.row.document.collectionId));
     }

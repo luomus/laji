@@ -44,9 +44,9 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() loading!: boolean;
   @Input() accessRequested!: boolean;
   @Input() formRights!: Rights;
-  @Input() useLabel!: string;
+  @Input() useLabel?: string;
   @Input() useDisabled = false;
-  @Input() reloadSubmissions$!: Observable<void>;
+  @Input() reloadSubmissions$?: Observable<void>;
 
   editButtonVisible: boolean | undefined;
 

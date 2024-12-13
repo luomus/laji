@@ -26,7 +26,7 @@ export class FormSampleComponent extends ObservationFormComponent {
     return super.searchQueryToFormQuery(query);
   }
 
-  onTaxonSelect(event) {
+  onTaxonSelect(event: any) {
     if ((event.key === 'Enter' || (event.value && event.item)) && this.formQuery.taxon) {
       const taxon = this.formQuery.taxon.endsWith('*') ? this.formQuery.taxon : this.formQuery.taxon + '*';
       this.query['target'] = this.query['target'] ?
@@ -36,7 +36,7 @@ export class FormSampleComponent extends ObservationFormComponent {
     }
   }
 
-  parseFacts(facts: string|string[]) {
+  parseFacts(facts?: string|string[]) {
     if (Array.isArray(facts)) {
       facts.forEach(fact => this.parseFacts(fact));
     }
