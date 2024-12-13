@@ -22,18 +22,31 @@
                 + (value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName ? ' &mdash; ': '')
                 + (value.linkings.taxon.scientificName ? value.linkings.taxon.scientificName : '')"
     >
-      <a [href]="value.unitId" target="_blank">
-        {{ value.linkings.taxon.vernacularName | multiLang:false }}
-        <span class="inline" *ngIf="value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName && (value.linkings.taxon.vernacularName | multiLang:false)"> &mdash; </span>
-        <span style="display: inline" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
-          {{ value.linkings.taxon.scientificName }}
-        </span>
-      </a>
+      {{ value.linkings.taxon.vernacularName | multiLang:false }}
+      <span class="inline" *ngIf="value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName && (value.linkings.taxon.vernacularName | multiLang:false)"> &mdash; </span>
+      <span style="display: inline" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
+        {{ value.linkings.taxon.scientificName }}
+      </span>
+      &mdash;
       <a
+        [routerLink]="['/taxon', ((value.linkings.taxon.id || value.linkings.taxon.qname) | toQName)] | localize"
         [luTooltip]="'showSpeciesCard' | translate"
         [placement]="'right'"
-        target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings.taxon.id || value.linkings.taxon.qname) | toQName)] | localize" (click)="onTaxonLinkClick($event)">
+        target="{{column.target || '_self'}}"
+        (click)="onTaxonLinkClick($event)"
+      >
+        {{ 'result.taxon' | translate }}
         <i class="glyphicon glyphicon-tag"></i>
+      </a>
+      &mdash;
+      <a
+        [href]="value.unitId"
+        [luTooltip]="'showObservation' | translate"
+        [placement]="'right'"
+        target="_blank"
+      >
+        {{ 'result.unit' | translate }}
+        <i class="glyphicon glyphicon-zoom-in"></i>
       </a>
     </span>
     <ng-template #taxonVerbatim>

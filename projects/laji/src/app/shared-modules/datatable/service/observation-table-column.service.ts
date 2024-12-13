@@ -125,7 +125,7 @@ export const COLUMNS: IColumns = {
       'unit.linkings.taxon.nameSwedish,' +
       'unit.linkings.taxon.scientificName' +
       'unit.linkings.taxon.cursiveName',
-    width: 300,
+    width: 400,
     required: environment.type === Global.type.vir
   },
   'unit.taxonVerbatim': {
