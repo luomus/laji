@@ -8,6 +8,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class IconComponent {
 
-  @Input() type: 'close' | 'menu';
+  @Input() type!: 'close' | 'menu';
 
 }

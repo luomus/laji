@@ -257,7 +257,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  onCheckBoxToggle(field: any, selectValue: any = true, isDirect = true) {
+  onCheckBoxToggle(field: keyof WarehouseQueryInterface, selectValue: any = true, isDirect = true) {
     if (isDirect) {
       this.query[field] = typeof this.query[field] === 'undefined' || this.query[field] !== selectValue ? selectValue : undefined;
     } else {
@@ -348,7 +348,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateSearchQuery(field: any, value: any) {
+  updateSearchQuery(field: keyof WarehouseQueryInterface, value: any) {
     this.query[field] = value;
     this.onQueryChange();
   }
@@ -371,7 +371,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.delayedQueryChange();
   }
 
-  indirectQueryChange(field: any, value: any) {
+  indirectQueryChange(field: keyof WarehouseQueryInterface, value: any) {
     this.query[field] = value;
     this.onQueryChange();
   }

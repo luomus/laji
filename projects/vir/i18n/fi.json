@@ -18,7 +18,7 @@
   "observation.download.api.terms.2": "käyttöehdot",
   "observation.download.apiTitle": "API-avain",
   "observation.download.publicTitle": "Havainnot: kattava havaintotietolataus",
-  "result.load.api": "Saat käyttöösi avaimen, jota voit käyttää Lajitietokeskuksen REST-rajapinnassa hakutulostasi vastaavan tiedon lukemiseksi ja lataamiseksi. Avain on voimassa valitsemasi määräajan ja tieto käytöstäsi välittyy aineistojen omistajille ja muille viranomaisportaalin käyttäjille.\n\nHuom.! Virva-hakua vastaavan aineiston voit hakea myös OGC API -rajapinnasta, Geoapista. Lue lisää <a href=\"https://viranomaiset.laji.fi/theme/geoapi\"> Geoapista</a>. ",
+  "result.load.api": "Saat käyttöösi avaimen, jota voit käyttää Lajitietokeskuksen REST-rajapinnassa hakutulostasi vastaavan tiedon lukemiseksi ja lataamiseksi. Avain on voimassa valitsemasi määräajan ja tieto käytöstäsi välittyy aineistojen omistajille ja muille viranomaisportaalin käyttäjille.<br><br>\n\nHuom.! Virva-hakua vastaavan aineiston voit hakea myös OGC API -rajapinnasta. Lue lisää <a href=\"https://viranomaiset.laji.fi/theme/geoapi\"> OGC API -rajapinnasta</a>. ",
   "result.load.error.minQuery": "Aineistoa on rajattava vähintään yhdellä rajauksella.",
   "result.load.intro": "Rajauksesi kattaa <b>{{count}}</b> havaintoa <b>{{species}}</b> lajista.",
   "result.load.introPublic": "Kattava havaintotietolataus tuottaa tiedoston, jossa on kaikki havainnoista Lajitietokeskuksen tietovarastosta ladattavissa oleva tieto. Tiedoston muodostus voi viedä jonkun aikaa, jos havaintoja on paljon. Kun tiedosto on valmis, se on ladattavissa \"Aineistojen käyttö\" -osion \"Omat havaintotietolataukseni\"-kohdassa. Aineisto on ladattavissa TSV-, Shapefile- ja GeoPackage-tiedostomuodoissa.",
