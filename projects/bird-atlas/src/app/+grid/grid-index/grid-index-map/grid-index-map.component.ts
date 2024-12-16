@@ -28,7 +28,7 @@ const getFeatureCollection = (grid: AtlasGridSquare[]) => ({
 });
 export const getGetFeatureStyle = (grid: AtlasGridSquare[], visualizationMode: VisualizationMode) => (
   (opt: GetFeatureStyleOptions): PathOptions => {
-    const sq: AtlasGridSquare = grid[opt.featureIdx];
+    const sq: AtlasGridSquare = grid[opt.featureIdx!];
     const o: PathOptions = {
       weight: 0,
       color: '#000000',
@@ -47,15 +47,15 @@ export const getGetFeatureStyle = (grid: AtlasGridSquare[], visualizationMode: V
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChanges {
-  @Input() atlasGrid: AtlasGridResponse;
+  @Input() atlasGrid!: AtlasGridResponse;
   @Output() selectYKJ = new EventEmitter<string>();
 
-  @ViewChild('lajiMap', { static: false }) lajiMapElem: ElementRef;
+  @ViewChild('lajiMap', { static: false }) lajiMapElem!: ElementRef;
 
   visualization: VisualizationMode = 'activityCategory';
 
   private map: any;
-  private mapData$ = new BehaviorSubject<MapData>(undefined);
+  private mapData$ = new BehaviorSubject<MapData | undefined>(undefined);
   private mapInitialized = false;
   private unsubscribe$ = new Subject<void>();
 
@@ -88,7 +88,7 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
       takeUntil(this.unsubscribe$),
       filter(d => d !== undefined)
     ).subscribe(mapData => {
-      this.map.setData(mapData.data);
+      this.map.setData(mapData!.data);
       if (!this.mapInitialized) {
         if (pathData['map']) {
           this.map.setNormalizedZoom(pathData['map'].zoom);
@@ -116,7 +116,7 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
         maxFillOpacity: 0.8,
         on: {
           click: (e, d) => {
-            this.selectYKJ.emit((<any>d.feature.geometry).coordinateVerbatim);
+            this.selectYKJ.emit((<any>d.feature!.geometry).coordinateVerbatim);
           }
         }
       }
@@ -126,7 +126,7 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
   onVisualizationChange(v: VisualizationMode) {
     if (v === this.visualization) { return; }
     this.visualization = v;
-    const d = this.mapData$.getValue(); // mutate previous mapData for performance reasons
+    const d = this.mapData$.getValue()!; // mutate previous mapData for performance reasons
     d.data.getFeatureStyle = getGetFeatureStyle(d.grid, v);
     this.mapData$.next(d);
   }

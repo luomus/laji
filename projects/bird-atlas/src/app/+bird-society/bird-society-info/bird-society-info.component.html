@@ -33,7 +33,7 @@
       </ng-container>
     <ng-container *ngIf="taxonVisualizationLoading"><laji-spinner class="d-block m-4"></laji-spinner></ng-container>
     <button *ngIf="selectedTaxon" class="pill" (click)="onTaxonDeselect()" role="button">{{ selectedTaxon.vernacularName.fi }} <span class="glyphicon glyphicon-remove"></span></button> 
-    <ba-bird-society-info-species-table class="d-block my-4" [taxa]="birdSociety.taxa" (rowClick)="onTableRowClick($event)"></ba-bird-society-info-species-table>
+    <ba-bird-society-info-species-table class="d-block my-4" [taxa]="birdSociety!.taxa" (rowClick)="onTableRowClick($event)"></ba-bird-society-info-species-table>
     </div>
   </div>
 </div>
@@ -57,7 +57,7 @@
 </ng-template>
 
 <ng-template #square>
-  <div class="grid-square-panel" *ngIf="birdSociety.gridSquares[selectedDataIdx] as selected">
+  <div class="grid-square-panel" *ngIf="birdSociety!.gridSquares[selectedDataIdx] as selected">
     <div class="d-flex flex-row justify-between">
       <h3 class="mr-4">{{ selected.name }} <span class="coords">({{selected.coordinates}})</span></h3>
       <button class="btn btn-default close-btn" (click)="resetSelected()">X</button>

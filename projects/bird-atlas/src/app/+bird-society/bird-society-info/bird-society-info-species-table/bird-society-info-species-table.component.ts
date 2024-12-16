@@ -24,19 +24,19 @@ type AugmentedAtlasTaxon = AtlasTaxon & {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdSocietyInfoSpeciesTableComponent implements OnChanges, AfterViewInit, OnDestroy, OnInit {
-  @ViewChild('alignRight') alignRightTemplate: TemplateRef<any>;
-  @ViewChild('textfield') textfieldElement: ElementRef<HTMLInputElement>;
+  @ViewChild('alignRight') alignRightTemplate!: TemplateRef<any>;
+  @ViewChild('textfield') textfieldElement!: ElementRef<HTMLInputElement>;
 
-  @Input() taxa: AtlasTaxon[];
+  @Input() taxa!: AtlasTaxon[];
   @Output() rowClick = new EventEmitter<AtlasTaxon | null>();
 
   filteredRows$ = new Subject<AugmentedAtlasTaxon[]>();
-  cols: TableColumn[];
+  cols!: TableColumn[];
   selected: AtlasTaxon[] = [];
 
   private unsubscribe$ = new Subject<void>();
-  private search$ = new BehaviorSubject<string>(undefined);
-  private rows: AugmentedAtlasTaxon[];
+  private search$ = new BehaviorSubject<string | undefined>(undefined);
+  private rows!: AugmentedAtlasTaxon[];
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -46,7 +46,7 @@ export class BirdSocietyInfoSpeciesTableComponent implements OnChanges, AfterVie
       debounceTime(200),
       takeUntil(this.unsubscribe$)
     ).subscribe(s => {
-      const filterStr = s.toLowerCase();
+      const filterStr = s!.toLowerCase();
       this.filteredRows$.next(
         this.rows.filter(
           r => (r.vernacularName.fi + r.scientificName).toLowerCase().includes(filterStr)
@@ -84,7 +84,7 @@ export class BirdSocietyInfoSpeciesTableComponent implements OnChanges, AfterVie
   }
 
   ngOnChanges() {
-    this.rows = this.taxa.map(t => (<AugmentedAtlasTaxon>{...t, classCounts: {certain: t.classCounts['MY.atlasClassEnumD'], all: t.classCounts.all}}));
+    this.rows = this.taxa.map(t => (<AugmentedAtlasTaxon>{...t, classCounts: {certain: t.classCounts!['MY.atlasClassEnumD'], all: t.classCounts!.all}}));
     this.search$.next(this.textfieldElement?.nativeElement?.value ?? '');
   }
 
@@ -116,7 +116,7 @@ export class BirdSocietyInfoSpeciesTableComponent implements OnChanges, AfterVie
     window.open(encodedUri);
   }
 
-  onSearchKeyUp(event) {
+  onSearchKeyUp(event: any) {
     this.search$.next(event.target.value);
   }
 

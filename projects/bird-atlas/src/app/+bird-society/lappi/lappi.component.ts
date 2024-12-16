@@ -32,9 +32,9 @@ const downloadWithFilename = (encodedUri: string, filename: string) => {
   styleUrls: ['./lappi.component.scss']
 })
 export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('linkCell') linkCellTemplate: TemplateRef<any>;
-  @ViewChild('ykjCell') ykjCellTemplate: TemplateRef<any>;
-  @ViewChild('percentageCell') percentageCellTemplate: TemplateRef<any>;
+  @ViewChild('linkCell') linkCellTemplate!: TemplateRef<any>;
+  @ViewChild('ykjCell') ykjCellTemplate!: TemplateRef<any>;
+  @ViewChild('percentageCell') percentageCellTemplate!: TemplateRef<any>;
 
   lappiStats$ = this.atlasApi.getLappiStats().pipe(
     map(a => a.map((e, i) => (
@@ -46,11 +46,11 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
       }
     )))
   );
-  cols: TableColumn[];
+  cols!: TableColumn[];
   round = Math.round;
 
-  private modalRef: ModalRef;
-  private hideModalSubscription: Subscription;
+  private modalRef: ModalRef | undefined;
+  private hideModalSubscription: Subscription | undefined;
 
   constructor(
     private atlasApi: AtlasApiService,
@@ -104,13 +104,13 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  onTableRowSelect(e) {
+  onTableRowSelect(e: any) {
     this.hideModalSubscription?.unsubscribe();
     this.modalRef = this.modalService.show(LappiModalComponent, {size: 'lg'});
     this.modalRef.content.rows = e.selected[0].grids;
     this.modalRef.content.index = e.selected[0].index;
     this.hideModalSubscription = this.modalRef.content.hideModal.subscribe(() => {
-      this.modalRef.hide();
+      this.modalRef!.hide();
       this.hideModalSubscription?.unsubscribe();
     });
   }

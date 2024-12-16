@@ -30,7 +30,7 @@ type AugmentedLegend = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridIndexMapTableComponent implements OnChanges {
-  @Input() activityCategoryStats: ActivityCategoryStats;
+  @Input() activityCategoryStats!: ActivityCategoryStats;
 
   legend: AugmentedLegend = legends['activityCategory'];
 
