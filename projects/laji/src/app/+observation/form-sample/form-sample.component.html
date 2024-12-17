@@ -45,7 +45,7 @@
       ]"></laji-select>
 </div>
 
-<section class="laji-panel" laji-panel [title]="'MF.sample' | label" [autoToggle]="true" [open]="visible['sample']">
+<section class="laji-panel" laji-panel [title]="'MF.sample' | label" [autoToggle]="true" [open]="visible['sample']!">
   <laji-metadata-select
     [open]="true"
     [(ngModel)]="query.sampleType"
@@ -158,7 +158,7 @@
   </div>
 </section>
 
-<section class="laji-panel" laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true"  [open]="visible['time']">
+<section class="laji-panel" laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true"  [open]="visible['time']!">
   <div class="row">
     <div class="col-sm-12">
       <label>{{ 'observation.form.time' | translate }}</label><laji-info>{{ 'observation.info.time' | translate }}
@@ -195,7 +195,7 @@
 
 <section class="laji-panel" laji-panel
       [autoToggle]="true"
-      [open]="showPlace || visible['place']"
+      [open]="showPlace || visible['place']!"
       (activate)="togglePlace($event)"
       [title]="'observation.form.place' | translate">
   <div class="form-group">
@@ -227,7 +227,7 @@
   </div>
 </section>
 
-<section class="laji-panel" laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true"  [open]="visible['observer']">
+<section class="laji-panel" laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true"  [open]="visible['observer']!">
   <div class="row">
     <div class="col-lg-12">
       <label>{{ 'observation.form.team' | translate }}</label><laji-info>{{ 'observation.info.team' | translate }}
@@ -235,15 +235,15 @@
     </div>
     <div class="col-lg-12">
       <laji-team
-        [(memberIds)]="query.teamMemberId"
-        [(members)]="query.teamMember"
+        [(memberIds)]="query.teamMemberId!"
+        [(members)]="query.teamMember!"
         (update)="onQueryChange()"
       ></laji-team>
     </div>
   </div>
 </section>
 
-<section class="laji-panel" laji-panel [title]="'observation.form.unit' | translate" [autoToggle]="true"  [open]="visible['individual']">
+<section class="laji-panel" laji-panel [title]="'observation.form.unit' | translate" [autoToggle]="true"  [open]="visible['individual']!">
   <div class="form-group">
     <div class="col-lg-12">
       <laji-metadata-select
@@ -271,7 +271,7 @@
     </div>
   </div>
 </section>
-<section class="laji-panel" laji-panel [title]="'observation.form.keywords' | translate" [autoToggle]="true" [open]="visible['keywords']">
+<section class="laji-panel" laji-panel [title]="'observation.form.keywords' | translate" [autoToggle]="true" [open]="visible['keywords']!">
   <div class="row">
     <div class="col-lg-12">
       <label>{{ 'observation.form.keyword' | translate }}</label><laji-info>{{ 'observation.info.keyword' | translate }}</laji-info>

@@ -1,5 +1,5 @@
 <div class="container mb-8">
-  <laji-theme-breadcrumb [breadcrumb]="breadcrumb$ | async"></laji-theme-breadcrumb>
+  <laji-theme-breadcrumb [breadcrumb]="(breadcrumb$ | async)!"></laji-theme-breadcrumb>
   <div class="laji-page">
     <laji-info-page *ngIf="instructions" [rootPage]="instructions"></laji-info-page>
     <ng-container *lajiBrowserOnly>
@@ -19,8 +19,8 @@
         </li>
         <li *ngFor="let form of forms">
           <ng-container *ngIf="form !== false">
-            <a [routerLink]="['/project/', form?.id] | localize">
-              {{ form?.collectionID | label }},
+            <a [routerLink]="['/project/', form?.id!] | localize">
+              {{ form?.collectionID! | label }},
               <ng-container *ngIf="form?.options?.secondaryCopy; else primary">
                 {{ 'datasets.secondary' | translate }}
               </ng-container>
