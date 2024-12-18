@@ -17,7 +17,7 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
 
   public selectedInformalGroup: InformalTaxonGroup | undefined;
   public informalGroups: InformalTaxonGroup[] = [];
-  public parentGroups: InformalTaxonGroup[] = [];
+  public parentGroup?: InformalTaxonGroup;
 
   private sub = new Subscription();
 
@@ -42,7 +42,6 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
   }
 
   private refreshInformalGroups() {
-    this.parentGroups = [];
     this.selectedInformalGroup = undefined;
 
     if (!this.id) {
@@ -59,7 +58,7 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
       this.selectedInformalGroup = data[1];
     });
 
-    this.informalTaxonService.informalTaxonGroupGetParents(this.id, this.translate.currentLang)
-      .subscribe(data => this.parentGroups = data, () => {});
+    this.informalTaxonService.informalTaxonGroupGetParent(this.id, this.translate.currentLang)
+      .subscribe(data => this.parentGroup = data, () => {});
   }
 }

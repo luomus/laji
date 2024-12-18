@@ -8,6 +8,7 @@ import { GroupSelectComponent } from './group-select.component';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { PagedResult } from '../model/PagedResult';
 import { RedListTaxonGroup } from '../model/RedListTaxonGroup';
+import { ArrayResult } from '../model/ArrayResult';
 
 export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -39,18 +40,19 @@ export class ObservationGroupSelectComponent extends GroupSelectComponent<Inform
   }
 
   findByIds(groupIds: string[], lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.informalTaxonService.informalTaxonGroupFind(lang, undefined, undefined, {idIn: groupIds});
+    console.log(groupIds);
+    return this.informalTaxonService.informalTaxonGroupFind(lang, undefined, undefined, groupIds);
   }
 
-  getWithSiblings(groupId: string, lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
+  getWithSiblings(groupId: string, lang: string | undefined): Observable<ArrayResult<RedListTaxonGroup>> {
     return this.informalTaxonService.informalTaxonGroupGetWithSiblings(groupId, lang);
   }
 
-  getChildren(groupId: string, lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
+  getChildren(groupId: string, lang: string | undefined): Observable<ArrayResult<RedListTaxonGroup>> {
     return this.informalTaxonService.informalTaxonGroupGetChildren(groupId, lang);
   }
 
-  findRoots(lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
+  findRoots(lang: string | undefined): Observable<ArrayResult<RedListTaxonGroup>> {
     return this.informalTaxonService.informalTaxonGroupFindRoots(lang);
   }
 
