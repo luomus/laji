@@ -40,7 +40,6 @@ export class ObservationGroupSelectComponent extends GroupSelectComponent<Inform
   }
 
   findByIds(groupIds: string[], lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
-    console.log(groupIds);
     return this.informalTaxonService.informalTaxonGroupFind(lang, undefined, undefined, groupIds);
   }
 
