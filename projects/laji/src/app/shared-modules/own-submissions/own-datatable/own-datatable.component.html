@@ -57,7 +57,7 @@
       pagerPrevious: 'glyphicon glyphicon-step-backward',
       pagerNext: 'glyphicon glyphicon-step-forward'
     }"
-    [selectionType]="selectionType"
+    [selectionType]="selectionType!"
     (select)='onSelect($event)'
     [selectAllRowsOnPage]="false"
     [rows]="visibleRows"
@@ -72,7 +72,7 @@
     [messages]="{emptyMessage: loadError, totalMessage: totalMessage}"
     (sort)="onSort($event)"
   >
-    <ngx-datatable-row-detail [rowHeight]="undefined">
+    <ngx-datatable-row-detail>
       <ng-template let-row="row" ngx-datatable-row-detail-template>
         <div *ngFor="let col of useColumns | filterColumns:displayMode:true" style="padding-left: 35px">
           <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>
@@ -92,7 +92,7 @@
       [checkboxable]="true">
     </ngx-datatable-column>
 
-    <ngx-datatable-column [flexGrow]="" [resizeable]="false"
+    <ngx-datatable-column [resizeable]="false"
                           [draggable]="false" *ngIf="displayMode !== 'large'" [headerClass]="'empty-header'">
       <ng-template ngx-datatable-header-template><span></span></ng-template>
       <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>

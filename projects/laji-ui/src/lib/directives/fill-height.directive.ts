@@ -4,7 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 export interface IFillHeightOptions {
   disabled?: boolean;
   minHeight?: number;
-  height?: number; // sets height to a constant value effectively disabling the fillHeight functionality
+  height?: number|undefined; // sets height to a constant value effectively disabling the fillHeight functionality
 }
 
 @Directive({

@@ -3,7 +3,7 @@
     <option value="" disabled>{{ 'excel.map.col-select' | translate }}</option>
     <option [value]="skipValue">{{ 'ignore'| translate }}</option>
     <optgroup *ngFor="let group of fieldGroups | removeEmpty" [label]="fieldGroupsLabel[group]">
-      <option *ngFor="let key of groups[group] | removeEmpty" [value]="key">
+      <option *ngFor="let key of groups![group] | removeEmpty" [value]="key">
         {{ key === skipValue ? ('ignore'| translate) : (_fields[key] && _fields[key].label || key) }}
       </option>
     </optgroup>

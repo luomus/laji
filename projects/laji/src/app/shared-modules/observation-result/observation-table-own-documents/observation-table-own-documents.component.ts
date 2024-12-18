@@ -117,7 +117,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     total: 0,
     pageSize: 0
   };
-  loading?: boolean;
+  loading = false;
 
   private langMap = {
     fi: 'Finnish',

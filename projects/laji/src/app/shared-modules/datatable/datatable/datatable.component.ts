@@ -31,7 +31,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   @ViewChild('dataTable') public datatable?: NgxDatatableComponent;
   @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates!: DatatableTemplatesComponent;
 
-  @Input() loading = false;
+  @Input() loading? = false;
   @Input() pageSize?: number;
   @Input() showHeader = true;
   @Input() showFooter = true;

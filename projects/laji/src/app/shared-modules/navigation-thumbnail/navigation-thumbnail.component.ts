@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class NavigationThumbnailComponent {
   @Input() icon?: string;
-  @Input() name?: string;
+  @Input({ required: true }) name!: string;
   @Input() path?: string;
   @Input() query?: any;
   @Input() info?: string;

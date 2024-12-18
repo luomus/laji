@@ -17,9 +17,9 @@ export class ObservationTableSettingsComponent<T extends IGenericColumn<Datatabl
   @Input() isAggregate = true;
   @Input() showPageSize = true;
   @Input() pageSize?: number;
-  @Input() columnSelector?: ColumnSelector;
-  @Input() numberColumnSelector?: ColumnSelector;
-  @Input() allAggregateFields?: string[];
+  @Input({ required: true }) columnSelector!: ColumnSelector;
+  @Input({ required: true }) numberColumnSelector!: ColumnSelector;
+  @Input({ required: true }) allAggregateFields!: string[];
   @Input() columnGroups?: IColumnGroup<T>[][];
   @Input() columnLookup: any = {};
 

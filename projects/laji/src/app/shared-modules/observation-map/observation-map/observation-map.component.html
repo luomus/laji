@@ -1,7 +1,7 @@
 <div class="observation-map"
     [luFillHeight]="{
       disabled: height === undefined || height === 0,
-      height: tableViewHeightOverride > 0 ? tableViewHeightOverride : height > 0 ? height : undefined
+      height: tableViewHeightOverride! > 0 ? tableViewHeightOverride : height > 0 ? height : undefined
     }"
      #mapContainer>
   <laji-map
