@@ -7,6 +7,7 @@ import { Logger } from '../logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Group } from '../model/Group';
 import { PagedResult } from '../model/PagedResult';
+import { ArrayResult } from '../model/ArrayResult';
 
 @Directive()
 export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges {
@@ -152,7 +153,7 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     }
   }
 
-  getRoot(lang: string): Observable<PagedResult<T>> {
+  getRoot(lang: string): Observable<ArrayResult<T>> {
     if (this.rootGroups) {
       return this.findByIds(this.rootGroups, lang);
     }
@@ -161,9 +162,9 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
 
   abstract findById(groupId: string, lang: string): Observable<T>;
   abstract findByIds(groupIds: string[], lang: any): Observable<PagedResult<T>>;
-  abstract getWithSiblings(groupId: any, lang: string): Observable<PagedResult<T>>;
-  abstract getChildren(groupId: any, lang: string): Observable<PagedResult<T>>;
-  abstract findRoots(lang: any): Observable<PagedResult<T>>;
+  abstract getWithSiblings(groupId: any, lang: string): Observable<ArrayResult<T>>;
+  abstract getChildren(groupId: any, lang: string): Observable<ArrayResult<T>>;
+  abstract findRoots(lang: any): Observable<ArrayResult<T>>;
   abstract convertToInformalTaxonGroup(group: T): InformalTaxonGroup;
 
   empty() {

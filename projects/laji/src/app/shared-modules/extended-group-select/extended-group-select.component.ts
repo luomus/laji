@@ -10,6 +10,7 @@ import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree
 import { Util } from '../../shared/service/util.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { RedListTaxonGroup } from '../../shared/model/RedListTaxonGroup';
+import { ArrayResult } from '../../shared/model/ArrayResult';
 
 export interface InformalGroupEvent {
   [key: string]: string[];
@@ -60,7 +61,7 @@ export abstract class ExtendedGroupSelectComponent<T extends RedListTaxonGroup|I
 
   abstract findByIds(groupIds: string[], lang: string): Observable<PagedResult<T>>;
   abstract convertToInformalTaxonGroup(group: T): InformalTaxonGroup;
-  abstract getTree(lang: string): Observable<PagedResult<T>>;
+  abstract getTree(lang: string): Observable<ArrayResult<T>>;
   abstract getOptions(query: Record<string, any>): string[][];
   abstract prepareEmit(includedOptions: string[], excludedOptions?: string[]): InformalGroupEvent;
 
