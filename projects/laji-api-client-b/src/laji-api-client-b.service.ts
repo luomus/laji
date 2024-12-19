@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { components, operations, paths } from '../generated/api';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { shareReplay, tap } from 'rxjs/operators';
 
 type WithResponses<T> = T & { responses: unknown };
 type Parameters<T> = 'parameters' extends keyof T ? T['parameters'] : undefined;
@@ -11,13 +11,11 @@ type ExtractRequestBodyIfExists<R> = R extends { requestBody: { content: { 'appl
 type HttpSuccessCodes = 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226;
 type IntersectUnionTypes<A, B> = A extends B ? A : never;
 
-// Example: type aliases can be exported like so:
-export type ApiUser = components['schemas']['ApiUser'];
+interface CachedValueNotStarted { _tag: 'not-started' };
+interface CachedValueLoading<T> { obs: Observable<T>; _tag: 'loading' };
+interface CachedValueCompleted<T> { val: T; lastRefresh: number; _tag: 'completed' };
 
-interface CacheElement<T> {
-  val: T | undefined;
-  lastRefresh: number;
-}
+type CacheElement<T> = CachedValueNotStarted | CachedValueLoading<T> | CachedValueCompleted<T>;
 
 const concatObjProps = (obj: any) => hashArgs(Object.entries(obj).map(([k, v]) => k + hashArgs(v)));
 const hashArgs = (...args: any): string => (
@@ -73,7 +71,7 @@ export class LajiApiClientBService {
     const requestUrl = this.baseUrl + path;
     const requestOptions = { params: (<any>params).query, body: requestBody };
 
-    if(method !== 'get') {
+    if (method !== 'get') {
       this.flush(endpoint);
       return this.http.request(method, requestUrl, requestOptions) as any;
     }
@@ -87,23 +85,36 @@ export class LajiApiClientBService {
 
     const paramsHash = hashArgs(params);
     if (!cachedPath.has(paramsHash)) {
-      cachedPath.set(paramsHash, { val: undefined, lastRefresh: 0 });
+      cachedPath.set(paramsHash, { _tag: 'not-started' });
     }
 
     const cachedParams = cachedPath.get(paramsHash);
 
-    const cachedValueExists = cachedParams.val !== undefined;
-    const cacheIsValid = Date.now() - cachedParams.lastRefresh < cacheInvalidationMs;
-    if (cachedValueExists && cacheIsValid) {
-      return of(cachedParams.val);
+    if (cachedParams !== undefined && cachedParams._tag !== 'not-started') {
+      if (cachedParams._tag === 'completed' && Date.now() - cachedParams.lastRefresh < cacheInvalidationMs) {
+        return of(cachedParams.val);
+      }
+      if (cachedParams._tag === 'loading') {
+        return cachedParams.obs;
+      }
     }
 
-    return this.http.request(method, requestUrl, requestOptions).pipe(
+    const obs = this.http.request(method, requestUrl, requestOptions).pipe(
       tap(val => {
-        cachedParams.val = val;
-        cachedParams.lastRefresh = Date.now();
-      })
+        cachedPath.set(paramsHash, {
+          _tag :'completed',
+          val,
+          lastRefresh: Date.now()
+        });
+      }),
+      shareReplay(1)
     ) as any;
+
+    cachedPath.set(paramsHash, {
+      _tag: 'loading', obs
+    });
+
+    return obs;
   }
 
   flush<
