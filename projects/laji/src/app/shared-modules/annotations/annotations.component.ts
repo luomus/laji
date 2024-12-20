@@ -38,7 +38,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   @Input() annotations: Annotation[] = [];
   @Input() formVisible?: boolean;
   @Input() listVisible?: boolean;
-  @Input() annotationTags?: AnnotationTag[]|null;
+  @Input() annotationTags?: AnnotationTag[] | null;
   @Output() annotationsClose = new EventEmitter<any>();
   @Output() annotationChange = new EventEmitter<Annotation>();
   @Output() loadingForm = new EventEmitter<any>();

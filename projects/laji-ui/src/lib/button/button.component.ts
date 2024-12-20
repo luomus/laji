@@ -22,7 +22,7 @@ export class ButtonComponent implements OnChanges, OnInit {
   @Input() loading?: boolean;
   @Input() disabled = false; // note: can't disable anchors
   @Input() small = false;
-  private _target = undefined;
+  private _target?: string = undefined;
   @Input() set target(t) {
     this._target = t;
     this.useHref = true;

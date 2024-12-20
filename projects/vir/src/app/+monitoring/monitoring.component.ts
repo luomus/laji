@@ -11,7 +11,7 @@ import { Form } from '../../../../laji/src/app/shared/model/Form';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MonitoringComponent implements OnInit {
-  monitoringForms$: Observable<Form.List[]>;
+  monitoringForms$!: Observable<Form.List[]>;
 
   constructor(private facade: MonitoringFacade) { }
 

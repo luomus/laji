@@ -51,7 +51,7 @@ export class DataTableComponent implements AfterViewInit {
   @Input() showDownloadMenu = true;
   @Input() showRowAsLink = false;
   @Input() height = 'calc(90vh - 195px)';
-  @Input() data!: any[];
+  @Input() data!: any[] | null;
   @Input() exportFileName = 'export';
   @Input() selected: any = [];
   @Input() selectionType!: SelectionType;
@@ -157,10 +157,10 @@ export class DataTableComponent implements AfterViewInit {
 
   download(type: string) {
     this.downloadLoading = true;
-    this.exportService.exportFromData(this.data, this.getColsFromType(this._type), type as BookType, this.exportFileName)
+    this.exportService.exportFromData(this.data!, this.getColsFromType(this._type), type as BookType, this.exportFileName)
       .subscribe(() => {
         this.downloadLoading = false;
-        this.header.downloadComponent.closeModal();
+        this.header.downloadComponent!.closeModal();
       }, () => {
         this.downloadLoading = false;
       });

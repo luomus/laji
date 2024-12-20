@@ -294,12 +294,7 @@
          [autoToggle]="true"
     >
 
-        <ng-container *ngFor="let secureLevelType of [
-          'secureLevel',
-          'breedingSecureLevel',
-          'naturaAreaSecureLevel',
-          'nestSiteSecureLevel',
-          'winteringSecureLevel']">
+        <ng-container *ngFor="let secureLevelType of secureLevelTypes">
           <laji-taxon-info-row *ngIf="taxon[secureLevelType]" [label]="'MX.' + secureLevelType | label">
             {{ taxon[secureLevelType] | label }}
           </laji-taxon-info-row>

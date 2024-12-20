@@ -124,7 +124,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     this._count = typeof cnt === 'number' ? cnt  : 0;
   }
 
-  @Input() set rows(rows: Record<string, any>[]) {
+  @Input() set rows(rows: Record<string, any>[] | null) {
     this._originalRows = rows as any || [];
 
     // record the original indexes of each row element so that when the table is sorted

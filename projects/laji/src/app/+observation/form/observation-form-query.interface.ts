@@ -1,7 +1,7 @@
 export interface ObservationFormQuery {
   taxon: string;
-  taxonIncludeLower: boolean;
-  taxonUseAnnotated: boolean;
+  taxonIncludeLower?: boolean;
+  taxonUseAnnotated?: boolean;
   timeStart?: string;
   timeEnd?: string;
   informalTaxonGroupId?: string[];
@@ -16,7 +16,7 @@ export interface ObservationFormQuery {
   nationalInvasiveSpeciesStrategy: boolean;
   controllingRisksOfInvasiveAlienSpecies: boolean;
   allInvasiveSpecies: boolean;
-  onlyFromCollectionSystems: boolean;
+  onlyFromCollectionSystems?: boolean;
   asObserver: boolean;
   asEditor: boolean;
   asNotEditorOrObserver: boolean;

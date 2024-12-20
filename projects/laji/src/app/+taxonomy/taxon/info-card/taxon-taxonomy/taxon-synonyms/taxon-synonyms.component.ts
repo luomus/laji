@@ -9,7 +9,7 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 })
 export class TaxonSynonymsComponent {
   @Input() taxon!: Taxonomy;
-  @Input() synonymTypes: string[] = [];
+  @Input() synonymTypes: (keyof Taxonomy)[] = [];
   @Input() hasOtherNamesBefore = false;
 
 }

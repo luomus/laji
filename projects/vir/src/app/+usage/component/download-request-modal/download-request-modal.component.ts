@@ -19,7 +19,7 @@ import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/d
 })
 
 export class DownloadRequestModalComponent {
-  @Input() downloadRequest?: DownloadRequest;
+  @Input() downloadRequest?: DownloadRequest | null;
   @Input() showPerson = true;
   @Input() showFileDownload = false;
 }

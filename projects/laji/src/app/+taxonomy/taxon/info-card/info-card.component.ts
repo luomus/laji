@@ -54,8 +54,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   selectedTab = 'overview'; // stores which tab index was provided by @Input
 
-  taxonDescription?: Array<TaxonomyDescription>;
-  taxonImages?: Array<Image>;
+  taxonDescription!: Array<TaxonomyDescription>;
+  taxonImages!: Array<Image>;
 
   hasImageData?: boolean;
   hasBiologyData?: boolean;
