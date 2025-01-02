@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import { DEFAULT_YEAR, ResultService } from '../iucn-shared/service/result.service';
+import { ChecklistYear, DEFAULT_YEAR, ResultService } from '../iucn-shared/service/result.service';
 
 @Component({
   selector: 'iucn-taxonomy',
@@ -16,10 +16,10 @@ import { DEFAULT_YEAR, ResultService } from '../iucn-shared/service/result.servi
 })
 export class TaxonomyComponent implements OnInit, OnDestroy {
 
-  taxon: string;
-  checklist: string;
-  year: string;
-  private subParam: Subscription;
+  taxon!: string;
+  checklist!: string;
+  year!: ChecklistYear;
+  private subParam!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
