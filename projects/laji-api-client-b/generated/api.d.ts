@@ -11,7 +11,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get form permissions for a person */
+        /** Get form permissions for a person */
         get: operations["FormsController_getPermissions"];
         put?: never;
         post?: never;
@@ -28,10 +28,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get form permissions for a person, and the form information about whether is has MHL.restrictAccess and MHL.hasAdmins */
+        /** Get form permissions for a person, and the form information about whether is has MHL.restrictAccess and MHL.hasAdmins */
         get: operations["FormsController_getPermissionsByCollectionID"];
         put?: never;
-        /** @description Request access to form */
+        /** Request access to form */
         post: operations["FormsController_requestAccess"];
         delete?: never;
         options?: never;
@@ -47,10 +47,10 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /** @description Accept access to form */
+        /** Accept access to form */
         put: operations["FormsController_acceptAccess"];
         post?: never;
-        /** @description Remove access to form */
+        /** Remove access to form */
         delete: operations["FormsController_revokeAccess"];
         options?: never;
         head?: never;
@@ -64,10 +64,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a page of forms */
+        /** Get a page of forms */
         get: operations["FormsController_getPage"];
         put?: never;
-        /** @description Create a new form */
+        /** Create a new form */
         post: operations["FormsController_create"];
         delete?: never;
         options?: never;
@@ -82,12 +82,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a form by id */
+        /** Get a form by id */
         get: operations["FormsController_getOne"];
-        /** @description Update an existing form */
+        /** Update an existing form */
         put: operations["FormsController_update"];
         post?: never;
-        /** @description Delete a form */
+        /** Delete a form */
         delete: operations["FormsController_remove"];
         options?: never;
         head?: never;
@@ -103,7 +103,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Get preview of form transformed from json format to schema format */
+        /** Get preview of form transformed from json format to schema format */
         post: operations["FormsController_transform"];
         delete?: never;
         options?: never;
@@ -118,7 +118,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Find person by person token */
+        /** Find person by person token */
         get: operations["PersonsController_findPersonByToken"];
         put?: never;
         post?: never;
@@ -136,9 +136,9 @@ export interface paths {
             cookie?: never;
         };
         get: operations["PersonsController_findProfileByPersonToken"];
-        /** @description Update profile */
+        /** Update profile */
         put: operations["PersonsController_updateProfile"];
-        /** @description Create profile */
+        /** Create profile */
         post: operations["PersonsController_createProfile"];
         delete?: never;
         options?: never;
@@ -153,7 +153,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Find person by user id (this will not include email) */
+        /** Find person by user id (this will not include email) */
         get: operations["PersonsController_findPersonByPersonId"];
         put?: never;
         post?: never;
@@ -170,7 +170,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Find profile by user id (this will only return small subset of the full profile) */
+        /** Find profile by user id (this will only return small subset of the full profile) */
         get: operations["PersonsController_getProfileByPersonId"];
         put?: never;
         post?: never;
@@ -188,11 +188,11 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /** @description Accept friend request */
+        /** Accept friend request */
         put: operations["PersonsController_acceptFriendRequest"];
-        /** @description Request person to be your friend */
+        /** Request person to be your friend */
         post: operations["PersonsController_addFriendRequest"];
-        /** @description Remove a friend request or a friend */
+        /** Remove a friend request or a friend */
         delete: operations["PersonsController_removeFriend"];
         options?: never;
         head?: never;
@@ -206,11 +206,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Returns information about the token */
+        /** Returns information about the token */
         get: operations["PersonTokenController_getInfo"];
         put?: never;
         post?: never;
-        /** @description Deletes the token */
+        /** Deletes the token */
         delete: operations["PersonTokenController_delete"];
         options?: never;
         head?: never;
@@ -224,7 +224,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get notifications */
+        /** Get notifications */
         get: operations["NotificationsController_getAll"];
         put?: never;
         post?: never;
@@ -242,10 +242,10 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /** @description Update notification */
+        /** Update notification */
         put: operations["NotificationsController_update"];
         post?: never;
-        /** @description Delete notification */
+        /** Delete notification */
         delete: operations["NotificationsController_delete"];
         options?: never;
         head?: never;
@@ -259,7 +259,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get all collections */
+        /** Get all collections */
         get: operations["CollectionsController_getPage"];
         put?: never;
         post?: never;
@@ -276,7 +276,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get all root collections */
+        /** Get all root collections */
         get: operations["CollectionsController_findRoots"];
         put?: never;
         post?: never;
@@ -293,7 +293,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get collection by id */
+        /** Get collection by id */
         get: operations["CollectionsController_get"];
         put?: never;
         post?: never;
@@ -310,7 +310,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get child collections */
+        /** Get child collections */
         get: operations["CollectionsController_findChildren"];
         put?: never;
         post?: never;
@@ -327,10 +327,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Returns info about user based on the access token */
+        /** Returns info about user based on the access token */
         get: operations["ApiUsersController_getInfo"];
         put?: never;
-        /** @description Register as an api user (access token will be sent to your email) */
+        /** Register as an api user (access token will be sent to your email) */
         post: operations["ApiUsersController_register"];
         delete?: never;
         options?: never;
@@ -347,7 +347,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Requests new access token (will be sent to your email). Please note that this will not delete any existing tokens. */
+        /** Requests new access token (will be sent to your email). Please note that this will not delete any existing tokens. */
         post: operations["ApiUsersController_renew"];
         delete?: never;
         options?: never;
@@ -364,7 +364,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Upload image and get temporary id */
+        /** Upload image and get temporary id */
         post: operations["ImagesController_upload"];
         delete?: never;
         options?: never;
@@ -379,12 +379,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get image by id */
+        /** Get image by id */
         get: operations["ImagesController_get"];
-        /** @description Update image metadata */
+        /** Update image metadata */
         put: operations["ImagesController_updateMetadata"];
         post?: never;
-        /** @description Delete image */
+        /** Delete image */
         delete: operations["ImagesController_delete"];
         options?: never;
         head?: never;
@@ -398,7 +398,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Fetch large image by id */
+        /** Fetch large image by id */
         get: operations["ImagesController_findLarge"];
         put?: never;
         post?: never;
@@ -415,7 +415,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Fetch square thumbnail by id */
+        /** Fetch square thumbnail by id */
         get: operations["ImagesController_findSquare"];
         put?: never;
         post?: never;
@@ -432,7 +432,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Fetch thumbnail by id */
+        /** Fetch thumbnail by id */
         get: operations["ImagesController_findThumbnail"];
         put?: never;
         post?: never;
@@ -451,7 +451,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Upload image metadata */
+        /** Upload image metadata */
         post: operations["ImagesController_uploadMetadata"];
         delete?: never;
         options?: never;
@@ -468,7 +468,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Upload audio and get temporary id */
+        /** Upload audio and get temporary id */
         post: operations["AudioController_upload"];
         delete?: never;
         options?: never;
@@ -483,12 +483,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get audio by id */
+        /** Get audio by id */
         get: operations["AudioController_get"];
-        /** @description Update audio metadata */
+        /** Update audio metadata */
         put: operations["AudioController_updateMetadata"];
         post?: never;
-        /** @description Delete audio */
+        /** Delete audio */
         delete: operations["AudioController_delete"];
         options?: never;
         head?: never;
@@ -502,7 +502,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Fetch mp3 by id */
+        /** Fetch mp3 by id */
         get: operations["AudioController_getMp3"];
         put?: never;
         post?: never;
@@ -519,7 +519,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Fetch thumbnail by id */
+        /** Fetch thumbnail by id */
         get: operations["AudioController_getThumbnail"];
         put?: never;
         post?: never;
@@ -536,7 +536,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Fetch wav by id */
+        /** Fetch wav by id */
         get: operations["AudioController_getWav"];
         put?: never;
         post?: never;
@@ -553,7 +553,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Fetch flac by id */
+        /** Fetch flac by id */
         get: operations["AudioController_findFlac"];
         put?: never;
         post?: never;
@@ -572,7 +572,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Upload audio metadata */
+        /** Upload audio metadata */
         post: operations["AudioController_uploadMetadata"];
         delete?: never;
         options?: never;
@@ -589,9 +589,9 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Reserve an existing named place */
+        /** Reserve an existing named place */
         post: operations["NamedPlacesController_reserve"];
-        /** @description Cancel a reservation for a named place */
+        /** Cancel a reservation for a named place */
         delete: operations["NamedPlacesController_cancelReservation"];
         options?: never;
         head?: never;
@@ -605,10 +605,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a page of named places */
+        /** Get a page of named places */
         get: operations["NamedPlacesController_getPage"];
         put?: never;
-        /** @description Create a new named place */
+        /** Create a new named place */
         post: operations["NamedPlacesController_create"];
         delete?: never;
         options?: never;
@@ -623,12 +623,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a named place by id */
+        /** Get a named place by id */
         get: operations["NamedPlacesController_get"];
-        /** @description Update an existing named place */
+        /** Update an existing named place */
         put: operations["NamedPlacesController_update"];
         post?: never;
-        /** @description Delete a named place */
+        /** Delete a named place */
         delete: operations["NamedPlacesController_delete"];
         options?: never;
         head?: never;
@@ -642,7 +642,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a page of areas */
+        /** Get a page of areas */
         get: operations["AreaController_get"];
         put?: never;
         post?: never;
@@ -659,7 +659,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a page of areas */
+        /** Get an areas by id */
         get: operations["AreaController_getPage"];
         put?: never;
         post?: never;
@@ -678,7 +678,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Starts a batch job that validates the documents. Use the returned job id to get the status of the job with GET
+        /** Starts a batch job that validates the documents. Use the returned job id to get the status of the job with GET
          *     /documents/:jobID, or create the documents with POST /documents/batch/:jobID */
         post: operations["DocumentsController_startBatchJob"];
         delete?: never;
@@ -694,11 +694,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a batch job's status. Once ready, the response will include properties 'documents' and 'errors', where the
+        /** Get a batch job's status. Once ready, the response will include properties 'documents' and 'errors', where the
          *     errors match the documents array indices, null meaning valid and an object. */
         get: operations["DocumentsController_getBatchJobStatus"];
         put?: never;
-        /** @description Completes a given batch job by sending them to the store/warehouse. The batch job must be already validated. */
+        /** Completes a given batch job by sending them to the store/warehouse. The batch job must be already validated. */
         post: operations["DocumentsController_completeBatchJob"];
         delete?: never;
         options?: never;
@@ -715,7 +715,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Validate a document */
+        /** Validate a document */
         post: operations["DocumentsController_validate"];
         delete?: never;
         options?: never;
@@ -730,7 +730,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get count of documents by type (currently just "byYear") */
+        /** Get count of documents by type (currently just "byYear") */
         get: operations["DocumentsController_getCountByYear"];
         put?: never;
         post?: never;
@@ -747,7 +747,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get the median date of documents for a named place */
+        /** Get the median date of documents for a named place */
         get: operations["DocumentsController_getStatistics"];
         put?: never;
         post?: never;
@@ -764,10 +764,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a page of documents */
+        /** Get a page of documents */
         get: operations["DocumentsController_getPage"];
         put?: never;
-        /** @description Create a new document */
+        /** Create a new document */
         post: operations["DocumentsController_create"];
         delete?: never;
         options?: never;
@@ -782,12 +782,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a document */
+        /** Get a document */
         get: operations["DocumentsController_get"];
-        /** @description Update an existing document */
+        /** Update an existing document */
         put: operations["DocumentsController_update"];
         post?: never;
-        /** @description Update an existing document */
+        /** Update an existing document */
         delete: operations["DocumentsController_delete"];
         options?: never;
         head?: never;
@@ -801,7 +801,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Fetch all annotation tags (Only visible in dev mode) */
+        /** Fetch all annotation tags */
         get: operations["AnnotationsController_getTags"];
         put?: never;
         post?: never;
@@ -818,10 +818,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a page of annotations */
+        /** Get a page of annotations */
         get: operations["AnnotationsController_getPage"];
         put?: never;
-        /** @description Create a new annotation */
+        /** Create a new annotation */
         post: operations["AnnotationsController_create"];
         delete?: never;
         options?: never;
@@ -839,7 +839,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** @description Delete an annotation */
+        /** Delete an annotation */
         delete: operations["AnnotationsController_delete"];
         options?: never;
         head?: never;
@@ -853,7 +853,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Returns id of the index page of some language */
+        /** Returns id of the index page of some language */
         get: operations["InformationController_getIndex"];
         put?: never;
         post?: never;
@@ -870,7 +870,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get information page by id */
+        /** Get information page by id */
         get: operations["InformationController_get"];
         put?: never;
         post?: never;
@@ -887,7 +887,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get information page contents */
+        /** Get information page contents */
         get: operations["InformationController_getAll"];
         put?: never;
         post?: never;
@@ -904,7 +904,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a checklist by id */
+        /** Get a checklist by id */
         get: operations["ChecklistController_get"];
         put?: never;
         post?: never;
@@ -921,7 +921,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a page of checklists */
+        /** Get a page of checklists */
         get: operations["ChecklistController_getPage"];
         put?: never;
         post?: never;
@@ -938,7 +938,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a checklist by id */
+        /** Get a checklist by id */
         get: operations["ChecklistVersionsController_get"];
         put?: never;
         post?: never;
@@ -955,7 +955,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a page of checklists */
+        /** Get a page of checklists */
         get: operations["ChecklistVersionsController_getPage"];
         put?: never;
         post?: never;
@@ -972,7 +972,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Find an organization by id */
+        /** Find an organization by id */
         get: operations["OrganizationsController_get"];
         put?: never;
         post?: never;
@@ -989,7 +989,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get a page of informal taxon groups */
+        /** Get a page of informal taxon groups */
         get: operations["InformalTaxonGroupsController_getPage"];
         put?: never;
         post?: never;
@@ -1006,7 +1006,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get the informal taxon group tree */
+        /** Get the informal taxon group tree */
         get: operations["InformalTaxonGroupsController_getTree"];
         put?: never;
         post?: never;
@@ -1023,7 +1023,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get first level of the informal taxon group tree */
+        /** Get first level of the informal taxon group tree */
         get: operations["InformalTaxonGroupsController_getRoots"];
         put?: never;
         post?: never;
@@ -1040,7 +1040,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get an informal taxon group by id */
+        /** Get an informal taxon group by id */
         get: operations["InformalTaxonGroupsController_get"];
         put?: never;
         post?: never;
@@ -1057,7 +1057,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get an informal taxon group's immediate children */
+        /** Get an informal taxon group's immediate children */
         get: operations["InformalTaxonGroupsController_getChildren"];
         put?: never;
         post?: never;
@@ -1074,7 +1074,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get informal taxon group's parents */
+        /** Get informal taxon group's parents */
         get: operations["InformalTaxonGroupsController_getParents"];
         put?: never;
         post?: never;
@@ -1091,7 +1091,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get informal taxon group's parents */
+        /** Get informal taxon group's parents */
         get: operations["InformalTaxonGroupsController_getParent"];
         put?: never;
         post?: never;
@@ -1108,7 +1108,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get informal taxon group's siblings */
+        /** Get informal taxon group's siblings */
         get: operations["InformalTaxonGroupsController_getSiblings"];
         put?: never;
         post?: never;
@@ -11921,6 +11921,8 @@ export interface components {
              * @description Microbial culture growth temperature
              */
             growthTemperature?: string;
+            /** Habitat */
+            habitat?: ("" | "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue37" | "MY.habitatEnumValue38" | "MY.habitatEnumValue39" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue55" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue63" | "MY.habitatEnumValue64" | "MY.habitatEnumValue65" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue75" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94")[];
             /** hasIdentification */
             hasIdentification?: string[];
             /** hasSubUnit */
@@ -13337,7 +13339,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["form"];
+            };
+        };
         responses: {
             201: {
                 headers: {
@@ -13388,7 +13394,11 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["form"];
+            };
+        };
         responses: {
             200: {
                 headers: {
@@ -13436,7 +13446,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["form"];
+            };
+        };
         responses: {
             201: {
                 headers: {
@@ -13708,7 +13722,17 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": {
+                        page: number;
+                        pageSize: number;
+                        total: number;
+                        lastPage: number;
+                        prevPage?: number;
+                        nextPage?: number;
+                        results: components["schemas"]["notification"][];
+                    };
+                };
             };
         };
     };
@@ -13724,7 +13748,11 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["notification"];
+            };
+        };
         responses: {
             200: {
                 headers: {
@@ -13968,12 +13996,6 @@ export interface operations {
                     "application/json": components["schemas"]["FileUploadResponse"];
                 };
             };
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
         };
     };
     ImagesController_get: {
@@ -14165,12 +14187,6 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["FileUploadResponse"];
                 };
-            };
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
             };
         };
     };
@@ -14382,7 +14398,11 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["namedPlace"];
+            };
+        };
         responses: {
             201: {
                 headers: {
@@ -14455,7 +14475,17 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": {
+                        page: number;
+                        pageSize: number;
+                        total: number;
+                        lastPage: number;
+                        prevPage?: number;
+                        nextPage?: number;
+                        results: components["schemas"]["namedPlace"][];
+                    };
+                };
             };
         };
     };
@@ -14471,7 +14501,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["NamedPlace"];
+                "application/json": components["schemas"]["namedPlace"];
             };
         };
         responses: {
@@ -14525,7 +14555,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["NamedPlace"];
+                "application/json": components["schemas"]["namedPlace"];
             };
         };
         responses: {
@@ -14826,7 +14856,17 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": {
+                        page: number;
+                        pageSize: number;
+                        total: number;
+                        lastPage: number;
+                        prevPage?: number;
+                        nextPage?: number;
+                        results: components["schemas"]["document"][];
+                    };
+                };
             };
         };
     };
@@ -14842,7 +14882,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["document"];
+            };
+        };
         responses: {
             201: {
                 headers: {
@@ -14892,7 +14936,11 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["document"];
+            };
+        };
         responses: {
             200: {
                 headers: {
@@ -14945,7 +14993,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["tag"];
+                    "application/json": components["schemas"]["tag"][];
                 };
             };
         };
@@ -14970,7 +15018,17 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": {
+                        page: number;
+                        pageSize: number;
+                        total: number;
+                        lastPage: number;
+                        prevPage?: number;
+                        nextPage?: number;
+                        results: components["schemas"]["annotation"][];
+                    };
+                };
             };
         };
     };
@@ -14984,7 +15042,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["annotation"];
+            };
+        };
         responses: {
             201: {
                 headers: {
@@ -15015,7 +15077,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["annotation"];
+                    "application/json": Record<string, never>;
                 };
             };
         };
@@ -15270,7 +15332,12 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": {
+                        "@context"?: string;
+                        results?: components["schemas"]["informalTaxonGroup"][];
+                    };
+                };
             };
         };
     };
@@ -15290,7 +15357,12 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": {
+                        "@context"?: string;
+                        results?: components["schemas"]["informalTaxonGroup"][];
+                    };
+                };
             };
         };
     };
