@@ -1,10 +1,13 @@
 <h1>Trait search</h1>
 <p>Browse, search and download trait data published on the FinBIF Trait Database.</p>
 
-<button>Download</button>
-<button>Filter</button>
+<laji-trait-search-filters
+  [filters]="initialFilters"
+  (filterChange)="onFilterChange($event)"
+  (searchClicked)="onFilterSearchClicked()"
+></laji-trait-search-filters>
 
-<laji-trait-search-filters></laji-trait-search-filters>
+<button>Download</button>
 
 <lu-datatable
   [rows]="searchResult?.res.results ?? []"
@@ -27,7 +30,7 @@
   [loading]="loading"
   [ghostCount]="pageSize"
   [sorts]="searchResult?.sorts ?? []"
-  (pageChange)="onLoadPage($event)"
+  (pageChange)="onChangePageIdx($event)"
   (sortChange)="onSort($event)"
 ></lu-datatable>
 

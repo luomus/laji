@@ -9,3 +9,6 @@ main {
   padding: $sp-5 $sp-6;
 }
 
+::ng-deep main.trait-db-main > ng-component {
+  width: 100%;
+}

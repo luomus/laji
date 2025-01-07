@@ -1,0 +1,15 @@
+@mixin fieldset {
+  padding: 0;
+  padding-left: $sp-4;
+  margin: 0;
+  border: 0;
+
+  legend {
+    margin-left: -$sp-4;
+    margin-bottom: $sp-2;
+  }
+
+  *:not(legend) {
+
+  }
+}

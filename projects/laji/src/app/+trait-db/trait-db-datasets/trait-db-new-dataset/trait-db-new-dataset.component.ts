@@ -7,6 +7,7 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { Subscription } from 'rxjs';
 import { tap, filter, switchMap, map } from 'rxjs/operators';
 import { DialogService } from '../../../shared/service/dialog.service';
+import { UserService } from '../../../shared/service/user.service';
 
 export type Dataset = components['schemas']['Dataset'];
 type ValidationResponse = components['schemas']['ValidationResponse'];
@@ -61,7 +62,8 @@ export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private dialogService: DialogService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -137,7 +139,7 @@ export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
     this.externalValidationInProgress = true;
     const form = filterNullValues(this.datasetForm.value) as Dataset;
     this.datasetForm.disable();
-    this.api.fetch('/trait/datasets/validate', 'post', { }, form, 0).pipe(
+    this.api.fetch('/trait/datasets/validate', 'post', { query: { personToken: this.userService.getToken() } }, form, 0).pipe(
       tap(res => {
         this.externalValidationInProgress = false;
         this.errors = res.pass ? undefined : res.errors;
@@ -149,9 +151,10 @@ export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
         this.uploadInProgress = true;
         this.datasetForm.disable();
       }),
-      switchMap(_ => this.api.fetch('/trait/datasets', 'post', { }, form, 0))
+      switchMap(_ => this.api.fetch('/trait/datasets', 'post', { query: { personToken: this.userService.getToken() } }, form, 0))
     ).subscribe(res => {
       this.uploadInProgress = false;
+      this.api.flush('/trait/dataset-permissions');
       this.cdr.markForCheck();
       this.router.navigate(['../', res.id], { relativeTo: this.route });
     }, err => { this.datasetForm.enable(); });

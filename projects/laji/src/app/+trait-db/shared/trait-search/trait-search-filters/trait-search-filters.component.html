@@ -1,1 +1,58 @@
-asdfsdf
+<details class="lu-details my-6" open>
+  <summary>Filters</summary>
+
+  <div class="mb-5 d-flex flex-gap-4">
+    <div class="dataset-filter flex-grow">
+      <label for="trait-search-filters-dataset">Dataset</label>
+      <select class="form-control" id="trait-search-filters-dataset" [formControl]="form.get('dataset')">
+        <option [value]="null">None</option>
+        <option *ngFor="let dataset of datasets" [value]="dataset.id">{{ dataset.name }}</option>
+      </select>
+    </div>
+
+    <div class="trait-filter flex-grow">
+      <label for="trait-search-filters-trait">Trait</label>
+      <select class="form-control" id="trait-search-filters-trait" [formControl]="form.get('trait')">
+        <option [value]="null">None</option>
+        <option *ngFor="let trait of traits" [value]="trait.id">{{ trait.name }}</option>
+      </select>
+    </div>
+  </div>
+
+  <details class="lu-details" open>
+    <summary>Taxonomy</summary>
+    <fieldset class="lu-fieldset mb-4">
+      <legend>Taxonomy source:</legend>
+      <div>
+        <input [formControl]="form.get('searchByTaxon')" type="radio" id="finbif" value="FinBIF" checked/>
+        <label class="ml-2" for="finbif">FinBIF</label>
+      </div>
+      <div>
+        <input [formControl]="form.get('searchByTaxon')" type="radio" id="gbif" value="GBIF"/>
+        <label class="ml-2" for="gbif">GBIF</label>
+      </div>
+    </fieldset>
+    <div class="d-flex flex-gap-4 flex-wrap flex-row">
+      <div *ngFor="let higherTaxon of higherTaxa" class="higher-taxa">
+        <label for="trait-search-filters-kingdom">{{ higherTaxon }}</label>
+        <input [formControl]="form.get(higherTaxon)" class="form-control" type="text" id="trait-search-filters-kingdom">
+      </div>
+    </div>
+  </details>
+
+  <details class="lu-details" open>
+    <summary>Additional fields</summary>
+    <div>
+      <label for="trait-search-filters-additional-field">Selected field</label>
+      <select class="form-control" id="trait-search-filters-additional-field">
+        <option [value]="null">None</option>
+        <option *ngFor="let additionalField of []" [value]="additionalField.prop">{{ additionalField.title}}</option>
+      </select>
+    </div>
+  </details>
+
+  <div class="d-flex flex-gap-4">
+    <button (click)="onSearch()" class="btn btn-primary">Search</button>
+    <button class="btn btn-default">Clear</button>
+  </div>
+</details>
