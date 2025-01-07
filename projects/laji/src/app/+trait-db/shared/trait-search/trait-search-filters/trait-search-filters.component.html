@@ -6,7 +6,7 @@
       <label for="trait-search-filters-dataset">Dataset</label>
       <select class="form-control" id="trait-search-filters-dataset" [formControl]="form.get('dataset')">
         <option [value]="null">None</option>
-        <option *ngFor="let dataset of datasets" [value]="dataset.id">{{ dataset.name }}</option>
+        <option *ngFor="let dataset of (datasets$ | async)" [value]="dataset.id">{{ dataset.name }}</option>
       </select>
     </div>
 
@@ -14,7 +14,7 @@
       <label for="trait-search-filters-trait">Trait</label>
       <select class="form-control" id="trait-search-filters-trait" [formControl]="form.get('trait')">
         <option [value]="null">None</option>
-        <option *ngFor="let trait of traits" [value]="trait.id">{{ trait.name }}</option>
+        <option *ngFor="let trait of (traits$ | async)" [value]="trait.id">{{ trait.name }}</option>
       </select>
     </div>
   </div>

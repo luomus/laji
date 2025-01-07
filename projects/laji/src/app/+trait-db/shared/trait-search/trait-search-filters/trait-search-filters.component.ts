@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable } from 'rxjs';
 
 export const HIGHER_TAXA: (keyof components['schemas']['HigherTaxa'])[] = [
@@ -62,14 +63,19 @@ export class TraitSearchFiltersComponent implements OnChanges {
   @Output() searchClicked = new EventEmitter<void>();
 
   form: FormGroup<Record<keyof Filters, FormControl>>;
-  datasets = [{ name: 'dataset A', id: 'DatasetID' }];
-  traits = [{ name: 'trait A', id: 'TraitID' }];
+  datasets$: Observable<components['schemas']['Dataset'][]>;
+  traits$: Observable<components['schemas']['Trait'][]>;
 
   higherTaxa = HIGHER_TAXA;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private api: LajiApiClientBService
+  ) {
     this.form = this.fb.group(filterDefaultValues);
     this.filterChange = this.form.valueChanges;
+    this.datasets$ = this.api.fetch('/trait/datasets', 'get', {});
+    this.traits$ = this.api.fetch('/trait/traits', 'get', {});
   }
 
   ngOnChanges(changes: SimpleChanges): void {
