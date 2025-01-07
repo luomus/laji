@@ -52,7 +52,7 @@ export class RecordingsComponent implements OnChanges {
           label: 'C' + (i + 1)
         }));
 
-      const templates = (this.templates || []).reduce((result, template, i) => {
+      const templates = (this.templates || []).reduce((result: any[], template, i) => {
         if (template?.audioId === recording.audio.id) {
           result.push({
             area: template.area,

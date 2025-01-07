@@ -20,7 +20,7 @@ import { DatatableColumn } from '../../../../../../../../laji/src/app/shared-mod
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SiteTableComponent implements OnInit, OnChanges {
-  @ViewChild('deleteTpl', { static: true }) deleteTpl: TemplateRef<any>;
+  @ViewChild('deleteTpl', { static: true }) deleteTpl!: TemplateRef<any>;
 
   @Input() sites: IGlobalSite[] = [];
   @Input() selectedSites: number[] = [];

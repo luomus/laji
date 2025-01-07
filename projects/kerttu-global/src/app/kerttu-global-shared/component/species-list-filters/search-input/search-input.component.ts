@@ -12,7 +12,7 @@ export class SearchInputComponent implements OnInit, OnDestroy {
   @Input() searchQuery = '';
 
   private searchQueryChanged: Subject<string> = new Subject<string>();
-  private searchQueryChangeSub: Subscription;
+  private searchQueryChangeSub!: Subscription;
 
   private debounceTime = 1000;
 

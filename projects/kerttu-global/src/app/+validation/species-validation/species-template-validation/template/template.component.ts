@@ -33,8 +33,8 @@ export class TemplateComponent {
   commentText = '';
   commentTypeEnum = CommentType;
 
-  @ViewChild('commentModal', { static: true }) commentModal: TemplateRef<any>;
-  @ViewChild('audioInfo', { static: true }) audioInfoTpl: TemplateRef<any>;
+  @ViewChild('commentModal', { static: true }) commentModal!: TemplateRef<any>;
+  @ViewChild('audioInfo', { static: true }) audioInfoTpl!: TemplateRef<any>;
 
   private framedTemplate?: IGlobalTemplate;
   private commentType: CommentType = CommentType.reframe;
@@ -53,7 +53,7 @@ export class TemplateComponent {
   onDrawEnd(area: IAudioViewerArea) {
     this.audioViewerMode = 'default';
     this.framedTemplate = {
-      audioId: this.audio.id,
+      audioId: this.audio!.id,
       area
     };
 
@@ -70,7 +70,7 @@ export class TemplateComponent {
   }
 
   onRemove() {
-    if (this.template.id) {
+    if (this.template!.id) {
       this.commentType = CommentType.replace;
       this.showCommentModal();
     } else {
@@ -87,7 +87,7 @@ export class TemplateComponent {
     this.hideCommentModal();
 
     this.comment.emit({
-      templateId:  this.template.id,
+      templateId:  this.template!.id!,
       comment: this.commentText,
       type: this.commentType
     });
@@ -104,6 +104,6 @@ export class TemplateComponent {
   }
 
   hideCommentModal() {
-    this.modalRef.hide();
+    this.modalRef!.hide();
   }
 }

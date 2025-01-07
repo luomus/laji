@@ -17,7 +17,7 @@ interface LajiMapData extends DataOptions {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SiteSelectionMapComponent implements OnChanges {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent) lajiMap!: LajiMapComponent;
   @Input() sites: IGlobalSite[] = [];
   @Input() selectedSites: number[] = [];
   @Input() height = '100%';
@@ -31,7 +31,7 @@ export class SiteSelectionMapComponent implements OnChanges {
 
   @Output() selectedSitesChange = new EventEmitter<number[]>();
 
-  private data: LajiMapData;
+  private data!: LajiMapData | null;
   private dataInitialized = false;
 
   constructor(
@@ -85,10 +85,10 @@ export class SiteSelectionMapComponent implements OnChanges {
     const lajiMapData = this.lajiMap?.map?.getData();
     if (lajiMapData?.length > 0) {
       this.data = lajiMapData[0];
-      this.data.groupContainer.on('clusterclick', (event) => {
+      this.data!.groupContainer.on('clusterclick', (event: any) => {
         this.ngZone.run(() => {
           const markers = event.layer.getAllChildMarkers();
-          const siteIds = markers.map(marker => marker.feature.properties.id);
+          const siteIds = markers.map((marker: any) => marker.feature.properties.id);
           this.addOrRemoveSites(siteIds);
         });
       });
@@ -102,7 +102,7 @@ export class SiteSelectionMapComponent implements OnChanges {
       on: {
         click: (event, data) => {
           this.ngZone.run(() => {
-            const id = data.feature.properties.id;
+            const id = data.feature!.properties!.id;
             this.addOrRemoveSite(id);
           });
         }
@@ -133,8 +133,8 @@ export class SiteSelectionMapComponent implements OnChanges {
   private iconCreateFunction(cluster: any): DivIcon {
     const childCount = cluster.getChildCount();
     const markers = cluster.getAllChildMarkers();
-    const sites = markers.map(marker => marker.feature.properties.id);
-    const selectedCount = sites.filter(siteId => this.selectedSites?.includes(siteId)).length;
+    const sites = markers.map((marker: any) => marker.feature.properties.id);
+    const selectedCount = sites.filter((siteId: any) => this.selectedSites?.includes(siteId)).length;
 
     let c = ' marker-cluster-';
     if (selectedCount === 0) {
@@ -151,11 +151,11 @@ export class SiteSelectionMapComponent implements OnChanges {
 
   private getPopup(options: GetPopupOptions, callback: (content: (string | HTMLElement)) => void): string {
     const siteTranslation = this.translate.instant('siteSelection.site');
-    const data = options.feature.properties;
+    const data = options.feature!.properties;
 
-    let popup = '<strong>' + siteTranslation + ' ' + data.id + '</strong><br>' + data.name;
-    if (data.country) {
-      popup += ', ' + data.country;
+    let popup = '<strong>' + siteTranslation + ' ' + data!.id + '</strong><br>' + data!.name;
+    if (data!.country) {
+      popup += ', ' + data!.country;
     }
     return popup;
   }
@@ -189,7 +189,7 @@ export class SiteSelectionMapComponent implements OnChanges {
   }
 
   private getSitesInsideRectangle(rect: Polygon): IGlobalSite[] {
-    return this.sites.reduce((res, site) => {
+    return this.sites.reduce((res: any[], site) => {
       if (this.pointIsInsideBox(site.geometry.coordinates, rect.coordinates[0])) {
         res.push(site);
       }

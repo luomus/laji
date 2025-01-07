@@ -31,8 +31,8 @@ export class ExpertiseComponent implements OnInit {
     {id: 'MA.birdwatchingActivityLevelEnum4', label: 'expertise.birdwatchingActivityLevel4'}
   ];
 
-  private profile: Profile;
-  private profileSub: Subscription;
+  private profile!: Profile;
+  private profileSub!: Subscription;
 
   private skillLevel1: BirdSongRecognitionSkillLevelEnum = 'MA.birdSongRecognitionSkillLevelEnum1';
 
@@ -54,7 +54,7 @@ export class ExpertiseComponent implements OnInit {
     ]).subscribe(([profile, continents]) => {
       this.profile = profile;
       this.birdwatchingActivityLevel = profile.birdwatchingActivityLevel || '';
-      if (profile.birdSongRecognitionSkillLevels?.length > 0) {
+      if (profile.birdSongRecognitionSkillLevels?.length && (profile.birdSongRecognitionSkillLevels.length > 0)) {
         this.birdSongRecognitionSkillLevels = profile.birdSongRecognitionSkillLevels;
       } else {
         this.birdSongRecognitionSkillLevels = continents.map(continent => ({

@@ -14,7 +14,7 @@ export class TemplatesComponent {
   @Input() highlightNonConfirmed = true;
 
   @Input() spectrogramConfig?: ISpectrogramConfig;
-  @Input() audioIdMap: { [id: number]: IGlobalAudio };
+  @Input() audioIdMap!: { [id: number]: IGlobalAudio };
 
   @Output() templateClick = new EventEmitter<number>();
 

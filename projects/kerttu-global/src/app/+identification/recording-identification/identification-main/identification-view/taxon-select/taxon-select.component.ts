@@ -90,9 +90,9 @@ export class TaxonSelectComponent {
         result.forEach(res => {
           let autocompleteDisplayName = '';
           if (res.commonName) {
-            autocompleteDisplayName += this.addBold(res.commonName, this.value) + ' - ';
+            autocompleteDisplayName += this.addBold(res.commonName, this.value!) + ' - ';
           }
-          autocompleteDisplayName += '<i>' + this.addBold(res.scientificName, this.value) + '</i>';
+          autocompleteDisplayName += '<i>' + this.addBold(res.scientificName, this.value!) + '</i>';
           res['autocompleteDisplayName'] = autocompleteDisplayName;
         });
         return result;

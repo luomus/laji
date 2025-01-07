@@ -27,9 +27,9 @@ export class IdentificationHistoryComponent {
   data$: Observable<PagedResult<IIdentificationHistoryResponseWithIndex>>;
   loading = false;
 
-  private results?: IIdentificationHistoryResponseWithIndex[];
+  private results!: IIdentificationHistoryResponseWithIndex[];
   private queryChange = new BehaviorSubject<IIdentificationHistoryQuery>(this.query);
-  private modalSub?: Subscription;
+  private modalSub!: Subscription;
 
   constructor(
     private kerttuGlobalApi: KerttuGlobalApi,
@@ -81,7 +81,7 @@ export class IdentificationHistoryComponent {
 
     this.modalSub = new Subscription();
     this.modalSub.add(
-      modalRef.content.modalClose.subscribe(hasChanges => {
+      modalRef.content!.modalClose.subscribe(hasChanges => {
         if (hasChanges) {
           this.setNewQuery({ ...this.query });
         }
@@ -90,14 +90,14 @@ export class IdentificationHistoryComponent {
       })
     );
     this.modalSub.add(
-      modalRef.content.indexChange.subscribe((idx) => {
+      modalRef.content!.indexChange.subscribe((idx) => {
         recordingIdSubject.next(this.results[idx].recording.id);
       })
     );
   }
 
   siteChange(value: string) {
-    const site = parseInt(value, 10) || null;
+    const site = parseInt(value, 10) || undefined;
     this.setNewQuery({ ...this.query, site });
   }
 

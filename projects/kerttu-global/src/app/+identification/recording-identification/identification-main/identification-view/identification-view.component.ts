@@ -56,19 +56,19 @@ import { Util } from '../../../../../../../laji/src/app/shared/service/util.serv
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('topContent') topContent: ElementRef;
-  @ViewChild(AudioViewerComponent) audioViewer: AudioViewerComponent;
-  @ViewChild(IdentificationTableComponent) identificationTable: IdentificationTableComponent;
+  @ViewChild('topContent') topContent!: ElementRef;
+  @ViewChild(AudioViewerComponent) audioViewer!: AudioViewerComponent;
+  @ViewChild(IdentificationTableComponent) identificationTable!: IdentificationTableComponent;
 
-  @Input() recording: IGlobalRecording;
-  @Input() annotation: IGlobalRecordingAnnotation;
+  @Input() recording!: IGlobalRecording;
+  @Input() annotation!: IGlobalRecordingAnnotation;
   @Input() buttonsDisabled = false;
 
   selectedSpecies: IGlobalSpeciesWithAnnotation[] = [];
   loadingSpecies = false;
 
-  sampleRate: number;
-  spectrogramConfig: ISpectrogramConfig;
+  sampleRate!: number;
+  spectrogramConfig!: ISpectrogramConfig;
   audioViewerMode: AudioViewerMode = 'default';
   audioViewerRectangles: IAudioViewerRectangle[] = [];
 
@@ -77,8 +77,8 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   showWholeTimeRange = true;
 
   drawBirdActive = false;
-  drawBirdIndex?: number;
-  drawBirdRelatedBoxIndex?: number;
+  drawBirdIndex!: number;
+  drawBirdRelatedBoxIndex!: number;
   drawNonBirdActive = false;
 
   birdRectangleColor = 'white';
@@ -91,7 +91,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
   @Output() annotationChange = new EventEmitter<IGlobalRecordingAnnotation>();
 
-  private selectedSpeciesSub: Subscription;
+  private selectedSpeciesSub!: Subscription;
   private nonBirdLabel = '';
 
   private topContentMinHeight = 180;
@@ -175,7 +175,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
           boxGroup = {boxes: [boxGroup]};
         }
         boxGroup.boxes.push({area});
-        boxGroup.boxes.sort((a: IGlobalSpeciesAnnotationBox, b: IGlobalSpeciesAnnotationBox) => a.area.xRange[0] - b.area.xRange[0]);
+        boxGroup.boxes.sort((a: IGlobalSpeciesAnnotationBox, b: IGlobalSpeciesAnnotationBox) => a.area.xRange![0] - b.area.xRange![0]);
         boxes[this.drawBirdRelatedBoxIndex] = boxGroup;
       } else {
         boxes.push({area});
@@ -209,7 +209,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
       this.selectedSpecies = selectedSpecies;
     } else {
-      this.annotation.nonBirdArea = null;
+      this.annotation.nonBirdArea = undefined;
     }
 
     this.updateSpectrogramAndAnnotation();
@@ -279,8 +279,8 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
     const speciesAnnotations = this.annotation?.speciesAnnotations;
 
-    if (speciesAnnotations?.length > 0) {
-      const observables: Observable<IGlobalSpeciesWithAnnotation>[] = speciesAnnotations.map(
+    if (speciesAnnotations!.length > 0) {
+      const observables: Observable<IGlobalSpeciesWithAnnotation>[] = speciesAnnotations!.map(
         annotation => this.kerttuGlobalApi.getSpecies(this.translate.currentLang, annotation.speciesId, true).pipe(
           map(species => ({ ...species, annotation }))
         )
@@ -305,7 +305,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
       color: box.overlapsWithOtherSpecies ? this.overlappingBirdRectangleColor : this.birdRectangleColor
     });
 
-    this.audioViewerRectangles = this.selectedSpecies.reduce((rectangles, species, speciesIdx) => {
+    this.audioViewerRectangles = this.selectedSpecies.reduce((rectangles: any[], species, speciesIdx) => {
       (species.annotation.boxes || []).forEach((box, idx) => {
         if (isBoxGroup(box)) {
           rectangles.push({

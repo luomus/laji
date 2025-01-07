@@ -27,8 +27,8 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
   @Input() recordingId$!: Observable<number>;
   @Input() lastIndex!: number;
 
-  recording: IGlobalRecording;
-  annotation: IGlobalRecordingAnnotation;
+  recording!: IGlobalRecording;
+  annotation!: IGlobalRecordingAnnotation;
 
   saving = false;
   loading = false;

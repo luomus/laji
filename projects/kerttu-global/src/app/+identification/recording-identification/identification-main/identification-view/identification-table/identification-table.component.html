@@ -16,7 +16,7 @@
   (deleteClick)="deleteRow(idx)"
   (drawBoxClick)="toggleDrawBox(idx)"
   (drawRelatedBoxClick)="toggleDrawRelatedBox(idx, $event.idx)"
-  (deleteBoxClick)="deleteBoxClick.emit({rowIndex: idx, boxIndex: $event.idx, boxGroupIndex: $event.groupIdx})"
+  (deleteBoxClick)="deleteBoxClick.emit({rowIndex: idx, boxIndex: $event.idx, boxGroupIndex: $event.groupIdx!})"
   (openChange)="panelOpenById[identification.id] = $event"
 >
 </bsg-identification-panel>

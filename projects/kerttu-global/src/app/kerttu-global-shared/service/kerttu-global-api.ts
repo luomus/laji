@@ -40,7 +40,7 @@ export class KerttuGlobalApi {
 
   protected basePath = environment.kerttuApi + '/global';
 
-  public static getErrorMessage(error): KerttuGlobalErrorEnum {
+  public static getErrorMessage(error: any): KerttuGlobalErrorEnum {
     while (error.error) {
       error = error.error;
     }

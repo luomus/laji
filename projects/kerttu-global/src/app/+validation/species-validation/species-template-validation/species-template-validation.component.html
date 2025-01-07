@@ -15,7 +15,7 @@
   <p>{{ ('validation.description' + (historyView ? '.oldVersion' : (hasAllTemplatesInitially ? '.confirm' : ''))) | translate }}</p>
   <laji-spinner [spinning]="!templates || !recordings" [hideContentWhileLoading]="true">
     <bsg-templates
-      [templates]="templates"
+      [templates]="templates!"
       [confirmedTemplates]="confirmedTemplates"
       [spectrogramConfig]="spectrogramConfig"
       [audioIdMap]="audioIdMap"
@@ -67,8 +67,8 @@
     </div>
     <bsg-recordings
       *ngIf="showCandidates"
-      [recordings]="recordings"
-      [templates]="templates"
+      [recordings]="recordings!"
+      [templates]="templates!"
       [spectrogramConfig]="spectrogramConfig"
       (audioClick)="onAudioClick($event)"
       (candidateClick)="onCandidateClick($event)"
@@ -82,8 +82,8 @@
   </h1>
   <bsg-template
     [audio]="activeAudio"
-    [template]="activeTemplate"
-    [templateIdx]="activeTemplateIdx"
+    [template]="activeTemplate!"
+    [templateIdx]="activeTemplateIdx!"
     [isNewTemplate]="activeTemplateIsNew"
     [audioFocusTime]="activeAudioFocusTime"
     [spectrogramConfig]="spectrogramConfig"

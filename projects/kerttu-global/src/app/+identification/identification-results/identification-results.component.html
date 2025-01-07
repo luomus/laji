@@ -22,13 +22,13 @@
 
 <h2>{{ 'results.annotationCountMap' | translate }}</h2>
 <bsg-site-result-map
-  [sites]="sites$ | async"
-  [siteStats]="siteStats$ | async"
+  [sites]="(sites$ | async)!"
+  [siteStats]="(siteStats$ | async)!"
 ></bsg-site-result-map>
 
 <h2>{{ 'results.userTable.title' | translate }}</h2>
 <bsg-identification-user-table
-  [data]="userStats$ | async"
+  [data]="(userStats$ | async)!"
 ></bsg-identification-user-table>
 
 <h2>{{ 'results.speciesTable.title' | translate }}</h2>
@@ -52,7 +52,7 @@
   </div>
 </div>
 <bsg-identification-species-table
-  [data]="(showOwnSpecies ? ownSpeciesStats$ : speciesStats$) | async"
+  [data]="((showOwnSpecies ? ownSpeciesStats$ : speciesStats$) | async)!"
   [filterBy]="filterSpeciesBy"
 ></bsg-identification-species-table>
 

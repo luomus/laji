@@ -4,7 +4,7 @@
     <label for="birdSongRecognitionSkillLevels">{{ 'expertise.birdSongRecognitionSkillLevels' | translate }}</label>
     <bsg-expertise-by-continent
       id="birdSongRecognitionSkillLevels"
-      [continents]="continents$ | async"
+      [continents]="(continents$ | async)!"
       [birdSongRecognitionSkillLevels]="birdSongRecognitionSkillLevels"
       [disabled]="saving"
     ></bsg-expertise-by-continent>

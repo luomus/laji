@@ -50,6 +50,6 @@
   </div>
   <div class="col-sm-3" *ngIf="showSearch">
     <label for="search">{{ 'speciesList.filters.search' | translate }}</label>
-    <bsg-search-input [(searchQuery)]="query.searchQuery" (searchQueryChange)="onQueryChange()" id="search"></bsg-search-input>
+    <bsg-search-input [(searchQuery)]="query.searchQuery!" (searchQueryChange)="onQueryChange()" id="search"></bsg-search-input>
   </div>
 </div>

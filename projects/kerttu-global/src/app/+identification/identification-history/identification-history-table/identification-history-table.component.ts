@@ -11,10 +11,10 @@ import { IIdentificationHistoryResponseWithIndex } from '../identification-histo
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationHistoryTableComponent implements OnInit {
-  @ViewChild('speciesListTpl', { static: true }) public speciesListTemplate: TemplateRef<any>;
-  @ViewChild('statusTpl', { static: true }) public statusTemplate: TemplateRef<any>;
+  @ViewChild('speciesListTpl', { static: true }) public speciesListTemplate!: TemplateRef<any>;
+  @ViewChild('statusTpl', { static: true }) public statusTemplate!: TemplateRef<any>;
 
-  @Input() data: PagedResult<IIdentificationHistoryResponseWithIndex>;
+  @Input() data!: PagedResult<IIdentificationHistoryResponseWithIndex>;
   @Input() loading = false;
 
   columns: DatatableColumn[] = [];

@@ -9,7 +9,7 @@ import { SiteSelectionMapComponent } from './site-selection-map/site-selection-m
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SiteSelectionViewComponent {
-  @ViewChild(SiteSelectionMapComponent) siteMap: SiteSelectionMapComponent;
+  @ViewChild(SiteSelectionMapComponent) siteMap!: SiteSelectionMapComponent;
 
   @Input() sites: IGlobalSite[] = [];
 

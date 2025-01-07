@@ -18,8 +18,8 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   expertiseMissing?: boolean;
   selectedSites?: number[];
 
-  private expertiseMissingSub: Subscription;
-  private siteIdsSub: Subscription;
+  private expertiseMissingSub!: Subscription;
+  private siteIdsSub!: Subscription;
 
   constructor(
     private personService: PersonApi,
@@ -37,7 +37,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
     this.siteIdsSub = this.route.queryParams.pipe(
       map(data => (
-        (data['siteId'] || '').split(',').map(id => parseInt(id, 10)).filter(id => !isNaN(id)))
+        (data['siteId'] || '').split(',').map((id: any) => parseInt(id, 10)).filter((id: any) => !isNaN(id)))
       )
     ).subscribe(siteIds => {
       this.selectedSites = siteIds;
@@ -50,12 +50,12 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     this.siteIdsSub?.unsubscribe();
   }
 
-  canDeactivate(): Observable<boolean> {
+  canDeactivate(): Observable<boolean> | undefined {
     return this.identificationComponent?.canDeactivate();
   }
 
   onSiteSelect(siteIds: number[]) {
-    const queryParams = {};
+    const queryParams: any = {};
     if (siteIds?.length > 0) {
       queryParams['siteId'] = siteIds.sort().join(',');
     }

@@ -14,19 +14,19 @@ export class RecordingLoaderService implements OnDestroy {
   private previousLimit = 1; // how many previous recordings are kept in memory
   private nextLimit = 5; // how many next recordings are loaded to memory
 
-  @LocalStorage('selected_sites') private selectedSites: number[];
+  @LocalStorage('selected_sites') private selectedSites!: number[];
   private fileNameFilter = '';
 
-  @LocalStorage('previous_recordings') private previous: number[];
-  @LocalStorage('current_recording') private current: number|null;
+  @LocalStorage('previous_recordings') private previous!: number[];
+  @LocalStorage('current_recording') private current!: number|null;
   private next: number[] = [];
 
   private dataByRecordingId: Record<number, IGlobalRecordingWithAnnotation> = {};
 
   private preloadNextRecordingIsActive = false;
   private preloadNextRecordingSubject = new Subject<number|null>();
-  private preloadNextRecording$: Observable<IGlobalRecordingWithAnnotation>;
-  private preloadNextRecordingSub: Subscription;
+  private preloadNextRecording$!: Observable<IGlobalRecordingWithAnnotation>;
+  private preloadNextRecordingSub!: Subscription;
   private preloadAudioSub?: Subscription;
 
   constructor(
@@ -85,7 +85,7 @@ export class RecordingLoaderService implements OnDestroy {
   }
 
   getPreviousRecording(): Observable<IGlobalRecordingWithAnnotation> {
-    this.next = [this.current, ...this.next];
+    this.next = [this.current!, ...this.next];
     if (this.next.length > this.nextLimit) {
       this.next = this.next.slice(0, this.next.length - 1);
     }
@@ -98,7 +98,7 @@ export class RecordingLoaderService implements OnDestroy {
   }
 
   getNextRecording(): Observable<IGlobalRecordingWithAnnotation> {
-    this.previous = [...this.previous, this.current];
+    this.previous = [...this.previous, this.current!];
     if (this.previous.length > this.previousLimit) {
       this.previous = this.previous.slice(1);
     }
@@ -116,7 +116,7 @@ export class RecordingLoaderService implements OnDestroy {
   }
 
   setCurrentAnnotation(annotation: IGlobalRecordingAnnotation) {
-    this.dataByRecordingId[this.current].annotation = annotation;
+    this.dataByRecordingId[this.current!].annotation = annotation;
   }
 
   private initLocalStorageValues() {
@@ -136,7 +136,7 @@ export class RecordingLoaderService implements OnDestroy {
       switchMap(previousId => {
         const excludedIds = this.current != null ? [this.current, ...this.next] : [...this.next];
         return this.kerttuGlobalApi.getNewIdentificationRecording(
-          this.userService.getToken(), this.translate.currentLang, this.selectedSites, previousId, excludedIds, this.fileNameFilter
+          this.userService.getToken(), this.translate.currentLang, this.selectedSites, previousId!, excludedIds, this.fileNameFilter
         );
       }),
       tap(result => {
@@ -144,11 +144,11 @@ export class RecordingLoaderService implements OnDestroy {
         if (this.current === null) {
           this.current = recordingId;
         } else {
-          this.next.push(recordingId);
+          this.next.push(recordingId!);
         }
 
         if (result.recording) {
-          this.dataByRecordingId[recordingId] = result;
+          this.dataByRecordingId[recordingId!] = result;
 
           this.preloadAudioSub = this.audioCacheLoader.loadAudioToCache(result.recording).subscribe(() => {
             if (this.next.length < this.nextLimit) {

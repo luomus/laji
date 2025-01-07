@@ -29,14 +29,14 @@ interface BoxClickEvent {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationPanelComponent {
-  @ViewChild('toggleDrawBtn', { static: false }) toggleDrawBtn: ElementRef;
-  @ViewChildren('toggleDrawRelatedBtn') toggleDrawRelatedBtn: QueryList<ElementRef>;
+  @ViewChild('toggleDrawBtn', { static: false }) toggleDrawBtn!: ElementRef;
+  @ViewChildren('toggleDrawRelatedBtn') toggleDrawRelatedBtn!: QueryList<ElementRef>;
 
   @Input() componentId = '';
   @Input() speciesIdx?: number;
 
-  @Input() recording: IGlobalRecording;
-  @Input() identification: IGlobalSpeciesWithAnnotation;
+  @Input() recording!: IGlobalRecording;
+  @Input() identification!: IGlobalSpeciesWithAnnotation;
 
   @Input() showDrawRelatedBoxBtn = true;
   @Input() buttonsDisabled = false;
@@ -46,7 +46,7 @@ export class IdentificationPanelComponent {
 
   @Input() birdRectangleColor = 'white';
   @Input() overlappingBirdRectangleColor = 'orange';
-  @Input() spectrogramConfig: ISpectrogramConfig;
+  @Input() spectrogramConfig!: ISpectrogramConfig;
 
   speciesAnnotationEnum = SpeciesAnnotationEnum;
   taxonTypeEnum = TaxonTypeEnum;

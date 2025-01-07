@@ -9,7 +9,7 @@ import { TaxonTypeEnum } from '../../../../kerttu-global-shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationNavComponent {
-  @ViewChild('filterModal', { static: true }) filterModal: TemplateRef<any>;
+  @ViewChild('filterModal', { static: true }) filterModal!: TemplateRef<any>;
 
   @Input() hasPreviousRecording = false;
   @Input() buttonsDisabled = false;
@@ -27,7 +27,7 @@ export class IdentificationNavComponent {
   @Output() backToSiteSelectionClick = new EventEmitter();
   @Output() fileNameFilterChange = new EventEmitter<string>();
 
-  private filterModalRef: ModalRef<any>;
+  private filterModalRef!: ModalRef<any>;
 
   constructor(
     private modalService: ModalService

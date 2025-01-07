@@ -10,9 +10,9 @@
   ></laji-audio-viewer-settings>
   <laji-audio-viewer
     [audio]="audio"
-    [spectrogramConfig]="spectrogramConfig"
+    [spectrogramConfig]="spectrogramConfig!"
     [mode]="audioViewerMode"
-    [focusArea]="template ? template.area : { 'xRange': [audioFocusTime, audioFocusTime] }"
+    [focusArea]="template ? template.area : { 'xRange': [audioFocusTime!, audioFocusTime!] }"
     [spectrogramHeight]="150"
     [showZoomControl]="true"
     [zoomFrequency]="template ? zoomFrequency : false"
@@ -35,17 +35,17 @@
 
 <div class="row mt-5">
   <div class="col-sm-4">
-    <h3 class="d-inline-block">{{ ('validation.template.' + (historyView ? 'oldVersion' : (isNewTemplate ? 'new' : 'current'))) | translate }} T{{ templateIdx + 1 }}</h3>
+    <h3 class="d-inline-block">{{ ('validation.template.' + (historyView ? 'oldVersion' : (isNewTemplate ? 'new' : 'current'))) | translate }} T{{ templateIdx! + 1 }}</h3>
     <p *ngIf="!historyView">{{ 'validation.template.description' | translate }}</p>
     <p *ngIf="template?.validatedBy">
-      {{ 'validation.template.validatedBy' | translate }}: {{ template.validatedBy | users | values }}
+      {{ 'validation.template.validatedBy' | translate }}: {{ template!.validatedBy | users | values }}
     </p>
   </div>
   <div class="col-sm-8">
     <laji-audio-viewer
       *ngIf="template"
       [audio]="audio"
-      [spectrogramConfig]="spectrogramConfig"
+      [spectrogramConfig]="spectrogramConfig!"
       [focusArea]="template.area"
       [zoomTime]="true"
       [timePaddingOnZoom]="0.5"
@@ -63,18 +63,18 @@
   <div class="panel panel-default">
     <div class="panel-body">
       <p>
-        {{ template.comment.created | amDateFormat: 'DD.MM.YYYY HH:mm:ss' }}
+        {{ template!.comment!.created | amDateFormat: 'DD.MM.YYYY HH:mm:ss' }}
         <span [ngClass]="{
-          'text-danger': template.comment.type === commentTypeEnum.replace,
-          'text-warning': template.comment.type === commentTypeEnum.reframe
+          'text-danger': template!.comment!.type === commentTypeEnum.replace,
+          'text-warning': template!.comment!.type === commentTypeEnum.reframe
         }" class="text-danger">
-          {{ 'validation.template.' + (template.comment.type === commentTypeEnum.replace ? 'removed' : 'reframed') | translate }}
+          {{ 'validation.template.' + (template!.comment!.type === commentTypeEnum.replace ? 'removed' : 'reframed') | translate }}
         </span>
       </p>
       <p>
-        {{ template.comment.userId | users }}:
+        {{ template!.comment!.userId | users }}:
         <br>
-        {{ template.comment.comment }}
+        {{ template!.comment!.comment }}
       </p>
     </div>
   </div>

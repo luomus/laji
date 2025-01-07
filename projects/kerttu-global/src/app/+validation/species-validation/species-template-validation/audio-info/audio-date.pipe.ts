@@ -8,7 +8,7 @@ import { IGlobalAudio } from '../../../../kerttu-global-shared/models';
 export class AudioDatePipe implements PipeTransform {
   constructor(private datePipe: DatePipe) {}
 
-  transform(value: IGlobalAudio): string {
+  transform(value: IGlobalAudio): string | null {
     const formatStringParts = [];
     if (value.day) {
       formatStringParts.push('d');
@@ -20,7 +20,7 @@ export class AudioDatePipe implements PipeTransform {
       formatStringParts.push('yyyy');
     }
 
-    const date = new Date(value.year ?? 2000, value.month - 1 ?? 0, value.day ?? 1, 0, 0, 0, 0);
+    const date = new Date(value.year ?? 2000, (value.month ?? 1) - 1, value.day ?? 1, 0, 0, 0, 0);
 
     return this.datePipe.transform(date, formatStringParts.join(' '));
   }

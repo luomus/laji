@@ -20,11 +20,11 @@ import { ISpectrogramConfig } from '../../../../../../../../laji/src/app/shared-
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationTableComponent implements OnChanges {
-  @ViewChildren(IdentificationPanelComponent) identificationPanels: QueryList<IdentificationPanelComponent>;
+  @ViewChildren(IdentificationPanelComponent) identificationPanels!: QueryList<IdentificationPanelComponent>;
 
   @Input() componentId = 0;
-  @Input() recording: IGlobalRecording;
-  @Input() identifications: IGlobalSpeciesWithAnnotation[];
+  @Input() recording!: IGlobalRecording;
+  @Input() identifications!: IGlobalSpeciesWithAnnotation[];
 
   @Input() loading = false;
   @Input() showDrawRelatedBoxBtn = true;
@@ -33,7 +33,7 @@ export class IdentificationTableComponent implements OnChanges {
 
   @Input() birdRectangleColor = 'white';
   @Input() overlappingBirdRectangleColor = 'orange';
-  @Input() spectrogramConfig: ISpectrogramConfig;
+  @Input() spectrogramConfig!: ISpectrogramConfig;
 
   drawBoxActive: boolean[] = [];
   drawRelatedBoxActive: boolean[][] = [];
@@ -52,7 +52,7 @@ export class IdentificationTableComponent implements OnChanges {
       const prevLength = Object.keys(this.panelOpenById).length;
       const currLength = this.identifications?.length || 0;
 
-      this.panelOpenById = this.identifications.reduce((panelOpenById, identification, idx) => {
+      this.panelOpenById = this.identifications.reduce((panelOpenById: any, identification, idx) => {
         if (currLength > prevLength) {
           panelOpenById[identification.id] = idx === this.identifications.length - 1;
         } else {
@@ -96,6 +96,6 @@ export class IdentificationTableComponent implements OnChanges {
   }
 
   scrollDrawButtonIntoView(rowIndex: number, boxIndex?: number) {
-    this.identificationPanels.get(rowIndex).scrollDrawButtonIntoView(boxIndex);
+    this.identificationPanels.get(rowIndex)!.scrollDrawButtonIntoView(boxIndex);
   }
 }
