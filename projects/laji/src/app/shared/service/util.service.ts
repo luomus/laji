@@ -71,7 +71,7 @@ export class Util {
   }
 
   /**
-   * Remove undefined values from object and any key specified by the key parameter
+   * Remove all undefined and null values from object
    *
    * @param obj object to remove keys from
    * @param keys array of keys that should be removed
