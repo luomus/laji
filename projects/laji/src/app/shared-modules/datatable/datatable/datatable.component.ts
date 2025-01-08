@@ -120,7 +120,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     this._isFixedHeight = height.substr(height.length - 2, 2).includes('px');
   }
 
-  @Input() set count(cnt: number) {
+  @Input() set count(cnt: number|undefined) {
     this._count = typeof cnt === 'number' ? cnt  : 0;
   }
 
@@ -152,9 +152,9 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     setTimeout(() => this.scrollTo());
   }
 
-  @Input() set page(page: number) {
+  @Input() set page(page: number|undefined) {
     this._page = page;
-    this._offset = page - 1;
+    this._offset = typeof page === 'number' ? page - 1 : undefined;
   }
 
   @Input() set columns(columns: DatatableColumn[]) {

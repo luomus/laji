@@ -66,7 +66,7 @@ export class SiteResultMapComponent implements OnChanges {
   }
 
   private getCountByLegend(sites: IGlobalSite[], siteStats: IIdentificationSiteStat[]): Record<string, number> {
-    const countByLegend: any = {};
+    const countByLegend: Record<string, number> = {};
     this.legendLabels.forEach(label => {
       countByLegend[label] = 0;
     });
@@ -90,7 +90,7 @@ export class SiteResultMapComponent implements OnChanges {
   }
 
   private getData(sites: IGlobalSite[], siteStats: IIdentificationSiteStat[]): DataOptions {
-    const countBySite: any = {};
+    const countBySite: Record<string, number> = {};
     (siteStats || []).forEach(stat => {
       countBySite[stat.siteId] = stat.count;
     });
@@ -142,11 +142,11 @@ export class SiteResultMapComponent implements OnChanges {
 
   private getPopup(options: GetPopupOptions, callback: (content: (string | HTMLElement)) => void): string {
     const siteTranslation = this.translate.instant('siteSelection.site');
-    const data = options.feature!.properties;
+    const data = options.feature!.properties!;
 
-    let popup = '<strong>' + siteTranslation + ' ' + data!.id + '</strong><br>' + data!.name;
-    if (data!.country) {
-      popup += ', ' + data!.country;
+    let popup = '<strong>' + siteTranslation + ' ' + data.id + '</strong><br>' + data.name;
+    if (data.country) {
+      popup += ', ' + data.country;
     }
     return popup;
   }

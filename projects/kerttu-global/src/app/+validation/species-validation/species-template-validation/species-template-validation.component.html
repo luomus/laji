@@ -67,8 +67,8 @@
     </div>
     <bsg-recordings
       *ngIf="showCandidates"
-      [recordings]="recordings!"
-      [templates]="templates!"
+      [recordings]="recordings"
+      [templates]="templates"
       [spectrogramConfig]="spectrogramConfig"
       (audioClick)="onAudioClick($event)"
       (candidateClick)="onCandidateClick($event)"
@@ -81,11 +81,11 @@
     <bsg-species-name [species]="activeAudio.species"></bsg-species-name>
   </h1>
   <bsg-template
-    [audio]="activeAudio"
-    [template]="activeTemplate!"
+    [audio]="activeAudio!"
+    [template]="activeTemplate"
     [templateIdx]="activeTemplateIdx!"
-    [isNewTemplate]="activeTemplateIsNew"
-    [audioFocusTime]="activeAudioFocusTime"
+    [isNewTemplate]="activeTemplateIsNew!"
+    [audioFocusTime]="activeAudioFocusTime!"
     [spectrogramConfig]="spectrogramConfig"
     [historyView]="historyView"
     (confirm)="onTemplateConfirm($event)"

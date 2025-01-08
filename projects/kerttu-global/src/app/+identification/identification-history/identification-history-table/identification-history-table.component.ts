@@ -14,7 +14,7 @@ export class IdentificationHistoryTableComponent implements OnInit {
   @ViewChild('speciesListTpl', { static: true }) public speciesListTemplate!: TemplateRef<any>;
   @ViewChild('statusTpl', { static: true }) public statusTemplate!: TemplateRef<any>;
 
-  @Input() data!: PagedResult<IIdentificationHistoryResponseWithIndex>;
+  @Input() data?: PagedResult<IIdentificationHistoryResponseWithIndex>;
   @Input() loading = false;
 
   columns: DatatableColumn[] = [];
@@ -60,7 +60,8 @@ export class IdentificationHistoryTableComponent implements OnInit {
     ];
   }
 
-  getRowClass(row: IIdentificationHistoryResponseWithIndex): string {
+  getRowClass(row: any): string {
+    row = row as IIdentificationHistoryResponseWithIndex;
     const rowClasses = ['link'];
 
     if (row.annotation.status === AnnotationStatusEnum.skipped) {

@@ -11,12 +11,12 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TemplateComponent {
-  @Input() template?: IGlobalTemplate;
-  @Input() templateIdx?: number;
-  @Input() isNewTemplate?: boolean;
-  @Input() audio?: IGlobalAudio;
+  @Input() template?: IGlobalTemplate|null;
+  @Input({ required: true }) templateIdx!: number;
+  @Input({ required: true }) isNewTemplate!: boolean;
+  @Input({ required: true }) audio!: IGlobalAudio;
   @Input() audioFocusTime?: number;
-  @Input() spectrogramConfig?: ISpectrogramConfig;
+  @Input({ required: true }) spectrogramConfig!: ISpectrogramConfig;
   @Input() historyView?: boolean;
 
   @Output() confirm = new EventEmitter<IGlobalTemplate>();
@@ -53,7 +53,7 @@ export class TemplateComponent {
   onDrawEnd(area: IAudioViewerArea) {
     this.audioViewerMode = 'default';
     this.framedTemplate = {
-      audioId: this.audio!.id,
+      audioId: this.audio.id,
       area
     };
 
@@ -66,7 +66,7 @@ export class TemplateComponent {
   }
 
   onConfirm() {
-    this.confirm.emit(this.template);
+    this.confirm.emit(this.template!);
   }
 
   onRemove() {

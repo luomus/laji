@@ -9,6 +9,8 @@ import { LocalStorage } from 'ngx-webstorage';
 import { Util } from '../../../../../laji/src/app/shared/service/util.service';
 import { AudioCacheLoaderService } from './audio-cache-loader.service';
 
+export interface NoRecordingsResult { recording: null; annotation: null }
+
 @Injectable()
 export class RecordingLoaderService implements OnDestroy {
   private previousLimit = 1; // how many previous recordings are kept in memory
@@ -19,7 +21,7 @@ export class RecordingLoaderService implements OnDestroy {
 
   @LocalStorage('previous_recordings') private previous!: number[];
   @LocalStorage('current_recording') private current!: number|null;
-  private next: number[] = [];
+  private next: (number|null)[] = [];
 
   private dataByRecordingId: Record<number, IGlobalRecordingWithAnnotation> = {};
 
@@ -97,7 +99,7 @@ export class RecordingLoaderService implements OnDestroy {
     return this.getCurrentRecording();
   }
 
-  getNextRecording(): Observable<IGlobalRecordingWithAnnotation> {
+  getNextRecording(): Observable<IGlobalRecordingWithAnnotation|NoRecordingsResult> {
     this.previous = [...this.previous, this.current!];
     if (this.previous.length > this.previousLimit) {
       this.previous = this.previous.slice(1);
@@ -136,7 +138,7 @@ export class RecordingLoaderService implements OnDestroy {
       switchMap(previousId => {
         const excludedIds = this.current != null ? [this.current, ...this.next] : [...this.next];
         return this.kerttuGlobalApi.getNewIdentificationRecording(
-          this.userService.getToken(), this.translate.currentLang, this.selectedSites, previousId!, excludedIds, this.fileNameFilter
+          this.userService.getToken(), this.translate.currentLang, this.selectedSites, previousId, excludedIds, this.fileNameFilter
         );
       }),
       tap(result => {
@@ -144,7 +146,7 @@ export class RecordingLoaderService implements OnDestroy {
         if (this.current === null) {
           this.current = recordingId;
         } else {
-          this.next.push(recordingId!);
+          this.next.push(recordingId);
         }
 
         if (result.recording) {
@@ -213,7 +215,7 @@ export class RecordingLoaderService implements OnDestroy {
     return this.undefinedToNull(recordingId);
   }
 
-  private undefinedToNull(value?: number) {
+  private undefinedToNull(value?: number|null) {
     return value === undefined ? null : value;
   }
 }

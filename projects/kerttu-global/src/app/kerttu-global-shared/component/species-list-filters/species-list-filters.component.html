@@ -5,7 +5,7 @@
       <div class="col-sm-6">
         <label>{{ 'speciesList.filters.continent' | translate }}</label>
         <select class="form-control input-sm" [ngModel]="query.continent" (ngModelChange)="selectChange('continent', $event)">
-          <option [value]=""></option>
+          <option [value]="undefined"></option>
           <option *ngFor="let continent of filters?.continent" [value]="continent.id">{{ ('continents.' + continent.name) | translate }}</option>
         </select>
       </div>
@@ -17,14 +17,14 @@
       <div class="col-sm-6">
         <label>{{ 'speciesList.filters.order' | translate }}</label>
         <select class="form-control input-sm" [ngModel]="query.order" (ngModelChange)="selectChange('order', $event)">
-          <option [value]=""></option>
+          <option [value]="undefined"></option>
           <option *ngFor="let order of filters?.order" [value]="order.id">{{ order.scientificName }}</option>
         </select>
       </div>
       <div class="col-sm-6">
         <label>{{ 'speciesList.filters.family' | translate }}</label>
         <select class="form-control input-sm" [ngModel]="query.family" (ngModelChange)="selectChange('family', $event)">
-          <option [value]=""></option>
+          <option [value]="undefined"></option>
           <ng-container *ngFor="let family of filters?.family">
             <option *ngIf="!query.order || query.order === family.order" [value]="family.id">
               {{ family.scientificName }}
@@ -50,6 +50,6 @@
   </div>
   <div class="col-sm-3" *ngIf="showSearch">
     <label for="search">{{ 'speciesList.filters.search' | translate }}</label>
-    <bsg-search-input [(searchQuery)]="query.searchQuery!" (searchQueryChange)="onQueryChange()" id="search"></bsg-search-input>
+    <bsg-search-input [(searchQuery)]="query.searchQuery" (searchQueryChange)="onQueryChange()" id="search"></bsg-search-input>
   </div>
 </div>

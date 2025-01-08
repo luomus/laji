@@ -8,16 +8,16 @@ import { IGlobalTemplateVersion } from '../../../kerttu-global-shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VersionNavComponent {
-  @Input() versions: IGlobalTemplateVersion[] = [];
-  @Input() activeIdx = 0;
+  @Input({ required: true }) versions: IGlobalTemplateVersion[] = [];
+  @Input() activeIdx?: number|null;
 
   @Output() activeIdxChange = new EventEmitter<number>();
 
   onNextClicked() {
-    this.activeIdxChange.emit(this.activeIdx + 1);
+    this.activeIdxChange.emit(this.activeIdx! + 1);
   }
 
   onPreviousClicked() {
-    this.activeIdxChange.emit(this.activeIdx - 1);
+    this.activeIdxChange.emit(this.activeIdx! - 1);
   }
 }

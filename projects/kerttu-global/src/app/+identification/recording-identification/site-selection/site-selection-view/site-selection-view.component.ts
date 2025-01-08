@@ -9,9 +9,9 @@ import { SiteSelectionMapComponent } from './site-selection-map/site-selection-m
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SiteSelectionViewComponent {
-  @ViewChild(SiteSelectionMapComponent) siteMap!: SiteSelectionMapComponent;
+  @ViewChild(SiteSelectionMapComponent, { static: true }) siteMap!: SiteSelectionMapComponent;
 
-  @Input() sites: IGlobalSite[] = [];
+  @Input({ required: true }) sites: IGlobalSite[] = [];
 
   selectedSites: number[] = [];
   drawActive = false;

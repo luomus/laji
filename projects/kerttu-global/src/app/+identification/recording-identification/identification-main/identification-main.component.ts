@@ -10,7 +10,7 @@ import { Observable, of } from 'rxjs';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
 import equals from 'deep-equal';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
-import { RecordingLoaderService } from '../../service/recording-loader.service';
+import { NoRecordingsResult, RecordingLoaderService } from '../../service/recording-loader.service';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { DialogService } from '../../../../../../laji/src/app/shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -25,7 +25,7 @@ import { AudioCacheLoaderService } from '../../service/audio-cache-loader.servic
   providers: [AudioService, AudioCacheLoaderService, RecordingLoaderService]
 })
 export class IdentificationMainComponent implements OnChanges {
-  @Input() selectedSites!: number[];
+  @Input({ required: true }) selectedSites!: number[];
 
   recording?: IGlobalRecording;
   annotation?: IGlobalRecordingAnnotation;
@@ -39,7 +39,7 @@ export class IdentificationMainComponent implements OnChanges {
 
   @Output() goBackToSiteSelection = new EventEmitter<void>();
 
-  private originalAnnotation!: IGlobalRecordingAnnotation;
+  private originalAnnotation?: IGlobalRecordingAnnotation;
 
   constructor(
     public recordingLoaderService: RecordingLoaderService,
@@ -167,7 +167,7 @@ export class IdentificationMainComponent implements OnChanges {
     );
   }
 
-  private onGetRecordingsSuccess(data: IGlobalRecordingWithAnnotation) {
+  private onGetRecordingsSuccess(data: IGlobalRecordingWithAnnotation|NoRecordingsResult) {
     this.loading = false;
     this.clearIdentificationState();
 

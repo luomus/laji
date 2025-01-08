@@ -9,12 +9,12 @@ import { IGlobalAudio, IGlobalTemplate } from '../../../../kerttu-global-shared/
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TemplatesComponent {
-  @Input() templates: IGlobalTemplate[] = [];
+  @Input() templates: (IGlobalTemplate|null)[] = [];
   @Input() confirmedTemplates: boolean[] = [];
   @Input() highlightNonConfirmed = true;
 
-  @Input() spectrogramConfig?: ISpectrogramConfig;
-  @Input() audioIdMap!: { [id: number]: IGlobalAudio };
+  @Input({ required: true }) spectrogramConfig!: ISpectrogramConfig;
+  @Input({ required: true }) audioIdMap!: { [id: number]: IGlobalAudio };
 
   @Output() templateClick = new EventEmitter<number>();
 

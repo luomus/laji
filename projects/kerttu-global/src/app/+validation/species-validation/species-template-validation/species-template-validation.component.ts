@@ -13,10 +13,10 @@ import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGloba
 export class SpeciesTemplateValidationComponent implements OnChanges {
   @Input() species?: IGlobalSpecies;
   @Input() recordings?: IGlobalRecording[];
-  @Input() templates?: IGlobalTemplate[];
+  @Input() templates?: (IGlobalTemplate|null)[];
   @Input() saving = false;
-  @Input() historyView = false;
-  @Input() spectrogramConfig!: ISpectrogramConfig;
+  @Input() historyView? = false;
+  @Input({ required: true }) spectrogramConfig!: ISpectrogramConfig;
 
   hasAllTemplatesInitially = false;
   showCandidates = false;
@@ -34,7 +34,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   audioIdMap: {[id: number]: IGlobalAudio } = {};
   subSpecies: IGlobalSpecies[] = [];
 
-  @Output() save = new EventEmitter<{ templates: IGlobalTemplate[]; comments: IGlobalComment[] }>();
+  @Output() save = new EventEmitter<{ templates: (IGlobalTemplate|null)[]; comments: IGlobalComment[] }>();
   @Output() cancel = new EventEmitter();
 
   constructor(
@@ -49,7 +49,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
         this.audioIdMap[d.audio.id] = d.audio;
       });
 
-      const addedSubSpecies: any[] = [];
+      const addedSubSpecies: number[] = [];
       this.subSpecies = (this.recordings || []).reduce((subSpecies: IGlobalSpecies[], d) => {
         const species = d.audio.species;
         if (!species.isSpecies && !addedSubSpecies.includes(species.id)) {
@@ -89,7 +89,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
       return;
     }
     this.activeTemplate = this.templates![templateIdx];
-    this.activeAudio = this.audioIdMap[this.activeTemplate?.audioId];
+    this.activeAudio = this.activeTemplate?.audioId ? this.audioIdMap[this.activeTemplate.audioId] : undefined;
     this.activeTemplateIdx = templateIdx;
     this.activeTemplateIsNew = false;
   }
@@ -105,7 +105,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   }
 
   onTemplateRemove() {
-    this.templates[this.activeTemplateIdx] = null;
+    this.templates![this.activeTemplateIdx!] = null;
     this.confirmedTemplates[this.activeTemplateIdx!] = false;
     this.activeTemplateIdx = null;
   }

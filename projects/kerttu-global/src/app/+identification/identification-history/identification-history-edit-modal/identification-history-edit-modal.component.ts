@@ -23,12 +23,12 @@ import equals from 'deep-equal';
   providers: [AudioService, SpectrogramService]
 })
 export class IdentificationHistoryEditModalComponent implements OnInit, OnDestroy {
-  @Input() index!: number;
-  @Input() recordingId$!: Observable<number>;
-  @Input() lastIndex!: number;
+  @Input({ required: true }) index!: number;
+  @Input({ required: true }) recordingId$!: Observable<number>;
+  @Input({ required: true }) lastIndex!: number;
 
-  recording!: IGlobalRecording;
-  annotation!: IGlobalRecordingAnnotation;
+  recording?: IGlobalRecording;
+  annotation?: IGlobalRecordingAnnotation;
 
   saving = false;
   loading = false;
@@ -81,7 +81,7 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
 
   saveAnnotation() {
     this.saving = true;
-    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).subscribe({
+    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording!.id, this.annotation!).subscribe({
       next: () => {
         this.originalAnnotation = Util.clone(this.annotation);
         this.hasUnsavedChanges = false;

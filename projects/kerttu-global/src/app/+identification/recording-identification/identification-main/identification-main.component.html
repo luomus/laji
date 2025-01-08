@@ -4,7 +4,7 @@
       [hasPreviousRecording]="recordingLoaderService.hasPreviousRecording()"
       [buttonsDisabled]="loading"
       [saveDisabled]="hasError || allRecordingsAnnotated"
-      [taxonType]="recording!.taxonType"
+      [taxonType]="recording?.taxonType"
       [fileNameFilter]="fileNameFilter"
       (nextRecordingClick)="getNextRecording()"
       (previousRecordingClick)="getPreviousRecording()"

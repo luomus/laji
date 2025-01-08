@@ -17,7 +17,7 @@ interface LajiMapData extends DataOptions {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SiteSelectionMapComponent implements OnChanges {
-  @ViewChild(LajiMapComponent) lajiMap!: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: true}) lajiMap!: LajiMapComponent;
   @Input() sites: IGlobalSite[] = [];
   @Input() selectedSites: number[] = [];
   @Input() height = '100%';
@@ -31,7 +31,7 @@ export class SiteSelectionMapComponent implements OnChanges {
 
   @Output() selectedSitesChange = new EventEmitter<number[]>();
 
-  private data!: LajiMapData | null;
+  private data: LajiMapData | null = null;
   private dataInitialized = false;
 
   constructor(
@@ -134,7 +134,7 @@ export class SiteSelectionMapComponent implements OnChanges {
     const childCount = cluster.getChildCount();
     const markers = cluster.getAllChildMarkers();
     const sites = markers.map((marker: any) => marker.feature.properties.id);
-    const selectedCount = sites.filter((siteId: any) => this.selectedSites?.includes(siteId)).length;
+    const selectedCount = sites.filter((siteId: number) => this.selectedSites?.includes(siteId)).length;
 
     let c = ' marker-cluster-';
     if (selectedCount === 0) {
@@ -189,12 +189,12 @@ export class SiteSelectionMapComponent implements OnChanges {
   }
 
   private getSitesInsideRectangle(rect: Polygon): IGlobalSite[] {
-    return this.sites.reduce((res: any[], site) => {
+    return this.sites.reduce((res, site) => {
       if (this.pointIsInsideBox(site.geometry.coordinates, rect.coordinates[0])) {
         res.push(site);
       }
       return res;
-    }, []);
+    }, [] as IGlobalSite[]);
   }
 
   private pointIsInsideBox(point: number[], box: number[][]): boolean {

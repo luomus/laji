@@ -14,7 +14,7 @@ export class ExpertiseByContinentComponent implements OnChanges {
   @Input() birdSongRecognitionSkillLevels: BirdSongRecognitionSkillLevel[] = [];
   @Input() disabled = false;
 
-  skillLevelByContinent = {};
+  skillLevelByContinent: Record<string, BirdSongRecognitionSkillLevelEnum> = {};
 
   birdSongRecognitionSkillLevelOptions: {id: BirdSongRecognitionSkillLevelEnum; label: string}[] = [
     {id: 'MA.birdSongRecognitionSkillLevelEnum1', label: 'expertise.birdSongRecognitionSkillLevel1'},

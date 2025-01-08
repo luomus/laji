@@ -26,7 +26,6 @@ export class IdentificationResultsComponent implements OnInit {
   speciesStats$!: Observable<IIdentificationSpeciesStat[]>;
   ownSpeciesStats$!: Observable<IIdentificationSpeciesStat[]>;
   generalStats$!: Observable<IIdentificationStat>;
-  userId$!: Observable<string>;
 
   showOwnSpecies = false;
   filterSpeciesBy = '';

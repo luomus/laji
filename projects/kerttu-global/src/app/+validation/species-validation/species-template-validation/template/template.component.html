@@ -10,7 +10,7 @@
   ></laji-audio-viewer-settings>
   <laji-audio-viewer
     [audio]="audio"
-    [spectrogramConfig]="spectrogramConfig!"
+    [spectrogramConfig]="spectrogramConfig"
     [mode]="audioViewerMode"
     [focusArea]="template ? template.area : { 'xRange': [audioFocusTime!, audioFocusTime!] }"
     [spectrogramHeight]="150"
@@ -35,7 +35,7 @@
 
 <div class="row mt-5">
   <div class="col-sm-4">
-    <h3 class="d-inline-block">{{ ('validation.template.' + (historyView ? 'oldVersion' : (isNewTemplate ? 'new' : 'current'))) | translate }} T{{ templateIdx! + 1 }}</h3>
+    <h3 class="d-inline-block">{{ ('validation.template.' + (historyView ? 'oldVersion' : (isNewTemplate ? 'new' : 'current'))) | translate }} T{{ templateIdx + 1 }}</h3>
     <p *ngIf="!historyView">{{ 'validation.template.description' | translate }}</p>
     <p *ngIf="template?.validatedBy">
       {{ 'validation.template.validatedBy' | translate }}: {{ template!.validatedBy | users | values }}
@@ -45,7 +45,7 @@
     <laji-audio-viewer
       *ngIf="template"
       [audio]="audio"
-      [spectrogramConfig]="spectrogramConfig!"
+      [spectrogramConfig]="spectrogramConfig"
       [focusArea]="template.area"
       [zoomTime]="true"
       [timePaddingOnZoom]="0.5"

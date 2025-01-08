@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestro
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { map } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PersonApi } from '../../../../../laji/src/app/shared/api/PersonApi';
 import { IdentificationMainComponent } from './identification-main/identification-main.component';
 
@@ -37,7 +37,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
     this.siteIdsSub = this.route.queryParams.pipe(
       map(data => (
-        (data['siteId'] || '').split(',').map((id: any) => parseInt(id, 10)).filter((id: any) => !isNaN(id)))
+        (data['siteId'] || '').split(',').map((id: string) => parseInt(id, 10)).filter((id: number) => !isNaN(id)))
       )
     ).subscribe(siteIds => {
       this.selectedSites = siteIds;
@@ -55,7 +55,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   }
 
   onSiteSelect(siteIds: number[]) {
-    const queryParams: any = {};
+    const queryParams: Params = {};
     if (siteIds?.length > 0) {
       queryParams['siteId'] = siteIds.sort().join(',');
     }

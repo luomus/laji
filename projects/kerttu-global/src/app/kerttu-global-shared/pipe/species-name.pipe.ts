@@ -6,7 +6,9 @@ import { IGlobalSpecies } from '../models';
 })
 export class SpeciesNamePipe implements PipeTransform {
 
-  transform(value: IGlobalSpecies|IGlobalSpecies[]): any {
+  transform(value: IGlobalSpecies): string;
+  transform(value: IGlobalSpecies[]): string[];
+  transform(value: IGlobalSpecies|IGlobalSpecies[]): string|string[] {
     if (Array.isArray(value)) {
       return value.map(v => this.transform(v));
     }

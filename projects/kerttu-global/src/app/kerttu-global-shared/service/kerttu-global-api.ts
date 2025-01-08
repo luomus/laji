@@ -100,7 +100,7 @@ export class KerttuGlobalApi {
   }
 
   public saveTemplates(personToken: string, taxonId: number, data: {
-    templates: IGlobalTemplate[]; comments: IGlobalComment[];
+    templates: (IGlobalTemplate|null)[]; comments: IGlobalComment[];
   }): Observable<ISuccessResult> {
     const path = this.basePath + '/templates/' + taxonId;
     const params = new HttpParams().set('personToken', personToken);
@@ -123,7 +123,7 @@ export class KerttuGlobalApi {
   }
 
   public getNewIdentificationRecording(
-    personToken: string, lang: string, siteIds: number[], previousRecordingId?: number, excludeRecordingIds?: number[], fileNameFilter?: string
+    personToken: string, lang: string, siteIds: number[], previousRecordingId?: number|null, excludeRecordingIds?: (number|null)[], fileNameFilter?: string
   ): Observable<IGlobalRecordingWithAnnotation> {
     const path = this.basePath + '/identification/recordings/new';
     let params = new HttpParams().set('personToken', personToken).set('lang', lang).set('sites', '' + siteIds);

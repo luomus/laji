@@ -13,7 +13,7 @@ import { UserNameTemplateComponent } from '../../../kerttu-global-shared/compone
 export class IdentificationUserTableComponent implements OnInit {
   @ViewChild(UserNameTemplateComponent, { static: true }) public userNameTemplate!: UserNameTemplateComponent;
 
-  @Input() data: IIdentificationUserStatResult = { results: [], totalDistinctSpeciesCount: 0 };
+  @Input() data?: IIdentificationUserStatResult = { results: [], totalDistinctSpeciesCount: 0 };
 
   columns: DatatableColumn[] = [];
 

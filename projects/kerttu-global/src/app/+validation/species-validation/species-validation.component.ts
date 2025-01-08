@@ -30,7 +30,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   species$!: Observable<IGlobalSpecies>;
   recordings$!: Observable<IGlobalRecording[]>;
   templateVersions$!: Observable<IGlobalTemplateVersion[]>;
-  activeTemplates$!: Observable<IGlobalTemplate[]>;
+  activeTemplates$!: Observable<(IGlobalTemplate|null)[]>;
   historyView$!: Observable<boolean>;
 
   saving = false;
@@ -47,7 +47,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   activeVersionIdx$ = this.activeVersionIdxSubject.asObservable();
 
   private speciesId$!: Observable<number>;
-  private speciesId!: number;
+  private speciesId?: number;
 
   private hasLockSub!: Subscription;
 
@@ -147,9 +147,9 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  saveTemplates(data: { templates: IGlobalTemplate[]; comments: IGlobalComment[] }) {
+  saveTemplates(data: { templates: (IGlobalTemplate|null)[]; comments: IGlobalComment[] }) {
     this.saving = true;
-    this.kerttuGlobalApi.saveTemplates(this.userService.getToken(), this.speciesId, data).subscribe(() => {
+    this.kerttuGlobalApi.saveTemplates(this.userService.getToken(), this.speciesId!, data).subscribe(() => {
       this.saving = false;
       this.canLeaveWithoutConfirm = true;
       this.goToSpeciesList();

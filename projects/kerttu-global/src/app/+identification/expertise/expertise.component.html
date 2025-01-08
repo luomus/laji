@@ -4,7 +4,7 @@
     <label for="birdSongRecognitionSkillLevels">{{ 'expertise.birdSongRecognitionSkillLevels' | translate }}</label>
     <bsg-expertise-by-continent
       id="birdSongRecognitionSkillLevels"
-      [continents]="(continents$ | async)!"
+      [continents]="(continents$ | async) ?? []"
       [birdSongRecognitionSkillLevels]="birdSongRecognitionSkillLevels"
       [disabled]="saving"
     ></bsg-expertise-by-continent>
@@ -21,7 +21,7 @@
       class="form-control"
       [disabled]="birdwatchingActivityLevel === undefined || saving"
     >
-      <option value="">{{ 'select' | translate }}</option>
+      <option [value]="undefined">{{ 'select' | translate }}</option>
       <option
         *ngFor="let option of birdwatchingActivityLevelOptions"
         [value]="option.id"

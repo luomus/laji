@@ -5,15 +5,15 @@
     [width]="'100%'"
     [label]="'T' + (i + 1)"
     [area]="template?.area"
-    [audio]="audioIdMap[template.audioId]"
-    [spectrogramConfig]="spectrogramConfig!"
+    [audio]="template ? audioIdMap[template.audioId] : undefined"
+    [spectrogramConfig]="spectrogramConfig"
     [highlight]="(template && !confirmedTemplates?.[i] && highlightNonConfirmed) || !!template?.comment"
     [highlightType]="template?.comment?.type === 0 ? 'danger' : (template?.comment?.type === 1 ? 'warning' : 'default')"
     [emptyAudioText]="'validation.undefined' | translate"
     (templateClick)="templateClick.emit(i)"
   >
     <div class="mb-2 mr-1 ml-1">
-      <small *ngIf="audioIdMap[template.audioId]?.soundType" class="d-inline-block" style="vertical-align: top">
+      <small *ngIf="template && audioIdMap[template.audioId]?.soundType" class="d-inline-block" style="vertical-align: top">
         {{ 'validation.soundType' | translate }}: {{ audioIdMap[template.audioId].soundType }}
       </small>
     </div>
