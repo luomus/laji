@@ -74,9 +74,8 @@ export class Util {
    * Remove all undefined and null values from object
    *
    * @param obj object to remove keys from
-   * @param keys array of keys that should be removed
    */
-  public static withNonNullableKeys<T extends {[prop: string]: any}, K extends keyof T>(obj: T): WithNonNullableKeys<T, K> {
+  public static withNonNullableValues<T extends {[prop: string]: any}, K extends keyof T>(obj: T): WithNonNullableKeys<T, K> {
     return Object.keys(obj).reduce((cumulative, current: keyof T) => {
       if (obj[current] !== undefined && obj[current] !== null) {
         (cumulative as any)[current] = obj[current];

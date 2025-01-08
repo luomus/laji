@@ -46,7 +46,7 @@ export class InformalTaxonGroupApi {
    * @param pageSize Page size
    */
   public informalTaxonGroupFind(lang?: string, page?: string, pageSize?: string, idIn?: string[]): Observable<PagedResult<InformalTaxonGroup>> {
-    return this.http.get<PagedResult<InformalTaxonGroup>>(this.basePath, { params: Util.withNonNullableKeys({ lang, page, pageSize, idIn }) });
+    return this.http.get<PagedResult<InformalTaxonGroup>>(this.basePath, { params: Util.withNonNullableValues({ lang, page, pageSize, idIn }) });
   }
 
   /**
@@ -59,7 +59,7 @@ export class InformalTaxonGroupApi {
     if (!id.length) {
       throw new Error('Required parameter id was empty when calling informalTaxonGroupFindById.');
     }
-    return this.http.get<InformalTaxonGroup>(`${this.basePath}/${id}`, {params:  Util.withNonNullableKeys({ lang })});
+    return this.http.get<InformalTaxonGroup>(`${this.basePath}/${id}`, {params:  Util.withNonNullableValues({ lang })});
   }
 
   /**
@@ -70,7 +70,7 @@ export class InformalTaxonGroupApi {
    * @param pageSize Page size
    */
   public informalTaxonGroupFindRoots(lang?: string): Observable<ArrayResult<InformalTaxonGroup>> {
-    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/roots`, { params: Util.withNonNullableKeys({ lang }) });
+    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/roots`, { params: Util.withNonNullableValues({ lang }) });
   }
 
   /**
@@ -82,7 +82,7 @@ export class InformalTaxonGroupApi {
    * @param pageSize Page size
    */
   public informalTaxonGroupGetChildren(id: string, lang?: string): Observable<ArrayResult<InformalTaxonGroup>> {
-    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/${id}/children`, { params: Util.withNonNullableKeys({ lang }) } );
+    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/${id}/children`, { params: Util.withNonNullableValues({ lang }) } );
   }
 
   /**
@@ -92,7 +92,7 @@ export class InformalTaxonGroupApi {
    * @param lang Language of fields that have multiple languages. Return english if asked language not found.
    */
   public informalTaxonGroupGetParent(id: string, lang?: string): Observable<InformalTaxonGroup> {
-    return this.http.get<InformalTaxonGroup>(`${this.basePath}/${id}/parent`, { params: Util.withNonNullableKeys({ lang })});
+    return this.http.get<InformalTaxonGroup>(`${this.basePath}/${id}/parent`, { params: Util.withNonNullableValues({ lang })});
   }
 
   /**
@@ -103,7 +103,7 @@ export class InformalTaxonGroupApi {
    * @param pageSize Page size
    */
   public informalTaxonGroupGetTree(lang?: string): Observable<ArrayResult<InformalTaxonGroup>> {
-    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/tree`, { params: Util.withNonNullableKeys({ lang }) });
+    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/tree`, { params: Util.withNonNullableValues({ lang }) });
   }
 
   /**
@@ -115,6 +115,6 @@ export class InformalTaxonGroupApi {
    * @param pageSize Page size
    */
   public informalTaxonGroupGetWithSiblings(id: string, lang?: string): Observable<ArrayResult<InformalTaxonGroup>> {
-    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/${id}/siblings`, { params: Util.withNonNullableKeys({ lang }) });
+    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/${id}/siblings`, { params: Util.withNonNullableValues({ lang }) });
   }
 }
