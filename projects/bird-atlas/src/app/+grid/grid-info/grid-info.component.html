@@ -1,8 +1,8 @@
 <div *ngIf="loading" class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
 <div *ngIf="data$ | async; let data" class="container mb-6" [ngClass]="{'d-none': loading}">
 <ng-container *ngIf="data.status === 200; else notFound">
-  <h1>{{ data.elem.name }}</h1>
-  <h3 class="mb-7">({{ data.elem.coordinates }})</h3>
+  <h1>{{ data.elem?.name }}</h1>
+  <h3 class="mb-7">({{ data.elem!.coordinates }})</h3>
   <div class="d-flex flex-wrap flex-gap-4">
     <ngx-datatable
       class="material"
@@ -18,35 +18,35 @@
       <div class="d-flex my-3">
         <div class="ba-laji-map-wrapper">
           <div></div>
-          <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, 1, 0)" class="glyphicon glyphicon-arrow-up"></a>
+          <a [routerLink]="getAdjacentSqLink(data.elem!.coordinates, 1, 0)" class="glyphicon glyphicon-arrow-up"></a>
           <div></div>
-          <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, 0, -1)" class="glyphicon glyphicon-arrow-left"></a>
+          <a [routerLink]="getAdjacentSqLink(data.elem!.coordinates, 0, -1)" class="glyphicon glyphicon-arrow-left"></a>
           <div #lajiMap class="ba-laji-map"></div>
-          <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, 0, 1)" class="glyphicon glyphicon-arrow-right"></a>
+          <a [routerLink]="getAdjacentSqLink(data.elem!.coordinates, 0, 1)" class="glyphicon glyphicon-arrow-right"></a>
           <div></div>
-          <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, -1, 0)" class="glyphicon glyphicon-arrow-down"></a>
+          <a [routerLink]="getAdjacentSqLink(data.elem!.coordinates, -1, 0)" class="glyphicon glyphicon-arrow-down"></a>
           <div></div>
         </div>
       </div>
-      <ba-grid-square-info [square]="data.elem"></ba-grid-square-info>
+      <ba-grid-square-info [square]="data.elem!"></ba-grid-square-info>
       <hr>
-      <div class="mb-2"><a [routerLink]="['/society', data.elem.birdAssociationArea.key]">{{ data.elem.birdAssociationArea.value }}</a></div>
-      <div class="mb-2"><a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid&print=true'" target="_blank">
+      <div class="mb-2"><a [routerLink]="['/society', data.elem!.birdAssociationArea.key]">{{ data.elem!.birdAssociationArea.value }}</a></div>
+      <div class="mb-2"><a [href]="'https://laji.fi/map?gridsquare=' + data.elem!.coordinates + '&layers=maastokartta,atlasGrid&print=true'" target="_blank">
         {{ 'ba.grid-info.mapPrint' | translate }} <span class="glyphicon glyphicon-link"></span>
       </a></div>
-      <div class="mb-2"><a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid'" target="_blank">
+      <div class="mb-2"><a [href]="'https://laji.fi/map?gridsquare=' + data.elem!.coordinates + '&layers=maastokartta,atlasGrid'" target="_blank">
         {{ 'ba.grid-info.mapFullScreen' | translate }} <span class="glyphicon glyphicon-link"></span>
       </a></div>
-      <div class="mb-2"><a [href]="'https://havistin.biomi.org/atlas/ruutulomake/' + data.elem.coordinates + '/vakio'" target="_blank">
+      <div class="mb-2"><a [href]="'https://havistin.biomi.org/atlas/ruutulomake/' + data.elem!.coordinates + '/vakio'" target="_blank">
         {{ 'ba.grid-info.havistin' | translate }} <span class="glyphicon glyphicon-link"></span>
       </a></div>
-      <div class="mb-2"><a [href]="'https://havistin.biomi.org/atlas/puutelista/' + data.elem.coordinates" target="_blank">
+      <div class="mb-2"><a [href]="'https://havistin.biomi.org/atlas/puutelista/' + data.elem!.coordinates" target="_blank">
         {{ 'ba.grid-info.havistin2' | translate }} <span class="glyphicon glyphicon-link"></span>
       </a></div>
       <div class="mb-2"><a href="https://havistin.biomi.org/atlas/gps" target="_blank">
         {{ 'ba.grid-info.havistin3' | translate }} <span class="glyphicon glyphicon-link"></span>
       </a></div>
-      <div class="mb-2"><a [href]="'https://laji.fi/observation/map?time=2022-01-01%2F2025-12-31&coordinates=' + data.elem.coordinates + ':YKJ:1&recordQuality=COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED&atlasClass=MY.atlasClassEnumB,MY.atlasClassEnumC,MY.atlasClassEnumD&target=MX.37580'" target="_blank">
+      <div class="mb-2"><a [href]="'https://laji.fi/observation/map?time=2022-01-01%2F2025-12-31&coordinates=' + data.elem!.coordinates + ':YKJ:1&recordQuality=COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED&atlasClass=MY.atlasClassEnumB,MY.atlasClassEnumC,MY.atlasClassEnumD&target=MX.37580'" target="_blank">
         {{ 'ba.grid-info.observations' | translate }} <span class="glyphicon glyphicon-link"></span>
       </a></div>
     </div>
