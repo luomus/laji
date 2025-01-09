@@ -1,4 +1,4 @@
-<div *ngIf="versions.length > 0 && activeIdx != null" class="version-nav-container">
+<div *ngIf="(versions?.length && versions.length > 0) && activeIdx != null" class="version-nav-container">
   <div>
     {{
       'versionNav.version' | translate: {

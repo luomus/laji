@@ -2,7 +2,7 @@
 
 <laji-info-page
   *ngIf="(form.options?.about | multiLang)"
-  [page]="form.options.about | multiLang: true:undefined:'%value%'"
+  [page]="form.options?.about | multiLang: true:undefined:'%value%'"
 ></laji-info-page>
 
 <p>
