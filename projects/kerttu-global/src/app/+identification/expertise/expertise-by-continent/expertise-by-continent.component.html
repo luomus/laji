@@ -1,4 +1,4 @@
-<laji-spinner [spinning]="!continents.length" [hideContentWhileLoading]="true">
+<laji-spinner [spinning]="!continents?.length" [hideContentWhileLoading]="true">
   <table class="mt-0 mb-0">
     <tr *ngFor="let continent of continents">
       <th>{{ 'continents.' + continent.value | translate }}</th>
@@ -6,7 +6,7 @@
         <select
           [(ngModel)]="skillLevelByContinent[continent.id]"
           class="form-control"
-          [disabled]="disabled || !birdSongRecognitionSkillLevels.length"
+          [disabled]="disabled || !birdSongRecognitionSkillLevels?.length"
           (ngModelChange)="selectChange()"
         >
           <option
