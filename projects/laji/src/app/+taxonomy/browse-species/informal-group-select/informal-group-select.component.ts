@@ -42,6 +42,7 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
   }
 
   private refreshInformalGroups() {
+    this.parentGroup = undefined;
     this.selectedInformalGroup = undefined;
 
     if (!this.id) {
