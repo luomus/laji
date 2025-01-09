@@ -1,7 +1,7 @@
 <laji-spinner [spinning]="!selectedInformalGroup && !informalGroups">
   <laji-informal-list-breadcrumb *ngIf="showBreadcrumb"
                                  [informalGroup]="selectedInformalGroup"
-                                 [parentGroups]="parentGroups"
+                                 [parentGroup]="parentGroup"
                                  (informalGroupSelect)="informalGroupSelect.emit($event)">
   </laji-informal-list-breadcrumb>
   <laji-informal-list [informalTaxonGroups]="informalGroups"

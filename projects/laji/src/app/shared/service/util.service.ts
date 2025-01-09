@@ -2,6 +2,10 @@ import { NavigationEnd, Event } from '@angular/router';
 import * as merge from 'deepmerge';
 import { Document } from '../model/Document';
 
+export type WithNonNullableKeys<T, K extends keyof T> = T & {
+  [P in K]-?: NonNullable<T[P]>;
+};
+
 export class Util {
   /**
    * Clones the object using JSON stringify
@@ -65,6 +69,21 @@ export class Util {
       return cumulative;
     }, {} as Partial<T>);
   }
+
+  /**
+   * Remove all undefined and null values from object
+   *
+   * @param obj object to remove keys from
+   */
+  public static withNonNullableValues<T extends {[prop: string]: any}, K extends keyof T>(obj: T): WithNonNullableKeys<T, K> {
+    return Object.keys(obj).reduce((cumulative, current: keyof T) => {
+      if (obj[current] !== undefined && obj[current] !== null) {
+        (cumulative as any)[current] = obj[current];
+      }
+      return cumulative;
+    }, {} as WithNonNullableKeys<T, K>);
+  }
+
 
   /**
    * Add leading zero so that the length of return string will be 2
