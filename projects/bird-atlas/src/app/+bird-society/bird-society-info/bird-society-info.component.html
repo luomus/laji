@@ -1,7 +1,7 @@
 <div *ngIf="loading" class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
 <div *ngIf="!loading" [ngClass]="displayModeLarge ? 'container-fluid' : 'container'">
   <div class="d-flex justify-between flex-wrap">
-    <h1>{{ birdSociety?.birdAssociationArea.value }}</h1>
+    <h1>{{ birdSociety!.birdAssociationArea?.value }}</h1>
     <div class="d-flex flex-wrap">
       <div><button class="btn btn-default mr-3" (click)="onExportSquares()">Lataa ruutujen selvitysasteet</button></div>
       <div><button class="btn btn-default" (click)="onResize()">
@@ -13,7 +13,7 @@
   <div class="d-flex flex-row flex-wrap">
     <div class="map-panel flex-grow d-flex flex-col">
       <ba-bird-society-info-map
-        [atlasGrid]="birdSociety?.gridSquares"
+        [atlasGrid]="birdSociety!.gridSquares"
         [selectedDataIdx]="selectedDataIdx"
         [visualizationMode]="visualizationMode"
         [taxonVisualization]="taxonVisualization"

@@ -3,7 +3,7 @@ import {
   ElementRef,
   EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, TemplateRef, ViewChild
 } from '@angular/core';
-import { TableColumn } from '@achimha/ngx-datatable';
+import { SelectionType, TableColumn } from '@achimha/ngx-datatable';
 import { AtlasTaxon } from '../../../core/atlas-api.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
@@ -33,6 +33,7 @@ export class BirdSocietyInfoSpeciesTableComponent implements OnChanges, AfterVie
   filteredRows$ = new Subject<AugmentedAtlasTaxon[]>();
   cols!: TableColumn[];
   selected: AtlasTaxon[] = [];
+  selectionType = SelectionType;
 
   private unsubscribe$ = new Subject<void>();
   private search$ = new BehaviorSubject<string | undefined>(undefined);

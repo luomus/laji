@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { AtlasApiService, LappiStatsResponseElement } from '../../core/atlas-api.service';
-import { TableColumn } from '@achimha/ngx-datatable';
+import { SelectionType, TableColumn } from '@achimha/ngx-datatable';
 import { map } from 'rxjs/operators';
 import { LappiModalComponent } from './lappi-modal.component';
 import { Subscription } from 'rxjs';
@@ -51,6 +51,7 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
 
   private modalRef: ModalRef | undefined;
   private hideModalSubscription: Subscription | undefined;
+  selectionType = SelectionType;
 
   constructor(
     private atlasApi: AtlasApiService,

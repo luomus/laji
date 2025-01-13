@@ -7,8 +7,8 @@
                                 [displayInstructions]="false"
                                 lajiFormOption="logo title options.hideTES"
       ></laji-project-form-header>
-      <laji-info-page *ngIf="(data.form.options.about | multiLang)"
-                      [page]="data.form.options.about | multiLang: true:undefined:'%value%'"
+      <laji-info-page *ngIf="(data.form.options?.about | multiLang)"
+                      [page]="data.form.options?.about | multiLang: true:undefined:'%value%'"
                       lajiFormOption="options.about"
       ></laji-info-page>
     </ng-container>
@@ -17,7 +17,7 @@
     </ng-template>
     <ng-container *ngIf="data.loggedIn; else loginButton">
       <laji-request *ngIf="data.form.collectionID && data.rights === Rights.NotAllowed"
-                    [collectionId]="data.form.collectionID" [disableDescription]="data.form.options.disableRequestDescription!"
+                    [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription!"
                     lajiFormOption="options.disableRequestDescription">
       </laji-request>
     </ng-container>

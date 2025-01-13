@@ -3,7 +3,7 @@
 
   <div> <!-- sidebar -->
     <ba-visualization-legend *ngIf="visualization === 'speciesCount'" [visualization]="visualization"></ba-visualization-legend>
-    <ba-grid-index-map-table *ngIf="visualization === 'activityCategory'" [activityCategoryStats]="atlasGrid?.activityCategories"></ba-grid-index-map-table>
+    <ba-grid-index-map-table *ngIf="visualization === 'activityCategory'" [activityCategoryStats]="atlasGrid.activityCategories"></ba-grid-index-map-table>
     <hr>
     <ba-visualization-selector [visualization]="visualization" (visualizationChange)="onVisualizationChange($event)"></ba-visualization-selector>
   </div>
