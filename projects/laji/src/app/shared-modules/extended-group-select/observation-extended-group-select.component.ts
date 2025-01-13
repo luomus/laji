@@ -9,6 +9,7 @@ import { ExtendedGroupSelectComponent, InformalGroupEvent } from './extended-gro
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { RedListTaxonGroup } from '../../shared/model/RedListTaxonGroup';
+import { ArrayResult } from '../../shared/model/ArrayResult';
 
 export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -39,14 +40,14 @@ export class ObservationExtendedGroupSelectComponent extends ExtendedGroupSelect
   }
 
   findByIds(groupIds: string[], lang: string): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.informalTaxonService.informalTaxonGroupFind(lang, undefined, undefined, {idIn: groupIds});
+    return this.informalTaxonService.informalTaxonGroupFind(lang, undefined, undefined, groupIds);
   }
 
   convertToInformalTaxonGroup(group: InformalTaxonGroup): InformalTaxonGroup {
     return {...group};
   }
 
-  getTree(lang: string): Observable<PagedResult<InformalTaxonGroup>> {
+  getTree(lang: string): Observable<ArrayResult<InformalTaxonGroup>> {
     return this.informalTaxonService.informalTaxonGroupGetTree(lang);
   }
 

@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'projects/bird-atlas/src/env/environment';
-import { Taxon } from 'projects/laji-api-client/src/public-api';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
@@ -81,7 +80,7 @@ export class SpeciesInfoComponent {
     );
   }
 
-  getForeignVernacularNames(taxon: Taxon) {
+  getForeignVernacularNames(taxon: AtlasTaxon) {
     return ['fi', 'sv', 'en'].filter(
       lang => lang !== this.translate.currentLang
     ).map(

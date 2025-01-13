@@ -466,15 +466,10 @@ export class ImporterComponent implements OnInit, OnDestroy {
         filter(step => step !== Step.validating),
         map(() => skipped = true)
       )),
-      map(({errors, documents}) => rowData.map((data, idx) => {
-        if (!documents[idx]) {
-          return {result: {_error: {status: 422}}, source: data};
-        }
-        return {
-          source: {...data, document: documents[idx]},
+      map(({errors}) => rowData.map((data, idx) => ({
+          source: data,
           result: (errors[idx] ? {_error: errors[idx]} : {})
-        };
-      }))
+        })))
     ).subscribe(
         (response: any) => {
           if (skipped) {
@@ -538,15 +533,10 @@ export class ImporterComponent implements OnInit, OnDestroy {
           Math.min(Math.max(this.total - 1, 0), ticker);
         this.cdr.markForCheck();
       })),
-      map(({errors, documents}) => rowData.map((data, idx) => {
-        if (!documents[idx]) {
-          return {result: {_error: {status: 422}}, source: data};
-        }
-        return {
-          source: {...data, document: documents[idx]},
+      map(({errors}) => rowData.map((data, idx) => ({
+          source: data,
           result: (errors[idx] ? {_error: errors[idx]} : {})
-        };
-      })),
+        }))),
       takeUntil(this.spreadsheetFacade.step$.pipe(
         filter(step => step !== Step.importing),
         map(() => skipped = true)

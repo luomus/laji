@@ -1,24 +1,24 @@
 <div *ngIf="loading" class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
 <div *ngIf="data$ | async; let data" [ngClass]="{'d-none': loading}">
   <div class="d-flex">
-    <a [routerLink]="['..', data.taxon.prev.id]" class="prev mr-4">
-      <span class="glyphicon glyphicon-arrow-left"></span> {{ data.taxon.prev.vernacularName | multiLang }}
+    <a [routerLink]="['..', data.taxon?.prev?.id]" class="prev mr-4">
+      <span class="glyphicon glyphicon-arrow-left"></span> {{ data.taxon?.prev?.vernacularName | multiLang }}
     </a>
-    <a [routerLink]="['..', data.taxon.next.id]" class="next">
-      {{ data.taxon.next.vernacularName | multiLang }} <span class="glyphicon glyphicon-arrow-right"></span>
+    <a [routerLink]="['..', data.taxon?.next?.id]" class="next">
+      {{ data.taxon?.next?.vernacularName | multiLang }} <span class="glyphicon glyphicon-arrow-right"></span>
     </a>
   </div>
-  <h1 class="mt-4">{{ capitalize(data.taxon.vernacularName | multiLang) }} <i>({{ data.taxon.scientificName }})</i></h1>
-  <h3>{{ getForeignVernacularNames(data.taxon) }}</h3>
-  <div role="alert" class="alert alert-info read-width-16" *ngIf="data.taxon.sensitive">
+  <h1 class="mt-4">{{ capitalize(data.taxon?.vernacularName | multiLang) }} <i>({{ data.taxon?.scientificName }})</i></h1>
+  <h3 *ngIf="data.taxon">{{ getForeignVernacularNames(data.taxon) }}</h3>
+  <div role="alert" class="alert alert-info read-width-16" *ngIf="data.taxon?.sensitive">
     Tämä laji on määritelty sensitiiviseksi, eikä sen kaikkia havaintoja näytetä atlaskartoilla, tai havainnot voivat tulla näkyviin viiveellä.
     <a href="https://lintuatlas.fi/sensitiiviset/" target="_blank">Lue tarkemmin eri lajien sensitiivisten havaintojen käsittelystä</a>.
   </div>
   <div class="d-flex flex-wrap flex-gap-6">
     <div class="map-container">
       <div [innerHtml]="data.map"></div>
-      <a class="d-block" [href]="getMapDownloadUrl(data.taxon.id)" target="_blank">{{ 'ba.species-info.downloadSvg' | translate }} <span class="glyphicon glyphicon-link"></span></a>
-      <a class="d-block" [href]="'https://laji.fi/observation/list?target=' + data.taxon.id + '&countryId=ML.206&time=2022-01-01%2F2025-12-31&recordQuality=COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED&atlasClass=MY.atlasClassEnumB,MY.atlasClassEnumC,MY.atlasClassEnumD'" target="_blank" rel="noopener noreferrer">
+      <a *ngIf="data.taxon" class="d-block" [href]="getMapDownloadUrl(data.taxon.id)" target="_blank">{{ 'ba.species-info.downloadSvg' | translate }} <span class="glyphicon glyphicon-link"></span></a>
+      <a *ngIf="data.taxon" class="d-block" [href]="'https://laji.fi/observation/list?target=' + data.taxon.id + '&countryId=ML.206&time=2022-01-01%2F2025-12-31&recordQuality=COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED&atlasClass=MY.atlasClassEnumB,MY.atlasClassEnumC,MY.atlasClassEnumD'" target="_blank" rel="noopener noreferrer">
         {{ 'ba.species-info.lajiMap' | translate }} <span class="glyphicon glyphicon-link"></span>
       </a>
     </div>
@@ -30,15 +30,15 @@
         </tr>
         <tr>
           <td>Varma</td>
-          <td style="text-align: right">{{ data.stats['MY.atlasClassEnumD'] }}</td>
+          <td style="text-align: right">{{ data.stats?.['MY.atlasClassEnumD'] }}</td>
         </tr>
         <tr>
           <td>Todennäköinen</td>
-          <td style="text-align: right">{{ data.stats['MY.atlasClassEnumC'] }}</td>
+          <td style="text-align: right">{{ data.stats?.['MY.atlasClassEnumC'] }}</td>
         </tr>
         <tr>
           <td>Mahdollinen</td>
-          <td style="text-align: right">{{ data.stats['MY.atlasClassEnumB'] }}</td>
+          <td style="text-align: right">{{ data.stats?.['MY.atlasClassEnumB'] }}</td>
         </tr>
       </table>
     </div>
