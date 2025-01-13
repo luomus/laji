@@ -211,7 +211,6 @@
   "download.geometry": "Geometria",
   "download.reason": "Mihin aineistoa käytetään?",
   "download.reason-required": "Sinun täytyy valita aineiston käytön syy ja kirjoittaa lisätiedot",
-  "download.shpDeprecationWarning": "Tiedostolataus ESRI Shapefile (.shp) -muodossa loppuu 31.12.2024. Käytä sen sijaan Geopackage (.gpkg) -tiedostomuotoa. <a target='_blank' href='https://laji.fi/news/8363'>Lue lisää muutoksesta</a>.",
   "downloadRequest.accessed": "haettu",
   "downloadRequest.apiKey": "API-avain",
   "downloadRequest.apiKeyExpires": "Voimassaolon päättymispäivä",
