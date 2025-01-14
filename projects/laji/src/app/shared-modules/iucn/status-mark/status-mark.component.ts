@@ -10,7 +10,7 @@ export class StatusMarkComponent {
 
   @Input() showLabels = false;
 
-  _evaluation: RedListEvaluation;
+  _evaluation!: RedListEvaluation;
   re = false;
   mark = '';
 

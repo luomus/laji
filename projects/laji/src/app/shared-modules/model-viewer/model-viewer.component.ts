@@ -38,16 +38,16 @@ const resizeCanvasToDisplaySize = (canvas: any): boolean => {
   styleUrls: ['./model-viewer.component.scss']
 })
 export class ModelViewerComponent implements AfterViewInit, OnDestroy {
-  @Input() src: string;
+  @Input() src!: string;
 
-  @ViewChild('canvas') canvasElem: ElementRef;
+  @ViewChild('canvas') canvasElem!: ElementRef;
 
-  private glr: MiniRenderer;
-  private destroyMousemoveListener: () => void;
-  private destroyMouseupListener: () => void;
-  private destroyTouchmoveListener: () => void;
-  private destroyTouchendListener: () => void;
-  private resizeObserver: ResizeObserver;
+  private glr!: MiniRenderer;
+  private destroyMousemoveListener!: () => void;
+  private destroyMouseupListener!: () => void;
+  private destroyTouchmoveListener!: () => void;
+  private destroyTouchendListener!: () => void;
+  private resizeObserver!: ResizeObserver;
 
   private viewerIsActive = false;
 
@@ -133,7 +133,8 @@ export class ModelViewerComponent implements AfterViewInit, OnDestroy {
   onWheel(event: WheelEvent) {
     event.preventDefault();
     const c = M4.extractTranslation(this.glr.scene.camera.transform);
-    const m = M4.extractTranslation(this.glr.scene.entity.transform);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const m = M4.extractTranslation(this.glr.scene.entity!.transform);
     const cm = V3.sub(m, c);
     const cm2 = V3.scale(cm, -1 * event.deltaY * .001);
     this.glr.scene.camera.transform = M4.mult(this.glr.scene.camera.transform, M4.translation(cm2[0], cm2[1], cm2[2]));

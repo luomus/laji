@@ -1,6 +1,6 @@
-<laji-spinner [spinning]="tree.loadingParentNodeList" [hideContentWhileLoading]="true">
+<laji-spinner [spinning]="tree!.loadingParentNodeList" [hideContentWhileLoading]="true">
   <div class="tree">
-    <ng-container *ngFor="let node of tree.parentNodeList; let last = last">
+    <ng-container *ngFor="let node of tree!.parentNodeList; let last = last">
       <div *ngIf="!node.state.isSkipped || node.value.id === activeId">
         <laji-spinner *ngIf="last && node.state.loadingCount > 0"></laji-spinner>
         <ng-container *ngTemplateOutlet="labelTpl; context: {'value': node.value}"></ng-container>

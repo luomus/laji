@@ -3,7 +3,7 @@ import { IGlobalSpeciesQuery } from '../../kerttu-global-shared/models';
 
 @Injectable()
 export class SpeciesListQueryService {
-  public query: IGlobalSpeciesQuery;
+  public query!: IGlobalSpeciesQuery;
 
   constructor() {
     this.setDefaultQuery();

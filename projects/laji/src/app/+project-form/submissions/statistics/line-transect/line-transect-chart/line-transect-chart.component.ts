@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { select , Selection } from 'd3-selection';
-import { scaleLinear, ScaleLinear } from 'd3-scale';
+import { NumberValue, scaleLinear, ScaleLinear } from 'd3-scale';
 import { line as d3Line } from 'd3-shape';
 import { format } from 'd3-format';
 
@@ -33,26 +33,26 @@ export interface LineTransectChartTerms {
 })
 export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnDestroy {
 
-  @Input() xValue: number;
-  @Input() yValue: number;
-  @Input() terms: LineTransectChartTerms;
+  @Input() xValue?: number;
+  @Input() yValue?: number;
+  @Input() terms?: LineTransectChartTerms;
   @Input() xRange: [number, number] = [660, 780];
   @Input() yRange: [number, number] = [0, 100];
-  @Input() xLabel: string;
-  @Input() yLabel: string;
-  @Input() title: string;
+  @Input() xLabel?: string;
+  @Input() yLabel?: string;
+  @Input() title?: string;
   @Input() margin: { top: number; bottom: number; left: number; right: number} = { top: 30, bottom: 40, left: 40, right: 10};
-  @Input() xTickFormat: string;
-  @Input() yLabelAnchor: string;
+  @Input() xTickFormat?: string;
+  @Input() yLabelAnchor?: string;
 
   private readonly nativeElement: HTMLDivElement;
-  private svg: Selection<SVGElement, unknown, undefined, undefined>;
-  private chart: Selection<SVGElement, unknown, undefined, undefined>;
-  private width: number;
-  private height: number;
-  private xScale: ScaleLinear<number, number>;
-  private yScale: ScaleLinear<number, number>;
-  private xAxis: Selection<SVGElement, unknown, undefined, undefined>;
+  private svg!: Selection<SVGElement, unknown, null, undefined>;
+  private chart!: Selection<SVGElement, unknown, null, undefined>;
+  private width?: number;
+  private height?: number;
+  private xScale!: ScaleLinear<number, number>;
+  private yScale!: ScaleLinear<number, number>;
+  private xAxis?: Selection<SVGElement, unknown, null, undefined>;
 
   constructor(
     element: ElementRef,
@@ -93,7 +93,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     // chart plot area
     this.chart = svg.append<SVGElement>('g')
       .attr('class', 'drawing')
-      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
+      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`) as any;
 
     // create scales
     this.xScale = scaleLinear().domain([this.xRange[0], this.xRange[1]]).range([0, this.width]);
@@ -109,8 +109,10 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
 
     // create guide lines
     const line = d3Line()
-      .x((d) => this.xScale(d[0]) + this.margin.left)
-      .y((d) => this.yScale(d[1]) + this.margin.top);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .x((d) => this.xScale(d[0])! + this.margin.left)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .y((d) => this.yScale(d[1])! + this.margin.top);
 
     if (this.terms) {
       svg.append('path')
@@ -173,7 +175,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     this.xAxis = svg.append<SVGElement>('g')
       .attr('class', 'axis axis-x')
       .attr('transform', `translate(${this.margin.left},${(this.height + this.margin.top)})`)
-      .call(svgXAxis as any);
+      .call(svgXAxis as any) as any;
   }
 
   updateChart() {
@@ -185,22 +187,26 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
 
     // update existing bars
     this.chart.selectAll('.mark')
-      .attr('cx', (d) => this.xScale(d[0]))
-      .attr('cy', (d) => this.yScale(d[1]));
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .attr('cx', (d) => this.xScale((d as number[])[0])!)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .attr('cy', (d) => this.yScale((d as number[])[1])!);
 
     // add new bars
     update
       .enter()
       .append('circle')
       .attr('class', 'mark')
-      .attr('cx', (d) => this.xScale(d[0]))
-      .attr('cy', (d) => this.yScale(d[1]))
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .attr('cx', (d) => this.xScale(d[0] as NumberValue)!)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .attr('cy', (d) => this.yScale(d[1] as NumberValue)!)
       .attr('r', 3)
       .attr('fill', 'red')
       .attr('stroke', 'black');
   }
 
-  styleGridlineNodes(axisNodes) {
+  styleGridlineNodes(axisNodes: any) {
     axisNodes.selectAll('.domain')
       .attr('fill', 'none')
       .attr('stroke', 'none');

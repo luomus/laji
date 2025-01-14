@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { LatestDocumentsFacade } from '../latest-documents.facade';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { tap } from 'rxjs/operators';
@@ -14,10 +14,10 @@ import { tap } from 'rxjs/operators';
 })
 export class UsersLatestComponent implements OnInit, OnDestroy {
   @Input() tmpOnly = false;
-  @Input() collectionID: string;
+  @Input() collectionID!: string;
   @Input() showFormNames = true;
-  @Input() complainLocality: boolean;
-  @Input() staticWidth: number = undefined;
+  @Input() complainLocality?: boolean;
+  @Input() staticWidth?: number = undefined;
 
   @Output() showViewer = new EventEmitter<Document>();
 
@@ -26,7 +26,7 @@ export class UsersLatestComponent implements OnInit, OnDestroy {
   public tmpDocuments$ = this.latestFacade.tmpDocuments$;
   public latest$ = this.latestFacade.latest$;
   public formsById = {};
-  public subscriptionDeleteOwnDocument;
+  public subscriptionDeleteOwnDocument?: Subscription;
 
   constructor(
     private latestFacade: LatestDocumentsFacade,
@@ -53,7 +53,7 @@ export class UsersLatestComponent implements OnInit, OnDestroy {
       this.subscriptionDeleteOwnDocument?.unsubscribe();
   }
 
-  discardTempDocument(document) {
+  discardTempDocument(document: Document & { id: string }) {
     this.latestFacade.discardTmpData(document.id);
   }
 

@@ -107,7 +107,7 @@ export class DownloadComponent implements OnChanges {
   fileType: FORMAT = 'tsv';
   geometry: FileGeometry = FileGeometry.point;
   crs: FileCrs = FileCrs.euref;
-  modalRef: ModalRef;
+  modalRef?: ModalRef;
   basicSelectStyle = SelectStyle.basic;
   disableDownLoad = false;
 

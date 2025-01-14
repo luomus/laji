@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { QueryParamsHandling } from '@angular/router';
 import { ViewType } from '../../../shared/gallery/image-gallery';
+import { Image } from '../../../shared/gallery/image-gallery/image.interface';
 
 @Component({
   selector: 'laji-images',
@@ -18,16 +19,16 @@ export class ImagesComponent implements OnChanges {
   @Input() showOverlay = true;
   @Input() showExtraInfo = true;
   @Input() showLinkToSpeciesCard = false;
-  @Input() linkOptions: {tab: string; queryParams: any; queryParamsHandling: QueryParamsHandling};
-  @Input() sort: string[];
+  @Input() linkOptions?: {tab: string; queryParams: any; queryParamsHandling: QueryParamsHandling};
+  @Input() sort?: string[];
   @Input() shortcut = true;
   @Input() view: ViewType = 'annotation';
   @Input() views: ViewType[] = ['compact', 'full'];
 
-  documentImages;
-  gatheringImages;
-  unitImages;
-  loading: boolean;
+  documentImages!: Image[];
+  gatheringImages!: Image[];
+  unitImages!: Image[];
+  loading!: boolean;
 
   ngOnChanges() {
     this.initImages();
@@ -54,7 +55,7 @@ export class ImagesComponent implements OnChanges {
         if (!gathering.units) {
            continue;
         }
-        const unit = gathering.units.find(u => u.unitId === this.highlight || (u.media || []).some(media => media.fullURL === this.highlight));
+        const unit = gathering.units.find((u: any) => u.unitId === this.highlight || (u.media || []).some((media: any) => media.fullURL === this.highlight));
         if (unit) {
           this.gatheringImages = gathering.media || [];
           this.unitImages = unit.media || [];

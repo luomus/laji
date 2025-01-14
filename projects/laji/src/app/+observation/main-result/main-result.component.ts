@@ -33,19 +33,19 @@ export class MainResultComponent implements OnInit, OnChanges {
     'unit.species'
   ];
 
-  @ViewChild('aggregatedDataTable') public aggregatedDataTable: ObservationTableComponent;
+  @ViewChild('aggregatedDataTable') public aggregatedDataTable?: ObservationTableComponent;
 
-  @Input() query: WarehouseQueryInterface;
-  @Input() visible: boolean;
+  @Input({ required: true }) query!: WarehouseQueryInterface;
+  @Input({ required: true }) visible!: boolean;
 
-  aggrQuery: WarehouseQueryInterface;
-  mapQuery: WarehouseQueryInterface;
-  listQuery: WarehouseQueryInterface;
+  aggrQuery?: WarehouseQueryInterface;
+  mapQuery?: WarehouseQueryInterface;
+  listQuery?: WarehouseQueryInterface;
 
   title = '';
 
-  documentId: string;
-  pageSize;
+  documentId?: string;
+  pageSize?: number;
 
   ctrlDown = false;
   showObservationList = false;
@@ -66,7 +66,7 @@ export class MainResultComponent implements OnInit, OnChanges {
     'unit.notes'
   ];
 
-  private viewerSub: Subscription;
+  private viewerSub?: Subscription;
 
   constructor(
     private userService: UserService,
@@ -84,7 +84,7 @@ export class MainResultComponent implements OnInit, OnChanges {
       this.ctrlDown = true;
     }
     if (event.keyCode === 27 && !this.documentModalVisible) {
-      if (this.showObservationList && this.listQuery.ykj10kmCenter) {
+      if (this.showObservationList && this.listQuery?.ykj10kmCenter) {
         this.removeGridFromList();
       } else if (this.showObservationList) {
         this.closeList();
@@ -158,7 +158,7 @@ export class MainResultComponent implements OnInit, OnChanges {
     this.browserService.triggerResizeEvent();
   }
 
-  onGridSelect(event) {
+  onGridSelect(event: any) {
     this.showObservationList = true;
     this.listQuery = event;
   }
@@ -171,14 +171,14 @@ export class MainResultComponent implements OnInit, OnChanges {
     this.listQuery = query;
   }
 
-  onAggregateSelect(event) {
+  onAggregateSelect(event: any) {
     this.showQueryOnMap = true;
     this.showObservationList = !this.ctrlDown;
     const mapQuery = {...this.aggrQuery};
     ObservationTableQueryService.fieldsToQuery(this.aggregateBy, event.row, mapQuery);
     const title: string[] = [];
     try {
-      const cells = [].slice.call(event.cellElement.parentElement.children);
+      const cells: any[] = [].slice.call(event.cellElement.parentElement.children);
       cells.map(cellElem => {
           const value = (cellElem.innterText || cellElem.textContent).trim();
           if (value && !value.match(/^[0-9\-,.+\sT:]+$/)) {
@@ -191,7 +191,7 @@ export class MainResultComponent implements OnInit, OnChanges {
     this.listQuery = {...mapQuery};
   }
 
-  showDocument(event) {
+  showDocument(event: any) {
     const row = event.row || {};
     const listQuery = this.listQuery;
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
@@ -205,17 +205,17 @@ export class MainResultComponent implements OnInit, OnChanges {
     }
   }
 
-  setPageSize(event) {
+  setPageSize(event: number) {
     this.pageSize = event;
     this.saveSettings();
   }
 
-  setAggregateBy(event) {
+  setAggregateBy(event: string[]) {
     this.aggregateBy = [...event];
     this.saveSettings();
   }
 
-  setSelectedFields(event) {
+  setSelectedFields(event: string[]) {
     this.selected = [...event];
     this.saveSettings();
   }

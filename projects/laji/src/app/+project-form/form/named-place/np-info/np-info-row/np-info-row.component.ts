@@ -12,7 +12,7 @@ export interface NpInfoRow {
   styleUrls: ['./np-info-row.component.scss']
 })
 export class NpInfoRowComponent implements NpInfoRow {
-  @Input() title: string;
+  @Input({ required: true }) title!: string;
   @Input() value: any;
   @Input() pipe?: 'label' | 'area';
 }

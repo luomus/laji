@@ -36,7 +36,7 @@ import { DownloadService } from '../../shared/service/download.service';
 import { ApiKeyRequest } from '../../shared-modules/download-modal/apikey-modal/apikey-modal.component';
 import { createActiveFiltersList } from '../../shared-modules/search-filters/active/observation-active.component';
 import { FORMAT } from '../../shared-modules/download-modal/download.component';
-import { GEO_CONVERT_LIMIT, FileFormat, GeoConvertService, isGeoConvertError } from '../../shared/service/geo-convert.service';
+import { FileFormat, GeoConvertService, isGeoConvertError } from '../../shared/service/geo-convert.service';
 import { DialogService } from '../../shared/service/dialog.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 import { PlatformService } from '../../root/platform.service';
@@ -56,19 +56,19 @@ enum RequestStatus {
 })
 export class ObservationDownloadComponent implements OnDestroy {
 
-  @ViewChild(ObservationTableSettingsComponent, { static: true }) public settingsModal: ObservationTableSettingsComponent;
-  @ViewChild(DownloadComponent) downloadTypeSelectModal: DownloadComponent;
-  @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
+  @ViewChild(ObservationTableSettingsComponent, { static: true }) public settingsModal!: ObservationTableSettingsComponent;
+  @ViewChild(DownloadComponent) downloadTypeSelectModal!: DownloadComponent;
+  @ViewChild('downloadModal', { static: true }) downloadModal!: TemplateRef<any>;
 
-  @Input() unitCount: number;
-  @Input() speciesCount: number;
+  @Input() unitCount!: number;
+  @Input() speciesCount!: number;
   @Input() taxaLimit = 3000;
   @Input() loadLimit = 2000000;
   @Input() maxSimpleDownload = Global.limit.simpleDownload;
 
   @Output() settingsChange = new EventEmitter<UserSettingsResultList>();
 
-  privateCount: number;
+  privateCount?: number|null;
   hasPersonalData = false;
   requests: {[place: string]: RequestStatus} = {};
   requestStatus = RequestStatus;
@@ -91,14 +91,12 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   formats: FORMAT[] = ['tsv', 'ods', 'xlsx', 'shp', 'gpkg'];
 
-  gisDownloadLimit = GEO_CONVERT_LIMIT;
-
   private _originalSelected: string[];
-  private _settings: UserSettingsResultList;
-  private modalRef: ModalRef;
-  private cntSub: Subscription;
-  private _query: WarehouseQueryInterface;
-  private _originalQuery: WarehouseQueryInterface;
+  private _settings?: UserSettingsResultList|null;
+  private modalRef!: ModalRef;
+  private cntSub!: Subscription;
+  private _query!: WarehouseQueryInterface;
+  private _originalQuery!: WarehouseQueryInterface;
   private taxaDownloadAggregateBy = {
     en: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
     fi: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
@@ -147,7 +145,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     }
   }
 
-  @Input() set settings(settings: UserSettingsResultList) {
+  @Input() set settings(settings: UserSettingsResultList|null|undefined) {
     this._settings = settings;
     if (settings && settings.selected) {
       this._originalSelected = [...settings.selected];
@@ -167,7 +165,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     let hasPersonalData = false;
     const warehouseQuery: WarehouseQueryInterface = {...query};
     ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
-      if (warehouseQuery[key]) {
+      if (warehouseQuery[key as keyof WarehouseQueryInterface]) {
         hasPersonalData = true;
       }
     });
@@ -194,7 +192,7 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   updateCsvLink() {
     const queryParams = this.searchQuery.getQueryObject(this.query);
-    queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang];
+    queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang as keyof { en: string; fi: string; sv: string }];
     queryParams['includeNonValidTaxa'] = 'false';
     queryParams['pageSize'] = '' + this.taxaLimit;
     queryParams['format'] = 'csv';
@@ -202,7 +200,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.csvParams = params.toString();
   }
 
-  updateQueryParamsDownloadTaxon(e) {
+  updateQueryParamsDownloadTaxon(e: any) {
     e.stopPropagation();
     const arrayParams = this.csvParams.split('&');
     ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
@@ -219,7 +217,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     }, 200);
   }
 
-  downloadSpecies(e) {
+  downloadSpecies(e: any) {
     this.speciesCsvLoading = true;
     this.cd.markForCheck();
     this.updateQueryParamsDownloadTaxon(e);
@@ -246,7 +244,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     }
     this.requests[type] = RequestStatus.loading;
     this.userService.getToken();
-    this.warehouseService[type](
+    (this.warehouseService as any)[type](
       this.userService.getToken(),
       'TSV_FLAT',
       'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
@@ -273,7 +271,7 @@ export class ObservationDownloadComponent implements OnDestroy {
         this.closeModal();
         this.cd.markForCheck();
       },
-      err => {
+      (err: any) => {
         this.requests[type] = RequestStatus.error;
         this.toastsService.showError(this.translate.instant(err?.status === 429 ?
           'observation.download.limitExceededException' :
@@ -372,7 +370,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.columnSelector.columns = this.tableColumnService.getDefaultFields();
   }
 
-  downloadData(data: {id?: string; results: any[]}, columns: ObservationTableColumn[], params: DownloadParams): Observable<void> {
+  downloadData(data: {id?: string|null; results: any[]}, columns: ObservationTableColumn[], params: DownloadParams): Observable<void> {
     if (this.isGisDownload(params.fileType)) {
       return this.exportService.getBlobFromData(data.results, columns, 'tsv', 'laji-data').pipe(
         map(blob => {
@@ -382,10 +380,13 @@ export class ObservationDownloadComponent implements OnDestroy {
         }),
         switchMap(formData => this.geoConvertService.geoConvertData(
           formData,
-          data.id,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          data.id!,
           params.fileType as FileFormat,
-          params.geometry,
-          params.crs
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          params.geometry!,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          params.crs!
         )),
         tap(response => {
           this.downloadProgressPercent = response.progressPercent;
@@ -393,7 +394,8 @@ export class ObservationDownloadComponent implements OnDestroy {
         }),
         first(response => response.status === 'complete'),
         map(response => {
-          this.platformService.window.location.href = response.outputLink;
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          this.platformService.window.location.href = response.outputLink!;
         })
       );
     } else {

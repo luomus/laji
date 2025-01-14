@@ -30,7 +30,7 @@ export class AboutComponent implements OnInit {
 
   Rights = Rights; // eslint-disable-line @typescript-eslint/naming-convention
 
-  aboutData$: Observable<AboutData>;
+  aboutData$!: Observable<AboutData>;
 
   constructor(private userService: UserService,
               private formService: FormService,

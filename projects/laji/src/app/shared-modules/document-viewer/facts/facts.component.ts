@@ -9,6 +9,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class FactsComponent {
 
   @Input() show = false;
-  @Input() facts: {fact: string; value: string}[];
+  @Input() facts?: {fact: string; value: string}[];
 
 }

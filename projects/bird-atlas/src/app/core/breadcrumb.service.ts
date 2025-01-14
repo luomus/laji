@@ -71,7 +71,7 @@ export class BreadcrumbService implements OnDestroy {
     });
   }
 
-  setBreadcrumbName(id: BreadcrumbId, name: string) {
+  setBreadcrumbName(id: BreadcrumbId, name: string | undefined) {
     this.breadcrumbLookup[id].name = name;
     this.updateBreadcrumbs();
   }

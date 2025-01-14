@@ -54,8 +54,8 @@ export class ModalService {
     const modalComponent = createComponent(ModalComponent, { environmentInjector: this.appRef.injector });
     this.appRef.attachView(modalComponent.hostView);
     this.renderer.appendChild(this.document.body, modalComponent.location.nativeElement);
-    Object.keys(options).forEach(option => {
-      modalComponent.instance[option] = options[option];
+    (Object.keys(options) as (keyof ModalOptions<T>)[]).forEach(option => {
+      (modalComponent.instance as any)[option] = options[option];
     });
     modalComponent.instance.show();
     modalComponent.changeDetectorRef.detectChanges();
@@ -78,8 +78,9 @@ export class ModalService {
     });
     this.renderer.appendChild(contentNode, contentComponent.location.nativeElement);
 
-    Object.keys((options.initialState || {})).forEach(option => {
-      contentComponent.instance[option] = options.initialState[option];
+    (Object.keys(options.initialState || {}) as (keyof T)[]).forEach(option => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      (contentComponent.instance as any)[option] = options.initialState![option];
     });
     contentComponent.changeDetectorRef.detectChanges();
     this.appRef.attachView(contentComponent.hostView);

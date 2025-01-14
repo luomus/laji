@@ -19,7 +19,7 @@ export class SpeciesTableComponent implements OnInit {
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<DatatableSort[]>();
 
-  @ViewChild('notifications', { static: true }) notificationTpl: TemplateRef<any>;
+  @ViewChild('notifications', { static: true }) notificationTpl!: TemplateRef<any>;
 
   ngOnInit() {
     this.columns = [

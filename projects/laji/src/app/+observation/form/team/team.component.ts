@@ -13,10 +13,10 @@ import { BrowserService } from '../../../shared/service/browser.service';
 })
 export class TeamComponent implements OnInit, OnDestroy {
 
-  value: string;
-  typeaheadLoading: boolean;
-  screenWidthSub: Subscription;
-  containerTypeAhead: string;
+  value?: string;
+  typeaheadLoading?: boolean;
+  screenWidthSub?: Subscription;
+  containerTypeAhead?: string;
   dataSource: Observable<any>;
 
   _members: string[] = [];
@@ -74,7 +74,7 @@ export class TeamComponent implements OnInit, OnDestroy {
     this.typeaheadLoading = e;
   }
 
-  onMemberSelect(event) {
+  onMemberSelect(event: any) {
     if (!this.value) {
       return;
     }
@@ -92,7 +92,7 @@ export class TeamComponent implements OnInit, OnDestroy {
   }
 
   updateMembers(target: string, values: string[]) {
-    this[target] = values;
+    (this as any)[target] = values;
     if (target === '_members') {
       this.membersChange.emit(this._members);
     } else {

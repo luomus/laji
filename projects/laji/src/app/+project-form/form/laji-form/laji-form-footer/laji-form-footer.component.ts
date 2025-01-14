@@ -16,19 +16,19 @@ export type LajiFormFooterStatus = '' | 'success' | 'error' | 'unsaved';
 export class LajiFormFooterComponent {
   @Input() status: LajiFormFooterStatus = '';
   @Input() saving = false;
-  @Input() readonly: Readonly;
+  @Input() readonly!: Readonly;
   @Input() edit = false;
-  @Input() lajiForm: LajiFormComponent;
+  @Input() lajiForm!: LajiFormComponent;
   @Input() template = false;
-  @Input() locked: boolean;
-  @Input() isAdmin: boolean;
-  @Input() dateEdited: string;
+  @Input() locked!: boolean;
+  @Input() isAdmin!: boolean;
+  @Input() dateEdited!: string;
   @Output() submitPublic = new EventEmitter();
   @Output() submitPrivate = new EventEmitter();
   @Output() submitTemplate = new EventEmitter();
   @Output() leave = new EventEmitter();
   @Output() lock = new EventEmitter<boolean>();
-  _form: Form.SchemaForm;
+  _form!: Form.SchemaForm;
   show = {
     save: false,
     temp: false,
@@ -37,8 +37,8 @@ export class LajiFormFooterComponent {
   displayFeedback = true;
   readonlyStates = Readonly;
   hasOnlyWarnings = false;
-  _touchedCounter: number;
-  _touchedCounterOnErrors: number;
+  _touchedCounter!: number;
+  _touchedCounterOnErrors!: number;
 
   constructor(private platformService: PlatformService) { }
 
@@ -60,8 +60,8 @@ export class LajiFormFooterComponent {
     }
   }
 
-  private _hasOnlyWarnings(errors) {
-    if (errors.__errors?.length && errors.__errors.every(e => e.indexOf('[warning]') === 0)) {
+  private _hasOnlyWarnings(errors: any): any {
+    if (errors.__errors?.length && errors.__errors.every((e: any) => e.indexOf('[warning]') === 0)) {
       return true;
     }
     return Object.keys(errors).length && Object.keys(errors).every(key => key !== '__errors' && this._hasOnlyWarnings(errors[key]));

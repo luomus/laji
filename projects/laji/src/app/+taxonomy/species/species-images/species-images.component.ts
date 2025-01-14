@@ -14,20 +14,20 @@ import { Observable, Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesImagesComponent implements OnInit, OnDestroy {
-  @Input() searchQuery: TaxonomySearchQuery;
+  @Input({ required: true }) searchQuery!: TaxonomySearchQuery;
   @Input() showSpeciesTotalCount = false;
   @Input() countStartText = '';
   @Input() countEndText = '';
   loading = false;
 
-  images = [];
+  images: any[] = [];
   pageSize = 50;
   total = 0;
 
-  private subFetch: Subscription;
-  private subQueryUpdate: Subscription;
+  private subFetch?: Subscription;
+  private subQueryUpdate?: Subscription;
 
-  private lastQuery: string;
+  private lastQuery?: string;
 
   constructor(
     private taxonomyService: TaxonomyApi,
@@ -56,7 +56,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  pageChanged(event) {
+  pageChanged(event: any) {
     this.searchQuery.imageOptions.page = event.page;
     this.refreshImages();
   }
@@ -79,8 +79,9 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
     this.subFetch = this.fetchPage()
       .subscribe(data => {
           this.images = data.results.map(res => {
-            let image = {};
-            for (const media of res['multimedia']) {
+            let image: any = {};
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            for (const media of res['multimedia']!) {
               if (!media['keywords']?.includes('skeletal')) {
                 image = media;
                 break;

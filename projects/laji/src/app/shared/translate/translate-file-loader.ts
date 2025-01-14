@@ -8,7 +8,7 @@ export class TranslateFileLoader implements TranslateLoader {
     sv: require('../../../i18n/sv.json'),
   };
 
-  getTranslation(lang: string): Observable<any> {
+  getTranslation(lang: 'en'|'fi'|'sv'): Observable<any> {
     if (!this.translations[lang]) {
       return ObservableOf({});
     }

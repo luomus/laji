@@ -36,33 +36,6 @@ import { DocumentJobPayload } from '../../../shared/api/DocumentApi';
 import { toHtmlSelectElement } from '../../../shared/service/html-element.service';
 import {ModalRef, ModalService} from 'projects/laji-ui/src/lib/modal/modal.service';
 
-/*
-  Check that required columns have a non-empty cell at each row.
-
-  Example data:
-  [
-    { "B": "data2", "C": "data3", "D": "data4" },
-    { "A": "data1", "B": "data2", "C": "data3", "D": "data4" }
-  ]
-  Example columnMap:
-    { "A": "gatheringEvent.leg[*]", "B": "gatheringEvent.dateBegin",
-      "C": "gatherings[*].geometry", "D": "gatherings[*].units[*].identifications[*].taxon" }
- */
-const checkEarlyValidation = (data: {[key: string]: string}[], columnMap: {[key: string]: string}) => (
-  data.every(row => {
-    const entries = Object.entries(row);
-    const legIsPresent = entries.some(([k,v]) =>
-         columnMap[k] === 'gatheringEvent.leg[*]');
-    const placeIsPresent = entries.some(([k,v]) =>
-         columnMap[k] === 'namedPlaceID'
-      || columnMap[k] === 'gatherings[*].namedPlaceID' // nimetty paikka
-      || columnMap[k] === 'gatherings[*].geometry' // koordinaatit
-      || columnMap[k] === 'gatherings[*].locality' // paikannimet
-    );
-    return legIsPresent && placeIsPresent;
-  })
-);
-
 @Component({
   selector: 'laji-importer',
   templateUrl: './importer.component.html',
@@ -132,6 +105,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   vm$: Observable<ISpreadsheetState>;
 
+  private coordinateField = 'gatherings[*].geometry';
+  private namedPlaceField = 'gatherings[*].namedPlaceID';
   private externalLabel = [
     'editors[*]',
     'gatheringEvent.leg[*]'
@@ -170,6 +145,35 @@ export class ImporterComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.spreadsheetFacade.goToStep(Step.empty);
   }
+
+  /*
+  Check that required columns have a non-empty cell at each row.
+
+  Example data:
+  [
+    { "B": "data2", "C": "data3", "D": "data4" },
+    { "A": "data1", "B": "data2", "C": "data3", "D": "data4" }
+  ]
+  Example columnMap:
+    { "A": "gatheringEvent.leg[*]", "B": "gatheringEvent.dateBegin",
+      "C": "gatherings[*].geometry", "D": "gatherings[*].units[*].identifications[*].taxon" }
+ */
+  checkEarlyValidation = (data: {[key: string]: string}[], columnMap: {[key: string]: string}) => (
+    data.every(row => {
+      const entries = Object.entries(row);
+      const isDelete = entries.some(([k,v]) =>
+        columnMap[k] === 'delete' && this.getMappedValue(v, this.fields![columnMap[k]]));
+      const legIsPresent = entries.some(([k,v]) =>
+          columnMap[k] === 'gatheringEvent.leg[*]');
+      const placeIsPresent = entries.some(([k,v]) =>
+          columnMap[k] === 'namedPlaceID'
+        || columnMap[k] === 'gatherings[*].namedPlaceID' // nimetty paikka
+        || columnMap[k] === 'gatherings[*].geometry' // koordinaatit
+        || columnMap[k] === 'gatherings[*].locality' // paikannimet
+      );
+      return (legIsPresent && placeIsPresent) || isDelete;
+    })
+  );
 
   onFileChange(event: Event) {
     this.fileLoading = true;
@@ -318,7 +322,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   }
 
   colMappingDone(mapping: any) {
-    if (checkEarlyValidation(this.data!, mapping)) {
+    if (this.checkEarlyValidation(this.data!, mapping)) {
       this.spreadsheetFacade.goToStep(Step.dataMapping);
       this.colMap = mapping;
     } else {
@@ -381,6 +385,38 @@ export class ImporterComponent implements OnInit, OnDestroy {
     return path.replace(/\[[0-9]+]/g, '[*]');
   }
 
+  addMissingNamedPlaceGeometryToMapping(data: any) {
+    let coordinateCol: string;
+    let namedPlaceCol: string;
+
+    Object.keys(this.colMap!).forEach(col => {
+      if (this.colMap![col] === this.coordinateField) {
+        coordinateCol = col;
+      }
+
+      if (this.colMap![col] === this.namedPlaceField) {
+        namedPlaceCol = col;
+      }
+    });
+
+    const geometry: any = {};
+
+    data.source?.document?.gatherings?.forEach((gathering: any) => {
+      if (gathering.namedPlaceID && gathering.geometry) {
+        geometry[gathering.namedPlaceID] = gathering.geometry;
+      }
+    });
+
+    Object.keys(data.source.rows).forEach((key: any) => {
+      if (!this.mappedData![key][coordinateCol] && geometry[this.mappedData![key][namedPlaceCol]]) {
+        this.mappedData![key] = {
+          ...this.mappedData![key],
+          [coordinateCol]: geometry[this.mappedData![key][namedPlaceCol]]
+        };
+      }
+    });
+  }
+
   removeInvalidFromUserMapping(errors: any) {
     const userMappings = this.mappingService.getUserMappings();
 
@@ -430,15 +466,10 @@ export class ImporterComponent implements OnInit, OnDestroy {
         filter(step => step !== Step.validating),
         map(() => skipped = true)
       )),
-      map(({errors, documents}) => rowData.map((data, idx) => {
-        if (!documents[idx]) {
-          return {result: {_error: {status: 422}}, source: data};
-        }
-        return {
-          source: {...data, document: documents[idx]},
+      map(({errors}) => rowData.map((data, idx) => ({
+          source: data,
           result: (errors[idx] ? {_error: errors[idx]} : {})
-        };
-      }))
+        })))
     ).subscribe(
         (response: any) => {
           if (skipped) {
@@ -453,6 +484,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
               });
 
               this.removeInvalidFromUserMapping(data.result._error);
+            } else {
+              this.addMissingNamedPlaceGeometryToMapping(data);
             }
           }
           this.mappedData = [...this.mappedData as any];
@@ -500,15 +533,10 @@ export class ImporterComponent implements OnInit, OnDestroy {
           Math.min(Math.max(this.total - 1, 0), ticker);
         this.cdr.markForCheck();
       })),
-      map(({errors, documents}) => rowData.map((data, idx) => {
-        if (!documents[idx]) {
-          return {result: {_error: {status: 422}}, source: data};
-        }
-        return {
-          source: {...data, document: documents[idx]},
+      map(({errors}) => rowData.map((data, idx) => ({
+          source: data,
           result: (errors[idx] ? {_error: errors[idx]} : {})
-        };
-      })),
+        }))),
       takeUntil(this.spreadsheetFacade.step$.pipe(
         filter(step => step !== Step.importing),
         map(() => skipped = true)
@@ -684,7 +712,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
       }
       const field = fields[mapping[col]];
       const value = this.mappingService.getLabel(
-        this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true),
+        this.getMappedValue(row[col], field),
         field
       );
       if (!this.importService.hasValue(value)) {
@@ -697,5 +725,9 @@ export class ImporterComponent implements OnInit, OnDestroy {
       }
     });
     return result;
+  }
+
+  private getMappedValue(rawValue: any, field: IFormField) {
+    return this.mappingService.map(this.mappingService.rawValueToArray(rawValue, field), field, true);
   }
 }

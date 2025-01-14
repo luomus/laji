@@ -8,6 +8,6 @@ import { Component, Input } from '@angular/core';
 export class IucnClassComponent {
 
   @Input() includeOther = true;
-  @Input() highlight;
+  @Input() highlight: any;
 
 }

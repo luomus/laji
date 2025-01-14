@@ -14,7 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
   template: `
     <bsg-species-list
       [(query)]="queryService.query"
-      [filters]="speciesFilters$ | async"
+      [filters]="(speciesFilters$ | async) ?? undefined"
       [speciesList]="speciesList"
       [loading]="loading"
       (speciesSelect)="onSpeciesSelect($event)"
@@ -35,7 +35,7 @@ export class SpeciesSelectComponent implements OnInit, OnDestroy {
   speciesList: IGlobalSpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0, lastPage: 0 };
   loading = false;
 
-  private speciesListSub: Subscription;
+  private speciesListSub?: Subscription;
 
   constructor(
     public queryService: SpeciesListQueryService,

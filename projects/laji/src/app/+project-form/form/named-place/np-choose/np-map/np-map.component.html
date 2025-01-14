@@ -1,8 +1,8 @@
 <div [ngStyle]="{height: height}">
   <laji-map [options]="{
 				      zoom: 2,
-				      tileLayerName: tileLayerName,
-				      overlayNames: overlayNames,
+				      tileLayerName: tileLayerName!,
+				      overlayNames: overlayNames!,
 		          tileLayerOpacity: 0.5,
 		          controls: {location: false}, popupOnHover: true
 				   }"

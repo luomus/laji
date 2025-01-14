@@ -65,7 +65,7 @@
           <div class="col-sm-4 column-modal">
               <div class="title">{{ 'annotation.list' | translate }}</div>
             <ng-container *ngIf="activeGathering">
-              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [annotationTags]="annotationTags$ | async" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [isEditor]="isEditor" [personID]="personID" [documentID]="documentID" [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="true"
+              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [annotationTags]="annotationTags$ | async" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [isEditor]="isEditor" [personID]="personID" [documentID]="documentID!" [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="true"
                                          [loadDate]="document.loadDate" [createdDate]="document.createdDate" [observerId]="document.editorUserIds" [collectionId]="document.collectionId"></laji-gathering-annotation>
             </ng-container>
           </div>
@@ -74,7 +74,7 @@
                 <div>
                   <div *ngIf="activeGathering">
                     <div *ngFor="let unit of activeGathering?.units">
-                       <ng-container *ngIf="!document.secured && $any(unit).unitId === highlight && $any(unit).annotations && $any(unit).annotations[0].occurrenceAtTimeOfAnnotation">
+                       <ng-container *ngIf="!document.secured && unit.unitId === highlight && unit.annotations && unit.annotations[0].occurrenceAtTimeOfAnnotation">
                          <lu-alert type="info">
                            {{ 'viewer.secured.none' | translate }}
                          </lu-alert>
@@ -135,13 +135,13 @@
             <laji-row [noTitleSpace]="false" ngPreserveWhitespaces>
               <a href="view?uri={{document.documentId}}" target="_blank">
                 <span>{{ unitCnt }}
-                  <span *ngIf="unitCnt > 1"> {{ 'annotation.observations.count' | translate }}</span>
+                  <span *ngIf="unitCnt ?? 0 > 1"> {{ 'annotation.observations.count' | translate }}</span>
                   <span *ngIf="unitCnt === 1"> {{ 'annotation.observation.count' | translate }}</span>
                 </span>
               </a>
             </laji-row>
             <ng-container *ngIf="activeGathering">
-              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [annotationTags]="annotationTags$ | async" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [isEditor]="isEditor" [personID]="personID" [documentID]="documentID" [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="false"
+              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [annotationTags]="annotationTags$ | async" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [isEditor]="isEditor" [personID]="personID" [documentID]="documentID!" [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="false"
                                          [loadDate]="document.loadDate" [createdDate]="document.createdDate" [observerId]="document.editorUserIds" [collectionId]="document.collectionId"></laji-gathering-annotation>
             </ng-container>
             <laji-viewer-map [settingsKey]="'viewer-map'" [useWorldMap]="useWorldMap" [active]="active" *ngIf="hasMapData" [data]="mapData" [hideCoordinates]="showCoordinates"></laji-viewer-map>
@@ -160,6 +160,6 @@
   </div>
 </ng-container>
 <div>
-  <a *ngIf="result && indexPagination>0" class="arrow left" (click)="previous()"></a>
-  <a *ngIf="result && indexPagination < result.length-1" class="arrow right" (click)="next()"></a>
+  <a *ngIf="result && indexPagination! > 0" class="arrow left" (click)="previous()"></a>
+  <a *ngIf="result && indexPagination! < result.length-1" class="arrow right" (click)="next()"></a>
 </div>

@@ -9,7 +9,7 @@
           <div class="laji-page">
             <h2 class="mb-3">{{ newsItem.title }}</h2>
             <div class="mb-5"><small>
-              {{ newsItem.posted | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }} - {{ newsItem.author }}
+              {{ (newsItem.posted ?? '') | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }} - {{ newsItem.author }}
               <span *ngIf="newsItem.modified">({{ 'news.updated' | translate }}: {{ newsItem.modified | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})</span>
             </small></div>
             <img *ngIf="newsItem.featuredImage" class="mb-4" [src]="getFeaturedImageUrl(newsItem)"/>

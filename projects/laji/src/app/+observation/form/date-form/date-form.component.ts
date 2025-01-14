@@ -4,7 +4,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { ObservationFormQuery } from '../observation-form-query.interface';
 
 const relativeDateFormat = /^-?\d+\/-?\d+$/;
-export function isRelativeDate(date: string): boolean {
+export function isRelativeDate(date?: string): boolean {
   if (!date) {
     return false;
   }
@@ -18,8 +18,8 @@ export function isRelativeDate(date: string): boolean {
 export class DateFormComponent implements OnDestroy {
   private unsubscribe$ = new Subject();
 
-  @Input() query: WarehouseQueryInterface;
-  @Input() formQuery: ObservationFormQuery;
+  @Input({ required: true }) query!: WarehouseQueryInterface;
+  @Input({ required: true }) formQuery!: ObservationFormQuery;
 
   @Output() formQueryChange = new EventEmitter<void>();
   @Output() queryChange = new EventEmitter<void>();
@@ -78,9 +78,10 @@ export class DateFormComponent implements OnDestroy {
   }
 
   get xDaysAgo() {
-    return isRelativeDate(this.formQuery.timeStart) ? Math.abs(parseInt(this.formQuery.timeStart, 10)) : undefined;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return isRelativeDate(this.formQuery.timeStart) ? Math.abs(parseInt(this.formQuery.timeStart!, 10)) : undefined;
   }
-  set xDaysAgo(days: number) {
+  set xDaysAgo(days: number|undefined) {
     this.formQuery.timeStart = typeof days === 'number'
       ? (-1) * Math.abs(days) + '/0'
       : undefined;
@@ -92,11 +93,11 @@ export class DateFormComponent implements OnDestroy {
     this.formQueryChange.emit();
   }
 
-  updateSearchQuery(field, value) {
+  updateSearchQuery(field: string, value: any) {
     this.searchQueryChange.next([field, value]);
   }
 
-  onUpdateTime(...args) {
+  onUpdateTime(...args: any[]) {
     this.updateTime.emit(args);
   }
 

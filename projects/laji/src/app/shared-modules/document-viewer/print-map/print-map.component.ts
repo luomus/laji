@@ -8,7 +8,7 @@ import type { Options } from '@luomus/laji-map';
   styleUrls: ['./print-map.component.css']
 })
 export class PrintMapComponent implements OnChanges {
-  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: true }) lajiMap!: LajiMapComponent;
   @Input() data: any;
 
   _data: any;
@@ -46,7 +46,7 @@ export class PrintMapComponent implements OnChanges {
     if (data.features) {
       return {
         type: data.type,
-        features: data.features.map(feat => ({
+        features: data.features.map((feat: any) => ({
           type: feat.type,
           geometry: feat.geometry,
           properties: {}

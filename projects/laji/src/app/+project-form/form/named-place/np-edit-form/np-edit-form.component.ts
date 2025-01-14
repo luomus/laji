@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../../../shared/service/user.service';
@@ -28,9 +29,9 @@ interface ViewModel extends NamedPlacesRouteData {
   styleUrls: ['./np-edit-form.component.css']
 })
 export class NpEditFormComponent implements OnInit {
-  asyncData$: Observable<ViewModel>;
+  asyncData$!: Observable<ViewModel>;
 
-  lang: string;
+  lang?: string;
   saving = false;
   status: LajiFormFooterStatus = '';
   error = '';
@@ -38,7 +39,7 @@ export class NpEditFormComponent implements OnInit {
   private hasChanges = false;
   private isPublic = false;
 
-  @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
+  @ViewChild(LajiFormComponent) lajiForm?: LajiFormComponent;
 
   constructor(
     private dialogService: DialogService,
@@ -69,7 +70,7 @@ export class NpEditFormComponent implements OnInit {
   }
 
   @HostListener('window:beforeunload', ['$event'])
-  preventLeave($event) {
+  preventLeave($event: any) {
     if (this.hasChanges) {
       this.translate.get('haseka.leave.unsaved')
         .subscribe((msg) =>  $event.returnValue = msg);
@@ -81,14 +82,14 @@ export class NpEditFormComponent implements OnInit {
     this.status = 'unsaved';
   }
 
-  onSubmit(event) {
+  onSubmit(event: any) {
     if (!event.data.formData) {
-      this.lajiForm.unBlock();
+      this.lajiForm!.unBlock();
       return;
     }
 
     this.saving = true;
-    this.lajiForm.block();
+    this.lajiForm!.block();
     this.asyncData$.pipe(take(1)).subscribe(asyncData =>
     this.getNamedPlaceData(event, asyncData).then(data => {
       data.public = this.isPublic;
@@ -102,7 +103,7 @@ export class NpEditFormComponent implements OnInit {
 
       result$.subscribe(
         (result) => {
-          this.lajiForm.unBlock();
+          this.lajiForm!.unBlock();
           this.saving = false;
           this.translate.get('np.form.success')
             .subscribe(value => {
@@ -111,7 +112,7 @@ export class NpEditFormComponent implements OnInit {
           this.navigateToNPsView(result);
         },
         (err) => {
-          this.lajiForm.unBlock();
+          this.lajiForm!.unBlock();
           this.saving = false;
           this.status = 'error';
           this.error = this.parseErrorMessage(err);
@@ -128,12 +129,12 @@ export class NpEditFormComponent implements OnInit {
 
   submitPublic() {
     this.isPublic = true;
-    this.lajiForm.submit();
+    this.lajiForm!.submit();
   }
 
   submitPrivate() {
     this.isPublic = false;
-    this.lajiForm.submit();
+    this.lajiForm!.submit();
   }
 
   discard() {
@@ -177,7 +178,7 @@ export class NpEditFormComponent implements OnInit {
     });
   }
 
-  private getNamedPlaceData(event, asyncData: NamedPlacesRouteData) {
+  private getNamedPlaceData(event: any, asyncData: NamedPlacesRouteData) {
     const filteredKeys = ['placeWrapper'];
 
     const formData = event.data.formData;
@@ -198,7 +199,7 @@ export class NpEditFormComponent implements OnInit {
     return Promise.resolve(data);
   }
 
-  private mergePrepopulatedDocument(namedPlace, formData, asyncData: NamedPlacesRouteData) {
+  private mergePrepopulatedDocument(namedPlace: NamedPlace, formData: any, asyncData: NamedPlacesRouteData) {
     namedPlace.prepopulatedDocument = asyncData.namedPlace?.prepopulatedDocument;
     if (formData.prepopulatedDocument) {
       namedPlace.prepopulatedDocument = merge(
@@ -210,7 +211,7 @@ export class NpEditFormComponent implements OnInit {
     return namedPlace;
   }
 
-  private parseErrorMessage(err) {
+  private parseErrorMessage(err: any) {
     let detail = 'Error! ', data;
     if (err._body) {
       try {
@@ -232,26 +233,26 @@ export class NpEditFormComponent implements OnInit {
     const getAreaEnum = (
       type: keyof Pick<AreaService, 'getMunicipalities' | 'getBiogeographicalProvinces' | 'getBirdAssociationAreas'>
     ): Observable<Form.IEnum> => (this.areaService[type](this.translate.currentLang)).pipe(
-      map(areas => areas.reduce((schema, area) => {
+      map(areas => areas.reduce((schema: Form.IEnum, area: {id: string; value: string}) => {
         schema.oneOf.push({const: area.id, title: area.value});
         return schema;
       }, {oneOf: []}))
     );
     return this.projectFormService.getPlaceForm$(data.documentForm).pipe(switchMap(placeForm => forkJoin([
-      placeForm.schema.properties.municipality ? getAreaEnum('getMunicipalities') : of(null),
-      placeForm.schema.properties.biogeographicalProvince ? getAreaEnum('getBiogeographicalProvinces') : of(null),
-      placeForm.schema.properties.birdAssociationArea ? getAreaEnum('getBirdAssociationAreas') : of(null)
+      placeForm!.schema.properties.municipality ? getAreaEnum('getMunicipalities') : of(null),
+      placeForm!.schema.properties.biogeographicalProvince ? getAreaEnum('getBiogeographicalProvinces') : of(null),
+      placeForm!.schema.properties.birdAssociationArea ? getAreaEnum('getBirdAssociationAreas') : of(null)
     ]).pipe(
       map(([municipalityEnum, biogeographicalProvinceEnum, birdAssociationAreaEnum]) => ({
         ...placeForm,
         uiSchemaContext: {
-          ...(placeForm.uiSchemaContext || {}),
+          ...(placeForm!.uiSchemaContext || {}),
           municipalityEnum,
           biogeographicalProvinceEnum,
           birdAssociationAreaEnum,
           isEdit: !!data.namedPlace
         }
-      }))
+      } as Form.SchemaForm))
     )
     ));
   }
@@ -274,7 +275,7 @@ export class NpEditFormComponent implements OnInit {
       return npData;
     } else {
       const prepopulatedNamedPlace = {} as any;
-      const areas = {municipality, birdAssociationArea};
+      const areas: Record<string, string|undefined> = {municipality, birdAssociationArea};
       ['birdAssociationArea', 'municipality'].forEach(area => {
         if (!placeForm.schema.properties[area]) {
           return;

@@ -17,11 +17,9 @@ import { LocalStorage } from 'ngx-webstorage';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HerpetologyComponent implements OnInit {
-
-  lang;
-  private subTrans: Subscription;
-  year;
-  currentYear;
+  lang!: string;
+  currentYear: string;
+  private subTrans!: Subscription;
 
   public amphibianTaxa: {taxon: Taxonomy; images: any}[] = [];
   public reptileTaxa: {taxon: Taxonomy; images: any}[] = [];
@@ -32,7 +30,7 @@ export class HerpetologyComponent implements OnInit {
 
   public amphibianGalleries: Array<Array<TaxonomyImage>>;
 
-  @LocalStorage() herpetology;
+  @LocalStorage() herpetology: any;
 
   constructor(
     private translate: TranslateService,
@@ -63,14 +61,16 @@ export class HerpetologyComponent implements OnInit {
         ).pipe(
         map(species => species.results)).pipe(
         switchMap(data => ObservableForkJoin(data.map(taxon => this.taxonomyApi
-            .taxonomyFindMedia(taxon.id, 'multi').pipe(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            .taxonomyFindMedia(taxon.id!, 'multi').pipe(
             map(images => ({taxon, images: images[0] || {} })))
           )))),
       this.taxonomyApi
         .taxonomyFindSpecies('MX.37610', 'multi', 'MVL.162',  undefined, undefined, 'MX.typeOfOccurrenceStablePopulation').pipe(
         map(species => species.results)).pipe(
         switchMap(data => ObservableForkJoin(data.map(taxon => this.taxonomyApi
-            .taxonomyFindMedia(taxon.id, 'multi').pipe(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            .taxonomyFindMedia(taxon.id!, 'multi').pipe(
             map(images => ({taxon, images: images[0] || {}})))
           )))),
       this.taxonomyApi
@@ -78,7 +78,8 @@ export class HerpetologyComponent implements OnInit {
           'MX.typeOfOccurrenceAnthropogenic,MX.typeOfOccurrenceRareVagrant,MX.typeOfOccurrenceVagrant').pipe(
         map(species => species.results)).pipe(
         switchMap(data => ObservableForkJoin(data.map(taxon => this.taxonomyApi
-            .taxonomyFindMedia(taxon.id, 'multi').pipe(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            .taxonomyFindMedia(taxon.id!, 'multi').pipe(
             map(images => ({taxon, images: images[0] || {}})))
           ))))
     );

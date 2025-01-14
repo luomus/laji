@@ -10,7 +10,7 @@
     class="material mb-8"
     [rows]="stats"
     [columns]="cols"
-    [selectionType]="'single'"
+    [selectionType]="selectionType.single"
     (select)="onTableRowSelect($event)"
   ></ngx-datatable>
   <hr>

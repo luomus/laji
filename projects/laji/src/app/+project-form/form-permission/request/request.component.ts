@@ -27,10 +27,10 @@ export class RequestComponent implements OnInit {
   // Allow use of AccessLevel Enum in templates
   AccessLevel = AccessLevel;  // eslint-disable-line @typescript-eslint/naming-convention
 
-  vm$: Observable<ViewModel>;
+  vm$!: Observable<ViewModel>;
   private resetVM$ = new BehaviorSubject<void>(undefined);
 
-  @Input() collectionId: string;
+  @Input() collectionId!: string;
   @Input() disableDescription = false;
 
   clicked = false;
@@ -52,9 +52,11 @@ export class RequestComponent implements OnInit {
             .pipe(
               switchMap(formPermission => this.userService.user$.pipe(
                 map(person => {
-                  if (formPermission.editors.indexOf(person.id) > -1 || formPermission.admins.indexOf(person.id) > -1) {
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  if (formPermission.editors.indexOf(person!.id!) > -1 || formPermission.admins.indexOf(person!.id!) > -1) {
                     return {accessLevel: AccessLevel.Allowed, loggedIn: true};
-                  } else if (formPermission.permissionRequests.indexOf(person.id) > -1) {
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  } else if (formPermission.permissionRequests.indexOf(person!.id!) > -1) {
                     return {accessLevel: AccessLevel.Requested, loggedIn: true};
                   }
                   return {accessLevel: AccessLevel.NotRequested, loggedIn: true};

@@ -31,7 +31,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   @ViewChild('dataTable') public datatable?: NgxDatatableComponent;
   @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates!: DatatableTemplatesComponent;
 
-  @Input() loading = false;
+  @Input() loading? = false;
   @Input() pageSize?: number;
   @Input() showHeader = true;
   @Input() showFooter = true;
@@ -120,11 +120,11 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     this._isFixedHeight = height.substr(height.length - 2, 2).includes('px');
   }
 
-  @Input() set count(cnt: number) {
+  @Input() set count(cnt: number|undefined) {
     this._count = typeof cnt === 'number' ? cnt  : 0;
   }
 
-  @Input() set rows(rows: Record<string, any>[]) {
+  @Input() set rows(rows: Record<string, any>[] | null) {
     this._originalRows = rows as any || [];
 
     // record the original indexes of each row element so that when the table is sorted
@@ -152,9 +152,9 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     setTimeout(() => this.scrollTo());
   }
 
-  @Input() set page(page: number) {
+  @Input() set page(page: number|undefined) {
     this._page = page;
-    this._offset = page - 1;
+    this._offset = typeof page === 'number' ? page - 1 : undefined;
   }
 
   @Input() set columns(columns: DatatableColumn[]) {
@@ -226,7 +226,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
    *
    * Please note that this should not be used when external pagination is used!
    */
-  @Input() set filterBy(filterBy: FilterByType) {
+  @Input() set filterBy(filterBy: FilterByType|undefined) {
     this._filterBy = filterBy;
     this.filterChange$.next();
   }

@@ -8,7 +8,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { of as ObservableOf } from 'rxjs';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { combineLatest, take } from 'rxjs/operators';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { UserService } from '../../../../../shared/service/user.service';
@@ -24,6 +24,8 @@ import { FormService } from '../../../../../shared/service/form.service';
 import { GeometryCollection } from 'geojson';
 import { NamedPlacesService } from '../../../../../shared/service/named-places.service';
 import { DocumentService } from '../../../../../shared-modules/own-submissions/service/document.service';
+import { FormPermission } from 'projects/laji/src/app/shared/model/FormPermission';
+import { Person } from 'projects/laji/src/app/shared/model/Person';
 
 @Component({
   selector: 'laji-accepted-document-approval',
@@ -33,15 +35,15 @@ import { DocumentService } from '../../../../../shared-modules/own-submissions/s
 })
 export class AcceptedDocumentApprovalComponent implements OnChanges {
 
-  @Input() namedPlace: NamedPlace;
-  @Input() document: Document;
+  @Input() namedPlace!: NamedPlace;
+  @Input() document!: Document;
   @Input() lineTransect = false;
 
   @Output() namedPlaceChange = new EventEmitter();
 
-  @ViewChild(LajiMapComponent, { static: false }) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: false }) lajiMap!: LajiMapComponent;
 
-  lajiMapOptions: Options;
+  lajiMapOptions!: Options;
   data: any;
   placesDiff: false | any = false;
   geometriesDiff: false | any = false;
@@ -63,7 +65,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
     this.initMapOptions();
     this.initData();
     this.initIsAdmin()
-      .subscribe(data => {
+      .subscribe((data: any) => {
         this.isAdmin = this.formPermissionService.isAdmin(data.formPermission, data.user);
         this.initDocumentDiff();
         this.updateMapZoom();
@@ -71,7 +73,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       });
   }
 
-  initIsAdmin() {
+  initIsAdmin(): Observable<null | { formPermission: FormPermission; user: Person | undefined }> {
     if (!this.namedPlace || !this.namedPlace.collectionID) {
       return ObservableOf(null);
     }
@@ -110,7 +112,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
     this.data = this.lineTransect ? undefined : this.getDataOption(this.activeDocument);
   }
 
-  setActiveDocument(document) {
+  setActiveDocument(document: any) {
     this.activeDocument = document;
     if (this.lineTransect) {
       this.lajiMap.map.setLineTransect(this.getLineTransectOption(document));
@@ -124,7 +126,8 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       ? this.document
       : this.namedPlace.acceptedDocument;
 
-    const geometry = {type: 'MultiLineString', coordinates: document.gatherings?.map(item => item.geometry.coordinates) || []} as LineTransectGeometry;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const geometry = {type: 'MultiLineString', coordinates: document!.gatherings?.map(item => item.geometry!.coordinates) || []} as LineTransectGeometry;
     return {feature: {type: 'Feature', properties: {}, geometry}, editable: false};
   }
 
@@ -135,7 +138,8 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
 
     const geometry = {
       type: 'GeometryCollection',
-      geometries: document.gatherings?.filter(item => item?.geometry?.type).map(item => item.geometry)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      geometries: document!.gatherings?.filter(item => item?.geometry?.type).map(item => item.geometry)
     } as GeometryCollection;
     return {geoData: geometry, editable: false};
   }
@@ -175,15 +179,15 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
     const getGeometry = (_document: any) =>
       this.documentService.removeMeta({
         type: 'GeometryCollection',
-        geometry: JSON.parse(JSON.stringify(_document)).gatherings?.map(item => item.geometry) || []
+        geometry: JSON.parse(JSON.stringify(_document)).gatherings?.map((item: any) => item.geometry) || []
       },
         ['$.geometries.*.coordinateVerbatim']
       );
 
-    const getDiff = (_acceptedDocument: any, _document: any) => (diff(_acceptedDocument, _document) || []).reduce((_diff, diffObj) => {
+    const getDiff = (_acceptedDocument: any, _document: any) => (diff(_acceptedDocument, _document) || []).reduce((_diff: any, diffObj) => {
         // Flatten object rhs (right-hand-side, or otherwise speaking the new value) to
         // the path so that we can render the simple value instead of rendering an object as value.
-        const addRecursively = (rhs: any, path) => {
+        const addRecursively = (rhs: any, path: any) => {
           if (typeof rhs === 'object' && !Array.isArray(rhs) && rhs !== null) {
             Object.keys(rhs).forEach(key => {
               addRecursively(rhs[key], [...path, key]);
@@ -202,7 +206,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
         };
         addRecursively((diffObj as DiffNew<any>).rhs, diffObj.path);
         return _diff;
-      }, []).sort((a, b) => b.path.join('.').localeCompare(a.path.join('')));
+      }, []).sort((a: any, b: any) => b.path.join('.').localeCompare(a.path.join('')));
 
     const document = this.documentService.removeMeta(this.document, diffIgnoredFields);
     const acceptedDocument = this.documentService.removeMeta(this.namedPlace.acceptedDocument || {}, diffIgnoredFields);
@@ -214,7 +218,8 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
 
   initDocumentDiff() {
     this.formService.getForm(this.document.formID).subscribe(form => {
-      const [differs, geometriesDiff, otherDiff] = this.checkDiff(form.excludeFromCopy);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const [differs, geometriesDiff, otherDiff] = this.checkDiff(form!.excludeFromCopy!);
       this.placesDiff = differs;
       this.geometriesDiff = geometriesDiff;
       this.otherDiff = otherDiff;

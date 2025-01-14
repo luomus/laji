@@ -74,23 +74,23 @@
     </ng-container>
 
     <laji-col-mapper
-      *ngIf="[step.empty, step.importingFile, step.sheetLoadError, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.invalidFormId].indexOf(vm.step) === -1"
+      *ngIf="[step.empty, step.importingFile, step.sheetLoadError, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.invalidFormId].indexOf($any(vm.step)) === -1"
       [hidden]="vm.step !== step.colMapping"
       (mappingDone)="colMappingDone($event)"
-      [fields]="fields"
-      [headers]="header"
-      [colMapping]="colMap"
+      [fields]="fields!"
+      [headers]="header!"
+      [colMapping]="colMap!"
       (fieldSelected)="mapCol($event)"></laji-col-mapper>
 
 
     <laji-cell-value-mapping
       *ngIf="vm.step === step.dataMapping"
       (done)="rowMappingDone($event)"
-      [formID]="formID"
+      [formID]="formID!"
       [valueMap]="valueMap"
-      [fields]="fields"
-      [data]="data"
-      [colMapping]="colMap"></laji-cell-value-mapping>
+      [fields]="fields!"
+      [data]="data!"
+      [colMapping]="colMap!"></laji-cell-value-mapping>
 
 
     <ng-container *ngIf="vm.step === step.importReady || vm.step === step.invalidData || vm.step === step.validating">
@@ -208,7 +208,7 @@
 </ng-template>
 
 <ng-template let-value="value" #statusCol>
-  <laji-status-cell [value]="value" [fields]="fields"></laji-status-cell>
+  <laji-status-cell [value]="value" [fields]="fields!"></laji-status-cell>
 </ng-template>
 
 <ng-template #importData>
@@ -225,10 +225,10 @@
     [clientSideSorting]="false"
     [height]="'50vh'"
     [rows]='mappedData | onlyErroneous:showOnlyErroneous | erroneousFirst'
-    [count]="mappedData.length"
+    [count]="mappedData!.length"
     [page]="1"
-    [pageSize]="mappedData.length"
-    [columns]="dataColumns">
+    [pageSize]="mappedData!.length"
+    [columns]="dataColumns!">
   </laji-datatable>
 </ng-template>
 
@@ -236,7 +236,7 @@
   <h4 class="modal-title">{{ 'excel.import.observationMap' | translate }}</h4>
     <laji-import-map
       [data]="mappedData | onlyErroneous:showOnlyErroneous"
-      [colMap]="colMap"
+      [colMap]="colMap!"
       [height]="'50vh'"
     ></laji-import-map>
 </ng-template>

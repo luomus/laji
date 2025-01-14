@@ -85,7 +85,7 @@ export class LajiApiClient {
     const url = `${this.basePath}/${endpoint}`;
     const options = {params: {...this.removeUndefinedFromObject(query)}};
     if (endpoint === LajiApiClient.Endpoints.htmlToPdf) {
-      options['responseType'] = 'blob';
+      (options as any)['responseType'] = 'blob';
     }
     return this.httpClient.post(
       url,
@@ -117,7 +117,7 @@ export class LajiApiClient {
     );
   }
 
-  private removeUndefinedFromObject(obj: object) {
+  private removeUndefinedFromObject(obj: Record<string, any>) {
     if (typeof obj !== 'object') {
       return obj;
     }
@@ -129,7 +129,7 @@ export class LajiApiClient {
         cumulative[current] = obj[current];
       }
       return cumulative;
-    }, {});
+    }, {} as Record<string, any>);
   }
 }
 
@@ -1694,9 +1694,9 @@ export namespace LajiApiClient {
   export interface PersonAddFriendRequestParams {
 
     /**
-     * profile key
+     * person ID who is asked to be a friend
      */
-    profileKey: string;
+    friendPersonID: string;
 
     /**
      * Person token

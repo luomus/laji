@@ -225,7 +225,7 @@ export class SykeInsectResultService {
   }
 
   private getYearMonthParam(year: number, date?: string): string {
-    let startMonth, endMonth, startYear, endYear;
+    let startMonth: number, endMonth: number, startYear: number, endYear: number;
     if (!date) {
       startMonth = this.seasonRanges[0];
       endMonth = this.seasonRanges[1];
@@ -233,7 +233,7 @@ export class SykeInsectResultService {
       endYear = endMonth > this.seasonRanges[1] ? year - 1 : year;
     }
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return !date ? startYear + '-' + this.padMonthDay(startMonth!) + '/' + endYear + '-' + this.padMonthDay(endMonth!) :
+    return !date ? startYear! + '-' + this.padMonthDay(startMonth!) + '/' + endYear! + '-' + this.padMonthDay(endMonth!) :
     date + '/' + date;
   }
 

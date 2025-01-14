@@ -18,9 +18,9 @@ import { NamedPlacesService } from '../../../shared/service/named-places.service
 })
 export class StatisticsComponent implements OnInit {
 
-  document: Document;
+  document!: Document;
   ns: any;
-  form: Form.List;
+  form!: Form.List;
   loaded = false;
 
   constructor(

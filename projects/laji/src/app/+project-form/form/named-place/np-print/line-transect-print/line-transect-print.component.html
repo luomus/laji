@@ -174,8 +174,8 @@
       </thead>
       <tbody>
         <ng-container *ngFor="let distance of page; let j = index">
-          <ng-container *ngIf="biotopes[(distance - formSplit)]; else noBiotopes">
-            <tr *ngFor="let biotope of biotopes[(distance - formSplit)]; first as isFirst" class="biotopes-{{biotopes[(distance - formSplit)].length}}">
+          <ng-container *ngIf="biotopes![(distance - formSplit)]; else noBiotopes">
+            <tr *ngFor="let biotope of biotopes![(distance - formSplit)]; first as isFirst" class="biotopes-{{biotopes![(distance - formSplit)].length}}">
               <td class="col-1"></td>
               <td class="col-2"><div class="distance" *ngIf="isFirst">{{ distance }}</div></td>
               <td class="col-3"></td>

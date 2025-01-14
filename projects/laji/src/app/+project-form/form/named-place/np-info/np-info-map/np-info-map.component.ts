@@ -10,9 +10,9 @@ import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
   styleUrls: ['./np-info-map.component.css']
 })
 export class NpInfoMapComponent implements OnInit, OnChanges {
-  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
-  @Input() visible: boolean;
-  @Input() namedPlace: NamedPlace;
+  @ViewChild(LajiMapComponent, { static: true }) lajiMap!: LajiMapComponent;
+  @Input() visible?: boolean;
+  @Input() namedPlace?: NamedPlace;
 
   mapOptions: Options = {
     tileLayerName: TileLayerName.maastokartta,
@@ -94,9 +94,11 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
   }
 
   private getGeometry() {
-    let geom = this.namedPlace.geometry;
-    const gatherings = this.namedPlace.acceptedDocument?.gatherings || this.namedPlace.prepopulatedDocument?.gatherings || [];
-    const geometries = gatherings.reduce((all, curr) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    let geom = this.namedPlace!.geometry;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const gatherings = this.namedPlace!.acceptedDocument?.gatherings || this.namedPlace!.prepopulatedDocument?.gatherings || [];
+    const geometries = gatherings.reduce((all: any[], curr: any) => {
       if (curr.geometry) {
         all.push(curr.geometry);
       }
@@ -111,9 +113,11 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
       };
     }
 
-    if (geom.type === 'GeometryCollection') {
-      const uniqueGeoms = [];
-      return {...geom, geometries: geom.geometries.reduce((geoms, g) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (geom!.type === 'GeometryCollection') {
+      const uniqueGeoms: any = [];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return {...geom, geometries: (geom as GeoJSON.GeometryCollection).geometries.reduce((geoms: any, g: any) => {
         const key = JSON.stringify(g);
         if (!uniqueGeoms[key]) {
           uniqueGeoms[key] = true;

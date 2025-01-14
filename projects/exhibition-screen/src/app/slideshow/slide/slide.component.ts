@@ -21,10 +21,10 @@ export interface ISlideData {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SlideComponent implements OnChanges, AfterViewChecked {
-  @Input() data: ISlideData;
+  @Input() data!: ISlideData;
 
-  private prevCheckedData;
-  private modalRef: ModalRef;
+  private prevCheckedData: ISlideData | undefined;
+  private modalRef: ModalRef | undefined;
 
   constructor(private el: ElementRef, private renderer: Renderer2, private modalService: ModalService) {}
 

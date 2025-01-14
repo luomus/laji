@@ -15,26 +15,26 @@ import { Form } from '../../../shared/model/Form';
 })
 export class NafiResultComponent implements OnInit, OnDestroy {
 
-  @Input() form: Form.SchemaForm;
+  @Input() form!: Form.SchemaForm;
 
   informalTaxonGroup = 'MVL.181';
-  page;
-  lang;
-  query: WarehouseQueryInterface;
-  mapQuery: WarehouseQueryInterface;
-  resultQuery: WarehouseQueryInterface;
-  taxon$: Observable<Taxonomy>;
+  page?: number;
+  lang?: string;
+  query!: WarehouseQueryInterface;
+  mapQuery!: WarehouseQueryInterface;
+  resultQuery!: WarehouseQueryInterface;
+  taxon$!: Observable<Taxonomy> | Observable<null>;
 
   year;
   currentMonth;
   currentYear;
   startMonth = 3;
-  fromYear;
-  fromMonth;
+  fromYear!: string;
+  fromMonth!: string;
   allTime = '';
 
-  private subTrans: Subscription;
-  private subQuery: Subscription;
+  private subTrans!: Subscription;
+  private subQuery!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -62,7 +62,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
       this.emptyTime();
       this.query = {
         yearMonth: time ===  'all' ? undefined : [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
-        collectionId: [this.form.collectionID],
+        collectionId: this.form.collectionID ? [this.form.collectionID] : [],
         informalTaxonGroupId: [this.informalTaxonGroup],
         countryId: ['ML.206']
       };
@@ -113,11 +113,11 @@ export class NafiResultComponent implements OnInit, OnDestroy {
     return this.year;
   }
 
-  private clone(obj) {
+  private clone(obj: WarehouseQueryInterface) {
     return JSON.parse(JSON.stringify(obj));
   }
 
-  private parseDateTimeRange(date) {
+  private parseDateTimeRange(date: any) {
     if (!date || typeof date !== 'string') {
       return date;
     }
@@ -131,7 +131,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
     return date;
   }
 
-  private parseDateTime(date): {year: string; month: string} {
+  private parseDateTime(date: any): {year: string; month: string} {
     if (date.length === '4') {
       return {year: date, month: ''};
     }

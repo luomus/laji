@@ -16,9 +16,9 @@ import { map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConservationFilterComponent {
-  @Input() administrativeStatus: string[];
-  @Input() redListStatus: string[];
-  @Input() set taxonAdminFiltersOperator(val: 'AND' | 'OR') {
+  @Input() administrativeStatus?: string[];
+  @Input() redListStatus?: string[];
+  @Input() set taxonAdminFiltersOperator(val: 'AND' | 'OR' | undefined) {
     this.form.setValue({operator: val || 'AND'}, { emitEvent: false });
   }
   @Output() administrativeStatusChange = new EventEmitter<string[]>();

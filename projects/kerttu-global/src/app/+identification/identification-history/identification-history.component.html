@@ -7,7 +7,7 @@
   <div class="col-sm-3">
     <label>{{ 'siteSelection.site' | translate }}</label>
     <select class="form-control input-sm" [ngModel]="query.site" (ngModelChange)="siteChange($event)">
-      <option [value]=""></option>
+      <option [value]="undefined"></option>
       <option *ngFor="let site of sites$ | async" [value]="site.id">{{ site.id }} {{ site.name }}</option>
     </select>
   </div>
@@ -28,7 +28,7 @@
   </div>
 </div>
 <bsg-identification-history-table
-  [data]="data$ | async"
+  [data]="(data$ | async) ?? undefined"
   [loading]="loading"
   (pageChange)="onPageChange($event)"
   (sortChange)="onSortChange($event)"

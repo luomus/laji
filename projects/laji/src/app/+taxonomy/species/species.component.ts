@@ -31,7 +31,7 @@ const tabIndexToName = {
 export class SpeciesComponent implements OnInit, OnDestroy {
   public selectedIndex = 0;
 
-  private subParams: Subscription;
+  private subParams!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,7 +48,7 @@ export class SpeciesComponent implements OnInit, OnDestroy {
     this.subParams = this.route.params.pipe(
       map(data => data['tab']),
     ).subscribe(tab => {
-        this.selectedIndex = tabNameToIndex[tab];
+        this.selectedIndex = tabNameToIndex[<keyof typeof tabNameToIndex>tab];
         this.cd.markForCheck();
     });
 
@@ -74,7 +74,7 @@ export class SpeciesComponent implements OnInit, OnDestroy {
 
   onSelect(tabIndex: number) {
     this.router.navigate(
-      this.localizeRouterService.translateRoute(['/taxon', tabIndexToName[tabIndex]]),
+      this.localizeRouterService.translateRoute(['/taxon', tabIndexToName[<keyof typeof tabIndexToName>tabIndex]]),
       {queryParams: this.route.snapshot.queryParams}
     );
   }

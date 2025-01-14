@@ -18,7 +18,7 @@ export class MonitoringFacade {
 
   constructor(private formService: FormService) {}
 
-  reducer(forms) {
+  reducer(forms: Form.List[][]) {
     this.store$.next({
       monitoringForms: forms[0]
     });
@@ -27,7 +27,7 @@ export class MonitoringFacade {
   loadAll(monitoringFormIds: string[]) {
     this.formService.getAllForms().pipe(
       map((forms) => {
-        const m = [];
+        const m: Form.List[] = [];
         forms.forEach((form) => {
           if (monitoringFormIds.includes(form.id)) {
             m.push(form);

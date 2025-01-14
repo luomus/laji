@@ -35,12 +35,12 @@ interface LineTransectCount {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineTransectComponent implements OnChanges {
-  @Input() document: Document;
-  @Input() namedPlace: NamedPlace;
+  @Input() document!: Document;
+  @Input() namedPlace!: NamedPlace;
 
   @Output() namedPlaceChange = new EventEmitter();
 
-  counts: LineTransectCount;
+  counts!: LineTransectCount;
   perKmTerms: LineTransectChartTerms = {
     upper: {
       slope: -0.279,
@@ -71,7 +71,7 @@ export class LineTransectComponent implements OnChanges {
     }
   };
   warnings: {message: string; cnt: number}[] = [];
-  stats$: Observable<string>;
+  stats$!: Observable<string>;
 
   ykj10kmN = 0;
   ykj10kmE = 0;
@@ -94,7 +94,8 @@ export class LineTransectComponent implements OnChanges {
   }
 
   private initEditLink() {
-    this.path = this.formService.getEditUrlPath(this.document.formID, this.document.id);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.path = this.formService.getEditUrlPath(this.document.formID, this.document.id!);
   }
 
   private initCounts() {
@@ -108,7 +109,7 @@ export class LineTransectComponent implements OnChanges {
       routeLength: 0,
       minPerKm: 0
     };
-    const species = {};
+    const species: any = {};
     this.stats$ = this.lajiApiService.getList(LajiApi.Endpoints.documentStats,
       {personToken: this.userSerivce.getToken(), namedPlace: this.namedPlace.id}).pipe(
       map(stats => this.dateDiffFromDoc(stats.dateMedian))).pipe(
@@ -147,7 +148,8 @@ export class LineTransectComponent implements OnChanges {
     if (total > 0) {
       count.onPsPros = Math.round((count.psCouples / (total)) * 100);
     }
-    count.couplesPerKm = (count.tsCouples + count.psCouples) / (count.routeLength / 1000);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    count.couplesPerKm = (count.tsCouples + count.psCouples) / (count.routeLength! / 1000);
     if (this.document.gatheringEvent &&
       this.document.gatheringEvent.dateBegin &&
       this.document.gatheringEvent.timeStart &&
@@ -157,12 +159,13 @@ export class LineTransectComponent implements OnChanges {
         +new Date(
           (this.document.gatheringEvent.dateEnd || this.document.gatheringEvent.dateBegin) + ' ' + this.document.gatheringEvent.timeStart
         );
-      count.minPerKm = Math.round((diff / 1000 / 60) / (count.routeLength / 1000));
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      count.minPerKm = Math.round((diff / 1000 / 60) / (count.routeLength! / 1000));
     }
     this.counts = count;
   }
 
-  private dateDiffFromDoc(date) {
+  private dateDiffFromDoc(date: any) {
     if (this.document && this.document.gatheringEvent && this.document.gatheringEvent.dateBegin) {
       const date1 = new Date(this.document.gatheringEvent.dateBegin);
       const date2 = new Date(this.document.gatheringEvent.dateBegin.slice(0, 5) + date);
@@ -183,7 +186,7 @@ export class LineTransectComponent implements OnChanges {
     this.warnings = warnings;
   }
 
-  private getErrors(warnings: {location: string; messages: string[]}[], messages = {}) {
+  private getErrors(warnings: {location: string; messages: string[]}[], messages: any = {}) {
     warnings.forEach(error => {
       error.messages.forEach(msg => {
         messages[msg] = messages[msg] ? messages[msg] + 1 : 1;
@@ -207,8 +210,10 @@ export class LineTransectComponent implements OnChanges {
         ? this.document
         : this.namedPlace.acceptedDocument;
 
-   if (document.gatherings) {
-      return {type: 'MultiLineString', coordinates: document.gatherings.map(item => item.geometry.coordinates)};
+   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+   if (document!.gatherings) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return {type: 'MultiLineString', coordinates: document!.gatherings.map(item => item!.geometry!.coordinates)};
     }
     return {type: 'MultiLineString', coordinates: []};
   }

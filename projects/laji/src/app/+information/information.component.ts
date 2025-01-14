@@ -16,7 +16,7 @@ import { getDescription, HeaderService } from '../shared/service/header.service'
 })
 export class InformationComponent {
 
-  information$: Observable<Information>;
+  information$: Observable<Information|null>;
 
   constructor(private route: ActivatedRoute,
               private lajiApi: LajiApiService,

@@ -7,7 +7,6 @@ import BirdwatchingActivityLevelEnum = Profile.BirdwatchingActivityLevelEnum;
 import BirdSongRecognitionSkillLevel = Profile.BirdSongRecognitionSkillLevel;
 import BirdSongRecognitionSkillLevelEnum = Profile.BirdSongRecognitionSkillLevelEnum;
 import { AreaService } from '../../../../../laji/src/app/shared/service/area.service';
-import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../../../laji/src/app/shared/service/dialog.service';
 
 @Component({
@@ -31,8 +30,8 @@ export class ExpertiseComponent implements OnInit {
     {id: 'MA.birdwatchingActivityLevelEnum4', label: 'expertise.birdwatchingActivityLevel4'}
   ];
 
-  private profile: Profile;
-  private profileSub: Subscription;
+  private profile?: Profile;
+  private profileSub!: Subscription;
 
   private skillLevel1: BirdSongRecognitionSkillLevelEnum = 'MA.birdSongRecognitionSkillLevelEnum1';
 
@@ -40,7 +39,6 @@ export class ExpertiseComponent implements OnInit {
     private areaService: AreaService,
     private userService: UserService,
     private personService: PersonApi,
-    private translate: TranslateService,
     private dialogService: DialogService,
     private cdr: ChangeDetectorRef
   ) {
@@ -54,7 +52,7 @@ export class ExpertiseComponent implements OnInit {
     ]).subscribe(([profile, continents]) => {
       this.profile = profile;
       this.birdwatchingActivityLevel = profile.birdwatchingActivityLevel || '';
-      if (profile.birdSongRecognitionSkillLevels?.length > 0) {
+      if (profile.birdSongRecognitionSkillLevels?.length && profile.birdSongRecognitionSkillLevels.length > 0) {
         this.birdSongRecognitionSkillLevels = profile.birdSongRecognitionSkillLevels;
       } else {
         this.birdSongRecognitionSkillLevels = continents.map(continent => ({
@@ -94,10 +92,10 @@ export class ExpertiseComponent implements OnInit {
   private saveProfile() {
     this.saving = true;
 
-    this.profile.birdwatchingActivityLevel = this.birdwatchingActivityLevel as BirdwatchingActivityLevelEnum;
-    this.profile.birdSongRecognitionSkillLevels = this.birdSongRecognitionSkillLevels;
+    this.profile!.birdwatchingActivityLevel = this.birdwatchingActivityLevel as BirdwatchingActivityLevelEnum;
+    this.profile!.birdSongRecognitionSkillLevels = this.birdSongRecognitionSkillLevels;
 
-    return this.personService.personUpdateProfileByToken(this.profile, this.userService.getToken()).subscribe(() => {
+    return this.personService.personUpdateProfileByToken(this.profile!, this.userService.getToken()).subscribe(() => {
       this.saving = false;
       this.cdr.markForCheck();
     }, () => {

@@ -31,7 +31,7 @@
           <span [ngClass]="{active: groups[(idx * 2)] && groups[(idx * 2)].id && groups[(idx * 2)].id === innerValue}">
             {{ groups[(idx * 2)]?.name }}
           </span>
-            <span *ngIf="groups[(idx * 2)] && groups[(idx * 2)].hasSubGroup && groups[(idx * 2)].hasSubGroup.length > 0">
+            <span *ngIf="groups[(idx * 2)] && groups[(idx * 2)]!.hasSubGroup && groups[(idx * 2)]!.hasSubGroup!.length > 0">
             <i class="glyphicon glyphicon-triangle-right"></i>
           </span>
           </td>
@@ -43,7 +43,7 @@
           <span [ngClass]="{active: groups[(idx * 2 + 1)] && groups[(idx * 2 + 1)].id && groups[(idx * 2 + 1)].id === innerValue}">
             {{ groups[(idx * 2 + 1)]?.name }}
           </span>
-            <span *ngIf="groups[(idx * 2 + 1)] && groups[(idx * 2 + 1)].hasSubGroup && groups[(idx * 2 + 1)].hasSubGroup.length > 0">
+            <span *ngIf="groups[(idx * 2 + 1)] && groups[(idx * 2 + 1)]!.hasSubGroup && groups[(idx * 2 + 1)]!.hasSubGroup!.length > 0">
             <i class="glyphicon glyphicon-triangle-right"></i>
           </span>
           </td>

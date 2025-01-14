@@ -4,9 +4,10 @@ import { LajiFormComponent } from './laji-form/laji-form.component';
 
 export class LajiFormUtil {
   public static schemaJSONPointer(schema: any, path: string): string {
-    return schemaJSONPointerFunc(schema, path);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return schemaJSONPointerFunc(schema, path)!;
   }
-  public static scrollIntoViewIfNeeded(elem) {
+  public static scrollIntoViewIfNeeded(elem: any) {
     scrollIntoViewIfNeeded(elem, LajiFormComponent.TOP_OFFSET, LajiFormComponent.BOTTOM_OFFSET);
   }
   public static removeLajiFormIds(formData: any, schema: any) {

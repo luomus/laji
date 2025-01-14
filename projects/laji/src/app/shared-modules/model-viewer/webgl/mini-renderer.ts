@@ -98,7 +98,7 @@ const executeInAnimationFrame = (
 export class MiniRenderer {
   scene: Scene;
 
-  private projectionMatrix: M4;
+  private projectionMatrix?: M4;
 
   private gl: WebGL2RenderingContext;
   private program: WebGLProgram;
@@ -156,7 +156,8 @@ export class MiniRenderer {
     this.gl.drawElements(
       this.gl.TRIANGLES,
       this.scene.entity.mesh.indices.length,
-      getGlTypeFromArr(this.gl, this.scene.entity.mesh.indices),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      getGlTypeFromArr(this.gl, this.scene.entity.mesh.indices)!,
       0
     );
   }
@@ -184,11 +185,13 @@ export class MiniRenderer {
 
     const vertexArr = this.gl.createVertexArray();
     this.gl.bindVertexArray(vertexArr);
-    this.positionBuffer = bufferPositions(this.gl, this.positionLocation, this.scene.entity.mesh.positions, this.positionBuffer);
-    this.normalBuffer = bufferNormals(this.gl, this.normalLocation, this.scene.entity.mesh.normals, this.normalBuffer);
-    this.indexBuffer = bufferIndices(this.gl, this.scene.entity.mesh.indices, this.indexBuffer);
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    this.positionBuffer = bufferPositions(this.gl, this.positionLocation, this.scene.entity.mesh.positions, this.positionBuffer!);
+    this.normalBuffer = bufferNormals(this.gl, this.normalLocation, this.scene.entity.mesh.normals, this.normalBuffer!);
+    this.indexBuffer = bufferIndices(this.gl, this.scene.entity.mesh.indices, this.indexBuffer!);
 
-    this.gl.uniformMatrix4fv(this.worldViewProjectionLocation, false, M4.mult(this.projectionMatrix, this.scene.entity.transform));
+    this.gl.uniformMatrix4fv(this.worldViewProjectionLocation, false, M4.mult(this.projectionMatrix!, this.scene.entity.transform));
     this.gl.uniformMatrix4fv(this.worldInverseTransposeLocation, false, M4.transpose(M4.inverse(this.scene.entity.transform)));
+    /* eslint-enable @typescript-eslint/no-non-null-assertion */
   }
 }

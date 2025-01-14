@@ -46,12 +46,12 @@ const targetPercentageComparator = (a: any, b: any, rowA: DatatableRow, rowB: Da
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdSocietyIndexComponent implements AfterViewInit {
-  @ViewChild('societyName') societyNameTemplate: TemplateRef<any>;
-  @ViewChild('alignRight') alignRightTemplate: TemplateRef<any>;
-  @ViewChild('activityCategoryCell') activityCategoryCellTemplate: TemplateRef<any>;
+  @ViewChild('societyName') societyNameTemplate!: TemplateRef<any>;
+  @ViewChild('alignRight') alignRightTemplate!: TemplateRef<any>;
+  @ViewChild('activityCategoryCell') activityCategoryCellTemplate!: TemplateRef<any>;
 
-  rows$: Observable<DatatableRow[]>;
-  cols: TableColumn[];
+  rows$!: Observable<DatatableRow[]>;
+  cols!: TableColumn[];
   round = Math.round;
   constructor(private atlasApi: AtlasApiService, private cdr: ChangeDetectorRef) {}
 

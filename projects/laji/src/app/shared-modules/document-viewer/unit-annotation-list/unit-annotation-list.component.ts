@@ -12,24 +12,23 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UnitAnnotationListComponent implements OnInit, OnDestroy {
-  @Input() isEditor: boolean;
-  @Input() personID: string;
-  @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
-  @Input() documentID: string;
+  @Input() isEditor?: boolean;
+  @Input() personID?: string;
+  @Input() personRoleAnnotation?: Annotation.AnnotationRoleEnum;
+  @Input({ required: true }) documentID!: string;
   @Input() unit: any;
   @Input() gathering: any;
-  @Input() highlight: string;
-  @Input() identifying: boolean;
-  @Input() openAnnotation: boolean;
+  @Input() highlight?: string;
+  @Input() identifying?: boolean;
+  @Input() openAnnotation?: boolean;
   @Input() showFacts = false;
-  @Input() showAnnotation: boolean;
-  @Input() annotationTags: AnnotationTag[];
+  @Input() showAnnotation?: boolean;
+  @Input() annotationTags?: AnnotationTag[] | null;
   @Output() annotationPending = new EventEmitter<Record<string, unknown>>();
 
   annotationVisible = false;
-  annotationIcon: string;
   annotations: Annotation[] = [];
-  unitID: string;
+  unitID?: string;
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
   checkloading = {
     status: false,
@@ -46,7 +45,7 @@ export class UnitAnnotationListComponent implements OnInit, OnDestroy {
         this.unit.linkings.taxonId = this.toQname.transform(this.unit.linkings.taxon.qname);
       }
       if (Array.isArray(this.unit.facts)) {
-        this.unit.facts = this.unit.facts.reduce((cumulative, current) => {
+        this.unit.facts = this.unit.facts.reduce((cumulative: any[], current: any) => {
           if (this.skipFacts.indexOf(current.fact) !== -1) {
             return cumulative;
           }

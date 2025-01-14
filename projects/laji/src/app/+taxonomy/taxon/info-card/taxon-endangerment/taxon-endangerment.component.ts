@@ -8,5 +8,5 @@ import { Taxonomy } from '../../../../shared/model/Taxonomy';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonEndangermentComponent {
-  @Input() taxon: Taxonomy;
+  @Input({ required: true }) taxon!: Taxonomy;
 }

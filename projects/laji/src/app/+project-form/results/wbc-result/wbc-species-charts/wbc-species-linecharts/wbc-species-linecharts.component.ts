@@ -69,7 +69,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
       // Eslint disabled because it needs to be a function to have the correct 'this' reference.
       // eslint-disable-next-line object-shorthand
       onHover: function(a, b, element: any) {
-        let indexChart;
+        let indexChart: number;
         if (element[0]) {
           indexChart = Number(element[0]['_index']);
         } else {

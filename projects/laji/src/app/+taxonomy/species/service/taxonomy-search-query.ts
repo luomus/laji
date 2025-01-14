@@ -16,14 +16,14 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
   private queryUpdatedSource = new Subject<any>();
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
 
-  public query: TaxonomySearchQueryInterface;
+  public query!: TaxonomySearchQueryInterface;
 
-  public listOptions: {
+  public listOptions!: {
     page: number;
     sortOrder: string;
     selected: string[];
   };
-  public imageOptions: {
+  public imageOptions!: {
     page: number;
   };
 
@@ -56,7 +56,7 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
   }
 
   public setQueryFromParams(params: Params) {
-    const newQuery = {};
+    const newQuery: Record<string, any> = {};
 
     newQuery['informalGroupFilters'] = params['informalGroupFilters'];
     newQuery['target'] = params['target'];
@@ -85,14 +85,15 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
 
   public updateUrl(skipParams?: string[]): void {
     const extra: NavigationExtras = {skipLocationChange: false};
-    const queryParams = {};
+    const queryParams: Record<string, any> = {};
 
-    for (const key in this.query) {
+    let key: keyof TaxonomySearchQueryInterface;
+    for (key in this.query) {
       if (!this.query.hasOwnProperty(key) || (skipParams && skipParams.indexOf(key) !== -1)) {
         continue;
       }
-      if (this.query[key] === '' || (Array.isArray(this.query[key]) && this.query[key].length === 0)) {
-        this.query[key] = undefined;
+      if (this.query[key] === '' || (Array.isArray(this.query[key]) && (this.query[key] as any[]).length === 0)) {
+        (this.query as SearchQueryInterface)[<keyof SearchQueryInterface>key] = undefined;
       }
 
       queryParams[key] = this.query[key];

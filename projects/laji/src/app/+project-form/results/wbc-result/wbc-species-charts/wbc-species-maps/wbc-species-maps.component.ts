@@ -25,7 +25,7 @@ export class WbcSpeciesMapsComponent implements OnChanges {
   @Input() taxonId: string | undefined;
   @Input() taxonCensus: string | undefined = undefined;
   @Input() showSeasonComparison = true;
-  @Input() year!: number;
+  @Input() year?: number;
   @Input() season!: SEASON;
   @Input() birdAssociationArea!: string;
 
@@ -45,7 +45,7 @@ export class WbcSpeciesMapsComponent implements OnChanges {
   differenceLabels = ['≤ -50%', '≤ -1%', '~0%', '≥ 1%', '≥ 100%'];
   differenceColorRange = ['blue', '#9999ff', 'white', '#ff9999', 'red'];
 
-  private maps!: any[];
+  private maps?: any[];
 
   constructor(
     private resultService: WbcResultService,
@@ -97,8 +97,8 @@ export class WbcSpeciesMapsComponent implements OnChanges {
   private setYearComparisonData() {
     this.loading = true;
     forkJoin([
-      this.getData(this.year),
-      this.getData(this.resultService.getPreviousTenYears(this.year))
+      this.getData(this.year!),
+      this.getData(this.resultService.getPreviousTenYears(this.year!))
     ]).pipe(
       map(data => ({
         data: data[0][0],
@@ -177,13 +177,13 @@ export class WbcSpeciesMapsComponent implements OnChanges {
     return this.ykjService.resultToGeoJson(result, '10kmCenter', zeroObservations);
   }
 
-  private getQuerys(season = this.season, year: number|number[] = this.year) {
+  private getQuerys(season = this.season, year: number|number[] = this.year!) {
     const filterParams = this.resultService.getFilterParams(year, season, this.birdAssociationArea);
     return {query: {...filterParams, taxonId: [this.taxonId]}, zeroQuery: {...filterParams, taxonCensus: [this.taxonCensus]}};
   }
 
   private initEventListeners(lajiMap: any) {
-    const otherMaps = this.maps.filter(_map => lajiMap !== _map);
+    const otherMaps = this.maps!.filter(_map => lajiMap !== _map);
     otherMaps.forEach(otherMap => {
       lajiMap.map.sync(otherMap.map);
     });
@@ -210,8 +210,8 @@ export class WbcSpeciesMapsComponent implements OnChanges {
     this.bounds.push(data);
     if (this.bounds.length === 3) {
       const bounds = this.bounds[0].extend(this.bounds[1]).extend(this.bounds[2]);
-      if (bounds.isValid() && (this.lastZoomedArea !== this.birdAssociationArea || !this.maps[0].map.getBounds().contains(bounds))) {
-        this.maps[0].map.fitBounds(bounds, {maxZoom: 4, padding: [50, 50]});
+      if (bounds.isValid() && (this.lastZoomedArea !== this.birdAssociationArea || !this.maps![0].map.getBounds().contains(bounds))) {
+        this.maps![0].map.fitBounds(bounds, {maxZoom: 4, padding: [50, 50]});
         this.lastZoomedArea = this.birdAssociationArea;
       }
     }

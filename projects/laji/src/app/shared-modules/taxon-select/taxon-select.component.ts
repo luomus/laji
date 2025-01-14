@@ -55,7 +55,7 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
   private typeaheadMatch?: {id: string; match: string};
   private enteredValue?: string;
 
-  public _taxonName!: string;
+  public _taxonName?: string;
   public typeaheadLimit = 10;
   public typeaheadLoading = false;
   public containerTypeAhead?: string;
@@ -76,7 +76,8 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
       .pipe(
         distinctUntilChanged(),
         switchMap((token: string) => this.getTaxa(token)),
-        switchMap((taxa: any[]) => this.taxonAutocompleteService.getInfo(taxa, this._taxonName)),
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        switchMap((taxa: any[]) => this.taxonAutocompleteService.getInfo(taxa, this._taxonName!)),
         switchMap((data: any[]) => {
           this.typeaheadMatch = undefined;
           if (this._taxonName) {
@@ -111,14 +112,15 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  @Input() set taxonId(id: string) {
+  @Input() set taxonId(id: string|undefined) {
     if (!id) {
       this._taxonName = id;
     }
     if (this._taxonName || !this.convertIdToName) {
       return;
     }
-    this.getTaxa(id).pipe(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.getTaxa(id!).pipe(
       take(1)
     ).subscribe(result => {
       this._taxonName = result[0] && result[0].value || id;

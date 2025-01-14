@@ -60,7 +60,7 @@ export interface IGlobalTemplateVersion {
 
 export interface IGlobalRecording {
   audio: IGlobalAudio;
-  candidates?: IAudioViewerArea[];
+  candidates: IAudioViewerArea[];
 }
 
 export interface IGlobalTemplate {

@@ -9,12 +9,11 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonInfoComponent implements OnChanges {
-
-  @Input() taxon: Taxonomy;
+  @Input() taxon!: Taxonomy;
 
   langs = ['fi', 'sv', 'en', 'se', 'ru'];
-  availableVernacularNames: Array<Record<string, string>>;
-  availableTaxonNames: {vernacularNames: Array<Record<string, string>>; colloquialVernacularNames: Array<Record<string, string>>};
+  availableVernacularNames: Array<Record<string, string>> | undefined;
+  availableTaxonNames: {vernacularNames: Array<Record<string, string>>; colloquialVernacularNames: Array<Record<string, string>>} | undefined;
 
   protectedUnderNatureConservationAct = false;
 
@@ -44,23 +43,30 @@ export class TaxonInfoComponent implements OnChanges {
     this.availableTaxonNames = {vernacularNames: [], colloquialVernacularNames: []};
 
     this.langs.forEach(value => {
-      if (this.taxon?.vernacularName?.[value]) {
-        this.availableVernacularNames.push({lang: value});
-        this.availableTaxonNames.vernacularNames.push({lang: value});
+      if (this.taxon?.vernacularName?.[<number><unknown>value]) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.availableVernacularNames!.push({lang: value});
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.availableTaxonNames!.vernacularNames.push({lang: value});
       }
-      if (this.taxon?.colloquialVernacularName?.[value]) {
-        this.availableTaxonNames.colloquialVernacularNames.push({lang: value});
+      if (this.taxon?.colloquialVernacularName?.[<number><unknown>value]) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.availableTaxonNames!.colloquialVernacularNames.push({lang: value});
       }
     });
   }
 
   private updateProtectedStatus() {
-    this.protectedUnderNatureConservationAct = (
+    this.protectedUnderNatureConservationAct = !!(
       this.taxon.species &&
       this.taxon.finnish &&
       !this.taxon.invasiveSpecies &&
       this.protectedSpeciesGroups.some(speciesGroup => this.taxon.parents?.includes(speciesGroup)) &&
       !this.unprotectedAdminStatuses.some(status => this.taxon.administrativeStatuses?.includes(status))
     );
+  }
+
+  getItemValue(item: any) {
+    return item.value.lang;
   }
 }

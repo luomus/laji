@@ -28,7 +28,7 @@ export class SaveObservationsFacade {
 
   constructor(private formService: FormService) {}
 
-  reducer(forms) {
+  reducer(forms: any) {
     this.store$.next({
       citizenScienceForms: forms[0],
       birdMonitoringForms: forms[1],
@@ -40,10 +40,10 @@ export class SaveObservationsFacade {
   loadAll() {
     this.formService.getAllForms().pipe(
       map((forms) => {
-        const citizen = [];
-        const birdMon = [];
-        const complete = [];
-        const surveys = [];
+        const citizen: any[] = [];
+        const birdMon: any[] = [];
+        const complete: any[] = [];
+        const surveys: any[] = [];
 
         forms.sort((a, b) =>
           a.id.localeCompare(b.id, undefined, {numeric: true, sensitivity: 'base'})
@@ -64,11 +64,12 @@ export class SaveObservationsFacade {
           }
         });
 
-        return [citizen, birdMon, complete, surveys].map(_forms =>
-          !_forms.length || !Global.formCategoryOrder[_forms[0].category]
+        return [citizen, birdMon, complete, surveys].map((_forms: any) =>
+          !_forms.length
+          || !Global.formCategoryOrder[_forms[0].category as keyof { 'MHL.categoryBirdMonitoringSchemes': string[]; 'MHL.categoryCitizenScience': string[] }]
             ? _forms
-            : _forms.sort((a, b) => {
-              const order = Global.formCategoryOrder[a.category];
+            : _forms.sort((a: any, b: any) => {
+              const order = Global.formCategoryOrder[a.category as keyof { 'MHL.categoryBirdMonitoringSchemes': string[]; 'MHL.categoryCitizenScience': string[] }];
               if (!order) {
                 return 0;
               }

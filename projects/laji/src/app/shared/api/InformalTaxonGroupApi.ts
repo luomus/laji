@@ -29,13 +29,11 @@ import { HttpClient } from '@angular/common/http';
 import { Util } from '../service/util.service';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { environment } from '../../../environments/environment';
-
-
-'use strict';
+import { ArrayResult } from '../model/ArrayResult';
 
 @Injectable({providedIn: 'root'})
 export class InformalTaxonGroupApi {
-  protected basePath = environment.apiBase;
+  protected basePath = `${environment.apiBase}/informal-taxon-groups`;
 
   constructor(protected http: HttpClient) {
   }
@@ -47,12 +45,8 @@ export class InformalTaxonGroupApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public informalTaxonGroupFind(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<InformalTaxonGroup>> {
-    const path = this.basePath + '/informal-taxon-groups';
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-
-    return this.httpGet<InformalTaxonGroup>(path, queryParameters, lang, page, pageSize);
+  public informalTaxonGroupFind(lang?: string, page?: string, pageSize?: string, idIn?: string[]): Observable<PagedResult<InformalTaxonGroup>> {
+    return this.http.get<PagedResult<InformalTaxonGroup>>(this.basePath, { params: Util.withNonNullableValues({ lang, page, pageSize, idIn }) });
   }
 
   /**
@@ -61,20 +55,11 @@ export class InformalTaxonGroupApi {
    * @param id
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
-  public informalTaxonGroupFindById(id: string, lang?: string, extraHttpRequestParams?: any): Observable<InformalTaxonGroup> {
-    const path = this.basePath + '/informal-taxon-groups/{id}'
-        .replace('{' + 'id' + '}', String(id));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'id' is not null or undefined
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupFindById.');
+  public informalTaxonGroupFindById(id: string, lang?: string): Observable<InformalTaxonGroup> {
+    if (!id.length) {
+      throw new Error('Required parameter id was empty when calling informalTaxonGroupFindById.');
     }
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
-
-    return this.http.get<InformalTaxonGroup>(path, {params: queryParameters});
+    return this.http.get<InformalTaxonGroup>(`${this.basePath}/${id}`, {params:  Util.withNonNullableValues({ lang })});
   }
 
   /**
@@ -84,12 +69,8 @@ export class InformalTaxonGroupApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public informalTaxonGroupFindRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<InformalTaxonGroup>> {
-    const path = this.basePath + '/informal-taxon-groups/roots';
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-
-    return this.httpGet<InformalTaxonGroup>(path, queryParameters, lang, page, pageSize);
+  public informalTaxonGroupFindRoots(lang?: string): Observable<ArrayResult<InformalTaxonGroup>> {
+    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/roots`, { params: Util.withNonNullableValues({ lang }) });
   }
 
   /**
@@ -100,60 +81,18 @@ export class InformalTaxonGroupApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public informalTaxonGroupGetChildren(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<InformalTaxonGroup>> {
-    const path = this.basePath + '/informal-taxon-groups/{id}/children'
-        .replace('{' + 'id' + '}', String(id));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'id' is not null or undefined
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetChildren.');
-    }
-
-    return this.httpGet<InformalTaxonGroup>(path, queryParameters, lang, page, pageSize);
+  public informalTaxonGroupGetChildren(id: string, lang?: string): Observable<ArrayResult<InformalTaxonGroup>> {
+    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/${id}/children`, { params: Util.withNonNullableValues({ lang }) } );
   }
 
   /**
-   * Get parents for a informal group
+   * Get parent for a informal group
    *
    * @param id
    * @param lang Language of fields that have multiple languages. Return english if asked language not found.
    */
-  public informalTaxonGroupGetParents(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<InformalTaxonGroup>> {
-    const path = this.basePath + '/informal-taxon-groups/{id}/parents'
-        .replace('{' + 'id' + '}', String(id));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'id' is not null or undefined
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetChildren.');
-    }
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
-
-    return this.http.get<InformalTaxonGroup[]>(path, {params: queryParameters});
-  }
-
-  /**
-   * Get current groups parents and parents siblings
-   *
-   * @param id
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-   * @param page Page number
-   * @param pageSize Page size
-   */
-  public informalTaxonGroupGetParentLevel(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<InformalTaxonGroup>> {
-    const path = this.basePath + '/informal-taxon-groups/{id}/parentLevel'
-        .replace('{' + 'id' + '}', String(id));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'id' is not null or undefined
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetParentLevel.');
-    }
-
-    return this.httpGet<InformalTaxonGroup>(path, queryParameters, lang, page, pageSize);
+  public informalTaxonGroupGetParent(id: string, lang?: string): Observable<InformalTaxonGroup> {
+    return this.http.get<InformalTaxonGroup>(`${this.basePath}/${id}/parent`, { params: Util.withNonNullableValues({ lang })});
   }
 
   /**
@@ -163,11 +102,8 @@ export class InformalTaxonGroupApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public informalTaxonGroupGetTree(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<InformalTaxonGroup>> {
-    const path = this.basePath + '/informal-taxon-groups/tree';
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-
-    return this.httpGet<InformalTaxonGroup>(path, queryParameters, lang, page, pageSize);
+  public informalTaxonGroupGetTree(lang?: string): Observable<ArrayResult<InformalTaxonGroup>> {
+    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/tree`, { params: Util.withNonNullableValues({ lang }) });
   }
 
   /**
@@ -178,32 +114,7 @@ export class InformalTaxonGroupApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public informalTaxonGroupGetWithSiblings(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<InformalTaxonGroup>> {
-    const path = this.basePath + '/informal-taxon-groups/{id}/siblings'
-        .replace('{' + 'id' + '}', String(id));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'id' is not null or undefined
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetWithSiblings.');
-    }
-
-    return this.httpGet<InformalTaxonGroup>(path, queryParameters, lang, page, pageSize);
-  }
-
-  private httpGet<T>(path: string, queryParameters: any, lang?: string, page?: string, pageSize?: string) {
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
-
-    if (page !== undefined) {
-      queryParameters['page'] = page;
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize;
-    }
-
-    return this.http.get<PagedResult<T>>(path, { params: queryParameters });
+  public informalTaxonGroupGetWithSiblings(id: string, lang?: string): Observable<ArrayResult<InformalTaxonGroup>> {
+    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/${id}/siblings`, { params: Util.withNonNullableValues({ lang }) });
   }
 }

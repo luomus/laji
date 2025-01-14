@@ -8,10 +8,10 @@ import { ColumnSelector } from '../../../../shared/columnselector/ColumnSelector
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectedParentsComponent {
-  @Input() header: string;
+  @Input() header!: string;
   @Input() parents: string[] = [];
   @Input() selected: string[] = [];
-  @Input() columnSelector: ColumnSelector;
+  @Input() columnSelector!: ColumnSelector;
 
   private parentFields(parent: string): string[] {
     return ['parent.' + parent + '.scientificName',
@@ -23,7 +23,7 @@ export class SelectedParentsComponent {
       forEach(p => this.columnSelector.toggleSelectedField(p));
   }
 
-  onMoveUp(parent: string, event) {
+  onMoveUp(parent: string, event: any) {
     event.stopPropagation();
 
     const fields = this.parentFields(parent);
@@ -37,7 +37,7 @@ export class SelectedParentsComponent {
     }
   }
 
-  onMoveDown(parent: string, event) {
+  onMoveDown(parent: string, event: any) {
     event.stopPropagation();
 
     const fields = this.parentFields(parent);

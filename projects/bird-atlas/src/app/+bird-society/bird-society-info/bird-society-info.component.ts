@@ -13,11 +13,11 @@ import { BirdSocietyInfoSpeciesTableComponent } from './bird-society-info-specie
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
-  @ViewChild(BirdSocietyInfoSpeciesTableComponent) table: BirdSocietyInfoSpeciesTableComponent;
+  @ViewChild(BirdSocietyInfoSpeciesTableComponent) table!: BirdSocietyInfoSpeciesTableComponent;
 
-  birdSociety: BirdSociety;
+  birdSociety: BirdSociety | undefined;
   loading = true;
-  selectedDataIdx: number;
+  selectedDataIdx!: number;
   visualizationMode: VisualizationMode = 'activityCategory';
   selectedTaxon: AtlasTaxon | undefined;
   taxonVisualization: BirdSocietyTaxaResponseElem[] | undefined;
@@ -48,7 +48,7 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
         this.breadcrumbs.setBreadcrumbName(BreadcrumbId.BirdSocietyInfo, undefined);
         this.loading = true;
       }),
-      switchMap(params => this.atlasApi.getBirdSociety(params.get('id'))),
+      switchMap(params => this.atlasApi.getBirdSociety(params.get('id')!)),
       tap(data => {
         this.breadcrumbs.setBreadcrumbName(BreadcrumbId.BirdSocietyInfo, data.birdAssociationArea.value);
         this.loading = false;
@@ -60,7 +60,7 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
   }
 
   onSelectDataIdx(idx: number) {
-    if (idx >= 0 && idx < this.birdSociety.gridSquares.length) {
+    if (idx >= 0 && idx < this.birdSociety!.gridSquares.length) {
       this.selectedDataIdx = idx;
       this.cdr.markForCheck();
     }
@@ -77,7 +77,7 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
   }
 
   getGridSquareCount(): string {
-    return this.birdSociety?.gridSquares?.length + '' ?? '';
+    return this.birdSociety?.gridSquares?.length + '';
   }
 
   onVisualizationChange(visualization: VisualizationMode) {
@@ -100,7 +100,7 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
     if (this.selectedTaxon?.id === taxon.id) { return; }
     this.selectedTaxon = taxon;
     this.taxonVisualizationLoading = true;
-    this.atlasApi.getBirdSocietyTaxa(this.birdSociety.birdAssociationArea.key, taxon.id).subscribe(r => {
+    this.atlasApi.getBirdSocietyTaxa(this.birdSociety!.birdAssociationArea.key, taxon.id).subscribe(r => {
       this.taxonVisualization = r;
       this.taxonVisualizationLoading = false;
       this.cdr.markForCheck();
@@ -130,10 +130,10 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
     ].join(',');
 
     const rows: string[] = [];
-    this.birdSociety.gridSquares.forEach(square => {
+    this.birdSociety!.gridSquares.forEach(square => {
       rows.push([
         square.coordinates, `"${square.name}"`, square.atlasClassSum,
-        square.activityCategory.value, `"${[
+        square.activityCategory!.value, `"${[
           square.level1, square.level2, square.level3, square.level4, square.level5
         ].join(',')}"`
       ].join(','));

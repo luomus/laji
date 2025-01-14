@@ -14,7 +14,7 @@ import { ProjectFormService } from '../../../../shared/service/project-form.serv
 })
 export class NpPrintComponent implements OnInit, OnDestroy {
 
-  namedPlace$: Observable<NamedPlace>;
+  namedPlace$!: Observable<NamedPlace|undefined>;
   loading = false;
 
   constructor(

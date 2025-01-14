@@ -16,7 +16,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./stat-item.component.css']
 })
 export class StatItemComponent {
-  @Input() value: number;
-  @Input() description: string;
+  @Input() value?: number;
+  @Input() description?: string;
   @Input() colClass = 'col-sm-3';
 }

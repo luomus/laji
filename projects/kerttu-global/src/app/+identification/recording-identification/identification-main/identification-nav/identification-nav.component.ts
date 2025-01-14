@@ -9,12 +9,12 @@ import { TaxonTypeEnum } from '../../../../kerttu-global-shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationNavComponent {
-  @ViewChild('filterModal', { static: true }) filterModal: TemplateRef<any>;
+  @ViewChild('filterModal', { static: true }) filterModal!: TemplateRef<any>;
 
   @Input() hasPreviousRecording = false;
   @Input() buttonsDisabled = false;
   @Input() saveDisabled = false;
-  @Input() taxonType: TaxonTypeEnum = TaxonTypeEnum.bird;
+  @Input() taxonType?: TaxonTypeEnum = TaxonTypeEnum.bird;
   @Input() fileNameFilter = '';
   _fileNameFilter = '';
 
@@ -27,7 +27,7 @@ export class IdentificationNavComponent {
   @Output() backToSiteSelectionClick = new EventEmitter();
   @Output() fileNameFilterChange = new EventEmitter<string>();
 
-  private filterModalRef: ModalRef<any>;
+  private filterModalRef?: ModalRef<any>;
 
   constructor(
     private modalService: ModalService
@@ -43,6 +43,6 @@ export class IdentificationNavComponent {
       this.fileNameFilter = this._fileNameFilter;
       this.fileNameFilterChange.emit(this.fileNameFilter);
     }
-    this.filterModalRef.hide();
+    this.filterModalRef!.hide();
   }
 }

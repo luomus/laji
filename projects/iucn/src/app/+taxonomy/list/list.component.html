@@ -4,7 +4,7 @@
     <div class="col-sm-8">
       <h1>{{ 'iucn.results.title' | translate }}</h1>
       <div class="year-select">
-        <select iucn-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
+        <select iucn-dropdown [options]="(years$ | async) ?? []" [value]="queryParams.year ?? ''" (valueChange)="queryParamChange('year', $event)"></select>
       </div>
     </div>
   </div>

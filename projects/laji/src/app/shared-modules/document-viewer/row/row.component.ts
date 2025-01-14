@@ -10,21 +10,16 @@ const EMPTY_VALUE = ' ';
 })
 export class RowComponent implements OnChanges {
 
-  @ViewChild('valueRow') valueRow;
-  @Input() title: string;
-  @Input() field: string;
+  @Input() title?: string;
+  @Input() field?: string;
   @Input() value?: string = EMPTY_VALUE;
   @Input() noTitleSpace = false;
   @Input() noRow = false;
   @Input() showWithoutValue = false;
   @Input() hideValue = false;
-  @Input() noTitleTransform;
 
   public _title = '';
   public show = false;
-
-  constructor() {
-  }
 
   ngOnChanges() {
     this.initRow();

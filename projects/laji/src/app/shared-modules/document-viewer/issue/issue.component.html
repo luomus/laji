@@ -1,7 +1,7 @@
 <ng-container *ngIf="error">
   {{ error.issue | label: 'warehouse' }}
   <i class="link glyphicon glyphicon-info-sign"
-    [luTooltip]="('taxonomy.source' | translate) + ': ' + (error.source | label: 'warehouse')
+    [luTooltip]="('taxonomy.source' | translate) + ': ' + (error.source ?? '' | label: 'warehouse')
       + (error.message ? ', ' + ('feedback.message' | translate) + ': ' + error.message : '')"
     placement="right" [isDisabled]="hideTooltip">
   </i>
