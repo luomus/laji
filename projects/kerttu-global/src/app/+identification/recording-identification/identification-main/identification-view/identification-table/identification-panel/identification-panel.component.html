@@ -58,6 +58,18 @@
                   </label>
                 </div>
               </td>
+              <td *ngIf="showSoundTypeSelect" style="width: 220px">
+                <select class="form-control input-sm sound-type-select" [(ngModel)]="box.soundType" (ngModelChange)="identificationChange.emit(identification)">
+                  <option [ngValue]="undefined">{{ 'identification.boxes.soundType' | translate }}</option>
+                  <option [ngValue]="soundTypeEnum.songOrDisplay">
+                    {{ 'identification.boxes.soundType.songOrDisplay' | translate }}
+                  </option>
+                  <option [ngValue]="soundTypeEnum.other">
+                    {{ 'identification.boxes.soundType.other' | translate }}
+                  </option>
+                </select>
+                <laji-info [placement]="'right'" [html]="'identification.boxes.soundType.info' | translate" [showOnHover]="true"></laji-info>
+              </td>
               <td style="width: 50px">
                 <button
                   class="btn btn-danger btn-sm"

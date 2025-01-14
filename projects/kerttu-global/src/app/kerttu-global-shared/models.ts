@@ -134,6 +134,7 @@ export interface IGlobalRecordingAnnotation {
 export interface IGlobalSpeciesAnnotation {
   speciesId: number;
   occurrence: SpeciesAnnotationEnum;
+  soundType?: SoundTypeEnum;
   boxes?: (IGlobalSpeciesAnnotationBox|IGlobalSpeciesAnnotationBoxGroup)[];
 }
 
@@ -216,6 +217,11 @@ export enum CommentType {
 export enum SpeciesAnnotationEnum {
   occurs = 1,
   possiblyOccurs = 2
+}
+
+export enum SoundTypeEnum {
+  songOrDisplay = 1,
+  other = 2
 }
 
 export enum KerttuGlobalErrorEnum {
