@@ -29,7 +29,7 @@
       <iucn-iucn-result-pie
         [routerLink]="'/results' | localize"
         [year]="2019"
-        [data]="iucnService.getYearsStats(2019) | async"></iucn-iucn-result-pie>
+        [data]="(iucnService.getYearsStats(2019) | async)!"></iucn-iucn-result-pie>
     </div>
   </div>
   <div class="row">

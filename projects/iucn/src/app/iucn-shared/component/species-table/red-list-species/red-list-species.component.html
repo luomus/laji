@@ -46,12 +46,12 @@
               </ng-container>
             </td>
             <td *ngSwitchCase="'status'">
-              {{ taxon.latestRedListEvaluation?.redListStatus | label | iucnStatus:true }}<laji-status-mark [evaluation]="taxon.latestRedListEvaluation"></laji-status-mark>
+              {{ taxon.latestRedListEvaluation?.redListStatus | label | iucnStatus:true }}<laji-status-mark [evaluation]="taxon.latestRedListEvaluation!"></laji-status-mark>
             </td>
             <td *ngSwitchCase="'habitat'" class="habitat">
               <ng-container *ngIf="taxon.latestRedListEvaluation">
-                <laji-habitat [habitat]="taxon.latestRedListEvaluation.primaryHabitat"></laji-habitat>
-                <laji-habitat [habitat]="taxon.latestRedListEvaluation.secondaryHabitats"></laji-habitat>
+                <laji-habitat [habitat]="taxon.latestRedListEvaluation.primaryHabitat!"></laji-habitat>
+                <laji-habitat [habitat]="taxon.latestRedListEvaluation.secondaryHabitats!"></laji-habitat>
               </ng-container>
             </td>
             <td *ngSwitchCase="'reasons'">
@@ -91,7 +91,7 @@
             </td>
             <td *ngSwitchCase="field.key.startsWith('occurrence_') ? field.key : !field.key">
               <ng-container *ngIf="taxon.latestRedListEvaluation?.occurrences">
-                <ng-container *ngFor="let occurrence of taxon.latestRedListEvaluation.occurrences">
+                <ng-container *ngFor="let occurrence of taxon.latestRedListEvaluation!.occurrences">
                   <ng-container *ngIf="occurrence.area === field.key.split('_')[1]">
                     {{ occurrence.status | label }}
                   </ng-container>

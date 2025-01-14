@@ -61,12 +61,12 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  @ViewChild('intro', { static: true }) intro;
+  @ViewChild('intro', { static: true }) intro!: TemplateRef<any>;
 
   /**
    * @internal
    */
-  @ViewChild('gettingStarted', { static: true }) gettingStarted;
+  @ViewChild('gettingStarted', { static: true }) gettingStarted!: TemplateRef<any>;
 
   /**
    * @internal
@@ -75,7 +75,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  _setup: ISetup;
+  _setup!: ISetup;
   /**
    * @internal
    */
@@ -91,7 +91,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  generateFields: ILabelField[];
+  generateFields?: ILabelField[];
   /**
    * @internal
    */
@@ -99,7 +99,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  filename$: Observable<string>;
+  filename$!: Observable<string>;
   /**
    * @internal
    */
@@ -112,16 +112,16 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
    * Setup that is used when the user clicks new from the file menu.
    * This is optional input and if this is missing there will not be new button visible.
    */
-  @Input() defaultSetup: ISetup;
+  @Input() defaultSetup!: ISetup;
   /**
    * These are the default label fields. If the user import an excel file available fields changes and if that list is different from this
    * there will be a reset button visible on label fields tab.
    */
-  @Input() defaultAvailableFields: ILabelField[];
+  @Input() defaultAvailableFields!: ILabelField[];
   /**
    * These are all the available fields that the user can add the label.
    */
-  @Input() availableFields: ILabelField[];
+  @Input() availableFields!: ILabelField[];
   /**
    * Whether or not show the intro on startup.
    */
@@ -141,11 +141,11 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * Preset setups that the user can pick from the file menu.
    */
-  @Input() presets: PresetSetup[];
+  @Input() presets!: PresetSetup[];
   /**
    * Map spreadsheet columns to where fields
    */
-  @Input() fileColumnMap: IColumnMap;
+  @Input() fileColumnMap!: IColumnMap;
 
   /**
    * Event that triggers when the html for the label is generated. Event holds the desired filename and the html string
@@ -192,40 +192,40 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  @ViewChild('editor') editor: ElementRef<HTMLDivElement>;
+  @ViewChild('editor') editor!: ElementRef<HTMLDivElement>;
   /**
    * @internal
    */
-  @ViewChild('generateTpl', { static: true }) generateTpl: TemplateRef<any>;
+  @ViewChild('generateTpl', { static: true }) generateTpl!: TemplateRef<any>;
   /**
    * @internal
    */
-  @ViewChild('generateActionsTpl', { static: true }) generateActionsTpl: TemplateRef<any>;
+  @ViewChild('generateActionsTpl', { static: true }) generateActionsTpl!: TemplateRef<any>;
   /**
    * @internal
    */
-  @ViewChild('excelFile') excelCmp: LabelExcelFileComponent;
+  @ViewChild('excelFile') excelCmp!: LabelExcelFileComponent;
   /**
    * @internal
    */
-  @ViewChild('excelTpl', { static: true }) excelTpl: TemplateRef<any>;
+  @ViewChild('excelTpl', { static: true }) excelTpl!: TemplateRef<any>;
   /**
    * @internal
    */
-  @ViewChild('excelActionsTpl', { static: true }) excelActionsTpl: TemplateRef<any>;
+  @ViewChild('excelActionsTpl', { static: true }) excelActionsTpl!: TemplateRef<any>;
 
   /**
    * @internal
    */
-  subIntro: Subscription;
+  subIntro!: Subscription;
 
   /**
    * @internal
    */
   generate: {
     uri: string;
-    rangeStart: number;
-    rangeEnd: number;
+    rangeStart: number | undefined;
+    rangeEnd: number | undefined;
     data: {[key: string]: string};
   } = {
     uri: '',
@@ -237,7 +237,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  dimensions: IPageLayout;
+  dimensions: IPageLayout | undefined;
 
   private _undo: ISetup[] = [];
   private _redo: ISetup[] = [];
@@ -333,12 +333,12 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     if (!setup) {
       return;
     }
-    const hasField = {};
-    const allFields = [];
+    const hasField: any = {};
+    const allFields: any[] = [];
     LabelDesignerComponent.id = this.findTheHighestId(setup) + 1;
 
-    const checkItem = (item) => {
-      item.fields.forEach(field => {
+    const checkItem = (item: any) => {
+      item.fields.forEach((field: any) => {
         const isText = field.type === 'text';
         const fieldId = FieldKeyPipe.getKey(field);
         if (!hasField[fieldId] && (!field.type || isText)) {
@@ -357,12 +357,12 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     this.dimensions = this.labelService.countLabelsPerPage(this._setup);
     this.generateFields = allFields;
     if (this._selectedLabelItem) {
-      let idx = this._setup.labelItems.findIndex(i => i._id === this._selectedLabelItem._id);
+      let idx = this._setup.labelItems.findIndex(i => i._id === this._selectedLabelItem!._id);
       if (idx !== -1) {
         this._selectedLabelItem = this._setup.labelItems[idx];
       } else {
-        idx = this._setup.backSideLabelItems.findIndex(i => i._id === this._selectedLabelItem._id);
-        this._selectedLabelItem = this._setup.backSideLabelItems[idx];
+        idx = this._setup.backSideLabelItems!.findIndex(i => i._id === this._selectedLabelItem!._id);
+        this._selectedLabelItem = this._setup.backSideLabelItems![idx];
       }
     }
     this.setPreviewActive(this.previewActive);
@@ -413,7 +413,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
       item._id = LabelDesignerComponent.id++;
     }
     this._undo.push(this._setup);
-    this._setup = {...this._setup, [event.location]: [...this._setup[event.location], item]};
+    this._setup = {...this._setup, [event.location]: [...this._setup[event.location]!, item]} as ISetup;
     this.setupChange.emit(this._setup);
   }
 
@@ -430,7 +430,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   undo() {
     if (this.hasUndo()) {
       this._redo.push(this._setup);
-      this.setupChanged(this._undo.pop(), false);
+      this.setupChanged(this._undo.pop()!, false);
     }
   }
 
@@ -440,7 +440,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   redo() {
     if (this.hasRedo()) {
       this._undo.push(this._setup);
-      this.setupChanged(this._redo.pop(), false);
+      this.setupChanged(this._redo.pop()!, false);
     }
   }
 
@@ -497,7 +497,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     const domainFieldsIdx = this.availableFields.findIndex(item => item.type === FieldType.domain);
     const idFieldsIdx = this.availableFields.findIndex(item => item.type === FieldType.id);
 
-    const addTextField = (field) => {
+    const addTextField = (field: any) => {
       if (field.type === FieldType.text) {
         const key = FieldKeyPipe.getKey(field);
         if (typeof this.generate.data[key] === 'undefined') {
@@ -668,8 +668,8 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   private findTheHighestId(setup: ISetup) {
     let id = 0;
     LabelService.forEachLabelItem(setup, (item) => {
-      if (item._id > id) {
-        id = item._id;
+      if (item._id! > id) {
+        id = item._id!;
       }
     });
     return id;

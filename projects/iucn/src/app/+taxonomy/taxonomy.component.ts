@@ -9,7 +9,7 @@ import { ChecklistYear, DEFAULT_YEAR, ResultService } from '../iucn-shared/servi
   template: `
     <iucn-simple-omni></iucn-simple-omni>
     <div class="container">
-      <iucn-info-card [taxonId]="taxon" [year]="year" [checklistId]="checklist"></iucn-info-card>
+      <iucn-info-card [taxonId]="taxon" [year]="year.toString()" [checklistId]="checklist"></iucn-info-card>
     </div>
   `,
   styles: []
