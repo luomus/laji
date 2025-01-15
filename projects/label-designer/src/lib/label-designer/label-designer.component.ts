@@ -196,11 +196,11 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  @ViewChild('generateTpl', { static: true }) generateTpl?: TemplateRef<any>;
+  @ViewChild('generateTpl', { static: true }) generateTpl!: TemplateRef<any>;
   /**
    * @internal
    */
-  @ViewChild('generateActionsTpl', { static: true }) generateActionsTpl?: TemplateRef<any>;
+  @ViewChild('generateActionsTpl', { static: true }) generateActionsTpl!: TemplateRef<any>;
   /**
    * @internal
    */
@@ -579,7 +579,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     });
     this.infoWindowService.open({
       title: this.translateService.get('Generate label data'),
-      content: this.generateTpl!,
+      content: this.generateTpl,
       actions: this.generateActionsTpl
     });
   }
