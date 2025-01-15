@@ -50,17 +50,13 @@
                   [areaColor]="box.overlapsWithOtherSpecies ? overlappingBirdRectangleColor: birdRectangleColor"
                 ></laji-small-audio-viewer>
               </td>
-              <td style="width: 240px">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" [(ngModel)]="box.overlapsWithOtherSpecies" (ngModelChange)="identificationChange.emit(identification)">
-                    {{ 'identification.boxes.overlapsWithOthers' | translate }}
-                  </label>
-                </div>
-              </td>
-              <td *ngIf="showSoundTypeSelect" style="width: 220px">
-                <select class="form-control input-sm sound-type-select" [(ngModel)]="box.soundType" (ngModelChange)="identificationChange.emit(identification)">
-                  <option [ngValue]="undefined">{{ 'identification.boxes.soundType' | translate }}</option>
+              <td *ngIf="showSoundTypeSelect" style="width: 160px" class="select-column">
+                <label>
+                  <small>{{ 'identification.boxes.soundType' | translate }}</small>
+                  <laji-info [placement]="'right'" [html]="'identification.boxes.soundType.info' | translate" [showOnHover]="true"></laji-info>
+                </label>
+                <select class="form-control input-sm" [(ngModel)]="box.soundType" (ngModelChange)="identificationChange.emit(identification)">
+                  <option [ngValue]="undefined"></option>
                   <option [ngValue]="soundTypeEnum.songOrDisplay">
                     {{ 'identification.boxes.soundType.songOrDisplay' | translate }}
                   </option>
@@ -68,7 +64,13 @@
                     {{ 'identification.boxes.soundType.other' | translate }}
                   </option>
                 </select>
-                <laji-info [placement]="'right'" [html]="'identification.boxes.soundType.info' | translate" [showOnHover]="true"></laji-info>
+              </td>
+              <td style="width: 240px">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" [(ngModel)]="box.overlapsWithOtherSpecies" (ngModelChange)="identificationChange.emit(identification)">{{ 'identification.boxes.overlapsWithOthers' | translate }}
+                  </label>
+                </div>
               </td>
               <td style="width: 50px">
                 <button

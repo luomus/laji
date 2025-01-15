@@ -42,7 +42,15 @@
   scroll-margin-top: $sp-6;
 }
 
-.sound-type-select {
-  width: auto;
-  display: inline-block;
+.select-column {
+  vertical-align: top !important;
+  padding-top: 2px;
+
+  label {
+    margin-bottom: 0;
+  }
+
+  select {
+    width: auto;
+  }
 }
