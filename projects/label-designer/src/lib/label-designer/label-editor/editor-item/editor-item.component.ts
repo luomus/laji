@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { FieldType, ILabelItem } from '../../../label-designer.interface';
+import { FieldType, ILabelItem, QRCodeErrorCorrectionLevel } from '../../../label-designer.interface';
 import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 import { LabelService } from '../../../label.service';
 import { TranslateService } from '../../../translate/translate.service';
@@ -15,7 +15,7 @@ import { TranslateService } from '../../../translate/translate.service';
 })
 export class EditorItemComponent implements AfterViewInit {
 
-  @Input() active: boolean;
+  @Input() active?: boolean;
   @Input() boundary = '#label-editor';
   @Output() done = new EventEmitter<void>();
   @Output() itemChange = new EventEmitter<ILabelItem>();
@@ -23,28 +23,29 @@ export class EditorItemComponent implements AfterViewInit {
   @Output() showSettings = new EventEmitter<ILabelItem>();
   @Output() itemClick = new EventEmitter<ILabelItem>();
 
-  @ViewChild('item', { static: true }) elemRef: ElementRef<HTMLDivElement>;
+  @ViewChild('item', { static: true }) elemRef!: ElementRef<HTMLDivElement>;
 
-  _item: ILabelItem;
-  _grid: number;
-  _magnification: number;
-  _maxWidth: number;
-  _maxHeight: number;
+  _item!: ILabelItem;
+  _grid!: number;
+  _magnification!: number;
+  _maxWidth!: number;
+  _maxHeight!: number;
 
-  width: number;
-  height: number;
-  size: number;
-  x: number;
-  y: number;
-  origElementDimensions: DOMRect;
+  width!: number;
+  height!: number;
+  size!: number;
+  x!: number;
+  y!: number;
+  origElementDimensions!: DOMRect;
   fieldType = FieldType;
 
-  private maxWidthMm: number;
-  private maxWidthPx: number;
-  private maxHeightMm: number;
-  private maxHeightPx: number;
+  qrErrorCorrectionCodeM = QRCodeErrorCorrectionLevel.levelM
 
-  private elem: HTMLDivElement;
+  private maxWidthMm!: number;
+  private maxWidthPx!: number;
+  private maxHeightMm!: number;
+  private maxHeightPx!: number;
+  private elem!: HTMLDivElement;
 
   constructor(
     private labelService: LabelService,
@@ -101,8 +102,8 @@ export class EditorItemComponent implements AfterViewInit {
     if (!this._item) {
       return;
     }
-    this.width = this._item.style['width.mm'] * this._magnification;
-    this.height = this._item.style['height.mm'] * this._magnification;
+    this.width = this._item.style!['width.mm']! * this._magnification;
+    this.height = this._item.style!['height.mm']! * this._magnification;
     this.size = this.labelService.mmToPixel(Math.min(this.width, this.height));
     this.x = this._item.x * this._magnification;
     this.y = this._item.y * this._magnification;
@@ -132,8 +133,8 @@ export class EditorItemComponent implements AfterViewInit {
     }
     this.itemChange.emit({
       ...this._item,
-      x: Math.max(Math.min(x, this._maxWidth - this._item.style['width.mm']), 0),
-      y: Math.max(Math.min(y, this._maxHeight - this._item.style['height.mm']), 0),
+      x: Math.max(Math.min(x, this._maxWidth - this._item.style!['width.mm']!), 0),
+      y: Math.max(Math.min(y, this._maxHeight - this._item.style!['height.mm']!), 0),
     });
   }
 
