@@ -14,7 +14,7 @@ import { Component, Input } from '@angular/core';
 })
 export class TaxonImageComponent {
 
-  image;
+  image: any;
 
   @Input()
   set images(images: any[]) {

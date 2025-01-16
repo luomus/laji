@@ -19,8 +19,8 @@ interface Row {
 })
 export class ObserversComponent implements OnInit {
   areaControl = new FormControl<string>('all');
-  rows$: Observable<Row[]>;
-  societies$: Observable<KeyValueObject<string, string>[]>;
+  rows$!: Observable<Row[]>;
+  societies$!: Observable<KeyValueObject<string, string>[]>;
   cols: TableColumn[] = [
     { prop: 'name', name: 'Nimi' },
     { prop: 'all', name: 'Kaikki' },

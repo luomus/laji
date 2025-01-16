@@ -24,9 +24,9 @@ interface IAggregated {
 })
 export class InvasiveComponent implements OnInit {
 
-  static taxa;
+  static taxa: Taxonomy[];
 
-  taxa: Observable<Taxonomy[]>;
+  taxa!: Observable<Taxonomy[]>;
   aggr: {[key: string]: IAggregated} = {};
   daysBack;
   invasiveQuery = {
@@ -70,7 +70,7 @@ export class InvasiveComponent implements OnInit {
     ).pipe(
       map(data => data.results))
       .subscribe(data => {
-        data.map(item => {
+        data.map((item: any) => {
           item.isNew = moment(item.oldestRecord) > this.daysBack;
           item.isNewThisYear = moment(item.newestRecord) > this.daysBack;
           this.aggr[IdService.getId(item['aggregateBy']['unit.linkings.taxon.id'])] = item;
@@ -78,7 +78,7 @@ export class InvasiveComponent implements OnInit {
       });
   }
 
-  showLatestDocument(taxonID) {
+  showLatestDocument(taxonID: string) {
     this.warehouseApi.warehouseQueryListGet({...this.invasiveQuery, taxonId: taxonID}, ['document.documentId', 'unit.unitId'], undefined, 1)
       .pipe(map(data => data.results[0]))
       .subscribe(result => {

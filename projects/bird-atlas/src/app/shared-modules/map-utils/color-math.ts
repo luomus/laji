@@ -1,6 +1,6 @@
 // RGB HSL conversions adapted from https://stackoverflow.com/a/9493060
 
-const hueToRgb = (p, q, t) => {
+const hueToRgb = (p: number, q: number, t: number) => {
   if (t < 0) { t += 1; }
   if (t > 1) { t -= 1; }
   if (t < 1/6) { return p + (q - p) * 6 * t; }
@@ -31,7 +31,7 @@ const rgbToHsl = (r: number, g: number, b: number) => {
   b /= 255;
   const max = Math.max(r, g, b), min = Math.min(r, g, b);
   // eslint-disable-next-line prefer-const
-  let h, s, l = (max + min) / 2;
+  let h: number, s: number, l: number = (max + min) / 2;
 
   if (max === min) {
       h = s = 0; // achromatic
@@ -42,6 +42,7 @@ const rgbToHsl = (r: number, g: number, b: number) => {
           case r: h = (g - b) / d + (g < b ? 6 : 0); break;
           case g: h = (b - r) / d + 2; break;
           case b: h = (r - g) / d + 4; break;
+          default: h = 0; break;
       }
       h /= 6;
   }
@@ -57,9 +58,9 @@ export const colorGradientLerp = (start: string, end: string, t: number): string
   const startHsl = rgbToHsl(parseHex(start, 0, 2), parseHex(start, 2, 4), parseHex(start, 4, 6));
   const endHsl = rgbToHsl(parseHex(end, 0, 2), parseHex(end, 2, 4), parseHex(end, 4, 6));
   const outRgb = hslToRgb(
-    lerp(startHsl[0], endHsl[0], t),
-    lerp(startHsl[1], endHsl[1], t),
-    lerp(startHsl[2], endHsl[2], t)
+    lerp(startHsl[0]!, endHsl[0]!, t),
+    lerp(startHsl[1]!, endHsl[1]!, t),
+    lerp(startHsl[2]!, endHsl[2]!, t)
   );
   return outRgb.map(c => c.toString(16)).map(s => s.length < 2 ? '0' + s : s).join('');
 };

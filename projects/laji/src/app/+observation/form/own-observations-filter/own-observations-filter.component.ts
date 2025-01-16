@@ -16,17 +16,17 @@ export type OwnFilterModel = Pick<ObservationFormQuery, 'asObserver' | 'asEditor
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OwnObservationsFilterComponent {
-  @Input() asObserver: ObservationFormQuery['asObserver'];
-  @Input() asEditor: ObservationFormQuery['asEditor'];
-  @Input() asNotEditorOrObserver: ObservationFormQuery['asNotEditorOrObserver'];
-  @Input() includeQualityIssues: string;
+  @Input() asObserver?: ObservationFormQuery['asObserver'];
+  @Input() asEditor?: ObservationFormQuery['asEditor'];
+  @Input() asNotEditorOrObserver?: ObservationFormQuery['asNotEditorOrObserver'];
+  @Input() includeQualityIssues?: string;
   @Output() asObserverChange = new EventEmitter<boolean>();
   @Output() asEditorChange = new EventEmitter<boolean>();
   @Output() asNotEditorOrObserverChange = new EventEmitter<boolean>();
   @Output() asEditorOrObserverChange = new EventEmitter<boolean>();
   @Output() qualityIssuesFilterChange = new EventEmitter<string>();
 
-  private observerEditorSideEffects(value) {
+  private observerEditorSideEffects(value?: boolean) {
     if (value && !this.includeQualityIssues) {
       this.includeQualityIssues = 'BOTH';
       this.qualityIssuesFilterChange.emit(this.includeQualityIssues);
@@ -37,19 +37,19 @@ export class OwnObservationsFilterComponent {
     }
   }
 
-  onAsObserverChange(value: boolean) {
+  onAsObserverChange(value?: boolean) {
     this.observerEditorSideEffects(value);
     this.asObserver = value;
     this.asObserverChange.emit(value);
   }
 
-  onAsEditorChange(value: boolean) {
+  onAsEditorChange(value?: boolean) {
     this.observerEditorSideEffects(value);
     this.asEditor = value;
     this.asEditorChange.emit(value);
   }
 
-  onAsNotEditorOrObserverChange(value: boolean) {
+  onAsNotEditorOrObserverChange(value?: boolean) {
     this.asNotEditorOrObserver = value;
     this.asNotEditorOrObserverChange.emit(value);
     if (value) {

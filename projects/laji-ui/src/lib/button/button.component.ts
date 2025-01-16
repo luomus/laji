@@ -19,10 +19,10 @@ export type ButtonRole = 'primary' | 'secondary' | 'neutral' | 'success' | 'warn
 })
 export class ButtonComponent implements OnChanges, OnInit {
   @Input() role: ButtonRole = 'secondary';
-  @Input() loading: boolean;
+  @Input() loading?: boolean;
   @Input() disabled = false; // note: can't disable anchors
   @Input() small = false;
-  private _target = undefined;
+  private _target?: string = undefined;
   @Input() set target(t) {
     this._target = t;
     this.useHref = true;
@@ -32,9 +32,9 @@ export class ButtonComponent implements OnChanges, OnInit {
   }
   // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() click = new EventEmitter<MouseEvent>();
-  @Input() queryParams;
+  @Input() queryParams?: any;
 
-  routerLink;
+  routerLink?: string | string[];
   useHref = false;
   pressed = false;
   classes = {};
@@ -53,7 +53,7 @@ export class ButtonComponent implements OnChanges, OnInit {
   }
 
   @HostListener('click', ['$event'])
-  onHostClick(event) {
+  onHostClick(event: any) {
     event.stopImmediatePropagation();
   }
 
@@ -84,8 +84,8 @@ export class ButtonComponent implements OnChanges, OnInit {
     const classes = {
       'lu-btn-small': this.small
     };
-    classes['lu-disabled'] = this.disabled;
-    classes[this.role] = true;
+    (classes as any)['lu-disabled'] = this.disabled;
+    (classes as any)[this.role] = true;
     this.classes = classes;
   }
 }

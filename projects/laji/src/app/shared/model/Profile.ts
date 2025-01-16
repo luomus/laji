@@ -25,6 +25,12 @@
 
 'use strict';
 
+export interface DefaultMediaMetadata {
+  capturerVerbatim: string;
+  intellectualOwner: string;
+  intellectualRights: Profile.IntellectualRights;
+}
+
 export interface Profile {
 
 
@@ -79,11 +85,7 @@ export interface Profile {
    * Settings for the user
    */
   settings?: {
-    defaultMediaMetadata?: {
-      capturerVerbatim: string;
-      intellectualOwner: string;
-      intellectualRights: Profile.IntellectualRights;
-    };
+    defaultMediaMetadata?: DefaultMediaMetadata;
   };
 
   finnishBirdSongRecognitionSkillLevel?: Profile.FinnishBirdSongRecognitionSkillLevelEnum;

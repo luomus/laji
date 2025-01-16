@@ -13,7 +13,7 @@ export class TaxonOccurrenceMapComponent implements OnChanges {
 
   fillData = {};
   statusList: any[] = [];
-  colorByStatus = {
+  colorByStatus: any = {
     'MX.doesNotOccur': '#ffffff',
     'MX.typeOfOccurrenceOccursBasedOnOccurrences': '#e3f1fb',
     'MX.typeOfOccurrenceOccurs': '#3498db',

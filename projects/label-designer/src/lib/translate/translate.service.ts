@@ -21,7 +21,7 @@ export class TranslateService {
       '  </p>'
   };
 
-  setTranslations(translations: LabelDesignerTranslationsInterface) {
+  setTranslations(translations?: LabelDesignerTranslationsInterface) {
     this.translations = {...this.translations, ...translations};
   }
 

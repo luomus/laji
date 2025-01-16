@@ -3,11 +3,11 @@ import { IVirUser, VirOrganisationService } from '../../../service/vir-organisat
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { map, switchMap, tap, take } from 'rxjs/operators';
 import { SelectionType } from '@achimha/ngx-datatable';
-import { Person } from 'projects/laji-api-client/src/lib/models/person';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
+import { Person } from 'projects/laji/src/app/shared/model/Person';
 
 @Component({
   selector: 'vir-usage-admin',

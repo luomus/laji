@@ -28,10 +28,10 @@ export class ListComponent implements OnInit, OnDestroy {
     {label: 'iucn.results.tab.habitat', value: 'habitat'}
   ];
 
-  years$: Observable<{label: string; value: string}[]>;
-  checklist: string;
-  queryParams: QueryParams;
-  private querySub: Subscription;
+  years$!: Observable<{label: string; value: string}[]>;
+  checklist!: string;
+  queryParams!: QueryParams;
+  private querySub!: Subscription;
   private onlyFields = ['onlyPrimaryThreat', 'onlyPrimaryReason', 'onlyPrimaryHabitat'];
   private currentTitle = '';
 
@@ -85,7 +85,7 @@ export class ListComponent implements OnInit, OnDestroy {
     }
   }
 
-  queryParamChange(param, value) {
+  queryParamChange(param: string, value: any) {
     this.queryChange({...this.queryParams, [param]: value});
   }
 

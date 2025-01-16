@@ -22,7 +22,7 @@ export interface IUCNSimpleChartData {
 })
 export class RedListChartComponent {
 
-  _data: ChartData;
+  _data?: ChartData;
 
   @Input() primaryColor = '#d62022';
   @Input() secondaryColor = '#888';
@@ -32,7 +32,7 @@ export class RedListChartComponent {
 
   @Output() valueSelect = new EventEmitter<string>();
 
-  private ids: string[];
+  private ids?: string[];
 
   options: ChartOptions = {
     responsive: true,
@@ -72,13 +72,13 @@ export class RedListChartComponent {
     ];
     const labels = data.map(({name}) => name);
     this._data =  {datasets, labels};
-    this.ids = data.map(({id}) => id);
+    this.ids = data.map(({id}) => id!);
   }
 
   itemSelect(event: ChartEvent, elements: ActiveElement[]) {
     if (!elements[0]) {
       return;
     }
-    this.valueSelect.emit(this.ids[elements[0].index]);
+    this.valueSelect.emit(this.ids![elements[0].index]);
   }
 }

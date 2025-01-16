@@ -5,7 +5,7 @@ type MediaGroupProp = keyof Pick<WarehouseQueryInterface, 'hasUnitImages' | 'has
 const mediaGroupProps: MediaGroupProp[] = ['hasUnitImages', 'hasUnitAudio', 'hasUnitModel'];
 
 const allMediaGroupPropsActive = (query: WarehouseQueryInterface) =>
-  mediaGroupProps.reduce((p, v) => p && query[v], true);
+  mediaGroupProps.reduce((p: boolean|undefined, v) => p && query[v], true);
 const activateAllMediaGroupProps = (query: WarehouseQueryInterface) =>
   mediaGroupProps.forEach(p => query[p] = true);
 const deactivateAllMediaGroupProps = (query: WarehouseQueryInterface) =>
@@ -18,10 +18,10 @@ const deactivateAllMediaGroupProps = (query: WarehouseQueryInterface) =>
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationFormMediaFilterComponent {
-  @Input()  query: WarehouseQueryInterface;
+  @Input({ required: true })  query!: WarehouseQueryInterface;
   @Output() queryChange = new EventEmitter<void>();
 
-  onMediaGroupPropChange(prop: MediaGroupProp, activated: boolean) {
+  onMediaGroupPropChange(prop: MediaGroupProp, activated?: boolean) {
     if (activated) {
       this.query[prop] = true;
       this.query.hasUnitMedia = undefined; // resets hasUnitMedia in case it was set to false
@@ -41,24 +41,24 @@ export class ObservationFormMediaFilterComponent {
     this.queryChange.emit();
   }
 
-  onToggleMedia(activated: boolean) {
+  onToggleMedia(activated?: boolean) {
     this.query.hasUnitMedia = activated ? true : undefined;
     deactivateAllMediaGroupProps(this.query);
     this.queryChange.emit();
   }
 
-  onToggleNoImages(activated: boolean) {
+  onToggleNoImages(activated?: boolean) {
     this.query.hasUnitMedia = activated ? false : undefined;
     deactivateAllMediaGroupProps(this.query);
     this.queryChange.emit();
   }
 
-  onToggleGatheringMedia(activated: boolean) {
+  onToggleGatheringMedia(activated?: boolean) {
     this.query.hasGatheringMedia = activated ? true : undefined;
     this.queryChange.emit();
   }
 
-  onToggleDocumentMedia(activated: boolean) {
+  onToggleDocumentMedia(activated?: boolean) {
     this.query.hasDocumentMedia = activated ? true : undefined;
     this.queryChange.emit();
   }

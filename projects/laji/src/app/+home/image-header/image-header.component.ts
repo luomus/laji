@@ -9,8 +9,8 @@ import { HeaderImage, HeaderImageService } from '../../shared/service/header-ima
   styleUrls: ['./image-header.component.scss']
 })
 export class ImageHeaderComponent implements OnInit {
-  headerImage: HeaderImage;
-  homeData$: Observable<IHomeData>;
+  headerImage!: HeaderImage;
+  homeData$!: Observable<IHomeData>;
 
   constructor(
     private headerImageService: HeaderImageService,

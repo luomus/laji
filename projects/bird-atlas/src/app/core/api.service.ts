@@ -9,9 +9,9 @@ export type Lang = LajiApiClient.LangEnum;
 
 // hash fn source: https://stackoverflow.com/a/15710692
 // eslint-disable-next-line no-bitwise
-const hashCode = s => s.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a;},0);
-const concatObjProps = (obj) => concatArgs(Object.entries(obj).map(([k, v]) => k + v));
-const concatArgs = (...args): string => (
+const hashCode = (s: string) => s.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a;},0);
+const concatObjProps = (obj: Record<string, unknown>) => concatArgs(Object.entries(obj).map(([k, v]) => k + v));
+const concatArgs = (...args: any[]): string => (
   args.reduce((prev, curr) => {
     if (curr instanceof Array) {
       return prev += concatArgs(...curr);
@@ -22,7 +22,7 @@ const concatArgs = (...args): string => (
     return prev += curr;
   }, '')
 );
-const hashArgs = (...args) => hashCode(concatArgs(...args));
+const hashArgs = (...args: any[]) => hashCode(concatArgs(...args));
 
 export const cacheReturnObservable = (cacheInvalidationMs?: number) => (
   (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {

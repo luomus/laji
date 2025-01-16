@@ -9,7 +9,7 @@ import { LocalStorage } from 'ngx-webstorage';
 })
 export class TemplatesComponent implements OnInit {
 
-  @LocalStorage() public showTemplateIntro;
+  @LocalStorage() public showTemplateIntro!: null | boolean;
 
   ngOnInit() {
     if (this.showTemplateIntro === null) {

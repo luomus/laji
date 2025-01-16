@@ -90,7 +90,7 @@
         <ll-label-settings
           [setup]="_setup"
           (setupChange)="setupChanged($event)"
-          [selectedLabelItem]="_selectedLabelItem"
+          [selectedLabelItem]="_selectedLabelItem!"
           [availableFields]="availableFields"
         ></ll-label-settings>
       </div>
@@ -117,25 +117,25 @@
     <div class="editor-wrap">
       <div class="editor-space">
         <ll-label-editor
-          [active]="_selectedLabelItem"
+          [active]="_selectedLabelItem!"
           (activeChange)="setActiveLabelItem($event)"
           (done)="done()"
           [setup]="_setup"
           (setupChange)="setupChanged($event)"
-          [grid]="_viewSettings.grid"
-          [gridVisible]="_viewSettings.gridVisible"
+          [grid]="_viewSettings.grid!"
+          [gridVisible]="_viewSettings.gridVisible!"
           [magnification]="_viewSettings.magnification"
           (showSettings)="showSettings($event)"></ll-label-editor>
         <div *ngIf="_setup.twoSided" style="margin-top: 10px; display: inline-block;">
           <ll-label-editor
             [backSide]="true"
-            [active]="_selectedLabelItem"
+            [active]="_selectedLabelItem!"
             (activeChange)="setActiveLabelItem($event)"
             (done)="done()"
             [setup]="_setup"
             (setupChange)="setupChanged($event)"
-            [grid]="_viewSettings.grid"
-            [gridVisible]="_viewSettings.gridVisible"
+            [grid]="_viewSettings.grid!"
+            [gridVisible]="_viewSettings.gridVisible!"
             [magnification]="_viewSettings.magnification"
             (showSettings)="showSettings($event)"></ll-label-editor>
         </div>
@@ -186,7 +186,7 @@
     <tr><td>{{ 'Uri' | translate }}:</td><td><input (change)="updateGenerate('uri', $event.target.value)" [value]="generate.uri" type="text" class="form-control input-sm"></td></tr>
     <tr><td>{{ 'Range start' | translate }}:</td><td><input (change)="updateGenerate('rangeStart', $event.target.value)" [value]="generate.rangeStart || ''" type="text" [class.error]="!(generate.rangeStart | isNumeric)" class="form-control input-sm"></td></tr>
     <tr><td>{{ 'Range end' | translate }}:</td><td><input (change)="updateGenerate('rangeEnd', $event.target.value)" [value]="generate.rangeEnd || ''" type="text" [class.error]="!(generate.rangeEnd | isNumeric)" class="form-control input-sm"></td></tr>
-    <tr *ngIf="generateFields.length > 0"><td colspan="2">&nbsp;</td></tr>
+    <tr *ngIf="generateFields!.length > 0"><td colspan="2">&nbsp;</td></tr>
     <tr *ngFor="let field of generateFields;">
       <td>{{ field.label }}:</td><td><input [value]="generate.data[(field | fieldKey)] || ''" (change)="updateGenerate(field, $event.target.value, true)" type="text" class="form-control input-sm"></td>
     </tr>

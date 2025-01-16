@@ -27,7 +27,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
   @Input() showLinks = true;
   @Input() lastAnnotationAddedId?: string;
   @Input() effectiveTags?: Annotation[];
-  @Input() annotationTags?: AnnotationTag[];
+  @Input() annotationTags?: AnnotationTag[] | null;
   @Output() remove = new EventEmitter<Annotation>();
 
   types = Annotation.TypeEnum;

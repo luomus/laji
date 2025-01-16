@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { ActivityCategoryStats } from 'projects/bird-atlas/src/app/core/atlas-api.service';
+import { ActivityCategoryStats, ActivityCategoryStatsObject } from 'projects/bird-atlas/src/app/core/atlas-api.service';
 import { legends } from 'projects/bird-atlas/src/app/shared-modules/map-utils/visualization-legend.component';
 
 type AugmentedLegend = {
@@ -30,7 +30,7 @@ type AugmentedLegend = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridIndexMapTableComponent implements OnChanges {
-  @Input() activityCategoryStats: ActivityCategoryStats;
+  @Input() activityCategoryStats!: ActivityCategoryStatsObject;
 
   legend: AugmentedLegend = legends['activityCategory'];
 

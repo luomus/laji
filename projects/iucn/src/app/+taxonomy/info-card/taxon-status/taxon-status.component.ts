@@ -16,6 +16,6 @@ export class TaxonStatusComponent {
     'MX.iucnLC'
   ];
 
-  @Input() status: string;
+  @Input() status!: string;
 
 }

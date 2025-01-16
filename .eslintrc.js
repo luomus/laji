@@ -80,7 +80,6 @@ module.exports = {
 					}
 				],
 				"@typescript-eslint/no-misused-new": "error",
-				"@typescript-eslint/no-non-null-assertion": "error",
 				"@typescript-eslint/no-parameter-properties": "off",
 				"@typescript-eslint/no-use-before-define": "off",
 				"@typescript-eslint/no-var-requires": "off",

@@ -37,7 +37,7 @@
           <laji-np-info-row class="d-block mb-3"
                             [title]="documentForm.options?.namedPlaceOptions?.lastCensusLabel || 'lastCensus' | translate"
                             lajiFormOption="documentForm.options.namedPlaceOptions.lastCensusLabel"
-                            [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin"></laji-np-info-row>
+                            [value]="namedPlace.prepopulatedDocument?.gatheringEvent?.dateBegin"></laji-np-info-row>
         </ng-container>
         <div *lajiLoggedIn="false" style="margin-top: 20px;">
           <strong>
@@ -88,7 +88,7 @@
                   <strong>Varauksen omistaja:</strong>
                 </div>
                 <div class="value">
-                  {{ namedPlace.reserve.reserver | label }}
+                  {{ namedPlace.reserve!.reserver | label }}
                 </div>
                 <lu-button [disabled]="loading" (click)="releaseButtonClick.emit(namedPlace)" lajiFormOption="options.namedPlaceOptions.releaseLabel">
                   {{ documentForm.options?.namedPlaceOptions?.releaseLabel || 'np.release' | translate }} (admin)</lu-button>

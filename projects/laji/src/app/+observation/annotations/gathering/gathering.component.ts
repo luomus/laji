@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
 export class GatheringComponent {
 
   @Input() gathering: any;
-  @Input() highlight: string;
+  @Input() highlight?: string;
   @Input() visible = true;
 
 }

@@ -18,7 +18,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() form!: Form.List;
   @Input() showFormName = true;
   @Input() staticWidth?: number = undefined;
-  @Input() complainLocality = true;
+  @Input() complainLocality? = true;
   @Input() unsaved = false;
   @Output() discardTempDocument = new EventEmitter();
   @Output() showViewer = new EventEmitter<Document>();

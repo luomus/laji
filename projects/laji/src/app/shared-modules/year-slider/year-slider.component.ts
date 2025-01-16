@@ -13,7 +13,7 @@ export interface YearInfoItem {
 })
 export class YearSliderComponent implements OnInit {
   @Input() year!: string;
-  @Input() yearInfo!: YearInfoItem[];
+  @Input() yearInfo?: YearInfoItem[]|null;
   @Input() showCounts = true;
 
   pcsString!: string;

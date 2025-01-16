@@ -11,7 +11,7 @@ import { Util } from '../../../../../shared/service/util.service';
 })
 export class ErrorListComponent {
 
-  @Input() fields?: {[key: string]: IFormField};
+  @Input({ required: true }) fields!: {[key: string]: IFormField};
 
   _errors: {field: string; errors: string[]}[] = [];
 

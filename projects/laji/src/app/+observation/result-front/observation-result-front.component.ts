@@ -8,5 +8,5 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationResultFrontComponent {
-  @Input() query: WarehouseQueryInterface;
+  @Input({ required: true }) query!: WarehouseQueryInterface;
 }

@@ -41,7 +41,7 @@
       <textarea id="inputData" class="form-control" [(ngModel)]="sequenceData" name="inputData" rows="10"></textarea>
     </lu-tab>
     <lu-tab [heading]="'theme.protax.fileInput' | translate">
-      <input #fileInput class="form-control" type="file" style="height: auto" (change)="updateSequenceFile(toHtmlInputElement($event.target).files)">
+      <input #fileInput class="form-control" type="file" style="height: auto" (change)="updateSequenceFile(toHtmlInputElement($event.target).files!)">
     </lu-tab>
   </lu-tabs>
 </div>

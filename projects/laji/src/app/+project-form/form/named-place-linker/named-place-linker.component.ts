@@ -25,21 +25,21 @@ interface ViewModel {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
-  @Input() documentID: string;
+  @Input() documentID!: string;
 
   reloadSubmissions$ = new EventEmitter<void>();
 
-  document$: Observable<Document>;
-  vm$: Observable<ViewModel>;
+  document$!: Observable<Document>;
+  vm$!: Observable<ViewModel>;
   loading = false;
   _linked = false;
 
-  municipality: string;
-  birdAssociationArea: string;
-  tags: string[];
-  activeNP: string;
+  municipality!: string;
+  birdAssociationArea!: string;
+  tags!: string[];
+  activeNP!: string;
 
-  subscription: Subscription;
+  subscription!: Subscription;
 
   constructor(
     private formService: FormService,
@@ -56,16 +56,18 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
     this.document$ = this.documentService.findById(this.documentID);
 
     const form$ = this.document$.pipe(switchMap(document => this.formService.getForm(document.formID)));
-    const rights$ = form$.pipe(switchMap(form => this.formPermissionService.getRights(form)));
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const rights$ = form$.pipe(switchMap(form => this.formPermissionService.getRights(form!)));
     const documentReadOnly$ = combineLatest(this.document$, rights$, this.userService.user$).pipe(
       map(([document, rights, person]) => this.documentService.getReadOnly(document, rights, person)),
       map(readonly => readonly === Readonly.true || readonly === Readonly.noEdit)
     );
     const isLinked$ = this.document$.pipe(map(document => !!document?.namedPlaceID));
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.vm$ = combineLatest([this.document$, form$, documentReadOnly$, isLinked$]).pipe(
       map(([document, form, isReadonly, isLinked]) => ({document, form, isLinkable: !isReadonly, isLinked}))
-    );
+    ) as Observable<ViewModel>;
   }
 
   ngOnDestroy(): void {
@@ -99,7 +101,8 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
           this.loading = false;
           return EMPTY;
         }
-        return this.document$.pipe(switchMap((doc) => this.documentApi.update(doc.id, {...doc, namedPlaceID: id}, this.userService.getToken())));
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return this.document$.pipe(switchMap((doc) => this.documentApi.update(doc.id!, {...doc, namedPlaceID: id}, this.userService.getToken())));
       }),
       switchMap(document => this.formService.getForm(document.formID).pipe(map(form => ({form, document})))),
       catchError(() => {
@@ -107,7 +110,7 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
         this.loading = false;
         return of(null);
       })
-    ).subscribe((res: null | {document: Document; form: Form.SchemaForm}) => {
+    ).subscribe((res: null | {document: Document; form: Form.SchemaForm | undefined}) => {
       if (!res) {
         this.loading = false;
         return;

@@ -7,7 +7,7 @@ import { BrowserService } from '../../../shared/service/browser.service';
   template: `<laji-named-place-linker [documentID]="documentID"></laji-named-place-linker>`
 })
 export class NamedPlaceLinkerWrapperComponent implements OnInit {
-  documentID: string;
+  documentID!: string;
   constructor(
     private route: ActivatedRoute,
     private browserService: BrowserService

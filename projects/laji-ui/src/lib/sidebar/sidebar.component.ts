@@ -51,12 +51,12 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   private unsubscribe$ = new Subject<null>();
 
   @Input() position: 'left' | 'right' = 'left';
-  @Input() staticWidth: number;
-  @Input() menuTitle: string;
+  @Input() staticWidth?: number;
+  @Input() menuTitle?: string;
   @Input() displayNavHeader = false;
   @Input() displayNav = true;
-  @Input() noPrint: boolean;
-  @Input() contentWrapperClass: string;
+  @Input() noPrint?: boolean;
+  @Input() contentWrapperClass?: string;
 
   sidebarMinWidth = 50;
 
@@ -79,15 +79,15 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   preCheckScreenWidth = true;
 
-  @ViewChild('sidebarRef') sidebarRef: ElementRef;
-  @ViewChild('contentRef') contentRef: ElementRef;
-  @ContentChildren(SidebarLinkComponent) sidebarLinks: QueryList<SidebarLinkComponent>;
+  @ViewChild('sidebarRef') sidebarRef?: ElementRef;
+  @ViewChild('contentRef') contentRef?: ElementRef;
+  @ContentChildren(SidebarLinkComponent) sidebarLinks?: QueryList<SidebarLinkComponent>;
 
-  destroyResizeListener: () => void;
-  destroyDragMoveListener: () => void;
-  destroyDragEndListener: () => void;
+  destroyResizeListener?: () => void;
+  destroyDragMoveListener?: () => void;
+  destroyDragEndListener?: () => void;
 
-  destroyCloseOnClickListener: () => void;
+  destroyCloseOnClickListener?: () => void;
 
   constructor(
     private renderer: Renderer2,
@@ -124,7 +124,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  checkScreenWidth(event?) {
+  checkScreenWidth(event?: any) {
     if (event && event['ignore-sidebar']) {
       return;
     }
@@ -146,7 +146,8 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     this.destroyCloseOnClickListener?.();
     if (this.mobile && this.open && this.contentRef) {
       setTimeout(() => {
-        this.destroyCloseOnClickListener = this.renderer.listen(this.contentRef.nativeElement, 'click', this.onContentClick.bind(this));
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.destroyCloseOnClickListener = this.renderer.listen(this.contentRef!.nativeElement, 'click', this.onContentClick.bind(this));
       });
     }
   }
@@ -160,7 +161,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   onResizeAnimationComplete() {
     try {
       const event = new Event('resize');
-      event['ignore-sidebar'] = true;
+      (event as any)['ignore-sidebar'] = true;
       this.platformService.window.dispatchEvent(event);
     } catch (e) {
       const evt: any = this.platformService.window.document.createEvent('UIEvents');
@@ -170,7 +171,8 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   }
 
   onDragStart() {
-    this.widthBeforeDrag = this.sidebarRef.nativeElement.offsetWidth;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.widthBeforeDrag = this.sidebarRef!.nativeElement.offsetWidth;
     this.dragging = true;
     this.destroyDragMoveListener?.();
     this.destroyDragEndListener?.();
@@ -178,7 +180,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     this.destroyDragEndListener = this.renderer.listen(document, 'mouseup', this.onDragEnd.bind(this));
   }
 
-  onContentClick(event) {
+  onContentClick(event: any) {
     if (this.mobile) {
       this.open = false;
       this.cdr.detectChanges();
@@ -186,7 +188,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  onDrag(mousemove) {
+  onDrag(mousemove: any) {
     const width = this.calcSidebarWidth(mousemove.clientX);
     if (width <= this.sidebarMinWidth) {
       if (this.open) {
@@ -199,23 +201,27 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
         this.cdr.markForCheck();
       }
     }
-    this.renderer.setStyle(this.sidebarRef.nativeElement, 'width', `${Math.max(this.sidebarMinWidth, width)}px`);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.renderer.setStyle(this.sidebarRef!.nativeElement, 'width', `${Math.max(this.sidebarMinWidth, width)}px`);
   }
 
-  onDragEnd(mouseup) {
+  onDragEnd(mouseup: any) {
     this.dragging = false;
     const currentWidth = this.calcSidebarWidth(mouseup.clientX);
     if (currentWidth < this.ogWidth) {
       if (currentWidth > this.widthBeforeDrag) {
-        this.renderer.setStyle(this.sidebarRef.nativeElement, 'width', `${this.ogWidth}px`);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.renderer.setStyle(this.sidebarRef!.nativeElement, 'width', `${this.ogWidth}px`);
         this.open = true;
       } else {
         this.open = false;
       }
       this.cdr.markForCheck();
     }
-    this.destroyDragMoveListener();
-    this.destroyDragEndListener();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.destroyDragMoveListener!();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.destroyDragEndListener!();
   }
 
   ngOnDestroy() {
@@ -227,12 +233,14 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     this.destroyDragEndListener?.();
   }
 
-  calcSidebarWidth(mouseX) {
+  calcSidebarWidth(mouseX: any) {
     let width = this.sidebarMinWidth;
     if (this.position === 'left') {
-      width = Math.abs(this.sidebarRef.nativeElement.clientLeft - mouseX);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      width = Math.abs(this.sidebarRef!.nativeElement.clientLeft - mouseX);
     } else {
-      width = Math.abs(this.sidebarRef.nativeElement.offsetLeft + this.sidebarRef.nativeElement.clientWidth - mouseX);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      width = Math.abs(this.sidebarRef!.nativeElement.offsetLeft + this.sidebarRef!.nativeElement.clientWidth - mouseX);
     }
     return width;
   }

@@ -25,7 +25,7 @@ import { environment } from '../../environments/environment';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationComponent extends AbstractObservation implements OnInit, OnDestroy {
-  reloadSubscription: Subscription;
+  reloadSubscription?: Subscription;
   reloadView = false;
 
   constructor(

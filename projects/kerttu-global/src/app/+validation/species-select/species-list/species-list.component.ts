@@ -9,9 +9,9 @@ import { IGlobalSpeciesQuery, IGlobalSpeciesFilters, IGlobalSpeciesListResult } 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesListComponent implements OnChanges {
-  @Input() filters: IGlobalSpeciesFilters = { continent: [], order: [], family: [] };
+  @Input() filters?: IGlobalSpeciesFilters = { continent: [], order: [], family: [] };
   @Input() query: IGlobalSpeciesQuery = {};
-  @Input() speciesList: IGlobalSpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0 };
+  @Input() speciesList: IGlobalSpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0, lastPage: 0 };
   @Input() loading = false;
 
   @Output() speciesSelect = new EventEmitter<number>();

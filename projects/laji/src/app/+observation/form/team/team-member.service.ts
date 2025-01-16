@@ -9,7 +9,7 @@ import { Observable, of as ObservableOf } from 'rxjs';
 export class TeamMemberService {
 
   memberCache: {[id: string]: string} = {};
-  fetcher = {};
+  fetcher: Record<string, Observable<string>> = {};
 
   constructor(
     private warehouseApi: WarehouseApi
@@ -42,7 +42,7 @@ export class TeamMemberService {
     return this.warehouseApi.warehouseTeamMemberFind(search).pipe(
       map(result => result.results || []),
       tap(members => {
-        this.memberCache = {...this.memberCache, ...members.reduce((cumulative, current) => {
+        this.memberCache = {...this.memberCache, ...members.reduce((cumulative: Record<string, string>, current: any) => {
           cumulative[current['id']] = current['name'];
           return cumulative;
         }, {})};

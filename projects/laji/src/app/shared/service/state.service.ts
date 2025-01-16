@@ -8,7 +8,7 @@ const LAJI_STATE_KEY = makeStateKey('l');
 })
 export class StateService {
 
-  private state = {};
+  private state: {[key: string]: any} = {};
 
   constructor(
     private platformService: PlatformService,

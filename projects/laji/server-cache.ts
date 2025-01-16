@@ -56,7 +56,7 @@ const cacheMiddleware: RequestHandler = (req, res, next) => {
   }
 
   const cacheKey = getCacheKey(req);
-  redisClient.get(cacheKey, (errRedis: any, resultRedis: string) => {
+  redisClient.get(cacheKey, (errRedis: any, resultRedis: string | null) => {
     const isCached = !errRedis && resultRedis;
 
     if (!isCached) {

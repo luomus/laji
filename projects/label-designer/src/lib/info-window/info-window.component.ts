@@ -15,9 +15,9 @@ import { IInfoWindow } from '../label-designer.interface';
 })
 export class InfoWindowComponent implements OnInit {
 
-  visible$: Observable<boolean>;
-  data$: Observable<IInfoWindow>;
-  isTemplate: boolean;
+  visible$!: Observable<boolean>;
+  data$!: Observable<IInfoWindow>;
+  isTemplate?: boolean;
 
   constructor(public infoWindowService: InfoWindowService) { }
 

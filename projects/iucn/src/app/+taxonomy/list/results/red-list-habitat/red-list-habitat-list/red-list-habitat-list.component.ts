@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ResultService } from '../../../../../iucn-shared/service/result.service';
 import { RedListHabitatData } from '../red-list-habitat.component';
+import { StatusCnt } from '../red-list-habitat.component';
 
 @Component({
   selector: 'iucn-red-list-habitat-list',
@@ -13,17 +14,17 @@ export class RedListHabitatListComponent {
   @Input() data: RedListHabitatData[] = [];
   @Output() habitatSelect = new EventEmitter<string>();
 
-  statuses: string[];
+  statuses: (keyof StatusCnt)[];
   statusLabel: any;
 
   constructor(
     private resultService: ResultService
   ) {
-    this.statuses = this.resultService.habitatStatuses;
+    this.statuses = this.resultService.habitatStatuses as (keyof StatusCnt)[];
     this.statusLabel = this.resultService.shortLabel;
   }
 
-  rowSelect(value) {
+  rowSelect(value: any) {
     if (!value) {
       return;
     }

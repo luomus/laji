@@ -46,7 +46,7 @@ interface DatatableRow {
 }
 
 interface GridInfoData {
-  elem: AtlasGridSquare;
+  elem: AtlasGridSquare | undefined;
   rows: DatatableRow[];
   status: number;
 }
@@ -57,10 +57,10 @@ interface GridInfoData {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridInfoComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('lajiMap', { static: false }) lajiMapElem: ElementRef;
+  @ViewChild('lajiMap', { static: false }) lajiMapElem!: ElementRef;
 
   private unsubscribe$ = new Subject<void>();
-  private loadMap$ = new BehaviorSubject<string>(undefined);
+  private loadMap$ = new BehaviorSubject<string | undefined>(undefined);
   private map: any;
 
   data$: Observable<GridInfoData>;
@@ -84,10 +84,10 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
         this.loading = true;
         this.cdr.markForCheck();
       }),
-      switchMap(params => this.atlasApi.getGridSquare(params.get('id'))),
+      switchMap(params => this.atlasApi.getGridSquare(params.get('id')!)),
       map(elem => ({
         elem,
-        rows: elem.data.map((d, idx) => ({
+        rows: elem.data!.map((d, idx) => ({
           idx: idx + 1,
           species: d.speciesName,
           code: (<string>d.atlasCode.key).match(/[0-9]+/)?.[0] || null,
@@ -109,7 +109,7 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
         elem: undefined,
         rows: [],
         status: 404
-      })),
+      } as any)),
       tap(() => { this.loading = false; this.cdr.detectChanges(); })
     );
 
@@ -157,7 +157,7 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
     ).subscribe(ykj => {
       setTimeout(() => { // yield control to renderer before accessing lajiMapElem
         this.map.setRootElem(this.lajiMapElem.nativeElement);
-        this.map.setData(getMapData(ykj));
+        this.map.setData(getMapData(ykj!));
         this.map.zoomToData();
       });
     });

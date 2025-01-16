@@ -6,10 +6,17 @@ import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { PagedResult } from '../../shared/model/PagedResult';
 
+interface ResultState {
+  key: string;
+  data: any;
+  pending?: Observable<any>;
+  pendingKey: string;
+}
+
 @Injectable()
 export class MainResultService {
 
-  private state = {
+  private state: Record<string, ResultState> = {
     taxon: {
       key: '',
       data: {},
@@ -64,7 +71,7 @@ export class MainResultService {
       false
     )).pipe(
       map(data => data.results),
-      map(data => data.map(row => {
+      map(data => data.map((row: any) => {
           row.aggregateBy['vernacularName'] =
             row.aggregateBy['unit.linkings.taxon.nameFinnish'] ||
             row.aggregateBy['unit.linkings.taxon.nameEnglish'] ||
@@ -93,7 +100,7 @@ export class MainResultService {
     ));
   }
 
-  private _fetch(type: 'map'|'list'|'result'|'taxon', cacheKey: string, request): Observable<any> {
+  private _fetch(type: 'map'|'list'|'result'|'taxon', cacheKey: string, request: Observable<any>): Observable<any> {
     if (this.state[type].key === cacheKey) {
       return ObservableOf(this.state[type].data);
     } else if (this.state[type].pendingKey === cacheKey && this.state[type].pending) {
@@ -102,7 +109,8 @@ export class MainResultService {
           observer.next(res);
           observer.complete();
         };
-        this.state[type].pending.subscribe(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.state[type].pending!.subscribe(
           (data) => { onComplete(data); }
         );
       });
@@ -113,7 +121,8 @@ export class MainResultService {
         this.state[type].data = data;
         this.state[type].key  = cacheKey;
       }));
-    return this.state[type].pending ;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.state[type].pending!;
   }
 
 }

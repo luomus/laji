@@ -65,4 +65,8 @@ export class TaxonInfoComponent implements OnChanges {
       !this.unprotectedAdminStatuses.some(status => this.taxon.administrativeStatuses?.includes(status))
     );
   }
+
+  getItemValue(item: any) {
+    return item.value.lang;
+  }
 }

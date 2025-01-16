@@ -46,7 +46,7 @@
         [form]="vm.form"
         [formData]="vm.formData"
         [settingsKey]="vm.form.id"
-        [showShortcutButton]="!vm.form.options.mobile"
+        [showShortcutButton]="!vm.form.options?.mobile"
         (dataChange)="onChange($event)"
         (dataSubmit)="onSubmit($event)"
         (validationError)="onValidationError($event)"

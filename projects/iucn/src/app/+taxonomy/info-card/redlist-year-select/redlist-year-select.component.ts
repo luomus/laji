@@ -7,12 +7,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class RedlistYearSelectComponent {
 
-  @Input() active: number;
+  @Input() active!: number;
   @Input() history: {year: number}[] = [];
 
   @Output() activeChange = new EventEmitter();
 
-  changeActive(event) {
+  changeActive(event: any) {
     event.stopPropagation();
     this.activeChange.emit(event.target.value);
   }
