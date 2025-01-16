@@ -64,7 +64,7 @@ export class DatatableTemplatesComponent {
     return Math.round(value * 10 ) / 10;
   }
 
-  onTaxonLinkClick(event: MouseEvent) {
+  onResultLinkClick(event: MouseEvent) {
     event.stopPropagation();
   }
 

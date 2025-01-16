@@ -33,7 +33,7 @@
         [luTooltip]="'showSpeciesCard' | translate"
         [placement]="'right'"
         target="{{column.target || '_self'}}"
-        (click)="onTaxonLinkClick($event)"
+        (click)="onResultLinkClick($event)"
       >
         {{ 'result.taxon' | translate }}
         <i class="glyphicon glyphicon-tag"></i>
@@ -44,6 +44,7 @@
         [luTooltip]="'showObservation' | translate"
         [placement]="'right'"
         target="_blank"
+        (click)="onResultLinkClick($event)"
       >
         {{ 'result.unit' | translate }}
         <i class="glyphicon glyphicon-zoom-in"></i>
@@ -76,7 +77,7 @@
         <a
           [luTooltip]="'showSpeciesCard' | translate"
           [placement]="'right'"
-          (click)="onTaxonLinkClick($event)"
+          (click)="onResultLinkClick($event)"
           target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings[taxon].id || value.linkings[taxon].qname) | toQName)] | localize">
           <i class="glyphicon glyphicon-tag"></i>
         </a>
@@ -106,7 +107,7 @@
       <a
         [luTooltip]="'showSpeciesCard' | translate"
         [placement]="'right'"
-        (click)="onTaxonLinkClick($event)"
+        (click)="onResultLinkClick($event)"
         target="{{column.target || '_self'}}" [routerLink]="['/taxon', (value.linkings.taxon.speciesId | toQName)] | localize">
         <i class="glyphicon glyphicon-tag"></i>
       </a>
