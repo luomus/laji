@@ -1,4 +1,4 @@
-<select class="form-control" (change)="select.emit($event.target.value)">
+<select class="form-control" (change)="select.emit($any($event.target)!.value)">
   <option value="">{{ 'all' | translate }}</option>
   <option *ngFor="let collection of collections" [value]="collection">
     {{ collection | label }}

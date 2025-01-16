@@ -1,13 +1,13 @@
 <ng-container [ngSwitch]="type">
   <ng-container *ngSwitchCase="'status'">
-    <iucn-red-list-status (groupSelect)="changeQuery('redListGroup', $event)" [data]="redListStatusQuery$ | async"></iucn-red-list-status>
+    <iucn-red-list-status (groupSelect)="changeQuery('redListGroup', $event)" [data]="(redListStatusQuery$ | async)!"></iucn-red-list-status>
   </ng-container>
   <ng-container *ngSwitchCase="'species'">
     <iucn-species-table
-      [species]="speciesQuery$ | async"
+      [species]="(speciesQuery$ | async)!"
       [defaultFields]="defaultSpeciesFields"
       [allFields]="speciesAllFields"
-      [selected]="query.speciesFields?.split(',')"
+      [selected]="query.speciesFields?.split(',') || []"
       [speciesPageSize]="speciesPageSize"
       [speciesPage]="speciesPage"
       [speciesCount]="speciesCount"
@@ -23,28 +23,28 @@
   <ng-container *ngSwitchCase="'reasons'">
     <div class="row">
       <div class="col-sm-10">
-        <iucn-red-list-chart (valueSelect)="changeQuery('reasons', $event)" [data]="reasonsQuery$ | async"></iucn-red-list-chart>
+        <iucn-red-list-chart (valueSelect)="changeQuery('reasons', $event)" [data]="(reasonsQuery$ | async)!"></iucn-red-list-chart>
       </div>
     </div>
   </ng-container>
   <ng-container *ngSwitchCase="'threats'">
     <div class="row">
       <div class="col-sm-10">
-        <iucn-red-list-chart (valueSelect)="changeQuery('threats', $event)" [data]="threadQuery$ | async"></iucn-red-list-chart>
+        <iucn-red-list-chart (valueSelect)="changeQuery('threats', $event)" [data]="(threadQuery$ | async)!"></iucn-red-list-chart>
       </div>
     </div>
   </ng-container>
   <ng-container *ngSwitchCase="'habitat'">
     <div class="row">
       <div class="col-sm-10">
-        <iucn-red-list-habitat (habitatSelect)="changeQuery('habitat', $event)" [data]="habitatQuery$ | async"></iucn-red-list-habitat>
+        <iucn-red-list-habitat (habitatSelect)="changeQuery('habitat', $event)" [data]="(habitatQuery$ | async)!"></iucn-red-list-habitat>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-8" style="height: 400px">
         <laji-chart
           chartType="pie"
-          [data]="habitatChartQuery$ | async"
+          [data]="(habitatChartQuery$ | async)!"
           [options]="options"
           ></laji-chart>
       </div>

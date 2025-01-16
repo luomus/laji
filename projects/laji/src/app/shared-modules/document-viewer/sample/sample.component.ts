@@ -16,7 +16,7 @@ export class SampleComponent {
     'http://tun.fi/MF.preparationMaterials',
     'http://tun.fi/MF.collectionID'
   ];
-  facts = {};
+  facts: Record<string, any> = {};
 
   @Input() set sample(sample: any) {
     this._sample = sample;

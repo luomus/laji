@@ -10,10 +10,10 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 export class AnnotationItemComponent implements OnInit {
 
   @Input() item: any;
-  @Input() annotationTags: AnnotationTag[];
+  @Input() annotationTags?: AnnotationTag[];
 
   limit = 1;
-  moreTags: number;
+  moreTags?: number;
   tagsConverted: any = {};
 
   ngOnInit() {
@@ -22,14 +22,14 @@ export class AnnotationItemComponent implements OnInit {
     }
     (this.annotationTags || []).forEach(element => {
       const key = element.id;
-      const obj = {};
+      const obj: Record<string, AnnotationTag> = {};
       obj[key] = element;
       this.tagsConverted = Object.assign(this.tagsConverted, obj);
     });
 
   }
 
-  toggleLimit(e) {
+  toggleLimit(e: any) {
     e.stopPropagation();
     if (this.item.unit.interpretations && this.item.unit.interpretations.effectiveTags && this.item.unit.interpretations.effectiveTags.length > 0) {
       if (this.limit === 1) {

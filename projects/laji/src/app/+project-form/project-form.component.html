@@ -9,7 +9,7 @@
                   [contentWrapperClass]="formOptionToClassName('options.simple options.mobile options.instructions options.resultServiceType options.allowExcel options.secondaryCopy options.allowTemplate options.hasAdmins')">
         <nav>
           <h5 lajiFormOption="title shortTitle collectionID options.shortTitleFromCollectionName options.secondaryCopy">
-            <span [innerHTML]="vm.form.options.shortTitleFromCollectionName && (vm.form.collectionID! | label) || vm.form.shortTitle || vm.form.title"></span>
+            <span [innerHTML]="vm.form.options?.shortTitleFromCollectionName && (vm.form.collectionID! | label) || vm.form.shortTitle || vm.form.title"></span>
             <small *ngIf="vm.form.options?.secondaryCopy"><br>{{ 'datasets.secondary.subtitle' | translate }}</small>
           </h5>
           <ng-container *ngTemplateOutlet="sidebarLinks; context:{ $implicit: vm.navLinks}"></ng-container>

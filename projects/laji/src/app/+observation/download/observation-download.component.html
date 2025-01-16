@@ -2,7 +2,8 @@
   <h4>{{ 'search.result.load' | translate }}</h4>
   <p
     *ngIf="!hasPersonalData"
-    [innerHtml]="'result.load.intro' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;'), public: ((unitCount - privateCount) | formattedNumber:'&nbsp;'), species: (speciesCount | formattedNumber:'&nbsp;') }">
+    [innerHtml]="'result.load.intro' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount
+    | formattedNumber:'&nbsp;'), public: ((unitCount - (privateCount ?? 0)) | formattedNumber:'&nbsp;'), species: (speciesCount | formattedNumber:'&nbsp;') }">
   </p>
   <section>
     <h3>{{ 'result.load.titleSimple' | translate }}</h3>

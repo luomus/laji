@@ -1,5 +1,7 @@
 # Standalone app
 
+Note that the standalone version is not developed and will not receive updates. It will stay downloadable though.
+
 You can fetch standalone version of this app from link bellow. We're using [js-xlsx](https://github.com/protobi/js-xlsx/tree/beta)
 to read the files so any format supported by that library is also supported by this library.
   

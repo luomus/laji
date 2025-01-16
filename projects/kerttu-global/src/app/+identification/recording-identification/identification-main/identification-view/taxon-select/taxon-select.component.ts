@@ -28,7 +28,7 @@ export class TaxonSelectComponent {
   value? = '';
   loading = false;
 
-  continent: number|null = null;
+  continent?: number;
   filters$: Observable<IGlobalSpeciesFilters>;
 
   taxonTypeEnum = TaxonTypeEnum;
@@ -86,18 +86,17 @@ export class TaxonSelectComponent {
       }
     ).pipe(
       map(result => (result.results)),
-      map(result => {
-        result.forEach(res => {
+      map(result => result.map(
+        res => {
           let autocompleteDisplayName = '';
           if (res.commonName) {
-            autocompleteDisplayName += this.addBold(res.commonName, this.value) + ' - ';
+            autocompleteDisplayName += this.addBold(res.commonName, this.value!) + ' - ';
           }
-          autocompleteDisplayName += '<i>' + this.addBold(res.scientificName, this.value) + '</i>';
-          res['autocompleteDisplayName'] = autocompleteDisplayName;
-        });
-        return result;
-      }),
-      catchError(() => ([])),
+          autocompleteDisplayName += '<i>' + this.addBold(res.scientificName, this.value!) + '</i>';
+          return {...res, autocompleteDisplayName };
+        })
+      ),
+      catchError(() => (of([] as IGlobalSpeciesWithAutocompleteInfo[]))),
       tap(() => {
         this.loading = false;
         this.cdr.markForCheck();

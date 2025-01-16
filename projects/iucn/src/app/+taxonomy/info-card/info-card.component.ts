@@ -16,7 +16,7 @@ import { HeaderService } from 'projects/laji/src/app/shared/service/header.servi
 export class InfoCardComponent implements OnChanges, OnInit {
   @Input() public year!: string;
   @Input() public checklistId!: string;
-  @Input() private taxonId!: string;
+  @Input() public taxonId!: string;
 
   public taxon: Taxonomy | undefined;
   public latestStatus: RedListEvaluation | undefined | null;

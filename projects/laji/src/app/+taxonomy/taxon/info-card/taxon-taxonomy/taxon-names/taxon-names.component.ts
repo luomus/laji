@@ -18,7 +18,7 @@ interface AvailableLangs {
 export class TaxonNamesComponent {
   _taxon!: Taxonomy;
   availableLangs: AvailableLangs = {vernacularName: [], alternativeVernacularName: [], obsoleteVernacularName: [], colloquialVernacularName: [], tradeName: []};
-  synonymTypes = [
+  synonymTypes: (keyof Taxonomy)[] = [
     'basionyms',
     'objectiveSynonyms',
     'subjectiveSynonyms',
@@ -31,6 +31,14 @@ export class TaxonNamesComponent {
     'misappliedNames',
     'alternativeNames'
   ];
+  readonly names = [
+    'vernacularName',
+    'alternativeVernacularName',
+    'obsoleteVernacularName',
+    'colloquialVernacularName',
+    'synonyms',
+    'tradeName'
+  ] as const;
 
   @Input() set taxon(taxon: Taxonomy) {
       this.availableLangs = {vernacularName: [], alternativeVernacularName: [], obsoleteVernacularName: [], colloquialVernacularName: [], tradeName: []};

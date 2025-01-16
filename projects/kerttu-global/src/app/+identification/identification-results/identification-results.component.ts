@@ -20,13 +20,12 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationResultsComponent implements OnInit {
-  sites$: Observable<IGlobalSite[]>;
-  siteStats$: Observable<IIdentificationSiteStat[]>;
-  userStats$: Observable<IIdentificationUserStatResult>;
-  speciesStats$: Observable<IIdentificationSpeciesStat[]>;
-  ownSpeciesStats$: Observable<IIdentificationSpeciesStat[]>;
-  generalStats$: Observable<IIdentificationStat>;
-  userId$: Observable<string>;
+  sites$!: Observable<IGlobalSite[]>;
+  siteStats$!: Observable<IIdentificationSiteStat[]>;
+  userStats$!: Observable<IIdentificationUserStatResult>;
+  speciesStats$!: Observable<IIdentificationSpeciesStat[]>;
+  ownSpeciesStats$!: Observable<IIdentificationSpeciesStat[]>;
+  generalStats$!: Observable<IIdentificationStat>;
 
   showOwnSpecies = false;
   filterSpeciesBy = '';

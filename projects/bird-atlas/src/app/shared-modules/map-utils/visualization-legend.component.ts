@@ -20,11 +20,11 @@ const activityCategoryLegendLabels = [
 export const legends: Record<VisualizationMode, { color: string; label: string }[]> = {
   speciesCount: Object.entries(speciesCountGradient).map(([key, val]) => ({
     color: val,
-    label: speciesCountLegendLabels[key]
+    label: speciesCountLegendLabels[<number><unknown>key]
   })),
   activityCategory: Object.entries(activityCategoryGradient).map(([key, val]) => ({
     color: val,
-    label: activityCategoryLegendLabels[key]
+    label: activityCategoryLegendLabels[<number><unknown>key]
   }))
 };
 
@@ -39,7 +39,7 @@ export const legends: Record<VisualizationMode, { color: string; label: string }
   styleUrls: ['./visualization-legend.component.scss']
 })
 export class VisualizationLegendComponent {
-  @Input() visualization: VisualizationMode;
+  @Input() visualization!: VisualizationMode;
   legends = legends;
   visualizationModeTitles = visualizationModeTitles;
 }

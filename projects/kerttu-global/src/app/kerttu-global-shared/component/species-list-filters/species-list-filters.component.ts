@@ -8,7 +8,7 @@ import { IGlobalSpeciesFilters, IGlobalSpeciesQuery } from '../../models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesListFiltersComponent {
-  @Input() filters: IGlobalSpeciesFilters = { continent: [], order: [], family: [] };
+  @Input() filters?: IGlobalSpeciesFilters = { continent: [], order: [], family: [] };
   @Input() query: IGlobalSpeciesQuery = {};
   @Input() showOnlyUnvalidated = true;
   @Input() showSearch = true;
@@ -16,12 +16,12 @@ export class SpeciesListFiltersComponent {
   @Output() queryChange = new EventEmitter<IGlobalSpeciesQuery>();
 
   selectChange(field: 'continent'|'order'|'family', value: string) {
-    this.query[field] = parseInt(value, 10) || null;
+    this.query[field] = parseInt(value, 10) || undefined;
 
     if (field === 'order' && this.query.order != null && this.query.family != null) {
-      const family = this.filters.family.filter(f => f.id === this.query.family)[0];
+      const family = this.filters!.family.filter(f => f.id === this.query.family)[0];
       if (family.order !== this.query.order) {
-        this.query.family = null;
+        this.query.family = undefined;
       }
     }
 

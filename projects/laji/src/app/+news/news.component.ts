@@ -16,29 +16,29 @@ import { NewsFacade } from './news.facade';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewsComponent implements OnInit {
-  public newsItem$: Observable<News>;
+  public newsItem$!: Observable<News>;
 
   constructor(private route: ActivatedRoute,
               private newsFacade: NewsFacade,
               private headerService: HeaderService,
               private title: Title,
-              @Inject(PLATFORM_ID) private platformId
+              @Inject(PLATFORM_ID) private platformId: object
   ) {}
 
   ngOnInit() {
     this.newsItem$ = this.route.params.pipe(
-      map(params => params['id']),
+      map(params => params['id'] as string),
       tap(id => this.newsFacade.activate(id)),
       switchMap((id) => this.newsFacade.active$.pipe(
-        filter(news => news?.id === id),
+        filter((news): news is News => news?.id === id),
       )),
       delay(0),
       tap(news => this.updateHeaders(news))
     );
   }
 
-  getFeaturedImageUrl(news: News): string {
-    return typeof news.featuredImage === 'string' ? news.featuredImage : news.featuredImage.url;
+  getFeaturedImageUrl(news: News): string|undefined {
+    return typeof news.featuredImage === 'string' ? news.featuredImage : news.featuredImage?.url;
   }
 
   private updateHeaders(news: News): void {
@@ -55,8 +55,8 @@ export class NewsComponent implements OnInit {
         image: this.getFeaturedImageUrl(news)
       });
     } else if (isPlatformServer(this.platformId)) {
-      const matches = news.content.match(/<img.+?src="(.*?)"/);
-      if (matches?.[1]?.length > 0) {
+      const matches = news.content?.match(/<img.+?src="(.*?)"/);
+      if (matches && matches[1]?.length > 0) {
         this.headerService.setHeaders({
           image: matches[1]
         });

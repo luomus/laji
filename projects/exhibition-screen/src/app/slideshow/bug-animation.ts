@@ -44,15 +44,15 @@ const bugPathToV2Arr = (p: BugPath, canvasW: number, canvasH: number): V2[] => {
 
 export class BugAnimation {
   private unsubscribe$ = new Subject<void>();
-  private destroyClickListener;
-  private destroyTouchListener;
+  private destroyClickListener: (() => void) | undefined;
+  private destroyTouchListener: (() => void) | undefined;
 
   private input$ = new Subject<void>();
 
   public bugPaths: BugPath[] = ['topleft', 'topright', 'botright', 'botleft'];
-  private bugEl: HTMLElement;
-  private bug: EsAnimatable;
-  private anim: AnimationEngine;
+  private bugEl!: HTMLElement;
+  private bug!: EsAnimatable;
+  private anim!: AnimationEngine;
 
   constructor(private baseEl: ElementRef, private renderer: Renderer2) {}
 

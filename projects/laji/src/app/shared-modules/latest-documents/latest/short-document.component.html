@@ -1,4 +1,4 @@
-<div [ngStyle]="{'width': (staticWidth - 50) ? (staticWidth - 50) +'px': undefined}" class="fixedDimension">
+<div [ngStyle]="{'width': staticWidth ? (staticWidth - 50) +'px': undefined}" class="fixedDimension">
 
   <div *ngIf="unsaved" class="unsaved" [luTooltip]="'haseka.users.unsaved.doc' | translate" [placement]="'left'">
     <div>!</div>
@@ -19,7 +19,7 @@
   </section>
 
   <section class="unit-list">
-    <div *ngIf="document.gatherings?.length > 1">({{ document.gatherings.length - 1 }} {{ 'haseka.users.latest.other' | translate }})</div>
+    <div *ngIf="document.gatherings?.length ?? 0 > 1">({{ document.gatherings!.length - 1 }} {{ 'haseka.users.latest.other' | translate }})</div>
     <div>
       <div *ngIf="unitList && unitList.length < 1" class="d-inline-block">
         <span>{{ unitList.length }} </span>

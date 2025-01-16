@@ -8,7 +8,7 @@ import { AtlasGridSquare } from '../../core/atlas-api.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridSquareInfoComponent {
-  @Input() square: AtlasGridSquare;
+  @Input() square!: AtlasGridSquare;
   activityCategoryClass = {
     'MY.atlasActivityCategoryEnum0': 'limit-neutral',
     'MY.atlasActivityCategoryEnum1': 'limit-danger',

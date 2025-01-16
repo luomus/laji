@@ -1,4 +1,4 @@
-<ng-container *ngIf="secureLevel !== 'NONE'">
+<ng-container *ngIf="secureLevel && secureLevel !== 'NONE'">
   <strong>{{ 'observation.active.secureLevel' | translate }}:</strong>
   {{ secureLevel | label: 'warehouse' }}
   <br>

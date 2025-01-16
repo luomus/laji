@@ -50,7 +50,7 @@
         {{ 'taxonomy.map.disclaimer' | translate }}
       </p>
       <laji-ykj-map
-        [query]="mapQuery"
+        [query]="mapQuery!"
         [height]="'600px'"
         [type]="'count'"
         [types]="['count']"
@@ -139,7 +139,7 @@
          [autoToggle]="true"
     >
       <laji-observation-month-day-chart
-        [query]="chartQuery"
+        [query]="chartQuery!"
         [useIndividualCount]="false"
         (hasData)="hasMonthDayData = $event"
       ></laji-observation-month-day-chart>
@@ -214,7 +214,7 @@
         [showSettingsMenu]="false"
         [isAggregate]="true"
         [selected]="['unit.superRecordBasis']"
-        [query]="chartQuery"
+        [query]="chartQuery!"
         [showRowAsLink]="false"
         (total)="filterByRecordBasisTotal = $event"
       ></laji-observation-table>
@@ -234,7 +234,7 @@
         [showSettingsMenu]="false"
         [isAggregate]="true"
         [selected]="['unit.lifeStage']"
-        [query]="chartQuery"
+        [query]="chartQuery!"
         [showRowAsLink]="false"
         (total)="filterByLifeStageTotal = $event"
       ></laji-observation-table>
@@ -256,7 +256,7 @@
         [showSettingsMenu]="false"
         [isAggregate]="true"
         [selected]="['unit.sex']"
-        [query]="chartQuery"
+        [query]="chartQuery!"
         [showRowAsLink]="false"
         (total)="filterBySexTotal = $event"
       ></laji-observation-table>
@@ -277,7 +277,7 @@
         [showHeader]="false"
         [isAggregate]="true"
         [selected]="['document.collectionId']"
-        [query]="chartQuery"
+        [query]="chartQuery!"
         [showRowAsLink]="false"
         (total)="filterByCollectionIdTotal = $event"
       ></laji-observation-table>
@@ -294,12 +294,7 @@
          [autoToggle]="true"
     >
 
-        <ng-container *ngFor="let secureLevelType of [
-          'secureLevel',
-          'breedingSecureLevel',
-          'naturaAreaSecureLevel',
-          'nestSiteSecureLevel',
-          'winteringSecureLevel']">
+        <ng-container *ngFor="let secureLevelType of secureLevelTypes">
           <laji-taxon-info-row *ngIf="taxon[secureLevelType]" [label]="'MX.' + secureLevelType | label">
             {{ taxon[secureLevelType] | label }}
           </laji-taxon-info-row>

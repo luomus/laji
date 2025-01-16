@@ -11,9 +11,9 @@ import { UserNameTemplateComponent } from '../../../kerttu-global-shared/compone
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserTableComponent implements OnInit {
-  @ViewChild(UserNameTemplateComponent, { static: true }) public userNameTemplate: UserNameTemplateComponent;
+  @ViewChild(UserNameTemplateComponent, { static: true }) public userNameTemplate!: UserNameTemplateComponent;
 
-  @Input() data: IUserStat[] = [];
+  @Input() data?: IUserStat[] = [];
 
   columns: DatatableColumn[] = [];
   sorts: { prop: string; dir: 'asc'|'desc' }[] = [{ prop: 'speciesCreated', dir: 'desc' }, { prop: 'speciesValidated', dir: 'desc' }];

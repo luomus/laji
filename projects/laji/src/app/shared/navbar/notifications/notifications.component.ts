@@ -77,7 +77,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     ).subscribe();
 }
 
-  trackNotification(idx: number, notification: Notification) {
+  trackNotification(idx: number, notification?: Notification) {
     return notification ? notification.id : undefined;
   }
 

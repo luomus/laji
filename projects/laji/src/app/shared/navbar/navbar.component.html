@@ -86,7 +86,7 @@
                       <a [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
                     </li>
                     <ng-container *lajiForTypes="['dev', 'prod', 'beta']">
-                      <ng-container *ngIf="(notificationsTotal$ | async) > 0">
+                      <ng-container *ngIf="(notificationsTotal$ | async)! > 0">
                         <li role="separator" class="divider"></li>
                         <li>
                           <laji-notifications></laji-notifications>

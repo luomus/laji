@@ -12,11 +12,11 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 })
 export class AnnotationListComponent implements OnInit {
 
-  @Input() result: PagedResult<any>;
-  @Input() annotationTags: AnnotationTag[];
-  lang: string;
-  gathering: any[];
-  hasTaxon: boolean;
+  @Input() result!: PagedResult<any>;
+  @Input() annotationTags?: AnnotationTag[];
+  lang!: string;
+  gathering?: any[];
+  hasTaxon?: boolean;
 
   constructor(
     private transation: TranslateService,
@@ -27,7 +27,7 @@ export class AnnotationListComponent implements OnInit {
    this.lang = this.transation.currentLang;
   }
 
-  showDocument(value) {
+  showDocument(value: any) {
     const row: any = value || {};
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
       this.documentViewerFacade.showDocumentID({

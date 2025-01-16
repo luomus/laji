@@ -18,21 +18,21 @@ export interface ILoadData {
 })
 export class LabelExcelFileComponent {
 
-  @Input() defaultDomain;
-  @Input() availableFields: ILabelField[];
+  @Input() defaultDomain?: string;
+  @Input({ required: true }) availableFields!: ILabelField[];
   @Output() columnMapChange = new EventEmitter<IColumnMap>();
   idField = '_id';
   domainField = '_domain';
   dataStarts = 2;
   hasColumnMap = false;
 
-  wb: XLSX.WorkBook;
-  filename: string;
+  wb?: XLSX.WorkBook;
+  filename?: string;
   sheets: string[] = [];
   headers: string[] = [];
-  uriCol: string;
+  uriCol?: string;
   importFields = true;
-  data: {[key: string]: string}[];
+  data?: {[key: string]: string}[];
 
   private _columnMap: IColumnMap = {};
 
@@ -41,7 +41,7 @@ export class LabelExcelFileComponent {
   ) { }
 
   @Input()
-  set columnMap(map: IColumnMap) {
+  set columnMap(map: IColumnMap|undefined) {
     if (!map || Object.keys(map).length === 0) {
       this.hasColumnMap = false;
       this._columnMap = {};
@@ -55,7 +55,7 @@ export class LabelExcelFileComponent {
     return this._columnMap;
   }
 
-  onExcelFileChange(evt): void {
+  onExcelFileChange(evt: any): void {
     const target: DataTransfer = <DataTransfer>(evt.target);
     if (target.files.length !== 1) {
       return;
@@ -76,7 +76,7 @@ export class LabelExcelFileComponent {
   }
 
   loadSheet(name: string): void {
-    const sheet: XLSX.WorkSheet = this.wb.Sheets[name];
+    const sheet: XLSX.WorkSheet = this.wb!.Sheets[name];
     const rows: {[key: string]: string}[] = <any>XLSX.utils.sheet_to_json<{[key: string]: string}>(sheet, {raw: false});
     if (Array.isArray(rows) && rows.length > 0) {
       this.headers = Object.keys(rows[0]);
@@ -106,11 +106,11 @@ export class LabelExcelFileComponent {
     return {
       availableFields: this.importFields ? this.getFields() : undefined,
       data: this.data.slice(start - 2).map(row => {
-        const uri = this.makeUri(row[this.uriCol]);
+        const uri = this.makeUri(row[this.uriCol!]);
         const parsedUri = LabelService.parseUri(uri);
         const rowData = {
           ...row,
-          [this.uriCol]: uri,
+          [this.uriCol!]: uri,
           [this.idField]: parsedUri.id
         };
         if (parsedUri.domain) {
@@ -127,11 +127,11 @@ export class LabelExcelFileComponent {
     const fieldMap: {[key: string]: ILabelField} = this.availableFields.reduce((cumulative, current) => {
       cumulative[current.field] = current;
       return cumulative;
-    }, {});
+    }, {} as Record<string, ILabelField>);
     return {
       availableFields: undefined,
-      data: this.data.slice(start - 2).map(row => {
-        const rowData = {};
+      data: this.data!.slice(start - 2).map(row => {
+        const rowData: Record<string, any> = {};
         cols.forEach(col => {
           if (rowData[this.columnMap[col]]) {
             if (fieldMap[this.columnMap[col]].isArray) {
@@ -149,7 +149,7 @@ export class LabelExcelFileComponent {
     };
   }
 
-  private makeUri(val): string {
+  private makeUri(val: any): string {
     if (typeof val === 'string' && val.indexOf('http') !== 0) {
       return ('' + this.defaultDomain) + val;
     }
@@ -157,22 +157,22 @@ export class LabelExcelFileComponent {
   }
 
   private getFields(): ILabelField[] {
-    const ex = this.data[0] || {};
+    const ex = this.data![0] || {};
     const fields: ILabelField[] = [
       {
         label: this.uriCol + ' - QRCode',
-        field: this.uriCol,
-        content: ex[this.uriCol] || 'http://example.com/123',
+        field: this.uriCol!,
+        content: ex[this.uriCol!] || 'http://example.com/123',
         type: FieldType.qrCode
       },
       {
-        label: this.uriCol,
-        field: this.uriCol,
-        content: ex[this.uriCol] || 'http://example.com/123',
+        label: this.uriCol!,
+        field: this.uriCol!,
+        content: ex[this.uriCol!] || 'http://example.com/123',
         type: FieldType.uri
       },
     ];
-    const uri = this.makeUri(ex[this.uriCol]);
+    const uri = this.makeUri(ex[this.uriCol!]);
     const parsedUri = LabelService.parseUri(uri);
     if (parsedUri.domain) {
       fields.push({
@@ -205,7 +205,7 @@ export class LabelExcelFileComponent {
           });
         }
         return cumulative;
-      }, [])
+      }, [] as ILabelField[])
     ];
   }
 
