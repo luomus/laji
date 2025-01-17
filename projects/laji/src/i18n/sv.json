@@ -1021,7 +1021,7 @@
   "np.delete.fail": "Raderingen misslyckades. Försök igen lite senare.",
   "np.delete.success": "Raderas framgångsrikt!",
   "np.earlier": "Observationer",
-  "np.edit": "Redigera offentliga fält",
+  "np.edit": "Redigera",
   "np.editPlace": "Spara ändringar",
   "np.form.success": "Plats sparat!",
   "np.formOwnSubmissions": "Placerar tidigare dokument",

@@ -1021,7 +1021,7 @@
   "np.delete.fail": "Deleting failed. Please try again later",
   "np.delete.success": "Deleted succesfully!",
   "np.earlier": "Observations",
-  "np.edit": "Edit my public information",
+  "np.edit": "Edit",
   "np.editPlace": "Save changes",
   "np.form.success": "Place saved!",
   "np.formOwnSubmissions": "Places previous documents",
