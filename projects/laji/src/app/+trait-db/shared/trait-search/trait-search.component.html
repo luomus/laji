@@ -7,7 +7,7 @@
   (searchClicked)="onFilterSearchClicked()"
 ></laji-trait-search-filters>
 
-<button>Download</button>
+<a class="btn btn-default" [href]="getDownloadUrl()" download="traits.zip">Download</a>
 
 <lu-datatable
   [rows]="searchResult?.res.results ?? []"

@@ -47,7 +47,8 @@ const getPath = <
   providedIn: 'root'
 })
 export class LajiApiClientBService {
-  private baseUrl = 'http://localhost:3000/api';
+  baseUrl = 'http://localhost:3000/api';
+
   private cache: Map<string, Map<string, CacheElement<any>>> = new Map();
 
   constructor(private http: HttpClient) { }

@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter,
+         Input, OnChanges, Output, QueryList, SimpleChanges, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable } from 'rxjs';
+import { FormChangeType as AdditionalFiltersFormChangeType } from './additional-filters.component';
 
 export const HIGHER_TAXA: (keyof components['schemas']['HigherTaxa'])[] = [
   'domain',
@@ -26,14 +28,16 @@ export type Filters = {
   dataset: string | null;
   trait: string | null;
   searchByTaxon: 'FinBIF' | 'GBIF';
+  additionalFilters: AdditionalFiltersFormChangeType;
 } & {
   [K in typeof HIGHER_TAXA[number]]: string | null;
 };
 
-export const filterDefaultValues = {
+export const filterDefaultValues: Filters = {
   dataset: null,
   trait: null,
   searchByTaxon: 'FinBIF',
+  additionalFilters: null,
   domain: null,
   kingdom: null,
   phylum: null,
@@ -90,5 +94,9 @@ export class TraitSearchFiltersComponent implements OnChanges {
 
   onSearch() {
     this.searchClicked.emit();
+  }
+
+  onAdditionalFiltersChange(filters: AdditionalFiltersFormChangeType) {
+    this.form.get('additionalFilters').setValue(filters);
   }
 }

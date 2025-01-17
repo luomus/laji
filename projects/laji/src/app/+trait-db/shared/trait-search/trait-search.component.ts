@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { combineLatest, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components, paths } from 'projects/laji-api-client-b/generated/api';
 import { map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { Sort } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 import { filterDefaultValues, Filters, HIGHER_TAXA } from './trait-search-filters/trait-search-filters.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { isObject } from '@luomus/laji-map/lib/utils';
+import { additionalFilters } from './trait-search-filters/additional-filters.component';
 
 type SearchResponse = paths['/trait/search']['get']['responses']['200']['content']['application/json'];
 
@@ -20,21 +22,34 @@ interface SearchResult {
 
 const PAGE_SIZE = 20;
 
+const addFiltersToApiQuery = (query: any, filters: Partial<Filters>) => {
+  if (filters['dataset']) { query['dataset.id'] = filters['dataset']; }
+  if (filters['trait']) { query['trait.id'] = filters['trait']; }
+
+  if (filters['additionalFilters']) {
+    Object.entries(filters['additionalFilters']).forEach(([k, v]) => {
+      if (v !== undefined && v !== null) {
+        query[additionalFilters[k].prop] = v;
+      }
+    });
+  }
+
+  const taxonField = filters['searchByTaxon'] === 'GBIF' ? 'subjectGBIFTaxon' : 'subjectFinBIFTaxon';
+  HIGHER_TAXA.forEach(taxon => {
+    if (filters[taxon]) {
+      query[taxonField + '.higherTaxa.domain'] = filters[taxon];
+    }
+  });
+  return query;
+};
+
 const getSearchApiQuery = (pageIdx: number, sorts: Sort[], filters: Partial<Filters>) => {
   const o: any = {
     pageSize: PAGE_SIZE,
     page: pageIdx + 1
   };
 
-  if (filters['dataset']) { o['dataset.id'] = filters['dataset']; }
-  if (filters['trait']) { o['trait.id'] = filters['trait']; }
-
-  const taxonField = filters['searchByTaxon'] === 'GBIF' ? 'subjectGBIFTaxon' : 'subjectFinBIFTaxon';
-  HIGHER_TAXA.forEach(taxon => {
-    if (filters[taxon]) {
-      o[taxonField + '.higherTaxa.domain'] = filters[taxon];
-    }
-  });
+  addFiltersToApiQuery(o, filters);
 
   return o;
 };
@@ -55,7 +70,7 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
   private searchResult$: Observable<{ res: SearchResponse; sorts: Sort[] }>;
   private pageIdxSubject = new Subject<number>();
   private sortSubject = new Subject<Sort[]>();
-  private filterChangeSubject = new Subject<Partial<Filters>>();
+  private filterChangeSubject = new BehaviorSubject<Partial<Filters>>({});
   private subscription = new Subscription();
 
   constructor(
@@ -123,12 +138,30 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
     this.sortSubject.next(sorts);
   }
 
+  getDownloadUrl(): string {
+    const queryParams = addFiltersToApiQuery({}, this.filterChangeSubject.getValue());
+    const queryParamString = Object.entries(queryParams)
+      .map(([k, v]) => k + '=' + v).join('&');
+    return this.api.baseUrl + '/trait/search/download?' + queryParamString;
+  }
+
   private handleInitialQueryParams(queryParams: QueryParams) {
     const filters = { ...queryParams };
     if (filters['page']) {
       this.currentPageIdx = filters['page'] - 1;
       delete filters['page'];
     }
+
+    // parse prefixed additionalFilters
+    const toRemove = [];
+    filters.additionalFilters = {};
+    Object.entries(queryParams).filter(([k, v]) => k.includes('additionalFilters-')).forEach(([k, v]) => {
+      // warning: implicit conversion
+      filters.additionalFilters[k.substring('additionalFilters-'.length)] = v;
+      toRemove.push(k);
+    });
+    toRemove.forEach(k => delete filters[k]);
+
     this.initialFilters = filters;
   }
 
@@ -136,9 +169,16 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
     const q: QueryParams = { };
     if (pageIdx > 0) { q.page = pageIdx + 1; }
 
-    Object.entries(filters).forEach(([k, v]) => {
-      if (v && v !== filterDefaultValues[k]) {
-        q[k] = v;
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value && value !== filterDefaultValues[key]) {
+        if (isObject(value)) {
+          // prefix nested values with the parents key
+          Object.entries(value).forEach(([subKey, subValue]) => {
+            q[key + '-' + subKey] = subValue;
+          });
+        } else {
+          q[key] = value;
+        }
       }
     });
 

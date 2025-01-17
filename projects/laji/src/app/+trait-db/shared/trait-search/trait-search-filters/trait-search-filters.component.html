@@ -40,16 +40,7 @@
     </div>
   </details>
 
-  <details class="lu-details" open>
-    <summary>Additional fields</summary>
-    <div>
-      <label for="trait-search-filters-additional-field">Selected field</label>
-      <select class="form-control" id="trait-search-filters-additional-field">
-        <option [value]="null">None</option>
-        <option *ngFor="let additionalField of []" [value]="additionalField.prop">{{ additionalField.title}}</option>
-      </select>
-    </div>
-  </details>
+  <laji-trait-search-additional-filters [initialValue]="form.get('additionalFilters').value" (filterChange)="onAdditionalFiltersChange($event)"></laji-trait-search-additional-filters>
 
   <div class="d-flex flex-gap-4">
     <button (click)="onSearch()" class="btn btn-primary">Search</button>
