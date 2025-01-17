@@ -4,7 +4,8 @@
     <button type="button" class="btn btn-default btn-sm" (click)="availableFieldsChange.emit(defaultAvailableFields)">{{ 'reset' | translate }}</button>
   </div>
   <h3 class="first">{{ 'Available fields' | translate }}</h3>
-  <input type="search" placeholder="{{ 'search' | translate }}..." style="margin-bottom: 10px;" class="form-control" (keyup)="filter($event.target.value)">
+  <input type="search" placeholder="{{ 'search' | translate }}..." style="margin-bottom: 10px;" class="form-control"
+  (keyup)="filter($any($event.target).value)">
   <div *ngIf="setup.twoSided">
     <label>
       {{ 'Add fields to the backside' | translate }}

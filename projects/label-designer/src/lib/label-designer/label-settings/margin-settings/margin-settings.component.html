@@ -4,28 +4,28 @@
     <tr>
       <td>{{ 'top' | translate }}:</td>
       <td>
-        <input class="form-control input-sm md-input" type="text" [value]="top" (change)="change('top', $event.target.value)">
+        <input class="form-control input-sm md-input" type="text" [value]="top" (change)="change('top', $any($event.target).value)">
       </td>
       <td>mm.</td>
     </tr>
     <tr>
       <td>{{ 'right' | translate }}:</td>
       <td>
-        <input class="form-control input-sm md-input" type="text" [value]="right" (change)="change('right', $event.target.value)">
+        <input class="form-control input-sm md-input" type="text" [value]="right" (change)="change('right', $any($event.target).value)">
       </td>
       <td>mm.</td>
     </tr>
     <tr>
       <td>{{ 'bottom' | translate }}:</td>
       <td>
-        <input class="form-control input-sm md-input" type="text" [value]="bottom" (change)="change('bottom', $event.target.value)">
+        <input class="form-control input-sm md-input" type="text" [value]="bottom" (change)="change('bottom', $any($event.target).value)">
       </td>
       <td>mm.</td>
     </tr>
     <tr>
       <td>{{ 'left' | translate }}:</td>
       <td>
-        <input class="form-control input-sm md-input" type="text" [value]="left" (change)="change('left', $event.target.value)">
+        <input class="form-control input-sm md-input" type="text" [value]="left" (change)="change('left', $any($event.target).value)">
       </td>
       <td>mm.</td>
     </tr>

@@ -19,7 +19,7 @@
     <tr>
       <td>{{ 'Sheet' | translate }}:</td>
       <td>
-        <select style="width: 100%" class="form-control input-sm" (change)="loadSheet($event.target.value)">
+        <select style="width: 100%" class="form-control input-sm" (change)="loadSheet($any($event.target).value)">
           <option *ngFor="let sheet of sheets" [value]="sheet">{{ sheet }}</option>
         </select>
       </td>
@@ -27,7 +27,8 @@
     <tr style="padding-top: 5px;">
       <td>{{ 'First data row' | translate }}:</td>
       <td>
-        <input class="form-control input-sm" type="number" [value]="dataStarts" (change)="dataStarts = $event.target.value" (keyup)="dataStarts = $event.target.value">
+        <input class="form-control input-sm" type="number" [value]="dataStarts" (change)="dataStarts =
+        $any($event.target).value" (keyup)="dataStarts = $any($event.target).value">
       </td>
     </tr>
     <tr style="padding-top: 5px; padding-bottom: 5px">
@@ -59,7 +60,7 @@
       <tr style="padding-top: 5px;" *ngIf="!hasColumnMap">
         <td>{{ 'Id column' | translate }}:</td>
         <td>
-          <select style="width: 100%" class="form-control input-sm" (change)="changeIdCol($event.target.value)">
+          <select style="width: 100%" class="form-control input-sm" (change)="changeIdCol($any($event.target).value)">
             <option *ngFor="let header of headers" [value]="header" [selected]="header === uriCol">{{ header }}</option>
           </select>
         </td>
@@ -73,7 +74,7 @@
             [includeTextField]="false"
             [availableFields]="availableFields"
             [value]="columnMap[header] || ''"
-            (valueChange)="onColumnMap(header, $event)"
+            (valueChange)="onColumnMap(header, $any($event))"
             placeholder="Field"></ll-available-fields>
         </td>
       </tr>

@@ -15,22 +15,22 @@ export class MarginSettingsComponent {
   @Input() type: 'padding'|'margin' = 'margin';
   @Output() styleChange = new EventEmitter<IPageStyle | ILabelStyle>();
 
-  top: string;
-  bottom: string;
-  left: string;
-  right: string;
+  top!: number;
+  bottom!: number;
+  left!: number;
+  right!: number;
 
-  private _style;
+  private _style!: IPageStyle | ILabelStyle;
 
   @Input() set style(style: IPageStyle | ILabelStyle) {
     this._style = style;
-    this.top = style[this.type + 'Top.mm'] || 0;
-    this.bottom = style[this.type + 'Bottom.mm'] || 0;
-    this.left = style[this.type + 'Left.mm'] || 0;
-    this.right = style[this.type + 'Right.mm'] || 0;
+    this.top = (style as any)[this.type + 'Top.mm'] || 0;
+    this.bottom = (style as any)[this.type + 'Bottom.mm'] || 0;
+    this.left = (style as any)[this.type + 'Left.mm'] || 0;
+    this.right = (style as any)[this.type + 'Right.mm'] || 0;
   }
 
-  change(place: keyof Pick<this, 'top' | 'bottom' | 'left' | 'right'>, value: string): void {
+  change(place: keyof Pick<this, 'top' | 'bottom' | 'left' | 'right'>, value: number): void {
     this[place] = value;
     this.styleChange.emit({
       ...this._style,

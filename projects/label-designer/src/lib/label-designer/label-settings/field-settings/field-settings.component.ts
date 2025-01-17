@@ -12,8 +12,8 @@ import { FieldType, ILabelField } from '../../../label-designer.interface';
 })
 export class FieldSettingsComponent {
 
-  @Input() field: ILabelField;
-  @Input() allowDelete: boolean;
+  @Input() field!: ILabelField;
+  @Input() allowDelete?: boolean;
   @Output() fieldChange = new EventEmitter<ILabelField>();
   @Output() fieldRemove = new EventEmitter<void>();
 
@@ -42,7 +42,7 @@ export class FieldSettingsComponent {
     this.change(select.value, place);
   }
 
-  change(value, place: keyof ILabelField = 'separator') {
+  change(value: any, place: keyof ILabelField = 'separator') {
     this.fieldChange.emit({
       ...this.field,
       [place]: value,

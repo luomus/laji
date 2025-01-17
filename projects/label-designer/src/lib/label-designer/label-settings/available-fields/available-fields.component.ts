@@ -15,12 +15,12 @@ interface ILabelFieldWithIdx extends ILabelField {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AvailableFieldsComponent implements OnChanges {
-  @Input() availableFields: ILabelField[];
+  @Input() availableFields?: ILabelField[];
   @Input() includeTextField = true;
   @Input() placeholder = 'add';
   @Input() value = '';
 
-  @Output() valueChange = new EventEmitter<ILabelField>();
+  @Output() valueChange = new EventEmitter<ILabelField | null>();
 
   fieldType = FieldType;
 
@@ -43,7 +43,7 @@ export class AvailableFieldsComponent implements OnChanges {
     select.value = '';
     const idx = parseInt(value, 10);
     if (!isNaN(idx)) {
-      this.valueChange.emit({...this.availableFields[idx]});
+      this.valueChange.emit({...this.availableFields![idx]});
     } else {
       this.valueChange.emit(null);
     }
