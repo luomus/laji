@@ -2,7 +2,7 @@
 <p>Browse, search and download trait data published on the FinBIF Trait Database.</p>
 
 <laji-trait-search-filters
-  [filters]="initialFilters"
+  [initialValue]="initialFilters"
   (filterChange)="onFilterChange($event)"
   (searchClicked)="onFilterSearchClicked()"
 ></laji-trait-search-filters>

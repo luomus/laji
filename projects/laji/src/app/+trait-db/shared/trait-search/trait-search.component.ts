@@ -7,7 +7,6 @@ import { Sort } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 import { filterDefaultValues, Filters, HIGHER_TAXA } from './trait-search-filters/trait-search-filters.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isObject } from '@luomus/laji-map/lib/utils';
-import { additionalFilters } from './trait-search-filters/additional-filters.component';
 
 type SearchResponse = paths['/trait/search']['get']['responses']['200']['content']['application/json'];
 
@@ -28,9 +27,7 @@ const addFiltersToApiQuery = (query: any, filters: Partial<Filters>) => {
 
   if (filters['additionalFilters']) {
     Object.entries(filters['additionalFilters']).forEach(([k, v]) => {
-      if (v !== undefined && v !== null) {
-        query[additionalFilters[k].prop] = v;
-      }
+      query[k] = v;
     });
   }
 
@@ -155,9 +152,9 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
     // parse prefixed additionalFilters
     const toRemove = [];
     filters.additionalFilters = {};
-    Object.entries(queryParams).filter(([k, v]) => k.includes('additionalFilters-')).forEach(([k, v]) => {
+    Object.entries(queryParams).filter(([k, v]) => k.includes('additionalFilters:')).forEach(([k, v]) => {
       // warning: implicit conversion
-      filters.additionalFilters[k.substring('additionalFilters-'.length)] = v;
+      filters.additionalFilters[k.substring('additionalFilters:'.length)] = v;
       toRemove.push(k);
     });
     toRemove.forEach(k => delete filters[k]);
@@ -174,7 +171,7 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
         if (isObject(value)) {
           // prefix nested values with the parents key
           Object.entries(value).forEach(([subKey, subValue]) => {
-            q[key + '-' + subKey] = subValue;
+            q[key + ':' + subKey] = subValue;
           });
         } else {
           q[key] = value;

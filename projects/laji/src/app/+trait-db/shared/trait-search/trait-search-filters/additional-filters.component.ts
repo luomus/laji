@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 interface BaseFilter {
   // what this filter gets mapped to in the final search api query
@@ -24,7 +25,7 @@ interface BooleanFilter extends BaseFilter {
   defaultValue: boolean | null;
 }
 
-type AdditionalFilter<T extends string> = StringFilter | EnumFilter<T> | BooleanFilter;
+type AdditionalFilter = StringFilter | EnumFilter<any> | BooleanFilter;
 
 // We need an additional FormKey, which is the key in this object,
 // because prop can't be used to index formgroup formcontrols.
@@ -55,9 +56,13 @@ export const additionalFilters = {
       'MY.intellectualRightsCC0'
     ]
   }
-} as const satisfies Record<string, AdditionalFilter<any>>;
+} as const satisfies Record<string, AdditionalFilter>;
 
-type AdditionalFilterWithFormKey = AdditionalFilter<any> & { formKey: keyof typeof additionalFilters };
+const propToFormKey = Object
+  .entries(additionalFilters)
+  .reduce((prev, [k, v]) => { prev[v.prop] = k; return prev; }, {});
+
+type AdditionalFilterWithFormKey = AdditionalFilter & { formKey: keyof typeof additionalFilters };
 
 const additionalFilterArr: AdditionalFilterWithFormKey[]
   = Object.entries(additionalFilters).map(([k, v]) => ({...v, formKey: <keyof typeof additionalFilters>k}));
@@ -69,8 +74,8 @@ const filterDefaultValues: {
 type FilterTypeToValueType<T extends 'string' | 'enum' | 'boolean'> =
   T extends 'boolean' ? boolean : 'string';
 
-export type FormChangeType = Partial<{
-  [K in keyof typeof additionalFilters]: FilterTypeToValueType<(typeof additionalFilters)[K]['filterType']>
+export type AdditionalFilterValues = Partial<{
+  [K in keyof typeof additionalFilters as typeof additionalFilters[K]['prop']]: FilterTypeToValueType<typeof additionalFilters[K]['filterType'] | null>
 }>;
 
 @Component({
@@ -117,8 +122,8 @@ export type FormChangeType = Partial<{
 `
 })
 export class TraitSearchAdditionalFiltersComponent implements OnInit {
-  @Input() initialValue: FormChangeType;
-  @Output() filterChange: Observable<FormChangeType>;
+  @Input() initialValue: AdditionalFilterValues;
+  @Output() filterChange: Observable<AdditionalFilterValues>;
 
   form: FormGroup<Record<keyof typeof additionalFilters, FormControl>>;
   additionalFilters!: AdditionalFilterWithFormKey[];
@@ -128,7 +133,13 @@ export class TraitSearchAdditionalFiltersComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group(filterDefaultValues);
-    this.filterChange = this.form.valueChanges;
+    this.filterChange = this.form.valueChanges.pipe(
+      map(values =>
+        Object.entries(values)
+          .filter(([k, v]) => v !== undefined && v !== null && v !== filterDefaultValues[k])
+          .reduce((p, [k, v]) => { p[additionalFilters[k].prop] = v; return p; }, {})
+      )
+    );
     this.additionalFilters = additionalFilterArr;
     this.additionalFilters.forEach((item, idx) => {
       this.unselectedAdditionalFilters.add(idx);
@@ -137,14 +148,16 @@ export class TraitSearchAdditionalFiltersComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.initialValue) {
-      this.form.setValue({ ...filterDefaultValues, ...this.initialValue });
+      const propsMappedToFormKeys = {};
       Object.entries(this.initialValue).forEach(([k, v]) => {
+        propsMappedToFormKeys[propToFormKey[k]] = v;
         if (v !== undefined && v !== null) {
-          const idx = this.additionalFilters.findIndex(f => f.formKey === k);
+          const idx = this.additionalFilters.findIndex(f => f.prop === k);
           this.unselectedAdditionalFilters.delete(idx);
           this.selectedAdditionalFilters.add(idx);
         }
       });
+      this.form.setValue({ ...filterDefaultValues, ...propsMappedToFormKeys });
     }
   }
 

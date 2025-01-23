@@ -1,10 +1,10 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter,
-         Input, OnChanges, Output, QueryList, SimpleChanges, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
+         Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable } from 'rxjs';
-import { FormChangeType as AdditionalFiltersFormChangeType } from './additional-filters.component';
+import { AdditionalFilterValues } from './additional-filters.component';
 
 export const HIGHER_TAXA: (keyof components['schemas']['HigherTaxa'])[] = [
   'domain',
@@ -28,7 +28,7 @@ export type Filters = {
   dataset: string | null;
   trait: string | null;
   searchByTaxon: 'FinBIF' | 'GBIF';
-  additionalFilters: AdditionalFiltersFormChangeType;
+  additionalFilters: AdditionalFilterValues;
 } & {
   [K in typeof HIGHER_TAXA[number]]: string | null;
 };
@@ -61,8 +61,8 @@ export const filterDefaultValues: Filters = {
   styleUrls: ['./trait-search-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TraitSearchFiltersComponent implements OnChanges {
-  @Input() filters: Partial<Filters>;
+export class TraitSearchFiltersComponent implements OnInit {
+  @Input() initialValue: Partial<Filters> | undefined;
   @Output() filterChange: Observable<Partial<Filters>>;
   @Output() searchClicked = new EventEmitter<void>();
 
@@ -82,13 +82,15 @@ export class TraitSearchFiltersComponent implements OnChanges {
     this.traits$ = this.api.fetch('/trait/traits', 'get', {});
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.filters?.currentValue) {
-      Object.entries(changes.filters.currentValue).forEach(([k, v]) => {
+  ngOnInit() {
+    if (this.initialValue !== undefined) {
+      Object.entries(this.initialValue).forEach(([k, v]) => {
         if (v !== null) {
           this.form.get(k).setValue(v);
         }
       });
+      console.log('search-filters form: ', this.form.value);
+      console.log('search-filters form additionalFilters: ', this.form.get('additionalFilters').value);
     }
   }
 
@@ -96,7 +98,7 @@ export class TraitSearchFiltersComponent implements OnChanges {
     this.searchClicked.emit();
   }
 
-  onAdditionalFiltersChange(filters: AdditionalFiltersFormChangeType) {
-    this.form.get('additionalFilters').setValue(filters);
+  onAdditionalFiltersChange(filterValues: AdditionalFilterValues) {
+    this.form.get('additionalFilters').setValue(filterValues);
   }
 }
