@@ -1591,7 +1591,7 @@
   "result.unit.quality.taxon": "Tillförlitlighet",
   "result.unit.reportedTaxonConfidence": "Observations grad av säkerhet enligt observatören",
   "result.unit.sensitive": "Skyddsklassad art",
-  "result.unit.sensitive.false": "Tämä taksoni ei ole sensitiivinen.",
+  "result.unit.sensitive.false": "Denna taxon är inte skyddsklassad.",
   "result.unit.sensitive.true": "Tämän havainnon laji on Lajitietokeskuksen sensitiivisten lajien luettelolla.",
   "result.unit.taxonVerbatim": "Art",
   "result.unit.unitId": "Observations-id",
