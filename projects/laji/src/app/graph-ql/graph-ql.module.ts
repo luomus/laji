@@ -1,12 +1,12 @@
 import { Apollo, ApolloModule } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
-import { NgModule, TransferState } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AcceptLanguageInterceptor } from './accept-language.interceptor';
 import { TranslateService } from '@ngx-translate/core';
-import { concatMap, tap } from 'rxjs/operators';
+import { concatMap } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { GraphQLService } from './service/graph-ql.service';
 import { PlatformService } from '../root/platform.service';
@@ -24,7 +24,6 @@ import { PlatformService } from '../root/platform.service';
 })
 export class GraphQLModule {
   private readonly cache: InMemoryCache;
-  private currentLang?: string;
 
   constructor(
     private apollo: Apollo,
@@ -37,9 +36,6 @@ export class GraphQLModule {
     });
 
     translateService.onLangChange.pipe(
-      tap(langChange => {
-        this.currentLang = langChange.lang;
-      }),
       concatMap(() => from(this.cache.reset()))
     ).subscribe(() => {}, (e) => console.error(e));
 
