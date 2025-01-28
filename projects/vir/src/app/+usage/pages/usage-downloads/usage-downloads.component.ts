@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
 import { VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
@@ -14,13 +14,13 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
 })
 export class UsageDownloadsComponent {
   @ViewChild('downloadModal', { static: true }) downloadModal!: TemplateRef<any>;
+
   downloadRequests$!: Observable<DownloadRequest[]>;
   apiKeys$!: Observable<DownloadRequest[]>;
 
   selectedRequest?: DownloadRequest | undefined | null;
 
   private modal: ModalRef | undefined;
-  private closeSub: Subscription | undefined;
 
   constructor(
       private modalService: ModalService,
@@ -43,18 +43,13 @@ export class UsageDownloadsComponent {
     );
   }
 
-  onRowClick(event: any) {
-    this.openDownloadModal(event.row);
-  }
-
   openDownloadModal(request: DownloadRequest) {
     this.selectedRequest = request;
-    this.closeSub?.unsubscribe();
-    this.modal = this.modalService.show(this.downloadModal);
-    this.closeSub = this.modal.onHide.subscribe(() => this.closeDownloadModal);
+    this.modal = this.modalService.show(this.downloadModal, { size: 'lg' });
   }
 
-  closeDownloadModal() {
+  closeModal() {
+    this.modal?.hide();
     this.selectedRequest = null;
   }
 }

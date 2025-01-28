@@ -1,3 +1,5 @@
+export type DownloadRequestType = 'apiKey' | 'geoApiKey' | 'fileDownload';
+
 export type DownloadRequestResponse = DownloadRequest | DownloadRequestNotFound;
 
 export interface DownloadRequest {

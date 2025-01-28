@@ -1,52 +1,13 @@
 <ng-container *ngIf="downloadRequest">
-  <h3 *ngIf="showTitle">{{ (
-    downloadRequest.downloadType === 'AUTHORITIES_API_KEY' ? 'downloadRequest.apiKey' : 'downloadRequest.fileDownload'
-  ) | translate }} {{ downloadRequest.id | toFullUri }}</h3>
-  <div class="info-rows">
-    <ng-container *ngIf="showPerson && downloadRequest.personId">
-      <div>
-        <label>{{ 'downloadRequest.person' | translate }}:</label>
-      </div>
-      <div>
-        {{ downloadRequest.personId | users }}
-      </div>
-    </ng-container>
-    <div>
-      <label>{{ 'downloadRequest.' + (
-        downloadRequest.downloadType === 'AUTHORITIES_API_KEY' ? 'apiKeyRequested' : 'requested'
-      ) | translate }}:</label>
-    </div>
-    <div>
-      {{ downloadRequest.requested | amDateFormat:'D.M.YYYY' }}
-    </div>
-    <ng-container *ngIf="downloadRequest.approximateMatches">
-      <div>
-        <label>{{ 'downloadRequest.approximateMatches' | translate }}:</label>
-      </div>
-      <div>
-        {{ downloadRequest.approximateMatches | formattedNumber:'&nbsp;' }}
-      </div>
-    </ng-container>
-    <ng-container *ngIf="downloadRequest.dataUsePurpose">
-      <div>
-        <label>{{ 'downloadRequest.dataUsePurpose' | translate }}:</label>
-      </div>
-      <div>
-        {{ downloadRequest.dataUsePurpose }}
-      </div>
-    </ng-container>
-    <ng-container *ngIf="downloadRequest.apiKeyExpires">
-      <div>
-        <label>{{ 'downloadRequest.apiKeyExpires' | translate }}:</label>
-      </div>
-      <div>
-        {{ downloadRequest.apiKeyExpires | amDateFormat:'D.M.YYYY' }}
-      </div>
-    </ng-container>
-  </div>
+  <h3 *ngIf="showTitle">{{ 'downloadRequest.' + downloadRequestType | translate }} {{ downloadRequest.id | toFullUri }}</h3>
+  <laji-download-request-basic-info
+    [downloadRequest]="downloadRequest"
+    [showPerson]="showPerson"
+    [downloadRequestType]="downloadRequestType"
+  ></laji-download-request-basic-info>
 
   <ng-container *ngIf="showDownload === 'always' || (showDownload === 'publicOnly' && downloadRequest.publicDownload)">
-    <ng-container *ngIf="downloadRequest.downloadType !== 'AUTHORITIES_API_KEY' else apiKey">
+    <ng-container *ngIf="downloadRequestType === 'fileDownload' else apiKey">
       <h4>{{ 'downloadRequest.download' | translate }}</h4>
       <div
         *ngIf="showDownload === 'publicOnly' && downloadRequest.publicDownload"
@@ -97,7 +58,7 @@
       >
     </ng-container>
     <ng-template #downloadNotAllowedReason>
-      <h4 *ngIf="downloadRequest.downloadType !== 'AUTHORITIES_API_KEY'">
+      <h4 *ngIf="downloadRequestType === 'fileDownload'">
         {{ 'downloadRequest.downloadNotAllowedReason.' + (
           downloadRequest.downloadType === 'APPROVED_DATA_REQUEST' ? 'pyha' : (
           downloadRequest.downloadType === 'LIGHTWEIGHT' ? 'lightweight' : 'authorities'
@@ -118,6 +79,7 @@
   <ng-container *ngIf="downloadRequest.publicLink || downloadRequest.privateLink">
     {{ 'downloadRequest.link' | translate }}:
     <a
+      class="wrap-text"
       [href]="(downloadRequest.privateLink ? downloadRequest.privateLink : downloadRequest.publicLink) | multiLang"
       target="_blank"
     >

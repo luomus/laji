@@ -1,0 +1,40 @@
+<div class="info-rows">
+  <ng-container *ngIf="showPerson && downloadRequest.personId">
+    <div>
+      <label>{{ 'downloadRequest.person' | translate }}:</label>
+    </div>
+    <div>
+      {{ downloadRequest.personId | users }}
+    </div>
+  </ng-container>
+  <div>
+    <label>{{ 'downloadRequest.' + (downloadRequestType === 'fileDownload' ? 'requested' : 'apiKeyRequested') | translate }}:</label>
+  </div>
+  <div>
+    {{ downloadRequest.requested | amDateFormat:'D.M.YYYY' }}
+  </div>
+  <ng-container *ngIf="downloadRequest.approximateMatches">
+    <div>
+      <label>{{ 'downloadRequest.approximateMatches' | translate }}:</label>
+    </div>
+    <div>
+      {{ downloadRequest.approximateMatches | formattedNumber:'&nbsp;' }}
+    </div>
+  </ng-container>
+  <ng-container *ngIf="downloadRequest.dataUsePurpose">
+    <div>
+      <label>{{ 'downloadRequest.dataUsePurpose' | translate }}:</label>
+    </div>
+    <div>
+      {{ downloadRequest.dataUsePurpose }}
+    </div>
+  </ng-container>
+  <ng-container *ngIf="downloadRequest.apiKeyExpires">
+    <div>
+      <label>{{ 'downloadRequest.apiKeyExpires' | translate }}:</label>
+    </div>
+    <div>
+      {{ downloadRequest.apiKeyExpires | amDateFormat:'D.M.YYYY' }}
+    </div>
+  </ng-container>
+</div>
