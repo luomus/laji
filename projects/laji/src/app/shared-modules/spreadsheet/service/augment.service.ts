@@ -22,7 +22,12 @@ export class AugmentService {
   augmentDocument(document: Document, excluded: string[] = []): Observable<Document> {
     const namedPlaces: string[] = [];
     const idxLookup: Record<string, any> = {};
-    if (document && document.gatherings) {
+
+    if (document?.namedPlaceID) {
+      namedPlaces.push(document.namedPlaceID);
+    }
+
+    if (document?.gatherings) {
       document.gatherings.forEach((gathering, idx) => {
         if (gathering.namedPlaceID) {
           namedPlaces.push(gathering.namedPlaceID);
@@ -33,9 +38,11 @@ export class AugmentService {
         }
       });
     }
+
     if (namedPlaces.length === 0) {
       return ObservableOf(document);
     }
+
     return ObservableFrom(namedPlaces).pipe(
       mergeMap(id => this.getNamedPlace(id)),
       map(namedPlace => this.addNamedPlaceData(document, namedPlace, idxLookup, excluded)),
@@ -46,6 +53,15 @@ export class AugmentService {
 
   private addNamedPlaceData(document: Document, namedPlace: NamedPlace, idxs: {[key: string]: number[]}, excluded: string[]) {
     const id = namedPlace.id;
+
+    if (id === document.namedPlaceID && namedPlace.prepopulatedDocument?.gatherings) {
+      namedPlace.prepopulatedDocument?.gatherings.forEach((gathering, idx) => {
+        if (document.gatherings[idx]) {
+          this.augment(document.gatherings[idx], this.documentService.removeMeta(gathering, excluded));
+        }
+      });
+    }
+
     if (
       idxs[id] &&
       namedPlace.prepopulatedDocument &&
@@ -59,6 +75,7 @@ export class AugmentService {
         }
       });
     }
+
     return document;
   }
 
