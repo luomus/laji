@@ -80,46 +80,8 @@ export type AdditionalFilterValues = Partial<{
 
 @Component({
   selector: 'laji-trait-search-additional-filters',
-  template: `
-<details class="lu-details" open>
-  <summary>Additional filters</summary>
-  <div class="mb-4">
-    <label for="trait-search-filters-additional-filter">Add a filter:</label>
-    <select class="form-control" id="trait-search-filters-additional-filter" (change)="onSelectAdditionalFilter($event)">
-      <option [value]="null">None</option>
-      <option *ngFor="let filterIdx of unselectedAdditionalFilters" [value]="filterIdx">{{ additionalFilters[filterIdx].prop }}</option>
-    </select>
-  </div>
-  <div *ngFor="let filterIdx of selectedAdditionalFilters">
-    <ng-container *ngTemplateOutlet="
-      { string: stringFilter, enum: enumFilter, boolean: booleanFilter }[additionalFilters[filterIdx].filterType];
-      context: { $implicit: additionalFilters[filterIdx].prop, formKey: additionalFilters[filterIdx].formKey }
-      "></ng-container>
-    <button class="btn btn-default" (click)="onRemoveAdditionalFilter(filterIdx)">Remove</button>
-  </div>
-</details>
-<ng-template #stringFilter let-prop let-formKey='formKey'>
-  <div class="mb-4">
-    <label [for]="'trait-search-filters-' + formKey">{{ prop }}</label>
-    <input [formControl]="form.get(formKey)" class="form-control" type="text" [id]="'trait-search-filters-' + formKey">
-  </div>
-</ng-template>
-<ng-template #enumFilter let-prop let-formKey='formKey'>
-  <div class="mb-4">
-    <label [for]="'trait-search-filters-' + formKey">{{ prop }}</label>
-    <select class="form-control" [formControl]="form.get(formKey)" class="form-control" [id]="'trait-search-filters-' + formKey">
-      <option [value]="null">None</option>
-      <option *ngFor="let val of additionalFiltersLookup[formKey].range" [value]="val">{{ val }}</option>
-    </select>
-  </div>
-</ng-template>
-<ng-template #booleanFilter let-prop let-formKey='formKey'>
-  <div class="mb-4">
-    <label [for]="'trait-search-filters-' + formKey">{{ prop }}</label>
-    <input type="checkbox" [id]="'trait-search-filters-' + formKey" [formControl]="form.get(formKey)">
-  </div>
-</ng-template>
-`
+  templateUrl: './additional-filters.component.html',
+  styleUrls: ['./additional-filters.component.scss']
 })
 export class TraitSearchAdditionalFiltersComponent implements OnInit {
   @Input() initialValue: AdditionalFilterValues;
