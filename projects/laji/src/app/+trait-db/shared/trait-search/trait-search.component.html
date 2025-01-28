@@ -33,29 +33,3 @@
   (pageChange)="onChangePageIdx($event)"
   (sortChange)="onSort($event)"
 ></lu-datatable>
-
-<h1>Test datatable example:</h1>
-
-<lu-datatable
-  [rows]="[
-    { a: 'somedata', b: 'camel', c: 50, d: 4 },
-    { a: 6954, b: 'alpaca', c: 18, d: 4 },
-    { a: null, b: 'alpine ibex', c: 18, d: 4 },
-    { a: { foo: 'bar' }, b: 'kangaroo', c: 20, d: 2 }
-  ]"
-  [columns]="[
-    { title: 'custom cell template', prop: 'a', sortable: false, cellTemplate: testTemplate },
-    { title: 'animal', prop: 'b' }, { title: 'lifespan', prop: 'c' },
-    { title: 'number of legs', prop: 'd' }
-  ]"
-  [defaultColumns]="[0, 1, 2]"
-  [totalPages]="1"
-  [currentPageIdx]="0"
-  [loading]="false"
-></lu-datatable>
-<ng-template #testTemplate let-data>
-  <div style="color: purple;">
-    {{ data.a }}
-  </div>
-</ng-template>
-
