@@ -22,8 +22,8 @@ export class KerttuGlobalUtil {
   }
 
   public static getDefaultSampleRate(taxonType: TaxonTypeEnum = TaxonTypeEnum.bird) {
-    return taxonType === TaxonTypeEnum.bird ? defaultAudioSampleRate :
-      taxonType === TaxonTypeEnum.bat ? defaultBatAudioSampleRate :
-        defaultInsectAudioSampleRate;
+    return taxonType === TaxonTypeEnum.bat ? defaultBatAudioSampleRate :
+      taxonType === TaxonTypeEnum.insect ? defaultInsectAudioSampleRate :
+        defaultAudioSampleRate;
   }
 }

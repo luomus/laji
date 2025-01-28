@@ -10,7 +10,7 @@ import {
 import {
   IGlobalRecording,
   IGlobalSpeciesWithAnnotation,
-  isBoxGroup,
+  isBoxGroup, SoundTypeEnum,
   SpeciesAnnotationEnum,
   TaxonTypeEnum
 } from '../../../../../../kerttu-global-shared/models';
@@ -38,6 +38,7 @@ export class IdentificationPanelComponent {
   @Input({ required: true }) recording!: IGlobalRecording;
   @Input({ required: true }) identification!: IGlobalSpeciesWithAnnotation;
 
+  @Input() showSoundTypeSelect = true;
   @Input() showDrawRelatedBoxBtn = true;
   @Input() buttonsDisabled = false;
   @Input() drawBoxActive = false;
@@ -50,6 +51,7 @@ export class IdentificationPanelComponent {
 
   speciesAnnotationEnum = SpeciesAnnotationEnum;
   taxonTypeEnum = TaxonTypeEnum;
+  soundTypeEnum = SoundTypeEnum;
 
   isBoxGroup = isBoxGroup;
   getBoxLabel = KerttuGlobalUtil.getBoxLabel;

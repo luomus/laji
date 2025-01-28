@@ -134,6 +134,7 @@ export interface IGlobalRecordingAnnotation {
 export interface IGlobalSpeciesAnnotation {
   speciesId: number;
   occurrence: SpeciesAnnotationEnum;
+  soundType?: SoundTypeEnum;
   boxes?: (IGlobalSpeciesAnnotationBox|IGlobalSpeciesAnnotationBoxGroup)[];
 }
 
@@ -218,6 +219,11 @@ export enum SpeciesAnnotationEnum {
   possiblyOccurs = 2
 }
 
+export enum SoundTypeEnum {
+  songOrDisplay = 1,
+  other = 2
+}
+
 export enum KerttuGlobalErrorEnum {
   speciesLocked = 'SpeciesLockedError',
   invalidRecordingId = 'InvalidRecordingIdError',
@@ -227,7 +233,8 @@ export enum KerttuGlobalErrorEnum {
 export enum TaxonTypeEnum {
   bird = 0,
   bat = 1,
-  insect = 2
+  insect = 2,
+  frog = 3
 }
 
 export enum AnnotationStatusEnum {

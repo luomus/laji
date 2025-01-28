@@ -41,3 +41,16 @@
 .scroll-margin-top {
   scroll-margin-top: $sp-6;
 }
+
+.select-column {
+  vertical-align: top !important;
+  padding-top: 2px;
+
+  label {
+    margin-bottom: 0;
+  }
+
+  select {
+    width: auto;
+  }
+}
