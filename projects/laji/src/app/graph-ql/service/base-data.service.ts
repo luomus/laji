@@ -85,7 +85,7 @@ const BASE_QUERY = gql`
 })
 export class BaseDataService {
 
-  private readonly query: QueryRef<IBaseData>;
+  private readonly query: QueryRef<IBaseData>|undefined;
   private readonly baseDataSub = new ReplaySubject<IBaseData>(1);
   private readonly baseData$ = this.baseDataSub.asObservable();
   private readonly labelMapSub = new ReplaySubject<Record<string, string>>(1);
@@ -103,9 +103,9 @@ export class BaseDataService {
 
     this.translationService.onLangChange.pipe(
       map(() => this.baseDataSub.next(undefined))
-    ).subscribe(() => this.query.refetch().then());
+    ).subscribe(() => this.query?.refetch().then());
 
-    this.query.valueChanges.pipe(
+    this.query?.valueChanges.pipe(
       map(({data}) => data)
     ).subscribe(data => this.baseDataSub.next(data));
 
