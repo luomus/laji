@@ -53,10 +53,6 @@ export class LajiApiClientBService {
 
   constructor(private http: HttpClient) { }
 
-  setBaseUrl(base: string) {
-    //this.baseUrl = base;
-  }
-
   fetch<
     T extends keyof paths & string,
     U extends keyof paths[T] & string,
