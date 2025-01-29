@@ -18,6 +18,7 @@ export interface DwQueryAnnotation {
   annotationBySystem?: string;
   annotationBySystemName?: string;
   annotationClass?: string;
+  atlasCode?: string;
   created?: string;
   id?: string;
   invasiveControlEffectiveness?: string;
