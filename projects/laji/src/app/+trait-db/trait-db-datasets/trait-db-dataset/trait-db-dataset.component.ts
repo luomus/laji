@@ -16,7 +16,7 @@ export type DatasetPermissions = components['schemas']['DatasetPermissions'];
 })
 export class TraitDbDatasetComponent implements OnInit {
   // null represents a state where we are done querying the api so the loading indicator shouldnt be shown
-  data$: Observable<{ dataset: Dataset | undefined; perms: DatasetPermissions | null | undefined }>;
+  data$!: Observable<{ dataset: Dataset | null | undefined; perms: DatasetPermissions | null | undefined }>;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,13 +30,13 @@ export class TraitDbDatasetComponent implements OnInit {
       filter(id => !!id),
       distinctUntilChanged(),
       switchMap(id => combineLatest([
-        this.api.fetch('/trait/datasets/{id}', 'get', { path: { id } }).pipe(
+        this.api.fetch('/trait/datasets/{id}', 'get', { path: { id: id! } }).pipe(
           startWith(undefined),
           catchError(() => of(null))
         ),
         this.userService.isLoggedIn$.pipe(
           switchMap(loggedIn => loggedIn
-            ? this.api.fetch('/trait/dataset-permissions/{datasetId}', 'get', { path: { datasetId: id } }).pipe(
+            ? this.api.fetch('/trait/dataset-permissions/{datasetId}', 'get', { path: { datasetId: id! } }).pipe(
               startWith(undefined),
               catchError(() => of(null))
             )

@@ -17,7 +17,7 @@ const cmsIds = { fi: '6491', sv: '6491', en: '6491' };
 export class TraitDbAboutComponent {
   content$ = this.translate.onLangChange.pipe(
     startWith({lang: this.translate.currentLang}),
-    map(event => cmsIds[event.lang]),
+    map(event => cmsIds[event.lang as 'fi' | 'sv' | 'en']),
     switchMap(cmsId => of({ content: 'todo: ' + cmsId }))
   );
 

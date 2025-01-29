@@ -19,7 +19,7 @@ export type Dataset = components['schemas']['Dataset'];
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitDbMainComponent implements OnInit {
-  counts$: Observable<Counts>;
+  counts$!: Observable<Counts>;
 
   constructor(
     private api: LajiApiClientBService,
@@ -30,15 +30,15 @@ export class TraitDbMainComponent implements OnInit {
     this.counts$ = forkJoin({
       entries:
         this.api.fetch('/trait/search', 'get', { query: { pageSize: 1 } }).pipe(
-          map(res => res.total)
+          map(res => res.total ?? 0)
         ),
       traits:
         this.api.fetch('/trait/traits', 'get', {}).pipe(
-          map(res => res.length)
+          map(res => res.length ?? 0)
         ),
       datasets:
         this.api.fetch('/trait/datasets', 'get', {}).pipe(
-          map(res => res.length)
+          map(res => res.length ?? 0)
         )
     });
   }

@@ -18,7 +18,7 @@ export class FormStringListComponent implements ControlValueAccessor {
   onChange: (value: string[]) => void = () => {};
   onTouched: (value: string[]) => void = () => {};
 
-  @ViewChild('textInput') textInput: ElementRef;
+  @ViewChild('textInput') textInput!: ElementRef;
 
   @HostListener('keydown.enter', ['$event'])
   onKeyDownEnter(event: KeyboardEvent) {

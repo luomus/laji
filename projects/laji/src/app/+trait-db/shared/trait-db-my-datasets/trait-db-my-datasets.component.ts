@@ -14,8 +14,8 @@ export type Dataset = components['schemas']['Dataset'];
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitDbMyDatasetsComponent implements OnInit {
-  loggedIn$: Observable<boolean>;
-  datasets$: Observable<Dataset[]>;
+  loggedIn$!: Observable<boolean>;
+  datasets$!: Observable<Dataset[]>;
 
   constructor(
     private api: LajiApiClientBService,

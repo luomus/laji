@@ -129,7 +129,7 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
    */
   @Output() sortChange = new EventEmitter<Sort[]>();
 
-  @ViewChildren('headerRef') headerEls: QueryList<ElementRef>;
+  @ViewChildren('headerRef') headerEls!: QueryList<ElementRef>;
 
   selectedColumns: number[] = [];
   unselectedColumns = new Set<number>();
@@ -151,7 +151,7 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
     }
 
     if (changes.defaultColumns) {
-      this.selectedColumns = this.defaultColumns;
+      this.selectedColumns = this.defaultColumns!;
       this.columns
         .map((c, idx) => idx)
         .filter(i => !this.selectedColumns.includes(i))
@@ -213,7 +213,9 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
   }
 
   onTableHeaderDragStart(dragStartEvent: DragEvent, columnIdx: number) {
-    dragStartEvent.dataTransfer.effectAllowed = 'move';
+    if (dragStartEvent.dataTransfer) {
+      dragStartEvent.dataTransfer.effectAllowed = 'move';
+    }
     this.draggedColumnHeaderIdx = columnIdx;
   }
 
@@ -223,7 +225,9 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
 
   onTableHeaderDragOver(dragOverEvent: DragEvent) {
     dragOverEvent.preventDefault();
-    dragOverEvent.dataTransfer.dropEffect = 'move';
+    if (dragOverEvent.dataTransfer) {
+      dragOverEvent.dataTransfer.dropEffect = 'move';
+    }
   }
 
   onTableHeaderDrop(dropEvent: DragEvent) {

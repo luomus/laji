@@ -28,7 +28,7 @@ export type Filters = {
   dataset: string | null;
   trait: string | null;
   searchByTaxon: 'FinBIF' | 'GBIF';
-  additionalFilters: AdditionalFilterValues;
+  additionalFilters: AdditionalFilterValues | null;
 } & {
   [K in typeof HIGHER_TAXA[number]]: string | null;
 };
@@ -86,7 +86,7 @@ export class TraitSearchFiltersComponent implements OnInit {
     if (this.initialValue !== undefined) {
       Object.entries(this.initialValue).forEach(([k, v]) => {
         if (v !== null) {
-          this.form.get(k).setValue(v);
+          this.form.get(k)?.setValue(v);
         }
       });
     }
@@ -101,6 +101,6 @@ export class TraitSearchFiltersComponent implements OnInit {
   }
 
   onAdditionalFiltersChange(filterValues: AdditionalFilterValues) {
-    this.form.get('additionalFilters').setValue(filterValues);
+    this.form.get('additionalFilters')!.setValue(filterValues);
   }
 }

@@ -12,7 +12,7 @@ import { UserService } from '../../../shared/service/user.service';
 export type Dataset = components['schemas']['Dataset'];
 type ValidationResponse = components['schemas']['ValidationResponse'];
 
-const filterNullValues = <T>(obj: T): T => {
+const filterNullValues = <T extends Record<string, unknown>>(obj: T): T => {
   const clone: any = {};
   Object.entries(obj).forEach(([key, val]) => {
     if (val !== null) {
@@ -28,12 +28,12 @@ const filterNullValues = <T>(obj: T): T => {
 })
 export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
   datasetForm = this.fb.group({
-    id: [undefined], // hidden + uneditable
-    published: [undefined], // only when editing existing dataset
-    shareToFinBIF: [undefined], // hidden
-    shareToGBIF: [undefined], // hidden
-    finbifDOI: [undefined], // uneditable
-    gbifDOI: [undefined], // uneditable
+    id: [undefined as (string | undefined)], // hidden + uneditable
+    published: [undefined as (boolean | undefined)], // only when editing existing dataset
+    shareToFinBIF: [undefined as (boolean | undefined)], // hidden
+    shareToGBIF: [undefined as (boolean | undefined)], // hidden
+    finbifDOI: [undefined as (string | undefined)], // uneditable
+    gbifDOI: [undefined as (string | undefined)], // uneditable
     name: [''],
     description: [''],
     citation: [''],
@@ -70,17 +70,17 @@ export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
     this.route.paramMap.pipe(
       map(paramMap => paramMap.get('id')),
       filter(id => id !== null),
-      switchMap(id => this.api.fetch('/trait/datasets/{id}', 'get', { path: { id } }))
+      switchMap(id => this.api.fetch('/trait/datasets/{id}', 'get', { path: { id: id! } }))
     ).subscribe(dataset => {
       Object.entries(dataset).forEach(([key, val]) => {
-        this.datasetForm.get(key).setValue(val);
+        this.datasetForm.get(key)?.setValue(val);
       });
-      this.updateShareToGBIF(this.datasetForm.get('shareToFinBIF').value);
+      this.updateShareToGBIF(this.datasetForm.get('shareToFinBIF')!.value);
       this.cdr.markForCheck();
     });
 
     this.subscription.add(
-      this.datasetForm.get('shareToFinBIF').valueChanges.subscribe(this.updateShareToGBIF.bind(this))
+      this.datasetForm.get('shareToFinBIF')!.valueChanges.subscribe(this.updateShareToGBIF.bind(this))
     );
   }
 
@@ -90,7 +90,7 @@ export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
 
   onPublish(event: MouseEvent) {
     event.preventDefault();
-    this.datasetForm.get('published').setValue(true);
+    this.datasetForm.get('published')!.setValue(true);
   }
 
   onUnpublish(event: MouseEvent) {
@@ -100,7 +100,7 @@ export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
         switchMap(str => this.dialogService.confirm(str)),
         filter(res => res)
       ).subscribe(_ => {
-        this.datasetForm.get('published').setValue(false);
+        this.datasetForm.get('published')!.setValue(false);
       })
     );
   }
@@ -115,7 +115,7 @@ export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
         this.datasetForm.enable();
         this.cdr.markForCheck();
       }),
-      filter(res => res.pass),
+      filter(res => !!res?.pass),
       tap(_ => { this.datasetForm.disable(); }),
       switchMap(_ => this.api.fetch('/trait/datasets/{id}', 'delete', { path: { id: form.id } }))
     ).subscribe(_ => {
@@ -128,7 +128,7 @@ export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (!this.datasetForm.get('id').value) {
+    if (!this.datasetForm.get('id')!.value) {
       this.submitNewDataset();
     } else {
       this.updateExistingDataset();
@@ -146,7 +146,7 @@ export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
         this.datasetForm.enable();
         this.cdr.markForCheck();
       }),
-      filter(res => res.pass),
+      filter(res => !!res?.pass),
       tap(_ => {
         this.uploadInProgress = true;
         this.datasetForm.disable();
@@ -171,7 +171,7 @@ export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
         this.datasetForm.enable();
         this.cdr.markForCheck();
       }),
-      filter(res => res.pass),
+      filter(res => !!res?.pass),
       tap(_ => {
         this.uploadInProgress = true;
         this.datasetForm.disable();
@@ -184,9 +184,8 @@ export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
     }, err => { this.datasetForm.enable(); });
   }
 
-  private updateShareToGBIF(shareToFinBIFisActive: boolean) {
-    const shareToGBIF = this.datasetForm.get('shareToGBIF');
+  private updateShareToGBIF(shareToFinBIFisActive: boolean | null | undefined) {
+    const shareToGBIF = this.datasetForm.get('shareToGBIF')!;
     shareToFinBIFisActive ? shareToGBIF.enable() : shareToGBIF.disable();
   }
 }
-

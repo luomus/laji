@@ -7,6 +7,7 @@ import { Sort } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 import { filterDefaultValues, Filters, HIGHER_TAXA } from './trait-search-filters/trait-search-filters.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isObject } from '@luomus/laji-map/lib/utils';
+import { AdditionalFilterValues } from './trait-search-filters/additional-filters.component';
 
 type SearchResponse = paths['/trait/search']['get']['responses']['200']['content']['application/json'];
 
@@ -58,7 +59,7 @@ const getSearchApiQuery = (pageIdx: number, sorts: Sort[], filters: Partial<Filt
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitSearchComponent implements OnInit, OnDestroy {
-  initialFilters: Partial<Filters>;
+  initialFilters: Partial<Filters> | undefined;
   searchResult: SearchResult | undefined;
   pageSize = PAGE_SIZE;
   currentPageIdx = 0;
@@ -107,7 +108,7 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
       take(1),
       tap(params => {
         this.handleInitialQueryParams(params);
-        this.filterChangeSubject.next(this.initialFilters);
+        this.filterChangeSubject.next(this.initialFilters!);
         this.pageIdxSubject.next(0);
         this.sortSubject.next([]);
       })
@@ -150,12 +151,12 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
     }
 
     // parse prefixed additionalFilters
-    const toRemove = [];
-    filters.additionalFilters = {};
+    const toRemove: (keyof typeof filters)[] = [];
+    filters.additionalFilters = {} as AdditionalFilterValues;
     Object.entries(queryParams).filter(([k, v]) => k.includes('additionalFilters:')).forEach(([k, v]) => {
-      // warning: implicit conversion
-      filters.additionalFilters[k.substring('additionalFilters:'.length)] = v;
-      toRemove.push(k);
+      const key = k.substring('additionalFilters:'.length) as unknown as keyof NonNullable<QueryParams['additionalFilters']>;
+      filters.additionalFilters![key] = v as any;
+      toRemove.push(k as keyof typeof filters);
     });
     toRemove.forEach(k => delete filters[k]);
 
@@ -167,14 +168,14 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
     if (pageIdx > 0) { q.page = pageIdx + 1; }
 
     Object.entries(filters).forEach(([key, value]) => {
-      if (value && value !== filterDefaultValues[key]) {
+      if (value && value !== filterDefaultValues[key as keyof typeof filters]) {
         if (isObject(value)) {
           // prefix nested values with the parents key
           Object.entries(value).forEach(([subKey, subValue]) => {
-            q[key + ':' + subKey] = subValue;
+            q[key + ':' + subKey as unknown as keyof typeof filters] = subValue as any;
           });
         } else {
-          q[key] = value;
+          q[key as keyof typeof filters] = value as any;
         }
       }
     });

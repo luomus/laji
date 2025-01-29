@@ -58,9 +58,12 @@ export const additionalFilters = {
   }
 } as const satisfies Record<string, AdditionalFilter>;
 
-const propToFormKey = Object
+const propToFormKey: { -readonly [K in keyof typeof additionalFilters as typeof additionalFilters[K]['prop']]: K } = Object
   .entries(additionalFilters)
-  .reduce((prev, [k, v]) => { prev[v.prop] = k; return prev; }, {});
+  .reduce(
+    (prev, [k, v]) => { prev[v.prop] = k; return prev; },
+    {} as any
+  );
 
 type AdditionalFilterWithFormKey = AdditionalFilter & { formKey: keyof typeof additionalFilters };
 
@@ -75,7 +78,7 @@ type FilterTypeToValueType<T extends 'string' | 'enum' | 'boolean'> =
   T extends 'boolean' ? boolean : 'string';
 
 export type AdditionalFilterValues = Partial<{
-  [K in keyof typeof additionalFilters as typeof additionalFilters[K]['prop']]: FilterTypeToValueType<typeof additionalFilters[K]['filterType'] | null>
+  -readonly [K in keyof typeof additionalFilters as typeof additionalFilters[K]['prop']]: FilterTypeToValueType<typeof additionalFilters[K]['filterType']> | null
 }>;
 
 @Component({
@@ -84,7 +87,7 @@ export type AdditionalFilterValues = Partial<{
   styleUrls: ['./additional-filters.component.scss']
 })
 export class TraitSearchAdditionalFiltersComponent implements OnInit {
-  @Input() initialValue: AdditionalFilterValues;
+  @Input() initialValue?: AdditionalFilterValues;
   @Output() filterChange: Observable<AdditionalFilterValues>;
 
   form: FormGroup<Record<keyof typeof additionalFilters, FormControl>>;
@@ -98,8 +101,8 @@ export class TraitSearchAdditionalFiltersComponent implements OnInit {
     this.filterChange = this.form.valueChanges.pipe(
       map(values =>
         Object.entries(values)
-          .filter(([k, v]) => v !== undefined && v !== null && v !== filterDefaultValues[k])
-          .reduce((p, [k, v]) => { p[additionalFilters[k].prop] = v; return p; }, {})
+          .filter(([k, v]) => v !== undefined && v !== null && v !== filterDefaultValues[k as unknown as keyof typeof filterDefaultValues])
+          .reduce((p, [k, v]) => { p[additionalFilters[k as unknown as keyof typeof additionalFilters].prop] = v; return p; }, {} as AdditionalFilterValues)
       )
     );
     this.additionalFilters = additionalFilterArr;
@@ -110,9 +113,9 @@ export class TraitSearchAdditionalFiltersComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.initialValue) {
-      const propsMappedToFormKeys = {};
+      const propsMappedToFormKeys: any = {};
       Object.entries(this.initialValue).forEach(([k, v]) => {
-        propsMappedToFormKeys[propToFormKey[k]] = v;
+        propsMappedToFormKeys[propToFormKey[k as keyof typeof propToFormKey]] = v;
         if (v !== undefined && v !== null) {
           const idx = this.additionalFilters.findIndex(f => f.prop === k);
           this.unselectedAdditionalFilters.delete(idx);
@@ -132,7 +135,7 @@ export class TraitSearchAdditionalFiltersComponent implements OnInit {
   }
 
   onRemoveAdditionalFilter(idx: number) {
-    this.form.get(this.additionalFilters[idx].formKey).setValue(null);
+    this.form.get(this.additionalFilters[idx].formKey)?.setValue(null);
     this.selectedAdditionalFilters.delete(idx);
     this.unselectedAdditionalFilters.add(idx);
   }

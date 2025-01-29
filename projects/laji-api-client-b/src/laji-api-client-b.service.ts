@@ -33,10 +33,10 @@ const hashArgs = (...args: any): string => (
 const getPath = <
   T extends keyof paths & string,
   U extends keyof paths[T] & string,
->(endpoint: T, params: Parameters<paths[T][U]>): string => {
+>(endpoint: T, params?: Parameters<paths[T][U]>): string => {
   let path: string = endpoint;
-  if (params?.['path']) {
-    Object.entries(params['path']).forEach(([k, v]) => {
+  if ((<any>params)?.['path']) {
+    Object.entries((<any>params)['path']).forEach(([k, v]) => {
       path = path.replace(`{${k}}`, <any>v);
     });
   }
@@ -81,11 +81,11 @@ export class LajiApiClientBService {
     const cachedPath = this.cache.get(pathHash);
 
     const paramsHash = hashArgs(params);
-    if (!cachedPath.has(paramsHash)) {
-      cachedPath.set(paramsHash, { _tag: 'not-started' });
+    if (!cachedPath?.has(paramsHash)) {
+      cachedPath?.set(paramsHash, { _tag: 'not-started' });
     }
 
-    const cachedParams = cachedPath.get(paramsHash);
+    const cachedParams = cachedPath?.get(paramsHash);
 
     if (cachedParams !== undefined && cachedParams._tag !== 'not-started') {
       if (cachedParams._tag === 'completed' && Date.now() - cachedParams.lastRefresh < cacheInvalidationMs) {
@@ -98,7 +98,7 @@ export class LajiApiClientBService {
 
     const obs = this.http.request(method, requestUrl, requestOptions).pipe(
       tap(val => {
-        cachedPath.set(paramsHash, {
+        cachedPath?.set(paramsHash, {
           _tag :'completed',
           val,
           lastRefresh: Date.now()
@@ -107,7 +107,7 @@ export class LajiApiClientBService {
       shareReplay(1)
     ) as any;
 
-    cachedPath.set(paramsHash, {
+    cachedPath?.set(paramsHash, {
       _tag: 'loading', obs
     });
 
@@ -127,7 +127,7 @@ export class LajiApiClientBService {
 
     if (params !== undefined) {
       const paramsHash = hashArgs(params);
-      this.cache.get(pathHash).delete(paramsHash);
+      this.cache.get(pathHash)?.delete(paramsHash);
     } else {
       this.cache.delete(pathHash);
     }

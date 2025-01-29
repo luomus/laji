@@ -12,7 +12,7 @@ export type Dataset = components['schemas']['Dataset'];
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitDbDatasetsComponent implements OnInit {
-  datasets$: Observable<Dataset[]>;
+  datasets$!: Observable<Dataset[]>;
 
   constructor(private api: LajiApiClientBService) {}
 

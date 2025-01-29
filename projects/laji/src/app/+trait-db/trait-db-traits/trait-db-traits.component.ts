@@ -16,7 +16,7 @@ export class TraitDbTraitsComponent implements OnInit, OnDestroy {
   private activeTraitGroupIdFilter: BehaviorSubject<string> = new BehaviorSubject('');
   private activeTraitSubscription: Subscription | undefined;
 
-  filteredTraits$: Observable<Trait[]> = this.filteredTraits.asObservable();
+  filteredTraits$: Observable<Trait[] | undefined> = this.filteredTraits.asObservable();
   loggedIn$: Observable<boolean>;
   traits: Trait[] | undefined;
   traitGroups: Record<string, TraitGroup> = {}; // indexed by id
