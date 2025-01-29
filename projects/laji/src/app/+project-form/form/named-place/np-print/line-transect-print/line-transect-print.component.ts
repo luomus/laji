@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import * as MapUtil from '@luomus/laji-map/lib/utils';
@@ -14,18 +15,18 @@ import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
 export class LineTransectPrintComponent implements OnChanges {
 
   @ViewChild(LajiMapComponent)
-  public lajiMap: LajiMapComponent;
-  @Input()
-  public namedPlace: NamedPlace;
+  public lajiMap?: LajiMapComponent;
+  @Input({ required: true })
+  public namedPlace!: NamedPlace;
 
-  public lajiMapOptions: Options;
-  public biotopes: {[distRow: number]: string[]};
+  public lajiMapOptions?: Options;
+  public biotopes?: {[distRow: number]: string[]};
   public pages: number[][] = [];
-  public totalNbrOfPages: number;
-  public routeLength: number;
+  public totalNbrOfPages?: number;
+  public routeLength?: number;
   public neDistance: any = 0;
-  public ykjGrid: string;
-  public info: {key: string; data: string}[];
+  public ykjGrid?: string;
+  public info?: {key: string; data: string}[];
   public formSplit = 50;
   public landscape = false;
   public startPoint = {lat: 0, lng: 0};
@@ -63,7 +64,7 @@ export class LineTransectPrintComponent implements OnChanges {
         info.push({key: 'Kuvaus', data: this.namedPlace.notes});
       } else {
         let data = '';
-        let dataValue;
+        let dataValue: {key: string; data?: string};
         parts.map(value => {
           if (value.indexOf(':') === value.length - 1) {
             if (dataValue) {
@@ -95,7 +96,7 @@ export class LineTransectPrintComponent implements OnChanges {
     let current = 0;
     let minLat =  9999999, maxLat = 0, minLng = 9999999, maxLng = 0;
     let startPoint = {lat: 0, lng: 0};
-    geometries.coordinates.forEach((coord, idx) => {
+    geometries.coordinates.forEach((coord: any, idx: number) => {
       if (Array.isArray(coord) && coord.length > 0) {
         coord.forEach((val, coordIdx) => {
           const ykjPoint = this.getYkj(val[1], val[0]);
@@ -149,15 +150,15 @@ export class LineTransectPrintComponent implements OnChanges {
       }
     }
     this.biotopes = biotopes;
-    this.lajiMap.map.zoomToData({paddingInMeters: 200});
-    this.lajiMap.map.map.dragging.disable();
-    this.lajiMap.map.map.touchZoom.disable();
-    this.lajiMap.map.map.doubleClickZoom.disable();
-    this.lajiMap.map.map.smoothWheelZoom.disable();
-    this.lajiMap.map.map.boxZoom.disable();
-    this.lajiMap.map.map.keyboard.disable();
-    if (this.lajiMap.map.map.tap) {
-      this.lajiMap.map.map.tap.disable();
+    this.lajiMap!.map.zoomToData({paddingInMeters: 200});
+    this.lajiMap!.map.map.dragging.disable();
+    this.lajiMap!.map.map.touchZoom.disable();
+    this.lajiMap!.map.map.doubleClickZoom.disable();
+    this.lajiMap!.map.map.smoothWheelZoom.disable();
+    this.lajiMap!.map.map.boxZoom.disable();
+    this.lajiMap!.map.map.keyboard.disable();
+    if (this.lajiMap!.map.map.tap) {
+      this.lajiMap!.map.map.tap.disable();
     }
     setTimeout(() => {
       this.pages = pages;
@@ -180,7 +181,7 @@ export class LineTransectPrintComponent implements OnChanges {
     };
   }
 
-  private getYkj(lat, lng): {lat: number; lng: number} {
+  private getYkj(lat: number, lng: number): {lat: number; lng: number} {
     const coord = convertWgs84ToYkj(lat, lng).map(val => Math.round(val / 10) * 10);
     return {
       lat: coord[0],
@@ -188,9 +189,9 @@ export class LineTransectPrintComponent implements OnChanges {
     };
   }
 
-  private checkOrientation(geometries) {
+  private checkOrientation(geometries: any) {
     let minX = 999, maxX = 0, minY = 999, maxY = 0;
-    geometries.coordinates.forEach(coord => {
+    geometries.coordinates.forEach((coord: any) => {
       if (Array.isArray(coord) && Array.isArray(coord[0]) && typeof coord[0][0] === 'number') {
         coord.forEach(point => {
           if (point[0] > maxX) {
@@ -216,10 +217,10 @@ export class LineTransectPrintComponent implements OnChanges {
 
   private getGeometry(): any {
     if (this.namedPlace.acceptedDocument && this.namedPlace.acceptedDocument.gatherings) {
-      return {type: 'MultiLineString', coordinates: this.namedPlace.acceptedDocument.gatherings.map(item => item.geometry.coordinates)};
+      return {type: 'MultiLineString', coordinates: this.namedPlace.acceptedDocument.gatherings.map(item => item.geometry!.coordinates)};
     }
     if (this.namedPlace.prepopulatedDocument && this.namedPlace.prepopulatedDocument.gatherings) {
-      return {type: 'MultiLineString', coordinates: this.namedPlace.prepopulatedDocument.gatherings.map(item => item.geometry.coordinates)};
+      return {type: 'MultiLineString', coordinates: this.namedPlace.prepopulatedDocument.gatherings.map(item => item.geometry!.coordinates)};
     }
     return {};
   }

@@ -12,7 +12,7 @@ export class DatatableHeaderComponent {
   @ViewChild(DownloadComponent, {static: false}) downloadComponent?: DownloadComponent;
 
   @Input() showSettingsMenu = false;
-  @Input() showDownloadMenu = false;
+  @Input() showDownloadMenu? = false;
   @Input() downloadLoading = false;
   @Input() maxDownload = 0;
   @Input() count = 0;

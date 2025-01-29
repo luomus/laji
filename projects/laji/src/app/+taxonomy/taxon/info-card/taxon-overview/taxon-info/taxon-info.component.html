@@ -9,15 +9,15 @@
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.vernacularName" [label]="'taxonomy.vernacular.names' | translate">
   <ul>
-    <li *ngFor="let item of availableTaxonNames['vernacularNames'] | keyvalue">
-        {{ taxon.vernacularName[item.value['lang']] }} ({{ 'lang.'+item.value['lang'] | translate }})
+    <li *ngFor="let item of availableTaxonNames!['vernacularNames'] | keyvalue">
+        {{ taxon.vernacularName[getItemValue(item)] }} ({{ 'lang.'+getItemValue(item) | translate }})
     </li>
   </ul>
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.colloquialVernacularName" [label]="'taxonomy.vernacular.colloquial' | translate">
   <ul>
-    <li *ngFor="let item of availableTaxonNames['colloquialVernacularNames'] | keyvalue">
-        {{ taxon.colloquialVernacularName[item.value['lang']] }} ({{ 'lang.'+item.value['lang'] | translate }})
+    <li *ngFor="let item of availableTaxonNames!['colloquialVernacularNames'] | keyvalue">
+        {{ taxon.colloquialVernacularName[getItemValue(item)] }} ({{ 'lang.'+getItemValue(item) | translate }})
     </li>
   </ul>
 </laji-taxon-info-row>
@@ -25,7 +25,7 @@
   {{ taxon.id | toFullUri }}
 </laji-taxon-info-row>
 <laji-taxon-info-row [label]="'taxonomy.rank' | translate">
-  {{ taxon.taxonRank | label }}
+  {{ taxon.taxonRank! | label }}
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.occurrenceInFinland" [label]="'taxonomy.occurrenceInFinland' | translate">
   {{ taxon.occurrenceInFinland | label }}
@@ -49,7 +49,7 @@
     <tbody>
     <tr>
       <th>{{ 'MX.invasiveSpeciesEstablishment' | label }}</th>
-      <td>{{ taxon.invasiveSpeciesEstablishment | label }}</td>
+      <td>{{ taxon.invasiveSpeciesEstablishment! | label }}</td>
     </tr>
     </tbody>
   </table>

@@ -13,7 +13,7 @@ export type PopoverRootElement = 'component' | 'body';
   selector: '[luPopover]'
 })
 export class PopoverDirective implements AfterViewInit, OnDestroy {
-  @Input() luPopover: TemplateRef<null>;
+  @Input() luPopover!: TemplateRef<null>;
   @Input() popoverTitle = '';
   @Input() placement: Placement = 'bottom';
   /* Inserting the popover at body, rather than as a child of the
@@ -28,12 +28,12 @@ export class PopoverDirective implements AfterViewInit, OnDestroy {
   private popoverRef: ComponentRef<PopoverContainerComponent> | undefined;
 
   private hovering$ = new BehaviorSubject<boolean>(false);
-  private hoveringSubscription: Subscription;
+  private hoveringSubscription?: Subscription;
   private hoveringComponent = false;
   private hoveringPopover = false;
   private componentListenerDestructors: (() => void)[] = [];
   private popoverListenerDestructors: (() => void)[] = [];
-  private closeSubscription: Subscription;
+  private closeSubscription?: Subscription;
 
   constructor(
     private el: ElementRef,

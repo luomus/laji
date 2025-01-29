@@ -61,7 +61,7 @@
     </ng-container>
     <ng-template #apiKey>
       <h4>{{ 'downloadRequest.copyApiKey' | translate }}</h4>
-      <laji-copy-to-clipboard [value]="downloadRequest.apiKey" [wrapText]="true"></laji-copy-to-clipboard>
+      <laji-copy-to-clipboard [value]="downloadRequest.apiKey ?? ''" [wrapText]="true"></laji-copy-to-clipboard>
     </ng-template>
   </ng-container>
 
@@ -128,7 +128,7 @@
   <ng-container *ngIf="downloadRequest.collections">
     <h4>{{ 'downloadRequest.collections' | translate }}</h4>
     <laji-collection-table
-      [collections]="collections$ | async"
+      [collections]="(collections$ | async) ?? []"
     ></laji-collection-table>
   </ng-container>
 </ng-container>

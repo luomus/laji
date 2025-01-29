@@ -22,16 +22,16 @@ import {
 export class LabelDesignerComponent {
 
   @Input()
-  pdfLoading: boolean;
+  pdfLoading?: boolean;
 
   @Input()
-  showIntro: boolean;
+  showIntro?: boolean;
 
   @Input()
   allowLabelItemRepeat = false;
 
   @Input()
-  data: Record<string, any>[];
+  data?: Record<string, any>[];
 
   @Input()
   defaultDomain = 'http://tun.fi/EXAMPLE.';
@@ -43,7 +43,7 @@ export class LabelDesignerComponent {
   defaultAvailableFields: ILabelField[] = [];
 
   @Input()
-  fileColumnMap: IColumnMap;
+  fileColumnMap?: IColumnMap;
 
   @Input()
   viewSetting: IViewSettings = {
@@ -57,10 +57,10 @@ export class LabelDesignerComponent {
   presets: PresetSetup[] = [];
 
   @Input()
-  translations: LabelDesignerTranslationsInterface;
+  translations?: LabelDesignerTranslationsInterface;
 
   @Input()
-  defaultSetup: ISetup;
+  defaultSetup?: ISetup;
 
   @Input()
   setup: ISetup = {

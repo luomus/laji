@@ -6,8 +6,6 @@ import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-globa
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { DatatableSort } from '../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { LocalizeRouterService } from '../../../../../laji/src/app/locale/localize-router.service';
 import { IdentificationHistoryEditModalComponent } from './identification-history-edit-modal/identification-history-edit-modal.component';
 import { ModalService } from '../../../../../laji-ui/src/lib/modal/modal.service';
 
@@ -34,8 +32,6 @@ export class IdentificationHistoryComponent {
   constructor(
     private kerttuGlobalApi: KerttuGlobalApi,
     private userService: UserService,
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService,
     private modalService: ModalService
   ) {
     this.sites$ = this.userService.isLoggedIn$.pipe(
@@ -71,7 +67,7 @@ export class IdentificationHistoryComponent {
     const initialState = {
       index: row.index,
       recordingId$,
-      lastIndex: this.results.length - 1
+      lastIndex: this.results!.length - 1
     };
 
     const modalRef = this.modalService.show(
@@ -81,7 +77,7 @@ export class IdentificationHistoryComponent {
 
     this.modalSub = new Subscription();
     this.modalSub.add(
-      modalRef.content.modalClose.subscribe(hasChanges => {
+      modalRef.content!.modalClose.subscribe(hasChanges => {
         if (hasChanges) {
           this.setNewQuery({ ...this.query });
         }
@@ -90,14 +86,14 @@ export class IdentificationHistoryComponent {
       })
     );
     this.modalSub.add(
-      modalRef.content.indexChange.subscribe((idx) => {
-        recordingIdSubject.next(this.results[idx].recording.id);
+      modalRef.content!.indexChange.subscribe((idx) => {
+        recordingIdSubject.next(this.results![idx].recording.id);
       })
     );
   }
 
   siteChange(value: string) {
-    const site = parseInt(value, 10) || null;
+    const site = parseInt(value, 10) || undefined;
     this.setNewQuery({ ...this.query, site });
   }
 

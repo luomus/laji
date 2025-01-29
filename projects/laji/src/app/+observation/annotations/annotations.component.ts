@@ -17,15 +17,15 @@ import { DeleteOwnDocumentService } from '../../shared/service/delete-own-docume
 })
 export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() query: WarehouseQueryInterface;
+  @Input() query?: WarehouseQueryInterface;
   @Input() showPaginator = true;
   @Input() limit = 1000;
 
   @Output() hasData = new EventEmitter<boolean>();
 
   annotations: any;
-  subAnnotation: Subscription;
-  gathering: any[];
+  subAnnotation?: Subscription;
+  gathering?: any[];
   result: PagedResult<any> = {
     currentPage: 1,
     lastPage: 1,
@@ -33,15 +33,15 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
     total: 0,
     pageSize: 0
   };
-  lang: string;
-  loading: boolean;
-  page: number;
-  total: number;
-  count: number;
-  size: number;
-  paginatorDisplay: boolean;
-  annotationTags$: Observable<AnnotationTag[]>;
-  subscriptionDeleteOwnDocument: Subscription;
+  lang!: string;
+  loading!: boolean;
+  page?: number;
+  total?: number;
+  count?: number;
+  size?: number;
+  paginatorDisplay?: boolean;
+  annotationTags$?: Observable<AnnotationTag[]>;
+  subscriptionDeleteOwnDocument?: Subscription;
   childEvent: any;
 
 
@@ -64,7 +64,8 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
       if (this.childEvent !== null) {
         setTimeout(() => {
           this.updateAnnotations();
-          this.subscriptionDeleteOwnDocument.unsubscribe();
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          this.subscriptionDeleteOwnDocument!.unsubscribe();
         }, 1300);
       }
       this.cd.markForCheck();
@@ -143,7 +144,7 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
 
-  pageChanged(event) {
+  pageChanged(event: any) {
     this.page = event.page;
     this.updateAnnotations();
   }

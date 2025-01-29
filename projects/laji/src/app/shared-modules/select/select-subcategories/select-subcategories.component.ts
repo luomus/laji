@@ -36,7 +36,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
   @Input() multiple = true;
   @Input() info?: string;
   @Input() loading = false;
-  @Input() subCategories = [];
+  @Input() subCategories: any[] = [];
   @Input() subTitleBase = '';
   @Input() filtersName: (keyof WarehouseQueryInterface)[] = [];
   @Input() filtersValues: string[] = [];

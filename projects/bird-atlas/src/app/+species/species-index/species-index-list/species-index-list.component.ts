@@ -11,10 +11,10 @@ import { AtlasTaxon } from '../../../core/atlas-api.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesIndexListComponent implements OnInit, OnDestroy {
-  @Input() atlasTaxa: AtlasTaxon[];
+  @Input() atlasTaxa!: AtlasTaxon[];
 
   searchVal = '';
-  filteredSpecies$ = new BehaviorSubject<AtlasTaxon[]>(undefined);
+  filteredSpecies$ = new BehaviorSubject<AtlasTaxon[] | undefined>(undefined);
 
   private unsubscribe$ = new Subject<void>();
   private search$ = new BehaviorSubject<string>('');
@@ -44,7 +44,7 @@ export class SpeciesIndexListComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSearchKeyUp(event) {
+  onSearchKeyUp(event: any) {
     this.search$.next(event.target.value);
   }
 

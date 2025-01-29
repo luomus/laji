@@ -13,7 +13,7 @@ import { AtlasGridSquare } from '../../../core/atlas-api.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridIndexTableComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() atlasGrid: AtlasGridSquare[];
+  @Input() atlasGrid!: AtlasGridSquare[];
   @Output() selectYKJ = new EventEmitter<string>();
 
   cols: TableColumn[];
@@ -21,7 +21,7 @@ export class GridIndexTableComponent implements OnInit, OnDestroy, OnChanges {
   datatableClasses = datatableClasses;
 
   private unsubscribe$ = new Subject<void>();
-  private search$ = new BehaviorSubject<string>(undefined);
+  private search$ = new BehaviorSubject<string | undefined>(undefined);
   private rows: AtlasGridSquare[] = [];
 
   constructor(
@@ -54,7 +54,7 @@ export class GridIndexTableComponent implements OnInit, OnDestroy, OnChanges {
       debounceTime(200),
       takeUntil(this.unsubscribe$)
     ).subscribe(s => {
-      const filterStr = s.toLowerCase();
+      const filterStr = s!.toLowerCase();
       this.filteredRows$.next(
         this.rows.filter(
           r => (r.name + r.coordinates + r.birdAssociationArea.value).toLowerCase().includes(filterStr)
@@ -77,7 +77,7 @@ export class GridIndexTableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  onSearchKeyUp(event) {
+  onSearchKeyUp(event: any) {
     this.search$.next(event.target.value);
   }
 

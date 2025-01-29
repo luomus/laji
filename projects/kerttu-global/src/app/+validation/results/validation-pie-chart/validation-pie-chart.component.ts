@@ -22,7 +22,7 @@ export class ValidationPieChartComponent {
     }]
   };
 
-  @Input() set data(data: IValidationStat[]) {
+  @Input() set data(data: IValidationStat[]|undefined) {
     this._data = { ...this._data };
 
     if (!data) {

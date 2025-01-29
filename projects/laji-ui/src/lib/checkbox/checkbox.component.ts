@@ -7,7 +7,7 @@ import { Component, Output, Input, EventEmitter, ChangeDetectionStrategy, ViewCh
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CheckboxComponent {
-  @ViewChild('checkbox', {static: true}) checkbox: ElementRef;
+  @ViewChild('checkbox', {static: true}) checkbox!: ElementRef;
   isChecked = false;
 
   /**
@@ -27,7 +27,7 @@ export class CheckboxComponent {
   @Output() checked = new EventEmitter<boolean>();
 
   onInput(event: Event) {
-    this.isChecked = event.target['checked'];
-    this.checked.emit(event.target['checked']);
+    this.isChecked = (event.target as any)['checked'];
+    this.checked.emit((event.target as any)['checked']);
   }
 }

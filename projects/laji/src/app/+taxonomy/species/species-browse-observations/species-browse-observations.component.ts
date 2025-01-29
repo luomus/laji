@@ -11,7 +11,7 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesBrowseObservationsComponent {
-  @Input() searchQuery: TaxonomySearchQuery;
+  @Input({ required: true }) searchQuery!: TaxonomySearchQuery;
 
   constructor(
     private router: Router,

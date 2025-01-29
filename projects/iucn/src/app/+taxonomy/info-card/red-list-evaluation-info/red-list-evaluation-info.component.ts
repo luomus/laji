@@ -3,6 +3,31 @@ import { RedListEvaluation } from '../../../../../../laji/src/app/shared/model/T
 import { IRow } from './red-list-evaluation-info-rowset/red-list-evaluation-info-rowset.component';
 import { TranslateService } from '@ngx-translate/core';
 
+interface KeyMapType {
+  secondaryHabitats: string;
+  endangermentReasons: string;
+  threats: string;
+}
+
+interface LocalTranslateType {
+  'MKV.hasEndangermentReason': string;
+  'MKV.hasThreat': string;
+}
+
+interface MinMaxItemType {
+  fields: string[];
+  combineTo: string;
+}
+
+interface MinMaxType {
+  distributionAreaMin: MinMaxItemType;
+  distributionAreaMax: MinMaxItemType;
+  occurrenceAreaMin: MinMaxItemType;
+  occurrenceAreaMax: MinMaxItemType;
+  individualCountMin: MinMaxItemType;
+  individualCountMax: MinMaxItemType;
+}
+
 @Component({
   selector: 'iucn-red-list-evaluation-info',
   templateUrl: './red-list-evaluation-info.component.html',
@@ -19,20 +44,20 @@ export class RedListEvaluationInfoComponent {
   evaluationBases: IRow[] = [];
   criteria: IRow[] = [];
   sources: IRow[] = [];
-  _evaluation: RedListEvaluation;
+  _evaluation?: RedListEvaluation;
 
-  private keyMap = {
+  private keyMap: KeyMapType = {
     secondaryHabitats: 'secondaryHabitat',
     endangermentReasons: 'hasEndangermentReason',
     threats: 'hasThreat',
   };
 
-  private localTranslate = {
+  private localTranslate: LocalTranslateType = {
     'MKV.hasEndangermentReason': 'iucn.hasEndangermentReason',
     'MKV.hasThreat': 'iucn.hasThreat'
   };
 
-  private fieldMap = {
+  private fieldMap: Record<string, string> = {
     // 'MKV.generationAge': 'evaluationBases',
     // 'MKV.generationAgeNotes': 'evaluationBases',
     // 'MKV.evaluationPeriodLength': 'evaluationBases',
@@ -108,7 +133,7 @@ export class RedListEvaluationInfoComponent {
     // 'MKV.percentageOfGlobalPopulationNotes': 'endanger',
   };
 
-  minMax = {
+  minMax: MinMaxType = {
     distributionAreaMin: {fields: ['distributionAreaMin', 'distributionAreaMax'], combineTo: 'distributionArea'},
     distributionAreaMax: {fields: ['distributionAreaMin', 'distributionAreaMax'], combineTo: 'distributionArea'},
     occurrenceAreaMin: {fields: ['occurrenceAreaMin', 'occurrenceAreaMax'], combineTo: 'occurrenceArea'},
@@ -143,24 +168,27 @@ export class RedListEvaluationInfoComponent {
     }
     const results: {[key: string]: IRow[]} = {};
     const sortBy = Object.keys(this.fieldMap);
-    for (let key in this._evaluation) {
+    let key: keyof RedListEvaluation;
+    for (key in this._evaluation) {
       if (!this._evaluation.hasOwnProperty(key)) {
         continue;
       }
       let translate = '';
-      if (this.minMax[key]) {
-        const combine = this.minMax[key];
-        key = combine.combineTo;
-        this._evaluation[key] = (this._evaluation[combine.fields[0]] || '') + ' — ' + (this._evaluation[combine.fields[1]] || '');
+      if (this.minMax[key as keyof MinMaxType]) {
+        const combine = this.minMax[key as keyof MinMaxType];
+        key = combine.combineTo as keyof RedListEvaluation;
+        this._evaluation[key] = (this._evaluation[combine.fields[0] as keyof RedListEvaluation] || '')
+          + ' — '
+          + (this._evaluation[combine.fields[1] as keyof RedListEvaluation] || '') as any;
         translate = 'iucn.taxon.' + key;
-        delete this._evaluation[combine.fields[0]];
-        delete this._evaluation[combine.fields[1]];
+        delete this._evaluation[combine.fields[0] as keyof RedListEvaluation];
+        delete this._evaluation[combine.fields[1] as keyof RedListEvaluation];
       }
       if (key === 'occurrences') {
-        this.occurrences = this._evaluation[key].map(o => ({key: o.area, value: o.status}));
+        this.occurrences = this._evaluation[key]!.map(o => ({key: o.area, value: o.status}));
         continue;
       }
-      const fullKey = 'MKV.' + (this.keyMap[key] || key);
+      const fullKey = 'MKV.' + (this.keyMap[key as keyof KeyMapType] || key) as keyof LocalTranslateType;
       if (this.localTranslate[fullKey]) {
         translate = this.localTranslate[fullKey];
       }
@@ -170,7 +198,7 @@ export class RedListEvaluationInfoComponent {
         }
         const values = [];
         if (Array.isArray(this._evaluation[key])) {
-          this._evaluation[key].forEach(item => {
+          (this._evaluation[key]! as any[]).forEach((item: any) => {
             if (typeof item === 'object') {
               values.push(...this.getValues(item));
             } else {
@@ -195,8 +223,8 @@ export class RedListEvaluationInfoComponent {
         }
       }
     }
-    Object.keys(results).forEach(key => {
-      this[key] = results[key].sort(this.getSortFunction(sortBy));
+    Object.keys(results).forEach(_key => {
+      (this as any)[_key] = results[_key].sort(this.getSortFunction(sortBy));
     });
   }
 
@@ -212,7 +240,7 @@ export class RedListEvaluationInfoComponent {
   }
 
   private getSortFunction(order: string[]) {
-    return (a, b) => order.indexOf(a.key) - order.indexOf(b.key);
+    return (a: any, b: any) => order.indexOf(a.key) - order.indexOf(b.key);
   }
 
 }

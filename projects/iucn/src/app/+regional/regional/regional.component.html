@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <h1>{{ 'iucn.regional.title' | translate }}</h1>
   <div class="year-select">
-    <select iucn-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
+    <select iucn-dropdown [options]="(years$ | async)!" [value]="queryParams.year!" (valueChange)="queryParamChange('year', $event)"></select>
   </div>
   <p>
     {{ 'iucn.regional.intro' | translate }}
@@ -35,5 +35,5 @@
       </ng-container>
     </ng-container>
   </div>
-  <iucn-regional-results [type]="queryParams.type" [query]="queryParams" [checklist]="checklist" (queryChange)="queryChange($event)"></iucn-regional-results>
+  <iucn-regional-results [type]="queryParams.type!" [query]="queryParams" [checklist]="checklist" (queryChange)="queryChange($event)"></iucn-regional-results>
 </div>

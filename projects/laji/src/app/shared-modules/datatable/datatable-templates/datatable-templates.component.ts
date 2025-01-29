@@ -57,7 +57,7 @@ export class DatatableTemplatesComponent {
 
   annotationTypes = Annotation.TypeEnum;
   synonymKeys = SYNONYM_KEYS;
-  annotationTagsObservation = Global.annotationTags;
+  annotationTagsObservation: any = Global.annotationTags;
   toHtmlSpanElement = toHtmlSpanElement;
 
   roundNumber(value: number) {

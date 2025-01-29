@@ -8,8 +8,8 @@ import { ISlideData } from '../slide/slide.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SlideNavigationComponent {
-  @Input() slides: ISlideData[];
-  @Input() currentSlideIdx: number;
+  @Input() slides!: ISlideData[];
+  @Input() currentSlideIdx!: number;
 
   @Output() selectSlide = new EventEmitter<number>();
 

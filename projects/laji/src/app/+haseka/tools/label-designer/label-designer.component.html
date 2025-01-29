@@ -13,7 +13,7 @@
       [setup]="setup"
       [fileColumnMap]="fileColumnMap"
       (fileColumnMapChange)="fileColumnMap = $event"
-      [availableFields]="labelFields$ | async"
+      [availableFields]="(labelFields$ | async) ?? []"
       (availableFieldsChange)="changeAvailableFields($event)"
       [defaultAvailableFields]="newLabelFields"
       (setupChange)="setup = $event"

@@ -29,7 +29,7 @@ import { LabelDesignerHelper } from '../../label-designer.helper';
 })
 export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
 
-  @Input() setup: ISetup;
+  @Input() setup!: ISetup;
   @Input() magnification = 2;
 
   @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
@@ -38,7 +38,7 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
 
   filterBy = '';
   filterSubject = new Subject<string>();
-  filterSubscription: Subscription;
+  filterSubscription!: Subscription;
   addToBackside = false;
   isSame = true;
 
@@ -46,7 +46,7 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
   private _defaultAvailableFields: ILabelField[] = [];
 
   constructor(
-    @Inject(PLATFORM_ID) protected platformId,
+    @Inject(PLATFORM_ID) protected platformId: any,
     private labelService: LabelService,
     private cdr: ChangeDetectorRef
   ) { }
@@ -96,7 +96,7 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
     let targetBounds: any;
     const targetElem = document.getElementById('label-editor');
     const targetBackElem = document.getElementById('back-side-label-editor');
-    const targetFrontBounds = targetElem.getBoundingClientRect();
+    const targetFrontBounds = targetElem!.getBoundingClientRect();
     const targetBackBounds = targetBackElem ? targetBackElem.getBoundingClientRect() : false;
     const elemBounds = event.source.element.nativeElement.getBoundingClientRect();
     if (
@@ -143,8 +143,8 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
         x: 0,
         fields: [field],
         style: {
-          'height.mm': Math.min(height, this.setup.label['height.mm']),
-          'width.mm': Math.min(width, this.setup.label['width.mm'])
+          'height.mm': Math.min(height, this.setup.label['height.mm']!),
+          'width.mm': Math.min(width, this.setup.label['width.mm']!)
         }
       }});
   }

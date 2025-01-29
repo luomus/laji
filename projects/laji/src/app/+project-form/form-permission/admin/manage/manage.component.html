@@ -7,12 +7,12 @@
     <ng-template #editorsTitle>
       <h3>{{ 'form.permission.admin.editors' | translate }}</h3>
     </ng-template>
-    <p *ngIf="!formPermission[type] || formPermission[type].length === 0; else list">
+    <p *ngIf="!$any(formPermission)[type] || $any(formPermission)[type].length === 0; else list">
       {{ 'form.permission.admin.noBody' | translate }}
     </p>
     <ng-template #list>
       <ul>
-        <li *ngFor="let person of formPermission[type]">
+        <li *ngFor="let person of $any(formPermission)[type]">
           <button class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'reject')">{{ 'form.permission.admin.removeAccess' | translate}}</button>
           <button *ngIf="type === 'admins'" class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'acceptEditor')">{{ 'form.permission.admin.removeAdminRights' | translate }}</button>
           <button *ngIf="type === 'editors'" class="btn btn-danger btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'acceptAdmin')">{{ 'form.permission.admin.grantAdminRights' | translate }}</button>

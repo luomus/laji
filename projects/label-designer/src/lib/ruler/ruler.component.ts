@@ -12,7 +12,7 @@ import { LabelService } from '../label.service';
 })
 export class RulerComponent implements AfterViewInit {
 
-  @ViewChild('ruler', { static: true }) rulerElemRef: ElementRef<HTMLDivElement>;
+  @ViewChild('ruler', { static: true }) rulerElemRef!: ElementRef<HTMLDivElement>;
   @Output() measured = new EventEmitter<void>();
 
   constructor(private renderer: Renderer2, private labelService: LabelService) { }

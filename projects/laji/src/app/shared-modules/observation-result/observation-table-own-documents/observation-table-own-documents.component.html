@@ -22,7 +22,7 @@
       [loading]="false"
       [count]="result.results.length"
       [page]="result.currentPage"
-      [pageSize]="result.pageSize"
+      [pageSize]="result.pageSize!"
       [columnMode]="isAggregate ? 'force' : 'standard'"
       (reorder)="onReorder($event)"
       [totalMessage]="'haseka.submissions.total' | translate"

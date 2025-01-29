@@ -16,9 +16,9 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
   slides: ISlideData[] = [];
   currentSlideIdx = 0;
   private panOffset = 0;
-  private bugAnimation: BugAnimation;
+  private bugAnimation!: BugAnimation;
 
-  @ViewChild('slideContainer') slideContainer: ElementRef;
+  @ViewChild('slideContainer') slideContainer!: ElementRef;
 
   constructor(
     private translate: TranslateService,
@@ -34,7 +34,7 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
     this.translate.onLangChange.pipe(startWith(undefined)).subscribe(() => this.facade.loadSlides());
     this.facade.slides$.pipe(filter(s => s && s.length > 0)).subscribe(slides => {
       this.currentSlideIdx = 0;
-      this.bugAnimation.bugPaths = slides[0].animationPlacement;
+      this.bugAnimation.bugPaths = slides[0].animationPlacement!;
       this.setSlides(slides);
     });
   }
@@ -45,7 +45,7 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
 
   selectSlide(i: number) {
     this.currentSlideIdx = i;
-    this.bugAnimation.bugPaths = this.slides[this.currentSlideIdx].animationPlacement;
+    this.bugAnimation.bugPaths = this.slides[this.currentSlideIdx].animationPlacement!;
     this.setAnimatable(true);
     this.translateX();
   }
@@ -71,43 +71,43 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
   }
 
   @HostListener('window:resize', ['$event'])
-  resize(event) {
+  resize(event: any) {
     this.translateX();
   }
 
   @HostListener('swiperight', ['$event'])
-  swiperight(event) {
+  swiperight(event: any) {
     if (this.currentSlideIdx > 0) {
       this.selectSlide(this.currentSlideIdx - 1);
     }
   }
 
   @HostListener('swipeleft', ['$event'])
-  swipeleft(event) {
+  swipeleft(event: any) {
     if (this.currentSlideIdx < this.slides.length - 1) {
       this.selectSlide(this.currentSlideIdx + 1);
     }
   }
 
   @HostListener('panstart', ['$event'])
-  panstart(event) {
+  panstart(event: any) {
     this.setAnimatable(false);
   }
 
   @HostListener('panright', ['$event'])
-  panright(event) {
+  panright(event: any) {
     this.panOffset = event.deltaX / 4;
     this.translateX();
   }
 
   @HostListener('panleft', ['$event'])
-  panleft(event) {
+  panleft(event: any) {
     this.panOffset = event.deltaX / 4;
     this.translateX();
   }
 
   @HostListener('panend', ['$event'])
-  panend(event) {
+  panend(event: any) {
     this.panOffset = 0;
     this.setAnimatable(true);
     this.translateX();

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { from, Observable, of } from 'rxjs';
 import { ExportService } from '../../../shared/service/export.service';
 import { concatMap, map, toArray } from 'rxjs/operators';
@@ -7,7 +6,7 @@ import { DatatableColumn } from '../../../shared-modules/datatable/model/datatab
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { BookType } from 'xlsx';
 
-export const SYNONYM_KEYS = [
+export const SYNONYM_KEYS: (keyof Taxonomy)[] = [
   'basionyms',
   'objectiveSynonyms',
   'subjectiveSynonyms',
@@ -24,7 +23,6 @@ export const SYNONYM_KEYS = [
 })
 export class TaxonExportService {
   constructor(
-    private translate: TranslateService,
     private exportService: ExportService
   ) {}
 
@@ -55,7 +53,7 @@ export class TaxonExportService {
     const synonyms: string[] = [];
     SYNONYM_KEYS.forEach(key => {
       if (data[key] && Array.isArray(data[key])) {
-        data[key].forEach(synonym => {
+        data[key].forEach((synonym: Taxonomy) => {
           synonyms.push(synonym.scientificName + (synonym.scientificNameAuthorship ? ' ' + synonym.scientificNameAuthorship : ''));
         });
       }

@@ -14,8 +14,8 @@ import { MultiLangService } from 'projects/laji/src/app/shared-modules/lang/serv
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesPieComponent implements OnInit, OnChanges {
-  @Input() children: Taxonomy[];
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+  @Input() children!: Taxonomy[];
+  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
   total = 0;
 
   chartType: any = 'treemap';
@@ -53,10 +53,10 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
           bodyAlign: 'center',
           displayColors: false,
           callbacks: {
-            title(item) {
+            title(item: any) {
               return item[0].dataset['tree'][item[0]['dataIndex']].label;
             },
-            label(item) {
+            label(item: any) {
               const {count} = item.dataset['tree'][item['dataIndex']];
               const species = (count < 2) ? singularSpeciesLabel : pluralSpeciesLabel;
               return count + ' ' + species;
@@ -65,7 +65,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
         }
       },
       events: ['mousemove', 'mouseout', 'click'],
-      onHover: (event, chartElement) => {
+      onHover: (event: any, chartElement: any) => {
         event.native['target']['style']['cursor'] = chartElement[0] ? 'pointer' : 'default';
       },
       hover: {
@@ -93,9 +93,9 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
         }
       }]
     } as any;
-    (this.lineChartData.datasets[0] as any).tree = (this.children || []).reduce((accData, child, index) => {
+    (this.lineChartData.datasets[0] as any).tree = (this.children || []).reduce((accData: any[], child, index) => {
       const id = child.id;
-      const count = child.countOfFinnishSpecies;
+      const count = child.countOfFinnishSpecies ?? 0;
       this.total += count;
 
       if (count > 0) {

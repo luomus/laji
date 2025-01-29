@@ -16,13 +16,13 @@
   <laji-red-list-evaluation-info-rowset [values]="occurrences"></laji-red-list-evaluation-info-rowset>
   -->
 </ng-container>
-<ng-container *ngIf="_evaluation.primaryHabitat">
+<ng-container *ngIf="_evaluation?.primaryHabitat">
   <h3>{{ 'MKV.primaryHabitat' | label }}</h3>
-  <laji-habitat [habitat]="_evaluation.primaryHabitat"></laji-habitat>
+  <laji-habitat [habitat]="_evaluation?.primaryHabitat"></laji-habitat>
 </ng-container>
-<ng-container *ngIf="_evaluation.secondaryHabitats">
+<ng-container *ngIf="_evaluation?.secondaryHabitats">
   <h3>{{ 'MKV.secondaryHabitat' | label }}</h3>
-  <laji-habitat [habitat]="_evaluation.secondaryHabitats"></laji-habitat>
+  <laji-habitat [habitat]="_evaluation?.secondaryHabitats"></laji-habitat>
 </ng-container>
 <ng-container *ngIf="evaluationBases.length">
   <iucn-red-list-evaluation-info-rowset [values]="evaluationBases"></iucn-red-list-evaluation-info-rowset>
@@ -34,13 +34,13 @@
   -->
 </ng-container>
 
-<ng-container *ngIf="_evaluation.lastSightingNotes">
+<ng-container *ngIf="_evaluation?.lastSightingNotes">
   <h3>{{ 'MKV.lastSightingNotes' | label }}</h3>
-  <p>{{ _evaluation.lastSightingNotes }}</p>
+  <p>{{ _evaluation?.lastSightingNotes }}</p>
 </ng-container>
-<ng-container *ngIf="_evaluation.occurrences">
+<ng-container *ngIf="_evaluation?.occurrences">
   <h3>{{ 'MKV.hasOccurrence' | label }}</h3>
-  <iucn-taxon-occurrences [occurrences]="_evaluation.occurrences"></iucn-taxon-occurrences>
+  <iucn-taxon-occurrences [occurrences]="_evaluation?.occurrences"></iucn-taxon-occurrences>
 </ng-container>
 
 <a [routerLink]="['/about'] | localize" style="display: inline-block; margin-top: 15px;">{{ 'iucn.more' | translate }}</a>

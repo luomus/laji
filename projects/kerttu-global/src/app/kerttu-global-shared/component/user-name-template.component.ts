@@ -15,7 +15,7 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
   `
 })
 export class UserNameTemplateComponent implements OnDestroy {
-  @ViewChild('userName', { static: true }) userNameTpl: TemplateRef<any>;
+  @ViewChild('userName', { static: true }) userNameTpl!: TemplateRef<any>;
 
   userId?: string;
 

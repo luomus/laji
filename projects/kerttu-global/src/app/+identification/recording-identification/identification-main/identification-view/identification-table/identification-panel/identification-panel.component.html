@@ -34,12 +34,12 @@
       <label>{{ 'identification.boxes' | translate }}</label>
       <laji-info [placement]="'right'" [html]="'identification.boxes.info' | translate" [showOnHover]="true"></laji-info>
     </div>
-    <div class="table-responsive" *ngIf="identification?.annotation?.boxes?.length > 0">
+    <div class="table-responsive" *ngIf="identification.annotation.boxes && identification.annotation.boxes.length > 0">
       <table class="table table-condensed mt-0 mb-0">
         <tbody *ngFor="let box of identification.annotation.boxes; let i=index" [ngClass]="{ 'box-group': isBoxGroup(box) }">
           <ng-template #boxRow let-box="box" let-groupIdx="groupIdx" let-hideDrawRelatedBtn="hideDrawRelatedBtn">
             <tr>
-              <td style="width: 50px">{{ getBoxLabel(speciesIdx, i, groupIdx) }}.</td>
+              <td style="width: 50px">{{ getBoxLabel(speciesIdx!, i, groupIdx) }}.</td>
               <td style="width: 200px">
                 <laji-small-audio-viewer
                   [audio]="recording"

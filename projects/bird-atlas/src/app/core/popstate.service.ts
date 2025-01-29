@@ -9,11 +9,11 @@ interface PathData {
 
 @Injectable()
 export class PopstateService {
-  private urlBeforeNavigation: string;
+  private urlBeforeNavigation!: string;
   private urlToPathData: {[url: string]: PathData} = {};
   private lastNavigationWasPopstate = false;
 
-  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId) {
+  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: any) {
     if (!isPlatformBrowser(platformId)) { return; }
 
     // Disable browser's default scroll restoration

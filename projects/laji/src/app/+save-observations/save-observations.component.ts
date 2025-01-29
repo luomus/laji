@@ -10,10 +10,10 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./save-observations.component.scss']
 })
 export class SaveObservationsComponent implements OnInit {
-  citizenScienceForms$: Observable<Form.List[]>;
-  birdMonitoringForms$: Observable<Form.List[]>;
-  completeListForms$: Observable<Form.List[]>;
-  researchProjectForms$: Observable<Form.List[]>;
+  citizenScienceForms$!: Observable<Form.List[]>;
+  birdMonitoringForms$!: Observable<Form.List[]>;
+  completeListForms$!: Observable<Form.List[]>;
+  researchProjectForms$!: Observable<Form.List[]>;
 
   constructor(
     private facade: SaveObservationsFacade,

@@ -27,15 +27,15 @@ import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.compo
   ]
 })
 export class DocumentFormComponent implements OnInit, OnDestroy {
-  @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
-  @ViewChild('saveAsTemplate') public templateModal: ModalComponent;
+  @ViewChild(LajiFormComponent) lajiForm!: LajiFormComponent;
+  @ViewChild('saveAsTemplate') public templateModal!: ModalComponent;
 
-  @Input() formID: string;
-  @Input() documentID: string;
-  @Input() namedPlaceID: string;
-  @Input() template: boolean;
+  @Input() formID!: string;
+  @Input() documentID!: string;
+  @Input() namedPlaceID!: string;
+  @Input() template!: boolean;
 
-  vm$: Observable<ViewModel>;
+  vm$!: Observable<ViewModel>;
 
   private touched$ = new Subject<void>();
   touchedCounter$ = this.touched$.pipe(map(() => 1), scan((acc, curr) => acc + curr));
@@ -50,13 +50,13 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   isSaneViewModel = isSaneViewModel;
   errors = FormError;
 
-  private vm: SaneViewModel;
+  private vm!: SaneViewModel;
   private isFromCancel = false;
   private confirmLeave = true;
   private saving = false;
-  private publicityRestrictions: Document.PublicityRestrictionsEnum;
+  private publicityRestrictions!: Document.PublicityRestrictionsEnum;
   private documentForTemplate: any = {};
-  private vmSub: Subscription;
+  private vmSub!: Subscription;
 
   constructor(
     private router: Router,
@@ -143,7 +143,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:beforeunload', ['$event'])
-  preventLeave($event) {
+  preventLeave($event: any) {
     if (this.vm?.hasChanges) {
       $event.returnValue = undefined;
     }
@@ -163,7 +163,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     this.documentFormFacade.lock(lock);
   }
 
-  onSubmit(event) {
+  onSubmit(event: any) {
     if (this.saving) {
       return;
     }
@@ -227,7 +227,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       );
   }
 
-  onValidationError(errors) {
+  onValidationError(errors: any) {
     // Shallow clone so that change detection runs even if errors didn't change
     // so that footer updates buttons disabled correctly.
     this.validationErrors = errors && {...errors} || errors;
@@ -238,7 +238,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     this.goBack();
   }
 
-  private getMessage(type, defaultValue) {
+  private getMessage(type: any, defaultValue: any) {
     const {options = {}} = this.vm.form || {};
     return (
       type === 'success' ? options.saveSuccessMessage :

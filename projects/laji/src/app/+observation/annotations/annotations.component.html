@@ -1,19 +1,19 @@
 <laji-spinner [spinning]="loading">
         <laji-paginator *ngIf="showPaginator && paginatorDisplay && !loading"
-        [page]="page" [count]="count"
-        [size]="size"
+        [page]="page!" [count]="count!"
+        [size]="size!"
         (pageChange)="pageChanged($event)">
         </laji-paginator>
 
         <laji-annotations-list *ngIf="!loading"
         [result]="result"
-        [annotationTags]="annotationTags$ | async"
+        [annotationTags]="(annotationTags$ | async)!"
         >
         </laji-annotations-list>
 
         <laji-paginator *ngIf="showPaginator && paginatorDisplay && !loading"
-        [page]="page" [count]="count"
-        [size]="size"
+        [page]="page!" [count]="count!"
+        [size]="size!"
         (pageChange)="pageChanged($event)">
         </laji-paginator>
 </laji-spinner>

@@ -14,14 +14,14 @@
   </div>
   <div *ngFor="let map of mapping | keyvalue">
     <div class="main-col left">
-      <input type="text" [value]="map.key" (change)="changeKey(map.key, $event.target.value)" class="form-control">
+      <input type="text" [value]="map.key" (change)="changeKey(map.key, $any($event.target).value)" class="form-control">
     </div>
     <div class="small-col left">-></div>
     <div class="small-col right link" (click)="removeKey(map.key)">
-      <ll-icon type="close" size="14"></ll-icon>
+      <ll-icon type="close" [size]="14"></ll-icon>
     </div>
     <div class="main-col right">
-      <input type="text" [value]="map.value" class="form-control" (change)="changeValue(map.key, $event.target.value)">
+      <input type="text" [value]="map.value" class="form-control" (change)="changeValue(map.key, $any($event.target).value)">
     </div>
   </div>
   <div style="clear: both"></div>

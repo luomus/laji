@@ -22,8 +22,8 @@ import { getDescription, HeaderService } from '../../shared/service/header.servi
 export class TaxonComponent implements OnInit, OnDestroy {
   taxon: Taxonomy | null | undefined;
   isFromMasterChecklist: boolean | undefined;
-  infoCardContext: string | undefined;
-  infoCardTab: InfoCardTabType | undefined;
+  infoCardContext!: string;
+  infoCardTab!: InfoCardTabType;
   showTree = false;
   canShowTree = true;
   showHidden = false;

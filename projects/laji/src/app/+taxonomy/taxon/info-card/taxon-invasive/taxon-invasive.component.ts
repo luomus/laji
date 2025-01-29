@@ -8,7 +8,7 @@ import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonInvasiveComponent {
-  @Input() taxon: Taxonomy;
-  @Input() taxonDescription: TaxonomyDescription[];
+  @Input({ required: true }) taxon!: Taxonomy;
+  @Input() taxonDescription!: TaxonomyDescription[];
 
 }

@@ -7,7 +7,7 @@
     {{ 'siteSelection.draw' | translate }}
   </button>
   <div class="pull-right">
-    <button class="btn btn-success" [disabled]="selectedSites?.length < 1" (click)="onConfirm()">
+    <button class="btn btn-success" [disabled]="selectedSites.length < 1" (click)="onConfirm()">
       {{ 'siteSelection.confirm' | translate }}
     </button>
   </div>

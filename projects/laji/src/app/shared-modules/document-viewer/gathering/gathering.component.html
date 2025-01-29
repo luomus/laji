@@ -7,9 +7,9 @@
       <laji-unit [identifying]="identifying" [annotationTags]="annotationTags" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [documentID]="documentID" [unit]="unit" [highlight]="highlight" [highlightParents]="highlightParents" [showOnlyHighlighted]="showOnlyHighlighted"></laji-unit>
     </ng-container>
   </ng-container>
-  <laji-row [showWithoutValue]="true" *ngIf="unitCnt > 1 && showOnlyHighlighted">
+  <laji-row [showWithoutValue]="true" *ngIf="unitCnt ?? 0 > 1 && showOnlyHighlighted">
     <button type="button" (click)="showAllUnits.emit()" class="btn btn-default btn-sm all-units-btn">
-      {{ 'viewer.otherUnits' | translate:{cnt: unitCnt - 1} }}
+      {{ 'viewer.otherUnits' | translate:{cnt: unitCnt! - 1} }}
     </button>
   </laji-row>
 </div>

@@ -64,11 +64,11 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
   private subscription: Subscription = new Subscription();
   private taxonChange$ = new BehaviorSubject<void>(undefined);
 
-  @Input() taxon: Taxonomy;
+  @Input({ required: true }) taxon!: Taxonomy;
 
-  @ViewChild('loadMore') loadMoreElem: ElementRef;
+  @ViewChild('loadMore') loadMoreElem!: ElementRef;
 
-  totalChildren$: Observable<number> = this.facade.totalChildren$;
+  totalChildren$: Observable<number | undefined> = this.facade.totalChildren$;
   loading = true;
   data: Data = {
     children: [],
@@ -80,7 +80,8 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
   private children$: Observable<Taxonomy[]> = this.facade.childDataSource$.pipe(
     filter(d => d !== undefined),
     tap(() => { this.loading = false; this.cdr.markForCheck(); }),
-    switchMap(d => d.connect(this.collectionViewer)),
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    switchMap(d => d!.connect(this.collectionViewer)),
     distinctUntilChanged()
   );
 
@@ -128,7 +129,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
         });
         this.cdr.markForCheck();
         this.totalChildren$.pipe(take(1)).subscribe(total => {
-          if (this.data.children.length < total) {
+          if (this.data.children.length < (total ?? 0)) {
             setTimeout(() => this.triggerInfiniteScrollStatusCheck.next(), 0);
           }
         });
@@ -159,16 +160,19 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     if (!taxon.descriptions || taxon.descriptions.length < 1) { return undefined; }
 
     const descriptions = taxon.descriptions;
-    const taxonDescriptions = {};
+    const taxonDescriptions: any = {};
 
     descriptions.forEach(description => {
-      description.groups.forEach(group => {
+      description.groups.forEach((group: any) => {
         if (!Object.keys(requestedDescriptionVariables).includes(group.group)) {
           return;
         }
 
-        group.variables.forEach(variable => {
-          if (!requestedDescriptionVariables[group.group].includes(variable.variable) || taxonDescriptions[variable.variable]) {
+        group.variables.forEach((variable: any) => {
+          if (
+            !requestedDescriptionVariables[<keyof typeof requestedDescriptionVariables>group.group].includes(variable.variable)
+            || taxonDescriptions[<keyof typeof taxonDescriptions>variable.variable]
+          ) {
             return;
           }
 

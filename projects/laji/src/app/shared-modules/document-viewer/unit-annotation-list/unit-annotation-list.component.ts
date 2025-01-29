@@ -23,7 +23,7 @@ export class UnitAnnotationListComponent implements OnInit, OnDestroy {
   @Input() openAnnotation?: boolean;
   @Input() showFacts = false;
   @Input() showAnnotation?: boolean;
-  @Input() annotationTags?: AnnotationTag[]|null;
+  @Input() annotationTags?: AnnotationTag[] | null;
   @Output() annotationPending = new EventEmitter<Record<string, unknown>>();
 
   annotationVisible = false;

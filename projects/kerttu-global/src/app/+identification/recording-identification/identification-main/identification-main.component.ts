@@ -10,7 +10,7 @@ import { Observable, of } from 'rxjs';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
 import equals from 'deep-equal';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
-import { RecordingLoaderService } from '../../service/recording-loader.service';
+import { NoRecordingsResult, RecordingLoaderService } from '../../service/recording-loader.service';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { DialogService } from '../../../../../../laji/src/app/shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -25,10 +25,10 @@ import { AudioCacheLoaderService } from '../../service/audio-cache-loader.servic
   providers: [AudioService, AudioCacheLoaderService, RecordingLoaderService]
 })
 export class IdentificationMainComponent implements OnChanges {
-  @Input() selectedSites: number[];
+  @Input({ required: true }) selectedSites!: number[];
 
-  recording: IGlobalRecording;
-  annotation: IGlobalRecordingAnnotation;
+  recording?: IGlobalRecording;
+  annotation?: IGlobalRecordingAnnotation;
 
   loading = false;
   hasUnsavedChanges = false;
@@ -39,7 +39,7 @@ export class IdentificationMainComponent implements OnChanges {
 
   @Output() goBackToSiteSelection = new EventEmitter<void>();
 
-  private originalAnnotation: IGlobalRecordingAnnotation;
+  private originalAnnotation?: IGlobalRecordingAnnotation;
 
   constructor(
     public recordingLoaderService: RecordingLoaderService,
@@ -79,7 +79,7 @@ export class IdentificationMainComponent implements OnChanges {
 
   getNextRecording(skipCurrent = false) {
     this.loading = true;
-    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation, false, skipCurrent).pipe(
+    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording!.id, this.annotation!, false, skipCurrent).pipe(
       switchMap(() => this.recordingLoaderService.getNextRecording())
     ).subscribe(result => {
       this.onGetRecordingsSuccess(result);
@@ -113,7 +113,7 @@ export class IdentificationMainComponent implements OnChanges {
 
   save() {
     this.loading = true;
-    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation, true).subscribe(() => {
+    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording!.id, this.annotation!, true).subscribe(() => {
       this.loading = false;
       this.originalAnnotation = Util.clone(this.annotation);
       this.hasUnsavedChanges = false;
@@ -124,7 +124,7 @@ export class IdentificationMainComponent implements OnChanges {
   }
 
   onAnnotationChange() {
-    this.recordingLoaderService.setCurrentAnnotation(this.annotation);
+    this.recordingLoaderService.setCurrentAnnotation(this.annotation!);
     this.hasUnsavedChanges = !equals(this.annotation, this.originalAnnotation);
   }
 
@@ -145,7 +145,7 @@ export class IdentificationMainComponent implements OnChanges {
   }
 
   private canSkip(): Observable<boolean> {
-    if (this.isEmptyAnnotation(this.annotation)) {
+    if (this.isEmptyAnnotation(this.annotation!)) {
       return of(true);
     }
     return this.dialogService.confirm(
@@ -167,7 +167,7 @@ export class IdentificationMainComponent implements OnChanges {
     );
   }
 
-  private onGetRecordingsSuccess(data: IGlobalRecordingWithAnnotation) {
+  private onGetRecordingsSuccess(data: IGlobalRecordingWithAnnotation|NoRecordingsResult) {
     this.loading = false;
     this.clearIdentificationState();
 

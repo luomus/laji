@@ -45,7 +45,7 @@
     {{ 'friend.requestSent' | translate }}
   </div>
   <div *ngIf="!requestSend && !alreadyFriends()">
-    <a class="btn btn-success" (click)="sendFriendRequest(profile.userID)">{{ 'friend.ask'|translate }}</a>
+    <a class="btn btn-success" (click)="sendFriendRequest(profile.userID!)">{{ 'friend.ask'|translate }}</a>
   </div>
 </div>
 <div *ngIf="!hasProfile()">

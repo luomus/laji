@@ -28,7 +28,7 @@ import {
 import {
   AudioViewerMode,
   IAudioViewerArea,
-  IAudioViewerRectangle,
+  IAudioViewerRectangle, IAudioViewerRectangleGroup,
   ISpectrogramConfig
 } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 import { map } from 'rxjs/operators';
@@ -56,29 +56,29 @@ import { Util } from '../../../../../../../laji/src/app/shared/service/util.serv
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('topContent') topContent: ElementRef;
-  @ViewChild(AudioViewerComponent) audioViewer: AudioViewerComponent;
-  @ViewChild(IdentificationTableComponent) identificationTable: IdentificationTableComponent;
+  @ViewChild('topContent') topContent?: ElementRef;
+  @ViewChild(AudioViewerComponent) audioViewer?: AudioViewerComponent;
+  @ViewChild(IdentificationTableComponent) identificationTable?: IdentificationTableComponent;
 
-  @Input() recording: IGlobalRecording;
-  @Input() annotation: IGlobalRecordingAnnotation;
+  @Input({ required: true }) recording!: IGlobalRecording;
+  @Input({ required: true }) annotation!: IGlobalRecordingAnnotation;
   @Input() buttonsDisabled = false;
 
   selectedSpecies: IGlobalSpeciesWithAnnotation[] = [];
   loadingSpecies = false;
 
-  sampleRate: number;
-  spectrogramConfig: ISpectrogramConfig;
+  sampleRate!: number;
+  spectrogramConfig!: ISpectrogramConfig;
   audioViewerMode: AudioViewerMode = 'default';
-  audioViewerRectangles: IAudioViewerRectangle[] = [];
+  audioViewerRectangles: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[] = [];
 
   slowDownAudio = false;
   showWholeFrequencyRange = false;
   showWholeTimeRange = true;
 
   drawBirdActive = false;
-  drawBirdIndex?: number;
-  drawBirdRelatedBoxIndex?: number;
+  drawBirdIndex = -1;
+  drawBirdRelatedBoxIndex = -1;
   drawNonBirdActive = false;
 
   birdRectangleColor = 'white';
@@ -91,7 +91,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
   @Output() annotationChange = new EventEmitter<IGlobalRecordingAnnotation>();
 
-  private selectedSpeciesSub: Subscription;
+  private selectedSpeciesSub!: Subscription;
   private nonBirdLabel = '';
 
   private topContentMinHeight = 180;
@@ -175,7 +175,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
           boxGroup = {boxes: [boxGroup]};
         }
         boxGroup.boxes.push({area});
-        boxGroup.boxes.sort((a: IGlobalSpeciesAnnotationBox, b: IGlobalSpeciesAnnotationBox) => a.area.xRange[0] - b.area.xRange[0]);
+        boxGroup.boxes.sort((a: IGlobalSpeciesAnnotationBox, b: IGlobalSpeciesAnnotationBox) => a.area.xRange![0] - b.area.xRange![0]);
         boxes[this.drawBirdRelatedBoxIndex] = boxGroup;
       } else {
         boxes.push({area});
@@ -192,14 +192,14 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     this.updateSpectrogramAndAnnotation();
   }
 
-  removeDrawing(data?: {rowIndex: number; boxIndex: number; boxGroupIndex: number}) {
+  removeDrawing(data?: {rowIndex: number; boxIndex: number; boxGroupIndex?: number}) {
     if (data) {
       const selectedSpecies = Util.clone(this.selectedSpecies);
       const boxes = selectedSpecies[data.rowIndex].annotation.boxes;
       const box = boxes[data.boxIndex];
 
       if (isBoxGroup(box)) {
-        box.boxes.splice(data.boxGroupIndex, 1);
+        box.boxes.splice(data.boxGroupIndex!, 1);
         if (box.boxes.length === 1) {
           boxes[data.boxIndex] = box.boxes[0];
         }
@@ -209,7 +209,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
       this.selectedSpecies = selectedSpecies;
     } else {
-      this.annotation.nonBirdArea = null;
+      this.annotation.nonBirdArea = undefined;
     }
 
     this.updateSpectrogramAndAnnotation();
@@ -279,8 +279,8 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
     const speciesAnnotations = this.annotation?.speciesAnnotations;
 
-    if (speciesAnnotations?.length > 0) {
-      const observables: Observable<IGlobalSpeciesWithAnnotation>[] = speciesAnnotations.map(
+    if (speciesAnnotations && speciesAnnotations.length > 0) {
+      const observables: Observable<IGlobalSpeciesWithAnnotation>[] = speciesAnnotations!.map(
         annotation => this.kerttuGlobalApi.getSpecies(this.translate.currentLang, annotation.speciesId, true).pipe(
           map(species => ({ ...species, annotation }))
         )
@@ -317,7 +317,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
         }
       });
       return rectangles;
-    }, []);
+    }, [] as (IAudioViewerRectangle|IAudioViewerRectangleGroup)[]);
 
     if (this.annotation.nonBirdArea) {
       this.audioViewerRectangles.push({
@@ -331,20 +331,20 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   private scrollDrawButtonIntoView(idx: number, boxIdx?: number) {
     // timeout ensures that the view is rendered before scrolling
     setTimeout(() => {
-      this.identificationTable.scrollDrawButtonIntoView(idx, boxIdx);
+      this.identificationTable!.scrollDrawButtonIntoView(idx, boxIdx);
     }, 0);
   }
 
   private onDrag(mousemove: MouseEvent) {
-    const topOffset = this.topContent.nativeElement.getBoundingClientRect().top + this.document.body.scrollTop;
+    const topOffset = this.topContent!.nativeElement.getBoundingClientRect().top + this.document.body.scrollTop;
     const height = mousemove.clientY - topOffset;
     this.topContentHeight = Math.max(this.topContentMinHeight, height);
-    this.audioViewer.resize();
+    this.audioViewer!.resize();
   }
 
   private onDragEnd() {
     this.destroyDragListeners();
-    this.audioViewer.resize();
+    this.audioViewer!.resize();
   }
 
   private destroyDragListeners() {

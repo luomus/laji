@@ -165,7 +165,7 @@ export class TaxonomyColumns {
     }
   ];
 
-  columnLookup = {};
+  columnLookup: Record<string, TaxonomyTableColumn> = {};
   parents = [
     'domain',
     'kingdom',
@@ -209,7 +209,8 @@ export class TaxonomyColumns {
 
     this.allColumns = this.allColumns
       .map(column => {
-        this.columnLookup[column.name] = column;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.columnLookup[column.name!] = column;
 
         if (!column.label) {
           column.label = 'taxonomy.' + column.name;
@@ -220,7 +221,7 @@ export class TaxonomyColumns {
   }
 
   getColumns(selected: string[]): TaxonomyTableColumn[] {
-    return selected.reduce((arr, name) => {
+    return selected.reduce((arr: TaxonomyTableColumn[], name: string) => {
       if (this.columnLookup[name]) {
         arr.push({...this.columnLookup[name]});
       }
@@ -236,7 +237,8 @@ export class TaxonomyColumns {
       map<string, TaxonomyTableColumn>(name => this.columnLookup[name]),
       filter(column => !!column),
       concatMap(column => (column.headerTemplate === 'labelHeader' ?
-        this.openLabel(column.label, true) :
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.openLabel(column.label!, true) :
         of(column.label)).pipe(map(label => ({...column, label})))
       ),
       toArray()

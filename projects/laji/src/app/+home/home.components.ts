@@ -22,12 +22,12 @@ import { environment } from '../../environments/environment';
 })
 export class HomeComponent implements OnInit {
 
-  mapStartDate: string;
-  mapQueryParams: Record<string, string>;
-  dashboardLink: MultiLanguage;
-  images$: Observable<Image[]>;
-  homeData$: Observable<IHomeData>;
-  publications$: Observable<Information>;
+  mapStartDate!: string;
+  mapQueryParams!: Record<string, string>;
+  dashboardLink!: MultiLanguage;
+  images$!: Observable<Image[]>;
+  homeData$!: Observable<IHomeData>;
+  publications$!: Observable<Information>;
 
   formId = Global.forms.whichSpecies;
 
@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit {
     this.publications$ = this.apiService.get(LajiApi.Endpoints.information, 'finbif-bib-top', {});
   }
 
-  taxonSelect(e) {
+  taxonSelect(e: string) {
     this.router.navigate(['/taxon/' + e]);
   }
 }

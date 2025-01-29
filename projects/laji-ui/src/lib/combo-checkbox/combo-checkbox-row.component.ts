@@ -12,7 +12,7 @@ import { CheckboxComponent } from '../checkbox/checkbox.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ComboCheckboxRowComponent {
-  @ViewChild(CheckboxComponent, { static: true }) cb: CheckboxComponent;
+  @ViewChild(CheckboxComponent, { static: true }) cb!: CheckboxComponent;
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('checked') set checkedInput(checked: boolean) {
@@ -23,7 +23,7 @@ export class ComboCheckboxRowComponent {
 
   constructor(public element: ElementRef) {}
 
-  onCheck(event) {
+  onCheck(event: any) {
     this.checked.emit(event);
   }
 }

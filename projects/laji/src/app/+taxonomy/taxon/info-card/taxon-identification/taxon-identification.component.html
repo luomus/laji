@@ -13,7 +13,7 @@
         </h3>
         <h4 class="child-info">
           {{
-            child.taxonRank | label
+            child.taxonRank! | label
           }} - {{
             child.countOfSpecies| formattedNumber:' '
           }}
@@ -49,7 +49,7 @@
       </ng-template>
     </div>
     <div #loadMore></div>
-    <div *ngIf="data.children.length < (totalChildren$ | async)" class="spinner three-bounce-spinner">
+    <div *ngIf="data.children.length < (totalChildren$ | async)!" class="spinner three-bounce-spinner">
       <div class="bounce1"></div>
       <div class="bounce2"></div>
       <div class="bounce3"></div>

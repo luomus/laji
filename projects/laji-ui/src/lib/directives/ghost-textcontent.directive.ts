@@ -10,7 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 export class GhostTextContentDirective implements OnInit, OnDestroy {
   @Input() disableTextContentGhost = false;
 
-  mutationObserver: MutationObserver;
+  mutationObserver?: MutationObserver;
 
   constructor(private el: ElementRef, private renderer: Renderer2, @Inject(PLATFORM_ID) private platformId: any) {}
 

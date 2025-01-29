@@ -9,9 +9,9 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonDescriptionSourceComponent implements OnChanges {
-  @Input() taxonDescription: TaxonomyDescription;
+  @Input() taxonDescription!: TaxonomyDescription;
 
-  currentLang: string;
+  currentLang: string | undefined;
 
   constructor(private checklang: TranslateService) { }
 

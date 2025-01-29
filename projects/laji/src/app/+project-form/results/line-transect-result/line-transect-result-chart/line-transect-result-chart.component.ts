@@ -72,7 +72,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     // Eslint disabled because it needs to be a function to have the correct 'this' reference.
     // eslint-disable-next-line object-shorthand
     onHover: function(a, e, element: any) {
-      let indexChart;
+      let indexChart: any;
       if (element[0]) {
        indexChart = Number(element[0]['_index']);
       } else {

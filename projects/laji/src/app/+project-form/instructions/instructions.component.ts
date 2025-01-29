@@ -12,7 +12,7 @@ import { MultiLanguage } from '../../../../../laji-api-client/src/lib/models';
 })
 export class InstructionsComponent implements OnInit {
 
-  instructions$: Observable<MultiLanguage>;
+  instructions$!: Observable<MultiLanguage | undefined>;
 
   constructor(private projectFormService: ProjectFormService,
               private route: ActivatedRoute

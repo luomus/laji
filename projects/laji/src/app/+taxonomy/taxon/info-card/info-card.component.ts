@@ -40,9 +40,9 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   private tabOrder = TAB_ORDER;
   loadedTabs: LoadedElementsStore = new LoadedElementsStore(this.tabOrder);
 
-  @Input() taxon: Taxonomy;
-  @Input() isFromMasterChecklist: boolean;
-  @Input() context: string;
+  @Input({ required: true }) taxon!: Taxonomy;
+  @Input({ required: true }) isFromMasterChecklist!: boolean;
+  @Input({ required: true }) context!: string;
   @Input() set activeTab(tab: InfoCardTabType) {
     this.selectedTab = tab;
     this.loadedTabs.load(tab);
@@ -54,18 +54,18 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   selectedTab = 'overview'; // stores which tab index was provided by @Input
 
-  taxonDescription: Array<TaxonomyDescription>;
-  taxonImages: Array<Image>;
+  taxonDescription!: Array<TaxonomyDescription>;
+  taxonImages!: Array<Image>;
 
-  hasImageData: boolean;
-  hasBiologyData: boolean;
-  isEndangered: boolean;
-  isInvasive: boolean;
-  images = [];
+  hasImageData?: boolean;
+  hasBiologyData?: boolean;
+  isEndangered?: boolean;
+  isInvasive?: boolean;
+  images: any[] = [];
 
-  sub: Subscription;
+  sub?: Subscription;
 
-  private imageSub: Subscription;
+  private imageSub?: Subscription;
 
   @Output() routeUpdate = new EventEmitter();
 
@@ -86,7 +86,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-  onSelect(tabIndex) {
+  onSelect(tabIndex: number) {
     const tabName = this.getTabNameFromVisibleIndex(tabIndex);
     const route = [BASE_PATH, this.taxon.id];
     if (tabName !== 'overview') { route.push(tabName); }
@@ -106,7 +106,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.setTitle(this.activeTab);
     }
     if (changes.taxon) {
-      this.taxonImages = (this.taxon.multimedia || []).map(img => {
+      this.taxonImages = (this.taxon.multimedia || []).map((img: any) => {
         if (img['taxon']) {
           img['taxonId'] = img['taxon']['id'];
           img['vernacularName'] = img['taxon']['vernacularName'];
@@ -116,7 +116,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       });
       this.taxonDescription = multiLangDescriptionToLang(
         this.taxon.descriptions || [], this.translate.currentLang
-      ).reduce((prev, current) => {
+      ).reduce((prev: TaxonomyDescription[], current: TaxonomyDescription) => {
         if (current.title) {
           prev.push(current);
         }
@@ -231,7 +231,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // used for translating tab indices
-  private getTabConditionals(): {e; t}[] {
+  private getTabConditionals(): {e?: boolean; t: string}[] {
     return [
       {e: this.hasImageData, t: 'images'},
       {e: this.hasBiologyData, t: 'biology'},
@@ -276,15 +276,15 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     return this.loadedTabs.getNameFromIdx(shifted);
   }
 
-  private setTitle(tabName) {
-    let metaTitle = this.taxon.vernacularName && this.taxon.vernacularName[this.translate.currentLang] || '';
+  private setTitle(tabName: string) {
+    let metaTitle = this.taxon.vernacularName && this.taxon.vernacularName[<any>this.translate.currentLang] || '';
     if (metaTitle) {
       const alternativeNames: string[] = [];
-      if (this.taxon?.alternativeVernacularName?.[this.translate.currentLang]) {
-        alternativeNames.push(...this.taxon.alternativeVernacularName[this.translate.currentLang]);
+      if (this.taxon?.alternativeVernacularName?.[<any>this.translate.currentLang]) {
+        alternativeNames.push(...this.taxon.alternativeVernacularName[<any>this.translate.currentLang]);
       }
-      if (this.taxon?.colloquialVernacularName?.[this.translate.currentLang]) {
-        alternativeNames.push(...this.taxon.colloquialVernacularName[this.translate.currentLang]);
+      if (this.taxon?.colloquialVernacularName?.[<any>this.translate.currentLang]) {
+        alternativeNames.push(...this.taxon.colloquialVernacularName[<any>this.translate.currentLang]);
       }
       metaTitle += alternativeNames.length ? ' (' + alternativeNames.join(', ') + ')' : '';
     }

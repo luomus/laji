@@ -15,7 +15,7 @@ interface BoldEntry {
 })
 export class TaxonBoldComponent implements OnChanges {
 
-  @Input() taxon: Taxonomy;
+  @Input() taxon!: Taxonomy;
 
   boldEntries: BoldEntry[] = [];
 
@@ -45,7 +45,8 @@ export class TaxonBoldComponent implements OnChanges {
   }
 
   getBoldEntry(taxon: Taxonomy) {
-    let scientificName: string = this.taxon.scientificName;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    let scientificName = this.taxon.scientificName!;
     let publicRecords = 0;
     const bins: string[] = [];
 
@@ -57,8 +58,8 @@ export class TaxonBoldComponent implements OnChanges {
       publicRecords = taxon.bold.publicRecords;
     }
 
-    if (taxon.bold?.binCount > 0) {
-      taxon.bold?.bins.forEach(bin => {
+    if (taxon.bold?.binCount && taxon.bold?.binCount > 0) {
+      taxon.bold?.bins?.forEach(bin => {
         bins.push(bin);
       });
     }
