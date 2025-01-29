@@ -130,7 +130,6 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
   @Output() sortChange = new EventEmitter<Sort[]>();
 
   @ViewChildren('headerRef') headerEls: QueryList<ElementRef>;
-  @ViewChildren('rowRef') rowEls: QueryList<ElementRef>; // TODO unused atm
 
   selectedColumns: number[] = [];
   unselectedColumns = new Set<number>();
