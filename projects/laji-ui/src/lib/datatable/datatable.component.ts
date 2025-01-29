@@ -61,7 +61,7 @@ export interface Sort {
   dir: 'ASC' | 'DESC';
 }
 
-/**
+/*
   <h1>Example usage</h1>
 
   <lu-datatable
