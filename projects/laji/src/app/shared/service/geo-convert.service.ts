@@ -19,7 +19,6 @@ export enum FileCrs {
   wgs84 = 'wgs84'
 }
 export enum ErrorType {
-  tooComplex = 'too_complex',
   tooLarge = 'too_large'
 }
 
