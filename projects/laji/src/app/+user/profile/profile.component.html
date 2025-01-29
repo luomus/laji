@@ -76,13 +76,6 @@
               <laji-friends [profile]="currentProfile" [usersProfile]="userProfile"></laji-friends>
             </div>
           </div>
-          <div class="form-group" *ngIf="(getCurrentUser() | async)!.id === userId">
-            <div class="col-sm-12 well">
-              <p>{{ 'selfUrl.introStart' | translate }}</p>
-              <a [href]="personSelfUrl | safe:'url'" class="btn btn-success self-link">{{ 'profile.accountSettings'|translate }}</a>
-              <p>{{ 'selfUrl.introEnd' | translate }}</p>
-            </div>
-          </div>
         </div>
       </div>
     </ng-container>
