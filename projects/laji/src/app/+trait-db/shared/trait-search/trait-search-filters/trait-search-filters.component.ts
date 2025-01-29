@@ -89,13 +89,15 @@ export class TraitSearchFiltersComponent implements OnInit {
           this.form.get(k).setValue(v);
         }
       });
-      console.log('search-filters form: ', this.form.value);
-      console.log('search-filters form additionalFilters: ', this.form.get('additionalFilters').value);
     }
   }
 
   onSearch() {
     this.searchClicked.emit();
+  }
+
+  onClear() {
+    this.form.setValue(filterDefaultValues);
   }
 
   onAdditionalFiltersChange(filterValues: AdditionalFilterValues) {
