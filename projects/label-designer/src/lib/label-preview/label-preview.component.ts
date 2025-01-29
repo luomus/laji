@@ -35,7 +35,7 @@ export class LabelPreviewComponent implements OnChanges {
   /**
    * Object that holds the key value data used on the label.
    */
-  @Input() data: Record<string, any>;
+  @Input() data!: Record<string, any>;
 
   /**
    * Show preview using backside label items.
@@ -54,7 +54,7 @@ export class LabelPreviewComponent implements OnChanges {
   /**
    * @ignore
    */
-  labelStyle: ILabelStyle;
+  labelStyle!: ILabelStyle;
   /**
    * @ignore
    */
@@ -63,7 +63,7 @@ export class LabelPreviewComponent implements OnChanges {
   /**
    * Setup used in the label.
    */
-  @Input() setup: ISetup;
+  @Input() setup!: ISetup;
 
   /**
    * @ignore
@@ -84,7 +84,7 @@ export class LabelPreviewComponent implements OnChanges {
     }
     const style = {...this.setup.label};
     if (this.backside) {
-      this.items = this.setup.backSideLabelItems;
+      this.items = this.setup.backSideLabelItems!;
       const swp = style['marginLeft.mm'];
       style['marginLeft.mm'] = style['marginRight.mm'];
       style['marginRight.mm'] = swp;

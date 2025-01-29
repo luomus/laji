@@ -10,7 +10,7 @@ export class LabelDesignerHelper {
    * Merges fields to setup.
    * This is mutable operation
    */
-  static mergeFieldsToSetup(fields: ILabelField[], setup: ISetup): ISetup {
+  static mergeFieldsToSetup(fields: ILabelField[], setup: ISetup): ISetup | undefined {
     if (!setup || !Array.isArray(fields) || fields.length === 0) {
       return setup;
     }
@@ -28,9 +28,9 @@ export class LabelDesignerHelper {
             field.valueMap = {};
           }
           const valueMap = map[field.field].valueMap;
-          Object.keys(valueMap).forEach(key => {
-            if (typeof field.valueMap[key] === 'undefined') {
-              field.valueMap[key] = valueMap[key];
+          Object.keys(valueMap!).forEach(key => {
+            if (typeof field.valueMap![key] === 'undefined') {
+              field.valueMap![key] = valueMap![key];
             }
           });
         }

@@ -20,9 +20,9 @@ import { QRCodeErrorCorrectionLevel } from '../label-designer.interface';
 })
 export class LabelQRCodeComponent {
 
-  @Input() qrdata: string;
-  @Input() size: number;
-  @Input() level: QRCodeErrorCorrectionLevel;
+  @Input() qrdata!: string;
+  @Input() size!: number;
+  @Input() level!: QRCodeErrorCorrectionLevel;
   @Input() print = false;
 
 }

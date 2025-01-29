@@ -16,14 +16,14 @@ import { LabelMakerFacade } from '../label-maker.facade';
 })
 export class LabelSettingsComponent {
 
-  @Input() setup: ISetup;
-  @Input() availableFields: ILabelField[];
+  @Input() setup!: ISetup;
+  @Input() availableFields!: ILabelField[];
   @Output() setupChange = new EventEmitter<ISetup>();
   showFieldFont = false;
   canDelete = false;
   borders = Presets.Border;
 
-  private _selectedLabelItem: ILabelItem;
+  private _selectedLabelItem!: ILabelItem;
 
   constructor(
     private translateService: TranslateService,
@@ -71,12 +71,12 @@ export class LabelSettingsComponent {
     this.setupChange.emit({
       ...this.setup,
       [location]: [
-        ...this.setup[location].slice(0, itemIdx),
+        ...this.setup[location]!.slice(0, itemIdx),
         {
-          ...this.setup[location][itemIdx],
+          ...this.setup[location]![itemIdx],
           [field]: item
         },
-        ...this.setup[location].slice(itemIdx + 1)
+        ...this.setup[location]!.slice(itemIdx + 1)
       ]
     });
   }
@@ -90,8 +90,8 @@ export class LabelSettingsComponent {
       this.setupChange.emit({
         ...this.setup,
         [location]: [
-          ...this.setup[location].slice(0, itemIdx),
-          ...this.setup[location].slice(itemIdx + 1)
+          ...this.setup[location]!.slice(0, itemIdx),
+          ...this.setup[location]!.slice(itemIdx + 1)
         ]
       });
       this.labelMakerFacade.hasChanges(true);
@@ -106,15 +106,15 @@ export class LabelSettingsComponent {
     this.setupChange.emit({
       ...this.setup,
       [location]: [
-        ...this.setup[location].slice(0, itemIdx),
+        ...this.setup[location]!.slice(0, itemIdx),
         {
-          ...this.setup[location][itemIdx],
+          ...this.setup[location]![itemIdx],
           fields: [
-            ...this.setup[location][itemIdx].fields.slice(0, idx),
-            ...this.setup[location][itemIdx].fields.slice(idx + 1)
+            ...this.setup[location]![itemIdx].fields.slice(0, idx),
+            ...this.setup[location]![itemIdx].fields.slice(idx + 1)
           ]
         },
-        ...this.setup[location].slice(itemIdx + 1)
+        ...this.setup[location]!.slice(itemIdx + 1)
       ]
     });
     this.labelMakerFacade.hasChanges(true);
@@ -131,15 +131,15 @@ export class LabelSettingsComponent {
     this.setupChange.emit({
       ...this.setup,
       [location]: [
-        ...this.setup[location].slice(0, itemIdx),
+        ...this.setup[location]!.slice(0, itemIdx),
         {
-          ...this.setup[location][itemIdx],
+          ...this.setup[location]![itemIdx],
           fields: [
-            ...this.setup[location][itemIdx].fields,
+            ...this.setup[location]![itemIdx].fields,
             labelField
           ]
         },
-        ...this.setup[location].slice(itemIdx + 1)
+        ...this.setup[location]!.slice(itemIdx + 1)
       ]
     });
     this.labelMakerFacade.hasChanges(true);
@@ -153,16 +153,16 @@ export class LabelSettingsComponent {
     this.setupChange.emit({
       ...this.setup,
       [location]: [
-        ...this.setup[location].slice(0, itemIdx),
+        ...this.setup[location]!.slice(0, itemIdx),
         {
-          ...this.setup[location][itemIdx],
+          ...this.setup[location]![itemIdx],
           fields: [
-            ...this.setup[location][itemIdx].fields.slice(0, idx),
+            ...this.setup[location]![itemIdx].fields.slice(0, idx),
             labelField,
-            ...this.setup[location][itemIdx].fields.slice(idx + 1)
+            ...this.setup[location]![itemIdx].fields.slice(idx + 1)
           ]
         },
-        ...this.setup[location].slice(itemIdx + 1)
+        ...this.setup[location]!.slice(itemIdx + 1)
       ]
     });
     this.labelMakerFacade.hasChanges(true);
@@ -178,12 +178,12 @@ export class LabelSettingsComponent {
     this.setupChange.emit({
       ...this.setup,
       [location]: [
-        ...this.setup[location].slice(0, itemIdx),
+        ...this.setup[location]!.slice(0, itemIdx),
         {
-          ...this.setup[location][itemIdx],
+          ...this.setup[location]![itemIdx],
           fields: list
         },
-        ...this.setup[location].slice(itemIdx + 1)
+        ...this.setup[location]!.slice(itemIdx + 1)
       ]
     });
     this.labelMakerFacade.hasChanges(true);
@@ -200,7 +200,7 @@ export class LabelSettingsComponent {
       return;
     }
     const dim = pos === 'x' ? 'width.mm' : 'height.mm';
-    if (value + this._selectedLabelItem.style[dim] > this.setup.label[dim]) {
+    if (value + this._selectedLabelItem.style![dim]! > this.setup.label![dim]!) {
       element.value = '' + this._selectedLabelItem[pos];
       return alert(this.translateService.get('Field cannot fit the label!'));
     }
@@ -214,8 +214,8 @@ export class LabelSettingsComponent {
       return;
     }
     const pos = style === 'width.mm' ? 'x' : 'y';
-    if (value + this._selectedLabelItem[pos] > this.setup.label[style]) {
-      element.value = this._selectedLabelItem.style[style];
+    if (value + this._selectedLabelItem[pos] > (this.setup.label as any)[style]) {
+      element.value = (this._selectedLabelItem!.style as any)[style];
       return alert(this.translateService.get('Field cannot fit the label!'));
     }
 

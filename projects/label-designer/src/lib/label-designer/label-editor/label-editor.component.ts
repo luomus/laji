@@ -15,16 +15,16 @@ import { LabelMakerFacade } from '../label-maker.facade';
 })
 export class LabelEditorComponent {
 
-  _setup: ISetup;
+  _setup!: ISetup;
   _magnification = 2;
   _backSide = false;
-  _magnifiedStyle: ILabelStyle;
+  _magnifiedStyle!: ILabelStyle;
   init = false;
   minSize = 4;
 
-  @Input() grid: number;
-  @Input() gridVisible: boolean;
-  @Input() active: ILabelItem;
+  @Input() grid!: number;
+  @Input() gridVisible!: boolean;
+  @Input() active!: ILabelItem;
   @Output() activeChange = new EventEmitter<ILabelItem>();
   @Output() setupChange = new EventEmitter<ISetup>();
   @Output() showSettings = new EventEmitter<ILabelItem>();
@@ -60,12 +60,12 @@ export class LabelEditorComponent {
     if (!this._setup) {
       return;
     }
-    const resultStyle = {};
-    Object.keys(this._setup.label).forEach(prop => {
+    const resultStyle: ILabelStyle = {};
+    (Object.keys(this._setup.label) as (keyof ILabelStyle)[]).forEach(prop => {
       if (typeof this._setup.label[prop] === 'number' && prop !== 'line-height') {
-        resultStyle[prop] = this._setup.label[prop] * this._magnification;
+        (resultStyle as any)[prop] = this._setup.label[prop] as any * this._magnification;
       } else {
-        resultStyle[prop] = this._setup.label[prop];
+        (resultStyle as any)[prop] = this._setup.label[prop];
       }
     });
     if (this._backSide) {
@@ -77,9 +77,9 @@ export class LabelEditorComponent {
   }
 
   onItemChange(originalItem: ILabelItem, newItem: ILabelItem): void {
-    const result = [];
+    const result: any = [];
     const items: TLabelLocation = this._backSide ? 'backSideLabelItems' : 'labelItems';
-    this._setup[items].forEach(item => {
+    (this._setup as any)[items].forEach((item: any) => {
       result.push(item === originalItem ? newItem : item);
     });
     this._setup = {

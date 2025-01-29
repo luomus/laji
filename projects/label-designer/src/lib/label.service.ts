@@ -9,22 +9,22 @@ import { ILabelField, ILabelItem, ILabelStyle, ILabelValueMap, IPageLayout, ISet
 })
 export class LabelService {
 
-  private pixelToMMRation;
+  private pixelToMMRation: any;
 
   public static widthInner(style: ILabelStyle) {
-    return style['width.mm'] - ((style['paddingRight.mm'] || 0) + (style['paddingLeft.mm'] || 0));
+    return style['width.mm']! - (((style as any)['paddingRight.mm'] || 0) + ((style as any)['paddingLeft.mm'] || 0));
   }
 
   public static heightInner(style: ILabelStyle) {
-    return style['height.mm'] - ((style['paddingTop.mm'] || 0) + (style['paddingBottom.mm'] || 0));
+    return style['height.mm']! - (((style as any)['paddingTop.mm'] || 0) + ((style as any)['paddingBottom.mm'] || 0));
   }
 
   public static widthOuter(style: ILabelStyle) {
-    return style['width.mm'] + ((style['marginRight.mm'] || 0) + (style['marginLeft.mm'] || 0));
+    return style['width.mm']! + ((style['marginRight.mm'] || 0) + (style['marginLeft.mm'] || 0));
   }
 
   public static heightOuter(style: ILabelStyle) {
-    return style['height.mm'] + ((style['marginTop.mm'] || 0) + (style['marginBottom.mm'] || 0));
+    return style['height.mm']! + ((style['marginTop.mm'] || 0) + (style['marginBottom.mm'] || 0));
   }
 
   public static hasValue(value: any) {
@@ -45,12 +45,12 @@ export class LabelService {
     return LabelService._getValue(value, field.valueMap, join ? field.join : undefined);
   }
 
-  public static parseUri(uri): {uri: string; id: string; domain: string} {
+  public static parseUri(uri: string): {uri: string; id: string; domain: string} {
     if (!uri.startsWith('http')) {
       return {uri, id: '', domain: ''};
     }
     const uriParts = uri.split('/');
-    const id = uriParts.pop();
+    const id = uriParts.pop()!;
     return {
       uri,
       id,
@@ -60,8 +60,8 @@ export class LabelService {
 
   public static forEachLabelItem(setup: ISetup, cb: (field: ILabelItem) => void) {
     ['labelItems', 'backSideLabelItems'].forEach(items => {
-      if (setup[items]) {
-        setup[items].map((item: ILabelItem) => cb(item));
+      if ((setup as any)[items]) {
+        (setup as any)[items].map((item: ILabelItem) => cb(item));
       }
     });
   }
@@ -121,7 +121,7 @@ export class LabelService {
   public countMinLabelSize(setup: ISetup): {width: number; height: number} {
     let width = 0, height = 0;
 
-    const max = (item => {
+    const max = ((item: any) => {
       if (item.x + item.style['width.mm'] > width) {
         width = item.x + item.style['width.mm'];
       }
@@ -131,7 +131,7 @@ export class LabelService {
     });
 
     setup.labelItems.forEach(max);
-    setup.backSideLabelItems.forEach(max);
+    setup.backSideLabelItems!.forEach(max);
 
     return {width, height};
   }

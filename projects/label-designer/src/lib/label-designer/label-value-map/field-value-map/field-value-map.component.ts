@@ -10,9 +10,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class FieldValueMapComponent {
 
-  @Input() field: string;
-  @Input() title: string;
-  @Input() mapping: {[value: string]: string};
+  @Input() field!: string;
+  @Input() title?: string;
+  @Input() mapping!: {[value: string]: string};
 
   @Output() mappingChange = new EventEmitter<{[value: string]: string}>();
   @Output() remove = new EventEmitter<void>();
@@ -29,7 +29,7 @@ export class FieldValueMapComponent {
   }
 
   changeKey(oldKey: string, newKey: string) {
-    const result = {};
+    const result: Record<string, string> = {};
     Object.keys(this.mapping).forEach(key => result[oldKey === key ? newKey : key] = this.mapping[key]);
     this.mappingChange.emit(result);
   }
