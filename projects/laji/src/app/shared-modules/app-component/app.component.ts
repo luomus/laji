@@ -36,7 +36,7 @@ export class AppComponent {
     historyService: HistoryService,
     apiClient: LajiApiClientBService
   ) {
-    apiClient.baseUrl = environment.base + environment.apiBase;
+    apiClient.baseUrl = environment.apiBase;
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.type === Global.type.embedded;
