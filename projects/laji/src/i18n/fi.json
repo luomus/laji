@@ -19,6 +19,7 @@
   "annotation.deleteComment": "Poista kommentti",
   "annotation.deleted": "Poistettu",
   "annotation.deletedSuccess": "Kommentti poistettu",
+  "annotation.effectiveAtlasCode": "Pesimävarmuusindeksi",
   "annotation.effectiveQualityMarkings": "Voimassa olevat laatumerkinnät",
   "annotation.effectiveTags": "Tagit",
   "annotation.effectiveTaxon": "Taksoni",

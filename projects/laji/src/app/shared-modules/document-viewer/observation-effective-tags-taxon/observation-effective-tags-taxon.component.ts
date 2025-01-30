@@ -23,6 +23,7 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
   @Input() showTitle?: boolean;
   @Input() showEffectiveTaxon = true;
   @Input() showEffectiveTag = true;
+  @Input() showEffectiveAtlasCode = true;
   @Input() showRecordQuality = true;
   @Input() annotationTags?: AnnotationTag[]|null;
 
