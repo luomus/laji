@@ -1,5 +1,5 @@
 <ng-container *ngIf="selectedLabelItem; else missingField">
-  <div (click)="remove(selectedLabelItem)" style="margin-top: 10px;" class="pull-right"><ll-icon size="20" type="close"></ll-icon></div>
+  <div (click)="remove(selectedLabelItem)" style="margin-top: 10px;" class="pull-right"><ll-icon [size]="20" type="close"></ll-icon></div>
   <h3 class="first">{{ 'Field' | translate }}</h3>
   <ll-font-settings
     *ngIf="showFieldFont"
@@ -27,14 +27,14 @@
       <tr>
         <td>{{ 'width' | translate }}:</td>
         <td>
-          <input class="form-control" type="text" [value]="round(selectedLabelItem.style['width.mm'])" (change)="changeActiveStyle('width.mm', $event)">
+          <input class="form-control" type="text" [value]="round(selectedLabelItem.style!['width.mm'])" (change)="changeActiveStyle('width.mm', $event)">
         </td>
         <td>mm.</td>
       </tr>
       <tr>
         <td>{{ 'height' | translate }}:</td>
         <td>
-          <input class="form-control" type="text" [value]="round(selectedLabelItem.style['height.mm'])" (change)="changeActiveStyle('height.mm', $event)">
+          <input class="form-control" type="text" [value]="round(selectedLabelItem.style!['height.mm'])" (change)="changeActiveStyle('height.mm', $event)">
         </td>
         <td>mm.</td>
       </tr>
@@ -48,7 +48,7 @@
       <ll-field-settings [allowDelete]="canDelete" [field]="field" (fieldChange)="fieldUpdate($event, i)" (fieldRemove)="fieldRemove(i)"></ll-field-settings>
     </div>
   </div>
-  <ll-available-fields *ngIf="showFieldFont" [availableFields]="availableFields" (valueChange)="fieldAdd($event)"
+  <ll-available-fields *ngIf="showFieldFont" [availableFields]="availableFields" (valueChange)="fieldAdd($any($event))"
                        [includeTextField]="true"></ll-available-fields>
 </ng-container>
 <ng-template #missingField>
@@ -64,7 +64,7 @@
     <tr>
       <td></td>
       <td>
-        <select class="form-control" (change)="change('border', $event.target.value)">
+        <select class="form-control" (change)="change('border', $any($event.target).value)">
           <option *ngFor="let border of borders | keyvalue" [value]="border.value" [selected]="border.value === setup.border">{{ border.key | translate }}</option>
         </select>
       </td>

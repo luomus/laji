@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ILabelField, ILabelItem, ILabelStyle, ILabelValueMap, IPageLayout, IPageStyle, ISetup } from './label-designer.interface';
+import { ILabelField, ILabelItem, ILabelStyle, ILabelValueMap, IPageLayout, ISetup } from './label-designer.interface';
 
 /**
  * @internal
@@ -9,14 +9,14 @@ import { ILabelField, ILabelItem, ILabelStyle, ILabelValueMap, IPageLayout, IPag
 })
 export class LabelService {
 
-  private pixelToMMRation!: number;
+  private pixelToMMRation: any;
 
-  public static widthInner(style: IPageStyle) {
-    return style['width.mm']! - ((style['paddingRight.mm'] || 0) + (style['paddingLeft.mm'] || 0));
+  public static widthInner(style: ILabelStyle) {
+    return style['width.mm']! - (((style as any)['paddingRight.mm'] || 0) + ((style as any)['paddingLeft.mm'] || 0));
   }
 
-  public static heightInner(style: IPageStyle) {
-    return style['height.mm']! - ((style['paddingTop.mm'] || 0) + (style['paddingBottom.mm'] || 0));
+  public static heightInner(style: ILabelStyle) {
+    return style['height.mm']! - (((style as any)['paddingTop.mm'] || 0) + ((style as any)['paddingBottom.mm'] || 0));
   }
 
   public static widthOuter(style: ILabelStyle) {
@@ -60,8 +60,8 @@ export class LabelService {
 
   public static forEachLabelItem(setup: ISetup, cb: (field: ILabelItem) => void) {
     ['labelItems', 'backSideLabelItems'].forEach(items => {
-      if (setup[items as 'labelItems'|'backSideLabelItems']) {
-        setup[items as 'labelItems'|'backSideLabelItems']!.map((item: ILabelItem) => cb(item));
+      if ((setup as any)[items]) {
+        (setup as any)[items].map((item: ILabelItem) => cb(item));
       }
     });
   }
@@ -131,7 +131,7 @@ export class LabelService {
     });
 
     setup.labelItems.forEach(max);
-    setup.backSideLabelItems?.forEach(max);
+    setup.backSideLabelItems!.forEach(max);
 
     return {width, height};
   }

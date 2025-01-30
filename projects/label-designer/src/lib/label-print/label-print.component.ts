@@ -81,12 +81,12 @@ export class LabelPrintComponent implements OnChanges {
   /**
    * Setup used for the label
    */
-  @Input() setup: ISetup;
+  @Input() setup!: ISetup;
 
   /**
    * Array that holds key value objects that are used for the data on the label.
    */
-  @Input() data: Record<string, any>[];
+  @Input() data!: Record<string, any>[];
 
   /**
    * Css class that are on the print button.
@@ -113,7 +113,7 @@ export class LabelPrintComponent implements OnChanges {
   /**
    * @ignore
    */
-  @ViewChild('pagesContainer', { static: true }) public pageContainer: ElementRef<HTMLDivElement>;
+  @ViewChild('pagesContainer', { static: true }) public pageContainer!: ElementRef<HTMLDivElement>;
 
   /**
    * @ignore
@@ -122,11 +122,11 @@ export class LabelPrintComponent implements OnChanges {
   /**
    * @ignore
    */
-  pageLayout: IPageLayout;
+  pageLayout!: IPageLayout;
   /**
    * @ignore
    */
-  nroPages: number;
+  nroPages!: number;
   /**
    * @ignore
    */
@@ -160,15 +160,15 @@ export class LabelPrintComponent implements OnChanges {
     this.pageLayout = this.labelService.countLabelsPerPage(this.setup);
     const perPage = this.pageLayout.rows * this.pageLayout.cols;
     const pages = [];
-    const skip = new Array(Math.max(options.skip || 0, 0)).fill(null);
-    const repeat = Math.max(options.repeat || 1, 1);
+    const skip = new Array(Math.max(options!.skip || 0, 0)).fill(null);
+    const repeat = Math.max(options!.repeat || 1, 1);
     const data = this.data.reduce((all: any[], current) => {
       for (let i = 0; i < repeat; i++) {
         all.push(current);
       }
       return all;
     }, []) as any[];
-    let page = [];
+    let page: any = [];
     [...skip, ...data].forEach((item, idx) => {
       if (idx % perPage === 0 && page.length > 0) {
         pages.push([...page]);

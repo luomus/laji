@@ -39,12 +39,14 @@ export class EditorItemComponent implements AfterViewInit {
   origElementDimensions!: DOMRect;
   fieldType = FieldType;
 
-  qrErrorCorrectionCodeM = QRCodeErrorCorrectionLevel.levelM
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel;
 
   private maxWidthMm!: number;
   private maxWidthPx!: number;
   private maxHeightMm!: number;
   private maxHeightPx!: number;
+
   private elem!: HTMLDivElement;
 
   constructor(

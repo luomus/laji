@@ -14,7 +14,7 @@ import { TranslateService } from '../../translate/translate.service';
 })
 export class LabelValueMapComponent {
 
-  @Input() data: Record<string, any>[];
+  @Input() data!: Record<string, any>[];
 
   fieldLookup: {[field: string]: ILabelField} = {};
   addableFields: ILabelField[] = [];
@@ -23,7 +23,7 @@ export class LabelValueMapComponent {
   @Output() valueMapChange = new EventEmitter<ILabelValueMap>();
 
   private _map: ILabelValueMap = {};
-  private _availableFields: ILabelField[];
+  private _availableFields?: ILabelField[];
 
   constructor(private translateService: TranslateService) {}
 
@@ -32,7 +32,7 @@ export class LabelValueMapComponent {
   set availableFields(fields: ILabelField[]) {
     this._availableFields = fields;
     if (Array.isArray(fields)) {
-      const lookup = {};
+      const lookup: Record<string, ILabelField> = {};
       fields.forEach(field => lookup[field.field] = field);
       this.fieldLookup = lookup;
     }
@@ -57,18 +57,18 @@ export class LabelValueMapComponent {
     });
   }
 
-  addNewField(field: ILabelField): void {
+  addNewField(field: ILabelField | null): void {
     if (!field) {
       return;
     }
-    let fieldMap = {};
+    let fieldMap: Record<string, string> = {};
     if (this.data) {
       fieldMap = this.addByData(field);
     }
     if (field.valueMap && Object.keys(fieldMap).length === 0) {
       Object.keys(field.valueMap).forEach(key => {
-        if (field.valueMap[key]) {
-          fieldMap[field.valueMap[key]] = '';
+        if (field.valueMap![key]) {
+          fieldMap[field.valueMap![key]] = '';
         }
       });
     }
@@ -90,7 +90,7 @@ export class LabelValueMapComponent {
   }
 
   addByData(field: ILabelField, map = {}): { [value: string]: string } {
-    const base = {...map};
+    const base: Record<string, string> = {...map};
     const values = new Set<string>();
     this.data.forEach((row) => {
       if (LabelService.hasValue(row[field.field])) {

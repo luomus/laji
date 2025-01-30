@@ -12,8 +12,8 @@ import { LabelService } from '../../../label.service';
 })
 export class EditorGridComponent implements OnChanges {
 
-  @Input() grid?: number;
-  @Input() magnification?: number;
+  @Input() grid!: number;
+  @Input() magnification!: number;
 
   size?: number;
 
