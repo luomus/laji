@@ -11,7 +11,7 @@ import { routing } from './trait-db.routes';
 import { TraitDbDatasetsComponent } from './trait-db-datasets/trait-db-datasets.component';
 import { TraitDbDatasetComponent } from './trait-db-datasets/trait-db-dataset/trait-db-dataset.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TraitDbNewDatasetComponent } from './trait-db-datasets/trait-db-new-dataset/trait-db-new-dataset.component';
+import { TraitDbDatasetEditorComponent } from './trait-db-datasets/trait-db-dataset-editor/trait-db-dataset-editor.component';
 import { TraitDbAboutComponent } from './trait-db-about/trait-db-about.component';
 import { TraitDbTraitsComponent } from './trait-db-traits/trait-db-traits.component';
 import { TraitDbTraitComponent } from './trait-db-traits/trait-db-trait/trait-db-trait.component';
@@ -25,7 +25,7 @@ import { TraitSearchAdditionalFiltersComponent } from './shared/trait-search/tra
   declarations: [
     TraitDbComponent, TraitDbMainComponent, TraitDbBrowseComponent,
     TraitDbMyDatasetsComponent, TraitDbDatasetsComponent, TraitDbDatasetComponent,
-    TraitDbNewDatasetComponent, TraitDbAboutComponent, TraitDbTraitsComponent,
+    TraitDbDatasetEditorComponent, TraitDbAboutComponent, TraitDbTraitsComponent,
     TraitDbTraitComponent, TraitSearchComponent, TraitSearchFiltersComponent, TraitSearchAdditionalFiltersComponent
   ]
 })

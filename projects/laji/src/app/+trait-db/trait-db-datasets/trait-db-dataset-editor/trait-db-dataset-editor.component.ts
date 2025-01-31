@@ -23,10 +23,10 @@ const filterNullValues = <T extends Record<string, unknown>>(obj: T): T => {
 };
 
 @Component({
-  templateUrl: './trait-db-new-dataset.component.html',
-  styleUrls: ['./trait-db-new-dataset.component.scss']
+  templateUrl: './trait-db-dataset-editor.component.html',
+  styleUrls: ['./trait-db-dataset-editor.component.scss']
 })
-export class TraitDbNewDatasetComponent implements OnInit, OnDestroy {
+export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
   datasetForm = this.fb.group({
     id: [undefined as (string | undefined)], // hidden + uneditable
     published: [undefined as (boolean | undefined)], // only when editing existing dataset

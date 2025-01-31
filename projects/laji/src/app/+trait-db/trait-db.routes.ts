@@ -4,7 +4,7 @@ import { TraitDbAboutComponent } from './trait-db-about/trait-db-about.component
 import { TraitDbBrowseComponent } from './trait-db-browse/trait-db-browse.component';
 import { TraitDbDatasetComponent } from './trait-db-datasets/trait-db-dataset/trait-db-dataset.component';
 import { TraitDbDatasetsComponent } from './trait-db-datasets/trait-db-datasets.component';
-import { TraitDbNewDatasetComponent } from './trait-db-datasets/trait-db-new-dataset/trait-db-new-dataset.component';
+import { TraitDbDatasetEditorComponent } from './trait-db-datasets/trait-db-dataset-editor/trait-db-dataset-editor.component';
 import { TraitDbMainComponent } from './trait-db-main/trait-db-main.component';
 import { TraitDbTraitComponent } from './trait-db-traits/trait-db-trait/trait-db-trait.component';
 import { TraitDbTraitsComponent } from './trait-db-traits/trait-db-traits.component';
@@ -20,8 +20,8 @@ export const routes: Routes = [
       { path: 'browse', component: TraitDbBrowseComponent },
       { path: 'datasets', children: [
         { path: '', pathMatch: 'full', component: TraitDbDatasetsComponent },
-        { path: 'new', component: TraitDbNewDatasetComponent },
-        { path: ':id/edit', component: TraitDbNewDatasetComponent },
+        { path: 'new', component: TraitDbDatasetEditorComponent },
+        { path: ':id/edit', component: TraitDbDatasetEditorComponent },
         { path: ':id', component: TraitDbDatasetComponent }
       ] },
       { path: 'traits', children: [
