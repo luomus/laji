@@ -11,6 +11,12 @@ type ExtractRequestBodyIfExists<R> = R extends { requestBody: { content: { 'appl
 type HttpSuccessCodes = 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226;
 type IntersectUnionTypes<A, B> = A extends B ? A : never;
 
+type Path = keyof paths & string;
+type Method<P extends Path> = Exclude<
+  keyof { [K in keyof paths[P] as paths[P][K] extends undefined | never ? never : K]: paths[P][K] }
+, 'parameters'>;
+type Responses<P extends Path, M extends Method<P>> = WithResponses<paths[P][M]>['responses'];
+
 interface CachedValueNotStarted { _tag: 'not-started' };
 interface CachedValueLoading<T> { obs: Observable<T>; _tag: 'loading' };
 interface CachedValueCompleted<T> { val: T; lastRefresh: number; _tag: 'completed' };
@@ -30,17 +36,17 @@ const hashArgs = (...args: any): string => (
   }, '')
 );
 
-const getPath = <
-  T extends keyof paths & string,
-  U extends keyof paths[T] & string,
->(endpoint: T, params?: Parameters<paths[T][U]>): string => {
-  let path: string = endpoint;
+const resolvePath = <
+  P extends Path,
+  M extends Method<P>,
+>(path: P, params?: Parameters<paths[P][M]>): string => {
+  let resolvedPath: string = path;
   if ((<any>params)?.['path']) {
     Object.entries((<any>params)['path']).forEach(([k, v]) => {
-      path = path.replace(`{${k}}`, <any>v);
+      resolvedPath = resolvedPath.replace(`{${k}}`, <any>v);
     });
   }
-  return path;
+  return resolvedPath;
 };
 
 @Injectable({
@@ -53,27 +59,23 @@ export class LajiApiClientBService {
 
   constructor(private http: HttpClient) { }
 
-  fetch<
-    T extends keyof paths & string,
-    U extends keyof paths[T] & string,
-    Responses extends WithResponses<paths[T][U]>['responses']
-  >(
-    endpoint: T,
-    method: U,
-    params: Parameters<paths[T][U]>,
-    requestBody?: ExtractRequestBodyIfExists<paths[T][U]>,
+  fetch<P extends Path, M extends Method<P>, R extends Responses<P, M>>(
+    path: P,
+    method: M,
+    params: Parameters<paths[P][M]>,
+    requestBody?: ExtractRequestBodyIfExists<paths[P][M]>,
     cacheInvalidationMs = 86400000 // 1day in ms
-  ): Observable<ExtractContentIfExists<Responses[IntersectUnionTypes<keyof Responses, HttpSuccessCodes>]>> {
-    const path = getPath(endpoint, params);
-    const requestUrl = this.baseUrl + path;
+  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+    const resolvedPath = resolvePath(path, params);
+    const requestUrl = this.baseUrl + resolvedPath;
     const requestOptions = { params: (<any>params).query, body: requestBody };
 
     if (method !== 'get') {
-      this.flush(endpoint);
-      return this.http.request(method, requestUrl, requestOptions) as any;
+      this.flush(path);
+      return this.http.request(method as string, requestUrl, requestOptions) as any;
     }
 
-    const pathHash = hashArgs(path);
+    const pathHash = hashArgs(resolvedPath);
     if (!(this.cache.has(pathHash))) {
       this.cache.set(pathHash, new Map());
     }
@@ -114,11 +116,11 @@ export class LajiApiClientBService {
     return obs;
   }
 
-  flush<
-    T extends keyof paths & string,
-    U extends keyof paths[T] & string,
-  >(endpoint: T, params?: Parameters<paths[T][U]>) {
-    const path = getPath(endpoint, params);
+  flush<P extends Path, M extends Method<P>>(
+    endpoint: P,
+    params?: Parameters<paths[P][M]>
+  ) {
+    const path = resolvePath(endpoint, params);
 
     const pathHash = hashArgs(path);
     if (!this.cache.has(pathHash)) {
