@@ -35,23 +35,32 @@ interface ColumnWithTemplate<T extends Keyable> extends BasicColumn<T> {
 }
 
 export interface UnsortableColumnWithTemplate<T extends Keyable> extends ColumnWithTemplate<T> {
+  prop?: T;
   sortable: false;
   sortFn: undefined;
 }
 
-export interface SortableColumnWithTemplate<T extends Keyable> extends ColumnWithTemplate<T> {
+// can fall back on default sorting fn
+export interface SortableColumnWithTemplateAndProp<T extends Keyable> extends ColumnWithTemplate<T> {
+  prop: T;
+  sortable: true;
+}
+
+// no sort fallback when a prop wasn't supplied
+export interface SortableColumnWithTemplateButNoProp<T extends Keyable> extends ColumnWithTemplate<T> {
   sortable: true;
   sortFn: <U>(a: U, b: U) => number;
 }
 
 export type DatatableColumn<T extends Keyable> =
-  DefaultColumn<T> | UnsortableColumnWithTemplate<T> | SortableColumnWithTemplate<T>;
+  DefaultColumn<T> | UnsortableColumnWithTemplate<T> | SortableColumnWithTemplateAndProp<T> | SortableColumnWithTemplateButNoProp<T>;
 
-const columnHasTemplate = <T extends Keyable>(col: DatatableColumn<T>): col is UnsortableColumnWithTemplate<T> | SortableColumnWithTemplate<T> =>
+const columnHasTemplate = <T extends Keyable>(col: DatatableColumn<T>):
+  col is
+    UnsortableColumnWithTemplate<T>
+    | SortableColumnWithTemplateAndProp<T>
+    | SortableColumnWithTemplateButNoProp<T> =>
   'cellTemplate' in col;
-
-const sortableColumnIsDefaultColumn = <T extends Keyable>(col: DefaultColumn<T> | SortableColumnWithTemplate<T>): col is DefaultColumn<T> =>
-  col.sortFn === undefined;
 
 /**
  * Index of the column to sort by referring to the `columns` array, and the direction.
@@ -81,9 +90,9 @@ export interface Sort {
     [currentPageIdx]="0"
     [loading]="false"
   ></lu-datatable>
-  <ng-template #testTemplate let-data>
+  <ng-template #testTemplate let-row let-p="prop">
     <div style="color: purple;">
-      {{ data.a }}
+      {{ row.a }} = {{ p }}
     </div>
   </ng-template>
  */
@@ -284,14 +293,13 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
     for (const sort of [...this.sorts].reverse()) {
       const col = this.columns[sort.by];
       if (col.sortable === false) {
-        return;
+        continue;
       }
-      const sortFn = sortableColumnIsDefaultColumn(col)
-        ? (a: DatatableRow<RowProp>, b: DatatableRow<RowProp>) =>
-          col.sortFn // col doesn't have a celltemplate
+      const sortFn = col.sortFn ? col.sortFn
+        : (a: DatatableRow<RowProp>, b: DatatableRow<RowProp>) =>
+          col.sortFn
             ? col.sortFn(a, b)
-            : a[col.prop] > b[col.prop] ? 1 : a[col.prop] < b[col.prop] ? -1 : 0
-        : col.sortFn; // col has a celltemplate
+            : a[col.prop] > b[col.prop] ? 1 : a[col.prop] < b[col.prop] ? -1 : 0;
       const sortDir = (a: DatatableRow<RowProp>, b: DatatableRow<RowProp>) => {
         if (sort.dir === 'DESC') {
           [b, a] = [a, b];

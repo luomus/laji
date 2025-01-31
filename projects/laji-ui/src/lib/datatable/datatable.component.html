@@ -41,7 +41,12 @@
       <tr *ngFor="let row of rows">
         <td *ngFor="let colIdx of selectedColumns" #rowRef>
           <ng-container *ngIf="columnHasTemplate(columns[colIdx]); else defaultTemplate">
-            <ng-container *ngTemplateOutlet="columns[colIdx]['cellTemplate']; context: { $implicit: row }"></ng-container>
+            <ng-container
+              *ngTemplateOutlet="columns[colIdx]['cellTemplate'];
+              context: columns[colIdx].prop
+                ? { $implicit: row, prop: getNestedValue(row, columns[colIdx]['prop']) }
+                : { $implicit: row }"
+            ></ng-container>
           </ng-container>
           <ng-template #defaultTemplate>
             {{ getNestedValue(row, columns[colIdx]['prop']) }}
