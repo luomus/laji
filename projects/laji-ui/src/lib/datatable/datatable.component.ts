@@ -159,8 +159,8 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
       this.unselectedColumns.clear();
     }
 
-    if (changes.defaultColumns) {
-      this.selectedColumns = this.defaultColumns!;
+    if (changes.defaultColumns && this.defaultColumns) {
+      this.selectedColumns = this.defaultColumns;
       this.columns
         .map((c, idx) => idx)
         .filter(i => !this.selectedColumns.includes(i))
