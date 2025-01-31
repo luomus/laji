@@ -248,7 +248,7 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
     }
   }
 
-  onChangePage(idx: number) {
+  onPageChange(idx: number) {
     this.pageChange.emit(idx);
   }
 

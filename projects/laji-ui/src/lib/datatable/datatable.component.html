@@ -58,43 +58,7 @@
   </table>
 </div>
 
-<ul *ngIf="totalPages > 1" class="paginator">
-  <ng-container *ngIf="totalPages <= 7; else truncatedPaginator">
-    <li *ngFor="let i of [].constructor(totalPages); let idx = index" (click)="onChangePage(idx)">
-      {{ idx }}
-    </li>
-  </ng-container>
-</ul>
-
-<ng-template #truncatedPaginator>
-  <ng-container *ngIf="currentPageIdx < 4">
-    <li (click)="onChangePage(0)" [ngClass]="{active: currentPageIdx === 0}">1</li>
-    <li (click)="onChangePage(1)" [ngClass]="{active: currentPageIdx === 1}">2</li>
-    <li (click)="onChangePage(2)" [ngClass]="{active: currentPageIdx === 2}">3</li>
-    <li (click)="onChangePage(3)" [ngClass]="{active: currentPageIdx === 3}">4</li>
-    <li (click)="onChangePage(4)">5</li>
-    <li class="three-dots">...</li>
-    <li (click)="onChangePage(totalPages - 1)">{{ totalPages }}</li>
-  </ng-container>
-  <ng-container *ngIf="currentPageIdx >= 4 && currentPageIdx <= totalPages - 5">
-    <li (click)="onChangePage(0)">1</li>
-    <li class="three-dots">...</li>
-    <li (click)="onChangePage(currentPageIdx - 1)">{{ currentPageIdx }}</li>
-    <li (click)="onChangePage(currentPageIdx)" class="active">{{ currentPageIdx + 1 }}</li>
-    <li (click)="onChangePage(currentPageIdx + 1)">{{ currentPageIdx + 2 }}</li>
-    <li class="three-dots">...</li>
-    <li (click)="onChangePage(totalPages - 1)">{{ totalPages }}</li>
-  </ng-container>
-  <ng-container *ngIf="currentPageIdx > totalPages - 5">
-    <li (click)="onChangePage(0)">{{ 1 }}</li>
-    <li class="three-dots">...</li>
-    <li (click)="onChangePage(totalPages - 5)">{{ totalPages - 4 }}</li>
-    <li (click)="onChangePage(totalPages - 4)" [ngClass]="{active: currentPageIdx === totalPages - 4}">{{ totalPages - 3 }}</li>
-    <li (click)="onChangePage(totalPages - 3)" [ngClass]="{active: currentPageIdx === totalPages - 3}">{{ totalPages - 2 }}</li>
-    <li (click)="onChangePage(totalPages - 2)" [ngClass]="{active: currentPageIdx === totalPages - 2}">{{ totalPages - 1 }}</li>
-    <li (click)="onChangePage(totalPages - 1)" [ngClass]="{active: currentPageIdx === totalPages - 1}">{{ totalPages }}</li>
-  </ng-container>
-</ng-template>
+<lu-datatable-paginator [totalPages]="totalPages" [currentPageIdx]="currentPageIdx" (pageChange)="onPageChange($event)"></lu-datatable-paginator>
 
 <ng-template #rowGhosts>
   <tr *ngFor="let i of [].constructor(ghostCount); let idx = index">
