@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { components, operations, paths } from '../generated/api';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
@@ -49,15 +49,15 @@ const resolvePath = <
   return resolvedPath;
 };
 
+export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
+
 @Injectable({
   providedIn: 'root'
 })
 export class LajiApiClientBService {
-  baseUrl = 'http://localhost:3000/api';
-
   private cache: Map<string, Map<string, CacheElement<any>>> = new Map();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, @Inject(API_BASE_URL) private baseUrl: string) { }
 
   fetch<P extends Path, M extends Method<P>, R extends Responses<P, M>>(
     path: P,

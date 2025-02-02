@@ -8,6 +8,7 @@ import { filterDefaultValues, Filters, HIGHER_TAXA } from './trait-search-filter
 import { ActivatedRoute, Router } from '@angular/router';
 import { isObject } from '@luomus/laji-map/lib/utils';
 import { AdditionalFilterValues } from './trait-search-filters/additional-filters.component';
+import { environment } from 'projects/laji/src/environments/environment';
 
 type SearchResponse = paths['/trait/search']['get']['responses']['200']['content']['application/json'];
 
@@ -140,7 +141,7 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
     const queryParams = addFiltersToApiQuery({}, this.filterChangeSubject.getValue());
     const queryParamString = Object.entries(queryParams)
       .map(([k, v]) => k + '=' + v).join('&');
-    return this.api.baseUrl + '/trait/search/download?' + queryParamString;
+    return environment.apiBase + '/trait/search/download?' + queryParamString;
   }
 
   private handleInitialQueryParams(queryParams: QueryParams) {

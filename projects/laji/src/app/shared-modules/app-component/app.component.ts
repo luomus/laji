@@ -33,10 +33,8 @@ export class AppComponent {
     location: Location,
     viewContainerRef: ViewContainerRef,
     headerService: HeaderService,
-    historyService: HistoryService,
-    apiClient: LajiApiClientBService
+    historyService: HistoryService
   ) {
-    apiClient.baseUrl = environment.apiBase;
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.type === Global.type.embedded;
