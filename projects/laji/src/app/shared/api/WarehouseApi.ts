@@ -508,6 +508,9 @@ export class WarehouseApi {
   }
 
   public getPolygonFeatureCollection(polygonId: string) {
+    if (this.platformService.isServer) {
+      return EMPTY;
+    }
     const path = this.basePath + '/warehouse/polygon/' + polygonId;
     const queryParameters = {format: 'geojson', crs: 'WGS84'};
     return this.http.get(path, {params: queryParameters});

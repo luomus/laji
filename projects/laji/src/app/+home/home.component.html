@@ -87,7 +87,7 @@
         <h3 class="width-0 d-inline" translate>{{ 'finbif-bib.title' | translate }}</h3>
         <laji-info>{{ 'finbif-bib.intro' | translate }}</laji-info>
       </div>
-      <div class="finBif-publications" innerHTML="{{ (publications$ | async)?.content }}"></div>
+      <div *lajiBrowserOnly class="finBif-publications" innerHTML="{{ (publications$ | async)?.content }}"></div>
       <a class="btn btn-default" [routerLink]="['/theme/publications'] | localize">
         {{ 'finbif-bib.seeAll' | translate }}
       </a>
