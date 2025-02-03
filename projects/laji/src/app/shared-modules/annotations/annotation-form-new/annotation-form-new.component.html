@@ -183,6 +183,18 @@
     (focus)="onFocus($event)"
     (blur)="onBlur($event)">
   </div>
+  <div class="mb-4" *ngIf="(personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
+    <h5>{{ 'MAN.atlasCode' | label }}</h5>
+    <laji-metadata-select
+      [(ngModel)]="annotation.atlasCode"
+      [multiple]="false"
+      [useFilter]="true"
+      name="atlasCode"
+      [open]="true"
+      [selectStyle]="selectStyleBasic"
+      [placeholder]="'MY.atlasCode' | label"
+      [alt]="'MY.atlasCodeEnum'"></laji-metadata-select>
+  </div>
 </ng-container>
 <ng-template #editorMessage>
   <div class="alert alert-warning">{{ 'annotation.isEditorTaxon' | translate }}</div>

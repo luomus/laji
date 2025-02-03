@@ -27,6 +27,7 @@ type Annotation {
   "QName for KE.informationSystem"
   annotationBySystem: String
   annotationClass: String
+  atlasCode: String
   byRole: String
   censusAnnotation: [String!]
   "dateTime string using ISO8601 format"
@@ -529,6 +530,7 @@ type DwAnnotation {
   annotationByPerson: String
   annotationByPersonName: String
   annotationClass: String
+  atlasCode: String
   created: String
   id: String
   invasiveControlEffectiveness: String
