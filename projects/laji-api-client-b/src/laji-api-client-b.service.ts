@@ -23,18 +23,20 @@ interface CachedValueCompleted<T> { val: T; lastRefresh: number; _tag: 'complete
 
 type CacheElement<T> = CachedValueNotStarted | CachedValueLoading<T> | CachedValueCompleted<T>;
 
-const concatObjProps = (obj: any) => hashArgs(Object.entries(obj).map(([k, v]) => k + hashArgs(v)));
-const hashArgs = (...args: any): string => (
-  args.reduce((prev: string, curr: any) => {
-    if (curr instanceof Array) {
-      return prev += hashArgs(...curr);
-    }
-    if (curr instanceof Object) {
-      return prev += concatObjProps(curr);
-    }
-    return prev += curr;
-  }, '')
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+const sortRecordRecursively = (record: Record<string, unknown>): Record<string, unknown> => (
+  Object.entries(record)
+    .sort(([aKey, aVal], [bKey, bVal]) => aKey > bKey ? 1 : aKey < bKey ? -1 : 0)
+    .reduce((acc, [key, value]) => {
+      acc[key] = isRecord(value) ? sortRecordRecursively(value) : value;
+      return acc;
+    }, Object.create(null))
 );
+
+const hashRecord = (record: any): string => JSON.stringify(sortRecordRecursively(record));
 
 const resolvePath = <
   P extends Path,
@@ -75,14 +77,14 @@ export class LajiApiClientBService {
       return this.http.request(method as string, requestUrl, requestOptions) as any;
     }
 
-    const pathHash = hashArgs(resolvedPath);
+    const pathHash = resolvedPath;
     if (!(this.cache.has(pathHash))) {
       this.cache.set(pathHash, new Map());
     }
 
     const cachedPath = this.cache.get(pathHash);
 
-    const paramsHash = hashArgs(params);
+    const paramsHash = hashRecord(params);
     if (!cachedPath?.has(paramsHash)) {
       cachedPath?.set(paramsHash, { _tag: 'not-started' });
     }
@@ -120,15 +122,15 @@ export class LajiApiClientBService {
     endpoint: P,
     params?: Parameters<paths[P][M]>
   ) {
-    const path = resolvePath(endpoint, params);
+    const resolvedPath = resolvePath(endpoint, params);
 
-    const pathHash = hashArgs(path);
+    const pathHash = resolvedPath;
     if (!this.cache.has(pathHash)) {
       return;
     }
 
     if (params !== undefined) {
-      const paramsHash = hashArgs(params);
+      const paramsHash = hashRecord(params);
       this.cache.get(pathHash)?.delete(paramsHash);
     } else {
       this.cache.delete(pathHash);
