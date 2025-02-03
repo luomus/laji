@@ -43,11 +43,6 @@ h5 {
     position: relative;
   }
 
-  a.manual img {
-    width: 24%;
-    margin-left: 5px;
-  }
-
   .column-modal {
     flex: 1;
     @include media-query-tablet {

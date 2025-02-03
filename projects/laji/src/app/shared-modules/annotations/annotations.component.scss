@@ -20,6 +20,12 @@ a {
   border-bottom: 1px solid #b2b2b2;
 }
 
+a.manual img {
+  width: 24%;
+  margin-left: 5px;
+}
+
+
 .no-border {
   background: transparent;
   padding: 5px 10px 0;
@@ -58,17 +64,6 @@ a {
   padding: 10px;
   border: 1px solid $neutral-4;
   position: relative;
-}
-
-a.manual {
-  padding: 2px 5px;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-a.manual img {
-  width: 20px;
 }
 
 hr {

@@ -17,6 +17,7 @@ import { TaxonTagEffectiveService } from '../document-viewer/taxon-tag-effective
 import { LoadingElementsService } from '../document-viewer/loading-elements.service';
 import { PlatformService } from '../../root/platform.service';
 import { AnnotationTag } from '../../shared/model/AnnotationTag';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-annotations',
@@ -73,8 +74,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     action: this.deleting ? 'deleting' : 'adding'
   };
   countCall = 0;
-
-
+  currentLang!: string;
 
   constructor(
     private annotationService: AnnotationService,
@@ -83,10 +83,12 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     private warehouseApi: WarehouseApi,
     private taxonTagEffective: TaxonTagEffectiveService,
     private loadingElements: LoadingElementsService,
-    private platformService: PlatformService
+    private platformService: PlatformService,
+    private translate: TranslateService,
     ) { }
 
   ngOnInit() {
+    this.currentLang = this.translate.currentLang;
     this.initEmptyAnnotation();
     this.findRendomKey1();
     if (this.identifying) {
@@ -108,6 +110,10 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscribeRefreshedAnnotations?.unsubscribe();
     this.subscribeRefreshedAnnotations1?.unsubscribe();
+  }
+
+  onManualLinkClick(event: MouseEvent) {
+    event.stopPropagation();
   }
 
   initEmptyAnnotation() {
