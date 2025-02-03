@@ -50,11 +50,25 @@
                   [areaColor]="box.overlapsWithOtherSpecies ? overlappingBirdRectangleColor: birdRectangleColor"
                 ></laji-small-audio-viewer>
               </td>
+              <td *ngIf="showSoundTypeSelect" style="width: 160px" class="select-column">
+                <label>
+                  <small>{{ 'identification.boxes.soundType' | translate }}</small>
+                  <laji-info [placement]="'right'" [html]="'identification.boxes.soundType.info' | translate" [showOnHover]="true"></laji-info>
+                </label>
+                <select class="form-control input-sm" [(ngModel)]="box.soundType" (ngModelChange)="identificationChange.emit(identification)">
+                  <option [ngValue]="undefined"></option>
+                  <option [ngValue]="soundTypeEnum.songOrDisplay">
+                    {{ 'identification.boxes.soundType.songOrDisplay' | translate }}
+                  </option>
+                  <option [ngValue]="soundTypeEnum.other">
+                    {{ 'identification.boxes.soundType.other' | translate }}
+                  </option>
+                </select>
+              </td>
               <td style="width: 240px">
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" [(ngModel)]="box.overlapsWithOtherSpecies" (ngModelChange)="identificationChange.emit(identification)">
-                    {{ 'identification.boxes.overlapsWithOthers' | translate }}
+                    <input type="checkbox" [(ngModel)]="box.overlapsWithOtherSpecies" (ngModelChange)="identificationChange.emit(identification)">{{ 'identification.boxes.overlapsWithOthers' | translate }}
                   </label>
                 </div>
               </td>
