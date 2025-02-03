@@ -38,17 +38,30 @@ const sortRecordRecursively = (record: Record<string, unknown>): Record<string, 
 
 const hashRecord = (record: any): string => JSON.stringify(sortRecordRecursively(record));
 
-const resolvePath = <
+const splitAndResolvePath = <
   P extends Path,
   M extends Method<P>,
->(path: P, params?: Parameters<paths[P][M]>): string => {
-  let resolvedPath: string = path;
-  if ((<any>params)?.['path']) {
-    Object.entries((<any>params)['path']).forEach(([k, v]) => {
-      resolvedPath = resolvedPath.replace(`{${k}}`, <any>v);
-    });
+>(path: P, params?: Parameters<paths[P][M]>): string[] => {
+  // parse path into segments based on path parameters
+  // eg. "/person/{personToken}/profile" -> ["/person", "/{personToken}/profile"]
+
+  // using a lookahead makes the split not consume the matching substrings
+  // but instead we are splitting *before* the pattern
+  // using a non-capturing group (?:...) avoids duplicates in the split output
+  // matches start with `/` such that there's a beginning `/` but no trailing `/`
+  const segments = path.split(/(?=(?:\/\{[^}]+\}))/);
+
+  if (!params) {
+    return segments;
   }
-  return resolvedPath;
+
+  // resolve path parameters (eg. replace '/{personToken}' with params.path.personToken)
+  for (let i = 1; i < segments.length; i++) {
+    const segment = segments[i];
+    segments[i] = segment.replace(/\{([^}]+)\}/, (match, p1) => (params as any)['path'][p1] ?? '');
+  }
+
+  return segments;
 };
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
@@ -57,7 +70,10 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
   providedIn: 'root'
 })
 export class LajiApiClientBService {
-  private cache: Map<string, Map<string, CacheElement<any>>> = new Map();
+  // variable level cache
+  // first levels are for different path segments separated by path variables
+  // the last level is for query params
+  private cache: Map<string, any> = new Map();
 
   constructor(private http: HttpClient, @Inject(API_BASE_URL) private baseUrl: string) { }
 
@@ -68,21 +84,16 @@ export class LajiApiClientBService {
     requestBody?: ExtractRequestBodyIfExists<paths[P][M]>,
     cacheInvalidationMs = 86400000 // 1day in ms
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
-    const resolvedPath = resolvePath(path, params);
-    const requestUrl = this.baseUrl + resolvedPath;
+    const pathSegments = splitAndResolvePath(path, params);
+    const requestUrl = this.baseUrl + pathSegments.join('');
     const requestOptions = { params: (<any>params).query, body: requestBody };
 
     if (method !== 'get') {
-      this.flush(path);
+      this._flush(pathSegments);
       return this.http.request(method as string, requestUrl, requestOptions) as any;
     }
 
-    const pathHash = resolvedPath;
-    if (!(this.cache.has(pathHash))) {
-      this.cache.set(pathHash, new Map());
-    }
-
-    const cachedPath = this.cache.get(pathHash);
+    const cachedPath = this.getOrInitializeLastPathCacheLevel(pathSegments);
 
     const paramsHash = hashRecord(params);
     if (!cachedPath?.has(paramsHash)) {
@@ -119,22 +130,51 @@ export class LajiApiClientBService {
   }
 
   flush<P extends Path, M extends Method<P>>(
-    endpoint: P,
+    path: P,
     params?: Parameters<paths[P][M]>
   ) {
-    const resolvedPath = resolvePath(endpoint, params);
+    this._flush(splitAndResolvePath(path, params), params);
+  }
 
-    const pathHash = resolvedPath;
-    if (!this.cache.has(pathHash)) {
+  private _flush<P extends Path, M extends Method<P>>(
+    pathSegments: string[],
+    params?: Parameters<paths[P][M]>
+  ) {
+    const cachedPath = this.pathSegmentsToCacheLevels(pathSegments);
+    if (cachedPath === null) {
       return;
     }
 
     if (params !== undefined) {
       const paramsHash = hashRecord(params);
-      this.cache.get(pathHash)?.delete(paramsHash);
+      cachedPath[cachedPath.length - 1].delete(paramsHash);
     } else {
-      this.cache.delete(pathHash);
+      cachedPath[cachedPath.length - 2].delete(pathSegments[pathSegments.length - 1]);
     }
+  }
+
+  private getOrInitializeLastPathCacheLevel(pathSegments: string[]): Map<string, CacheElement<any>> {
+    let currentLevel = this.cache;
+    for (const segment of pathSegments) {
+      if (!(currentLevel.has(segment))) {
+        currentLevel.set(segment, new Map());
+      }
+      currentLevel = currentLevel.get(segment);
+    }
+    return currentLevel;
+  }
+
+  private pathSegmentsToCacheLevels(pathSegments: string[]): Map<string, any>[] | null {
+    const allLevels: Map<string, any>[] = [this.cache];
+    let currentLevel = this.cache;
+    for (const segment of pathSegments) {
+      if (!(currentLevel.has(segment))) {
+        return null;
+      }
+      currentLevel = currentLevel.get(segment);
+      allLevels.push(currentLevel);
+    }
+    return allLevels;
   }
 }
 
