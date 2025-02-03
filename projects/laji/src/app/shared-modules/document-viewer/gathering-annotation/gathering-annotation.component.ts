@@ -41,7 +41,7 @@ export class GatheringAnnotationComponent implements OnDestroy {
   @Input() openAnnotation?: boolean;
   @Input() showOnlyHighlightedUnit?: boolean;
   @Input() showAnnotation?: boolean;
-  @Input() annotationTags?: AnnotationTag[]|null;
+  @Input() annotationTags?: AnnotationTag[] | null;
   @Output() showAllUnits = new EventEmitter();
 
   annotationAddedDeleted = {

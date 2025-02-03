@@ -236,7 +236,15 @@
     <div class="title">{{ 'annotation.addTags' | translate }} </div>
     <div class="tag" *ngFor="let addedTag of value.addedTags; let i = index" [ngSwitch]="addedTag | warehouse">
       <div *ngIf="annotationTagsObservation[addedTag | warehouse]; else noCategory">
-         <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker" [ngClass]="{'positive': annotationTagsObservation[addedTag | warehouse ].type==='positive', 'check': annotationTagsObservation[addedTag | warehouse ].type==='check', 'negative': annotationTagsObservation[addedTag | warehouse ].type==='negative', 'self': annotationTagsObservation[addedTag | warehouse ].type ==='info', 'admin': annotationTagsObservation[addedTag | warehouse ].type ==='admin' }" >
+         <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value"
+              class="annotation-marker"
+              [ngClass]="{
+                'positive': annotationTagsObservation[addedTag | warehouse ].type==='positive',
+                'check': annotationTagsObservation[addedTag | warehouse ].type==='check',
+                'negative': annotationTagsObservation[addedTag | warehouse ].type==='negative',
+                'self': annotationTagsObservation[addedTag | warehouse ].type ==='info',
+                'admin': annotationTagsObservation[addedTag | warehouse ].type ==='admin'
+              }">
            <span>{{ addedTag | label: 'warehouse' }}<span *ngIf="(i < value.addedTags.length - 1) && value.addedTags" style="display: inline;">,</span></span>
          </div>
       </div>
@@ -249,7 +257,15 @@
     <div class="title">{{ 'annotation.removedTags' | translate }}: </div>
     <div class="tag" *ngFor="let addedTag of value.removedTags; let i = index" [ngSwitch]="addedTag | warehouse">
       <div *ngIf="annotationTagsObservation[addedTag | warehouse]; else noCategory">
-         <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse ].value" class="annotation-marker" [ngClass]="{'positive': annotationTagsObservation[addedTag | warehouse ].type==='positive', 'check': annotationTagsObservation[addedTag | warehouse ].type==='check', 'negative': annotationTagsObservation[addedTag | warehouse ].type==='negative', 'self': annotationTagsObservation[addedTag | warehouse ].type ==='info', 'admin': annotationTagsObservation[addedTag | warehouse ].type ==='admin' }" >
+         <div *ngSwitchCase="annotationTagsObservation[addedTag | warehouse].value"
+              class="annotation-marker"
+              [ngClass]="{
+                'positive': $any(annotationTagsObservation)[addedTag | warehouse].type==='positive',
+                'check': $any(annotationTagsObservation)[addedTag | warehouse].type==='check',
+                'negative': $any(annotationTagsObservation)[addedTag | warehouse].type==='negative',
+                'self': $any(annotationTagsObservation)[addedTag | warehouse].type ==='info',
+                'admin': $any(annotationTagsObservation)[addedTag | warehouse].type ==='admin'
+              }">
            <span>{{ addedTag | label: 'warehouse' }}<span *ngIf="(i < value.removedTags.length - 1) && value.removedTags" style="display: inline;">,</span></span>
          </div>
       </div>

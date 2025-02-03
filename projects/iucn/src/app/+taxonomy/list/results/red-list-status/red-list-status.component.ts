@@ -29,7 +29,7 @@ interface RedListStatusDataInternal extends RedListStatusData {
 export class RedListStatusComponent {
 
   _data: RedListStatusDataInternal[] = [];
-  statuses: string[];
+  statuses: (keyof RedListStatusData)[];
   statusLabel: any;
 
   @Output() groupSelect = new EventEmitter<string>();
@@ -37,7 +37,7 @@ export class RedListStatusComponent {
   constructor(
     private resultService: ResultService
   ) {
-    this.statuses = this.resultService.statuses;
+    this.statuses = this.resultService.statuses as (keyof RedListStatusData)[];
     this.statusLabel = this.resultService.shortLabel;
   }
 
@@ -47,11 +47,11 @@ export class RedListStatusComponent {
       this._data = [];
       return;
     }
-    const total: RedListStatusData = { species: 'Total', count: 0 };
-    this.statuses.forEach(status => {
+    const total: any = { species: 'Total', count: 0 };
+    (this.statuses as any).forEach((status: any) => {
       total[status] = 0;
     });
-    const results = data.map<RedListStatusDataInternal>(row => {
+    const results = data.map<RedListStatusDataInternal>((row: any) => {
       let rlCnt = 0;
       this.statuses.forEach(status => {
         if (row[status]) {
@@ -73,14 +73,14 @@ export class RedListStatusComponent {
     this._data = results;
   }
 
-  rowClick(group) {
+  rowClick(group: any) {
     if (!group) {
       return;
     }
     this.groupSelect.emit(group);
   }
 
-  private dataToInternal(data: RedListStatusData): RedListStatusDataInternal {
+  private dataToInternal(data: any): RedListStatusDataInternal {
     let cnt = 0;
     this.resultService.endangered.forEach(status => cnt += data[status] || 0);
     return {...data, redListCnt: cnt, redListPct: data.count > 0 ? Math.round((cnt / data.count) * 100 * 10) / 10 : 0};

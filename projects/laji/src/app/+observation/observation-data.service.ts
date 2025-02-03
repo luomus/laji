@@ -9,9 +9,9 @@ import { PlatformService } from '../root/platform.service';
 import deepEqual from 'deep-equal';
 
 export interface IObservationData {
-  unitsCount: number;
-  speciesCount: number;
-  securedCount: number;
+  unitsCount: number|null;
+  speciesCount: number|null;
+  securedCount: number|null;
 }
 
 const overrideType = {
@@ -22,8 +22,8 @@ const overrideType = {
   providedIn: 'root'
 })
 export class ObservationDataService {
-  cacheCount$: Observable<IObservationData>;
-  lastQuery: WarehouseQueryInterface;
+  cacheCount$?: Observable<IObservationData>;
+  lastQuery?: WarehouseQueryInterface;
 
   constructor(
     private searchQueryService: SearchQueryService,
@@ -38,7 +38,8 @@ export class ObservationDataService {
     const newQuery = query;
 
     if (deepEqual(newQuery, this.lastQuery)) {
-      return this.cacheCount$;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.cacheCount$!;
     }
 
     query = this.searchQueryService.getQuery({

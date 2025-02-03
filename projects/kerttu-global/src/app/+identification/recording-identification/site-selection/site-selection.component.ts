@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
   selector: 'bsg-site-selection',
   template: `
     <bsg-site-selection-view
-      [sites]="sites$ | async"
+      [sites]="(sites$ | async) ?? []"
       (siteSelect)="siteSelect.emit($event)"
     ></bsg-site-selection-view>
   `,

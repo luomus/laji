@@ -80,25 +80,33 @@
             </div>
           </div>
         </div>
-         <div class="content-taxon-comment new-identification" *ngIf="annotation.identification && ((annotation.identification.taxon && annotation.identification.taxon !== '') || (annotation.identification.linkings && annotation.identification.linkings.taxon))">
-           <div class="row">
-             <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.title.taxon' | translate }}:</div>
-             <div class="col-xs-8">
-              <ng-container *ngIf="annotation.identification.linkings && annotation.identification.linkings.taxon; else taxonNameSimple">
-               <laji-taxon-name [capitalizeName]="true" [taxon]="annotation.identification.linkings.taxon"></laji-taxon-name>
-              </ng-container>
-              <ng-template #taxonNameSimple>
-                <span>
-                  {{ annotation.identification.taxon }}
-                </span>
-              </ng-template>
-               <ng-container *ngIf="annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== ''"> ,{{ annotation.identification.taxonSpecifier }}</ng-container>
-             </div>
-           </div>
-         </div>
+        <div class="content-taxon-comment new-identification" *ngIf="annotation.identification && ((annotation.identification.taxon && annotation.identification.taxon !== '') || (annotation.identification.linkings && annotation.identification.linkings.taxon))">
+          <div class="row">
+            <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.title.taxon' | translate }}:</div>
+            <div class="col-xs-8">
+            <ng-container *ngIf="annotation.identification.linkings && annotation.identification.linkings.taxon; else taxonNameSimple">
+              <laji-taxon-name [capitalizeName]="true" [taxon]="annotation.identification.linkings.taxon"></laji-taxon-name>
+            </ng-container>
+            <ng-template #taxonNameSimple>
+              <span>
+                {{ annotation.identification.taxon }}
+              </span>
+            </ng-template>
+              <ng-container *ngIf="annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== ''"> ,{{ annotation.identification.taxonSpecifier }}</ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="annotation.atlasCode">
+          <div class="col-xs-4" style="font-weight: bold;">
+            {{ "MAN.atlasCode" | label }}:
+          </div>
+          <div class="col-xs-8">
+            {{ annotation.atlasCode | label:"fullUri" | truncate : 100 : true : '...'}}
+          </div>
+        </div>
         <div class="row" *ngIf="annotation.opinion">
           <div class="col-xs-4">
-            {{ 'MAN.opinion' | label }}:
+            {{ "MAN.opinion" | label }}:
           </div>
           <div class="col-xs-8">
             {{ annotation.opinion }}

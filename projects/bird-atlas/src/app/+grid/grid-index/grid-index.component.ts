@@ -12,7 +12,7 @@ import { PopstateService } from '../../core/popstate.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridIndexComponent implements OnInit {
-  grid$: Observable<AtlasGridResponse>;
+  grid$!: Observable<AtlasGridResponse>;
   loadedElementsStore = new LoadedElementsStore(['map', 'table']);
 
   constructor(
@@ -38,7 +38,7 @@ export class GridIndexComponent implements OnInit {
       'YKJ-ruudun koordinaatit', 'Nimi', 'Pesimävarmuussumma', 'Selvitysaste'
     ];
     const rows = grid.gridSquares.map(square => [
-      square.coordinates, `"${square.name}"`, square.atlasClassSum, square.activityCategory.value
+      square.coordinates, `"${square.name}"`, square.atlasClassSum, square.activityCategory!.value
     ]);
     const csvContent = 'data:text/csv;charset=utf-8,' + [cols.join(','), ...rows].join('\n');
     const encodedUri = encodeURI(csvContent);

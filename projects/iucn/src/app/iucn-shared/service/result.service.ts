@@ -4,9 +4,20 @@ import { TaxonomyApi } from '../../../../../laji/src/app/shared/api/TaxonomyApi'
 import { map, share, switchMap, tap } from 'rxjs/operators';
 import { TriplestoreLabelService } from '../../../../../laji/src/app/shared/service/triplestore-label.service';
 import { TranslateService } from '@ngx-translate/core';
+import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
+import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
 
 export const DEFAULT_YEAR = '2019';
 const AGG_STATUS = 'latestRedListEvaluation.redListStatus';
+
+export interface YearChecklists {
+  2000: string;
+  2010: string;
+  2015: string;
+  2019: string;
+}
+
+export type ChecklistYear = keyof YearChecklists;
 
 export interface FilterQuery {
   taxon?: string;
@@ -97,7 +108,7 @@ export class ResultService {
     'MX.iucnDD'
   ];
 
-  private yearToChecklistVersion = {
+  private yearToChecklistVersion: YearChecklists = {
     2019: 'MR.424',
     2015: 'MR.425',
     2010: 'MR.426',
@@ -110,7 +121,7 @@ export class ResultService {
     private translationService: TranslateService
   ) { }
 
-  getChecklistVersion(year: string): string {
+  getChecklistVersion(year: ChecklistYear): string {
     return this.yearToChecklistVersion[year];
   }
 
@@ -119,10 +130,11 @@ export class ResultService {
       return DEFAULT_YEAR;
     }
 
-    return Object.keys(this.yearToChecklistVersion).find(key => this.yearToChecklistVersion[key] === checklistVersion);
+    return Object.keys(this.yearToChecklistVersion)
+      .find((key) => this.yearToChecklistVersion[key as unknown as keyof YearChecklists] === checklistVersion);
   }
 
-  getYearsStats(year: number): Observable<{name: string; value: number; key: string}[]> {
+  getYearsStats(year: ChecklistYear): Observable<{name: string; value: number; key: string}[]> {
     if (!this.requestCache[year]) {
       this.requestCache[year] = {};
     }
@@ -151,7 +163,7 @@ export class ResultService {
     return this.requestCache[year][this.translationService.currentLang];
   }
 
-  private mapAgg(data) {
+  private mapAgg(data: PagedResult<Taxonomy>) {
     if (!data.aggregations || !data.aggregations[AGG_STATUS]) {
       return [];
     }

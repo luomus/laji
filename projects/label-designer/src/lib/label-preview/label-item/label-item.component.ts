@@ -14,12 +14,12 @@ import { FieldKeyPipe } from '../../pipe/field-key.pipe';
 })
 export class LabelItemComponent {
 
-  _item: ILabelItem;
-  _originalFields: ILabelField[];
-  _data: Record<string, any>;
-  _map: ILabelValueMap;
+  _item!: ILabelItem;
+  _originalFields!: ILabelField[];
+  _data!: Record<string, any>;
+  _map!: ILabelValueMap;
 
-  size;
+  size!: number;
   @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
 
   constructor(private labelService: LabelService) { }
@@ -28,7 +28,7 @@ export class LabelItemComponent {
   set item(item: ILabelItem) {
     this._item = {...item, fields: [...item.fields]};
     this._originalFields = item.fields;
-    this.size = this.labelService.mmToPixel(Math.min(item.style['height.mm'], item.style['width.mm']));
+    this.size = this.labelService.mmToPixel(Math.min(item.style!['height.mm']!, item.style!['width.mm']!));
     this.initContent();
   }
 
@@ -54,7 +54,7 @@ export class LabelItemComponent {
     }
 
     let prev: string;
-    const nextField = {};
+    const nextField: Record<string, string> = {};
     const fields: ILabelField[] = [];
 
     this._originalFields.forEach((field) => {
@@ -78,7 +78,7 @@ export class LabelItemComponent {
           content: LabelService.getFieldValue(field, this._data[dataKey], this._map, true) as string
         };
       }
-      if (newField) {
+      if (newField!) {
         if (field.separatorOnlyWhenNextNotEmpty && nextField[dataKey] && !LabelService.hasValue(this._data[nextField[dataKey]])) {
           newField.separator = '';
         }

@@ -17,7 +17,7 @@
         </div>
         <div *ngIf="descriptionText">
           <laji-taxon-description-variables [variables]="descriptionText"></laji-taxon-description-variables>
-          <laji-taxon-description-source [taxonDescription]="descriptionTextSource"></laji-taxon-description-source>
+          <laji-taxon-description-source [taxonDescription]="descriptionTextSource!"></laji-taxon-description-source>
         </div>
       </div>
     </div>
@@ -107,7 +107,7 @@
   </div>
   <div class="col-xs-12" *ngIf="taxon.hasChildren">
     <ng-container *lajiHideForIe>
-      <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies > 0 && taxon.taxonRank !== 'MX.subgenus' && !isChildrenOnlySpecie"
+      <div *ngIf="!taxon.species && taxon.countOfFinnishSpecies! > 0 && taxon.taxonRank !== 'MX.subgenus' && !isChildrenOnlySpecie"
            class="panel panel-default"
            laji-panel
            [title]="'taxonomy.speciesPieChartTitle' | translate"

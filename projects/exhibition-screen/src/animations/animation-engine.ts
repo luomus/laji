@@ -1,6 +1,6 @@
 export class AnimationEngine {
   private playing = false;
-  private lastLoop: DOMHighResTimeStamp;
+  private lastLoop!: DOMHighResTimeStamp;
 
   constructor(private initFn: () => void, private updateFn: (dt: number) => boolean, private destroyFn: () => void) {}
 

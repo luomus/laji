@@ -17,18 +17,18 @@ const DEFAULT_PAGE_SIZE = 100;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationResultListComponent implements OnInit, OnDestroy {
-  @Input() query: WarehouseQueryInterface;
-  @Input() visible: boolean;
-  @Input() showDownloadMenu = false;
+  @Input({ required: true }) query!: WarehouseQueryInterface;
+  @Input() visible?: boolean;
+  @Input() showDownloadMenu? = false;
   @Input() resultBase: 'unit' | 'sample' = 'unit';
 
   @Output() settingsChange = new EventEmitter<UserSettingsResultList>();
 
   selectedFields: string[];
   requiredFields: string[];
-  pageSize: number;
+  pageSize!: number;
   aggregateBy: string[] = [];
-  subscriptionDeleteOwnDocument: Subscription;
+  subscriptionDeleteOwnDocument!: Subscription;
   childEvent: any;
 
   constructor(
@@ -41,8 +41,8 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     this.requiredFields = tableColumnService.getRequiredFields();
   }
 
-  @Input()
-  set settings(settings: UserSettingsResultList) {
+  @Input({ required: true })
+  set settings(settings: UserSettingsResultList|null|undefined) {
     if (!settings) {
       settings = {};
     }
@@ -64,7 +64,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     });
   }
 
-  showDocument(event) {
+  showDocument(event: any) {
     const row = event.row || {};
     const query = this.query;
     if (row.document && row.document.documentId && row.unit && row.unit.unitId) {

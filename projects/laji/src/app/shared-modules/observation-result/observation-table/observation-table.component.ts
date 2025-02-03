@@ -67,7 +67,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() isAggregate = true;
   @Input() height = '100%';
   @Input() showSettingsMenu = false;
-  @Input() showDownloadMenu = false;
+  @Input() showDownloadMenu?: boolean = false;
   @Input() showPageSize = true;
   @Input() showHeader = true;
   @Input() showFooter = true;

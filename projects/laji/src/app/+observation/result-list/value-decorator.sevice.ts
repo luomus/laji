@@ -12,7 +12,7 @@ export class ValueDecoratorService {
 
   public lang = 'fi';
 
-  private decoratable = {
+  private decoratable: Record<string, string> = {
     'document.createdDate': 'makeDate',
     'gathering.eventDate': 'makeDateRange',
     'gathering.team': 'makeArrayToSemiColon',
@@ -56,74 +56,74 @@ export class ValueDecoratorService {
     if (!this.isDecoratable(field)) {
       return value;
     }
-    return this[this.decoratable[field]](value, context);
+    return (this as any)[this.decoratable[field]](value, context);
   }
 
-  protected makeJson(value) {
+  protected makeJson(value: any) {
     return JSON.stringify(value);
   }
 
-  protected makeDateRange(value) {
+  protected makeDateRange(value: any) {
     if (value.begin !== value.end) {
       return `${this.makeDate(value.begin)} - ${this.makeDate(value.end)}`;
     }
     return this.makeDate(value.begin);
   }
 
-  protected makeDate(value) {
+  protected makeDate(value: any) {
     return this.datePipe.transform(value, 'DD.MM.YYYY');
   }
 
-  protected makeArrayToSemiColon(value) {
+  protected makeArrayToSemiColon(value: any[]) {
     return value.join('; ');
   }
 
-  protected makeLongNumber(value) {
+  protected makeLongNumber(value: any) {
     return this.numberFormater.transform(value, '&nbsp;') || '';
   }
 
-  protected makeSecure(value) {
+  protected makeSecure(value: any) {
     if (value === 'NONE') {
       return '';
     }
     return this.makeLabel(value);
   }
 
-  protected makeLabelFromFullUri(value) {
+  protected makeLabelFromFullUri(value: any) {
     return this.makeLabel(this.toQNamePipe.transform(value));
   }
 
-  protected makeTaxonQuality(value) {
+  protected makeTaxonQuality(value: any) {
     if (!value && !value.reliability) {
       return '';
     }
     return this.makeLabel(value.reliability);
   }
 
-  protected makeCollectionName(value) {
+  protected makeCollectionName(value: any) {
     return this.collectionName.transform(this.toQNamePipe.transform(value));
   }
 
-  protected makeSourceName(value) {
+  protected makeSourceName(value: any) {
     return this.source.getName(this.toQNamePipe.transform(value), this.lang);
   }
 
-  protected makeLabelFromArray(value) {
+  protected makeLabelFromArray(value: any[]) {
     return value.map(val => ' ' + this.makeLabel(val));
   }
 
-  protected makeLabel(value) {
+  protected makeLabel(value: any) {
     return this.labelPipe.transform(value, 'warehouse');
   }
 
-  protected makeYkj(value) {
+  protected makeYkj(value: any) {
     if (value && value.lat && value.lon) {
       return `${value.lat}:${value.lon}`;
     }
     return '';
   }
 
-  protected makeMinMaxCoordinate(value) {
+  protected makeMinMaxCoordinate(value: any) {
     if (value && value.latMax && value.latMin && value.lonMax && value.lonMin) {
       const lat = value.latMax === value.latMin ? value.latMax : value.latMin + '-' + value.latMax;
       const lon = value.lonMax === value.lonMin ? value.lonMax : value.lonMin + '-' + value.lonMax;
@@ -132,7 +132,7 @@ export class ValueDecoratorService {
     return '';
   }
 
-  protected makeMinMaxYkj(value) {
+  protected makeMinMaxYkj(value: any) {
     if (value && value.latMin) {
       const lat = this.getYkjCoord(value.latMin, value.latMax);
       return lat + ':' + this.getYkjCoord(value.lonMin, value.lonMax, lat.split('-')[0].length);
@@ -140,7 +140,7 @@ export class ValueDecoratorService {
     return '';
   }
 
-  protected getYkjCoord(min, max, minLen = 3) {
+  protected getYkjCoord(min: number, max: number, minLen = 3) {
     let tmpMin = ('' + min).replace(/[0]*$/, '');
     let tmpMax = ('' + max).replace(/[0]*$/, '');
     const targetLen = Math.max(tmpMin.length, tmpMax.length, minLen);
@@ -149,16 +149,16 @@ export class ValueDecoratorService {
     return tmpMin === tmpMax ? tmpMin : tmpMin + '-' + tmpMax;
   }
 
-  protected makeArrayToBr(value) {
+  protected makeArrayToBr(value: any[]) {
     return value.join('<br>');
   }
 
-  protected makeMapPoint(value) {
+  protected makeMapPoint(value: any) {
     // TODO: return image with center marked to these coordinates
     return (+value.lat.toFixed(6)) + ' : ' + (+value.lon.toFixed(6));
   }
 
-  protected makeTaxonLocal(value, context) {
+  protected makeTaxonLocal(value: any, context: any) {
     if (
       context &&
       context.unit &&
@@ -174,7 +174,7 @@ export class ValueDecoratorService {
     return value;
   }
 
-  protected makeTaxon(value): any {
+  protected makeTaxon(value: any): any {
     let result = '';
     if (value.qname || value.id) {
       result += value.vernacularName && value.vernacularName[this.lang] ?
@@ -184,7 +184,7 @@ export class ValueDecoratorService {
     return result;
   }
 
-  protected makeIcon(value): any {
+  protected makeIcon(value: any): any {
     return '<img style="height:15px;width:15px;margin-right:5px" src="' +
       this.qualityUrlPipe.transform(value) + '">' +
       this.labelPipe.transform(value, 'warehouse');

@@ -1,7 +1,7 @@
 <div class="container-fluid" style="width: 100%" >
   <div id="container" class="row np-row" *ngIf="(vm$ | async) as data; else spinner ">
     <laji-project-form-header *ngIf="displayHeader"
-                              [form]="data.documentForm"
+                              [form]="data.documentForm!"
                               [description]="data.description"
                               class="no-flex"
                               lajiFormOption="logo title options.hideTES"></laji-project-form-header>
@@ -11,12 +11,12 @@
     <ng-container *lajiLoggedIn="true">
       <div *ngIf='data.namedPlaces' class="choose-label">
         <span lajiFormOption="options.namedPlaceOptions.createNewButtonPrependingTextLabel">
-          {{data.documentForm.options?.namedPlaceOptions?.createNewButtonPrependingTextLabel || 'np.chooseLabel' | translate}}
+          {{data.documentForm!.options?.namedPlaceOptions?.createNewButtonPrependingTextLabel || 'np.chooseLabel' | translate}}
         </span>
         <ng-container *ngIf="data.allowEdit">
           <span class="choose-or">{{'or' | translate}}</span>
         <lu-button (click)='onCreateNew()' lajiFormOption="options.namedPlaceOptions.createNewButtonLabel">
-          {{ data.documentForm.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}
+          {{ data.documentForm!.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}
         </lu-button>
         </ng-container>
       </div>
@@ -31,7 +31,7 @@
                           [allOptionEnabled]='true'
                           [selectOptionEnabled]='false'
                           (areaSelect)="onMunicipalityChange($any($event))"
-                          [value]="[data.municipality]"></laji-area-select>
+                          [value]="[data.municipality!]"></laji-area-select>
         </div>
     </div>
     <div *ngIf="data.documentForm?.options?.namedPlaceOptions?.filterByBirdAssociationArea"
@@ -52,7 +52,7 @@
                           [allOptionLabel]="'area-select.allRoutes'"
                           [allOptionLast]="true"
                           (areaSelect)="onBirdAssociationAreaChange($event)"
-                          [value]="[data.birdAssociationArea]"></laji-area-select>
+                          [value]="[data.birdAssociationArea!]"></laji-area-select>
       </div>
     </div>
     <laji-metadata-select
@@ -84,10 +84,10 @@
         <div [ngClass]="{'col-lg-6': true, 'nav-margin': data.showMap}">
           <laji-np-info *ngIf="data.activeNP"
                         [namedPlace]="data.activeNP"
-                        [formRights]="data.formRights"
-                        [placeForm]="data.placeForm"
+                        [formRights]="data.formRights!"
+                        [placeForm]="data.placeForm!"
                         [documentForm]="data.documentForm"
-                        [collectionId]="data.collectionId"
+                        [collectionId]="data.collectionId!"
                         [allowEdit]="data.allowEdit"
                         [loading]="loading"
                         [useLabel]="useLabel"

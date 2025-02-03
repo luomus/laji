@@ -32,28 +32,28 @@ interface ISaveData {
 })
 export class LabelFileComponent {
 
-  @Input() newSetup: ISetup;
-  @Input() setup: ISetup;
-  @Input() data: Record<string, any>[];
-  @Input() defaultAvailableFields: ILabelField[];
-  @Input() availableFields: ILabelField[];
+  @Input() newSetup?: ISetup;
+  @Input({ required: true }) setup!: ISetup;
+  @Input() data?: Record<string, any>[];
+  @Input({ required: true }) defaultAvailableFields!: ILabelField[];
+  @Input({ required: true }) availableFields!: ILabelField[];
   @Input() pdfLoading = false;
   @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
-  @Input() presets: PresetSetup[];
+  @Input() presets?: PresetSetup[];
   @Input() allowLabelItemRepeat = false;
 
-  @LocalStorage('recent-files', []) recentFiles: {setup: ISetup; filename: string; availableFields: ILabelField[]}[];
+  @LocalStorage('recent-files', []) recentFiles!: {setup: ISetup; filename: string; availableFields: ILabelField[]}[];
 
   @Output() html = new EventEmitter<ILabelPdf>();
   @Output() dataChange = new EventEmitter<Record<string, any>[]>();
   @Output() setupChange = new EventEmitter<ISetup>();
   @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
   @Output() pdfLoadingChange = new EventEmitter<boolean>();
-  @ViewChild('printBtn', { static: true }) printBtn: LabelPrintComponent;
-  @ViewChild('saveTpl', { static: true }) saveTpl: TemplateRef<any>;
-  @ViewChild('saveActionsTpl', { static: true }) saveActionsTpl: TemplateRef<any>;
-  @ViewChild('makePdfTpl', { static: true }) makePdfTpl: TemplateRef<any>;
-  @ViewChild('makePdfActionsTpl', { static: true }) makePdfActionsTpl: TemplateRef<any>;
+  @ViewChild('printBtn', { static: true }) printBtn!: LabelPrintComponent;
+  @ViewChild('saveTpl', { static: true }) saveTpl!: TemplateRef<any>;
+  @ViewChild('saveActionsTpl', { static: true }) saveActionsTpl!: TemplateRef<any>;
+  @ViewChild('makePdfTpl', { static: true }) makePdfTpl!: TemplateRef<any>;
+  @ViewChild('makePdfActionsTpl', { static: true }) makePdfActionsTpl!: TemplateRef<any>;
 
   filename = '';
   saveData: ISaveData = {

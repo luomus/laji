@@ -21,7 +21,7 @@ export enum FileType {
 @Injectable({providedIn: 'root'})
 export class FileDownloadService {
   fileType: FileType = FileType.standard;
-  format: FileFormat = FileFormat.shp;
+  format: FileFormat = FileFormat.gpkg;
   geometry: FileGeometry = FileGeometry.point;
   crs: FileCrs = FileCrs.euref;
   loading = false;

@@ -13,10 +13,10 @@ import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGloba
 export class SpeciesTemplateValidationComponent implements OnChanges {
   @Input() species?: IGlobalSpecies;
   @Input() recordings?: IGlobalRecording[];
-  @Input() templates?: IGlobalTemplate[];
+  @Input() templates?: (IGlobalTemplate|null)[];
   @Input() saving = false;
-  @Input() historyView = false;
-  @Input() spectrogramConfig: ISpectrogramConfig;
+  @Input() historyView? = false;
+  @Input({ required: true }) spectrogramConfig!: ISpectrogramConfig;
 
   hasAllTemplatesInitially = false;
   showCandidates = false;
@@ -25,8 +25,8 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   comments: IGlobalComment[] = [];
   creatingAllTemplatesIsNotPossible = false;
 
-  activeTemplateIdx?: number;
-  activeTemplate?: IGlobalTemplate;
+  activeTemplateIdx?: number | null;
+  activeTemplate?: IGlobalTemplate | null;
   activeTemplateIsNew?: boolean;
   activeAudio?: IGlobalAudio;
   activeAudioFocusTime?: number;
@@ -34,7 +34,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   audioIdMap: {[id: number]: IGlobalAudio } = {};
   subSpecies: IGlobalSpecies[] = [];
 
-  @Output() save = new EventEmitter<{ templates: IGlobalTemplate[]; comments: IGlobalComment[] }>();
+  @Output() save = new EventEmitter<{ templates: (IGlobalTemplate|null)[]; comments: IGlobalComment[] }>();
   @Output() cancel = new EventEmitter();
 
   constructor(
@@ -49,8 +49,8 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
         this.audioIdMap[d.audio.id] = d.audio;
       });
 
-      const addedSubSpecies = [];
-      this.subSpecies = (this.recordings || []).reduce((subSpecies, d) => {
+      const addedSubSpecies: number[] = [];
+      this.subSpecies = (this.recordings || []).reduce((subSpecies: IGlobalSpecies[], d) => {
         const species = d.audio.species;
         if (!species.isSpecies && !addedSubSpecies.includes(species.id)) {
           subSpecies.push(species);
@@ -58,7 +58,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
         }
         return subSpecies;
       }, []);
-      this.subSpecies = this.subSpecies.sort((a, b) => b.taxonOrder - a.taxonOrder);
+      this.subSpecies = this.subSpecies.sort((a, b) => b.taxonOrder! - a.taxonOrder!);
     }
 
     if (changes.templates && this.templates) {
@@ -88,15 +88,15 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     if (this.saving) {
       return;
     }
-    this.activeTemplate = this.templates[templateIdx];
-    this.activeAudio = this.audioIdMap[this.activeTemplate?.audioId];
+    this.activeTemplate = this.templates![templateIdx];
+    this.activeAudio = this.activeTemplate?.audioId ? this.audioIdMap[this.activeTemplate.audioId] : undefined;
     this.activeTemplateIdx = templateIdx;
     this.activeTemplateIsNew = false;
   }
 
   onTemplateConfirm(template: IGlobalTemplate) {
-    this.templates[this.activeTemplateIdx] = template;
-    this.confirmedTemplates[this.activeTemplateIdx] = true;
+    this.templates![this.activeTemplateIdx!] = template;
+    this.confirmedTemplates[this.activeTemplateIdx!] = true;
     this.activeTemplateIdx = null;
   }
 
@@ -105,8 +105,8 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   }
 
   onTemplateRemove() {
-    this.templates[this.activeTemplateIdx] = null;
-    this.confirmedTemplates[this.activeTemplateIdx] = false;
+    this.templates![this.activeTemplateIdx!] = null;
+    this.confirmedTemplates[this.activeTemplateIdx!] = false;
     this.activeTemplateIdx = null;
   }
 
@@ -119,11 +119,11 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   }
 
   confirmAllTemplates() {
-    this.confirmedTemplates = this.templates.map(template => !!template);
+    this.confirmedTemplates = this.templates!.map(template => !!template);
   }
 
   saveTemplates() {
-    const missingConfirm = this.confirmedTemplates.filter(confirm => !!confirm).length !== this.templates.length;
+    const missingConfirm = this.confirmedTemplates.filter(confirm => !!confirm).length !== this.templates!.length;
 
     if (missingConfirm && !(!this.hasAllTemplatesInitially && this.creatingAllTemplatesIsNotPossible)) {
       this.dialogService.alert(
@@ -133,16 +133,16 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     }
 
     this.save.emit({
-      templates: this.templates,
+      templates: this.templates!,
       comments: this.comments
     });
   }
 
-  private onNewTemplateClick(audioId: number, template?: IGlobalTemplate, time?: number) {
+  private onNewTemplateClick(audioId: number, template?: IGlobalTemplate | null, time?: number) {
     if (this.saving || this.historyView) {
       return;
     }
-    const newTemplateIdx = this.templates.indexOf(null);
+    const newTemplateIdx = this.templates!.indexOf(null);
     if (newTemplateIdx === -1) {
       this.dialogService.alert('validation.maxNbrOfTemplates');
     } else {

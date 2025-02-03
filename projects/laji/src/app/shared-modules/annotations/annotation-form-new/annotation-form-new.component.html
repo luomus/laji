@@ -92,7 +92,7 @@
     </div>
 </div>
 </ng-template>
-<div class="row removed-tags" *ngIf="(annotationRemovableTags$ | async)?.length > 0 && expert && (personRoleAnnotation === 'MMAN.expert' || personRoleAnnotation === 'MMAN.ictAdmin' ) && (unit.interpretations && unit.interpretations.effectiveTags && unit.interpretations.effectiveTags.length > 0)">
+<div class="row removed-tags" *ngIf="((annotationRemovableTags$ | async) ?? []).length > 0 && expert && (personRoleAnnotation === 'MMAN.expert' || personRoleAnnotation === 'MMAN.ictAdmin' ) && (unit.interpretations && unit.interpretations.effectiveTags && unit.interpretations.effectiveTags.length > 0)">
       <div class="col-sm-12">
          <label>{{ 'annotation.removeTags' | translate }}</label>
          <div *ngFor="let item of annotationRemovableTags$ | async " class="list-checkbox">
@@ -187,6 +187,18 @@
     [(ngModel)]="annotation.identification.taxonSpecifier"
     (focus)="onFocus($event)"
     (blur)="onBlur($event)">
+  </div>
+  <div class="mb-4" *ngIf="(personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
+    <h5>{{ 'MAN.atlasCode' | label }}</h5>
+    <laji-metadata-select
+      [(ngModel)]="annotation.atlasCode"
+      [multiple]="false"
+      [useFilter]="true"
+      name="atlasCode"
+      [open]="true"
+      [selectStyle]="selectStyleBasic"
+      [placeholder]="'MY.atlasCode' | label"
+      [alt]="'MY.atlasCodeEnum'"></laji-metadata-select>
   </div>
 </ng-container>
 <ng-template #editorMessage>

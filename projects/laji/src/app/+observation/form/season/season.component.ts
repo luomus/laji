@@ -8,10 +8,10 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class SeasonComponent {
 
-  startDay;
-  startMonth;
-  endDay;
-  endMonth;
+  startDay?: string;
+  startMonth?: string;
+  endDay?: string;
+  endMonth?: string;
 
   days: string[];
   months: string[];
@@ -30,7 +30,7 @@ export class SeasonComponent {
     }
   }
 
-  @Input() set season(season: string) {
+  @Input() set season(season: string|undefined) {
     if (!season) {
       this.startDay = '';
       this.startMonth = '';

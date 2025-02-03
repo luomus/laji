@@ -21,11 +21,13 @@ import { TaxonAutocompleteService } from '../../../shared/service/taxon-autocomp
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { TypeaheadMatch } from '../../../../../../laji-ui/src/lib/typeahead/typeahead-match.class';
 import { DialogService } from '../../../shared/service/dialog.service';
+import { SelectStyle } from '../../select/metadata-select/metadata-select.component';
 
 export interface AnnotationFormAnnotation extends Annotation {
   identification: Annotation.Identification;
   addedTags: string[];
   removedTags: string[];
+  atlasCode?: string;
 }
 
 interface AnnotationTaxonomy {
@@ -102,6 +104,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     scientificNameAuthorship: null
   };
   currentTaxonName = '';
+  selectStyleBasic = SelectStyle.basic;
   annotationTagsObservation: Record<string, { value: string; quality: string; type: string }> = Global.annotationTags;
   annotationRole = Annotation.AnnotationRoleEnum;
 
@@ -512,6 +515,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     ((
       (this.annotation.notes === '' || this.annotation.notes === undefined) &&
       (this.annotation.addedTags.length === 0) &&
+      (this.annotation.atlasCode === '' || this.annotation.atlasCode === undefined) &&
       (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined)) && this.annotation.removedTags.length === 0)
     ||
     (

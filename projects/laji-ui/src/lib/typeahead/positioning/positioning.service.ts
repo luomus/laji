@@ -111,10 +111,10 @@ export class PositioningService {
     if (!options.target) { console.warn('Positioning service: expected target to exist'); return; }
     if (typeof options.element === 'string') { console.warn('Positioning service: expected element not to be string'); return; }
     if (typeof options.target === 'string') { console.warn('Positioning service: expected element not to be string'); return; }
-    const element: HTMLElement = options.element?.['nativeElement'] ?? options.element;
-    const target: HTMLElement = options.target?.['nativeElement'] ?? options.target;
-    this.placementService.attach(element, target, attachmentToLajiUiPlacement(options.attachment), {window, document: this.document, renderer: renderer})
-    this.positionElements.set(_getHtmlElement(options.element), options);
+    const element: HTMLElement = (options.element as any)?.['nativeElement'] as HTMLElement ?? options.element;
+    const target: HTMLElement = (options.target as any)?.['nativeElement'] as HTMLElement?? options.target;
+    this.placementService.attach(element, target, attachmentToLajiUiPlacement(options.attachment!), {window, document: this.document, renderer: renderer})
+    this.positionElements.set(_getHtmlElement(options.element)!, options);
   }
 
   calcPosition(): void {
@@ -123,7 +123,7 @@ export class PositioningService {
 
   deletePositionElement(elRef: ElementRef): void {
     this.placementService.detach(elRef.nativeElement);
-    this.positionElements.delete(_getHtmlElement(elRef));
+    this.positionElements.delete(_getHtmlElement(elRef)!);
   }
 
   setOptions(options: Options) {

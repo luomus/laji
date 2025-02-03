@@ -11,6 +11,7 @@ import { OccurrenceAtTimeOfAnnotationComponent } from './annotation-list/occurre
 import { InfoModule } from '../info/info.module';
 import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
+import { SelectModule } from '../select/select.module';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.mo
     SearchFiltersModule,
     LajiUiModule,
     InfoModule,
-    TooltipModule
+    TooltipModule,
+    SelectModule
   ],
   declarations: [AnnotationsComponent, AnnotationListComponent,
     AnnotationFormNewComponent, OccurrenceAtTimeOfAnnotationComponent ],

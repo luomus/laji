@@ -10,11 +10,11 @@ import { Util } from 'projects/laji/src/app/shared/service/util.service';
   styleUrls: ['./sidebar-link.component.scss']
 })
 export class SidebarLinkComponent implements OnInit, OnDestroy {
-  @Input() link: Array<string>;
-  @Input() linkParams: {
+  @Input() link!: Array<string>;
+  @Input() linkParams?: {
     [k: string]: any;
   };
-  @Input() active = undefined;
+  @Input() active?: boolean = undefined;
   @Output() clicked = new EventEmitter<any>();
 
   unsubscribe$ = new Subject<void>();
@@ -35,7 +35,7 @@ export class SidebarLinkComponent implements OnInit, OnDestroy {
     });
   }
 
-  onClick(event) {
+  onClick(event: any) {
     this.clicked.next(event);
   }
 

@@ -27,6 +27,6 @@ export const getSpeciesCountColor = (speciesCount: number): string => {
 };
 export const getFeatureColor = (gridSq: AtlasGridSquare, visualizationMode: VisualizationMode): string => (
   visualizationMode === 'activityCategory'
-    ? getAtlasActivityCategoryColor(gridSq.activityCategory.key)
-    : getSpeciesCountColor(gridSq.speciesCount)
+    ? getAtlasActivityCategoryColor(gridSq.activityCategory!.key)
+    : getSpeciesCountColor(gridSq.speciesCount!)
 );

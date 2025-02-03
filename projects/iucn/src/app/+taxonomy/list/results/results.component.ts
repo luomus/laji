@@ -17,6 +17,7 @@ import { Params } from '@angular/router';
 import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
 import { IUCNChartData } from './red-list-chart/red-list-chart.component';
 import {ActiveElement, ChartData, ChartEvent, ChartOptions} from 'chart.js';
+import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 
 @Component({
   selector: 'iucn-results',
@@ -25,25 +26,25 @@ import {ActiveElement, ChartData, ChartEvent, ChartOptions} from 'chart.js';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ResultsComponent implements OnChanges {
-  @Input() type: ListType;
-  @Input() query: FilterQuery;
-  @Input() checklist: string;
+  @Input() type!: ListType;
+  @Input() query!: FilterQuery;
+  @Input() checklist!: string;
   @Output() queryChange = new EventEmitter<FilterQuery>();
 
-  lang: string;
-  year: string;
-  redListStatusQuery$: Observable<RedListStatusData[]>;
-  speciesQuery$: Observable<Taxonomy[]>;
-  threadQuery$: Observable<IUCNChartData[]>;
-  habitatQuery$: Observable<RedListHabitatData[]>;
-  habitatChartQuery$: Observable<ChartData>;
-  reasonsQuery$: Observable<IUCNChartData[]>;
+  lang!: string;
+  year?: string;
+  redListStatusQuery$!: Observable<RedListStatusData[]>;
+  speciesQuery$!: Observable<Taxonomy[]>;
+  threadQuery$!: Observable<IUCNChartData[]>;
+  habitatQuery$!: Observable<RedListHabitatData[]>;
+  habitatChartQuery$!: Observable<ChartData>;
+  reasonsQuery$!: Observable<IUCNChartData[]>;
 
   habitatIds: string[] = [];
 
   cache: any = {};
-  baseQuery = {};
-  statusMap = {};
+  baseQuery: any = {};
+  statusMap: any = {};
 
   colors = ['#d81e05', '#fc7f3f', '#f9e814', '#cce226', '#60c659', '#bfbfbf', '#777', '#000'];
 
@@ -76,7 +77,7 @@ export class ResultsComponent implements OnChanges {
     {label: 'iucn.results.column.class2015', key: '2015'},
     {label: 'iucn.results.column.class2010', key: '2010'}
   ];
-  selectedSpeciesFields: string[];
+  selectedSpeciesFields!: string[];
   labels = {
     redListStatusesInFinland: 'iucn.results.redListStatusesInFinland',
     'latestRedListEvaluation.redListStatus': 'iucn.results.column.status',
@@ -107,8 +108,8 @@ export class ResultsComponent implements OnChanges {
     private cdr: ChangeDetectorRef,
     private taxonExportService: IucnTaxonExportService
   ) {
-    this.statusMap = Object.keys(this.resultService.shortLabel).reduce((result, key) => {
-      result[this.resultService.shortLabel[key]] = key;
+    this.statusMap = Object.keys(this.resultService.shortLabel).reduce((result: {[key: string]: string}, key: string) => {
+      result[this.resultService.shortLabel[key as keyof typeof this.resultService.shortLabel]] = key;
       return result;
     }, {});
   }
@@ -189,7 +190,8 @@ export class ResultsComponent implements OnChanges {
     );
   }
 
-  private getGraph(cacheKey, baseQuery, primaryField, allField, primaryLabel, allLabel, lastKeys: string[] = []): Observable<IUCNChartData[]> {
+  private getGraph(cacheKey: string, baseQuery: any, primaryField: string, allField: string,
+      primaryLabel: any, allLabel: any, lastKeys: string[] = []): Observable<IUCNChartData[]> {
     const query = {
       ...baseQuery,
       aggregateBy: primaryField + ';' + allField,
@@ -201,11 +203,11 @@ export class ResultsComponent implements OnChanges {
       ObservableOf(this.cache[cacheKey]) :
       this.taxonApi.species(query, this.lang, '1', '0').pipe(
         map(data => {
-          const lookup = {};
-          const result = [];
-          const last = {};
+          const lookup: any = {};
+          const result: any[] = [];
+          const last: any = {};
 
-          data.aggregations[primaryField].forEach(agg => {
+          data.aggregations![primaryField].forEach(agg => {
             lookup[agg.values[primaryField]] = {
               name: agg.values[primaryField],
               series: [{name: primaryLabel, value: agg.count}]
@@ -216,7 +218,7 @@ export class ResultsComponent implements OnChanges {
               result.push(lookup[agg.values[primaryField]]);
             }
           });
-          data.aggregations[allField].forEach(agg => {
+          data.aggregations![allField].forEach(agg => {
             const value = agg.values[allField];
             if (lookup[value]) {
               lookup[value].series.push({name: allLabel, value: agg.count});
@@ -265,9 +267,9 @@ export class ResultsComponent implements OnChanges {
       ObservableOf(this.cache[cacheKey]) :
       this.taxonApi.species(query, this.lang, '1', '0').pipe(
         map(data => this.extractHabitat(data, primaryField, allField, statusField)),
-        switchMap(data => this.metadataService.getRange('MKV.habitatEnum').pipe(
-          map(label => label.reduce((cumulative, current) => {
-            const idx = data.findIndex(d => d.name === current.id);
+        switchMap((data: any) => this.metadataService.getRange('MKV.habitatEnum').pipe(
+          map(label => label.reduce((cumulative: any, current) => {
+            const idx = data.findIndex((d: any) => d.name === current.id);
             if (idx > -1) {
               if (!hasHabitatQuery) {
                 data[idx].name = data[idx].name.substring(0, 12);
@@ -281,9 +283,9 @@ export class ResultsComponent implements OnChanges {
           if (!hasHabitatQuery) {
             return data;
           }
-          const parents = {};
-          const changeIdx = {};
-          data.forEach((h, idx) => {
+          const parents: any = {};
+          const changeIdx: any = {};
+          data.forEach((h: any, idx: any) => {
             const parent = h.name.substring(0, 12);
             if (parents[parent]) {
               ['primary', 'secondary'].forEach(spot => {
@@ -309,7 +311,7 @@ export class ResultsComponent implements OnChanges {
               };
             }
           });
-          const spots = [];
+          const spots: any[] = [];
           Object.keys(changeIdx).forEach(parent => {
             spots.push({parent, spot: changeIdx[parent]});
           });
@@ -321,8 +323,8 @@ export class ResultsComponent implements OnChanges {
           });
           return data;
         }),
-        switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
-          map(translations => data.map(a => ({
+        switchMap(data => this.fetchLabels(data.map((a: any) => a.name)).pipe(
+          map(translations => data.map((a: any) => ({
             ...a,
             name: translations[a.name],
             id: a.name,
@@ -339,7 +341,7 @@ export class ResultsComponent implements OnChanges {
   private initHabitatChart() {
     this.colorSchema = [];
     this.habitatChartQuery$ = this.habitatQuery$.pipe(
-      tap(habitats => this.habitatIds = habitats.map(({id}) => id)),
+      tap(habitats => this.habitatIds = habitats.map(({id}) => id!)),
       map(habitats => (
         {
           labels: habitats.map(h => h.name),
@@ -352,8 +354,8 @@ export class ResultsComponent implements OnChanges {
     );
   }
 
-  private combineHabitat(data) {
-    const lookup = {};
+  private combineHabitat(data: any[]) {
+    const lookup: any = {};
     data.forEach(item => {
       const key = item.name;
       if (!lookup[key]) {
@@ -375,9 +377,9 @@ export class ResultsComponent implements OnChanges {
     return Object.keys(lookup).map(name => lookup[name]);
   }
 
-  private extractHabitat(data, primaryField, allField, statusField) {
-    const lookup = {};
-    const count = (agg, type, field) => {
+  private extractHabitat(data: PagedResult<Taxonomy>, primaryField: string, allField: string, statusField: string) {
+    const lookup: any = {};
+    const count = (agg: any, type: any, field: any) => {
       const status = agg.values[statusField];
       const key = agg.values[field];
       if (!lookup[key]) {
@@ -390,8 +392,8 @@ export class ResultsComponent implements OnChanges {
       lookup[key][type][status] += agg.count;
       lookup[key][type].total += agg.count;
     };
-    data.aggregations[primaryField].forEach(agg => count(agg, 'primary', primaryField));
-    data.aggregations[allField].forEach(agg => count(agg, 'secondary', allField));
+    data.aggregations![primaryField].forEach(agg => count(agg, 'primary', primaryField));
+    data.aggregations![allField].forEach(agg => count(agg, 'secondary', allField));
     return Object.keys(lookup).map(name => lookup[name]);
   }
 
@@ -469,7 +471,7 @@ export class ResultsComponent implements OnChanges {
         label: val
       }))));
     return ObservableForkJoin(obs).pipe(
-      map(data => data.reduce((cumulative, current) => {
+      map(data => data.reduce((cumulative: any, current) => {
         cumulative[current.key] = current.label;
         return cumulative;
       }, {}))
@@ -477,7 +479,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   private removeKeys(obj: Record<string, unknown>, keys: string[]) {
-    const result = {};
+    const result: any = {};
     Object.keys(obj).forEach(key => {
       if (keys.indexOf(key) === -1) {
         result[key] = obj[key];

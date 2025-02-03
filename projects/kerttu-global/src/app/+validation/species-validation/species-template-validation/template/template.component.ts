@@ -11,12 +11,12 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TemplateComponent {
-  @Input() template?: IGlobalTemplate;
-  @Input() templateIdx?: number;
-  @Input() isNewTemplate?: boolean;
-  @Input() audio?: IGlobalAudio;
+  @Input() template?: IGlobalTemplate|null;
+  @Input({ required: true }) templateIdx!: number;
+  @Input({ required: true }) isNewTemplate!: boolean;
+  @Input({ required: true }) audio!: IGlobalAudio;
   @Input() audioFocusTime?: number;
-  @Input() spectrogramConfig?: ISpectrogramConfig;
+  @Input({ required: true }) spectrogramConfig!: ISpectrogramConfig;
   @Input() historyView?: boolean;
 
   @Output() confirm = new EventEmitter<IGlobalTemplate>();
@@ -33,8 +33,8 @@ export class TemplateComponent {
   commentText = '';
   commentTypeEnum = CommentType;
 
-  @ViewChild('commentModal', { static: true }) commentModal: TemplateRef<any>;
-  @ViewChild('audioInfo', { static: true }) audioInfoTpl: TemplateRef<any>;
+  @ViewChild('commentModal', { static: true }) commentModal!: TemplateRef<any>;
+  @ViewChild('audioInfo', { static: true }) audioInfoTpl!: TemplateRef<any>;
 
   private framedTemplate?: IGlobalTemplate;
   private commentType: CommentType = CommentType.reframe;
@@ -66,11 +66,11 @@ export class TemplateComponent {
   }
 
   onConfirm() {
-    this.confirm.emit(this.template);
+    this.confirm.emit(this.template!);
   }
 
   onRemove() {
-    if (this.template.id) {
+    if (this.template!.id) {
       this.commentType = CommentType.replace;
       this.showCommentModal();
     } else {
@@ -87,7 +87,7 @@ export class TemplateComponent {
     this.hideCommentModal();
 
     this.comment.emit({
-      templateId:  this.template.id,
+      templateId:  this.template!.id!,
       comment: this.commentText,
       type: this.commentType
     });
@@ -104,6 +104,6 @@ export class TemplateComponent {
   }
 
   hideCommentModal() {
-    this.modalRef.hide();
+    this.modalRef!.hide();
   }
 }

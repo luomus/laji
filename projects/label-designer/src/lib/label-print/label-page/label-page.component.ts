@@ -13,15 +13,15 @@ import { LabelService } from '../../label.service';
 })
 export class LabelPageComponent implements AfterViewInit {
 
-  @Input() data: Record<string, any>[];
+  @Input() data!: Record<string, any>[];
   @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
   @Output() ready = new EventEmitter<void>();
 
   cols = '';
   rows = '';
-  backStyle: IPageStyle;
-  private _setup: ISetup;
-  _dim: IPageLayout;
+  backStyle!: IPageStyle;
+  private _setup!: ISetup;
+  _dim!: IPageLayout;
 
   @Input() set setup(val: ISetup) {
     this._setup = val;

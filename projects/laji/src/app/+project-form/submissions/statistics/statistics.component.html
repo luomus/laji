@@ -1,6 +1,6 @@
 <div *ngIf="loaded; else loading">
   <div *ngIf="form; else wip">
-    <div [ngSwitch]="form.options.viewerType" lajiFormOption="options.viewerType">
+    <div [ngSwitch]="form.options?.viewerType" lajiFormOption="options.viewerType">
       <div *ngSwitchCase="'MHL.viewerTypeLineTransect'">
         <laji-line-transect-stats [document]="document" [namedPlace]="ns" (namedPlaceChange)="updateNamedPlace($event)"></laji-line-transect-stats>
       </div>

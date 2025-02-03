@@ -21,7 +21,7 @@ import { ToastsService } from '../../../../shared/service/toasts.service';
 import { concatMap, map, take } from 'rxjs/operators';
 import { Global } from '../../../../../environments/global';
 import { combineLatest, Subscription } from 'rxjs';
-import { Profile } from '../../../../shared/model/Profile';
+import { DefaultMediaMetadata, Profile } from '../../../../shared/model/Profile';
 import type LajiForm from '@luomus/laji-form/lib/index';
 import type { Theme as LajiFormTheme } from '@luomus/laji-form/lib/themes/theme';
 import { Form } from 'projects/laji/src/app/shared/model/Form';
@@ -63,7 +63,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
 
   static TOP_OFFSET = 50;
   static BOTTOM_OFFSET = 53.5;
-  @Input() form: Form.SchemaForm;
+  @Input() form!: Form.SchemaForm;
   @Input() formData: any = {};
   @Input() settingsKey: keyof UserSettings = 'formDefault';
   @Input() showShortcutButton = true;
@@ -73,7 +73,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   @Output() validationError = new EventEmitter();
   @Output() goBack = new EventEmitter();
 
-  errorModalData: ErrorModal;
+  errorModalData!: ErrorModal;
 
   reactCrashModalData: ErrorModal = {
     description: 'haseka.form.crash.description',
@@ -91,19 +91,19 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
     ]
   };
 
-  private lajiFormWrapper: LajiForm;
+  private lajiFormWrapper!: LajiForm;
   private lajiFormWrapperProto: any;
-  private lajiFormBs3Theme: LajiFormTheme;
+  private lajiFormBs3Theme!: LajiFormTheme;
   private _block = false;
   private settings: any;
-  private defaultMediaMetadata: Profile['settings']['defaultMediaMetadata'];
-  private langSub: Subscription;
-  private localLang: string;
-  private reloadSub: Subscription;
+  private defaultMediaMetadata: DefaultMediaMetadata | undefined;
+  private langSub!: Subscription;
+  private localLang!: string;
+  private reloadSub!: Subscription;
 
 
-  @ViewChild('errorModal', { static: true }) public errorModal: ModalComponent;
-  @ViewChild('lajiForm', { static: true }) lajiFormRoot: ElementRef;
+  @ViewChild('errorModal', { static: true }) public errorModal!: ModalComponent;
+  @ViewChild('lajiForm', { static: true }) lajiFormRoot!: ElementRef;
 
   ngOnInit() {
     this.langSub = this.projectFormService.localLang$.subscribe(lang => {
@@ -290,13 +290,13 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
     });
   }
 
-  private _onChange(formData) {
+  private _onChange(formData: any) {
     this.ngZone.run(() => {
       this.dataChange.emit(formData);
     });
   }
 
-  private _onSubmit(data) {
+  private _onSubmit(data: any) {
     this.ngZone.run(() => {
       this.dataSubmit.emit({
         data,
@@ -306,13 +306,13 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
     });
   }
 
-  private _onError(error, info) {
+  private _onError(error: any, info: any) {
     this.logger.error('LajiForm crashed', {error, userSettings: this.settings, document: this.formData});
     console.error(info);
     this.displayErrorModal('reactCrash');
   }
 
-  private _onValidationError(errors) {
+  private _onValidationError(errors: any) {
     this.ngZone.run(() => {
       this.validationError.emit(errors);
     });
@@ -332,10 +332,10 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   private notifier = {
-    success: msg => this.ngZone.run(() => this.toastsService.showSuccess(msg)),
-    info: msg => this.ngZone.run(() => this.toastsService.showInfo(msg)),
-    warning: msg => this.ngZone.run(() => this.toastsService.showWarning(msg)),
-    error: msg => this.ngZone.run(() => this.toastsService.showError(msg)),
+    success: (msg: any) => this.ngZone.run(() => this.toastsService.showSuccess(msg)),
+    info: (msg: any) => this.ngZone.run(() => this.toastsService.showInfo(msg)),
+    warning: (msg: any) => this.ngZone.run(() => this.toastsService.showWarning(msg)),
+    error: (msg: any) => this.ngZone.run(() => this.toastsService.showError(msg)),
   };
 
   private updateLajiFormLocalLang() {

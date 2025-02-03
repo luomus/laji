@@ -4,6 +4,7 @@
     <ul>
       <li *ngFor="let id of usersProfile.friends">
         <a [routerLink]="['/user/' + id] | localize">{{ id|users:'fullName' }}</a>
+        &nbsp;
         <button class="btn btn-default btn-xs" (click)="removeFriend(id)">{{ 'friend.remove' | translate }} <i class="glyphicon glyphicon-remove"></i></button>
       </li>
     </ul>
@@ -45,7 +46,7 @@
     {{ 'friend.requestSent' | translate }}
   </div>
   <div *ngIf="!requestSend && !alreadyFriends()">
-    <a class="btn btn-success" (click)="sendFriendRequest(profile.userID)">{{ 'friend.ask'|translate }}</a>
+    <a class="btn btn-success" (click)="sendFriendRequest(profile.userID!)">{{ 'friend.ask'|translate }}</a>
   </div>
 </div>
 <div *ngIf="!hasProfile()">

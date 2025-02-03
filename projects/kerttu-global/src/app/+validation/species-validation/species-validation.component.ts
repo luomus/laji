@@ -27,11 +27,11 @@ import { defaultAudioSampleRate } from '../../kerttu-global-shared/variables';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesValidationComponent implements OnInit, OnDestroy {
-  species$: Observable<IGlobalSpecies>;
-  recordings$: Observable<IGlobalRecording[]>;
-  templateVersions$: Observable<IGlobalTemplateVersion[]>;
-  activeTemplates$: Observable<IGlobalTemplate[]>;
-  historyView$: Observable<boolean>;
+  species$!: Observable<IGlobalSpecies>;
+  recordings$!: Observable<IGlobalRecording[]>;
+  templateVersions$!: Observable<IGlobalTemplateVersion[]>;
+  activeTemplates$!: Observable<(IGlobalTemplate|null)[]>;
+  historyView$!: Observable<boolean>;
 
   saving = false;
   canLeaveWithoutConfirm = false;
@@ -46,10 +46,10 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   private activeVersionIdxSubject = new BehaviorSubject<number>(0);
   activeVersionIdx$ = this.activeVersionIdxSubject.asObservable();
 
-  private speciesId$: Observable<number>;
-  private speciesId: number;
+  private speciesId$!: Observable<number>;
+  private speciesId?: number;
 
-  private hasLockSub: Subscription;
+  private hasLockSub!: Subscription;
 
   constructor(
     private userService: UserService,
@@ -147,9 +147,9 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  saveTemplates(data: { templates: IGlobalTemplate[]; comments: IGlobalComment[] }) {
+  saveTemplates(data: { templates: (IGlobalTemplate|null)[]; comments: IGlobalComment[] }) {
     this.saving = true;
-    this.kerttuGlobalApi.saveTemplates(this.userService.getToken(), this.speciesId, data).subscribe(() => {
+    this.kerttuGlobalApi.saveTemplates(this.userService.getToken(), this.speciesId!, data).subscribe(() => {
       this.saving = false;
       this.canLeaveWithoutConfirm = true;
       this.goToSpeciesList();
@@ -177,7 +177,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   }
 
   private showErrorMessage(message: KerttuGlobalErrorEnum) {
-    let reason: string;
+    let reason: string | undefined;
     if (message === KerttuGlobalErrorEnum.speciesLocked) {
       reason = this.translate.instant('validation.savingError.speciesLocked');
     }

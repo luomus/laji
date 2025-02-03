@@ -51,6 +51,18 @@
             </div>
         </ng-template>
     </laji-row>
+    <laji-row *ngIf="showEffectiveAtlasCode && unit.atlasCode" [title]="'annotation.effectiveAtlasCode' | translate"  [noTitleSpace]="false" ngPreserveWhitespaces>
+      <div *ngIf="annotationResolving; else atlasCodeNoResolving">
+        <laji-spinner></laji-spinner>
+      </div>
+      <ng-template #atlasCodeNoResolving>
+        <div>
+            <span>
+              {{ unit.atlasCode | label:"fullUri" }}
+            </span>
+        </div>
+    </ng-template>
+    </laji-row>
 </div>
 
 

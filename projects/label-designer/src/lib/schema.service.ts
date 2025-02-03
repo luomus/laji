@@ -29,7 +29,7 @@ export class SchemaService {
     }
     this.convertSchema('', '', schema, base, options);
     if (options && options.skip) {
-      base = base.filter(field => options.skip.indexOf(field.field) === -1);
+      base = base.filter(field => options!.skip!.indexOf(field.field) === -1);
     }
     return base;
   }
@@ -69,8 +69,8 @@ export class SchemaService {
     const fieldMap: ILabelFieldMap = fields.reduce((cumulative, current) => {
       cumulative[current.field] = current;
       return cumulative;
-    }, {});
-    const result = [];
+    }, {} as any);
+    const result: any = [];
     try {
       (data || []).forEach(item => result.push(...this.convertData(item, fieldMap, select, specialTransform) as ILabelData[]));
     } catch (e) {
@@ -84,7 +84,7 @@ export class SchemaService {
     fields: ILabelFieldMap,
     select?: string,
     specialTransform?: ISpecialTransform,
-    result = [],
+    result: ILabelData[] = [],
     base: ILabelData = {},
     parent = '',
     lvl = 0
@@ -100,8 +100,8 @@ export class SchemaService {
       }
       const path = this.getPath(parent, key);
 
-      if (specialTransform[path]) {
-        const transforms = specialTransform[path](data[key]);
+      if (specialTransform![path]) {
+        const transforms = specialTransform![path](data[key]);
         for (const transformPath of Object.keys(transforms)) {
           base[transformPath] = transforms[transformPath];
         }
@@ -125,13 +125,13 @@ export class SchemaService {
 
     arrays.forEach(key => {
       const path = this.getPath(parent, key);
-      data[key].forEach(item => this.convertData(item, fields, select, specialTransform, result, base, path, lvl + 1));
+      data[key].forEach((item: any) => this.convertData(item, fields, select, specialTransform, result, base, path, lvl + 1));
     });
 
     selected.forEach(key => {
       const path = this.getPath(parent, key);
       data[key].forEach(
-        item => result.push(this.convertData(item, fields, select, specialTransform, result, {...base}, path, lvl + 1))
+        (item: any) => result.push(this.convertData(item, fields, select, specialTransform, result, {...base}, path, lvl + 1) as any)
       );
     });
 
@@ -147,8 +147,8 @@ export class SchemaService {
       return base;
     }
 
-    if (options.special?.[path]) {
-      options.special[path].forEach(labelField => {
+    if (options!.special?.[path]) {
+      options!.special[path].forEach(labelField => {
         base.push({field: labelField.field, label: this.joinLabelWithParentLabel(labelField.label, parentLabel)});
       });
       return base;
@@ -186,7 +186,7 @@ export class SchemaService {
     return parent ? parent + '.' + field : field;
   }
 
-  private getLabel(item, parent: string): string {
+  private getLabel(item: any, parent: string): string {
     return this.joinLabelWithParentLabel(item.title, parent);
   }
 
@@ -194,9 +194,9 @@ export class SchemaService {
     return label + (parent ? ' - ' + parent : '');
   }
 
-  private getValueMap(item): undefined|{[value: string]: string} {
-    function pick(from) {
-      const result = {};
+  private getValueMap(item: any): undefined|{[value: string]: string} {
+    function pick(from: any) {
+      const result: any = {};
       for (const one of from.oneOf) {
         result[one.const] = one.title;
       }

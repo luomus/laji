@@ -21,7 +21,7 @@ import { MappingService, SpecialTypes } from '../../service/mapping.service';
 })
 export class CellValueMappingComponent implements OnInit, OnChanges {
 
-  @Input() formID?: string;
+  @Input({ required: true }) formID!: string;
   @Input() data: any[] = [];
   @Input() fields: {[key: string]: IFormField} = {};
   @Input() colMapping: {[key: string]: string} = {};

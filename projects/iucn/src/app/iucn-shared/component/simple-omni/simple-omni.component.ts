@@ -11,7 +11,7 @@ import { TaxonSelectComponent } from '../../../../../../laji/src/app/shared-modu
 })
 export class SimpleOmniComponent {
 
-  @ViewChild(TaxonSelectComponent, { static: true }) taxonSelectComponent: TaxonSelectComponent;
+  @ViewChild(TaxonSelectComponent, { static: true }) taxonSelectComponent!: TaxonSelectComponent;
 
   constructor(
     private localizeRouterService: LocalizeRouterService,
@@ -22,7 +22,7 @@ export class SimpleOmniComponent {
   taxonSelect(taxonID: string) {
     if (taxonID) {
       this.router.navigate(this.localizeRouterService.translateRoute(['/results', taxonID]), {
-        queryParams: {checklist: this.resultService.getChecklistVersion(DEFAULT_YEAR)}
+        queryParams: {checklist: this.resultService.getChecklistVersion(DEFAULT_YEAR as any)}
       });
     }
     this.taxonSelectComponent.taxonId = '';

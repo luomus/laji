@@ -8,5 +8,5 @@ import { IGlobalAudio } from 'projects/kerttu-global/src/app/kerttu-global-share
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioInfoComponent {
-  @Input() audio: IGlobalAudio;
+  @Input({ required: true }) audio!: IGlobalAudio;
 }

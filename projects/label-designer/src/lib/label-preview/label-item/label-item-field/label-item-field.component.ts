@@ -12,15 +12,15 @@ import { FieldType, IFontStyle, ILabelField, QRCodeErrorCorrectionLevel } from '
 })
 export class LabelItemFieldComponent {
 
-  _field: ILabelField;
+  _field!: ILabelField;
 
   @Input() isLast = false;
-  @Input() size: number;
+  @Input() size!: number;
   @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
 
-  _prefixStyle: IFontStyle;
-  _contentStyle: IFontStyle;
-  _suffixStyle: IFontStyle;
+  _prefixStyle?: IFontStyle;
+  _contentStyle?: IFontStyle;
+  _suffixStyle?: IFontStyle;
 
   fieldType = FieldType;
 

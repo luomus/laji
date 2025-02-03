@@ -8,14 +8,14 @@ import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface
 
 @Directive()
 export abstract class AbstractObservation {
-  public activeTab$: Observable<string>;
+  public activeTab$!: Observable<string | undefined>;
 
   private subscription = new Subscription();
   private qpUpdate = new Subject<void>();
 
-  protected observationFacade: ObservationFacade;
-  protected route: ActivatedRoute;
-  protected searchQuery: SearchQueryService;
+  protected observationFacade!: ObservationFacade;
+  protected route!: ActivatedRoute;
+  protected searchQuery!: SearchQueryService;
   public skipUrlParams: string[] = [
     'selected',
     'pageSize',
@@ -67,7 +67,7 @@ export abstract class AbstractObservation {
     this.searchQuery.updateUrl(query, this.skipUrlParams);
   }
 
-  private updateQueryFromQueryParams$(queryParams): Observable<any> {
+  private updateQueryFromQueryParams$(queryParams: Record<string, any>): Observable<any> {
     const query = this.searchQuery.getQueryFromUrlQueryParams(queryParams);
     if (queryParams['target']) {
       query.target = [queryParams['target']];

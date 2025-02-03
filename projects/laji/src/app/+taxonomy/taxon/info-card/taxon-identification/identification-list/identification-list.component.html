@@ -1,20 +1,20 @@
 <ng-container *ngIf="taxon.species">
-  <ng-container *ngIf="taxon.multimedia?.length > 0; else noImage">
+  <ng-container *ngIf="taxon.multimedia?.length! > 0; else noImage">
     <ng-container *ngFor="let multimedia of taxon.multimedia; index as i">
-      <img lajiLazyImage (click)="openImage(i)" [src]="taxon.multimedia[i].largeURL">
-      <ng-container *ngTemplateOutlet="imageCopyright; context:{ $implicit: taxon.multimedia[i] }"></ng-container>
+      <img lajiLazyImage (click)="openImage(i)" [src]="taxon.multimedia![i].largeURL">
+      <ng-container *ngTemplateOutlet="imageCopyright; context:{ $implicit: taxon.multimedia![i] }"></ng-container>
     </ng-container>
   </ng-container>
 </ng-container>
 
 <ng-container *ngIf="taxon.children?.length === 0">
-  <ng-container *ngIf="taxon.multimedia?.length > 0; else noImage">
-    <img (click)="openImage()" [src]="taxon.multimedia[0].largeURL">
-    <ng-container *ngTemplateOutlet="imageCopyright; context:{ $implicit: taxon.multimedia[0] }"></ng-container>
+  <ng-container *ngIf="taxon.multimedia?.length! > 0; else noImage">
+    <img (click)="openImage()" [src]="taxon.multimedia![0].largeURL">
+    <ng-container *ngTemplateOutlet="imageCopyright; context:{ $implicit: taxon.multimedia![0] }"></ng-container>
   </ng-container>
 </ng-container>
 
-<div class="species-container-container mb-8" *ngIf="taxon.children?.length > 0">
+<div class="species-container-container mb-8" *ngIf="taxon.children?.length! > 0">
   <div class="species-navigation back" (mousedown)="discreteScroll(-1)">
     <div class="glyphicon glyphicon-chevron-left"></div>
   </div>
@@ -28,9 +28,9 @@
           <laji-taxon-name [capitalizeName]="true" [addLink]="false" [taxon]="child"></laji-taxon-name>
         </a>
       </h5>
-      <ng-container *ngIf="child.multimedia?.length > 0; else noImageContainer">
+      <ng-container *ngIf="child.multimedia?.length! > 0; else noImageContainer">
         <div class="species-img-container">
-          <img (click)="openImage(i)" [src]="child.multimedia[0].largeURL">
+          <img (click)="openImage(i)" [src]="child.multimedia![0].largeURL">
         </div>
       </ng-container>
     </div>

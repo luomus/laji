@@ -8,7 +8,7 @@
     </div>
     <div class="content">
       <ng-container *ngIf="isTemplate; else plainHtml">
-        <ng-container *ngTemplateOutlet="data.content"></ng-container>
+        <ng-container *ngTemplateOutlet="$any(data.content)"></ng-container>
       </ng-container>
       <ng-template #plainHtml>
         <div [innerHTML]="data.content" *ngIf="isTemplate"></div>

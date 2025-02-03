@@ -25,6 +25,14 @@ export class TaxonOccurrenceComponent implements OnChanges {
   filterByCollectionIdTotal: number | undefined;
   filterHabitats: Array<any> = [];
 
+  secureLevelTypes: readonly (keyof Taxonomy)[] = [
+    'secureLevel',
+    'breedingSecureLevel',
+    'naturaAreaSecureLevel',
+    'nestSiteSecureLevel',
+    'winteringSecureLevel'
+  ] as const;
+
   ngOnChanges() {
     this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
     this.chartQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id);

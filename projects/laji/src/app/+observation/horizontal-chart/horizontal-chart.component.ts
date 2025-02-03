@@ -19,26 +19,26 @@ import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HorizontalChartComponent implements OnInit, OnChanges {
-  @Input() query: WarehouseQueryInterface;
+  @Input({ required: true }) query!: WarehouseQueryInterface;
   @Input() height = 150;
   @Input() showLegend = false;
   @Input() legendPosition = 'top';
   @Input() visible = true;
-  @Input() lang: string;
+  @Input({ required: true }) lang!: string;
 
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() hasData = new EventEmitter<boolean>();
 
 
   loading = false;
-  queryQL: Subscription;
-  dataClasses: Subscription;
-  taxa: string;
-  componentHeight: number;
+  queryQL?: Subscription;
+  dataClasses?: Subscription;
+  taxa?: string;
+  componentHeight?: number;
   loadLabels = false;
-  barChartOptions: ChartOptions;
-  subscription: Subscription;
-  timer: Observable<any>;
+  barChartOptions?: ChartOptions;
+  subscription?: Subscription;
+  timer?: Observable<any>;
   resultList: any[] = [];
 
  classification = [
@@ -51,7 +51,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   ];
 
   classificationValue = 'classId';
-  @LocalStorage('onlycount') onlyCount;
+  @LocalStorage('onlycount') onlyCount?: boolean;
 
   public barChartData: ChartDataset[] = [
     { data: [], label: this.translate.instant('all') },
@@ -76,7 +76,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    (Tooltip.positioners as any).cursor = function(chartElements, coordinates) {
+    (Tooltip.positioners as any).cursor = function(chartElements: any, coordinates: any) {
       return coordinates;
     };
     this.localSt.observe('onlycount')
@@ -123,15 +123,15 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
       ).pipe(
         map(res => res.results),
         switchMap(res => {
-          const taxaIds = res.map(r => this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
+          const taxaIds = res.map((r: any) => this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
           return this.horizontalDataService.getChartDataLabels(taxaIds).pipe(
-            map(labels => res.map((r, idx) => ({
+            map(labels => res.map((r: any, idx: number) => ({
                 ...r,
                 label: labels['r' + idx]
               })))
           );
         }),
-        map(res => res.map(r => {
+        map(res => res.map((r: any) => {
             this.resultList.push(r);
             this.subDataBarChart.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
             this.subBackgroundColors.push('#3498db');
@@ -222,7 +222,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
     }
   }
 
-  initializeArrays(list) {
+  initializeArrays(list: any[]) {
     this.barChartData = [];
     this.barChartLabels = [];
     this.allDataBarChart = [];
@@ -235,7 +235,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
     this.fillDataGraph(list);
   }
 
-  fillDataGraph(list) {
+  fillDataGraph(list: any[]) {
     const field = this.onlyCount === null ? 'count' : this.onlyCount ? 'count' : 'individualCountSum';
     list.sort((a, b) => (a[field] > b[field]) ? -1 : ((b[field] > a[field]) ? 1 : 0));
     list.map(r =>  {
