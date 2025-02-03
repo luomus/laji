@@ -145,7 +145,8 @@
   </span>
 </ng-template>
 <ng-template let-row="row" #taxonScientificNameLink>
-  <a *ngIf="row.scientificName" title="{{row.scientificName}}" [routerLink]="['/taxon/' + row.id] | localize">
+  <a *ngIf="row.scientificName" title="{{row.scientificName}}"
+    [routerLink]="['/taxon/' + (row.id.includes('http') ? row.id.split('/').pop() : row.id)] | localize">
     <span [class.cursive]="row.cursiveName">{{ row.scientificName }}</span>
   </a>
 </ng-template>
