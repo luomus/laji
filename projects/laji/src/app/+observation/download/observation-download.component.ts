@@ -89,7 +89,7 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   linkTimeout: any;
 
-  formats: FORMAT[] = ['tsv', 'ods', 'xlsx', 'shp', 'gpkg'];
+  formats: FORMAT[] = ['tsv', 'ods', 'xlsx', 'gpkg'];
 
   private _originalSelected: string[];
   private _settings?: UserSettingsResultList|null;
@@ -404,6 +404,6 @@ export class ObservationDownloadComponent implements OnDestroy {
   }
 
   private isGisDownload(fileType: FORMAT): boolean {
-    return fileType === 'shp' || fileType === 'gpkg';
+    return fileType === 'gpkg';
   }
 }

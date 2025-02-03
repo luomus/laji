@@ -7,7 +7,6 @@ import { TranslateService } from '@ngx-translate/core';
 export type GeoConversionStatus = 'pending'|'complete';
 
 export enum FileFormat {
-  shp = 'shp',
   gpkg = 'gpkg'
 }
 export enum FileGeometry {
@@ -20,7 +19,6 @@ export enum FileCrs {
   wgs84 = 'wgs84'
 }
 export enum ErrorType {
-  tooComplex = 'too_complex',
   tooLarge = 'too_large'
 }
 
