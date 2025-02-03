@@ -2167,5 +2167,7 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä"
+  "yes": "Kyllä",
+  "home.pinkka.desc": "Pinkka on lajintunnistusta tukeva verkko-oppimisympäristö. Pinkasta löydät eri tarpeisiin kootut virtuaaliset näytepinkat lajintuntemuksen opiskeluun – opiskeliljalle, luontoharrastajalle ja koululaiselle.",
+  "home.pinkka.btn": "Tutustu Pinkkaan"
 }
