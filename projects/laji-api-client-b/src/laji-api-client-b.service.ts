@@ -43,13 +43,8 @@ const splitAndResolvePath = <
   M extends Method<P>,
 >(path: P, params?: Parameters<paths[P][M]>): string[] => {
   // parse path into segments based on path parameters
-  // eg. "/person/{personToken}/profile" -> ["/person", "/{personToken}/profile"]
-
-  // using a lookahead makes the split not consume the matching substrings
-  // but instead we are splitting *before* the pattern
-  // using a non-capturing group (?:...) avoids duplicates in the split output
-  // matches start with `/` such that there's a beginning `/` but no trailing `/`
-  const segments = path.split(/(?=(?:\/\{[^}]+\}))/);
+  // eg. "/person/{personToken}/profile" -> ["/person", "/{personToken}", "/profile"]
+  const segments = path.split(/(\/\{[^}]+\})/).filter(Boolean);
 
   if (!params) {
     return segments;
