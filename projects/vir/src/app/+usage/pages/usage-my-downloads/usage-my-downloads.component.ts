@@ -22,27 +22,25 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
           class="d-block my-5"
         ></vir-data-table>
       </laji-spinner>
-      <ng-container>
-        <laji-spinner [spinning]="keysTableLoading" [overlay]="true">
-          <h3 translate>usage.apikeys</h3>
-          <vir-data-table
-            type="userKeys"
-            [height]="'50vh'"
-            [data]="apiKeys$ | async"
-            [showDownloadMenu]="false"
-            [showRowAsLink]="true"
-            (rowSelect)="openDownloadModal($event.row)"
-            class="d-block my-5"
-          ></vir-data-table>
-        </laji-spinner>
-      </ng-container>
+      <laji-spinner [spinning]="keysTableLoading" [overlay]="true">
+        <h3 translate>usage.apikeys</h3>
+        <vir-data-table
+          type="userKeys"
+          [height]="'50vh'"
+          [data]="apiKeys$ | async"
+          [showDownloadMenu]="false"
+          [showRowAsLink]="true"
+          (rowSelect)="openDownloadModal($event.row)"
+          class="d-block my-5"
+        ></vir-data-table>
+      </laji-spinner>
     </div>
     <ng-template #downloadModal>
       <vir-download-request-modal
         [downloadRequest]="selectedRequest"
         [showPerson]="false"
         [showFileDownload]="true"
-        (close)="closeDownloadModal()"
+        (close)="closeModal()"
       ></vir-download-request-modal>
     </ng-template>
   `,
@@ -90,10 +88,10 @@ export class UsageMyDownloadsComponent {
 
   openDownloadModal(request: DownloadRequest) {
     this.selectedRequest = request;
-    this.modal = this.modalService.show(this.downloadModal);
+    this.modal = this.modalService.show(this.downloadModal, { size: 'lg' });
   }
 
-  closeDownloadModal() {
+  closeModal() {
     this.modal?.hide();
     this.selectedRequest = null;
   }

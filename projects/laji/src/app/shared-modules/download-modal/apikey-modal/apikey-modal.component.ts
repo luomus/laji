@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
+import { ModalComponent, ModalSize } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 export interface ApiKeyRequest {
   reason: string;
@@ -27,6 +27,7 @@ export class ApikeyModalComponent implements OnChanges, OnInit {
   @Input() disabled = false;
   @Input() loading = false;
   @Input() apiKey = '';
+  @Input() modalSize: ModalSize = 'sm';
 
   @ViewChild('modal', {static: true}) modal!: ModalComponent;
 
