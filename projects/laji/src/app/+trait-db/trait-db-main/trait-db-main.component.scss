@@ -1,0 +1,19 @@
+@import 'vars';
+
+:host {
+  max-width: 1000px;
+}
+
+p {
+  max-width: 600px;
+}
+
+.counts-item {
+  padding: $sp-4 $sp-5;
+  background-color: $neutral-4;
+
+  strong {
+    font-size: $fs-5;
+  }
+}
+

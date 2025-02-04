@@ -1,0 +1,104 @@
+@import 'vars';
+
+:host {
+  display: block;
+  margin: $sp-6 0px;
+}
+
+.table-wrapper {
+  overflow-x: scroll;
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+  margin-bottom: $sp-3;
+}
+
+table {
+  width: max-content;
+  margin: 0;
+}
+
+th {
+  position: relative;
+  cursor: grab;
+  min-width: min-content;
+}
+
+th:hover {
+  background-color: $neutral-3;
+}
+
+.header-contents {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  white-space: nowrap;
+  gap: $sp-4;
+  width: 100%;
+}
+
+.sort-btn {
+  border: none;
+  box-shadow: 0px 1px 3px 0px rgba($neutral-6, .1);
+  color: $neutral-6;
+  background-color: $neutral-1;
+  border-radius: 100%;
+  font-size: $fs-1;
+  padding: $sp-1 $sp-3;
+}
+
+.sort-btn:hover {
+  color: $primary-6;
+  background-color: $primary-2;
+}
+
+.sort-btn.sorted {
+  color: $primary-6;
+  background-color: $primary-2;
+  box-shadow: inset 0px 1px 3px 0px rgba($primary-7, .15);
+}
+
+.unselect-col-btn {
+  border: none;
+  box-shadow: 0px 1px 3px 0px rgba($neutral-6, .1);
+  color: $neutral-6;
+  background-color: $neutral-1;
+  border-radius: 100%;
+  font-size: $fs-1;
+  padding: $sp-1 $sp-3;
+}
+
+.unselect-col-btn:hover {
+  color: $danger-6;
+  background-color: $danger-2;
+}
+
+.col-separator {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background-color: $neutral-4;
+  cursor: col-resize;
+}
+
+@keyframes ghost-anim {
+  from {box-shadow: inset 0 -20px $neutral-4;}
+  to {box-shadow: inset 0 -20px lighten($neutral-4, 3);}
+}
+
+.cell-ghost {
+  color: transparent;
+  user-select: none;
+  span {
+    display: block;
+    width: 100%;
+    height: 20px;
+
+    animation-name: ghost-anim;
+    animation-duration: 500ms;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+  }
+}

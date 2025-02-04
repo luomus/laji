@@ -37,6 +37,19 @@
     </div>
   </div>
 </a>
+<a [routerLink]="'/trait-db' | localize" class="d-flex flex-nowrap mb-4 container-link" *lajiForTypes="['dev']">
+  <div class="img-container">
+    <img src="/static/images/icons/tree.png">
+  </div>
+  <div class="nav-container">
+    <div class="nav-title">
+      {{ 'taxonomy.traitDb' | translate }}
+    </div>
+    <div class="nav-description">
+      {{ 'taxonomy.traitDb.intro' | translate }}
+    </div>
+  </div>
+</a>
 <div>
   <laji-omni-search [visible]="omniSearchVisible" [placeholder]="'species.search' | translate" luDropdownNoClose></laji-omni-search>
 </div>

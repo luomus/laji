@@ -1,0 +1,5 @@
+<input type="text" (blur)="onTouched(value)" #textInput>
+<ul>
+  <li *ngFor="let elem of value; let i = index">{{ elem }} <button (click)="onRemoveIdx(i)">X</button></li>
+</ul>
+

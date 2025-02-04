@@ -18,12 +18,13 @@ import { ComboCheckboxRowComponent } from './combo-checkbox/combo-checkbox-row.c
 import { ClickOutsideDirective } from './directives/click-outside.directive';
 import { KeyboardClickableDirective } from './directives/keyboard-clickable.directive';
 import { CloseOnEscDirective } from './directives/close-on-esc.directive';
+import { FormStringListComponent } from './forms/string-list/string-list.component';
 
 @NgModule({
   declarations: [
     ButtonComponent, CheckboxComponent, TabsComponent, TabComponent, SidebarComponent,
     SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, ButtonRoundComponent, MessageComponent,
-    ComboCheckboxComponent, ComboCheckboxRowComponent, ClickOutsideDirective, KeyboardClickableDirective, CloseOnEscDirective
+    ComboCheckboxComponent, ComboCheckboxRowComponent, ClickOutsideDirective, KeyboardClickableDirective, CloseOnEscDirective, FormStringListComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +33,7 @@ import { CloseOnEscDirective } from './directives/close-on-esc.directive';
   exports: [
     ButtonComponent, ButtonRoundComponent, CheckboxComponent, TabsComponent, TabComponent, SidebarComponent,
     SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, MessageComponent,
-    ComboCheckboxComponent, ComboCheckboxRowComponent, KeyboardClickableDirective, CloseOnEscDirective
+    ComboCheckboxComponent, ComboCheckboxRowComponent, KeyboardClickableDirective, CloseOnEscDirective, FormStringListComponent
   ]
 })
 export class LajiUiModule { }

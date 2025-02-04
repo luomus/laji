@@ -1,0 +1,29 @@
+<div class="your-datasets">
+  <h5>Your Datasets</h5>
+  <!-- a simple `loggedIn$ | async` is not sufficient here, because loggedIn$ emits a boolean -->
+  <ng-container *ngIf="{ val: loggedIn$ | async } as loggedIn; else loading">
+    <div *ngIf="!(loggedIn.val); else loggedInDatasets" class="your-datasets-content">
+      <p>Please <a href="" (click)="onLogin($event)">sign in</a> to begin sharing your own trait datasets with the community. </p>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #loading>
+  <laji-spinner class="d-block m-6"></laji-spinner>
+</ng-template>
+
+<ng-template #loggedInDatasets>
+  <ng-container *ngIf="datasets$ | async as datasets; else loading">
+    <div *ngIf="datasets.length > 0; else noDatasets">
+      <ul *ngFor="let dataset of datasets">
+        <li><a [routerLink]="['/trait-db/datasets/', dataset.id]">{{ dataset.name }}</a></li>
+      </ul>
+    </div>
+  </ng-container>
+  <a routerLink="/trait-db/datasets/new" class="btn btn-default">Create dataset</a>
+</ng-template>
+
+<ng-template #noDatasets>
+  <p>You have not created any datasets yet. Click below to start sharing trait data.</p>
+</ng-template>
+

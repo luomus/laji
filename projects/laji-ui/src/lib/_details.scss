@@ -1,0 +1,5 @@
+@import 'mixins/details';
+
+details.lu-details {
+  @include details();
+}
