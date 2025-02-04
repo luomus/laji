@@ -17,12 +17,12 @@
   </div>
   <ng-container *ngIf="state$ | async as state">
     <div *ngIf="isStatisticsState(state)">
-      <laji-biomon-result-statistics [collection]="state.collection ? state.collection : form.collectionID">
+      <laji-biomon-result-statistics [collection]="state.collection ? state.collection : this.form.collectionID!">
       </laji-biomon-result-statistics>
     </div>
     <div *ngIf="isMapState(state)">
       <laji-result-map
-        [collections]="[state.collection ? state.collection : this.form.collectionID]"
+        [collections]="[state.collection ? state.collection : this.form.collectionID!]"
         [taxon]="state.taxon"
         (taxonChange)="onTaxonChange($event)"
         [taxonOptions]="taxonOptions$ | async"

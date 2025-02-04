@@ -21,12 +21,12 @@ import { getFeatureCollectionFromGeometry, getGeometryFromFeatureCollection } fr
 })
 export class SpecialGeometryComponent {
 
-  @Input() invalidValues: string[];
+  @Input() invalidValues!: string[];
   @Input() mapping: {[value: string]: any} = {};
-  @Input() field: IFormField;
+  @Input() field?: IFormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
   @Output() done = new EventEmitter();
-  @ViewChild(LajiMapComponent) lajiMapComponent: LajiMapComponent;
+  @ViewChild(LajiMapComponent) lajiMapComponent!: LajiMapComponent;
 
   ignore = VALUE_IGNORE;
   lajiMapOptions: Options = {
@@ -57,8 +57,8 @@ export class SpecialGeometryComponent {
     },
     lang: Lang.fi
   };
-  active: number;
-  last: number;
+  active!: number;
+  last!: number;
   value: any;
 
   constructor(
@@ -77,7 +77,7 @@ export class SpecialGeometryComponent {
     }, 200);
   }
 
-  setActive(idx) {
+  setActive(idx: number) {
     if (idx > this.last) {
       return this.done.emit();
     }
@@ -107,7 +107,7 @@ export class SpecialGeometryComponent {
     this.last = this.invalidValues ? (this.invalidValues.length - 1) : 0;
   }
 
-  valueMap(value, to) {
+  valueMap(value: any, to: any) {
     const mapping = {...this.mapping};
 
     if (to === undefined && mapping[value]) {

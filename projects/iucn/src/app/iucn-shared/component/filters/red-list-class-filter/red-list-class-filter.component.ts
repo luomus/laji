@@ -38,22 +38,22 @@ export class RedListClassFilterComponent {
     const selected = {...this.selected};
     for (const i in selected) {
       if (selected.hasOwnProperty(i)) {
-        selected[i] = false;
+        selected[i as keyof typeof selected] = false;
       }
     }
 
     if (val) {
       val.forEach(key => {
-        selected[key] = true;
+        selected[key as keyof typeof selected] = true;
       });
     }
     this.selected = selected;
     this.initGroups();
   }
 
-  groupSelect(group) {
+  groupSelect(group: keyof typeof this.selectedGroups) {
     if (this.selectedGroups[group]) {
-      this.valueChange.emit(Object.keys(this.selected).reduce((cumulative, current) => {
+      this.valueChange.emit((Object.keys(this.selected) as (keyof typeof this.selected)[]).reduce((cumulative: string[], current) => {
         if (this.selected[current] && this.groups[group].indexOf(current) === -1) {
           cumulative.push(current);
         }
@@ -62,7 +62,7 @@ export class RedListClassFilterComponent {
     } else {
       const selected = [...this.groups[group]];
       ['NA', 'NE'].forEach(status => {
-        if (this.selected[status]) {
+        if (this.selected[status as 'NA'|'NE']) {
           selected.push(status);
         }
       });
@@ -70,10 +70,10 @@ export class RedListClassFilterComponent {
     }
   }
 
-  itemSelect(item) {
+  itemSelect(item: keyof typeof this.selected) {
     this.selected[item] = !this.selected[item];
-    this.valueChange.emit(Object.keys(this.selected).reduce((cumulative, current) => {
-      if (this.selected[current]) {
+    this.valueChange.emit(Object.keys(this.selected).reduce((cumulative: string[], current) => {
+      if (this.selected[current as keyof typeof this.selected]) {
         cumulative.push(current);
       }
       return cumulative;
@@ -92,13 +92,13 @@ export class RedListClassFilterComponent {
         return;
       }
       let match = 0;
-      this.groups[group].forEach(level => {
-        if (this.selected[level]) {
+      this.groups[group as keyof typeof this.groups].forEach(level => {
+        if (this.selected[level as keyof typeof this.selected]) {
           match++;
         }
       });
-      if (match === this.groups[group].length) {
-        this.selectedGroups[group] = true;
+      if (match === this.groups[group as keyof typeof this.groups].length) {
+        this.selectedGroups[group as keyof typeof this.groups] = true;
         hasGroup = true;
       } else if (match < 3) {
         hasGroup = true;

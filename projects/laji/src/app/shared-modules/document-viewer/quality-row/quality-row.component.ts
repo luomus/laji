@@ -14,6 +14,6 @@ import { Component, Input } from '@angular/core';
 })
 
 export class QualityRowComponent {
-  @Input() quality: string;
-  @Input() qualityIcon: string;
+  @Input() quality?: string;
+  @Input() qualityIcon?: string;
 }

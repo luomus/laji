@@ -76,7 +76,7 @@ export class DocumentApi {
    * @param id Find document with the id
    * @param userToken User authentication token
    */
-  public findById(id: string, userToken: string, extraHttpRequestParams?: any): Observable<Document> {
+  public findById(id: string, userToken: string, extraHttpRequestParams?: any): Observable<Document & { id: string }> {
     const path = this.basePath + '/documents/{id}'
         .replace('{' + 'id' + '}', String(id));
 
@@ -91,7 +91,7 @@ export class DocumentApi {
     }
     queryParameters['personToken'] = userToken;
 
-    return this.http.get<Document>(path, {params: queryParameters});
+    return this.http.get<Document & { id: string }>(path, {params: queryParameters});
   }
 
   /**
@@ -101,7 +101,7 @@ export class DocumentApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findAll(userToken: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Document>> {
+  public findAll(userToken: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Document & { id: string }>> {
     const path = this.basePath + '/documents';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -128,7 +128,7 @@ export class DocumentApi {
       });
     }
 
-    return this.http.get<PagedResult<Document>>(path, {params: queryParameters});
+    return this.http.get<PagedResult<Document & { id: string }>>(path, {params: queryParameters});
   }
 
   /**

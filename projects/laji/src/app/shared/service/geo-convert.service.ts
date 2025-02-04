@@ -4,11 +4,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { switchMap, concatMap, map, catchError, takeWhile } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
-export const GEO_CONVERT_LIMIT = 500000;
 export type GeoConversionStatus = 'pending'|'complete';
 
 export enum FileFormat {
-  shp = 'shp',
   gpkg = 'gpkg'
 }
 export enum FileGeometry {
@@ -21,7 +19,6 @@ export enum FileCrs {
   wgs84 = 'wgs84'
 }
 export enum ErrorType {
-  tooComplex = 'too_complex',
   tooLarge = 'too_large'
 }
 
@@ -56,7 +53,7 @@ export class GeoConvertService {
   ) {}
 
   public geoConvertFile(
-    fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs, personToken?: string
+    fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs, personToken?: string | null
   ): Observable<GeoConversionResponse> {
     return this.startGeoConversion(fileId, format, geometry, crs, personToken).pipe(
       switchMap(conversionId => this.getResponse(conversionId)),
@@ -74,7 +71,7 @@ export class GeoConvertService {
   }
 
   private startGeoConversion(
-    fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs, personToken?: string
+    fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs, personToken?: string | null
   ): Observable<string> {
     const queryParams: any = {
       outputFormat: format,

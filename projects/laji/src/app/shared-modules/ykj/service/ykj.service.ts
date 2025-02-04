@@ -34,7 +34,7 @@ export class YkjService {
   }
 
   getList(query: WarehouseQueryInterface, grid: Grid = '10kmCenter', key?: string,
-             useStatistics = false, zeroObservations = false, selected = [], enableOnlyCount = false): Observable<any> {
+             useStatistics = false, zeroObservations = false, selected: any[] = [], enableOnlyCount = false): Observable<any> {
     if (!key) {
       key = JSON.stringify(query);
     }

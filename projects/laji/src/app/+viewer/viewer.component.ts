@@ -10,18 +10,18 @@ import { map, mergeMap } from 'rxjs/operators';
 })
 export class ViewerComponent implements OnInit, OnDestroy {
 
-  public uri: string;
-  public highlight: string;
-  public own: boolean;
-  public openAnnotation: boolean;
-  private subQuery: Subscription;
+  uri: string | undefined;
+  highlight: string | undefined;
+  own: boolean | undefined;
+  openAnnotation: boolean | undefined;
+  private subQuery!: Subscription;
 
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.subQuery = this.route.queryParams.pipe(
       mergeMap(params => this.route.fragment.pipe(
-        map(fragment => ({
+        map(fragment => (<any>{
           ...params,
           highlight: fragment ? (params['uri'] || '') + '#' + fragment : (params['highlight'] || '').replace('%23', '#')
         }))

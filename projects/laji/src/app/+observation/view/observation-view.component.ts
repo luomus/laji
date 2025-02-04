@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -14,6 +15,7 @@ import { Global } from '../../../environments/global';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { SidebarComponent } from 'projects/laji-ui/src/lib/sidebar/sidebar.component';
 import { ActiveToast } from 'ngx-toastr';
+import { ObservationFormQuery } from '../form/observation-form-query.interface';
 
 export interface VisibleSections {
   finnish?: boolean;
@@ -59,15 +61,15 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     'page'
   ];
   @Input() settingsKeyList = 'resultList';
-  _activeTab: string;
-  @ViewChild(SidebarComponent) sidebar: SidebarComponent;
-  @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
+  _activeTab!: string;
+  @ViewChild(SidebarComponent) sidebar?: SidebarComponent;
+  @ViewChild(ObservationResultComponent) results?: ObservationResultComponent;
   showMobile: any;
 
   showFilter = true;
   statusFilterMobile = false;
 
-  invasiveStatuses: string[] = [
+  invasiveStatuses: (keyof ObservationFormQuery)[] = [
     'euInvasiveSpeciesList',
     'controllingRisksOfInvasiveAlienSpecies',
     'quarantinePlantPest',
@@ -77,8 +79,8 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     'otherInvasiveSpeciesList',
   ];
 
-  vm$: Observable<IObservationViewModel>;
-  settingsList$: Observable<UserSettingsResultList>;
+  vm$?: Observable<IObservationViewModel>;
+  settingsList$?: Observable<UserSettingsResultList>;
 
   private searchButtonInfoToast?: ActiveToast<any>;
   private searchButtonInfoToastOnHiddenSub?: Subscription;
@@ -94,7 +96,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     private toastsService: ToastsService
   ) {}
 
-  @Input()
+  @Input({ required: true })
   set activeTab(tab: string) {
     this._activeTab = tab;
     this.browserService.triggerResizeEvent();
@@ -120,6 +122,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
         })
       ).subscribe()
     );
+    /*
     this.mainSubscription.add(
       combineLatest([
         this.observationFacade.showSearchButtonInfo$,
@@ -130,6 +133,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
         }
       })
     );
+    */
   }
 
   ngOnDestroy() {
@@ -138,25 +142,25 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   draw(type: string) {
-    this.sidebar.hideOnMobile();
+    this.sidebar!.hideOnMobile();
     if (this.activeTab !== 'map') {
       this.route.navigate(this.localizeRouterService.translateRoute([this.basePath + '/map']), { queryParamsHandling: 'preserve' });
     }
     setTimeout(() => {
-      this.results.observationMap.drawToMap(type);
+      this.results!.observationMap!.drawToMap(type);
     }, 0);
   }
 
   updateTmpQuery(query: WarehouseQueryInterface, showSidebarOnMobile = false) {
     this.observationFacade.updateTmpQuery({...query});
     if (showSidebarOnMobile) {
-      this.sidebar.showOnMobile();
+      this.sidebar!.showOnMobile();
     }
   }
 
   updateActiveQuery(query: WarehouseQueryInterface) {
     this.observationFacade.updateActiveQuery$(query).subscribe();
-    this.sidebar.hideOnMobile();
+    this.sidebar!.hideOnMobile();
   }
 
   filterVisible(event: boolean) {
@@ -182,7 +186,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
           positionClass: 'toast-center-center'
         }
       );
-      this.searchButtonInfoToastOnHiddenSub = this.searchButtonInfoToast.onHidden.subscribe(() => {
+      this.searchButtonInfoToastOnHiddenSub = this.searchButtonInfoToast!.onHidden.subscribe(() => {
         this.observationFacade.hideSearchButtonInfo();
       });
     }

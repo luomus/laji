@@ -1,4 +1,4 @@
-import { RouterModule, Routes, UrlSegment } from '@angular/router';
+import { RouterModule, Routes, UrlMatcher, UrlSegment } from '@angular/router';
 import { TaxonomyComponent } from './taxonomy.component';
 import { SpeciesComponent } from './species/species.component';
 import { TaxonComponent } from './taxon/taxon.component';
@@ -49,7 +49,7 @@ export const taxonomyRoutes: Routes = [
     component: InformalGroupRedirectComponent
   },
   {
-    matcher: decideTaxonTab,
+    matcher: <UrlMatcher | undefined>decideTaxonTab,
     component: TaxonComponent
   },
 ];

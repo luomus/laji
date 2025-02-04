@@ -18,6 +18,7 @@ export interface DwETLAnnotation {
   annotationBySystem?: string;
   annotationBySystemName?: string;
   annotationClass?: string;
+  atlasCode?: string;
   created?: string;
   createdTimestamp?: number;
   id?: string;

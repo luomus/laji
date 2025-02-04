@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class IntroComponent implements OnInit {
 
-  form$: Observable<Form.SchemaForm>;
+  form$!: Observable<Form.SchemaForm>;
   loaded = false;
 
   constructor(private route: ActivatedRoute,

@@ -9,9 +9,9 @@ import { IGlobalAudio, IGlobalTemplate, IGlobalRecording } from '../../../../ker
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecordingsComponent implements OnChanges {
-  @Input() recordings: IGlobalRecording[] = [];
-  @Input() templates: IGlobalTemplate[] = [];
-  @Input() spectrogramConfig?: ISpectrogramConfig;
+  @Input() recordings?: IGlobalRecording[] = [];
+  @Input() templates?: (IGlobalTemplate|null)[] = [];
+  @Input({ required: true }) spectrogramConfig!: ISpectrogramConfig;
 
   @Output() audioClick = new EventEmitter<{audioId: number; time: number}>();
   @Output() candidateClick = new EventEmitter<IGlobalTemplate>();
@@ -50,7 +50,7 @@ export class RecordingsComponent implements OnChanges {
           area: candidate,
           color: '#26bed9',
           label: 'C' + (i + 1)
-        }));
+        })) as IAudioViewerRectangle[];
 
       const templates = (this.templates || []).reduce((result, template, i) => {
         if (template?.audioId === recording.audio.id) {
@@ -61,7 +61,7 @@ export class RecordingsComponent implements OnChanges {
           });
         }
         return result;
-      }, []);
+      }, [] as IAudioViewerRectangle[]);
 
       return candidates.concat(templates);
     });

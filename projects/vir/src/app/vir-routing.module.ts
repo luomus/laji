@@ -45,7 +45,11 @@ const routesWithLang: Routes = [
   {
     path: '',
     data: {lang: 'fi'},
-    children: [...routes, {path: '**', component: NotFoundComponent}],
+    children: [
+      ...routes,
+      {path: 'paikkatietorajapinta', redirectTo: '/theme/ogcapi', pathMatch: 'full'},
+      {path: '**', component: NotFoundComponent}
+    ],
     component: LocaleFiComponent,
     canActivate: [LocalizeGuard]
   }

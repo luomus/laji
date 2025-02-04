@@ -6,18 +6,16 @@
     [height]="'max(50vh, 300px)'"
     [data]="downloadRequests$ | async"
     [showRowAsLink]="true"
-    (rowSelect)="onRowClick($event)"
+    (rowSelect)="openDownloadModal($event.row)"
     type="downloads"></vir-data-table>
-  <ng-container>
-    <h3 translate>usage.apikeys</h3>
-    <vir-data-table
-      class="d-block my-5"
-      [height]="'max(50vh, 300px)'"
-      [data]="apiKeys$ | async"
-      [showRowAsLink]="true"
-      (rowSelect)="onRowClick($event)"
-      type="apiKeys"></vir-data-table>
-  </ng-container>
+  <h3 translate>usage.apikeys</h3>
+  <vir-data-table
+    class="d-block my-5"
+    [height]="'max(50vh, 300px)'"
+    [data]="apiKeys$ | async"
+    [showRowAsLink]="true"
+    (rowSelect)="openDownloadModal($event.row)"
+    type="apiKeys"></vir-data-table>
 </div>
 
 <ng-template #downloadModal>
@@ -25,5 +23,6 @@
     [downloadRequest]="selectedRequest"
     [showPerson]="true"
     [showFileDownload]="false"
+    (close)="closeModal()"
   ></vir-download-request-modal>
 </ng-template>

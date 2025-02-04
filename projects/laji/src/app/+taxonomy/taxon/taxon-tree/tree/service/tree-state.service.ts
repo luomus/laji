@@ -10,7 +10,7 @@ export class TreeStateService {
   ): TreeNodeState {
     const skipped = this.isSkipped(nodeValue, skipParams);
     return {
-      isExpanded: skipped && parentNode && parentNode.state.isExpanded,
+      isExpanded: !!(skipped && parentNode && parentNode.state.isExpanded),
       isSkipped: skipped,
       loadingCount: 0
     };

@@ -16,7 +16,7 @@ export class FindPersonComponent implements OnInit {
   @Input() inputId = '';
   @Output() selectChange = new EventEmitter<Person>();
 
-  dataSource: Observable<any>;
+  dataSource!: Observable<any>;
   typeaheadLoading = false;
   value = '';
 
@@ -37,7 +37,7 @@ export class FindPersonComponent implements OnInit {
       });
   }
 
-  personSelected(event) {
+  personSelected(event: any) {
     this.value = '';
     this.selectChange.emit({
       id: event.item.key || '',
@@ -45,7 +45,7 @@ export class FindPersonComponent implements OnInit {
     });
   }
 
-  changeTypeaheadLoading(loading) {
+  changeTypeaheadLoading(loading: any) {
     this.typeaheadLoading = loading;
   }
 

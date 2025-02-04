@@ -34,12 +34,12 @@
       <label>{{ 'identification.boxes' | translate }}</label>
       <laji-info [placement]="'right'" [html]="'identification.boxes.info' | translate" [showOnHover]="true"></laji-info>
     </div>
-    <div class="table-responsive" *ngIf="identification?.annotation?.boxes?.length > 0">
+    <div class="table-responsive" *ngIf="identification.annotation.boxes && identification.annotation.boxes.length > 0">
       <table class="table table-condensed mt-0 mb-0">
         <tbody *ngFor="let box of identification.annotation.boxes; let i=index" [ngClass]="{ 'box-group': isBoxGroup(box) }">
           <ng-template #boxRow let-box="box" let-groupIdx="groupIdx" let-hideDrawRelatedBtn="hideDrawRelatedBtn">
             <tr>
-              <td style="width: 50px">{{ getBoxLabel(speciesIdx, i, groupIdx) }}.</td>
+              <td style="width: 50px">{{ getBoxLabel(speciesIdx!, i, groupIdx) }}.</td>
               <td style="width: 200px">
                 <laji-small-audio-viewer
                   [audio]="recording"
@@ -50,11 +50,25 @@
                   [areaColor]="box.overlapsWithOtherSpecies ? overlappingBirdRectangleColor: birdRectangleColor"
                 ></laji-small-audio-viewer>
               </td>
+              <td *ngIf="showSoundTypeSelect" style="width: 160px" class="select-column">
+                <label>
+                  <small>{{ 'identification.boxes.soundType' | translate }}</small>
+                  <laji-info [placement]="'right'" [html]="'identification.boxes.soundType.info' | translate" [showOnHover]="true"></laji-info>
+                </label>
+                <select class="form-control input-sm" [(ngModel)]="box.soundType" (ngModelChange)="identificationChange.emit(identification)">
+                  <option [ngValue]="undefined"></option>
+                  <option [ngValue]="soundTypeEnum.songOrDisplay">
+                    {{ 'identification.boxes.soundType.songOrDisplay' | translate }}
+                  </option>
+                  <option [ngValue]="soundTypeEnum.other">
+                    {{ 'identification.boxes.soundType.other' | translate }}
+                  </option>
+                </select>
+              </td>
               <td style="width: 240px">
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" [(ngModel)]="box.overlapsWithOtherSpecies" (ngModelChange)="identificationChange.emit(identification)">
-                    {{ 'identification.boxes.overlapsWithOthers' | translate }}
+                    <input type="checkbox" [(ngModel)]="box.overlapsWithOtherSpecies" (ngModelChange)="identificationChange.emit(identification)">{{ 'identification.boxes.overlapsWithOthers' | translate }}
                   </label>
                 </div>
               </td>

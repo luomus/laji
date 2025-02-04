@@ -38,7 +38,7 @@ export enum FormError {
 }
 
 export function isFormError(any: any): any is FormError {
-  return typeof any === 'string' && !!FormError[any];
+  return typeof any === 'string' && !!FormError[any as keyof typeof FormError];
 }
 
 export enum Readonly {
@@ -78,17 +78,17 @@ interface DocumentAndHasChanges {
 
 @Injectable()
 export class DocumentFormFacade {
-  @LocalStorage('tmpDocId', 1) private tmpDocId: number;
+  @LocalStorage('tmpDocId', 1) private tmpDocId!: number;
 
-  vm$: Observable<ViewModel>;
-  vm: SaneViewModel;
-  private locked$: Observable<boolean | undefined>;
-  private formData$: Observable<any>;
+  vm$!: Observable<ViewModel>;
+  vm!: SaneViewModel;
+  private locked$!: Observable<boolean | undefined>;
+  private formData$!: Observable<any>;
   private formDataChange$ = new ReplaySubject<any>();
-  private hasChanges$: Observable<boolean>;
+  private hasChanges$!: Observable<boolean>;
   private onSaved$ = new ReplaySubject<void>();
-  private vmSub: Subscription;
-  private saveTmpSub: Subscription;
+  private vmSub!: Subscription;
+  private saveTmpSub!: Subscription;
   private annotationCache: Record<string, Observable<Annotation[]>> = {};
   private memoizedForm: {form?: Form.SchemaForm; uiSchema?: any; uiSchemaContext?: any; result?: any} = {};
 
@@ -149,10 +149,11 @@ export class DocumentFormFacade {
     );
 
     const namedPlace$: Observable<NamedPlace | FormError | null> = combineLatest([includeUnits$, existingDocument$, namedPlaceID$]).pipe(
-      map(([includeUnits, existingDocument, namedPlaceID]): [boolean, string] | null =>
+      map(([includeUnits, existingDocument, namedPlaceID]): [boolean, string] =>
         isFormError(includeUnits) || isFormError(existingDocument)
           ? [false, '']
-          : [includeUnits, existingDocument?.document?.namedPlaceID || namedPlaceID]
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          : [includeUnits!, existingDocument?.document?.namedPlaceID || namedPlaceID]
       ),
       switchMap(([includeUnits, namedPlaceID]) => namedPlaceID
         ? this.namedPlacesService.getNamedPlace(namedPlaceID, undefined, includeUnits)
@@ -160,7 +161,7 @@ export class DocumentFormFacade {
       ),
       take(1),
       catchError(() => of(FormError.missingNamedPlace))
-    );
+    ) as Observable<NamedPlace | FormError | null>;
 
     const inputModel$: Observable<InputModel> = combineLatest([form$, template$]).pipe(
       switchMap(([form, template]) =>
@@ -172,7 +173,7 @@ export class DocumentFormFacade {
               ? of(namedPlace)
               : (existingDocument
                 ? of(existingDocument)
-                : this.fetchEmptyData(form, user, namedPlace)
+                : this.fetchEmptyData(form, user as Person, namedPlace as NamedPlace)
               ).pipe(map(documentModel => {
                 if (isFormError(documentModel)) {
                   return documentModel;
@@ -182,7 +183,7 @@ export class DocumentFormFacade {
             )
           )
       )
-    );
+    ) as Observable<InputModel>;
 
     const saneInputModel$ = inputModel$.pipe(isSane, shareReplay());
 
@@ -212,12 +213,12 @@ export class DocumentFormFacade {
 
     const uiSchemaContext$ = combineLatest([
       saneForm$.pipe(distinctUntilKeyChanged('id')),
-      namedPlace$.pipe(isSane, distinctUntilKeyChanged('id')),
+      namedPlace$.pipe(isSane, (distinctUntilKeyChanged as any)('id')),
       user$,
       rights$,
       this.formData$.pipe(map(data => data.id), distinctUntilChanged())
     ]).pipe(switchMap(([form, namedPlace, user, rights, id]) =>
-      this.getUiSchemaContext(form, namedPlace, user, rights, id)
+      this.getUiSchemaContext(form, namedPlace as NamedPlace, user as Person, rights, id)
     ), distinctUntilChanged((a, b) => equals(a, b)), shareReplay());
 
     const uiSchema$ = combineLatest([
@@ -227,7 +228,7 @@ export class DocumentFormFacade {
       saneForm$,
       template$
     ]).pipe(map(([locked, readonly, rights, form, template]) =>
-      this.getUiSchema(form, locked, readonly, rights, template),
+      this.getUiSchema(form, locked as boolean, readonly, rights, template),
       shareReplay()
     ));
 
@@ -281,7 +282,7 @@ export class DocumentFormFacade {
   getMemoizedForm(form: Form.SchemaForm, uiSchema: any, uiSchemaContext: any) {
     const result =  {...form, uiSchema, uiSchemaContext};
     const memoizedForm = {form, uiSchema, uiSchemaContext, result};
-    if (Object.keys(memoizedForm).every(k => k === 'result' || memoizedForm[k] === this.memoizedForm[k])) {
+    if (Object.keys(memoizedForm).every(k => k === 'result' || (memoizedForm as any)[k] === (this.memoizedForm as any)[k])) {
       return this.memoizedForm.result;
     }
     this.memoizedForm = memoizedForm;
@@ -310,7 +311,8 @@ export class DocumentFormFacade {
   }
 
   private saveDocument(document: Document): Observable<Document> {
-    const tmpId = FormService.isTmpId(document.id) && document.id;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const tmpId = FormService.isTmpId(document.id!) && document.id;
     if (tmpId) { delete document.id; }
 
     return (tmpId || !document.id
@@ -320,7 +322,7 @@ export class DocumentFormFacade {
       switchMap(doc =>
         this.userService.user$.pipe(
           take(1),
-          switchMap(p => this.documentStorage.removeItem(tmpId, p)),
+          switchMap(p => this.documentStorage.removeItem(tmpId as string, p)),
           tap(() => {
             this.onSaved$.next();
             this.latestFacade.update();
@@ -382,7 +384,8 @@ export class DocumentFormFacade {
                 hasChanges: false
               };
             }
-            if (Util.isLocalNewestDocument(local, document)) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            if (Util.isLocalNewestDocument(local!, document)) {
               return {hasChanges: true, document: local};
             }
             return {document, hasChanges: false};
@@ -401,7 +404,8 @@ export class DocumentFormFacade {
       id: this.getNewTmpId(),
       formID: form.id,
       creator: person.id,
-      gatheringEvent: { leg: [person.id] }
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      gatheringEvent: { leg: [person.id!] }
     };
     if (form.options?.prepopulatedDocument) {
       document = deepmerge(form.options?.prepopulatedDocument, document, { arrayMerge: Util.arrayCombineMerge });
@@ -441,7 +445,8 @@ export class DocumentFormFacade {
     }
 
     let removeList = [
-      ...(form.excludeFromCopy),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      ...(form.excludeFromCopy!),
       '$.editors',
       '$.gatheringEvent.leg'
     ];
@@ -456,7 +461,7 @@ export class DocumentFormFacade {
     return form.id === Global.forms.privateCollection
       ? this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(map(profile =>
         typeof profile?.personalCollectionIdentifier === 'string'
-          ? {
+          ? <Document>{
             ...(data || {}),
             keywords: [...(data?.keywords || []), profile.personalCollectionIdentifier.trim()]
           }
@@ -498,8 +503,9 @@ export class DocumentFormFacade {
     return this.getAnnotations(documentID).pipe(
       shareReplay(),
       map((annotations) => (annotations || []).reduce<Form.IAnnotationMap>((cumulative, current) => {
-        if ((current.byRole || []).includes('MMAN.formAdmin')) {
-          cumulative[current.targetID] = [current];
+        if ((current.byRole || [] as any[]).includes('MMAN.formAdmin')) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          cumulative[current.targetID!] = [current];
         }
         return cumulative;
       }, {})),
@@ -507,7 +513,7 @@ export class DocumentFormFacade {
     );
   }
 
-  private getAnnotations(documentID: string, page = 1, results = []): Observable<Annotation[]> {
+  private getAnnotations(documentID: string, page = 1, results: any[] = []): Observable<Annotation[]> {
     const cacheKey = documentID + page;
     if (this.annotationCache[cacheKey]) {
       return this.annotationCache[cacheKey];

@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 import { Global } from '../../../environments/global';
 import { TaxonomyImage } from '../../shared/model/Taxonomy';
+import { IImageSelectEvent } from '../../shared/gallery/image-gallery/image.interface';
 
 @Component({
   selector: 'laji-identify',
@@ -14,12 +15,12 @@ import { TaxonomyImage } from '../../shared/model/Taxonomy';
 })
 export class IdentifyComponent implements OnInit {
 
-  query: WarehouseQueryInterface;
-  group: string;
-  documentId: string;
-  unitId: string;
-  totalItemsIdentify: TaxonomyImage[];
-  formId: string;
+  query?: WarehouseQueryInterface;
+  group?: string;
+  documentId?: string;
+  unitId?: string;
+  totalItemsIdentify?: TaxonomyImage[];
+  formId?: string;
 
   constructor(
     public translateService: TranslateService,
@@ -39,13 +40,15 @@ export class IdentifyComponent implements OnInit {
   onSelectGroup() {
     this.query = {
       ...this.query,
-      informalTaxonGroupIdIncludingReported: [this.group]
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      informalTaxonGroupIdIncludingReported: [this.group!]
     };
   }
 
-  onImageSelect(event) {
+  onImageSelect(event: IImageSelectEvent) {
     this.documentViewerFacade.showDocumentID({
-      document: event.documentId,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      document: event.documentId!,
       highlight: event.unitId,
       identifying: true,
       openAnnotation: true,
@@ -53,7 +56,7 @@ export class IdentifyComponent implements OnInit {
     });
   }
 
-  onImagesInit(e) {
+  onImagesInit(e: TaxonomyImage[]) {
     this.totalItemsIdentify = e;
   }
 

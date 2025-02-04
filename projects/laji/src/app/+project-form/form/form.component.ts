@@ -21,9 +21,9 @@ interface ViewModel {
     <ng-container *ngIf="(vm$ | async) as vm; else loader">
       <laji-document-form
         [formID]="vm.formID"
-        [documentID]="vm.documentID"
-        [namedPlaceID]="vm.namedPlaceID"
-        [template]="vm.template"
+        [documentID]="vm.documentID!"
+        [namedPlaceID]="vm.namedPlaceID!"
+        [template]="vm.template!"
       >
       </laji-document-form>
     </ng-container>
@@ -35,9 +35,9 @@ interface ViewModel {
 })
 export class FormComponent implements OnInit {
 
-  vm$: Observable<ViewModel>;
+  vm$!: Observable<ViewModel>;
 
-  @ViewChild(DocumentFormComponent) documentComponent: DocumentFormComponent;
+  @ViewChild(DocumentFormComponent) documentComponent!: DocumentFormComponent;
 
   constructor(private projectFormService: ProjectFormService,
               private route: ActivatedRoute,
@@ -72,11 +72,14 @@ export class FormComponent implements OnInit {
               const documentID = paramsStack.pop();
               return (_usedSubForm === form
                 ? of(form)
-                : this.formService.getForm(_usedSubForm.id)
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                : this.formService.getForm(_usedSubForm!.id)
               ).pipe(
                 switchMap(usedSubForm => {
-                  const namedPlaceID = usedSubForm.options?.useNamedPlaces && routeParams['namedPlace'];
-                  if (usedSubForm.options?.useNamedPlaces && !documentID && !namedPlaceID) {
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  const namedPlaceID = usedSubForm!.options?.useNamedPlaces && routeParams['namedPlace'];
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  if (usedSubForm!.options?.useNamedPlaces && !documentID && !namedPlaceID) {
                     this.router.navigate(['places'], {relativeTo: this.route, replaceUrl: true});
                     return EMPTY;
                   }
@@ -87,7 +90,8 @@ export class FormComponent implements OnInit {
                       return EMPTY;
                     }
                     return of({
-                      formID: usedSubForm.id,
+                      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                      formID: usedSubForm!.id,
                       documentID,
                       namedPlaceID,
                       template: !!template
@@ -132,7 +136,7 @@ export class FormComponent implements OnInit {
     return of(false);
   }
 
-  canDeactivate(...params) {
+  canDeactivate(...params: any[]) {
     return this.documentComponent
       ? this.documentComponent.canDeactivate(...params)
       : true;

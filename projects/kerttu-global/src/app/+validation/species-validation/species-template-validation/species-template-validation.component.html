@@ -15,7 +15,7 @@
   <p>{{ ('validation.description' + (historyView ? '.oldVersion' : (hasAllTemplatesInitially ? '.confirm' : ''))) | translate }}</p>
   <laji-spinner [spinning]="!templates || !recordings" [hideContentWhileLoading]="true">
     <bsg-templates
-      [templates]="templates"
+      [templates]="templates!"
       [confirmedTemplates]="confirmedTemplates"
       [spectrogramConfig]="spectrogramConfig"
       [audioIdMap]="audioIdMap"
@@ -81,11 +81,11 @@
     <bsg-species-name [species]="activeAudio.species"></bsg-species-name>
   </h1>
   <bsg-template
-    [audio]="activeAudio"
+    [audio]="activeAudio!"
     [template]="activeTemplate"
-    [templateIdx]="activeTemplateIdx"
-    [isNewTemplate]="activeTemplateIsNew"
-    [audioFocusTime]="activeAudioFocusTime"
+    [templateIdx]="activeTemplateIdx!"
+    [isNewTemplate]="activeTemplateIsNew!"
+    [audioFocusTime]="activeAudioFocusTime!"
     [spectrogramConfig]="spectrogramConfig"
     [historyView]="historyView"
     (confirm)="onTemplateConfirm($event)"

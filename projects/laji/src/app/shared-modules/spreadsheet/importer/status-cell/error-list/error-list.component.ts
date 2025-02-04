@@ -11,7 +11,7 @@ import { Util } from '../../../../../shared/service/util.service';
 })
 export class ErrorListComponent {
 
-  @Input() fields: {[key: string]: IFormField};
+  @Input({ required: true }) fields!: {[key: string]: IFormField};
 
   _errors: {field: string; errors: string[]}[] = [];
 
@@ -68,13 +68,13 @@ export class ErrorListComponent {
     return path.replace(/\[[0-9]+]/g, '[*]');
   }
 
-  private pickErrors(value) {
+  private pickErrors(value: any): any[] {
     if (typeof value === 'string') {
       return [value];
     } else if (Array.isArray(value)) {
       return value;
     } else if (typeof value === 'object') {
-      return Object.keys(value).reduce((prev, current) => [...prev, ...this.pickErrors(current)], []);
+      return Object.keys((value)).reduce((prev, current) => [...prev, ...this.pickErrors(current)] as any, []);
     }
     return [value];
   }

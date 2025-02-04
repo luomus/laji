@@ -7,12 +7,12 @@ import { TaxonomyDescription, TaxonomyDescriptionGroup } from '../../../../../..
   styleUrls: ['./taxon-description.component.scss']
 })
 export class TaxonDescriptionComponent implements OnChanges {
-  @Input() taxonDescriptions: TaxonomyDescription[];
-  @Input() groupId: string;
-  @Input() title: string;
+  @Input() taxonDescriptions?: TaxonomyDescription[];
+  @Input() groupId!: string;
+  @Input() title?: string;
 
-  taxonDescription: TaxonomyDescription;
-  descriptionGroup: TaxonomyDescriptionGroup;
+  taxonDescription?: TaxonomyDescription;
+  descriptionGroup?: TaxonomyDescriptionGroup;
 
   ngOnChanges() {
     this.descriptionGroup = undefined;

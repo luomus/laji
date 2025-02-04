@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-interface StatusCnt {
+export interface StatusCnt {
   'MX.iucnRE'?: number;
   'MX.iucnCR'?: number;
   'MX.iucnEN'?: number;
@@ -30,7 +30,7 @@ export class RedListHabitatComponent {
 
   @Output() habitatSelect = new EventEmitter<string>();
 
-  _data: RedListHabitatData[];
+  _data!: RedListHabitatData[];
 
   @Input()
   set data(data: RedListHabitatData[]) {

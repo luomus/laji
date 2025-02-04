@@ -16,9 +16,9 @@ import { PlatformService } from '../../root/platform.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FrontComponent implements OnInit, OnDestroy {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
-  @ViewChild('printControlWell') printControlsWell: {nativeElement: HTMLDivElement};
-  @ViewChild('printControl') printControls: {nativeElement: HTMLDivElement};
+  @ViewChild(LajiMapComponent) lajiMap!: LajiMapComponent;
+  @ViewChild('printControlWell') printControlsWell!: {nativeElement: HTMLDivElement};
+  @ViewChild('printControl') printControls!: {nativeElement: HTMLDivElement};
 
   mapOptions: Options = {
     center: [64.209802, 24.912872],
@@ -43,6 +43,15 @@ export class FrontComponent implements OnInit, OnDestroy {
     }]
   };
 
+<<<<<<< HEAD
+=======
+  readonly instructions: {[key: string]: string} = {
+    fi: '/about/1785',
+    sv: '/about/1809',
+    en: '/about/1807'
+  };
+
+>>>>>>> development
   drawData: any = {
     editable: true,
     featureCollection: {
@@ -125,9 +134,9 @@ export class FrontComponent implements OnInit, OnDestroy {
     this.lajiMap.map.map.invalidateSize();
 
     const printControlsElem = this.printControls.nativeElement;
-    const lajiMapPrintControl = document.querySelector('.laji-map .glyphicon-print').parentElement;
+    const lajiMapPrintControl = document.querySelector('.laji-map .glyphicon-print')?.parentElement;
     if (this.printMode) {
-      lajiMapPrintControl.appendChild(printControlsElem);
+      lajiMapPrintControl?.appendChild(printControlsElem);
     } else {
       this.printControlsWell.nativeElement.appendChild(printControlsElem);
     }

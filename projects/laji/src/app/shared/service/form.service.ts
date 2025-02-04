@@ -62,7 +62,7 @@ export class FormService {
     return this.formCache[cacheKey];
   }
 
-  getFormInJSONFormat(formId: string): Observable<Form.JsonForm> {
+  getFormInJSONFormat(formId?: string): Observable<Form.JsonForm> {
     if (!formId) {
       return ObservableOf({} as Form.JsonForm);
     }

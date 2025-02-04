@@ -5,16 +5,17 @@ import { isIctAdmin, UserService } from '../../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { Observable, of } from 'rxjs';
+import { Person } from '../../../shared/model/Person';
 
 export abstract class AbstractPermission {
-  formPermission: FormPermission;
+  formPermission!: FormPermission;
   isAllowed = false;
-  collectionId: string;
+  collectionId!: string;
 
-  protected formPermissionService: FormPermissionService;
-  protected userService: UserService;
-  protected router: Router;
-  protected localizeRouterService: LocalizeRouterService;
+  protected formPermissionService!: FormPermissionService;
+  protected userService!: UserService;
+  protected router!: Router;
+  protected localizeRouterService!: LocalizeRouterService;
 
   protected updateFormPermission$(): Observable<any> {
     if (!this.collectionId) {
@@ -27,7 +28,7 @@ export abstract class AbstractPermission {
       ),
       tap(data => {
         this.formPermission = data.permission;
-        this.isAllowed = this.formPermissionService.isAdmin(data.permission, data.person) || isIctAdmin(data.person);
+        this.isAllowed = this.formPermissionService.isAdmin(data.permission, data.person as Person) || isIctAdmin(data.person);
         if (!this.isAllowed) {
           this.router.navigate(
             this.localizeRouterService.translateRoute(['/vihko'])

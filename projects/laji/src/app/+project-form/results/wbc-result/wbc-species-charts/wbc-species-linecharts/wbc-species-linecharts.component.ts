@@ -13,25 +13,25 @@ import { LineWithLine } from '../../../../../shared-modules/chart/line-with-line
   styleUrls: ['./wbc-species-linecharts.component.css']
 })
 export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
-  @Input() taxonId: string;
-  @Input() taxonCensus = undefined;
-  @Input() birdAssociationArea: string;
+  @Input() taxonId: string | undefined;
+  @Input() taxonCensus: string | undefined = undefined;
+  @Input() birdAssociationArea: string | undefined;
 
   counts: any;
 
-  xScaleMin: number;
-  xScaleMax: number;
+  xScaleMin?: number;
+  xScaleMax?: number;
   yScaleMin = 0;
   yScaleMax = 0;
 
   public lineChartData: {[s: string]: any[]} = {};
   public lineChartLabels: {[s: string]: any[]} = {};
   public lineChartOptions: ChartOptions = {};
-  season: string;
-  textCount: string;
-  textSeasonCount: string;
+  season?: string;
+  textCount?: string;
+  textSeasonCount?: string;
 
-  resultSub: Subscription;
+  resultSub!: Subscription;
   chartType: ChartType = 'LineWithLine';
 
   constructor(
@@ -42,7 +42,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     Chart.register(LineWithLine);
-    (Tooltip.positioners as any).cursor = function(chartElements, coordinates) {
+    (Tooltip.positioners as any).cursor = function(chartElements: any, coordinates: any) {
       return coordinates;
     };
 
@@ -68,18 +68,18 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
       },
       // Eslint disabled because it needs to be a function to have the correct 'this' reference.
       // eslint-disable-next-line object-shorthand
-      onHover: function(a, b, element) {
-        let indexChart;
+      onHover: function(a, b, element: any) {
+        let indexChart: number;
         if (element[0]) {
           indexChart = Number(element[0]['_index']);
         } else {
           indexChart = -1;
         }
 
-        const dataset = this.data.datasets[0].data;
+        const dataset = (this as any).data.datasets[0].data;
         if (element[0]) {
-          this.options.plugins.tooltip.callbacks.label = function(tooltipItem, data) {
-            const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+          (this as any).options.plugins.tooltip.callbacks.label = function(tooltipItem: any, data: any) {
+            const range = (start: number, end: number, step: number) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
             const activePoint = element[0]['_chart'].tooltip._active[0];
             const tooltipPosition = element[0].tooltipPosition();
             const x = Number((tooltipPosition.x).toFixed(0));
@@ -89,7 +89,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
             const coeff = Math.ceil(570 / element[0]['_chart'].config.data.labels.length);
             if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
               if ( !dataset[Number(indexChart) + 1] || (indexChart === 0 && !dataset[Number(indexChart) + 1])) {
-                const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
+                const index = dataset.slice(indexChart + 1).findIndex((el: any) => el) + indexChart;
                 const diff = index - Number(indexChart);
                 if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
                   empty = -coeff * diff;
@@ -97,7 +97,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
               }
               if ( !dataset[Number(indexChart) - 1] || (indexChart === (dataset.length - 1) && !dataset[Number(indexChart) - 1])) {
                 if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                  const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
+                  const index = dataset.slice(0, indexChart).reverse().findIndex((el: any) => el);
                   const diff = Number(indexChart) - (Number(indexChart) - index);
                   empty = coeff * diff;
                 }
@@ -115,9 +115,9 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
                 + ': ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
             }
           };
-          element[0]['_chart'].tooltip._options.callbacks.title = function(tooltipItem, data) {
+          element[0]['_chart'].tooltip._options.callbacks.title = function(tooltipItem: any, data: any) {
             const offset = data['datasets'][0]['count'].length < 15 ? 6 : 1;
-            const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+            const range = (start: number, end: number, step: number) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
             const activePoint = element[0]['_chart'].tooltip._active[0];
             const tooltipPosition = element[0].tooltipPosition();
             const x = Number((tooltipPosition.x).toFixed(0));
@@ -127,7 +127,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
             const coeff = Math.ceil(570 / element[0]['_chart'].config.data.labels.length);
             if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
               if ( !dataset[Number(indexChart) + 1]) {
-                const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
+                const index = dataset.slice(indexChart + 1).findIndex((el: any) => el) + indexChart;
                 const diff = index - Number(indexChart);
                 if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
                   empty = -coeff * diff;
@@ -135,7 +135,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
               }
               if (!dataset[Number(indexChart) - 1]) {
                 if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                  const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
+                  const index = dataset.slice(0, indexChart).reverse().findIndex((el: any) => el);
                   const diff = Number(indexChart) - (Number(indexChart) - index);
                   empty = coeff * diff;
                 }
@@ -246,7 +246,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
     this.lineChartLabels[season] = [];
 
     const yearsTotal = Object.keys(data).map(y => parseInt(y, 10));
-    const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
+    const range = (start: number, stop: number, step: number) => Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + (i * step));
     const years = range(Math.min(...yearsTotal), Math.max(...yearsTotal), 1);
     years.sort();
 
@@ -257,7 +257,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
     const count = [];
     const censusCount = [];
     for (const year of years) {
-      const parsedYear = parseInt(year, 10);
+      const parsedYear = typeof year === 'number' ? year : parseInt(year, 10);
       const value = data[year] ? data[year].count / data[year].censusCount : NaN;
       count.push(data[year] ? data[year].count : NaN);
       censusCount.push(data[year] ? data[year].censusCount : NaN);

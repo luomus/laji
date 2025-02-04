@@ -30,7 +30,7 @@ const getFeatureCollection = (grid: AtlasGridSquare[]) => ({
 });
 const getGetFeatureStyle = (grid: AtlasGridSquare[], visualizationMode: VisualizationMode, selectedIdx = -1) => (
   (opt: GetFeatureStyleOptions): PathOptions => {
-    const sq: AtlasGridSquare = grid[opt.featureIdx];
+    const sq: AtlasGridSquare = grid[opt.featureIdx!];
     const o: PathOptions = {
       weight: 1,
       color: '#000000',
@@ -61,7 +61,7 @@ export const atlasClassStyleLookup: Record<AtlasClass, {radius: number; fillColo
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, OnChanges {
-  @Input() atlasGrid: AtlasGridSquare[];
+  @Input() atlasGrid!: AtlasGridSquare[];
   @Input() visualizationMode: VisualizationMode = 'activityCategory';
   @Input() set selectedDataIdx(idx: number) { this.setSelectedDataIdx(idx); };
   get selectedDataIdx() { return this._selectedDataIdx; };
@@ -69,10 +69,10 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
 
   @Output() selectDataIdx = new EventEmitter<number>();
 
-  @ViewChild('lajiMap', { static: false }) lajiMapElem: ElementRef;
+  @ViewChild('lajiMap', { static: false }) lajiMapElem!: ElementRef;
 
   private map: any;
-  private mapData$ = new BehaviorSubject<MapData>(undefined);
+  private mapData$ = new BehaviorSubject<MapData | undefined>(undefined);
   private mapInitialized = false;
   private taxonVisualizationMarkers: L.Circle<any>[] = [];
   private _selectedDataIdx = -1;
@@ -105,7 +105,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
       takeUntil(this.unsubscribe$),
       filter(d => d !== undefined)
     ).subscribe(mapData => {
-      this.map.setData(mapData.dataOptions);
+      this.map.setData(mapData!.dataOptions);
       if (!this.mapInitialized) {
         if (pathData['map']) {
           this.map.setNormalizedZoom(pathData['map'].zoom);
@@ -181,7 +181,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
   }
 
   private triggerFeatureStyleUpdate() {
-    const curr = this.mapData$.getValue();
+    const curr = this.mapData$.getValue()!;
     this.mapData$.next({grid: curr?.grid, dataOptions: {
       ...curr?.dataOptions,
       getFeatureStyle: getGetFeatureStyle(curr?.grid, this.visualizationMode, this.selectedDataIdx)

@@ -39,7 +39,7 @@ const replaceColSortLang = (sort: string, lang: string) => (
 );
 
 export const getSortsFromCols = (event: any, cols: ObservationTableColumn[], lang: string) => (
-  event.sorts.map(sort => {
+  event.sorts.map((sort: any) => {
     const col = cols.filter(column => column.prop ? column.prop === sort.prop : column.name === sort.prop)[0];
     if (!col) {
       return '';
@@ -58,22 +58,22 @@ export const getSortsFromCols = (event: any, cols: ObservationTableColumn[], lan
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationTableComponent implements OnInit, OnChanges {
-  @ViewChild('dataTable', { static: true }) public datatable: DatatableComponent;
-  @ViewChild(ObservationTableSettingsComponent, { static: true }) public settingsModal: ObservationTableSettingsComponent;
+  @ViewChild('dataTable', { static: true }) public datatable?: DatatableComponent;
+  @ViewChild(ObservationTableSettingsComponent, { static: true }) public settingsModal!: ObservationTableSettingsComponent;
 
-  @Input() query: WarehouseQueryInterface;
-  @Input() pageSize;
+  @Input() query!: WarehouseQueryInterface;
+  @Input() pageSize?: number;
   @Input() page = 1;
   @Input() isAggregate = true;
   @Input() height = '100%';
   @Input() showSettingsMenu = false;
-  @Input() showDownloadMenu = false;
+  @Input() showDownloadMenu?: boolean = false;
   @Input() showPageSize = true;
   @Input() showHeader = true;
   @Input() showFooter = true;
   @Input() virtualScrolling = true;
-  @Input() defaultOrder: string;
-  @Input() visible: boolean;
+  @Input() defaultOrder?: string;
+  @Input() visible?: boolean;
   @Input() hideDefaultCountColumn = false;
   @Input() allAggregateFields = [
     'unit.species',
@@ -90,7 +90,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     'gathering.team.memberName',
     'pairCountSum'
   ];
-  @Input() useStatistics: boolean;
+  @Input() useStatistics?: boolean;
 
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() selectChange = new EventEmitter<string[]>();
@@ -100,24 +100,24 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   maxDownload = Global.limit.simpleDownload;
   downloadLoading = false;
-  lang: string;
+  lang!: string;
   cache: any = {};
   orderBy: string[] = [];
-  columnLookup = {};
+  columnLookup: Record<string, ObservationTableColumn> = {};
   _originalSelected: string[] = [];
   _originalSelectedNumbers: string[] = [];
 
   columnSelector = new ColumnSelector();
   numberColumnSelector = new ColumnSelector();
 
-  result: PagedResult<any> = {
+  result: Omit<PagedResult<any>, 'prevPage' | 'nextPage'>  = {
     currentPage: 1,
     lastPage: 1,
     results: [],
     total: 0,
     pageSize: 0
   };
-  loading: boolean;
+  loading?: boolean;
 
   columns: ObservationTableColumn[] = [];
   allColumns: ObservationTableColumn[];
@@ -125,8 +125,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCountSum'];
 
-  private fetchSub: Subscription;
-  private queryKey: string;
+  private fetchSub?: Subscription;
+  private queryKey?: string;
   private aggregateBy: string[] = [];
 
   @Input() showRowAsLink = true;
@@ -144,8 +144,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   @Input() set selected(sel: string[]) {
-    const selected = [];
-    const selectedNumbers = [];
+    const selected: string[] = [];
+    const selectedNumbers: string[] = [];
     sel.map(field => {
       if (this.numberFields.indexOf(field) > -1) {
         selectedNumbers.push(field);
@@ -201,9 +201,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
     this.columnLookup = this.allColumns
       .reduce((prev, column) => {
-        prev[column.name] = column;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        prev[column.name!] = column;
         return prev;
-      }, {});
+      }, {} as Record<string, ObservationTableColumn> );
 
     this.aggregateBy = [];
 
@@ -211,7 +212,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       const column = this.columnLookup[name];
       if (column.aggregate !== false) {
         this.aggregateBy.push((column.aggregateBy || column.name)
-          + (this.columnLookup[name].sortBy ? ',' + replaceColSortLang(this.columnLookup[name].sortBy, this.lang) : ''));
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          + (this.columnLookup[name].sortBy ? ',' + replaceColSortLang(this.columnLookup[name].sortBy!, this.lang) : ''));
       }
       return this.columnLookup[name];
     });
@@ -231,7 +233,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     }
   }
 
-  onReorder(event) {
+  onReorder(event: any) {
     if (
       !event.column ||
       !event.column.name ||
@@ -250,11 +252,11 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.numberColumnSelector.clear();
   }
 
-  setPage(pageInfo) {
+  setPage(pageInfo: any) {
     this.fetchPage(pageInfo.offset + 1);
   }
 
-  onSort(event) {
+  onSort(event: any) {
     this.orderBy = getSortsFromCols(event, this.columns, this.lang);
     this.fetchPage(this.page);
   }
@@ -279,10 +281,12 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.changeDetectorRef.markForCheck();
     const aggregate$ = this.resultService.getAggregate(
       this.query,
-      [...this.aggregateBy, this.defaultOrder],
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      [...this.aggregateBy, this.defaultOrder!],
       page,
       this.pageSize,
-      [...this.orderBy, this.defaultOrder],
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      [...this.orderBy, this.defaultOrder!],
       this.lang,
       this.useStatistics
     );
@@ -291,7 +295,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       this.getSelectFields(this.columnSelector.columns, this.query),
       page,
       this.pageSize,
-      [...this.orderBy, this.defaultOrder],
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      [...this.orderBy, this.defaultOrder!],
       this.lang
     );
 
@@ -324,7 +329,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.resultService.getAll(
       this.query,
       this.tableColumnService.getSelectFields(this.columnSelector.columns, this.query),
-      [...this.orderBy, this.defaultOrder],
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      [...this.orderBy, this.defaultOrder!],
       this.lang
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data.results, columns, type as BookType, 'laji-data'))

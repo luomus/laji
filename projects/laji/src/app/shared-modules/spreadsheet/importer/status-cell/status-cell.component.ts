@@ -9,10 +9,10 @@ import { IFormField } from '../../model/excel';
 })
 export class StatusCellComponent {
 
-  @Input() value: {
+  @Input() value?: {
     status: 'ok'|'valid'|'invalid'|'fail'|'ignore';
     error: any;
   };
-  @Input() fields: {[key: string]: IFormField};
+  @Input({ required: true }) fields!: {[key: string]: IFormField};
 
 }

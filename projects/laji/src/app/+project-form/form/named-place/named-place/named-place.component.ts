@@ -46,7 +46,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.documentForm$.next(documentForm);
   }
 
-  @Input() set activeId(activeID: string) {
+  @Input() set activeId(activeID: string | null) {
     this.activeNP$.next(activeID);
   }
 
@@ -63,18 +63,37 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   @Input() displayHeader = true;
-  @Input() useLabel: string;
+  @Input() useLabel?: string;
   @Input() readonly = false;
   @Input() useDisabled = false;
-  @Input() reloadSubmissions$: Observable<void>;
+  @Input() reloadSubmissions$?: Observable<void>;
 
   @Output() birdAssociationAreaChange = new EventEmitter<string>();
   @Output() municipalityChange = new EventEmitter<string>();
   @Output() tagsChange = new EventEmitter<string[]>();
-  @Output() activeIdChange = new EventEmitter<string>();
-  @Output() use = new EventEmitter<string>();
-  @Output() edit = new EventEmitter<string>();
+  @Output() activeIdChange = new EventEmitter<string | null>();
+  @Output() use = new EventEmitter<string | undefined | null>();
+  @Output() edit = new EventEmitter<string | undefined | null>();
   @Output() create = new EventEmitter<null>();
+
+  @ViewChild(NpChooseComponent) chooseView!: NpChooseComponent;
+  @ViewChild(NpInfoComponent) infoView!: NpInfoComponent;
+
+  vm$!: Observable<DerivedFromInput>;
+
+  areaTypes = Area.AreaType;
+  loading = false;
+
+  errorMsg = '';
+
+  private updateFromInput!: Subscription;
+  private documentForm$ = new BehaviorSubject<Form.SchemaForm | undefined>(undefined);
+  private activeNP$ = new BehaviorSubject<string | undefined | null>(undefined);
+  private municipality$ = new BehaviorSubject<string | undefined>(undefined);
+  private birdAssociationArea$ = new BehaviorSubject<string | undefined>(undefined);
+  private tags$ = new BehaviorSubject<string[] | undefined>(undefined);
+
+  private reloadNamedPlaces$ = new BehaviorSubject<void>(undefined);
 
   constructor(
     private namedPlaceService: NamedPlacesService,
@@ -86,24 +105,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     private formPermissionService: FormPermissionService,
     private formService: FormService
   ) {}
-  @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
-  @ViewChild(NpInfoComponent) infoView: NpInfoComponent;
-
-  vm$: Observable<DerivedFromInput>;
-
-  areaTypes = Area.AreaType;
-  loading = false;
-
-  errorMsg = '';
-
-  private updateFromInput: Subscription;
-  private documentForm$ = new BehaviorSubject<Form.SchemaForm>(undefined);
-  private activeNP$ = new BehaviorSubject<string>(undefined);
-  private municipality$ = new BehaviorSubject<string>(undefined);
-  private birdAssociationArea$ = new BehaviorSubject<string>(undefined);
-  private tags$ = new BehaviorSubject<string[]>(undefined);
-
-  private reloadNamedPlaces$ = new BehaviorSubject<void>(undefined);
 
   static getMapOptions(documentForm: Form.SchemaForm) {
     const uiSchema = documentForm.uiSchema;
@@ -115,7 +116,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     return NamedPlaceComponent.findObjectByKey(uiSchema, 'mapOptions', ['gatherings', 'uiSchema', 'ui:options']);
   }
 
-  private static findObjectByKey(obj, key, allowedObjectsInPath, recursionLimit = 5) {
+  private static findObjectByKey(obj: any, key: any, allowedObjectsInPath: any, recursionLimit = 5): any {
     if (recursionLimit <= 0) {
       return null;
     }
@@ -141,23 +142,27 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const placeForm$ = this.documentForm$.pipe(switchMap(documentForm => this.formService.getPlaceForm(documentForm)));
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const placeForm$ = this.documentForm$.pipe(switchMap(documentForm => this.formService.getPlaceForm(documentForm!)));
 
     const activeNP$ = combineLatest(this.activeNP$, this.documentForm$, this.reloadNamedPlaces$).pipe(switchMap(([activeNP, documentForm]) =>
-      this.namedPlaceService.getNamedPlace(activeNP, undefined, (documentForm.options?.namedPlaceOptions || {}).includeUnits)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.namedPlaceService.getNamedPlace(activeNP!, undefined, (documentForm!.options?.namedPlaceOptions || {}).includeUnits)
     ));
 
     const namedPlaces$ = combineLatest(this.municipality$, this.birdAssociationArea$, this.tags$, this.documentForm$, this.reloadNamedPlaces$).pipe(
       tap(() => {
         this.loading = true;
       }),
-      switchMap(([municipality, birdAssociationArea, tags, documentForm]) => this.getNamedPlaces$(documentForm, municipality, birdAssociationArea, tags)),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      switchMap(([municipality, birdAssociationArea, tags, documentForm]) => this.getNamedPlaces$(documentForm!, municipality!, birdAssociationArea!, tags!)),
       tap(() => {
         this.loading = false;
       }),
     );
     const user$ = this.userService.user$;
-    const formRights$ = this.documentForm$.pipe(switchMap(documentForm => this.formPermissionService.getRights(documentForm)));
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const formRights$ = this.documentForm$.pipe(switchMap(documentForm => this.formPermissionService.getRights(documentForm!)));
 
     this.vm$ = combineLatest(this.documentForm$, placeForm$, this.municipality$, this.birdAssociationArea$, this.tags$, activeNP$, namedPlaces$, user$, formRights$).pipe(
       map(([
@@ -198,7 +203,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       startWith(null), pairwise()
     ).subscribe(([previousState, newState]) => {
       const {activeNP: prevActiveNP} = previousState || {};
-      const {activeNP: newActiveNP} = newState;
+      const {activeNP: newActiveNP} = <any>newState;
       if (newActiveNP !== prevActiveNP) {
         this.infoView?.npClick();
       } else if (prevActiveNP && !newActiveNP) {
@@ -214,7 +219,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.footerService.footerVisible = true;
   }
 
-  onBirdAssociationAreaChange(birdAssociationArea) {
+  onBirdAssociationAreaChange(birdAssociationArea: any) {
     this.birdAssociationAreaChange.emit(birdAssociationArea);
   }
 
@@ -299,7 +304,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       });
   }
 
-  setErrorMessage(msg) {
+  setErrorMessage(msg: string) {
     this.errorMsg = msg;
   }
 
@@ -340,7 +345,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       );
   }
 
-  npRequirementsNotMet(documentForm: Form.SchemaForm, municipality: string, birdAssociationArea: string) {
+  npRequirementsNotMet(documentForm: Form.SchemaForm, municipality?: string, birdAssociationArea?: string) {
     return (documentForm.options?.namedPlaceOptions?.filterByMunicipality && !municipality)
       || (documentForm.options?.namedPlaceOptions?.filterByBirdAssociationArea && !birdAssociationArea);
   }

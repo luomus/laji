@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
 import { VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
@@ -13,13 +13,14 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsageDownloadsComponent {
-  @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
-  downloadRequests$: Observable<DownloadRequest[]>;
-  apiKeys$: Observable<DownloadRequest[]>;
+  @ViewChild('downloadModal', { static: true }) downloadModal!: TemplateRef<any>;
 
-  selectedRequest?: DownloadRequest;
+  downloadRequests$!: Observable<DownloadRequest[]>;
+  apiKeys$!: Observable<DownloadRequest[]>;
 
-  private modal: ModalRef;
+  selectedRequest?: DownloadRequest | undefined | null;
+
+  private modal: ModalRef | undefined;
 
   constructor(
       private modalService: ModalService,
@@ -28,32 +29,27 @@ export class UsageDownloadsComponent {
     this.collectionSelect(undefined);
   }
 
-  collectionSelect(col: string) {
+  collectionSelect(col: string | undefined) {
     this.downloadRequests$ = this.virDownloadRequestsService.findDownloadRequests().pipe(
-      map(downloads => col ? downloads.filter(d => d?.collectionSearch.includes(col)) : downloads),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      map(downloads => col ? downloads.filter(d => d?.collectionSearch!.includes(col)) : downloads),
       map(downloads => downloads.map(download => ({...download, collectionIds: download.collections?.map(collection => collection.id)})))
     );
     this.apiKeys$ = this.virDownloadRequestsService.findApiKeys().pipe(
-      map(downloads => col ? downloads.filter(d => d?.collectionSearch.includes(col)) : downloads),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      map(downloads => col ? downloads.filter(d => d?.collectionSearch!.includes(col)) : downloads),
       map(downloads => downloads.sort((a, b) => moment(b.requested).diff(moment(a.requested)))),
       map(res => res.map(a => ({...a, collectionIds: a.collections?.map(c => c.id) || []})))
     );
   }
 
-  onRowClick(event: any) {
-    this.openDownloadModal(event.row);
-  }
-
-  private closeSub: Subscription;
-
   openDownloadModal(request: DownloadRequest) {
     this.selectedRequest = request;
-    this.closeSub?.unsubscribe();
-    this.modal = this.modalService.show(this.downloadModal);
-    this.closeSub = this.modal.onHide.subscribe(() => this.closeDownloadModal);
+    this.modal = this.modalService.show(this.downloadModal, { size: 'lg' });
   }
 
-  closeDownloadModal() {
+  closeModal() {
+    this.modal?.hide();
     this.selectedRequest = null;
   }
 }

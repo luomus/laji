@@ -7,7 +7,7 @@ import { Placement, PlacementService } from '../placement/placement.service';
   selector: '[luTooltip]'
 })
 export class TooltipDirective implements OnDestroy {
-  @Input() luTooltip: string;
+  @Input() luTooltip?: string;
   @Input() placement: Placement = 'top';
   @Input() isDisabled = false; // note this is unnecessary, but required for ngx-bootstrap compat
 

@@ -32,14 +32,14 @@ type State = StatisticsState | MapState;
 })
 export class InvasiveSpeciesControlResultComponent implements OnInit, OnDestroy {
 
-  @Input() form: Form.SchemaForm;
+  @Input() form!: Form.SchemaForm;
 
   Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
-  state$: Observable<State>;
+  state$!: Observable<State>;
   isStatisticsState = (state: State): state is StatisticsState => state.tab === Tabs.statistics;
   isMapState = (state: State): state is MapState => state.tab === Tabs.map;
 
-  private defaultTabSubscription: Subscription;
+  private defaultTabSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,

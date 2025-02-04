@@ -9,7 +9,7 @@ import { LocalStorage } from 'ngx-webstorage';
 })
 export class HasekaTermsComponent implements OnInit{
 
-  @LocalStorage() public vihkoSettings;
+  @LocalStorage() public vihkoSettings: any;
 
   ngOnInit() {
     if (!this.vihkoSettings) {

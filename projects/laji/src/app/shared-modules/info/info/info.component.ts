@@ -11,14 +11,14 @@ import { PlatformService } from '../../../root/platform.service';
 })
 export class InfoComponent {
   @Input() placement: Placement = 'bottom';
-  @Input() html: string;
-  @Input() glyphicon: string;
+  @Input() html?: string;
+  @Input() glyphicon?: string;
   @Input() labelType = 'info';
   @Input() showOnHover = false;
 
-  @ViewChild('modal', {static: true}) modal: ModalComponent;
+  @ViewChild('modal', {static: true}) modal!: ModalComponent;
 
-  useModal: boolean;
+  useModal?: boolean;
 
   constructor(
     private cdr: ChangeDetectorRef,

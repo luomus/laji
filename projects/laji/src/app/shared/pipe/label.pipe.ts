@@ -33,6 +33,8 @@ export class LabelPipe implements PipeTransform, OnDestroy {
   transform(value: string, type?: LabelType): string;
   transform(value: string[], type?: LabelType): string[];
   transform(value: undefined, type?: LabelType): undefined;
+  transform(value: string | undefined, type?: LabelType): string | undefined;
+  transform(value: string[] | undefined, type?: LabelType): string[] | undefined;
   transform(value: string|string[]|undefined, type?: LabelType): string|string[]|undefined {
     if (!value || (typeof value !== 'string' && !Array.isArray(value)) || value.length === 0) {
       return value;

@@ -7,12 +7,12 @@ import { TableColumn } from '@achimha/ngx-datatable';
   styleUrls: ['./lappi-modal.component.scss']
 })
 export class LappiModalComponent implements AfterViewInit {
-  @ViewChild('YKJ') ykjTemplate: TemplateRef<any>;
-  @ViewChild('alignRight') alignRightTemplate: TemplateRef<any>;
+  @ViewChild('YKJ') ykjTemplate!: TemplateRef<any>;
+  @ViewChild('alignRight') alignRightTemplate!: TemplateRef<any>;
 
   rows: LappiStatsResponseGridsElement[] = [];
-  cols: TableColumn[];
-  index: number;
+  cols!: TableColumn[];
+  index: number | undefined;
   hideModal = new EventEmitter<null>();
 
   ngAfterViewInit() {

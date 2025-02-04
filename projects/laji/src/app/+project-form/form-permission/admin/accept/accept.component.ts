@@ -18,7 +18,7 @@ import { switchMap, tap } from 'rxjs/operators';
 export class AcceptComponent extends AbstractPermission implements OnInit, OnDestroy {
   disabled: {[personId: string]: boolean} = {};
 
-  private subParam: Subscription;
+  private subParam!: Subscription;
 
   constructor(
     protected router: Router,
@@ -33,7 +33,7 @@ export class AcceptComponent extends AbstractPermission implements OnInit, OnDes
 
   ngOnInit() {
     this.subParam = this.projectFormService.getFormFromRoute$(this.route).pipe(
-      tap(form => this.collectionId = form.collectionID),
+      tap(form => this.collectionId = form.collectionID as string),
       switchMap(() => this.updateFormPermission$())
     ).subscribe(() => this.cdr.markForCheck());
   }
@@ -55,7 +55,7 @@ export class AcceptComponent extends AbstractPermission implements OnInit, OnDes
     ).subscribe(cb, cb);
   }
 
-  selectPerson(event) {
+  selectPerson(event: any) {
     if (confirm(this.translate.instant('form.permission.admin.confirmAccess', { fullName: event.fullName }))) {
       this.makePermissionChange(event.id, 'accept');
     }

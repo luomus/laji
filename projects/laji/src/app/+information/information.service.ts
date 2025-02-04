@@ -10,7 +10,7 @@ export class InformationService {
     }
   };
 
-  private idMapping = {};
+  private idMapping: {[key: string]: string} = {};
 
   constructor() {
     for (const i in this.urlMapping) {
@@ -30,7 +30,7 @@ export class InformationService {
     return id;
   }
 
-  resolveId(path: string, lang: string): string {
+  resolveId(path: string, lang: 'en'|'fi'|'sv'): string {
     if (this.urlMapping[path] && this.urlMapping[path][lang]) {
       return this.urlMapping[path][lang];
     }

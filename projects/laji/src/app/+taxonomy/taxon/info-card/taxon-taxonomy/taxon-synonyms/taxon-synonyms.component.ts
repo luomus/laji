@@ -8,8 +8,8 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonSynonymsComponent {
-  @Input() taxon: Taxonomy;
-  @Input() synonymTypes: string[] = [];
+  @Input() taxon!: Taxonomy;
+  @Input() synonymTypes: (keyof Taxonomy)[] = [];
   @Input() hasOtherNamesBefore = false;
 
 }

@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { Global } from '../../../../environments/global';
 import { Subject, Subscription, of, from, Observable } from 'rxjs';
-import { TaxonTagEffectiveService } from '../taxon-tag-effective.service';
 import { LoadingElementsService } from '../loading-elements.service';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { AnnotationService } from '../service/annotation.service';
@@ -21,23 +19,20 @@ import { switchMap, toArray, concatMap } from 'rxjs/operators';
 export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy {
 
   @Input() unit: any;
-  @Input() parentSubject: Subject<boolean>;
-  @Input() showTitle: boolean;
+  @Input() parentSubject?: Subject<boolean>;
+  @Input() showTitle?: boolean;
   @Input() showEffectiveTaxon = true;
   @Input() showEffectiveTag = true;
+  @Input() showEffectiveAtlasCode = true;
   @Input() showRecordQuality = true;
-  @Input() annotationTags: AnnotationTag[];
+  @Input() annotationTags?: AnnotationTag[]|null;
 
-  annotationResolving: boolean;
-  subscriptParent: Subscription;
-  annotationTagsObservation = Global.annotationTags;
-  countItems: number;
-  haschangedTaxon = false;
-  convertEffective$: Observable<any>;
-  subEffectiveTags: Subscription;
+  annotationResolving?: boolean;
+  subscriptParent?: Subscription;
+  haschangedTaxon? = false;
+  convertEffective$?: Observable<any>;
 
   constructor(
-    private taxonTagEffective: TaxonTagEffectiveService,
     private cd: ChangeDetectorRef,
     private toQname: ToQNamePipe,
     private loadingElements: LoadingElementsService,

@@ -1,9 +1,9 @@
-<ng-container *ngIf="chartData?.yearChartData?.length > 0">
+<ng-container *ngIf="chartData?.yearChartData?.length! > 0">
   <p>{{ 'taxonomy.observation.yearChart.filter' | translate }}</p>
   <div class="info-card-chart">
     <div class="chart-container">
       <laji-chart
-        [datasets]="chartData.yearChartData"
+        [datasets]="chartData!.yearChartData"
         [labels]="yearChartLabels"
         [options]="barChartOptions"
         [legend]="true"
@@ -15,10 +15,10 @@
 </ng-container>
 
 <lu-modal #modal size="lg">
-  <h4 class="modal-title">{{ monthFormatting(activeMonthIdx + 1) | capitalize }}</h4>
-  <div *ngIf="chartData?.monthChartDataArr?.[activeMonthIdx]?.length > 0" class="info-card-chart day-chart">
+  <h4 class="modal-title">{{ monthFormatting(activeMonthIdx! + 1) | capitalize }}</h4>
+  <div *ngIf="chartData?.monthChartDataArr?.[activeMonthIdx!]?.length! > 0" class="info-card-chart day-chart">
     <laji-chart
-      [datasets]="chartData.monthChartDataArr[activeMonthIdx]"
+      [datasets]="chartData!.monthChartDataArr[activeMonthIdx!]"
       [labels]="monthChartLabels"
       [options]="barChartOptions"
       [legend]="true"

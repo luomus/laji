@@ -114,7 +114,8 @@ export namespace GLB {
       */
       const arrConst = { 5126: Float32Array, 5125: Uint32Array, 5123: Uint16Array }[accessor.componentType];
       if (!arrConst) { throw new Error(`Unimplemented accessor.componentType: ${accessor.componentType}`); }
-      const dataGetter = { 5126: d.getFloat32.bind(d), 5125: d.getUint32.bind(d), 5123: d.getUint16.bind(d) }[accessor.componentType];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const dataGetter = { 5126: d.getFloat32.bind(d), 5125: d.getUint32.bind(d), 5123: d.getUint16.bind(d) }[accessor.componentType]!;
       const dimension = { VEC3: 3, SCALAR: 1 }[accessor.type];
       if (!dimension) { throw new Error(`Unimplemented accessor.type: ${accessor.type}`); }
       /*
@@ -122,7 +123,8 @@ export namespace GLB {
               we are not doing much with this for now, since positions and normals are always ARRAY_BUFFER
               and indices are always ELEMENT_ARRAY_BUFFER
       */
-      const target = { 34962: <Target>'ARRAY_BUFFER', 34963: <Target>'ELEMENT_ARRAY_BUFFER' }[bufferView.target];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const target = { 34962: <Target>'ARRAY_BUFFER', 34963: <Target>'ELEMENT_ARRAY_BUFFER' }[bufferView.target]!;
 
       const arr = new arrConst(bufferView.byteLength / arrConst.BYTES_PER_ELEMENT);
       let k = 0;

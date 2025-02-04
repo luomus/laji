@@ -18,7 +18,7 @@ export interface INewsState {
 
 let _state: INewsState = {
   active: null,
-  list: { results: [], currentPage: 0, total: 0, pageSize: 5 },
+  list: { results: [], currentPage: 0, total: 0, pageSize: 5, lastPage: 0 },
 };
 
 @Injectable({providedIn: 'root'})
@@ -29,8 +29,8 @@ export class NewsFacade {
   readonly active$ = this.state$.pipe(map((state) => state.active), distinctUntilChanged());
   readonly list$ = this.state$.pipe(map((state) => state.list), distinctUntilChanged());
 
-  private listSub: Subscription;
-  private currentSub: Subscription;
+  private listSub?: Subscription;
+  private currentSub?: Subscription;
 
   constructor(
     private newsService: NewsService,
@@ -89,7 +89,7 @@ export class NewsFacade {
   private fixNews(news: News) {
     return {
       ...news,
-      posted: news.posted.substr(0, 10),
+      posted: (news.posted || '').substr(0, 10),
       modified: (news.modified || '').substr(0, 10)
     };
   }

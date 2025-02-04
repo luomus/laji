@@ -13,9 +13,9 @@ import { DialogService } from '../../shared/service/dialog.service';
 })
 export class ProtaxComponent implements OnDestroy {
   loading = false;
-  downloadProgress: number;
+  downloadProgress: number | undefined;
 
-  private analyseSub: Subscription;
+  private analyseSub: Subscription | undefined;
 
   constructor(
     private protaxApi: ProtaxApi,
@@ -40,7 +40,8 @@ export class ProtaxComponent implements OnDestroy {
 
     this.analyseSub = this.protaxApi.analyse(formData).subscribe(event => {
       if (event.type === HttpEventType.DownloadProgress) {
-        this.downloadProgress = event.loaded / event.total;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.downloadProgress = event.loaded / event.total!;
       } else if (event.type === HttpEventType.Response) {
         this.exportService.exportArrayBuffer(event.body, 'protax_output', 'zip');
         this.loading = false;

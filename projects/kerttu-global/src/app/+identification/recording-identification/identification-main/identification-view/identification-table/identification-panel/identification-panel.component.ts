@@ -10,7 +10,7 @@ import {
 import {
   IGlobalRecording,
   IGlobalSpeciesWithAnnotation,
-  isBoxGroup,
+  isBoxGroup, SoundTypeEnum,
   SpeciesAnnotationEnum,
   TaxonTypeEnum
 } from '../../../../../../kerttu-global-shared/models';
@@ -29,15 +29,16 @@ interface BoxClickEvent {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationPanelComponent {
-  @ViewChild('toggleDrawBtn', { static: false }) toggleDrawBtn: ElementRef;
-  @ViewChildren('toggleDrawRelatedBtn') toggleDrawRelatedBtn: QueryList<ElementRef>;
+  @ViewChild('toggleDrawBtn', { static: false }) toggleDrawBtn?: ElementRef;
+  @ViewChildren('toggleDrawRelatedBtn') toggleDrawRelatedBtn!: QueryList<ElementRef>;
 
   @Input() componentId = '';
   @Input() speciesIdx?: number;
 
-  @Input() recording: IGlobalRecording;
-  @Input() identification: IGlobalSpeciesWithAnnotation;
+  @Input({ required: true }) recording!: IGlobalRecording;
+  @Input({ required: true }) identification!: IGlobalSpeciesWithAnnotation;
 
+  @Input() showSoundTypeSelect = true;
   @Input() showDrawRelatedBoxBtn = true;
   @Input() buttonsDisabled = false;
   @Input() drawBoxActive = false;
@@ -46,10 +47,11 @@ export class IdentificationPanelComponent {
 
   @Input() birdRectangleColor = 'white';
   @Input() overlappingBirdRectangleColor = 'orange';
-  @Input() spectrogramConfig: ISpectrogramConfig;
+  @Input({ required: true }) spectrogramConfig!: ISpectrogramConfig;
 
   speciesAnnotationEnum = SpeciesAnnotationEnum;
   taxonTypeEnum = TaxonTypeEnum;
+  soundTypeEnum = SoundTypeEnum;
 
   isBoxGroup = isBoxGroup;
   getBoxLabel = KerttuGlobalUtil.getBoxLabel;
@@ -77,6 +79,6 @@ export class IdentificationPanelComponent {
 
   scrollDrawButtonIntoView(boxIndex?: number) {
     const elem = boxIndex != null ? this.toggleDrawRelatedBtn.toArray()[boxIndex] : this.toggleDrawBtn;
-    elem.nativeElement.scrollIntoView({behavior: 'smooth'});
+    elem?.nativeElement.scrollIntoView({behavior: 'smooth'});
   }
 }

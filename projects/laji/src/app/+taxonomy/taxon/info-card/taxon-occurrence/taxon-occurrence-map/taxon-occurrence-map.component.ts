@@ -7,13 +7,13 @@ import { Occurrence } from '../../../../../shared/model/Taxonomy';
   styleUrls: ['./taxon-occurrence-map.component.scss']
 })
 export class TaxonOccurrenceMapComponent implements OnChanges {
-  @Input() occurrences: Occurrence[];
+  @Input() occurrences!: Occurrence[];
   @Input() height = '100%';
   @Input() width = '100%';
 
   fillData = {};
-  statusList = [];
-  colorByStatus = {
+  statusList: any[] = [];
+  colorByStatus: any = {
     'MX.doesNotOccur': '#ffffff',
     'MX.typeOfOccurrenceOccursBasedOnOccurrences': '#e3f1fb',
     'MX.typeOfOccurrenceOccurs': '#3498db',
@@ -62,7 +62,7 @@ export class TaxonOccurrenceMapComponent implements OnChanges {
       if (this.statusList.indexOf(occ.status) === -1) {
         this.statusList.push(occ.status);
       }
-      this.fillData[occ.area] = this.colorByStatus[occ.status];
+      (<any>this.fillData)[occ.area] = (<any>this.colorByStatus)[occ.status];
     });
   }
 }

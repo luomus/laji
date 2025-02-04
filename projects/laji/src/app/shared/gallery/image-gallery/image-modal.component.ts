@@ -93,7 +93,7 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   @Input() showOverlay = true;
   @Input() showLinkToSpeciesCard = false;
   @Input() shortcut!: boolean;
-  @Input() linkOptions!: {tab: string; queryParams: any; queryParamsHandling: QueryParamsHandling};
+  @Input() linkOptions?: {tab: string; queryParams: any; queryParamsHandling: QueryParamsHandling};
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() imageSelect = new EventEmitter<IImageSelectEvent>();
   @Output() showModal = new EventEmitter<boolean>();

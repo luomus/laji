@@ -3,7 +3,6 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
 
-
 @Component({
   selector: 'laji-quality-filters',
   templateUrl: './quality-filters.component.html',
@@ -21,7 +20,7 @@ export class QualityFiltersComponent implements OnInit, OnDestroy {
   private delayedSearchSource = new Subject<any>();
   private delayedSearch = this.delayedSearchSource.asObservable();
   private debouchAfterChange = 500;
-  private subSearch: Subscription;
+  private subSearch!: Subscription;
 
   constructor(
     public translateService: TranslateService

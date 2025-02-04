@@ -7,6 +7,6 @@ import { Occurrence } from '../../../../../../laji/src/app/shared/model/Taxonomy
   styleUrls: ['./taxon-occurrences.component.scss']
 })
 export class TaxonOccurrencesComponent {
-  @Input() occurrences: Occurrence[];
+  @Input() occurrences?: Occurrence[];
 
 }

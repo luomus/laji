@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
       <laji-taxon-select [searchParams]="{onlyInvasive: true}"
-                         [taxonId]="taxon$ | async"
+                         [taxonId]="(taxon$ | async)!"
                          (taxonIdChange)="onTaxonChange($event)"></laji-taxon-select>
     </div>
   </div>
@@ -22,8 +22,8 @@
   </div>
 </div>
 <div class="mt-5">
-  <laji-datatable [rows]="rows$ | async"
-                  [loading]="loading$ | async"
+  <laji-datatable [rows]="(rows$ | async)!"
+                  [loading]="(loading$ | async)!"
                   [columns]="columns"
                   [clientSideSorting]="true">
   </laji-datatable>

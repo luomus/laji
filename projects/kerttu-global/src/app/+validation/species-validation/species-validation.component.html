@@ -2,15 +2,15 @@
   <ng-container *lajiRequiresAudioSupport="audioSampleRate">
     <bsg-version-nav
       class="pull-right"
-      [versions]="templateVersions$ | async"
+      [versions]="(templateVersions$ | async) ?? []"
       [activeIdx]="activeVersionIdx$ | async"
       (activeIdxChange)="activeVersionIdxChange($event)"
     ></bsg-version-nav>
     <bsg-species-template-validation
-      [species]="species$ | async"
-      [recordings]="recordings$ | async"
-      [templates]="activeTemplates$ | async"
-      [historyView]="historyView$ | async"
+      [species]="(species$ | async) ?? undefined"
+      [recordings]="(recordings$ | async) ?? undefined"
+      [templates]="(activeTemplates$ | async) ?? undefined"
+      [historyView]="(historyView$ | async) ?? undefined"
       [saving]="saving"
       [spectrogramConfig]="spectrogramConfig"
       (save)="saveTemplates($event)"

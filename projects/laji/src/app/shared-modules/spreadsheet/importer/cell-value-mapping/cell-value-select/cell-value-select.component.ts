@@ -10,11 +10,11 @@ import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 })
 export class CellValueSelectComponent {
 
-  @Input() invalidValues: string[];
+  @Input() invalidValues?: string[];
   @Input() mapping: {[value: string]: any} = {};
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
 
-  _field: IFormField;
+  _field!: IFormField;
   labels: string[] = [];
   ignore = VALUE_IGNORE;
   booleanValueMap: {[key: string]: typeof VALUE_IGNORE|boolean} = {};
@@ -40,7 +40,7 @@ export class CellValueSelectComponent {
     this.booleanValues = Object.keys(this.booleanValueMap);
    }
 
-  valueMapped(value, to) {
+  valueMapped(value: any, to: any) {
     const mapping = {...this.mapping};
 
     if (to === VALUE_IGNORE) {

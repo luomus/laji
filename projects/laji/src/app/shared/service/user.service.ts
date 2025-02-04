@@ -130,7 +130,7 @@ export const getLoginUrl = (next = '', lang = DEFAULT_LANG, base = '') => {
   return (url + params.join('&')).replace('%lang%', lang);
 };
 
-export const isIctAdmin = (person: Person): boolean => person?.role?.includes('MA.admin') ?? false;
+export const isIctAdmin = (person?: Person): boolean => person?.role?.includes('MA.admin') ?? false;
 
 const personsCacheKey = (personID?: string): string => `users-${ personID || 'global' }-settings`;
 

@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SiteResultMapComponent implements OnChanges {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent) lajiMap!: LajiMapComponent;
   @Input() sites: IGlobalSite[] = [];
   @Input() siteStats: IIdentificationSiteStat[] = [];
 
@@ -66,13 +66,13 @@ export class SiteResultMapComponent implements OnChanges {
   }
 
   private getCountByLegend(sites: IGlobalSite[], siteStats: IIdentificationSiteStat[]): Record<string, number> {
-    const countByLegend = {};
+    const countByLegend: Record<string, number> = {};
     this.legendLabels.forEach(label => {
       countByLegend[label] = 0;
     });
 
     siteStats.forEach(stat => {
-      let legendIdx: number;
+      let legendIdx = 0;
       for (let i = 0; i < this.legendThresholds.length; i++) {
         if (stat.count >= this.legendThresholds[i]) {
           legendIdx = i;
@@ -90,7 +90,7 @@ export class SiteResultMapComponent implements OnChanges {
   }
 
   private getData(sites: IGlobalSite[], siteStats: IIdentificationSiteStat[]): DataOptions {
-    const countBySite = {};
+    const countBySite: Record<string, number> = {};
     (siteStats || []).forEach(stat => {
       countBySite[stat.siteId] = stat.count;
     });
@@ -120,8 +120,8 @@ export class SiteResultMapComponent implements OnChanges {
 
   private iconCreateFunction(cluster: any): DivIcon {
     const markers = cluster.getAllChildMarkers();
-    const counts = markers.map(marker => marker.feature.properties.count);
-    const count = counts.reduce((sum, curr) => (sum + curr), 0);
+    const counts = markers.map((marker: any) => marker.feature.properties.count);
+    const count = counts.reduce((sum: number, curr: number) => (sum + curr), 0);
 
     let c = ' marker-cluster-';
     if (count === 0) {
@@ -142,7 +142,7 @@ export class SiteResultMapComponent implements OnChanges {
 
   private getPopup(options: GetPopupOptions, callback: (content: (string | HTMLElement)) => void): string {
     const siteTranslation = this.translate.instant('siteSelection.site');
-    const data = options.feature.properties;
+    const data = options.feature!.properties!;
 
     let popup = '<strong>' + siteTranslation + ' ' + data.id + '</strong><br>' + data.name;
     if (data.country) {

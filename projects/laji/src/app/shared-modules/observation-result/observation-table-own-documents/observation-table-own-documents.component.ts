@@ -47,11 +47,11 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('dataTableOwn', { static: true }) public datatable: DatatableOwnSubmissionsComponent;
+  @ViewChild('dataTableOwn', { static: true }) public datatable?: DatatableOwnSubmissionsComponent;
 
-  @Input() query: WarehouseQueryInterface;
-  @Input() overrideInQuery: WarehouseQueryInterface;
-  @Input() pageSize;
+  @Input() query!: WarehouseQueryInterface;
+  @Input() overrideInQuery!: WarehouseQueryInterface;
+  @Input() pageSize?: number;
   @Input() page = 1;
   @Input() isAggregate = true;
   @Input() height = '100%';
@@ -60,8 +60,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   @Input() showHeader = true;
   @Input() showFooter = true;
   @Input() virtualScrolling = true;
-  @Input() defaultOrder: string;
-  @Input() visible: boolean;
+  @Input() defaultOrder?: string;
+  @Input() visible?: boolean;
   @Input() hideDefaultCountColumn = false;
   @Input() allAggregateFields = [
     'document.createdDate',
@@ -73,7 +73,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
       'gathering.municipality',
       'gathering.linkings.observers'
   ];
-  @Input() useStatistics: boolean;
+  @Input() useStatistics?: boolean;
 
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() selectChange = new EventEmitter<string[]>();
@@ -83,10 +83,10 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
 
   maxDownload = Global.limit.simpleDownload;
   downloadLoading = false;
-  lang: string;
+  lang!: string;
   cache: any = {};
   orderBy: string[] = [];
-  columnLookup = {};
+  columnLookup: Record<string, ObservationTableColumn> = {};
   _originalSelected: string[] = [];
   _originalSelectedNumbers: string[] = [];
   newColumns = ['dateEdited', 'dateCreated', 'locality', 'form', 'id', 'observer'];
@@ -107,17 +107,17 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
 
   columnSelector = new ColumnSelector();
   numberColumnSelector = new ColumnSelector();
-  subscriptionDeleteOwnDocument: Subscription;
+  subscriptionDeleteOwnDocument!: Subscription;
   childEvent: any;
 
-  result: PagedResult<any> = {
+  result: Omit<PagedResult<any>, 'nextPage' | 'prevPage' | 'pageSize'> & { pageSize?: number } = {
     currentPage: 1,
     lastPage: 1,
     results: [],
     total: 0,
     pageSize: 0
   };
-  loading: boolean;
+  loading = false;
 
   private langMap = {
     fi: 'Finnish',
@@ -131,8 +131,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
 
   private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCountSum'];
 
-  private fetchSub: Subscription;
-  private queryKey: string;
+  private fetchSub?: Subscription;
+  private queryKey?: string;
   templateForm: TemplateForm = {
     name: '',
     description: ''
@@ -157,8 +157,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   }
 
   @Input() set selected(sel: string[]) {
-    const selected = [];
-    const selectedNumbers = [];
+    const selected: string[] = [];
+    const selectedNumbers: string[] = [];
     sel.map(field => {
       if (this.numberFields.indexOf(field) > -1) {
         selectedNumbers.push(field);
@@ -225,9 +225,10 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     this.columns = [];
     this.columnLookup = this.allColumns
       .reduce((prev, column) => {
-        prev[column.name] = column;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        prev[column.name!] = column;
         return prev;
-      }, {});
+      }, {} as Record<string, ObservationTableColumn>);
 
     // this.columns.push({name: 'buttons', label: 'Buttons', sortable: false})
     this.allColumnsNew.map(col => {
@@ -247,7 +248,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     }
   }
 
-  onReorder(event) {
+  onReorder(event: any) {
     if (
       !event.column ||
       !event.column.name ||
@@ -266,12 +267,12 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     this.numberColumnSelector.clear();
   }
 
-  setPage(pageInfo) {
+  setPage(pageInfo: any) {
     this.fetchPage(pageInfo.offset + 1);
   }
 
-  onSort(event) {
-    this.orderBy = event.sorts.map(sort => {
+  onSort(event: any) {
+    this.orderBy = event.sorts.map((sort: any) => {
       const col = this.columns.filter(column => column.prop === sort.prop)[0];
       if (!col) {
         return '';
@@ -347,7 +348,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
       ObservableOf([]);
   }
 
-  private setRowData(document: Document, idx: number): any {
+  private setRowData(document: any, idx: number): any {
     return this.getForm(this.toQName.transform(document['aggregateBy']['document.formId'])).pipe(
       map((form) => ({
           creator: '',
@@ -370,11 +371,11 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
           _editUrl: this.formService.getEditUrlPath(
             this.toQName.transform(document['aggregateBy']['document.formId']), this.toQName.transform(document['aggregateBy']['document.documentId'])
           ),
-        } as RowDocument))
+        } as unknown as RowDocument))
     );
   }
 
-  private createLocality(locality, municipality) {
+  private createLocality(locality: string, municipality: string) {
     if (!locality && !municipality) {
       return this.translate.instant('np.localityNotSet');
     } else {
@@ -407,7 +408,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
 
   private setLangParams(value: string) {
     return (value || '')
-      .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish');
+      .replace(/%longLang%/g, (this.langMap as any)[this.lang as any] || 'Finnish');
   }
 
   download(type: string) {
@@ -416,7 +417,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     this.resultService.getAll(
       this.query,
       this.tableColumnService.getSelectFields(this.columnSelector.columns, this.query),
-      [...this.orderBy, this.defaultOrder],
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      [...this.orderBy, this.defaultOrder!],
       this.lang
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data.results, columns, type as BookType, 'laji-data'))
@@ -428,7 +430,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
       (err) => this.logger.error('Simple download failed', err));
   }
 
-  private dedupeByKey(arr, key) {
+  private dedupeByKey(arr: any[], key: any) {
     const temp = arr.map(el => el[key]);
     return arr.filter((el, i) =>
       temp.indexOf(el[key]) === i

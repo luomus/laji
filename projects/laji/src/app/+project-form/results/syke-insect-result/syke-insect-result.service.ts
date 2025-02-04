@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { forkJoin, Observable, of } from 'rxjs';
-import {map, share, switchMap, tap} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, share, switchMap } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { PagedResult } from '../../../shared/model/PagedResult';
 
@@ -29,10 +29,10 @@ export interface YearDays {
 export class SykeInsectResultService {
 
   private seasonRanges = [4 , 10];
-  private yearCache: YearDays;
-  private yearObs: Observable<YearDays>;
-  private yearDayObs: Observable<string[]>;
-  private speciesListCache: any[];
+  private yearCache?: YearDays;
+  private yearObs?: Observable<YearDays>;
+  private yearDayObs?: Observable<string[]>;
+  private speciesListCache?: any[];
 
   constructor(
     private warehouseApi: WarehouseApi
@@ -41,7 +41,7 @@ export class SykeInsectResultService {
   getFilterParams(year?: number|number[], season?: string, taxonId?: string|string[], collectionId?: string): WarehouseQueryInterface {
     const yearMonth = year ? (Array.isArray(year) ? year : [year]).map(y => this.getYearMonthParam(y, season)) : [];
     return {
-      collectionId: [collectionId],
+      collectionId: collectionId ? [collectionId] : [],
       yearMonth: !season ? yearMonth : undefined,
       time: season ? yearMonth : undefined,
       taxonId: taxonId ? (Array.isArray(taxonId) ? taxonId : [taxonId]) : []
@@ -50,7 +50,7 @@ export class SykeInsectResultService {
 
   getYears(routeId?: string, collectionId?: string): Observable<YearDays> {
     this.yearObs = this.warehouseApi.warehouseQueryUnitStatisticsGet(
-      {...this.getFilterParams(undefined, undefined, undefined, collectionId), namedPlaceId: [routeId]},
+      {...this.getFilterParams(undefined, undefined, undefined, collectionId), namedPlaceId: routeId ? [routeId] : []},
       [
         'unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day',
         'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'
@@ -63,7 +63,7 @@ export class SykeInsectResultService {
     ).pipe(
         map(res => res.results),
         map(res => {
-          const yearsDays = {};
+          const yearsDays: any = {};
           for (const resItem of res) {
             const year = resItem['aggregateBy']['gathering.conversions.year'];
             const date = resItem['aggregateBy']['gathering.conversions.year'] + '-'
@@ -103,8 +103,9 @@ export class SykeInsectResultService {
   }
 
   getCensusList(year?: number, season?: SEASON, routeId?: string, collectionId?: string): Observable<any[]> {
-    const query = {collectionId: [collectionId], namedPlaceId: [routeId]};
-    const unitQuery = {...this.getFilterParams(year, season, undefined, collectionId), namedPlaceId: [routeId]};
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const query: WarehouseQueryInterface = {collectionId: [collectionId!], namedPlaceId: [routeId!]};
+    const unitQuery: WarehouseQueryInterface = {...this.getFilterParams(year, season, undefined, collectionId), namedPlaceId: routeId ? [routeId] : []};
 
     return this.getList(
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
@@ -118,7 +119,8 @@ export class SykeInsectResultService {
         true
       )
     ).pipe(
-      switchMap(result => this.addUnitStatsToResults(result, unitQuery, year, routeId))
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      switchMap(result => this.addUnitStatsToResults(result, unitQuery, year, routeId!))
     );
   }
 
@@ -141,7 +143,7 @@ export class SykeInsectResultService {
       )
     ).pipe(
       map(list => {
-        const statsByDocumentId = {};
+        const statsByDocumentId: any = {};
         list.map(l => {
           statsByDocumentId[l['document.documentId']] = l;
         });
@@ -200,7 +202,8 @@ export class SykeInsectResultService {
         false
       )
     ).pipe(
-      map(result => this.mergeElementsByProperties(collectionId, result, onlySections, year, season, year === undefined
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      map(result => this.mergeElementsByProperties(collectionId!, result, onlySections, year!, season, year === undefined
         ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month',
           'gathering.conversions.day', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish',
           'unit.linkings.taxon.cursiveName', 'unit.linkings.taxon.id']
@@ -222,14 +225,15 @@ export class SykeInsectResultService {
   }
 
   private getYearMonthParam(year: number, date?: string): string {
-    let startMonth, endMonth, startYear, endYear;
+    let startMonth: number, endMonth: number, startYear: number, endYear: number;
     if (!date) {
       startMonth = this.seasonRanges[0];
       endMonth = this.seasonRanges[1];
       startYear = startMonth > this.seasonRanges[1] ? year - 1 : year;
       endYear = endMonth > this.seasonRanges[1] ? year - 1 : year;
     }
-    return !date ? startYear + '-' + this.padMonthDay(startMonth) + '/' + endYear + '-' + this.padMonthDay(endMonth) :
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return !date ? startYear! + '-' + this.padMonthDay(startMonth!) + '/' + endYear! + '-' + this.padMonthDay(endMonth!) :
     date + '/' + date;
   }
 
@@ -238,7 +242,7 @@ export class SykeInsectResultService {
   }
 
   private mergeElementsByProperties(collectionId: string, result: any[], onlySections: boolean, year: number, season: string, filters: string[]) {
-    const objectFilter = [];
+    const objectFilter: any[] = [];
 
     if (onlySections) {
       const minMax = this.findMaxMinFilter(result, filters[2]);
@@ -264,14 +268,14 @@ export class SykeInsectResultService {
 
     let uniqueTaxonSets = [...new Set(result.map(item => item['unit.linkings.taxon.taxonSets']))];
 
-    const arrayMerged = [{dataSets: [], yearsDays: [], taxonSets: []}];
+    const arrayMerged: [{dataSets: any[]; yearsDays: any[]; taxonSets: any[]}] = [{dataSets: [], yearsDays: [], taxonSets: []}];
     uniqueTaxonSets.forEach(item => {
       arrayMerged[0].dataSets[item] = [];
     });
 
     result.forEach(item => {
       const existing = arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']].filter(
-        (v) => (v['id'] === item['unit.linkings.taxon.id'])
+        (v: any) => (v['id'] === item['unit.linkings.taxon.id'])
       );
       const property = season
         ? filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' + (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')
@@ -328,7 +332,7 @@ export class SykeInsectResultService {
   }
 
   private findMaxMinFilter(array: any[], filter: string) {
-   const tmpArray = [];
+   const tmpArray: any[] = [];
 
     array.forEach(element => {
       for (const key in element) {
@@ -341,14 +345,14 @@ export class SykeInsectResultService {
     return [Math.min(...tmpArray), Math.max(...tmpArray)];
   }
 
-  private uniqueYearDaysToDate(array, onlySort) {
+  private uniqueYearDaysToDate(array: any, onlySort: any) {
     let tmpArray = [];
 
     if (!onlySort) {
-      tmpArray = array.filter((el, index) => array.indexOf(el) === index);
+      tmpArray = array.filter((el: any, index: any) => array.indexOf(el) === index);
     }
 
-    tmpArray.sort((a, b) => {
+    tmpArray.sort((a: any, b: any) => {
       a = a.split('-').join('');
       b = b.split('-').join('');
       return a > b ? 1 : a < b ? -1 : 0;
@@ -357,8 +361,8 @@ export class SykeInsectResultService {
     return tmpArray;
   }
 
-  private sortDate(array) {
-    array.sort((a, b) => {
+  private sortDate(array: any) {
+    array.sort((a: any, b: any) => {
       a = a.split('-').join('');
       b = b.split('-').join('');
       return  a < b ? -1 : (a > b ? 1 : 0);

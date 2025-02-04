@@ -5,7 +5,7 @@ import { BehaviorSubject, forkJoin } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { InformationService } from '../core/information.service';
 import { ISlideData } from './slide/slide.component';
-import { i18nMap } from '../core/i18n-map';
+import { i18nMap, Lang } from '../core/i18n-map';
 
 @Injectable()
 export class SlideshowFacade {
@@ -16,20 +16,20 @@ export class SlideshowFacade {
   constructor(private translate: TranslateService, private informationService: InformationService) {}
 
   loadSlides() {
-    this.informationService.getInformation(i18nMap.screenOne[this.translate.currentLang], {}).pipe(
+    this.informationService.getInformation(i18nMap.screenOne[<Lang>this.translate.currentLang], {}).pipe(
       filter(information => {
         const a = !information.children;
         if (a) { console.warn(`The slideshow root element does not have children: ${information?.id}`); }
         return !a;
       }),
-      switchMap(information => forkJoin(...information.children.map(child => this.informationService.getInformation(child.id, {})))),
+      switchMap(information => forkJoin(...information.children!.map(child => this.informationService.getInformation(child.id, {})))),
       map((informationArr: Information[]) => <ISlideData[]>(
         informationArr.map(information => {
           let contentPlacement = 'left';
           let style = 'default';
           let bgSrc = information.featuredImage?.url;
           let bgIsVideo = false;
-          information.tags.forEach((curr) => {
+          information.tags!.forEach((curr) => {
             if(curr.startsWith('video:')) {
               bgSrc = 'https://nayttely-cms.luomus.fi/wp-content/uploads/' + curr.split(':')[1];
               bgIsVideo = true;

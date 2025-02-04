@@ -5,5 +5,5 @@ import { Component, Input } from '@angular/core';
   template: ``
 })
 export class LajiFormBuilderComponent {
-  @Input() id: string;
+  @Input() id?: string;
 }

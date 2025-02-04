@@ -50,8 +50,8 @@ interface DocumentQuery {
 })
 export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
 
-  @Input() collectionID;
-  @Input() formID;
+  @Input() collectionID?: string;
+  @Input() formID?: string;
   @Input() showDownloadAll = true;
   @Input() showPrintLabels = false;
   @Input() admin = false;
@@ -61,8 +61,8 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   @Input() columnNameMapping: any;
   @Input() templateColumns = ['templateName', 'templateDescription', 'dateEdited', 'form', 'id'];
   @Input() onlyTemplates = false;
-  @Input() namedPlace: string;
-  @Input() header: string;
+  @Input() namedPlace?: string;
+  @Input() header?: string;
   @Input() forceLocalDocument = false;
   @Input() reload$?: Observable<void>;
 
@@ -70,17 +70,17 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
 
   publicity = Document.PublicityRestrictionsEnum;
 
-  documents$: Observable<RowDocument[]>;
-  private documents: RowDocument[];
+  documents$?: Observable<RowDocument[]>;
+  private documents!: RowDocument[];
   loading = true;
-  reloadSubscription$: Subscription;
-  subscriptionDeleteOwnDocument: Subscription;
+  reloadSubscription$?: Subscription;
+  subscriptionDeleteOwnDocument?: Subscription;
 
-  @LocalStorage('own-submissions-year', '') year: string;
-  yearInfo$: Observable<any[]>;
+  @LocalStorage('own-submissions-year', '') year!: string;
+  yearInfo$?: Observable<any[]>;
 
-  yearInfoError: string;
-  documentError: string;
+  yearInfoError?: string;
+  documentError?: string;
   selectedFields = 'creator,id,gatherings[*].id,publicityRestrictions,formID';
 
   selectedMap = {
@@ -164,7 +164,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     this.loading = true;
 
     if (this.namedPlace) {
-      this.documents$ = this.getAllDocuments<Document>({
+      this.documents$ = this.getAllDocuments({
         year: undefined,
         namedPlace: this.namedPlace,
         collectionID: this.collectionID,
@@ -209,7 +209,8 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
       );
     }
 
-    this.documents$ = (onlyDocuments ? ObservableOf([]) : this.yearInfo$).pipe(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.documents$ = (onlyDocuments ? ObservableOf([]) : this.yearInfo$!).pipe(
       switchMap(() => {
         const documentQuery: DocumentQuery = {
           year: this.onlyTemplates ? undefined : this.year,
@@ -221,7 +222,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
         if (this.namedPlace) {
           documentQuery.namedPlace = this.namedPlace;
         }
-        return this.getAllDocuments<Document>(documentQuery);
+        return this.getAllDocuments(documentQuery);
       }),
       switchMap(documents => this.searchDocumentsToRowDocuments(documents)),
       tap((documents) => {
@@ -240,7 +241,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
       );
     } else {
       this.documentExportService.downloadDocuments(
-        this.getAllDocuments<Document>({year: this.year}), 1, e.fileType
+        this.getAllDocuments({year: this.year}), 1, e.fileType
       );
     }
   }
@@ -276,8 +277,8 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     const selected = [this.selectedFields];
     const cols = this.onlyTemplates ? this.templateColumns : this.columns;
     cols.forEach(col => {
-      if (this.selectedMap[col]) {
-        this.selectedMap[col].split(',').forEach(field => {
+      if ((this.selectedMap as any)[col]) {
+        (this.selectedMap as any)[col].split(',').forEach((field: any) => {
           if (selected.indexOf(field) === -1) {
             selected.push(field);
           }
@@ -289,11 +290,11 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     return selected.join(',');
   }
 
-  private getAllDocuments<T>(
+  private getAllDocuments(
     query: DocumentQuery = {},
     page = 1,
-    documents = []
-  ): Observable<T[]> {
+    documents: (Document & { id: string })[] = []
+  ): Observable<(Document & { id: string })[]> {
     const _query: any = {
       templates: query.onlyTemplates ? 'true' : undefined,
       collectionID: query.collectionID,
@@ -315,7 +316,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
       switchMap(result => {
         documents.push(...result.results);
         if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
-          return this.getAllDocuments<T>(query, result.currentPage + 1, documents);
+          return this.getAllDocuments(query, result.currentPage + 1, documents);
         } else {
           return ObservableOf(documents);
         }
@@ -330,14 +331,15 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     );
   }
 
-  private searchDocumentsToRowDocuments(documents: Document[]): Observable<RowDocument[]> {
+  private searchDocumentsToRowDocuments(documents: (Document & { id: string })[]): Observable<RowDocument[]> {
     return Array.isArray(documents) && documents.length > 0 ?
       forkJoin(documents.map((doc, i) => this.setRowData(doc, i))) :
       ObservableOf([]);
   }
 
-  private setRowData(document: Document, idx: number): Observable<RowDocument> {
-    return this.getForm(document.formID).pipe(
+  private setRowData(document: Document & { id: string }, idx: number): Observable<RowDocument> {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.getForm(document.formID!).pipe(
       switchMap((form) => {
         const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
         return ObservableForkJoin(
@@ -376,7 +378,8 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
                     : this.translate.instant('haseka.submissions.publicityRestrictions.protected'),
               locked: !!document.locked,
               index: idx,
-              _editUrl: this.formService.getEditUrlPath(document.formID, document.id),
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              _editUrl: this.formService.getEditUrlPath(document.formID!, document.id),
             } as RowDocument;
           })
         );
@@ -405,7 +408,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
       }));
   }
 
-  private getNamedPlaceName(npId: string): Observable<string> {
+  private getNamedPlaceName(npId: string | undefined): Observable<string> {
     if (!npId || this.columns.indexOf('namedPlaceName') === -1) { return ObservableOf(''); }
     return this.labelService.get(npId, 'multi');
   }
@@ -414,7 +417,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     if (!taxonId || !taxonId.length || this.columns.indexOf('taxon') === -1 ||
     (gatheringInfo && gatheringInfo.unitList && gatheringInfo.unitList.length > 1)) { return ObservableOf(''); }
     return this.labelService.get(taxonId[0], 'multi').pipe(
-      map(langResult => langResult[this.translate.currentLang])
+      map((langResult: any) => langResult[this.translate.currentLang])
     );
   }
 
@@ -423,7 +426,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     const documents$ = ObservableForkJoin(
       event.documentIDs.map(id => this.documentApi.findById(id, this.userService.getToken()))
     );
-    const year$ = this.getAllDocuments<Document>({year: event.year}).pipe(
+    const year$ = this.getAllDocuments({year: event.year}).pipe(
       map(documents => documents.filter(doc => event.documentIDs.indexOf(doc.id) > -1))
     );
     (event.documentIDs.length > 10 ? year$ : documents$).pipe(

@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
+import { ModalComponent, ModalSize } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 export interface ApiKeyRequest {
   reason: string;
@@ -27,8 +27,9 @@ export class ApikeyModalComponent implements OnChanges, OnInit {
   @Input() disabled = false;
   @Input() loading = false;
   @Input() apiKey = '';
+  @Input() modalSize: ModalSize = 'sm';
 
-  @ViewChild('modal', {static: true}) modal: ModalComponent;
+  @ViewChild('modal', {static: true}) modal!: ModalComponent;
 
   private _reason = '';
   private _reasonEnum = '';
@@ -64,7 +65,7 @@ export class ApikeyModalComponent implements OnChanges, OnInit {
     this.modal.show();
   }
 
-  onRadioInput(event, value: number) {
+  onRadioInput(event: any, value: number) {
     if (event.target?.checked) {
       this.expiration = value;
       this.cdr.markForCheck();

@@ -5,17 +5,17 @@ import { interval, Subscription } from 'rxjs';
 
 export class AudioPlayer {
   isPlaying = false;
-  currentTime: number;
+  currentTime?: number;
 
   loop = false;
 
-  private buffer: AudioBuffer;
-  private playArea: IAudioViewerArea;
+  private buffer?: AudioBuffer;
+  private playArea?: IAudioViewerArea;
 
-  private source: AudioBufferSourceNode;
+  private source?: AudioBufferSourceNode;
   private startOffset = 0;
-  private startAudioContextTime: number;
-  private startedOutsidePlayArea = false;
+  private startAudioContextTime?: number;
+  private startedOutsidePlayArea? = false;
 
   private autoplay = false;
   private autoplayRepeat = 1;
@@ -24,10 +24,10 @@ export class AudioPlayer {
   private playBackRate = 1;
 
   private timeupdateInterval = interval(20);
-  private timeupdateIntervalSub: Subscription;
+  private timeupdateIntervalSub?: Subscription;
 
   private resumingContext = false;
-  private resumeContextSub: Subscription;
+  private resumeContextSub?: Subscription;
 
   constructor(
     private audioService: AudioService,
@@ -63,7 +63,8 @@ export class AudioPlayer {
   }
 
   start() {
-    this.startedOutsidePlayArea = this.playArea && (this.currentTime < this.playArea.xRange[0] || this.currentTime > this.playArea.xRange[1]);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.startedOutsidePlayArea = this.playArea && (this.currentTime! < this.playArea!.xRange![0] || this.currentTime! > this.playArea!.xRange![1]);
 
     if (this.resumingContext) {
       return;
@@ -117,7 +118,8 @@ export class AudioPlayer {
       }
       this.startOffset = this.currentTime;
 
-      this.source = this.audioService.playAudio(this.buffer, this.playBackRate, this.playArea?.yRange, this.currentTime, this);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.source = this.audioService.playAudio(this.buffer!, this.playBackRate, this.playArea?.yRange, this.currentTime, this);
       this.startAudioContextTime = this.audioService.getAudioContextTime();
 
       this.source.onended = () => {
@@ -133,7 +135,7 @@ export class AudioPlayer {
 
   private stopPlaying() {
     if (this.isPlaying) {
-      const source = this.source;
+      const source = this.source as AudioBufferSourceNode;
       source.onended = () => {};
       this.onPlayingStopped();
       this.audioService.stopAudio(source);
@@ -170,8 +172,10 @@ export class AudioPlayer {
     this.timeupdateIntervalSub = this.timeupdateInterval.subscribe(() => {
       this.updateCurrentTime();
       const endTime = this.getEndTime();
-      if (this.currentTime === endTime && endTime !== this.buffer.duration) {
-        this.audioService.stopAudio(this.source);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      if (this.currentTime === endTime && endTime !== this.buffer!.duration) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.audioService.stopAudio(this.source!);
       }
       this.cdr.markForCheck();
     });
@@ -184,11 +188,12 @@ export class AudioPlayer {
   }
 
   private updateCurrentTime() {
-    const playedTime = this.startOffset + this.audioService.getPlayedTime(this.startAudioContextTime, this.source.playbackRate.value);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const playedTime = this.startOffset + this.audioService.getPlayedTime(this.startAudioContextTime!, this.source!.playbackRate.value);
     this.currentTime = Math.min(playedTime, this.getEndTime());
   }
 
-  private getStartTime() {
+  private getStartTime(): number {
     if (!this.startedOutsidePlayArea && this.playArea?.xRange) {
       return this.playArea.xRange[0];
     } else {
@@ -196,11 +201,12 @@ export class AudioPlayer {
     }
   }
 
-  private getEndTime() {
+  private getEndTime(): number {
     if (!this.startedOutsidePlayArea && this.playArea?.xRange) {
       return this.playArea.xRange[1];
     } else {
-      return this.buffer.duration;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.buffer!.duration;
     }
   }
 }

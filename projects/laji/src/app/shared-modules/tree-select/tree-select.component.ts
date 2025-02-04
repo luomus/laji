@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { TreeSelectModalComponent } from './tree-select-modal/tree-select-modal.component';
 import { Util } from '../../shared/service/util.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
-import { PlatformService } from '../../root/platform.service';
 
 export interface SelectedOption {
   id: string;
@@ -34,16 +33,16 @@ export interface TreeOptionsChangeEvent {
 export class TreeSelectComponent {
   @Input() includedOptions: string[] = [];
   @Input() excludedOptions: string[] = [];
-  @Input() optionsTree$!: Observable<TreeOptionsNode[]>;
-  @Input() options!: SelectedOption[];
-  @Input() modalButtonLabel!: string;
-  @Input() modalTitle!: string;
-  @Input() browseTitle!: string;
-  @Input() selectedTitle!: string;
-  @Input() includedTitle!: string;
-  @Input() excludedTitle!: string;
-  @Input() okButtonLabel!: string;
-  @Input() clearButtonLabel!: string;
+  @Input({required: true}) optionsTree$!: Observable<TreeOptionsNode[]>;
+  @Input({required: true}) options!: SelectedOption[];
+  @Input({required: true}) modalButtonLabel!: string;
+  @Input({required: true}) modalTitle!: string;
+  @Input({required: true}) browseTitle!: string;
+  @Input({required: true}) selectedTitle!: string;
+  @Input({required: true}) includedTitle!: string;
+  @Input({required: true}) excludedTitle!: string;
+  @Input({required: true}) okButtonLabel!: string;
+  @Input({required: true}) clearButtonLabel!: string;
   @Input() includeCount = false;
   @Input() includeLink = false;
   @Output() selectedOptionsChange = new EventEmitter<TreeOptionsChangeEvent>();

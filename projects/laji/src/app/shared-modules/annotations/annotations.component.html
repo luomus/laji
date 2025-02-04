@@ -13,12 +13,19 @@
 
 <div [ngClass]="{'annotation-form': formVisible, '': !formVisible}">
   <ng-container *ngIf="personRoleAnnotation === annotationRole.expert; else basicForm">
+    <div>
+      <span [ngSwitch]="currentLang" class="pull-right">
+        <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'sv'" [routerLink]="['/about', '3928'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
+        <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'en'" [routerLink]="['/about', '3926'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
+        <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'fi'" [routerLink]="['/about', '3806'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
+      </span>
       <span class="comment-title"  *ngIf="expert; else expertAnnotation">
           {{ 'annotation.addAnnotationExpert' | translate }}
       </span>
       <ng-template #expertAnnotation>
         <span class="comment-title">{{ 'annotation.addBasicAnnotation' | translate }} </span>
       </ng-template>
+    </div>
       <span *lajiLoggedIn="true">
         <span class="switch-mode" *ngIf="expert; else basicMode" (click)="changeModeForm()" tabindex="0" role="button" luKeyboardClickable>{{ 'annotation.switchToBasic' | translate }}</span>
         <ng-template #basicMode>

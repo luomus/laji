@@ -22,34 +22,32 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
           class="d-block my-5"
         ></vir-data-table>
       </laji-spinner>
-      <ng-container>
-        <laji-spinner [spinning]="keysTableLoading" [overlay]="true">
-          <h3 translate>usage.apikeys</h3>
-          <vir-data-table
-            type="userKeys"
-            [height]="'50vh'"
-            [data]="apiKeys$ | async"
-            [showDownloadMenu]="false"
-            [showRowAsLink]="true"
-            (rowSelect)="openDownloadModal($event.row)"
-            class="d-block my-5"
-          ></vir-data-table>
-        </laji-spinner>
-      </ng-container>
+      <laji-spinner [spinning]="keysTableLoading" [overlay]="true">
+        <h3 translate>usage.apikeys</h3>
+        <vir-data-table
+          type="userKeys"
+          [height]="'50vh'"
+          [data]="apiKeys$ | async"
+          [showDownloadMenu]="false"
+          [showRowAsLink]="true"
+          (rowSelect)="openDownloadModal($event.row)"
+          class="d-block my-5"
+        ></vir-data-table>
+      </laji-spinner>
     </div>
     <ng-template #downloadModal>
       <vir-download-request-modal
         [downloadRequest]="selectedRequest"
         [showPerson]="false"
         [showFileDownload]="true"
-        (close)="closeDownloadModal()"
+        (close)="closeModal()"
       ></vir-download-request-modal>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsageMyDownloadsComponent {
-  @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
+  @ViewChild('downloadModal', { static: true }) downloadModal!: TemplateRef<any>;
 
   requestsTableLoading = false;
   keysTableLoading = false;
@@ -59,7 +57,7 @@ export class UsageMyDownloadsComponent {
 
   selectedRequest: DownloadRequest | null = null;
 
-  private modal: ModalRef;
+  private modal: ModalRef | undefined;
 
   constructor(
     private modalService: ModalService,
@@ -78,7 +76,8 @@ export class UsageMyDownloadsComponent {
     );
     this.apiKeys$ = this.virDownloadRequestsService.findMyApiKeys().pipe(
       map(downloads => downloads.sort((a, b) => moment(b.requested).diff(moment(a.requested)))),
-      map(res => res.map(a => ({...a, collectionIds: a.collections.map(c => c.id)}))),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      map(res => res.map(a => ({...a, collectionIds: a.collections!.map(c => c.id)}))),
       take(1),
       finalize(() => {
         this.keysTableLoading = false;
@@ -89,10 +88,10 @@ export class UsageMyDownloadsComponent {
 
   openDownloadModal(request: DownloadRequest) {
     this.selectedRequest = request;
-    this.modal = this.modalService.show(this.downloadModal);
+    this.modal = this.modalService.show(this.downloadModal, { size: 'lg' });
   }
 
-  closeDownloadModal() {
+  closeModal() {
     this.modal?.hide();
     this.selectedRequest = null;
   }

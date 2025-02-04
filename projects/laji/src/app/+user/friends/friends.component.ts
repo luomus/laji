@@ -13,14 +13,12 @@ import { of as ObservableOf } from 'rxjs';
   templateUrl: './friends.component.html'
 })
 export class FriendsComponent implements OnInit, OnChanges {
+  @Input() profile!: Profile;
+  @Input() usersProfile!: Profile;
 
-  @Input() profile: Profile;
-  @Input() usersProfile: Profile;
-
-  public user;
   public requestSend = false;
   public friends = [];
-  private lastId: string;
+  private lastId: string | undefined;
 
   constructor(private userService: UserService,
               private personService: PersonApi,
@@ -51,20 +49,21 @@ export class FriendsComponent implements OnInit, OnChanges {
   }
 
   alreadyFriends() {
-    return this.usersProfile.friends && this.usersProfile.friends.indexOf(this.profile.userID) > -1;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.usersProfile.friends && this.usersProfile.friends.indexOf(this.profile.userID!) > -1;
   }
 
-  sendFriendRequest(profileKy: string) {
+  sendFriendRequest(friendPersonID: string) {
     this.personService.personAddFriendRequest(
       this.userService.getToken(),
-      profileKy
+      friendPersonID
     ).subscribe(
       () => this.requestSend = true,
       () => this.requestSend = true
     );
   }
 
-  removeFriend(userId, block = false) {
+  removeFriend(userId: string, block = false) {
     this.translateService.get(['friend.blockConfirm', 'friend.removeConfirm']).pipe(
       switchMap(translation => this.dialogService.confirm(block ? translation['friend.blockConfirm'] : translation['friend.removeConfirm'])),
       switchMap((confirm) => confirm ?
@@ -77,8 +76,9 @@ export class FriendsComponent implements OnInit, OnChanges {
       );
   }
 
-  removeBlock(userId) {
-    this.usersProfile.blocked = this.usersProfile.blocked.filter(id => id !== userId);
+  removeBlock(userId: string) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.usersProfile.blocked = this.usersProfile.blocked!.filter(id => id !== userId);
     this.personService.personUpdateProfileByToken(this.usersProfile, this.userService.getToken())
       .subscribe(
         profile => this.usersProfile = profile,

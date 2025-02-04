@@ -8,6 +8,7 @@ import { CopyToClipboardModule } from '../copy-to-clipboard/copy-to-clipboard.mo
 import { InfoModule } from '../info/info.module';
 import { CollectionTableComponent } from './collection-table/collection-table.component';
 import { DatatableModule } from '../datatable/datatable.module';
+import { DownloadRequestBasicInfoComponent } from './download-request-basic-info/download-request-basic-info.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import { DatatableModule } from '../datatable/datatable.module';
     InfoModule,
     DatatableModule
   ],
-  declarations: [FileDownloadComponent, DownloadRequestComponent, CollectionTableComponent],
-  exports: [DownloadRequestComponent]
+  declarations: [FileDownloadComponent, DownloadRequestComponent, DownloadRequestBasicInfoComponent, CollectionTableComponent],
+  exports: [DownloadRequestComponent, DownloadRequestBasicInfoComponent]
 })
 export class DownloadRequestModule { }

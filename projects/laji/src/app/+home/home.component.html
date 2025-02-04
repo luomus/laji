@@ -9,14 +9,19 @@
           <p>{{ 'home.main-page.text' | translate }}</p>
           <ng-container *ngTemplateOutlet="navigationThumbnails"></ng-container>
         </div>
-        <laji-news-list class="d-block mb-3"></laji-news-list>
+        <laji-news-list class="d-block mb-3 home-news-list"></laji-news-list>
       </div>
     </div>
     <div class="d-flex flex-col items-center home-content-container section-2">
       <ng-container *ngTemplateOutlet="map"></ng-container>
     </div>
-    <div class="d-flex justify-center home-content-container section-3">
-      <ng-container *ngTemplateOutlet="iNaturalist"></ng-container>
+    <div class="section-3">
+      <div class="d-flex justify-center home-content-container">
+        <ng-container *ngTemplateOutlet="iNaturalist"></ng-container>
+      </div>
+      <div class="d-flex justify-center home-content-container">
+        <ng-container *ngTemplateOutlet="pinkka"></ng-container>
+      </div>
     </div>
     <div class="d-flex flex-col items-center flex-wrap home-content-container section-4">
       <ng-container *ngTemplateOutlet="some"></ng-container>
@@ -34,7 +39,7 @@
       <a [routerLink]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/'}">
         <div class="identification-images">
           <laji-image-gallery [showPopover]="false" [showViewSwitch]="false" [showOverlay]="false"
-            [showExtraInfo]="false" [showLinkToSpeciesCard]="false" [view]="'compact'" [modalImages]="images$ | async"
+            [showExtraInfo]="false" [showLinkToSpeciesCard]="false" [view]="'compact'" [modalImages]="(images$ | async) ?? []"
             [shortcut]="false"></laji-image-gallery>
         </div>
       </a>
@@ -70,12 +75,24 @@
 
 <ng-template #iNaturalist>
   <div class="d-flex content-max-width xs:flex-wrap">
-    <div class="inat-img-container">
-      <img class="inat-img" src="/static/images/inat-sufi.png" alt="iNaturalist Suomi">
+    <div class="section-3-img-container">
+      <img class="section-3-img" src="/static/images/inat-sufi.png" alt="iNaturalist Suomi">
     </div>
-    <div class="inat-desc-container">
+    <div class="section-3-desc-container">
       <p translate>home.inat.desc</p>
-      <a class="btn btn-primary btn-lg inat-link" href="https://inaturalist.laji.fi/" target="_blank">{{ 'home.inat.btn' | translate }}</a>
+      <a class="btn btn-primary btn-lg section-3-link" href="https://inaturalist.laji.fi/" target="_blank">{{ 'home.inat.btn' | translate }}</a>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #pinkka>
+  <div class="d-flex content-max-width xs:flex-wrap">
+    <div class="section-3-img-container">
+      <img class="section-3-img" src="/static/images/pinkka-logo.png" alt="Pinkka">
+    </div>
+    <div class="section-3-desc-container">
+      <p translate>home.pinkka.desc</p>
+      <a class="btn btn-primary btn-lg section-3-link" href="https://pinkka.laji.fi/pinkat/" target="_blank">{{ 'home.pinkka.btn' | translate }}</a>
     </div>
   </div>
 </ng-template>
@@ -87,7 +104,7 @@
         <h3 class="width-0 d-inline" translate>{{ 'finbif-bib.title' | translate }}</h3>
         <laji-info>{{ 'finbif-bib.intro' | translate }}</laji-info>
       </div>
-      <div class="finBif-publications" innerHTML="{{ (publications$ | async)?.content }}"></div>
+      <div *lajiBrowserOnly class="finBif-publications" innerHTML="{{ (publications$ | async)?.content }}"></div>
       <a class="btn btn-default" [routerLink]="['/theme/publications'] | localize">
         {{ 'finbif-bib.seeAll' | translate }}
       </a>
@@ -128,7 +145,7 @@
     <div class="d-flex flex-wrap">
       <a [href]="(dashboardLink | multiLang)" target="_blank" class="home-card d-flex flex-col items-center mr-3 mb-3">
         <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/dashboard.svg)'"></div>
-        <div *ngIf="(homeData$ | async)?.unitsLastWeek?.total > 0">
+        <div *ngIf="((homeData$ | async)?.unitsLastWeek?.total ?? 0) > 0">
           <span>{{(homeData$ | async)?.unitsLastWeek?.total}} </span>
           <span translate>home.dashboard-sub-intro-1</span>
         </div>

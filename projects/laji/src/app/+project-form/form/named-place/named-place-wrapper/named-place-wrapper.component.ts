@@ -9,16 +9,16 @@ import { take } from 'rxjs/operators';
   template: `
     <ng-container *ngIf="data$ | async as data; else spinner">
       <laji-named-places [documentForm]="data.documentForm"
-                         [activeId]="data.activeNP"
-                         [municipality]="data.municipality"
-                         [birdAssociationArea]="data.birdAssociationArea"
-                         [tags]="data.tags"
+                         [activeId]="data.activeNP!"
+                         [municipality]="data.municipality!"
+                         [birdAssociationArea]="data.birdAssociationArea!"
+                         [tags]="data.tags!"
                          (municipalityChange)="onMunicipalityChange($event)"
                          (birdAssociationAreaChange)="onBirdAssociationAreaChange($event)"
                          (tagsChange)="onTagsChange($event)"
-                         (activeIdChange)="onActiveIdChange($event)"
-                         (use)="use($event)"
-                         (edit)="edit($event)"
+                         (activeIdChange)="onActiveIdChange($event!)"
+                         (use)="use($event!)"
+                         (edit)="edit($event!)"
                          (create)="create()"
                          lajiFormOption="options.useNamedPlaces options.namedPlaceOptions"
       ></laji-named-places>
@@ -31,7 +31,7 @@ import { take } from 'rxjs/operators';
 })
 export class NamedPlaceWrapperComponent implements OnInit {
 
-  data$: Observable<NamedPlacesRouteData>;
+  data$!: Observable<NamedPlacesRouteData>;
 
   constructor(
     private projectFormService: ProjectFormService,

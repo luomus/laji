@@ -4,7 +4,7 @@
     <div class="col-sm-8">
       <h1>{{ 'iucn.results.title' | translate }}</h1>
       <div class="year-select">
-        <select iucn-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
+        <select iucn-dropdown [options]="(years$ | async) ?? []" [value]="queryParams.year ?? ''" (valueChange)="queryParamChange('year', $event)"></select>
       </div>
     </div>
   </div>
@@ -31,5 +31,5 @@
       </ng-container>
     </ng-container>
   </div>
-  <iucn-results [type]="queryParams.type" [query]="queryParams" [checklist]="checklist" (queryChange)="queryChange($event, false)"></iucn-results>
+  <iucn-results [type]="queryParams.type!" [query]="queryParams" [checklist]="checklist" (queryChange)="queryChange($event, false)"></iucn-results>
 </div>

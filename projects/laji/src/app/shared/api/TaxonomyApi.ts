@@ -70,7 +70,7 @@ export class TaxonomyApi {
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }
-    return this.http.get(path, {params: queryParameters});
+    return this.http.get<Taxonomy>(path, {params: queryParameters});
   }
 
 

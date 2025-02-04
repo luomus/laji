@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Injectable } from '@angular/core';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Observable, of } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class TaxonTaxonomyService {
@@ -13,7 +13,6 @@ export class TaxonTaxonomyService {
   private pendingParents: {[key: string]: Observable<Taxonomy[]>} = {};
 
   constructor(
-    private translate: TranslateService,
     private taxonService: TaxonomyApi
   ) { }
 
@@ -23,7 +22,7 @@ export class TaxonTaxonomyService {
     }
 
     if (this.cacheById[id].taxon) {
-      return of(this.cacheById[id].taxon);
+      return of(this.cacheById[id].taxon!);
     }
 
     if (!this.pending[id]) {
@@ -49,13 +48,13 @@ export class TaxonTaxonomyService {
       this.cacheById[id] = {};
     }
 
-    if (this.cacheById[id].taxon && !this.cacheById[id].taxon.hasChildren) {
+    if (this.cacheById[id].taxon && !this.cacheById[id].taxon!.hasChildren) {
       return of([]);
     }
 
     if (this.cacheById[id].childrenIds) {
       return of(
-        this.cacheById[id].childrenIds.map(childId => (this.cacheById[childId].taxon))
+        this.cacheById[id].childrenIds!.map(childId => (this.cacheById[childId].taxon!))
       );
     }
 
@@ -89,7 +88,7 @@ export class TaxonTaxonomyService {
       this.cacheById[id] = {};
     }
 
-    if (this.cacheById[id].taxon && !this.cacheById[id].taxon.hasParent) {
+    if (this.cacheById[id].taxon && !this.cacheById[id].taxon!.hasParent) {
       return of([]);
     }
 
@@ -128,7 +127,7 @@ export class TaxonTaxonomyService {
     return this.pendingParents[id];
   }
 
-  getParent(id: string): Observable<Taxonomy> {
+  getParent(id: string): Observable<Taxonomy|undefined> {
     return this.getParents(id)
       .pipe(map(parents => parents.length > 0 ? parents[parents.length - 1] : undefined));
   }
@@ -146,10 +145,10 @@ export class TaxonTaxonomyService {
 
   private getParentsFromCache(id: string, result: Taxonomy[] = []): Taxonomy[] {
     if (this.cacheById[id] && this.cacheById[id].parentId) {
-      const parentId = this.cacheById[id].parentId;
+      const parentId = this.cacheById[id].parentId!;
 
       if (this.cacheById[parentId].taxon) {
-        result.unshift(this.cacheById[parentId].taxon);
+        result.unshift(this.cacheById[parentId].taxon!);
         return this.getParentsFromCache(parentId, result);
       }
     }

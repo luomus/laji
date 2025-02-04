@@ -8,7 +8,7 @@
  *        -- tab content --
  */
 export class LoadedElementsStore {
-  private loaded = {};
+  private loaded: Record<string, boolean> = {};
 
   constructor(private names: string[]) {
     this.reset();

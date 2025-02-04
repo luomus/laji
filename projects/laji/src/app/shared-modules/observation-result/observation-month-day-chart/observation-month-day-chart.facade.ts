@@ -81,7 +81,7 @@ export class ObservationMonthDayChartFacade {
       });
     });
 
-    return forkJoin(labelObservables).pipe(defaultIfEmpty(null), map(_ => ({yearChartData, monthChartDataArr})));
+    return forkJoin(labelObservables).pipe(defaultIfEmpty(null) as any, map(_ => ({yearChartData, monthChartDataArr})));
   }
 
   private getLifeStageLabel(lifeStage: string): Observable<string> {

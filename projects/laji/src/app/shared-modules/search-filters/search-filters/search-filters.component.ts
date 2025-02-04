@@ -8,8 +8,8 @@ import { BrowserService } from '../../../shared/service/browser.service';
 })
 export class SearchFiltersComponent {
   @Input() showFilter = true;
-  @Input() queryType: string;
-  @Input() query: Record<string, unknown>;
+  @Input({ required: true }) queryType!: string;
+  @Input({ required: true }) query!: Record<string, unknown>;
   @Input() activeSkip: string[] = [];
 
   @Output() showFilterChange = new EventEmitter<boolean>();

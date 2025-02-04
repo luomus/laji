@@ -32,7 +32,7 @@ import { MultiLanguage } from './MultiLanguage';
 
 export interface Taxonomy {
 
-  id?: string;
+  id: string;
 
   distributionMapFinland?: string;
 
@@ -171,6 +171,10 @@ export interface Taxonomy {
   orthographicVariants?: Array<Taxonomy>;
 
   subjectiveSynonyms?: Array<Taxonomy>;
+
+  uncertainSynonyms?: Array<Taxonomy>;
+
+  alternativeNames?: Array<Taxonomy>;
 
   children?: Array<Taxonomy>;
 

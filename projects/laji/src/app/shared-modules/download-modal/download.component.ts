@@ -3,9 +3,8 @@ import { SelectStyle } from '../select/metadata-select/metadata-select.component
 import { FileCrs, FileGeometry } from '../../shared/service/geo-convert.service';
 import { KeyValue } from '@angular/common';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
-import { DialogService } from '../../shared/service/dialog.service';
 
-export type FORMAT = 'csv'|'tsv'|'ods'|'xlsx'|'shp'|'gpkg';
+export type FORMAT = 'csv'|'tsv'|'ods'|'xlsx'|'gpkg';
 
 export interface DownloadParams {
   fileType: FORMAT;
@@ -45,13 +44,10 @@ export interface DownloadParams {
           <div class="radio" *ngIf="_formats.indexOf('xlsx') > -1">
             <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">Excel (.xlsx)</label>
           </div>
-          <div class="radio" *ngIf="_formats.indexOf('shp') > -1">
-            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="shp" (click)="shpFormatClick()">Shapefile (.shp)</label>
-          </div>
           <div class="radio" *ngIf="_formats.indexOf('gpkg') > -1">
             <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="gpkg">GeoPackage (.gpkg)</label>
           </div>
-          <ng-container *ngIf="fileType === 'shp' || fileType === 'gpkg'">
+          <ng-container *ngIf="fileType === 'gpkg'">
             <div class="mb-3">
               <label for="geometry">{{ 'download.geometry' | translate }}:</label>
               <select id="geometry" name="geometry" class="form-control" [(ngModel)]="geometry">
@@ -107,7 +103,7 @@ export class DownloadComponent implements OnChanges {
   fileType: FORMAT = 'tsv';
   geometry: FileGeometry = FileGeometry.point;
   crs: FileCrs = FileCrs.euref;
-  modalRef: ModalRef;
+  modalRef?: ModalRef;
   basicSelectStyle = SelectStyle.basic;
   disableDownLoad = false;
 
@@ -126,8 +122,7 @@ export class DownloadComponent implements OnChanges {
   }
 
   constructor(
-    private modalService: ModalService,
-    private dialogService: DialogService
+    private modalService: ModalService
   ) { }
 
   ngOnChanges() {
@@ -147,7 +142,7 @@ export class DownloadComponent implements OnChanges {
       return;
     }
     const params: DownloadParams = {fileType: this.fileType};
-    if (this.fileType === 'shp' || this.fileType === 'gpkg') {
+    if (this.fileType === 'gpkg') {
       params.geometry = this.geometry;
       params.crs = this.crs;
     }
@@ -160,11 +155,5 @@ export class DownloadComponent implements OnChanges {
   checkCanDownloadStatus() {
     this.disableDownLoad = this.downloadLoading ||
       (this.showReason && (!this.reason || !this.reasonEnum));
-  }
-
-  shpFormatClick() {
-    if (this.fileType !== 'shp') {
-      this.dialogService.alert('download.shpDeprecationWarning');
-    }
   }
 }

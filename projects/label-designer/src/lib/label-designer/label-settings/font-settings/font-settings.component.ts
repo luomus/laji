@@ -45,7 +45,7 @@ export class FontSettingsComponent implements OnInit {
   @Input() allowEmptyFontFamily = false;
   @Input() showUnderline = false;
   @Input() minimal = false;
-  @Input() fontSettings: IFontStyle;
+  @Input() fontSettings?: IFontStyle;
   @Output() fontSettingsChange = new EventEmitter<IFontStyle>();
 
   ngOnInit() {
@@ -56,12 +56,12 @@ export class FontSettingsComponent implements OnInit {
     this.fontSizes = sizes;
   }
 
-  change(field: keyof IFontStyle, value: string|number, forceNumeric = false): void {
+  change(field: keyof IFontStyle, value?: string|number, forceNumeric = false): void {
     if (!value) {
-      const result = {};
-      const currentSetting = this.fontSettings || {};
-      Object.keys(currentSetting).forEach(key => {
-        result[key] = key === field ? undefined : currentSetting[key];
+      const result: IFontStyle = {};
+      const currentSetting = this.fontSettings || {} as IFontStyle;
+      (Object.keys(currentSetting) as (keyof IFontStyle)[]).forEach(key => {
+        result[key] = key === field ? undefined : currentSetting[key] as any;
       });
       return this.fontSettingsChange.emit(result);
     }

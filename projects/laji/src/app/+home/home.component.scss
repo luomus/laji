@@ -147,43 +147,25 @@
 }
 
 .section-1 {
-  padding: 50px $sp-4;
+  padding: $sp-8 $sp-4;
   overflow: hidden;
 }
 
 .section-2 {
-  padding: 100px $sp-4;
+  padding: $sp-9 $sp-4;
   background-color: $neutral-2;
   box-shadow: 0 2px 8px rgba(0,0,0,.1);
 }
 
 .section-3 {
-  padding: 100px $sp-4;
+  padding: $sp-9 $sp-4;
 }
 
 .section-4 {
-  padding: 50px $sp-5;
+  padding: $sp-8 $sp-5;
   background-color: $neutral-2;
   box-shadow: 0 2px 8px rgba(0,0,0,.1);
   flex-wrap: wrap;
-}
-
-.home-main {
-  padding-right: $sp-6;
-  @include media-query-phone {
-  padding-right: 10px;
-  padding-left: 10px;
-  }
-}
-
-laji-news-list {
-  max-width: 400px;
-  padding-left: $sp-6;
-  border-left: 1px solid $neutral-4;
-  @media only screen and (max-width: map-get($map: $breakpoints, $key: "xs")) {
-    border-left: none;
-    padding-left: unset;
-  }
 }
 
 .content-max-width {
@@ -208,22 +190,22 @@ laji-news-list {
   padding: 20px;
 }
 
-.inat-img-container {
+.section-3-img-container {
   padding: 20px;
   width: 300px;
 }
 
-.inat-img {
+.section-3-img {
   width: 100%;
 }
 
-.inat-desc-container {
+.section-3-desc-container {
   padding: 20px;
   max-width: 700px;
   min-width: 300px;
 }
 
-.inat-link {
+.section-3-link {
   white-space: unset;
 }
 

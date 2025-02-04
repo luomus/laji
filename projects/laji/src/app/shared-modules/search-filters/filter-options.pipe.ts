@@ -9,7 +9,7 @@ export class FilterOptionsPipe implements PipeTransform {
     if (!Array.isArray(value) || !Array.isArray(args)) {
       return value;
     }
-    const all = [].concat(...args);
+    const all: any[] = [].concat(...args as any);
     if (key) {
       return value.filter(val => val[key] && all.indexOf(val[key]) !== -1);
     }

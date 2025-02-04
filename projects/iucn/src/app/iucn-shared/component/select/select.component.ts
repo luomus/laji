@@ -13,15 +13,15 @@ export interface SelectOption {
 })
 export class SelectComponent {
 
-  @Input() value: string;
-  @Input() placeholder: string;
-  @Input() options: SelectOption[];
+  @Input() value?: string;
+  @Input() placeholder?: string;
+  @Input() options?: SelectOption[];
 
   @Output() valueChange = new EventEmitter();
   @HostBinding('class') @Input() class = 'form-control';
 
   @HostListener('change', ['$event'])
-  onChange(event) {
+  onChange(event: any) {
     event.stopPropagation();
     this.valueChange.emit(event.target.value);
   }

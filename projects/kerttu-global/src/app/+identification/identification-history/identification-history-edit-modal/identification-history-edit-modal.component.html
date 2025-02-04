@@ -16,7 +16,7 @@
       <laji-spinner [spinning]="loading" [overlay]="true" class="flex-container">
         <bsg-identification-view
           class="flex-container"
-          *ngIf="recording"
+          *ngIf="recording && annotation"
           [recording]="recording"
           [(annotation)]="annotation"
           [buttonsDisabled]="saving || loading"

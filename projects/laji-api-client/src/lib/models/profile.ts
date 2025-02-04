@@ -14,10 +14,6 @@
 
 export interface Profile {
   /**
-   * Profile key to link profiles
-   */
-  profileKey?: string;
-  /**
    * Settings for the user
    */
   userID?: string;

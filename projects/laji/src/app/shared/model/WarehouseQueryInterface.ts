@@ -248,6 +248,7 @@ export interface WarehouseQueryInterface {
   featureType?: string;
   onlyCount?: boolean;
   pessimisticDateRangeHandling?: boolean;
+  local?: boolean;
   alive?: boolean;
   identificationBasis?: Array<string>;
   samplingMethod?: Array<string>;

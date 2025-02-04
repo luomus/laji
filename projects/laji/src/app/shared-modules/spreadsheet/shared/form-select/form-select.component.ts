@@ -26,7 +26,7 @@ interface FormList {
 })
 export class FormSelectComponent {
 
-  @Input() formID = '';
+  @Input() formID? = '';
   @Input() disabled = false;
   @Output() selected = new EventEmitter<any>();
 

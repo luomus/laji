@@ -17,6 +17,7 @@ import { TaxonTagEffectiveService } from '../document-viewer/taxon-tag-effective
 import { LoadingElementsService } from '../document-viewer/loading-elements.service';
 import { PlatformService } from '../../root/platform.service';
 import { AnnotationTag } from '../../shared/model/AnnotationTag';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-annotations',
@@ -28,17 +29,17 @@ import { AnnotationTag } from '../../shared/model/AnnotationTag';
 export class AnnotationsComponent implements OnInit, OnDestroy {
   @Input({ required: true }) rootID!: string;
   @Input() targetID?: string;
-  @Input({ required: true }) documentID!: string;
+  @Input() documentID?: string;
   @Input() isEditor?: boolean;
   @Input() personID?: string;
   @Input() personRoleAnnotation?: Annotation.AnnotationRoleEnum;
-  @Input() identifying = false;
+  @Input() identifying? = false;
   @Input() unit: any;
   @Input() gathering: any;
   @Input() annotations: Annotation[] = [];
   @Input() formVisible?: boolean;
   @Input() listVisible?: boolean;
-  @Input() annotationTags?: AnnotationTag[];
+  @Input() annotationTags?: AnnotationTag[] | null;
   @Output() annotationsClose = new EventEmitter<any>();
   @Output() annotationChange = new EventEmitter<Annotation>();
   @Output() loadingForm = new EventEmitter<any>();
@@ -73,8 +74,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     action: this.deleting ? 'deleting' : 'adding'
   };
   countCall = 0;
-
-
+  currentLang!: string;
 
   constructor(
     private annotationService: AnnotationService,
@@ -83,10 +83,12 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     private warehouseApi: WarehouseApi,
     private taxonTagEffective: TaxonTagEffectiveService,
     private loadingElements: LoadingElementsService,
-    private platformService: PlatformService
+    private platformService: PlatformService,
+    private translate: TranslateService,
     ) { }
 
   ngOnInit() {
+    this.currentLang = this.translate.currentLang;
     this.initEmptyAnnotation();
     this.findRendomKey1();
     if (this.identifying) {
@@ -108,6 +110,10 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscribeRefreshedAnnotations?.unsubscribe();
     this.subscribeRefreshedAnnotations1?.unsubscribe();
+  }
+
+  onManualLinkClick(event: MouseEvent) {
+    event.stopPropagation();
   }
 
   initEmptyAnnotation() {
@@ -196,7 +202,8 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   showDocument() {
     this.documentViewerFacade.showDocumentID({
       highlight: this.unit.unitId,
-      document: this.documentID,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      document: this.documentID!,
       openAnnotation: true,
       result: undefined
     });

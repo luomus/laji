@@ -17,8 +17,8 @@ import { FormService } from '../../../../shared/service/form.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdPointCountStatsComponent implements OnChanges {
-  @Input() document: Document;
-  @Input() namedPlace: NamedPlace;
+  @Input() document!: Document;
+  @Input() namedPlace!: NamedPlace;
 
   @Output() namedPlaceChange = new EventEmitter();
 
@@ -35,6 +35,7 @@ export class BirdPointCountStatsComponent implements OnChanges {
   }
 
   private initEditLink() {
-    this.path = this.formService.getEditUrlPath(this.document.formID, this.document.id);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.path = this.formService.getEditUrlPath(this.document.formID, this.document!.id!);
   }
 }

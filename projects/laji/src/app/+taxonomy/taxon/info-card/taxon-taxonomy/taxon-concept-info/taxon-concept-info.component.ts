@@ -13,10 +13,10 @@ import { catchError } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonConceptInfoComponent implements OnChanges, OnDestroy {
-  @Input() taxon: Taxonomy;
+  @Input() taxon!: Taxonomy;
 
-  taxonConceptId: string;
-  matches: TaxonMatch[];
+  taxonConceptId?: string;
+  matches!: TaxonMatch[];
 
   private subs: Subscription[] = [];
 

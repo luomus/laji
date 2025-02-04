@@ -30,18 +30,18 @@ const indexAndArrAfterFilter = <T>(index: number, arr: Array<T>, fn: (element: T
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationListComponent implements OnDestroy {
-  @Input() taxon: Taxonomy;
+  @Input() taxon!: Taxonomy;
 
-  @ViewChild('speciesContainer') speciesContainer: ElementRef;
+  @ViewChild('speciesContainer') speciesContainer!: ElementRef;
 
-  previousScrollTimestamp: DOMHighResTimeStamp;
+  previousScrollTimestamp: DOMHighResTimeStamp | undefined;
   scrolling = false;
   scrollDirection = 1;
 
-  destroyMouseupListener: () => void;
+  destroyMouseupListener: (() => void) | undefined;
 
-  private overlayRef: ComponentRef<ImageModalOverlayComponent>;
-  private showModalSub: Subscription;
+  private overlayRef: ComponentRef<ImageModalOverlayComponent> | undefined;
+  private showModalSub: Subscription | undefined;
   private showOverlay = false;
 
   constructor(
@@ -80,11 +80,10 @@ export class IdentificationListComponent implements OnDestroy {
 
   scrollEnd() {
     this.scrolling = false;
-    this.destroyMouseupListener();
+    this.destroyMouseupListener?.();
   }
 
   openImage(index?: number) {
-
     this.overlayRef = this.viewContainerRef.createComponent(ImageModalOverlayComponent,
       {
         environmentInjector: this.envInjector
@@ -94,31 +93,36 @@ export class IdentificationListComponent implements OnDestroy {
     this.showOverlay = true;
 
     if (this?.taxon?.species) {
-      this.overlayRef.instance.modalImages = this.taxon.multimedia.map((media, i) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.overlayRef.instance.modalImages = this.taxon.multimedia!.map((media, i) => {
         const image = <Image>{
-          ...this.taxon.multimedia[i],
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          ...this.taxon.multimedia![i],
           taxonId: this.taxon.id,
           vernacularName: this.taxon.vernacularName,
           scientificName: this.taxon.scientificName
         };
         return image;
       });
-      this.overlayRef.instance.showImage(index);
+      this.overlayRef.instance.showImage(index ?? 0);
     } else if (this.taxon.children?.length === 0) {
       this.overlayRef.instance.modalImages = [<Image>{
-        ...this.taxon.multimedia[0],
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        ...this.taxon.multimedia![0],
         taxonId: this.taxon.id,
         vernacularName: this.taxon.vernacularName,
         scientificName: this.taxon.scientificName
       }];
       this.overlayRef.instance.showImage(0);
-    } else if (this.taxon.children?.length > 0) {
+    } else if ((this.taxon.children?.length ?? 0) > 0) {
       const [filteredIndex, filteredChildren] = indexAndArrAfterFilter(
-        index, this.taxon.children,
-        taxonomy => taxonomy.multimedia && taxonomy.multimedia.length > 0
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        index ?? 0, this.taxon.children!,
+        taxonomy => (taxonomy.multimedia?.length ?? 0) > 0
       );
       this.overlayRef.instance.modalImages = filteredChildren.map(taxonomy => <Image>{
-          ...taxonomy.multimedia[0],
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          ...taxonomy.multimedia![0],
           taxonId: taxonomy.id,
           vernacularName: taxonomy.vernacularName,
           scientificName: taxonomy.scientificName
@@ -138,7 +142,7 @@ export class IdentificationListComponent implements OnDestroy {
       return;
     }
     this.showOverlay = false;
-    this.overlayRef.destroy();
+    this.overlayRef?.destroy();
   }
 
   ngOnDestroy() {

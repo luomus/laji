@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { SelectOption } from '../select/select.component';
 import { MetadataSelectComponent } from '../metadata-select/metadata-select.component';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { SelectOptions } from '../select-subcategories/select-subcategories.component';
 
 
 @Component({
@@ -11,18 +12,19 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComponent implements OnChanges {
-  @Input() query: WarehouseQueryInterface;
-  @Input() subCategories = [];
+  @Input({required: true}) query!: WarehouseQueryInterface;
+  @Input() subCategories: string[] = [];
   @Input() subTitleBase = '';
-  @Input() filtersName = [];
-  @Input() filtersValues = [];
+  @Input() filtersName: (keyof WarehouseQueryInterface)[] = [];
+  @Input() filtersValues: any[] = [];
 
   @Output() update = new EventEmitter<{id: string[] | string; category: string}>();
 
   categoryOptions:  {[key: string]: SelectOption[]} = {};
-  queryToSelect = [];
+  queryToSelect: any[] = [];
+  _options: SelectOptions[] = [];
 
-  ngOnChanges(changes) {
+  ngOnChanges(changes: SimpleChanges) {
     super.ngOnChanges(changes);
     this.queryToSelect = this.filtersValues;
   }

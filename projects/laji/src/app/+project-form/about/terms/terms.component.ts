@@ -13,15 +13,15 @@ import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.compo
 })
 export class TermsComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @LocalStorage() public vihkoSettings;
+  @LocalStorage() public vihkoSettings: any;
 
   @Input() modal = false;
   @Input() dismissLabel = 'Ok';
 
-  @ViewChild('modal') public modalComponent: ModalComponent;
+  @ViewChild('modal') public modalComponent!: ModalComponent;
 
   modalIsVisible = false;
-  private showModalSub: Subscription;
+  private showModalSub!: Subscription;
 
   constructor(private userService: UserService) { }
 

@@ -27,14 +27,14 @@
 
     <ngx-datatable-row-detail>
       <ng-template let-row="row" ngx-datatable-row-detail-template>
-        <div *ngFor="let col of _columns | filterColumns:displayMode:true" style="padding-left: 35px">
+        <div *ngFor="let col of _columns | filterColumns:displayMode!:true" style="padding-left: 35px">
           <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>
           <span>{{ row[col.prop] }}</span>
         </div>
       </ng-template>
     </ngx-datatable-row-detail>
 
-    <ngx-datatable-column [flexGrow]="" [resizeable]="false"
+    <ngx-datatable-column [resizeable]="false"
                           [draggable]="false" *ngIf="displayMode !== 'large'" [headerClass]="'empty-header'">
       <ng-template ngx-datatable-header-template><span></span></ng-template>
       <ng-template let-row="row" ngx-datatable-cell-template>
@@ -46,7 +46,7 @@
       </ng-template>
     </ngx-datatable-column>
 
-    <ngx-datatable-column *ngIf="actions.length > 0" [name]="" [sortable]="false"  [flexGrow]="1" >
+    <ngx-datatable-column *ngIf="actions.length > 0" [sortable]="false"  [flexGrow]="1" >
         <ng-template let-row="row" let-value="value"  ngx-datatable-cell-template>
             <div class="buttons" *ngIf="(actions | includes:'view')">
                 <button
@@ -68,7 +68,7 @@
             </div>
         </ng-template>
     </ngx-datatable-column>
-    <ngx-datatable-column *ngFor="let col of _columns | filterColumns:displayMode; let i = index" [prop]="col.prop" [flexGrow]="1">
+    <ngx-datatable-column *ngFor="let col of _columns | filterColumns:displayMode!; let i = index" [prop]="col.prop" [flexGrow]="1">
       <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
         <span class="datatable-header-cell-wrapper"
               (click)="sort()"

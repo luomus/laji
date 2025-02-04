@@ -39,7 +39,7 @@ const redlistStatusMapRev = [
 ];
 const getRedlistStatusColor = (redlistStatus: string | undefined): string => {
   if (!redlistStatus) { return '#ffffff'; }
-  return lajiMapObservationVisualization.redlistStatus.categories[redlistStatusMap[redlistStatus]].color;
+  return lajiMapObservationVisualization.redlistStatus.categories[redlistStatusMap[<keyof typeof redlistStatusMap>redlistStatus]].color;
 };
 
 const getIndividualCountColor = (count: number): string => {
@@ -99,10 +99,13 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
     ],
     getFeatureStyle: (options) => ({
       ...BASE_FEATURE_STYLE,
-      color: getObsCountColor(options.feature.properties.count),
-      className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      color: getObsCountColor(options.feature!.properties!.count),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      className: getCoordinateAccuracyClassName(options.feature!.properties!['gathering.interpretations.coordinateAccuracy'])
     }),
-    getClusterColor: (markers) => getObsCountColor(markers.reduce((prev, marker) => prev + marker.feature.properties.count, 0))
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    getClusterColor: (markers) => getObsCountColor(markers.reduce((prev, marker) => prev + marker.feature!.properties.count, 0))
   },
   recordQuality: {
     label: 'laji-map.legend.mode.recordQuality',
@@ -130,15 +133,18 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
     ],
     getFeatureStyle: (options) => ({
       ...BASE_FEATURE_STYLE,
-      color: getRecordQualityColor(options.feature.properties.recordQualityMax),
-      className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      color: getRecordQualityColor(options.feature!.properties!.recordQualityMax),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      className: getCoordinateAccuracyClassName(options.feature!.properties!['gathering.interpretations.coordinateAccuracy'])
     }),
     // display the best (smallest) record quality
     getClusterColor: (markers) => getRecordQualityColor(
       recordQualityMapRev[
         markers.reduce(
           (min, curr) => {
-            const n = recordQualityMap[curr.feature.properties.recordQualityMax];
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const n = recordQualityMap[curr.feature!.properties.recordQualityMax];
             return min < n ? min : n;
           },
           Infinity
@@ -172,8 +178,10 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
     ],
     getFeatureStyle: (options) => ({
       ...BASE_FEATURE_STYLE,
-      color: getRedlistStatusColor(options.feature.properties.redListStatusMax),
-      className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      color: getRedlistStatusColor(options.feature!.properties!.redListStatusMax),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      className: getCoordinateAccuracyClassName(options.feature!.properties!['gathering.interpretations.coordinateAccuracy'])
     }),
     // display the worst (largest) redlist status group
     // defaults to 0
@@ -181,7 +189,8 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
       redlistStatusMapRev[
         markers.reduce(
           (max, curr) => {
-            const n = redlistStatusMap[curr.feature.properties.redListStatusMax];
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const n = redlistStatusMap[<keyof typeof redlistStatusMap>curr.feature!.properties.redListStatusMax];
             return n > max ? n : max;
           },
           0
@@ -219,10 +228,13 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
     ],
     getFeatureStyle: (options) => ({
       ...BASE_FEATURE_STYLE,
-      color: getIndividualCountColor(options.feature.properties.individualCountSum),
-      className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      color: getIndividualCountColor(options.feature!.properties!.individualCountSum),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      className: getCoordinateAccuracyClassName(options.feature!.properties!['gathering.interpretations.coordinateAccuracy'])
     }),
-    getClusterColor: (markers) => getIndividualCountColor(markers.reduce((prev, marker) => prev + marker.feature.properties.individualCountSum, 0))
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    getClusterColor: (markers) => getIndividualCountColor(markers.reduce((prev, marker) => prev + marker.feature!.properties.individualCountSum, 0))
   },
   recordAge: {
     label: 'laji-map.legend.mode.recordAge',
@@ -250,13 +262,16 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
     ],
     getFeatureStyle: (options) => ({
       ...BASE_FEATURE_STYLE,
-      color: getRecordAgeColor(options.feature.properties.newestRecord),
-      className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      color: getRecordAgeColor(options.feature!.properties!.newestRecord),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      className: getCoordinateAccuracyClassName(options.feature!.properties!['gathering.interpretations.coordinateAccuracy'])
     }),
     getClusterColor: (markers) =>
       // display color based on the newest record
       getRecordAgeColor(markers.reduce((p, curr) => {
-        const nr = curr.feature.properties.newestRecord || '0001-01-01';
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const nr = curr.feature!.properties.newestRecord || '0001-01-01';
         return sliceYear(p) < sliceYear(nr) ? nr : p;
       }, '0001-01-01'))
   }
