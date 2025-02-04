@@ -8,7 +8,7 @@ import { DownloadRequest, DownloadRequestType } from '../models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DownloadRequestBasicInfoComponent {
-  @Input() downloadRequest: Partial<DownloadRequest>;
+  @Input() downloadRequest!: Partial<DownloadRequest>;
   @Input() showPerson = false;
   @Input() downloadRequestType: DownloadRequestType = 'fileDownload';
 }

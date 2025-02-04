@@ -56,7 +56,7 @@ export class AugmentService {
 
     if (id === document.namedPlaceID && namedPlace.prepopulatedDocument?.gatherings) {
       namedPlace.prepopulatedDocument?.gatherings.forEach((gathering, idx) => {
-        if (document.gatherings[idx]) {
+        if (document.gatherings?.[idx]) {
           this.augment(document.gatherings[idx], this.documentService.removeMeta(gathering, excluded));
         }
       });
