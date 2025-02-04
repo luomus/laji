@@ -32,6 +32,8 @@
   "theme.excel": "Exportera data till Excel",
   "theme.excel.desc": "Använd den här guiden för att importera TSV-filer till Excel. I synnerhet är det här hur man gör specialtecken som Ä, ф och ♀ i Excel korrekt och hur man förhindrar att Excel konverterar siffror till datum. (på finska)",
   "theme.export": "Kopiera information från Artdatacentret",
+  "theme.geoapi": "OGC API Features -rajapinta",
+  "theme.geoapi.desc": "Viranomaisrajausten karkeistamattomat havainnot OGC API Features -rajapinnasta.",
   "theme.import": "Dela data med Artdatacentret",
   "theme.import.1": "Förena samlingar",
   "theme.import.1.desc": "Den här hjälpsidan beskriver alternativ för hur din egen samling kan förenas till Finlands Artdatacenter. (på finska)",
