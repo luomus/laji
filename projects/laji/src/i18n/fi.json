@@ -216,7 +216,6 @@
   "download.reason-required": "Sinun täytyy valita aineiston käytön syy ja kirjoittaa lisätiedot",
   "downloadRequest.accessed": "haettu",
   "downloadRequest.apiKey": "API-avain",
-  "downloadRequest.geoApiKey": "OGC API-avain",
   "downloadRequest.apiKeyExpires": "Voimassaolon päättymispäivä",
   "downloadRequest.apiKeyRequested": "Luontipäivä",
   "downloadRequest.approximateMatches": "Osumien lkm",
@@ -241,6 +240,7 @@
   "downloadRequest.fileDownload.type.gis.info": "Paikkatietomuotoisessa aineistolatauksessa voit itse määrittää aineiston tiedostomuodon, geometriatyypin ja koordinaattijärjestelmän.<br><br>Tiedostomuoto:<br>.gpkg = GeoPackage<br><br>Geometria:<br>point =  havaintojen sijaintien keskipisteet<br>footprint = havaintojen geometriat alkuperäisessä muodossaan: voi sisältää piste-, viiva- ja aluegeometrioita<br>bbox = havaintojen \"Bounding Box\" -aluerajaukset<br><br>CRS (koordinaattijärjestelmä):<br>euref (ETRS89-TM35FIN, epsg 3067)<br>wgs84 (epsg 4326)",
   "downloadRequest.fileDownload.type.standard": "Vakio",
   "downloadRequest.filters": "Rajaukset",
+  "downloadRequest.geoApiKey": "OGC API-avain",
   "downloadRequest.link": "Linkki hakuun",
   "downloadRequest.metadata": "metatiedot",
   "downloadRequest.notFound": "Aineistolatausta id:llä {{id}} ei löytynyt.",
@@ -605,6 +605,8 @@
   "home.observation": "Havainnot",
   "home.observation-intro": "Havaintohaku - Selaa Lajitietokeskukseeen tallennettuja lajihavaintoja monipuolisen rajustyökalun avulla kartoilla ja taulukossa. Kaikki avoimessa käytössä olevat aineistot ovat ladattavissa käyttöösi.",
   "home.observation-sub-intro": "Selaa havaintoja",
+  "home.pinkka.btn": "Tutustu Pinkkaan",
+  "home.pinkka.desc": "Pinkka on lajintunnistusta tukeva verkko-oppimisympäristö. Pinkasta löydät eri tarpeisiin kootut virtuaaliset näytepinkat lajintuntemuksen opiskeluun – opiskeliljalle, luontoharrastajalle ja koululaiselle.",
   "home.search.exact": "Tarkat tulokset",
   "home.search.likely": "Todennäköiset tulokset",
   "home.search.partial": "Osittaiset tulokset",
@@ -2169,7 +2171,5 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä",
-  "home.pinkka.desc": "Pinkka on lajintunnistusta tukeva verkko-oppimisympäristö. Pinkasta löydät eri tarpeisiin kootut virtuaaliset näytepinkat lajintuntemuksen opiskeluun – opiskeliljalle, luontoharrastajalle ja koululaiselle.",
-  "home.pinkka.btn": "Tutustu Pinkkaan"
+  "yes": "Kyllä"
 }
