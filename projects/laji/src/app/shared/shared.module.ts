@@ -85,6 +85,7 @@ import { AlertModule } from 'projects/laji-ui/src/lib/alert/alert.module';
 import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
+import { InfoPageRedirectComponent } from './info-page-redirect/info-page-redirect.component';
 
 @NgModule({
     declarations: [
@@ -98,7 +99,7 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
         HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,
         ObservationGroupSelectComponent, IucnGroupSelectComponent,
         SourcePipe, RemoveEmptyPipe, DatePickerComponent,
-        TaxonNameComponent, NotFoundComponent,
+        TaxonNameComponent, NotFoundComponent, InfoPageRedirectComponent,
         ChecklistPipe,
         FactNotInPipe,
         CapitalizePipe,
@@ -165,6 +166,7 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
         FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe, IncludesPipe,
         UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule,
         NotFoundComponent,
+        InfoPageRedirectComponent,
         QualityUrlPipe,
         InfoModule,
         CheckboxValuePipe,

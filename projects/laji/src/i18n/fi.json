@@ -2173,6 +2173,13 @@
   "wholeYear": "Koko vuosi {{year}}",
   "yes": "Kyllä",
   "infoLinks.notebook": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/havaintopalvelut/vihko-havaintojarjestelma/",
+  "infoLinks.notebook.termsOfUse": "https://info.laji.fi/etusivu/vihko-havaintojarjestelma/vihko-havaintopalvelun-kayttoehdot/",
+  "infoLinks.notebook.mobileNotebook": "https://info.laji.fi/etusivu/vihko-havaintojarjestelma/mobiilivihko/",
+  "infoLinks.notebook.mobileFormInstructions": "https://info.laji.fi/etusivu/vihko-havaintojarjestelma/mobiililomakkeen-kayttoohje/",
+  "infoLinks.notebook.tripFormInstructions": "https://info.laji.fi/etusivu/vihko-havaintojarjestelma/retkilomakkeen-kayttoohje/",
+  "infoLinks.notebook.labelDesignerInstructions": "https://info.laji.fi/etusivu/vihko-havaintojarjestelma/nayte-etikettien-tekeminen-vihkossa/",
+  "infoLinks.notebook.excelImportInstructions": "https://info.laji.fi/etusivu/vihko-havaintojarjestelma/retkilomakkeen-kayttoohje/havaintojen-tallennus-tiedostona/",
+  "infoLinks.notebook.templateInstructions": "https://info.laji.fi/etusivu/vihko-havaintojarjestelma/retkilomakkeen-kayttoohje/esitaytetyt-lomakkeet/",
   "infoLinks.ykj": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/paikkatieto/paikkatietotuotteet/yhtenaiskoordinaatisto-ykj/",
   "infoLinks.biogeographicalProvinces": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/paikkatieto/paikkatietotuotteet/eliomaakunnat/",
   "infoLinks.rPackage": "https://info.laji.fi/en/frontpage/services-and-instructions/api-technical/r-package/",
@@ -2185,5 +2192,6 @@
   "infoLinks.sensitiveData": "https://info.laji.fi/etusivu/tiedonhallinta/sensitiivinen-lajitieto/",
   "infoLinks.excelImport": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/laji-fi/tiedostojen-vienti-exceliin/",
   "infoLinks.arcGISImport": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/paikkatieto/muut-paikkatieto-ohjeet/tiedoston-vienti-arcgis-paikkatieto-ohjelmaan/",
-  "infoLinks.map": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/laji-fi/lajitietokeskuksen-karttapalvelu/"
+  "infoLinks.map": "https://info.laji.fi/etusivu/palvelut-ja-ohjeet/laji-fi/lajitietokeskuksen-karttapalvelu/",
+  "infoLinks.gis": "https://info.laji.fi/etusivu/paikkatieto/muut-paikkatieto-ohjeet/"
 }

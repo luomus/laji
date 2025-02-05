@@ -14,7 +14,7 @@
       <laji-haseka-terms *ngIf="isFront"></laji-haseka-terms>
       <a [href]="'infoLinks.changelog' | translate" target="_blank"><b>{{ 'haseka.changelog' | translate }}</b></a> |
       <a [href]="'infoLinks.notebook' | translate" target="_blank">{{ 'haseka.instructions' | translate }}</a> |
-      <a [routerLink]="('/about/' + (lang !== 'en' ? '5809' : '5874')) | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
+      <a [href]="'infoLinks.notebook.termsOfUse' | translate" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
       <router-outlet></router-outlet>
   </main>
   <nav>
