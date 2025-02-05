@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components, paths } from 'projects/laji-api-client-b/generated/api';
+import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
 import { map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { Sort } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 import { filterDefaultValues, Filters, HIGHER_TAXA } from './trait-search-filters/trait-search-filters.component';

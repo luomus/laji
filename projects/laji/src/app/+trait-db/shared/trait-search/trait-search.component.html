@@ -10,7 +10,7 @@
 <a class="btn btn-default" [href]="getDownloadUrl()" download="traits.zip">Download</a>
 
 <lu-datatable
-  [rows]="searchResult?.res.results ?? []"
+  [rows]="$any(searchResult?.res?.results) ?? []"
   [columns]="[
     { title: 'Type', prop: 'subject.type', sortable: false },
     { title: 'Taxon', prop: 'subjectFinBIFTaxon.scientificName', sortable: false },
@@ -25,7 +25,7 @@
     { title: 'Functional group name', prop: 'subject.functionalGroupName', sortable: false },
   ]"
   [defaultColumns]="[0, 1, 2, 3, 4, 5, 6]"
-  [totalPages]="searchResult?.res.total ?? 1"
+  [totalPages]="searchResult?.res?.total ?? 1"
   [currentPageIdx]="currentPageIdx"
   [loading]="loading"
   [ghostCount]="pageSize"
