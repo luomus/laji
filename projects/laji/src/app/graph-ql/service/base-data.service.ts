@@ -1,11 +1,10 @@
 import { gql, QueryRef } from 'apollo-angular';
 import { Injectable, OnDestroy } from '@angular/core';
-import { EMPTY, Observable, ReplaySubject, Subject } from 'rxjs';
-import { catchError, filter, map, takeUntil } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { GraphQLService } from './graph-ql.service';
 import { TranslateService } from '@ngx-translate/core';
-import { OnDataOptions } from '@apollo/client';
 
 export interface IBaseData {
   classes: {

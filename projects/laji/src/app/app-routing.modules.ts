@@ -31,6 +31,7 @@ const baseRoutes: Routes = [
     data: {title: 'navigation.map', displayFeedback: false, preload: false }
   },
   {path: 'error/404', pathMatch: 'full', component: NotFoundComponent},
+  {path: 'theme/checklist', component: InfoPageRedirectComponent, data: {infoLink: 'infoLinks.checklist'}, pathMatch: 'full'},
   {path: 'theme/ykj', component: InfoPageRedirectComponent, data: {infoLink: 'infoLinks.ykj'}, pathMatch: 'full'},
   {path: 'theme/emk', component: InfoPageRedirectComponent, data: {infoLink: 'infoLinks.biogeographicalProvinces'}, pathMatch: 'full'},
   {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule), data: {preload: false}},
