@@ -9,6 +9,7 @@ import { HeaderService } from '../../shared/service/header.service';
 import { PlatformService } from '../../root/platform.service';
 import { HistoryService } from '../../shared/service/history.service';
 import { Util } from '../../shared/service/util.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 declare const ga: (eventName: string, hitType: string, data: string) => void;
 

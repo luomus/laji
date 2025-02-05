@@ -23,6 +23,7 @@ import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http
 import { BrowserModule, provideClientHydration, Title } from '@angular/platform-browser';
 import { LajiTitle } from './shared/service/laji-title';
 import { LocaleModule } from './locale/locale.module';
+import { API_BASE_URL } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -60,6 +61,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     {provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: TransferHttpCacheInterceptor, multi: true},
     {provide: APP_BASE_HREF, useValue: '/'},
+    {provide: API_BASE_URL, useValue: environment.apiBase},
     DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},
     LocalizeRouterService,
