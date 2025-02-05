@@ -5,7 +5,7 @@ import { OwnSubmissionsComponent } from './own-submissions/own-submissions.compo
 import { TemplatesComponent } from './templates/templates.component';
 import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { VihkoHomeComponent } from './vihko-home/vihko-home.component';
-import { InfoPageRedirectComponent } from '../shared/info-page-redirect/info-page-redirect.component';
+import { ExternalRedirectComponent } from '../shared/external-redirect/external-redirect.component';
 
 export const hasekaRoutes: Routes = [
   {
@@ -23,9 +23,9 @@ export const hasekaRoutes: Routes = [
   {
     path: 'terms-of-service',
     pathMatch: 'full',
-    component: InfoPageRedirectComponent,
+    component: ExternalRedirectComponent,
     data: {
-      infoLink: 'infoLinks.notebook.termsOfUse'
+      linkKey: 'infoLinks.notebook.termsOfUse'
     }
   },
   {
