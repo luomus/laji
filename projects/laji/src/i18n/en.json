@@ -1838,6 +1838,8 @@
   "taxonomy.taxonPage.search": "Write taxon’s name",
   "taxonomy.total": "Total",
   "taxonomy.trade.name": "Trade name",
+  "taxonomy.traitDb": "Lajien ominaisuustietokanta",
+  "taxonomy.traitDb.intro": "Selaa ja tallenna eliölajien ominaisuuksia ja ominaispiirteitä.",
   "taxonomy.typeOfOccurrenceInFinland": "Status in Finland",
   "taxonomy.typeOfOccurrenceInFinlandNotes": "Notes on status in Finland",
   "taxonomy.typeSpecimens": "Type specimen",

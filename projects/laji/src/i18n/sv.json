@@ -1838,6 +1838,8 @@
   "taxonomy.taxonPage.search": "Skriv taxons namn",
   "taxonomy.total": "Totalt",
   "taxonomy.trade.name": "Handelsnamn",
+  "taxonomy.traitDb": "Lajien ominaisuustietokanta",
+  "taxonomy.traitDb.intro": "Selaa ja tallenna eliölajien ominaisuuksia ja ominaispiirteitä.",
   "taxonomy.typeOfOccurrenceInFinland": "Typ av förekomst i Finland",
   "taxonomy.typeOfOccurrenceInFinlandNotes": "Anteckningar om typ av förekomst",
   "taxonomy.typeSpecimens": "Typprov",
