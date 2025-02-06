@@ -36,6 +36,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   showSearch = false;
   containerClass: string;
   navId: string;
+  isOpenForm = false;
 
   notificationsNotSeen = 0;
   notificationsTotal$!: Observable<number>;
@@ -72,6 +73,10 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     }
     this.router.events.pipe(takeUntil(this.unsubscribe$)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
+        if (this.router.url.includes('pyoriaiset')) {
+          this.isOpenForm = true;
+        }
+
         this.closeMenu();
         this.changeDetector.markForCheck();
       }
