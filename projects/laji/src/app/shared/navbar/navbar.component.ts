@@ -18,6 +18,7 @@ import { Global } from '../../../environments/global';
 import { NotificationsFacade } from './notifications/notifications.facade';
 import { BrowserService } from '../service/browser.service';
 import { PlatformService } from '../../root/platform.service';
+import { NavbarService } from '../service/navbar.service';
 
 @Component({
   selector: 'laji-navbar',
@@ -48,6 +49,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     protected changeDetector: ChangeDetectorRef,
+    public navbarService: NavbarService,
     public translate: TranslateService,
     private notificationsFacade: NotificationsFacade,
     private browserService: BrowserService,
@@ -71,12 +73,11 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     if (this.platformService.isServer) {
       return;
     }
+    this.navbarService.navbarVisible$.subscribe(() => {
+      this.cdr.markForCheck();
+    });
     this.router.events.pipe(takeUntil(this.unsubscribe$)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        if (this.router.url.includes('pyoriaiset')) {
-          this.isOpenForm = true;
-        }
-
         this.closeMenu();
         this.changeDetector.markForCheck();
       }

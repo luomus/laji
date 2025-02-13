@@ -9,6 +9,7 @@ import { LajiFormComponent } from '../../+project-form/form/laji-form/laji-form/
 import { DialogService } from '../../shared/service/dialog.service';
 import { DocumentStorage } from '../../storage/document.storage';
 import { UserService } from '../../shared/service/user.service';
+import { NavbarService } from '../../shared/service/navbar.service';
 
 @Component({
   selector: 'laji-open-form',
@@ -43,6 +44,7 @@ export class OpenFormComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
+    private navbarService: NavbarService,
     private dialogService: DialogService,
     private userService: UserService,
     private documentStorage: DocumentStorage,
@@ -50,6 +52,8 @@ export class OpenFormComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.navbarService.navbarVisible = false;
+
     this.vm$ = this.documentFormFacade.getViewModel('MHL.1156', '', '', false);
     this.vmSub = this.vm$.pipe(filter(isSaneViewModel)).subscribe(vm => {
       this.vm = vm;
@@ -61,6 +65,8 @@ export class OpenFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.navbarService.navbarVisible = true;
+
     this.documentFormFacade.flush();
     this.vmSub.unsubscribe();
   }
