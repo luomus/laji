@@ -1,1 +1,37 @@
-<p>Pyöriäislomake</p>
+<ng-container *ngIf="vm$ | async; let vm; else spinner">
+  <ng-container *ngIf="vm | typeGuard: isSaneViewModel as vm">
+    <div class="laji-form">
+      <laji-form
+        [form]="vm.form"
+        [formData]="vm.formData"
+        [settingsKey]="vm.form.id"
+        [showShortcutButton]="!vm.form.options?.mobile"
+        (dataChange)="onChange($event)"
+        (dataSubmit)="onSubmit($event)"
+        (validationError)="onValidationError($event)"
+        (goBack)="onGoBack()"
+      ></laji-form>
+      <laji-form-footer
+        [form]="vm.form"
+        [dateEdited]="vm.formData.dateEdited"
+        [locked]="vm.locked!"
+        [isAdmin]="vm.isAdmin"
+        [status]="vm.hasChanges ? 'unsaved' : ''"
+        [readonly]="vm.readonly"
+        [edit]="!!documentID"
+        [errors]="validationErrors"
+        [touchedCounter]="(touchedCounter$ | async)!"
+        [lajiForm]="lajiForm"
+        [template]="template"
+        (lock)="lock($event)"
+        (submitPublic)="submitPublic()"
+        (submitPrivate)="submitPrivate()"
+        (submitTemplate)="submitTemplate()"
+        (leave)="onLeave()"></laji-form-footer>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #spinner>
+  <laji-spinner #spinner [spinning]="true" [overlay]="true"></laji-spinner>
+</ng-template>

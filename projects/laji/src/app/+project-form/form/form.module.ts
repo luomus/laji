@@ -41,6 +41,9 @@ import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
     FormComponent,
     DocumentFormComponent,
   ],
+  exports: [
+    DocumentFormComponent
+  ],
   providers: [
   ]
 })
