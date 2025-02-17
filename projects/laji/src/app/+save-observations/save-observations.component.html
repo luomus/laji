@@ -5,7 +5,7 @@
     <p>{{ 'saveObservations.desc' | translate }}</p>
     <h2>{{ 'saveObservations.chooseSystem' | translate }}</h2>
     <div class="d-flex flex-row my-6 flex-nowrap sm:flex-wrap">
-      <div class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2">
+      <div class="report-type-container d-flex flex-col flex-grow-1 justify-between xs:basis-0 basis-3 m-2">
         <div>
           <a class="d-block mb-4 inaturalist-link" href="https://inaturalist.laji.fi/" target="_blank">
             <img src="/static/images/inat-sufi.png" alt="iNaturalist Suomi">
@@ -25,7 +25,7 @@
           </a>
         </div>
       </div>
-      <div class="report-type-container d-flex flex-col justify-between m-2">
+      <div class="report-type-container d-flex flex-col flex-grow-1 justify-between xs:basis-0 basis-3 m-2">
         <div>
           <a [routerLink]="['/vihko'] | localize" class="vihko-logo">{{ 'saveObservations.vihko' | translate }}</a>
           <ul>
@@ -36,7 +36,7 @@
         </div>
         <div><button [routerLink]="['/vihko'] | localize" class="btn btn-primary">{{ 'saveObservations.vihko.report' | translate }}</button></div>
       </div>
-      <div class="report-type-container d-flex flex-col justify-between m-2">
+      <div class="report-type-container d-flex flex-col flex-grow-1 justify-between xs:basis-0 basis-3 m-2">
         <div>
           <h3>{{ 'saveObservations.easy' | translate }}</h3>
           <ul>
@@ -46,6 +46,15 @@
           </ul>
         </div>
         <div><a href="https://loydos.luomus.fi/loydos/forms/luontohavainto?language=fi" target="_blank" class="btn btn-primary">{{ 'saveObservations.easy.report' | translate }}</a></div>
+      </div>
+      <div class="report-type-container d-flex flex-col flex-grow-1 justify-between xs:basis-0 basis-3 m-2">
+        <div>
+          <a [routerLink]="['/pyoriaiset'] | localize" class="vihko-logo">{{ 'saveObservations.openForm' | translate }}</a>
+          <ul>
+            <li>{{ 'saveObservations.openForm.1' | translate }}</li>
+          </ul>
+        </div>
+        <div><button [routerLink]="['/pyoriaiset'] | localize" class="btn btn-primary">{{ 'saveObservations.openForm.report' | translate }}</button></div>
       </div>
     </div>
   </section>
