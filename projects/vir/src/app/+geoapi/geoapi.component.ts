@@ -24,7 +24,7 @@ export class GeoapiComponent {
     private cd: ChangeDetectorRef
   ) {}
 
-  apiKey?: string;
+  apiKey = '';
   apiKeyLoading = false;
 
   onApiKeyRequest(req: ApiKeyRequest) {
