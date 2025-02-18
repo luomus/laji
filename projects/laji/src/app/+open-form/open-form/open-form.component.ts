@@ -10,9 +10,6 @@ import { DialogService } from '../../shared/service/dialog.service';
 import { DocumentStorage } from '../../storage/document.storage';
 import { UserService } from '../../shared/service/user.service';
 import { NavbarService } from '../../shared/service/navbar.service';
-import { ToastsService } from '../../shared/service/toasts.service';
-import { TranslateService } from '@ngx-translate/core';
-import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 @Component({
   selector: 'laji-open-form',
@@ -24,7 +21,6 @@ import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.compo
 })
 export class OpenFormComponent implements OnInit, OnDestroy {
   @ViewChild(LajiFormComponent) lajiForm!: LajiFormComponent;
-  @ViewChild('saveAsTemplate') public templateModal!: ModalComponent;
 
   vm$!: Observable<ViewModel>;
 
@@ -39,10 +35,8 @@ export class OpenFormComponent implements OnInit, OnDestroy {
   private vm!: SaneViewModel;
   private vmSub!: Subscription;
   private confirmLeave = true;
-  private saving = false;
   private publicityRestrictions!: Document.PublicityRestrictionsEnum;
   private isFromCancel = false;
-  private documentForTemplate: any = {};
 
   validationErrors: any;
 
@@ -52,8 +46,6 @@ export class OpenFormComponent implements OnInit, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private navbarService: NavbarService,
     private dialogService: DialogService,
-    private toastsService: ToastsService,
-    private translate: TranslateService,
     private userService: UserService,
     private documentStorage: DocumentStorage,
     private documentFormFacade: DocumentFormFacade
@@ -77,10 +69,6 @@ export class OpenFormComponent implements OnInit, OnDestroy {
 
     this.documentFormFacade.flush();
     this.vmSub.unsubscribe();
-  }
-
-  successNavigation() {
-    this.router.navigate(['pyoriaiset/thank-you']);
   }
 
   canDeactivate(leaveKey = 'haseka.form.leaveConfirm', cancelKey = 'haseka.form.discardConfirm') {
@@ -111,30 +99,7 @@ export class OpenFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(event: any) {
-    if (this.saving) {
-      return;
-    }
-    const document = event.data.formData;
-    if (!this.template) {
-      this.lajiForm.block();
-      this.saving = true;
-      this.documentFormFacade.save({...document, publicityRestrictions: this.publicityRestrictions}).subscribe(() => {
-        this.lajiForm.unBlock();
-        this.saving = false;
-        this.toastsService.showSuccess(this.getMessage(
-            this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
-           this.translate.instant('haseka.form.success')
-        ));
-        this.successNavigation();
-      }, () => {
-        this.lajiForm.unBlock();
-        this.saving = false;
-        this.lajiForm.displayErrorModal('saveError');
-      });
-    } else {
-      this.documentForTemplate = document;
-      this.templateModal.show();
-    }
+    console.log('submit', event);
   }
 
   onValidationError(errors: any) {
@@ -171,14 +136,5 @@ export class OpenFormComponent implements OnInit, OnDestroy {
 
   goBack() {
     this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']));
-  }
-
-  private getMessage(type: any, defaultValue: any) {
-    const {options = {}} = this.vm.form || {};
-    return (
-      type === 'success' ? options.saveSuccessMessage :
-      type === 'success-temp' ? options.saveDraftSuccessMessage :
-      type === 'error' ? options.saveErrorMessage : undefined
-    ) ?? defaultValue;
   }
 }
