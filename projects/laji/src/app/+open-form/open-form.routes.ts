@@ -1,7 +1,7 @@
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OpenFormComponent } from './open-form/open-form.component';
-import { AboutComponent } from '../+project-form/about/about.component';
+import { OpenFormThankYouComponent } from './open-form-thank-you/open-form-thank-you.component';
 
 export const routes: Routes = [
   {
@@ -9,9 +9,9 @@ export const routes: Routes = [
     component: OpenFormComponent
   },
   {
-    path: 'about',
+    path: 'thank-you',
     pathMatch: 'prefix',
-    component: AboutComponent
+    component: OpenFormThankYouComponent
   }
 ];
 
