@@ -37,7 +37,6 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   showSearch = false;
   containerClass: string;
   navId: string;
-  isOpenForm = false;
 
   notificationsNotSeen = 0;
   notificationsTotal$!: Observable<number>;
@@ -74,6 +73,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
       return;
     }
     this.navbarService.navbarVisible$.subscribe(() => {
+      // required to update the view when the navbar visibility changes
       this.cdr.markForCheck();
     });
     this.router.events.pipe(takeUntil(this.unsubscribe$)).subscribe((event) => {

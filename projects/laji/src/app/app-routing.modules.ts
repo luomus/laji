@@ -39,8 +39,7 @@ const baseRoutes: Routes = [
   {path: 'save-observations', loadChildren: () => import('./+save-observations/save-observations.module').then(m => m.SaveObservationsModule)},
   {path: 'project', loadChildren: () => import('./+project-form/project-form.module').then(m => m.ProjectFormModule)},
   {path: 'project-edit', loadChildren: () => import('./+project-form-edit/project-form-edit.module').then(m => m.ProjectFormEditModule)},
-  {path: 'citation', loadChildren: () => import('./+citable-download/citable-download.module').then(m => m.CitableDownloadModule), data: {preload: false}},
-  {path: 'pyoriaiset', loadChildren: () => import('./+open-form/open-form.module').then(m => m.OpenFormModule)}
+  {path: 'citation', loadChildren: () => import('./+citable-download/citable-download.module').then(m => m.CitableDownloadModule), data: {preload: false}}
 ];
 
 const rootRouting = {
