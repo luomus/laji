@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { isObject } from '@luomus/laji-map/lib/utils';
 import { AdditionalFilterValues } from './trait-search-filters/additional-filters.component';
 import { environment } from 'projects/laji/src/environments/environment';
+import { cols } from './trait-search-table-columns';
 
 type SearchResponse = paths['/trait/search']['get']['responses']['200']['content']['application/json'];
 
@@ -60,6 +61,7 @@ const getSearchApiQuery = (pageIdx: number, sorts: Sort[], filters: Partial<Filt
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitSearchComponent implements OnInit, OnDestroy {
+  columns = cols.map(([prop, _]) => ({ title: prop as string, prop: prop as string, sortable: false }));
   initialFilters: Partial<Filters> | undefined;
   searchResult: SearchResult | undefined;
   pageSize = PAGE_SIZE;

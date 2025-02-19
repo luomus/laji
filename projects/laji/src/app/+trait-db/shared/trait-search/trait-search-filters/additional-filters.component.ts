@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { filters } from './filters';
 
 interface BaseFilter {
   // what this filter gets mapped to in the final search api query
@@ -11,7 +12,7 @@ interface BaseFilter {
 
 interface StringFilter extends BaseFilter {
   filterType: 'string';
-  defaultValue: 'string' | null;
+  defaultValue: string | null;
 }
 
 interface EnumFilter<T extends string> extends BaseFilter {
@@ -25,38 +26,23 @@ interface BooleanFilter extends BaseFilter {
   defaultValue: boolean | null;
 }
 
-type AdditionalFilter = StringFilter | EnumFilter<any> | BooleanFilter;
+interface NumberFilter extends BaseFilter {
+  filterType: 'number';
+  defaultValue: number | null;
+}
+
+interface ArrayFilter<T> extends BaseFilter {
+  filterType: 'array';
+  defaultValue: null;
+  elementType: T;
+}
+
+export type AdditionalFilter = StringFilter | EnumFilter<any> | BooleanFilter | NumberFilter | ArrayFilter<any>;
 
 // We need an additional FormKey, which is the key in this object,
 // because prop can't be used to index formgroup formcontrols.
 // The presence of dots in formgroup keys causes mysterious angular errors.
-export const additionalFilters = {
-  subjectScientificName: { prop: 'subject.scientificName', filterType: 'string', defaultValue: null },
-  subjectFinBIFTaxonSensitive: {
-    prop: 'subjectFinBIFTaxon.sensitive',
-    filterType: 'boolean',
-    defaultValue: null
-  },
-  license: {
-    prop: 'license',
-    filterType: 'enum',
-    defaultValue: null,
-    range: [
-      'MZ.intellectualRightsCC-BY-SA-4.0', 'MZ.intellectualRightsCC-BY-NC-4.0',
-      'MZ.intellectualRightsCC-BY-NC-SA-4.0', 'MZ.intellectualRightsCC-BY-4.0',
-      'MZ.intellectualRightsCC0-4.0', 'MZ.intellectualRightsODBL-1.0',
-      'MZ.intellectualRightsPD', 'MZ.intellectualRightsARR',
-      'MZ.intellectualRightsCC-BY-2.0', 'MZ.intellectualRightsCC-BY-SA-2.0',
-      'MZ.intellectualRightsCC-BY-SA-2.0-DE', 'MZ.intellectualRightsCC-BY-NC-2.0',
-      'MZ.intellectualRightsCC-BY-NC-SA-2.0', 'MZ.intellectualRightsCC-BY-NC-ND-2.0',
-      'MZ.intellectualRightsCC-BY-SA-2.5', 'MZ.intellectualRightsCC-BY-SA-2.5-SE',
-      'MZ.intellectualRightsCC-BY-3.0', 'MZ.intellectualRightsCC-BY-SA-3.0',
-      'MZ.intellectualRightsCC-BY-NC-SA-3.0', 'MZ.intellectualRightsCC-BY-ND-4.0',
-      'MZ.intellectualRightsCC-BY-NC-ND-4.0', 'MY.intellectualRightsCC-BY',
-      'MY.intellectualRightsCC0'
-    ]
-  }
-} as const satisfies Record<string, AdditionalFilter>;
+export const additionalFilters = filters as Record<string, AdditionalFilter>;
 
 const propToFormKey: { -readonly [K in keyof typeof additionalFilters as typeof additionalFilters[K]['prop']]: K } = Object
   .entries(additionalFilters)
@@ -74,8 +60,8 @@ const filterDefaultValues: {
 } = Object.entries(additionalFilters)
   .reduce((p, [k, v]) => { p[k] = v.defaultValue; return p; }, <any>{});
 
-type FilterTypeToValueType<T extends 'string' | 'enum' | 'boolean'> =
-  T extends 'boolean' ? boolean : 'string';
+type FilterTypeToValueType<T extends 'string' | 'enum' | 'boolean' | 'number' | 'array'> =
+  T extends 'boolean' ? boolean : T extends 'number' ? T extends 'array ' ? any : number : string;
 
 export type AdditionalFilterValues = Partial<{
   -readonly [K in keyof typeof additionalFilters as typeof additionalFilters[K]['prop']]: FilterTypeToValueType<typeof additionalFilters[K]['filterType']> | null

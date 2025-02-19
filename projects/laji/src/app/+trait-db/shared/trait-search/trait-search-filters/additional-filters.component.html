@@ -10,7 +10,13 @@
   <ul class="additional-filter-list" *ngFor="let filterIdx of selectedAdditionalFilters">
     <li>
       <ng-container *ngTemplateOutlet="
-        { string: stringFilter, enum: enumFilter, boolean: booleanFilter }[additionalFilters[filterIdx].filterType];
+        {
+          string: stringFilter,
+          enum: enumFilter,
+          boolean: booleanFilter,
+          array: arrayFilter,
+          number: numberFilter,
+        }[additionalFilters[filterIdx].filterType];
         context: { $implicit: additionalFilters[filterIdx].prop, formKey: additionalFilters[filterIdx].formKey }
         "></ng-container>
       <button class="btn btn-default" (click)="onRemoveAdditionalFilter(filterIdx)">Remove</button>
@@ -18,6 +24,20 @@
   </ul>
 </details>
 <ng-template #stringFilter let-prop let-formKey='formKey'>
+  <div class="mb-2">
+    <label [for]="'trait-search-filters-' + formKey">{{ prop }}
+      <input [formControl]="$any(form.get(formKey))" class="form-control" type="text" [id]="'trait-search-filters-' + formKey">
+    </label>
+  </div>
+</ng-template>
+<ng-template #numberFilter let-prop let-formKey='formKey'>
+  <div class="mb-2">
+    <label [for]="'trait-search-filters-' + formKey">{{ prop }}
+      <input [formControl]="$any(form.get(formKey))" class="form-control" type="number" [id]="'trait-search-filters-' + formKey">
+    </label>
+  </div>
+</ng-template>
+<ng-template #arrayFilter let-prop let-formKey='formKey'>
   <div class="mb-2">
     <label [for]="'trait-search-filters-' + formKey">{{ prop }}
       <input [formControl]="$any(form.get(formKey))" class="form-control" type="text" [id]="'trait-search-filters-' + formKey">
