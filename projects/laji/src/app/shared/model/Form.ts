@@ -83,6 +83,7 @@ export namespace Form {
     adminLockable?: boolean;
     warnEditingOldDocument?: boolean;
     mobile?: boolean;
+    openForm?: boolean;
     saveSuccessMessage?: string;
     saveDraftSuccessMessage?: string;
     saveErrorMessage?: string;
