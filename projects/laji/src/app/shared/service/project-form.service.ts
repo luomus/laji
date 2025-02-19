@@ -60,6 +60,14 @@ export class ProjectFormService {
   }
 
   getForm$(id: string): Observable<Form.SchemaForm> {
+    const aliasMap: { [key: string]: string } = {
+      pyoriaiset: 'MHL.1156'
+    };
+
+    if (aliasMap[id]) {
+      id = aliasMap[id];
+    }
+
     if (this.currentFormID === id) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return this.form$!;

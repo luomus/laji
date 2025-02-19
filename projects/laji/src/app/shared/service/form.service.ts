@@ -103,6 +103,15 @@ export class FormService {
   }
 
   getEditUrlPath(formId: string, documentId: string) {
+    const aliasMap: { [key: string]: string } = {
+      pyoriaiset: 'MHL.1156'
+    };
+
+    const alias = Object.keys(aliasMap).find(key => aliasMap[key] === formId);
+    if (alias) {
+      return `${this.getAddUrlPath(alias)}/${documentId}`;
+    }
+
     return `${this.getAddUrlPath(formId)}/${documentId}`;
   }
 
