@@ -171,6 +171,15 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     if (!this.template) {
       this.lajiForm.block();
       this.saving = true;
+      if (this.vm.form.options?.openForm) {
+        this.projectFormService.setRegistrationContacts([
+          {
+            preferredName: document?.contacts[0]?.preferredName,
+            inheritedName: document?.contacts[0]?.inheritedName,
+            emailAddress: document?.contacts[0]?.emailAddress
+          }
+        ]);
+      }
       this.documentFormFacade.save({...document, publicityRestrictions: this.publicityRestrictions}).subscribe(() => {
         this.lajiForm.unBlock();
         this.saving = false;

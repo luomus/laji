@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { FormService } from '../../shared/service/form.service';
 import { map, mergeMap } from 'rxjs/operators';
@@ -26,7 +26,7 @@ interface AboutData {
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss']
 })
-export class AboutComponent implements OnInit {
+export class AboutComponent implements OnInit, OnDestroy {
 
   Rights = Rights; // eslint-disable-line @typescript-eslint/naming-convention
 
@@ -44,15 +44,27 @@ export class AboutComponent implements OnInit {
   ngOnInit() {
     this.aboutData$ = this.userService.isLoggedIn$.pipe(
       mergeMap(loggedIn => this.projectFormService.getFormFromRoute$(this.route).pipe(
-        mergeMap(form => this.formPermissionService.getRights(form).pipe(
-          map((rights) => ({
-            loggedIn,
-            rights: rights.edit === true ? Rights.Allowed : Rights.NotAllowed,
-            form
-          }))
-        ))
+        mergeMap(form => {
+          if (form.options?.openForm) {
+            const contacts = this.projectFormService.getRegistrationContacts();
+            console.log('contacts', contacts);
+          }
+          return this.formPermissionService.getRights(form).pipe(
+            map((rights) => ({
+              loggedIn,
+              rights: rights.edit === true ? Rights.Allowed : Rights.NotAllowed,
+              form
+            }))
+          );
+        })
       ))
     );
+  }
+
+  ngOnDestroy() {
+    if (this.projectFormService.getRegistrationContacts()) {
+      this.projectFormService.setRegistrationContacts(undefined);
+    }
   }
 
   showDocumentViewer(document: Document) {

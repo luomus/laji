@@ -36,6 +36,12 @@ export interface ExcelFormOptions {
   allowGenerate: boolean;
 }
 
+export interface RegistrationContact {
+  preferredName: string | undefined;
+  inheritedName: string | undefined;
+  emailAddress: string | undefined;
+}
+
 @Injectable({providedIn: 'root'})
 export class ProjectFormService {
   constructor(
@@ -50,6 +56,7 @@ export class ProjectFormService {
 
   private currentFormID?: string;
   private form$?: ReplaySubject<Form.SchemaForm>;
+  private registrationContacts?: RegistrationContact[];
 
   /** LajiFormBuilder can change the language of the form, without changing the lang of the whole page. */
   public localLang$ = new BehaviorSubject<string>(this.translate.currentLang);
@@ -193,5 +200,13 @@ export class ProjectFormService {
 
   remountLajiForm() {
     this.remountLajiForm$.next();
+  }
+
+  getRegistrationContacts() {
+    return this.registrationContacts;
+  }
+
+  setRegistrationContacts(contacts: RegistrationContact[] | undefined) {
+    this.registrationContacts = contacts;
   }
 }
