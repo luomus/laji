@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
-import { FormService } from '../../shared/service/form.service';
 import { map, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Form } from '../../shared/model/Form';
-import { ProjectFormService } from '../../shared/service/project-form.service';
+import { ProjectFormService, RegistrationContact } from '../../shared/service/project-form.service';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
 import { Document } from '../../shared/model/Document';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
@@ -29,11 +28,10 @@ interface AboutData {
 export class AboutComponent implements OnInit, OnDestroy {
 
   Rights = Rights; // eslint-disable-line @typescript-eslint/naming-convention
-
   aboutData$!: Observable<AboutData>;
+  registrationContacts?: RegistrationContact[] | undefined;
 
   constructor(private userService: UserService,
-              private formService: FormService,
               private formPermissionService: FormPermissionService,
               private projectFormService: ProjectFormService,
               private route: ActivatedRoute,
@@ -47,6 +45,7 @@ export class AboutComponent implements OnInit, OnDestroy {
         mergeMap(form => {
           if (form.options?.openForm) {
             const contacts = this.projectFormService.getRegistrationContacts();
+            this.registrationContacts = contacts;
             console.log('contacts', contacts);
           }
           return this.formPermissionService.getRights(form).pipe(
@@ -77,5 +76,9 @@ export class AboutComponent implements OnInit, OnDestroy {
 
   login() {
     this.userService.redirectToLogin();
+  }
+
+  register() {
+    this.userService.register(this.registrationContacts);
   }
 }

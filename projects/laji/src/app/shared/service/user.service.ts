@@ -23,6 +23,7 @@ import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
 import { Profile } from '../model/Profile';
 import { Global } from '../../../environments/global';
+import { RegistrationContact } from './project-form.service';
 
 export interface UserSettingsResultList {
   aggregateBy?: string[];
@@ -248,6 +249,21 @@ export class UserService implements OnDestroy {
       this.setNotLoggedIn();
       cb?.();
     });
+  }
+
+  register(registrationContacts: RegistrationContact[] | undefined): void {
+    const params: string[] = [
+      `next=${this.location.path(true)}`,
+      'redirectMethod=POST',
+      'locale=%lang%',
+      'permanent=false'
+    ];
+
+    if (registrationContacts?.[0]?.preferredName) { params.push(`preferredName=${registrationContacts?.[0]?.preferredName}`); }
+    if (registrationContacts?.[0]?.inheritedName) { params.push(`inheritedName=${registrationContacts?.[0]?.inheritedName}`); }
+    if (registrationContacts?.[0]?.emailAddress) { params.push(`email=${registrationContacts?.[0]?.emailAddress}`); }
+
+    window.location.href = (environment.registerUrl + '?' + params.join('&')).replace('%lang%', this.translate.currentLang);
   }
 
   getToken(): string {

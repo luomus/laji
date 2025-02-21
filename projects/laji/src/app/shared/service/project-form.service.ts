@@ -7,6 +7,7 @@ import { Form } from '../model/Form';
 import { BehaviorSubject, combineLatest, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { NamedPlacesService } from './named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
+import { environment } from '../../../environments/environment';
 
 export interface ProjectForm {
   form: Form.SchemaForm;
