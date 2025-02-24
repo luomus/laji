@@ -1,0 +1,28 @@
+<div class="input-btn-group d-flex flex-nowrap">
+  <ng-container *ngTemplateOutlet="kind === 'enum' ? enum : input"></ng-container>
+  <button class="btn btn-default" (click)="onAdd($event)">+</button>
+</div>
+<ul class="value-list">
+  <li class="pill secondary" *ngFor="let elem of valueList; let i = index">
+    {{ elem }} <button class="btn btn-danger remove-btn" (click)="onRemoveIdx(i, $event)">x</button>
+  </li>
+</ul>
+
+<!-- this.kind !== 'enum' -->
+<ng-template #input>
+  <input
+    [attr.id]="inputId ? inputId : null"
+    [type]="{ 'string': 'text', 'number': 'number', 'enum': 'hidden' }[kind]"
+    (blur)="onTouched(valueList)"
+    class="form-control"
+    #inputElem>
+</ng-template>
+
+<!-- this.kind === 'enum' -->
+<ng-template #enum>
+  <select [attr.id]="inputId ? inputId : null" class="form-control" (change)="onSelectChange($event)" #selectElem>
+    <option [value]="null"></option>
+    <option *ngFor="let variant of getUnusedEnumVariants()" [value]="variant">{{ variant }}</option>
+  </select>
+</ng-template>
+

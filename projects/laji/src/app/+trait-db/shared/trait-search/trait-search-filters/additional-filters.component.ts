@@ -31,13 +31,22 @@ interface NumberFilter extends BaseFilter {
   defaultValue: number | null;
 }
 
-interface ArrayFilter<T> extends BaseFilter {
-  filterType: 'array';
-  defaultValue: null;
-  elementType: T;
+interface ArrayFilterElementString {
+  _tag: 'string';
 }
 
-export type AdditionalFilter = StringFilter | EnumFilter<any> | BooleanFilter | NumberFilter | ArrayFilter<any>;
+interface ArrayFilterElementEnum {
+  _tag: 'enum';
+  variants: string[];
+}
+
+interface ArrayFilter extends BaseFilter {
+  filterType: 'array';
+  defaultValue: null;
+  elementType: ArrayFilterElementString | ArrayFilterElementEnum;
+}
+
+export type AdditionalFilter = StringFilter | EnumFilter<any> | BooleanFilter | NumberFilter | ArrayFilter;
 
 // We need an additional FormKey, which is the key in this object,
 // because prop can't be used to index formgroup formcontrols.
