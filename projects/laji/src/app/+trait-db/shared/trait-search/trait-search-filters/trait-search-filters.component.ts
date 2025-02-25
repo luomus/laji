@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable } from 'rxjs';
-import { AdditionalFilterValues } from './additional-filters.component';
+import { AdditionalFilterValues, stripDefaultValues as stripAdditionalFilterDefaultValues } from './additional-filters.component';
 
 export const HIGHER_TAXA: (keyof components['schemas']['HigherTaxa'])[] = [
   'domain',
@@ -53,6 +53,20 @@ export const filterDefaultValues: Filters = {
   tribe: null,
   subtribe: null,
   genus: null
+};
+
+export const stripDefaultValues = (filters: Partial<Filters>): Partial<Filters> => {
+  const newFilters: Partial<Filters> = {};
+  Object.entries(filters).forEach(([k, v]) => {
+    if (k === 'additionalFilters') {
+      newFilters['additionalFilters'] = stripAdditionalFilterDefaultValues(v as any) as any;
+    } else {
+      if (v !== undefined && v !== filterDefaultValues[k as keyof Filters]) {
+        newFilters[k as keyof Filters] = v as any;
+      }
+    }
+  });
+  return newFilters;
 };
 
 @Component({

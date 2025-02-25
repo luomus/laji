@@ -60,6 +60,11 @@ const propToFormKey: { -readonly [K in keyof typeof additionalFilters as typeof 
     {} as any
   );
 
+export const propIsArray = (prop: string): boolean => {
+  const formKey = propToFormKey[prop];
+  return additionalFilters[formKey].filterType === 'array';
+};
+
 type AdditionalFilterWithFormKey = AdditionalFilter & { formKey: keyof typeof additionalFilters };
 
 const additionalFilterArr: AdditionalFilterWithFormKey[]
@@ -75,6 +80,21 @@ type FilterTypeToValueType<T extends 'string' | 'enum' | 'boolean' | 'number' | 
 export type AdditionalFilterValues = Partial<{
   -readonly [K in keyof typeof additionalFilters as typeof additionalFilters[K]['prop']]: FilterTypeToValueType<typeof additionalFilters[K]['filterType']> | null
 }>;
+
+export const stripDefaultValues = (f: AdditionalFilterValues): Partial<AdditionalFilterValues> => {
+  const newFilters: Partial<AdditionalFilterValues> = {};
+  Object.entries(f).forEach(([k, v]) => {
+    const formKey = propToFormKey[k];
+    if (
+      v !== undefined
+      && v !== filterDefaultValues[formKey]
+      && !(Array.isArray(v) && v.length === 0)
+    ) {
+      newFilters[k as keyof AdditionalFilterValues] = v as any;
+    }
+  });
+  return newFilters;
+};
 
 @Component({
   selector: 'laji-trait-search-additional-filters',
@@ -96,7 +116,6 @@ export class TraitSearchAdditionalFiltersComponent implements OnInit {
     this.filterChange = this.form.valueChanges.pipe(
       map(values =>
         Object.entries(values)
-          .filter(([k, v]) => v !== undefined && v !== null && v !== filterDefaultValues[k as unknown as keyof typeof filterDefaultValues])
           .reduce((p, [k, v]) => { p[additionalFilters[k as unknown as keyof typeof additionalFilters].prop] = v; return p; }, {} as AdditionalFilterValues)
       )
     );
