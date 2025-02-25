@@ -348,13 +348,17 @@ export class UserService implements OnDestroy {
   }
 
   getProfile(): Observable<Profile> {
-    return combineLatest([
-      this.personApi.personFindProfileByToken(this.getToken()),
-      this.user$
-    ]).pipe(
-      map(([profile, person]) => prepareProfile(profile, person)),
-      take(1)
-    );
+    if (this.getToken() === '') {
+      return of(prepareProfile(null, null));
+    } else {
+      return combineLatest([
+        this.personApi.personFindProfileByToken(this.getToken()),
+        this.user$
+      ]).pipe(
+        map(([profile, person]) => prepareProfile(profile, person)),
+        take(1)
+      );
+    }
   }
 
   ngOnDestroy() {

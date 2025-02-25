@@ -122,7 +122,7 @@ export class DocumentFormFacade {
         switchMap(form => template && !form.options?.allowTemplate
           ? of(FormError.templateDisallowed)
           : this.formPermissionService.getRights(form).pipe(map(rights =>
-            rights.edit === false
+            (rights.edit === false && !form.options.openForm)
               ? FormError.noAccess
               : form
           ))
@@ -399,13 +399,13 @@ export class DocumentFormFacade {
     );
   }
 
-  private fetchEmptyData(form: Form.SchemaForm, person: Person, namedPlace: NamedPlace): Observable<DocumentAndHasChanges> {
+  private fetchEmptyData(form: Form.SchemaForm, person: Person | undefined, namedPlace: NamedPlace): Observable<DocumentAndHasChanges> {
     let document: Document = {
       id: this.getNewTmpId(),
       formID: form.id,
-      creator: person.id,
+      creator: person?.id ? person.id : undefined,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      gatheringEvent: { leg: [person.id!] }
+      gatheringEvent: { leg: person?.id ? [person.id] : undefined }
     };
     if (form.options?.prepopulatedDocument) {
       document = deepmerge(form.options?.prepopulatedDocument, document, { arrayMerge: Util.arrayCombineMerge });
@@ -490,11 +490,11 @@ export class DocumentFormFacade {
     return uiSchema;
   }
 
-  private getUiSchemaContext(form: Form.SchemaForm, namedPlace: NamedPlace, user: Person, rights: Rights, documentID: string): Observable<any> {
+  private getUiSchemaContext(form: Form.SchemaForm, namedPlace: NamedPlace, user: Person | undefined, rights: Rights, documentID: string): Observable<any> {
     const uiSchemaContext = {
       ...form.uiSchemaContext,
       formID: form.id,
-      creator: user.id,
+      creator: user?.id ? user.id : undefined,
       isAdmin: rights && rights.admin,
       isEdit: documentID && !FormService.isTmpId(documentID),
       placeholderGeometry: namedPlace?.geometry || undefined

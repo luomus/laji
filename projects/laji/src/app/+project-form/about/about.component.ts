@@ -46,7 +46,6 @@ export class AboutComponent implements OnInit, OnDestroy {
           if (form.options?.openForm) {
             const contacts = this.projectFormService.getRegistrationContacts();
             this.registrationContacts = contacts;
-            console.log('contacts', contacts);
           }
           return this.formPermissionService.getRights(form).pipe(
             map((rights) => ({
