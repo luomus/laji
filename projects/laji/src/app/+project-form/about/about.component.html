@@ -65,7 +65,17 @@
 </ng-template>
 
 <ng-template #openForm>
-  <h2>{{ 'project-form.about.openForm' | translate }}</h2>
-  <p>{{ 'project-form.about.openForm.1' | translate }}</p>
-  <lu-button (click)="register()" role="primary" class="login-button">{{ 'project-form.about.register' | translate }}</lu-button>
+  <ng-container *ngIf="aboutData$ | async as data">
+    <div class="m-6">
+      <laji-project-form-header [form]="data.form"
+                                [displayInstructions]="false"
+                                lajiFormOption="logo title options.hideTES"
+      ></laji-project-form-header>
+      <p>{{ 'project-form.about.openForm.porpoise' | translate }}</p>
+      <ng-container *ngIf="!data.loggedIn">
+        <p>{{ 'project-form.about.register.description' | translate }}</p>
+        <lu-button (click)="register()" role="primary" class="login-button">{{ 'project-form.about.register' | translate }}</lu-button>
+      </ng-container>
+    </div>
+  </ng-container>
 </ng-template>
