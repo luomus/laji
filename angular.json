@@ -1074,7 +1074,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "vir:build"
+            "browserTarget": "vir:build",
+            "proxyConfig": "projects/vir/proxy.conf.json"
           },
           "configurations": {
             "production": {

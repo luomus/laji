@@ -31,7 +31,7 @@ export const environment = {
   },
   rootCollections: ['HR.128'],
   loginUrl: '/user/viranomaiset',
-  selfPage: 'https://login.laji.fi/self',
+  selfPage: 'https://fmnh-ws-test-24.it.helsinki.fi/laji-auth/self',
   apiBase: '/api',
   production: true,
   forceLogin: true,
