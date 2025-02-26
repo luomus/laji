@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { APP_ID, ErrorHandler, NgModule } from '@angular/core';
 import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 import { ToastrModule } from 'ngx-toastr';
@@ -27,6 +27,7 @@ import { GlobalMessageComponent } from './component/global-message/global-messag
 import { FooterComponent } from './component/footer/footer.component';
 import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
+import { VirAuthenticatedHttpInterceptor } from './service/vir-authenticated-http.interceptor';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -72,6 +73,11 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
       provide: Logger,
       deps: [LoggerApi],
       useFactory: createLoggerLoader
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: VirAuthenticatedHttpInterceptor,
+      multi: true
     }
   ],
   bootstrap: [VirAppComponent],

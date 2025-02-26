@@ -1,32 +1,29 @@
 import { Observable, Subject, throwError as observableThrowError } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { UserService } from './user.service';
+import { UserService } from '../../../../laji/src/app/shared/service/user.service';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { catchError, throttleTime } from 'rxjs/operators';
 
 
 @Injectable()
-export class AuthenticatedHttpInterceptor implements HttpInterceptor {
-
-  private throttle = new Subject();
+export class VirAuthenticatedHttpInterceptor implements HttpInterceptor {
+  private needsRedirect$ = new Subject<void>();
 
   constructor(
     private userService: UserService
   ) {
-    this.throttle.pipe(
+    this.needsRedirect$.pipe(
       throttleTime(5000)
     ).subscribe(() => {
       this.userService.redirectToLogin();
     });
   }
 
-
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
-        if (environment.forceLogin && (err.status === 401 || err.status === 403)) {
-          this.throttle.next();
+        if (err.status === 403 && err.error === 'Login Required') {
+          this.needsRedirect$.next();
         }
         return observableThrowError(err);
         })

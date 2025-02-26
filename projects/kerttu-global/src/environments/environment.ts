@@ -9,7 +9,6 @@ export const environment = {
   type: Global.type.kerttuGlobal,
   base: 'http://localhost:3000',
   production: false,
-  forceLogin: false,
   disableAnalytics: true,
   sourceKotka: 'KE.3',
   systemID: 'KE.542',

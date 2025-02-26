@@ -34,7 +34,6 @@ export const environment = {
   selfPage: 'https://fmnh-ws-test-24.it.helsinki.fi/laji-auth/self',
   apiBase: '/api',
   production: true,
-  forceLogin: true,
   disableAnalytics: true,
   waterbirdPairForm: 'MHL.65',
   waterbirdJuvenileForm: 'MHL.66',

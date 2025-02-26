@@ -17,7 +17,6 @@ import { ToFullUriPipe } from './pipe/to-full-uri';
 import { GalleryComponent } from './gallery/gallery/gallery.component';
 import { AuthoritiesDirective } from './authorities/authorities.directive';
 import { NgxWebstorageModule } from 'ngx-webstorage';
-import { AuthenticatedHttpInterceptor } from './service/authenticated-http.interceptor';
 import { ImageComponent } from './gallery/image/image.component';
 import { ValuesPipe } from './pipe/values.pipe';
 import { CollectionNamePipe } from './pipe/collection-name.pipe';
@@ -45,7 +44,6 @@ import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
 import { DatePickerComponent } from './datepicker/datepicker.component';
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { FactNotInPipe } from './pipe/fact-not-in.pipe';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CapitalizePipe } from './pipe/capitalize.pipe';
 import { CoordinatePipe } from './pipe/coordinate.pipe';
 import { FilterPipe } from './pipe/filter.pipe';
@@ -190,12 +188,7 @@ export class SharedModule {
         ToQNamePipe,
         QualityUrlPipe,
         TranslatableIucnPipe,
-        TypeGuardPipe,
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: AuthenticatedHttpInterceptor,
-          multi: true
-        }
+        TypeGuardPipe
       ]
     };
   }

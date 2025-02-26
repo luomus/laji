@@ -10,7 +10,6 @@ export const environment = {
   type: Global.type.vir,
   base: 'http://localhost:3000',
   production: false,
-  forceLogin: true,
   disableAnalytics: true,
   sourceKotka: 'KE.3',
   systemID: 'KE.542',
