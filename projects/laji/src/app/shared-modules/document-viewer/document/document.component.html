@@ -42,6 +42,7 @@
           [qualityIcon]="document.linkings.collectionQuality | qualityUrl">
         </laji-quality-row>
       </laji-row>
+      <laji-row [title]="'document.dataSource' | translate" [value]="document.dataSource"></laji-row>
       <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
       <laji-row [title]="'MY.keywords' | label" [value]="document.keywords"></laji-row>
       <laji-row title="URL" ngPreserveWhitespaces>
