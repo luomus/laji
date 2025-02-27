@@ -33,7 +33,7 @@
           <span *ngIf="showFacts"><a target="_blank" href="http://tun.fi/{{document.collectionID}}">http://tun.fi/{{ document.collectionID }}</a></span>
         </laji-row>
         <laji-row [title]="'document.dataSource' | translate" [value]="document.dataSource"></laji-row>
-        <laji-row title="URL" ngPreserveWhitespaces>
+        <laji-row title="URL" *ngIf="document.referenceURL" ngPreserveWhitespaces>
           <a [href]="document.referenceURL" target="_blank" rel="noopener">{{ document.referenceURL }}</a>
         </laji-row>
         <laji-row *ngIf="document?.gatherings?.[0]?.units?.[0]?.externalMediaCount" 
