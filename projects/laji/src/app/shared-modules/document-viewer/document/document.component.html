@@ -47,6 +47,10 @@
       <laji-row title="URL" ngPreserveWhitespaces>
         <a [href]="document.referenceURL" target="_blank" rel="noopener">{{ document.referenceURL }}</a>
       </laji-row>
+      <laji-row *ngIf="document?.gatherings?.[0]?.units?.[0]?.externalMediaCount" 
+                [title]="'document.externalMediaCount' | translate" 
+                [value]="document.gatherings[0].units[0].externalMediaCount">
+      </laji-row>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
       <laji-facts [show]="showFacts" [facts]="document.facts | factNotIn:['http://tun.fi/MY.formID','http://tun.fi/MZ.publicityRestrictions']"></laji-facts>
     </div>

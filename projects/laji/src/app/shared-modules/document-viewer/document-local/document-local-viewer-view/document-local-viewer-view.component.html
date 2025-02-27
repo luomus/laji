@@ -35,6 +35,10 @@
         <laji-row title="URL" ngPreserveWhitespaces>
           <a [href]="document.referenceURL" target="_blank" rel="noopener">{{ document.referenceURL }}</a>
         </laji-row>
+        <laji-row *ngIf="document?.gatherings?.[0]?.units?.[0]?.externalMediaCount" 
+                [title]="'document.externalMediaCount' | translate" 
+                [value]="document.gatherings[0].units[0].externalMediaCount">
+        </laji-row>
         <laji-document-object *ngIf="fields['document']" [object]="document" [fields]="fields['document']" [showFacts]="showFacts"></laji-document-object>
       </div>
       <div class="col-sm-5">

@@ -204,6 +204,7 @@
   "delete.noId": "Havaintoerän tunnistetta ei löytynyt. Lataa sivu uudelleen ja kokeile hetken kuluttua uudelleen.",
   "delete.success": "Poisto onnistui.",
   "disabled.feature": "Sinun täytyy kirjautua sisään käyttääksesi tätä toimintoa",
+  "document.externalMediaCount": "Kuvia alkuperäislähteessä",
   "document.fullResolutionMedia": "Median täysversio",
   "document.locked": "Tämä havaintoerä on lukittu, eikä sitä voi muokata.",
   "download.crs": "CRS",
