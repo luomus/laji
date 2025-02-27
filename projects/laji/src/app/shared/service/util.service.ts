@@ -1,6 +1,7 @@
 import { NavigationEnd, Event } from '@angular/router';
 import * as merge from 'deepmerge';
 import { Document } from '../model/Document';
+import { PlatformService } from '../../root/platform.service';
 
 export type WithNonNullableKeys<T, K extends keyof T> = T & {
   [P in K]-?: NonNullable<T[P]>;
@@ -184,6 +185,29 @@ export class Util {
     return typeof any === 'object' && any !== null && !Array.isArray(any);
   }
 
+  /**
+   * @param platformService
+   * @param tag can be used to track the event eg. if this event needs to be ignored by a specific listener. Should not be a key of the Event type!
+   */
+  public static dispatchResizeEvent(platformService: PlatformService, tag?: string) {
+    try {
+      const event = new Event('resize');
+      if (tag !== undefined) {
+        (event as any)[tag] = true;
+      }
+      platformService.window.dispatchEvent(event);
+    } catch (e) {
+      try {
+        const evt: any = platformService.window.document.createEvent('UIEvents');
+        if (tag !== undefined) {
+          (evt as any)[tag] = true;
+        }
+        evt.initUIEvent('resize', true, false, platformService.window, 0);
+        platformService.window.dispatchEvent(evt);
+      } catch (error) {}
+    }
+  }
+
   private static mergeClone(value: any, options: any) {
     return merge(Util.mergeEmptyTarget(value), value, options);
   }
@@ -191,4 +215,5 @@ export class Util {
   private static mergeEmptyTarget(value: any) {
     return Array.isArray(value) ? [] : {};
   }
+
 }

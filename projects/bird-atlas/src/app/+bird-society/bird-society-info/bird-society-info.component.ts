@@ -6,6 +6,8 @@ import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 import { PopstateService } from '../../core/popstate.service';
 import { VisualizationMode } from '../../shared-modules/map-utils/visualization-mode';
 import { BirdSocietyInfoSpeciesTableComponent } from './bird-society-info-species-table/bird-society-info-species-table.component';
+import { PlatformService } from 'projects/laji/src/app/root/platform.service';
+import { Util } from 'projects/laji/src/app/shared/service/util.service';
 
 @Component({
   templateUrl: 'bird-society-info.component.html',
@@ -36,6 +38,7 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
     private atlasApi: AtlasApiService,
     private route: ActivatedRoute,
     private breadcrumbs: BreadcrumbService,
+    private platformService: PlatformService,
     private cdr: ChangeDetectorRef,
     private popstateService: PopstateService
   ) {}
@@ -110,15 +113,7 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
 
   onResize() {
     this.displayModeLarge = !this.displayModeLarge;
-    try {
-      const event = new Event('resize');
-      window.dispatchEvent(event);
-    } catch (error) {
-      const event = window.document.createEvent('UIEvents');
-      // @ts-ignore
-      event.initUIEvent('resize', true, false, window, 0);
-      window.dispatchEvent(event);
-    }
+    Util.dispatchResizeEvent(this.platformService);
     this.cdr.markForCheck();
     this.cdr.detectChanges();
   }
