@@ -4,8 +4,6 @@ import { UserService } from '../../../../laji/src/app/shared/service/user.servic
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { catchError, throttleTime } from 'rxjs/operators';
 
-const AUTH_ERRORS = ['Login Required', 'Invalid Token'];
-
 @Injectable()
 export class VirAuthenticatedHttpInterceptor implements HttpInterceptor {
   private needsRedirect$ = new Subject<void>();
@@ -23,7 +21,7 @@ export class VirAuthenticatedHttpInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
-        if ([401, 403].includes(err.status) && (AUTH_ERRORS.includes(err.error))) {
+        if (err.status === 401 && err.error === 'Login Required') {
           this.needsRedirect$.next();
         }
         return observableThrowError(err);
