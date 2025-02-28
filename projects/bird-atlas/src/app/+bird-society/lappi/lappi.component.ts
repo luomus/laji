@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 interface LappiTableRowData extends LappiStatsResponseElement {
   index: number;
@@ -56,7 +57,8 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
     private atlasApi: AtlasApiService,
     private modalService: ModalService,
     private headerService: HeaderService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngAfterViewInit(): void {
@@ -104,7 +106,11 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  onTableRowSelect(e) {
+  interactiveMap$ = this.atlasApi.getInteractiveMap().pipe(
+    map(html => this.sanitizer.bypassSecurityTrustHtml(html)),
+  );
+
+  onTableRowSelect(e: any) {
     this.hideModalSubscription?.unsubscribe();
     this.modalRef = this.modalService.show(LappiModalComponent, {size: 'lg'});
     this.modalRef.content.rows = e.selected[0].grids;
