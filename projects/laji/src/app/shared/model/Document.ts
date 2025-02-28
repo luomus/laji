@@ -297,8 +297,6 @@ export interface Document {
     acknowledgedWarnings?: {location: string; messages: string[]}[];
 
     dataOrigin?: Document.DataOriginEnum[];
-
-    referenceURL?: string;
 }
 export namespace Document {
 

@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-sm-7">
       <div class="page-header" *ngIf="!hideHeader" [ngClass]="{tight: !showTitle}">
-        <h3 ngPreserveWhitespaces>
+        <h3>
           {{ 'viewer.document' | translate }}
           <small>
             <a [routerLink]="['/view'] | localize" [queryParams]="{uri: document.documentId}" target="_blank">
@@ -32,11 +32,11 @@
         </h3>
       </div>
       <laji-issues [data]="document"></laji-issues>
-      <laji-row [title]="'vihko.home.form.collection' | translate" ngPreserveWhitespaces>
+      <laji-row [title]="'vihko.home.form.collection' | translate">
         <span>{{ document.collectionId | toQName | collectionName }}</span>
         <span *ngIf="showFacts"><a target="_blank" href="{{document.collectionId}}">{{ document.collectionId }}</a></span>
       </laji-row>
-      <laji-row [title]="'annotation.collectionQuality' | translate" ngPreserveWhitespaces>
+      <laji-row [title]="'annotation.collectionQuality' | translate">
         <laji-quality-row
           [quality]="document.linkings.collectionQuality | label:'warehouse'"
           [qualityIcon]="document.linkings.collectionQuality | qualityUrl">
@@ -45,7 +45,7 @@
       <laji-row [title]="'document.dataSource' | translate" [value]="document.dataSource"></laji-row>
       <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
       <laji-row [title]="'MY.keywords' | label" [value]="document.keywords"></laji-row>
-      <laji-row title="URL" *ngIf="document.referenceURL" ngPreserveWhitespaces>
+      <laji-row title="URL" *ngIf="document.referenceURL">
         <a [href]="document.referenceURL" target="_blank" rel="noopener">{{ document.referenceURL }}</a>
       </laji-row>
       <laji-row *ngIf="document?.gatherings?.[0]?.units?.[0]?.externalMediaCount" 
