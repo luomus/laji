@@ -153,6 +153,12 @@ const BASE_URL = environment.atlasApiBasePath;
 export class AtlasApiService {
   constructor(private http: HttpClient, private translate: TranslateService) {}
 
+  @cacheReturnObservable(600000)
+  getInteractiveMap() {
+    const url = `${BASE_URL}/map/interactiveMap`;
+    return this.http.get(url, {responseType: 'text'});
+  }
+
   @cacheReturnObservable(60000) // 1 minute
   getSpeciesMap(speciesId: string, lang: Lang = <Lang>this.translate.currentLang): Observable<AtlasMap> {
     const url = `${BASE_URL}/map/${speciesId}/atlas`;
