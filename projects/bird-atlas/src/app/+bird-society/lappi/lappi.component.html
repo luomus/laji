@@ -1,21 +1,19 @@
 <div *ngIf="lappiStats$ | async; let stats; else loading" class="container">
   <h1>Pohjois-Lapin suurruudut</h1>
-  <div class="map-container">
-    <img class="map-viewer" src="https://cdn.laji.fi/images/bird-society-lappi.png" alt="Suurruudut">
-    <iframe class="map-viewer" [srcdoc]="interactiveMap$ | async"></iframe>
-  </div>
-  <p>Lintuatlaksessa tavoitteena on, että Pohjois-Lapin (YKJ 740 ja siitä pohjoiseen) jokaisen 50 km × 50 km suurruudun atlasruuduista vähintään 75 % tutkitaan tyydyttävästi.</p>
-  <p>Lapissa tarvitaan koko maan lintuharrastajien apua. Käy kesällä Lapissa, pysähtele usein ja ilmoita kaikista lajeista atlashavainto. Tärkeimmät puutealueet mainitaan <a href='https://www.birdlife.fi/suojelu/seuranta/lintuatlas/lapin-suurruutujen-retkeily/' target="_blank">Lapin suurruutujen retkeilysivulla</a>.</p>
+    <iframe class="mb-4 interactive-map-container" [srcdoc]="interactiveMap$ | async"></iframe>
+  <p>Lintuatlaksessa tavoitteena Lapin osalta on, että Kemijärveltä (YKJ 740) pohjoiseen jokaisen 50 km × 50 km suurruudun atlasruuduista vähintään 75 % tutkitaan tyydyttävästi. Kartalla on punaisella ehdotus priorisoiduista ruuduista, jotka tutkitaan. Priorisointiehdotuksen voi ladata sivulta <a href='https://lintuatlas.fi/lapin-priorisoinnit/' target="_blank">https://lintuatlas.fi/lapin-priorisoinnit/</a>. Punaiset: nostettava tyydyttäviksi. Siniset: jo tyydyttäviä (valmis). Värittömät: ei tutkita. </p>
+  <p>Lapissa tarvitaan koko maan lintuharrastajien apua. Käy kesällä Lapissa, pysähtele usein ja ilmoita kaikista lajeista atlashavainto.</p>
   <div class="d-flex justify-end">
     <button class="btn btn-default mb-3" (click)="onExportCsv(stats)">Lataa .csv</button>
   </div>
   <ngx-datatable
-    class="material mb-8"
+    class="material mb-4"
     [rows]="stats"
     [columns]="cols"
     [selectionType]="'single'"
     (select)="onTableRowSelect($event)"
   ></ngx-datatable>
+  <img class="d-block mb-8" src="https://cdn.laji.fi/images/bird-society-lappi.png" alt="Suurruudut">
   <hr>
   <ng-container *ngTemplateOutlet="description"></ng-container>
 </div>

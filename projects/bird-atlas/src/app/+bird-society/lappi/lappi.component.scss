@@ -18,15 +18,9 @@
   color: $primary-5;
 }
 
-.map-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.map-viewer {
+.interactive-map-container {
   min-height: 550px;
   min-width: 550px;
-  max-width: 50%;
-  max-width: 50%;
-  margin: 4px;
+  width: 100%;
+  height: 40vw;
 }
