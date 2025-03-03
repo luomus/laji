@@ -19,11 +19,11 @@ type ElementType<T extends { kind: Kind }> = KindToConcreteType<T['kind']>;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcreteType<K>> implements ControlValueAccessor {
-  @Input() inputId: string | undefined;
+  @Input() inputId?: string;
   /**
    * If kind === 'enum', then enumVariants must be defined.
    */
-  @Input() kind!: K;
+  @Input({ required: true }) kind!: K;
   @Input() enumVariants!: K extends 'enum' ? string[] : undefined;
 
   valueList: T[] = [];
