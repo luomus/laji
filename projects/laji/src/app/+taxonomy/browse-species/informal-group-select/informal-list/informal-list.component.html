@@ -1,6 +1,6 @@
 <div class="d-flex flex-wrap">
   <a *ngFor="let group of informalTaxonGroups" [routerLink]="'/taxon/browse'" [queryParams]="{ informalGroupFilters: group.id }"
-    (click)="informalGroupSelect.emit(group.id)" class="group d-flex flex-nowrap items-center mr-3 mb-3"
+    class="group d-flex flex-nowrap items-center mr-3 mb-3"
     tabindex="0" role="button" luKeyboardClickable>
     <img class="group-image" [src]="'https://cdn.laji.fi/images/informalGroups/' + group.id + '.svg'" (error)="onImgError($event)" alt="">
     <div class="group-name">{{ group.name }}</div>
