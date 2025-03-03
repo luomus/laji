@@ -50,7 +50,7 @@
               ></ng-container>
             </ng-container>
             <ng-container *ngIf="!columnHasTemplate(col)">
-              {{ getNestedValue(row, $any(col).prop) }}
+              {{ getNestedValue(row, col.prop) }}
             </ng-container>
           </ng-container>
         </td>
