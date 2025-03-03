@@ -12,23 +12,23 @@
       <h5 translate>theme.geoapi</h5>
       <p translate>theme.geoapi.desc</p>
     </div>
-    <div [routerLink]="['/about/5138'] | localize" class="navbox">
+    <a [href]="'infoLinks.gis' | translate" rel="noopener nofollow" target="_blank" class="navbox">
       <h5 translate>theme.arcgis</h5>
       <p translate>theme.arcgis.desc</p>
-    </div>
+    </a>
   </div>
 
   <h4><span class="glyphicon glyphicon-cloud-upload"></span> {{ "theme.import" | translate }}</h4>
   <div class="d-flex">
-    <div [routerLink]="['/about/1289'] | localize" class="navbox">
+    <a [href]="'infoLinks.connectData' | translate" rel="noopener nofollow" target="_blank"  class="navbox">
       <h5 translate>theme.import.1</h5>
       <p translate>theme.import.1.desc</p>
-    </div>
-    <div [routerLink]="['/about/3977'] | localize" class="navbox">
+    </a>
+    <a [href]="'infoLinks.primaryAndSecondaryData' | translate" rel="noopener nofollow" target="_blank" class="navbox">
       <h5 translate>theme.import.2</h5>
       <p translate>theme.import.2.desc</p>
-    </div>
-    <a href="https://laji.fi/theme/datasets" class="navbox" target="_blank">
+    </a>
+    <a href="https://laji.fi/theme/datasets" rel="noopener nofollow" target="_blank"  class="navbox">
       <h5 translate>theme.import.3</h5>
       <p translate>theme.import.3.desc</p>
     </a>
