@@ -4,6 +4,7 @@ import { PlatformService } from '../../root/platform.service';
 import { DOCUMENT, Location } from '@angular/common';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { HistoryService } from './history.service';
+import { Util } from './util.service';
 
 export interface IBrowserState {
   visibility: boolean;
@@ -137,13 +138,7 @@ export class BrowserService implements OnDestroy {
     this.resizeSub = this.resize.pipe(
       debounceTime(100)
     ).subscribe(() => {
-      try {
-        this.platformService.window.dispatchEvent(new Event('resize'));
-      } catch (e) {
-        const evt: any = this.document.createEvent('UIEvents');
-        evt.initUIEvent('resize', true, false, this.platformService.window, 0);
-        this.platformService.window.dispatchEvent(evt);
-      }
+      Util.dispatchResizeEvent(this.platformService);
     });
   }
 

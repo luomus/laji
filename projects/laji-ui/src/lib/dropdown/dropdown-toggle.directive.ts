@@ -1,5 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Directive, ElementRef, HostBinding, HostListener, Inject } from '@angular/core';
+import { PlatformService } from 'projects/laji/src/app/root/platform.service';
+import { Util } from 'projects/laji/src/app/shared/service/util.service';
 
 /**
  * Makes the target element to be show a dropdown menu on click.
@@ -19,6 +21,7 @@ export class DropdownToggleDirective {
 
   constructor(
     private elementRef: ElementRef,
+    private platformService: PlatformService,
     @Inject(DOCUMENT) private document: Document
   ) { }
 
@@ -28,6 +31,7 @@ export class DropdownToggleDirective {
 
     const isDisplayed = dropdownMenuElement.style.display !== 'none';
     dropdownMenuElement.style.display = isDisplayed ? 'none' : 'block';
+    Util.dispatchResizeEvent(this.platformService);
   }
 
   @HostListener('document:click', ['$event.target'])
@@ -49,6 +53,7 @@ export class DropdownToggleDirective {
     if (!clickedInside) {
       menu.style.display = 'none';
     }
+    Util.dispatchResizeEvent(this.platformService);
   }
 
   /**

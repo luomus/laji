@@ -6,6 +6,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { SidebarLinkComponent } from './sidebar-link/sidebar-link.component';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
+import { Util } from 'projects/laji/src/app/shared/service/util.service';
 
 const mobileBreakpoint = 768;
 
@@ -159,15 +160,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   }
 
   onResizeAnimationComplete() {
-    try {
-      const event = new Event('resize');
-      (event as any)['ignore-sidebar'] = true;
-      this.platformService.window.dispatchEvent(event);
-    } catch (e) {
-      const evt: any = this.platformService.window.document.createEvent('UIEvents');
-      evt.initUIEvent('resize', true, false, this.platformService.window, 0);
-      this.platformService.window.dispatchEvent(evt);
-    }
+    Util.dispatchResizeEvent(this.platformService, 'ignore-sidebar');
   }
 
   onDragStart() {
