@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Even
   OnChanges, Output, QueryList, Renderer2, RendererStyleFlags2, SimpleChanges, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 
 type Keyable = string | number | symbol;
+type SortFn<T extends Keyable> = <U extends DatatableRow<T>>(rowA: U, rowB: U) => number;
 export type DatatableRow<T extends Keyable> = Record<T, any>;
 interface BasicColumn<T extends Keyable> {
   title: string;
@@ -11,7 +12,7 @@ interface BasicColumn<T extends Keyable> {
    * Sorting function to be used when totalPages === 1 (local sort).
    * Returns a negative number if rowA comes before rowB, 0 if equal, and positive otherwise.
    */
-  sortFn?: <U extends DatatableRow<T>>(rowA: U, rowB: U) => number;
+  sortFn?: SortFn<T>;
   sortable?: boolean; // defaults to true
 }
 
@@ -49,7 +50,7 @@ export interface SortableColumnWithTemplateAndProp<T extends Keyable> extends Co
 // no sort fallback when a prop wasn't supplied
 export interface SortableColumnWithTemplateButNoProp<T extends Keyable> extends ColumnWithTemplate<T> {
   sortable: true;
-  sortFn: <U>(a: U, b: U) => number;
+  sortFn: SortFn<T>;
 }
 
 export type DatatableColumn<T extends Keyable> =
@@ -300,9 +301,7 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
       }
       const sortFn = col.sortFn ? col.sortFn
         : (a: DatatableRow<RowProp>, b: DatatableRow<RowProp>) =>
-          col.sortFn
-            ? col.sortFn(a, b)
-            : a[col.prop] > b[col.prop] ? 1 : a[col.prop] < b[col.prop] ? -1 : 0;
+          a[col.prop] > b[col.prop] ? 1 : a[col.prop] < b[col.prop] ? -1 : 0;
       const sortDir = (a: DatatableRow<RowProp>, b: DatatableRow<RowProp>) => {
         if (sort.dir === 'DESC') {
           [b, a] = [a, b];
