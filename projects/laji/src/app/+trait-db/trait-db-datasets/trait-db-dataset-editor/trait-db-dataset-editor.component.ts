@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,7 +24,8 @@ const filterNullValues = <T extends Record<string, unknown>>(obj: T): T => {
 
 @Component({
   templateUrl: './trait-db-dataset-editor.component.html',
-  styleUrls: ['./trait-db-dataset-editor.component.scss']
+  styleUrls: ['./trait-db-dataset-editor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
   datasetForm = this.fb.group({

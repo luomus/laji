@@ -19,6 +19,8 @@ import { DatatableModule } from 'projects/laji-ui/src/lib/datatable/datatable.mo
 import { TraitSearchComponent } from './shared/trait-search/trait-search.component';
 import { TraitSearchFiltersComponent } from './shared/trait-search/trait-search-filters/trait-search-filters.component';
 import { TraitSearchAdditionalFiltersComponent } from './shared/trait-search/trait-search-filters/additional-filters.component';
+import { TraitDbTraitEditorComponent } from './trait-db-traits/trait-db-trait-editor/trait-db-trait-editor.component';
+import { TraitEnumerationValueListComponent } from './trait-db-traits/trait-db-trait-editor/trait-enumeration-value-list.component';
 
 @NgModule({
   imports: [ routing, CommonModule, SharedModule, LajiUiModule, ReactiveFormsModule, DatatableModule ],
@@ -26,7 +28,8 @@ import { TraitSearchAdditionalFiltersComponent } from './shared/trait-search/tra
     TraitDbComponent, TraitDbMainComponent, TraitDbBrowseComponent,
     TraitDbMyDatasetsComponent, TraitDbDatasetsComponent, TraitDbDatasetComponent,
     TraitDbDatasetEditorComponent, TraitDbAboutComponent, TraitDbTraitsComponent,
-    TraitDbTraitComponent, TraitSearchComponent, TraitSearchFiltersComponent, TraitSearchAdditionalFiltersComponent
+    TraitDbTraitComponent, TraitSearchComponent, TraitSearchFiltersComponent, TraitSearchAdditionalFiltersComponent,
+    TraitDbTraitEditorComponent, TraitEnumerationValueListComponent
   ]
 })
 export class TraitDbModule {}
