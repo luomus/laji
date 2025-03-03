@@ -3,7 +3,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 type Kind = 'string' | 'number' | 'enum';
 type KindToConcreteType<K extends Kind> = K extends 'number' ? number : string;
-type ExtractKind<T extends { kind: Kind }> = T['kind'];
 type ElementType<T extends { kind: Kind }> = KindToConcreteType<T['kind']>;
 
 @Component({
