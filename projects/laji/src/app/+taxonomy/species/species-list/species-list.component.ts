@@ -172,11 +172,6 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
           }
 
           this.speciesPage = data;
-          this.speciesPage.results.map(r => {
-            if (r['id']) {
-              r['id'] = this.fullUri.transform(r['id']);
-            }
-          });
           this.loading = false;
           this.datatable?.refreshTable();
           this.cd.markForCheck();
