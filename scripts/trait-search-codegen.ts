@@ -137,14 +137,9 @@ const generateExportObjectLiteral = (obj: any, name: string, path: string) => {
   fs.writeFileSync(path, `/* eslint-disable @typescript-eslint/quotes */\n/* eslint-disable max-len */\n/*\nGenerated file. Do not edit manually!\n*/\n\n${result}\n`);
 };
 
-const generateDatatableColumns = (tree: any) => {
-  const cols = accDatatableColumnsRecursive(tree);
-  console.log(cols);
-  generateExportObjectLiteral(cols, 'cols', './projects/laji/src/app/+trait-db/shared/trait-search/trait-search-table-columns.ts');
-};
+const generateDatatableColumns = (cols: [string, LeafType][]) => generateExportObjectLiteral(cols, 'cols', './projects/laji/src/app/+trait-db/shared/trait-search/trait-search-table-columns.ts');
 
-const generateFilters = (tree: any) => {
-  const cols = accDatatableColumnsRecursive(tree);
+const generateFilters = (cols: [string, LeafType][]) => {
   const filters = {} as any;
   cols.forEach(([prop, leaf]) => {
     const formKey = prop.replace(/\./g, '');
@@ -194,8 +189,9 @@ const main = () => {
       const resultsType = getNestedPropertyType(traitSearchType, ['get', 'responses', '200', 'content', 'application/json', 'results']);
       const resultType = checker.getTypeArguments(resultsType as ts.TypeReference)[0];
       const tree = traverseType(resultType);
-      generateDatatableColumns(tree);
-      generateFilters(tree);
+      const cols = accDatatableColumnsRecursive(tree);
+      generateDatatableColumns(cols);
+      generateFilters(cols);
     }
   });
 };
