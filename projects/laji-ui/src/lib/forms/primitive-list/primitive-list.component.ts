@@ -19,17 +19,17 @@ type ElementType<T extends { kind: Kind }> = KindToConcreteType<T['kind']>;
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormPrimitiveListComponent implements ControlValueAccessor {
+export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcreteType<K>> implements ControlValueAccessor {
   @Input() inputId: string | undefined;
   /**
    * If kind === 'enum', then enumVariants must be defined.
    */
-  @Input() kind: Kind = 'string';
-  @Input() enumVariants!: ExtractKind<this> extends 'enum' ? string[] : undefined;
+  @Input() kind!: K;
+  @Input() enumVariants!: K extends 'enum' ? string[] : undefined;
 
-  valueList: ElementType<this>[] = [];
-  onChange: (value: ElementType<this>[]) => void = () => {};
-  onTouched: (value: ElementType<this>[]) => void = () => {};
+  valueList: T[] = [];
+  onChange: (value: T[]) => void = () => {};
+  onTouched: (value: T[]) => void = () => {};
 
   @ViewChild('inputElem') inputElem?: ElementRef;
   @ViewChild('selectElem') selectElem?: ElementRef;
@@ -78,7 +78,7 @@ export class FormPrimitiveListComponent implements ControlValueAccessor {
   // ------------------------------  //
   // ControlValueAccessor methods:   //
   // ------------------------------- //
-  writeValue(value: ElementType<this>[]): void {
+  writeValue(value: T[]): void {
     if (!value) {
       this.valueList = [];
     } else {
