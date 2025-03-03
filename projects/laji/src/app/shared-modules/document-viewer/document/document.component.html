@@ -32,7 +32,7 @@
         </h3>
       </div>
       <laji-issues [data]="document"></laji-issues>
-      <laji-row [title]="'vihko.home.form.collection' | translate">
+      <laji-row [title]="'vihko.home.form.collection' | translate" ngPreserveWhitespaces>
         <span>{{ document.collectionId | toQName | collectionName }}</span>
         <span *ngIf="showFacts"><a target="_blank" href="{{document.collectionId}}">{{ document.collectionId }}</a></span>
       </laji-row>
@@ -48,8 +48,8 @@
       <laji-row title="URL" *ngIf="document.referenceURL">
         <a [href]="document.referenceURL" target="_blank" rel="noopener">{{ document.referenceURL }}</a>
       </laji-row>
-      <laji-row *ngIf="document?.gatherings?.[0]?.units?.[0]?.externalMediaCount" 
-                [title]="'document.externalMediaCount' | translate" 
+      <laji-row *ngIf="document?.gatherings?.[0]?.units?.[0]?.externalMediaCount"
+                [title]="'document.externalMediaCount' | translate"
                 [value]="document.gatherings[0].units[0].externalMediaCount">
       </laji-row>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
