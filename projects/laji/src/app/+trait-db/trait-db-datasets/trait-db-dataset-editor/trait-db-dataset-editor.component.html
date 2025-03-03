@@ -61,7 +61,7 @@
   </div>
   <div>
     <label for="additionalIdentifiers">Additional Identifiers:</label>
-    <lu-form-string-list id="additionalIdentifiers" formControlName="additionalIdentifiers"></lu-form-string-list>
+    <lu-form-primitive-list inputId="additionalIdentifiers" kind="string" formControlName="additionalIdentifiers"></lu-form-primitive-list>
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'additionalIdentifiers' }"></ng-container>
   </div>
 

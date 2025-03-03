@@ -3,15 +3,21 @@
   <div class="mb-4">
     <label for="trait-search-filters-additional-filter">Add a filter:</label>
     <select class="form-control" id="trait-search-filters-additional-filter" (change)="onSelectAdditionalFilter($event)">
-      <option [value]="null">None</option>
+      <option [value]="null"></option>
       <option *ngFor="let filterIdx of unselectedAdditionalFilters" [value]="filterIdx">{{ additionalFilters[filterIdx].prop }}</option>
     </select>
   </div>
   <ul class="additional-filter-list" *ngFor="let filterIdx of selectedAdditionalFilters">
     <li>
       <ng-container *ngTemplateOutlet="
-        { string: stringFilter, enum: enumFilter, boolean: booleanFilter }[additionalFilters[filterIdx].filterType];
-        context: { $implicit: additionalFilters[filterIdx].prop, formKey: additionalFilters[filterIdx].formKey }
+        {
+          string: stringFilter,
+          enum: enumFilter,
+          boolean: booleanFilter,
+          array: arrayFilter,
+          number: numberFilter,
+        }[additionalFilters[filterIdx].filterType];
+        context: { $implicit: additionalFilters[filterIdx].prop, formKey: additionalFilters[filterIdx].formKey, filter: additionalFilters[filterIdx] }
         "></ng-container>
       <button class="btn btn-default" (click)="onRemoveAdditionalFilter(filterIdx)">Remove</button>
     </li>
@@ -24,11 +30,40 @@
     </label>
   </div>
 </ng-template>
+<ng-template #numberFilter let-prop let-formKey='formKey'>
+  <div class="mb-2">
+    <label [for]="'trait-search-filters-' + formKey">{{ prop }}
+      <input [formControl]="$any(form.get(formKey))" class="form-control" type="number" [id]="'trait-search-filters-' + formKey">
+    </label>
+  </div>
+</ng-template>
+<ng-template #arrayFilter let-prop let-formKey='formKey' let-filter='filter'>
+  <div class="mb-2">
+    <label [for]="'trait-search-filters-' + formKey">{{ prop }}</label>
+    <ng-container *ngIf="filter.elementType._tag === 'string'; else enumList">
+      <lu-form-primitive-list
+        kind="string"
+        [formControl]="$any(form.get(formKey))"
+        [inputId]="'trait-search-filters-' + formKey"
+      ></lu-form-primitive-list>
+    </ng-container>
+    <ng-template #enumList>
+      <lu-form-primitive-list
+        *ngIf="filter.elementType._tag === 'enum'; else unsupported"
+        kind="enum"
+        [formControl]="$any(form.get(formKey))"
+        [enumVariants]="filter.elementType.variants"
+        [inputId]="'trait-search-filters-' + formKey"
+      ></lu-form-primitive-list>
+    </ng-template>
+    <ng-template #unsupported>Error: unsupported array type</ng-template>
+  </div>
+</ng-template>
 <ng-template #enumFilter let-prop let-formKey='formKey'>
   <div class="mb-2">
     <label [for]="'trait-search-filters-' + formKey">{{ prop }}
-      <select class="form-control" [formControl]="$any(form.get(formKey))" class="form-control" [id]="'trait-search-filters-' + formKey">
-        <option [value]="null">None</option>
+      <select [formControl]="$any(form.get(formKey))" class="form-control" [id]="'trait-search-filters-' + formKey">
+        <option [value]="null"></option>
         <option *ngFor="let val of $any(additionalFiltersLookup)[formKey].range" [value]="val">{{ val }}</option>
       </select>
     </label>

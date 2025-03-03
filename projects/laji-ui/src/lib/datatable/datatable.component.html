@@ -11,7 +11,7 @@
         #headerRef
       >
         <span class="header-contents">
-          {{ columns[colIdx].title }} 
+          {{ columns[colIdx].title }}
           <div class="d-flex flex-row flex-nowrap">
             <button
               *ngIf="columns[colIdx].sortable === undefined || columns[colIdx].sortable"
@@ -40,17 +40,19 @@
     <ng-container *ngIf="!loading else rowGhosts">
       <tr *ngFor="let row of rows">
         <td *ngFor="let colIdx of selectedColumns" #rowRef>
-          <ng-container *ngIf="columnHasTemplate(columns[colIdx]); else defaultTemplate">
-            <ng-container
-              *ngTemplateOutlet="$any(columns[colIdx])['cellTemplate'];
-              context: $any(columns[colIdx]).prop
-                ? { $implicit: row, prop: getNestedValue(row, $any(columns[colIdx])['prop']) }
-                : { $implicit: row }"
-            ></ng-container>
+          <ng-container *ngIf="columns[colIdx] as col">
+            <ng-container *ngIf="columnHasTemplate(col)">
+              <ng-container
+                *ngTemplateOutlet="col.cellTemplate;
+                context: 'prop' in col
+                  ? { $implicit: row, prop: getNestedValue(row, col.prop) }
+                  : { $implicit: row }"
+              ></ng-container>
+            </ng-container>
+            <ng-container *ngIf="!columnHasTemplate(col)">
+              {{ getNestedValue(row, col.prop) }}
+            </ng-container>
           </ng-container>
-          <ng-template #defaultTemplate>
-            {{ getNestedValue(row, $any(columns[colIdx])['prop']) }}
-          </ng-template>
         </td>
       </tr>
     </ng-container>
