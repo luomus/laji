@@ -27,7 +27,7 @@ export const HIGHER_TAXA: (keyof components['schemas']['HigherTaxa'])[] = [
 export type Filters = {
   dataset: string | null;
   trait: string | null;
-  searchByTaxon: 'FinBIF' | 'GBIF';
+  searchByTaxon: 'FinBIF' | 'GBIF' | null;
   additionalFilters: AdditionalFilterValues | null;
 } & {
   [K in typeof HIGHER_TAXA[number]]: string | null;
@@ -80,7 +80,7 @@ export class TraitSearchFiltersComponent implements OnInit {
   @Output() filterChange: Observable<Partial<Filters>>;
   @Output() searchClicked = new EventEmitter<void>();
 
-  form: FormGroup<Record<keyof Filters, FormControl>>;
+  form: FormGroup<{[K in keyof Filters]: FormControl<Filters[K]>}>;
   datasets$: Observable<components['schemas']['Dataset'][]>;
   traits$: Observable<components['schemas']['Trait'][]>;
 
