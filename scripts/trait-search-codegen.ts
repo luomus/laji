@@ -137,7 +137,8 @@ const generateExportObjectLiteral = (obj: any, name: string, path: string) => {
   fs.writeFileSync(path, `/* eslint-disable @typescript-eslint/quotes */\n/* eslint-disable max-len */\n/*\nGenerated file. Do not edit manually!\n*/\n\n${result}\n`);
 };
 
-const generateDatatableColumns = (cols: [string, LeafType][]) => generateExportObjectLiteral(cols, 'cols', './projects/laji/src/app/+trait-db/shared/trait-search/trait-search-table-columns.ts');
+const generateDatatableColumns = (cols: [string, LeafType][]) =>
+  generateExportObjectLiteral(cols, 'cols', './projects/laji/src/app/+trait-db/shared/trait-search/trait-search-table-columns.ts');
 
 const generateFilters = (cols: [string, LeafType][]) => {
   const filters = {} as any;
