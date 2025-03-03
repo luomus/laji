@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input,
-  OnChanges, OnInit, Output, QueryList, Renderer2, RendererStyleFlags2, SimpleChanges, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
+  OnChanges, Output, QueryList, Renderer2, RendererStyleFlags2, SimpleChanges, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 
 type Keyable = string | number | symbol;
 export type DatatableRow<T extends Keyable> = Record<T, any>;
@@ -285,8 +285,11 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
     return this.sorts.find(s => s.by === colIdx)?.dir ?? 'NONE';
   }
 
-  getNestedValue(obj: any, path: string): any {
-    return path.split('.').reduce((acc, key) => acc?.[key], obj);
+  getNestedValue(obj: any, prop: Keyable): any {
+    if (typeof prop !== 'string') {
+      return obj[prop];
+    }
+    return prop.split('.').reduce((acc, key) => acc?.[key], obj);
   }
 
   private performLocalSort() {
