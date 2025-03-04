@@ -12,7 +12,7 @@ import { UserService } from '../../../shared/service/user.service';
 export type Dataset = components['schemas']['Dataset'];
 type ValidationResponse = components['schemas']['ValidationResponse'];
 
-const filterNullValues = <T extends Record<string, unknown>>(obj: T): T => {
+export const filterNullValues = <T extends Record<string, unknown>>(obj: T): T => {
   const clone: any = {};
   Object.entries(obj).forEach(([key, val]) => {
     if (val !== null) {

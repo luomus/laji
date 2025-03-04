@@ -37,12 +37,14 @@ export class TraitEnumerationValueListComponent implements ControlValueAccessor,
     this.subscription.unsubscribe();
   }
 
-  onAddElem() {
+  onAddElem(event: Event) {
+    event.preventDefault();
     this.addElem();
     this.onChange(this.form.getRawValue());
   }
 
-  onRemoveElem(index: number) {
+  onRemoveElem(event: Event, index: number) {
+    event.preventDefault();
     this.form.removeAt(index);
     this.onChange(this.form.getRawValue());
   }

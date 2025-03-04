@@ -92,7 +92,7 @@
   </div>
 
   <ng-container *ngIf="form.get('id')?.value">
-    <button class="d-block" (click)="onDelete()">DELETE DATASET</button>
+    <button class="btn btn-default" (click)="onDelete()">DELETE TRAIT</button>
   </ng-container>
 
   <button type="submit" class="btn btn-default" [disabled]="submissionState !== 'none'">Submit</button>
