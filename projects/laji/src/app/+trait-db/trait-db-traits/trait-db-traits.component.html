@@ -4,7 +4,7 @@
 <div *ngIf="{ val: loggedIn$ | async } as loggedIn; else loading">
   <div *ngIf="loggedIn.val; else notLoggedIn">
     <a class="btn btn-default" [routerLink]="['new']">+ create new trait</a>
-    <a class="btn btn-default">+ create new trait group</a>
+    <a class="btn btn-default" routerLink="/trait-db/trait-groups/new">+ create new trait group</a>
   </div>
 </div>
 <ng-template #loading>

@@ -21,6 +21,7 @@ import { TraitSearchFiltersComponent } from './shared/trait-search/trait-search-
 import { TraitSearchAdditionalFiltersComponent } from './shared/trait-search/trait-search-filters/additional-filters.component';
 import { TraitDbTraitEditorComponent } from './trait-db-traits/trait-db-trait-editor/trait-db-trait-editor.component';
 import { TraitEnumerationValueListComponent } from './trait-db-traits/trait-db-trait-editor/trait-enumeration-value-list.component';
+import { TraitDbTraitGroupEditorComponent } from './trait-db-traits/trait-db-trait-group-editor/trait-db-trait-group-editor.component';
 
 @NgModule({
   imports: [ routing, CommonModule, SharedModule, LajiUiModule, ReactiveFormsModule, DatatableModule ],
@@ -29,7 +30,7 @@ import { TraitEnumerationValueListComponent } from './trait-db-traits/trait-db-t
     TraitDbMyDatasetsComponent, TraitDbDatasetsComponent, TraitDbDatasetComponent,
     TraitDbDatasetEditorComponent, TraitDbAboutComponent, TraitDbTraitsComponent,
     TraitDbTraitComponent, TraitSearchComponent, TraitSearchFiltersComponent, TraitSearchAdditionalFiltersComponent,
-    TraitDbTraitEditorComponent, TraitEnumerationValueListComponent
+    TraitDbTraitEditorComponent, TraitEnumerationValueListComponent, TraitDbTraitGroupEditorComponent
   ]
 })
 export class TraitDbModule {}

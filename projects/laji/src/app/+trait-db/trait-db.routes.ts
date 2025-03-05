@@ -10,6 +10,7 @@ import { TraitDbTraitComponent } from './trait-db-traits/trait-db-trait/trait-db
 import { TraitDbTraitsComponent } from './trait-db-traits/trait-db-traits.component';
 import { TraitDbComponent } from './trait-db.component';
 import { TraitDbTraitEditorComponent } from './trait-db-traits/trait-db-trait-editor/trait-db-trait-editor.component';
+import { TraitDbTraitGroupEditorComponent } from './trait-db-traits/trait-db-trait-group-editor/trait-db-trait-group-editor.component';
 
 export const routes: Routes = [
   {
@@ -31,6 +32,7 @@ export const routes: Routes = [
         { path: ':id/edit', component: TraitDbTraitEditorComponent },
         { path: ':id', component: TraitDbTraitComponent }
       ] },
+      { path: 'trait-groups/new', component: TraitDbTraitGroupEditorComponent },
       { path: 'about', component: TraitDbAboutComponent },
     ]
   }
