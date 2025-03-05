@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { mergeMap, take, tap, delay, map, scan, filter } from 'rxjs/operators';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { mergeMap, take, tap, delay, map, scan, filter, switchMap } from 'rxjs/operators';
+import { combineLatest, Observable, of, Subject, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { BrowserService } from '../../../shared/service/browser.service';
@@ -14,8 +14,9 @@ import { UserService } from '../../../shared/service/user.service';
 import { DocumentStorage } from '../../../storage/document.storage';
 import { LajiFormComponent } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form/laji-form.component';
 import { DocumentFormFacade, FormError, isFormError, SaneViewModel, isSaneViewModel, ViewModel } from './document-form.facade';
-import { ProjectFormService } from '../../../shared/service/project-form.service';
+import { ProjectFormService, RegistrationContact } from '../../../shared/service/project-form.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
+import { LocalStorage } from 'ngx-webstorage';
 
 @Component({
   selector: 'laji-document-form',
@@ -29,11 +30,14 @@ import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.compo
 export class DocumentFormComponent implements OnInit, OnDestroy {
   @ViewChild(LajiFormComponent) lajiForm!: LajiFormComponent;
   @ViewChild('saveAsTemplate') public templateModal!: ModalComponent;
+  @ViewChild('loginModal', { static: true }) loginModal!: ModalComponent;
 
   @Input() formID!: string;
   @Input() documentID!: string;
   @Input() namedPlaceID!: string;
   @Input() template!: boolean;
+
+  @LocalStorage('formState', undefined) private formPersistentState: Document | undefined;
 
   vm$!: Observable<ViewModel>;
 
@@ -79,6 +83,11 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       this.vm = vm;
     });
     this.footerService.footerVisible = false;
+
+    if (this.formPersistentState) {
+      this.saveDocumentFromLocalStorage();
+      this.formPersistentState = undefined;
+    }
   }
 
   ngOnDestroy() {
@@ -167,36 +176,88 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     if (this.saving) {
       return;
     }
-    const document = event.data.formData;
+
+    const document: Document = event.data.formData;
+
     if (!this.template) {
-      this.lajiForm.block();
-      this.saving = true;
-      if (this.vm.form.options?.openForm) {
-        this.projectFormService.setRegistrationContacts([
-          {
-            preferredName: document?.contacts[0]?.preferredName,
-            inheritedName: document?.contacts[0]?.inheritedName,
-            emailAddress: document?.contacts[0]?.emailAddress
+      combineLatest([
+        of(this.vm.form.options?.openForm),
+        this.userService.isLoggedIn$
+      ]).pipe(
+        take(1),
+        switchMap(([openForm, isLoggedIn]) => {
+          if (openForm && !isLoggedIn) {
+            this.setRegistrationContacts(document?.contacts);
+
+            return this.userService.emailHasAccount(document?.contacts[0]?.emailAddress).pipe(
+              switchMap(exists => {
+                if (exists) {
+                  this.formPersistentState = document;
+                  this.loginModal.show();
+                  return this.loginModal.onHide.pipe(take(1));
+                } else {
+                  return of(null);
+                }
+              })
+            );
+          } else {
+            return of(null);
           }
-        ]);
-      }
-      this.documentFormFacade.save({...document, publicityRestrictions: this.publicityRestrictions}).subscribe(() => {
-        this.lajiForm.unBlock();
-        this.saving = false;
-        this.toastsService.showSuccess(this.getMessage(
-            this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
-           this.translate.instant('haseka.form.success')
-        ));
-        this.successNavigation();
-      }, () => {
-        this.lajiForm.unBlock();
-        this.saving = false;
-        this.lajiForm.displayErrorModal('saveError');
+        })
+      ).subscribe(() => {
+        this.saveDocument(document);
       });
     } else {
       this.documentForTemplate = document;
       this.templateModal.show();
     }
+  }
+
+  saveDocument(document: Document) {
+    this.lajiForm.block();
+    this.saving = true;
+    this.documentFormFacade.save({...document, publicityRestrictions: this.publicityRestrictions}).subscribe(() => {
+      this.lajiForm.unBlock();
+      this.saving = false;
+      this.toastsService.showSuccess(this.getMessage(
+          this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
+         this.translate.instant('haseka.form.success')
+      ));
+      this.successNavigation();
+    }, () => {
+      this.lajiForm.unBlock();
+      this.saving = false;
+      this.lajiForm.displayErrorModal('saveError');
+    });
+  };
+
+  saveDocumentFromLocalStorage() {
+    this.userService.user$.pipe(
+      take(1),
+      switchMap(person => {
+        if (!this.formPersistentState) { return of(null); }
+        return this.documentFormFacade.save({
+          ...this.formPersistentState,
+          publicityRestrictions: this.publicityRestrictions,
+          gatheringEvent: {
+            ...this.formPersistentState.gatheringEvent,
+            leg: person?.id ? [person.id] : undefined
+          }
+        });
+      })
+    ).subscribe(() => {
+      this.successNavigation();
+    });
+  }
+
+  setRegistrationContacts(contacts: RegistrationContact[] | undefined) {
+    this.projectFormService.setRegistrationContacts([
+      {
+        preferredName: contacts?.[0]?.preferredName,
+        inheritedName: contacts?.[0]?.inheritedName,
+        emailAddress: contacts?.[0]?.emailAddress
+      }
+    ]);
   }
 
   submitPublic() {
@@ -245,6 +306,10 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   onGoBack() {
     this.confirmLeave = false;
     this.goBack();
+  }
+
+  login() {
+    this.userService.redirectToLogin();
   }
 
   private getMessage(type: any, defaultValue: any) {

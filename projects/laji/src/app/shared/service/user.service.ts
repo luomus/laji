@@ -361,6 +361,13 @@ export class UserService implements OnDestroy {
     }
   }
 
+  emailHasAccount(email: string): Observable<boolean> {
+    return this.personApi.existsByEmail(email).pipe(
+      map(response => response.status === 204),
+      catchError(() => of(false))
+    );
+  }
+
   ngOnDestroy() {
     this.subLogout?.unsubscribe();
   }

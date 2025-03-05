@@ -1464,6 +1464,7 @@
   "project-form.about.openForm.porpoise": "Voit ilmoittaa pyöriäislomakkeella havaintoja myös ilman kirjautumista.",
   "project-form.about.register": "Luo tili",
   "project-form.about.register.description": "Luo tili, jotta voit muokata havaintojasi.",
+  "project-form.login": "Sähköpostiosoitteellasi on jo luotu käyttäjätili. Haluatko kirjautua sisään? Tällöin havaintoerä liitetään tiliisi.",
   "quality.annotations.title": "Käyttäjien kommentteja",
   "quality.created": "Kommentoitu",
   "quality.creator": "Kommentoija",

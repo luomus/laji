@@ -78,6 +78,8 @@ export interface Document {
      */
     condition?: string;
 
+    contacts?: any;
+
     /**
      * QName for MA.person
      */

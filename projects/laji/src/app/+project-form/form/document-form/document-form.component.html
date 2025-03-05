@@ -88,6 +88,11 @@
   </div>
 </lu-modal>
 
+<lu-modal #loginModal size="md">
+  <h4>{{ 'project-form.login' | translate }}</h4>
+  <lu-button (click)="login()" role="primary" class="login-button">{{ 'login' | translate }}</lu-button>
+<lu-modal>
+
 <ng-template #spinner>
   <laji-spinner #spinner [spinning]="true" [overlay]="true"></laji-spinner>
 </ng-template>
