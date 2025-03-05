@@ -13,7 +13,6 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
   @Input() id?: string;
   @Input() showBreadcrumb = true;
   @Input() showAll = false;
-  @Output() informalGroupSelect = new EventEmitter<string>();
 
   public selectedInformalGroup: InformalTaxonGroup | undefined;
   public informalGroups: InformalTaxonGroup[] = [];

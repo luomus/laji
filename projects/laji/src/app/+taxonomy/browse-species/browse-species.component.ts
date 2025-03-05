@@ -14,6 +14,7 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
   loadedTabs = new LoadedElementsStore(['images', 'list']);
 
   private subQueryUpdate?: Subscription;
+  private queryParamsSubscription?: Subscription;
 
   constructor(
     public searchQuery: TaxonomySearchQuery,
@@ -24,17 +25,20 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadedTabs.load(this.activeIndex);
     this.searchQuery.setQueryFromParams({...this.route.snapshot.queryParams, onlyFinnish: 'true'});
+
+    this.queryParamsSubscription = this.route.queryParams.subscribe(params => {
+      this.searchQuery.query.informalGroupFilters = params.informalGroupFilters;
+      this.searchQuery.updateUrl(['onlyFinnish']);
+    });
   }
 
   ngOnDestroy() {
     if (this.subQueryUpdate) {
       this.subQueryUpdate.unsubscribe();
     }
-  }
-
-  informalGroupChange(id: string) {
-    this.searchQuery.query.informalGroupFilters = id;
-    this.searchQuery.updateUrl(['onlyFinnish']);
+    if (this.queryParamsSubscription) {
+      this.queryParamsSubscription.unsubscribe();
+    }
   }
 
   @HostListener('window:popstate')

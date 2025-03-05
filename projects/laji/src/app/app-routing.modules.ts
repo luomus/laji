@@ -10,6 +10,7 @@ import { CheckLoginGuard } from './shared/guards/check-login.guard';
 import { NgModule } from '@angular/core';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import { Global } from '../environments/global';
+import { ExternalRedirectComponent } from './shared/external-redirect/external-redirect.component';
 
 const baseRoutes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule)},
@@ -30,6 +31,9 @@ const baseRoutes: Routes = [
     data: {title: 'navigation.map', displayFeedback: false, preload: false }
   },
   {path: 'error/404', pathMatch: 'full', component: NotFoundComponent},
+  {path: 'theme/checklist', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.checklist'}, pathMatch: 'full'},
+  {path: 'theme/ykj', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.ykj'}, pathMatch: 'full'},
+  {path: 'theme/emk', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.biogeographicalProvinces'}, pathMatch: 'full'},
   {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule), data: {preload: false}},
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
   // {path: 'shell', component: ForumComponent},
@@ -67,13 +71,11 @@ const routesWithLang: Routes = [
   ], component: LocaleEnComponent, canActivate: [LocalizeInGuard]},
   {path: 'en', data: {lang: 'en'}, children: [
     ...redirectsEn,
-      {path: 'theme/emk', redirectTo: '/en/about/3061', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
   {path: 'sv', data: {lang: 'sv'}, children: [
     ...redirectsFi,
-    {path: 'theme/emk', redirectTo: '/sv/about/5719', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
@@ -87,12 +89,11 @@ const routesWithLang: Routes = [
     {path: 'bibliografi', redirectTo: '/sv/theme/publications', pathMatch: 'full'},
     {path: 'publications', redirectTo: '/en/theme/publications', pathMatch: 'full'},
     {path: 'hyonteisopas', redirectTo: '/theme/hyonteisopas', pathMatch: 'full'},
-    {path: 'laadunvalvonta', redirectTo: '/about/772', pathMatch: 'full'},
-    {path: 'sensitiiviset', redirectTo: '/about/709', pathMatch: 'full'},
-    {path: 'mobiilivihko', redirectTo: '/about/4981', pathMatch: 'full'},
+    {path: 'laadunvalvonta', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.dataQuality'}, pathMatch: 'full'},
+    {path: 'sensitiiviset', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.sensitiveData'}, pathMatch: 'full'},
+    {path: 'mobiilivihko',  component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.notebook.mobileNotebook'}, pathMatch: 'full'},
     {path: 'ilmoita', redirectTo: '/save-observations', pathMatch: 'full'},
     {path: 'selaa', redirectTo: '/observation/list', pathMatch: 'full'},
-    {path: 'theme/emk', redirectTo: '/about/5719', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}

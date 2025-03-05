@@ -1,9 +1,11 @@
 <ol class="breadcrumb" *ngIf="informalGroup && informalGroup.id">
   <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-    <a (click)="informalGroupSelect.emit()" tabindex="0" role="button" luKeyboardClickable>{{ 'observation.active.informalTaxonGroupAll' | translate }}</a>
+    <a [routerLink]="'/taxon/browse'"
+      tabindex="0" role="button" luKeyboardClickable>{{ 'observation.active.informalTaxonGroupAll' | translate }}</a>
   </li>
   <li *ngIf="parentGroup">
-    <a (click)="informalGroupSelect.emit(parentGroup.id)" tabindex="0" role="button" luKeyboardClickable>{{ parentGroup.name }}</a>
+    <a [routerLink]="'/taxon/browse'" [queryParams]="{ informalGroupFilters: parentGroup.id }"
+      tabindex="0" role="button" luKeyboardClickable>{{ parentGroup.name }}</a>
   </li>
   <li *ngIf="informalGroup" class="active">
     <span>{{ informalGroup.name }}</span>
