@@ -76,6 +76,7 @@ export namespace Form {
     dataset?: boolean;
     viewerType?: ViewerType;
     disabled?: boolean;
+    openForm?: boolean;
   }
 
   export interface FormOptions extends ListOptions {

@@ -7,7 +7,7 @@ import { Form } from '../model/Form';
 import { BehaviorSubject, combineLatest, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { NamedPlacesService } from './named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
-import { environment } from '../../../environments/environment';
+import { Global } from '../../../environments/global';
 
 export interface ProjectForm {
   form: Form.SchemaForm;
@@ -68,12 +68,8 @@ export class ProjectFormService {
   }
 
   getForm$(id: string): Observable<Form.SchemaForm> {
-    const aliasMap: { [key: string]: string } = {
-      pyoriaiset: 'MHL.1156'
-    };
-
-    if (aliasMap[id]) {
-      id = aliasMap[id];
+    if (Global.formAliasMap[id]) {
+      id = Global.formAliasMap[id];
     }
 
     if (this.currentFormID === id) {

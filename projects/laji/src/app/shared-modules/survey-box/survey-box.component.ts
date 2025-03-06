@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Form } from '../../shared/model/Form';
+import { Global } from '../../../environments/global';
 
 @Component({
   selector: 'laji-survey-box',
@@ -8,4 +9,16 @@ import { Form } from '../../shared/model/Form';
 })
 export class SurveyBoxComponent {
   @Input() form!: Form.List;
+
+  formLink(): string[] {
+    if (this.form.options?.openForm) {
+      let id = this.form.id;
+      const aliasKey = Object.keys(Global.formAliasMap).find(key => Global.formAliasMap[key] === id);
+      if (aliasKey) {
+        id = aliasKey;
+      }
+      return [`/project/${id}/form`];
+    }
+    return ['/project', this.form.id];
+  }
 }
