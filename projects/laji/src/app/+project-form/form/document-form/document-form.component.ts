@@ -49,6 +49,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     name: '',
     description: ''
   };
+  savingFromLocalStorage = false;
 
   isFormError = isFormError;
   isSaneViewModel = isSaneViewModel;
@@ -78,6 +79,8 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    if (this.formPersistentState) { this.savingFromLocalStorage = true; }
+
     this.vm$ = this.documentFormFacade.getViewModel(this.formID, this.documentID, this.namedPlaceID, this.template);
     this.vmSub = this.vm$.pipe(filter(isSaneViewModel)).subscribe(vm => {
       this.vm = vm;
@@ -86,7 +89,6 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 
     if (this.formPersistentState) {
       this.saveDocumentFromLocalStorage();
-      this.formPersistentState = undefined;
     }
   }
 
@@ -194,7 +196,12 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
                 if (exists) {
                   this.formPersistentState = document;
                   this.loginModal.show();
-                  return this.loginModal.onHide.pipe(take(1));
+                  return this.loginModal.onHide.pipe(
+                    take(1),
+                    tap(() => {
+                      this.formPersistentState = undefined;
+                    })
+                  );
                 } else {
                   return of(null);
                 }
@@ -246,6 +253,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
         });
       })
     ).subscribe(() => {
+      this.formPersistentState = undefined;
       this.successNavigation();
     });
   }
