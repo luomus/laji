@@ -155,7 +155,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 
   @HostListener('window:beforeunload', ['$event'])
   preventLeave($event: any) {
-    if (this.vm?.hasChanges) {
+    if (this.vm?.hasChanges && !this.loginModal.isShown) {
       $event.returnValue = undefined;
     }
   }
