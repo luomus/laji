@@ -10,7 +10,6 @@ export const environment = {
   type: Global.type.dev,
   base: 'http://localhost:3000',
   production: false,
-  forceLogin: false,
   disableAnalytics: true,
   systemID: 'KE.542',
   apiBase: '/api',

@@ -1032,24 +1032,6 @@
                 }
               ]
             },
-            "integrate-w-backend": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "projects/laji/src/environments/environment.ts",
-                  "with": "projects/vir/src/environments/environment.dev.ts"
-                }
-              ],
-              "outputHashing": "all",
-              "aot": true,
-              "vendorChunk": false,
-              "buildOptimizer": false
-            },
             "local": {
               "budgets": [
                 {
@@ -1074,7 +1056,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "vir:build"
+            "browserTarget": "vir:build",
+            "proxyConfig": "projects/vir/proxy.conf.json"
           },
           "configurations": {
             "production": {

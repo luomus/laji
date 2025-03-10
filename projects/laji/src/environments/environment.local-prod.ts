@@ -4,7 +4,6 @@ export const environment = {
   type: Global.type.beta,
   base: 'http://localhost:3000',
   production: true,
-  forceLogin: false,
   disableAnalytics: true,
   sourceKotka: 'KE.3',
   systemID: 'KE.1081',

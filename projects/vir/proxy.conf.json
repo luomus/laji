@@ -1,0 +1,20 @@
+{
+  "/api": {
+    "target": {
+      "host": "localhost",
+      "port": 4300,
+      "protocol": "http:"
+    },
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/user/viranomaiset": {
+    "target": {
+      "host": "localhost",
+      "port": 4300,
+      "protocol": "http:"
+    },
+    "secure": false,
+    "changeOrigin": true
+  }
+}

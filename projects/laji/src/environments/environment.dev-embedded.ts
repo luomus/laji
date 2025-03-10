@@ -5,7 +5,6 @@ export const environment = {
   type: Global.type.embedded,
   base: 'https://dev-embedded.laji.fi',
   production: false,
-  forceLogin: false,
   disableAnalytics: true,
   sourceKotka: 'KE.3',
   systemID: 'KE.389',

@@ -5,7 +5,6 @@ export const environment = {
   type: Global.type.iucn,
   base: 'https://punainenkirja.laji.fi',
   production: true,
-  forceLogin: true,
   disableAnalytics: false,
   systemID: 'KE.601',
   apiBase: '/api',
