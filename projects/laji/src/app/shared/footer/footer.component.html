@@ -1,31 +1,54 @@
 <footer *ngIf="footerService.footerVisible">
-  <div class="info-footer">
-    <div class="d-flex justify-center">
-      <div class="d-flex flex-wrap info-footer-content">
-        <div *ngFor="let item of tree$ | async; let i=index">
-          <h3>{{ item.title }}</h3>
-          <p class="intro" *ngIf="i === 0">{{ 'footer.intro1' | translate }}</p>
-          <ul *ngIf="item.children">
-            <li *ngFor="let child of item.children">
-              <a [routerLink]="'/about/' + child.id | localize">{{ child.title }}</a>
-            </li>
-            <li *ngIf="i === 0"><laji-feedback></laji-feedback></li>
-          </ul>
-        </div>
+  <div class="info-footer d-flex flex-col items-center">
+    <div class="d-flex flex-wrap info-footer-content mb-4 flex-gap-3">
+      <div>
+        <h3>Suomen lajitietokeskus</h3>
+        <p>{{ 'footer.intro1' | translate }} <a [routerLink]="'/about/'" translate>footer2.section1.readmore</a></p>
+        <ul>
+          <li><a href="https://info.laji.fi/etusivu/lajitietokeskus-pahkinankuoressa/yhteystiedot/" target="_blank" translate>footer2.section1.link.contact</a></li>
+          <li><laji-feedback></laji-feedback></li>
+          <li><a href="https://info.laji.fi/etusivu/lajitietokeskus-pahkinankuoressa/tietosuojaseloste/" target="_blank" translate>footer2.section1.link.privacypolicy</a></li>
+          <li><a href="https://info.laji.fi/etusivu/lajitietokeskus-pahkinankuoressa/saavutettavuusseloste/" target="_blank" translate>footer2.section1.link.accessibilty</a></li>
+          <li><a href="https://info.laji.fi/etusivu/lajitietokeskus-pahkinankuoressa/aineistopolitiikka/" target="_blank" translate>footer2.section1.link.datapolicy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 translate>footer2.section2.title</h3>
+        <ul>
+          <li><a [routerLink]="'/about/'" translate>footer2.section2.link.help</a></li>
+          <li><a href="https://info.laji.fi/etusivu/viranomaisportaali/usein-kysytyt-kysymykset/" target="_blank" translate>footer2.section2.link.faq</a></li>
+          <li>{{ 'footer2.section2.link.guides' | translate }}
+            <ul>
+              <li><a [routerLink]="'/about/'" translate>footer2.section2.link.dataUsers</a></li>
+              <li><a [routerLink]="'/about/'" translate>footer2.section2.link.researches</a></li>
+              <li><a [routerLink]="'/about/'" translate>footer2.section2.link.natureObservers</a></li>
+              <li><a [routerLink]="'/about/'" translate>footer2.section2.link.dataHolders</a></li>
+              <li><a [routerLink]="'/about/'" translate>footer2.section2.link.developers</a></li>
+              <li><a [routerLink]="'/about/'" translate>footer2.section2.link.media</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h3 translate>footer2.section3.title</h3>
+        <ul>
+          <li><a [routerLink]="'/about/'" translate>footer2.section3.link.taxonomy</a></li>
+          <li><a [routerLink]="'/about/'" translate>footer2.section3.link.observations</a> &#38; <a [routerLink]="'/about/'" translate>footer2.section3.link.gis</a></li>
+          <li><a [routerLink]="'/about/'" translate>footer2.section3.link.citizenScience</a></li>
+          <li><a href="https://pinkka.laji.fi/" target="_blank" translate>footer2.section3.link.pinkka</a> &#38; <a [routerLink]="'/about/'" translate>footer2.section3.link.identification</a></li>
+          <li><a href="https://punainenkirja.laji.fi/" target="_blank" translate>footer2.section3.link.redList</a></li>
+          <li><a href="https://vieraslajit.fi/" target="_blank" translate>footer2.section3.link.invasive</a></li>
+          <li><a [routerLink]="'/about/'" translate>footer2.section3.link.api</a></li>
+        </ul>
       </div>
     </div>
-    <div *ngIf="onFrontPage" class="d-flex justify-end">
-      <div class="header-image-info">
-        {{ 'footer.image.attribution' | translate }}:
-        <a [href]="headerImage.attributionUrl">{{ headerImage.attribution }}</a>, <a [href]="headerImage.licenseUrl">{{ headerImage.license }}</a>
-      </div>
-    </div>
+    <div class="info-footer-bottom-section">
+      <a [routerLink]="'/about/'">REST API</a> - <a [routerLink]="'/about/'">R API</a> - <a [routerLink]="'/about/'">GIS</a> - <a href="https://github.com/luomus/laji/" target="_blank" translate>footer2.github</a></div>
   </div>
   <div class="partners-footer">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-offset-1 col-sm-11 partners front"
-             [ngClass]="{hidden: !onFrontPage}">
+        <div class="col-sm-offset-1 col-sm-11 partners front" [ngClass]="{hidden: !onFrontPage}">
           <span class="title">{{ 'footer.partners' | translate }}</span>
           <ul>
             <li>
