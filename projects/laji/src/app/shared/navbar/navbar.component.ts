@@ -138,11 +138,4 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     this.userService.redirectToLogin();
     this.closeMenu();
   }
-
-  goToForum(event: Event) {
-    event.preventDefault();
-    this.closeMenu();
-    this.router.navigate(this.localizeRouterService.translateRoute(['/forum']), {skipLocationChange: true});
-  }
-
 }

@@ -2225,5 +2225,9 @@
   "footer2.section3.link.redList": "Suomen punainen kirja",
   "footer2.section3.link.invasive": "Vieraslajit",
   "footer2.section3.link.api": "Rajapinnat ja kehittäjäpalvelut",
-  "footer2.github": "View on Github"
+  "footer2.github": "View on Github",
+  "navigation.more": "Lisää",
+  "navigation.more.help": "Tietopankki",
+  "navigation.more.services": "Palvelut",
+  "navigation.more.forum": "Foorumi"
 }
