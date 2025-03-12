@@ -56,6 +56,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   errors = FormError;
 
   private vm!: SaneViewModel;
+  private tmpID: string | undefined;
   private isFromCancel = false;
   private confirmLeave = true;
   private saving = false;
@@ -79,17 +80,28 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    if (this.formPersistentState) { this.savingFromLocalStorage = true; }
+    if (this.formPersistentState?.id) {
+      if (this.formPersistentState.id === this.documentID) {
+        this.savingFromLocalStorage = true;
+      } else {
+        this.formPersistentState = undefined;
+      }
+    }
 
     this.vm$ = this.documentFormFacade.getViewModel(this.formID, this.documentID, this.namedPlaceID, this.template);
-    this.vmSub = this.vm$.pipe(filter(isSaneViewModel)).subscribe(vm => {
+    this.vmSub = this.vm$.pipe(
+      take(1),
+      filter(isSaneViewModel),
+      tap(_ => {
+        if (this.savingFromLocalStorage) {
+          this.saveDocumentFromLocalStorage();
+        }
+      })
+    ).subscribe(vm => {
       this.vm = vm;
     });
-    this.footerService.footerVisible = false;
 
-    if (this.formPersistentState) {
-      this.saveDocumentFromLocalStorage();
-    }
+    this.footerService.footerVisible = false;
   }
 
   ngOnDestroy() {
@@ -121,18 +133,20 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     }
     this.browserService.goBack(() => {
       this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(projectRoute => {
-        const page = this.vm.form.options?.resultServiceType
-          ? 'stats'
-          : this.vm.form.options?.mobile
-            ? 'about'
-            : 'submissions';
+        const page = this.vm.form.options?.openForm
+          ? 'about'
+          : this.vm.form.options?.resultServiceType
+            ? 'stats'
+            : this.vm.form.options?.mobile
+              ? 'about'
+              : 'submissions';
         this.router.navigate([`./${page}`], {relativeTo: projectRoute});
       });
     });
   }
 
   canDeactivate(leaveKey = 'haseka.form.leaveConfirm', cancelKey = 'haseka.form.discardConfirm') {
-    if (!this.confirmLeave || !this.vm?.hasChanges || this.template) {
+    if (!this.confirmLeave || !this.vm?.hasChanges || this.template || this.savingFromLocalStorage) {
       return true;
     }
     const msg = this.isFromCancel ? cancelKey : leaveKey;
@@ -155,7 +169,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 
   @HostListener('window:beforeunload', ['$event'])
   preventLeave($event: any) {
-    if (this.vm?.hasChanges && !this.loginModal.isShown) {
+    if (this.vm?.hasChanges && !this.loginModal.isShown && !this.savingFromLocalStorage) {
       $event.returnValue = undefined;
     }
   }
@@ -195,6 +209,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
               switchMap(exists => {
                 if (exists) {
                   this.formPersistentState = document;
+                  this.tmpID = document.id;
                   this.loginModal.show();
                   return this.loginModal.onHide.pipe(
                     take(1),
@@ -317,7 +332,8 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    this.userService.redirectToLogin();
+    const redirectUrl = this.router.url + '/' + this.tmpID;
+    this.userService.redirectToLogin(redirectUrl);
   }
 
   private getMessage(type: any, defaultValue: any) {

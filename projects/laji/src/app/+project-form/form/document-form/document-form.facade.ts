@@ -366,6 +366,7 @@ export class DocumentFormFacade {
       return this.userService.user$.pipe(
         take(1),
         mergeMap(p => this.documentStorage.getItem(documentID, p).pipe(
+          mergeMap(doc => doc ? of(doc) : this.documentStorage.getItem(documentID)),
           map(doc => ({document: LajiFormUtil.removeLajiFormIds(doc, form.schema), hasChanges: true}))
         ))
       );
