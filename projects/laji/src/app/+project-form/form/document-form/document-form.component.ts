@@ -62,7 +62,6 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   private saving = false;
   private publicityRestrictions!: Document.PublicityRestrictionsEnum;
   private documentForTemplate: any = {};
-  private vmSub!: Subscription;
 
   constructor(
     private router: Router,
@@ -85,11 +84,12 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
         this.savingFromLocalStorage = true;
       } else {
         this.formPersistentState = undefined;
+        this.documentFormFacade.clearUnlinkedTmpDocsSub();
       }
     }
 
     this.vm$ = this.documentFormFacade.getViewModel(this.formID, this.documentID, this.namedPlaceID, this.template);
-    this.vmSub = this.vm$.pipe(
+    this.vm$.pipe(
       take(1),
       filter(isSaneViewModel),
       tap(_ => {
@@ -106,7 +106,6 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.documentFormFacade.flush();
-    this.vmSub.unsubscribe();
     this.footerService.footerVisible = true;
   }
 
@@ -269,6 +268,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       })
     ).subscribe(() => {
       this.formPersistentState = undefined;
+      this.documentFormFacade.clearUnlinkedTmpDocsSub();
       this.successNavigation();
     });
   }

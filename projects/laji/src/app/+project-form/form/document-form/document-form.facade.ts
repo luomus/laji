@@ -310,6 +310,10 @@ export class DocumentFormFacade {
       : this.saveDocument(data as Document);
   }
 
+  clearUnlinkedTmpDocsSub(): void {
+    this.documentStorage.clearUnlinkedTmpDocs$().pipe(take(1)).subscribe();
+  }
+
   private saveDocument(document: Document): Observable<Document> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const tmpId = FormService.isTmpId(document.id!) && document.id;
