@@ -1,7 +1,7 @@
 import { gql, QueryRef } from 'apollo-angular';
-import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { GraphQLService } from './graph-ql.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -83,13 +83,14 @@ const BASE_QUERY = gql`
 @Injectable({
   providedIn: 'root'
 })
-export class BaseDataService {
+export class BaseDataService implements OnDestroy {
 
   private readonly query: QueryRef<IBaseData>|undefined;
   private readonly baseDataSub = new ReplaySubject<IBaseData>(1);
   private readonly baseData$ = this.baseDataSub.asObservable();
   private readonly labelMapSub = new ReplaySubject<Record<string, string>>(1);
   private readonly labelMap$ = this.labelMapSub.asObservable();
+  private unsubscribe$ = new Subject();
 
   constructor(
     private graphQLService: GraphQLService,
@@ -102,16 +103,25 @@ export class BaseDataService {
     });
 
     this.translationService.onLangChange.pipe(
+      takeUntil(this.unsubscribe$),
       map(() => this.baseDataSub.next(undefined))
     ).subscribe(() => this.query?.refetch().then());
 
     this.query?.valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
       map(({data}) => data)
     ).subscribe(data => this.baseDataSub.next(data));
 
-    this.baseData$.subscribe(data => {
+    this.baseData$.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe(data => {
       this.labelMapSub.next(this.dataToLabelMap(data));
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getBaseData(): Observable<IBaseData> {

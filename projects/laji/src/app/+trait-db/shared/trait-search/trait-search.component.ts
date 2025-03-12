@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components, paths } from 'projects/laji-api-client-b/generated/api';
+import { paths } from 'projects/laji-api-client-b/generated/api.d';
 import { map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { Sort } from 'projects/laji-ui/src/lib/datatable/datatable.component';
-import { filterDefaultValues, Filters, HIGHER_TAXA } from './trait-search-filters/trait-search-filters.component';
+import { Filters, HIGHER_TAXA, stripDefaultValues } from './trait-search-filters/trait-search-filters.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isObject } from '@luomus/laji-map/lib/utils';
-import { AdditionalFilterValues } from './trait-search-filters/additional-filters.component';
+import { AdditionalFilterValues, propIsArray } from './trait-search-filters/additional-filters.component';
 import { environment } from 'projects/laji/src/environments/environment';
+import { cols } from './trait-search-table-columns';
 
 type SearchResponse = paths['/trait/search']['get']['responses']['200']['content']['application/json'];
 
@@ -60,6 +61,7 @@ const getSearchApiQuery = (pageIdx: number, sorts: Sort[], filters: Partial<Filt
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitSearchComponent implements OnInit, OnDestroy {
+  columns = cols.map(([prop, _]) => ({ title: prop as string, prop: prop as string, sortable: false }));
   initialFilters: Partial<Filters> | undefined;
   searchResult: SearchResult | undefined;
   pageSize = PAGE_SIZE;
@@ -79,7 +81,7 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
     private router: Router
   ) {
     this.searchResult$ = combineLatest([this.pageIdxSubject, this.sortSubject]).pipe(
-      withLatestFrom(this.filterChangeSubject),
+      withLatestFrom(this.filterChangeSubject.pipe(map(filters => stripDefaultValues(filters)))),
       tap(([[pageIdx, sorts], filters]) => {
         this.loading = true;
         this.setQueryParams(pageIdx, sorts, filters);
@@ -156,7 +158,11 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
     filters.additionalFilters = {} as AdditionalFilterValues;
     Object.entries(queryParams).filter(([k, v]) => k.includes('additionalFilters:')).forEach(([k, v]) => {
       const key = k.substring('additionalFilters:'.length) as unknown as keyof NonNullable<QueryParams['additionalFilters']>;
-      filters.additionalFilters![key] = v as any;
+      let val = v as any;
+      if (propIsArray(key as string)) {
+        val = (val + '').split(',');
+      }
+      filters.additionalFilters![key] = val as any;
       toRemove.push(k as keyof typeof filters);
     });
     toRemove.forEach(k => delete filters[k]);
@@ -169,15 +175,13 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
     if (pageIdx > 0) { q.page = pageIdx + 1; }
 
     Object.entries(filters).forEach(([key, value]) => {
-      if (value && value !== filterDefaultValues[key as keyof typeof filters]) {
-        if (isObject(value)) {
-          // prefix nested values with the parents key
-          Object.entries(value).forEach(([subKey, subValue]) => {
-            q[key + ':' + subKey as unknown as keyof typeof filters] = subValue as any;
-          });
-        } else {
-          q[key as keyof typeof filters] = value as any;
-        }
+      if (isObject(value)) {
+        // prefix nested values with the parents key
+        Object.entries(value).forEach(([subKey, subValue]) => {
+          q[key + ':' + subKey as unknown as keyof typeof filters] = Array.isArray(subValue) ? subValue.join(',') : subValue as any;
+        });
+      } else {
+        q[key as keyof typeof filters] = value as any;
       }
     });
 

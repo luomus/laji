@@ -25,7 +25,7 @@ export class TaxonomyColumns {
       name: 'scientificName',
       selectField: 'scientificName,cursiveName',
       label: 'taxonomy.scientific.name',
-      cellTemplate: 'taxonScientificName',
+      cellTemplate: 'taxonScientificNameLink',
       width: 200
     },
     {

@@ -61,11 +61,11 @@
   </div>
   <div>
     <label for="additionalIdentifiers">Additional Identifiers:</label>
-    <lu-form-string-list id="additionalIdentifiers" formControlName="additionalIdentifiers"></lu-form-string-list>
+    <lu-form-primitive-list inputId="additionalIdentifiers" kind="string" formControlName="additionalIdentifiers"></lu-form-primitive-list>
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'additionalIdentifiers' }"></ng-container>
   </div>
 
-  <ng-container *ngIf="datasetForm.get('id').value">
+  <ng-container *ngIf="datasetForm.get('id')?.value">
     <ng-container *ngIf="datasetForm.get('published') as published">
       <div *ngIf="(published.valueChanges | async) === true; else notPublished">
         This dataset is published.
@@ -87,7 +87,7 @@
     <div *ngIf="datasetForm.get('shareToGBIF')">
       <p>If you have opted for occurrences to be generated on FinBIF, you can also specify here whether you would like these occurrences to be shared with https://GBIF.org. If you wish to share the occurrences with GBIF, please indicate ‘YES’.</p>
       <label for="shareToGBIF">Share to GBIF:</label>
-      <input id="shareToGBIF" class="form-control" formControlName="shareToGBIF" type="checkbox" [disabled]="(datasetForm.get('shareToFinBIF').valueChanges | async) === false">
+      <input id="shareToGBIF" class="form-control" formControlName="shareToGBIF" type="checkbox" [disabled]="(datasetForm.get('shareToFinBIF')?.valueChanges | async) === false">
     </div>
 
     <button class="d-block" (click)="onDelete()">DELETE DATASET</button>
@@ -100,6 +100,6 @@
 </form>
 
 <ng-template #errorsTmp let-prop>
-  <div class="alert alert-danger" role="alert" *ngIf="errors?.[prop]">{{ errors[prop]}}</div>
+  <div class="alert alert-danger" role="alert" *ngIf="errors?.[prop]">{{ errors?.[prop]}}</div>
 </ng-template>
 

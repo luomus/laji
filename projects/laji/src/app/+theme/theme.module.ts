@@ -14,7 +14,6 @@ import { QualityComponent } from './quality/quality.component';
 import { MostActiveUsersTableComponent } from './quality/most-active-users-table/most-active-users-table.component';
 import { AnnotationTableComponent } from './quality/annotation-table/annotation-table.component';
 import { QualityFiltersComponent } from './quality/quality-filters/quality-filters.component';
-import { ChecklistComponent } from './checklist/checklist.component';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { LajiUiModule } from '../../../../laji-ui/src/public-api';
 import { ObservationComponentModule } from '../+observation/observation-component.module';
@@ -57,7 +56,6 @@ import { DocumentViewerModule } from '../shared-modules/document-viewer/document
   ],
   declarations: [
     HerpetologyComponent,
-    ChecklistComponent,
     PinkkaComponent,
     BibliographyComponent,
     InsectGuideComponent,

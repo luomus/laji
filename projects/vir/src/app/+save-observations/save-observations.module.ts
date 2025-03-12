@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SaveObservationsRoutingModule } from './save-observations-routing.module';
 import { SaveObservationsComponent } from './save-observations.component';
 import { LajiUiModule } from '../../../../laji-ui/src/public-api';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { LajiUiModule } from '../../../../laji-ui/src/public-api';
   imports: [
     CommonModule,
     SaveObservationsRoutingModule,
-    LajiUiModule
+    LajiUiModule,
+    TranslateModule
   ]
 })
 export class SaveObservationsModule { }

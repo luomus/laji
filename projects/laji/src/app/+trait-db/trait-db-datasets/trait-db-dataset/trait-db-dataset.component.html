@@ -11,14 +11,14 @@
     <div>intellectual owner: {{ data.dataset?.intellectualOwner}}</div>
     <div>person responsible: {{ data.dataset?.personResponsible }}</div>
     <div>contact email: {{ data.dataset?.contactEmail }}</div>
-    <div *ngIf="data.dataset?.institutionCode">institution code: {{ data.dataset.institutionCode }}</div>
+    <div *ngIf="data.dataset?.institutionCode">institution code: {{ data.dataset?.institutionCode }}</div>
     <div>methods: {{ data.dataset?.methods }}</div>
     <div>taxonomic coverage: {{ data.dataset?.taxonomicCoverage}}</div>
     <div>temporal coverage: {{ data.dataset?.temporalCoverage }}</div>
     <div>geographic coverage: {{ data.dataset?.geographicCoverage }}</div>
     <div>coverage basis: {{ data.dataset?.coverageBasis }}</div>
-    <div *ngIf="data.dataset?.finbifDOI">FinBIF DOI: {{ data.dataset.finbifDOI }}</div>
-    <div *ngIf="data.dataset?.gbifDOI">GBIF DOI: {{ data.dataset.gbifDOI }}</div>
+    <div *ngIf="data.dataset?.finbifDOI">FinBIF DOI: {{ data.dataset?.finbifDOI }}</div>
+    <div *ngIf="data.dataset?.gbifDOI">GBIF DOI: {{ data.dataset?.gbifDOI }}</div>
     <div>additional identifiers: {{ data.dataset?.additionalIdentifiers }}</div>
     <div>published: {{ data.dataset?.published }}</div>
 
@@ -49,4 +49,3 @@
 <ng-template #datasetNotFound>
   The dataset could not be found.
 </ng-template>
-

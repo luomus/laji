@@ -1,6 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef, Inject, PLATFORM_ID, EventEmitter, Output } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
+import { Util } from 'projects/laji/src/app/shared/service/util.service';
 
 @Component({
   selector: 'lu-tab',
@@ -40,15 +41,7 @@ export class TabComponent {
       return;
     }
     setTimeout(() => {
-      try {
-        this.platformService.window.dispatchEvent(new Event('resize'));
-      } catch (e) {
-        try {
-          const evt: any = this.platformService.window.document.createEvent('UIEvents');
-          evt.initUIEvent('resize', true, false, this.platformService.window, 0);
-          this.platformService.window.dispatchEvent(evt);
-        } catch (error) {}
-      }
+      Util.dispatchResizeEvent(this.platformService);
     }, 100);
   }
 }
