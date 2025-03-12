@@ -89,21 +89,19 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  onPublish(event: MouseEvent) {
-    event.preventDefault();
-    this.datasetForm.get('published')!.setValue(true);
-  }
-
-  onUnpublish(event: MouseEvent) {
-    event.preventDefault();
-    this.subscription.add(
-      this.translate.get('trait-db.new-dataset.publish-confirm').pipe(
-        switchMap(str => this.dialogService.confirm(str)),
-        filter(res => res)
-      ).subscribe(_ => {
-        this.datasetForm.get('published')!.setValue(false);
-      })
-    );
+  onPublishedClick(event: Event) {
+    const checked = this.datasetForm.get('published')!.value;
+    if (checked) {
+      event.preventDefault();
+      this.subscription.add(
+        this.translate.get('trait-db.new-dataset.publish-confirm').pipe(
+          switchMap(str => this.dialogService.confirm(str)),
+          filter(res => res)
+        ).subscribe(_ => {
+          this.datasetForm.get('published')!.setValue(false);
+        })
+      );
+    }
   }
 
   onDelete() {
