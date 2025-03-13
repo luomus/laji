@@ -201,36 +201,55 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     if (!this.template) {
       combineLatest([
         of(this.vm.form.options?.openForm),
-        this.userService.isLoggedIn$
+        this.userService.isLoggedIn$.pipe(
+          take(1),
+          switchMap(isLoggedIn => {
+            if (isLoggedIn) {
+              return this.userService.user$.pipe(
+                take(1),
+                map(person => person?.emailAddress)
+              );
+            } else {
+              return of(undefined);
+            }
+          })
+        )
       ]).pipe(
         take(1),
-        switchMap(([openForm, isLoggedIn]) => {
-          if (openForm && !isLoggedIn) {
-            this.setRegistrationContacts(document?.contacts);
-
-            return this.userService.emailHasAccount(document?.contacts[0]?.emailAddress).pipe(
-              switchMap(exists => {
-                if (exists) {
-                  this.formPersistentState = document;
-                  this.tmpID = document.id;
-                  this.loginModal.show();
-                  return this.loginModal.onHide.pipe(
-                    take(1),
-                    tap(() => {
-                      this.formPersistentState = undefined;
-                    })
-                  );
-                } else {
-                  return of(null);
-                }
-              })
-            );
-          } else {
-            return of(null);
+        switchMap(([openForm, emailAddress]) => {
+          if (!openForm) {
+            return of(true);
           }
+
+          this.setRegistrationContacts(document?.contacts);
+          const contactEmail = document?.contacts[0]?.emailAddress;
+          return this.userService.emailHasAccount(contactEmail).pipe(
+            switchMap(exists => {
+              if (exists && !emailAddress) {
+                this.formPersistentState = document;
+                this.tmpID = document.id;
+                this.loginModal.show();
+                return this.loginModal.onHide.pipe(
+                  take(1),
+                  tap(() => {
+                    this.formPersistentState = undefined;
+                  }),
+                  switchMap(() => of(false))
+                );
+              } else if (exists && emailAddress) {
+                const isUsersEmail = emailAddress?.includes(contactEmail);
+                return of(isUsersEmail);
+              } else {
+                this.addContactEmailToDocument(document, contactEmail);
+                return of(true);
+              }
+            })
+          );
         })
-      ).subscribe(() => {
-        this.saveDocument(document);
+      ).subscribe((canSave) => {
+        if (canSave) {
+          this.saveDocument(document);
+        }
       });
     } else {
       this.documentForTemplate = document;
@@ -285,6 +304,15 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
         emailAddress: contacts?.[0]?.emailAddress
       }
     ]);
+  }
+
+  addContactEmailToDocument(document: Document, email: string) {
+    const prefixedEmail = 'vihko:' + email;
+    if (document.gatheringEvent) {
+      document.gatheringEvent.leg = [prefixedEmail];
+    }
+    document.creator = prefixedEmail;
+    document.editor = prefixedEmail;
   }
 
   submitPublic() {
