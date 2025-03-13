@@ -102,8 +102,12 @@ export class FormService {
     return `/project/${formId}/form`;
   }
 
+  getFormAlias(formId: string) {
+    return Object.keys(Global.formAliasMap).find(key => Global.formAliasMap[key] === formId);
+  }
+
   getEditUrlPath(formId: string, documentId: string) {
-    const alias = Object.keys(Global.formAliasMap).find(key => Global.formAliasMap[key] === formId);
+    const alias = this.getFormAlias(formId);
     if (alias) {
       return `${this.getAddUrlPath(alias)}/${documentId}`;
     }

@@ -17,6 +17,7 @@ import { DocumentFormFacade, FormError, isFormError, SaneViewModel, isSaneViewMo
 import { ProjectFormService, RegistrationContact } from '../../../shared/service/project-form.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 import { LocalStorage } from 'ngx-webstorage';
+import { FormService } from '../../../shared/service/form.service';
 
 @Component({
   selector: 'laji-document-form',
@@ -75,7 +76,8 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private userService: UserService,
     private documentStorage: DocumentStorage,
-    private documentFormFacade: DocumentFormFacade
+    private documentFormFacade: DocumentFormFacade,
+    private formService: FormService
   ) { }
 
   ngOnInit() {
@@ -130,15 +132,17 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       this.router.navigate(this.localizeRouterService.translateRoute([this.vm.form.category ? '/save-observations' : '/vihko']));
       return;
     }
+    if (this.vm.form.options?.openForm) {
+      this.router.navigate(this.localizeRouterService.translateRoute([`project/${this.formService.getFormAlias(this.vm.form.id)}/about`]));
+      return;
+    }
     this.browserService.goBack(() => {
       this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(projectRoute => {
-        const page = this.vm.form.options?.openForm
-          ? 'about'
-          : this.vm.form.options?.resultServiceType
-            ? 'stats'
-            : this.vm.form.options?.mobile
-              ? 'about'
-              : 'submissions';
+        const page = this.vm.form.options?.resultServiceType
+          ? 'stats'
+          : this.vm.form.options?.mobile
+            ? 'about'
+            : 'submissions';
         this.router.navigate([`./${page}`], {relativeTo: projectRoute});
       });
     });
