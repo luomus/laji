@@ -8,5 +8,8 @@
   "sideEffects": false,
   "devDependencies": {
     "openapi-typescript": "^7.0.0-next.8"
+  },
+  "volta": {
+    "node": "16.20.2"
   }
 }
