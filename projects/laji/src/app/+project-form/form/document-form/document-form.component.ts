@@ -292,6 +292,10 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     ).subscribe(() => {
       this.formPersistentState = undefined;
       this.documentFormFacade.clearUnlinkedTmpDocsSub();
+      this.toastsService.showSuccess(this.getMessage(
+        this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
+       this.translate.instant('haseka.form.success')
+      ));
       this.successNavigation();
     });
   }
