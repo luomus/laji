@@ -30,7 +30,7 @@ export class TraitDbTraitsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.api.fetch('/trait/trait-groups', 'get', {}).subscribe(groups => {
+    this.api.get('/trait/trait-groups', {}).subscribe(groups => {
       groups.forEach(group => this.traitGroups[group.id] = group);
       this.cdr.markForCheck();
     });
@@ -46,7 +46,7 @@ export class TraitDbTraitsComponent implements OnInit, OnDestroy {
       this.filteredTraits.next(this.traits.filter(trait => trait.group === filteredTraitGroupId));
     });
 
-    this.api.fetch('/trait/traits', 'get', {}).subscribe(traits => {
+    this.api.get('/trait/traits', {}).subscribe(traits => {
       this.traits = traits;
       this.activeTraitGroupIdFilter.next(this.activeTraitGroupIdFilter.value);
     });

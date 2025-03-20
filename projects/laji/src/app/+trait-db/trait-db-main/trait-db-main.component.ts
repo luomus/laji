@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { tap, map, switchMap, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { UserService } from '../../shared/service/user.service';
 import { components } from 'projects/laji-api-client-b/generated/api';
 
@@ -29,15 +29,15 @@ export class TraitDbMainComponent implements OnInit {
   ngOnInit() {
     this.counts$ = forkJoin({
       entries:
-        this.api.fetch('/trait/search', 'get', { query: { pageSize: 1 } }).pipe(
+        this.api.get('/trait/search', { query: { pageSize: 1 } }).pipe(
           map(res => res.total ?? 0)
         ),
       traits:
-        this.api.fetch('/trait/traits', 'get', {}).pipe(
+        this.api.get('/trait/traits', {}).pipe(
           map(res => res.length ?? 0)
         ),
       datasets:
-        this.api.fetch('/trait/datasets', 'get', {}).pipe(
+        this.api.get('/trait/datasets', {}).pipe(
           map(res => res.length ?? 0)
         )
     });

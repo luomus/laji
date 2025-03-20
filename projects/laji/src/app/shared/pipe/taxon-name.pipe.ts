@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AbstractLabelPipe } from './abstract-label.pipe';
-import { TaxonomyApi } from '../api/TaxonomyApi';
 import { Taxonomy } from '../model/Taxonomy';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 /**
  * This is meant for getting single taxon names and is not yet usable on lists
@@ -18,7 +18,7 @@ export class TaxonNamePipe extends AbstractLabelPipe implements PipeTransform {
 
   constructor(protected translate: TranslateService,
               protected _ref: ChangeDetectorRef,
-              protected taxonApi: TaxonomyApi) {
+              protected api: LajiApiClientBService) {
     super(translate, _ref);
   }
 
@@ -27,8 +27,8 @@ export class TaxonNamePipe extends AbstractLabelPipe implements PipeTransform {
     return super.transform(value);
   }
 
-  protected _updateValue(key: string): Observable<any> {
-    return this.taxonApi.taxonomyFindBySubject(key, this.translate.currentLang, {selectedFields: 'scientificName,vernacularName'}).pipe(
+  protected _updateValue(key: string) {
+    return this.api.get('/taxa/{id}', { path: { id: key }, query: { selectedFields: 'scientificName,vernacularName' } }).pipe(
       catchError(() => of({
         vernacularName: key,
         scientificName: key

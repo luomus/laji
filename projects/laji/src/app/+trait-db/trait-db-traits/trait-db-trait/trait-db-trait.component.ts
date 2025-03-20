@@ -26,7 +26,7 @@ export class TraitDbTraitComponent implements OnInit {
       map(m => m.get('id')),
       filter(id => !!id),
       distinctUntilChanged(),
-      switchMap(id => this.api.fetch('/trait/traits/{id}', 'get', { path: { id: id! } }))
+      switchMap(id => this.api.get('/trait/traits/{id}', { path: { id: id! } }))
     );
     this.loggedIn$ = this.userService.isLoggedIn$;
   }
