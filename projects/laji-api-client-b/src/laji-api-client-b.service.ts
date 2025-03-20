@@ -234,7 +234,7 @@ export class LajiApiClientBService {
       ...(params || {}),
       query: {
         lang: this.translate.currentLang,
-        personToken: this.userService.getToken(),
+        personToken: this.userService.getToken() || undefined,
         ...((params as any).query || {})
       }
     } as any;
