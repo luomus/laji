@@ -49,6 +49,22 @@ const sortRecordRecursively = (record: Record<string, unknown>): Record<string, 
 
 const hashRecord = (record: any): string => JSON.stringify(sortRecordRecursively(record));
 
+const sanitizeQuery = <P extends Path, M extends Method>(params: Parameters<paths[P][M]>): Parameters<paths[P][M]> => {
+  const { query } = params as any;
+  if (!query) {
+    return params;
+  }
+  return {
+    ...params,
+    query: Object.keys(query).reduce((sanitizedQuery, key) => {
+      if (![undefined, null, ''].includes(query[key])) {
+        sanitizedQuery[key] = query[key];
+      }
+      return sanitizedQuery;
+    }, {} as Record<string, unknown>)
+  };
+};
+
 const splitAndResolvePath = <
   P extends Path,
   M extends Method,
@@ -133,7 +149,7 @@ export class LajiApiClientBService {
     requestBody?: ExtractRequestBodyIfExists<paths[P][M]>,
     cacheInvalidationMs = 86400000 // One day in ms
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
-    const defaultFilledParams = this.paramsWithDefaults(params as any);
+    const defaultFilledParams = sanitizeQuery(this.paramsWithDefaults(params as any));
     const pathSegments = splitAndResolvePath(path, defaultFilledParams);
     const requestUrl = this.baseUrl + pathSegments.join('');
     const requestOptions = { params: (<any>defaultFilledParams).query, body: requestBody, headers: { 'API-Version': '1' } };
