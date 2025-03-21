@@ -136,7 +136,7 @@ export class LajiApiClientBService {
     const defaultFilledParams = this.paramsWithDefaults(params as any);
     const pathSegments = splitAndResolvePath(path, defaultFilledParams);
     const requestUrl = this.baseUrl + pathSegments.join('');
-    const requestOptions = { params: (<any>params).query, body: requestBody, headers: { 'API-Version': '1' } };
+    const requestOptions = { params: (<any>defaultFilledParams).query, body: requestBody, headers: { 'API-Version': '1' } };
 
     if (method !== 'get') {
       this._flush(pathSegments);
@@ -145,7 +145,7 @@ export class LajiApiClientBService {
 
     const cachedPath = this.getOrInitializeLastPathCacheLevel(pathSegments);
 
-    const paramsHash = hashRecord(params);
+    const paramsHash = hashRecord(defaultFilledParams);
     if (!cachedPath?.has(paramsHash)) {
       cachedPath?.set(paramsHash, { _tag: 'not-started' });
     }
