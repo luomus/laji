@@ -5221,7 +5221,7 @@ export interface paths {
                      *     If field is given multiple time as parameter, at least one of the given values must match.
                      *     Example: subject.type=TDF.typeTaxon&trait.id=TDF.1&trait.id=TDF.2&subjectFinBIFTaxon.higherTaxa.kingdom=Animalia */
                     searchParams?: {
-                        [key: string]: string | undefined;
+                        [key: string]: string;
                     };
                 };
                 header?: never;
@@ -5286,7 +5286,7 @@ export interface paths {
                      *     If field is given multiple time as parameter, at least one of the given values must match.
                      *     Example: subject.type=TDF.typeTaxon&trait.id=TDF.1&trait.id=TDF.2&subjectFinBIFTaxon.higherTaxa.kingdom=Animalia */
                     searchParams?: {
-                        [key: string]: string | undefined;
+                        [key: string]: string;
                     };
                 };
                 header?: never;
@@ -6147,7 +6147,7 @@ export interface paths {
                      *     If field is given multiple time as parameter, at least one of the given values must match.
                      *     Example: subject.type=TDF.typeTaxon&traits.statisticalMethod=TDF.statisticalMethodSD&traits.statisticalMethod=TDF.statisticalMethodAvg */
                     searchParams?: {
-                        [key: string]: string | undefined;
+                        [key: string]: string;
                     };
                 };
                 header?: never;
@@ -9881,13 +9881,13 @@ export interface components {
             total?: number;
             results?: components["schemas"]["TraitSearchRow"][];
             errors?: {
-                [key: string]: string | undefined;
+                [key: string]: string;
             };
         };
         ValidationResponse: {
             pass?: boolean;
             errors?: {
-                [key: string]: string | undefined;
+                [key: string]: string;
             };
         };
         TraitTSVValidationResponse: {
@@ -10757,7 +10757,7 @@ export interface components {
              * @description Overrides labels for named place list column headers
              */
             listColumnNameMapping?: {
-                [key: string]: string | undefined;
+                [key: string]: string;
             };
             /**
              * Columns in list
@@ -16679,10 +16679,10 @@ export interface operations {
     TaxaController_getTaxonChildren: {
         parameters: {
             query?: {
-                /** @description Filter by comma separated ids */
-                id?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
@@ -16715,7 +16715,9 @@ export interface operations {
                 parentTaxonId?: string;
             };
             header?: never;
-            path?: never;
+            path: {
+                id: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
@@ -16736,10 +16738,10 @@ export interface operations {
     TaxaController_getTaxonParents: {
         parameters: {
             query?: {
-                /** @description Filter by comma separated ids */
-                id?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
@@ -16772,7 +16774,9 @@ export interface operations {
                 parentTaxonId?: string;
             };
             header?: never;
-            path?: never;
+            path: {
+                id: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
@@ -16793,10 +16797,10 @@ export interface operations {
     TaxaController_getTaxonSpeciesPage: {
         parameters: {
             query?: {
-                /** @description Filter by comma separated ids */
-                id?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
@@ -16831,7 +16835,9 @@ export interface operations {
                 parentTaxonId?: string;
             };
             header?: never;
-            path?: never;
+            path: {
+                id: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
@@ -16857,10 +16863,10 @@ export interface operations {
     TaxaController_getTaxonSpeciesAggregate: {
         parameters: {
             query?: {
-                /** @description Filter by comma separated ids */
-                id?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Aggregate by these fields. Multiple values are separated by a comma (,). Different aggregations can be made at the
                  *     same time using semicolon as separator (;) and aggregates can be named giving "=name" at the end of each
                  *     aggregation.
@@ -16885,7 +16891,9 @@ export interface operations {
                 includeHidden?: boolean;
             };
             header?: never;
-            path?: never;
+            path: {
+                id: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
