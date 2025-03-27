@@ -222,7 +222,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
           }
 
           this.setRegistrationContacts(document?.contacts);
-          const contactEmail = document?.contacts[0]?.emailAddress;
+          const contactEmail = document?.contacts?.[0]?.emailAddress ?? '';
           return this.userService.emailHasAccount(contactEmail).pipe(
             switchMap(exists => {
               if (exists && !emailAddress) {

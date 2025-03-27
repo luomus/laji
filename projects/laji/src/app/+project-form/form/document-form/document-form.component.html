@@ -22,7 +22,7 @@
         </lu-alert>
       </ng-container>
       <ng-container *ngIf="vm | typeGuard: isSaneViewModel as vm">
-        <laji-project-form-header *ngIf="!vm.form.options?.mobile"
+        <laji-project-form-header *ngIf="!vm.form.options?.mobile || vm.form.options?.openForm"
                                   [form]="vm.form"
                                   [description]="vm.form.description"
                                   lajiFormOption="description logo title options.hideTES">
@@ -58,7 +58,7 @@
             [dateEdited]="vm.formData.dateEdited"
             [locked]="vm.locked!"
             [isAdmin]="vm.isAdmin"
-            [status]="vm.hasChanges ? 'unsaved' : ''"
+            [status]="(vm.hasChanges && !vm.form.options.openForm) ? 'unsaved' : ''"
             [readonly]="vm.readonly"
             [edit]="!!documentID"
             [errors]="validationErrors"
