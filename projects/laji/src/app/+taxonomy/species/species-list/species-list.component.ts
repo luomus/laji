@@ -29,6 +29,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { DatatableHeaderComponent } from '../../../shared-modules/datatable/datatable-header/datatable-header.component';
 import { ToFullUriPipe } from 'projects/laji/src/app/shared/pipe/to-full-uri';
 import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
   selector: 'laji-species-list',
@@ -76,7 +77,8 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     private taxonExportService: TaxonExportService,
     private columnService: TaxonomyColumns,
     private fullUri: ToFullUriPipe,
-    private toQname: ToQNamePipe
+    private toQname: ToQNamePipe,
+    private api: LajiApiClientBService
   ) { }
 
   ngOnInit() {
@@ -219,39 +221,43 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       }));
   }
 
-  private fetchPage(page: number): Observable<PagedResult<Taxonomy>> {
+  private fetchPage(page: number) {
     if (!this.loading && this.speciesPage.currentPage === page) {
       return ObservableOf(this.speciesPage);
     }
 
     const query = this.searchQueryToTaxaQuery();
 
-    return this.taxonomyService
-      .taxonomyFindSpecies(
-        query.target,
-        'multi',
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        '' + page,
-        '1000',
-        this.searchQuery.listOptions.sortOrder,
-        query.extraParameters
-      ).pipe(
+    // return this.taxonomyService
+    //   .taxonomyFindSpecies(
+    //     query.target,
+    //     'multi',
+    //     undefined,
+    //     undefined,
+    //     undefined,
+    //     undefined,
+    //     undefined,
+    //     '' + page,
+    //     '1000',
+    //     this.searchQuery.listOptions.sortOrder,
+    //     query.extraParameters
+    return this.api.get('/taxa/{id}/species', {
+      path: { id: query.target },
+      query: { ...query.extraParameters, page, pageSize: 1000, sortOrder: this.searchQuery.listOptions.sortOrder }
+    }).pipe(
         map(data => {
           if (data && Array.isArray(data.results)) {
-            data.results = data.results.map(taxon => {
+            data.results = data.results.map((taxon: any) => {
+              console.log(1, JSON.parse(JSON.stringify(taxon)));
               if (taxon.parent && Array.isArray(taxon.nonHiddenParentsIncludeSelf)) {
-                return {...taxon, parent: Object.keys(taxon.parent).reduce((parent: any, level) => {
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                  if (taxon.nonHiddenParentsIncludeSelf!.includes(taxon.parent[level].id)) {
+                return {...taxon, parent: Object.keys(taxon.parent).reduce((parent, level) => {
+                  if (taxon.parent && taxon.nonHiddenParentsIncludeSelf!.includes(taxon.parent![level].id)) {
                     parent[level] = taxon.parent[level];
                   }
                   return parent;
-                }, {})};
+                }, {} as any)};
               }
+              console.log(2, JSON.parse(JSON.stringify(taxon)));
               return taxon;
             });
           }
