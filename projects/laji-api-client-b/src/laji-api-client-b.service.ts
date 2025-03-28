@@ -3,8 +3,6 @@ import { paths } from 'projects/laji-api-client-b/generated/api.d';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { shareReplay, tap } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
-import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 type WithResponses<T> = T & { responses: unknown };
 type Parameters<T> = 'parameters' extends keyof T ? T['parameters'] : undefined;
@@ -88,6 +86,7 @@ const splitAndResolvePath = <
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
+/** For automatic personToken & lang population, you must set them with `setPersonToken()` and `setLang()` */
 @Injectable({
   providedIn: 'root'
 })
@@ -96,13 +95,21 @@ export class LajiApiClientBService {
   // first levels are for different path segments separated by path variables
   // the last level is for query params
   private cache: Map<string, any> = new Map();
+  private personToken?: string;
+  private lang?: string;
 
   constructor(
     private http: HttpClient,
-    @Inject(API_BASE_URL) private baseUrl: string,
-    private translate: TranslateService,
-    private userService: UserService
+    @Inject(API_BASE_URL) private baseUrl: string
   ) { }
+
+  setPersonToken(personToken?: string) {
+    this.personToken = personToken;
+  }
+
+  setLang(lang?: string) {
+    this.lang = lang;
+  }
 
   /** `personToken` and `lang` are populated automatically into the query */
   get<P extends Path, R extends Responses<P, 'get'>>(
@@ -249,8 +256,8 @@ export class LajiApiClientBService {
     return {
       ...(params || {}),
       query: {
-        lang: this.translate.currentLang,
-        personToken: this.userService.getToken() || undefined,
+        lang: this.lang,
+        personToken: this.personToken,
         ...((params as any).query || {})
       }
     } as any;

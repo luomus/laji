@@ -2,7 +2,7 @@ import { Component, ViewContainerRef } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
-import { filter } from 'rxjs/operators';
+import { filter, startWith } from 'rxjs/operators';
 import { Global } from '../../../environments/global';
 import { RouteDataService } from '../../shared/service/route-data.service';
 import { HeaderService } from '../../shared/service/header.service';
@@ -10,6 +10,8 @@ import { PlatformService } from '../../root/platform.service';
 import { HistoryService } from '../../shared/service/history.service';
 import { Util } from '../../shared/service/util.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { TranslateService } from '@ngx-translate/core';
+import { UserService } from '../../shared/service/user.service';
 
 declare const ga: (eventName: string, hitType: string, data: string) => void;
 
@@ -33,8 +35,19 @@ export class AppComponent {
     location: Location,
     viewContainerRef: ViewContainerRef,
     headerService: HeaderService,
-    historyService: HistoryService
+    historyService: HistoryService,
+    private api: LajiApiClientBService,
+    private translateService: TranslateService,
+    private userService: UserService
   ) {
+    this.translateService.onLangChange
+      .pipe(startWith({ lang: this.translateService.currentLang }))
+      .subscribe(({ lang }) => {
+        this.api.setLang(lang);
+      });
+    this.userService.personToken$.subscribe(personToken => {
+      this.api.setPersonToken(personToken);
+    });
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.type === Global.type.embedded;
