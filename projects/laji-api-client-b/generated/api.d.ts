@@ -13666,7 +13666,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -14092,7 +14092,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -14178,7 +14178,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -14210,7 +14210,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -14268,7 +14268,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -14864,7 +14864,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -15089,7 +15089,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -15104,6 +15104,10 @@ export interface operations {
     TaxaController_getPageWithFilters: {
         parameters: {
             query?: {
+                /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
+                informalTaxonGroups?: string;
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
@@ -15114,6 +15118,12 @@ export interface operations {
                 pageSize?: number;
                 lang?: "fi" | "sv" | "en" | "multi";
                 langFallback?: boolean;
+                /** @description true: Will include only invasive taxa.
+                 *     false: Will exclude invasive taxa. */
+                invasiveSpecies?: boolean;
+                /** @description true: Will include only finnish taxa.
+                 *     false: Will exclude finnish taxa. */
+                finnish?: boolean;
                 /** @description Include media objects in the response. Defaults to false. */
                 includeMedia?: boolean;
                 /** @description Include description objects in the response. Defaults to false. */
@@ -15679,7 +15689,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -15740,6 +15750,10 @@ export interface operations {
     TaxaController_getAggregateWithFilters: {
         parameters: {
             query?: {
+                /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
+                informalTaxonGroups?: string;
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Aggregate by these fields. Multiple values are separated by a comma (,). Different aggregations can be made at the
                  *     same time using semicolon as separator (;) and aggregates can be named giving "=name" at the end of each
                  *     aggregation.
@@ -15751,6 +15765,12 @@ export interface operations {
                 checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
+                /** @description true: Will include only invasive taxa.
+                 *     false: Will exclude invasive taxa. */
+                invasiveSpecies?: boolean;
+                /** @description true: Will include only finnish taxa.
+                 *     false: Will exclude finnish taxa. */
+                finnish?: boolean;
                 /** @description Filter based on parent taxon id */
                 parentTaxonId?: string;
                 /** @description true: Will show hidden taxa
@@ -15761,543 +15781,7 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        /** @description
-         *     The request body is a JSON object where each property represents a filter.
-         *     Properties are dot-separated (e.g., 'field.subfield') and correspond to the fields of taxon results. For array fields, the filter is done against each array item, so the dot-separated pointer shouldn't include array item path (if 'subfield' is an array that has property 'subsubfield', the pointer would be 'field.subfield.subsubfield').
-         *     For array fields, the dot notation allows filtering by nested properties.
-         *
-         *     Each filter value can be one of the following types:
-         *     - **boolean**: To filter by true/false values.
-         *     - **string**: To filter by exact string matches.
-         *     - **array of strings**: To filter by multiple possible string values. In this case, the filter acts as an "OR" operator.
-         *
-         *     Example:
-         *     ```
-         *     {
-         *       "species": true,                 // Matches taxa that have "species": true
-         *       "informalTaxonGroups": "MVL.1",  // Matches taxa with informalTaxonGoup MVL.1
-         *       "multimedia.author": "somebody"  // Maches taxa with any multimedia item having author "somebody"
-         *     }
-         *     ```
-         *      */
-        requestBody?: {
-            content: {
-                "application/json": {
-                    qname?: string | string[];
-                    id?: string | string[];
-                    isPartOf?: string | string[];
-                    isPartOfNonHidden?: string | string[];
-                    parents?: string | string[];
-                    nonHiddenParents?: string | string[];
-                    parentsIncludeSelf?: string | string[];
-                    nonHiddenParentsIncludeSelf?: string | string[];
-                    hiddenTaxon?: boolean;
-                    nameAccordingTo?: string | string[];
-                    taxonRank?: string | string[];
-                    scientificName?: string | string[];
-                    scientificNameAuthorship?: string | string[];
-                    scientificNameDisplayName?: string | string[];
-                    cursiveName?: boolean;
-                    typeSpecimenURI?: string | string[];
-                    synonymNames?: string | string[];
-                    "basionyms.id"?: string | string[];
-                    "basionyms.scientificName"?: string | string[];
-                    "basionyms.scientificNameAuthorship"?: string | string[];
-                    "basionyms.vernacularName.fi"?: string | string[];
-                    "basionyms.vernacularName.sv"?: string | string[];
-                    "basionyms.vernacularName.en"?: string | string[];
-                    "basionyms.taxonRank"?: string | string[];
-                    "basionyms.cursiveName"?: boolean;
-                    "basionyms.notes"?: string | string[];
-                    "basionyms.bold.bins"?: string | string[];
-                    "basionyms.hasBold"?: boolean;
-                    "objectiveSynonyms.id"?: string | string[];
-                    "objectiveSynonyms.scientificName"?: string | string[];
-                    "objectiveSynonyms.scientificNameAuthorship"?: string | string[];
-                    "objectiveSynonyms.vernacularName.fi"?: string | string[];
-                    "objectiveSynonyms.vernacularName.sv"?: string | string[];
-                    "objectiveSynonyms.vernacularName.en"?: string | string[];
-                    "objectiveSynonyms.taxonRank"?: string | string[];
-                    "objectiveSynonyms.cursiveName"?: boolean;
-                    "objectiveSynonyms.notes"?: string | string[];
-                    "objectiveSynonyms.bold.bins"?: string | string[];
-                    "objectiveSynonyms.hasBold"?: boolean;
-                    "subjectiveSynonyms.id"?: string | string[];
-                    "subjectiveSynonyms.scientificName"?: string | string[];
-                    "subjectiveSynonyms.scientificNameAuthorship"?: string | string[];
-                    "subjectiveSynonyms.vernacularName.fi"?: string | string[];
-                    "subjectiveSynonyms.vernacularName.sv"?: string | string[];
-                    "subjectiveSynonyms.vernacularName.en"?: string | string[];
-                    "subjectiveSynonyms.taxonRank"?: string | string[];
-                    "subjectiveSynonyms.cursiveName"?: boolean;
-                    "subjectiveSynonyms.notes"?: string | string[];
-                    "subjectiveSynonyms.bold.bins"?: string | string[];
-                    "subjectiveSynonyms.hasBold"?: boolean;
-                    "homotypicSynonyms.id"?: string | string[];
-                    "homotypicSynonyms.scientificName"?: string | string[];
-                    "homotypicSynonyms.scientificNameAuthorship"?: string | string[];
-                    "homotypicSynonyms.vernacularName.fi"?: string | string[];
-                    "homotypicSynonyms.vernacularName.sv"?: string | string[];
-                    "homotypicSynonyms.vernacularName.en"?: string | string[];
-                    "homotypicSynonyms.taxonRank"?: string | string[];
-                    "homotypicSynonyms.cursiveName"?: boolean;
-                    "homotypicSynonyms.notes"?: string | string[];
-                    "homotypicSynonyms.bold.bins"?: string | string[];
-                    "homotypicSynonyms.hasBold"?: boolean;
-                    "heterotypicSynonyms.id"?: string | string[];
-                    "heterotypicSynonyms.scientificName"?: string | string[];
-                    "heterotypicSynonyms.scientificNameAuthorship"?: string | string[];
-                    "heterotypicSynonyms.vernacularName.fi"?: string | string[];
-                    "heterotypicSynonyms.vernacularName.sv"?: string | string[];
-                    "heterotypicSynonyms.vernacularName.en"?: string | string[];
-                    "heterotypicSynonyms.taxonRank"?: string | string[];
-                    "heterotypicSynonyms.cursiveName"?: boolean;
-                    "heterotypicSynonyms.notes"?: string | string[];
-                    "heterotypicSynonyms.bold.bins"?: string | string[];
-                    "heterotypicSynonyms.hasBold"?: boolean;
-                    "synonyms.id"?: string | string[];
-                    "synonyms.scientificName"?: string | string[];
-                    "synonyms.scientificNameAuthorship"?: string | string[];
-                    "synonyms.vernacularName.fi"?: string | string[];
-                    "synonyms.vernacularName.sv"?: string | string[];
-                    "synonyms.vernacularName.en"?: string | string[];
-                    "synonyms.taxonRank"?: string | string[];
-                    "synonyms.cursiveName"?: boolean;
-                    "synonyms.notes"?: string | string[];
-                    "synonyms.bold.bins"?: string | string[];
-                    "synonyms.hasBold"?: boolean;
-                    "misspelledNames.id"?: string | string[];
-                    "misspelledNames.scientificName"?: string | string[];
-                    "misspelledNames.scientificNameAuthorship"?: string | string[];
-                    "misspelledNames.vernacularName.fi"?: string | string[];
-                    "misspelledNames.vernacularName.sv"?: string | string[];
-                    "misspelledNames.vernacularName.en"?: string | string[];
-                    "misspelledNames.taxonRank"?: string | string[];
-                    "misspelledNames.cursiveName"?: boolean;
-                    "misspelledNames.notes"?: string | string[];
-                    "misspelledNames.bold.bins"?: string | string[];
-                    "misspelledNames.hasBold"?: boolean;
-                    "orthographicVariants.id"?: string | string[];
-                    "orthographicVariants.scientificName"?: string | string[];
-                    "orthographicVariants.scientificNameAuthorship"?: string | string[];
-                    "orthographicVariants.vernacularName.fi"?: string | string[];
-                    "orthographicVariants.vernacularName.sv"?: string | string[];
-                    "orthographicVariants.vernacularName.en"?: string | string[];
-                    "orthographicVariants.taxonRank"?: string | string[];
-                    "orthographicVariants.cursiveName"?: boolean;
-                    "orthographicVariants.notes"?: string | string[];
-                    "orthographicVariants.bold.bins"?: string | string[];
-                    "orthographicVariants.hasBold"?: boolean;
-                    "uncertainSynonyms.id"?: string | string[];
-                    "uncertainSynonyms.scientificName"?: string | string[];
-                    "uncertainSynonyms.scientificNameAuthorship"?: string | string[];
-                    "uncertainSynonyms.vernacularName.fi"?: string | string[];
-                    "uncertainSynonyms.vernacularName.sv"?: string | string[];
-                    "uncertainSynonyms.vernacularName.en"?: string | string[];
-                    "uncertainSynonyms.taxonRank"?: string | string[];
-                    "uncertainSynonyms.cursiveName"?: boolean;
-                    "uncertainSynonyms.notes"?: string | string[];
-                    "uncertainSynonyms.bold.bins"?: string | string[];
-                    "uncertainSynonyms.hasBold"?: boolean;
-                    "misappliedNames.id"?: string | string[];
-                    "misappliedNames.scientificName"?: string | string[];
-                    "misappliedNames.scientificNameAuthorship"?: string | string[];
-                    "misappliedNames.vernacularName.fi"?: string | string[];
-                    "misappliedNames.vernacularName.sv"?: string | string[];
-                    "misappliedNames.vernacularName.en"?: string | string[];
-                    "misappliedNames.taxonRank"?: string | string[];
-                    "misappliedNames.cursiveName"?: boolean;
-                    "misappliedNames.notes"?: string | string[];
-                    "misappliedNames.bold.bins"?: string | string[];
-                    "misappliedNames.hasBold"?: boolean;
-                    "alternativeNames.id"?: string | string[];
-                    "alternativeNames.scientificName"?: string | string[];
-                    "alternativeNames.scientificNameAuthorship"?: string | string[];
-                    "alternativeNames.vernacularName.fi"?: string | string[];
-                    "alternativeNames.vernacularName.sv"?: string | string[];
-                    "alternativeNames.vernacularName.en"?: string | string[];
-                    "alternativeNames.taxonRank"?: string | string[];
-                    "alternativeNames.cursiveName"?: boolean;
-                    "alternativeNames.notes"?: string | string[];
-                    "alternativeNames.bold.bins"?: string | string[];
-                    "alternativeNames.hasBold"?: boolean;
-                    "vernacularName.fi"?: string | string[];
-                    "vernacularName.sv"?: string | string[];
-                    "vernacularName.en"?: string | string[];
-                    "alternativeVernacularName.fi"?: string | string[];
-                    "alternativeVernacularName.sv"?: string | string[];
-                    "alternativeVernacularName.en"?: string | string[];
-                    "obsoleteVernacularName.fi"?: string | string[];
-                    "obsoleteVernacularName.sv"?: string | string[];
-                    "obsoleteVernacularName.en"?: string | string[];
-                    "colloquialVernacularName.fi"?: string | string[];
-                    "colloquialVernacularName.sv"?: string | string[];
-                    "colloquialVernacularName.en"?: string | string[];
-                    "tradeName.fi"?: string | string[];
-                    "tradeName.sv"?: string | string[];
-                    "tradeName.en"?: string | string[];
-                    informalTaxonGroups?: string | string[];
-                    threatenedStatus?: string | string[];
-                    redListEvaluationGroups?: string | string[];
-                    occurrenceInFinland?: string | string[];
-                    occurrenceInFinlandSpecimenURI?: string | string[];
-                    typeOfOccurrenceInFinland?: string | string[];
-                    occurrenceInFinlandPublications?: string | string[];
-                    typeOfOccurrenceInFinlandNotes?: string | string[];
-                    originalPublications?: string | string[];
-                    originalDescription?: string | string[];
-                    nameDecidedBy?: string | string[];
-                    nameDecidedDate?: string | string[];
-                    administrativeStatuses?: string | string[];
-                    "primaryHabitat.habitat"?: string | string[];
-                    "primaryHabitat.habitatSpecificTypes"?: string | string[];
-                    "primaryHabitat.id"?: string | string[];
-                    "secondaryHabitats.habitat"?: string | string[];
-                    "secondaryHabitats.habitatSpecificTypes"?: string | string[];
-                    "secondaryHabitats.id"?: string | string[];
-                    "latestRedListStatusFinland.status"?: string | string[];
-                    "redListStatusesInFinland.status"?: string | string[];
-                    taxonExpert?: string | string[];
-                    taxonEditor?: string | string[];
-                    invasiveSpeciesEstablishment?: string | string[];
-                    "multimedia.author"?: string | string[];
-                    "multimedia.caption"?: string | string[];
-                    "multimedia.captureDateTime"?: string | string[];
-                    "multimedia.copyrightOwner"?: string | string[];
-                    "multimedia.fullURL"?: string | string[];
-                    "multimedia.id"?: string | string[];
-                    "multimedia.keywords"?: string | string[];
-                    "multimedia.largeURL"?: string | string[];
-                    "multimedia.licenseAbbreviation"?: string | string[];
-                    "multimedia.licenseFullname.fi"?: string | string[];
-                    "multimedia.licenseFullname.sv"?: string | string[];
-                    "multimedia.licenseFullname.en"?: string | string[];
-                    "multimedia.licenseId"?: string | string[];
-                    "multimedia.lifeStage"?: string | string[];
-                    "multimedia.plantLifeStage"?: string | string[];
-                    "multimedia.sex"?: string | string[];
-                    "multimedia.side"?: string | string[];
-                    "multimedia.source"?: string | string[];
-                    "multimedia.squareThumbnailURL"?: string | string[];
-                    "multimedia.taxon.id"?: string | string[];
-                    "multimedia.taxon.scientificName"?: string | string[];
-                    "multimedia.taxon.scientificNameAuthorship"?: string | string[];
-                    "multimedia.taxon.vernacularName.fi"?: string | string[];
-                    "multimedia.taxon.vernacularName.sv"?: string | string[];
-                    "multimedia.taxon.vernacularName.en"?: string | string[];
-                    "multimedia.taxon.taxonRank"?: string | string[];
-                    "multimedia.taxon.cursiveName"?: boolean;
-                    "multimedia.taxon.notes"?: string | string[];
-                    "multimedia.taxon.bold.bins"?: string | string[];
-                    "multimedia.taxon.hasBold"?: boolean;
-                    "multimedia.taxonDescriptionCaption.fi"?: string | string[];
-                    "multimedia.taxonDescriptionCaption.sv"?: string | string[];
-                    "multimedia.taxonDescriptionCaption.en"?: string | string[];
-                    "multimedia.thumbnailURL"?: string | string[];
-                    "multimedia.type"?: string | string[];
-                    "multimedia.uploadDateTime"?: string | string[];
-                    "multimedia.primaryForTaxon"?: boolean;
-                    "descriptions.id"?: string | string[];
-                    "descriptions.title.fi"?: string | string[];
-                    "descriptions.title.sv"?: string | string[];
-                    "descriptions.title.en"?: string | string[];
-                    "descriptions.groups.group"?: string | string[];
-                    "descriptions.groups.title.fi"?: string | string[];
-                    "descriptions.groups.title.sv"?: string | string[];
-                    "descriptions.groups.title.en"?: string | string[];
-                    "descriptions.groups.variables.variable"?: string | string[];
-                    "descriptions.groups.variables.title.fi"?: string | string[];
-                    "descriptions.groups.variables.title.sv"?: string | string[];
-                    "descriptions.groups.variables.title.en"?: string | string[];
-                    "descriptions.groups.variables.content.fi"?: string | string[];
-                    "descriptions.groups.variables.content.sv"?: string | string[];
-                    "descriptions.groups.variables.content.en"?: string | string[];
-                    "descriptions.speciesCardAuthors.variable"?: string | string[];
-                    "descriptions.speciesCardAuthors.title.fi"?: string | string[];
-                    "descriptions.speciesCardAuthors.title.sv"?: string | string[];
-                    "descriptions.speciesCardAuthors.title.en"?: string | string[];
-                    "descriptions.speciesCardAuthors.content.fi"?: string | string[];
-                    "descriptions.speciesCardAuthors.content.sv"?: string | string[];
-                    "descriptions.speciesCardAuthors.content.en"?: string | string[];
-                    secureLevel?: string | string[];
-                    breedingSecureLevel?: string | string[];
-                    winteringSecureLevel?: string | string[];
-                    nestSiteSecureLevel?: string | string[];
-                    naturaAreaSecureLevel?: string | string[];
-                    sensitive?: boolean;
-                    autoNonWild?: boolean;
-                    "occurrences.area"?: string | string[];
-                    "occurrences.id"?: string | string[];
-                    "occurrences.notes"?: string | string[];
-                    "occurrences.specimenURI"?: string | string[];
-                    "occurrences.status"?: string | string[];
-                    "occurrences.threatened"?: boolean;
-                    "habitatOccurrenceCounts.habitat.fi"?: string | string[];
-                    "habitatOccurrenceCounts.habitat.sv"?: string | string[];
-                    "habitatOccurrenceCounts.habitat.en"?: string | string[];
-                    "habitatOccurrenceCounts.id"?: string | string[];
-                    birdlifeCode?: string | string[];
-                    euringCode?: string | string[];
-                    customReportFormLink?: string | string[];
-                    taxonConceptIds?: string | string[];
-                    additionalIds?: string | string[];
-                    "externalLinks.locale"?: string | string[];
-                    "externalLinks.uri"?: string | string[];
-                    finnish?: boolean;
-                    species?: boolean;
-                    finnishSpecies?: boolean;
-                    invasiveSpecies?: boolean;
-                    stableInFinland?: boolean;
-                    "bold.bins"?: string | string[];
-                    hasBold?: boolean;
-                    hasParent?: boolean;
-                    hasChildren?: boolean;
-                    hasMultimedia?: boolean;
-                    hasDescriptions?: boolean;
-                    invasiveSpeciesMainGroups?: string | string[];
-                    taxonSets?: string | string[];
-                    notes?: string | string[];
-                    "parent.domain.id"?: string | string[];
-                    "parent.domain.scientificName"?: string | string[];
-                    "parent.domain.scientificNameAuthorship"?: string | string[];
-                    "parent.domain.vernacularName.fi"?: string | string[];
-                    "parent.domain.vernacularName.sv"?: string | string[];
-                    "parent.domain.vernacularName.en"?: string | string[];
-                    "parent.domain.taxonRank"?: string | string[];
-                    "parent.domain.cursiveName"?: boolean;
-                    "parent.domain.notes"?: string | string[];
-                    "parent.domain.bold.bins"?: string | string[];
-                    "parent.domain.hasBold"?: boolean;
-                    "parent.kingdom.id"?: string | string[];
-                    "parent.kingdom.scientificName"?: string | string[];
-                    "parent.kingdom.scientificNameAuthorship"?: string | string[];
-                    "parent.kingdom.vernacularName.fi"?: string | string[];
-                    "parent.kingdom.vernacularName.sv"?: string | string[];
-                    "parent.kingdom.vernacularName.en"?: string | string[];
-                    "parent.kingdom.taxonRank"?: string | string[];
-                    "parent.kingdom.cursiveName"?: boolean;
-                    "parent.kingdom.notes"?: string | string[];
-                    "parent.kingdom.bold.bins"?: string | string[];
-                    "parent.kingdom.hasBold"?: boolean;
-                    "parent.phylum.id"?: string | string[];
-                    "parent.phylum.scientificName"?: string | string[];
-                    "parent.phylum.scientificNameAuthorship"?: string | string[];
-                    "parent.phylum.vernacularName.fi"?: string | string[];
-                    "parent.phylum.vernacularName.sv"?: string | string[];
-                    "parent.phylum.vernacularName.en"?: string | string[];
-                    "parent.phylum.taxonRank"?: string | string[];
-                    "parent.phylum.cursiveName"?: boolean;
-                    "parent.phylum.notes"?: string | string[];
-                    "parent.phylum.bold.bins"?: string | string[];
-                    "parent.phylum.hasBold"?: boolean;
-                    "parent.subphylum.id"?: string | string[];
-                    "parent.subphylum.scientificName"?: string | string[];
-                    "parent.subphylum.scientificNameAuthorship"?: string | string[];
-                    "parent.subphylum.vernacularName.fi"?: string | string[];
-                    "parent.subphylum.vernacularName.sv"?: string | string[];
-                    "parent.subphylum.vernacularName.en"?: string | string[];
-                    "parent.subphylum.taxonRank"?: string | string[];
-                    "parent.subphylum.cursiveName"?: boolean;
-                    "parent.subphylum.notes"?: string | string[];
-                    "parent.subphylum.bold.bins"?: string | string[];
-                    "parent.subphylum.hasBold"?: boolean;
-                    "parent.division.id"?: string | string[];
-                    "parent.division.scientificName"?: string | string[];
-                    "parent.division.scientificNameAuthorship"?: string | string[];
-                    "parent.division.vernacularName.fi"?: string | string[];
-                    "parent.division.vernacularName.sv"?: string | string[];
-                    "parent.division.vernacularName.en"?: string | string[];
-                    "parent.division.taxonRank"?: string | string[];
-                    "parent.division.cursiveName"?: boolean;
-                    "parent.division.notes"?: string | string[];
-                    "parent.division.bold.bins"?: string | string[];
-                    "parent.division.hasBold"?: boolean;
-                    "parent.class.id"?: string | string[];
-                    "parent.class.scientificName"?: string | string[];
-                    "parent.class.scientificNameAuthorship"?: string | string[];
-                    "parent.class.vernacularName.fi"?: string | string[];
-                    "parent.class.vernacularName.sv"?: string | string[];
-                    "parent.class.vernacularName.en"?: string | string[];
-                    "parent.class.taxonRank"?: string | string[];
-                    "parent.class.cursiveName"?: boolean;
-                    "parent.class.notes"?: string | string[];
-                    "parent.class.bold.bins"?: string | string[];
-                    "parent.class.hasBold"?: boolean;
-                    "parent.subclass.id"?: string | string[];
-                    "parent.subclass.scientificName"?: string | string[];
-                    "parent.subclass.scientificNameAuthorship"?: string | string[];
-                    "parent.subclass.vernacularName.fi"?: string | string[];
-                    "parent.subclass.vernacularName.sv"?: string | string[];
-                    "parent.subclass.vernacularName.en"?: string | string[];
-                    "parent.subclass.taxonRank"?: string | string[];
-                    "parent.subclass.cursiveName"?: boolean;
-                    "parent.subclass.notes"?: string | string[];
-                    "parent.subclass.bold.bins"?: string | string[];
-                    "parent.subclass.hasBold"?: boolean;
-                    "parent.order.id"?: string | string[];
-                    "parent.order.scientificName"?: string | string[];
-                    "parent.order.scientificNameAuthorship"?: string | string[];
-                    "parent.order.vernacularName.fi"?: string | string[];
-                    "parent.order.vernacularName.sv"?: string | string[];
-                    "parent.order.vernacularName.en"?: string | string[];
-                    "parent.order.taxonRank"?: string | string[];
-                    "parent.order.cursiveName"?: boolean;
-                    "parent.order.notes"?: string | string[];
-                    "parent.order.bold.bins"?: string | string[];
-                    "parent.order.hasBold"?: boolean;
-                    "parent.suborder.id"?: string | string[];
-                    "parent.suborder.scientificName"?: string | string[];
-                    "parent.suborder.scientificNameAuthorship"?: string | string[];
-                    "parent.suborder.vernacularName.fi"?: string | string[];
-                    "parent.suborder.vernacularName.sv"?: string | string[];
-                    "parent.suborder.vernacularName.en"?: string | string[];
-                    "parent.suborder.taxonRank"?: string | string[];
-                    "parent.suborder.cursiveName"?: boolean;
-                    "parent.suborder.notes"?: string | string[];
-                    "parent.suborder.bold.bins"?: string | string[];
-                    "parent.suborder.hasBold"?: boolean;
-                    "parent.superfamily.id"?: string | string[];
-                    "parent.superfamily.scientificName"?: string | string[];
-                    "parent.superfamily.scientificNameAuthorship"?: string | string[];
-                    "parent.superfamily.vernacularName.fi"?: string | string[];
-                    "parent.superfamily.vernacularName.sv"?: string | string[];
-                    "parent.superfamily.vernacularName.en"?: string | string[];
-                    "parent.superfamily.taxonRank"?: string | string[];
-                    "parent.superfamily.cursiveName"?: boolean;
-                    "parent.superfamily.notes"?: string | string[];
-                    "parent.superfamily.bold.bins"?: string | string[];
-                    "parent.superfamily.hasBold"?: boolean;
-                    "parent.family.id"?: string | string[];
-                    "parent.family.scientificName"?: string | string[];
-                    "parent.family.scientificNameAuthorship"?: string | string[];
-                    "parent.family.vernacularName.fi"?: string | string[];
-                    "parent.family.vernacularName.sv"?: string | string[];
-                    "parent.family.vernacularName.en"?: string | string[];
-                    "parent.family.taxonRank"?: string | string[];
-                    "parent.family.cursiveName"?: boolean;
-                    "parent.family.notes"?: string | string[];
-                    "parent.family.bold.bins"?: string | string[];
-                    "parent.family.hasBold"?: boolean;
-                    "parent.subfamily.id"?: string | string[];
-                    "parent.subfamily.scientificName"?: string | string[];
-                    "parent.subfamily.scientificNameAuthorship"?: string | string[];
-                    "parent.subfamily.vernacularName.fi"?: string | string[];
-                    "parent.subfamily.vernacularName.sv"?: string | string[];
-                    "parent.subfamily.vernacularName.en"?: string | string[];
-                    "parent.subfamily.taxonRank"?: string | string[];
-                    "parent.subfamily.cursiveName"?: boolean;
-                    "parent.subfamily.notes"?: string | string[];
-                    "parent.subfamily.bold.bins"?: string | string[];
-                    "parent.subfamily.hasBold"?: boolean;
-                    "parent.tribe.id"?: string | string[];
-                    "parent.tribe.scientificName"?: string | string[];
-                    "parent.tribe.scientificNameAuthorship"?: string | string[];
-                    "parent.tribe.vernacularName.fi"?: string | string[];
-                    "parent.tribe.vernacularName.sv"?: string | string[];
-                    "parent.tribe.vernacularName.en"?: string | string[];
-                    "parent.tribe.taxonRank"?: string | string[];
-                    "parent.tribe.cursiveName"?: boolean;
-                    "parent.tribe.notes"?: string | string[];
-                    "parent.tribe.bold.bins"?: string | string[];
-                    "parent.tribe.hasBold"?: boolean;
-                    "parent.subtribe.id"?: string | string[];
-                    "parent.subtribe.scientificName"?: string | string[];
-                    "parent.subtribe.scientificNameAuthorship"?: string | string[];
-                    "parent.subtribe.vernacularName.fi"?: string | string[];
-                    "parent.subtribe.vernacularName.sv"?: string | string[];
-                    "parent.subtribe.vernacularName.en"?: string | string[];
-                    "parent.subtribe.taxonRank"?: string | string[];
-                    "parent.subtribe.cursiveName"?: boolean;
-                    "parent.subtribe.notes"?: string | string[];
-                    "parent.subtribe.bold.bins"?: string | string[];
-                    "parent.subtribe.hasBold"?: boolean;
-                    "parent.genus.id"?: string | string[];
-                    "parent.genus.scientificName"?: string | string[];
-                    "parent.genus.scientificNameAuthorship"?: string | string[];
-                    "parent.genus.vernacularName.fi"?: string | string[];
-                    "parent.genus.vernacularName.sv"?: string | string[];
-                    "parent.genus.vernacularName.en"?: string | string[];
-                    "parent.genus.taxonRank"?: string | string[];
-                    "parent.genus.cursiveName"?: boolean;
-                    "parent.genus.notes"?: string | string[];
-                    "parent.genus.bold.bins"?: string | string[];
-                    "parent.genus.hasBold"?: boolean;
-                    "parent.subgenus.id"?: string | string[];
-                    "parent.subgenus.scientificName"?: string | string[];
-                    "parent.subgenus.scientificNameAuthorship"?: string | string[];
-                    "parent.subgenus.vernacularName.fi"?: string | string[];
-                    "parent.subgenus.vernacularName.sv"?: string | string[];
-                    "parent.subgenus.vernacularName.en"?: string | string[];
-                    "parent.subgenus.taxonRank"?: string | string[];
-                    "parent.subgenus.cursiveName"?: boolean;
-                    "parent.subgenus.notes"?: string | string[];
-                    "parent.subgenus.bold.bins"?: string | string[];
-                    "parent.subgenus.hasBold"?: boolean;
-                    "parent.aggregate.id"?: string | string[];
-                    "parent.aggregate.scientificName"?: string | string[];
-                    "parent.aggregate.scientificNameAuthorship"?: string | string[];
-                    "parent.aggregate.vernacularName.fi"?: string | string[];
-                    "parent.aggregate.vernacularName.sv"?: string | string[];
-                    "parent.aggregate.vernacularName.en"?: string | string[];
-                    "parent.aggregate.taxonRank"?: string | string[];
-                    "parent.aggregate.cursiveName"?: boolean;
-                    "parent.aggregate.notes"?: string | string[];
-                    "parent.aggregate.bold.bins"?: string | string[];
-                    "parent.aggregate.hasBold"?: boolean;
-                    "parent.species.id"?: string | string[];
-                    "parent.species.scientificName"?: string | string[];
-                    "parent.species.scientificNameAuthorship"?: string | string[];
-                    "parent.species.vernacularName.fi"?: string | string[];
-                    "parent.species.vernacularName.sv"?: string | string[];
-                    "parent.species.vernacularName.en"?: string | string[];
-                    "parent.species.taxonRank"?: string | string[];
-                    "parent.species.cursiveName"?: boolean;
-                    "parent.species.notes"?: string | string[];
-                    "parent.species.bold.bins"?: string | string[];
-                    "parent.species.hasBold"?: boolean;
-                    "synonymOf.id"?: string | string[];
-                    "synonymOf.scientificName"?: string | string[];
-                    "synonymOf.scientificNameAuthorship"?: string | string[];
-                    "synonymOf.vernacularName.fi"?: string | string[];
-                    "synonymOf.vernacularName.sv"?: string | string[];
-                    "synonymOf.vernacularName.en"?: string | string[];
-                    "synonymOf.taxonRank"?: string | string[];
-                    "synonymOf.cursiveName"?: boolean;
-                    "synonymOf.notes"?: string | string[];
-                    "synonymOf.bold.bins"?: string | string[];
-                    "synonymOf.hasBold"?: boolean;
-                    "latestRedListEvaluation.redListStatus"?: string | string[];
-                    "latestRedListEvaluation.externalPopulationImpactOnRedListStatus"?: string | string[];
-                    "latestRedListEvaluation.criteriaForStatus"?: string | string[];
-                    "latestRedListEvaluation.possiblyRE"?: string | string[];
-                    "latestRedListEvaluation.reasonForStatusChange"?: string | string[];
-                    "latestRedListEvaluation.lastSightingNotes"?: string | string[];
-                    "latestRedListEvaluation.primaryHabitat.habitat"?: string | string[];
-                    "latestRedListEvaluation.primaryHabitat.habitatSpecificTypes"?: string | string[];
-                    "latestRedListEvaluation.primaryHabitat.id"?: string | string[];
-                    "latestRedListEvaluation.secondaryHabitats.habitat"?: string | string[];
-                    "latestRedListEvaluation.secondaryHabitats.habitatSpecificTypes"?: string | string[];
-                    "latestRedListEvaluation.secondaryHabitats.id"?: string | string[];
-                    "latestRedListEvaluation.primaryHabitatSearchStrings"?: string | string[];
-                    "latestRedListEvaluation.anyHabitatSearchStrings"?: string | string[];
-                    "latestRedListEvaluation.endangermentReasons"?: string | string[];
-                    "latestRedListEvaluation.primaryEndangermentReason"?: string | string[];
-                    "latestRedListEvaluation.threats"?: string | string[];
-                    "latestRedListEvaluation.primaryThreat"?: string | string[];
-                    "latestRedListEvaluation.occurrences.area"?: string | string[];
-                    "latestRedListEvaluation.occurrences.id"?: string | string[];
-                    "latestRedListEvaluation.occurrences.notes"?: string | string[];
-                    "latestRedListEvaluation.occurrences.specimenURI"?: string | string[];
-                    "latestRedListEvaluation.occurrences.status"?: string | string[];
-                    "latestRedListEvaluation.occurrences.threatened"?: boolean;
-                    "latestRedListEvaluation.threatenedAtArea"?: string | string[];
-                    "latestRedListEvaluation.correctedStatusForRedListIndex"?: string | string[];
-                    hasLatestRedListEvaluation?: boolean;
-                    primaryHabitatSearchStrings?: string | string[];
-                    anyHabitatSearchStrings?: string | string[];
-                };
-            };
-        };
+        requestBody?: never;
         responses: {
             201: {
                 headers: {
@@ -16361,7 +15845,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -16376,6 +15860,10 @@ export interface operations {
     TaxaController_getSpeciesPageWithFilters: {
         parameters: {
             query?: {
+                /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
+                informalTaxonGroups?: string;
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
@@ -16386,6 +15874,12 @@ export interface operations {
                 pageSize?: number;
                 lang?: "fi" | "sv" | "en" | "multi";
                 langFallback?: boolean;
+                /** @description true: Will include only invasive taxa.
+                 *     false: Will exclude invasive taxa. */
+                invasiveSpecies?: boolean;
+                /** @description true: Will include only finnish taxa.
+                 *     false: Will exclude finnish taxa. */
+                finnish?: boolean;
                 /** @description Include media objects in the response. Defaults to false. */
                 includeMedia?: boolean;
                 /** @description Include description objects in the response. Defaults to false. */
@@ -16951,7 +16445,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -17354,7 +16848,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -17524,7 +17018,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -17741,7 +17235,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -17903,7 +17397,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -18074,7 +17568,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -18132,7 +17626,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
@@ -18190,7 +17684,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
+                        page: number;
                         pageSize: number;
                         total: number;
                         lastPage: number;
