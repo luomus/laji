@@ -1,49 +1,49 @@
-<footer *ngIf="footerService.footerVisible">
+<footer *ngIf="footerVisible$ | async">
   <div class="info-footer d-flex flex-col items-center">
     <div class="d-flex flex-wrap info-footer-content mb-4 flex-gap-3">
       <div>
         <h3>Suomen lajitietokeskus</h3>
-        <p>{{ 'footer.intro1' | translate }} <a [routerLink]="'/about/'" translate>footer2.section1.readmore</a></p>
+        <p>{{ 'footer.intro1' | translate }} <a [href]="getInfoLajiFiUrl('readMore')" target="_blank">{{ 'footer2.section1.readmore' | translate }}</a></p>
         <ul>
-          <li><a href="https://info.laji.fi/etusivu/lajitietokeskus-pahkinankuoressa/yhteystiedot/" target="_blank" translate>footer2.section1.link.contact</a></li>
+          <li><a [href]="getInfoLajiFiUrl('contact')" target="_blank">{{ 'footer2.section1.link.contact' | translate }}</a></li>
           <li><laji-feedback></laji-feedback></li>
-          <li><a href="https://info.laji.fi/etusivu/lajitietokeskus-pahkinankuoressa/tietosuojaseloste/" target="_blank" translate>footer2.section1.link.privacypolicy</a></li>
-          <li><a href="https://info.laji.fi/etusivu/lajitietokeskus-pahkinankuoressa/saavutettavuusseloste/" target="_blank" translate>footer2.section1.link.accessibilty</a></li>
-          <li><a href="https://info.laji.fi/etusivu/lajitietokeskus-pahkinankuoressa/aineistopolitiikka/" target="_blank" translate>footer2.section1.link.datapolicy</a></li>
+          <li><a [href]="getInfoLajiFiUrl('privacyPolicy')" target="_blank">{{ 'footer2.section1.link.privacypolicy' | translate }}</a></li>
+          <li><a [href]="getInfoLajiFiUrl('accessibility')" target="_blank">{{ 'footer2.section1.link.accessibilty' | translate }}</a></li>
+          <li><a [href]="getInfoLajiFiUrl('dataPolicy')" target="_blank">{{ 'footer2.section1.link.datapolicy' | translate }}</a></li>
         </ul>
       </div>
       <div>
-        <h3 translate>footer2.section2.title</h3>
+        <h3>{{ 'footer2.section2.title' | translate }}</h3>
         <ul>
-          <li><a [routerLink]="'/about/'" translate>footer2.section2.link.help</a></li>
-          <li><a href="https://info.laji.fi/etusivu/viranomaisportaali/usein-kysytyt-kysymykset/" target="_blank" translate>footer2.section2.link.faq</a></li>
+          <li><a [href]="getInfoLajiFiUrl('support')" target="_blank">{{ 'footer2.section2.link.help' | translate }}</a></li>
+          <li><a href="https://info.laji.fi/etusivu/viranomaisportaali/usein-kysytyt-kysymykset/" target="_blank">{{ 'footer2.section2.link.faq' | translate }}</a></li>
           <li>{{ 'footer2.section2.link.guides' | translate }}
             <ul>
-              <li><a [routerLink]="'/about/'" translate>footer2.section2.link.dataUsers</a></li>
-              <li><a [routerLink]="'/about/'" translate>footer2.section2.link.researches</a></li>
-              <li><a [routerLink]="'/about/'" translate>footer2.section2.link.natureObservers</a></li>
-              <li><a [routerLink]="'/about/'" translate>footer2.section2.link.dataHolders</a></li>
-              <li><a [routerLink]="'/about/'" translate>footer2.section2.link.developers</a></li>
-              <li><a [routerLink]="'/about/'" translate>footer2.section2.link.media</a></li>
+              <li><a [href]="getInfoLajiFiUrl('dataUsers')" target="_blank">{{ 'footer2.section2.link.dataUsers' | translate }}</a></li>
+              <li><a [href]="getInfoLajiFiUrl('researchers')" target="_blank">{{ 'footer2.section2.link.researches' | translate }}</a></li>
+              <li><a [href]="getInfoLajiFiUrl('natureObservers')" target="_blank">{{ 'footer2.section2.link.natureObservers' | translate }}</a></li>
+              <li><a [href]="getInfoLajiFiUrl('dataHolders')" target="_blank">{{ 'footer2.section2.link.dataHolders' | translate }}</a></li>
+              <li><a [href]="getInfoLajiFiUrl('developers')" target="_blank">{{ 'footer2.section2.link.developers' | translate }}</a></li>
+              <li><a [href]="getInfoLajiFiUrl('media')" target="_blank">{{ 'footer2.section2.link.media' | translate }}</a></li>
             </ul>
           </li>
         </ul>
       </div>
       <div>
-        <h3 translate>footer2.section3.title</h3>
+        <h3>{{ 'footer2.section3.title' | translate }}</h3>
         <ul>
-          <li><a [routerLink]="'/about/'" translate>footer2.section3.link.taxonomy</a></li>
-          <li><a [routerLink]="'/about/'" translate>footer2.section3.link.observations</a> &#38; <a [routerLink]="'/about/'" translate>footer2.section3.link.gis</a></li>
-          <li><a [routerLink]="'/about/'" translate>footer2.section3.link.citizenScience</a></li>
-          <li><a href="https://pinkka.laji.fi/" target="_blank" translate>footer2.section3.link.pinkka</a> &#38; <a [routerLink]="'/about/'" translate>footer2.section3.link.identification</a></li>
-          <li><a href="https://punainenkirja.laji.fi/" target="_blank" translate>footer2.section3.link.redList</a></li>
-          <li><a href="https://vieraslajit.fi/" target="_blank" translate>footer2.section3.link.invasive</a></li>
-          <li><a [routerLink]="'/about/'" translate>footer2.section3.link.api</a></li>
+          <li><a [href]="getInfoLajiFiUrl('taxa')" target="_blank">{{ 'footer2.section3.link.taxonomy' | translate }}</a></li>
+          <li><a [href]="getInfoLajiFiUrl('observations')" target="_blank">{{ 'footer2.section3.link.observations' | translate }}</a> &#38; <a [href]="getInfoLajiFiUrl('gisServices')" target="_blank">{{ 'footer2.section3.link.gis' | translate }}</a></li>
+          <li><a [href]="getInfoLajiFiUrl('citizenScience')" target="_blank">{{ 'footer2.section3.link.citizenScience' | translate }}</a></li>
+          <li><a href="https://pinkka.laji.fi/" target="_blank">{{ 'footer2.section3.link.pinkka' | translate }}</a> &#38; <a [href]="getInfoLajiFiUrl('identification')" target="_blank">{{ 'footer2.section3.link.identification' | translate }}</a></li>
+          <li><a href="https://punainenkirja.laji.fi/" target="_blank">{{ 'footer2.section3.link.redList' | translate }}</a></li>
+          <li><a href="https://vieraslajit.fi/" target="_blank">{{ 'footer2.section3.link.invasive' | translate }}</a></li>
+          <li><a [href]="getInfoLajiFiUrl('apis')" target="_blank">{{ 'footer2.section3.link.api' | translate }}</a></li>
         </ul>
       </div>
     </div>
     <div class="info-footer-bottom-section">
-      <a [routerLink]="'/about/'">REST API</a> - <a [routerLink]="'/about/'">R API</a> - <a [routerLink]="'/about/'">GIS</a> - <a href="https://github.com/luomus/laji/" target="_blank" translate>footer2.github</a></div>
+      <a [href]="getInfoLajiFiUrl('restApi')" target="_blank">REST API</a> - <a [href]="getInfoLajiFiUrl('rApi')" target="_blank">R API</a> - <a [href]="getInfoLajiFiUrl('gis')" target="_blank">GIS</a> - <a href="https://github.com/luomus/laji/" target="_blank">{{ 'footer2.github' | translate }}</a></div>
   </div>
   <div class="partners-footer">
     <div class="container-fluid">
