@@ -85,6 +85,10 @@
   }
 }
 
+.core-trust-seal {
+  max-width: 50px;
+}
+
 :host ::ng-deep laji-feedback a {
   color: $primary-3;
   &:hover {

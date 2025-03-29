@@ -42,8 +42,12 @@
         </ul>
       </div>
     </div>
-    <div class="info-footer-bottom-section">
-      <a [href]="getInfoLajiFiUrl('restApi')" target="_blank">REST API</a> - <a [href]="getInfoLajiFiUrl('rApi')" target="_blank">R API</a> - <a [href]="getInfoLajiFiUrl('gis')" target="_blank">GIS</a> - <a href="https://github.com/luomus/laji/" target="_blank">{{ 'footer2.github' | translate }}</a></div>
+    <div class="info-footer-bottom-section d-flex flex-row justify-between">
+      <div>
+        <a [href]="getInfoLajiFiUrl('restApi')" target="_blank">REST API</a> - <a [href]="getInfoLajiFiUrl('rApi')" target="_blank">R API</a> - <a [href]="getInfoLajiFiUrl('gis')" target="_blank">GIS</a> - <a href="https://github.com/luomus/laji/" target="_blank">{{ 'footer2.github' | translate }}</a>
+      </div>
+      <a class="d-block core-trust-seal" href="https://amt.coretrustseal.org/certificates" target="_blank"><img lajiLazyImage src="https://cdn.laji.fi/images/partners/CoreTrustSeal-logo-transparent.png" alt="Core Trust Seal"></a>
+    </div>
   </div>
   <div class="partners-footer">
     <div class="container-fluid">
