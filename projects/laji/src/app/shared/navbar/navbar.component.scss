@@ -193,7 +193,6 @@ $text-color: $primary-2;
   }
 }
 
-
 @media only screen and (max-width: 900px) {
   .red-theme.navbar .navbar-collapse {
     .lu-dropdown a {
@@ -217,7 +216,7 @@ $text-color: $primary-2;
     & > .lu-dropdown {
       position: static;
       float: none;
-      width: auto;
+      width: 100%;
       margin-top: 0;
       border: 0;
       box-shadow: none;
@@ -276,3 +275,13 @@ $text-color: $primary-2;
     }
   }
 }
+
+@media only screen and (max-width: 900px) {
+  :host ::ng-deep .navbar-collapse .feedback laji-feedback a {
+    color: $primary-1;
+    &:hover {
+      background-color: $primary-6;
+    }
+  }
+}
+
