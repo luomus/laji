@@ -1,0 +1,11 @@
+<ng-container *ngIf="dataset$ | async as dataset; else loading">
+  <ng-container *ngIf="dataset.published; else notPublished">
+    <a [routerLink]="['/trait-db/datasets/', dataset.id]">Browse data of the dataset</a>
+  </ng-container>
+  <ng-template #notPublished>
+    Your data is now saved, but the dataset is not yet published. Would you like to publish it now?
+    <button class="btn btn-default" (click)="onPublishDataset()">Publish dataset</button>
+  </ng-template>
+</ng-container>
+<ng-template #loading>Loading...</ng-template>
+

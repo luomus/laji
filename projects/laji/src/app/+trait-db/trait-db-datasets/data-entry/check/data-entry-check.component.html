@@ -1,0 +1,24 @@
+<div *ngIf="(state$ | async) as state">
+  <div *ngIf="state._tag === 'not-initialized'">Loading...</div>
+  <div *ngIf="state._tag === 'tsv-in-progress'">Transforming rows...</div>
+  <div *ngIf="state._tag === 'http-error'">Http error!</div>
+  <ng-container *ngIf="table$ | async as table">
+    <lu-datatable
+      [rows]="table.rows"
+      [columns]="table.cols"
+    ></lu-datatable>
+  </ng-container>
+
+  <button
+    class="btn btn-default"
+    [disabled]="state._tag !== 'tsv-complete'"
+    (click)="onSubmit(state)"
+  >
+    Submit
+  </button>
+</div>
+
+<ng-template #cellTemplate let-row let-p="prop" let-rowIdx="rowIdx" let-colIdx="colIdx">
+  {{ p }}
+</ng-template>
+

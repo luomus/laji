@@ -38,15 +38,15 @@
       </th>
     </tr>
     <ng-container *ngIf="!loading else rowGhosts">
-      <tr *ngFor="let row of rows">
+      <tr *ngFor="let row of rows; let rowIdx = index">
         <td *ngFor="let colIdx of selectedColumns" #rowRef>
           <ng-container *ngIf="columns[colIdx] as col">
             <ng-container *ngIf="columnHasTemplate(col)">
               <ng-container
                 *ngTemplateOutlet="col.cellTemplate;
-                context: 'prop' in col
-                  ? { $implicit: row, prop: getNestedValue(row, col.prop) }
-                  : { $implicit: row }"
+                context: hasProp(col)
+                  ? { $implicit: row, prop: getNestedValue(row, $any(col).prop), rowIdx, colIdx }
+                  : { $implicit: row, rowIdx, colIdx }"
               ></ng-container>
             </ng-container>
             <ng-container *ngIf="!columnHasTemplate(col)">

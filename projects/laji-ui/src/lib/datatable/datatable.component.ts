@@ -293,6 +293,10 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
     return prop.split('.').reduce((acc, key) => acc?.[key], obj);
   }
 
+  hasProp(col: any): boolean {
+    return 'prop' in col;
+  }
+
   private performLocalSort() {
     for (const sort of [...this.sorts].reverse()) {
       const col = this.columns[sort.by];
