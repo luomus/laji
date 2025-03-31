@@ -1,7 +1,6 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { FooterService } from '../service/footer.service';
 
 interface MaybeMultiLang { fi: string; sv?: string; en?: string };
@@ -11,13 +10,19 @@ const infoLajiFiLangUrlMap: Record<string, MaybeMultiLang> = {
   contact: { fi: 'https://info.laji.fi/etusivu/lajitietokeskus-pahkinankuoressa/yhteystiedot/' },
   privacyPolicy: { fi: 'https://info.laji.fi/etusivu/lajitietokeskus-pahkinankuoressa/tietosuojaseloste/' },
   accessibility: { fi: 'https://info.laji.fi/etusivu/lajitietokeskus-pahkinankuoressa/saavutettavuusseloste/' },
-  dataPolicy: { fi: 'https://info.laji.fi/etusivu/lajitietokeskus-pahkinankuoressa/aineistopolitiikka/' },
-  restApi: { fi: 'https://info.laji.fi/etusivu/api/' },
-  rApi: { fi: 'https://info.laji.fi/etusivu/r-paketti/' },
-  gis: { fi: 'https://info.laji.fi/etusivu/paikkatieto/' },
+  dataPolicy: {
+    fi: 'https://info.laji.fi/etusivu/lajitietokeskus-pahkinankuoressa/aineistopolitiikka/',
+    sv: 'https://info.laji.fi/sv/lajitietokeskuksen-ohje-ja-tietopankki-svenska/datapolicy-for-finlands-artdatacenter/'
+  },
+  restApi: {
+    fi: 'https://info.laji.fi/etusivu/api/', en: 'https://info.laji.fi/en/frontpage/api/',
+    sv: 'https://info.laji.fi/sv/lajitietokeskuksen-ohje-ja-tietopankki-svenska/api-technical/'
+  },
+  rApi: { fi: 'https://info.laji.fi/etusivu/r-paketti/', en: 'https://github.com/luomus/finbif', sv: 'https://github.com/luomus/finbif' },
+  gis: { fi: 'https://info.laji.fi/etusivu/paikkatieto/', en: 'https://info.laji.fi/en/frontpage/spatial-data/', sv: 'https://info.laji.fi/en/frontpage/spatial-data/' },
   support: { fi: 'https://info.laji.fi/' },
   faq: { fi: 'https://info.laji.fi/ukk/' },
-  dataUsers: { fi: 'https://info.laji.fi/etusivu/oppaat/opas-datan-omistajille/' },
+  dataUsers: { fi: 'https://info.laji.fi/etusivu/oppaat/opas-datan-omistajille/', en: 'https://info.laji.fi/en/frontpage/datasets-and-their-use/' },
   dataHolders: { fi: 'https://info.laji.fi/etusivu/oppaat/opas-datan-kayttajille/' },
   researchers: { fi: 'https://info.laji.fi/etusivu/oppaat/opas-tutkijoille/' },
   natureObservers: { fi: 'https://info.laji.fi/etusivu/oppaat/opas-luontoharrastajille/' },
@@ -50,8 +55,7 @@ export class FooterComponent implements AfterViewInit {
     this.translate.onLangChange.subscribe(() => this.cdr.markForCheck());
   }
 
-  getInfoLajiFiUrl(key: keyof typeof infoLajiFiLangUrlMap): string {
-    return infoLajiFiLangUrlMap[key][this.translate.currentLang as keyof typeof infoLajiFiLangUrlMap[typeof key]]
-      ?? infoLajiFiLangUrlMap[key].fi;
+  getInfoLajiFiUrl(key: keyof typeof infoLajiFiLangUrlMap): string | undefined {
+    return infoLajiFiLangUrlMap[key][this.translate.currentLang as keyof typeof infoLajiFiLangUrlMap[typeof key]];
   }
 }

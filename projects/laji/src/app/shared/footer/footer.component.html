@@ -5,26 +5,50 @@
         <h3>Suomen lajitietokeskus</h3>
         <p>{{ 'footer.intro1' | translate }} <a [href]="getInfoLajiFiUrl('readMore')" target="_blank">{{ 'footer2.section1.readmore' | translate }}</a></p>
         <ul>
-          <li><a [href]="getInfoLajiFiUrl('contact')" target="_blank">{{ 'footer2.section1.link.contact' | translate }}</a></li>
+          <ng-container *ngIf="getInfoLajiFiUrl('contact') as url">
+            <li><a [href]="url" target="_blank">{{ 'footer2.section1.link.contact' | translate }}</a></li>
+          </ng-container>
           <li><laji-feedback></laji-feedback></li>
-          <li><a [href]="getInfoLajiFiUrl('privacyPolicy')" target="_blank">{{ 'footer2.section1.link.privacypolicy' | translate }}</a></li>
-          <li><a [href]="getInfoLajiFiUrl('accessibility')" target="_blank">{{ 'footer2.section1.link.accessibilty' | translate }}</a></li>
-          <li><a [href]="getInfoLajiFiUrl('dataPolicy')" target="_blank">{{ 'footer2.section1.link.datapolicy' | translate }}</a></li>
+          <ng-container *ngIf="getInfoLajiFiUrl('privacyPolicy') as url">
+            <li><a [href]="url" target="_blank">{{ 'footer2.section1.link.privacypolicy' | translate }}</a></li>
+          </ng-container>
+          <ng-container *ngIf="getInfoLajiFiUrl('accessibility') as url">
+            <li><a [href]="url" target="_blank">{{ 'footer2.section1.link.accessibilty' | translate }}</a></li>
+          </ng-container>
+          <ng-container *ngIf="getInfoLajiFiUrl('dataPolicy') as url">
+            <li><a [href]="url" target="_blank">{{ 'footer2.section1.link.datapolicy' | translate }}</a></li>
+          </ng-container>
         </ul>
       </div>
       <div>
         <h3>{{ 'footer2.section2.title' | translate }}</h3>
         <ul>
-          <li><a [href]="getInfoLajiFiUrl('support')" target="_blank">{{ 'footer2.section2.link.help' | translate }}</a></li>
-          <li><a href="https://info.laji.fi/etusivu/viranomaisportaali/usein-kysytyt-kysymykset/" target="_blank">{{ 'footer2.section2.link.faq' | translate }}</a></li>
+          <ng-container *ngIf="getInfoLajiFiUrl('support') as url">
+            <li><a [href]="url" target="_blank">{{ 'footer2.section2.link.help' | translate }}</a></li>
+          </ng-container>
+          <ng-container *ngIf="getInfoLajiFiUrl('faq') as url">
+            <li><a href="url" target="_blank">{{ 'footer2.section2.link.faq' | translate }}</a></li>
+          </ng-container>
           <li>{{ 'footer2.section2.link.guides' | translate }}
             <ul>
-              <li><a [href]="getInfoLajiFiUrl('dataUsers')" target="_blank">{{ 'footer2.section2.link.dataUsers' | translate }}</a></li>
-              <li><a [href]="getInfoLajiFiUrl('researchers')" target="_blank">{{ 'footer2.section2.link.researches' | translate }}</a></li>
-              <li><a [href]="getInfoLajiFiUrl('natureObservers')" target="_blank">{{ 'footer2.section2.link.natureObservers' | translate }}</a></li>
-              <li><a [href]="getInfoLajiFiUrl('dataHolders')" target="_blank">{{ 'footer2.section2.link.dataHolders' | translate }}</a></li>
-              <li><a [href]="getInfoLajiFiUrl('developers')" target="_blank">{{ 'footer2.section2.link.developers' | translate }}</a></li>
-              <li><a [href]="getInfoLajiFiUrl('media')" target="_blank">{{ 'footer2.section2.link.media' | translate }}</a></li>
+              <ng-container *ngIf="getInfoLajiFiUrl('dataUsers') as url">
+                <li><a [href]="url" target="_blank">{{ 'footer2.section2.link.dataUsers' | translate }}</a></li>
+              </ng-container>
+              <ng-container *ngIf="getInfoLajiFiUrl('researchers') as url">
+                <li><a [href]="url" target="_blank">{{ 'footer2.section2.link.researches' | translate }}</a></li>
+              </ng-container>
+              <ng-container *ngIf="getInfoLajiFiUrl('natureObservers') as url">
+                <li><a [href]="url" target="_blank">{{ 'footer2.section2.link.natureObservers' | translate }}</a></li>
+              </ng-container>
+              <ng-container *ngIf="getInfoLajiFiUrl('dataHolders') as url">
+                <li><a [href]="url" target="_blank">{{ 'footer2.section2.link.dataHolders' | translate }}</a></li>
+              </ng-container>
+              <ng-container *ngIf="getInfoLajiFiUrl('developers') as url">
+                <li><a [href]="url" target="_blank">{{ 'footer2.section2.link.developers' | translate }}</a></li>
+              </ng-container>
+              <ng-container *ngIf="getInfoLajiFiUrl('media') as url">
+                <li><a [href]="url" target="_blank">{{ 'footer2.section2.link.media' | translate }}</a></li>
+              </ng-container>
             </ul>
           </li>
         </ul>
@@ -32,13 +56,27 @@
       <div>
         <h3>{{ 'footer2.section3.title' | translate }}</h3>
         <ul>
-          <li><a [href]="getInfoLajiFiUrl('taxa')" target="_blank">{{ 'footer2.section3.link.taxonomy' | translate }}</a></li>
-          <li><a [href]="getInfoLajiFiUrl('observations')" target="_blank">{{ 'footer2.section3.link.observations' | translate }}</a> &#38; <a [href]="getInfoLajiFiUrl('gisServices')" target="_blank">{{ 'footer2.section3.link.gis' | translate }}</a></li>
-          <li><a [href]="getInfoLajiFiUrl('citizenScience')" target="_blank">{{ 'footer2.section3.link.citizenScience' | translate }}</a></li>
-          <li><a href="https://pinkka.laji.fi/" target="_blank">{{ 'footer2.section3.link.pinkka' | translate }}</a> &#38; <a [href]="getInfoLajiFiUrl('identification')" target="_blank">{{ 'footer2.section3.link.identification' | translate }}</a></li>
+          <ng-container *ngIf="getInfoLajiFiUrl('taxa') as url">
+            <li><a [href]="url" target="_blank">{{ 'footer2.section3.link.taxonomy' | translate }}</a></li>
+          </ng-container>
+          <ng-container *ngIf="getInfoLajiFiUrl('observations') as observationsUrl">
+            <li>
+              <a [href]="observationsUrl" target="_blank">{{ 'footer2.section3.link.observations' | translate }}</a>
+              <ng-container *ngIf="getInfoLajiFiUrl('gisServices') as gisServicesUrl"> &#38; <a [href]="gisServicesUrl" target="_blank">{{ 'footer2.section3.link.gis' | translate }}</a></ng-container>
+            </li>
+          </ng-container>
+          <ng-container *ngIf="getInfoLajiFiUrl('citizenScience') as url">
+            <li><a [href]="url" target="_blank">{{ 'footer2.section3.link.citizenScience' | translate }}</a></li>
+          </ng-container>
+          <li>
+            <a href="https://pinkka.laji.fi/" target="_blank">{{ 'footer2.section3.link.pinkka' | translate }}</a>
+            <ng-container *ngIf="getInfoLajiFiUrl('identification') as url"> &#38; <a [href]="url" target="_blank">{{ 'footer2.section3.link.identification' | translate }}</a></ng-container>
+          </li>
           <li><a href="https://punainenkirja.laji.fi/" target="_blank">{{ 'footer2.section3.link.redList' | translate }}</a></li>
           <li><a href="https://vieraslajit.fi/" target="_blank">{{ 'footer2.section3.link.invasive' | translate }}</a></li>
-          <li><a [href]="getInfoLajiFiUrl('apis')" target="_blank">{{ 'footer2.section3.link.api' | translate }}</a></li>
+          <ng-container *ngIf="getInfoLajiFiUrl('apis') as url">
+            <li><a [href]="url" target="_blank">{{ 'footer2.section3.link.api' | translate }}</a></li>
+          </ng-container>
         </ul>
       </div>
     </div>
