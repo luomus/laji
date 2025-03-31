@@ -4,6 +4,7 @@ import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { tap, map, switchMap } from 'rxjs/operators';
 
 interface NotInitialized {
   _tag: 'not-initialized';
@@ -18,16 +19,21 @@ interface RequestHttpError {
   error: string;
 }
 
-interface Tsv2RowsComplete {
-  _tag: 'tsv-complete';
+interface ValidationInProgress {
+  _tag: 'validation-in-progress';
+}
+
+interface ValidationComplete {
+  _tag: 'validation-complete';
   result: components['schemas']['InputRow'][];
+  validationResult: components['schemas']['TraitMultiValidationResponse'];
 }
 
 interface SubmissionInProgress {
   _tag: 'submitting';
 }
 
-type State = NotInitialized | Tsv2RowsInProgress | Tsv2RowsComplete | RequestHttpError | SubmissionInProgress;
+type State = NotInitialized | Tsv2RowsInProgress | ValidationInProgress | ValidationComplete | RequestHttpError | SubmissionInProgress;
 
 const apiInputRowsToTable = (res: components['schemas']['InputRow'][]): { cols: string[]; rows: any[][] } => {
   // Transform subjects to column-major sparse table
@@ -114,7 +120,7 @@ export class TraitDbDataEntryCheckComponent implements OnChanges, AfterViewInit,
   @ViewChild('cellTemplate') cellTemplate!: TemplateRef<any>;
 
   state$ = new BehaviorSubject<State>({ _tag: 'not-initialized' });
-  table$ = new Subject<{ rows: any; cols: any }>();
+  table$ = new BehaviorSubject<{ rows: any; cols: any } | undefined>(undefined);
   objectEntries = Object.entries;
 
   private tsvChange = new BehaviorSubject<null>(null);
@@ -126,7 +132,7 @@ export class TraitDbDataEntryCheckComponent implements OnChanges, AfterViewInit,
   ) {}
 
   onSubmit(state: State) {
-    if (state._tag !== 'tsv-complete') {
+    if (!(state._tag === 'validation-complete' && state.validationResult.pass)) {
       return;
     }
     const query = {
@@ -153,18 +159,29 @@ export class TraitDbDataEntryCheckComponent implements OnChanges, AfterViewInit,
       };
       this.state$.next({ _tag: 'tsv-in-progress' });
       this.api.fetch('/trait/rows/tsv2rows', 'post', { query }, this.tsv)
-        .subscribe(
-          res => {
+        .pipe(
+          tap(res => {
             const table = apiInputRowsToTable(res);
             this.table$.next({
               cols: table.cols.map((col, index) => ({
                 title: col,
                 prop: index,
+                cellTemplate: this.cellTemplate
               })),
               rows: table.rows
             });
-            this.state$.next({ _tag: 'tsv-complete', result: res });
+            this.state$.next({ _tag: 'validation-in-progress' });
             this.cdr.markForCheck();
+          }),
+          switchMap(res =>
+            this.api.fetch('/trait/rows/multi/validate', 'post', { query: { personToken: this.userService.getToken() } }, res).pipe(
+              map(validationRes => ({_tag: 'validation-complete', result: res, validationResult: validationRes}) as ValidationComplete)
+            )
+          )
+        )
+        .subscribe(
+          res => {
+            this.state$.next(res);
           },
           err => {
             console.error(err);

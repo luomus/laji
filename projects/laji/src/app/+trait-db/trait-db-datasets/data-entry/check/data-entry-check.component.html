@@ -1,6 +1,8 @@
 <div *ngIf="(state$ | async) as state">
   <div *ngIf="state._tag === 'not-initialized'">Loading...</div>
   <div *ngIf="state._tag === 'tsv-in-progress'">Transforming rows...</div>
+  <div *ngIf="state._tag === 'validation-in-progress'">Validating...</div>
+  <div *ngIf="state._tag === 'submitting'">Submitting...</div>
   <div *ngIf="state._tag === 'http-error'">Http error!</div>
   <ng-container *ngIf="table$ | async as table">
     <lu-datatable
@@ -11,7 +13,7 @@
 
   <button
     class="btn btn-default"
-    [disabled]="state._tag !== 'tsv-complete'"
+    [disabled]="!(state._tag === 'validation-complete' && state.validationResult.pass)"
     (click)="onSubmit(state)"
   >
     Submit
@@ -19,6 +21,17 @@
 </div>
 
 <ng-template #cellTemplate let-row let-p="prop" let-rowIdx="rowIdx" let-colIdx="colIdx">
-  {{ p }}
+  {{ p }} <ng-container *ngIf="(state$ | async) as state">
+    <ng-container *ngIf="state._tag === 'validation-complete'">
+      <ng-container *ngIf="state.validationResult.rows?.[rowIdx]?.errors as errors">
+        <ng-container *ngIf="(table$ | async)?.cols[colIdx].title as colTitle">
+          <ng-container *ngIf="errors[colTitle] as error">
+            <span class="pill danger" [luTooltip]="error">x</span>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
 </ng-template>
 
