@@ -28,7 +28,7 @@ const baseRoutes: Routes = [
   {path: 'kartta', loadChildren: () => import('./+map/map.module').then(m => m.MapModule), data: {preload: false, canonical: '/map'}},
   {
     path: 'map', loadChildren: () => import('./+map/map.module').then(m => m.MapModule),
-    data: {title: 'navigation.map', displayFeedback: false, preload: false }
+    data: {title: 'navigation.map', preload: false }
   },
   {path: 'error/404', pathMatch: 'full', component: NotFoundComponent},
   {path: 'theme/checklist', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.checklist'}, pathMatch: 'full'},

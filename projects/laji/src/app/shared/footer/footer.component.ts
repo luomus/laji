@@ -1,39 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FooterService } from '../service/footer.service';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
-import { Logger } from '../logger/logger.service';
-import { LajiApiService } from '../service/laji-api.service';
-import { map } from 'rxjs/operators';
-import { HeaderImage, HeaderImageService } from '../service/header-image.service';
-import { BaseDataService } from '../../graph-ql/service/base-data.service';
+import { FooterService } from '../service/footer.service';
 
 @Component({
   selector: 'laji-footer',
   styleUrls: ['./footer.component.scss'],
-  templateUrl: './footer.component.html'
+  templateUrl: './footer.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FooterComponent implements OnInit {
-
+export class FooterComponent {
   @Input() onFrontPage = false;
 
-  public tree$!: Observable<any>;
-  public headerImage!: HeaderImage;
+  footerVisible$: Observable<boolean>;
 
-  constructor(
-    public footerService: FooterService,
-    private lajiApi: LajiApiService,
-    private translate: TranslateService,
-    private logger: Logger,
-    private headerImageService: HeaderImageService,
-    private baseDataService: BaseDataService
-  ) {
-  }
-
-  ngOnInit() {
-    this.headerImage = this.headerImageService.getCurrentSeason();
-    this.tree$ = this.baseDataService.getBaseData().pipe(
-      map(data => data.information && data.information.children || [])
-    );
+  constructor(footerService: FooterService) {
+    this.footerVisible$ = footerService.footerVisible$;
   }
 }

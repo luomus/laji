@@ -13,20 +13,18 @@ export const routes: Routes = [
   {
     path: '', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false},
     pathMatch: 'prefix'
   },
   {
     path: 'template', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false, template: true},
+    data: {template: true},
     pathMatch: 'prefix'
 
   },
   {
     path: ':formOrDocument/places/new', component: NpEditFormComponent,
     canActivate: [HasFormPermission],
-    data: {displayFeedback: false},
     pathMatch: 'prefix'
 
   },
@@ -38,7 +36,6 @@ export const routes: Routes = [
   {
     path: ':formOrDocument/places/:namedPlace/edit', component: NpEditFormComponent,
     canActivate: [HasFormPermission],
-    data: {displayFeedback: false},
     pathMatch: 'prefix'
 
   },
@@ -46,7 +43,6 @@ export const routes: Routes = [
     path: ':formOrDocument/places/:namedPlace', component: FormComponent,
     canActivate: [HasFormPermission],
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false},
     pathMatch: 'prefix'
 
   },
@@ -54,7 +50,7 @@ export const routes: Routes = [
     path: ':formOrDocument/places/:namedPlace/template', component: FormComponent,
     canActivate: [HasFormPermission],
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false, template: true},
+    data: {template: true},
     pathMatch: 'prefix'
 
   },
@@ -68,14 +64,12 @@ export const routes: Routes = [
   {
     path: 'places/new', component: NpEditFormComponent,
     canActivate: [HasFormPermission],
-    data: {displayFeedback: false},
     pathMatch: 'prefix'
 
    },
   {
     path: 'places/:namedPlace/edit', component: NpEditFormComponent,
     canActivate: [HasFormPermission],
-    data: {displayFeedback: false},
     pathMatch: 'prefix'
 
   },
@@ -88,7 +82,6 @@ export const routes: Routes = [
     path: 'places/:namedPlace', component: FormComponent,
     canActivate: [HasFormPermission],
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false},
     pathMatch: 'prefix'
 
   },
@@ -96,7 +89,7 @@ export const routes: Routes = [
     path: 'places/:namedPlace/template', component: FormComponent,
     canActivate: [HasFormPermission],
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false, template: true},
+    data: {template: true},
     pathMatch: 'prefix'
 
   },
@@ -109,33 +102,29 @@ export const routes: Routes = [
   },
   {
     path: ':formOrDocument/link', component: NamedPlaceLinkerWrapperComponent,
-    data: {displayFeedback: false},
     pathMatch: 'prefix'
   },
   {
     path: ':formOrDocument/:document', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false},
     pathMatch: 'prefix'
 
   },
   {
     path: ':formOrDocument/:document/link', component: NamedPlaceLinkerWrapperComponent,
-    data: {displayFeedback: false},
     pathMatch: 'prefix'
 
   },
   {
     path: ':formOrDocument', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false},
     pathMatch: 'prefix'
 
   },
   {
     path: ':formOrDocument/template', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false, template: true},
+    data: {template: true},
     pathMatch: 'prefix'
 
   },

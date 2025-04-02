@@ -24,7 +24,6 @@ export class AppComponent {
   public hasAnalytics = true;
   public isEmbedded: boolean;
   public onFrontPage = false;
-  public displayFeedback = true;
   private currentRoute?: string;
 
   constructor(
@@ -55,10 +54,6 @@ export class AppComponent {
             });
         }
 
-        // Hide feedback when data has displayFeedback: false
-        RouteDataService.getDeepest<boolean>(router.routerState.snapshot.root, 'displayFeedback', true).subscribe(
-          (displayFeedback) => this.displayFeedback = displayFeedback
-        );
 
         this.currentRoute = newRoute;
         this.onFrontPage = router.isActive('/', true)

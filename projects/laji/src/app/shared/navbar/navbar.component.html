@@ -55,11 +55,25 @@
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
             <a [routerLink]="['/vihko'] | localize">{{ 'navigation.vihko' | translate }}</a>
             </li>
-            <li [ngClass]="{'hidden-sm': showSearch}" *lajiForTypes="['dev', 'prod', 'beta']">
-              <a (click)="goToForum($event)" class="link" href="http://foorumi.laji.fi/">{{ 'Forum' | translate }}</a>
-            </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
-              <a [routerLink]="['/theme'] | localize">{{ 'navigation.theme' | translate }}</a>
+            <li *lajiForTypes="['dev', 'prod', 'beta']">
+              <a luDropdownToggle class="link">
+                {{ 'navigation.more' | translate }}
+                <span class="glyphicon glyphicon-triangle-bottom"></span>
+              </a>
+              <ul luDropdownMenu class="user-dropdown">
+                <li role="menuitem">
+                  <a [href]="'infoLinks.base' | translate" target="_blank" class="navbar-link link">{{ 'navigation.more.help' | translate }} <span class="glyphicon glyphicon-link"></span></a>
+                </li>
+                <li role="menuitem">
+                  <a [routerLink]="['/theme'] | localize" class="navbar-link link">{{ 'navigation.more.services' | translate }}</a>
+                </li>
+                <li role="menuitem">
+                  <a href="http://foorumi.laji.fi/" target="_blank" class="navbar-link link">{{ 'navigation.more.forum' | translate }} <span class="glyphicon glyphicon-link"></span></a>
+                </li>
+                <li role="menuitem" class="feedback">
+                  <laji-feedback></laji-feedback>
+                </li>
+              </ul>
             </li>
           </ul>
           <ul class="nav navbar-nav pull-right">
