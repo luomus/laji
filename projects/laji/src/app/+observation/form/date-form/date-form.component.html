@@ -49,7 +49,7 @@
     </div>
     <laji-datepicker [(ngModel)]="firstLoadedSameOrAfter"></laji-datepicker>
 
-    <laji-datepicker [(ngModel)]="firstLoadedSameOrBefore"></laji-datepicker>
+    <laji-datepicker [(ngModel)]="firstLoadedSameOrBefore" [toLastOfYear]="true"></laji-datepicker>
 
     <div class="btn-group btn-group-xs mt-1">
       <button type="button" class="btn btn-default" (click)="onUpdateTime(1, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">{{ 'observations.form.1d' | translate }}</button>
