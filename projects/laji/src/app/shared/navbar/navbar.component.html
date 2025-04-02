@@ -62,7 +62,7 @@
               </a>
               <ul luDropdownMenu class="user-dropdown">
                 <li role="menuitem">
-                  <a href="https://info.laji.fi/" target="_blank" class="navbar-link link">{{ 'navigation.more.help' | translate }} <span class="glyphicon glyphicon-link"></span></a>
+                  <a [href]="'infoLinks.base' | translate" target="_blank" class="navbar-link link">{{ 'navigation.more.help' | translate }} <span class="glyphicon glyphicon-link"></span></a>
                 </li>
                 <li role="menuitem">
                   <a [routerLink]="['/theme'] | localize" class="navbar-link link">{{ 'navigation.more.services' | translate }}</a>
