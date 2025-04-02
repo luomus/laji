@@ -363,7 +363,7 @@
   "finbif-bib.title": "FinBIF Publications",
   "finbif-r.intro": "R programming language interface for the Finnish Biodiversity Information Facility (FinBIF) API.",
   "finbif-r.title": "FinBIF R package",
-  "footer.api": "API",
+  "footer.api": "",
   "footer.citizenScience": "Citizen science briefly",
   "footer.conservation": "Nature conservation and influencing",
   "footer.conservationSociety": "Nature conservation<br>societies",
