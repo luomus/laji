@@ -6,13 +6,13 @@ import { LocalizeGuard } from '../../../laji/src/app/locale/localize.guard';
 import { LocaleSvComponent } from '../../../laji/src/app/locale/locale-sv.component';
 import { LocaleFiComponent } from '../../../laji/src/app/locale/locale-fi.component';
 import { CheckLoginGuard } from '../../../laji/src/app/shared/guards/check-login.guard';
+import { OnlyLoggedIn } from '../../../laji/src/app/shared/route/only-logged-in';
 
 
-const routes: Routes = [
+const mainRoutes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule), data: {preload: true}},
   {path: 'news', loadChildren: () => import('../../../laji/src/app/+news/news.module').then(m => m.NewsModule), data: {title: 'news.title'}},
   {path: 'about', loadChildren: () => import('../../../laji/src/app/+information/information.module').then(m => m.InformationModule)},
-  {path: 'user', loadChildren: () => import('../../../laji/src/app/+user/user.module').then(m => m.UserModule)},
   {path: 'view', loadChildren: () => import('../../../laji/src/app/+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document'}},
   {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule)},
   {path: 'usage', loadChildren: () => import('./+usage/usage.module').then(m => m.UsageModule), data: {title: 'navigation.usage'}},
@@ -27,18 +27,29 @@ const routes: Routes = [
   }},
 ];
 
+const routes: Routes = [
+  {
+    path: '',
+    children: [...mainRoutes],
+    canActivate: [OnlyLoggedIn]
+  },
+  {path: 'user', loadChildren: () => import('../../../laji/src/app/+user/user.module').then(m => m.UserModule)}
+];
+
+const notFoundRoute = {path: '**', component: NotFoundComponent, canActivate: [OnlyLoggedIn]};
+
 const routesWithLang: Routes = [
   {
     path: 'en',
     data: {lang: 'en'},
-    children: [...routes, {path: '**', component: NotFoundComponent}],
+    children: [...routes, notFoundRoute],
     component: LocaleEnComponent,
     canActivate: [LocalizeGuard]
   },
   {
     path: 'sv',
     data: {lang: 'sv'},
-    children: [...routes, {path: '**', component: NotFoundComponent}],
+    children: [...routes, notFoundRoute],
     component: LocaleSvComponent,
     canActivate: [LocalizeGuard]
   },
@@ -48,7 +59,7 @@ const routesWithLang: Routes = [
     children: [
       ...routes,
       {path: 'paikkatietorajapinta', redirectTo: '/theme/ogcapi', pathMatch: 'full'},
-      {path: '**', component: NotFoundComponent}
+      notFoundRoute
     ],
     component: LocaleFiComponent,
     canActivate: [LocalizeGuard]

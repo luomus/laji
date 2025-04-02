@@ -10,7 +10,6 @@ export const environment = {
   type: Global.type.beta,
   base: 'https://beta.laji.fi',
   production: true,
-  forceLogin: false,
   disableAnalytics: true,
   sourceKotka: 'KE.3',
   systemID: 'KE.841',
