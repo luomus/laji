@@ -117,6 +117,7 @@ export namespace Form {
     formPermissionDescription?: string;
     formOwnSubmissionsLabel?: string;
     hideTES?: boolean;
+    privacyPolicy?: boolean;
     ownSubmissionsTitle?: string;
     ownSubmissionsAdminTitle?: string;
     shortTitleFromCollectionName?: boolean;
