@@ -1,18 +1,28 @@
-<details class="lu-details">Lorem ipsum...
+<details class="lu-details">
+  <ng-container *ngIf="headerReferenceContent$ | async; let information">
+    <div [innerHtml]="information?.content"></div>
+  </ng-container>
   <summary>Column header reference</summary>
 </details>
-<button class="btn btn-default d-block my-4">Download example file</button>
-<div class="my-4">
-  <label for="data-entry-file">
-    Import a file <i class="glyphicon glyphicon-open"></i>
-  </label>
-  <input #fileSelector type="file" accept=".tsv" id="data-entry-file" [disabled]="data" (change)="onFileChange($event)">
+<div>Download example file: <a href="https://cdn.laji.fi/images/partners/CoreTrustSeal-logo-transparent.png" target="_blank">todo-add-to-cms.tsv</a></div>
+<div class="d-flex flex-row flex-gap-3 items-end my-4">
+  <div class="file-upload">
+    <label for="data-entry-file">
+      Import a file <i class="glyphicon glyphicon-open"></i>
+    </label>
+    <input #fileSelector type="file" accept=".tsv" id="data-entry-file" [disabled]="data" (change)="onFileChange($event)">
+  </div>
+  <div class="my-3"><button class="btn btn-default" [disabled]="!isFileAttached()" (click)="onRemoveFile()">Remove file</button></div>
 </div>
-<button class="btn btn-default" [disabled]="!isFileAttached()" (click)="onRemoveFile()">Remove file</button>
 
 <p>Alternatively, input .tsv data directly onto the text field below:</p>
 <label for="manual-data-entry"></label>
-<textarea [disabled]="isFileAttached()" id="manual-data-entry" (input)="onTextAreaInput($event)"></textarea>
+<textarea
+  #textArea
+  [disabled]="isFileAttached()"
+  id="manual-data-entry"
+  (keydown)="onTextAreaKeyDown($event)"
+  (input)="onTextAreaInput($event)"></textarea>
 
 <button class="btn btn-default d-block my-4" [disabled]="!data" (click)="onSubmit()">Continue</button>
 

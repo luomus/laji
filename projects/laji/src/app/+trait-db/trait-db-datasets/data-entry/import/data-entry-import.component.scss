@@ -1,0 +1,13 @@
+@import 'vars';
+
+textarea {
+  width: 100%;
+  height: 400px;
+}
+
+.file-upload > input {
+  border: 2px dashed $neutral-4;
+  background: $neutral-3;
+  padding: $sp-3 $sp-4;
+}
+

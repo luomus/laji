@@ -1,73 +1,80 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 interface ImportStep {
   _tag: 'import';
-  tsv: string | null;
+  datasetId: string;
 }
-
-const defaultImportStep = { _tag: 'import', tsv: null } as ImportStep;
 
 interface ValidateStep {
   _tag: 'validate';
+  tsv: string;
+  datasetId: string;
 }
-
-const defaultValidateStep = { _tag: 'validate' } as ValidateStep;
 
 interface CheckStep {
   _tag: 'check';
+  tsv: string;
+  datasetId: string;
 }
-
-const defaultCheckStep = { _tag: 'check' } as CheckStep;
 
 interface ReadyStep {
   _tag: 'ready';
+  datasetId: string;
 }
 
-const defaultReadyStep = { _tag: 'ready' } as ReadyStep;
-
-const initialStepData = [
-  {...defaultImportStep}, {...defaultValidateStep}, {...defaultCheckStep}, {...defaultReadyStep}
-] as [ImportStep, ValidateStep, CheckStep, ReadyStep];
+type Step = ImportStep | ValidateStep | CheckStep | ReadyStep;
 
 @Component({
   templateUrl: './trait-db-data-entry.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TraitDbDataEntryComponent implements OnInit {
-  stepData = initialStepData;
-  currentStep = 0;
-
-  datasetId$!: Observable<string>;
-  tsv = ''; // TODO refactor
+  stepStack$ = new BehaviorSubject<Step[]>([]);
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.datasetId$ = this.route.params.pipe(map(params => params.id));
+    this.route.params.pipe(map(params => params.id)).subscribe(datasetId => {
+      this.stepStack$.next([{ _tag: 'import', datasetId }]);
+    });
   }
 
   onStepBack(idx: number) {
-    this.currentStep = idx;
+    this.stepBack(idx);
   }
 
   onTsvChange(tsv: string | null) {
     if (!tsv) {
-      this.currentStep = 0;
+      this.stepBack(0);
       return;
     }
-    this.tsv = tsv;
-    this.currentStep = 1;
+    const stack = this.stepStack$.value;
+    const readyStep = stack[0];
+    stack.push({ _tag: 'validate', datasetId: readyStep.datasetId, tsv });
+    this.stepStack$.next(stack);
   }
 
   onValidationSuccess() {
-    this.currentStep = 2;
+    const stack = this.stepStack$.value;
+    const validateStep = stack[1] as ValidateStep;
+    stack.push({ _tag: 'check', datasetId: validateStep.datasetId, tsv: validateStep.tsv });
+    this.stepStack$.next(stack);
   }
 
   onSubmissionSuccess() {
-    this.currentStep = 3;
+    const stack = this.stepStack$.value;
+    const checkStep = stack[2] as CheckStep;
+    stack.push({ _tag: 'ready', datasetId: checkStep.datasetId });
+    this.stepStack$.next(stack);
+  }
+
+  private stepBack(idx: number) {
+    const steps = this.stepStack$.value;
+    const newSteps = steps.slice(0, idx + 1);
+    this.stepStack$.next(newSteps);
   }
 }
 
