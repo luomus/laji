@@ -221,7 +221,7 @@ export class UserService implements OnDestroy {
         });
       }),
       map(_ => true),
-      httpOkError(404, false),
+      httpOkError([404, 400], false),
       retryWithBackoff(300),
       catchError(_ => {
         this.setNotLoggedIn();

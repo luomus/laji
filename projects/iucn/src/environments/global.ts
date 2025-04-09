@@ -47,7 +47,7 @@ export const Global = {
     'MHL.33': '/vieraslajit',
     'MHL.35': '/kunnat',
   },
-  googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
+  googleApiKey: 'AIzaSyAnc14tc2VUnxQKheawSBmEW2uJ5qFzDgk',
   sources: {
     kotka: 'KE.3'
   }

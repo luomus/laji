@@ -450,7 +450,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
           const tagId = tag.id as string;
           if (tagId !== value.id) {
             if ((tagId === 'MMAN.5' || tagId === 'MMAN.8' || tagId === 'MMAN.9' || tagId === 'MMAN.3'
-            || tagId === 'MMAN.50' || tagId === 'MMAN.51')
+            || tagId === 'MMAN.50' || tagId === 'MMAN.51' || tagId === 'MMAN.52')
             && this.annotationTagsObservation[value.id].type !== 'check' && this.annotationTagsObservation[value.id].type !== 'info'
             && this.annotation.removedTags.indexOf(tagId) === -1 && this.annotation.addedTags.indexOf(tagId) === -1) {
               this.addToRemoveTags(tagId);
@@ -469,8 +469,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
               this.addToRemoveTags(tagId);
             }
           });
-        } else {
-
         }
 
         if (this.annotation.removedTags.indexOf(value.id) !== -1 &&

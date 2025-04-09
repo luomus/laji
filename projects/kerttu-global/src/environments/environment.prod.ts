@@ -5,7 +5,6 @@ export const environment = {
   type: Global.type.kerttuGlobal,
   base: 'https://bsg.laji.fi',
   production: true,
-  forceLogin: false,
   disableAnalytics: false,
   systemID: 'KE.1441',
   apiBase: '/api',
