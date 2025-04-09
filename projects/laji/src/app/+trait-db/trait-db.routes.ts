@@ -12,6 +12,7 @@ import { TraitDbComponent } from './trait-db.component';
 import { TraitDbTraitEditorComponent } from './trait-db-traits/trait-db-trait-editor/trait-db-trait-editor.component';
 import { TraitDbTraitGroupEditorComponent } from './trait-db-traits/trait-db-trait-group-editor/trait-db-trait-group-editor.component';
 import { TraitDbDataEntryComponent } from './trait-db-datasets/data-entry/trait-db-data-entry.component';
+import { TraitDbDataEditorComponent } from './trait-db-datasets/data-editor/trait-db-data-editor.component';
 
 export const routes: Routes = [
   {
@@ -26,7 +27,8 @@ export const routes: Routes = [
         { path: 'new', component: TraitDbDatasetEditorComponent },
         { path: ':id/edit', component: TraitDbDatasetEditorComponent },
         { path: ':id', component: TraitDbDatasetComponent },
-        { path: ':id/data-entry', component: TraitDbDataEntryComponent }
+        { path: ':id/data-entry', component: TraitDbDataEntryComponent },
+        { path: ':id/data-editor', component: TraitDbDataEditorComponent }
       ] },
       { path: 'traits', children: [
         { path: '', pathMatch: 'full', component: TraitDbTraitsComponent },
