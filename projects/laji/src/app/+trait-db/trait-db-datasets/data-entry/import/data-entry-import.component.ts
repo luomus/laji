@@ -36,6 +36,7 @@ export class TraitDbDataEntryImportComponent {
     const file = target.files![0];
     file.text().then(str => {
       this.data = str ?? null;
+      this.textArea!.nativeElement.value = str;
       this.cdr.markForCheck();
     });
   }
@@ -44,6 +45,7 @@ export class TraitDbDataEntryImportComponent {
     if (this.fileSelector) {
       this.data = null;
       this.fileSelector.nativeElement.value = '';
+      this.textArea!.nativeElement.value = '';
     }
   }
 
