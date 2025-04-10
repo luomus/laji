@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { shareReplay, tap } from 'rxjs/operators';
 
 type WithResponses<T> = T & { responses: unknown };
-type Parameters<T> = 'parameters' extends keyof T ? T['parameters'] : undefined;
+type Parameters<T> = 'parameters' extends keyof T ? T['parameters'] : never;
 type ExtractContentIfExists<R> = R extends { content: infer C } ? C[keyof C] : null;
 type ExtractRequestBodyIfExists<R> =
   R extends { requestBody: { content: infer C } } | { requestBody?: { content: infer C } }
@@ -15,6 +15,9 @@ type HttpSuccessCodes = 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 22
 type IntersectUnionTypes<A, B> = A extends B ? A : never;
 
 type Path = keyof paths & string;
+type PathWithMethod<M extends string> =
+  keyof { [P in keyof paths as paths[P] extends Record<M, any> ? P : never]: paths[P] };
+
 type Method<P extends Path> = Exclude<
   keyof { [K in keyof paths[P] as paths[P][K] extends undefined | never ? never : K]: paths[P][K] }
 , 'parameters'>;
@@ -29,6 +32,8 @@ type CacheElement<T> = CachedValueNotStarted | CachedValueLoading<T> | CachedVal
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
+
+const ONE_DAY = 86400000;
 
 const sortRecordRecursively = (record: Record<string, unknown>): Record<string, unknown> => (
   Object.entries(record)
@@ -75,12 +80,46 @@ export class LajiApiClientBService {
 
   constructor(private http: HttpClient, @Inject(API_BASE_URL) private baseUrl: string) { }
 
+  get<P extends PathWithMethod<'get'>, R extends Responses<P, 'get' extends Method<P> ? 'get' : never>>(
+    path: P,
+    params?: Parameters<paths[P]['get']>,
+    cacheInvalidationMs = ONE_DAY
+  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+    return this.fetch(path, 'get' as any, params as any, undefined, cacheInvalidationMs);
+  }
+
+  put<P extends PathWithMethod<'put'>, R extends Responses<P, 'put' extends Method<P> ? 'put' : never>>(
+    path: P,
+    params?: Parameters<paths[P]['put']>,
+    requestBody?: ExtractRequestBodyIfExists<paths[P]['put']>,
+    cacheInvalidationMs = ONE_DAY
+  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+    return this.fetch(path, 'put' as any, params as any, requestBody, cacheInvalidationMs);
+  }
+
+  post<P extends PathWithMethod<'post'>, R extends Responses<P, 'post' extends Method<P> ? 'post' : never>>(
+    path: P,
+    params?: Parameters<paths[P]['post']>,
+    requestBody?: ExtractRequestBodyIfExists<paths[P]['post']>,
+    cacheInvalidationMs = ONE_DAY
+  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+    return this.fetch(path, 'post' as any, params as any, requestBody, cacheInvalidationMs);
+  }
+
+  delete<P extends PathWithMethod<'delete'>, R extends Responses<P, 'delete' extends Method<P> ? 'delete' : never>>(
+    path: P,
+    params?: Parameters<paths[P]['delete']>,
+    cacheInvalidationMs = ONE_DAY
+  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+    return this.fetch(path, 'delete' as any, params as any, undefined, cacheInvalidationMs);
+  }
+
   fetch<P extends Path, M extends Method<P>, R extends Responses<P, M>>(
     path: P,
     method: M,
-    params: Parameters<paths[P][M]>,
+    params?: Parameters<paths[P][M]>,
     requestBody?: ExtractRequestBodyIfExists<paths[P][M]>,
-    cacheInvalidationMs = 86400000 // 1day in ms
+    cacheInvalidationMs = ONE_DAY
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     const pathSegments = splitAndResolvePath(path, params);
     const requestUrl = this.baseUrl + pathSegments.join('');
