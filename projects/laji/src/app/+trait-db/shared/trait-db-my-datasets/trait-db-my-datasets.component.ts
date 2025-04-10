@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { tap, map, switchMap, filter } from 'rxjs/operators';
+import { map, switchMap, filter } from 'rxjs/operators';
 import { UserService } from '../../../shared/service/user.service';
 import { components } from 'projects/laji-api-client-b/generated/api';
 
@@ -26,8 +26,8 @@ export class TraitDbMyDatasetsComponent implements OnInit {
     this.loggedIn$ = this.userService.isLoggedIn$;
     this.datasets$ = this.loggedIn$.pipe(
       filter(loggedIn => loggedIn),
-      switchMap(_ => this.api.fetch('/trait/dataset-permissions', 'get', { query: { personToken: this.userService.getToken() } })),
-      switchMap(perms => this.api.fetch('/trait/datasets', 'get', {}).pipe(
+      switchMap(_ => this.api.get('/trait/dataset-permissions', {})),
+      switchMap(perms => this.api.get('/trait/datasets', {}).pipe(
         map(datasets => datasets.filter(dataset => perms.some(perm => perm.datasetId === dataset.id)))
       ))
     );

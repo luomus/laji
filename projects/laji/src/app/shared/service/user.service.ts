@@ -176,6 +176,10 @@ export class UserService implements OnDestroy {
     map(state => state.user._tag === 'ready' ? (<UserState.Ready>state.user).person : undefined),
     distinctUntilChanged()
   );
+  personToken$: Observable<string | undefined> = this.state$.pipe(
+    map(state => state.loginState._tag === 'logged_in' ? state.loginState.token : undefined),
+    distinctUntilChanged()
+  );
 
   constructor(
     private personApi: PersonApi,

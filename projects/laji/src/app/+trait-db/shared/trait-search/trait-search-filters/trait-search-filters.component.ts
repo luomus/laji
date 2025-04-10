@@ -1,5 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter,
-         Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
@@ -92,8 +91,8 @@ export class TraitSearchFiltersComponent implements OnInit {
   ) {
     this.form = this.fb.group(filterDefaultValues);
     this.filterChange = this.form.valueChanges;
-    this.datasets$ = this.api.fetch('/trait/datasets', 'get', {});
-    this.traits$ = this.api.fetch('/trait/traits', 'get', {});
+    this.datasets$ = this.api.get('/trait/datasets', {});
+    this.traits$ = this.api.get('/trait/traits', {});
   }
 
   ngOnInit() {

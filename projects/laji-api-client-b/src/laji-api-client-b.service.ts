@@ -13,12 +13,21 @@ type ExtractRequestBodyIfExists<R> =
     : never;
 type HttpSuccessCodes = 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226;
 type IntersectUnionTypes<A, B> = A extends B ? A : never;
+type OptionalKeys<T, K extends string> = Omit<T, K> & Partial<Pick<T, Extract<K, keyof T>>>;
+
+type WithOptionalQuery<T, Q> = Q extends Record<string, never>
+	? T | (T & { query: Q })
+		: T & { query: Q };
+type ParametersWithOptionalQueryKeys<T, K extends string> =
+	T extends { parameters: infer P }
+		? P extends { query: infer Q }
+			? WithOptionalQuery<Omit<P, 'query'>, OptionalKeys<Q, K>>
+			: P
+	: undefined;
 
 type Path = keyof paths & string;
-type Method<P extends Path> = Exclude<
-  keyof { [K in keyof paths[P] as paths[P][K] extends undefined | never ? never : K]: paths[P][K] }
-, 'parameters'>;
-type Responses<P extends Path, M extends Method<P>> = WithResponses<paths[P][M]>['responses'];
+type Method = 'get' | 'post' | 'put' | 'delete';
+type Responses<P extends Path, M extends Method> = WithResponses<paths[P][M]>['responses'];
 
 interface CachedValueNotStarted { _tag: 'not-started' };
 interface CachedValueLoading<T> { obs: Observable<T>; _tag: 'loading' };
@@ -41,9 +50,25 @@ const sortRecordRecursively = (record: Record<string, unknown>): Record<string, 
 
 const hashRecord = (record: any): string => JSON.stringify(sortRecordRecursively(record));
 
+const sanitizeQuery = <P extends Path, M extends Method>(params: Parameters<paths[P][M]>): Parameters<paths[P][M]> => {
+  const { query } = params as any;
+  if (!query) {
+    return params;
+  }
+  return {
+    ...params,
+    query: Object.keys(query).reduce((sanitizedQuery, key) => {
+      if (![undefined, null, ''].includes(query[key])) {
+        sanitizedQuery[key] = query[key];
+      }
+      return sanitizedQuery;
+    }, {} as Record<string, unknown>)
+  };
+};
+
 const splitAndResolvePath = <
   P extends Path,
-  M extends Method<P>,
+  M extends Method,
 >(path: P, params?: Parameters<paths[P][M]>): string[] => {
   // parse path into segments based on path parameters
   // eg. "/person/{personToken}/profile" -> ["/person", "/{personToken}", "/profile"]
@@ -64,6 +89,7 @@ const splitAndResolvePath = <
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
+/** For automatic personToken & lang population, you must set them with `setPersonToken()` and `setLang()` */
 @Injectable({
   providedIn: 'root'
 })
@@ -72,19 +98,71 @@ export class LajiApiClientBService {
   // first levels are for different path segments separated by path variables
   // the last level is for query params
   private cache: Map<string, any> = new Map();
+  private personToken?: string;
+  private lang?: string;
 
-  constructor(private http: HttpClient, @Inject(API_BASE_URL) private baseUrl: string) { }
+  constructor(
+    private http: HttpClient,
+    @Inject(API_BASE_URL) private baseUrl: string
+  ) { }
 
-  fetch<P extends Path, M extends Method<P>, R extends Responses<P, M>>(
+  setPersonToken(personToken?: string) {
+    this.personToken = personToken;
+  }
+
+  setLang(lang?: string) {
+    this.lang = lang;
+  }
+
+  /** `personToken` and `lang` are populated automatically into the query */
+  get<P extends Path, R extends Responses<P, 'get'>>(
+    path: P,
+    params: ParametersWithOptionalQueryKeys<paths[P]['get'], 'personToken' | 'lang'>,
+    cacheInvalidationMs?: number
+  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+    return this.fetch(path, 'get', params, undefined, cacheInvalidationMs);
+  }
+
+  /** `personToken` and `lang` are populated automatically into the query */
+  put<P extends Path, R extends Responses<P, 'put'>>(
+    path: P,
+    params: ParametersWithOptionalQueryKeys<paths[P]['put'], 'personToken' | 'lang'>,
+    body?: ExtractRequestBodyIfExists<paths[P]['put']>,
+    cacheInvalidationMs?: number
+  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+    return this.fetch(path, 'put', params, body, cacheInvalidationMs);
+  }
+
+  /** `personToken` and `lang` are populated automatically into the query */
+  post<P extends Path, R extends Responses<P, 'post'>>(
+    path: P,
+    params: ParametersWithOptionalQueryKeys<paths[P]['post'], 'personToken' | 'lang'>,
+    body?: ExtractRequestBodyIfExists<paths[P]['post']>,
+    cacheInvalidationMs?: number
+  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+    return this.fetch(path, 'post', params, body, cacheInvalidationMs);
+  }
+
+  /** `personToken` and `lang` are populated automatically into the query */
+  delete<P extends Path, R extends Responses<P, 'delete'>>(
+    path: P,
+    params: ParametersWithOptionalQueryKeys<paths[P]['delete'], 'personToken' | 'lang'>,
+    cacheInvalidationMs?: number
+  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+    return this.fetch(path, 'delete', params, undefined, cacheInvalidationMs);
+  }
+
+  private fetch<P extends Path, M extends Method, R extends Responses<P, M>>(
     path: P,
     method: M,
-    params: Parameters<paths[P][M]>,
+    params: ParametersWithOptionalQueryKeys<paths[P][M], 'personToken' | 'lang'>,
     requestBody?: ExtractRequestBodyIfExists<paths[P][M]>,
-    cacheInvalidationMs = 86400000 // 1day in ms
+    cacheInvalidationMs = 86400000 // One day in ms
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
-    const pathSegments = splitAndResolvePath(path, params);
+    const defaultFilledParams = sanitizeQuery(this.paramsWithDefaults(params as any));
+    const pathSegments = splitAndResolvePath(path, defaultFilledParams);
     const requestUrl = this.baseUrl + pathSegments.join('');
-    const requestOptions = { params: (<any>params).query, body: requestBody };
+    const requestOptions = { params: (<any>defaultFilledParams).query, body: requestBody, headers: { 'API-Version': '1' } };
 
     if (method !== 'get') {
       this._flush(pathSegments);
@@ -93,7 +171,7 @@ export class LajiApiClientBService {
 
     const cachedPath = this.getOrInitializeLastPathCacheLevel(pathSegments);
 
-    const paramsHash = hashRecord(params);
+    const paramsHash = hashRecord(defaultFilledParams);
     if (!cachedPath?.has(paramsHash)) {
       cachedPath?.set(paramsHash, { _tag: 'not-started' });
     }
@@ -127,14 +205,14 @@ export class LajiApiClientBService {
     return obs;
   }
 
-  flush<P extends Path, M extends Method<P>>(
+  flush<P extends Path, M extends Method>(
     path: P,
     params?: Parameters<paths[P][M]>
   ) {
     this._flush(splitAndResolvePath(path, params), params);
   }
 
-  private _flush<P extends Path, M extends Method<P>>(
+  private _flush<P extends Path, M extends Method>(
     pathSegments: string[],
     params?: Parameters<paths[P][M]>
   ) {
@@ -173,6 +251,19 @@ export class LajiApiClientBService {
       allLevels.push(currentLevel);
     }
     return allLevels;
+  }
+
+  private paramsWithDefaults<P extends Path, M extends Method>(
+    params: ParametersWithOptionalQueryKeys<Parameters<paths[P][M]>, 'personToken' | 'lang'>
+  ): Parameters<paths[P][M]> {
+    return {
+      ...(params || {}),
+      query: {
+        lang: this.lang,
+        personToken: this.personToken,
+        ...((params as any).query || {})
+      }
+    } as any;
   }
 }
 

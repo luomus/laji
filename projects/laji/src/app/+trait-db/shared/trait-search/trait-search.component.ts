@@ -88,7 +88,7 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
         this.cdr.markForCheck();
       }),
       switchMap(([[pageIdx, sorts], filters]) =>
-        this.api.fetch('/trait/search', 'get', {
+        this.api.get('/trait/search', {
           query: getSearchApiQuery(pageIdx, sorts, filters)
         }).pipe(
           map(res => ({res, sorts}))

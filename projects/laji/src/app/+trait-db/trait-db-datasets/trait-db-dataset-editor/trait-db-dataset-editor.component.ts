@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client-b/generated/api';
@@ -7,8 +7,6 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { Subscription } from 'rxjs';
 import { tap, filter, switchMap, map } from 'rxjs/operators';
 import { DialogService } from '../../../shared/service/dialog.service';
-import { UserService } from '../../../shared/service/user.service';
-
 export type Dataset = components['schemas']['Dataset'];
 type ValidationResponse = components['schemas']['ValidationResponse'];
 
@@ -62,15 +60,14 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private dialogService: DialogService,
-    private translate: TranslateService,
-    private userService: UserService
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
     this.route.paramMap.pipe(
       map(paramMap => paramMap.get('id')),
       filter(id => id !== null),
-      switchMap(id => this.api.fetch('/trait/datasets/{id}', 'get', { path: { id: id! } }))
+      switchMap(id => this.api.get('/trait/datasets/{id}', { path: { id: id! } }))
     ).subscribe(dataset => {
       Object.entries(dataset).forEach(([key, val]) => {
         this.datasetForm.get(key)?.setValue(val);
@@ -109,7 +106,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     this.deletionInProgress = true;
     const form = filterNullValues(this.datasetForm.value) as Dataset;
     this.datasetForm.disable();
-    this.api.fetch('/trait/datasets/validate-delete/{id}', 'post', { path: { id: form.id } }).pipe(
+    this.api.post('/trait/datasets/validate-delete/{id}', { path: { id: form.id } }).pipe(
       tap(res => {
         this.errors = res.pass ? undefined : res.errors;
         this.datasetForm.enable();
@@ -117,7 +114,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
       }),
       filter(res => !!res?.pass),
       tap(_ => { this.datasetForm.disable(); }),
-      switchMap(_ => this.api.fetch('/trait/datasets/{id}', 'delete', { path: { id: form.id } }))
+      switchMap(_ => this.api.delete('/trait/datasets/{id}', { path: { id: form.id } }))
     ).subscribe(_ => {
       this.router.navigate(['../../'], { relativeTo: this.route });
     }, () => {
@@ -139,7 +136,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     this.externalValidationInProgress = true;
     const form = filterNullValues(this.datasetForm.value) as Dataset;
     this.datasetForm.disable();
-    this.api.fetch('/trait/datasets/validate', 'post', { query: { personToken: this.userService.getToken() } }, form, 0).pipe(
+    this.api.post('/trait/datasets/validate', {}, form, 0).pipe(
       tap(res => {
         this.externalValidationInProgress = false;
         this.errors = res.pass ? undefined : res.errors;
@@ -151,7 +148,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
         this.uploadInProgress = true;
         this.datasetForm.disable();
       }),
-      switchMap(_ => this.api.fetch('/trait/datasets', 'post', { query: { personToken: this.userService.getToken() } }, form, 0))
+      switchMap(_ => this.api.post('/trait/datasets', {}, form, 0))
     ).subscribe(res => {
       this.uploadInProgress = false;
       this.api.flush('/trait/dataset-permissions');
@@ -164,7 +161,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     this.externalValidationInProgress = true;
     const form = filterNullValues(this.datasetForm.value) as Dataset;
     this.datasetForm.disable();
-    this.api.fetch('/trait/datasets/validate-update/{id}', 'post', { path: { id: form.id } }, form).pipe(
+    this.api.post('/trait/datasets/validate-update/{id}', { path: { id: form.id } }, form).pipe(
       tap(res => {
         this.externalValidationInProgress = false;
         this.errors = res.pass ? undefined : res.errors;
@@ -176,7 +173,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
         this.uploadInProgress = true;
         this.datasetForm.disable();
       }),
-      switchMap(_ => this.api.fetch('/trait/datasets/{id}', 'put', { path: { id: form.id } }, form))
+      switchMap(_ => this.api.put('/trait/datasets/{id}', { path: { id: form.id } }, form))
     ).subscribe(res => {
       this.uploadInProgress = false;
       this.cdr.markForCheck();

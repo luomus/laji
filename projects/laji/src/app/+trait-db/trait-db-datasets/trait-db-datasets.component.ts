@@ -17,7 +17,7 @@ export class TraitDbDatasetsComponent implements OnInit {
   constructor(private api: LajiApiClientBService) {}
 
   ngOnInit() {
-    this.datasets$ = this.api.fetch('/trait/datasets', 'get', {}).pipe(
+    this.datasets$ = this.api.get('/trait/datasets', {}).pipe(
       map(datasets => datasets.filter(dataset => dataset.published))
     );
   }

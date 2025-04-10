@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { combineLatest, Observable, of } from 'rxjs';
-import { map, filter, distinctUntilChanged, switchMap, startWith, catchError, tap } from 'rxjs/operators';
+import { map, filter, distinctUntilChanged, switchMap, startWith, catchError } from 'rxjs/operators';
 import { UserService } from '../../../shared/service/user.service';
 
 export type Dataset = components['schemas']['Dataset'];
@@ -30,13 +30,13 @@ export class TraitDbDatasetComponent implements OnInit {
       filter(id => !!id),
       distinctUntilChanged(),
       switchMap(id => combineLatest([
-        this.api.fetch('/trait/datasets/{id}', 'get', { path: { id: id! } }).pipe(
+        this.api.get('/trait/datasets/{id}', { path: { id: id! } }).pipe(
           startWith(undefined),
           catchError(() => of(null))
         ),
         this.userService.isLoggedIn$.pipe(
           switchMap(loggedIn => loggedIn
-            ? this.api.fetch('/trait/dataset-permissions/{datasetId}', 'get', { path: { datasetId: id! } }).pipe(
+            ? this.api.get('/trait/dataset-permissions/{datasetId}', { path: { datasetId: id! } }).pipe(
               startWith(undefined),
               catchError(() => of(null))
             )
