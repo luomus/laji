@@ -51,7 +51,7 @@ export const Global = { // eslint-disable-line @typescript-eslint/naming-convent
     'MHL.categoryBirdMonitoringSchemes': ['MHL.117'],
     'MHL.categoryCitizenScience': ['MHL.932']
   },
-  googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
+  googleApiKey: 'AIzaSyAnc14tc2VUnxQKheawSBmEW2uJ5qFzDgk',
   sources: {
     kotka: 'KE.3'
   },
@@ -219,11 +219,11 @@ export const Global = { // eslint-disable-line @typescript-eslint/naming-convent
       quality: 'MMAN.typeCheck',
       type: 'check'
     },
-    /*'MMAN.52': {
+    'MMAN.52': {
       value: 'MMAN.52',
       quality: 'MMAN.typePositiveQuality',
       type: 'admin'
-    }*/
+    }
   },
   limit: {
     simpleDownload: 10000

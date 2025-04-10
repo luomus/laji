@@ -4,6 +4,7 @@
   display: block;
   z-index: 1;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
 .header-image::before {
@@ -22,6 +23,23 @@
   z-index: 100;
   color: $neutral-1;
   padding: $sp-6 $sp-3;
+}
+
+.header-caption {
+  font-size: $fs-1;
+  position: absolute;
+  right: $sp-3;
+  bottom: $sp-2;
+  z-index: 100;
+  color: $neutral-5;
+  background: rgba(0, 0, 0, .4);
+  padding: $sp-1 $sp-2;
+  a {
+    color: $primary-3;
+    &:hover {
+      color: $primary-4;
+    }
+  }
 }
 
 .logo {

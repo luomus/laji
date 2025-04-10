@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { getLoginUrl, UserService } from '../../shared/service/user.service';
+import { UserService } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { environment } from '../../../environments/environment';
 import { take } from 'rxjs/operators';
-import { PlatformService } from '../../root/platform.service';
 
 @Component({
   selector: 'laji-logout',
@@ -12,7 +10,6 @@ import { PlatformService } from '../../root/platform.service';
 })
 export class UserLogoutComponent implements OnInit {
   constructor(
-    private platformService: PlatformService,
     private userService: UserService,
     private router: Router,
     private localizeRouterService: LocalizeRouterService
@@ -25,11 +22,7 @@ export class UserLogoutComponent implements OnInit {
     ).subscribe(login => {
       if (login) {
         this.userService.logout(() => {
-          if (environment.forceLogin) {
-            this.platformService.window.location.href = getLoginUrl();
-          } else {
-            this.router.navigate(this.localizeRouterService.translateRoute(['/']), {queryParams: {}});
-          }
+          this.router.navigate(this.localizeRouterService.translateRoute(['/']), {queryParams: {}});
         });
       }
     });

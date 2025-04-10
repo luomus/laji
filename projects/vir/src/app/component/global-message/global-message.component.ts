@@ -8,6 +8,7 @@ import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';
 import { isPlatformBrowser } from '@angular/common';
 import { Util } from 'projects/laji/src/app/shared/service/util.service';
+import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 @Component({
   selector: 'vir-global-message',
@@ -30,6 +31,7 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private translate: TranslateService,
+    private platformService: PlatformService,
     @Inject(PLATFORM_ID) private platformId: any) {}
 
   ngOnInit() {
@@ -85,16 +87,7 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
   private toggle() {
     this.isCurrentPageClosed() ? this.open() : this.close();
     if (isPlatformBrowser(this.platformId)) {
-      setTimeout(() => {
-        try {
-          window.dispatchEvent(new Event('resize'));
-        } catch (e) {
-          const evt = window.document.createEvent('UIEvents');
-          // @ts-ignore
-          evt.initUIEvent('resize', true, false, window, 0);
-          window.dispatchEvent(evt);
-        }
-      });
+      setTimeout(() => Util.dispatchResizeEvent(this.platformService));
     }
   }
 }

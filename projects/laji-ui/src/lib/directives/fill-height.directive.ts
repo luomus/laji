@@ -1,5 +1,7 @@
 import { Directive, ElementRef, Renderer2, OnDestroy, AfterViewInit, Input, Inject, PLATFORM_ID, OnChanges } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { Util } from 'projects/laji/src/app/shared/service/util.service';
+import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 export interface IFillHeightOptions {
   disabled?: boolean;
@@ -18,6 +20,7 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit, OnChanges 
 
   constructor(private el: ElementRef,
     private renderer: Renderer2,
+    private platformService: PlatformService,
     @Inject(PLATFORM_ID) private platformId: any
   ) {}
 
@@ -58,17 +61,7 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit, OnChanges 
       h = this.options.height;
     }
     this.renderer.setStyle(this.el.nativeElement, 'height', h.toString() + 'px');
-    try {
-      const event = new Event('resize');
-      (event as any)['ignore-fill-height'] = true;
-      window.dispatchEvent(event);
-    } catch (e) {
-      const evt = window.document.createEvent('UIEvents');
-      (evt as any)['ignore-fill-height'] = true;
-      // @ts-ignore
-      evt.initUIEvent('resize', true, false, window, 0);
-      window.dispatchEvent(evt);
-    }
+    Util.dispatchResizeEvent(this.platformService, 'ignore-fill-height');
   }
 
   ngOnDestroy() {

@@ -7,7 +7,10 @@ import { shareReplay, tap } from 'rxjs/operators';
 type WithResponses<T> = T & { responses: unknown };
 type Parameters<T> = 'parameters' extends keyof T ? T['parameters'] : undefined;
 type ExtractContentIfExists<R> = R extends { content: infer C } ? C[keyof C] : null;
-type ExtractRequestBodyIfExists<R> = R extends { requestBody: { content: infer C } } ? C[keyof C] : never;
+type ExtractRequestBodyIfExists<R> =
+  R extends { requestBody: { content: infer C } } | { requestBody?: { content: infer C } }
+    ? C[keyof C]
+    : never;
 type HttpSuccessCodes = 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226;
 type IntersectUnionTypes<A, B> = A extends B ? A : never;
 

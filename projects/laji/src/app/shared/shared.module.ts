@@ -17,7 +17,6 @@ import { ToFullUriPipe } from './pipe/to-full-uri';
 import { GalleryComponent } from './gallery/gallery/gallery.component';
 import { AuthoritiesDirective } from './authorities/authorities.directive';
 import { NgxWebstorageModule } from 'ngx-webstorage';
-import { AuthenticatedHttpInterceptor } from './service/authenticated-http.interceptor';
 import { ImageComponent } from './gallery/image/image.component';
 import { ValuesPipe } from './pipe/values.pipe';
 import { CollectionNamePipe } from './pipe/collection-name.pipe';
@@ -45,7 +44,6 @@ import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
 import { DatePickerComponent } from './datepicker/datepicker.component';
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { FactNotInPipe } from './pipe/fact-not-in.pipe';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CapitalizePipe } from './pipe/capitalize.pipe';
 import { CoordinatePipe } from './pipe/coordinate.pipe';
 import { FilterPipe } from './pipe/filter.pipe';
@@ -85,6 +83,7 @@ import { AlertModule } from 'projects/laji-ui/src/lib/alert/alert.module';
 import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
+import { ExternalRedirectComponent } from './external-redirect/external-redirect.component';
 
 @NgModule({
     declarations: [
@@ -98,7 +97,7 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
         HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,
         ObservationGroupSelectComponent, IucnGroupSelectComponent,
         SourcePipe, RemoveEmptyPipe, DatePickerComponent,
-        TaxonNameComponent, NotFoundComponent,
+        TaxonNameComponent, NotFoundComponent, ExternalRedirectComponent,
         ChecklistPipe,
         FactNotInPipe,
         CapitalizePipe,
@@ -165,6 +164,7 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
         FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe, IncludesPipe,
         UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule,
         NotFoundComponent,
+        ExternalRedirectComponent,
         QualityUrlPipe,
         InfoModule,
         CheckboxValuePipe,
@@ -190,12 +190,7 @@ export class SharedModule {
         ToQNamePipe,
         QualityUrlPipe,
         TranslatableIucnPipe,
-        TypeGuardPipe,
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: AuthenticatedHttpInterceptor,
-          multi: true
-        }
+        TypeGuardPipe
       ]
     };
   }
