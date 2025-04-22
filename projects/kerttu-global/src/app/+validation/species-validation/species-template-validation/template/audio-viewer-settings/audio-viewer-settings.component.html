@@ -27,5 +27,5 @@
 </div>
 <div [ngClass]="{'d-block': !displayInline}" class="mt-2">
   <lu-button [small]="true" (click)="setDefaultSettings()">{{ 'audioViewer.setDefaultSettings' | translate }}</lu-button>
-  <laji-info *ngIf="setDefaultSettingsInfoText" [placement]="'right'" [html]="setDefaultSettingsInfoText" [showOnHover]="true"></laji-info>
+  <laji-info [placement]="'right'" [html]="'audioViewer.setDefaultSettings.info' | translate" [showOnHover]="true"></laji-info>
 </div>

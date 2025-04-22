@@ -12,7 +12,6 @@ import { AudioIosWarningComponent } from './directive/audio-ios-warning.componen
 import { AudioService } from './service/audio.service';
 import { SpectrogramService } from './service/spectrogram.service';
 import { RequiresAudioSupportDirective } from './directive/requires-audio-support.directive';
-import { AudioViewerSettingsComponent } from './audio-viewer-settings/audio-viewer-settings.component';
 import { SpectrogramComponent } from './audio-viewer/audio-spectrogram/spectrogram/spectrogram.component';
 import { SpectrogramChartComponent } from './audio-viewer/audio-spectrogram/spectrogram-chart/spectrogram-chart.component';
 import { SmallAudioViewerComponent } from './small-audio-viewer/small-audio-viewer.component';
@@ -22,7 +21,7 @@ import { AudioViewerSimpleSettingsComponent } from './audio-viewer-simple-settin
 @NgModule({
   declarations: [AudioViewerComponent, AudioSpectrogramComponent,
     AudioNotSupportedErrorComponent, AudioIosWarningComponent,
-    RequiresAudioSupportDirective, AudioViewerSettingsComponent,
+    RequiresAudioSupportDirective,
     SpectrogramComponent, SpectrogramChartComponent, SmallAudioViewerComponent,
     AudioViewerSimpleSettingsComponent
   ],
@@ -39,7 +38,6 @@ import { AudioViewerSimpleSettingsComponent } from './audio-viewer-simple-settin
   exports: [
     AudioViewerComponent,
     RequiresAudioSupportDirective,
-    AudioViewerSettingsComponent,
     AudioViewerSimpleSettingsComponent,
     SmallAudioViewerComponent
   ]

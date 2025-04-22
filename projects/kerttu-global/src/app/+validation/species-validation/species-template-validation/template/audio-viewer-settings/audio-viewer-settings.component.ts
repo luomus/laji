@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'laji-audio-viewer-settings',
+  selector: 'bsg-audio-viewer-settings',
   templateUrl: './audio-viewer-settings.component.html',
   styleUrls: ['./audio-viewer-settings.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -14,7 +14,6 @@ export class AudioViewerSettingsComponent {
   @Input() defaultXRangePadding = 1;
 
   @Input() displayInline = false;
-  @Input() setDefaultSettingsInfoText?: string;
 
   @Output() zoomedChange = new EventEmitter<boolean>();
   @Output() xRangePaddingChange = new EventEmitter<number>();
