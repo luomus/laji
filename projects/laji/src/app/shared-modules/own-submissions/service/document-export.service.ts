@@ -352,15 +352,20 @@ export class DocumentExportService {
   }
 
   private getLabelToValue(key: string, obj: any, fieldData: any): Observable<any> {
-    let value: string;
+    let value = '';
 
     if (key === 'geometry') {
-      value = geoJSONToISO6709({
-        type: 'FeatureCollection',
-        features: [{
-          type: 'Feature',
-          geometry: obj,
-        }]} as FeatureCollection).replace(/\n$/, '');
+      try {
+        value = geoJSONToISO6709({
+          type: 'FeatureCollection',
+          features: [{
+            type: 'Feature',
+            geometry: obj,
+          }]
+        } as FeatureCollection).replace(/\n$/, '');
+      } catch (e: any) {
+        console.warn('Could not parse geometry: ' + JSON.stringify(obj));
+      }
     } else if (Array.isArray(obj)) {
       return ObservableForkJoin(obj.map((labelKey) => this.getDataLabel(labelKey, fieldData)))
         .pipe(map(array => array.join(', ')));

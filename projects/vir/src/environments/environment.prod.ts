@@ -33,7 +33,6 @@ export const environment = {
   selfPage: 'https://login.laji.fi/self',
   apiBase: '/api',
   production: true,
-  forceLogin: true,
   disableAnalytics: true,
   waterbirdPairForm: 'MHL.65',
   waterbirdJuvenileForm: 'MHL.66',

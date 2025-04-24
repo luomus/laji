@@ -30,7 +30,7 @@ export class VirOrganisationService {
       switchMap(() =>
       this.userService.isLoggedIn$.pipe(
         filter(loggedIn => loggedIn),
-        switchMap(() => this.httpClient.get<IVirUser[]>('/api/authorities', {params: {token: this.userService.getToken(), ...(params || {})}})),
+        switchMap(() => this.httpClient.get<IVirUser[]>('/api/authorities', {params: params || {}})),
         share()
     )),
       share()
@@ -52,7 +52,7 @@ export class VirOrganisationService {
   reloadUsers = () => this.updateUsers$.next();
 
   getUser$(id: string) {
-    return this.httpClient.get<IVirUser>(`/api/authorities/${id}`, {params: {token: this.userService.getToken()}});
+    return this.httpClient.get<IVirUser>(`/api/authorities/${id}`);
   }
 
   continueExpiration(users: IVirUser[]) {

@@ -1,31 +1,94 @@
-<footer *ngIf="footerService.footerVisible">
-  <div class="info-footer">
-    <div class="d-flex justify-center">
-      <div class="d-flex flex-wrap info-footer-content">
-        <div *ngFor="let item of tree$ | async; let i=index">
-          <h3>{{ item.title }}</h3>
-          <p class="intro" *ngIf="i === 0">{{ 'footer.intro1' | translate }}</p>
-          <ul *ngIf="item.children">
-            <li *ngFor="let child of item.children">
-              <a [routerLink]="'/about/' + child.id | localize">{{ child.title }}</a>
-            </li>
-            <li *ngIf="i === 0"><laji-feedback></laji-feedback></li>
-          </ul>
-        </div>
+<footer *ngIf="footerVisible$ | async">
+  <div class="info-footer d-flex flex-col items-center">
+    <div class="d-flex flex-wrap info-footer-content mb-4 flex-gap-3">
+      <div>
+        <h3>{{ 'footer2.section1.title' | translate }}</h3>
+        <p>{{ 'footer2.section1.desc' | translate }} <a [href]="'infoLinks.base' | translate" target="_blank">{{ 'footer2.section1.readmore' | translate }}</a></p>
+        <ul>
+          <li *ngIf="('infoLinks.contact' | translate) as url">
+            <a [href]="url" target="_blank">{{ 'footer2.section1.link.contact' | translate }}</a>
+          </li>
+          <li><laji-feedback></laji-feedback></li>
+          <li *ngIf="('infoLinks.privacyPolicy' | translate) as url">
+            <a [href]="url" target="_blank">{{ 'footer2.section1.link.privacyPolicy' | translate }}</a>
+          </li>
+          <li *ngIf="('infoLinks.accessibility' | translate) as url">
+            <a [href]="url" target="_blank">{{ 'footer2.section1.link.accessibilty' | translate }}</a>
+          </li>
+          <li *ngIf="('infoLinks.dataPolicy' | translate) as url">
+            <a [href]="url" target="_blank">{{ 'footer2.section1.link.dataPolicy' | translate }}</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h3>{{ 'footer2.section2.title' | translate }}</h3>
+        <ul>
+          <li *ngIf="('infoLinks.base' | translate) as url">
+            <a [href]="url" target="_blank">{{ 'footer2.section2.link.help' | translate }}</a>
+          </li>
+          <li *ngIf="('infoLinks.faq' | translate) as url">
+            <a [href]="url" target="_blank">{{ 'footer2.section2.link.faq' | translate }}</a>
+          </li>
+          <li>{{ 'footer2.section2.link.guides' | translate }}
+            <ul>
+              <li *ngIf="('infoLinks.guide.dataUsers' | translate) as url">
+                <a [href]="url" target="_blank">{{ 'footer2.section2.link.dataUsers' | translate }}</a>
+              </li>
+              <li *ngIf="('infoLinks.guide.researchers' | translate) as url">
+                <a [href]="url" target="_blank">{{ 'footer2.section2.link.researchers' | translate }}</a>
+              </li>
+              <li *ngIf="('infoLinks.guide.hobbyists' | translate) as url">
+                <a [href]="url" target="_blank">{{ 'footer2.section2.link.hobbyists' | translate }}</a>
+              </li>
+              <li *ngIf="('infoLinks.guide.dataHolders' | translate) as url">
+                <a [href]="url" target="_blank">{{ 'footer2.section2.link.dataHolders' | translate }}</a>
+              </li>
+              <li *ngIf="('infoLinks.guide.developers' | translate) as url">
+                <a [href]="url" target="_blank">{{ 'footer2.section2.link.developers' | translate }}</a>
+              </li>
+              <li *ngIf="('infoLinks.guide.media' | translate) as url">
+                <a [href]="url" target="_blank">{{ 'footer2.section2.link.media' | translate }}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h3>{{ 'footer2.section3.title' | translate }}</h3>
+        <ul>
+          <li *ngIf="('infoLinks.taxa' | translate) as url">
+            <a [href]="url" target="_blank">{{ 'footer2.section3.link.taxonomy' | translate }}</a>
+          </li>
+          <li *ngIf="('infoLinks.observations' | translate) as observationsUrl">
+            <a [href]="observationsUrl" target="_blank">{{ 'footer2.section3.link.observations' | translate }}</a>
+            <ng-container *ngIf="('infoLinks.gis' | translate) as gisServicesUrl"> &#38; <a [href]="gisServicesUrl" target="_blank">{{ 'footer2.section3.link.gis' | translate }}</a></ng-container>
+          </li>
+          <li *ngIf="('infoLinks.citizenScience' | translate) as url">
+            <a [href]="url" target="_blank">{{ 'footer2.section3.link.citizenScience' | translate }}</a>
+          </li>
+          <li>
+            <a [href]="'links.pinkka' | translate" target="_blank">{{ 'footer2.section3.link.pinkka' | translate }}</a>
+            <ng-container *ngIf="('infoLinks.identification' | translate) as url"> &#38; <a [href]="url" target="_blank">{{ 'footer2.section3.link.identification' | translate }}</a></ng-container>
+          </li>
+          <li><a [href]="'links.redList' | translate" target="_blank">{{ 'footer2.section3.link.redList' | translate }}</a></li>
+          <li><a [href]="'links.ias' | translate" target="_blank">{{ 'footer2.section3.link.invasive' | translate }}</a></li>
+          <li *ngIf="('infoLinks.guide.developers' | translate) as url">
+            <a [href]="url" target="_blank">{{ 'footer2.section3.link.api' | translate }}</a>
+          </li>
+        </ul>
       </div>
     </div>
-    <div *ngIf="onFrontPage" class="d-flex justify-end">
-      <div class="header-image-info">
-        {{ 'footer.image.attribution' | translate }}:
-        <a [href]="headerImage.attributionUrl">{{ headerImage.attribution }}</a>, <a [href]="headerImage.licenseUrl">{{ headerImage.license }}</a>
+    <div class="info-footer-bottom-section d-flex flex-row justify-between">
+      <div>
+        <a [href]="'infoLinks.restApi' | translate" target="_blank">REST API</a> - <a [href]="'infoLinks.rApi' | translate" target="_blank">R API</a> - <a [href]="'infoLinks.gis' | translate" target="_blank">GIS</a> - <a href="https://github.com/luomus/laji/" target="_blank">{{ 'footer2.github' | translate }}</a>
       </div>
+      <a class="d-block core-trust-seal" href="https://amt.coretrustseal.org/certificates" target="_blank"><img lajiLazyImage src="https://cdn.laji.fi/images/partners/CoreTrustSeal-logo-transparent.png" alt="Core Trust Seal"></a>
     </div>
   </div>
   <div class="partners-footer">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-offset-1 col-sm-11 partners front"
-             [ngClass]="{hidden: !onFrontPage}">
+        <div class="col-sm-offset-1 col-sm-11 partners front" [ngClass]="{hidden: !onFrontPage}">
           <span class="title">{{ 'footer.partners' | translate }}</span>
           <ul>
             <li>

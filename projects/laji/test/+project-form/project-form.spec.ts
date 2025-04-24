@@ -140,11 +140,11 @@ test.describe('Project form', () =>  {
       });
     });
 
-    test('and has simple option and has category, canceling document save redirects to save observations page and keeps lang if no history', async () => {
+    test('and has simple option and has category, canceling document save redirects and keeps lang if no history', async () => {
       await page.goto(getProjectFormUrl(FORM_WITH_SIMPLE_HAS_CATEGORY, undefined, 'en'));
       await page.locator('laji-form-footer .btn-danger').click(); // cancel
 
-      await expect(page.locator('.survey-box').first()).toBeVisible();
+      await expect(page).toHaveURL(/\/vihko\/home/);
       await expectLangToBe('en', page);
     });
 

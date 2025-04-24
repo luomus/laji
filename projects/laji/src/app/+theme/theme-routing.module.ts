@@ -5,7 +5,6 @@ import { HerpetologyComponent } from './herpetology/herpetology.component';
 import { IdentifyComponent } from './identify/identify.component';
 import { QualityComponent } from './quality/quality.component';
 import { ThemeComponent } from './theme.component';
-import { ChecklistComponent } from './checklist/checklist.component';
 import { GeneticResourceComponent } from './genetic-resource/genetic-resource.component';
 import { DatasetsComponent } from './datasets/datasets.component';
 import { PinkkaComponent } from './pinkka/pinkka.component';
@@ -94,8 +93,6 @@ const routes: Routes = [
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
   {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
   {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},
-  {path: 'ykj',  pathMatch: 'full', redirectTo: '/about/5310', data: {title: 'navigation.ykj'}},
-  {path: 'checklist',  pathMatch: 'full', component: ChecklistComponent, data: {title: 'navigation.checklist'}},
   {path: 'pinkka',  pathMatch: 'full', component: PinkkaComponent, data: {title: 'navigation.pinkka'}},
   {path: 'publications',  pathMatch: 'full', component: BibliographyComponent, data: {title: 'finbif-bib.title'}},
   {path: 'hyonteisopas',  pathMatch: 'full', component: InsectGuideComponent, data: {title: 'navigation.hyonteisopas'}},

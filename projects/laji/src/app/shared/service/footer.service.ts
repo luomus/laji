@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class FooterService {
   private _footerVisible = true;
-  public footerVisible$ = new Subject<boolean>();
+  public footerVisible$ = new BehaviorSubject<boolean>(this._footerVisible);
 
   set footerVisible(visible: boolean) {
     if (visible !== this._footerVisible) {

@@ -98,7 +98,7 @@ export const Global = {
     'JX.652': '/sieniatlas',
     'MHL.75': '/pistelaskenta',
   },
-  googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
+  googleApiKey: 'AIzaSyAnc14tc2VUnxQKheawSBmEW2uJ5qFzDgk',
   sources: {
     kotka: 'KE.3'
   },

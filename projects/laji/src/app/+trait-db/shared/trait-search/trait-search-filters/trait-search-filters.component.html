@@ -40,7 +40,7 @@
     </div>
   </details>
 
-  <laji-trait-search-additional-filters [initialValue]="form.get('additionalFilters')!.value" (filterChange)="onAdditionalFiltersChange($event)"></laji-trait-search-additional-filters>
+  <laji-trait-search-additional-filters [initialValue]="form.get('additionalFilters')!.value!" (filterChange)="onAdditionalFiltersChange($event)"></laji-trait-search-additional-filters>
 
   <div class="d-flex flex-gap-4">
     <button (click)="onSearch()" class="btn btn-primary">Search</button>

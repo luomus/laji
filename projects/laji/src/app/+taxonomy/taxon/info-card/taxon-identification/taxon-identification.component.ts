@@ -139,8 +139,15 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {
+      this.resetDescriptionFields();
       this.taxonChange$.next();
     }
+  }
+
+  resetDescriptionFields() {
+    this.data.descriptionSources = [];
+    this.data.speciesCardAuthors = [];
+    this.data.speciesCardAuthorsTitle = undefined;
   }
 
   ngOnDestroy() {
