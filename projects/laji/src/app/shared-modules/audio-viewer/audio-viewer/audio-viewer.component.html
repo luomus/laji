@@ -2,19 +2,19 @@
   <lu-alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "audioViewer.audioError" | translate }}</lu-alert>
   <div class="spectrogram-container">
     <laji-audio-spectrogram
-      [buffer]="buffer"
-      [view]="view"
-      [defaultView]="defaultView"
-      [focusArea]="focusArea"
-      [highlightFocusArea]="highlightFocusArea"
-      [onlyFocusAreaDrawable]="highlightFocusArea"
-      [focusAreaColor]="focusAreaColor"
+      [buffer]="buffer()"
+      [view]="audioViewerView.activeView()"
+      [defaultView]="audioViewerView.defaultView()"
+      [focusArea]="focusArea?.area"
+      [highlightFocusArea]="focusArea?.highlight"
+      [onlyFocusAreaDrawable]="focusArea?.highlight"
+      [focusAreaColor]="focusArea?.color"
       [showAxisLabels]="showAxisLabels"
       [axisFontSize]="axisFontSize"
       [rectangles]="rectangles"
-      [currentTime]="audioPlayer.currentTime"
+      [currentTime]="audioPlayer.currentTime()"
       [config]="spectrogramConfig"
-      [mode]="mode"
+      [mode]="audioViewerView.mode()"
       [width]="spectrogramWidth"
       [height]="spectrogramHeight"
       [margin]="spectrogramMargin"
@@ -29,37 +29,17 @@
       (drawEnd)="onSpectrogramDrawEnd($event)"
     ></laji-audio-spectrogram>
   </div>
-
-  <div class="audio-controls" *ngIf="showControls">
-    <lu-button (click)="audioPlayer.toggle()" [disabled]="loading">
-      <span
-        class="fa"
-        [ngClass]="{'fa-play': !audioPlayer.isPlaying, 'fa-pause': audioPlayer.isPlaying}"
-      >
-      </span>
-    </lu-button>
-    <div class="btn-with-info" *ngIf="showLoopControl">
-      <lu-button [role]="audioPlayer.loop ? 'primary' : 'secondary'" (click)="audioPlayer.loop = !audioPlayer.loop" [disabled]="loading">
-        <span class="fa fa-refresh"></span>
-      </lu-button>
-      <laji-info [placement]="'right'" [html]="'audioViewer.loop.info' | translate" [showOnHover]="true"></laji-info>
-    </div>
-    <ng-container *ngIf="customControlsTpl">
-      <ng-template [ngTemplateOutlet]="customControlsTpl"></ng-template>
-    </ng-container>
-    <ng-container *ngIf="showZoomControl">
-      <div class="btn-with-info">
-        <lu-button [role]="mode === 'zoom' ? 'primary' : 'secondary'" (click)="toggleZoomMode()">
-          {{ 'audioViewer.changeView' | translate }}
-        </lu-button>
-        <laji-info [placement]="'right'" [html]="'audioViewer.changeView.info' | translate" [showOnHover]="true"></laji-info>
-      </div>
-      <lu-button [role]="'secondary'" (click)="clearZoomArea()" *ngIf="view !== defaultView">
-        {{ 'audioViewer.defaultView' | translate }}
-      </lu-button>
-    </ng-container>
-    <div class="pull-right audio-info" *ngIf="audio && audioInfoTpl">
-      <ng-template [ngTemplateOutlet]="audioInfoTpl" [ngTemplateOutletContext]="{audio: audio}"></ng-template>
-    </div>
-  </div>
 </laji-spinner>
+<div class="audio-controls">
+  <laji-audio-viewer-controls
+    *ngIf="showControls"
+    [audioPlayer]="audioPlayer"
+    [audioViewerView]="audioViewerView"
+    [loading]="loading"
+    [controls]="controls"
+    [customControlsTpl]="customControlsTpl"
+  ></laji-audio-viewer-controls>
+  <div class="pull-right audio-info" *ngIf="audio && audioInfoTpl">
+    <ng-template [ngTemplateOutlet]="audioInfoTpl" [ngTemplateOutletContext]="{audio: audio}"></ng-template>
+  </div>
+</div>

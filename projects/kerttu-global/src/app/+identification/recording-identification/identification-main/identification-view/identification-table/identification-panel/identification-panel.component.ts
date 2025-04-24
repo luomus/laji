@@ -15,7 +15,7 @@ import {
   TaxonTypeEnum
 } from '../../../../../../kerttu-global-shared/models';
 import { KerttuGlobalUtil } from '../../../../../../kerttu-global-shared/service/kerttu-global-util.service';
-import { ISpectrogramConfig } from '../../../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
+import { SpectrogramConfig } from '../../../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 interface BoxClickEvent {
   idx: number;
@@ -47,7 +47,7 @@ export class IdentificationPanelComponent {
 
   @Input() birdRectangleColor = 'white';
   @Input() overlappingBirdRectangleColor = 'orange';
-  @Input({ required: true }) spectrogramConfig!: ISpectrogramConfig;
+  @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
 
   speciesAnnotationEnum = SpeciesAnnotationEnum;
   taxonTypeEnum = TaxonTypeEnum;

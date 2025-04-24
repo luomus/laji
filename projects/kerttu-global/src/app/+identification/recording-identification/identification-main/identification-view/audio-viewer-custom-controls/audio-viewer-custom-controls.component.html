@@ -1,15 +1,3 @@
-<div *ngIf="enableSlowDownAudioSetting">
-  <label>{{ 'audioViewer.slowDown' | translate }}</label>
-  <bSwitch
-    [switch-on-text]="'on' | translate"
-    [switch-off-text]="'off' | translate"
-    [switch-on-color]="'primary'"
-    [switch-size]="'small'"
-    [ngModel]="slowDownAudio"
-    (ngModelChange)="slowDownAudioChange.emit($event)"
-    [switch-base-class]="'bootstrap-switch'">
-  </bSwitch>
-</div>
 <div *ngIf="enableShowWholeTimeRangeSetting">
   <label>{{ showWholeTimeRangeLabel }}</label>
   <bSwitch

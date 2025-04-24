@@ -1,10 +1,10 @@
 import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, Input, SimpleChanges, OnChanges, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { Subscription, Observable, of } from 'rxjs';
-import { delay, map, tap } from 'rxjs/operators';
-import { IAudioViewerArea, ISpectrogramConfig } from '../../../models';
-import { AudioViewerUtils } from '../../../service/audio-viewer-utils';
+import { map, tap } from 'rxjs/operators';
+import { AudioViewerArea, SpectrogramConfig } from '../../../models';
 import { AudioService } from '../../../service/audio.service';
 import { SpectrogramService } from '../../../service/spectrogram.service';
+import { getMaxFreq } from '../../../service/audio-viewer-utils';
 
 @Component({
   selector: 'laji-spectrogram',
@@ -18,9 +18,9 @@ export class SpectrogramComponent implements OnChanges {
   @Input() buffer?: AudioBuffer;
   @Input() startTime?: number;
   @Input() endTime?: number;
-  @Input() config?: ISpectrogramConfig;
+  @Input() config?: SpectrogramConfig;
 
-  @Input() view?: IAudioViewerArea;
+  @Input() view?: AudioViewerArea;
 
   @Input() width = 0;
   @Input() height = 0;
@@ -70,7 +70,7 @@ export class SpectrogramComponent implements OnChanges {
     }
   }
 
-  private spectrogramNeedsToBeRecreatedOnConfigChange(currConfig?: ISpectrogramConfig, prevConfig?: ISpectrogramConfig): boolean {
+  private spectrogramNeedsToBeRecreatedOnConfigChange(currConfig?: SpectrogramConfig, prevConfig?: SpectrogramConfig): boolean {
     if (!currConfig || !prevConfig) {
       return true;
     }
@@ -79,7 +79,7 @@ export class SpectrogramComponent implements OnChanges {
     }
 
     return Object.keys(currConfig).some(key => {
-      const _key = key as keyof ISpectrogramConfig;
+      const _key = key as keyof SpectrogramConfig;
       return _key !== 'sampleRate' && currConfig[_key] !== prevConfig[_key];
     });
   }
@@ -111,7 +111,7 @@ export class SpectrogramComponent implements OnChanges {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const maxTime = this.endTime! - this.startTime!;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const maxFreq = AudioViewerUtils.getMaxFreq(this.buffer!.sampleRate);
+    const maxFreq = getMaxFreq(this.buffer!.sampleRate);
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const startTime = this.view?.xRange?.[0] ? this.view.xRange[0] - this.startTime! : 0;

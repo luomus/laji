@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
-import { AudioViewerMode, IAudioViewerArea, ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { AudioViewerMode, AudioViewerArea, SpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { CommentType, IGlobalAudio, IGlobalComment, IGlobalTemplate } from '../../../../kerttu-global-shared/models';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
@@ -16,7 +16,7 @@ export class TemplateComponent {
   @Input({ required: true }) isNewTemplate!: boolean;
   @Input({ required: true }) audio!: IGlobalAudio;
   @Input() audioFocusTime?: number;
-  @Input({ required: true }) spectrogramConfig!: ISpectrogramConfig;
+  @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
   @Input() historyView?: boolean;
 
   @Output() confirm = new EventEmitter<IGlobalTemplate>();
@@ -50,7 +50,7 @@ export class TemplateComponent {
     this.audioViewerMode = this.audioViewerMode === 'draw' ? 'default' : 'draw';
   }
 
-  onDrawEnd(area: IAudioViewerArea) {
+  onDrawEnd(area: AudioViewerArea) {
     this.audioViewerMode = 'default';
     this.framedTemplate = {
       audioId: this.audio.id,

@@ -9,9 +9,9 @@ import { drag } from 'd3-drag';
 import { brush } from 'd3-brush';
 import {
   AudioViewerMode,
-  IAudioViewerArea,
-  IAudioViewerRectangle,
-  IAudioViewerRectangleGroup,
+  AudioViewerArea,
+  AudioViewerRectangle,
+  AudioViewerRectangleGroup,
   isRectangleGroup
 } from '../../../models';
 
@@ -54,15 +54,15 @@ interface LinearNumberScale extends ScaleLinear<number, number> {
 export class SpectrogramChartComponent implements OnChanges {
   @ViewChild('chart', {static: true}) chartRef!: ElementRef<SVGElement>;
 
-  @Input() view?: IAudioViewerArea;
-  @Input() focusArea?: IAudioViewerArea;
-  @Input() highlightFocusArea = false;
-  @Input() onlyFocusAreaClickable = false;
-  @Input() onlyFocusAreaDrawable = false;
+  @Input() view?: AudioViewerArea;
+  @Input() focusArea?: AudioViewerArea;
+  @Input() highlightFocusArea? = false;
+  @Input() onlyFocusAreaClickable? = false;
+  @Input() onlyFocusAreaDrawable? = false;
   @Input() focusAreaColor?: string;
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
-  @Input() rectangles?: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[];
+  @Input() rectangles?: (AudioViewerRectangle|AudioViewerRectangleGroup)[];
 
   @Input() currentTime? = 0;
 
@@ -76,8 +76,8 @@ export class SpectrogramChartComponent implements OnChanges {
   @Output() dragEnd = new EventEmitter<number>();
   @Output() spectrogramClick = new EventEmitter<number>();
   @Output() spectrogramDblclick = new EventEmitter<number>();
-  @Output() zoomEnd = new EventEmitter<IAudioViewerArea>();
-  @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
+  @Output() zoomEnd = new EventEmitter<AudioViewerArea>();
+  @Output() drawEnd = new EventEmitter<AudioViewerArea>();
 
   private xScale?: LinearNumberScale;
   private yScale?: LinearNumberScale;
@@ -395,11 +395,11 @@ export class SpectrogramChartComponent implements OnChanges {
     return { x, width, y, height };
   }
 
-  private getRectangleDrawData(rectangles: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[]): RectanglesWithLinesDrawData {
+  private getRectangleDrawData(rectangles: (AudioViewerRectangle|AudioViewerRectangleGroup)[]): RectanglesWithLinesDrawData {
     const rectangleDrawData: RectangleDrawData[] = [];
     const lineDrawData: LineDrawData[] = [];
 
-    const addRectangleDrawData = (rect: IAudioViewerRectangle): RectangleDrawData => {
+    const addRectangleDrawData = (rect: AudioViewerRectangle): RectangleDrawData => {
       const dim = this.getRectangleDimensions(rect.area.xRange!, rect.area.yRange!);
       const duplicates = rectangleDrawData.filter(value => this.rectanglesAreSame(value.dimensions, dim));
 
@@ -471,7 +471,7 @@ export class SpectrogramChartComponent implements OnChanges {
     );
   }
 
-  private areaIsInsideAnotherArea(area1: IAudioViewerArea, area2: IAudioViewerArea): boolean {
+  private areaIsInsideAnotherArea(area1: AudioViewerArea, area2: AudioViewerArea): boolean {
     if (!(area1.xRange && area2.xRange && area2.xRange[0] <= area1.xRange[0] && area2.xRange[1] >= area1.xRange[1])) {
       return false;
     }

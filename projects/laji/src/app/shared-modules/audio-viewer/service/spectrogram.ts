@@ -1,10 +1,10 @@
 import { FFT } from './assets/FFT';
 import { gaussBlur_4 } from './assets/gaussian-blur';
-import { ISpectrogramConfig } from '../models';
-import { AudioViewerUtils } from './audio-viewer-utils';
+import { SpectrogramConfig } from '../models';
 import { defaultSpectrogramConfig } from '../variables';
+import { getSpectrogramSegmentLength } from './audio-viewer-utils';
 
-interface CompleteSpectrogramConfig extends ISpectrogramConfig {
+interface CompleteSpectrogramConfig extends SpectrogramConfig {
   nbrOfRowsRemovedFromStart: number;
   maxNbrOfColsForNoiseEstimation: number;
   noiseReductionParam: number;
@@ -12,9 +12,9 @@ interface CompleteSpectrogramConfig extends ISpectrogramConfig {
   minFrequency: number;
 }
 
-const defaultConfig: ISpectrogramConfig = defaultSpectrogramConfig;
+const defaultConfig: SpectrogramConfig = defaultSpectrogramConfig;
 
-export function getSpectrogramImageData(buffer: AudioBuffer, colormap: number[][], config?: ISpectrogramConfig): ImageData {
+export function getSpectrogramImageData(buffer: AudioBuffer, colormap: number[][], config?: SpectrogramConfig): ImageData {
   config = config ? {...defaultConfig, ...config} : defaultConfig;
 
   const {spectrogram, width, height} = computeSpectrogram(buffer, config as CompleteSpectrogramConfig);
@@ -58,7 +58,7 @@ function computeSpectrogram(buffer: AudioBuffer, config: CompleteSpectrogramConf
   return {spectrogram: blurredData, width, height};
 }
 
-function getData(buffer: AudioBuffer, config: ISpectrogramConfig): {data: Float32Array[]; sumByColumn: number[]} {
+function getData(buffer: AudioBuffer, config: SpectrogramConfig): {data: Float32Array[]; sumByColumn: number[]} {
   const {nperseg, noverlap} = getSegmentSizeAndOverlap(config, buffer.sampleRate);
 
   const chanData = buffer.getChannelData(0);
@@ -179,8 +179,8 @@ function convertRange(input: number, inputRange: number[], outputRange: number[]
   return percent * (outputRangeMax - outputRangeMin) + outputRangeMin;
 }
 
-function getSegmentSizeAndOverlap(config: ISpectrogramConfig, sampleRate: number): {nperseg: number; noverlap: number} {
-  const nperseg = AudioViewerUtils.getSpectrogramSegmentLength(config.targetWindowLengthInSeconds, sampleRate);
+function getSegmentSizeAndOverlap(config: SpectrogramConfig, sampleRate: number): {nperseg: number; noverlap: number} {
+  const nperseg = getSpectrogramSegmentLength(config.targetWindowLengthInSeconds, sampleRate);
   const noverlap = Math.round(config.targetWindowOverlapPercentage * nperseg);
   return {nperseg, noverlap};
 }

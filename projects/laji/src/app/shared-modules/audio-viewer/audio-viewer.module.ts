@@ -5,7 +5,6 @@ import { LangModule } from '../lang/lang.module';
 import { LajiMapModule } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/public-api';
 import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
-import { AudioViewerComponent } from './audio-viewer/audio-viewer.component';
 import { AudioSpectrogramComponent } from './audio-viewer/audio-spectrogram/audio-spectrogram.component';
 import { AudioNotSupportedErrorComponent } from './directive/audio-not-supported-error.component';
 import { AudioIosWarningComponent } from './directive/audio-ios-warning.component';
@@ -16,14 +15,16 @@ import { SpectrogramComponent } from './audio-viewer/audio-spectrogram/spectrogr
 import { SpectrogramChartComponent } from './audio-viewer/audio-spectrogram/spectrogram-chart/spectrogram-chart.component';
 import { SmallAudioViewerComponent } from './small-audio-viewer/small-audio-viewer.component';
 import { UtilitiesDumbDirectivesModule } from '../utilities/directive/dumb-directives/utilities-dumb-directives.module';
-import { AudioViewerSimpleSettingsComponent } from './audio-viewer-simple-settings/audio-viewer-simple-settings.component';
+import { AudioViewerComponent } from './audio-viewer/audio-viewer.component';
+import { AudioViewerControlsComponent } from './audio-viewer/audio-viewer-controls/audio-viewer-controls.component';
 
 @NgModule({
-  declarations: [AudioViewerComponent, AudioSpectrogramComponent,
+  declarations: [AudioSpectrogramComponent,
     AudioNotSupportedErrorComponent, AudioIosWarningComponent,
     RequiresAudioSupportDirective,
     SpectrogramComponent, SpectrogramChartComponent, SmallAudioViewerComponent,
-    AudioViewerSimpleSettingsComponent
+    AudioViewerComponent,
+    AudioViewerControlsComponent
   ],
   providers: [AudioService, SpectrogramService],
   imports: [
@@ -37,9 +38,8 @@ import { AudioViewerSimpleSettingsComponent } from './audio-viewer-simple-settin
   ],
   exports: [
     AudioViewerComponent,
-    RequiresAudioSupportDirective,
-    AudioViewerSimpleSettingsComponent,
-    SmallAudioViewerComponent
+    SmallAudioViewerComponent,
+    RequiresAudioSupportDirective
   ]
 })
 export class AudioViewerModule { }

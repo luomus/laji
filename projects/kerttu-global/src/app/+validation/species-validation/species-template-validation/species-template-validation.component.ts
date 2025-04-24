@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { SpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
 import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGlobalSpecies } from '../../../kerttu-global-shared/models';
 
@@ -16,7 +16,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   @Input() templates?: (IGlobalTemplate|null)[];
   @Input() saving = false;
   @Input() historyView? = false;
-  @Input({ required: true }) spectrogramConfig!: ISpectrogramConfig;
+  @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
 
   hasAllTemplatesInitially = false;
   showCandidates = false;

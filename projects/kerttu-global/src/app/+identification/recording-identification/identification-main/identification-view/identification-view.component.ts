@@ -27,9 +27,9 @@ import {
 } from '../../../../kerttu-global-shared/models';
 import {
   AudioViewerMode,
-  IAudioViewerArea,
-  IAudioViewerRectangle, IAudioViewerRectangleGroup,
-  ISpectrogramConfig
+  AudioViewerArea,
+  AudioViewerRectangle, AudioViewerRectangleGroup,
+  SpectrogramConfig
 } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 import { map } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../../../../kerttu-global-shared/service/kerttu-global-api';
@@ -45,8 +45,10 @@ import {
   lowAudioSampleRate
 } from '../../../../kerttu-global-shared/variables';
 import { DOCUMENT } from '@angular/common';
-import { AudioViewerComponent } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer/audio-viewer.component';
 import { Util } from '../../../../../../../laji/src/app/shared/service/util.service';
+import {
+  AudioViewerComponent
+} from '../../../../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer/audio-viewer.component';
 
 
 @Component({
@@ -68,11 +70,10 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   loadingSpecies = false;
 
   sampleRate!: number;
-  spectrogramConfig!: ISpectrogramConfig;
+  spectrogramConfig!: SpectrogramConfig;
   audioViewerMode: AudioViewerMode = 'default';
-  audioViewerRectangles: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[] = [];
+  audioViewerRectangles: (AudioViewerRectangle|AudioViewerRectangleGroup)[] = [];
 
-  slowDownAudio = false;
   showWholeFrequencyRange = false;
   showWholeTimeRange = true;
 
@@ -164,7 +165,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     this.audioViewerMode = this.drawNonBirdActive ? 'draw' : 'default';
   }
 
-  drawEnd(area: IAudioViewerArea) {
+  drawEnd(area: AudioViewerArea) {
     if (this.drawBirdIndex >= 0) {
       const selectedSpecies = Util.clone(this.selectedSpecies);
       const boxes = selectedSpecies[this.drawBirdIndex].annotation.boxes || [];
@@ -317,7 +318,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
         }
       });
       return rectangles;
-    }, [] as (IAudioViewerRectangle|IAudioViewerRectangleGroup)[]);
+    }, [] as (AudioViewerRectangle|AudioViewerRectangleGroup)[]);
 
     if (this.annotation.nonBirdArea) {
       this.audioViewerRectangles.push({
@@ -340,11 +341,13 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     const height = mousemove.clientY - topOffset;
     this.topContentHeight = Math.max(this.topContentMinHeight, height);
     this.audioViewer!.resize();
+    this.cdr.markForCheck();
   }
 
   private onDragEnd() {
     this.destroyDragListeners();
     this.audioViewer!.resize();
+    this.cdr.markForCheck();
   }
 
   private destroyDragListeners() {

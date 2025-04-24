@@ -1,7 +1,7 @@
 import {
-  IAudio,
-  IAudioViewerArea,
-  IAudioViewerRectangle, IAudioViewerRectangleGroup
+  Audio,
+  AudioViewerArea,
+  AudioViewerRectangle, AudioViewerRectangleGroup
 } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 import { Point } from 'geojson';
@@ -60,13 +60,13 @@ export interface IGlobalTemplateVersion {
 
 export interface IGlobalRecording {
   audio: IGlobalAudio;
-  candidates: IAudioViewerArea[];
+  candidates: AudioViewerArea[];
 }
 
 export interface IGlobalTemplate {
   id?: number;
   audioId: number;
-  area: IAudioViewerArea;
+  area: AudioViewerArea;
   comment?: IGlobalComment;
   validatedBy?: string[];
 }
@@ -79,7 +79,7 @@ export interface IGlobalComment {
   comment: string;
 }
 
-export interface IGlobalAudio extends IAudio {
+export interface IGlobalAudio extends Audio {
   id: number;
   species: IGlobalSpecies;
   recordist?: string;
@@ -108,7 +108,7 @@ export interface IUserStat {
   speciesValidated: number;
 }
 
-export interface IGlobalRecording extends IAudio {
+export interface IGlobalRecording extends Audio {
   id: number;
   dateTime: string;
   xRange: number[];
@@ -126,7 +126,7 @@ export interface IGlobalRecordingAnnotation {
   containsBirdsNotOnList?: boolean;
   birdsNotOnList?: string;
   hasBoxesForAllBirdSounds?: boolean;
-  nonBirdArea?: IAudioViewerArea;
+  nonBirdArea?: AudioViewerArea;
 
   speciesAnnotations?: IGlobalSpeciesAnnotation[];
 }
@@ -139,7 +139,7 @@ export interface IGlobalSpeciesAnnotation {
 }
 
 export interface IGlobalSpeciesAnnotationBox {
-  area: IAudioViewerArea;
+  area: AudioViewerArea;
   overlapsWithOtherSpecies?: boolean;
 }
 

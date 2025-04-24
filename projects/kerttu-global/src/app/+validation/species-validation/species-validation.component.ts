@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
 import { AudioService } from '../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
-import { ISpectrogramConfig } from '../../../../../laji/src/app/shared-modules/audio-viewer/models';
+import { SpectrogramConfig } from '../../../../../laji/src/app/shared-modules/audio-viewer/models';
 import { defaultSpectrogramConfig } from '../../../../../laji/src/app/shared-modules/audio-viewer/variables';
 import { defaultAudioSampleRate } from '../../kerttu-global-shared/variables';
 
@@ -38,7 +38,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   hasLock?: boolean;
 
   audioSampleRate = defaultAudioSampleRate;
-  spectrogramConfig: ISpectrogramConfig = {
+  spectrogramConfig: SpectrogramConfig = {
     ...defaultSpectrogramConfig,
     sampleRate: this.audioSampleRate
   };

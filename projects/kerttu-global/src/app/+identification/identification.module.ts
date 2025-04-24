@@ -35,6 +35,9 @@ import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.mo
 import { SiteSelectionComponent } from './recording-identification/site-selection/site-selection.component';
 import { IdentificationMainComponent } from './recording-identification/identification-main/identification-main.component';
 import { IdentificationNavComponent } from './recording-identification/identification-main/identification-nav/identification-nav.component';
+import {
+  AudioViewerCustomControlsComponent
+} from './recording-identification/identification-main/identification-view/audio-viewer-custom-controls/audio-viewer-custom-controls.component';
 
 @NgModule({
   imports: [
@@ -73,7 +76,8 @@ import { IdentificationNavComponent } from './recording-identification/identific
     IdentificationHistoryEditModalComponent,
     SiteSelectionComponent,
     IdentificationMainComponent,
-    IdentificationNavComponent
+    IdentificationNavComponent,
+    AudioViewerCustomControlsComponent
   ]
 })
 export class IdentificationModule { }

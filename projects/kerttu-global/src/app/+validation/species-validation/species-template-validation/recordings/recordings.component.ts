@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
-import { ISpectrogramConfig, IAudioViewerRectangle, IAudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { SpectrogramConfig, AudioViewerRectangle, AudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { IGlobalAudio, IGlobalTemplate, IGlobalRecording } from '../../../../kerttu-global-shared/models';
 
 @Component({
@@ -11,12 +11,12 @@ import { IGlobalAudio, IGlobalTemplate, IGlobalRecording } from '../../../../ker
 export class RecordingsComponent implements OnChanges {
   @Input() recordings?: IGlobalRecording[] = [];
   @Input() templates?: (IGlobalTemplate|null)[] = [];
-  @Input({ required: true }) spectrogramConfig!: ISpectrogramConfig;
+  @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
 
   @Output() audioClick = new EventEmitter<{audioId: number; time: number}>();
   @Output() candidateClick = new EventEmitter<IGlobalTemplate>();
 
-  rectangles: IAudioViewerRectangle[][] = [];
+  rectangles: AudioViewerRectangle[][] = [];
 
   audioLoadingLimit = 0;
   private maxLoadingAtTheSameTime = 5;
@@ -34,7 +34,7 @@ export class RecordingsComponent implements OnChanges {
     this.audioClick.emit({audioId: audio.id, time});
   }
 
-  onCandidateClick(audio: IGlobalAudio, area: IAudioViewerArea) {
+  onCandidateClick(audio: IGlobalAudio, area: AudioViewerArea) {
     this.candidateClick.emit({audioId: audio.id, area});
   }
 
@@ -50,7 +50,7 @@ export class RecordingsComponent implements OnChanges {
           area: candidate,
           color: '#26bed9',
           label: 'C' + (i + 1)
-        })) as IAudioViewerRectangle[];
+        })) as AudioViewerRectangle[];
 
       const templates = (this.templates || []).reduce((result, template, i) => {
         if (template?.audioId === recording.audio.id) {
@@ -61,7 +61,7 @@ export class RecordingsComponent implements OnChanges {
           });
         }
         return result;
-      }, [] as IAudioViewerRectangle[]);
+      }, [] as AudioViewerRectangle[]);
 
       return candidates.concat(templates);
     });

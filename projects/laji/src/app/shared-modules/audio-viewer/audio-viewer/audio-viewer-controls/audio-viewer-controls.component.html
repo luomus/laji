@@ -1,0 +1,39 @@
+<lu-button (click)="audioPlayer.toggle()" [disabled]="loading">
+  <span
+    class="fa"
+    [ngClass]="{'fa-play': !audioPlayer.isPlaying(), 'fa-pause': audioPlayer.isPlaying()}"
+  >
+  </span>
+</lu-button>
+<div class="btn-with-info" *ngIf="controls?.loopControl">
+  <lu-button [role]="audioPlayer.loop() ? 'primary' : 'secondary'" (click)="setLoop(!audioPlayer.loop())" [disabled]="loading">
+    <span class="fa fa-refresh"></span>
+  </lu-button>
+  <laji-info [placement]="'right'" [html]="'audioViewer.loop.info' | translate" [showOnHover]="true"></laji-info>
+</div>
+<div class="switch-control" *ngIf="controls?.slowDownControl">
+  <label>{{ 'audioViewer.slowDown' | translate }}</label>
+  <bSwitch
+    [switch-on-text]="'on' | translate"
+    [switch-off-text]="'off' | translate"
+    [switch-on-color]="'primary'"
+    [switch-size]="'small'"
+    [ngModel]="audioPlayer.playBackRate() !== 1"
+    (ngModelChange)="slowDownAudio($event)"
+    [switch-base-class]="'bootstrap-switch'">
+  </bSwitch>
+</div>
+<ng-container *ngIf="customControlsTpl">
+  <ng-template [ngTemplateOutlet]="customControlsTpl"></ng-template>
+</ng-container>
+<ng-container *ngIf="controls?.zoomControl">
+  <div class="btn-with-info">
+    <lu-button [role]="audioViewerView.mode() === 'zoom' ? 'primary' : 'secondary'" (click)="toggleZoom()">
+      {{ 'audioViewer.changeView' | translate }}
+    </lu-button>
+    <laji-info [placement]="'right'" [html]="'audioViewer.changeView.info' | translate" [showOnHover]="true"></laji-info>
+  </div>
+  <lu-button [role]="'secondary'" (click)="clearZoomArea()" *ngIf="audioViewerView.activeView() !== audioViewerView.defaultView()">
+    {{ 'audioViewer.defaultView' | translate }}
+  </lu-button>
+</ng-container>

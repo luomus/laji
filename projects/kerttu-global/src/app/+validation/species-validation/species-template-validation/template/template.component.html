@@ -12,12 +12,14 @@
     [audio]="audio"
     [spectrogramConfig]="spectrogramConfig"
     [mode]="audioViewerMode"
-    [focusArea]="template ? template.area : { 'xRange': [audioFocusTime!, audioFocusTime!] }"
+    [focusArea]="{
+      area: template ? template.area : { 'xRange': [audioFocusTime!, audioFocusTime!] },
+      zoomTime: true,
+      timePaddingOnZoom: template ? timePadding : 60,
+      zoomFrequency: template ? zoomFrequency : false
+    }"
     [spectrogramHeight]="150"
-    [showZoomControl]="true"
-    [zoomFrequency]="template ? zoomFrequency : false"
-    [zoomTime]="true"
-    [timePaddingOnZoom]="template ? timePadding : 60"
+    [controls]="{ zoomControl: true }"
     [audioInfoTpl]="audioInfoTpl"
     (drawEnd)="onDrawEnd($event)"
   ></laji-audio-viewer>
@@ -46,13 +48,15 @@
       *ngIf="template"
       [audio]="audio"
       [spectrogramConfig]="spectrogramConfig"
-      [focusArea]="template.area"
-      [zoomTime]="true"
-      [timePaddingOnZoom]="0.5"
-      [zoomFrequency]="true"
-      [showControls]="false"
+      [focusArea]="{
+        area: template.area,
+        zoomTime: true,
+        timePaddingOnZoom: 0.5,
+        zoomFrequency: true
+      }"
       [spectrogramHeight]="150"
       [showAxisLabels]="false"
+      [showControls]="false"
       [mode]="audioViewerMode"
       (drawEnd)="onDrawEnd($event)"
     ></laji-audio-viewer>

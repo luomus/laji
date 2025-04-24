@@ -1,16 +1,23 @@
-import { IAudioViewerArea } from '../models';
-import { ChangeDetectorRef, NgZone } from '@angular/core';
+import { AudioViewerArea } from '../models';
+import { effect, inject, NgZone, Signal, signal, untracked } from '@angular/core';
 import { AudioService } from './audio.service';
 import { interval, Subscription } from 'rxjs';
 
 export class AudioPlayer {
-  isPlaying = false;
-  currentTime?: number;
+  private readonly isPlayingSignal = signal(false);
+  readonly isPlaying = this.isPlayingSignal.asReadonly();
 
-  loop = false;
+  private readonly currentTimeSignal = signal(0);
+  readonly currentTime = this.currentTimeSignal.asReadonly();
 
-  private buffer?: AudioBuffer;
-  private playArea?: IAudioViewerArea;
+  private readonly loopSignal = signal(false);
+  readonly loop = this.loopSignal.asReadonly();
+
+  private readonly playBackRateSignal = signal(1);
+  readonly playBackRate = this.playBackRateSignal.asReadonly();
+
+  private readonly buffer: Signal<AudioBuffer|undefined>;
+  private readonly playArea: Signal<AudioViewerArea|undefined>;
 
   private source?: AudioBufferSourceNode;
   private startOffset = 0;
@@ -21,50 +28,58 @@ export class AudioPlayer {
   private autoplayRepeat = 1;
   private autoplayCounter = 0;
 
-  private playBackRate = 1;
-
   private timeupdateInterval = interval(20);
   private timeupdateIntervalSub?: Subscription;
 
   private resumingContext = false;
   private resumeContextSub?: Subscription;
 
-  constructor(
-    private audioService: AudioService,
-    private ngZone: NgZone,
-    private cdr: ChangeDetectorRef
-  ) { }
+  private audioService: AudioService;
+  private ngZone: NgZone;
 
-  setBuffer(buffer: AudioBuffer, playArea?: IAudioViewerArea) {
-    this.clear();
+  constructor(buffer: Signal<AudioBuffer|undefined>, playArea: Signal<AudioViewerArea|undefined>) {
+    this.audioService = inject(AudioService);
+    this.ngZone = inject(NgZone);
     this.buffer = buffer;
     this.playArea = playArea;
-    this.currentTime = this.getStartTime();
+
+    effect(() => {
+      this.buffer(); // effect is triggered when buffer changes
+      untracked(() => {
+        this.clear();
+        this.currentTimeSignal.set(this.getStartTime());
+      });
+    }, { allowSignalWrites: true });
+
+    effect(() => {
+      this.playArea();
+      untracked(() => {
+        this.stop();
+        this.currentTimeSignal.set(this.getStartTime());
+      });
+    }, { allowSignalWrites: true });
   }
 
-  setPlayArea(playArea: IAudioViewerArea) {
-    this.stop();
-    this.playArea = playArea;
-    this.currentTime = this.getStartTime();
+  setLoop(loop: boolean) {
+    this.loopSignal.set(loop);
   }
 
   setPlayBackRate(playBackRate: number) {
     this.stop();
-    this.playBackRate = playBackRate;
+    this.playBackRateSignal.set(playBackRate);
   }
 
   toggle() {
-    this.isPlaying ? this.stop() : this.start();
+    this.isPlaying() ? this.stop() : this.start();
   }
 
   stop() {
     this.stopPlaying();
-    this.cdr.markForCheck();
   }
 
   start() {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.startedOutsidePlayArea = this.playArea && (this.currentTime! < this.playArea!.xRange![0] || this.currentTime! > this.playArea!.xRange![1]);
+    this.startedOutsidePlayArea = this.playArea() && (this.currentTime() < this.playArea()!.xRange![0] || this.currentTime() > this.playArea()!.xRange![1]);
 
     if (this.resumingContext) {
       return;
@@ -75,17 +90,15 @@ export class AudioPlayer {
       this.resumeContextSub = this.audioService.resumeAudioContext().subscribe(() => {
         this.resumingContext = false;
         this.startPlaying();
-        this.cdr.markForCheck();
       });
     } else {
       this.startPlaying();
-      this.cdr.markForCheck();
     }
   }
 
   startFrom(time: number) {
     this.stop();
-    this.currentTime = time;
+    this.currentTimeSignal.set(time);
     this.start();
   }
 
@@ -105,27 +118,26 @@ export class AudioPlayer {
       this.stop();
     }
 
-    this.currentTime = undefined;
-    this.isPlaying = false;
+    this.currentTimeSignal.set(0);
+    this.isPlayingSignal.set(false);
     this.source = undefined;
   }
 
   private startPlaying() {
-    if (!this.isPlaying) {
-      this.isPlaying = true;
-      if (!this.currentTime || this.currentTime >= this.getEndTime() || this.currentTime < this.getStartTime()) {
-        this.currentTime = this.getStartTime();
+    if (!this.isPlaying()) {
+      this.isPlayingSignal.set(true);
+      if (!this.currentTime() || this.currentTime() >= this.getEndTime() || this.currentTime() < this.getStartTime()) {
+        this.currentTimeSignal.set(this.getStartTime());
       }
-      this.startOffset = this.currentTime;
+      this.startOffset = this.currentTime();
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.source = this.audioService.playAudio(this.buffer!, this.playBackRate, this.playArea?.yRange, this.currentTime, this);
+      this.source = this.audioService.playAudio(this.buffer()!, this.playBackRate(), this.playArea()?.yRange, this.currentTime(), this);
       this.startAudioContextTime = this.audioService.getAudioContextTime();
 
       this.source.onended = () => {
         this.ngZone.run(() => {
           this.onPlayingEnded();
-          this.cdr.markForCheck();
         });
       };
 
@@ -134,7 +146,7 @@ export class AudioPlayer {
   }
 
   private stopPlaying() {
-    if (this.isPlaying) {
+    if (this.isPlaying()) {
       const source = this.source as AudioBufferSourceNode;
       source.onended = () => {};
       this.onPlayingStopped();
@@ -145,22 +157,22 @@ export class AudioPlayer {
   private onPlayingStopped() {
     this.clearTimeupdateInterval();
     this.updateCurrentTime();
-    this.isPlaying = false;
+    this.isPlayingSignal.set(false);
     this.autoplayCounter = this.autoplayRepeat;
   }
 
   private onPlayingEnded() {
     this.clearTimeupdateInterval();
     this.updateCurrentTime();
-    this.isPlaying = false;
+    this.isPlayingSignal.set(false);
 
-    if (this.currentTime === this.getEndTime()) {
+    if (this.currentTime() === this.getEndTime()) {
       if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
         this.autoplayCounter += 1;
         this.toggle();
         return;
       }
-      if (this.loop) {
+      if (this.loop()) {
         this.toggle();
       }
     } else {
@@ -173,11 +185,10 @@ export class AudioPlayer {
       this.updateCurrentTime();
       const endTime = this.getEndTime();
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      if (this.currentTime === endTime && endTime !== this.buffer!.duration) {
+      if (this.currentTime() === endTime && endTime !== this.buffer()!.duration) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.audioService.stopAudio(this.source!);
       }
-      this.cdr.markForCheck();
     });
   }
 
@@ -190,23 +201,25 @@ export class AudioPlayer {
   private updateCurrentTime() {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const playedTime = this.startOffset + this.audioService.getPlayedTime(this.startAudioContextTime!, this.source!.playbackRate.value);
-    this.currentTime = Math.min(playedTime, this.getEndTime());
+    this.currentTimeSignal.set(Math.min(playedTime, this.getEndTime()));
   }
 
   private getStartTime(): number {
-    if (!this.startedOutsidePlayArea && this.playArea?.xRange) {
-      return this.playArea.xRange[0];
+    if (!this.startedOutsidePlayArea && this.playArea()?.xRange) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.playArea()!.xRange![0];
     } else {
       return 0;
     }
   }
 
   private getEndTime(): number {
-    if (!this.startedOutsidePlayArea && this.playArea?.xRange) {
-      return this.playArea.xRange[1];
+    if (!this.startedOutsidePlayArea && this.playArea()?.xRange) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.playArea()!.xRange![1];
     } else {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return this.buffer!.duration;
+      return this.buffer()!.duration;
     }
   }
 }

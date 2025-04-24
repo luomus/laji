@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
-import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { SpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { IGlobalAudio, IGlobalTemplate } from '../../../../kerttu-global-shared/models';
 
 @Component({
@@ -13,7 +13,7 @@ export class TemplatesComponent {
   @Input() confirmedTemplates: boolean[] = [];
   @Input() highlightNonConfirmed = true;
 
-  @Input({ required: true }) spectrogramConfig!: ISpectrogramConfig;
+  @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
   @Input({ required: true }) audioIdMap!: { [id: number]: IGlobalAudio };
 
   @Output() templateClick = new EventEmitter<number>();

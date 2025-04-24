@@ -1,32 +1,32 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  effect,
   EventEmitter,
   HostBinding,
   Input,
-  NgZone,
-  OnChanges,
-  OnDestroy,
   Output,
+  signal,
   SimpleChanges,
+  OnChanges,
   TemplateRef,
-  ViewChild
+  ViewChild, ChangeDetectorRef
 } from '@angular/core';
-import { AudioService } from '../service/audio.service';
-import { Subscription } from 'rxjs';
 import {
   AudioViewerMode,
-  IAudio,
-  IAudioViewerArea,
-  IAudioViewerRectangle,
-  IAudioViewerRectangleGroup,
-  ISpectrogramConfig
+  Audio,
+  AudioViewerArea,
+  AudioViewerRectangle,
+  AudioViewerRectangleGroup,
+  SpectrogramConfig, AudioViewerFocusArea, AudioViewerControls
 } from '../models';
-import { AudioPlayer } from '../service/audio-player';
-import { AudioViewerUtils } from '../service/audio-viewer-utils';
 import { defaultSpectrogramConfig } from '../variables';
+import { AudioPlayer } from '../service/audio-player';
+import { AudioViewerView } from '../service/audio-viewer-view';
 import { delay } from 'rxjs/operators';
+import { rangeIsInsideRange } from '../service/audio-viewer-utils';
+import { Subscription } from 'rxjs';
+import { AudioService } from '../service/audio.service';
 import { AudioSpectrogramComponent } from './audio-spectrogram/audio-spectrogram.component';
 
 @Component({
@@ -35,34 +35,24 @@ import { AudioSpectrogramComponent } from './audio-spectrogram/audio-spectrogram
   styleUrls: ['./audio-viewer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AudioViewerComponent implements OnChanges, OnDestroy {
-  @Input() audio?: IAudio;
+export class AudioViewerComponent implements OnChanges {
+  @Input() audio?: Audio;
 
-  @Input() focusArea?: IAudioViewerArea;
-  @Input() highlightFocusArea = false;
-  @Input() focusAreaColor?: string;
-
-  @Input() rectangles?: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[];
-
-  @Input() zoomTime = false;
-  @Input() timePaddingOnZoom = 1;
-  @Input() zoomFrequency = false;
-  @Input() frequencyPaddingOnZoom = 500;
+  @Input() focusArea?: AudioViewerFocusArea;
+  @Input() rectangles?: (AudioViewerRectangle|AudioViewerRectangleGroup)[];
 
   @Input() autoplay = false;
   @Input() autoplayRepeat = 1;
 
-  @Input() playbackRate = 1;
-
   @Input() showControls = true;
-  @Input() showZoomControl = false; // zoom control allows the user to zoom into the spectrogram
-  @Input() showLoopControl = true; // loop control allows the user to loop the recording
+  @Input() controls?: AudioViewerControls;
+
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
   @Input() playOnlyOnSingleClick = false; // play the recording only when the user clicks once and not double-clicks
 
   @Input() showPregeneratedSpectrogram = false;
-  @Input() spectrogramConfig: ISpectrogramConfig = defaultSpectrogramConfig;
+  @Input() spectrogramConfig: SpectrogramConfig = defaultSpectrogramConfig;
 
   @Input() spectrogramWidth?: number;
   @Input() spectrogramHeight?: number;
@@ -72,20 +62,20 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   @Input() mode: AudioViewerMode = 'default';
 
-  @Input() audioInfoTpl?: TemplateRef<any>;
   @Input() customControlsTpl?: TemplateRef<any>;
+  @Input() audioInfoTpl?: TemplateRef<any>;
 
-  buffer?: AudioBuffer;
   audioPlayer: AudioPlayer;
+  audioViewerView: AudioViewerView;
+
+  private bufferSignal = signal<AudioBuffer|undefined>(undefined);
+  buffer = this.bufferSignal.asReadonly();
 
   loading = false;
   hasError = false;
 
-  view?: IAudioViewerArea;
-  defaultView?: IAudioViewerArea;
-
   @Output() audioLoading = new EventEmitter<boolean>();
-  @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
+  @Output() drawEnd = new EventEmitter<AudioViewerArea>();
   @Output() spectrogramDblclick = new EventEmitter<number>();
   @Output() modeChange = new EventEmitter<AudioViewerMode>();
 
@@ -95,34 +85,57 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
     return this.adaptToContainerHeight;
   }
 
+  private spectrogramConfigSignal = signal<SpectrogramConfig>(this.spectrogramConfig);
+  private focusAreaSignal = signal<AudioViewerFocusArea|undefined>(this.focusArea);
+
   private audioSub?: Subscription;
   private clicks = 0;
 
   constructor(
-    private cdr: ChangeDetectorRef,
     private audioService: AudioService,
-    private ngZone: NgZone
+    private cdr: ChangeDetectorRef
   ) {
-    this.audioPlayer = new AudioPlayer(this.audioService, this.ngZone, this.cdr);
+    this.audioViewerView = new AudioViewerView(
+      this.buffer,
+      this.spectrogramConfigSignal.asReadonly(),
+      this.focusAreaSignal.asReadonly(),
+    );
+    this.audioPlayer = new AudioPlayer(this.buffer, this.audioViewerView.playArea);
+
+    effect(() => {
+      this.modeChange.emit(this.audioViewerView.mode());
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.spectrogramConfig) {
+      this.spectrogramConfigSignal.set(this.spectrogramConfig);
+    }
+
+    if (changes.focusArea) {
+      this.focusAreaSignal.set(this.focusArea);
+    }
+
+    if (changes.mode) {
+      this.audioPlayer.stop();
+      this.audioViewerView.setMode(this.mode);
+    }
+
     if (changes.audio) {
-      this.clear();
+      this.audioSub?.unsubscribe();
+      this.bufferSignal.set(undefined);
       this.setAudioLoading(true);
 
       if (this.audio) {
         this.audioSub = this.audioService.getAudioBuffer(this.audio.url, this.audio.duration).pipe(
           delay(0) // has a delay because otherwise the changes are not always detected
         ).subscribe((buffer) => {
-          if (!this.areaIsValid(buffer, this.focusArea)) {
+          if (this.focusArea?.area.xRange && !rangeIsInsideRange(this.focusArea.area.xRange, [0, buffer.duration])) {
             this.onError();
             return;
           }
 
-          this.buffer = buffer;
-          this.audioPlayer.setBuffer(buffer);
-          this.setDefaultView();
+          this.bufferSignal.set(buffer);
 
           if (this.autoplay) {
             this.audioPlayer.startAutoplay(this.autoplayRepeat);
@@ -133,24 +146,16 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
           this.onError();
         });
       }
-    } else if (!this.hasError) {
-      if (
-        changes.focusArea || changes.highlightFocusArea ||
-        changes.zoomTime || changes.timePaddingOnZoom ||
-        changes.zoomFrequency || changes.frequencyPaddingOnZoom ||
-        changes.spectrogramConfig
-      ) {
-        this.setDefaultView();
-      } else if (changes.playbackRate) {
-        this.audioPlayer.setPlayBackRate(this.playbackRate || 1);
-      } else if (changes.mode) {
-        this.audioPlayer.stop();
-      }
     }
   }
 
-  ngOnDestroy() {
-    this.clear();
+  resize() {
+    this.spectrogramComponent.resize();
+  }
+
+  setAudioLoading(loading: boolean) {
+    this.loading = loading;
+    this.audioLoading.emit(loading);
   }
 
   onSpectrogramDragStart() {
@@ -178,98 +183,21 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
     }
   }
 
-  onSpectrogramZoomEnd(area: IAudioViewerArea) {
-    this.changeMode('default');
-    this.setView(area);
+  onSpectrogramZoomEnd(area: AudioViewerArea) {
+    this.audioViewerView.setMode('default');
+    this.audioViewerView.setView(area);
   }
 
-  onSpectrogramDrawEnd(area: IAudioViewerArea) {
+  onSpectrogramDrawEnd(area: AudioViewerArea) {
     this.drawEnd.emit({
       xRange: area.xRange,
       yRange: area.yRange
     });
   }
 
-  clearZoomArea() {
-    this.setView(this.defaultView);
-  }
-
-  toggleZoomMode() {
-    this.audioPlayer.stop();
-    this.changeMode(this.mode === 'zoom' ? 'default' : 'zoom');
-  }
-
-  setAudioLoading(loading: boolean) {
-    this.loading = loading;
-    this.audioLoading.emit(loading);
-  }
-
-  setView(view?: IAudioViewerArea) {
-    this.view = view;
-    this.audioPlayer.setPlayArea(this.getPlayArea());
-  }
-
-  resize() {
-    this.spectrogramComponent.resize();
-  }
-
-  private clear() {
-    if (this.audioSub) {
-      this.audioSub.unsubscribe();
-    }
-
-    this.buffer = undefined;
-    this.view = undefined;
-    this.defaultView = undefined;
-    this.hasError = false;
-    this.audioPlayer.clear();
-  }
-
-  private setDefaultView() {
-    const minTime = 0;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const maxTime = this.buffer!.duration;
-    const minFreq = this.spectrogramConfig.minFrequency || 0;
-    const maxFreq = AudioViewerUtils.getMaxFreq(this.spectrogramConfig.sampleRate);
-
-    this.defaultView = {
-      xRange: AudioViewerUtils.getPaddedRange(
-        this.focusArea?.xRange, this.zoomTime ? this.timePaddingOnZoom : undefined, minTime, maxTime
-      ),
-      yRange: AudioViewerUtils.getPaddedRange(
-        this.focusArea?.yRange, this.zoomFrequency ? this.frequencyPaddingOnZoom : undefined, minFreq, maxFreq
-      )
-    };
-    this.setView(this.defaultView);
-  }
-
-  private getPlayArea(): IAudioViewerArea {
-    const xRange = this.highlightFocusArea && this.view === this.defaultView && this.focusArea ? this.focusArea.xRange : this.view?.xRange;
-    const yRange = this.zoomFrequency && this.focusArea ? this.focusArea.yRange : this.view?.yRange;
-
-    return { xRange, yRange };
-  }
-
-  private areaIsValid(buffer: AudioBuffer, area?: IAudioViewerArea): boolean {
-    const [minValue, maxValue] = [0, buffer.duration];
-    return !(area?.xRange && this.rangeIsNotValid(area.xRange, minValue, maxValue));
-  }
-
-  private rangeIsNotValid(range: number[], minValue: number, maxValue: number): boolean {
-    if (range[1] < range[0]) {
-      return true;
-    }
-    return range[1] < minValue || range[0] > maxValue;
-  }
-
   private onError() {
     this.hasError = true;
     this.setAudioLoading(false);
     this.cdr.markForCheck();
-  }
-
-  private changeMode(mode: AudioViewerMode) {
-    this.mode = mode;
-    this.modeChange.emit(this.mode);
   }
 }

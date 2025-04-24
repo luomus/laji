@@ -1,15 +1,12 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'laji-audio-viewer-simple-settings',
-  templateUrl: './audio-viewer-simple-settings.component.html',
-  styleUrls: ['./audio-viewer-simple-settings.component.scss'],
+  selector: 'bsg-audio-viewer-custom-controls',
+  templateUrl: './audio-viewer-custom-controls.component.html',
+  styleUrls: ['./audio-viewer-custom-controls.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AudioViewerSimpleSettingsComponent {
-  @Input() enableSlowDownAudioSetting = false;
-  @Input() slowDownAudio = false;
-
+export class AudioViewerCustomControlsComponent {
   @Input() enableShowWholeFrequencyRangeSetting = true;
   @Input() showWholeFrequencyRange = false;
   @Input() showWholeFrequencyRangeLabel = '';
@@ -20,7 +17,6 @@ export class AudioViewerSimpleSettingsComponent {
   @Input() showWholeTimeRangeLabel = '';
   @Input() showWholeTimeRangeInfo = '';
 
-  @Output() slowDownAudioChange = new EventEmitter<boolean>();
   @Output() showWholeFrequencyRangeChange = new EventEmitter<boolean>();
   @Output() showWholeTimeRangeChange = new EventEmitter<boolean>();
 }
