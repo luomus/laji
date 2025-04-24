@@ -1,9 +1,15 @@
-<div>hello trait db data editor</div>
-
-<div>
+<h1>Trait data editor</h1>
+<div *ngIf="(tableData$ | async) as tableData">
   <lu-datatable
-    [rows]="(rows$ | async) ?? []"
-    [columns]="columns"
+    [rows]="tableData.rows.controls"
+    [columns]="tableData.cols"
   ></lu-datatable>
 </div>
+<ng-template #stringCell let-row let-col="col" let-rowIdx="rowIdx" let-colIdx="colIdx">
+  <ng-container *ngIf="row.get($any(col).prop) as control">
+    <input [formControl]="control"/>
+  </ng-container>
+</ng-template>
+
+<button class="btn btn-primary" [disabled]="(submissionState$ | async) === 1" (click)="onSubmit()">Submit</button>
 

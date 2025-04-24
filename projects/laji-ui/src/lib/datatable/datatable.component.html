@@ -45,8 +45,8 @@
               <ng-container
                 *ngTemplateOutlet="col.cellTemplate;
                 context: hasProp(col)
-                  ? { $implicit: row, prop: getNestedValue(row, $any(col).prop), rowIdx, colIdx }
-                  : { $implicit: row, rowIdx, colIdx }"
+                  ? { $implicit: row, col, rowIdx, colIdx, prop: getNestedValue(row, $any(col).prop) }
+                  : { $implicit: row, col, rowIdx, colIdx }"
               ></ng-container>
             </ng-container>
             <ng-container *ngIf="!columnHasTemplate(col)">
