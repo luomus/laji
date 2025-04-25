@@ -55,7 +55,7 @@ export class SpectrogramChartComponent implements OnChanges {
   @ViewChild('chart', {static: true}) chartRef!: ElementRef<SVGElement>;
 
   @Input() view?: AudioViewerArea;
-  @Input() focusArea?: AudioViewerArea;
+  @Input() focusArea?: Partial<AudioViewerArea>;
   @Input() highlightFocusArea? = false;
   @Input() onlyFocusAreaClickable? = false;
   @Input() onlyFocusAreaDrawable? = false;
@@ -471,7 +471,7 @@ export class SpectrogramChartComponent implements OnChanges {
     );
   }
 
-  private areaIsInsideAnotherArea(area1: AudioViewerArea, area2: AudioViewerArea): boolean {
+  private areaIsInsideAnotherArea(area1: Partial<AudioViewerArea>, area2: Partial<AudioViewerArea>): boolean {
     if (!(area1.xRange && area2.xRange && area2.xRange[0] <= area1.xRange[0] && area2.xRange[1] >= area1.xRange[1])) {
       return false;
     }

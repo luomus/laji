@@ -1,7 +1,6 @@
 import { SpectrogramConfig } from './models';
 
 export const defaultSpectrogramConfig: SpectrogramConfig = {
-  sampleRate: 22050,
   targetWindowLengthInSeconds: 0.015,
   targetWindowOverlapPercentage: 0.375,
   nbrOfRowsRemovedFromStart: 0,

@@ -47,6 +47,8 @@ export class IdentificationPanelComponent {
 
   @Input() birdRectangleColor = 'white';
   @Input() overlappingBirdRectangleColor = 'orange';
+
+  @Input({ required: true }) sampleRate!: number;
   @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
 
   speciesAnnotationEnum = SpeciesAnnotationEnum;

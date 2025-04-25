@@ -37,6 +37,7 @@ import { AudioSpectrogramComponent } from './audio-spectrogram/audio-spectrogram
 })
 export class AudioViewerComponent implements OnChanges {
   @Input() audio?: Audio;
+  @Input() sampleRate = 44100;
 
   @Input() focusArea?: AudioViewerFocusArea;
   @Input() rectangles?: (AudioViewerRectangle|AudioViewerRectangleGroup)[];
@@ -127,7 +128,7 @@ export class AudioViewerComponent implements OnChanges {
       this.setAudioLoading(true);
 
       if (this.audio) {
-        this.audioSub = this.audioService.getAudioBuffer(this.audio.url, this.audio.duration).pipe(
+        this.audioSub = this.audioService.getAudioBuffer(this.audio.url, this.sampleRate, this.audio.duration).pipe(
           delay(0) // has a delay because otherwise the changes are not always detected
         ).subscribe((buffer) => {
           if (this.focusArea?.area.xRange && !rangeIsInsideRange(this.focusArea.area.xRange, [0, buffer.duration])) {

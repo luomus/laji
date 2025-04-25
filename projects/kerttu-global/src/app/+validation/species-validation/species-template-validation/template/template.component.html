@@ -10,6 +10,7 @@
   ></bsg-audio-viewer-settings>
   <laji-audio-viewer
     [audio]="audio"
+    [sampleRate]="sampleRate"
     [spectrogramConfig]="spectrogramConfig"
     [mode]="audioViewerMode"
     [focusArea]="{
@@ -47,6 +48,7 @@
     <laji-audio-viewer
       *ngIf="template"
       [audio]="audio"
+      [sampleRate]="sampleRate"
       [spectrogramConfig]="spectrogramConfig"
       [focusArea]="{
         area: template.area,

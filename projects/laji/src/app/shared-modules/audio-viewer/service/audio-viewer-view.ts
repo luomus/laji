@@ -54,7 +54,7 @@ export class AudioViewerView {
     const minTime = 0;
     const maxTime = buffer.duration;
     const minFreq = spectrogramConfig.minFrequency || 0;
-    const maxFreq = getMaxFreq(spectrogramConfig.sampleRate);
+    const maxFreq = spectrogramConfig.maxFrequency || getMaxFreq(buffer.sampleRate);
 
     return {
       xRange: getPaddedRange(
@@ -67,9 +67,9 @@ export class AudioViewerView {
   }
 
   private getPlayArea(activeView: AudioViewerArea, defaultView: AudioViewerArea, focusArea?: AudioViewerFocusArea): AudioViewerArea {
-    const xRange = focusArea?.highlight && activeView === defaultView ? focusArea.area.xRange : activeView.xRange;
-    const yRange = focusArea?.zoomFrequency ? focusArea.area.yRange : activeView.yRange;
+    const xRange = focusArea?.highlight && activeView === defaultView ? focusArea.area.xRange : undefined;
+    const yRange = focusArea?.zoomFrequency ? focusArea.area.yRange : undefined;
 
-    return { xRange, yRange };
+    return { xRange: xRange || activeView.xRange, yRange: yRange || activeView.yRange };
   }
 }

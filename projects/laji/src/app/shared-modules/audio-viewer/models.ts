@@ -5,18 +5,18 @@ export interface Audio {
 }
 
 export interface SpectrogramConfig {
-  sampleRate: number;
   targetWindowLengthInSeconds: number;
   targetWindowOverlapPercentage: number;
-  nbrOfRowsRemovedFromStart?: number;
+  nbrOfRowsRemovedFromStart?: number; // first rows are usually very noisy and removing them improves the spectrogram
   maxNbrOfColsForNoiseEstimation?: number;
   noiseReductionParam?: number;
   logRange?: number;
   minFrequency?: number;
+  maxFrequency?: number;
 }
 
 export interface AudioViewerFocusArea {
-  area: AudioViewerArea;
+  area: Partial<AudioViewerArea>;
   color?: string;
   highlight?: boolean;
   zoomTime?: boolean;
@@ -26,7 +26,7 @@ export interface AudioViewerFocusArea {
 }
 
 export interface AudioViewerRectangle {
-  area: AudioViewerArea;
+  area: Partial<AudioViewerArea>;
   color?: string;
   label?: string;
 }
@@ -37,8 +37,8 @@ export interface AudioViewerRectangleGroup {
 }
 
 export interface AudioViewerArea {
-  xRange?: number[];
-  yRange?: number[];
+  xRange: number[];
+  yRange: number[];
 }
 
 export type AudioViewerMode = 'default' | 'zoom' | 'draw';

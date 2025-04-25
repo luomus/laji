@@ -11,6 +11,7 @@ import { IGlobalAudio, IGlobalTemplate, IGlobalRecording } from '../../../../ker
 export class RecordingsComponent implements OnChanges {
   @Input() recordings?: IGlobalRecording[] = [];
   @Input() templates?: (IGlobalTemplate|null)[] = [];
+  @Input({ required: true }) sampleRate!: number;
   @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
 
   @Output() audioClick = new EventEmitter<{audioId: number; time: number}>();

@@ -6,6 +6,7 @@
     [label]="'T' + (i + 1)"
     [area]="template?.area"
     [audio]="template ? audioIdMap[template.audioId] : undefined"
+    [sampleRate]="sampleRate"
     [spectrogramConfig]="spectrogramConfig"
     [highlight]="(template && !confirmedTemplates[i] && highlightNonConfirmed) || !!template?.comment"
     [highlightType]="template?.comment?.type === 0 ? 'danger' : (template?.comment?.type === 1 ? 'warning' : 'default')"

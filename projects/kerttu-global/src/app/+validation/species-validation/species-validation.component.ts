@@ -38,10 +38,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   hasLock?: boolean;
 
   audioSampleRate = defaultAudioSampleRate;
-  spectrogramConfig: SpectrogramConfig = {
-    ...defaultSpectrogramConfig,
-    sampleRate: this.audioSampleRate
-  };
+  spectrogramConfig: SpectrogramConfig = defaultSpectrogramConfig;
 
   private activeVersionIdxSubject = new BehaviorSubject<number>(0);
   activeVersionIdx$ = this.activeVersionIdxSubject.asObservable();
@@ -85,7 +82,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
       switchMap(speciesId => this.kerttuGlobalApi.getRecordings(this.translate.currentLang, speciesId).pipe(
         map(data => data.results),
         tap(recordings => {
-          this.audioService.setCacheSize(recordings.length);
+          this.audioService.setBufferCacheSize(recordings.length);
         })
       ))
     );

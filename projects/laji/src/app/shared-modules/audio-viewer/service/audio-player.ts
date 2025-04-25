@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import { AudioViewerArea } from '../models';
 import { effect, inject, NgZone, Signal, signal, untracked } from '@angular/core';
 import { AudioService } from './audio.service';
@@ -78,16 +80,15 @@ export class AudioPlayer {
   }
 
   start() {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.startedOutsidePlayArea = this.playArea() && (this.currentTime() < this.playArea()!.xRange![0] || this.currentTime() > this.playArea()!.xRange![1]);
 
     if (this.resumingContext) {
       return;
     }
 
-    if (this.audioService.audioContextIsSuspended()) {
+    if (this.audioService.audioContextIsSuspended(this.buffer()!.sampleRate)) {
       this.resumingContext = true;
-      this.resumeContextSub = this.audioService.resumeAudioContext().subscribe(() => {
+      this.resumeContextSub = this.audioService.resumeAudioContext(this.buffer()!.sampleRate).subscribe(() => {
         this.resumingContext = false;
         this.startPlaying();
       });
@@ -131,9 +132,8 @@ export class AudioPlayer {
       }
       this.startOffset = this.currentTime();
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.source = this.audioService.playAudio(this.buffer()!, this.playBackRate(), this.playArea()?.yRange, this.currentTime(), this);
-      this.startAudioContextTime = this.audioService.getAudioContextTime();
+      this.startAudioContextTime = this.audioService.getAudioContextTime(this.buffer()!.sampleRate);
 
       this.source.onended = () => {
         this.ngZone.run(() => {
@@ -184,9 +184,8 @@ export class AudioPlayer {
     this.timeupdateIntervalSub = this.timeupdateInterval.subscribe(() => {
       this.updateCurrentTime();
       const endTime = this.getEndTime();
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
       if (this.currentTime() === endTime && endTime !== this.buffer()!.duration) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.audioService.stopAudio(this.source!);
       }
     });
@@ -199,14 +198,12 @@ export class AudioPlayer {
   }
 
   private updateCurrentTime() {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const playedTime = this.startOffset + this.audioService.getPlayedTime(this.startAudioContextTime!, this.source!.playbackRate.value);
+    const playedTime = this.startOffset + this.audioService.getPlayedTime(this.buffer()!.sampleRate, this.startAudioContextTime!, this.source!.playbackRate.value);
     this.currentTimeSignal.set(Math.min(playedTime, this.getEndTime()));
   }
 
   private getStartTime(): number {
     if (!this.startedOutsidePlayArea && this.playArea()?.xRange) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return this.playArea()!.xRange![0];
     } else {
       return 0;
@@ -215,10 +212,8 @@ export class AudioPlayer {
 
   private getEndTime(): number {
     if (!this.startedOutsidePlayArea && this.playArea()?.xRange) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return this.playArea()!.xRange![1];
     } else {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return this.buffer()!.duration;
     }
   }

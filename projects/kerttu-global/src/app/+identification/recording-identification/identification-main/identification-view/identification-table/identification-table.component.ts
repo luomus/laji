@@ -23,8 +23,8 @@ export class IdentificationTableComponent implements OnChanges {
   @ViewChildren(IdentificationPanelComponent) identificationPanels!: QueryList<IdentificationPanelComponent>;
 
   @Input() componentId = 0;
-  @Input() recording!: IGlobalRecording;
-  @Input() identifications!: IGlobalSpeciesWithAnnotation[];
+  @Input({ required: true }) recording!: IGlobalRecording;
+  @Input({ required: true }) identifications!: IGlobalSpeciesWithAnnotation[];
 
   @Input() loading = false;
   @Input() showSoundTypeSelect = true;
@@ -34,7 +34,9 @@ export class IdentificationTableComponent implements OnChanges {
 
   @Input() birdRectangleColor = 'white';
   @Input() overlappingBirdRectangleColor = 'orange';
-  @Input() spectrogramConfig!: SpectrogramConfig;
+
+  @Input({ required: true }) sampleRate!: number;
+  @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
 
   drawBoxActive: boolean[] = [];
   drawRelatedBoxActive: boolean[][] = [];

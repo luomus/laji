@@ -11,6 +11,7 @@
         timePaddingOnZoom: 0
       }"
       [adaptToContainerHeight]="true"
+      [sampleRate]="sampleRate"
       [spectrogramConfig]="spectrogramConfig"
       [controls]="{
         slowDownControl: recording.taxonType === taxonTypeEnum.bat || recording.taxonType === taxonTypeEnum.insect,
@@ -131,6 +132,7 @@
       [buttonsDisabled]="buttonsDisabled || loadingSpecies"
       [birdRectangleColor]="birdRectangleColor"
       [overlappingBirdRectangleColor]="overlappingBirdRectangleColor"
+      [sampleRate]="sampleRate"
       [spectrogramConfig]="spectrogramConfig"
       [drawActive]="drawBirdActive"
       (drawBoxClick)="onDrawBirdClick($event)"

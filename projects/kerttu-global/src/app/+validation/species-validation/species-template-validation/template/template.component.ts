@@ -16,6 +16,7 @@ export class TemplateComponent {
   @Input({ required: true }) isNewTemplate!: boolean;
   @Input({ required: true }) audio!: IGlobalAudio;
   @Input() audioFocusTime?: number;
+  @Input({ required: true }) sampleRate!: number;
   @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
   @Input() historyView?: boolean;
 

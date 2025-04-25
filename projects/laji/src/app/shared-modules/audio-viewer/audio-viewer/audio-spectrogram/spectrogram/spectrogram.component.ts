@@ -16,11 +16,10 @@ export class SpectrogramComponent implements OnChanges {
   @ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
 
   @Input() buffer?: AudioBuffer;
-  @Input() startTime?: number;
-  @Input() endTime?: number;
   @Input() config?: SpectrogramConfig;
 
   @Input() view?: AudioViewerArea;
+  @Input() defaultView?: AudioViewerArea;
 
   @Input() width = 0;
   @Input() height = 0;
@@ -29,8 +28,8 @@ export class SpectrogramComponent implements OnChanges {
 
   @Output() spectrogramLoading = new EventEmitter<boolean>();
 
-  private imageData?: ImageData|null;
-  private imageDataSub?: Subscription;
+  private defaultViewImageDataCache?: ImageData|null;
+  private spectrogramCreateSub?: Subscription;
 
   constructor(
     private audioService: AudioService,
@@ -39,100 +38,85 @@ export class SpectrogramComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.buffer || changes.config || changes.defaultView) {
+      this.defaultViewImageDataCache = null;
+    }
+
     if (
-      changes.buffer || changes.startTime || changes.endTime || changes.pregeneratedSpectrogramUrl || (
-      changes.config && this.spectrogramNeedsToBeRecreatedOnConfigChange(changes.config.currentValue, changes.config.previousValue)
-    )) {
-      this.imageData = null;
+      changes.buffer || changes.config || changes.view || changes.pregeneratedSpectrogramUrl
+    ) {
       this.clearCanvas();
 
-      if (this.imageDataSub) {
-        this.imageDataSub.unsubscribe();
+      if (this.spectrogramCreateSub) {
+        this.spectrogramCreateSub.unsubscribe();
       }
 
-      if (this.buffer && this.startTime != null && this.endTime != null) {
+      if (this.buffer && this.view) {
         const observable: Observable<null> = this.pregeneratedSpectrogramUrl ? of(null) : this.createSpectrogram(
-          this.buffer, this.startTime, this.endTime
+          this.buffer, this.view
         );
         // has a timeout because otherwise the changes caused by this.spectrogramLoading.emit() are not always detected
         setTimeout(() => {
           this.spectrogramLoading.emit(true);
-          this.imageDataSub = observable.subscribe(() => {
+          this.spectrogramCreateSub = observable.subscribe(() => {
             this.spectrogramLoading.emit(false);
             this.cdr.markForCheck();
           });
         }, 0);
       }
-    } else if (changes.view) {
-      if (this.imageData) {
-        this.drawImage(this.imageData, this.canvasRef.nativeElement);
-      }
     }
   }
 
-  private spectrogramNeedsToBeRecreatedOnConfigChange(currConfig?: SpectrogramConfig, prevConfig?: SpectrogramConfig): boolean {
-    if (!currConfig || !prevConfig) {
-      return true;
-    }
-    if (Object.keys(currConfig).length !== Object.keys(prevConfig).length) {
-      return true;
+  private createSpectrogram(buffer: AudioBuffer, view: AudioViewerArea): Observable<null> {
+    const isDefaultView = (
+      view.xRange[0] === this.defaultView?.xRange[0] && view.xRange[1] === this.defaultView.xRange?.[1] &&
+      view.yRange[0] === this.defaultView?.yRange[0] && view.yRange[1] === this.defaultView.yRange?.[1]
+    );
+
+    if (isDefaultView && this.defaultViewImageDataCache) {
+      this.drawImage(this.defaultViewImageDataCache, this.canvasRef.nativeElement);
+      return of(null);
     }
 
-    return Object.keys(currConfig).some(key => {
-      const _key = key as keyof SpectrogramConfig;
-      return _key !== 'sampleRate' && currConfig[_key] !== prevConfig[_key];
-    });
+    buffer = this.processBuffer(buffer, view);
+
+    return this.getSpectrogramImageData(buffer).pipe(
+      tap(result => {
+        if (isDefaultView) {
+          this.defaultViewImageDataCache = result;
+        }
+        this.drawImage(result, this.canvasRef.nativeElement);
+      }),
+      map(() => null)
+    );
   }
 
-  private createSpectrogram(buffer: AudioBuffer, startTime: number, endTime: number): Observable<null> {
-    buffer = this.processBuffer(buffer, startTime, endTime);
-    return this.createSpectrogramFromProcessedBuffer(buffer);
-  }
-
-  private processBuffer(buffer: AudioBuffer, startTime: number, endTime: number): AudioBuffer {
-    if (startTime !== 0 || endTime !== buffer.duration) {
-      buffer = this.audioService.extractSegment(buffer, startTime, endTime);
+  private processBuffer(buffer: AudioBuffer, view: AudioViewerArea): AudioBuffer {
+    if (view.xRange[0] !== 0 || view.xRange[1] !== buffer.duration) {
+      return this.audioService.extractSegment(buffer, view.xRange[0], view.xRange[1]);
     }
     return buffer;
   }
 
-  private createSpectrogramFromProcessedBuffer(buffer: AudioBuffer): Observable<null> {
-    return this.spectrogramService.getSpectrogramImageData(buffer, this.config)
-      .pipe(
-        tap(result => {
-          this.imageData = result;
-          this.drawImage(this.imageData, this.canvasRef.nativeElement);
-        }),
-        map(() => null)
-      );
+  private getSpectrogramImageData(buffer: AudioBuffer): Observable<ImageData> {
+    return this.spectrogramService.getSpectrogramImageData(buffer, this.config);
   }
 
   private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const maxTime = this.endTime! - this.startTime!;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const maxFreq = getMaxFreq(this.buffer!.sampleRate);
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const startTime = this.view?.xRange?.[0] ? this.view.xRange[0] - this.startTime! : 0;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const endTime = this.view?.xRange?.[1] ? this.view.xRange[1] - this.startTime! : maxTime;
     const startFreq = this.view?.yRange?.[0] || 0;
     const endFreq = this.view?.yRange?.[1] || maxFreq;
-
-    const ratioX1 = startTime / maxTime;
-    const ratioX2 = endTime / maxTime;
-    const startX = data.width * ratioX1;
 
     const ratioY1 = startFreq / maxFreq;
     const ratioY2 = endFreq / maxFreq;
     const startY = data.height - (data.height * ratioY2);
 
-    canvas.width = data.width * (ratioX2 - ratioX1);
+    canvas.width = data.width;
     canvas.height = data.height * (ratioY2 - ratioY1);
 
     const ctx = canvas.getContext('2d');
-    ctx?.putImageData(data, -startX, -startY, startX, startY, canvas.width, canvas.height);
+    ctx?.putImageData(data, 0, -startY, 0, startY, canvas.width, canvas.height);
   }
 
   private clearCanvas() {

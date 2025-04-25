@@ -34,10 +34,12 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @ViewChild('container', {static: true}) containerRef!: ElementRef<HTMLDivElement>;
 
   @Input() buffer?: AudioBuffer;
+  @Input() sampleRate?: number;
+
   @Input() view?: AudioViewerArea;
   @Input() defaultView?: AudioViewerArea;
 
-  @Input() focusArea?: AudioViewerArea;
+  @Input() focusArea?: Partial<AudioViewerArea>;
   @Input() highlightFocusArea? = false;
   @Input() onlyFocusAreaClickable? = false;
   @Input() onlyFocusAreaDrawable? = false;
@@ -124,12 +126,18 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
       : this.containerRef
         ? Math.max(this.containerRef.nativeElement.offsetWidth - this._margin.left - this._margin.right, 0)
         : 0;
+
     this._height = this.height
       ? this.height
       : this.adaptToContainerHeight && this.containerRef
         ? Math.max(this.containerRef.nativeElement.offsetHeight - this._margin.top - this._margin.bottom, 0)
-        : this.config
-          ? (getSpectrogramSegmentLength(this.config.targetWindowLengthInSeconds, this.config.sampleRate) / 2)
+        : this.config && this.sampleRate !== undefined
+          ? (
+            getSpectrogramSegmentLength(
+              this.config.targetWindowLengthInSeconds,
+              this.config.maxFrequency ? this.config.maxFrequency * 2 : this.sampleRate
+            ) / 2
+          )
           : 0;
   }
 }

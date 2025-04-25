@@ -10,11 +10,11 @@ interface CompleteSpectrogramConfig extends SpectrogramConfig {
   noiseReductionParam: number;
   logRange: number;
   minFrequency: number;
+  maxFrequency: number;
 }
 
-const defaultConfig: SpectrogramConfig = defaultSpectrogramConfig;
-
 export function getSpectrogramImageData(buffer: AudioBuffer, colormap: number[][], config?: SpectrogramConfig): ImageData {
+  const defaultConfig = {...defaultSpectrogramConfig, maxFrequency: buffer.sampleRate / 2};
   config = config ? {...defaultConfig, ...config} : defaultConfig;
 
   const {spectrogram, width, height} = computeSpectrogram(buffer, config as CompleteSpectrogramConfig);
@@ -44,7 +44,7 @@ function computeSpectrogram(buffer: AudioBuffer, config: CompleteSpectrogramConf
 } {
   const {data, sumByColumn} = getData(buffer, config);
   const meanNoise = getMeanNoiseColumn(data, sumByColumn, config);
-  const maxValue = filterNoiseAndFindMaxValue(data, meanNoise, config);
+  const maxValue = filterNoiseAndFindMaxValue(data, meanNoise, buffer.sampleRate, config);
 
   scaleSpectrogram(data, maxValue, config);
 
@@ -110,28 +110,32 @@ function getMeanNoiseColumn(data: Float32Array[], sumByColumn: number[], config:
   return meanByRow;
 }
 
-function filterNoiseAndFindMaxValue(data: Float32Array[], meanNoise: Float32Array, config: CompleteSpectrogramConfig): number {
+function filterNoiseAndFindMaxValue(data: Float32Array[], meanNoise: Float32Array, sampleRate: number, config: CompleteSpectrogramConfig): number {
   let maxValue = 0;
   const columnLength = data[0].length;
-  const minColumn = Math.floor(config.minFrequency / ((config.sampleRate / 2) / columnLength));
-  const nbrOfRowsRemovedFromStart = Math.max(minColumn, config.nbrOfRowsRemovedFromStart);
+
+  let minRow = Math.floor(config.minFrequency / ((sampleRate / 2) / columnLength));
+  minRow = Math.max(minRow, config.nbrOfRowsRemovedFromStart);
+  const maxRow = Math.ceil(config.maxFrequency / ((sampleRate / 2) / columnLength));
 
   for (const item of data) {
     for (let j = 0; j < columnLength; j++) {
-      item[j] = item[j] - config.noiseReductionParam * meanNoise[j];
-      if (item[j] < 0) {
+      if (j < minRow || j > maxRow) {
         item[j] = 0;
-      }
-      // first rows are usually very noisy
-      if (j < nbrOfRowsRemovedFromStart) {
-        item[j] = 0;
-      }
+      } else {
+        item[j] = item[j] - config.noiseReductionParam * meanNoise[j];
 
-      if (item[j] > maxValue) {
-        maxValue = item[j];
+        if (item[j] < 0) {
+          item[j] = 0;
+        }
+
+        if (item[j] > maxValue) {
+          maxValue = item[j];
+        }
       }
     }
   }
+
   return maxValue;
 }
 

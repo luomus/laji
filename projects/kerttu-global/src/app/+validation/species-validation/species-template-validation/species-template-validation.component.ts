@@ -16,6 +16,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   @Input() templates?: (IGlobalTemplate|null)[];
   @Input() saving = false;
   @Input() historyView? = false;
+  @Input({ required: true }) sampleRate!: number;
   @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
 
   hasAllTemplatesInitially = false;

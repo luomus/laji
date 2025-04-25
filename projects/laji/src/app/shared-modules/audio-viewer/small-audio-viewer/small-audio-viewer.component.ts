@@ -17,6 +17,7 @@ import { defaultSpectrogramConfig } from '../variables';
 })
 export class SmallAudioViewerComponent implements OnChanges {
   @Input() audio?: Audio;
+  @Input() sampleRate = 44100;
   @Input() area?: AudioViewerArea;
   @Input() areaColor?: string;
   @Input() spectrogramConfig: SpectrogramConfig = defaultSpectrogramConfig;

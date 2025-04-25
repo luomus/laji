@@ -13,6 +13,7 @@ export class TemplatesComponent {
   @Input() confirmedTemplates: boolean[] = [];
   @Input() highlightNonConfirmed = true;
 
+  @Input({ required: true }) sampleRate!: number;
   @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
   @Input({ required: true }) audioIdMap!: { [id: number]: IGlobalAudio };
 
