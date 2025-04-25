@@ -3,11 +3,13 @@
 :host {
   font-size: $fs-2;
   display: inline-block;
+  margin-left: 3px;
 
   > div {
     display: inline-block;
     vertical-align: bottom;
     margin-right: 3px;
+    margin-top: -10px;
 
     label {
       display: block;
