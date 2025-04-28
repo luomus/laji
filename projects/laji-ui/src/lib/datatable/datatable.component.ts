@@ -14,6 +14,7 @@ interface BasicColumn<T extends Keyable> {
    */
   sortFn?: SortFn<T>;
   sortable?: boolean; // defaults to true
+  unselectable?: boolean; // defaults to true
 }
 
 /**

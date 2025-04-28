@@ -19,19 +19,41 @@ interface TableData {
   cols: DatatableColumn<any>[];
 }
 
-enum SubmissionState { NotStarted, Submitting, Ready }
+interface RowUploadInProgress {
+  _tag: 'in-progress';
+}
+
+interface RowUploadComplete {
+  _tag: 'complete';
+}
+
+interface RowUploadError {
+  _tag: 'error';
+  msg: string;
+}
+
+interface RowDeletionInProgress {
+  _tag: 'deleting';
+}
+
+type RowUploadState = RowUploadInProgress | RowUploadComplete | RowUploadError | RowDeletionInProgress;
 
 @Component({
   templateUrl: './trait-db-data-editor.component.html',
+  styleUrls: ['./trait-db-data-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('stringCell') stringCell!: TemplateRef<any>;
+  @ViewChild('numberCell') numberCell!: TemplateRef<any>;
+  @ViewChild('booleanCell') booleanCell!: TemplateRef<any>;
+  @ViewChild('enumCell') enumCell!: TemplateRef<any>;
+  @ViewChild('editCell') editCell!: TemplateRef<any>;
 
   @Output() submissionSuccess = new EventEmitter();
 
   tableData$ = new BehaviorSubject<TableData | null>(null);
-  submissionState$ = new BehaviorSubject<SubmissionState>(SubmissionState.NotStarted);
+  rowUploadState$ = new BehaviorSubject<Record<number, RowUploadState>>({});
 
   private viewInit$ = new Subject<void>();
   private datasetId$: Observable<string>;
@@ -62,15 +84,49 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
           rows[0].traits?.forEach((trait, idx) => {
             traitColsAcc.push(...traitCols.map(([name, node]) => ([`traits.${idx}.${name}`, node] as [string, LeafType])));
           });
-          const columns = ([...subjectCols, ...traitColsAcc] as [string, LeafType][])
+          const columns: DatatableColumn<any>[] = [{
+            title: '',
+            sortable: false,
+            unselectable: false,
+            cellTemplate: this.editCell
+          } as DatatableColumn<any>];
+          columns.push(...([...subjectCols, ...traitColsAcc] as [string, LeafType][])
             .map(
-              ([prop, _]) => ({
-                title: prop as string,
-                prop: prop as string,
-                sortable: false,
-                cellTemplate: this.stringCell
-              } as DatatableColumn<any>)
-            );
+              ([prop, colType]) => {
+                switch (colType._tag) {
+                  case 'enum':
+                    return ({
+                      title: prop as string,
+                      prop: prop as string,
+                      sortable: false,
+                      cellTemplate: this.enumCell,
+                      variants: colType.variants
+                    } as DatatableColumn<any>);
+                  case 'number':
+                    return ({
+                      title: prop as string,
+                      prop: prop as string,
+                      sortable: false,
+                      cellTemplate: this.numberCell,
+                    } as DatatableColumn<any>);
+                  case 'boolean':
+                    return ({
+                      title: prop as string,
+                      prop: prop as string,
+                      sortable: false,
+                      cellTemplate: this.booleanCell,
+                    } as DatatableColumn<any>);
+                  default:
+                    return ({
+                      title: prop as string,
+                      prop: prop as string,
+                      sortable: false,
+                      cellTemplate: this.stringCell
+                    } as DatatableColumn<any>);
+                }
+              }
+            )
+          );
 
           const formArray = this.constructFormArray(rows);
           return {
@@ -79,6 +135,19 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
           };
         })
       ).subscribe(data => {
+        // There's a potential memory leak with this subscription if the datasetId$ changes,
+        // however, it all gets cleaned up upon ngOnDestroy so it's not worth worrying about imo...
+        this.sub.add(
+          this.rowUploadState$.subscribe(state => {
+            Object.entries(state).forEach(([rowIdx, rowState]) => {
+              if (rowState._tag === 'in-progress') {
+                data.rows.at(+rowIdx).disable({ emitEvent: false });
+              } else {
+                data.rows.at(+rowIdx).enable({ emitEvent: false });
+              }
+            });
+          })
+        );
         this.tableData$.next(data);
       })
     );
@@ -95,25 +164,50 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
     this.viewInit$.complete();
   }
 
-  onSubmit() {
-    this.tableData$.pipe(
-      filter(data => !!data),
-      tap(_ => {
-        this.submissionState$.next(SubmissionState.Submitting);
-      }),
-      switchMap(data => this.api.fetch(
-        '/trait/rows/multi',
-        'post',
-        { query: { personToken: this.userService.getToken() } },
-        data!.rows.value
-      ))
-    ).subscribe(
+  onSubmitRow(row: FormGroup<any>, rowIdx: number) {
+    const params = {
+      path: { id: row.get(['subject', 'id'])!.value },
+      query: { personToken: this.userService.getToken() }
+    };
+    this.rowUploadState$.next({ ...this.rowUploadState$.value, [rowIdx]: { _tag: 'in-progress' } });
+    this.api.fetch('/trait/rows/{id}', 'put', params, row.value).subscribe(
       (res) => {
-        console.log('changes saved!', res);
-        this.submissionSuccess.emit();
+        console.log('result: ', res);
+        this.rowUploadState$.next({ ...this.rowUploadState$.value, [rowIdx]: { _tag: 'complete' } });
       },
       err => {
         console.error(err);
+        const msg = `Status: ${err?.error?.status}, Message: ${err?.error?.message}`;
+        this.rowUploadState$.next({ ...this.rowUploadState$.value, [rowIdx]: { _tag: 'error', msg } });
+      }
+    );
+  }
+
+  onDeleteRow(row: FormGroup<any>, rowIdx: number) {
+    const params = {
+      path: { id: row.get(['subject', 'id'])!.value },
+      query: { personToken: this.userService.getToken() }
+    };
+    this.rowUploadState$.next({ ...this.rowUploadState$.value, [rowIdx]: { _tag: 'deleting' } });
+    this.api.fetch('/trait/rows/{id}', 'delete', params).subscribe(
+      _ => {
+        this.tableData$.value?.rows.removeAt(rowIdx);
+        // shift all following indices down by 1
+        const currentState = this.rowUploadState$.value;
+        const newState = {} as Record<number, RowUploadState>;
+        Object.entries(currentState).forEach(([idx, state]) => {
+          if (+idx > rowIdx) {
+            newState[(+idx) - 1] = state;
+          } else if (+idx < rowIdx) {
+            newState[+idx] = state;
+          }
+        });
+        this.rowUploadState$.next(newState);
+      },
+      err => {
+        console.error(err);
+        const msg = `Status: ${err?.error?.status}, Message: ${err?.error?.message}`;
+        this.rowUploadState$.next({ ...this.rowUploadState$.value, [rowIdx]: { _tag: 'error', msg } });
       }
     );
   }

@@ -20,10 +20,17 @@
                 'sort-btn mr-2': true,
                 'sorted': colSortType(colIdx) !== 'NONE'
               }"
-              (click)="onToggleSort(colIdx)">
+              (click)="onToggleSort(colIdx)"
+            >
               {{ getSortBtnChar(colIdx) }}
             </button>
-            <button class="unselect-col-btn" (click)="onUnselectColumn(colIdx)">x</button>
+            <button
+              *ngIf="columns[colIdx].unselectable === undefined || columns[colIdx].unselectable"
+              class="unselect-col-btn"
+              (click)="onUnselectColumn(colIdx)"
+            >
+              x
+            </button>
           </div>
         </span>
         <span class="col-separator" (mousedown)="onResizeMouseDown($event)"></span>
