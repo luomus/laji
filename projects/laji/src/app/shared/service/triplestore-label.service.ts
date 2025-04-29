@@ -105,7 +105,7 @@ export class TriplestoreLabelService {
         case 'MP':
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.publications, key, {lang: 'multi'}).pipe(
-              map((publication: Publication) => publication['dc:bibliographicCitation']),
+              map((publication: Publication) => publication['name']),
               tap(name => TriplestoreLabelService.cache[key] = name),
               map(name => MultiLangService.getValue((name as any), lang)),
               share()

@@ -20,7 +20,7 @@ export class PublicationPipe implements PipeTransform {
 
   }
 
-  transform(value: any, field: 'bibliographicCitation'|'URI' = 'bibliographicCitation'): any {
+  transform(value: any, field: 'name'|'URI' = 'name'): any {
     if (value === this.lastKey && field === this.lastField) {
       return this.value;
     }

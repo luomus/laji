@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { LajiApi, LajiApiService } from './laji-api.service';
 import { map } from 'rxjs/operators';
 import { AbstractCachedHttpService } from './abstract-cached-http.service';
@@ -13,7 +12,7 @@ export class ChecklistService extends AbstractCachedHttpService<Checklist> {
     private lajiApi: LajiApiService,
     private translate: TranslateService
   ) {
-    super('dc:bibliographicCitation');
+    super('name');
   }
 
   getAllAsLookUp(lang: string = this.translate.currentLang) {

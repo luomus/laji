@@ -155,7 +155,7 @@ export class DatatableUtil {
     for (const item of values) {
       labelObservables.push(
         this.publicationService.getPublication(item, this.translate.currentLang).pipe(
-          map((res: Publication) => res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : item))
+          map((res: Publication) => res && res.name ? res.name : item))
       );
     }
     return ObservableForkJoin(labelObservables).pipe(
