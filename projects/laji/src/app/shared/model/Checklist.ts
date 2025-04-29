@@ -29,7 +29,7 @@ export interface Checklist {
      *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
      */
 
-    dcbibliographicCitation?: string;
+    name?: string;
 
 
     isPublic?: boolean;
