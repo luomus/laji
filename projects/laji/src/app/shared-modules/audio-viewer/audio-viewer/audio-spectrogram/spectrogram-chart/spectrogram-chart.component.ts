@@ -60,7 +60,7 @@ export class SpectrogramChartComponent implements OnChanges {
   @Input() onlyFocusAreaClickable? = false;
   @Input() onlyFocusAreaDrawable? = false;
   @Input() focusAreaColor?: string;
-  @Input() showAxisLabels = true;
+  @Input() showAxisLabels? = true;
   @Input() axisFontSize = 10;
   @Input() rectangles?: (AudioViewerRectangle|AudioViewerRectangleGroup)[];
 

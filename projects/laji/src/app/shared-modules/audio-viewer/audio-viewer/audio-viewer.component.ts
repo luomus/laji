@@ -10,7 +10,8 @@ import {
   SimpleChanges,
   OnChanges,
   TemplateRef,
-  ViewChild, ChangeDetectorRef
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core';
 import {
   AudioViewerMode,
@@ -24,10 +25,13 @@ import { defaultSpectrogramConfig } from '../variables';
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerView } from '../service/audio-viewer-view';
 import { delay } from 'rxjs/operators';
-import { rangeIsInsideRange } from '../service/audio-viewer-utils';
+import { getMaxFreq, rangeIsInsideRange } from '../service/audio-viewer-utils';
 import { Subscription } from 'rxjs';
 import { AudioService } from '../service/audio.service';
 import { AudioSpectrogramComponent } from './audio-spectrogram/audio-spectrogram.component';
+import { ModalRef, ModalService } from '../../../../../../laji-ui/src/lib/modal/modal.service';
+import { SpectrogramConfigModalComponent } from './spectrogram-config-modal/spectrogram-config-modal.component';
+import equals from 'deep-equal';
 
 @Component({
   selector: 'laji-audio-viewer',
@@ -42,24 +46,28 @@ export class AudioViewerComponent implements OnChanges {
   @Input() focusArea?: AudioViewerFocusArea;
   @Input() rectangles?: (AudioViewerRectangle|AudioViewerRectangleGroup)[];
 
-  @Input() autoplay = false;
+  @Input() autoplay? = false;
   @Input() autoplayRepeat = 1;
 
-  @Input() showControls = true;
+  @Input() showControls? = true;
   @Input() controls?: AudioViewerControls;
+  @Input() showSpectrogramConfig? = false;
 
-  @Input() showAxisLabels = true;
+  @Input() showAxisLabels? = true;
   @Input() axisFontSize = 10;
-  @Input() playOnlyOnSingleClick = false; // play the recording only when the user clicks once and not double-clicks
+  @Input() playOnlyOnSingleClick? = false; // play the recording only when the user clicks once and not double-clicks
 
-  @Input() showPregeneratedSpectrogram = false;
+  @Input() showPregeneratedSpectrogram? = false;
   @Input() spectrogramConfig: SpectrogramConfig = defaultSpectrogramConfig;
 
   @Input() spectrogramWidth?: number;
   @Input() spectrogramHeight?: number;
   @Input() spectrogramMargin?: { top: number; bottom: number; left: number; right: number };
 
-  @Input() adaptToContainerHeight = false;
+  @Input() minFrequency?: number;
+  @Input() maxFrequency?: number;
+
+  @Input() adaptToContainerHeight? = false;
 
   @Input() mode: AudioViewerMode = 'default';
 
@@ -71,6 +79,11 @@ export class AudioViewerComponent implements OnChanges {
 
   private bufferSignal = signal<AudioBuffer|undefined>(undefined);
   buffer = this.bufferSignal.asReadonly();
+
+  private activeSpectrogramConfigSignal = signal<SpectrogramConfig>(
+    this.spectrogramConfig, {equal: equals}
+  );
+  activeSpectrogramConfig = this.activeSpectrogramConfigSignal.asReadonly();
 
   loading = false;
   hasError = false;
@@ -86,19 +99,24 @@ export class AudioViewerComponent implements OnChanges {
     return this.adaptToContainerHeight;
   }
 
-  private spectrogramConfigSignal = signal<SpectrogramConfig>(this.spectrogramConfig);
+  private activeMinFrequencySignal = signal<number|undefined>(this.minFrequency);
+  private activeMaxFrequencySignal = signal<number|undefined>(this.maxFrequency);
   private focusAreaSignal = signal<AudioViewerFocusArea|undefined>(this.focusArea);
 
-  private audioSub?: Subscription;
   private clicks = 0;
+  private spectrogramConfigModalRef?: ModalRef<SpectrogramConfigModalComponent>;
+  private spectrogramConfigModalHideSub?: Subscription;
+  private audioSub?: Subscription;
 
   constructor(
     private audioService: AudioService,
+    private modalService: ModalService,
     private cdr: ChangeDetectorRef
   ) {
     this.audioViewerView = new AudioViewerView(
       this.buffer,
-      this.spectrogramConfigSignal.asReadonly(),
+      this.activeMinFrequencySignal.asReadonly(),
+      this.activeMaxFrequencySignal.asReadonly(),
       this.focusAreaSignal.asReadonly(),
     );
     this.audioPlayer = new AudioPlayer(this.buffer, this.audioViewerView.playArea);
@@ -109,10 +127,17 @@ export class AudioViewerComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.spectrogramConfig) {
-      this.spectrogramConfigSignal.set(this.spectrogramConfig);
-    }
+    const spectrogramConfigToDefault = changes.showSpectrogramConfig && !this.showSpectrogramConfig;
 
+    if (changes.spectrogramConfig || spectrogramConfigToDefault) {
+      this.activeSpectrogramConfigSignal.set(this.spectrogramConfig);
+    }
+    if (changes.minFrequency || spectrogramConfigToDefault) {
+      this.activeMinFrequencySignal.set(this.minFrequency);
+    }
+    if (changes.maxFrequency || spectrogramConfigToDefault) {
+      this.activeMaxFrequencySignal.set(this.maxFrequency);
+    }
     if (changes.focusArea) {
       this.focusAreaSignal.set(this.focusArea);
     }
@@ -193,6 +218,33 @@ export class AudioViewerComponent implements OnChanges {
     this.drawEnd.emit({
       xRange: area.xRange,
       yRange: area.yRange
+    });
+  }
+
+  openSpectrogramConfigModal(): void {
+    const initialState = {
+      minFrequencyLimit: this.minFrequency ?? 0,
+      maxFrequencyLimit: this.maxFrequency ?? getMaxFreq(this.buffer()!.sampleRate),
+      minFrequency: this.audioViewerView.defaultView()!.yRange[0],
+      maxFrequency: this.audioViewerView.defaultView()!.yRange[1],
+      noiseReduction: this.activeSpectrogramConfig().noiseReductionParam ?? defaultSpectrogramConfig.noiseReductionParam,
+      defaultNoiseReduction: this.spectrogramConfig.noiseReductionParam ?? defaultSpectrogramConfig.noiseReductionParam
+    };
+    this.spectrogramConfigModalRef = this.modalService.show(SpectrogramConfigModalComponent, {
+      size: 'md',
+      contentClass: 'laji-page',
+      initialState
+    });
+
+    this.spectrogramConfigModalHideSub = this.spectrogramConfigModalRef.content!.hideModal.subscribe((data) => {
+      if (data) {
+        this.activeMinFrequencySignal.set(data.minFrequency);
+        this.activeMaxFrequencySignal.set(data.maxFrequency);
+        this.activeSpectrogramConfigSignal.update(config => ({...config, noiseReductionParam: data.noiseReduction}));
+      }
+      this.spectrogramConfigModalRef!.hide();
+      this.spectrogramConfigModalHideSub?.unsubscribe();
+      this.cdr.markForCheck();
     });
   }
 

@@ -14,7 +14,7 @@
       [axisFontSize]="axisFontSize"
       [rectangles]="rectangles"
       [currentTime]="audioPlayer.currentTime()"
-      [config]="spectrogramConfig"
+      [config]="activeSpectrogramConfig()"
       [mode]="audioViewerView.mode()"
       [width]="spectrogramWidth"
       [height]="spectrogramHeight"
@@ -40,6 +40,9 @@
     [controls]="controls"
     [customControlsTpl]="customControlsTpl"
   ></laji-audio-viewer-controls>
+  <div class="spectrogram-config" *ngIf="showSpectrogramConfig">
+    <lu-button (click)="openSpectrogramConfigModal()"><i class="glyphicon glyphicon-cog"></i></lu-button>
+  </div>
   <div class="pull-right audio-info" *ngIf="audio && audioInfoTpl">
     <ng-template [ngTemplateOutlet]="audioInfoTpl" [ngTemplateOutletContext]="{audio: audio}"></ng-template>
   </div>

@@ -26,9 +26,10 @@ import {
   TaxonTypeEnum
 } from '../../../../kerttu-global-shared/models';
 import {
-  AudioViewerMode,
   AudioViewerArea,
-  AudioViewerRectangle, AudioViewerRectangleGroup,
+  AudioViewerMode,
+  AudioViewerRectangle,
+  AudioViewerRectangleGroup,
   SpectrogramConfig
 } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 import { map } from 'rxjs/operators';
@@ -38,18 +39,17 @@ import { TranslateService } from '@ngx-translate/core';
 import { KerttuGlobalUtil } from '../../../../kerttu-global-shared/service/kerttu-global-util.service';
 import { IdentificationTableComponent } from './identification-table/identification-table.component';
 import { defaultSpectrogramConfig } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/variables';
-import {
-  defaultAudioSampleRate,
-  defaultBatAudioSampleRate,
-  defaultInsectAudioSampleRate,
-  lowAudioSampleRate
-} from '../../../../kerttu-global-shared/variables';
+import { lowAudioSampleRate } from '../../../../kerttu-global-shared/variables';
 import { DOCUMENT } from '@angular/common';
 import { Util } from '../../../../../../../laji/src/app/shared/service/util.service';
 import {
   AudioViewerComponent
 } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer/audio-viewer.component';
 
+const batSpectrogramConfig = {
+...defaultSpectrogramConfig,
+    targetWindowLengthInSeconds: 0.004
+};
 
 @Component({
   selector: 'bsg-identification-view',
@@ -70,6 +70,8 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   loadingSpecies = false;
 
   sampleRate!: number;
+  minFrequency!: number;
+  maxFrequency!: number;
   spectrogramConfig!: SpectrogramConfig;
   audioViewerMode: AudioViewerMode = 'default';
   audioViewerRectangles: (AudioViewerRectangle|AudioViewerRectangleGroup)[] = [];
@@ -104,7 +106,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2
   ) {
-    this.updateSpectrogramConfig();
+    this.updateAudioViewerConfigForType(TaxonTypeEnum.bird);
   }
 
   destroyDragMoveListener?: () => void;
@@ -117,8 +119,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   ngOnChanges(changes: SimpleChanges) {
     this.clearDrawMode();
     if (changes.recording) {
-      this.sampleRate = KerttuGlobalUtil.getDefaultSampleRate(this.recording.taxonType);
-      this.updateSpectrogramConfig();
+      this.updateAudioViewerConfigForType(this.recording.taxonType);
       this.updateSelectedSpeciesAndSpectrogramRectangles();
     }
   }
@@ -237,22 +238,15 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
-  updateSpectrogramConfig() {
-    if (this.recording?.taxonType === TaxonTypeEnum.bat) {
-      this.spectrogramConfig = {
-        ...defaultSpectrogramConfig,
-        targetWindowLengthInSeconds: 0.004,
-        minFrequency: this.showWholeFrequencyRange ? 0 : 14000
-      };
-    } else if (this.recording?.taxonType === TaxonTypeEnum.insect) {
-      this.spectrogramConfig = {
-        ...defaultSpectrogramConfig
-      };
+  updateAudioViewerConfigForType(taxonType: TaxonTypeEnum) {
+    this.sampleRate = KerttuGlobalUtil.getDefaultSampleRate(taxonType);
+    this.minFrequency = 0;
+    this.maxFrequency = (taxonType === TaxonTypeEnum.bird && !this.showWholeFrequencyRange ? lowAudioSampleRate : this.sampleRate) / 2;
+
+    if (taxonType === TaxonTypeEnum.bat) {
+      this.spectrogramConfig = batSpectrogramConfig;
     } else {
-      this.spectrogramConfig = {
-        ...defaultSpectrogramConfig,
-        maxFrequency: (this.showWholeFrequencyRange ? defaultAudioSampleRate : lowAudioSampleRate) / 2
-      };
+      this.spectrogramConfig = defaultSpectrogramConfig;
     }
   }
 

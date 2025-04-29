@@ -13,10 +13,13 @@
       [adaptToContainerHeight]="true"
       [sampleRate]="sampleRate"
       [spectrogramConfig]="spectrogramConfig"
+      [minFrequency]="minFrequency"
+      [maxFrequency]="maxFrequency"
       [controls]="{
         slowDownControl: recording.taxonType === taxonTypeEnum.bat || recording.taxonType === taxonTypeEnum.insect,
         zoomControl: true
       }"
+      [showSpectrogramConfig]="recording.taxonType === taxonTypeEnum.bat"
       [customControlsTpl]="audioCustomControls"
       [audioInfoTpl]="audioInfo"
       (drawEnd)="drawEnd($event)"
@@ -24,14 +27,14 @@
     ></laji-audio-viewer>
     <ng-template #audioCustomControls>
       <bsg-audio-viewer-custom-controls
-        [enableShowWholeFrequencyRangeSetting]="recording.taxonType !== taxonTypeEnum.insect"
-        [enableShowWholeTimeRangeSetting]="recording.taxonType !== taxonTypeEnum.bat"
+        [enableShowWholeFrequencyRangeSetting]="recording.taxonType === taxonTypeEnum.bird"
+        [enableShowWholeTimeRangeSetting]="recording.taxonType === taxonTypeEnum.bird || recording.taxonType === taxonTypeEnum.insect"
         [(showWholeFrequencyRange)]="showWholeFrequencyRange"
         [(showWholeTimeRange)]="showWholeTimeRange"
-        (showWholeFrequencyRangeChange)="updateSpectrogramConfig()"
-        [showWholeFrequencyRangeLabel]="(recording.taxonType === taxonTypeEnum.bat ? 'identification.lowFrequencies' : 'identification.highFrequencies') | translate"
+        (showWholeFrequencyRangeChange)="updateAudioViewerConfigForType(recording.taxonType)"
+        [showWholeFrequencyRangeLabel]="'identification.highFrequencies' | translate"
         [showWholeTimeRangeLabel]="'identification.timeBuffer' | translate"
-        [showWholeFrequencyRangeInfo]="(recording.taxonType === taxonTypeEnum.bat ? 'identification.lowFrequencies.info' : 'identification.highFrequencies.info') | translate"
+        [showWholeFrequencyRangeInfo]="'identification.highFrequencies.info' | translate"
         [showWholeTimeRangeInfo]="'identification.timeBuffer.info' | translate"
       ></bsg-audio-viewer-custom-controls>
     </ng-template>

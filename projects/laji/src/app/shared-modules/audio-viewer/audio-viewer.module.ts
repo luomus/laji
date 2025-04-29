@@ -17,6 +17,8 @@ import { SmallAudioViewerComponent } from './small-audio-viewer/small-audio-view
 import { UtilitiesDumbDirectivesModule } from '../utilities/directive/dumb-directives/utilities-dumb-directives.module';
 import { AudioViewerComponent } from './audio-viewer/audio-viewer.component';
 import { AudioViewerControlsComponent } from './audio-viewer/audio-viewer-controls/audio-viewer-controls.component';
+import { SpectrogramConfigModalComponent } from './audio-viewer/spectrogram-config-modal/spectrogram-config-modal.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AudioSpectrogramComponent,
@@ -24,7 +26,8 @@ import { AudioViewerControlsComponent } from './audio-viewer/audio-viewer-contro
     RequiresAudioSupportDirective,
     SpectrogramComponent, SpectrogramChartComponent, SmallAudioViewerComponent,
     AudioViewerComponent,
-    AudioViewerControlsComponent
+    AudioViewerControlsComponent,
+    SpectrogramConfigModalComponent
   ],
   providers: [AudioService, SpectrogramService],
   imports: [
@@ -34,7 +37,8 @@ import { AudioViewerControlsComponent } from './audio-viewer/audio-viewer-contro
     LajiUiModule,
     LajiMapModule,
     JwBootstrapSwitchNg2Module,
-    UtilitiesDumbDirectivesModule
+    UtilitiesDumbDirectivesModule,
+    FormsModule
   ],
   exports: [
     AudioViewerComponent,

@@ -59,7 +59,7 @@ function computeSpectrogram(buffer: AudioBuffer, config: CompleteSpectrogramConf
 }
 
 function getData(buffer: AudioBuffer, config: SpectrogramConfig): {data: Float32Array[]; sumByColumn: number[]} {
-  const {nperseg, noverlap} = getSegmentSizeAndOverlap(config, buffer.sampleRate);
+  const {nperseg, noverlap} = getSegmentSizeAndOverlap(buffer, config);
 
   const chanData = buffer.getChannelData(0);
   // @ts-ignore
@@ -183,9 +183,16 @@ function convertRange(input: number, inputRange: number[], outputRange: number[]
   return percent * (outputRangeMax - outputRangeMin) + outputRangeMin;
 }
 
-function getSegmentSizeAndOverlap(config: SpectrogramConfig, sampleRate: number): {nperseg: number; noverlap: number} {
-  const nperseg = getSpectrogramSegmentLength(config.targetWindowLengthInSeconds, sampleRate);
-  const noverlap = Math.round(config.targetWindowOverlapPercentage * nperseg);
+function getSegmentSizeAndOverlap(buffer: AudioBuffer, config: SpectrogramConfig): {nperseg: number; noverlap: number} {
+  const nperseg = getSpectrogramSegmentLength(config.targetWindowLengthInSeconds, buffer.sampleRate);
+
+  let targetWindowOverlapPercentage: number|undefined;
+  if (config.targetWindowOverlapPercentage === 'auto') {
+    targetWindowOverlapPercentage = convertRange(Math.min(Math.max(buffer.length, 100000), 1000000), [100000, 1000000], [0.95, 0.375]);
+  } else {
+    targetWindowOverlapPercentage = config.targetWindowOverlapPercentage;
+  }
+  const noverlap = Math.round(targetWindowOverlapPercentage * nperseg);
   return {nperseg, noverlap};
 }
 

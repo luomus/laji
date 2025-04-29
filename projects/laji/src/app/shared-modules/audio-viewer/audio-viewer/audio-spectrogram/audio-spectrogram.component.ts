@@ -44,7 +44,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Input() onlyFocusAreaClickable? = false;
   @Input() onlyFocusAreaDrawable? = false;
   @Input() focusAreaColor?: string;
-  @Input() showAxisLabels = true;
+  @Input() showAxisLabels? = true;
   @Input() axisFontSize = 10;
   @Input() rectangles?: (AudioViewerRectangle|AudioViewerRectangleGroup)[];
 
@@ -57,7 +57,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Input() width?: number;
   @Input() height?: number;
   @Input() margin?: { top: number; bottom: number; left: number; right: number };
-  @Input() adaptToContainerHeight = false;
+  @Input() adaptToContainerHeight? = false;
 
   @Output() spectrogramLoading = new EventEmitter<boolean>();
   @Output() dragStart = new EventEmitter();
@@ -135,7 +135,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
           ? (
             getSpectrogramSegmentLength(
               this.config.targetWindowLengthInSeconds,
-              this.config.maxFrequency ? this.config.maxFrequency * 2 : this.sampleRate
+              this.defaultView ? this.defaultView.yRange[1] * 2 : this.sampleRate
             ) / 2
           )
           : 0;

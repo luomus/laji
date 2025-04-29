@@ -6,13 +6,11 @@ export interface Audio {
 
 export interface SpectrogramConfig {
   targetWindowLengthInSeconds: number;
-  targetWindowOverlapPercentage: number;
+  targetWindowOverlapPercentage: number|'auto';
   nbrOfRowsRemovedFromStart?: number; // first rows are usually very noisy and removing them improves the spectrogram
   maxNbrOfColsForNoiseEstimation?: number;
   noiseReductionParam?: number;
   logRange?: number;
-  minFrequency?: number;
-  maxFrequency?: number;
 }
 
 export interface AudioViewerFocusArea {
