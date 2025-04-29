@@ -49,6 +49,8 @@
                   [spectrogramHeight]="50"
                   [spectrogramConfig]="spectrogramConfig"
                   [areaColor]="box.overlapsWithOtherSpecies ? overlappingBirdRectangleColor: birdRectangleColor"
+                  [areaTimePadding]="recording.taxonType === this.taxonTypeEnum.bat ? 0.05 : 0.5"
+                  [areaFrequencyPadding]="recording.taxonType === this.taxonTypeEnum.bat ? 2000 : 500"
                 ></laji-small-audio-viewer>
               </td>
               <td *ngIf="showSoundTypeSelect" style="width: 160px" class="select-column">

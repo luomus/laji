@@ -31,19 +31,21 @@
     ></laji-audio-spectrogram>
   </div>
 </laji-spinner>
-<div class="audio-controls">
+<div class="audio-controls" *ngIf="showControls || showSpectrogramConfig || audioInfoTpl">
   <laji-audio-viewer-controls
     *ngIf="showControls"
     [audioPlayer]="audioPlayer"
     [audioViewerView]="audioViewerView"
-    [loading]="loading"
+    [disabled]="loading || hasError"
     [controls]="controls"
     [customControlsTpl]="customControlsTpl"
   ></laji-audio-viewer-controls>
   <div class="spectrogram-config" *ngIf="showSpectrogramConfig">
-    <lu-button (click)="openSpectrogramConfigModal()"><i class="glyphicon glyphicon-cog"></i></lu-button>
+    <lu-button [disabled]="loading || hasError" (click)="openSpectrogramConfigModal()">
+      <i class="glyphicon glyphicon-cog"></i>
+    </lu-button>
   </div>
-  <div class="pull-right audio-info" *ngIf="audio && audioInfoTpl">
+  <div class="pull-right audio-info" *ngIf="audioInfoTpl">
     <ng-template [ngTemplateOutlet]="audioInfoTpl" [ngTemplateOutletContext]="{audio: audio}"></ng-template>
   </div>
 </div>

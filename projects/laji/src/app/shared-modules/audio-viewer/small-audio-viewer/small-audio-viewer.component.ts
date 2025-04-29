@@ -20,6 +20,8 @@ export class SmallAudioViewerComponent implements OnChanges {
   @Input() sampleRate = 44100;
   @Input() area?: AudioViewerArea;
   @Input() areaColor?: string;
+  @Input() areaTimePadding?: number;
+  @Input() areaFrequencyPadding?: number;
   @Input() spectrogramConfig: SpectrogramConfig = defaultSpectrogramConfig;
   @Input() label?: string;
   @Input() highlight = false;
@@ -42,8 +44,9 @@ export class SmallAudioViewerComponent implements OnChanges {
         area: this.area,
         color: this.areaColor,
         zoomTime: true,
-        timePaddingOnZoom: 0.5,
-        zoomFrequency: true
+        timePaddingOnZoom: this.areaTimePadding || 0.5,
+        zoomFrequency: true,
+        frequencyPaddingOnZoom: this.areaFrequencyPadding || 500
       };
     } else {
       this.focusArea = undefined;

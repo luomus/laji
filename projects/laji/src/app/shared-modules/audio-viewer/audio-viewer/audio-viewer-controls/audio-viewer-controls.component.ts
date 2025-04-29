@@ -12,7 +12,7 @@ import { AudioViewerControls } from '../../models';
 export class AudioViewerControlsComponent {
   @Input({ required: true }) audioPlayer!: AudioPlayer;
   @Input({ required: true }) audioViewerView!: AudioViewerView;
-  @Input() loading? = false;
+  @Input() disabled = false;
   @Input() controls?: AudioViewerControls;
   @Input() customControlsTpl?: TemplateRef<any>;
 

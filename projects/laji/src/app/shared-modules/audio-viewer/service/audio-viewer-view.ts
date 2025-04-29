@@ -1,19 +1,19 @@
 import { effect, Signal, signal } from '@angular/core';
-import { AudioViewerMode, AudioViewerArea, SpectrogramConfig, AudioViewerFocusArea } from '../models';
+import { AudioViewerMode, AudioViewerArea, AudioViewerFocusArea } from '../models';
 import { getMaxFreq, getPaddedRange } from './audio-viewer-utils';
-
+import equals from 'deep-equal';
 
 export class AudioViewerView {
   private readonly modeSignal = signal<AudioViewerMode>('default');
   readonly mode = this.modeSignal.asReadonly();
 
-  private readonly activeViewSignal = signal<AudioViewerArea|undefined>(undefined);
+  private readonly activeViewSignal = signal<AudioViewerArea|undefined>(undefined, {equal: equals});
   readonly activeView = this.activeViewSignal.asReadonly();
 
-  private readonly defaultViewSignal = signal<AudioViewerArea|undefined>(undefined);
+  private readonly defaultViewSignal = signal<AudioViewerArea|undefined>(undefined, {equal: equals});
   readonly defaultView = this.defaultViewSignal.asReadonly();
 
-  private readonly playAreaSignal = signal<AudioViewerArea|undefined>(undefined);
+  private readonly playAreaSignal = signal<AudioViewerArea|undefined>(undefined, {equal: equals});
   readonly playArea = this.playAreaSignal.asReadonly();
 
   private readonly buffer: Signal<AudioBuffer|undefined>;

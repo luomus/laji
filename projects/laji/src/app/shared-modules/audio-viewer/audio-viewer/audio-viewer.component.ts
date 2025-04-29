@@ -40,7 +40,7 @@ import equals from 'deep-equal';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioViewerComponent implements OnChanges {
-  @Input() audio?: Audio;
+  @Input({ required: true }) audio!: Audio;
   @Input() sampleRate = 44100;
 
   @Input() focusArea?: AudioViewerFocusArea;
@@ -152,26 +152,24 @@ export class AudioViewerComponent implements OnChanges {
       this.bufferSignal.set(undefined);
       this.setAudioLoading(true);
 
-      if (this.audio) {
-        this.audioSub = this.audioService.getAudioBuffer(this.audio.url, this.sampleRate, this.audio.duration).pipe(
-          delay(0) // has a delay because otherwise the changes are not always detected
-        ).subscribe((buffer) => {
-          if (this.focusArea?.area.xRange && !rangeIsInsideRange(this.focusArea.area.xRange, [0, buffer.duration])) {
-            this.onError();
-            return;
-          }
-
-          this.bufferSignal.set(buffer);
-
-          if (this.autoplay) {
-            this.audioPlayer.startAutoplay(this.autoplayRepeat);
-          }
-
-          this.cdr.markForCheck();
-        }, () => {
+      this.audioSub = this.audioService.getAudioBuffer(this.audio.url, this.sampleRate, this.audio.duration).pipe(
+        delay(0) // has a delay because otherwise the changes are not always detected
+      ).subscribe((buffer) => {
+        if (this.focusArea?.area.xRange && !rangeIsInsideRange(this.focusArea.area.xRange, [0, buffer.duration])) {
           this.onError();
-        });
-      }
+          return;
+        }
+
+        this.bufferSignal.set(buffer);
+
+        if (this.autoplay) {
+          this.audioPlayer.startAutoplay(this.autoplayRepeat);
+        }
+
+        this.cdr.markForCheck();
+      }, () => {
+        this.onError();
+      });
     }
   }
 
