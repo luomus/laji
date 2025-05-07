@@ -1,0 +1,35 @@
+<ng-container *ngIf="(stepStack$ | async) as stack">
+  <ng-container *ngIf="stack.length > 0; else loading">
+    <lu-stepper
+      [currentStep]="stack.length - 1"
+      [steps]="['Import', 'Validate', 'Check', 'Ready']"
+      (stepBack)="onStepBack($event)"
+    ></lu-stepper>
+
+    <laji-trait-db-data-entry-import
+      [ngClass]="{'d-none': stack.length !== 1}"
+      (traitDataTsv)="onTsvChange($event)"
+    ></laji-trait-db-data-entry-import>
+    <laji-trait-db-data-entry-validate
+      *ngIf="stack.length > 1"
+      [ngClass]="{'d-none': stack.length !== 2}"
+      [datasetId]="stack[1].datasetId"
+      [tsv]="stack[1].tsv"
+      (validationSuccess)="onValidationSuccess()"
+    ></laji-trait-db-data-entry-validate>
+    <laji-trait-db-data-entry-check
+      *ngIf="stack.length > 2"
+      [ngClass]="{'d-none': stack.length !== 3}"
+      [datasetId]="stack[2].datasetId"
+      [tsv]="stack[2].tsv"
+      (submissionSuccess)="onSubmissionSuccess()"
+    ></laji-trait-db-data-entry-check>
+    <laji-trait-db-data-entry-ready
+      *ngIf="stack.length > 3"
+      [ngClass]="{'d-none': stack.length !== 4}"
+      [datasetId]="stack[3].datasetId"
+    ></laji-trait-db-data-entry-ready>
+  </ng-container>
+</ng-container>
+<ng-template #loading>Loading...</ng-template>
+

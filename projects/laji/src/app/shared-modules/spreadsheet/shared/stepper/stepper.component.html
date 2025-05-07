@@ -1,12 +1,2 @@
-<ul>
-  <li *ngFor="let step of steps; let i=index"
-      (click)="backTo(i)"
-      [ngClass]="{
-        'completed link': i < active,
-        'active': i === active,
-        'incomplete': i > active
-      }">
-    <span class="bubble">{{ i < active ? '✓' : (i + 1) }}</span>
-    <strong>{{ step.label | translate }}</strong>
-  </li>
-</ul>
+<lu-stepper [currentStep]="currentStep" [steps]="luStepperSteps" (stepBack)="onStepBack($event)"></lu-stepper>
+

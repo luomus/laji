@@ -20,10 +20,17 @@
                 'sort-btn mr-2': true,
                 'sorted': colSortType(colIdx) !== 'NONE'
               }"
-              (click)="onToggleSort(colIdx)">
+              (click)="onToggleSort(colIdx)"
+            >
               {{ getSortBtnChar(colIdx) }}
             </button>
-            <button class="unselect-col-btn" (click)="onUnselectColumn(colIdx)">x</button>
+            <button
+              *ngIf="columns[colIdx].unselectable === undefined || columns[colIdx].unselectable"
+              class="unselect-col-btn"
+              (click)="onUnselectColumn(colIdx)"
+            >
+              x
+            </button>
           </div>
         </span>
         <span class="col-separator" (mousedown)="onResizeMouseDown($event)"></span>
@@ -38,15 +45,15 @@
       </th>
     </tr>
     <ng-container *ngIf="!loading else rowGhosts">
-      <tr *ngFor="let row of rows">
+      <tr *ngFor="let row of rows; let rowIdx = index">
         <td *ngFor="let colIdx of selectedColumns" #rowRef>
           <ng-container *ngIf="columns[colIdx] as col">
             <ng-container *ngIf="columnHasTemplate(col)">
               <ng-container
                 *ngTemplateOutlet="col.cellTemplate;
-                context: 'prop' in col
-                  ? { $implicit: row, prop: getNestedValue(row, col.prop) }
-                  : { $implicit: row }"
+                context: hasProp(col)
+                  ? { $implicit: row, col, rowIdx, colIdx, prop: getNestedValue(row, $any(col).prop) }
+                  : { $implicit: row, col, rowIdx, colIdx }"
               ></ng-container>
             </ng-container>
             <ng-container *ngIf="!columnHasTemplate(col)">

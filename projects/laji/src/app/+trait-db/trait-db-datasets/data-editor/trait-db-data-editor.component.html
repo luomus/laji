@@ -1,0 +1,66 @@
+<h1>Trait data editor</h1>
+<div *ngIf="(tableData$ | async) as tableData">
+  <lu-datatable
+    [rows]="tableData.rows.controls"
+    [columns]="tableData.cols"
+  ></lu-datatable>
+</div>
+
+<ng-template #stringCell let-row let-col="col" let-rowIdx="rowIdx" let-colIdx="colIdx">
+  <ng-container *ngIf="row.get($any(col).prop) as control">
+    <input class="form-control" [formControl]="control"/>
+  </ng-container>
+</ng-template>
+
+<ng-template #numberCell let-row let-col="col" let-rowIdx="rowIdx" let-colIdx="colIdx">
+  <ng-container *ngIf="row.get($any(col).prop) as control">
+    <input type="number" class="form-control" [formControl]="control"/>
+  </ng-container>
+</ng-template>
+
+<ng-template #booleanCell let-row let-col="col" let-rowIdx="rowIdx" let-colIdx="colIdx">
+  <ng-container *ngIf="row.get($any(col).prop) as control">
+    <input type="checkbox" [formControl]="control"/>
+  </ng-container>
+</ng-template>
+
+<ng-template #enumCell let-row let-col="col" let-rowIdx="rowIdx" let-colIdx="colIdx">
+  <ng-container *ngIf="row.get($any(col).prop) as control">
+    <select class="form-control" [formControl]="control">
+      <option *ngFor="let option of col.variants" [value]="option">
+        {{ option }}
+      </option>
+    </select>
+  </ng-container>
+</ng-template>
+
+<ng-template #editCell let-row let-col="col" let-rowIdx="rowIdx" let-colIdx="colIdx">
+  <div class="d-flex flex-nowrap" *ngIf="(rowUploadState$ | async) as rowUploadState">
+    <span
+      class="status-icon"
+      [ngClass]="{
+        'glyphicon glyphicon-hourglass info': rowUploadState[rowIdx]?._tag === 'in-progress' || rowUploadState[rowIdx]?._tag === 'deleting',
+        'glyphicon glyphicon-ok success': rowUploadState[rowIdx]?._tag === 'complete',
+        'glyphicon glyphicon-remove danger': rowUploadState[rowIdx]?._tag === 'error'
+      }"
+      [luTooltip]="rowUploadState[rowIdx]?._tag === 'error' ? rowUploadState[rowIdx].msg : null"
+    ></span>
+    <button
+      class="lu-btn btn-default mr-4"
+      [class.lu-loading]="rowUploadState[rowIdx]?._tag === 'in-progress'"
+      [disabled]="rowUploadState[rowIdx]?._tag === 'in-progress' || rowUploadState[rowIdx]?._tag === 'deleting'"
+      (click)="onSubmitRow(row, rowIdx)"
+    >
+      Submit
+    </button>
+    <button
+      class="lu-btn btn-default"
+      [class.lu-loading]="rowUploadState[rowIdx]?._tag === 'deleting'"
+      [disabled]="rowUploadState[rowIdx]?._tag === 'in-progress' || rowUploadState[rowIdx]?._tag === 'deleting'"
+      (click)="onDeleteRow(row, rowIdx)"
+    >
+      Delete
+    </button>
+  </div>
+</ng-template>
+
