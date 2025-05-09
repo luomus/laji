@@ -1,0 +1,25 @@
+<div *ngFor="let traitEnumValueControl of form.controls; let index = index" class="trait-enum-value-control">
+  <form [formGroup]="traitEnumValueControl">
+    <div class="d-block mb-3">
+      <label>
+        Name:
+        <input class="form-control" type="text" formControlName="name">
+      </label>
+    </div>
+    <div class="mb-3">
+      <label>
+        Description:
+        <input class="form-control" type="text" formControlName="description">
+      </label>
+    </div>
+    <div class="mb-3">
+      <label>
+        Data entry name:
+        <input class="form-control" type="text" formControlName="dataEntryName">
+      </label>
+    </div>
+  </form>
+  <button class="btn btn-default" (click)="onRemoveElem($event, index)">Remove trait enumeration value</button>
+</div>
+<button class="btn btn-default" (click)="onAddElem($event)">Add trait enumeration value</button>
+

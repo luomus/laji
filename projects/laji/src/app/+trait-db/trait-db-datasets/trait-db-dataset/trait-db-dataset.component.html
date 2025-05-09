@@ -24,8 +24,8 @@
 
     <ng-container *ngIf="data.perms !== undefined; else loading">
       <ng-container *ngIf="data.perms !== null">
-        <button class="btn btn-default">upload trait data</button>
-        <button class="btn btn-default">modify existing trait data</button>
+        <a [routerLink]="['data-entry']" class="btn btn-default">upload trait data</a>
+        <a [routerLink]="['data-editor']" class="btn btn-default">modify existing trait data</a>
 
         <h3>Permissions</h3>
         <ul>

@@ -86,7 +86,8 @@
     "docker:npm-run": "npm run docker:npm-run:build && npm run docker:npm-run:run --",
     "docker:npm-run:build": "docker build -t laji-npm-run -f npm-run.Dockerfile .",
     "docker:npm-run:run": "docker run laji-npm-run:latest",
-    "generate:trait-search": "tsc ./scripts/trait-search-codegen.ts --outDir ./dist && node ./dist/trait-search-codegen.js"
+    "generate:trait-search": "tsc ./scripts/codegen/laji-trait-search.ts --outDir ./dist/scripts && node ./dist/scripts/laji-trait-search.js",
+    "generate:trait-data-editor": "tsc ./scripts/codegen/laji-trait-data-editor.ts --outDir ./dist/scripts && node ./dist/scripts/laji-trait-data-editor.js"
   },
   "contributors": [
     "Olli Raitio <olli.raitio@helsinki.fi>",
