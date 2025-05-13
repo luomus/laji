@@ -2,8 +2,8 @@
   "name": "laji-api-client-b",
   "version": "0.0.1",
   "scripts": {
-    "updateOld": "openapi-typescript https://apitest.laji.fi/explorer/swagger.json -o ./generated/api.d.ts",
-    "updateNew": "openapi-typescript https://apitest.laji.fi/explorer-json -o ./generated/api.d.ts"
+    "updateOld": "openapi-typescript https://apitest.laji.fi/explorer/swagger.json -o ./generated/api.d.ts --properties-required-by-default",
+    "updateNew": "openapi-typescript https://apitest.laji.fi/explorer-json -o ./generated/api.d.ts --properties-required-by-default"
   },
   "sideEffects": false,
   "devDependencies": {

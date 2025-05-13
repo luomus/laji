@@ -1,0 +1,33 @@
+<div *ngIf="(validationState$ | async) as validationState">
+  <div *ngIf="validationState._tag === 'not-started'">Loading...</div>
+  <div *ngIf="validationState._tag === 'in-progress'">Validating...</div>
+  <div *ngIf="validationState._tag === 'http-error'">Http error!</div>
+  <ng-container *ngIf="table$ | async as table">
+    <lu-datatable
+      [rows]="table.rows"
+      [columns]="table.cols"
+    ></lu-datatable>
+  </ng-container>
+
+  <ul *ngIf="validationState._tag === 'complete' && validationState.result.header?.pass === false && validationState.result.header?.errors">
+    <li *ngFor="let err of objectEntries(validationState.result.header!.errors!)">
+      Column {{ err[0] }}: {{ err[1] }}
+    </li>
+  </ul>
+
+  <button
+    class="btn btn-default"
+    [disabled]="validationState._tag !== 'complete' || (validationState._tag === 'complete' && !validationState.result.pass)"
+    (click)="onSubmit()"
+  >
+    Continue
+  </button>
+</div>
+
+<ng-template #cellTemplate let-row let-p="prop" let-rowIdx="rowIdx" let-colIdx="colIdx">
+  {{ p }} <ng-container *ngIf="(validationState$ | async) as validationState">
+    <ng-container *ngIf="validationState._tag === 'complete' && validationState.result.rows?.[rowIdx]?.errors?.[colIdx]">
+      <span class="pill danger" [luTooltip]="validationState.result.rows?.[rowIdx]?.errors?.[colIdx]">x</span>
+    </ng-container>
+  </ng-container>
+</ng-template>

@@ -1,0 +1,21 @@
+<form [formGroup]="form" (submit)="onSubmit()">
+  <div>
+    <label for="name">Name*:</label>
+    <input id="name" class="form-control" formControlName="name" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'name' }"></ng-container>
+  </div>
+  <div>
+    <label for="description">Description*:</label>
+    <input id="description" class="form-control" formControlName="description" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'description' }"></ng-container>
+  </div>
+
+  <button type="submit" class="btn btn-default" [disabled]="submissionState !== 'none'">Submit</button>
+  <div *ngIf="submissionState === 'externalValidation'">Server is validating...</div>
+  <div *ngIf="submissionState === 'uploading'">Uploading trait group...</div>
+</form>
+
+<ng-template #errorsTmp let-prop>
+  <div class="alert alert-danger" role="alert" *ngIf="errors?.[prop]">{{ errors?.[prop]}}</div>
+</ng-template>
+

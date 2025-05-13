@@ -1,0 +1,7 @@
+/* eslint-disable @typescript-eslint/quotes */
+/* eslint-disable max-len */
+/*
+Generated file. Do not edit manually!
+*/
+
+export const cols = [["traitId", { _tag: "string" }], ["value", { _tag: "string" }], ["unit", { _tag: "enum", variants: ["TDF.umNM", "TDF.umUM", "TDF.umMM", "TDF.umCM", "TDF.umM", "TDF.umKM", "TDF.umG", "TDF.umKG", "TDF.umA", "TDF.umS", "TDF.umML", "TDF.umL", "TDF.umMOL", "TDF.umMMOL", "TDF.umUMOL", "TDF.umHZ", "TDF.umP", "TDF.umPPT", "TDF.umPPM", "TDF.umC", "TDF.umMM2", "TDF.umCM2", "TDF.umM2", "TDF.umARE", "TDF.umHA", "TDF.umKM2", "TDF.umMM3", "TDF.umCM3", "TDF.umM3", "TDF.umGMOL", "TDF.umMOLL", "TDF.umCM2H"] }], ["statisticalMethod", { _tag: "enum", variants: ["TDF.statisticalMethodMin", "TDF.statisticalMethodMax", "TDF.statisticalMethodAvg", "TDF.statisticalMethodMedian", "TDF.statisticalMethodSD", "TDF.statisticalMethodMode"] }], ["measurementAccuracy", { _tag: "number" }], ["objectTaxonLifeStage", { _tag: "enum", variants: ["MY.lifeStageAdult", "MY.lifeStageNymph", "MY.lifeStageLarva", "MY.lifeStageEgg", "MY.lifeStagePupa", "MY.lifeStageJuvenile", "MY.lifeStageSubimago", "MY.lifeStageImmature", "MY.lifeStageFertile", "MY.lifeStageSterile", "MY.lifeStageTadpole", "MY.lifeStageEmbryo", "MY.lifeStageSubadult", "MY.lifeStageMature", "MY.lifeStagePullus", "MY.lifeStageHatchedEgg", "MY.lifeStageHatchedPupa", "MY.lifeStageGall", "MY.lifeStageMarks", "MY.lifeStageTriungulin"] }], ["warnings", { _tag: "boolean" }], ["measurementRemarks", { _tag: "string" }], ["reference", { _tag: "string" }]];

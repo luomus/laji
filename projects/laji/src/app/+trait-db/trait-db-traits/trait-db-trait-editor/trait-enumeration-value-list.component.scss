@@ -1,0 +1,14 @@
+@import 'vars';
+
+:host {
+  display: block;
+  margin: $sp-4 0;
+}
+
+.trait-enum-value-control {
+  margin: $sp-4 0;
+  padding-left: $sp-4;
+  margin-left: $sp-3;
+  border-left: 2px solid $neutral-4;
+}
+
