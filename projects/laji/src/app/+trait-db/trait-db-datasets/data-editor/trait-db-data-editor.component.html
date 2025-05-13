@@ -43,7 +43,7 @@
         'glyphicon glyphicon-ok success': rowUploadState[rowIdx]?._tag === 'complete',
         'glyphicon glyphicon-remove danger': rowUploadState[rowIdx]?._tag === 'error'
       }"
-      [luTooltip]="rowUploadState[rowIdx]?._tag === 'error' ? rowUploadState[rowIdx].msg : null"
+      [luTooltip]="rowUploadState[rowIdx]?._tag === 'error' ? $any(rowUploadState[rowIdx]).msg : null"
     ></span>
     <button
       class="lu-btn btn-default mr-4"
