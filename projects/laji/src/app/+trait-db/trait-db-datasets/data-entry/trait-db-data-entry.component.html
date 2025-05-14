@@ -14,14 +14,14 @@
       *ngIf="stack.length > 1"
       [ngClass]="{'d-none': stack.length !== 2}"
       [datasetId]="stack[1].datasetId"
-      [tsv]="stack[1].tsv"
+      [tsv]="$any(stack[1]).tsv"
       (validationSuccess)="onValidationSuccess()"
     ></laji-trait-db-data-entry-validate>
     <laji-trait-db-data-entry-check
       *ngIf="stack.length > 2"
       [ngClass]="{'d-none': stack.length !== 3}"
       [datasetId]="stack[2].datasetId"
-      [tsv]="stack[2].tsv"
+      [tsv]="$any(stack[2]).tsv"
       (submissionSuccess)="onSubmissionSuccess()"
     ></laji-trait-db-data-entry-check>
     <laji-trait-db-data-entry-ready
