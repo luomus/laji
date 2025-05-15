@@ -1,0 +1,10 @@
+<bsg-species-selection
+  *ngIf="(!selectedSpeciesIds || selectedSpeciesIds.length === 0) else identification"
+  (speciesSelect)="onSpeciesSelect($event)"
+></bsg-species-selection>
+<ng-template #identification>
+  <!--bsg-identification-main
+    [selectedSites]="selectedSpeciesIds!"
+    (goBackToSiteSelection)="onSpeciesSelect([])"
+  ></bsg-identification-main-->
+</ng-template>

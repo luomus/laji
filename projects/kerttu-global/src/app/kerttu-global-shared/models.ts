@@ -34,7 +34,7 @@ export interface IGlobalSpeciesQuery {
 export interface IGlobalSpecies {
   id: number;
   scientificName: string;
-  commonName: string;
+  commonName?: string;
   versionCount?: number;
   validationCount?: number;
   userHasValidated?: boolean;

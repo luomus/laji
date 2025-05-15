@@ -1,0 +1,11 @@
+<laji-datatable
+  [columns]="columns"
+  [rows]="species"
+  [clientSideSorting]="true"
+  [showFooter]="false"
+  [height]="height"
+  [selectionType]="selectionType"
+  [selected]="$any(selected)"
+  (datatableSelect)="onSelect($event)"
+  (rowSelect)="onRowSelect($event)"
+></laji-datatable>

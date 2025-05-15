@@ -257,5 +257,9 @@
   "close": "Close",
   "identification.filter": "Filter",
   "identification.filter.title": "Filter recordings",
-  "identification.filter.fileName": "File name contains"
+  "identification.filter.fileName": "File name contains",
+  "navigation.birds": "Birds",
+  "navigation.bats": "Bats",
+  "speciesSelection.title": "Select a species",
+  "speciesSelection.description": "Select one or more species by clicking a row in the table."
 }

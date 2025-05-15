@@ -25,17 +25,22 @@ const routes: Routes = [
     path: '',
     pathMatch: 'full',
     loadChildren: () => import('./+about/about.module').then(m => m.AboutModule),
-    data: {preload: true, title: 'Bird Sounds Global'}
+    data: {preload: true, title: 'Bird / Bat Sounds Global'}
   },
   {
     path: 'validation',
     loadChildren: () => import('./+validation/validation.module').then(m => m.ValidationModule),
-    data: {title: 'Bird Sounds Global'}
+    data: {title: 'Bird / Bat Sounds Global'}
   },
   {
     path: 'identification',
     loadChildren: () => import('./+identification/identification.module').then(m => m.IdentificationModule),
-    data: {title: 'Bird Sounds Global'}
+    data: {title: 'Bird / Bat Sounds Global'}
+  },
+  {
+    path: 'bats/identification',
+    loadChildren: () => import('./+bat-identification/bat-identification.module').then(m => m.BatIdentificationModule),
+    data: {title: 'Bird / Bat Sounds Global'}
   },
   {
     path: 'user',

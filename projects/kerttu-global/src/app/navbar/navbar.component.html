@@ -9,16 +9,35 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" [routerLink]="['/'] | localize">
-        <span>BIRD SOUNDS GLOBAL</span>
+        <span>Bird / Bat Sounds Global</span>
       </a>
     </div>
     <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
       <ul class="nav navbar-nav">
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/validation'] | localize">{{ 'validation.title' | translate }}</a>
+          <a luDropdownToggle class="link">
+            {{ 'navigation.birds' | translate }}
+            <span class="glyphicon glyphicon-triangle-bottom"></span>
+          </a>
+          <ul luDropdownMenu>
+            <li role="menuitem">
+              <a [routerLink]="['/validation'] | localize">{{ 'validation.title' | translate }}</a>
+            </li>
+            <li role="menuitem">
+              <a [routerLink]="['/identification'] | localize">{{ 'identification.title' | translate }}</a>
+            </li>
+          </ul>
         </li>
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/identification'] | localize">{{ 'identification.title' | translate }}</a>
+          <a luDropdownToggle class="link">
+            {{ 'navigation.bats' | translate }}
+            <span class="glyphicon glyphicon-triangle-bottom"></span>
+          </a>
+          <ul luDropdownMenu>
+            <li role="menuitem">
+              <a [routerLink]="['/bats/identification'] | localize">{{ 'identification.title' | translate }}</a>
+            </li>
+          </ul>
         </li>
       </ul>
       <ul class="nav navbar-nav pull-right">

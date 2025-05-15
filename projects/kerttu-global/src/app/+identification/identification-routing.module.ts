@@ -13,7 +13,6 @@ const routes: Routes = [
   {
     path: '',
     component: IdentificationComponent,
-    data: {title: 'Bird Sounds Global'},
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
       {path: 'instructions', pathMatch: 'full', component: IdentificationInstructionsComponent},
