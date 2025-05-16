@@ -26,6 +26,7 @@ export class EditorItemComponent implements AfterViewInit {
   @ViewChild('item', { static: true }) elemRef!: ElementRef<HTMLDivElement>;
 
   _item!: ILabelItem;
+  _containsQRCode!: boolean;
   _grid!: number;
   _magnification!: number;
   _maxWidth!: number;
@@ -33,7 +34,7 @@ export class EditorItemComponent implements AfterViewInit {
 
   width!: number;
   height!: number;
-  size!: number;
+  sizeInPixels!: number;
   x!: number;
   y!: number;
   origElementDimensions!: DOMRect;
@@ -79,9 +80,10 @@ export class EditorItemComponent implements AfterViewInit {
     this.recalculateMinMax();
   }
 
-  @Input()
+  @Input({ required: true })
   set item(item: ILabelItem) {
     this._item = item;
+    this._containsQRCode = item.fields.some(field => field.type === this.fieldType.qrCode);
     this.recalculate();
   }
 
@@ -106,7 +108,7 @@ export class EditorItemComponent implements AfterViewInit {
     }
     this.width = this._item.style!['width.mm']! * this._magnification;
     this.height = this._item.style!['height.mm']! * this._magnification;
-    this.size = this.labelService.mmToPixel(Math.min(this.width, this.height));
+    this.sizeInPixels = this.labelService.mmToPixel(Math.min(this.width, this.height));
     this.x = this._item.x * this._magnification;
     this.y = this._item.y * this._magnification;
 
