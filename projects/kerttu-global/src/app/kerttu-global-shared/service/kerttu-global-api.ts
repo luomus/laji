@@ -123,10 +123,16 @@ export class KerttuGlobalApi {
   }
 
   public getNewIdentificationRecording(
-    personToken: string, lang: string, siteIds: number[], previousRecordingId?: number|null, excludeRecordingIds?: (number|null)[], fileNameFilter?: string
+    personToken: string,
+    lang: string,
+    siteIds: number[],
+    speciesIds: number[],
+    previousRecordingId?: number|null,
+    excludeRecordingIds?: (number|null)[],
+    fileNameFilter?: string
   ): Observable<IGlobalRecordingWithAnnotation> {
     const path = this.basePath + '/identification/recordings/new';
-    let params = new HttpParams().set('personToken', personToken).set('lang', lang).set('sites', '' + siteIds);
+    let params = new HttpParams().set('personToken', personToken).set('lang', lang).set('sites', '' + siteIds).set('species', '' + speciesIds);
 
     if (previousRecordingId != null) {
       params = params.set('previousRecording', '' + previousRecordingId);

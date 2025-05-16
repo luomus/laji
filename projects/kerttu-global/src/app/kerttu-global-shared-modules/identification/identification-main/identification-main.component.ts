@@ -10,12 +10,16 @@ import { Observable, of } from 'rxjs';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
 import equals from 'deep-equal';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
-import { NoRecordingsResult, RecordingLoaderService } from '../../service/recording-loader.service';
+import { NoRecordingsResult, RecordingLoaderService } from '../../../+identification/service/recording-loader.service';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { DialogService } from '../../../../../../laji/src/app/shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AudioService } from '../../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
-import { AudioCacheLoaderService } from '../../service/audio-cache-loader.service';
+import { AudioCacheLoaderService } from '../../../+identification/service/audio-cache-loader.service';
+import { IdentificationNavComponent } from './identification-nav/identification-nav.component';
+import { IdentificationViewComponent } from './identification-view/identification-view.component';
+import { NgIf } from '@angular/common';
+import { LajiUiModule } from '../../../../../../laji-ui/src/lib/laji-ui.module';
 
 @Component({
   selector: 'bsg-identification-main',
@@ -25,7 +29,10 @@ import { AudioCacheLoaderService } from '../../service/audio-cache-loader.servic
   providers: [AudioService, AudioCacheLoaderService, RecordingLoaderService]
 })
 export class IdentificationMainComponent implements OnChanges {
-  @Input({ required: true }) selectedSites!: number[];
+  @Input() selectedSites: number[] = [];
+  @Input() selectedSpecies: number[] = [];
+  @Input({ required: true }) goBackBtnLabel!: string;
+  @Input({ required: true }) allRecordingsAnnotatedLabel!: string;
 
   recording?: IGlobalRecording;
   annotation?: IGlobalRecordingAnnotation;
@@ -37,7 +44,7 @@ export class IdentificationMainComponent implements OnChanges {
 
   fileNameFilter = '';
 
-  @Output() goBackToSiteSelection = new EventEmitter<void>();
+  @Output() goBackClick = new EventEmitter<void>();
 
   private originalAnnotation?: IGlobalRecordingAnnotation;
 
@@ -53,6 +60,7 @@ export class IdentificationMainComponent implements OnChanges {
   ngOnChanges() {
     this.clearIdentificationState();
     this.recordingLoaderService.setSelectedSites(this.selectedSites);
+    this.recordingLoaderService.setSelectedSpecies(this.selectedSpecies);
     this.loadCurrentRecording();
   }
 
@@ -69,10 +77,10 @@ export class IdentificationMainComponent implements OnChanges {
     return this.dialogService.confirm(this.translate.instant('identification.leaveConfirm'));
   }
 
-  onBackToSiteSelectionClick() {
+  onGoBackClick() {
     this.canDeactivate().subscribe(canDeactivate => {
       if (canDeactivate) {
-        this.goBackToSiteSelection.emit();
+        this.goBackClick.emit();
       }
     });
   }

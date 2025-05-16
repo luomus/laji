@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PersonApi } from '../../../../../laji/src/app/shared/api/PersonApi';
-import { IdentificationMainComponent } from './identification-main/identification-main.component';
+import { IdentificationMainComponent } from '../../kerttu-global-shared-modules/identification/identification-main/identification-main.component';
 
 @Component({
   selector: 'bsg-recording-identification',

@@ -3,8 +3,10 @@
   (speciesSelect)="onSpeciesSelect($event)"
 ></bsg-species-selection>
 <ng-template #identification>
-  <!--bsg-identification-main
-    [selectedSites]="selectedSpeciesIds!"
-    (goBackToSiteSelection)="onSpeciesSelect([])"
-  ></bsg-identification-main-->
+  <bsg-identification-main
+    [selectedSpecies]="selectedSpeciesIds!"
+    [goBackBtnLabel]="'identification.backToSpeciesSelection' | translate"
+    [allRecordingsAnnotatedLabel]="'identification.allRecordingsAnnotatedForSpecies' | translate"
+    (goBackClick)="onSpeciesSelect([])"
+  ></bsg-identification-main>
 </ng-template>

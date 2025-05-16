@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import {
   IdentificationMainComponent
-} from '../../+identification/recording-identification/identification-main/identification-main.component';
+} from '../../kerttu-global-shared-modules/identification/identification-main/identification-main.component';
 import { map } from 'rxjs/operators';
 
 @Component({

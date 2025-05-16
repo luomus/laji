@@ -15,6 +15,7 @@ export class IdentificationNavComponent {
   @Input() buttonsDisabled = false;
   @Input() saveDisabled = false;
   @Input() taxonType?: TaxonTypeEnum = TaxonTypeEnum.bird;
+  @Input({ required: true }) goBackBtnLabel!: string;
   @Input() fileNameFilter = '';
   _fileNameFilter = '';
 
@@ -24,7 +25,7 @@ export class IdentificationNavComponent {
   @Output() previousRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter();
   @Output() skipClick = new EventEmitter();
-  @Output() backToSiteSelectionClick = new EventEmitter();
+  @Output() goBackClick = new EventEmitter();
   @Output() fileNameFilterChange = new EventEmitter<string>();
 
   private filterModalRef?: ModalRef<any>;

@@ -6,17 +6,18 @@
       [saveDisabled]="hasError || allRecordingsAnnotated"
       [taxonType]="recording?.taxonType"
       [fileNameFilter]="fileNameFilter"
+      [goBackBtnLabel]="goBackBtnLabel"
       (nextRecordingClick)="getNextRecording()"
       (previousRecordingClick)="getPreviousRecording()"
       (saveClick)="save()"
       (skipClick)="skipRecording()"
-      (backToSiteSelectionClick)="onBackToSiteSelectionClick()"
+      (goBackClick)="onGoBackClick()"
       (fileNameFilterChange)="onFileNameFilterChange($event)"
     ></bsg-identification-nav>
 
     <div *ngIf="hasError || allRecordingsAnnotated" class="identification-alert-container">
       <lu-alert type="danger" [dismissible]="false" *ngIf="hasError">{{ 'identification.genericError' | translate }}</lu-alert>
-      <lu-alert type="success" [dismissible]="false" *ngIf="allRecordingsAnnotated">{{ 'identification.allRecordingsAnnotated' | translate }}</lu-alert>
+      <lu-alert type="success" [dismissible]="false" *ngIf="allRecordingsAnnotated">{{ allRecordingsAnnotatedLabel }}</lu-alert>
     </div>
 
     <bsg-identification-view

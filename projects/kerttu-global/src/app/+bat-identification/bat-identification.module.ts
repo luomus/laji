@@ -22,17 +22,19 @@ import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatab
 import {
   BatRecordingIdentificationComponent
 } from './bat-recording-identification/bat-recording-identification.component';
+import { IdentificationModule } from '../kerttu-global-shared-modules/identification/identification.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    KerttuGlobalSharedModule,
-    BatIdentificationRoutingModule,
-    LajiUiModule,
-    InfoPageModule,
-    DatatableModule
-  ],
+    imports: [
+        CommonModule,
+        SharedModule,
+        KerttuGlobalSharedModule,
+        BatIdentificationRoutingModule,
+        LajiUiModule,
+        InfoPageModule,
+        DatatableModule,
+        IdentificationModule
+    ],
   declarations: [
     BatIdentificationComponent,
     BatIdentificationInstructionsComponent,

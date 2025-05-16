@@ -4,9 +4,9 @@
       <button
         class="btn btn-default"
         [disabled]="buttonsDisabled"
-        (click)="backToSiteSelectionClick.emit()"
+        (click)="goBackClick.emit()"
       >
-        {{ 'identification.backToSiteSelection' | translate }}
+        {{ goBackBtnLabel | translate }}
       </button>
     </div>
     <div>
