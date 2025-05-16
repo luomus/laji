@@ -2,5 +2,5 @@
   <ll-label-qrcode [qrdata]="_field.content!" [size]="size" [level]="qrCodeErrorCorrectionLevel" [print]="true"></ll-label-qrcode>
 </ng-container>
 <ng-template #plainText>
-  <span *ngIf="_field.prefix && (_field.content | hasValue)" [innerHTML]="_field.prefix" [ngStyle]="_prefixStyle"></span><span [ngStyle]="_contentStyle" [innerHtml]="_field.content"></span><span *ngIf="_field.suffix && (_field.content | hasValue)" [ngStyle]="_suffixStyle" [innerHTML]="_field.suffix"></span><span *ngIf="((_field.content | hasValue) && !isLast) || _field.separatorAlways" [innerHTML]="_field.separator | separator"></span>
+  <span *ngIf="_field.prefix && (_field.content | hasValue)" class="ll-label-item-field" [innerHTML]="_field.prefix | insertWordBreaks" [ngStyle]="_prefixStyle"></span><span class="ll-label-item-field" [ngStyle]="_contentStyle" [innerHtml]="_field.content | insertWordBreaks"></span><span *ngIf="_field.suffix && (_field.content | hasValue)" class="ll-label-item-field"  [ngStyle]="_suffixStyle" [innerHTML]="_field.suffix | insertWordBreaks"></span><span *ngIf="((_field.content | hasValue) && !isLast) || _field.separatorAlways" class="ll-label-item-field"  [innerHTML]="_field.separator | separator"></span>
 </ng-template>

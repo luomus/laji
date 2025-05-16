@@ -24,6 +24,10 @@ so that this styling will be included in the generated pdf
 .ll-label-item {
   position: absolute;
 }
+.ll-label-item-field {
+  word-wrap: break-word;
+  word-break: break-word;
+}
 .ll-label {
   direction: ltr;
   position: relative;
@@ -32,7 +36,6 @@ so that this styling will be included in the generated pdf
 .ll-label.preview {
   border: 1px solid #333;
 }
-img {
-  transform-origin: top left;
-  transform: scale(0.25);
+.qrcode img {
+  width: 100%;
 }

@@ -39,6 +39,10 @@ const style = `
 .ll-label-item {
   position: absolute;
 }
+.ll-label-item-field {
+  word-wrap: break-word;
+  word-break: break-word;
+}
 .ll-label {
   direction: ltr;
   position: relative;
