@@ -10,9 +10,9 @@ export class LabelDesignerHelper {
    * Merges fields to setup.
    * This is mutable operation
    */
-  static mergeFieldsToSetup(fields: ILabelField[], setup: ISetup): ISetup | undefined {
+  static mergeFieldsToSetup(fields: ILabelField[], setup: ISetup) {
     if (!setup || !Array.isArray(fields) || fields.length === 0) {
-      return setup;
+      return;
     }
     const map: {[field: string]: ILabelField} = {};
     fields.forEach(field => map[field.field] = field);
