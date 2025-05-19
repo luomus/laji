@@ -46,7 +46,7 @@
       >
         {{ 'identification.nextRecording' | translate }}
       </button>
-      <laji-info [html]="(taxonType === taxonTypeEnum.insect ? 'identification.nextRecordingInsect.info' : 'identification.nextRecording.info') | translate" [showOnHover]="true"></laji-info>
+      <laji-info [html]="'identification.nextBirdRecording.info' | translateWithTaxonType: taxonType" [showOnHover]="true"></laji-info>
     </div>
     <div>
       <button

@@ -20,6 +20,7 @@ import { IdentificationNavComponent } from './identification-nav/identification-
 import { IdentificationViewComponent } from './identification-view/identification-view.component';
 import { NgIf } from '@angular/common';
 import { LajiUiModule } from '../../../../../../laji-ui/src/lib/laji-ui.module';
+import { getTranslateKeyWithTaxonType } from '../../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
 
 @Component({
   selector: 'bsg-identification-main',
@@ -196,7 +197,9 @@ export class IdentificationMainComponent implements OnChanges {
 
     const msg = KerttuGlobalApi.getErrorMessage(err);
     if (msg === KerttuGlobalErrorEnum.invalidRecordingAnnotation) {
-      alert(this.translate.instant('identification.nextRecording.validation'));
+      this.dialogService.alert(this.translate.instant(
+        getTranslateKeyWithTaxonType('identification.nextBirdRecording.validation', this.recording?.taxonType)
+      ));
     } else {
       this.hasError = true;
     }

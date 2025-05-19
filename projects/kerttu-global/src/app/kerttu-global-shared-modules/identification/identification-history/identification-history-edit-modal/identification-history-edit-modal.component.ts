@@ -14,6 +14,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { Util } from '../../../../../../../laji/src/app/shared/service/util.service';
 import equals from 'deep-equal';
+import { getTranslateKeyWithTaxonType } from '../../../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
 
 @Component({
   selector: 'bsg-identification-history-edit-modal',
@@ -92,7 +93,9 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
       error: (err) => {
         const msg = KerttuGlobalApi.getErrorMessage(err);
         if (msg === KerttuGlobalErrorEnum.invalidRecordingAnnotation) {
-          this.dialogService.alert(this.translate.instant('identification.nextRecording.validation'));
+          this.dialogService.alert(this.translate.instant(
+            getTranslateKeyWithTaxonType('identification.nextBirdRecording.validation', this.recording?.taxonType)
+          ));
         } else {
           this.dialogService.alert(this.translate.instant('expertise.error'));
         }
