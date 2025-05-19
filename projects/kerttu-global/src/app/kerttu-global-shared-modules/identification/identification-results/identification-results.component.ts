@@ -1,15 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   IGlobalSite,
   IIdentificationSiteStat,
   IIdentificationStat,
   IIdentificationUserStatResult,
-  IIdentificationSpeciesStat
-} from '../../kerttu-global-shared/models';
+  IIdentificationSpeciesStat, TaxonTypeEnum
+} from '../../../kerttu-global-shared/models';
 import { map, share, shareReplay, switchMap } from 'rxjs/operators';
-import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
-import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
+import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
+import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { toHtmlInputElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -20,6 +20,9 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationResultsComponent implements OnInit {
+  @Input() taxonTypes: TaxonTypeEnum[]|null = null;
+  @Input() showMap = true;
+
   sites$!: Observable<IGlobalSite[]>;
   siteStats$!: Observable<IIdentificationSiteStat[]>;
   userStats$!: Observable<IIdentificationUserStatResult>;
@@ -43,18 +46,18 @@ export class IdentificationResultsComponent implements OnInit {
       switchMap(() => this.kerttuGlobalApi.getSites(this.userService.getToken())),
       map(result => result.results)
     );
-    this.siteStats$ = this.kerttuGlobalApi.getIdentificationSiteStats().pipe(
+    this.siteStats$ = this.kerttuGlobalApi.getIdentificationSiteStats(this.taxonTypes).pipe(
       map(result => result.results)
     );
-    this.userStats$ = this.kerttuGlobalApi.getIdentificationUserStats().pipe(
+    this.userStats$ = this.kerttuGlobalApi.getIdentificationUserStats(this.taxonTypes).pipe(
       share()
     );
-    this.speciesStats$ = this.kerttuGlobalApi.getIdentificationSpeciesStats(this.translate.currentLang).pipe(
+    this.speciesStats$ = this.kerttuGlobalApi.getIdentificationSpeciesStats(this.taxonTypes, this.translate.currentLang).pipe(
       map(result => result.results),
       shareReplay(1)
     );
     this.ownSpeciesStats$ = this.userService.isLoggedIn$.pipe(
-      switchMap(() => this.kerttuGlobalApi.getIdentificationOwnSpeciesStats(this.userService.getToken(), this.translate.currentLang)),
+      switchMap(() => this.kerttuGlobalApi.getIdentificationOwnSpeciesStats(this.taxonTypes, this.userService.getToken(), this.translate.currentLang)),
       map(result => result.results),
       shareReplay(1)
     );

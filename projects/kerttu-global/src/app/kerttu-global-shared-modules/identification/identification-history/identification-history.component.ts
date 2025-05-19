@@ -1,13 +1,18 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { PagedResult } from '../../../../../laji/src/app/shared/model/PagedResult';
-import { IGlobalSite, IIdentificationHistoryQuery, IIdentificationHistoryResponse } from '../../kerttu-global-shared/models';
-import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
-import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
-import { DatatableSort } from '../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
+import { PagedResult } from '../../../../../../laji/src/app/shared/model/PagedResult';
+import {
+  IGlobalSite,
+  IIdentificationHistoryQuery,
+  IIdentificationHistoryResponse,
+  TaxonTypeEnum
+} from '../../../kerttu-global-shared/models';
+import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
+import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
+import { DatatableSort } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { IdentificationHistoryEditModalComponent } from './identification-history-edit-modal/identification-history-edit-modal.component';
-import { ModalService } from '../../../../../laji-ui/src/lib/modal/modal.service';
+import { ModalService } from '../../../../../../laji-ui/src/lib/modal/modal.service';
 
 export interface IIdentificationHistoryResponseWithIndex extends IIdentificationHistoryResponse {
   index: number;
@@ -19,9 +24,11 @@ export interface IIdentificationHistoryResponseWithIndex extends IIdentification
   styleUrls: ['./identification-history.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IdentificationHistoryComponent {
+export class IdentificationHistoryComponent implements OnChanges {
+  @Input() sites?: IGlobalSite[];
+  @Input() taxonTypes?: TaxonTypeEnum[];
+
   query: IIdentificationHistoryQuery = { page: 1, includeSkipped: false };
-  sites$: Observable<IGlobalSite[]>;
   data$: Observable<PagedResult<IIdentificationHistoryResponseWithIndex>>;
   loading = false;
 
@@ -34,11 +41,6 @@ export class IdentificationHistoryComponent {
     private userService: UserService,
     private modalService: ModalService
   ) {
-    this.sites$ = this.userService.isLoggedIn$.pipe(
-      switchMap(() => this.kerttuGlobalApi.getSites(this.userService.getToken())),
-      map(result => result.results)
-    );
-
     this.data$ = this.queryChange.pipe(
       tap(() => this.loading = true),
       switchMap(query => this.kerttuGlobalApi.getIdentificationHistory(this.userService.getToken(), query)),
@@ -49,6 +51,12 @@ export class IdentificationHistoryComponent {
       tap((data) => this.results = data.results),
       tap(() => this.loading = false)
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.taxonTypes) {
+      this.setNewQuery({ ...this.query, taxonTypes: this.taxonTypes });
+    }
   }
 
   onPageChange(page: number) {

@@ -3,16 +3,16 @@ import {
   IGlobalRecording,
   IGlobalRecordingAnnotation,
   KerttuGlobalErrorEnum
-} from '../../../kerttu-global-shared/models';
-import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
-import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
+} from '../../../../kerttu-global-shared/models';
+import { KerttuGlobalApi } from '../../../../kerttu-global-shared/service/kerttu-global-api';
+import { UserService } from '../../../../../../../laji/src/app/shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
-import { AudioService } from '../../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
-import { SpectrogramService } from '../../../../../../laji/src/app/shared-modules/audio-viewer/service/spectrogram.service';
-import { DialogService } from '../../../../../../laji/src/app/shared/service/dialog.service';
+import { AudioService } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
+import { SpectrogramService } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/service/spectrogram.service';
+import { DialogService } from '../../../../../../../laji/src/app/shared/service/dialog.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
-import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
+import { Util } from '../../../../../../../laji/src/app/shared/service/util.service';
 import equals from 'deep-equal';
 
 @Component({

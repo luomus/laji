@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
-import { IIdentificationUserStatResult } from '../../../kerttu-global-shared/models';
-import { UserNameTemplateComponent } from '../../../kerttu-global-shared/component/user-name-template.component';
+import { IIdentificationUserStatResult } from '../../../../kerttu-global-shared/models';
+import { UserNameTemplateComponent } from '../../../../kerttu-global-shared/component/user-name-template.component';
 
 @Component({
   selector: 'bsg-identification-user-table',

@@ -8,7 +8,6 @@ import { IdentificationComponent } from './identification.component';
 import { IdentificationInstructionsComponent } from './identification-instructions/identification-instructions.component';
 import { RecordingIdentificationComponent } from './recording-identification/recording-identification.component';
 import { ExpertiseComponent } from './expertise/expertise.component';
-import { IdentificationResultsComponent } from './identification-results/identification-results.component';
 import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-page/info-page.module';
 import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatable/datatable.module';
 import { SiteSelectionViewComponent } from './recording-identification/site-selection/site-selection-view/site-selection-view.component';
@@ -16,15 +15,15 @@ import { SiteSelectionMapComponent } from './recording-identification/site-selec
 import { LajiMapModule } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.module';
 import { ExpertiseByContinentComponent } from './expertise/expertise-by-continent/expertise-by-continent.component';
 import { SiteTableComponent } from './recording-identification/site-selection/site-selection-view/site-table/site-table.component';
-import { SiteResultMapComponent } from './identification-results/site-result-map/site-result-map.component';
-import { IdentificationUserTableComponent } from './identification-results/identification-user-table/identification-user-table.component';
-import { IdentificationSpeciesTableComponent } from './identification-results/identification-species-table/identification-species-table.component';
-import { IdentificationHistoryComponent } from './identification-history/identification-history.component';
-import { IdentificationHistoryTableComponent } from './identification-history/identification-history-table/identification-history-table.component';
-import { IdentificationHistoryEditModalComponent } from './identification-history/identification-history-edit-modal/identification-history-edit-modal.component';
 import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 import { SiteSelectionComponent } from './recording-identification/site-selection/site-selection.component';
 import { IdentificationModule as SharedIdentificationModule } from '../kerttu-global-shared-modules/identification/identification.module';
+import {
+  BirdIdentificationHistoryComponent
+} from './bird-identification-history/bird-identification-history.component';
+import {
+  BirdIdentificationResultsComponent
+} from './bird-identification-results/bird-identification-results.component';
 
 @NgModule({
   imports: [
@@ -44,18 +43,13 @@ import { IdentificationModule as SharedIdentificationModule } from '../kerttu-gl
     IdentificationInstructionsComponent,
     RecordingIdentificationComponent,
     ExpertiseComponent,
-    IdentificationResultsComponent,
     SiteSelectionViewComponent,
     SiteSelectionMapComponent,
     ExpertiseByContinentComponent,
     SiteTableComponent,
-    SiteResultMapComponent,
-    IdentificationUserTableComponent,
-    IdentificationSpeciesTableComponent,
-    IdentificationHistoryComponent,
-    IdentificationHistoryTableComponent,
-    IdentificationHistoryEditModalComponent,
-    SiteSelectionComponent
+    SiteSelectionComponent,
+    BirdIdentificationHistoryComponent,
+    BirdIdentificationResultsComponent
   ]
 })
 export class IdentificationModule { }

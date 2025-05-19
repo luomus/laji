@@ -1,5 +1,5 @@
 import { Component, OnChanges, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
-import { IGlobalSite, IIdentificationSiteStat } from '../../../kerttu-global-shared/models';
+import { IGlobalSite, IIdentificationSiteStat } from '../../../../kerttu-global-shared/models';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import type { DivIcon } from 'leaflet';
 import { DataOptions, Options, TileLayerName, GetPopupOptions } from '@luomus/laji-map/lib/defs';

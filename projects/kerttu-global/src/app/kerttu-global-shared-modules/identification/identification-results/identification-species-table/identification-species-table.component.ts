@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { IIdentificationSpeciesStat } from '../../../kerttu-global-shared/models';
+import { IIdentificationSpeciesStat } from '../../../../kerttu-global-shared/models';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 import { TranslateService } from '@ngx-translate/core';
 

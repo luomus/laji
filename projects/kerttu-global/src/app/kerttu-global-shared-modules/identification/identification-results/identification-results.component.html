@@ -20,11 +20,13 @@
   </div>
 </div>
 
-<h2>{{ 'results.annotationCountMap' | translate }}</h2>
-<bsg-site-result-map
-  [sites]="(sites$ | async) ?? []"
-  [siteStats]="(siteStats$ | async) ?? []"
-></bsg-site-result-map>
+<ng-container *ngIf="showMap">
+  <h2>{{ 'results.annotationCountMap' | translate }}</h2>
+  <bsg-site-result-map
+    [sites]="(sites$ | async) ?? []"
+    [siteStats]="(siteStats$ | async) ?? []"
+  ></bsg-site-result-map>
+</ng-container>
 
 <h2>{{ 'results.userTable.title' | translate }}</h2>
 <bsg-identification-user-table

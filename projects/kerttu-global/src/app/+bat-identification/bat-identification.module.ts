@@ -23,6 +23,8 @@ import {
   BatRecordingIdentificationComponent
 } from './bat-recording-identification/bat-recording-identification.component';
 import { IdentificationModule } from '../kerttu-global-shared-modules/identification/identification.module';
+import { BatIdentificationHistoryComponent } from './bat-identification-history/bat-identification-history.component';
+import { BatIdentificationResultsComponent } from './bat-identification-results/bat-identification-results.component';
 
 @NgModule({
     imports: [
@@ -41,7 +43,9 @@ import { IdentificationModule } from '../kerttu-global-shared-modules/identifica
     BatRecordingIdentificationComponent,
     SpeciesSelectionComponent,
     SpeciesSelectionViewComponent,
-    SpeciesTableComponent
+    SpeciesTableComponent,
+    BatIdentificationHistoryComponent,
+    BatIdentificationResultsComponent
   ]
 })
 export class BatIdentificationModule { }

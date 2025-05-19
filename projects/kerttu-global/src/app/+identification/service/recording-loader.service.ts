@@ -16,8 +16,8 @@ export class RecordingLoaderService implements OnDestroy {
   private previousLimit = 1; // how many previous recordings are kept in memory
   private nextLimit = 5; // how many next recordings are loaded to memory
 
-  @LocalStorage('selected_sites') private selectedSites!: number[];
-  @LocalStorage('selected_species') private selectedSpecies!: number[];
+  @LocalStorage('selected_sites') private selectedSites!: number[]|null;
+  @LocalStorage('selected_species') private selectedSpecies!: number[]|null;
   private fileNameFilter = '';
 
   @LocalStorage('previous_recordings') private previous!: number[];
@@ -48,14 +48,14 @@ export class RecordingLoaderService implements OnDestroy {
     this.preloadAudioSub?.unsubscribe();
   }
 
-  setSelectedSites(selectedSites: number[]) {
+  setSelectedSites(selectedSites: number[]|null = null) {
     if (!Util.equalsArray(this.selectedSites, selectedSites)) {
       this.selectedSites = selectedSites;
       this.clearLoadedRecordings(true);
     }
   }
 
-  setSelectedSpecies(selectedSpecies: number[]) {
+  setSelectedSpecies(selectedSpecies: number[]|null = null) {
     if (!Util.equalsArray(this.selectedSpecies, selectedSpecies)) {
       this.selectedSpecies = selectedSpecies;
       this.clearLoadedRecordings(true);
@@ -131,10 +131,10 @@ export class RecordingLoaderService implements OnDestroy {
 
   private initLocalStorageValues() {
     if (!this.selectedSites) {
-      this.selectedSites = [];
+      this.selectedSites = null;
     }
     if (!this.selectedSpecies) {
-      this.selectedSpecies = [];
+      this.selectedSpecies = null;
     }
     if (!this.previous) {
       this.previous = [];

@@ -4,10 +4,14 @@ import { OnlyLoggedIn } from '../../../../laji/src/app/shared/route/only-logged-
 import { IdentificationInstructionsComponent } from './identification-instructions/identification-instructions.component';
 import { ExpertiseComponent } from './expertise/expertise.component';
 import { RecordingIdentificationComponent } from './recording-identification/recording-identification.component';
-import { IdentificationResultsComponent } from './identification-results/identification-results.component';
 import { IdentificationComponent } from './identification.component';
 import { DocumentDeActivateGuard } from '../../../../laji/src/app/shared/guards/document-de-activate.guard';
-import { IdentificationHistoryComponent } from './identification-history/identification-history.component';
+import {
+  BirdIdentificationHistoryComponent
+} from './bird-identification-history/bird-identification-history.component';
+import {
+  BirdIdentificationResultsComponent
+} from './bird-identification-results/bird-identification-results.component';
 
 const routes: Routes = [
   {
@@ -18,8 +22,8 @@ const routes: Routes = [
       {path: 'instructions', pathMatch: 'full', component: IdentificationInstructionsComponent},
       {path: 'expertise', pathMatch: 'full', component: ExpertiseComponent, canActivate: [OnlyLoggedIn]},
       {path: 'recordings', pathMatch: 'full', component: RecordingIdentificationComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
-      {path: 'history', pathMatch: 'full', component: IdentificationHistoryComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'results', pathMatch: 'full', component: IdentificationResultsComponent}
+      {path: 'history', pathMatch: 'full', component: BirdIdentificationHistoryComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'results', pathMatch: 'full', component: BirdIdentificationResultsComponent}
     ]
   }
 ];

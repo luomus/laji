@@ -29,8 +29,8 @@ import { LajiUiModule } from '../../../../../../laji-ui/src/lib/laji-ui.module';
   providers: [AudioService, AudioCacheLoaderService, RecordingLoaderService]
 })
 export class IdentificationMainComponent implements OnChanges {
-  @Input() selectedSites: number[] = [];
-  @Input() selectedSpecies: number[] = [];
+  @Input() selectedSites?: number[];
+  @Input() selectedSpecies?: number[];
   @Input({ required: true }) goBackBtnLabel!: string;
   @Input({ required: true }) allRecordingsAnnotatedLabel!: string;
 

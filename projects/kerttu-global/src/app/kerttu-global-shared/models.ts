@@ -195,6 +195,7 @@ export interface IIdentificationHistoryQuery {
   speciesSearchQuery?: string;
   includeSkipped?: boolean;
   site?: number;
+  taxonTypes?: TaxonTypeEnum[];
 }
 
 export interface IIdentificationHistoryResponse {
