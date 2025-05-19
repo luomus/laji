@@ -49,14 +49,14 @@ export class RecordingLoaderService implements OnDestroy {
   }
 
   setSelectedSites(selectedSites: number[]|null = null) {
-    if (!Util.equalsArray(this.selectedSites, selectedSites)) {
+    if (!(this.selectedSites === selectedSites || Util.equalsArray(this.selectedSites, selectedSites))) {
       this.selectedSites = selectedSites;
       this.clearLoadedRecordings(true);
     }
   }
 
   setSelectedSpecies(selectedSpecies: number[]|null = null) {
-    if (!Util.equalsArray(this.selectedSpecies, selectedSpecies)) {
+    if (!(this.selectedSpecies === selectedSpecies || Util.equalsArray(this.selectedSpecies, selectedSpecies))) {
       this.selectedSpecies = selectedSpecies;
       this.clearLoadedRecordings(true);
     }
