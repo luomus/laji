@@ -9,7 +9,8 @@
 </div>
 
 <bsg-species-table
-  [species]="species"
+  [species]="species || []"
+  [loading]="!species"
   [height]="height"
   [(selectedSpecies)]="selectedSites"
 ></bsg-species-table>

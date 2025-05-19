@@ -24,6 +24,7 @@ export class SpeciesTableComponent implements OnInit, OnChanges {
   @ViewChild('selectTpl', { static: true }) selectTpl!: TemplateRef<any>;
 
   @Input() species: IGlobalSpecies[] = [];
+  @Input() loading = false;
   @Input() selectedSpecies: number[] = [];
   @Input() height = '100%';
 

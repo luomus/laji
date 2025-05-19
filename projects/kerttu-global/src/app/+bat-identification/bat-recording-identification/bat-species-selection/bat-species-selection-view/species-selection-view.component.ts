@@ -8,7 +8,7 @@ import { IGlobalSpecies } from '../../../../kerttu-global-shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesSelectionViewComponent {
-  @Input({ required: true }) species: IGlobalSpecies[] = [];
+  @Input({ required: true }) species: IGlobalSpecies[]|undefined;
 
   selectedSites: number[] = [];
   height = 'calc(100vh - 230px)';
