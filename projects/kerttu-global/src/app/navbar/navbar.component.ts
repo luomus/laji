@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'bsg-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['../../../../laji/src/app/shared/navbar/navbar.component.scss'],
+  styleUrls: ['../../../../laji/src/app/shared/navbar/navbar.component.scss', './navbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent implements OnInit, OnDestroy {

@@ -1,0 +1,12 @@
+@import 'vars';
+
+@media only screen and (max-width: 900px) {
+  .navbar-collapse .navbar-nav > li > .lu-dropdown.navbar-dropdown {
+    background-color: $primary-6;
+    position: relative !important;
+
+    & > li > a:hover {
+      background-color: lighten($primary-6, 5%);
+    }
+  }
+}

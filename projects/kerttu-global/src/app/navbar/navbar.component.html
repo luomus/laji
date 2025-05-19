@@ -19,7 +19,7 @@
             {{ 'navigation.birds' | translate }}
             <span class="glyphicon glyphicon-triangle-bottom"></span>
           </a>
-          <ul luDropdownMenu>
+          <ul luDropdownMenu class="navbar-dropdown">
             <li role="menuitem">
               <a [routerLink]="['/validation'] | localize">{{ 'validation.title' | translate }}</a>
             </li>
@@ -33,7 +33,7 @@
             {{ 'navigation.bats' | translate }}
             <span class="glyphicon glyphicon-triangle-bottom"></span>
           </a>
-          <ul luDropdownMenu>
+          <ul luDropdownMenu class="navbar-dropdown">
             <li role="menuitem">
               <a [routerLink]="['/bats/identification'] | localize">{{ 'identification.title' | translate }}</a>
             </li>
@@ -46,7 +46,7 @@
             <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
             <i class="glyphicon glyphicon-user"></i>
           </a>
-          <ul luDropdownMenu class="right">
+          <ul luDropdownMenu class="navbar-dropdown">
             <li role="menuitem">
               <a [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
             </li>
@@ -75,7 +75,7 @@
               FR
             </span>
           </a>
-          <ul luDropdownMenu class="right">
+          <ul luDropdownMenu class="right navbar-dropdown">
             <li *ngIf="'en' !== translate.currentLang" role="menuitem">
               <a rel="alternate" hreflang="en" class="navbar-link link" [routerLink]="[] | localize:'en'" queryParamsHandling="preserve">English</a>
             </li>
