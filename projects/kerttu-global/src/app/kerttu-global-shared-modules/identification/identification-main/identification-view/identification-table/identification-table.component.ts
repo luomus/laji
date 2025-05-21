@@ -28,6 +28,7 @@ export class IdentificationTableComponent implements OnChanges {
 
   @Input() loading = false;
   @Input() showSoundTypeSelect = true;
+  @Input() showOverlapsWithOtherSpeciesCheck = true;
   @Input() showDrawRelatedBoxBtn = true;
   @Input() buttonsDisabled = false;
   @Input() drawActive = false;

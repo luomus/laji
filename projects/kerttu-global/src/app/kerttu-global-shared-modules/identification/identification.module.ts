@@ -36,6 +36,9 @@ import {
 } from './identification-results/identification-user-table/identification-user-table.component';
 import { SiteResultMapComponent } from './identification-results/site-result-map/site-result-map.component';
 import { LajiMapModule } from '../../../../../laji/src/app/shared-modules/laji-map/laji-map.module';
+import {
+  OtherSoundSelectComponent
+} from './identification-main/identification-view/other-sound-select/other-sound-select.component';
 
 @NgModule({
   imports: [
@@ -53,6 +56,7 @@ import { LajiMapModule } from '../../../../../laji/src/app/shared-modules/laji-m
     IdentificationMainComponent,
     IdentificationViewComponent,
     TaxonSelectComponent,
+    OtherSoundSelectComponent,
     IdentificationTableComponent,
     IdentificationPanelComponent,
     AudioViewerCustomControlsComponent,

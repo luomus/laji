@@ -39,6 +39,7 @@ export class IdentificationPanelComponent {
   @Input({ required: true }) identification!: IGlobalSpeciesWithAnnotation;
 
   @Input() showSoundTypeSelect = true;
+  @Input() showOverlapsWithOtherSpeciesCheck = true;
   @Input() showDrawRelatedBoxBtn = true;
   @Input() buttonsDisabled = false;
   @Input() drawBoxActive = false;

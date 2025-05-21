@@ -46,6 +46,17 @@ import {
   AudioViewerComponent
 } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer/audio-viewer.component';
 
+interface ActiveDrawState {
+  active: true;
+  type: 'species'|'otherSound';
+  speciesIdx: number;
+  relatedBoxIdx?: number;
+}
+interface InactiveDrawState {
+  active: false;
+}
+type DrawState = ActiveDrawState|InactiveDrawState;
+
 const batSpectrogramConfig = {
 ...defaultSpectrogramConfig,
     targetWindowLengthInSeconds: 0.004
@@ -57,16 +68,18 @@ const batSpectrogramConfig = {
   styleUrls: ['./identification-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy {
+export class IdentificationViewComponent implements OnChanges, OnDestroy {
   @ViewChild('topContent') topContent?: ElementRef;
   @ViewChild(AudioViewerComponent) audioViewer?: AudioViewerComponent;
-  @ViewChild(IdentificationTableComponent) identificationTable?: IdentificationTableComponent;
+  @ViewChild('speciesIdentificationTable') identificationTable?: IdentificationTableComponent;
+  @ViewChild('otherSoundsIdentificationTable') otherSoundsIdentificationTable?: IdentificationTableComponent;
 
   @Input({ required: true }) recording!: IGlobalRecording;
   @Input({ required: true }) annotation!: IGlobalRecordingAnnotation;
   @Input() buttonsDisabled = false;
 
   selectedSpecies: IGlobalSpeciesWithAnnotation[] = [];
+  selectedOtherSounds: IGlobalSpeciesWithAnnotation[] = [];
   loadingSpecies = false;
 
   sampleRate!: number;
@@ -79,14 +92,13 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   showWholeFrequencyRange = false;
   showWholeTimeRange = true;
 
-  drawBirdActive = false;
-  drawBirdIndex = -1;
-  drawBirdRelatedBoxIndex = -1;
-  drawNonBirdActive = false;
+  speciesBoxDrawState: DrawState = {
+    active: false
+  };
 
-  birdRectangleColor = 'white';
-  overlappingBirdRectangleColor = '#d9d926';
-  nonBirdRectangleColor = '#d98026';
+  speciesRectangleColor = 'white';
+  overlappingSpeciesRectangleColor = '#d9d926';
+  otherSoundRectangleColor = '#d98026';
 
   taxonTypeEnum = TaxonTypeEnum;
 
@@ -95,7 +107,6 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   @Output() annotationChange = new EventEmitter<IGlobalRecordingAnnotation>();
 
   private selectedSpeciesSub!: Subscription;
-  private nonBirdLabel = '';
 
   private topContentMinHeight = 180;
 
@@ -111,10 +122,6 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
   destroyDragMoveListener?: () => void;
   destroyDragEndListener?: () => void;
-
-  ngOnInit() {
-    this.nonBirdLabel = this.translate.instant('identification.nonBird');
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     this.clearDrawMode();
@@ -132,9 +139,6 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     if (this.loadingSpecies) {
       return;
     }
-    if (this.selectedSpecies.filter(t => t.annotation.speciesId === species.id).length > 0) {
-      return;
-    }
 
     const newSpecies: IGlobalSpeciesWithAnnotation = {
       ...species,
@@ -144,74 +148,91 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
       }
     };
 
-    this.selectedSpecies = [...this.selectedSpecies, newSpecies];
+    if (species.taxonType !== TaxonTypeEnum.other) {
+      if (this.selectedSpecies.filter(t => t.annotation.speciesId === species.id).length > 0) {
+        return;
+      }
 
-    this.updateAnnotation();
-    this.scrollDrawButtonIntoView(this.selectedSpecies.length - 1);
+      this.selectedSpecies = [...this.selectedSpecies, newSpecies];
+
+      this.updateAnnotation();
+      this.scrollDrawButtonIntoView('species', this.selectedSpecies.length - 1);
+    } else {
+      if (this.selectedOtherSounds.filter(t => t.annotation.speciesId === species.id).length > 0) {
+        return;
+      }
+
+      this.selectedOtherSounds = [...this.selectedOtherSounds, newSpecies];
+
+      this.updateAnnotation();
+      this.scrollDrawButtonIntoView('otherSound', this.selectedOtherSounds.length - 1);
+    }
   }
 
-  onDrawBirdClick(data: {drawClicked: boolean; rowIndex: number; boxIndex?: number}) {
-    this.drawBirdActive = data.drawClicked;
-    this.drawBirdIndex = data.rowIndex;
-    this.drawBirdRelatedBoxIndex = data.boxIndex != null ? data.boxIndex : -1;
-    this.drawNonBirdActive = false;
-    this.audioViewerMode = this.drawBirdActive ? 'draw' : 'default';
-  }
-
-  toggleDrawNonBird() {
-    this.drawBirdActive = false;
-    this.drawBirdIndex = -1;
-    this.drawBirdRelatedBoxIndex = -1;
-    this.drawNonBirdActive = !this.drawNonBirdActive;
-    this.audioViewerMode = this.drawNonBirdActive ? 'draw' : 'default';
+  onDrawBirdClick(type: 'species'|'otherSound', data: {drawClicked: boolean; rowIndex: number; boxIndex?: number}) {
+    this.speciesBoxDrawState = data.drawClicked ? {
+      active: true,
+      type,
+      speciesIdx: data.rowIndex,
+      relatedBoxIdx: data.boxIndex
+    } : { active: false };
+    this.audioViewerMode = this.speciesBoxDrawState.active ? 'draw' : 'default';
   }
 
   drawEnd(area: AudioViewerArea) {
-    if (this.drawBirdIndex >= 0) {
-      const selectedSpecies = Util.clone(this.selectedSpecies);
-      const boxes = selectedSpecies[this.drawBirdIndex].annotation.boxes || [];
-
-      if (this.drawBirdRelatedBoxIndex >= 0) {
-        let boxGroup = boxes[this.drawBirdRelatedBoxIndex];
-        if (!isBoxGroup(boxGroup)) {
-          boxGroup = {boxes: [boxGroup]};
-        }
-        boxGroup.boxes.push({area});
-        boxGroup.boxes.sort((a: IGlobalSpeciesAnnotationBox, b: IGlobalSpeciesAnnotationBox) => a.area.xRange![0] - b.area.xRange![0]);
-        boxes[this.drawBirdRelatedBoxIndex] = boxGroup;
-      } else {
-        boxes.push({area});
-      }
-
-      selectedSpecies[this.drawBirdIndex].annotation.boxes = boxes;
-      this.selectedSpecies = selectedSpecies;
-      this.scrollDrawButtonIntoView(this.drawBirdIndex, this.drawBirdRelatedBoxIndex >= 0 ? this.drawBirdRelatedBoxIndex : undefined);
-    } else {
-      this.annotation.nonBirdArea = area;
+    if (!this.speciesBoxDrawState.active) {
+      return;
     }
+
+    const { type, speciesIdx, relatedBoxIdx } = this.speciesBoxDrawState;
+
+    const selectedSpecies = Util.clone(type === 'species' ? this.selectedSpecies : this.selectedOtherSounds);
+    const boxes = selectedSpecies[speciesIdx].annotation.boxes || [];
+
+    if (relatedBoxIdx !== undefined) {
+      let boxGroup = boxes[relatedBoxIdx];
+      if (!isBoxGroup(boxGroup)) {
+        boxGroup = {boxes: [boxGroup]};
+      }
+      boxGroup.boxes.push({area});
+      boxGroup.boxes.sort((a: IGlobalSpeciesAnnotationBox, b: IGlobalSpeciesAnnotationBox) => a.area.xRange![0] - b.area.xRange![0]);
+      boxes[relatedBoxIdx] = boxGroup;
+    } else {
+      boxes.push({area});
+    }
+
+    selectedSpecies[speciesIdx].annotation.boxes = boxes;
+
+    if (type === 'species') {
+      this.selectedSpecies = selectedSpecies;
+    } else {
+      this.selectedOtherSounds = selectedSpecies;
+    }
+
+    this.scrollDrawButtonIntoView(type, speciesIdx, relatedBoxIdx);
 
     this.clearDrawMode();
     this.updateSpectrogramAndAnnotation();
   }
 
-  removeDrawing(data?: {rowIndex: number; boxIndex: number; boxGroupIndex?: number}) {
-    if (data) {
-      const selectedSpecies = Util.clone(this.selectedSpecies);
-      const boxes = selectedSpecies[data.rowIndex].annotation.boxes;
-      const box = boxes[data.boxIndex];
+  removeDrawing(type: 'species'|'otherSound', data: {rowIndex: number; boxIndex: number; boxGroupIndex?: number}) {
+    const selectedSpecies = Util.clone(type === 'species' ? this.selectedSpecies : this.selectedOtherSounds);
+    const boxes = selectedSpecies[data.rowIndex].annotation.boxes;
+    const box = boxes[data.boxIndex];
 
-      if (isBoxGroup(box)) {
-        box.boxes.splice(data.boxGroupIndex!, 1);
-        if (box.boxes.length === 1) {
-          boxes[data.boxIndex] = box.boxes[0];
-        }
-      } else {
-        boxes.splice(data.boxIndex, 1);
+    if (isBoxGroup(box)) {
+      box.boxes.splice(data.boxGroupIndex!, 1);
+      if (box.boxes.length === 1) {
+        boxes[data.boxIndex] = box.boxes[0];
       }
+    } else {
+      boxes.splice(data.boxIndex, 1);
+    }
 
+    if (type === 'species') {
       this.selectedSpecies = selectedSpecies;
     } else {
-      this.annotation.nonBirdArea = undefined;
+      this.selectedOtherSounds = selectedSpecies;
     }
 
     this.updateSpectrogramAndAnnotation();
@@ -223,18 +244,18 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   }
 
   updateAnnotation() {
-    const speciesAnnotations: IGlobalSpeciesAnnotation[] = this.selectedSpecies.map(species => species.annotation);
+    const speciesAnnotations: IGlobalSpeciesAnnotation[] = this.selectedSpecies.map(s => s.annotation);
+    const otherAnnotations: IGlobalSpeciesAnnotation[] = this.selectedOtherSounds.map(s => s.annotation);
 
     this.annotationChange.emit({
       ...this.annotation,
-      speciesAnnotations
+      speciesAnnotations: speciesAnnotations.concat(otherAnnotations)
     });
   }
 
   onAudioViewerModeChange() {
     if (this.audioViewerMode !== 'draw') {
-      this.drawBirdActive = false;
-      this.drawNonBirdActive = false;
+      this.speciesBoxDrawState.active = false;
     }
   }
 
@@ -257,8 +278,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private clearDrawMode() {
-    this.drawBirdActive = false;
-    this.drawNonBirdActive = false;
+    this.speciesBoxDrawState.active = false;
     this.audioViewerMode = 'default';
   }
 
@@ -268,6 +288,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     }
 
     this.selectedSpecies = [];
+    this.selectedOtherSounds = [];
     this.updateSpectrogramRectangles();
 
     const speciesAnnotations = this.annotation?.speciesAnnotations;
@@ -281,7 +302,8 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
       this.loadingSpecies = true;
       this.selectedSpeciesSub = forkJoin(observables).subscribe((results: IGlobalSpeciesWithAnnotation[])  => {
-        this.selectedSpecies = results;
+        this.selectedSpecies = results.filter(s => s.taxonType !== TaxonTypeEnum.other);
+        this.selectedOtherSounds = results.filter(s => s.taxonType === TaxonTypeEnum.other);
         this.loadingSpecies = false;
         this.updateSpectrogramRectangles();
         this.cdr.markForCheck();
@@ -292,18 +314,25 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private updateSpectrogramRectangles() {
+    const speciesRectangles = this.getSpectrogramRectanglesForAnnotations(this.selectedSpecies, this.speciesRectangleColor, this.overlappingSpeciesRectangleColor);
+    const otherRectangles = this.getSpectrogramRectanglesForAnnotations(this.selectedOtherSounds, this.otherSoundRectangleColor, this.otherSoundRectangleColor);
+
+    this.audioViewerRectangles = speciesRectangles.concat(otherRectangles);
+  }
+
+  private getSpectrogramRectanglesForAnnotations(speciesAnnotations: IGlobalSpeciesWithAnnotation[], color: string, overlapColor: string) {
     const boxToRectangle = (box: IGlobalSpeciesAnnotationBox, speciesIdx: number, idx: number, groupIdx?: number) => ({
       label: KerttuGlobalUtil.getBoxLabel(speciesIdx, idx, groupIdx),
       area: box.area,
-      color: box.overlapsWithOtherSpecies ? this.overlappingBirdRectangleColor : this.birdRectangleColor
+      color: box.overlapsWithOtherSpecies ? overlapColor : color
     });
 
-    this.audioViewerRectangles = this.selectedSpecies.reduce((rectangles, species, speciesIdx) => {
+    return  speciesAnnotations.reduce((rectangles, species, speciesIdx) => {
       (species.annotation.boxes || []).forEach((box, idx) => {
         if (isBoxGroup(box)) {
           rectangles.push({
             rectangles: box.boxes.map((b, i) => boxToRectangle(b, speciesIdx, idx, i)),
-            color: this.birdRectangleColor
+            color
           });
         } else {
           rectangles.push(boxToRectangle(box, speciesIdx, idx));
@@ -311,20 +340,13 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
       });
       return rectangles;
     }, [] as (AudioViewerRectangle|AudioViewerRectangleGroup)[]);
-
-    if (this.annotation.nonBirdArea) {
-      this.audioViewerRectangles.push({
-        label: this.nonBirdLabel,
-        area: this.annotation.nonBirdArea,
-        color: this.nonBirdRectangleColor
-      });
-    }
   }
 
-  private scrollDrawButtonIntoView(idx: number, boxIdx?: number) {
+  private scrollDrawButtonIntoView(type: 'species'|'otherSound', idx: number, boxIdx?: number) {
     // timeout ensures that the view is rendered before scrolling
     setTimeout(() => {
-      this.identificationTable!.scrollDrawButtonIntoView(idx, boxIdx);
+      const table = type === 'species' ? this.identificationTable : this.otherSoundsIdentificationTable;
+      table!.scrollDrawButtonIntoView(idx, boxIdx);
     }, 0);
   }
 

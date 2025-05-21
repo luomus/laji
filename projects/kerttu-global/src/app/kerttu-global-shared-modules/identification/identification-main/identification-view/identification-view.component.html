@@ -115,61 +115,67 @@
         </div>
       </div>
     </div>
-    <div class="form-group">
-      <h4>
-        {{ 'identification.listBirdSpecies' | translateWithTaxonType: recording.taxonType }}
-        <laji-info [placement]="'right'" [html]="'identification.listSpecies.info' | translate" [showOnHover]="true"></laji-info>
-      </h4>
-      <bsg-taxon-select
-        id="species-select"
-        [taxonType]="recording.taxonType"
-        (taxonSelect)="addToIdentifications($event)"
-      ></bsg-taxon-select>
-    </div>
-    <bsg-identification-table
-      [recording]="recording"
-      [(identifications)]="selectedSpecies"
-      [loading]="loadingSpecies"
-      [showSoundTypeSelect]="recording.taxonType === taxonTypeEnum.bird"
-      [showDrawRelatedBoxBtn]="recording.taxonType === taxonTypeEnum.insect"
-      [buttonsDisabled]="buttonsDisabled || loadingSpecies"
-      [birdRectangleColor]="birdRectangleColor"
-      [overlappingBirdRectangleColor]="overlappingBirdRectangleColor"
-      [sampleRate]="sampleRate"
-      [spectrogramConfig]="spectrogramConfig"
-      [drawActive]="drawBirdActive"
-      (drawBoxClick)="onDrawBirdClick($event)"
-      (drawRelatedBoxClick)="onDrawBirdClick($event)"
-      (deleteBoxClick)="removeDrawing($event)"
-      (identificationsChange)="updateSpectrogramAndAnnotation()"
-    ></bsg-identification-table>
-    <div class="form-group mt-4 mb-4">
-      <label for="drawNonBird" class="d-inline">
-        {{ 'identification.drawNonBird' | translateWithTaxonType: recording.taxonType }}
-      </label>
-      <laji-info [placement]="'right'" [html]="'identification.drawNonBird.info' | translateWithTaxonType: recording.taxonType" [showOnHover]="true"></laji-info>
-      <div>
-        <button
-          id="drawNonBird"
-          class="btn"
-          [ngClass]="{
-              'btn-default': !drawNonBirdActive,
-              'btn-primary': drawNonBirdActive
-             }"
-          (click)="toggleDrawNonBird()"
-          [disabled]="buttonsDisabled || loadingSpecies"
-        >
-          {{ 'identification.' + (annotation.nonBirdArea ? 'redraw' : 'draw') | translate }}
-        </button>
-        <button
-          *ngIf="annotation.nonBirdArea"
-          class="btn btn-default ml-2"
-          (click)="removeDrawing()"
-          [disabled]="buttonsDisabled || loadingSpecies"
-        >
-          {{ 'identification.remove' | translate }}
-        </button>
+    <div class="mb-5">
+      <div class="form-group">
+        <h4>
+          {{ 'identification.listBirdSpecies' | translateWithTaxonType: recording.taxonType }}
+          <laji-info [placement]="'right'" [html]="'identification.listSpecies.info' | translate" [showOnHover]="true"></laji-info>
+        </h4>
+        <bsg-taxon-select
+          id="species-select"
+          [taxonType]="recording.taxonType"
+          (taxonSelect)="addToIdentifications($event)"
+        ></bsg-taxon-select>
       </div>
+      <bsg-identification-table
+        #speciesIdentificationTable
+        [recording]="recording"
+        [(identifications)]="selectedSpecies"
+        [loading]="loadingSpecies"
+        [showSoundTypeSelect]="recording.taxonType === taxonTypeEnum.bird"
+        [showDrawRelatedBoxBtn]="recording.taxonType === taxonTypeEnum.insect"
+        [buttonsDisabled]="buttonsDisabled || loadingSpecies"
+        [birdRectangleColor]="speciesRectangleColor"
+        [overlappingBirdRectangleColor]="overlappingSpeciesRectangleColor"
+        [sampleRate]="sampleRate"
+        [spectrogramConfig]="spectrogramConfig"
+        [drawActive]="speciesBoxDrawState.active && speciesBoxDrawState.type === 'species'"
+        (drawBoxClick)="onDrawBirdClick('species', $event)"
+        (drawRelatedBoxClick)="onDrawBirdClick('species', $event)"
+        (deleteBoxClick)="removeDrawing('species', $event)"
+        (identificationsChange)="updateSpectrogramAndAnnotation()"
+      ></bsg-identification-table>
+    </div>
+    <div class="mb-5">
+      <div class="form-group">
+        <h4>
+          {{ 'identification.listNonBirdSpecies' | translateWithTaxonType: recording.taxonType }}
+        </h4>
+        <bsg-other-sound-select
+          id="other-species-select"
+          [taxonType]="recording.taxonType"
+          (soundSelect)="addToIdentifications($event)"
+        ></bsg-other-sound-select>
+      </div>
+      <bsg-identification-table
+        #otherSoundsIdentificationTable
+        [recording]="recording"
+        [(identifications)]="selectedOtherSounds"
+        [loading]="loadingSpecies"
+        [showSoundTypeSelect]="false"
+        [showOverlapsWithOtherSpeciesCheck]="false"
+        [showDrawRelatedBoxBtn]="false"
+        [buttonsDisabled]="buttonsDisabled || loadingSpecies"
+        [birdRectangleColor]="otherSoundRectangleColor"
+        [overlappingBirdRectangleColor]="overlappingSpeciesRectangleColor"
+        [sampleRate]="sampleRate"
+        [spectrogramConfig]="spectrogramConfig"
+        [drawActive]="speciesBoxDrawState.active && speciesBoxDrawState.type === 'otherSound'"
+        (drawBoxClick)="onDrawBirdClick('otherSound', $event)"
+        (drawRelatedBoxClick)="onDrawBirdClick('otherSound', $event)"
+        (deleteBoxClick)="removeDrawing('otherSound', $event)"
+        (identificationsChange)="updateSpectrogramAndAnnotation()"
+      ></bsg-identification-table>
     </div>
   </div>
 </ng-container>

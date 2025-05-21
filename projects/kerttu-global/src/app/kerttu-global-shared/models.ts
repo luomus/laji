@@ -35,6 +35,7 @@ export interface IGlobalSpecies {
   id: number;
   scientificName: string;
   commonName?: string;
+  taxonType?: TaxonTypeEnum;
   versionCount?: number;
   validationCount?: number;
   userHasValidated?: boolean;
@@ -235,7 +236,8 @@ export enum TaxonTypeEnum {
   bird = 0,
   bat = 1,
   insect = 2,
-  frog = 3
+  frog = 3,
+  other = 4
 }
 
 export enum AnnotationStatusEnum {

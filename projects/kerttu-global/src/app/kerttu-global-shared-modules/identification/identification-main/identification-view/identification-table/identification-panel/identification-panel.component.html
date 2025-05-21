@@ -68,7 +68,7 @@
                   </option>
                 </select>
               </td>
-              <td style="width: 240px">
+              <td *ngIf="showOverlapsWithOtherSpeciesCheck" style="width: 240px">
                 <div class="checkbox">
                   <label>
                     <input type="checkbox" [(ngModel)]="box.overlapsWithOtherSpecies" (ngModelChange)="identificationChange.emit(identification)">{{ 'identification.boxes.overlapsWithOthers' | translate }}
