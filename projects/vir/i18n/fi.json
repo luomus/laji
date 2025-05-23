@@ -125,5 +125,16 @@
   "vir.taxonomyHeader.li.1.2": "Suomen kansallisen lajiluettelon ",
   "vir.taxonomyHeader.li.1.3": "lajit ja niihin liitetyt hallinnolliset ominaisuudet.",
   "vir.taxonomyHeader.li.2": "Taksonomiaselailupalvelun avulla saat käyttöösi tieteellisen luokittelun mukaan järjestetyt lajitiedot.",
-  "vir.taxonomyHeader.title": "Lajiluettelot"
+  "vir.taxonomyHeader.title": "Lajiluettelot",
+  "infoLinks.virTerms": "https://info.laji.fi/etusivu/viranomaisportaali/viranomaisportaalin-kayttoehdot/",
+  "footer2.section1.link.virTerms": "Viranomaisportaalin käyttöehdot",
+  "footer2.section2.link.lajiFaq": "Lajitietokeskus",
+  "infoLinks.virFaq": "https://info.laji.fi/etusivu/viranomaisportaali/usein-kysytyt-kysymykset/",
+  "footer2.section2.link.virFaq": "Viranomaisportaali",
+  "infoLinks.guide.vir": "https://info.laji.fi/etusivu/viranomaisportaali/viranomaisportaalin-kaytto/",
+  "footer2.section2.link.vir": "Viranomaisportaalin ohjeet",
+  "infoLinks.webinars": "https://info.laji.fi/etusivu/viranomaisportaali/webinaarit-ja-uutiskirjeet/",
+  "footer2.section2.link.webinars": "Webinaarit",
+  "infoLinks.datasets": "https://info.laji.fi/etusivu/aineistopankki/",
+  "footer2.section3.link.datasets": "Aineistopankki"
 }
