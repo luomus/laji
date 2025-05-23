@@ -8290,6 +8290,7 @@ export interface components {
             nonHiddenParents: string[];
             nameAccordingTo: string;
             vernacularName: Record<string, never>;
+            colloquialVernacularName: Record<string, never>;
         };
         ErrorsObj: Record<string, never>;
         BatchJobValidationStatus: {
@@ -9754,9 +9755,31 @@ export interface components {
             hasLatestRedListEvaluation: boolean;
             primaryHabitatSearchStrings: string[];
             anyHabitatSearchStrings: string[];
-            vernacularNameFi: string;
-            vernacularNameSv: string;
-            vernacularNameEn: string;
+            vernacularNameMultiLang: {
+                fi: string;
+                sv: string;
+                en: string;
+            };
+            alternativeVernacularNameMultiLang: {
+                fi: string;
+                sv: string;
+                en: string;
+            };
+            obsoleteVernacularNameMultiLang: {
+                fi: string;
+                sv: string;
+                en: string;
+            };
+            synonymsMultiLang: {
+                fi: string;
+                sv: string;
+                en: string;
+            };
+            tradeNameMultiLang: {
+                fi: string;
+                sv: string;
+                en: string;
+            };
         };
         SimpleTaxon: {
             id: string;
@@ -15063,7 +15086,7 @@ export interface operations {
                 /** @description true: Will show hidden taxa
                  *     false: Hidden taxa are skipped and their non-hidden children raised up in the tree. */
                 includeHidden?: boolean;
-                /** @description Sorting field of the species (one of 'taxonomic' | 'scientific_name' | 'finnish_name') and optional sort order 'desc' | 'asc'.
+                /** @description Sorting field of the species (one of 'taxonomic' | 'scientificName' | 'finnishName') and optional sort order 'desc' | 'asc'.
                  *     Order defaults to 'asc'. The sort field and order are separated by a space character.
                  *
                  *     Defaults to 'taxonomic' */
@@ -15075,30 +15098,7 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        /** @description
-         *     The request body is a JSON object where each property represents a filter.
-         *     Properties are dot-separated (e.g., 'field.subfield') and correspond to the fields of taxon results. For array fields, the filter is done against each array item, so the dot-separated pointer shouldn't include array item path (if 'subfield' is an array that has property 'subsubfield', the pointer would be 'field.subfield.subsubfield').
-         *     For array fields, the dot notation allows filtering by nested properties.
-         *
-         *     Each filter value can be one of the following types:
-         *     - **boolean**: To filter by true/false values.
-         *     - **string**: To filter by exact string matches.
-         *     - **array of strings**: To filter by multiple possible string values. In this case, the filter acts as an "OR" operator.
-         *
-         *     Example:
-         *     ```
-         *     {
-         *       "species": true,                 // Matches taxa that have "species": true
-         *       "informalTaxonGroups": "MVL.1",  // Matches taxa with informalTaxonGoup MVL.1
-         *       "multimedia.author": "somebody"  // Maches taxa with any multimedia item having author "somebody"
-         *     }
-         *     ```
-         *      */
-        requestBody?: {
-            content: {
-                "application/json": string;
-            };
-        };
+        requestBody?: never;
         responses: {
             200: {
                 headers: {
@@ -15140,7 +15140,7 @@ export interface operations {
                 /** @description true: Will show hidden taxa
                  *     false: Hidden taxa are skipped and their non-hidden children raised up in the tree. */
                 includeHidden?: boolean;
-                /** @description Sorting field of the species (one of 'taxonomic' | 'scientific_name' | 'finnish_name') and optional sort order 'desc' | 'asc'.
+                /** @description Sorting field of the species (one of 'taxonomic' | 'scientificName' | 'finnishName') and optional sort order 'desc' | 'asc'.
                  *     Order defaults to 'asc'. The sort field and order are separated by a space character.
                  *
                  *     Defaults to 'taxonomic' */
@@ -16358,7 +16358,7 @@ export interface operations {
                 /** @description true: Will show hidden taxa
                  *     false: Hidden taxa are skipped and their non-hidden children raised up in the tree. */
                 includeHidden?: boolean;
-                /** @description Sorting field of the species (one of 'taxonomic' | 'scientific_name' | 'finnish_name') and optional sort order 'desc' | 'asc'.
+                /** @description Sorting field of the species (one of 'taxonomic' | 'scientificName' | 'finnishName') and optional sort order 'desc' | 'asc'.
                  *     Order defaults to 'asc'. The sort field and order are separated by a space character.
                  *
                  *     Defaults to 'taxonomic' */
@@ -16412,7 +16412,7 @@ export interface operations {
                 /** @description true: Will show hidden taxa
                  *     false: Hidden taxa are skipped and their non-hidden children raised up in the tree. */
                 includeHidden?: boolean;
-                /** @description Sorting field of the species (one of 'taxonomic' | 'scientific_name' | 'finnish_name') and optional sort order 'desc' | 'asc'.
+                /** @description Sorting field of the species (one of 'taxonomic' | 'scientificName' | 'finnishName') and optional sort order 'desc' | 'asc'.
                  *     Order defaults to 'asc'. The sort field and order are separated by a space character.
                  *
                  *     Defaults to 'taxonomic' */
@@ -17191,9 +17191,31 @@ export interface operations {
                         hasLatestRedListEvaluation: boolean;
                         primaryHabitatSearchStrings: string[];
                         anyHabitatSearchStrings: string[];
-                        vernacularNameFi: string;
-                        vernacularNameSv: string;
-                        vernacularNameEn: string;
+                        vernacularNameMultiLang: {
+                            fi: string;
+                            sv: string;
+                            en: string;
+                        };
+                        alternativeVernacularNameMultiLang: {
+                            fi: string;
+                            sv: string;
+                            en: string;
+                        };
+                        obsoleteVernacularNameMultiLang: {
+                            fi: string;
+                            sv: string;
+                            en: string;
+                        };
+                        synonymsMultiLang: {
+                            fi: string;
+                            sv: string;
+                            en: string;
+                        };
+                        tradeNameMultiLang: {
+                            fi: string;
+                            sv: string;
+                            en: string;
+                        };
                     };
                 };
             };
@@ -17229,7 +17251,7 @@ export interface operations {
                 /** @description true: Will show hidden taxa
                  *     false: Hidden taxa are skipped and their non-hidden children raised up in the tree. */
                 includeHidden?: boolean;
-                /** @description Sorting field of the species (one of 'taxonomic' | 'scientific_name' | 'finnish_name') and optional sort order 'desc' | 'asc'.
+                /** @description Sorting field of the species (one of 'taxonomic' | 'scientificName' | 'finnishName') and optional sort order 'desc' | 'asc'.
                  *     Order defaults to 'asc'. The sort field and order are separated by a space character.
                  *
                  *     Defaults to 'taxonomic' */
@@ -17288,7 +17310,7 @@ export interface operations {
                 /** @description true: Will show hidden taxa
                  *     false: Hidden taxa are skipped and their non-hidden children raised up in the tree. */
                 includeHidden?: boolean;
-                /** @description Sorting field of the species (one of 'taxonomic' | 'scientific_name' | 'finnish_name') and optional sort order 'desc' | 'asc'.
+                /** @description Sorting field of the species (one of 'taxonomic' | 'scientificName' | 'finnishName') and optional sort order 'desc' | 'asc'.
                  *     Order defaults to 'asc'. The sort field and order are separated by a space character.
                  *
                  *     Defaults to 'taxonomic' */
@@ -17349,7 +17371,7 @@ export interface operations {
                 /** @description true: Will show hidden taxa
                  *     false: Hidden taxa are skipped and their non-hidden children raised up in the tree. */
                 includeHidden?: boolean;
-                /** @description Sorting field of the species (one of 'taxonomic' | 'scientific_name' | 'finnish_name') and optional sort order 'desc' | 'asc'.
+                /** @description Sorting field of the species (one of 'taxonomic' | 'scientificName' | 'finnishName') and optional sort order 'desc' | 'asc'.
                  *     Order defaults to 'asc'. The sort field and order are separated by a space character.
                  *
                  *     Defaults to 'taxonomic' */
@@ -17415,7 +17437,7 @@ export interface operations {
                 /** @description true: Will show hidden taxa
                  *     false: Hidden taxa are skipped and their non-hidden children raised up in the tree. */
                 includeHidden?: boolean;
-                /** @description Sorting field of the species (one of 'taxonomic' | 'scientific_name' | 'finnish_name') and optional sort order 'desc' | 'asc'.
+                /** @description Sorting field of the species (one of 'taxonomic' | 'scientificName' | 'finnishName') and optional sort order 'desc' | 'asc'.
                  *     Order defaults to 'asc'. The sort field and order are separated by a space character.
                  *
                  *     Defaults to 'taxonomic' */
@@ -17963,9 +17985,21 @@ export interface operations {
                     hasLatestRedListEvaluation?: boolean;
                     primaryHabitatSearchStrings?: string | string[];
                     anyHabitatSearchStrings?: string | string[];
-                    vernacularNameFi?: string | string[];
-                    vernacularNameSv?: string | string[];
-                    vernacularNameEn?: string | string[];
+                    "vernacularNameMultiLang.fi"?: string | string[];
+                    "vernacularNameMultiLang.sv"?: string | string[];
+                    "vernacularNameMultiLang.en"?: string | string[];
+                    "alternativeVernacularNameMultiLang.fi"?: string | string[];
+                    "alternativeVernacularNameMultiLang.sv"?: string | string[];
+                    "alternativeVernacularNameMultiLang.en"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.fi"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.sv"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.en"?: string | string[];
+                    "synonymsMultiLang.fi"?: string | string[];
+                    "synonymsMultiLang.sv"?: string | string[];
+                    "synonymsMultiLang.en"?: string | string[];
+                    "tradeNameMultiLang.fi"?: string | string[];
+                    "tradeNameMultiLang.sv"?: string | string[];
+                    "tradeNameMultiLang.en"?: string | string[];
                 };
             };
         };

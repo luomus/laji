@@ -1104,7 +1104,7 @@
   "np.delete.fail": "Poisto epäonnistui. Koita hetken päästä uudelleen",
   "np.delete.success": "Poisto onnistui!",
   "np.earlier": "Ilmoitukset",
-  "np.edit": "Muokkaa julkisia tietoja",
+  "np.edit": "Muokkaa",
   "np.editPlace": "Tallenna muutokset",
   "np.form.success": "Paikka tallennettu!",
   "np.formOwnSubmissions": "Paikan aiemmat ilmoitukset",

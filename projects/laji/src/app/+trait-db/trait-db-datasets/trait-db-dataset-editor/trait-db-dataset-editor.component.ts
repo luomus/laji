@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,7 +12,7 @@ import { UserService } from '../../../shared/service/user.service';
 export type Dataset = components['schemas']['Dataset'];
 type ValidationResponse = components['schemas']['ValidationResponse'];
 
-const filterNullValues = <T extends Record<string, unknown>>(obj: T): T => {
+export const filterNullValues = <T extends Record<string, unknown>>(obj: T): T => {
   const clone: any = {};
   Object.entries(obj).forEach(([key, val]) => {
     if (val !== null) {
@@ -24,7 +24,8 @@ const filterNullValues = <T extends Record<string, unknown>>(obj: T): T => {
 
 @Component({
   templateUrl: './trait-db-dataset-editor.component.html',
-  styleUrls: ['./trait-db-dataset-editor.component.scss']
+  styleUrls: ['./trait-db-dataset-editor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
   datasetForm = this.fb.group({
@@ -88,21 +89,19 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  onPublish(event: MouseEvent) {
-    event.preventDefault();
-    this.datasetForm.get('published')!.setValue(true);
-  }
-
-  onUnpublish(event: MouseEvent) {
-    event.preventDefault();
-    this.subscription.add(
-      this.translate.get('trait-db.new-dataset.publish-confirm').pipe(
-        switchMap(str => this.dialogService.confirm(str)),
-        filter(res => res)
-      ).subscribe(_ => {
-        this.datasetForm.get('published')!.setValue(false);
-      })
-    );
+  onPublishedClick(event: Event) {
+    const checked = this.datasetForm.get('published')!.value;
+    if (checked) {
+      event.preventDefault();
+      this.subscription.add(
+        this.translate.get('trait-db.new-dataset.publish-confirm').pipe(
+          switchMap(str => this.dialogService.confirm(str)),
+          filter(res => res)
+        ).subscribe(_ => {
+          this.datasetForm.get('published')!.setValue(false);
+        })
+      );
+    }
   }
 
   onDelete() {
@@ -164,7 +163,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     this.externalValidationInProgress = true;
     const form = filterNullValues(this.datasetForm.value) as Dataset;
     this.datasetForm.disable();
-    this.api.fetch('/trait/datasets/validate-update/{id}', 'post', { path: { id: form.id } }, form).pipe(
+    this.api.fetch('/trait/datasets/validate-update/{id}', 'post', { path: { id: form.id }, query: { personToken: this.userService.getToken() } }, form).pipe(
       tap(res => {
         this.externalValidationInProgress = false;
         this.errors = res.pass ? undefined : res.errors;
@@ -176,7 +175,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
         this.uploadInProgress = true;
         this.datasetForm.disable();
       }),
-      switchMap(_ => this.api.fetch('/trait/datasets/{id}', 'put', { path: { id: form.id } }, form))
+      switchMap(_ => this.api.fetch('/trait/datasets/{id}', 'put', { path: { id: form.id }, query: { personToken: this.userService.getToken() } }, form))
     ).subscribe(res => {
       this.uploadInProgress = false;
       this.cdr.markForCheck();

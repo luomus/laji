@@ -1,0 +1,53 @@
+@import 'vars';
+
+ul {
+  display: flex;
+  margin: 0;
+  padding: 15px;
+}
+li {
+  flex: 1;
+  list-style: none;
+  text-align: center;
+  width: auto;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  text-overflow: ellipsis;
+  display: block;
+  border-top: 2px solid $neutral-4;
+}
+
+.bubble {
+  color: $neutral-1;
+  font-size: $fs-2;
+  font-weight: bold;
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  display: block;
+  background-color: $neutral-5;
+  margin: -10px auto 0.5em auto;
+  padding-top: 1px;
+  box-shadow: 0px 1px 2px rgba($neutral-8, .2);
+}
+
+.active .bubble {
+  background-color: $info-6;
+  width: 26px;
+  height: 26px;
+  font-size: $fs-3;
+  padding-top: 2px;
+  margin-top: -13px;
+  box-shadow: 0px 1px 2px rgba($info-8, .2);
+}
+
+.completed .bubble {
+  background-color: $success-6;
+  box-shadow: 0px 1px 4px rgba($success-8, .4);
+}
+
+.completed {
+  cursor: pointer;
+}
+

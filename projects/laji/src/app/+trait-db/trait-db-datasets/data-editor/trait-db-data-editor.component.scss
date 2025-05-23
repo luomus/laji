@@ -1,0 +1,22 @@
+@import 'vars';
+
+.status-icon {
+  display: inline-flex;
+  align-items: center;
+  width: 16px;
+  margin-left: -10px;
+  margin-right: 10px;
+}
+
+.status-icon.info {
+  color: $info-5;
+}
+
+.status-icon.success {
+  color: $success-5;
+}
+
+.status-icon.danger {
+  color: $danger-5;
+}
+

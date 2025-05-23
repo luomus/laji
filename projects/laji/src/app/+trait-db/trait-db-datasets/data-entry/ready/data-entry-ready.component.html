@@ -1,0 +1,19 @@
+<div>Your data has been submitted succesfully!</div>
+
+<div *ngIf="(state$ | async) as state">
+  <ng-container [ngSwitch]="state._tag">
+    <ng-container *ngSwitchCase="'loading'">Loading dataset...</ng-container>
+    <ng-container *ngSwitchCase="'error'">Error: {{ $any(state).msg | json }}</ng-container>
+    <ng-container *ngSwitchCase="'uploading'">Uploading dataset...</ng-container>
+    <ng-container *ngSwitchCase="'ready'">
+      <ng-container *ngIf="$any(state).dataset.published; else notPublished">
+        <a [routerLink]="['/trait-db/datasets/', $any(state).dataset.id]">Browse data of the dataset</a>
+      </ng-container>
+      <ng-template #notPublished>
+        Your data is now saved, but the dataset is not yet published. Would you like to publish it now?
+        <button class="btn btn-default" (click)="onPublishDataset($any(state).dataset)">Publish dataset</button>
+      </ng-template>
+    </ng-container>
+  </ng-container>
+</div>
+

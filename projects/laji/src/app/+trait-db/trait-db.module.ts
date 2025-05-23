@@ -19,6 +19,15 @@ import { DatatableModule } from 'projects/laji-ui/src/lib/datatable/datatable.mo
 import { TraitSearchComponent } from './shared/trait-search/trait-search.component';
 import { TraitSearchFiltersComponent } from './shared/trait-search/trait-search-filters/trait-search-filters.component';
 import { TraitSearchAdditionalFiltersComponent } from './shared/trait-search/trait-search-filters/additional-filters.component';
+import { TraitDbTraitEditorComponent } from './trait-db-traits/trait-db-trait-editor/trait-db-trait-editor.component';
+import { TraitEnumerationValueListComponent } from './trait-db-traits/trait-db-trait-editor/trait-enumeration-value-list.component';
+import { TraitDbTraitGroupEditorComponent } from './trait-db-traits/trait-db-trait-group-editor/trait-db-trait-group-editor.component';
+import { TraitDbDataEntryComponent } from './trait-db-datasets/data-entry/trait-db-data-entry.component';
+import { TraitDbDataEntryImportComponent } from './trait-db-datasets/data-entry/import/data-entry-import.component';
+import { TraitDbDataEntryValidateComponent } from './trait-db-datasets/data-entry/validate/data-entry-validate.component';
+import { TraitDbDataEntryCheckComponent } from './trait-db-datasets/data-entry/check/data-entry-check.component';
+import { TraitDbDataEntryReadyComponent } from './trait-db-datasets/data-entry/ready/data-entry-ready.component';
+import { TraitDbDataEditorComponent } from './trait-db-datasets/data-editor/trait-db-data-editor.component';
 
 @NgModule({
   imports: [ routing, CommonModule, SharedModule, LajiUiModule, ReactiveFormsModule, DatatableModule ],
@@ -26,7 +35,10 @@ import { TraitSearchAdditionalFiltersComponent } from './shared/trait-search/tra
     TraitDbComponent, TraitDbMainComponent, TraitDbBrowseComponent,
     TraitDbMyDatasetsComponent, TraitDbDatasetsComponent, TraitDbDatasetComponent,
     TraitDbDatasetEditorComponent, TraitDbAboutComponent, TraitDbTraitsComponent,
-    TraitDbTraitComponent, TraitSearchComponent, TraitSearchFiltersComponent, TraitSearchAdditionalFiltersComponent
+    TraitDbTraitComponent, TraitSearchComponent, TraitSearchFiltersComponent, TraitSearchAdditionalFiltersComponent,
+    TraitDbTraitEditorComponent, TraitEnumerationValueListComponent, TraitDbTraitGroupEditorComponent, TraitDbDataEntryComponent,
+    TraitDbDataEntryImportComponent, TraitDbDataEntryValidateComponent, TraitDbDataEntryCheckComponent, TraitDbDataEntryReadyComponent,
+    TraitDbDataEditorComponent
   ]
 })
 export class TraitDbModule {}
