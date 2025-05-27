@@ -543,7 +543,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       maxFillOpacity: 0.8,
       controlFillOpacity: true,
       onOpacityChange: this.onOpacityChange.bind(this),
-      onVisibleChange: this.onDataVisibleChange.bind(this)
+      onVisibleChange: this.onDataVisibleChange.bind(this),
+      tabbable: false
     };
   }
 
