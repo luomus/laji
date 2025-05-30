@@ -133,7 +133,9 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       return;
     }
     if (this.vm.form.options?.openForm) {
-      this.router.navigate(this.localizeRouterService.translateRoute([`project/${this.formService.getFormAlias(this.vm.form.id)}/about`]));
+      this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(projectRoute => {
+        this.router.navigate(['./about'], {relativeTo: projectRoute});
+      });
       return;
     }
     this.browserService.goBack(() => {
