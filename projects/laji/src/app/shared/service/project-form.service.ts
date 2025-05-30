@@ -50,8 +50,9 @@ export class ProjectFormService {
     private translate: TranslateService,
     private namedPlacesService: NamedPlacesService
   ) {
-    this.translate.onLangChange.subscribe(() => {
+    this.translate.onLangChange.subscribe(({ lang }) => {
       this.currentFormID = undefined;
+      this.localLang$.next(lang);
     });
   }
 
