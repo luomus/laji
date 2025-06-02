@@ -20,6 +20,10 @@ export interface IGlobalSpeciesListResult extends PagedResult<IGlobalSpecies> {
 
 export interface IGlobalSpeciesQuery {
   onlyUnvalidated?: boolean;
+  onlyWithValidationAudio?: boolean;
+  onlyWithSoundscapeRecordings?: boolean;
+  includeValidationStatus?: boolean;
+  includeAnnotationStatus?: boolean;
   continent?: number;
   order?: number;
   family?: number;
@@ -27,7 +31,6 @@ export interface IGlobalSpeciesQuery {
   page?: number;
   pageSize?: number;
   orderBy?: string[];
-  includeSpeciesWithoutAudio?: boolean;
   taxonType?: TaxonTypeEnum;
 }
 

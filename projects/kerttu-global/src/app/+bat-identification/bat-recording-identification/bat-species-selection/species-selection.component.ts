@@ -30,8 +30,9 @@ export class SpeciesSelectionComponent {
       page: 1,
       pageSize: 1000,
       taxonType: TaxonTypeEnum.bat,
-      includeSpeciesWithoutAudio: true,
-      orderBy: ['scientificName ASC']
+      orderBy: ['scientificName ASC'],
+      onlyWithSoundscapeRecordings: true,
+      includeAnnotationStatus: true
     }).pipe(map(speciesList => speciesList.results));
   }
 }

@@ -39,7 +39,12 @@ export class SpeciesTableComponent implements OnInit, OnChanges {
     this.columns = [
       {
         name: 'scientificName',
-        label: 'siteSelection.site.name',
+        label: 'speciesSelection.name',
+        width: 100
+      },
+      {
+        name: 'recordingCount',
+        label: 'speciesSelection.recordingCount',
         width: 100
       },
       {

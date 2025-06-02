@@ -280,5 +280,7 @@
   "otherSounds.Rain or wind": "Rain or wind",
   "otherSounds.Technical artefact": "Technical artefact",
   "otherSounds.Other or unknown": "Other or unknown",
-  "identification.taxonSelectPlaceholder": "Search..."
+  "identification.taxonSelectPlaceholder": "Search...",
+  "speciesSelection.name": "Name",
+  "speciesSelection.recordingCount": "Recording count"
 }

@@ -82,7 +82,7 @@ export class TaxonSelectComponent {
         pageSize: this.limit,
         orderBy: ['searchQuery ASC'],
         continent: this.continent,
-        includeSpeciesWithoutAudio: true
+        includeValidationStatus: true
       }
     ).pipe(
       map(result => (result.results)),

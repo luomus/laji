@@ -49,8 +49,7 @@ export class OtherSoundSelectComponent {
       this.translate.currentLang,
       {
         taxonType: TaxonTypeEnum.other,
-        pageSize: 1000,
-        includeSpeciesWithoutAudio: true
+        pageSize: 1000
       }
     ).pipe(
       map(result => (result.results))
