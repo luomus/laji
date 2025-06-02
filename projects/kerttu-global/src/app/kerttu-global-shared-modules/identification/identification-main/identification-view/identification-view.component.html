@@ -125,6 +125,7 @@
           id="species-select"
           [taxonType]="recording.taxonType"
           (taxonSelect)="addToIdentifications($event)"
+          [placeholder]="'identification.taxonSelectPlaceholder' | translate"
         ></bsg-taxon-select>
       </div>
       <bsg-identification-table

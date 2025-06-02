@@ -279,5 +279,6 @@
   "otherAnimalsThanInsects": "Other animals than insects",
   "otherSounds.Rain or wind": "Rain or wind",
   "otherSounds.Technical artefact": "Technical artefact",
-  "otherSounds.Other or unknown": "Other or unknown"
+  "otherSounds.Other or unknown": "Other or unknown",
+  "identification.taxonSelectPlaceholder": "Search..."
 }
