@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { map, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,7 +25,7 @@ interface AboutData {
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss']
 })
-export class AboutComponent implements OnInit, OnDestroy {
+export class AboutComponent implements OnInit {
 
   Rights = Rights; // eslint-disable-line @typescript-eslint/naming-convention
   aboutData$!: Observable<AboutData>;
@@ -42,20 +42,14 @@ export class AboutComponent implements OnInit, OnDestroy {
     this.aboutData$ = this.userService.isLoggedIn$.pipe(
       mergeMap(loggedIn => this.projectFormService.getFormFromRoute$(this.route).pipe(
         mergeMap(form => this.formPermissionService.getRights(form).pipe(
-            map((rights) => ({
-              loggedIn,
-              rights: rights.edit === true ? Rights.Allowed : Rights.NotAllowed,
-              form
-            }))
-          ))
+          map((rights) => ({
+            loggedIn,
+            rights: rights.edit === true ? Rights.Allowed : Rights.NotAllowed,
+            form
+          }))
+        ))
       ))
     );
-  }
-
-  ngOnDestroy() {
-    if (this.projectFormService.getRegistrationContacts()) {
-      this.projectFormService.setRegistrationContacts(undefined);
-    }
   }
 
   showDocumentViewer(document: Document) {
