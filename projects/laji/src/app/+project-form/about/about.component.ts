@@ -4,7 +4,7 @@ import { map, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Form } from '../../shared/model/Form';
-import { ProjectFormService, RegistrationContact } from '../../shared/service/project-form.service';
+import { ProjectFormService } from '../../shared/service/project-form.service';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
 import { Document } from '../../shared/model/Document';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
@@ -29,7 +29,6 @@ export class AboutComponent implements OnInit, OnDestroy {
 
   Rights = Rights; // eslint-disable-line @typescript-eslint/naming-convention
   aboutData$!: Observable<AboutData>;
-  registrationContacts?: RegistrationContact[] | undefined;
 
   constructor(private userService: UserService,
               private formPermissionService: FormPermissionService,
@@ -42,19 +41,13 @@ export class AboutComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.aboutData$ = this.userService.isLoggedIn$.pipe(
       mergeMap(loggedIn => this.projectFormService.getFormFromRoute$(this.route).pipe(
-        mergeMap(form => {
-          if (form.options?.openForm) {
-            const contacts = this.projectFormService.getRegistrationContacts();
-            this.registrationContacts = contacts;
-          }
-          return this.formPermissionService.getRights(form).pipe(
+        mergeMap(form => this.formPermissionService.getRights(form).pipe(
             map((rights) => ({
               loggedIn,
               rights: rights.edit === true ? Rights.Allowed : Rights.NotAllowed,
               form
             }))
-          );
-        })
+          ))
       ))
     );
   }
@@ -75,9 +68,5 @@ export class AboutComponent implements OnInit, OnDestroy {
 
   login() {
     this.userService.redirectToLogin();
-  }
-
-  register() {
-    this.userService.register(this.registrationContacts);
   }
 }

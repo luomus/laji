@@ -1,27 +1,25 @@
 <laji-technical-news></laji-technical-news>
 
 <div *ngIf="aboutData$ | async as data" lajiFormOption="options.mobile options.dataset options.about collectionID options.disableRequestDescription">
-  <ng-container *ngIf="!data.form.options?.openForm; else openForm">
-    <ng-container *ngIf="!data.form.options?.mobile; else mobile">
-      <ng-container *ngIf="!data.form.options?.dataset; else datasetIntro">
-        <laji-project-form-header [form]="data.form"
-                                  [displayInstructions]="false"
-                                  lajiFormOption="logo title options.hideTES"
-        ></laji-project-form-header>
-        <laji-info-page *ngIf="(data.form.options?.about | multiLang)"
-                        [page]="data.form.options?.about | multiLang: true:undefined:'%value%'"
-                        lajiFormOption="options.about"
-        ></laji-info-page>
-      </ng-container>
-      <ng-template #datasetIntro>
-        <laji-dataset-about [form]="data.form"></laji-dataset-about>
-      </ng-template>
-      <ng-container *ngIf="data.loggedIn; else loginButton">
-        <laji-request *ngIf="data.form.collectionID && data.rights === Rights.NotAllowed"
-                      [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription!"
-                      lajiFormOption="options.disableRequestDescription">
-        </laji-request>
-      </ng-container>
+  <ng-container *ngIf="!data.form.options?.mobile; else mobile">
+    <ng-container *ngIf="!data.form.options?.dataset; else datasetIntro">
+      <laji-project-form-header [form]="data.form"
+                                [displayInstructions]="false"
+                                lajiFormOption="logo title options.hideTES"
+      ></laji-project-form-header>
+      <laji-info-page *ngIf="(data.form.options?.about | multiLang)"
+                      [page]="data.form.options?.about | multiLang: true:undefined:'%value%'"
+                      lajiFormOption="options.about"
+      ></laji-info-page>
+    </ng-container>
+    <ng-template #datasetIntro>
+      <laji-dataset-about [form]="data.form"></laji-dataset-about>
+    </ng-template>
+    <ng-container *ngIf="data.loggedIn; else loginButton">
+      <laji-request *ngIf="data.form.collectionID && data.rights === Rights.NotAllowed"
+                    [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription!"
+                    lajiFormOption="options.disableRequestDescription">
+      </laji-request>
     </ng-container>
   </ng-container>
 </div>
@@ -60,25 +58,6 @@
           </li>
         </ng-container>
       </ul>
-    </div>
-  </ng-container>
-</ng-template>
-
-<ng-template #openForm>
-  <ng-container *ngIf="aboutData$ | async as data">
-    <div class="m-6">
-      <laji-project-form-header [form]="data.form"
-                                [displayInstructions]="false"
-                                lajiFormOption="logo title options.hideTES"
-      ></laji-project-form-header>
-      <laji-info-page *ngIf="(data.form.options?.about | multiLang)"
-                      [page]="data.form.options?.about | multiLang: true:undefined:'%value%'"
-                      lajiFormOption="options.about"
-      ></laji-info-page>
-      <ng-container *ngIf="!data.loggedIn">
-        <p>{{ 'project-form.about.register.description' | translate }}</p>
-        <lu-button (click)="register()" role="primary" class="login-button">{{ 'project-form.about.register' | translate }}</lu-button>
-      </ng-container>
     </div>
   </ng-container>
 </ng-template>
