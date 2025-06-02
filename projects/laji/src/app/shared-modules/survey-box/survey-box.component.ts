@@ -17,7 +17,7 @@ export class SurveyBoxComponent {
       if (aliasKey) {
         id = aliasKey;
       }
-      return [`/project/${id}/form`];
+      return [`/project/${id}`];
     }
     return ['/project', this.form.id];
   }

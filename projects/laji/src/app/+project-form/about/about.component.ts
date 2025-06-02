@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
+import { FormService } from '../../shared/service/form.service';
 import { map, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -28,9 +29,11 @@ interface AboutData {
 export class AboutComponent implements OnInit {
 
   Rights = Rights; // eslint-disable-line @typescript-eslint/naming-convention
+
   aboutData$!: Observable<AboutData>;
 
   constructor(private userService: UserService,
+              private formService: FormService,
               private formPermissionService: FormPermissionService,
               private projectFormService: ProjectFormService,
               private route: ActivatedRoute,
