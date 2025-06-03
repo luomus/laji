@@ -1,12 +1,12 @@
 <ng-container *ngIf="boldEntries.length > 0">
   <div class="mb-1" *ngFor="let boldEntry of boldEntries">
     <b>{{ boldEntry.scientificName }}</b><br />
-    <a href="https://boldsystems.org/index.php/Public_SearchTerms?query={{boldEntry.scientificName}}">
+    <a href="https://portal.boldsystems.org/result?query=%22{{boldEntry.scientificName}}%22">
       {{ boldEntry.publicRecords }} {{ 'taxonomy.bold.publicRecords' | translate }}
     </a>
     <ul>
       <li *ngFor="let bin of boldEntry.bins">
-        <a href="http://boldsystems.org/index.php/Public_BarcodeCluster?clusteruri={{bin}}">{{ bin }}</a>
+        <a href="https://portal.boldsystems.org/bin/{{bin}}">{{ bin }}</a>
       </li>
     </ul>
   </div>
