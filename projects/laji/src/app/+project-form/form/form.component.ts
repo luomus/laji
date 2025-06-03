@@ -5,7 +5,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import { FormService } from '../../shared/service/form.service';
-import { TranslateService } from '@ngx-translate/core';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { UserService } from '../../shared/service/user.service';
 
@@ -43,7 +42,6 @@ export class FormComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private formService: FormService,
-              private translate: TranslateService,
               private userService: UserService
   ) {}
 
