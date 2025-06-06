@@ -34,6 +34,7 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
 import { HistoryService } from '../../../shared/service/history.service';
 import { DocumentPermissionService } from '../service/document-permission.service';
 import { FormService } from '../../../shared/service/form.service';
+import { Form } from '../../../shared/model/Form';
 
 @Component({
   selector: 'laji-document',
@@ -180,17 +181,17 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       switchMap(doc => this.documentPermissionService.getRightsToWarehouseDocument(doc).pipe(
         map(rights => ({doc, rights})),
       )),
-      switchMap(doc => doc.doc.formId
-        ? this.formService.getFormInListFormat(IdService.getId(doc.doc.formId)).pipe(
-          map(form => {
-            if (!!form.options?.secondaryCopy) {
-              doc.rights.hasEditRights = false;
-              doc.rights.hasDeleteRights = false;
+      switchMap(({doc, rights}) => doc.formId
+        ? this.formService.getFormInListFormat(IdService.getId(doc.formId)).pipe(
+          map((form: Form.List | undefined) => {
+            if (!form || !!form.options?.secondaryCopy) {
+              rights.hasEditRights = false;
+              rights.hasDeleteRights = false;
             }
-            return doc;
+            return {doc, rights};
           })
         )
-        : of(doc)
+        : of({doc, rights})
       )
     );
 
