@@ -9,8 +9,7 @@ node {
     }
     stage('Run integration tests') {
      sh 'rsync -r /home/node/config/beta.laji.fi/ "$WORKSPACE"'
-     sh 'npm run test:docker -- --project chromium --project firefox --reporter junit'
-     sh 'docker cp $(docker ps -alq):/app/test-results.xml test-results.xml'
+     sh 'PLAYWRIGHT_JUNIT_OUTPUT_NAME=test-results.xml CI=true npm run test -- --project chromium --reporter junit'
      junit allowEmptyResults: true, testResults: 'test-results.xml'
     }
     stage('Build beta') {
