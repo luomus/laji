@@ -21,7 +21,6 @@ interface ThankYouData {
 })
 export class ThankYouComponent implements OnInit, OnDestroy {
 
-  Rights = Rights; // eslint-disable-line @typescript-eslint/naming-convention
   thankYouData$!: Observable<ThankYouData>;
   registrationContacts?: RegistrationContact[] | undefined;
 

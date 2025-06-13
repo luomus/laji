@@ -38,9 +38,9 @@ export interface ExcelFormOptions {
 }
 
 export interface RegistrationContact {
-  preferredName: string | undefined;
-  inheritedName: string | undefined;
-  emailAddress: string | undefined;
+  preferredName?: string;
+  inheritedName?: string;
+  emailAddress?: string;
 }
 
 @Injectable({providedIn: 'root'})

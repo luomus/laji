@@ -72,10 +72,6 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     if (this.platformService.isServer) {
       return;
     }
-    this.navbarService.navbarVisible$.subscribe(() => {
-      // required to update the view when the navbar visibility changes
-      this.cdr.markForCheck();
-    });
     this.router.events.pipe(takeUntil(this.unsubscribe$)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.closeMenu();

@@ -255,7 +255,7 @@ export class UserService implements OnDestroy {
     const params: string[] = [
       `next=${this.location.path(true)}`,
       'redirectMethod=POST',
-      'locale=%lang%',
+      `locale=${this.translate.currentLang}`,
       'permanent=false'
     ];
 
