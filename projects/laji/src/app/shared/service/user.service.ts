@@ -23,6 +23,7 @@ import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
 import { Profile } from '../model/Profile';
 import { Global } from '../../../environments/global';
+import { RegistrationContact } from './project-form.service';
 
 export interface UserSettingsResultList {
   aggregateBy?: string[];
@@ -250,6 +251,21 @@ export class UserService implements OnDestroy {
     });
   }
 
+  register(registrationContacts: RegistrationContact[] | undefined): void {
+    const params: string[] = [
+      `next=${this.location.path(true)}`,
+      'redirectMethod=POST',
+      `locale=${this.translate.currentLang}`,
+      'permanent=false'
+    ];
+
+    if (registrationContacts?.[0]?.preferredName) { params.push(`preferredName=${registrationContacts?.[0]?.preferredName}`); }
+    if (registrationContacts?.[0]?.inheritedName) { params.push(`inheritedName=${registrationContacts?.[0]?.inheritedName}`); }
+    if (registrationContacts?.[0]?.emailAddress) { params.push(`email=${registrationContacts?.[0]?.emailAddress}`); }
+
+    window.location.href = environment.registerUrl + '?' + params.join('&');
+  }
+
   getToken(): string {
     if (this.store.value.loginState._tag !== 'logged_in') {
       console.warn('Attempted to get token while user is not logged in');
@@ -332,12 +348,23 @@ export class UserService implements OnDestroy {
   }
 
   getProfile(): Observable<Profile> {
-    return combineLatest([
-      this.personApi.personFindProfileByToken(this.getToken()),
-      this.user$
-    ]).pipe(
-      map(([profile, person]) => prepareProfile(profile, person)),
-      take(1)
+    if (this.getToken() === '') {
+      return of(prepareProfile(null, null));
+    } else {
+      return combineLatest([
+        this.personApi.personFindProfileByToken(this.getToken()),
+        this.user$
+      ]).pipe(
+        map(([profile, person]) => prepareProfile(profile, person)),
+        take(1)
+      );
+    }
+  }
+
+  emailHasAccount(email: string): Observable<boolean> {
+    return this.personApi.existsByEmail(email).pipe(
+      map(response => response.status === 204),
+      catchError(() => of(false))
     );
   }
 

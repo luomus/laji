@@ -15,6 +15,7 @@ import { TemplatesComponent } from './templates/templates.component';
 import { HasAdminPermission } from './guards/has-admin-permission';
 import { HasFormPermission } from './guards/has-form-permission';
 import { DisabledComponent } from './disabled/disabled.component';
+import { ThankYouComponent } from './thank-you/thank-you.component';
 
 export const routes: Routes = [
   {
@@ -62,7 +63,8 @@ export const routes: Routes = [
         pathMatch: 'prefix',
         canActivate: [OnlyLoggedIn, HasFormPermission],
         component: TemplatesComponent
-      }
+      },
+      {path: 'thank-you', pathMatch: 'prefix', component: ThankYouComponent},
     ]
   }
 ];

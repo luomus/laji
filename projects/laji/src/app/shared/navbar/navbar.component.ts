@@ -18,6 +18,7 @@ import { Global } from '../../../environments/global';
 import { NotificationsFacade } from './notifications/notifications.facade';
 import { BrowserService } from '../service/browser.service';
 import { PlatformService } from '../../root/platform.service';
+import { NavbarService } from '../service/navbar.service';
 
 @Component({
   selector: 'laji-navbar',
@@ -47,6 +48,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     protected changeDetector: ChangeDetectorRef,
+    public navbarService: NavbarService,
     public translate: TranslateService,
     private notificationsFacade: NotificationsFacade,
     private browserService: BrowserService,

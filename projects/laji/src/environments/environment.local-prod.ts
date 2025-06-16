@@ -11,6 +11,7 @@ export const environment = {
   loginCheck: '/loginInfo',
   loginUrl: 'https://login.laji.fi/login',
   selfPage: 'https://login.laji.fi/self',
+  registerUrl: 'https://login.laji.fi/auth-sources/LOCAL/register',
   kerttuApi: 'https://kerttu-backend.laji.fi',
   protaxApi: 'https://protax-api.laji.fi',
   geoserver: 'https://geoserver.laji.fi/geoserver',

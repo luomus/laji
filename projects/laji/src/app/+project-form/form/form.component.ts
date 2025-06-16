@@ -83,7 +83,7 @@ export class FormComponent implements OnInit {
                   }
 
                   return this.userService.isLoggedIn$.pipe(switchMap(isLoggedIn => {
-                    if (!isLoggedIn) {
+                    if (!isLoggedIn && !usedSubForm!.options?.openForm) {
                       this.userService.redirectToLogin();
                       return EMPTY;
                     }

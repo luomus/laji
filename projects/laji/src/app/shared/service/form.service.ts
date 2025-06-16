@@ -47,6 +47,17 @@ export class FormService {
     return id?.indexOf(FormService.tmpNs + ':') === 0;
   }
 
+  private getFormAlias(formId: string) {
+    return Object.keys(Global.formAliasMap).find(key => Global.formAliasMap[key] === formId);
+  }
+
+  private setLang(lang = this.translate.currentLang) {
+    if (this.currentLang !== lang) {
+      this.allForms = undefined;
+      this.currentLang = lang;
+    }
+  }
+
   getForm(formId: string): Observable<Form.SchemaForm | undefined> {
     if (!formId) {
       return ObservableOf(undefined);
@@ -103,6 +114,11 @@ export class FormService {
   }
 
   getEditUrlPath(formId: string, documentId: string) {
+    const alias = this.getFormAlias(formId);
+    if (alias) {
+      return `${this.getAddUrlPath(alias)}/${documentId}`;
+    }
+
     return `${this.getAddUrlPath(formId)}/${documentId}`;
   }
 
@@ -111,13 +127,6 @@ export class FormService {
       `${this.basePath}/${LajiApi.Endpoints.forms}/${form.id}/participants`,
     {params: {personToken: this.userService.getToken()}, headers: {timeout: '240000'}}
     ) as Observable<Participant[]>;
-  }
-
-  private setLang(lang = this.translate.currentLang) {
-    if (this.currentLang !== lang) {
-      this.allForms = undefined;
-      this.currentLang = lang;
-    }
   }
 
   getPlaceForm(documentForm: Form.SchemaForm) {

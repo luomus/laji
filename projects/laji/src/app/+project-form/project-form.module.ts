@@ -27,6 +27,7 @@ import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 import { ProjectFormHeaderModule } from './header/project-form-header.module';
 import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
+import { ThankYouComponent } from './thank-you/thank-you.component';
 
 @NgModule({
   imports: [
@@ -56,7 +57,8 @@ import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
     GenerateSpreadsheetComponent,
     TemplatesComponent,
     TermsComponent,
-    DisabledComponent
+    DisabledComponent,
+    ThankYouComponent
   ],
   providers: [
     HasAdminPermission,
