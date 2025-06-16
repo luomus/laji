@@ -92,7 +92,6 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 
     this.vm$ = this.documentFormFacade.getViewModel(this.formID, this.documentID, this.namedPlaceID, this.template);
     this.vm$.pipe(
-      take(1),
       filter(isSaneViewModel),
       tap(_ => {
         if (this.savingFromLocalStorage) {
