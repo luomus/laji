@@ -1,0 +1,66 @@
+<div id="soundIdentificationParams">
+  <div class="form-group">
+    <label for="threshold">{{ 'theme.soundIdentification.probabilityThreshold' | translate }}</label>
+    <input
+      [(ngModel)]="probabilityThreshold"
+      class="form-control input-sm"
+      type="number"
+      min="0"
+      max="1"
+      step="0.001"
+      id="threshold"
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="overlap">{{ 'theme.soundIdentification.overlap' | translate }}</label>
+    <input
+      [(ngModel)]="overlap"
+      class="form-control input-sm"
+      type="number"
+      min="0"
+      max="1"
+      step="0.001"
+      id="overlap"
+    >
+  </div>
+</div>
+
+<div id="soundIdentificationParams">
+  <div class="form-group">
+    <lu-checkbox (input)="toggleIncludeSdm()" [checked]="includeSdm === true"><label for="includeSdm">{{ 'theme.soundIdentification.sdm' | translate }}</label></lu-checkbox>
+    <div *ngIf="includeSdm">
+      <input
+        [(ngModel)]="latitude"
+        class="form-control input-sm"
+        type="number"
+        id="latitude"
+        placeholder="{{'theme.soundIdentification.latitude' | translate}}"
+      >
+      <input
+        [(ngModel)]="longitude"
+        class="form-control input-sm"
+        type="number"
+        id="longitude"
+        placeholder="{{'theme.soundIdentification.longitude' | translate}}"
+      />
+      <laji-datepicker [(ngModel)]="date" [toLastOfYear]="true" class="time-end"></laji-datepicker>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+  <p>{{ 'theme.soundIdentification.fileInput' | translate }}</p>
+  <input #fileInput class="form-control" type="file" style="height: auto" (change)="updateAudioFile(toHtmlInputElement($event.target).files!)">
+</div>
+
+<div class="form-group">
+  <lu-button [loading]="loading" [role]="'primary'" (click)="submitForm()">
+    <ng-container *ngIf="!(loading) else downloading">
+      {{ 'theme.soundIdentification.analyse' | translate }}
+    </ng-container>
+    <ng-template #downloading>
+      {{ 'theme.soundIdentification.loading' | translate }}
+    </ng-template>
+  </lu-button>
+</div>

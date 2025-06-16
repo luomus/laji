@@ -1,0 +1,30 @@
+<div>
+  <laji-datatable
+    [loading]="loading"
+    [columns]="columns"
+    [rows]="data || []"
+    [virtualScrolling]="true"
+    [height]="'calc(80vh - 50px)'"
+    [count]="data?.length"
+    [clientSideSorting]="true"
+    [showFooter]="false"
+  ></laji-datatable>
+
+  <ng-template let-row="row" #clipSpan>
+    <span>
+      {{row.start_time + "-" + row.end_time + "s"}} 
+    </span>
+  </ng-template>
+
+  <ng-template let-row="row" #vernacularName>
+    <ng-container *ngIf="(getVernacularName(row.scientific_name) | async | multiLang); let vernacularName; else spinner">
+      <span>
+        {{vernacularName}} 
+      </span>
+    </ng-container>
+  </ng-template>
+
+  <ng-template #spinner>
+  <div><laji-spinner class="d-block m-6"></laji-spinner></div>
+</ng-template>
+</div>

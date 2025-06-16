@@ -1,0 +1,12 @@
+<div class="container laji-information">
+  <h1>{{ 'theme.soundIdentification' | translate }}</h1>
+  <p>{{ 'theme.soundIdentification.intro' | translate }}</p>
+
+  <div>
+    <laji-sound-identification-form (soundIdentificationSubmit)="analyseData($event)" [loading]="loading" [maxAudioDuration]="maxAudioDuration" [acceptedFormats]="acceptedFormats"></laji-sound-identification-form>
+  </div>
+
+  <ng-container *ngIf="data !== undefined">
+    <laji-sound-identification-table [data]="data" [loading]="loading"></laji-sound-identification-table>
+  </ng-container>
+</div>
