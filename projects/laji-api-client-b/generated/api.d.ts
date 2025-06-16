@@ -15966,6 +15966,7 @@ export interface operations {
                  *     Result will have aggregations property object where the keys of the object are either the field(s) that were used
                  *     or the name if it was given. */
                 aggregateBy?: string;
+                aggregateSize?: number;
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
                 checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
@@ -16017,6 +16018,7 @@ export interface operations {
                 /** @description true: Will show hidden taxa
                  *     false: Hidden taxa are skipped and their non-hidden children raised up in the tree. */
                 includeHidden?: boolean;
+                aggregateSize?: number;
             };
             header?: never;
             path?: never;
@@ -17240,6 +17242,7 @@ export interface operations {
                  *     Result will have aggregations property object where the keys of the object are either the field(s) that were used
                  *     or the name if it was given. */
                 aggregateBy?: string;
+                aggregateSize?: number;
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
                 checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
@@ -17286,6 +17289,7 @@ export interface operations {
                  *     Result will have aggregations property object where the keys of the object are either the field(s) that were used
                  *     or the name if it was given. */
                 aggregateBy?: string;
+                aggregateSize?: number;
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
                 checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
@@ -18878,6 +18882,7 @@ export interface operations {
                  *     Result will have aggregations property object where the keys of the object are either the field(s) that were used
                  *     or the name if it was given. */
                 aggregateBy?: string;
+                aggregateSize?: number;
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
                 checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
