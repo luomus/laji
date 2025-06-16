@@ -263,7 +263,7 @@ export class UserService implements OnDestroy {
     if (registrationContacts?.[0]?.inheritedName) { params.push(`inheritedName=${registrationContacts?.[0]?.inheritedName}`); }
     if (registrationContacts?.[0]?.emailAddress) { params.push(`email=${registrationContacts?.[0]?.emailAddress}`); }
 
-    window.location.href = (environment.registerUrl + '?' + params.join('&')).replace('%lang%', this.translate.currentLang);
+    window.location.href = environment.registerUrl + '?' + params.join('&');
   }
 
   getToken(): string {
