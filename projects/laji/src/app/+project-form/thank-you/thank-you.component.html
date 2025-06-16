@@ -1,0 +1,12 @@
+<ng-container *ngIf="thankYouData$ | async as data">
+  <laji-project-form-header [form]="data.form" [displayInstructions]="false"
+    lajiFormOption="logo title options.hideTES"></laji-project-form-header>
+  <laji-info-page *ngIf="(data.form.options?.about | multiLang)"
+    [page]="data.form.options.about | multiLang: true:undefined:'%value%'"
+    lajiFormOption="options.about"></laji-info-page>
+  <ng-container *ngIf="!data.loggedIn">
+    <p>{{ 'project-form.about.register.description' | translate }}</p>
+    <lu-button (click)="register()" role="primary" class="login-button">{{ 'project-form.about.register' |
+      translate }}</lu-button>
+  </ng-container>
+</ng-container>

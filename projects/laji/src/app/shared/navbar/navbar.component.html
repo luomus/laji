@@ -24,7 +24,7 @@
           </div>
         </div>
         <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
-          <ul class="nav navbar-nav">
+          <ul class="nav navbar-nav" *ngIf="navbarService.navbarVisible$ | async">
             <ng-container *lajiForTypes="['iucn']">
               <li [routerLinkActive]="['active']">
                 <a [routerLink]="['/results'] | localize">{{ 'iucn.taxon.title' | translate }}</a>
