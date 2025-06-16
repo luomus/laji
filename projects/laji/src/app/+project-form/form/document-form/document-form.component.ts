@@ -57,6 +57,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   errors = FormError;
 
   private vm!: SaneViewModel;
+  private vmSub!: Subscription;
   private tmpID: string | undefined;
   private isFromCancel = false;
   private confirmLeave = true;
@@ -91,7 +92,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     }
 
     this.vm$ = this.documentFormFacade.getViewModel(this.formID, this.documentID, this.namedPlaceID, this.template);
-    this.vm$.pipe(
+    this.vmSub = this.vm$.pipe(
       filter(isSaneViewModel),
       tap(_ => {
         if (this.savingFromLocalStorage) {
@@ -107,6 +108,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.documentFormFacade.flush();
+    this.vmSub.unsubscribe();
     this.footerService.footerVisible = true;
   }
 
