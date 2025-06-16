@@ -1,77 +1,79 @@
 <ng-container *ngIf="vm$ | async; let vm; else spinner">
-  <div class="mt-5">
-  <ng-container *ngIf="vm | typeGuard: isFormError as error" [ngSwitch]="error">
-    <lu-alert type="danger" *ngSwitchCase="errors.notFoundForm">
-      {{ 'haseka.form.formNotFound' | translate:{formId: formID} }}
-    </lu-alert>
-    <lu-alert type="danger" *ngSwitchCase="errors.notFoundDocument">
-      {{ 'haseka.form.documentNotFound' | translate:{documentId: documentID} }}
-    </lu-alert>
-    <lu-alert type="danger" *ngSwitchCase="errors.loadFailed">
-      {{ 'haseka.form.genericError' | translate }}
-    </lu-alert>
-    <lu-alert type="danger" *ngSwitchCase="errors.noAccessToDocument">
-      {{ 'haseka.form.noAccessToDocument' | translate }}
-    </lu-alert>
-    <lu-alert type="danger" *ngSwitchCase="errors.templateDisallowed">
-      {{ 'haseka.form.templateDisallowed' | translate }}
-    </lu-alert>
-    <lu-alert type="danger" *ngSwitchCase="errors.missingNamedPlace">
-      {{ 'haseka.form.missingNamedPlace' | translate }}
-    </lu-alert>
-  </ng-container>
-  <ng-container *ngIf="vm | typeGuard: isSaneViewModel as vm">
-    <laji-project-form-header *ngIf="!vm.form.options?.mobile"
-                              [form]="vm.form"
-                              [description]="vm.form.description"
-                              lajiFormOption="description logo title options.hideTES">
-    </laji-project-form-header>
-    <laji-named-place-linker-button [documentID]="documentID"></laji-named-place-linker-button>
-    <lu-alert [type]="'danger'" *ngIf="vm.formData?.locked">
-      {{ 'document.locked' | translate }}
-    </lu-alert>
-    <lu-alert *ngIf="vm.editingOldWarning" type="warning">{{ 'haseka.editingOldDocumentWarning' | translate: {date: vm.editingOldWarning} }}</lu-alert>
-    <div class="row mt-3" *ngIf="vm.namedPlaceHeader.length">
-      <div class="col-sm-12">
-        <h3><span *ngFor="let field of vm.namedPlaceHeader; let i = index">
-            <ng-container *ngIf="$any(vm.namedPlace)[field] | area | values as val">
-              {{ val }}{{ $any(vm.namedPlace)[vm.namedPlaceHeader[i + 1]] ? ', ' : '' }}
-            </ng-container>
-          </span></h3>
-      </div>
+  <ng-container *ngIf="!savingFromLocalStorage; else spinner">
+    <div class="mt-5">
+      <ng-container *ngIf="vm | typeGuard: isFormError as error" [ngSwitch]="error">
+        <lu-alert type="danger" *ngSwitchCase="errors.notFoundForm">
+          {{ 'haseka.form.formNotFound' | translate:{formId: formID} }}
+        </lu-alert>
+        <lu-alert type="danger" *ngSwitchCase="errors.notFoundDocument">
+          {{ 'haseka.form.documentNotFound' | translate:{documentId: documentID} }}
+        </lu-alert>
+        <lu-alert type="danger" *ngSwitchCase="errors.loadFailed">
+          {{ 'haseka.form.genericError' | translate }}
+        </lu-alert>
+        <lu-alert type="danger" *ngSwitchCase="errors.noAccessToDocument">
+          {{ 'haseka.form.noAccessToDocument' | translate }}
+        </lu-alert>
+        <lu-alert type="danger" *ngSwitchCase="errors.templateDisallowed">
+          {{ 'haseka.form.templateDisallowed' | translate }}
+        </lu-alert>
+        <lu-alert type="danger" *ngSwitchCase="errors.missingNamedPlace">
+          {{ 'haseka.form.missingNamedPlace' | translate }}
+        </lu-alert>
+      </ng-container>
+      <ng-container *ngIf="vm | typeGuard: isSaneViewModel as vm">
+        <laji-project-form-header *ngIf="!vm.form.options?.mobile || vm.form.options?.openForm"
+                                  [form]="vm.form"
+                                  [description]="vm.form.description"
+                                  lajiFormOption="description logo title options.hideTES">
+        </laji-project-form-header>
+        <laji-named-place-linker-button [documentID]="documentID"></laji-named-place-linker-button>
+        <lu-alert [type]="'danger'" *ngIf="vm.formData?.locked">
+          {{ 'document.locked' | translate }}
+        </lu-alert>
+        <lu-alert *ngIf="vm.editingOldWarning" type="warning">{{ 'haseka.editingOldDocumentWarning' | translate: {date: vm.editingOldWarning} }}</lu-alert>
+        <div class="row mt-3" *ngIf="vm.namedPlaceHeader.length">
+          <div class="col-sm-12">
+            <h3><span *ngFor="let field of vm.namedPlaceHeader; let i = index">
+                <ng-container *ngIf="$any(vm.namedPlace)[field] | area | values as val">
+                  {{ val }}{{ $any(vm.namedPlace)[vm.namedPlaceHeader[i + 1]] ? ', ' : '' }}
+                </ng-container>
+              </span></h3>
+          </div>
+        </div>
+        <div class="clear"></div>
+        <div class="laji-form">
+          <laji-form
+            [form]="vm.form"
+            [formData]="vm.formData"
+            [settingsKey]="vm.form.id"
+            [showShortcutButton]="!vm.form.options?.mobile"
+            (dataChange)="onChange($event)"
+            (dataSubmit)="onSubmit($event)"
+            (validationError)="onValidationError($event)"
+            (goBack)="onGoBack()"
+          ></laji-form>
+          <laji-form-footer
+            [form]="vm.form"
+            [dateEdited]="vm.formData.dateEdited"
+            [locked]="vm.locked!"
+            [isAdmin]="vm.isAdmin"
+            [status]="(vm.hasChanges && !vm.form.options.openForm) ? 'unsaved' : ''"
+            [readonly]="vm.readonly"
+            [edit]="!!documentID"
+            [errors]="validationErrors"
+            [touchedCounter]="(touchedCounter$ | async)!"
+            [lajiForm]="lajiForm"
+            [template]="template"
+            (lock)="lock($event)"
+            (submitPublic)="submitPublic()"
+            (submitPrivate)="submitPrivate()"
+            (submitTemplate)="submitTemplate()"
+            (leave)="onLeave()"></laji-form-footer>
+        </div>
+      </ng-container>
     </div>
-    <div class="clear"></div>
-    <div class="laji-form">
-      <laji-form
-        [form]="vm.form"
-        [formData]="vm.formData"
-        [settingsKey]="vm.form.id"
-        [showShortcutButton]="!vm.form.options?.mobile"
-        (dataChange)="onChange($event)"
-        (dataSubmit)="onSubmit($event)"
-        (validationError)="onValidationError($event)"
-        (goBack)="onGoBack()"
-      ></laji-form>
-      <laji-form-footer
-        [form]="vm.form"
-        [dateEdited]="vm.formData.dateEdited"
-        [locked]="vm.locked!"
-        [isAdmin]="vm.isAdmin"
-        [status]="vm.hasChanges ? 'unsaved' : ''"
-        [readonly]="vm.readonly"
-        [edit]="!!documentID"
-        [errors]="validationErrors"
-        [touchedCounter]="(touchedCounter$ | async)!"
-        [lajiForm]="lajiForm"
-        [template]="template"
-        (lock)="lock($event)"
-        (submitPublic)="submitPublic()"
-        (submitPrivate)="submitPrivate()"
-        (submitTemplate)="submitTemplate()"
-        (leave)="onLeave()"></laji-form-footer>
-      </div>
-    </ng-container>
-  </div>
+  </ng-container>
 </ng-container>
 
 <lu-modal #saveAsTemplate contentClass="template-form" size="sm">
@@ -87,6 +89,11 @@
     </button>
   </div>
 </lu-modal>
+
+<lu-modal #loginModal size="md">
+  <h4>{{ 'project-form.login' | translate }}</h4>
+  <lu-button (click)="login()" role="primary" class="login-button">{{ 'login' | translate }}</lu-button>
+<lu-modal>
 
 <ng-template #spinner>
   <laji-spinner #spinner [spinning]="true" [overlay]="true"></laji-spinner>

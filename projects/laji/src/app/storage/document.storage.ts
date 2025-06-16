@@ -81,4 +81,22 @@ export class DocumentStorage extends LocalDb<Document & { id: string }> {
       toArray()
     );
   }
+
+  getUnlinkedTmpDocs$(): Observable<(Document | null)[]> {
+    return from(this.db.keys()).pipe(
+      map(keys => keys.filter(key => FormService.isTmpId(key))),
+      switchMap(keys => from(keys)),
+      mergeMap((key) => this.getItem(key)),
+      toArray()
+    );
+  }
+
+  clearUnlinkedTmpDocs$(): Observable<void> {
+    return this.getUnlinkedTmpDocs$().pipe(
+      mergeMap(docs => from(docs)),
+      mergeMap(doc => doc && doc.id ? this.removeItem(doc.id) : EMPTY),
+      toArray(),
+      map(() => {})
+    );
+  }
 }

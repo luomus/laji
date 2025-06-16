@@ -15,6 +15,7 @@ import { TriplestoreLabelService } from '../shared/service/triplestore-label.ser
 import { Breadcrumb } from '../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
 import ResultServiceType = Form.ResultServiceType;
 import { formOptionToClassName } from '../shared/directive/project-form-option.directive';
+import { NavbarService } from '../shared/service/navbar.service';
 
 interface ViewModel {
   navLinks: NavLink[];
@@ -81,6 +82,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     private browserService: BrowserService,
     private title: Title,
     private labelService: TriplestoreLabelService,
+    private navbarService: NavbarService
   ) {}
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
@@ -147,7 +149,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       map(projectForm => !projectForm.form)
     );
 
-    const projectForm$ = _projectForm$.pipe(filter( projectForm => !!projectForm.form));
+    const projectForm$ = _projectForm$.pipe(filter(projectForm => !!projectForm.form));
 
     const rights$ = projectForm$.pipe(switchMap(projectForm => this.formPermissionService.getRights(projectForm.form)));
 
@@ -157,15 +159,19 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       switchMap(notFound => notFound
         ? formID$.pipe(map(formID => (<NotFoundViewModel>{formID})))
         : combineLatest([projectForm$, rights$, this.route.queryParams]).pipe(
-          map(([projectForm, rights, queryParams]) => (<ViewModel>{
+          map(([projectForm, rights, queryParams]) => {
+            if (projectForm.form.options?.openForm) {
+              this.navbarService.navbarVisible = false;
+            }
+            return <ViewModel>{
               form: projectForm.form,
               navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
                 ? this.getNavLinks(projectForm, rights, queryParams)
                 : undefined,
               disabled: projectForm.form.options?.disabled && !rights?.ictAdmin,
               datasetsBreadcrumb: this.getDatasetsBreadcrumb(projectForm.form)
-            })
-          )
+            };
+          })
         )
       )
     );
@@ -226,6 +232,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.navbarService.navbarVisible === false) { this.navbarService.navbarVisible = true; };
     this.redirectionSubscription.unsubscribe();
     this.titleSubscription?.unsubscribe();
   }
