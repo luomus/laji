@@ -20,11 +20,15 @@ export class SoundIdentificationApi {
 
   public analyse(data: CombinedData): Observable<IdentificationData[]> {
     const headers = new HttpHeaders();
+    let paramString = '';
 
     headers.set('Content-Type', 'multipart/form-data');
     headers.set('Aceept', 'application/json');
 
+    if (data.params) {
+      paramString = `?${Object.keys(data.params).map(param => param + '=' + data.params[param]).join('&')}`;
+    }
     // @ts-ignore
-    return this.api.fetch('/sound-identification', 'post', data.params, data.formData);
+    return this.api.fetch('/sound-identification' + paramString, 'post', data.params, data.formData);
   }
 }

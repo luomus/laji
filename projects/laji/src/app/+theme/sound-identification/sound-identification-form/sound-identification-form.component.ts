@@ -52,11 +52,11 @@ export class SoundIdentificationFormComponent implements OnChanges {
   }
 
   async submitForm() {
-    if (this.probabilityThreshold == null || this.probabilityThreshold < 0 || this.probabilityThreshold > 1) {
+    if (this.probabilityThreshold == null || this.probabilityThreshold < 0.1 || this.probabilityThreshold > 1) {
       this.dialogService.alert('theme.soundIdentification.invalidThreshold');
       return;
     }
-    if (this.overlap == null || this.overlap < 0 || this.overlap > 1) {
+    if (this.overlap == null || this.overlap < 0 || this.overlap > 2) {
       this.dialogService.alert('theme.soundIdentification.invalidOverlap');
       return;
     }
@@ -134,7 +134,7 @@ export class SoundIdentificationFormComponent implements OnChanges {
       params['longitude'] = this.longitude;
 
       if (this.date) {
-        params['dayOfYear'] = this.getDayOfYearFromDate(this.date);
+        params['day_of_year'] = this.getDayOfYearFromDate(this.date);
       }
     }
 

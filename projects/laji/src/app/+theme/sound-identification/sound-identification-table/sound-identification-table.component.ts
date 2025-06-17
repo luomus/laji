@@ -70,7 +70,6 @@ export class SoundIdentificationTableComponent implements OnInit {
             includePayload: true,
             matchType: LajiApi.AutocompleteMatchType.exact
           } as LajiApi.Query.AutocompleteQuery).pipe(
-          tap(console.log),
           map(data => data[0]?.payload.vernacularName),
           shareReplay(1)
         );

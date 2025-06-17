@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { SoundIdentificationApi, IdentificationData } from './sound-identification-api';
-import { ExportService } from '../../shared/service/export.service';
 import { Subscription } from 'rxjs';
 import { DialogService } from '../../shared/service/dialog.service';
 import { CombinedData } from './sound-identification-form/sound-identification-form.component';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-sound-identification',
@@ -26,7 +24,6 @@ export class SoundIdentificationComponent implements OnDestroy {
 
   constructor(
     private soundIdentificationApi: SoundIdentificationApi,
-    private exportService: ExportService,
     private dialogService: DialogService,
     private cd: ChangeDetectorRef
   ) { }
@@ -43,8 +40,6 @@ export class SoundIdentificationComponent implements OnDestroy {
     }
 
     this.loading = true;
-
-    console.log(formData);
 
     this.analyseSub = this.soundIdentificationApi.analyse(formData).subscribe(data => {
       this.data = data.sort((a, b) => {
@@ -70,11 +65,8 @@ export class SoundIdentificationComponent implements OnDestroy {
       this.loading = false;
       this.cd.markForCheck();
 
-      console.log(err);
-      if (err.status === 400) {
-        this.dialogService.alert('theme.soundIdentification.invalidSequence');
-      } else if (err.status === 413) {
-        this.dialogService.alert('theme.soundIdentification.tooLargeSequence');
+      if (err.status >= 400) {
+        this.dialogService.alert('theme.soundIdentification.remoteError');
       } else {
         this.dialogService.alert('theme.soundIdentification.genericError');
       }
