@@ -65,7 +65,7 @@ export interface paths {
             cookie?: never;
         };
         /** Get a page of forms */
-        get: operations["FormsController_getPage"];
+        get: operations["FormsController_getListing"];
         put?: never;
         /** Create a new form */
         post: operations["FormsController_create"];
@@ -13912,12 +13912,11 @@ export interface operations {
             };
         };
     };
-    FormsController_getPage: {
+    FormsController_getListing: {
         parameters: {
             query?: {
                 lang?: "fi" | "sv" | "en" | "multi";
-                pageSize?: number;
-                page?: number;
+                langFallback?: boolean;
             };
             header?: never;
             path?: never;
@@ -13931,13 +13930,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        currentPage: number;
-                        pageSize: number;
-                        total: number;
-                        lastPage: number;
-                        prevPage?: number;
-                        nextPage?: number;
                         results: components["schemas"]["form"][];
+                        "@context": string;
                     };
                 };
             };
@@ -17853,6 +17847,8 @@ export interface operations {
                 includeDescriptions?: boolean;
                 /** @description Include red list evaluations in the response. Defaults to false. */
                 includeRedListEvaluations?: boolean;
+                /** @description Checklist version to be used. Defaults to the latest version. */
+                checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
             };
             header?: never;
             path: {
@@ -19723,8 +19719,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        "@context": string;
                         results: components["schemas"]["informalTaxonGroup"][];
+                        "@context": string;
                     };
                 };
             };
@@ -19748,8 +19744,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        "@context": string;
                         results: components["schemas"]["informalTaxonGroup"][];
+                        "@context": string;
                     };
                 };
             };
@@ -19799,8 +19795,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        "@context": string;
                         results: components["schemas"]["informalTaxonGroup"][];
+                        "@context": string;
                     };
                 };
             };
@@ -19850,8 +19846,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        "@context": string;
                         results: components["schemas"]["informalTaxonGroup"][];
+                        "@context": string;
                     };
                 };
             };
