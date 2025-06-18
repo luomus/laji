@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges,
   ViewChild, ElementRef, Inject, ChangeDetectorRef, AfterViewInit, OnDestroy } from '@angular/core';
-import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { TaxonIdentificationFacade } from './taxon-identification.facade';
 import { Observable, merge, Subscription, BehaviorSubject, fromEvent, Subject } from 'rxjs';
 import { map, switchMap, distinctUntilChanged, filter, startWith, take, tap } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 import { CollectionViewer } from '@angular/cdk/collections';
 import { PlatformService } from '../../../../root/platform.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 const INFINITE_SCROLL_DISTANCE = 300;
 
@@ -43,12 +45,9 @@ const requestedDescriptionVariables = {
   ],
 };
 
-interface TaxonomyWithDescriptions extends Taxonomy {
-  taxonDescriptions: Record<string, any>;
-}
-
 interface Data {
-  children: TaxonomyWithDescriptions[];
+  // children: TaxonomyWithDescriptions[];
+  children: (Taxon & { children: Taxon[]; taxonDescriptions: Record<string, any> })[];
   descriptionSources: Array<string>;
   speciesCardAuthors: Array<string>;
   speciesCardAuthorsTitle: string | undefined;
@@ -64,7 +63,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
   private subscription: Subscription = new Subscription();
   private taxonChange$ = new BehaviorSubject<void>(undefined);
 
-  @Input({ required: true }) taxon!: Taxonomy;
+  @Input({ required: true }) taxon!: Taxon;
 
   @ViewChild('loadMore') loadMoreElem!: ElementRef;
 
@@ -77,7 +76,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     speciesCardAuthorsTitle: undefined
   };
 
-  private children$: Observable<Taxonomy[]> = this.facade.childDataSource$.pipe(
+  private children$: Observable<(Taxon & { children: Taxon[] })[]> = this.facade.childDataSource$.pipe(
     filter(d => d !== undefined),
     tap(() => { this.loading = false; this.cdr.markForCheck(); }),
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -163,7 +162,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     );
   }
 
-  private parseTaxonDescriptions(taxon: Taxonomy): any {
+  private parseTaxonDescriptions(taxon: Taxon): any {
     if (!taxon.descriptions || taxon.descriptions.length < 1) { return undefined; }
 
     const descriptions = taxon.descriptions;

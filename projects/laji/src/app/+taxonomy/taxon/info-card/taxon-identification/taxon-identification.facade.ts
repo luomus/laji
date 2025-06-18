@@ -1,11 +1,13 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
 import { map, distinctUntilChanged, tap, takeUntil, switchMap, take } from 'rxjs/operators';
-import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
-import { Taxon } from '../../../../../../../laji-api-client/src/lib/models';
-import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
 import { IdentificationChildrenDataSource } from './identification-children-data-source';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { MetadataService } from 'projects/laji/src/app/shared/service/metadata.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 interface IIdentificationState {
   childDataSource?: IdentificationChildrenDataSource | undefined;
@@ -17,7 +19,7 @@ const _state: IIdentificationState = {
   totalChildren: 0
 };
 
-const rankWhiteList: Taxon.TaxonRankEnum[] = [
+const rankWhiteList = [
   'MX.superdomain',
   'MX.domain',
   'MX.kingdom',
@@ -29,26 +31,6 @@ const rankWhiteList: Taxon.TaxonRankEnum[] = [
   'MX.species'
 ];
 
-const isMainRank = (r: Taxon.TaxonRankEnum): boolean => rankWhiteList.includes(r);
-
-const taxonEnumReversed = Object.values(Taxon.TaxonRankEnum).reverse();
-
-const findNearestParentMainRankIdx = (root: Taxon.TaxonRankEnum): number => {
-    const idx = taxonEnumReversed.indexOf(root);
-    const parent = taxonEnumReversed.slice(idx + 1).find(rank => isMainRank(rank));
-    return rankWhiteList.findIndex(r => r === parent);
-};
-
-const getSubMainRank = (root: Taxon.TaxonRankEnum): Taxon.TaxonRankEnum => {
-  let rootIdx = rankWhiteList.findIndex(r => r === root);
-  if (rootIdx < 0) {
-    // Root is not a main rank
-    // find the closest parent that is mainrank instead
-    rootIdx = findNearestParentMainRankIdx(root);
-  }
-  return rankWhiteList[rootIdx + 1] || rankWhiteList[rootIdx];
-};
-
 @Injectable()
 export class TaxonIdentificationFacade implements OnDestroy {
   private readonly store = new BehaviorSubject<IIdentificationState>(_state);
@@ -57,8 +39,33 @@ export class TaxonIdentificationFacade implements OnDestroy {
   readonly totalChildren$ = this.state$.pipe(map((state) => state.totalChildren), distinctUntilChanged());
 
   private unsubscribe$ = new Subject<void>();
+  private taxonEnumReversed$ = this.metadataService.getRange('MX.taxonRankEnum').pipe(map(range => [...range].reverse().map(({id}) => id)));
 
-  constructor(private taxonApi: TaxonomyApi, private translate: TranslateService) {}
+  private getSubMainRank$(root: string): Observable<string> {
+    const isMainRank = (r: string): boolean => rankWhiteList.includes(r);
+
+    const findNearestParentMainRankIdx$ = (_root: string) =>
+      this.taxonEnumReversed$.pipe(map(taxonEnumReversed => {
+        const idx = taxonEnumReversed.indexOf(_root);
+        const parent = taxonEnumReversed.slice(idx + 1).find(rank => isMainRank(rank));
+        return rankWhiteList.findIndex(r => r === parent);
+      }));
+
+    return of(rankWhiteList.findIndex(r => r === root)).pipe(
+        switchMap(rootIdx =>
+          // Find the closest parent that is a mainrank, if the root isn't a main rank
+          rootIdx < 0
+            ? findNearestParentMainRankIdx$(root)
+            : of(rootIdx)
+        ),
+        map(rootIdx => rankWhiteList[rootIdx + 1] || rankWhiteList[rootIdx]));
+  }
+
+  constructor(
+    private api: LajiApiClientBService,
+    private translate: TranslateService,
+    private metadataService: MetadataService
+  ) {}
 
   reducer(newState: IIdentificationState) {
     this.store.next({
@@ -67,7 +74,7 @@ export class TaxonIdentificationFacade implements OnDestroy {
     });
   }
 
-  loadChildDataSource(root: Taxonomy) {
+  loadChildDataSource(root: Taxon) {
     this.childDataSource$.pipe(take(1)).subscribe(d => {
       if (d) {
         d.disconnect();
@@ -78,36 +85,38 @@ export class TaxonIdentificationFacade implements OnDestroy {
       return;
     }
 
-    this.getDataSourceObservable$(root.id, <Taxon.TaxonRankEnum>root.taxonRank).subscribe(d => this.reducer({childDataSource: d}));
+    this.getDataSourceObservable$(root.id, root.taxonRank).subscribe(d => this.reducer({childDataSource: d}));
   }
 
-  private getTaxaObservable$(id: string, rank: Taxon.TaxonRankEnum): Observable<any> {
-    return this.taxonApi.taxonomyList(
-      this.translate.currentLang,
-      {
-        parentTaxonId: id,
-        taxonRanks: rank,
-        sortOrder: 'observationCountFinland DESC',
-        selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren,countOfSpecies,observationCountFinland,descriptions',
-        includeMedia: true,
-      }
-    ).pipe(
-      switchMap(res => {
+  private getTaxaObservable$(id: string, rank: string): Observable<any> {
+    return this.api.post('/taxa', { query: {
+      parentTaxonId: id,
+      lang: this.translate.currentLang as any,
+      sortOrder: 'observationCountFinland desc',
+      selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren,countOfSpecies,observationCountFinland,descriptions,multimedia',
+      includeMedia: true,
+    } }, {
+      taxonRank: rank
+    }).pipe(switchMap(res => {
         if (res.total > 0 || rank === 'MX.species') {
           return of({...res, rank});
         } else {
-          return this.getTaxaObservable$(id, getSubMainRank(rank));
+          return this.getSubMainRank$(rank).pipe(switchMap(_rank => this.getTaxaObservable$(id, _rank)));
         }
       }),
       takeUntil(this.unsubscribe$),
     );
   }
 
-  private getDataSourceObservable$(id: string, rootRank: Taxon.TaxonRankEnum) {
-    return this.getTaxaObservable$(id, getSubMainRank(rootRank)).pipe(
-      tap(res => this.reducer({totalChildren: res.total})),
-      map(res => new IdentificationChildrenDataSource(this.taxonApi, this.translate, res.results, getSubMainRank(res.rank)))
-    );
+  private getDataSourceObservable$(id: string, rootRank: string) {
+    return this.getSubMainRank$(rootRank).pipe(switchMap(rank =>
+      this.getTaxaObservable$(id, rank).pipe(
+        tap(res => this.reducer({totalChildren: res.total})),
+        switchMap(res => this.getSubMainRank$(res.rank).pipe(
+          map(_rank => new IdentificationChildrenDataSource(this.api, this.translate, res.results, _rank))
+        ))
+      )
+    ));
   }
 
   ngOnDestroy() {

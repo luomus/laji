@@ -8,7 +8,7 @@ import {
   take,
   tap
 } from 'rxjs/operators';
-import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subject, Subscription, throwError } from 'rxjs';
+import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
@@ -263,7 +263,7 @@ export class UserService implements OnDestroy {
     if (registrationContacts?.[0]?.inheritedName) { params.push(`inheritedName=${registrationContacts?.[0]?.inheritedName}`); }
     if (registrationContacts?.[0]?.emailAddress) { params.push(`email=${registrationContacts?.[0]?.emailAddress}`); }
 
-    window.location.href = environment.registerUrl + '?' + params.join('&');
+    window.location.href = (environment as any).registerUrl + '?' + params.join('&');
   }
 
   getToken(): string {

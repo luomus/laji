@@ -2,7 +2,8 @@
   <laji-taxon-synonyms *ngIf="name === 'synonyms' && taxonHasSynonymKey(_taxon)"
   [taxon]="_taxon"
   [synonymTypes]="synonymTypes"
-  [hasOtherNamesBefore]="hasOtherNamesBefore(['vernacularName', 'alternativeVernacularName', 'obsoleteVernacularName', 'colloquialVernacularName'])"
+  [hasOtherNamesBefore]="hasOtherNamesBefore(['vernacularName', 'alternativeVernacularName',
+  'obsoleteVernacularName', 'colloquialVernacularName'])"
   ></laji-taxon-synonyms>
   <ng-container *ngIf="name !== 'synonyms'">
     <laji-taxon-info-row
@@ -10,7 +11,7 @@
       [label]="('MX.' + name) | label">
       <ul>
         <li *ngFor="let lang of availableLangs[name]">
-          {{ _taxon[name] | multiLang: false:lang | values }} ({{ lang }})
+          {{ $any(_taxon)[name + 'MultiLang'] | multiLang: false:lang | values }} ({{ lang }})
         </li>
       </ul>
     </laji-taxon-info-row>

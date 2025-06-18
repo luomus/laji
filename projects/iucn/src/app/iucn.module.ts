@@ -21,6 +21,7 @@ import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-com
 import { AppComponent } from '../../../laji/src/app/shared-modules/app-component/app.component';
 import { GraphQLModule } from '../../../laji/src/app/graph-ql/graph-ql.module';
 import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
+import { API_BASE_URL } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -57,6 +58,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   providers: [
     {provide: APP_ID, useValue: 'laji-app'},
     {provide: APP_BASE_HREF, useValue: '/'},
+    {provide: API_BASE_URL, useValue: environment.apiBase},
     DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},
     LocalizeRouterService,

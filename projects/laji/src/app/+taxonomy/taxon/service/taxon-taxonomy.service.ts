@@ -1,22 +1,26 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Injectable } from '@angular/core';
-import { Taxonomy } from '../../../shared/model/Taxonomy';
-import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Observable, of } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { TranslateService } from '@ngx-translate/core';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Injectable()
 export class TaxonTaxonomyService {
-  private cacheById: { [key: string]: { taxon?: Taxonomy; parentId?: string; childrenIds?: string[] } } = {};
-  private pending: {[key: string]: Observable<Taxonomy>} = {};
-  private pendingChildren: {[key: string]: Observable<Taxonomy[]>} = {};
-  private pendingParents: {[key: string]: Observable<Taxonomy[]>} = {};
+  private cacheById: { [key: string]: { taxon?: Taxon; parentId?: string; childrenIds?: string[] } } = {};
+  private pending: {[key: string]: Observable<Taxon>} = {};
+  private pendingChildren: {[key: string]: Observable<Taxon[]>} = {};
+  private pendingParents: {[key: string]: Observable<Taxon[]>} = {};
 
   constructor(
-    private taxonService: TaxonomyApi
+    private api: LajiApiClientBService,
+    private translate: TranslateService
   ) { }
 
-  getTaxon(id: string): Observable<Taxonomy> {
+  getTaxon(id: string): Observable<Taxon> {
     if (!this.cacheById[id]) {
       this.cacheById[id] = {};
     }
@@ -26,12 +30,10 @@ export class TaxonTaxonomyService {
     }
 
     if (!this.pending[id]) {
-      this.pending[id] = this.taxonService
-        .taxonomyFindBySubject(id, 'multi', {
-          selectedFields: this.getSelectedFields(),
-          onlyFinnish: false,
-          includeHidden: true
-        })
+      this.pending[id] = this.api.get('/taxa/{id}', { path: { id }, query: {
+        lang: this.translate.currentLang as any,
+        selectedFields: this.getSelectedFields()
+      } })
         .pipe(
           tap((data) => {
             this.cacheById[id].taxon = data;
@@ -43,7 +45,7 @@ export class TaxonTaxonomyService {
     return this.pending[id];
   }
 
-  getChildren(id: string): Observable<Taxonomy[]> {
+  getChildren(id: string): Observable<Taxon[]> {
     if (!this.cacheById[id]) {
       this.cacheById[id] = {};
     }
@@ -59,13 +61,12 @@ export class TaxonTaxonomyService {
     }
 
     if (!this.pendingChildren[id]) {
-      this.pendingChildren[id] = this.taxonService
-        .taxonomyFindChildren(id, 'multi', undefined, {
+      this.pendingChildren[id] = this.api.get('/taxa/{id}/children', { path: { id }, query: {
+          lang: this.translate.currentLang as any,
           selectedFields: this.getSelectedFields(),
-          onlyFinnish: false,
           includeHidden: true
-        })
-        .pipe(
+        } }).pipe(
+          map(({ results }) => results),
           tap(children => {
             this.cacheById[id].childrenIds = children.map(child => {
               this.cacheById[child.id] = {
@@ -83,7 +84,7 @@ export class TaxonTaxonomyService {
     return this.pendingChildren[id];
   }
 
-  getParents(id: string): Observable<Taxonomy[]> {
+  getParents(id: string): Observable<Taxon[]> {
     if (!this.cacheById[id]) {
       this.cacheById[id] = {};
     }
@@ -102,12 +103,13 @@ export class TaxonTaxonomyService {
     }
 
     if (!this.pendingParents[id]) {
-      this.pendingParents[id] = this.taxonService
-        .taxonomyFindParents(id, 'multi', {
-          selectedFields: this.getSelectedFields(),
-          onlyFinnish: false
-        })
+
+      this.pendingParents[id] = this.api.get('/taxa/{id}/parents', { path: { id }, query: {
+        lang: this.translate.currentLang as any,
+        selectedFields: this.getSelectedFields()
+      } })
         .pipe(
+          map(({ results }) => results),
           tap(parents => {
             let prevId = id;
             for (let i = parents.length - 1; i >= 0; i--) {
@@ -127,12 +129,12 @@ export class TaxonTaxonomyService {
     return this.pendingParents[id];
   }
 
-  getParent(id: string): Observable<Taxonomy|undefined> {
+  getParent(id: string): Observable<Taxon | undefined> {
     return this.getParents(id)
       .pipe(map(parents => parents.length > 0 ? parents[parents.length - 1] : undefined));
   }
 
-  getSiblings(id: string): Observable<Taxonomy[]> {
+  getSiblings(id: string): Observable<Taxon[]> {
     return this.getParent(id)
       .pipe(switchMap(parent => {
         if (!parent) {
@@ -143,7 +145,7 @@ export class TaxonTaxonomyService {
       }));
   }
 
-  private getParentsFromCache(id: string, result: Taxonomy[] = []): Taxonomy[] {
+  private getParentsFromCache(id: string, result: Taxon[] = []): Taxon[] {
     if (this.cacheById[id] && this.cacheById[id].parentId) {
       const parentId = this.cacheById[id].parentId!;
 

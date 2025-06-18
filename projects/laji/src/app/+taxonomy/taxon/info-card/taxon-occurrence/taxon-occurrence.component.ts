@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
+type TaxonDescription = components['schemas']['Content'][number];
 
 @Component({
   selector: 'laji-taxon-occurrence',
@@ -10,8 +13,8 @@ import { InfoCardQueryService } from '../shared/service/info-card-query.service'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonOccurrenceComponent implements OnChanges {
-  @Input({ required: true }) taxon!: Taxonomy;
-  @Input() taxonDescription!: TaxonomyDescription[];
+  @Input({ required: true }) taxon!: Taxon;
+  @Input() taxonDescription!: TaxonDescription[];
   @Input() isFromMasterChecklist!: boolean;
 
   mapQuery: WarehouseQueryInterface | undefined;
@@ -25,7 +28,7 @@ export class TaxonOccurrenceComponent implements OnChanges {
   filterByCollectionIdTotal: number | undefined;
   filterHabitats: Array<any> = [];
 
-  secureLevelTypes: readonly (keyof Taxonomy)[] = [
+  secureLevelTypes = [
     'secureLevel',
     'breedingSecureLevel',
     'naturaAreaSecureLevel',

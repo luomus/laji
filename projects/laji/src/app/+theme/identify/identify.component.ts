@@ -4,8 +4,10 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 import { Global } from '../../../environments/global';
-import { TaxonomyImage } from '../../shared/model/Taxonomy';
 import { IImageSelectEvent } from '../../shared/gallery/image-gallery/image.interface';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type TaxonImage = components['schemas']['Image'];
 
 @Component({
   selector: 'laji-identify',
@@ -19,7 +21,7 @@ export class IdentifyComponent implements OnInit {
   group?: string;
   documentId?: string;
   unitId?: string;
-  totalItemsIdentify?: TaxonomyImage[];
+  totalItemsIdentify?: TaxonImage[];
   formId?: string;
 
   constructor(
@@ -56,7 +58,7 @@ export class IdentifyComponent implements OnInit {
     });
   }
 
-  onImagesInit(e: TaxonomyImage[]) {
+  onImagesInit(e: TaxonImage[]) {
     this.totalItemsIdentify = e;
   }
 

@@ -1,14 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { ListType } from '../list.component';
 import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.service';
-import { TaxonomyApi } from '../../../../../../laji/src/app/shared/api/TaxonomyApi';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf} from 'rxjs';
 import { RedListStatusData } from './red-list-status/red-list-status.component';
 import { map, share, switchMap, tap } from 'rxjs/operators';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
-import { Taxonomy } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 import { TriplestoreLabelService } from '../../../../../../laji/src/app/shared/service/triplestore-label.service';
-import { TaxonService } from '../../../iucn-shared/service/taxon.service';
+import { ChecklistVersion, TaxonService } from '../../../iucn-shared/service/taxon.service';
 import { RedListHabitatData } from './red-list-habitat/red-list-habitat.component';
 import { MetadataService } from '../../../../../../laji/src/app/shared/service/metadata.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,7 +15,12 @@ import { Params } from '@angular/router';
 import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
 import { IUCNChartData } from './red-list-chart/red-list-chart.component';
 import {ActiveElement, ChartData, ChartEvent, ChartOptions} from 'chart.js';
-import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components, operations } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
+export type TaxonAggregateQuery = operations['TaxaController_getAggregateWithFilters']['parameters']['query'];
+export type TaxonAggregateFilters = NonNullable<operations['TaxaController_getAggregateWithFilters']['requestBody']>['content']['application/json'];
 
 @Component({
   selector: 'iucn-results',
@@ -28,13 +31,13 @@ import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 export class ResultsComponent implements OnChanges {
   @Input() type!: ListType;
   @Input() query!: FilterQuery;
-  @Input() checklist!: string;
+  @Input() checklist!: ChecklistVersion;
   @Output() queryChange = new EventEmitter<FilterQuery>();
 
   lang!: string;
   year?: string;
   redListStatusQuery$!: Observable<RedListStatusData[]>;
-  speciesQuery$!: Observable<Taxonomy[]>;
+  speciesQuery$!: Observable<Taxon[]>;
   threadQuery$!: Observable<IUCNChartData[]>;
   habitatQuery$!: Observable<RedListHabitatData[]>;
   habitatChartQuery$!: Observable<ChartData>;
@@ -43,7 +46,8 @@ export class ResultsComponent implements OnChanges {
   habitatIds: string[] = [];
 
   cache: any = {};
-  baseQuery: any = {};
+  baseQuery: TaxonAggregateQuery = {};
+  baseFilters: TaxonAggregateFilters = {};
   statusMap: any = {};
 
   colors = ['#d81e05', '#fc7f3f', '#f9e814', '#cce226', '#60c659', '#bfbfbf', '#777', '#000'];
@@ -99,7 +103,7 @@ export class ResultsComponent implements OnChanges {
   init = false;
 
   constructor(
-    private taxonApi: TaxonomyApi,
+    private api: LajiApiClientBService,
     private resultService: ResultService,
     private triplestoreLabelService: TriplestoreLabelService,
     private metadataService: MetadataService,
@@ -133,17 +137,18 @@ export class ResultsComponent implements OnChanges {
   private initQueries() {
     this.baseQuery = Util.removeFromObject({
       checklistVersion: this.checklist,
-      id: this.query.taxon,
+      includeHidden: true
+    });
+    this.baseFilters = Util.removeFromObject({
       redListEvaluationGroups: this.query.redListGroup,
-      'latestRedListEvaluation.redListStatus': (this.query.status || []).map(status => this.statusMap[status] || status).join(','),
+      'latestRedListEvaluation.redListStatus': this.query.status?.map(status => this.statusMap[status] || status).join(',') as any,
       [this.query.onlyPrimaryReason ?
         'latestRedListEvaluation.primaryEndangermentReason' : 'latestRedListEvaluation.endangermentReasons']: this.query.reasons,
       [this.query.onlyPrimaryHabitat ?
-        'latestRedListEvaluation.primaryHabitat' : 'latestRedListEvaluation.anyHabitat']: this.getHabitat(this.query),
+        'latestRedListEvaluation.primaryHabitatSearchStrings' : 'latestRedListEvaluation.anyHabitatSearchStrings']: this.getHabitat(this.query),
       [this.query.onlyPrimaryThreat ?
         'latestRedListEvaluation.primaryThreat' : 'latestRedListEvaluation.threats']: this.query.threats,
       hasLatestRedListEvaluation: true,
-      includeHidden: true
     });
 
     this.selectedSpeciesFields = this.query.speciesFields ? this.query.speciesFields.split(',') : [];
@@ -168,6 +173,7 @@ export class ResultsComponent implements OnChanges {
     this.reasonsQuery$ = this.getGraph(
       'reasons',
       this.baseQuery,
+      this.baseFilters,
       'latestRedListEvaluation.primaryEndangermentReason',
       'latestRedListEvaluation.endangermentReasons',
       primary,
@@ -182,6 +188,7 @@ export class ResultsComponent implements OnChanges {
     this.threadQuery$ = this.getGraph(
       'threats',
       this.baseQuery,
+      this.baseFilters,
       'latestRedListEvaluation.primaryThreat',
       'latestRedListEvaluation.threats',
       primary,
@@ -190,24 +197,24 @@ export class ResultsComponent implements OnChanges {
     );
   }
 
-  private getGraph(cacheKey: string, baseQuery: any, primaryField: string, allField: string,
+  private getGraph(cacheKey: string, baseQuery: TaxonAggregateQuery, filters: TaxonAggregateFilters, primaryField: string, allField: string,
       primaryLabel: any, allLabel: any, lastKeys: string[] = []): Observable<IUCNChartData[]> {
     const query = {
       ...baseQuery,
       aggregateBy: primaryField + ';' + allField,
       aggregateSize: 10000
     };
-    const currentQuery = JSON.stringify(query);
+    const currentQueryAndFilters = JSON.stringify({ ...query, ...filters });
 
-    return this.hasCache(cacheKey, currentQuery) ?
-      ObservableOf(this.cache[cacheKey]) :
-      this.taxonApi.species(query, this.lang, '1', '0').pipe(
-        map(data => {
+    return this.hasCache(cacheKey, currentQueryAndFilters)
+        ? ObservableOf(this.cache[cacheKey]) :
+        this.api.post('/taxa/species/aggregate', { query }, filters).pipe(
+          map((data: any) => {
           const lookup: any = {};
           const result: any[] = [];
           const last: any = {};
 
-          data.aggregations![primaryField].forEach(agg => {
+          data[primaryField].forEach((agg: any) => {
             lookup[agg.values[primaryField]] = {
               name: agg.values[primaryField],
               series: [{name: primaryLabel, value: agg.count}]
@@ -218,7 +225,7 @@ export class ResultsComponent implements OnChanges {
               result.push(lookup[agg.values[primaryField]]);
             }
           });
-          data.aggregations![allField].forEach(agg => {
+          data[allField].forEach((agg: any) => {
             const value = agg.values[allField];
             if (lookup[value]) {
               lookup[value].series.push({name: allLabel, value: agg.count});
@@ -242,11 +249,11 @@ export class ResultsComponent implements OnChanges {
 
           return result;
         }),
-        switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
-          map(translations => data.map(a => ({...a, name: translations[a.name], id: a.name})))
-        )),
-        tap(data => this.setCache(cacheKey, data, currentQuery))
-      );
+          switchMap(data => this.fetchLabels(data.map(a => a.name)).pipe(
+            map(translations => data.map(a => ({...a, name: translations[a.name], id: a.name})))
+          )),
+          tap(data => this.setCache(cacheKey, data, currentQueryAndFilters))
+        );
   }
 
   private initHabitat() {
@@ -254,18 +261,21 @@ export class ResultsComponent implements OnChanges {
     const primaryField = 'latestRedListEvaluation.primaryHabitat.habitat';
     const allField = 'latestRedListEvaluation.secondaryHabitats.habitat';
     const statusField = 'latestRedListEvaluation.redListStatus';
-    const query: any = {
+    const query: TaxonAggregateQuery = {
       ...this.baseQuery,
-      [statusField]: this.baseQuery[statusField] || this.resultService.habitatStatuses.join(','),
       aggregateBy: primaryField  + ',' + statusField + '=' + primaryField + ';' + allField + ',' + statusField + '=' + allField,
       aggregateSize: 10000
     };
-    const currentQuery = JSON.stringify(query);
-    const hasHabitatQuery = !!query['latestRedListEvaluation.primaryHabitat'] || !!query['latestRedListEvaluation.anyHabitat'];
+    const filters: TaxonAggregateFilters = {
+      ...this.baseFilters,
+      [statusField]: this.baseFilters[statusField] || this.resultService.habitatStatuses as any
+    };
+    const currentQueryAndFilters = JSON.stringify({ ...query, ...filters });
+    const hasHabitatQuery = !!filters['latestRedListEvaluation.primaryHabitatSearchStrings'] || !!filters['latestRedListEvaluation.anyHabitatSearchStrings'];
 
-    this.habitatQuery$ = this.hasCache(cacheKey, currentQuery) ?
-      ObservableOf(this.cache[cacheKey]) :
-      this.taxonApi.species(query, this.lang, '1', '0').pipe(
+    this.habitatQuery$ = this.hasCache(cacheKey, currentQueryAndFilters)
+      ? ObservableOf(this.cache[cacheKey])
+      : this.api.post('/taxa/species/aggregate', { query }, filters).pipe(
         map(data => this.extractHabitat(data, primaryField, allField, statusField)),
         switchMap((data: any) => this.metadataService.getRange('MKV.habitatEnum').pipe(
           map(label => label.reduce((cumulative: any, current) => {
@@ -332,7 +342,7 @@ export class ResultsComponent implements OnChanges {
           }))),
         )),
         map(data => hasHabitatQuery ? data : this.combineHabitat(data)),
-        tap(data => this.setCache(cacheKey, data, currentQuery)),
+        tap(data => this.setCache(cacheKey, data, currentQueryAndFilters)),
         share()
       );
     this.initHabitatChart();
@@ -377,7 +387,7 @@ export class ResultsComponent implements OnChanges {
     return Object.keys(lookup).map(name => lookup[name]);
   }
 
-  private extractHabitat(data: PagedResult<Taxonomy>, primaryField: string, allField: string, statusField: string) {
+  private extractHabitat(data: any, primaryField: string, allField: string, statusField: string) {
     const lookup: any = {};
     const count = (agg: any, type: any, field: any) => {
       const status = agg.values[statusField];
@@ -392,8 +402,8 @@ export class ResultsComponent implements OnChanges {
       lookup[key][type][status] += agg.count;
       lookup[key][type].total += agg.count;
     };
-    data.aggregations![primaryField].forEach(agg => count(agg, 'primary', primaryField));
-    data.aggregations![allField].forEach(agg => count(agg, 'secondary', allField));
+    data[primaryField].forEach((agg: any) => count(agg, 'primary', primaryField));
+    data[allField].forEach((agg: any) => count(agg, 'secondary', allField));
     return Object.keys(lookup).map(name => lookup[name]);
   }
 
@@ -401,7 +411,7 @@ export class ResultsComponent implements OnChanges {
     return [
       'id',
       'scientificName',
-      'vernacularName.' + this.lang,
+      'vernacularName',
       'cursiveName',
       'redListStatusesInFinland',
       'redListEvaluationGroups',
@@ -422,7 +432,7 @@ export class ResultsComponent implements OnChanges {
   private getSpeciesQuery() {
     return {
       ...this.baseQuery,
-      page: this.query.page || '1',
+      page: this.query.page || 1,
       selectedFields: this.getSpeciesFields().join(',')
     };
   }
@@ -430,38 +440,37 @@ export class ResultsComponent implements OnChanges {
   private initSpeciesListQuery(): void  {
     const cacheKey = 'species';
     const query = this.getSpeciesQuery();
+    const filters = this.baseFilters;
 
-    const currentQuery = JSON.stringify(query);
-    this.speciesQuery$ = this.hasCache(cacheKey, currentQuery) ?
+    const currentQueryAndFilters = JSON.stringify({ ...query, ...filters });
+    this.speciesQuery$ = this.hasCache(cacheKey, currentQueryAndFilters) ?
       ObservableOf(this.cache[cacheKey]) :
-      this.taxonService.getSpeciesList(query, this.lang, this.speciesPageSize).pipe(
+      this.taxonService.getSpeciesList(undefined, query, filters, this.lang, this.speciesPageSize).pipe(
         tap(data => {
           this.speciesPage = data.currentPage;
           this.speciesCount = data.total;
         }),
         map(data => data.results),
-        tap(data => this.setCache(cacheKey, data, currentQuery))
+        tap(data => this.setCache(cacheKey, data, currentQueryAndFilters))
       );
   }
 
-  private getAllSpecies(): Observable<Taxonomy[]> {
-    const query = this.getSpeciesQuery();
-    return this.taxonService.getAllSpecies(query, this.lang);
+  private getAllSpecies() {
+    return this.taxonService.getAllSpecies(this.getSpeciesQuery(), this.baseFilters, this.lang);
   }
 
   private initStatusQuery() {
     const cacheKey = 'status';
     const statusField = 'latestRedListEvaluation.redListStatus';
 
-    const query: any = {
-      ...this.removeKeys(this.baseQuery, [statusField])
-    };
+    const query = this.baseQuery;
+    const { 'latestRedListEvaluation.redListStatus': omitted, ...filters } = this.baseFilters;
 
-    const currentQuery = JSON.stringify(query);
-    this.redListStatusQuery$ = this.hasCache(cacheKey, currentQuery) ?
+    const currentQueryAndFilters = JSON.stringify({ ...query, ...filters });
+    this.redListStatusQuery$ = this.hasCache(cacheKey, currentQueryAndFilters) ?
       ObservableOf(this.cache[cacheKey]) :
-      this.taxonService.getRedListStatusQuery(query, this.lang, statusField).pipe(
-        tap(data => this.setCache(cacheKey, data, currentQuery))
+      this.taxonService.getRedListStatusQuery(undefined, query, filters, this.lang, statusField).pipe(
+        tap(data => this.setCache(cacheKey, data, currentQueryAndFilters))
       );
   }
 
@@ -478,23 +487,13 @@ export class ResultsComponent implements OnChanges {
     );
   }
 
-  private removeKeys(obj: Record<string, unknown>, keys: string[]) {
-    const result: any = {};
-    Object.keys(obj).forEach(key => {
-      if (keys.indexOf(key) === -1) {
-        result[key] = obj[key];
-      }
-    });
-    return result;
-  }
-
   private setCache(key: string, data: any, query: string) {
     this.cache[key] = data;
     this.cache[key + '_query'] = query;
   }
 
-  private hasCache(key: string, query: string) {
-    return !!(this.cache[key + '_query'] && this.cache[key + '_query'] === query);
+  private hasCache(key: string, queryAndFilters: string) {
+    return !!(this.cache[key + '_query'] && this.cache[key + '_query'] === queryAndFilters);
   }
 
   changeQuery(field: string, value: any) {
@@ -507,7 +506,7 @@ export class ResultsComponent implements OnChanges {
   changeSpeciesPage(page: number) {
     this.queryChange.emit({
       ...this.query,
-      page: '' + page
+      page
     });
   }
 

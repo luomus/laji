@@ -1,14 +1,14 @@
 import { filter, map, merge, switchMap, tap } from 'rxjs/operators';
-/**
- * Created by mjtahtin on 18.4.2017.
- */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { forkJoin as ObservableForkJoin, of, Subscription } from 'rxjs';
+import { forkJoin as ObservableForkJoin, of } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { Taxonomy, TaxonomyImage } from '../../shared/model/Taxonomy';
-import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Logger } from '../../shared/logger/logger.service';
 import { LocalStorage } from 'ngx-webstorage';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
+type TaxonImage = components['schemas']['Image'];
 
 @Component({
   selector: 'laji-herpetology',
@@ -19,22 +19,21 @@ import { LocalStorage } from 'ngx-webstorage';
 export class HerpetologyComponent implements OnInit {
   lang!: string;
   currentYear: string;
-  private subTrans!: Subscription;
 
-  public amphibianTaxa: {taxon: Taxonomy; images: any}[] = [];
-  public reptileTaxa: {taxon: Taxonomy; images: any}[] = [];
-  public occasionalTaxa: {taxon: Taxonomy; images: any}[] = [];
+  public amphibianTaxa: {taxon: Taxon; images: any}[] = [];
+  public reptileTaxa: {taxon: Taxon; images: any}[] = [];
+  public occasionalTaxa: {taxon: Taxon; images: any}[] = [];
 
-  public taxonImages: Array<TaxonomyImage>;
-  public amphibianImages: Array<TaxonomyImage>;
+  public taxonImages: Array<TaxonImage>;
+  public amphibianImages: Array<TaxonImage>;
 
-  public amphibianGalleries: Array<Array<TaxonomyImage>>;
+  public amphibianGalleries: Array<Array<TaxonImage>>;
 
   @LocalStorage() herpetology: any;
 
   constructor(
-    private translate: TranslateService,
-    private taxonomyApi: TaxonomyApi,
+    public translate: TranslateService,
+    private api: LajiApiClientBService,
     private cd: ChangeDetectorRef,
     private logger: Logger) {
     const now = new Date();
@@ -45,42 +44,52 @@ export class HerpetologyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.lang = this.translate.currentLang;
     this.updateTaxa();
-    this.subTrans = this.translate.onLangChange.subscribe(res => {
-      this.lang = res.lang;
-    });
-}
+  }
 
   updateTaxa() {
     const fetchData$ = ObservableForkJoin(
-      this.taxonomyApi
-        .taxonomyFindSpecies(
-          'MX.37609', 'multi', 'MVL.26',  undefined, undefined, 'MX.typeOfOccurrenceStablePopulation', undefined, '1', '10', undefined,
-          {selectedFields: 'id,alternativeVernacularName,vernacularName'}
+      this.api.post('/taxa/{id}/species', { path: { id: 'MX.37609' }, query: {
+        selectedFields:  'id,alternativeVernacularName,vernacularName',
+        lang: this.translate.currentLang as any,
+        pageSize: 10
+      } }, {
+        informalTaxonGroups: 'MVL.26',
+        typeOfOccurrenceInFinland: 'MX.typeOfOccurrenceStablePopulation'
+      }
         ).pipe(
         map(species => species.results)).pipe(
-        switchMap(data => ObservableForkJoin(data.map(taxon => this.taxonomyApi
+        switchMap(data => ObservableForkJoin(data.map(taxon => this.api.get('/taxa/{id}/media',
+          { path: { id: taxon.id }, query: { lang: this.translate.currentLang as any } })
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            .taxonomyFindMedia(taxon.id!, 'multi').pipe(
-            map(images => ({taxon, images: images[0] || {} })))
+            .pipe(
+            map(({ results: images }) => ({taxon, images: images[0] || {} })))
           )))),
-      this.taxonomyApi
-        .taxonomyFindSpecies('MX.37610', 'multi', 'MVL.162',  undefined, undefined, 'MX.typeOfOccurrenceStablePopulation').pipe(
+      this.api.post('/taxa/{id}/species', { path: { id: 'MX.37610' }, query: {
+        lang: this.translate.currentLang as any,
+      } }, {
+        informalTaxonGroups: 'MVL.162',
+        typeOfOccurrenceInFinland: 'MX.typeOfOccurrenceStablePopulation'
+      }).pipe(
         map(species => species.results)).pipe(
-        switchMap(data => ObservableForkJoin(data.map(taxon => this.taxonomyApi
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            .taxonomyFindMedia(taxon.id!, 'multi').pipe(
-            map(images => ({taxon, images: images[0] || {}})))
+        switchMap(data => ObservableForkJoin(data.map(taxon => this.api.get('/taxa/{id}/media', {
+          path: { id: taxon.id },
+          query: { lang: this.translate.currentLang as any }
+        }).pipe(
+            map(({ results: images }) => ({taxon, images: images[0] || {}})))
           )))),
-      this.taxonomyApi
-        .taxonomyFindSpecies('MX.37608', 'multi', 'MVL.26',  undefined, undefined,
-          'MX.typeOfOccurrenceAnthropogenic,MX.typeOfOccurrenceRareVagrant,MX.typeOfOccurrenceVagrant').pipe(
+      this.api.post('/taxa/{id}/species', { path: { id: 'MX.37608' }, query: {
+        lang: this.translate.currentLang as any,
+      } }, {
+        informalTaxonGroups: 'MVL.26',
+        typeOfOccurrenceInFinland: ['MX.typeOfOccurrenceAnthropogenic', 'MX.typeOfOccurrenceRareVagrant', 'MX.typeOfOccurrenceVagrant']
+      }).pipe(
         map(species => species.results)).pipe(
-        switchMap(data => ObservableForkJoin(data.map(taxon => this.taxonomyApi
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            .taxonomyFindMedia(taxon.id!, 'multi').pipe(
-            map(images => ({taxon, images: images[0] || {}})))
+        switchMap(data => ObservableForkJoin(data.map(taxon => this.api.get('/taxa/{id}/media', {
+          path: { id: taxon.id },
+          query: { lang: this.translate.currentLang as any }
+        }).pipe(
+            map(({ results: images }) => ({taxon, images: images[0] || {}})))
           ))))
     );
 

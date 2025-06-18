@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { LatestRedListStatusFinland } from '../../../shared/model/Taxonomy';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type LatestRedListStatusFinland = components['schemas']['Taxon']['latestRedListStatusFinland'];
 
 @Component({
   selector: 'laji-taxon-status-history',

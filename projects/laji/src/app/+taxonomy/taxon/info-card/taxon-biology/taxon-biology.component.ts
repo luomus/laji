@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 import { toHtmlSelectElement } from '../../../../shared/service/html-element.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
+type TaxonDescription = components['schemas']['Content'][number];
 
 @Component({
   selector: 'laji-taxon-biology',
@@ -9,8 +12,8 @@ import { toHtmlSelectElement } from '../../../../shared/service/html-element.ser
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonBiologyComponent implements OnChanges {
-  @Input({ required: true }) taxon!: Taxonomy;
-  @Input({ required: true }) taxonDescription!: TaxonomyDescription[];
+  @Input({ required: true }) taxon!: Taxon;
+  @Input({ required: true }) taxonDescription!: TaxonDescription[];
   @Input({ required: true }) context!: string;
 
   activeDescription = 0;

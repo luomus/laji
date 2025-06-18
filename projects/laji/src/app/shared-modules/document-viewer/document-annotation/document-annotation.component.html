@@ -130,7 +130,7 @@
             <laji-row [noTitleSpace]="false" ngPreserveWhitespaces>
               <a href="view?uri={{document.documentId}}" target="_blank">
                 <span>{{ unitCnt }}
-                  <span *ngIf="unitCnt ?? 0 > 1"> {{ 'annotation.observations.count' | translate }}</span>
+                  <span *ngIf="(unitCnt ?? 0) > 1"> {{ 'annotation.observations.count' | translate }}</span>
                   <span *ngIf="unitCnt === 1"> {{ 'annotation.observation.count' | translate }}</span>
                 </span>
               </a>

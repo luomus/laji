@@ -9,7 +9,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TaxonomySearchQuery } from './service/taxonomy-search-query';
+import { TaxonomySearch } from './service/taxonomy-search.service';
 import { FooterService } from '../../shared/service/footer.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 
@@ -36,7 +36,7 @@ export class SpeciesComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    public searchQuery: TaxonomySearchQuery,
+    public search: TaxonomySearch,
     private cd: ChangeDetectorRef,
     private footerService: FooterService,
     private localizeRouterService: LocalizeRouterService
@@ -52,7 +52,7 @@ export class SpeciesComponent implements OnInit, OnDestroy {
         this.cd.markForCheck();
     });
 
-    this.searchQuery.setQueryFromParams(this.route.snapshot.queryParams);
+    this.search.setQueryFromParams(this.route.snapshot.queryParams);
   }
 
   ngOnDestroy() {
@@ -67,7 +67,7 @@ export class SpeciesComponent implements OnInit, OnDestroy {
   onPopState() {
     // Route snapshot is not populated with the latest info when this event is triggered. So we need to delay the execution little.
     setTimeout(() => {
-      this.searchQuery.setQueryFromParams(this.route.snapshot.queryParams);
+      this.search.setQueryFromParams(this.route.snapshot.queryParams);
       this.cd.markForCheck();
     });
   }
