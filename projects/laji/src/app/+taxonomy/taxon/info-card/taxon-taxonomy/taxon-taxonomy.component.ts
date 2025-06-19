@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges,
 Output, EventEmitter } from '@angular/core';
-import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'laji-taxon-taxonomy',
@@ -14,13 +16,13 @@ import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
-  @Input({ required: true }) taxon!: Taxonomy;
-  @Input() taxonDescription?: TaxonomyDescription[];
+  @Input({ required: true }) taxon!: Taxon;
+  @Input() taxonDescription?: Taxon['descriptions'][number][];
 
   @Output() taxonSelect = new EventEmitter<string>();
 
   synonymType?: string;
-  synonymTypes: (keyof Taxonomy)[] = [
+  synonymTypes = [
     'basionyms',
     'objectiveSynonyms',
     'subjectiveSynonyms',
@@ -32,15 +34,15 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
     'uncertainSynonyms',
     'misappliedNames',
     'alternativeNames'
-  ];
+  ] as const;
 
   private synonymSub?: Subscription;
-  taxonChildren: Taxonomy[] = [];
+  taxonChildren: Taxon[] = [];
   private childrenSub?: Subscription;
 
   constructor(
     private translate: TranslateService,
-    private taxonService: TaxonomyApi,
+    private api: LajiApiClientBService,
     private taxonomyService: TaxonTaxonomyService,
     private cd: ChangeDetectorRef
   ) { }
@@ -54,17 +56,16 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
       this.synonymType = undefined;
 
       if (!this.taxon.nameAccordingTo && this.taxon.synonymOf) {
-        this.synonymSub = this.taxonService.taxonomyFindBySubject(
-          this.taxon.synonymOf.id,
-          this.translate.currentLang,
-          {
+        this.synonymSub = this.api.get('/taxa/{id}', {
+          path: { id: this.taxon.synonymOf.id },
+          query: {
+            lang: this.translate.currentLang as any,
             selectedFields: this.synonymTypes.join(',')
           }
-        )
-          .subscribe(taxon => {
-            this.synonymType = this.getSynonymType(taxon);
-            this.cd.markForCheck();
-          });
+        }).subscribe(taxon => {
+          this.synonymType = this.getSynonymType(taxon);
+          this.cd.markForCheck();
+        });
       }
     }
   }
@@ -79,7 +80,7 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
     }
   }
 
-  private getSynonymType(taxon: Taxonomy): string | undefined {
+  private getSynonymType(taxon: Taxon): string | undefined {
     for (const synonymType of this.synonymTypes) {
       if (taxon[synonymType]) {
         for (const synonym of taxon[synonymType]) {
@@ -96,6 +97,7 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
     if (this.childrenSub) {
       this.childrenSub.unsubscribe();
     }
+
     this.childrenSub = this.taxonomyService
       .getChildren(this.taxon.id).pipe(
         map((obj) => {
@@ -113,7 +115,7 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
       });
   }
 
-  taxonHasSynonymKey(taxon: Taxonomy) {
+  taxonHasSynonymKey(taxon: Taxon) {
     for (const synonymType of this.synonymTypes) {
       if (taxon.hasOwnProperty(synonymType)) {
         return true;

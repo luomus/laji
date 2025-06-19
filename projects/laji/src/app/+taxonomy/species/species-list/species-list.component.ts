@@ -11,13 +11,11 @@ import {
   ViewChild
 } from '@angular/core';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
-import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
-import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { Logger } from '../../../shared/logger/logger.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
+import { TaxonomySearch } from '../service/taxonomy-search.service';
 import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/species-list-options-modal.component';
 import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { TaxonExportService } from '../service/taxon-export.service';
@@ -29,6 +27,11 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { DatatableHeaderComponent } from '../../../shared-modules/datatable/datatable-header/datatable-header.component';
 import { ToFullUriPipe } from 'projects/laji/src/app/shared/pipe/to-full-uri';
 import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { TranslateService } from '@ngx-translate/core';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'laji-species-list',
@@ -42,7 +45,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('settingsModal', { static: true }) settingsModal!: SpeciesListOptionsModalComponent;
   @ViewChild('dataTable', { static: true }) public datatable!: DatatableComponent;
 
-  @Input() searchQuery!: TaxonomySearchQuery;
+  @Input() search!: TaxonomySearch;
   @Input() visible!: boolean;
   @Input() showDownloadAndBrowse = true;
   @Input() countStartText = '';
@@ -52,7 +55,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   downloadLoading = false;
 
   columns: DatatableColumn[] = [];
-  speciesPage: PagedResult<Taxonomy> = {
+  speciesPage: PagedResult<Taxon> = {
     currentPage: 1,
     lastPage: 1,
     results: [],
@@ -60,40 +63,36 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     pageSize: 0
   };
 
-  private lastQuery: string | undefined;
   private subQueryUpdate: Subscription | undefined;
   private subFetch: Subscription | undefined;
 
-  private settingsLoaded = false;
-
   constructor(
     private userService: UserService,
-    private taxonomyService: TaxonomyApi,
     private logger: Logger,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private cd: ChangeDetectorRef,
     private taxonExportService: TaxonExportService,
     private columnService: TaxonomyColumns,
-    private fullUri: ToFullUriPipe,
-    private toQname: ToQNamePipe
+    private toQname: ToQNamePipe,
+    private api: LajiApiClientBService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
     this.loading = true;
 
-    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
+    this.subQueryUpdate = this.search.queryUpdated$.subscribe(
       () => {
-        this.searchQuery.listOptions.page = 1;
+        this.search.listOptions.page = 1;
         this.refreshSpeciesList();
       }
     );
 
     this.userService.getUserSetting<any>('taxonomyList').subscribe(data => {
         if (data && data.selected) {
-          this.searchQuery.listOptions.selected = data.selected;
+          this.search.listOptions.selected = data.selected;
         }
-        this.settingsLoaded = true;
         this.refreshSpeciesList();
       });
   }
@@ -122,12 +121,12 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   pageChanged(event: any) {
-    this.searchQuery.listOptions.page = event.offset + 1;
+    this.search.listOptions.page = event.offset + 1;
     this.refreshSpeciesList();
   }
 
   sortOrderChanged(event: any) {
-    this.searchQuery.listOptions.sortOrder = event;
+    this.search.listOptions.sortOrder = event;
     this.refreshSpeciesList();
   }
 
@@ -135,40 +134,31 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     if (
       !event.column ||
       !event.column.name ||
-      this.searchQuery.listOptions.selected.indexOf(event.column.name) === -1 ||
+      this.search.listOptions.selected.indexOf(event.column.name) === -1 ||
       typeof event.newValue !== 'number' ||
       typeof event.prevValue !== 'number'
     ) {
       return;
     }
-    this.searchQuery.listOptions.selected.splice(event.newValue, 0, this.searchQuery.listOptions.selected.splice(event.prevValue, 1)[0]);
+    this.search.listOptions.selected.splice(event.newValue, 0, this.search.listOptions.selected.splice(event.prevValue, 1)[0]);
     this.saveSettings();
     this.refreshSpeciesList();
   }
 
   refreshSpeciesList() {
-    const cacheKey = JSON.stringify({
-      query: this.searchQuery.query,
-      listOptions: this.searchQuery.listOptions
-    });
-    if (this.lastQuery === cacheKey || !this.settingsLoaded) {
-      return;
-    }
-    this.lastQuery = cacheKey;
-
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
     this.loading = true;
 
-    this.subFetch = this.fetchPage(this.searchQuery.listOptions.page)
+    this.subFetch = this.fetchPage(this.search.listOptions.page)
       .subscribe(data => {
-          this.columns = this.columnService.getColumns(this.searchQuery.listOptions.selected);
+          this.columns = this.columnService.getColumns(this.search.listOptions.selected);
 
           if (data.lastPage && data.lastPage === 1) {
-            this.columns.map(column => {column.sortable = true; });
+            this.columns.map(column => { column.sortable = true; });
           } else {
-            this.columns.map(column => {column.sortable = false; });
+            this.columns.map(column => { column.sortable = false; });
           }
 
           this.speciesPage = data;
@@ -187,7 +177,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   download(fileType: string) {
     this.downloadLoading = true;
 
-    this.columnService.getColumns$(this.searchQuery.listOptions.selected).pipe(
+    this.columnService.getColumns$(this.search.listOptions.selected).pipe(
       switchMap(columns => this.fetchAllPages().pipe(map((data) => ({data, columns})))),
       switchMap(res => this.taxonExportService.downloadTaxons(res.columns, res.data, fileType))
     ).subscribe(() =>  {
@@ -203,7 +193,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
 
   onSettingsChange() {
     this.saveSettings();
-    this.searchQuery.listOptions.page = 1;
+    this.search.listOptions.page = 1;
     this.refreshSpeciesList();
   }
 
@@ -219,62 +209,38 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       }));
   }
 
-  private fetchPage(page: number): Observable<PagedResult<Taxonomy>> {
-    if (!this.loading && this.speciesPage.currentPage === page) {
-      return ObservableOf(this.speciesPage);
-    }
-
-    const query = this.searchQueryToTaxaQuery();
-
-    return this.taxonomyService
-      .taxonomyFindSpecies(
-        query.target,
-        'multi',
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        '' + page,
-        '1000',
-        this.searchQuery.listOptions.sortOrder,
-        query.extraParameters
-      ).pipe(
+  private fetchPage(page: number) {
+    const { query, filters, taxonId } = this.search;
+    return this.api.post('/taxa/{id}/species', {
+      path: { id: taxonId || 'MX.37600' },
+      query: {
+        ...query,
+        lang: this.translate.currentLang as any,
+        page,
+        pageSize: 1000,
+        sortOrder: this.search.listOptions.sortOrder,
+        selectedFields: this.getSelectedFields()
+      },
+    }, filters).pipe(
         map(data => {
-          if (data && Array.isArray(data.results)) {
-            data.results = data.results.map(taxon => {
-              if (taxon.parent && Array.isArray(taxon.nonHiddenParentsIncludeSelf)) {
-                return {...taxon, parent: Object.keys(taxon.parent).reduce((parent: any, level) => {
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                  if (taxon.nonHiddenParentsIncludeSelf!.includes(taxon.parent[level].id)) {
-                    parent[level] = taxon.parent[level];
-                  }
-                  return parent;
-                }, {})};
-              }
-              return taxon;
-            });
-          }
+          data.results = data.results.map(taxon => {
+            if (taxon.parent && Array.isArray(taxon.nonHiddenParentsIncludeSelf)) {
+              return {...taxon, parent: (Object.keys(taxon.parent) as (keyof NonNullable<Taxon['parent']>)[]).reduce((parent, level) => {
+                if (taxon.nonHiddenParentsIncludeSelf!.includes(taxon.parent![level]!.id!)) {
+                  parent![level] = taxon.parent![level];
+                }
+                return parent;
+              }, {} as Taxon['parent'])};
+            }
+            return taxon;
+          });
           return data;
         })
       );
   }
 
-  private searchQueryToTaxaQuery() {
-    const query = this.searchQuery.query;
-    const target = query.target ? query.target : 'MX.37600';
-    const extraParameters: any = {...query};
-    extraParameters['target'] = undefined;
-    extraParameters['selectedFields'] = this.getSelectedFields();
-
-    return {
-      target,
-      extraParameters: extraParameters as typeof query & { selectedFields: string }
-    };
-  }
-
   private getSelectedFields() {
-    const selects = this.searchQuery.listOptions.selected.reduce((arr: any[], field) => {
+    const selects = this.search.listOptions.selected.reduce((arr: any[], field) => {
       let addedField: string|string[] = field;
       if (this.columnService.columnLookup[field] && this.columnService.columnLookup[field].selectField) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -299,31 +265,35 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
 
   private saveSettings() {
     this.userService.setUserSetting('taxonomyList', {
-      selected: this.searchQuery.listOptions.selected
+      selected: this.search.listOptions.selected
     });
   }
 
   browseObservations() {
-    const query = this.searchQuery.query;
+    const filters = this.search.filters;
 
-    const parameters: WarehouseQueryInterface = Util.removeFromObject({
-      informalTaxonGroupId: query.informalGroupFilters as any,
-      target: query.target as any,
-      finnish: query.onlyFinnish,
-      redListStatusId: query.redListStatusFilters,
-      administrativeStatusId: query.adminStatusFilters,
-      typeOfOccurrenceId: query.typesOfOccurrenceFilters,
-      typeOfOccurrenceIdNot: query.typesOfOccurrenceNotFilters,
-      invasive: query.invasiveSpeciesFilter,
-      primaryHabitat: query.primaryHabitat,
-      anyHabitat: query.anyHabitat,
-      taxonRankId: query.taxonRanks
+    const [typeOfOccurrenceInFinlandInclusions, typeOfOccurrenceInFinlandExclusions] =
+      (filters.typeOfOccurrenceInFinland || []).reduce(([inclusions, exclusions], value) => {
+        (value.startsWith('!') ? exclusions : inclusions).push(value);
+        return [inclusions, exclusions];
+      }, [[],[]] as [string[], string[]]);
+
+    const queryParams: WarehouseQueryInterface = Util.removeFromObject({
+      target: this.search.taxonId as any,
+      informalTaxonGroupId: filters.informalTaxonGroups,
+      onlyFinnish: filters.finnish,
+      redListStatusId: filters['latestRedListStatusFinland.status'],
+      administrativeStatusId: filters.administrativeStatuses,
+      typeOfOccurrenceId: typeOfOccurrenceInFinlandInclusions,
+      typeOfOccurrenceIdNot: typeOfOccurrenceInFinlandExclusions,
+      invasive: filters.invasiveSpecies,
+      primaryHabitat: filters['primaryHabitat.habitat'],
+      anyHabitat: filters.anyHabitatSearchStrings,
+      taxonRankId: filters.taxonRank
     });
 
     this.router.navigate(
-      this.localizeRouterService.translateRoute(
-        ['/observation/map']
-      ), {queryParams: parameters}
+      this.localizeRouterService.translateRoute(['/observation/map']), { queryParams }
     );
   }
 }

@@ -40,9 +40,9 @@
         <a [routerLink]="['/taxon', taxon.taxon.id] | localize">
           <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
           <h4>
-            {{ taxon.taxon.vernacularName | multiLang }}
-            <span *ngIf="lang === 'fi'">
-          <br> {{ taxon.taxon.alternativeVernacularName | multiLang }}
+            {{ taxon.taxon.vernacularName }}
+            <span *ngIf="translate.currentLang === 'fi'">
+          <br> {{ taxon.taxon.alternativeVernacularName }}
         </span>
           </h4>
         </a>
@@ -56,9 +56,9 @@
         <a [routerLink]="['/taxon', taxon.taxon.id] | localize">
           <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
           <h4>
-            {{ taxon.taxon.vernacularName | multiLang }}
-            <span *ngIf="lang === 'fi'">
-              <br> {{ taxon.taxon.alternativeVernacularName | multiLang }}
+            {{ taxon.taxon.vernacularName }}
+            <span *ngIf="translate.currentLang === 'fi'">
+              <br> {{ taxon.taxon.alternativeVernacularName }}
             </span>
           </h4>
         </a>
@@ -71,9 +71,9 @@
         <a [routerLink]="['/taxon', taxon.taxon.id] | localize">
           <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
           <h4>
-            {{ taxon.taxon.vernacularName | multiLang }}
-            <span *ngIf="lang === 'fi'">
-              <br> {{ taxon.taxon.alternativeVernacularName | multiLang }}
+            {{ taxon.taxon.vernacularName }}
+            <span *ngIf="translate.currentLang === 'fi'">
+              <br> {{ taxon.taxon.alternativeVernacularName }}
             </span>
           </h4>
         </a>

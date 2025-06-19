@@ -9,7 +9,6 @@ import { InfoCardComponent } from './taxon/info-card/info-card.component';
 import { IUCNComponent } from './iucn/iucn.component';
 import { TaxonTreeComponent } from './taxon/taxon-tree/taxon-tree.component';
 import { SpeciesListComponent } from './species/species-list/species-list.component';
-import { TaxonomyApi } from '../shared/api/TaxonomyApi';
 import { InformalTaxonGroupApi } from '../shared/api/InformalTaxonGroupApi';
 import { TaxonInfoComponent } from './taxon/info-card/taxon-overview/taxon-info/taxon-info.component';
 import { LangModule } from '../shared-modules/lang/lang.module';
@@ -18,9 +17,8 @@ import { SpeciesFormComponent } from './species/species-form/species-form.compon
 import { SpeciesComponent } from './species/species.component';
 import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
 import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
-import { TaxonomySearchQuery } from './species/service/taxonomy-search-query';
+import { TaxonomySearch } from './species/service/taxonomy-search.service';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
-import { SpeciesBrowseObservationsComponent } from './species/species-browse-observations/species-browse-observations.component';
 import { InformalGroupRedirectComponent } from './informal-group-redirect/informal-group-redirect.component';
 import { SpeciesImagesComponent } from './species/species-images/species-images.component';
 import { TaxonConceptInfoComponent } from './taxon/info-card/taxon-taxonomy/taxon-concept-info/taxon-concept-info.component';
@@ -86,9 +84,8 @@ import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
     ModalModule
   ],
   providers: [
-    TaxonomyApi,
     InformalTaxonGroupApi,
-    TaxonomySearchQuery,
+    TaxonomySearch,
     TaxonTaxonomyService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
     TaxonAutocompleteService,
@@ -98,7 +95,7 @@ import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,
     TaxonTreeComponent, SpeciesListComponent, TaxonComponent,
     SpeciesFormComponent, SpeciesComponent,
-    InformalGroupRedirectComponent, SpeciesBrowseObservationsComponent,
+    InformalGroupRedirectComponent,
     SpeciesImagesComponent, TaxonConceptInfoComponent, TreeComponent,
     SpeciesListOptionsModalComponent, SpeciesCountComponent, SpeciesPieComponent,
     InfoCardComponent, TaxonSynonymsComponent, TaxonNamesComponent,

@@ -10,7 +10,7 @@
         <span *ngIf="taxon" [ngClass]="{cursive: taxon.cursiveName}"
               class="scientificName">{{ taxon.scientificName }}</span>
         <ng-container *ngIf="taxon && taxon.vernacularName">
-          <br>{{ taxon.vernacularName | multiLang }}
+          <br>{{ taxon.vernacularName }}
         </ng-container>
         <ng-container *ngIf="title">{{ title }}</ng-container>
         <laji-info *ngIf="titleInfo">{{ titleInfo | translate }}</laji-info>

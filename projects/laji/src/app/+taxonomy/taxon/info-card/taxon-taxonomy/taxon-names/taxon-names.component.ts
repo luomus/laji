@@ -1,12 +1,19 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Taxonomy } from '../../../../../shared/model/Taxonomy';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
+type SimpleTaxon = components['schemas']['SimpleTaxon'];
+
+type SimpleTaxonArrayKeys = {
+  [K in keyof Taxon]: Taxon[K] extends SimpleTaxon[] ? K : never
+}[keyof Taxon];
 
 interface AvailableLangs {
   vernacularName: string[];
- alternativeVernacularName: string[];
- obsoleteVernacularName: string[];
- colloquialVernacularName: string[];
- tradeName: string[];
+  alternativeVernacularName: string[];
+  obsoleteVernacularName: string[];
+  colloquialVernacularName: string[];
+  tradeName: string[];
 };
 
 @Component({
@@ -16,9 +23,9 @@ interface AvailableLangs {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonNamesComponent {
-  _taxon!: Taxonomy;
+  _taxon!: Taxon;
   availableLangs: AvailableLangs = {vernacularName: [], alternativeVernacularName: [], obsoleteVernacularName: [], colloquialVernacularName: [], tradeName: []};
-  synonymTypes: (keyof Taxonomy)[] = [
+  synonymTypes: SimpleTaxonArrayKeys[] = [
     'basionyms',
     'objectiveSynonyms',
     'subjectiveSynonyms',
@@ -40,29 +47,29 @@ export class TaxonNamesComponent {
     'tradeName'
   ] as const;
 
-  @Input() set taxon(taxon: Taxonomy) {
+  @Input() set taxon(taxon: Taxon) {
       this.availableLangs = {vernacularName: [], alternativeVernacularName: [], obsoleteVernacularName: [], colloquialVernacularName: [], tradeName: []};
-      for (const lang of ['fi', 'sv', 'en', 'se', 'ru']) {
-        if (taxon.vernacularName && (taxon.vernacularName as any)[lang]) {
+      for (const lang of ['fi', 'sv', 'en'] as const) {
+        if (taxon.vernacularNameMultiLang?.[lang]) {
           this.availableLangs.vernacularName.push(lang);
         }
-        if (taxon.alternativeVernacularName && (taxon.alternativeVernacularName as any)[lang]) {
+        if (taxon.alternativeVernacularNameMultiLang?.[lang]) {
           this.availableLangs.alternativeVernacularName.push(lang);
         }
-        if (taxon.obsoleteVernacularName && (taxon.obsoleteVernacularName as any)[lang]) {
+        if (taxon.obsoleteVernacularNameMultiLang?.[lang]) {
           this.availableLangs.obsoleteVernacularName.push(lang);
         }
-        if (taxon.tradeName && (taxon.tradeName as any)[lang]) {
-          this.availableLangs.tradeName.push(lang);
-        }
-        if (taxon.colloquialVernacularName && (taxon.colloquialVernacularName as any)[lang]) {
+        if (taxon.colloquialVernacularNameMultiLang?.[lang]) {
           this.availableLangs.colloquialVernacularName.push(lang);
+        }
+        if (taxon.tradeNameMultiLang?.[lang]) {
+          this.availableLangs.tradeName.push(lang);
         }
       }
     this._taxon = taxon;
   }
 
-  taxonHasSynonymKey(taxon: Taxonomy) {
+  taxonHasSynonymKey(taxon: Taxon) {
     for (const synonymType of this.synonymTypes) {
       if (taxon.hasOwnProperty(synonymType)) {
         return true;

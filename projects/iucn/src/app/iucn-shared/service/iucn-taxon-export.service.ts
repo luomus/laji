@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Taxonomy } from '../../../../../laji/src/app/shared/model/Taxonomy';
 import { ISelectFields } from '../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
 import { TaxonomyColumns } from '../../../../../laji/src/app/+taxonomy/species/service/taxonomy-columns';
 import { DatatableColumn } from '../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { TaxonExportService } from '../../../../../laji/src/app/+taxonomy/species/service/taxon-export.service';
 import { Observable } from 'rxjs';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +41,7 @@ export class IucnTaxonExportService {
     private taxonomyColumns: TaxonomyColumns
   ) { }
 
-  download(data: Taxonomy[], fields: ISelectFields[], type: string): Observable<boolean> {
+  download(data: Taxon[], fields: ISelectFields[], type: string): Observable<boolean> {
     const columns: DatatableColumn[] = [];
 
     fields.forEach(field => {

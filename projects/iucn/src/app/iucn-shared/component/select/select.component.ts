@@ -23,7 +23,8 @@ export class SelectComponent {
   @HostListener('change', ['$event'])
   onChange(event: any) {
     event.stopPropagation();
-    this.valueChange.emit(event.target.value);
+    const { value } = event.target;
+    this.valueChange.emit(value === '' ? undefined : value);
   }
 
 }

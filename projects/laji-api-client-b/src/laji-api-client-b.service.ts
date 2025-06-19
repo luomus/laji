@@ -71,7 +71,7 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable({
   providedIn: 'root'
-})
+}) 
 export class LajiApiClientBService {
   // variable level cache
   // first levels are for different path segments separated by path variables
@@ -123,7 +123,7 @@ export class LajiApiClientBService {
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     const pathSegments = splitAndResolvePath(path, params);
     const requestUrl = this.baseUrl + pathSegments.join('');
-    const requestOptions = { params: (<any>params).query, body: requestBody };
+    const requestOptions = { params: (<any>params).query, body: requestBody, headers: { 'API-Version': '1' } };
 
     if (method !== 'get') {
       this._flush(pathSegments);

@@ -8,7 +8,6 @@ import { Document } from '../../../shared/model/Document';
 import { Units } from '../../../shared/model/Units';
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
-import { Global } from '../../../../environments/global';
 import { Image } from '../../../shared/model/Image';
 import { Form } from '../../../shared/model/Form';
 import { JSONPath } from 'jsonpath-plus';
@@ -27,7 +26,7 @@ export class DocumentLocalComponent implements OnChanges {
 
   @Output() documentClose = new EventEmitter<boolean>();
 
-  collectionContestFormId = Global.forms.collectionContest;
+  collectionContestFormId = 'MHL.25';
 
   mapData: any[] = [];
   imageData: {[key: string]: any} = {};

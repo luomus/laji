@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Taxonomy } from '../../../../shared/model/Taxonomy';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'laji-taxon-endangerment',
@@ -8,5 +10,5 @@ import { Taxonomy } from '../../../../shared/model/Taxonomy';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonEndangermentComponent {
-  @Input({ required: true }) taxon!: Taxonomy;
+  @Input({ required: true }) taxon!: Taxon;
 }

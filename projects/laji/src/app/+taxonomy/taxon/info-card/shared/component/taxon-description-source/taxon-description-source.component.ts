@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { TaxonomyDescription } from '../../../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type TaxonDescription = components['schemas']['Content'][number];
 
 @Component({
   selector: 'laji-taxon-description-source',
@@ -9,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonDescriptionSourceComponent implements OnChanges {
-  @Input() taxonDescription!: TaxonomyDescription;
+  @Input() taxonDescription!: TaxonDescription;
 
   currentLang: string | undefined;
 

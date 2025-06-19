@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { ResultService } from '../common/service/result.service';
 import { Form } from '../../../shared/model/Form';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { map } from 'rxjs/operators';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+type Taxon = components['schemas']['Taxon'];
 
 enum Tabs {
   species = 'species',
@@ -29,7 +30,7 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
   query!: WarehouseQueryInterface;
   mapQuery!: WarehouseQueryInterface;
   resultQuery!: WarehouseQueryInterface;
-  taxon$!: Observable<Taxonomy> | Observable<null>;
+  taxon$!: Observable<Taxon> | Observable<null>;
   Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
   tab$!: Observable<keyof typeof Tabs>;
   year;
@@ -47,7 +48,6 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private translate: TranslateService,
     private resultService: ResultService,
     private cdr: ChangeDetectorRef,
     private qName: ToQNamePipe

@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
-import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { ResultService } from '../../common/service/result.service';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'laji-syke-insect-all-results',
@@ -20,7 +21,7 @@ export class SykeInsectAllResultsComponent implements OnInit, OnDestroy {
   query!: WarehouseQueryInterface;
   mapQuery!: WarehouseQueryInterface;
   resultQuery!: WarehouseQueryInterface;
-  taxon$!: Observable<Taxonomy> | Observable<null>;
+  taxon$!: Observable<Taxon> | Observable<null>;
 
   year;
   currentMonth;

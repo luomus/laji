@@ -4,8 +4,6 @@ import { YkjMapComponent } from './ykj-map/ykj-map.component';
 import { LangModule } from '../lang/lang.module';
 import { LajiMapModule } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.module';
 import { YkjService } from './service/ykj.service';
-import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { InfoModule } from '../info/info.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 
@@ -18,7 +16,7 @@ import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.modul
     InfoModule
   ],
   declarations: [YkjMapComponent],
-  providers: [YkjService, TaxonomyApi],
+  providers: [YkjService],
   exports: [YkjMapComponent]
 })
 export class YkjModule { }

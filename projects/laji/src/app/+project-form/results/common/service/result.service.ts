@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 import { convertYkjToGeoJsonFeature } from '../../../../root/coordinate-utils';
-import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class ResultService {
@@ -38,17 +39,15 @@ export class ResultService {
 
   constructor(
     private warehouseApi: WarehouseApi,
-    private taxonomyApi: TaxonomyApi
+    private api: LajiApiClientBService,
+    private translate: TranslateService
   ) { }
 
   getTaxon(taxonId: string) {
-    return this._fetch('taxon', taxonId, this.taxonomyApi.taxonomyFindBySubject(
-      taxonId,
-      'multi',
-      {
-        selectedFields: 'scientificName,vernacularName,cursiveName'
-      }
-    ));
+    return this.api.get('/taxa/{id}', {
+      path: { id: taxonId },
+      query: { selectedFields: 'scientificName,vernacularName,cursiveName', lang: this.translate.currentLang as any }
+    });
   }
 
   getResults(query: WarehouseQueryInterface, lang: string): Observable<any> {

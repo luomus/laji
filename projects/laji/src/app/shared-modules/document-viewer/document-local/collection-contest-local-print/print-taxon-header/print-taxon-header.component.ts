@@ -1,7 +1,9 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { TaxonomyApi } from '../../../../../shared/api/TaxonomyApi';
-import { Taxonomy } from '../../../../../shared/model/Taxonomy';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'laji-print-taxon-header',
@@ -11,25 +13,27 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 export class PrintTaxonHeaderComponent implements OnInit {
   @Input() taxonVerbatim?: string;
   @Input() autocompleteTaxonId?: string;
-  taxon?: Taxonomy;
+  taxon?: Taxon;
 
   constructor(
     private translate: TranslateService,
     private cd: ChangeDetectorRef,
-    private taxonomyApi: TaxonomyApi
+    private api: LajiApiClientBService
   ) { }
 
   ngOnInit() {
-    if (this.autocompleteTaxonId) {
-      this.taxonomyApi.taxonomyFindBySubject(
-        this.autocompleteTaxonId,
-        this.translate.currentLang,
-        {selectedFields: 'scientificName,vernacularName,cursiveName'}
-        ).subscribe(taxon => {
-          this.taxon = taxon;
-          this.cd.markForCheck();
-        });
+    if (!this.autocompleteTaxonId) {
+      return;
     }
+    this.api.get('/taxa/{id}', {
+      path: { id: this.autocompleteTaxonId },
+      query: {
+        selectedFields: 'scientificName,vernacularName,cursiveName',
+        lang: this.translate.currentLang as any
+      }
+    }).subscribe(taxon => {
+      this.taxon = taxon;
+      this.cd.markForCheck();
+    });
   }
-
 }

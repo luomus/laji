@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Image } from '../image-gallery/image.interface';
 
 @Component({
@@ -8,5 +8,5 @@ import { Image } from '../image-gallery/image.interface';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageModalVideoComponent {
-  @Input() source!: Image;
+  @Input() source!: Partial<Image>;
 }

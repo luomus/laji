@@ -1,12 +1,15 @@
 import { map, tap } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { TaxonomyApi } from '../../../../laji/src/app/shared/api/TaxonomyApi';
 import { WarehouseApi } from '../../../../laji/src/app/shared/api/WarehouseApi';
-import { Taxonomy } from '../../../../laji/src/app/shared/model/Taxonomy';
 import { IdService } from '../../../../laji/src/app/shared/service/id.service';
 import { Observable, of as ObservableOf } from 'rxjs';
 import * as moment from 'moment';
 import { DocumentViewerFacade } from '../../../../laji/src/app/shared-modules/document-viewer/document-viewer.facade';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { TranslateService } from '@ngx-translate/core';
+
+type Taxon = components['schemas']['Taxon'];
 
 interface IAggregated {
   isNew: boolean;
@@ -24,9 +27,9 @@ interface IAggregated {
 })
 export class InvasiveComponent implements OnInit {
 
-  static taxa: Taxonomy[];
+  static taxa: Taxon[];
 
-  taxa!: Observable<Taxonomy[]>;
+  taxa!: Observable<Taxon[]>;
   aggr: {[key: string]: IAggregated} = {};
   daysBack;
   invasiveQuery = {
@@ -35,9 +38,10 @@ export class InvasiveComponent implements OnInit {
   };
 
   constructor(
-    private taxonomyApi: TaxonomyApi,
+    private api: LajiApiClientBService,
     private warehouseApi: WarehouseApi,
-    private documentViewerFacade: DocumentViewerFacade
+    private documentViewerFacade: DocumentViewerFacade,
+    private translate: TranslateService
   ) {
     this.daysBack = moment().subtract(365, 'days');
   }
@@ -51,8 +55,11 @@ export class InvasiveComponent implements OnInit {
     if (InvasiveComponent.taxa) {
       this.taxa = ObservableOf(InvasiveComponent.taxa);
     } else {
-      this.taxa = this.taxonomyApi
-        .taxonomyFindSpecies('MX.37600', 'multi', undefined, 'MX.euInvasiveSpeciesList').pipe(
+      this.taxa = this.api.post('/taxa/{id}/species', {
+        path:  { id: 'MX.37600' },
+        query: { lang: this.translate.currentLang as any } },
+        { administrativeStatuses: 'MX.euInvasiveSpeciesList'
+      }).pipe(
         map(species => species.results)).pipe(
         tap(taxa => InvasiveComponent.taxa = taxa));
     }

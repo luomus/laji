@@ -60,7 +60,7 @@ import { DOCUMENT } from '@angular/common';
 
 export type ViewType = 'compact'|'annotation'|'full'|'full2'|'full3';
 
-const getAnnotationTmpFullImgUrl = (img: Image): string | undefined => {
+const getAnnotationTmpFullImgUrl = (img: Partial<Image>): string | undefined => {
   switch (img.mediaType) {
     case 'MODEL':
     case 'VIDEO':
@@ -78,14 +78,14 @@ const getAnnotationTmpFullImgUrl = (img: Image): string | undefined => {
 })
 export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   public opened = false;
-  public img!: Image;
+  public img!: Partial<Image>;
   public loading = false;
   public showRepeat = false;
   @Input() eventOnClick = false;
   @Input() view: ViewType = 'compact';
   @Input() views: ViewType[] = ['compact', 'full'];
   @Input() showExtraInfo = true;
-  @Input() modalImages!: Image[];
+  @Input() modalImages!: Partial<Image>[];
   @Input() imagePointer!: number;
   @Input() showPaginator!: number;
   @Input() showViewSwitch = false;
@@ -135,7 +135,7 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
     this.overlay?.destroy();
   }
 
-  onClickAnnotationTmpThumb(img: Image, index: number) {
+  onClickAnnotationTmpThumb(img: Partial<Image>, index: number) {
     this.annotationTmpSelectedImg = {
       url: getAnnotationTmpFullImgUrl(img),
       index
