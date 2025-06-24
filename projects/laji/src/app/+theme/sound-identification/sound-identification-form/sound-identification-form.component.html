@@ -1,6 +1,9 @@
 <div id="soundIdentificationParams">
   <div class="form-group">
-    <label for="threshold">{{ 'theme.soundIdentification.probabilityThreshold' | translate }}</label>
+    <label for="threshold">
+      {{ 'theme.soundIdentification.probabilityThreshold' | translate }}
+      <laji-info [html]="'theme.soundIdentification.probabilityThreshold.info' | translate" [showOnHover]="true"></laji-info>
+    </label>
     <input
       [(ngModel)]="probabilityThreshold"
       class="form-control input-sm"
@@ -13,7 +16,10 @@
   </div>
 
   <div class="form-group">
-    <label for="overlap">{{ 'theme.soundIdentification.overlap' | translate }}</label>
+    <label for="overlap">
+      {{ 'theme.soundIdentification.overlap' | translate }}
+      <laji-info [html]="'theme.soundIdentification.overlap.info' | translate" [showOnHover]="true"></laji-info>
+    </label>
     <input
       [(ngModel)]="overlap"
       class="form-control input-sm"
