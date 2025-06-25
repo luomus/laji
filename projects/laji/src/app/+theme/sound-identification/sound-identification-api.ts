@@ -1,8 +1,8 @@
-import { HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CombinedData } from './sound-identification-form/sound-identification-form.component';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { environment } from '../../../environments/environment';
 
 export interface IdentificationData {
   start_time: number;
@@ -15,20 +15,16 @@ export interface IdentificationData {
 @Injectable()
 export class SoundIdentificationApi {
   constructor(
-    protected api: LajiApiClientBService
+    private httpClient: HttpClient,
   ) {}
 
   public analyse(data: CombinedData): Observable<IdentificationData[]> {
     const headers = new HttpHeaders();
-    let paramString = '';
+    const url = environment.apiBase + '/sound-identification';
 
     headers.set('Content-Type', 'multipart/form-data');
     headers.set('Aceept', 'application/json');
 
-    if (data.params) {
-      paramString = `?${Object.keys(data.params).map(param => param + '=' + data.params[param]).join('&')}`;
-    }
-    // @ts-ignore
-    return this.api.fetch('/sound-identification' + paramString, 'post', data.params, data.formData);
+    return this.httpClient.post<IdentificationData[]>(url, data.formData, { headers, params: data.params });
   }
 }
