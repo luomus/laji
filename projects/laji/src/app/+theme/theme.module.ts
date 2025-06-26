@@ -35,6 +35,10 @@ import { KerttuClosedComponent } from './kerttu/kerttu-closed.component';
 import { TreeSelectModule } from '../shared-modules/tree-select/tree-select.module';
 import { SelectModule } from '../shared-modules/select/select.module';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
+import { SoundIdentificationComponent } from './sound-identification/sound-identification.component';
+import { SoundIdentificationApi } from './sound-identification/sound-identification-api';
+import { SoundIdentificationFormComponent } from './sound-identification/sound-identification-form/sound-identification-form.component';
+import { SoundIdentificationTableComponent } from './sound-identification/sound-identification-table/sound-identification-table.component';
 
 /* eslint-enable max-len */
 
@@ -52,8 +56,8 @@ import { DocumentViewerModule } from '../shared-modules/document-viewer/document
     BreadcrumbModule,
     TreeSelectModule,
     SelectModule,
-    DocumentViewerModule
-  ],
+    DocumentViewerModule,
+],
   declarations: [
     HerpetologyComponent,
     PinkkaComponent,
@@ -73,10 +77,14 @@ import { DocumentViewerModule } from '../shared-modules/document-viewer/document
     GeneticResourceLayoutComponent,
     GeneticResourceInstructionsComponent,
     KerttuClosedComponent,
+    SoundIdentificationComponent,
+    SoundIdentificationFormComponent,
+    SoundIdentificationTableComponent
   ],
   providers: [
     QualityService,
     ProtaxApi,
+    SoundIdentificationApi,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
   ]
 })
