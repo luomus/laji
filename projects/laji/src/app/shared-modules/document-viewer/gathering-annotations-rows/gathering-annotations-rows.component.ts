@@ -10,6 +10,7 @@ export class GatheringAnnotationsRowsComponent implements OnInit {
   @Input() gathering: any;
   @Input() highlight?: string;
   @Input() hideTooltips = false;
+  @Input() document: any;
 
   date = '';
   time = '';
