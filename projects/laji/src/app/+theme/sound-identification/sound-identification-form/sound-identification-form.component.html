@@ -1,5 +1,5 @@
-<div id="soundIdentificationParams">
-  <div class="form-group">
+<div class="soundIdentificationParams">
+  <div class="form-group d-inline-block">
     <label for="threshold">
       {{ 'theme.soundIdentification.probabilityThreshold' | translate }}
       <laji-info [html]="'theme.soundIdentification.probabilityThreshold.info' | translate" [showOnHover]="true"></laji-info>
@@ -15,7 +15,7 @@
     >
   </div>
 
-  <div class="form-group">
+  <div class="form-group d-inline-block">
     <label for="overlap">
       {{ 'theme.soundIdentification.overlap' | translate }}
       <laji-info [html]="'theme.soundIdentification.overlap.info' | translate" [showOnHover]="true"></laji-info>
@@ -31,6 +31,7 @@
     >
   </div>
 </div>
+
 <!--
 <div id="soundIdentificationParams">
   <div class="form-group">
@@ -59,16 +60,16 @@
 
 <div class="form-group">
   <p>{{ 'theme.soundIdentification.fileInput' | translate }}</p>
-  <input #fileInput class="form-control" type="file" style="height: auto" (change)="updateAudioFile(toHtmlInputElement($event.target).files!)">
+  <input #fileInput class="form-control" type="file" style="height: auto" (change)="onFileInput($event)">
 </div>
 
 <div class="form-group">
-  <lu-button [loading]="loading" [role]="'primary'" (click)="submitForm()">
-    <ng-container *ngIf="!(loading) else downloading">
+  <button class="btn btn-primary" [disabled]="(loading || isValidating)" (click)="submitForm()">
+    <ng-container *ngIf="!(loading || isValidating) else downloading">
       {{ 'theme.soundIdentification.analyse' | translate }}
     </ng-container>
     <ng-template #downloading>
       {{ 'theme.soundIdentification.loading' | translate }}
     </ng-template>
-  </lu-button>
+  </button>
 </div>

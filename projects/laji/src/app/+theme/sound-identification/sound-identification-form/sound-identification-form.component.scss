@@ -1,7 +1,6 @@
 @import 'projects/laji-ui/src/lib/vars';
 
-#soundIdentificationParams > div {
-  display: inline-block;
+.soundIdentificationParams > div {
   margin-right: 8px;
   vertical-align: top;
 
@@ -15,8 +14,4 @@
     display: block;
     margin-right: auto;
   }
-}
-
-.optional-params {
-  display: inline-block;
 }

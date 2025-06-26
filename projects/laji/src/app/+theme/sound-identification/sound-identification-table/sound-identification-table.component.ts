@@ -2,8 +2,8 @@ import { Component, OnInit, ChangeDetectionStrategy, ViewChild, TemplateRef, Inp
 import { IdentificationData } from '../sound-identification-api';
 import { Observable } from 'rxjs';
 import { LajiApi, LajiApiService } from 'projects/laji/src/app/shared/service/laji-api.service';
-import { TranslateService } from '@ngx-translate/core';
 import { map, shareReplay, tap } from 'rxjs/operators';
+import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 
 @Component({
   selector: 'laji-sound-identification-table',
@@ -12,13 +12,13 @@ import { map, shareReplay, tap } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SoundIdentificationTableComponent implements OnInit {
-  @ViewChild('clipSpan', { static: true }) public clipSpanTemplate!: TemplateRef<any>;
-  @ViewChild('vernacularName', { static: true }) public vernacularNameTemplate!: TemplateRef<any>;
+  @ViewChild('clipSpan', { static: true }) clipSpanTemplate!: TemplateRef<any>;
+  @ViewChild('vernacularName', { static: true }) vernacularNameTemplate!: TemplateRef<any>;
 
   @Input() data?: IdentificationData[];
   @Input() loading = false;
 
-  columns!: any[];
+  columns!: DatatableColumn[];
   vernacularCache: {
     [key: string]: Observable<{
       'fi'?: string;
@@ -30,7 +30,6 @@ export class SoundIdentificationTableComponent implements OnInit {
 
   constructor(
     private lajiApiService: LajiApiService,
-    private translate: TranslateService
   ) { }
 
   ngOnInit() {

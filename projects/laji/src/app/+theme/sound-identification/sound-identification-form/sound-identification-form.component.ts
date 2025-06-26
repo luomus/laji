@@ -1,6 +1,8 @@
 import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { toHtmlInputElement } from '../../../shared/service/html-element.service';
+import { from, Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 export interface CombinedData {
   params: {[key: string]: any};
@@ -29,8 +31,6 @@ export class SoundIdentificationFormComponent implements OnChanges {
   audioFile: File | undefined | null;
   isValidating = false;
 
-  toHtmlInputElement = toHtmlInputElement;
-
   @Output() soundIdentificationSubmit = new EventEmitter<CombinedData>();
 
   constructor(
@@ -47,11 +47,11 @@ export class SoundIdentificationFormComponent implements OnChanges {
     this.includeSdm = !this.includeSdm;
   }
 
-  updateAudioFile(files: FileList) {
-    this.audioFile = files.item(0);
+  onFileInput($event: Event) {
+    this.audioFile = toHtmlInputElement($event.target).files!.item(0);
   }
 
-  async submitForm() {
+  submitForm() {
     if (this.probabilityThreshold == null || this.probabilityThreshold < 0.1 || this.probabilityThreshold > 1) {
       this.dialogService.alert('theme.soundIdentification.invalidThreshold');
       return;
@@ -82,21 +82,22 @@ export class SoundIdentificationFormComponent implements OnChanges {
       return;
     }
 
-    try {
       this.isValidating = true;
-      const audioDuration = await this.getAudioDuration(this.audioFile);
 
-      if (audioDuration > this.maxAudioDuration) {
-        this.dialogService.alert('theme.soundIdentification.invalidDuration');
-        return;
-      }
-    } catch (e){
-      this.dialogService.alert(`theme.soundIdentification.audioError`);
-    } finally {
-      this.isValidating = false;
-    }
+      this.getAudioDuration(this.audioFile).subscribe(
+        duration => {
+          if (duration > this.maxAudioDuration) {
+            this.dialogService.alert('theme.soundIdentification.invalidDuration');
+            return;
+          }
 
-    this.soundIdentificationSubmit.emit(this.getFormAndParamsData());
+          this.soundIdentificationSubmit.emit(this.getFormAndParamsData());
+        },
+        () => {
+          this.dialogService.alert(`theme.soundIdentification.audioError`);
+        },
+        () => {this.isValidating = false;}
+      );
   }
 
   private getDayOfYearFromDate(dateString: string): number {
@@ -110,13 +111,14 @@ export class SoundIdentificationFormComponent implements OnChanges {
   private isValidAudioFormat(file: File): boolean {
     return this.acceptedFormats.some(format => file.name.toLowerCase().endsWith(format));
   }
-  private async getAudioDuration(file: File): Promise<number> {
-    const audioBuffer = await file.arrayBuffer();
-    const ctx = new AudioContext();
-
-    const audioData = await ctx.decodeAudioData(audioBuffer);
-
-    return audioData.duration;
+  private getAudioDuration(file: File): Observable<number> {
+    return from(file.arrayBuffer()).pipe(
+      switchMap((audioBuffer: ArrayBuffer) => {
+        const ctx = new AudioContext();
+        return from(ctx.decodeAudioData(audioBuffer)).pipe(
+          map((audioData: AudioBuffer) => audioData.duration));
+      })
+    );
   }
 
   private getFormAndParamsData(): CombinedData {
