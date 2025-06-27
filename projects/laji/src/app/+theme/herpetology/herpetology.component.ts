@@ -17,7 +17,6 @@ type TaxonImage = components['schemas']['Image'];
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HerpetologyComponent implements OnInit {
-  lang!: string;
   currentYear: string;
 
   public amphibianTaxa: {taxon: Taxon; images: any}[] = [];
