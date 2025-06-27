@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Params } from '@angular/router';
-import { Taxonomy } from '../../../../../../../laji/src/app/shared/model/Taxonomy';
 import { ISelectFields } from '../../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'iucn-red-list-species',
@@ -11,14 +13,14 @@ import { ISelectFields } from '../../../../../../../laji/src/app/shared-modules/
 })
 export class RedListSpeciesComponent {
 
-  @Input() species: Taxonomy[] = [];
+  @Input() species: Taxon[] = [];
   @Input() fields: ISelectFields[] = [];
   @Input() showTaxonLink = true;
   @Input() taxonLinkQueryParams: Params = {};
 
   constructor() { }
 
-  trackBySpeciesId(index: number, species: Taxonomy): string|number {
+  trackBySpeciesId(index: number, species: Taxon): string|number {
     return species.id || index;
   }
 

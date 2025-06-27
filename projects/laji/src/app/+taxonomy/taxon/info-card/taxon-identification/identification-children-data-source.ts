@@ -1,10 +1,10 @@
 import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
-import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
 import { Observable, of, Subject, forkJoin } from 'rxjs';
 import { takeUntil, tap, map, concatMap } from 'rxjs/operators';
-import { Taxon } from '../../../../../../../laji-api-client/src/lib/models';
-import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
-import { TranslateService } from '@ngx-translate/core';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 const rangeToIter = (range: ListRange): number[] => {
   const arr = [];
@@ -19,21 +19,20 @@ const clampRange = (range: ListRange, min: number, max: number): ListRange => ({
   end: clamp(range.end, min, max)
 });
 
-export class IdentificationChildrenDataSource extends DataSource<Taxonomy> {
+export class IdentificationChildrenDataSource extends DataSource<Taxon & { children: Taxon[] }> {
   private unsubscribe$ = new Subject<void>();
 
-  private childCache: any = {};
+  private childCache: Record<string, Taxon & { children: Taxon[] }> = {};
 
   constructor(
-    private taxonApi: TaxonomyApi,
-    private translate: TranslateService,
-    private children: Taxonomy[],
-    private grandchildRank: Taxon.TaxonRankEnum
+    private api: LajiApiClientBService,
+    private children: Taxon[],
+    private grandchildRank: string
   ) {
     super();
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<Taxonomy[]> {
+  connect(collectionViewer: CollectionViewer) {
     return collectionViewer.viewChange.pipe(
       takeUntil(this.unsubscribe$),
       map(range => this.children.length > 0 ? Array.from(rangeToIter(clampRange(range, 0, this.children.length - 1))) : []),
@@ -41,12 +40,12 @@ export class IdentificationChildrenDataSource extends DataSource<Taxonomy> {
     );
   }
 
-  disconnect(collectionViewer?: CollectionViewer): void {
+  disconnect(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  private childByIdx$(childIdx: number): Observable<Taxonomy> {
+  private childByIdx$(childIdx: number) {
     if (this.childCache[childIdx]) {
       return of(this.childCache[childIdx]);
     } else {
@@ -56,17 +55,15 @@ export class IdentificationChildrenDataSource extends DataSource<Taxonomy> {
     }
   }
 
-  private populateGrandchildren$(child: Taxonomy): Observable<Taxonomy> {
-    return this.taxonApi.taxonomyList(
-      this.translate.currentLang,
-      {
-        parentTaxonId: child.id,
-        taxonRanks: this.grandchildRank,
-        sortOrder: 'observationCountFinland DESC',
-        selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren',
-        includeMedia: true
-      }
-    ).pipe(
+  private populateGrandchildren$(child: Taxon): Observable<Taxon & { children: Taxon[] }> {
+    return this.api.post('/taxa', { query: {
+      parentTaxonId: child.id,
+      sortOrder: 'observationCountFinland desc',
+      selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren,multimedia',
+      includeMedia: true
+    }}, {
+      taxonRank: this.grandchildRank,
+    }).pipe(
       map(taxa => ({...child, children: taxa.results}))
     );
   }

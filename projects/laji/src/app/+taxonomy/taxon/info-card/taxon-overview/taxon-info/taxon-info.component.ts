@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Taxonomy } from '../../../../../shared/model/Taxonomy';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'laji-taxon-info',
@@ -9,11 +11,7 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonInfoComponent implements OnChanges {
-  @Input() taxon!: Taxonomy;
-
-  langs = ['fi', 'sv', 'en', 'se', 'ru'];
-  availableVernacularNames: Array<Record<string, string>> | undefined;
-  availableTaxonNames: {vernacularNames: Array<Record<string, string>>; colloquialVernacularNames: Array<Record<string, string>>} | undefined;
+  @Input() taxon!: Taxon;
 
   protectedUnderNatureConservationAct = false;
 
@@ -34,26 +32,7 @@ export class TaxonInfoComponent implements OnChanges {
     ) { }
 
   ngOnChanges() {
-    this.updateLangTaxonNames();
     this.updateProtectedStatus();
-  }
-
-  private updateLangTaxonNames() {
-    this.availableVernacularNames = [];
-    this.availableTaxonNames = {vernacularNames: [], colloquialVernacularNames: []};
-
-    this.langs.forEach(value => {
-      if (this.taxon?.vernacularName?.[<number><unknown>value]) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.availableVernacularNames!.push({lang: value});
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.availableTaxonNames!.vernacularNames.push({lang: value});
-      }
-      if (this.taxon?.colloquialVernacularName?.[<number><unknown>value]) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.availableTaxonNames!.colloquialVernacularNames.push({lang: value});
-      }
-    });
   }
 
   private updateProtectedStatus() {

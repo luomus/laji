@@ -3,17 +3,17 @@
   <div class="row">
     <div class="col-sm-12">
       <laji-informal-group-select
-        [id]="searchQuery.query.informalGroupFilters"
+        [id]="search.filters.informalTaxonGroups?.[0]"
       ></laji-informal-group-select>
     </div>
   </div>
   <div class="mt-6">
     <h2 class="informal-group d-inline">
-      {{ searchQuery.query.informalGroupFilters! | label }}
+      {{ search.filters.informalTaxonGroups! | label }}
     </h2>
     <span class="species-count ml-2">
       ({{ 'species.browse.list.count1' | translate }}
-      <laji-species-count [searchQuery]="searchQuery"></laji-species-count>
+      <laji-species-count [search]="search"></laji-species-count>
       {{ 'species.browse.list.count2' | translate }})
     </span>
   </div>
@@ -24,7 +24,7 @@
         <lu-tab [heading]="'species.images' | translate">
           <ng-container *ngIf="loadedTabs.isLoaded('images')">
             <laji-species-images [hidden]="activeIndex !== 0"
-                                [searchQuery]="searchQuery"
+                                [search]="search"
                                 [showSpeciesTotalCount]="true"
                                 [countStartText]="'species.browse.images.count1' | translate"
                                 [countEndText]="'species.browse.images.count2' | translate"
@@ -35,7 +35,7 @@
           <ng-container *ngIf="loadedTabs.isLoaded('list')">
             <laji-species-list [hidden]="activeIndex !== 1"
                               [visible]="activeIndex === 1"
-                              [searchQuery]="searchQuery"
+                              [search]="search"
                               [showDownloadAndBrowse]="false"
             ></laji-species-list>
           </ng-container>

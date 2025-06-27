@@ -4,8 +4,8 @@ import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { delay, map, startWith, switchMap } from 'rxjs/operators';
 import { DEFAULT_YEAR, FilterQuery, ResultService } from '../../iucn-shared/service/result.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LocalizeRouterService } from '../../../../../laji/src/app/locale/localize-router.service';
 import { Title } from '@angular/platform-browser';
+import { ChecklistVersion } from '../../iucn-shared/service/taxon.service';
 
 export type ListType = 'status'|'species'|'reasons'|'threats'|'habitat';
 
@@ -29,7 +29,7 @@ export class ListComponent implements OnInit, OnDestroy {
   ];
 
   years$!: Observable<{label: string; value: string}[]>;
-  checklist!: string;
+  checklist!: ChecklistVersion;
   queryParams!: QueryParams;
   private querySub!: Subscription;
   private onlyFields = ['onlyPrimaryThreat', 'onlyPrimaryReason', 'onlyPrimaryHabitat'];
@@ -39,7 +39,6 @@ export class ListComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     private route: ActivatedRoute,
     private router: Router,
-    private localizeRouterService: LocalizeRouterService,
     private resultService: ResultService,
     private title: Title
   ) {}

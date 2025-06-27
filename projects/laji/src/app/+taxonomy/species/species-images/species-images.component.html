@@ -1,8 +1,8 @@
 <div class="counts">
   <strong>
     {{ countStartText }}
-    <laji-species-count [searchQuery]="searchQuery" [hasMediaFilter]="true"></laji-species-count>
-    <ng-container *ngIf="showSpeciesTotalCount"> / <laji-species-count [searchQuery]="searchQuery"></laji-species-count></ng-container>
+    <laji-species-count [search]="search" [hasMediaFilter]="true"></laji-species-count>
+    <ng-container *ngIf="showSpeciesTotalCount"> / <laji-species-count [search]="search"></laji-species-count></ng-container>
     {{ countEndText }}
   </strong>
 </div>
@@ -16,5 +16,5 @@
                       [view]="'full2'"
                       [views]="['full2', 'compact']"
   ></laji-image-gallery>
-  <laji-paginator [page]="searchQuery.imageOptions.page" [count]="total" [size]="pageSize" (pageChange)="pageChanged($event)"></laji-paginator>
+  <laji-paginator [page]="search.imageOptions.page" [count]="total" [size]="pageSize" (pageChange)="pageChanged($event)"></laji-paginator>
 </laji-spinner>

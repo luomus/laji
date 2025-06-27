@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input,
 ElementRef, ViewChild, Renderer2, ComponentRef, ViewContainerRef, OnDestroy, EnvironmentInjector, Inject } from '@angular/core';
-import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
 import { ImageModalOverlayComponent } from 'projects/laji/src/app/shared/gallery/image-gallery/image-modal-overlay.component';
 import { Image } from 'projects/laji/src/app/shared/gallery/image-gallery/image.interface';
 import { Subscription } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 const SCROLL_SPEED = 500; // pixels per second
 
@@ -30,7 +32,7 @@ const indexAndArrAfterFilter = <T>(index: number, arr: Array<T>, fn: (element: T
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationListComponent implements OnDestroy {
-  @Input() taxon!: Taxonomy;
+  @Input() taxon!: Taxon & { children?: Taxon[] };
 
   @ViewChild('speciesContainer') speciesContainer!: ElementRef;
 

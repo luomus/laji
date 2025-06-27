@@ -4,6 +4,7 @@ import { map, startWith, switchMap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {RegionalFilterQuery, RegionalService, REGIONAL_DEFAULT_YEAR} from '../../iucn-shared/service/regional.service';
+import { ChecklistVersion } from '../../iucn-shared/service/taxon.service';
 
 export type RegionalListType = 'status'|'species';
 
@@ -25,7 +26,7 @@ export class RegionalComponent implements OnDestroy {
   ];
 
   years$: Observable<{label: string; value: string}[]>;
-  checklist?: string;
+  checklist?: ChecklistVersion;
   groupSelectRootGroups: string[];
 
   queryParams: QueryParams = {};

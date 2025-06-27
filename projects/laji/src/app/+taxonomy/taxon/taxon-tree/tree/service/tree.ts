@@ -1,5 +1,5 @@
 import { TreeNode, TreeSkipParameter } from '../model/tree.interface';
-import { forkJoin, Observable, of } from 'rxjs';
+import { combineLatest, forkJoin, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { TreeStateService } from './tree-state.service';
 
@@ -35,7 +35,7 @@ export class Tree {
     this.activeId = activeId;
     this.loadingParentNodeList = true;
 
-    return forkJoin([
+    return combineLatest([
       this.getData(activeId),
       this.getParents(activeId)
     ])

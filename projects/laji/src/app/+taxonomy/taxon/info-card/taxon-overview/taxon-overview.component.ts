@@ -1,16 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
-import {
-  Taxonomy,
-  TaxonomyDescription,
-  TaxonomyDescriptionVariable
-} from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { map } from 'rxjs/operators';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
 
+type Taxon = components['schemas']['Taxon'];
+type TaxonDescription = Taxon['descriptions'][number];
+type TaxonDescriptionVariable = TaxonDescription['groups'][number]['variables'][number];
 
 @Component({
   selector: 'laji-taxon-overview',
@@ -19,16 +18,16 @@ import { map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonOverviewComponent implements OnChanges, OnDestroy {
-  @Input({ required: true }) taxon!: Taxonomy;
+  @Input({ required: true }) taxon!: Taxon;
   @Input() isFromMasterChecklist?: boolean;
   @Input() images!: any[];
 
   @Output() taxonSelect = new EventEmitter<string>();
 
-  taxonChildren: Taxonomy[] = [];
+  taxonChildren: Taxon[] = [];
 
-  descriptionText?: TaxonomyDescriptionVariable[];
-  descriptionTextSource?: TaxonomyDescription;
+  descriptionText?: TaxonDescriptionVariable[];
+  descriptionTextSource?: TaxonDescription;
 
   isChildrenOnlySpecie = false;
   totalObservations = 0;
@@ -39,7 +38,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   queryKeysDeleted: (keyof WarehouseQueryInterface)[] = ['coordinateAccuracyMax', 'includeNonValidTaxa', 'cache'];
   private childrenSub?: Subscription;
 
-  @Input() set taxonDescription(taxonDescription: TaxonomyDescription[]) {
+  @Input() set taxonDescription(taxonDescription: TaxonDescription[]) {
     this.updateDescriptionText(taxonDescription);
   }
 
@@ -88,7 +87,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
       });
   }
 
-  private updateDescriptionText(taxonDescription?: TaxonomyDescription[]) {
+  private updateDescriptionText(taxonDescription?: TaxonDescription[]) {
     this.descriptionText = undefined;
     this.descriptionTextSource = undefined;
 

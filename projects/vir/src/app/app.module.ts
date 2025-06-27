@@ -28,6 +28,7 @@ import { FooterComponent } from './component/footer/footer.component';
 import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 import { VirAuthenticatedHttpInterceptor } from './service/vir-authenticated-http.interceptor';
+import { API_BASE_URL } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -65,6 +66,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   providers: [
     {provide: APP_ID, useValue: 'vir-app'},
     {provide: APP_BASE_HREF, useValue: '/'},
+    {provide: API_BASE_URL, useValue: environment.apiBase},
     DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},
     LocalizeRouterService,

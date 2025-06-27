@@ -8,7 +8,6 @@ import { LocaleFiComponent } from '../../../laji/src/app/locale/locale-fi.compon
 import { CheckLoginGuard } from '../../../laji/src/app/shared/guards/check-login.guard';
 import { OnlyLoggedIn } from '../../../laji/src/app/shared/route/only-logged-in';
 
-
 const mainRoutes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule), data: {preload: true}},
   {path: 'news', loadChildren: () => import('../../../laji/src/app/+news/news.module').then(m => m.NewsModule), data: {title: 'news.title'}},

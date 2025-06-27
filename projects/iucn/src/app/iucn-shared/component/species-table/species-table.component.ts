@@ -1,9 +1,11 @@
 import { Component, ChangeDetectionStrategy, Input, OnChanges, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
-import { Taxonomy } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
 import { IPageChange } from '../../../../../../laji/src/app/shared-modules/datatable/data-table-footer/data-table-footer.component';
 import { Params } from '@angular/router';
 import { DownloadComponent } from '../../../../../../laji/src/app/shared-modules/download-modal/download.component';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'iucn-species-table',
@@ -14,7 +16,7 @@ import { DownloadComponent } from '../../../../../../laji/src/app/shared-modules
 export class SpeciesTableComponent implements OnChanges {
   @ViewChild(DownloadComponent) speciesDownload!: DownloadComponent;
 
-  @Input() species: Taxonomy[] = [];
+  @Input() species: Taxon[] = [];
 
   @Input() defaultFields: ISelectFields[] = [];
   @Input() allFields: ISelectFields[] = [];

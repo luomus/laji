@@ -2,8 +2,8 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { SEASON, WbcResultService } from '../wbc-result.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
 import { IdService } from '../../../../shared/service/id.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
   selector: 'laji-wbc-species-charts',
@@ -30,7 +30,7 @@ export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private taxonService: TaxonomyApi,
+    private api: LajiApiClientBService,
     private resultService: WbcResultService,
     private cd: ChangeDetectorRef
   ) { }
@@ -64,12 +64,10 @@ export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
       this.cd.markForCheck();
     });
 
-    this.taxonService.taxonomyFindParents(id, undefined, {
-      selectedFields: 'id'
-    })
+    this.api.get('/taxa/{id}/parents', { path: { id }, query: { selectedFields: 'id' } })
     .subscribe(data => {
       this.isMammal = false;
-      data.map(parent => {
+      data.results.map(parent => {
         if (parent.id === this.mammals) {
           this.isMammal = true;
         }

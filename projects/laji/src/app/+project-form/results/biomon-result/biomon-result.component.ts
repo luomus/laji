@@ -4,9 +4,9 @@ import { Observable, Subscription } from 'rxjs';
 import { Form } from '../../../shared/model/Form';
 import { FormService } from '../../../shared/service/form.service';
 import { map, switchMap } from 'rxjs/operators'; // "map" reserved for tab logic
-import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 export type CompleteListPrevalence = 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
 
@@ -56,7 +56,7 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private formApi: FormService,
-    private taxonApi: TaxonomyApi,
+    private api: LajiApiClientBService,
     private translate: TranslateService
   ) { }
 
@@ -89,13 +89,10 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
     );
   }
 
-  getOptionsByTaxonSet$(taxonSet: string[]): Observable<{ label: string; value: string }[]> {
-    return this.taxonApi.taxonomyList(
-      this.translate.currentLang,
-      {
-        selectedFields: 'id,vernacularName,scientificName',
-        taxonSets: taxonSet.join(',')
-      }
+  getOptionsByTaxonSet$(taxonSets: string[]): Observable<{ label: string; value: string }[]> {
+    return this.api.post('/taxa', {
+      query: { selectedFields: 'id,vernacularName,scientificName' }
+    }, { taxonSets }
     ).pipe(
       map(res => res.results),
       map(taxa => taxa.map(t => ({

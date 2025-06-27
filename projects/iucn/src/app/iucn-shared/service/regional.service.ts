@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { AreaService } from '../../../../../laji/src/app/shared/service/area.service';
 import { Area } from '../../../../../laji/src/app/shared/model/Area';
 import { Observable } from 'rxjs';
-import { map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { ChecklistVersion } from './taxon.service';
 
 export const REGIONAL_DEFAULT_YEAR = '2020';
 
@@ -11,7 +12,7 @@ export interface RegionalFilterQuery {
   redListGroup?: string;
   habitat?: string;
   threatenedAtArea?: string[];
-  page?: string;
+  page?: number;
   speciesFields?: string;
 }
 
@@ -32,7 +33,7 @@ export class RegionalService {
 
   rootGroups = ['MVL.721', 'MVL.727', 'MVL.1042', 'MVL.799', 'MVL.729']; // putkilokasvit, sammaleet, sienet ja jäkälät, perhoset, linnut
 
-  private yearToChecklistVersion: {[year: string]: string} = {
+  private yearToChecklistVersion: {[year: string]: ChecklistVersion} = {
     2020: 'MR.484'
   };
 
@@ -50,7 +51,7 @@ export class RegionalService {
     );
   }
 
-  getChecklistVersion(year: string): string {
+  getChecklistVersion(year: string): ChecklistVersion {
     return this.yearToChecklistVersion[year];
   }
 

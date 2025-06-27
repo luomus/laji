@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
+import { TaxonomySearch } from '../service/taxonomy-search.service';
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
 import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
@@ -12,7 +12,7 @@ import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.compo
 export class SpeciesListOptionsModalComponent {
   @ViewChild('settingsModal', { static: true }) modalRef!: ModalComponent;
 
-  @Input() searchQuery!: TaxonomySearchQuery;
+  @Input() search!: TaxonomySearch;
   @Input() requiredFields: string[] = [];
 
   @Output() settingsChange = new EventEmitter();
@@ -28,20 +28,20 @@ export class SpeciesListOptionsModalComponent {
   }
 
   resetFields() {
-    this.searchQuery.resetFields();
-    this.columnSelector.columns = [...this.searchQuery.listOptions.selected];
+    this.search.resetFields();
+    this.columnSelector.columns = [...this.search.listOptions.selected];
     this.settingsChange.emit();
   }
 
   openModal() {
-    this.columnSelector.columns = [...this.searchQuery.listOptions.selected];
+    this.columnSelector.columns = [...this.search.listOptions.selected];
 
     this.modalRef.show();
   }
 
   closeOkModal() {
     if (this.columnSelector.hasChanges) {
-      this.searchQuery.listOptions.selected = [...this.columnSelector.columns];
+      this.search.listOptions.selected = [...this.columnSelector.columns];
       this.settingsChange.emit();
     }
 

@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RedListEvaluation } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 import { IRow } from './red-list-evaluation-info-rowset/red-list-evaluation-info-rowset.component';
 import { TranslateService } from '@ngx-translate/core';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type RedListEvaluation = components['schemas']['Evaluation'];
 
 interface KeyMapType {
   secondaryHabitats: string;
@@ -177,7 +179,7 @@ export class RedListEvaluationInfoComponent {
       if (this.minMax[key as keyof MinMaxType]) {
         const combine = this.minMax[key as keyof MinMaxType];
         key = combine.combineTo as keyof RedListEvaluation;
-        this._evaluation[key] = (this._evaluation[combine.fields[0] as keyof RedListEvaluation] || '')
+        (this._evaluation as any)[key] = (this._evaluation[combine.fields[0] as keyof RedListEvaluation] || '')
           + ' — '
           + (this._evaluation[combine.fields[1] as keyof RedListEvaluation] || '') as any;
         translate = 'iucn.taxon.' + key;

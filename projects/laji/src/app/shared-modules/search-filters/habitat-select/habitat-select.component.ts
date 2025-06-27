@@ -1,13 +1,15 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+interface Signature { primaryHabitat?: string[]; anyHabitat?: string[] };
+
 @Component({
   selector: 'laji-habitat-select',
   templateUrl: './habitat-select.component.html',
   styleUrls: ['./habitat-select.component.scss']
 })
 export class HabitatSelectComponent implements OnChanges, OnDestroy {
-  @Input() query: any;
+  @Input({ required: true }) query!: Signature;
   @Input() info: string | undefined;
 
   habitat?: string[];
@@ -16,7 +18,7 @@ export class HabitatSelectComponent implements OnChanges, OnDestroy {
 
   private subUpdate?: Subscription;
 
-  @Output() habitatSelect = new EventEmitter<{primaryHabitat?: string[]; anyHabitat?: string[]}>();
+  @Output() habitatSelect = new EventEmitter<Signature>();
 
   ngOnChanges() {
     this.setQuery(this.query);
@@ -53,7 +55,7 @@ export class HabitatSelectComponent implements OnChanges, OnDestroy {
     return habitatQuery;
   }
 
-  private setQuery(query: any) {
+  private setQuery(query: Signature) {
     if (query.primaryHabitat && query.primaryHabitat.length > 0) {
       this.setHabitatQuery(query.primaryHabitat);
       this.onlyPrimary = true;

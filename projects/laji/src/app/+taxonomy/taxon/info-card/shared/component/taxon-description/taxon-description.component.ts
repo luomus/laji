@@ -1,5 +1,8 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { TaxonomyDescription, TaxonomyDescriptionGroup } from '../../../../../../shared/model/Taxonomy';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type TaxonDescription = components['schemas']['Content'][number];
+type TaxonDescriptionGroup = TaxonDescription['groups'][number];
 
 @Component({
   selector: 'laji-taxon-description',
@@ -7,12 +10,12 @@ import { TaxonomyDescription, TaxonomyDescriptionGroup } from '../../../../../..
   styleUrls: ['./taxon-description.component.scss']
 })
 export class TaxonDescriptionComponent implements OnChanges {
-  @Input() taxonDescriptions?: TaxonomyDescription[];
+  @Input() taxonDescriptions?: TaxonDescription[];
   @Input() groupId!: string;
   @Input() title?: string;
 
-  taxonDescription?: TaxonomyDescription;
-  descriptionGroup?: TaxonomyDescriptionGroup;
+  taxonDescription?: TaxonDescription;
+  descriptionGroup?: TaxonDescriptionGroup;
 
   ngOnChanges() {
     this.descriptionGroup = undefined;

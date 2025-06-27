@@ -1,11 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
-import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
-import { Taxonomy } from '../../../shared/model/Taxonomy';
-import { PagedResult } from '../../../shared/model/PagedResult';
+import { TaxonomySearch } from '../service/taxonomy-search.service';
 import { Logger } from '../../../shared/logger/logger.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
   selector: 'laji-species-images',
@@ -14,7 +11,7 @@ import { Observable, Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesImagesComponent implements OnInit, OnDestroy {
-  @Input({ required: true }) searchQuery!: TaxonomySearchQuery;
+  @Input({ required: true }) search!: TaxonomySearch;
   @Input() showSpeciesTotalCount = false;
   @Input() countStartText = '';
   @Input() countEndText = '';
@@ -27,21 +24,18 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   private subFetch?: Subscription;
   private subQueryUpdate?: Subscription;
 
-  private lastQuery?: string;
-
   constructor(
-    private taxonomyService: TaxonomyApi,
     private cd: ChangeDetectorRef,
     private logger: Logger,
-    private translate: TranslateService
+    private api: LajiApiClientBService
   ) {}
 
   ngOnInit() {
     this.refreshImages();
 
-    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
+    this.subQueryUpdate = this.search.queryUpdated$.subscribe(
       () => {
-        this.searchQuery.imageOptions.page = 1;
+        this.search.imageOptions.page = 1;
         this.refreshImages();
       }
     );
@@ -57,20 +51,11 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(event: any) {
-    this.searchQuery.imageOptions.page = event.page;
+    this.search.imageOptions.page = event.page;
     this.refreshImages();
   }
 
   refreshImages() {
-    const cacheKey = JSON.stringify({
-      query: this.searchQuery.query,
-      imageOptions: this.searchQuery.imageOptions
-    });
-    if (this.lastQuery === cacheKey) {
-      return;
-    }
-    this.lastQuery = cacheKey;
-
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
@@ -105,28 +90,19 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
       );
   }
 
-  private fetchPage(): Observable<PagedResult<Taxonomy>> {
-    const query = this.searchQuery.query;
-
-    return this.taxonomyService
-      .taxonomyFindSpecies(
-        query.target ? query.target : 'MX.37600',
-        this.translate.currentLang,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        '' + this.searchQuery.imageOptions.page,
-        '50',
-        'taxonomic',
-        {
-          ...query,
-          target: undefined,
-          selectedFields: 'id,vernacularName,scientificName',
-          hasMediaFilter: true,
-          includeMedia: true
-        }
-      );
+  private fetchPage() {
+    const { taxonId, query: _query, filters: _filters } = this.search;
+    const query = {
+      ..._query,
+      selectedFields: 'id,vernacularName,scientificName,multimedia',
+      includeMedia: true,
+      page: this.search.imageOptions.page,
+      pageSize: 50
+    };
+    const filters = {
+      ..._filters,
+      hasMultimedia: true
+    };
+    return this.api.post('/taxa/{id}/species', { path: { id: taxonId || 'MX.37600' }, query }, filters);
   }
 }

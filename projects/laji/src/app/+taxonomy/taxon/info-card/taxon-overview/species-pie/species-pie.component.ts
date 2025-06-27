@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter,
 Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions, Chart } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { TreemapController, TreemapElement } from 'chartjs-chart-treemap';
 import { MultiLangService } from 'projects/laji/src/app/shared-modules/lang/service/multi-lang.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'laji-species-pie',
@@ -14,7 +16,7 @@ import { MultiLangService } from 'projects/laji/src/app/shared-modules/lang/serv
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesPieComponent implements OnInit, OnChanges {
-  @Input() children!: Taxonomy[];
+  @Input() children!: Taxon[];
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
   total = 0;
 

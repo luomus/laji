@@ -3,10 +3,17 @@ import { from, Observable, of } from 'rxjs';
 import { ExportService } from '../../../shared/service/export.service';
 import { concatMap, map, toArray } from 'rxjs/operators';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
-import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { BookType } from 'xlsx';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-export const SYNONYM_KEYS: (keyof Taxonomy)[] = [
+type Taxon = components['schemas']['Taxon'];
+type SimpleTaxon = components['schemas']['SimpleTaxon'];
+
+type SimpleTaxonArrayKeys = {
+    [K in keyof Taxon]: Taxon[K] extends SimpleTaxon[] ? K : never
+}[keyof Taxon];
+
+export const SYNONYM_KEYS: SimpleTaxonArrayKeys[] = [
   'basionyms',
   'objectiveSynonyms',
   'subjectiveSynonyms',
@@ -26,7 +33,7 @@ export class TaxonExportService {
     private exportService: ExportService
   ) {}
 
-  public downloadTaxons(columns: DatatableColumn[], data: Taxonomy[], type = 'tsv', firstRow?: string[]): Observable<boolean> {
+  public downloadTaxons(columns: DatatableColumn[], data: Taxon[], type = 'tsv', firstRow?: string[]): Observable<boolean> {
     return this.analyzeTaxa(data)
       .pipe(
         concatMap(taxa => this.exportService.exportFromData(taxa, columns, type as BookType, 'taxon-export', firstRow)),
@@ -34,14 +41,14 @@ export class TaxonExportService {
       );
   }
 
-  private analyzeTaxa(data: Taxonomy[]): Observable<Taxonomy[]> {
+  private analyzeTaxa(data: Taxon[]): Observable<Taxon[]> {
     return from(data).pipe(
       concatMap(taxon => this.analyzeTaxon(taxon)),
       toArray()
     );
   }
 
-  private analyzeTaxon(data: Taxonomy): Observable<Taxonomy> {
+  private analyzeTaxon(data: Taxon): Observable<Taxon> {
     return of({
       ...data,
       synonymNames: this.pickSynonyms(data),
@@ -49,11 +56,12 @@ export class TaxonExportService {
     });
   }
 
-  private pickSynonyms(data: Taxonomy): string {
+  private pickSynonyms(data: Taxon): string {
     const synonyms: string[] = [];
     SYNONYM_KEYS.forEach(key => {
-      if (data[key] && Array.isArray(data[key])) {
-        data[key].forEach((synonym: Taxonomy) => {
+      const value = data[key];
+      if (Array.isArray(value)) {
+        value.forEach((synonym: SimpleTaxon) => {
           synonyms.push(synonym.scientificName + (synonym.scientificNameAuthorship ? ' ' + synonym.scientificNameAuthorship : ''));
         });
       }
@@ -61,7 +69,7 @@ export class TaxonExportService {
     return synonyms.join('; ');
   }
 
-  private pickMisappliedNames(data: Taxonomy): string {
+  private pickMisappliedNames(data: Taxon): string {
     const misappliedNames: string[] = [];
       if (data['misappliedNames'] && Array.isArray(data['misappliedNames'])) {
         data['misappliedNames'].forEach((misappliedName: any) => {

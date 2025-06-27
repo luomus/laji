@@ -1,4 +1,6 @@
-import { TaxonomyImage } from '../../model/Taxonomy';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type TaxonImage = components['schemas']['Image'];
 
 export interface IImageSelectEvent {
   taxonId?: string;
@@ -7,13 +9,13 @@ export interface IImageSelectEvent {
   fullURL?: string;
 }
 
-export interface Image extends TaxonomyImage {
+export interface Image extends TaxonImage {
   taxonId?: string;
   documentId?: string;
+  caption: string;
   unitId?: string;
   vernacularName?: string;
   scientificName?: string;
-  caption?: string;
   mediaType?: 'IMAGE' | 'VIDEO' | 'MODEL';
   videoURL?: string;
   lowDetailModelURL?: string;

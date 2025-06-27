@@ -9,11 +9,9 @@ import { Observable, Subscription } from 'rxjs';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
-import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { Global } from '../../../../environments/global';
 import { IdService } from '../../../shared/service/id.service';
-import { LajiTaxonSearch } from '../../../shared/model/LajiTaxonSearch';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { LoadingElementsService } from '../../document-viewer/loading-elements.service';
 import { CheckFocusService } from '../../document-viewer/check-focus.service';
@@ -22,6 +20,7 @@ import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { TypeaheadMatch } from '../../../../../../laji-ui/src/lib/typeahead/typeahead-match.class';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { SelectStyle } from '../../select/metadata-select/metadata-select.component';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 export interface AnnotationFormAnnotation extends Annotation {
   identification: Annotation.Identification;
@@ -85,7 +84,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   needsAck?: boolean;
   annotationAddadableTags$!: Observable<AnnotationTag[]>;
   annotationRemovableTags$!: Observable<AnnotationTag[]>;
-  annotationTaxonMatch$?: Observable<LajiTaxonSearch>;
   annotationSub?: Subscription;
   alertNotSpamVerified?: boolean;
   typeaheadLoading = false;
@@ -113,7 +111,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     private annotationService: AnnotationService,
     private loggerService: Logger,
     private lajiApi: LajiApiService,
-    private taxonApi: TaxonomyApi,
+    private api: LajiApiClientBService,
     private translate: TranslateService,
     private cd: ChangeDetectorRef,
     private labelPipe: LabelPipe,
@@ -142,8 +140,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
       limit: '10',
-      includePayload: true,
-      lang: this.translate.currentLang
+      includePayload: true
     }).pipe(
       map(data => data.map((item: any) => {
         let groups = '';
@@ -156,9 +153,8 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   public getMatchTaxon(taxonomy: string) {
-    this.annotationTaxonMatch$ = this.taxonApi.taxonomySearch(taxonomy, '5', undefined, {matchType: 'exact'} );
-    this.annotationSub = this.annotationTaxonMatch$.subscribe((result: any) => {
-      result.forEach((taxon: any) => {
+    this.annotationSub = this.api.get('/taxa/search', { query: { query: taxonomy, matchType: 'exact', limit: 5 } }).subscribe(({results}) => {
+      results.forEach((taxon: any) => {
         if (taxon.matchingName.toLowerCase() === taxonomy.toLowerCase()) {
           this.annotation.identification.taxonID = taxon.id;
           this.taxonomy = taxon;

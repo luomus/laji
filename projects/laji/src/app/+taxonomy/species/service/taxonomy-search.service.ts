@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { NavigationExtras, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { operations } from 'projects/laji-api-client-b/generated/api.d';
 
 type Query = NonNullable<operations['TaxaController_getPageWithFilters']['parameters']['query']>;
 type RawFilters = NonNullable<operations['TaxaController_getPageWithFilters']['requestBody']>['content']['application/json'];
   // It allows non-array strings but we use only arrays to narrow down acrobatics with types.
-type Filters = { [ K in keyof RawFilters]: Exclude<RawFilters[K], string> };
+type Filters = { [K in keyof RawFilters]: Exclude<RawFilters[K], string> };
 
 @Injectable()
 export class TaxonomySearch {
@@ -62,8 +62,7 @@ export class TaxonomySearch {
   }
 
   public setQueryFromParams(rawParams: Record<string, string>) {
-    // const params = convertOldParamModelToNew(rawParams);
-    const { target: newTaxonId, ...params } = rawParams;
+    const { taxonId: newTaxonId, ...params } = rawParams;
 
     const newFilters = (Object.keys(params) as (keyof Filters)[]).reduce((filters, param) => {
       const rawParam = params[param];
@@ -85,32 +84,30 @@ export class TaxonomySearch {
   }
 
   public updateUrl(skipParams?: (keyof (Query & Filters))[]): void {
-    const extra: NavigationExtras = {skipLocationChange: false};
     const queryParams: Record<string, any> = {};
 
-    function updateQueryParamsFrom(container: Record<string, unknown>) {
-      for (const key in container) {
-        if (skipParams?.includes(key as any)) {
-          continue;
-        }
-        if (container[key] === '' || (Array.isArray(container[key]) && (container[key] as any[]).length === 0)) {
-          container[key] = undefined;
-        }
-
-        queryParams[key] = Array.isArray(container[key])
-          ? (container[key] as string[]).join(',')
-          : container[key];
+    for (const key in this.filters) {
+      if (skipParams?.includes(key as any)) {
+        continue;
       }
-    }
-    updateQueryParamsFrom(this.query);
-    updateQueryParamsFrom(this.filters);
+      const param = (this.filters as any)[key];
+      if (param === '' || (Array.isArray(param) && (param as any[]).length === 0)) {
+        delete (this.filters as any)[key];
+        continue;
+      }
 
-    if (Object.keys(queryParams).length > 0) {
-      extra['queryParams'] = queryParams;
+      queryParams[key] = Array.isArray(param)
+        ? (param as string[]).join(',')
+        : param;
     }
+
+    if (this.taxonId) {
+      queryParams.taxonId = this.taxonId;
+    }
+
     this.router.navigate(
       [],
-      extra
+      { queryParams, skipLocationChange: false }
     );
 
     this.queryUpdate();
@@ -120,31 +117,3 @@ export class TaxonomySearch {
     this.queryUpdatedSource.next();
   }
 }
-
-// const convertOldParamModelToNew = (params: Record<string, string>) => {
-//   const oldToNew: Record<string, keyof Filters> = {
-//     informalGroupFilters: 'informalTaxonGroups',
-//     onlyFinnish: 'finnish',
-//     invasiveSpeciesFilter: 'invasiveSpecies',
-//     hasBoldData: 'hasBold',
-//     redListStatusFilters: 'latestRedListStatusFinland.status',
-//     adminStatusFilters: 'administrativeStatuses',
-//     taxonRanks: 'taxonRank',
-//     primaryHabitat: 'primaryHabitat.habitat',
-//     anyHabitat: 'anyHabitatSearchStrings',
-//     typesOfOccurrenceFilters: 'typeOfOccurrenceInFinland',
-//   };
-//
-//   // TODO are params arrays ever here?? Should this be comma-separated?
-//   if (params.typesOfOccurrenceNotFilters) {
-//     (params as any).typesOfOccurrenceFilters = [...(params.typesOfOccurrenceFilters || []), '!params.typesOfOccurrenceNotFilters'];
-//   }
-//
-//   // TODO values of the map are string or arrays and booleans...?
-//   return Object.keys(oldToNew).reduce<Partial<Record<keyof Filters, string>>>((_params, oldKey) => {
-//     if (oldKey in params) {
-//       _params[oldToNew[oldKey]] = params[oldKey];
-//     }
-//     return _params;
-//   }, {...params});
-// };

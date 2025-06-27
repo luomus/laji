@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { TaxonomyDescriptionVariable } from '../../../../../../shared/model/Taxonomy';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type TaxonDescriptionVariable = components['schemas']['Taxon']['descriptions'][number]['groups'][number]['variables'][number];
 
 @Component({
   selector: 'laji-taxon-description-variables',
@@ -8,6 +10,6 @@ import { TaxonomyDescriptionVariable } from '../../../../../../shared/model/Taxo
 })
 export class TaxonDescriptionVariablesComponent {
 
-  @Input() variables!: TaxonomyDescriptionVariable[];
+  @Input() variables!: TaxonDescriptionVariable[];
 
 }
