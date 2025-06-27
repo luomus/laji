@@ -1,7 +1,6 @@
 import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
 import { Observable, of, Subject, forkJoin } from 'rxjs';
 import { takeUntil, tap, map, concatMap } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
@@ -27,7 +26,6 @@ export class IdentificationChildrenDataSource extends DataSource<Taxon & { child
 
   constructor(
     private api: LajiApiClientBService,
-    private translate: TranslateService,
     private children: Taxon[],
     private grandchildRank: string
   ) {
@@ -59,7 +57,6 @@ export class IdentificationChildrenDataSource extends DataSource<Taxon & { child
 
   private populateGrandchildren$(child: Taxon): Observable<Taxon & { children: Taxon[] }> {
     return this.api.post('/taxa', { query: {
-      lang: this.translate.currentLang as any,
       parentTaxonId: child.id,
       sortOrder: 'observationCountFinland desc',
       selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren,multimedia',

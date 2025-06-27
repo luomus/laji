@@ -25,18 +25,16 @@ export class TaxonService {
     private redList: RedListTaxonGroupApi
   ) { }
 
-  getTaxon(id: string, lang: string, checklistVersion?: ChecklistVersion): Observable<Taxon> {
+  getTaxon(id: string, checklistVersion?: ChecklistVersion): Observable<Taxon> {
     return this.api.get('/taxa/{id}', { path: { id }, query: {
       includeMedia: true,
       includeRedListEvaluations: true,
-      checklistVersion,
-      lang: lang as any
+      checklistVersion
     }});
   }
 
-  getTaxonSpeciesWithLatestEvaluation(id: string, lang: string, checklistVersion?: ChecklistVersion): Observable<Taxon[]> {
+  getTaxonSpeciesWithLatestEvaluation(id: string, checklistVersion?: ChecklistVersion): Observable<Taxon[]> {
     return this.api.post('/taxa/{id}/species', { path: { id }, query: {
-      lang: lang as any,
       pageSize: 10000,
       checklistVersion,
       selectedFields: ['id', 'vernacularName', 'scientificName', 'cursiveName'].join(',')
@@ -145,25 +143,23 @@ export class TaxonService {
     taxon: string | undefined,
     query: TaxonQuery,
     filters: TaxonFilters,
-    lang: string,
     pageSize = 100
   ) {
     query = {
       ...query,
-      pageSize,
-      lang: lang as any
+      pageSize
     };
     return taxon
       ? this.api.post('/taxa/{id}/species', { path: { id: taxon }, query }, filters)
       : this.api.post('/taxa/species', { query }, filters);
   }
 
-  getAllSpecies(query: TaxonQuery, filters: TaxonFilters, lang: string, data: Taxon[] = [], page = 1, pageSize = 10000): Observable<Taxon[]> {
-    return this.getSpeciesList(undefined, { ...query, page }, filters, lang, pageSize).pipe(
+  getAllSpecies(query: TaxonQuery, filters: TaxonFilters, data: Taxon[] = [], page = 1, pageSize = 10000): Observable<Taxon[]> {
+    return this.getSpeciesList(undefined, { ...query, page }, filters, pageSize).pipe(
       switchMap(result => {
         data.push(...result.results);
         if (result.lastPage && result.lastPage > result.currentPage) {
-          return this.getAllSpecies(query, filters, lang, data, result.currentPage + 1);
+          return this.getAllSpecies(query, filters, data, result.currentPage + 1);
         } else {
           return ObservableOf(data);
         }

@@ -140,8 +140,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
       limit: '10',
-      includePayload: true,
-      lang: this.translate.currentLang
+      includePayload: true
     }).pipe(
       map(data => data.map((item: any) => {
         let groups = '';

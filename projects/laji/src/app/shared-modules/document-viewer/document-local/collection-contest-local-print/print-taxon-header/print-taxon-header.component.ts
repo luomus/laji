@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
@@ -16,7 +15,6 @@ export class PrintTaxonHeaderComponent implements OnInit {
   taxon?: Taxon;
 
   constructor(
-    private translate: TranslateService,
     private cd: ChangeDetectorRef,
     private api: LajiApiClientBService
   ) { }
@@ -28,8 +26,7 @@ export class PrintTaxonHeaderComponent implements OnInit {
     this.api.get('/taxa/{id}', {
       path: { id: this.autocompleteTaxonId },
       query: {
-        selectedFields: 'scientificName,vernacularName,cursiveName',
-        lang: this.translate.currentLang as any
+        selectedFields: 'scientificName,vernacularName,cursiveName'
       }
     }).subscribe(taxon => {
       this.taxon = taxon;

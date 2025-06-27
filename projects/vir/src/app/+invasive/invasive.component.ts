@@ -7,7 +7,6 @@ import * as moment from 'moment';
 import { DocumentViewerFacade } from '../../../../laji/src/app/shared-modules/document-viewer/document-viewer.facade';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { TranslateService } from '@ngx-translate/core';
 
 type Taxon = components['schemas']['Taxon'];
 
@@ -40,8 +39,7 @@ export class InvasiveComponent implements OnInit {
   constructor(
     private api: LajiApiClientBService,
     private warehouseApi: WarehouseApi,
-    private documentViewerFacade: DocumentViewerFacade,
-    private translate: TranslateService
+    private documentViewerFacade: DocumentViewerFacade
   ) {
     this.daysBack = moment().subtract(365, 'days');
   }
@@ -55,9 +53,8 @@ export class InvasiveComponent implements OnInit {
     if (InvasiveComponent.taxa) {
       this.taxa = ObservableOf(InvasiveComponent.taxa);
     } else {
-      this.taxa = this.api.post('/taxa/{id}/species', {
-        path:  { id: 'MX.37600' },
-        query: { lang: this.translate.currentLang as any } },
+      this.taxa = this.api.post('/taxa/{id}/species',
+        { path:  { id: 'MX.37600' } },
         { administrativeStatuses: 'MX.euInvasiveSpeciesList'
       }).pipe(
         map(species => species.results)).pipe(

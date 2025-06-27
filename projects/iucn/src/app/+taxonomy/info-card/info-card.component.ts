@@ -65,7 +65,7 @@ export class InfoCardComponent implements OnChanges, OnInit {
       return;
     }
 
-    this.taxonSub = this.taxonService.getTaxon(this.taxonId, this.translateService.currentLang, this.checklistId)
+    this.taxonSub = this.taxonService.getTaxon(this.taxonId, this.checklistId)
       .subscribe(taxon => {
         if (!taxon.species) {
           this.missing = true;
@@ -80,7 +80,6 @@ export class InfoCardComponent implements OnChanges, OnInit {
           this.latestStatus = null;
           this.species$ = this.taxonService.getTaxonSpeciesWithLatestEvaluation(
             taxon.id,
-            this.translateService.currentLang,
             this.checklistId
           );
         }

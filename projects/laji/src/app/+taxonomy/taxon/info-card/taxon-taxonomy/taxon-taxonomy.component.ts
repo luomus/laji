@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
@@ -41,7 +40,6 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
   private childrenSub?: Subscription;
 
   constructor(
-    private translate: TranslateService,
     private api: LajiApiClientBService,
     private taxonomyService: TaxonTaxonomyService,
     private cd: ChangeDetectorRef
@@ -59,7 +57,6 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
         this.synonymSub = this.api.get('/taxa/{id}', {
           path: { id: this.taxon.synonymOf.id },
           query: {
-            lang: this.translate.currentLang as any,
             selectedFields: this.synonymTypes.join(',')
           }
         }).subscribe(taxon => {

@@ -32,7 +32,7 @@ export class TaxonNamePipe extends AbstractLabelPipe implements PipeTransform {
   protected _updateValue(id: string): Observable<any> {
     return this.api.get('/taxa/{id}', {
       path: { id },
-      query: { lang: this.translate.currentLang as any, selectedFields: 'scientificName,vernacularName' }
+      query: { selectedFields: 'scientificName,vernacularName' }
     }).pipe(
       catchError(() => of({
         vernacularName: id,

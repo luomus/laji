@@ -1,7 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
 import { map, distinctUntilChanged, tap, takeUntil, switchMap, take } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
 import { IdentificationChildrenDataSource } from './identification-children-data-source';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { MetadataService } from 'projects/laji/src/app/shared/service/metadata.service';
@@ -63,7 +62,6 @@ export class TaxonIdentificationFacade implements OnDestroy {
 
   constructor(
     private api: LajiApiClientBService,
-    private translate: TranslateService,
     private metadataService: MetadataService
   ) {}
 
@@ -91,7 +89,6 @@ export class TaxonIdentificationFacade implements OnDestroy {
   private getTaxaObservable$(id: string, rank: string): Observable<any> {
     return this.api.post('/taxa', { query: {
       parentTaxonId: id,
-      lang: this.translate.currentLang as any,
       sortOrder: 'observationCountFinland desc',
       selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren,countOfSpecies,observationCountFinland,descriptions,multimedia',
       includeMedia: true,
@@ -113,7 +110,7 @@ export class TaxonIdentificationFacade implements OnDestroy {
       this.getTaxaObservable$(id, rank).pipe(
         tap(res => this.reducer({totalChildren: res.total})),
         switchMap(res => this.getSubMainRank$(res.rank).pipe(
-          map(_rank => new IdentificationChildrenDataSource(this.api, this.translate, res.results, _rank))
+          map(_rank => new IdentificationChildrenDataSource(this.api, res.results, _rank))
         ))
       )
     ));

@@ -1,8 +1,8 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { paths } from 'projects/laji-api-client-b/generated/api.d';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { shareReplay, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { shareReplay, switchMap, tap } from 'rxjs/operators';
 
 type WithResponses<T> = T & { responses: unknown };
 type Parameters<T> = 'parameters' extends keyof T ? T['parameters'] : never;
@@ -13,6 +13,11 @@ type ExtractRequestBodyIfExists<R> =
     : never;
 type HttpSuccessCodes = 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226;
 type IntersectUnionTypes<A, B> = A extends B ? A : never;
+type OptionalKeys<T, K extends string> = Omit<T, K> & Partial<Pick<T, Extract<K, keyof T>>>;
+
+type WithOptionalQuery<T, Q> = Q extends Record<string, never>
+    ? T | (T & { query: Q })
+    : T & { query: Q };
 
 type Path = keyof paths & string;
 type PathWithMethod<M extends string> =
@@ -71,14 +76,19 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable({
   providedIn: 'root'
-}) 
+})
 export class LajiApiClientBService {
   // variable level cache
   // first levels are for different path segments separated by path variables
   // the last level is for query params
   private cache: Map<string, any> = new Map();
+  private lang$ = new BehaviorSubject('en');
 
   constructor(private http: HttpClient, @Inject(API_BASE_URL) private baseUrl: string) { }
+
+	setLang(lang: string) {
+    this.lang$.next(lang);
+	}
 
   get<P extends PathWithMethod<'get'>, R extends Responses<P, 'get' extends Method<P> ? 'get' : never>>(
     path: P,
@@ -114,6 +124,13 @@ export class LajiApiClientBService {
     return this.fetch(path, 'delete' as any, params as any, undefined, cacheInvalidationMs);
   }
 
+  private getRequestOptions(queryParams: any, requestBody: any, lang: string) {
+    return { params: queryParams, body: requestBody, headers: {
+			'API-Version': '1',
+			'Accept-Language': lang
+		} };
+  }
+
   fetch<P extends Path, M extends Method<P>, R extends Responses<P, M>>(
     path: P,
     method: M,
@@ -123,11 +140,10 @@ export class LajiApiClientBService {
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     const pathSegments = splitAndResolvePath(path, params);
     const requestUrl = this.baseUrl + pathSegments.join('');
-    const requestOptions = { params: (<any>params).query, body: requestBody, headers: { 'API-Version': '1' } };
 
     if (method !== 'get') {
       this._flush(pathSegments);
-      return this.http.request(method as string, requestUrl, requestOptions) as any;
+      return this.http.request(method as string, requestUrl, this.getRequestOptions((params as any).query, requestBody, this.lang$.value)) as any;
     }
 
     const cachedPath = this.getOrInitializeLastPathCacheLevel(pathSegments);
@@ -148,22 +164,23 @@ export class LajiApiClientBService {
       }
     }
 
-    const obs = this.http.request(method, requestUrl, requestOptions).pipe(
-      tap(val => {
-        cachedPath?.set(paramsHash, {
-          _tag :'completed',
-          val,
-          lastRefresh: Date.now()
-        });
-      }),
-      shareReplay(1)
-    ) as any;
+    const obs = this.lang$.pipe(
+      switchMap((lang: string) => this.http.request(method, requestUrl, this.getRequestOptions((params as any).query, requestBody, lang)).pipe(
+        tap(val => {
+          cachedPath?.set(paramsHash, {
+            _tag :'completed',
+            val,
+            lastRefresh: Date.now()
+          });
+        }),
+        shareReplay(1)
+      )));
 
     cachedPath?.set(paramsHash, {
       _tag: 'loading', obs
     });
 
-    return obs;
+    return obs as any;
   }
 
   flush<P extends Path, M extends Method<P>>(

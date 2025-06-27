@@ -187,7 +187,7 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
     const currentQueryAndFilters = JSON.stringify({ taxon: this.query.taxon, ...query, ...filters });
     this.speciesQuery$ = this.hasCache(cacheKey, currentQueryAndFilters) ?
       of(this.cache[cacheKey]) :
-      this.taxonService.getSpeciesList(this.query.taxon, query, filters, this.translate.currentLang, this.speciesPageSize).pipe(
+      this.taxonService.getSpeciesList(this.query.taxon, query, filters, this.speciesPageSize).pipe(
         tap(data => {
           this.speciesPage = data.currentPage;
           this.speciesCount = data.total;
@@ -198,7 +198,7 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
   }
 
   private getAllSpecies(): Observable<Taxon[]> {
-    return this.taxonService.getAllSpecies(this.getSpeciesQuery(), this.baseFilters, this.translate.currentLang);
+    return this.taxonService.getAllSpecies(this.getSpeciesQuery(), this.baseFilters);
   }
 
   private setCache(key: string, data: any, query: string) {

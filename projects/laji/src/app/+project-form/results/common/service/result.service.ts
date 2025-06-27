@@ -5,7 +5,6 @@ import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 import { convertYkjToGeoJsonFeature } from '../../../../root/coordinate-utils';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class ResultService {
@@ -40,13 +39,12 @@ export class ResultService {
   constructor(
     private warehouseApi: WarehouseApi,
     private api: LajiApiClientBService,
-    private translate: TranslateService
   ) { }
 
   getTaxon(taxonId: string) {
     return this.api.get('/taxa/{id}', {
       path: { id: taxonId },
-      query: { selectedFields: 'scientificName,vernacularName,cursiveName', lang: this.translate.currentLang as any }
+      query: { selectedFields: 'scientificName,vernacularName,cursiveName' }
     });
   }
 

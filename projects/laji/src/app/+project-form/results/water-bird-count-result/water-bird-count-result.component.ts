@@ -44,8 +44,7 @@ export class WaterBirdCountResultComponent implements OnInit {
   getTaxonOptions$(): Observable<{ label: string; value: string }[]> {
     return this.api.post('/taxa', { query: {
         selectedFields: 'id,vernacularName,scientificName',
-        pageSize: 10000,
-        lang: this.translate.currentLang as any
+        pageSize: 10000
       } }, {
         taxonSets: 'MX.taxonSetWaterbirdWaterbirds',
       }).pipe(

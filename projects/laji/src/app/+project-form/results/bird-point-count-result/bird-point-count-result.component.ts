@@ -72,7 +72,6 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
   getTaxonOptions$(): Observable<{ label: string; value: string }[]> {
     return this.api.post('/taxa', {
       query: {
-        lang: this.translate.currentLang as any,
         selectedFields: 'id,vernacularName,scientificName',
         pageSize: 10000
       }

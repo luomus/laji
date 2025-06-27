@@ -445,7 +445,7 @@ export class ResultsComponent implements OnChanges {
     const currentQueryAndFilters = JSON.stringify({ ...query, ...filters });
     this.speciesQuery$ = this.hasCache(cacheKey, currentQueryAndFilters) ?
       ObservableOf(this.cache[cacheKey]) :
-      this.taxonService.getSpeciesList(undefined, query, filters, this.lang, this.speciesPageSize).pipe(
+      this.taxonService.getSpeciesList(undefined, query, filters, this.speciesPageSize).pipe(
         tap(data => {
           this.speciesPage = data.currentPage;
           this.speciesCount = data.total;
@@ -456,7 +456,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   private getAllSpecies() {
-    return this.taxonService.getAllSpecies(this.getSpeciesQuery(), this.baseFilters, this.lang);
+    return this.taxonService.getAllSpecies(this.getSpeciesQuery(), this.baseFilters);
   }
 
   private initStatusQuery() {

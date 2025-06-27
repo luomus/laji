@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { TaxonomySearch } from '../service/taxonomy-search.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { Subscription } from 'rxjs';
@@ -28,7 +27,6 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   constructor(
     private cd: ChangeDetectorRef,
     private logger: Logger,
-    private translate: TranslateService,
     private api: LajiApiClientBService
   ) {}
 
@@ -96,7 +94,6 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
     const { taxonId, query: _query, filters: _filters } = this.search;
     const query = {
       ..._query,
-      lang: this.translate.currentLang as any,
       selectedFields: 'id,vernacularName,scientificName,multimedia',
       includeMedia: true,
       page: this.search.imageOptions.page,

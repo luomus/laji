@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type Taxon = components['schemas']['Taxon'];
@@ -16,8 +15,7 @@ export class TaxonTaxonomyService {
   private pendingParents: {[key: string]: Observable<Taxon[]>} = {};
 
   constructor(
-    private api: LajiApiClientBService,
-    private translate: TranslateService
+    private api: LajiApiClientBService
   ) { }
 
   getTaxon(id: string): Observable<Taxon> {
@@ -31,7 +29,6 @@ export class TaxonTaxonomyService {
 
     if (!this.pending[id]) {
       this.pending[id] = this.api.get('/taxa/{id}', { path: { id }, query: {
-        lang: this.translate.currentLang as any,
         selectedFields: this.getSelectedFields()
       } })
         .pipe(
@@ -62,7 +59,6 @@ export class TaxonTaxonomyService {
 
     if (!this.pendingChildren[id]) {
       this.pendingChildren[id] = this.api.get('/taxa/{id}/children', { path: { id }, query: {
-          lang: this.translate.currentLang as any,
           selectedFields: this.getSelectedFields(),
           includeHidden: true
         } }).pipe(
@@ -105,7 +101,6 @@ export class TaxonTaxonomyService {
     if (!this.pendingParents[id]) {
 
       this.pendingParents[id] = this.api.get('/taxa/{id}/parents', { path: { id }, query: {
-        lang: this.translate.currentLang as any,
         selectedFields: this.getSelectedFields()
       } })
         .pipe(

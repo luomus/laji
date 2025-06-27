@@ -51,7 +51,6 @@ export class HerpetologyComponent implements OnInit {
     const fetchData$ = ObservableForkJoin(
       this.api.post('/taxa/{id}/species', { path: { id: 'MX.37609' }, query: {
         selectedFields:  'id,alternativeVernacularName,vernacularName',
-        lang: this.translate.currentLang as any,
         pageSize: 10
       } }, {
         informalTaxonGroups: 'MVL.26',
@@ -60,34 +59,28 @@ export class HerpetologyComponent implements OnInit {
         ).pipe(
         map(species => species.results)).pipe(
         switchMap(data => ObservableForkJoin(data.map(taxon => this.api.get('/taxa/{id}/media',
-          { path: { id: taxon.id }, query: { lang: this.translate.currentLang as any } })
+          { path: { id: taxon.id } })
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             .pipe(
             map(({ results: images }) => ({taxon, images: images[0] || {} })))
           )))),
-      this.api.post('/taxa/{id}/species', { path: { id: 'MX.37610' }, query: {
-        lang: this.translate.currentLang as any,
-      } }, {
+      this.api.post('/taxa/{id}/species', { path: { id: 'MX.37610' } }, {
         informalTaxonGroups: 'MVL.162',
         typeOfOccurrenceInFinland: 'MX.typeOfOccurrenceStablePopulation'
       }).pipe(
         map(species => species.results)).pipe(
         switchMap(data => ObservableForkJoin(data.map(taxon => this.api.get('/taxa/{id}/media', {
-          path: { id: taxon.id },
-          query: { lang: this.translate.currentLang as any }
+          path: { id: taxon.id }
         }).pipe(
             map(({ results: images }) => ({taxon, images: images[0] || {}})))
           )))),
-      this.api.post('/taxa/{id}/species', { path: { id: 'MX.37608' }, query: {
-        lang: this.translate.currentLang as any,
-      } }, {
+      this.api.post('/taxa/{id}/species', { path: { id: 'MX.37608' } }, {
         informalTaxonGroups: 'MVL.26',
         typeOfOccurrenceInFinland: ['MX.typeOfOccurrenceAnthropogenic', 'MX.typeOfOccurrenceRareVagrant', 'MX.typeOfOccurrenceVagrant']
       }).pipe(
         map(species => species.results)).pipe(
         switchMap(data => ObservableForkJoin(data.map(taxon => this.api.get('/taxa/{id}/media', {
-          path: { id: taxon.id },
-          query: { lang: this.translate.currentLang as any }
+          path: { id: taxon.id }
         }).pipe(
             map(({ results: images }) => ({taxon, images: images[0] || {}})))
           ))))

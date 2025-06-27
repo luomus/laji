@@ -29,7 +29,6 @@ import { ToFullUriPipe } from 'projects/laji/src/app/shared/pipe/to-full-uri';
 import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { TranslateService } from '@ngx-translate/core';
 
 type Taxon = components['schemas']['Taxon'];
 
@@ -75,8 +74,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     private taxonExportService: TaxonExportService,
     private columnService: TaxonomyColumns,
     private toQname: ToQNamePipe,
-    private api: LajiApiClientBService,
-    private translate: TranslateService
+    private api: LajiApiClientBService
   ) { }
 
   ngOnInit() {
@@ -215,7 +213,6 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       path: { id: taxonId || 'MX.37600' },
       query: {
         ...query,
-        lang: this.translate.currentLang as any,
         page,
         pageSize: 1000,
         sortOrder: this.search.listOptions.sortOrder,
