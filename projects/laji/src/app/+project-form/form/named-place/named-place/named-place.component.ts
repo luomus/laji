@@ -187,7 +187,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           tags,
           activeNP,
           description: documentForm.options?.namedPlaceOptions?.chooseDescription ?? 'np.defaultDescription',
-          allowEdit: (documentForm?.options?.namedPlaceOptions?.allowAddingPublic || formRights.admin) && !this.readonly,
+          allowEdit: (documentForm?.options?.namedPlaceOptions?.allowAddingPublic || formRights.admin || formRights.ictAdmin) && !this.readonly,
           mapOptionsData: NamedPlaceComponent.getMapOptions(documentForm),
           showMap: !documentForm.options?.namedPlaceOptions?.hideMapTab
         }
