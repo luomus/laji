@@ -1,6 +1,6 @@
 <select class="form-control d-inline continent-select" [(ngModel)]="selectedId" (ngModelChange)="onSelect($event)" [disabled]="!options">
   <option [value]="undefined">{{ 'select' | translate }}</option>
   <option *ngFor="let option of options" [ngValue]="option.id">
-    <bsg-species-name [species]="option"></bsg-species-name>
+    <bsg-species-name [species]="option" [mainTaxonType]="taxonType"></bsg-species-name>
   </option>
 </select>

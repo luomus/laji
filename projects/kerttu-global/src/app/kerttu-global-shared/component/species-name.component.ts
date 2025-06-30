@@ -10,7 +10,7 @@ import { IGlobalSpecies, TaxonTypeEnum } from '../models';
       </ng-container>
       <ng-template #otherSound>
         {{ (species.scientificName === 'Other animals'
-        ? ('otherAnimalsThanBird' | translateWithTaxonType: species.taxonType)
+        ? ('otherAnimalsThanBirds' | translateWithTaxonType: mainTaxonType)
         : ('otherSounds.' + species.scientificName) | translate) }}
       </ng-template>
     </ng-container>
@@ -18,6 +18,7 @@ import { IGlobalSpecies, TaxonTypeEnum } from '../models';
 })
 export class SpeciesNameComponent {
   @Input() species?: IGlobalSpecies;
+  @Input() mainTaxonType?: TaxonTypeEnum;
 
   taxonTypeEnum = TaxonTypeEnum;
 }
