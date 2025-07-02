@@ -576,6 +576,7 @@
   "haseka.tools": "Työkalut",
   "haseka.users.edited": "Muokattu",
   "haseka.users.latest": "Uusimmat havaintoeräni",
+  "haseka.users.latest.all": "Uusimmat havaintoerät",
   "haseka.users.latest.discard": "Poista tallentamattomat muutokset",
   "haseka.users.latest.discardConfirm": "Haluatko varmasti hylätä muutokset? Uusia havaintoja: {{unitCount}} kpl.",
   "haseka.users.latest.gathered": "havaintoa",
