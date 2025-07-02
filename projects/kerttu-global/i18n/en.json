@@ -90,7 +90,7 @@
   "identification.containsBatsNotOnList.info": "Free-text field for species that are not found in the taxonomy list.",
   "identification.containsBirdsNotOnList": "Recording contains birds that are not on the list",
   "identification.containsBirdsNotOnList.info": "Free-text field for species that are not found in the 2019 eBird/Clements taxonomy list. For example Maghreb Owl (<i>Strix [aluco] mauritanica<i>).",
-  "identification.containsHumanSpeech": "Recording contains human speech or other vocalizations",
+  "identification.containsHumanSpeech": "Recording contains human speech or other human vocalizations",
   "identification.containsHumanSpeech.info": "Select this if the recording includes human speech or other vocalization.",
   "identification.containsInsectsNotOnList": "Recording contains insects that are not on the list",
   "identification.containsInsectsNotOnList.info": "Free-text field for species that are not found in the taxonomy list.",
