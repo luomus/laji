@@ -15,6 +15,7 @@
           <ng-container *ngTemplateOutlet="sidebarLinks; context:{ $implicit: vm.navLinks}"></ng-container>
           <laji-haseka-latest [collectionID]="vm.form.collectionID!"
                               [tmpOnly]="false"
+                              [rights]="vm.rights"
                               (showViewer)="showDocumentViewer($event)"
                               [showFormNames]="false"
                               *ngIf="(userService.isLoggedIn$ | async)">
