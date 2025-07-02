@@ -130,6 +130,7 @@
       </div>
       <bsg-identification-table
         #speciesIdentificationTable
+        [componentId]="0"
         [recording]="recording"
         [(identifications)]="selectedSpecies"
         [loading]="loadingSpecies"
@@ -160,6 +161,7 @@
       </div>
       <bsg-identification-table
         #otherSoundsIdentificationTable
+        [componentId]="1"
         [recording]="recording"
         [(identifications)]="selectedOtherSounds"
         [loading]="loadingSpecies"
