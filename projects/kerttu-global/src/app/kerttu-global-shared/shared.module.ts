@@ -9,6 +9,7 @@ import { SpeciesNamePipe } from './pipe/species-name.pipe';
 import { SpeciesNameComponent } from './component/species-name.component';
 import { FileNamePipe } from './pipe/file-name.pipe';
 import { TranslateWithTaxonTypePipe } from './pipe/translate-with-taxon-type.pipe';
+import { FilterNonSpeciesPipe } from './pipe/filter-non-species.pipe';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { TranslateWithTaxonTypePipe } from './pipe/translate-with-taxon-type.pip
     SpeciesNamePipe,
     SpeciesNameComponent,
     FileNamePipe,
-    TranslateWithTaxonTypePipe
+    TranslateWithTaxonTypePipe,
+    FilterNonSpeciesPipe
   ],
   exports: [
     SpeciesListFiltersComponent,
@@ -32,7 +34,8 @@ import { TranslateWithTaxonTypePipe } from './pipe/translate-with-taxon-type.pip
     SpeciesNamePipe,
     SpeciesNameComponent,
     FileNamePipe,
-    TranslateWithTaxonTypePipe
+    TranslateWithTaxonTypePipe,
+    FilterNonSpeciesPipe
   ]
 })
 export class KerttuGlobalSharedModule { }

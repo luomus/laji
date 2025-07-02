@@ -14,11 +14,13 @@
 ></laji-datatable>
 
 <ng-template let-value="value" #speciesListTpl>
-  <span [title]="value | speciesName | values">
-    <ng-container *ngFor="let species of value; let isLast=last">
-      <bsg-species-name [species]="species"></bsg-species-name>{{ isLast ? '' : ', ' }}
-    </ng-container>
-  </span>
+  <ng-container *ngIf="(value | filterNonSpecies) as speciesList">
+    <span [title]="speciesList | speciesName | values">
+      <ng-container *ngFor="let species of speciesList; let isLast=last">
+        <bsg-species-name [species]="species"></bsg-species-name>{{ isLast ? '' : ', ' }}
+      </ng-container>
+    </span>
+  </ng-container>
 </ng-template>
 
 <ng-template let-value="value" #statusTpl>
