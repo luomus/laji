@@ -28,7 +28,7 @@
         <input type="radio" name="{{ componentId }}_occurrence" [checked]="identification.annotation.occurrence === value" [disabled]="buttonsDisabled" (change)="annotationTypeChange(value)"/>
         {{ 'identification.' + (value === speciesAnnotationEnum.occurs ? 'occurs' : 'possiblyOccurs') | translate }}
       </label>
-      <laji-info [placement]="'right'" [html]="(recording.taxonType === taxonTypeEnum.insect ? 'identification.possiblyOccursInsect.info' : 'identification.possiblyOccurs.info') | translate" [showOnHover]="true"></laji-info>
+      <laji-info [placement]="'right'" [html]="'identification.possiblyOccursBird.info' | translateWithTaxonType: recording.taxonType" [showOnHover]="true"></laji-info>
     </div>
     <div class="mt-4">
       <label>{{ 'identification.boxes' | translate }}</label>
