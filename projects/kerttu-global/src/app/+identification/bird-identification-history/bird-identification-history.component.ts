@@ -3,7 +3,7 @@ import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-globa
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { map, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { IGlobalSite } from '../../kerttu-global-shared/models';
+import { IGlobalSite, TaxonTypeEnum } from '../../kerttu-global-shared/models';
 
 @Component({
   selector: 'bsg-bird-identification-history',
@@ -21,7 +21,10 @@ export class BirdIdentificationHistoryComponent {
     private userService: UserService
   ) {
     this.sites$ = this.userService.isLoggedIn$.pipe(
-      switchMap(() => this.kerttuGlobalApi.getSites(this.userService.getToken())),
+      switchMap(() => this.kerttuGlobalApi.getSites(
+        [TaxonTypeEnum.bird, TaxonTypeEnum.insect, TaxonTypeEnum.frog],
+        this.userService.getToken())
+      ),
       map(result => result.results)
     );
   }

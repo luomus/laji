@@ -167,9 +167,13 @@ export class KerttuGlobalApi {
     return this.httpClient.post(path, annotation, { params });
   }
 
-  public getSites(personToken: string): Observable<IListResult<IGlobalSite>> {
+  public getSites(taxonTypes: TaxonTypeEnum[]|null, personToken: string): Observable<IListResult<IGlobalSite>> {
     const path = this.basePath + '/identification/sites';
-    const params = new HttpParams().set('personToken', personToken);
+
+    let params = new HttpParams().set('personToken', personToken);
+    if (taxonTypes) {
+      params = params.set('taxonTypes', '' + taxonTypes);
+    }
 
     return this.httpClient.get<IListResult<IGlobalSite>>(path, { params });
   }

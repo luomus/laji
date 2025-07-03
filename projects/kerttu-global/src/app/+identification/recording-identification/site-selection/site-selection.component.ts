@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IGlobalSite } from '../../../kerttu-global-shared/models';
+import { IGlobalSite, TaxonTypeEnum } from '../../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { map } from 'rxjs/operators';
@@ -24,7 +24,10 @@ export class SiteSelectionComponent {
     private userService: UserService,
     private kerttuGlobalApi: KerttuGlobalApi
   ) {
-    this.sites$ = this.kerttuGlobalApi.getSites(this.userService.getToken()).pipe(
+    this.sites$ = this.kerttuGlobalApi.getSites(
+      [TaxonTypeEnum.bird, TaxonTypeEnum.insect, TaxonTypeEnum.frog],
+      this.userService.getToken()
+    ).pipe(
       map(result => result.results)
     );
   }

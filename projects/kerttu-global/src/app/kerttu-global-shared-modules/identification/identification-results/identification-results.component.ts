@@ -43,7 +43,7 @@ export class IdentificationResultsComponent implements OnInit {
 
   ngOnInit(): void {
     this.sites$ = this.userService.isLoggedIn$.pipe(
-      switchMap(() => this.kerttuGlobalApi.getSites(this.userService.getToken())),
+      switchMap(() => this.kerttuGlobalApi.getSites(this.taxonTypes, this.userService.getToken())),
       map(result => result.results)
     );
     this.siteStats$ = this.kerttuGlobalApi.getIdentificationSiteStats(this.taxonTypes).pipe(
