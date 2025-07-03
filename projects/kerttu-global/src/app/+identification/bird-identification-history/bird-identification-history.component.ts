@@ -9,12 +9,14 @@ import { IGlobalSite, TaxonTypeEnum } from '../../kerttu-global-shared/models';
   selector: 'bsg-bird-identification-history',
   template: `
     <bsg-identification-history
+      [taxonTypes]="taxonTypes"
       [sites]="(sites$ | async) ?? []"
     ></bsg-identification-history>
   `
 })
 export class BirdIdentificationHistoryComponent {
   sites$: Observable<IGlobalSite[]>;
+  taxonTypes = [TaxonTypeEnum.bird, TaxonTypeEnum.insect, TaxonTypeEnum.frog];
 
   constructor(
     private kerttuGlobalApi: KerttuGlobalApi,
@@ -22,7 +24,7 @@ export class BirdIdentificationHistoryComponent {
   ) {
     this.sites$ = this.userService.isLoggedIn$.pipe(
       switchMap(() => this.kerttuGlobalApi.getSites(
-        [TaxonTypeEnum.bird, TaxonTypeEnum.insect, TaxonTypeEnum.frog],
+        this.taxonTypes,
         this.userService.getToken())
       ),
       map(result => result.results)
