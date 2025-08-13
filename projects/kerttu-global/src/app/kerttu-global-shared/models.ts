@@ -138,13 +138,13 @@ export interface IGlobalRecordingAnnotation {
 export interface IGlobalSpeciesAnnotation {
   speciesId: number;
   occurrence: SpeciesAnnotationEnum;
-  soundType?: SoundTypeEnum;
   boxes?: (IGlobalSpeciesAnnotationBox|IGlobalSpeciesAnnotationBoxGroup)[];
 }
 
 export interface IGlobalSpeciesAnnotationBox {
   area: AudioViewerArea;
   overlapsWithOtherSpecies?: boolean;
+  soundType?: SoundTypeEnum;
 }
 
 export interface IGlobalSpeciesAnnotationBoxGroup {

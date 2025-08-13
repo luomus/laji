@@ -188,17 +188,18 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
 
     const selectedSpecies = Util.clone(type === 'species' ? this.selectedSpecies : this.selectedOtherSounds);
     const boxes = selectedSpecies[speciesIdx].annotation.boxes || [];
+    const newBox: IGlobalSpeciesAnnotationBox = type === 'species' ? {area, overlapsWithOtherSpecies: false} : {area};
 
     if (relatedBoxIdx !== undefined) {
       let boxGroup = boxes[relatedBoxIdx];
       if (!isBoxGroup(boxGroup)) {
         boxGroup = {boxes: [boxGroup]};
       }
-      boxGroup.boxes.push({area});
+      boxGroup.boxes.push(newBox);
       boxGroup.boxes.sort((a: IGlobalSpeciesAnnotationBox, b: IGlobalSpeciesAnnotationBox) => a.area.xRange![0] - b.area.xRange![0]);
       boxes[relatedBoxIdx] = boxGroup;
     } else {
-      boxes.push({area});
+      boxes.push(newBox);
     }
 
     selectedSpecies[speciesIdx].annotation.boxes = boxes;
