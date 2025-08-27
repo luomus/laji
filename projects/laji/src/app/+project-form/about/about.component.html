@@ -32,15 +32,15 @@
   <ng-container *ngIf="aboutData$ | async as data">
     <laji-project-form-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-project-form-terms>
     <laji-project-form-header [form]="data.form" [description]="data.form.description" lajiFormOption="description logo title options.hideTES"></laji-project-form-header>
-    <ng-container *ngIf="data.form.options.openForm">
-      <img src="/static/images/partner-logos/eu-funding.png" alt="Partly funded by the European Union." class="mb-6">
-    </ng-container>
     <ng-container *ngIf="data.form.options?.openForm || data.loggedIn; else loginButton">
       <button type="button"
               class="btn btn-md btn-primary btn-block use-button"
               (click)="enterForm()">
         {{ 'haseka.mobile.newObservation' | translate }}
       </button>
+    </ng-container>
+    <ng-container *ngIf="data.form.options?.openForm">
+      <img src="/static/images/partner-logos/eu-funding.png" alt="Partly funded by the European Union." class="my-8">
     </ng-container>
     <laji-haseka-latest [collectionID]="data.form.collectionID!"
                         [showFormNames]="false"
