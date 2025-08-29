@@ -164,7 +164,7 @@ export class LajiApiClientBService {
       }
     }
 
-    const obs = switchMap((lang: string) => this.http.request(method, requestUrl, this.getRequestOptions((params as any).query, requestBody, lang)).pipe(
+    const obs = this.http.request(method, requestUrl, this.getRequestOptions((params as any).query, requestBody, this.lang$.value)).pipe(
       tap(val => {
         cachedPath?.set(paramsHash, {
           _tag :'completed',
@@ -173,7 +173,7 @@ export class LajiApiClientBService {
         });
       }),
       shareReplay(1)
-    )) as any;
+    ) as any;
 
     cachedPath?.set(paramsHash, {
       _tag: 'loading', obs
