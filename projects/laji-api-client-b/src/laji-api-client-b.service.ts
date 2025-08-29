@@ -86,9 +86,9 @@ export class LajiApiClientBService {
 
   constructor(private http: HttpClient, @Inject(API_BASE_URL) private baseUrl: string) { }
 
-	setLang(lang: string) {
+  setLang(lang: string) {
     this.lang$.next(lang);
-	}
+  }
 
   get<P extends PathWithMethod<'get'>, R extends Responses<P, 'get' extends Method<P> ? 'get' : never>>(
     path: P,
@@ -164,17 +164,16 @@ export class LajiApiClientBService {
       }
     }
 
-    const obs = this.lang$.pipe(
-      switchMap((lang: string) => this.http.request(method, requestUrl, this.getRequestOptions((params as any).query, requestBody, lang)).pipe(
-        tap(val => {
-          cachedPath?.set(paramsHash, {
-            _tag :'completed',
-            val,
-            lastRefresh: Date.now()
-          });
-        }),
-        shareReplay(1)
-      )));
+    const obs = switchMap((lang: string) => this.http.request(method, requestUrl, this.getRequestOptions((params as any).query, requestBody, lang)).pipe(
+      tap(val => {
+        cachedPath?.set(paramsHash, {
+          _tag :'completed',
+          val,
+          lastRefresh: Date.now()
+        });
+      }),
+      shareReplay(1)
+    )) as any;
 
     cachedPath?.set(paramsHash, {
       _tag: 'loading', obs
