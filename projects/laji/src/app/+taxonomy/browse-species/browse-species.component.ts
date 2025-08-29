@@ -27,7 +27,7 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
     this.search.setQueryFromParams({...this.route.snapshot.queryParams, finnish: 'true'});
 
     this.queryParamsSubscription = this.route.queryParams.subscribe(params => {
-      this.search.filters.informalTaxonGroups = params.informalTaxonGroups;
+      this.search.filters.informalTaxonGroups = [params.informalTaxonGroups];
       this.search.updateUrl(['finnish']);
     });
   }
