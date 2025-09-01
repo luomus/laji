@@ -14,7 +14,7 @@
         role="alert"
         class="alert alert-success"
         [innerHTML]='"downloadRequest.fileDownload.licenseReminder" | translate:{
-          filename: "<code>readme.txt</code>"
+          filename: "<code>" + ("downloadRequest.fileDownload.licenseFile" | translate) + "</code>"
         }'
       ></div>
       <laji-file-download [downloadRequest]="downloadRequest"></laji-file-download>
