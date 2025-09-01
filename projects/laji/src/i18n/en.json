@@ -235,7 +235,7 @@
   "downloadRequest.fileDownload.downloading": "Loading",
   "downloadRequest.fileDownload.format": "File format",
   "downloadRequest.fileDownload.genericError": "Failed to download the file!",
-  "downloadRequest.fileDownload.instructionLinks": "<a target=\"_blank\" href=\"https://laji.fi/about/1064\">Import files into Excel</a><br><a target=\"_blank\" href=\"https://laji.fi/about/5138\">Import data to GIS (only in Finnish)</a><br>\n<a target=\"_blank\" href=\"https://laji.fi/about/2883\">Documentation of file contents</a>",
+  "downloadRequest.fileDownload.instructionLinks": "<a target=\"_blank\" href=\"https://info.laji.fi/en/frontpage/finbif-portal/how-to-import-a-file-into-excel/\">Import files into Excel</a><br><a target=\"_blank\" href=\"https://info.laji.fi/en/frontpage/spatial-data/other-gis-instructions/\">Import data to GIS</a><br>\n<a target=\"_blank\" href=\"https://info.laji.fi/en/frontpage/finbif-portal/file-download-field-documentation/\">Documentation of file contents</a>",
   "downloadRequest.fileDownload.licenseReminder": "When you download the file you agree to follow the copyright-licenses described above. They are also included in {{filename}} file of the download.",
   "downloadRequest.fileDownload.type": "File type",
   "downloadRequest.fileDownload.type.gis": "GIS",
