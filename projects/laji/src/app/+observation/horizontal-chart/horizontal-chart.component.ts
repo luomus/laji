@@ -125,9 +125,9 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
         switchMap(res => {
           const taxaIds = res.map((r: any) => this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
           return this.horizontalDataService.getChartDataLabels(taxaIds).pipe(
-            map(labels => res.map((r: any, idx: number) => ({
+            map(labels => res.map((r: any) => ({
             ...r,
-            label: labels[idx]
+            label: labels[this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ])]
           }))));
         }),
         map(res => res.map((r: any) => {
