@@ -129,7 +129,7 @@
             <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'L'"></laji-row>
             <laji-row [noTitleSpace]="false" ngPreserveWhitespaces>
               <a href="view?uri={{document.documentId}}" target="_blank">
-                <span>{{ unitCnt }} {{ 'annotation.observation.count'  }}</span>
+                <span>{{ unitCnt }} {{ 'annotation.observation.count' | translate }}</span>
               </a>
             </laji-row>
             <ng-container *ngIf="activeGathering">
