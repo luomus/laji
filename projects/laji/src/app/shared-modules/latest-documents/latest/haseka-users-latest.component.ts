@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { LatestDocumentsFacade } from '../latest-documents.facade';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { tap } from 'rxjs/operators';
+import { Rights } from '../../../shared/service/form-permission.service';
 
 
 @Component({
@@ -15,6 +16,7 @@ import { tap } from 'rxjs/operators';
 export class UsersLatestComponent implements OnInit, OnDestroy {
   @Input() tmpOnly = false;
   @Input() collectionID!: string;
+  @Input() rights!: Rights;
   @Input() showFormNames = true;
   @Input() complainLocality?: boolean;
   @Input() staticWidth?: number = undefined;
