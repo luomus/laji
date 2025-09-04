@@ -178,10 +178,10 @@ test.describe('Project form', () =>  {
 
       test('canceling document save redirects to about page and keeps lang if no history', async () => {
         await expect(page.locator('laji-project-form-form')).toBeVisible();
-        await page.getByText('No photo').click();
         await expect(page.getByText('Choose this location')).toBeVisible();
         await page.mouse.click(300, 300);
         await page.getByText('Choose this location').click();
+        await page.locator('.media-add-modal .cancel').click();
         await page.locator('laji-form-footer .btn-danger').click();
         await page.locator('.laji-dialog-confirm').click();
 
