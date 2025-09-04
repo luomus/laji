@@ -1,65 +1,43 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
-import { SpeciesFormQuery } from './species-form-query.interface';
-import { Util } from '../../../shared/service/util.service';
+import { TaxonomySearch } from '../service/taxonomy-search.service';
+import { startWith } from 'rxjs/operators';
 
-type InvasiveStatuses = Pick<SpeciesFormQuery,
-  'euInvasiveSpeciesList'
-  | 'controllingRisksOfInvasiveAlienSpecies'
-  | 'quarantinePlantPest'
-  | 'qualityPlantPest'
-  | 'otherPlantPest'
-  | 'nationalInvasiveSpeciesStrategy'
-  | 'otherInvasiveSpeciesList'
->;
+const invasiveStatuses = [
+    'MX.euInvasiveSpeciesList',
+    'MX.controllingRisksOfInvasiveAlienSpecies',
+    'MX.quarantinePlantPest',
+    'MX.qualityPlantPest',
+    'MX.otherPlantPest',
+    'MX.nationalInvasiveSpeciesStrategy',
+    'MX.otherInvasiveSpeciesList',
+  ] as const;
+const invasiveStatusesDict = invasiveStatuses.reduce((dict, status) => {
+  dict[status] = true;
+  return dict;
+}, {} as Record<InvasiveStatus, true>);
 
-type BoldField = keyof (Pick<SpeciesFormQuery, 'onlyBold' | 'onlyNonBold'>);
+type InvasiveStatus = typeof invasiveStatuses[number];
 
 @Component({
-  selector: 'laji-species-form[searchQuery]',
+  selector: 'laji-species-form[search]',
   templateUrl: './species-form.component.html',
   styleUrls: ['./species-form.component.css']
 })
 export class SpeciesFormComponent implements OnInit, OnDestroy {
-  @Input() searchQuery!: TaxonomySearchQuery;
+  @Input() search!: TaxonomySearch;
 
-  public taxonSelectFilters!: {
-    informalTaxonGroup?: string;
-    onlyFinnish?: boolean;
-  };
+  taxonSelectFilters!: Pick<TaxonomySearch['filters'], 'informalTaxonGroups' | 'finnish'>;
 
-  public formQuery: SpeciesFormQuery = {
-    onlyFinnish: true,
-    onlyInvasive: false,
-    onlyNonInvasive: false,
-    euInvasiveSpeciesList: false,
-    controllingRisksOfInvasiveAlienSpecies: false,
-    quarantinePlantPest: false,
-    allInvasiveSpecies: false,
-    nationalInvasiveSpeciesStrategy: false,
-    otherInvasiveSpeciesList: false,
-    otherPlantPest: false,
-    qualityPlantPest: false,
-    onlyBold: false,
-    onlyNonBold: false
-  };
+  subUpdate?: Subscription;
 
-  public subUpdate?: Subscription;
+  invasiveSelected: (InvasiveStatus | 'allInvasiveSpecies' | 'onlyInvasive' | 'onlyNonInvasive')[] = [];
 
-  public invasiveSelected: (keyof SpeciesFormQuery)[] = [];
-  public invasiveStatuses: (keyof InvasiveStatuses)[] = [
-    'euInvasiveSpeciesList',
-    'controllingRisksOfInvasiveAlienSpecies',
-    'quarantinePlantPest',
-    'qualityPlantPest',
-    'otherPlantPest',
-    'nationalInvasiveSpeciesStrategy',
-    'otherInvasiveSpeciesList',
-  ];
+  typeOfOccurrenceInFinlandInclusions?: string[];
+  typeOfOccurrenceInFinlandExclusions?: string[];
 
-  public boldSelected: BoldField[] = [];
+  finnishCheckboxValue!: boolean;
 
   constructor(
     public translate: TranslateService
@@ -67,243 +45,115 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.taxonSelectFilters = {
-      informalTaxonGroup: this.searchQuery.query.informalGroupFilters,
-      onlyFinnish: this.searchQuery.query.onlyFinnish
+      informalTaxonGroups: this.search.filters.informalTaxonGroups,
+      finnish: this.search.filters.finnish
     };
-    this.queryToFormQuery();
 
-    this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
-      res => {
+    this.finnishCheckboxValue = this.search.filters.finnish !== undefined;
+
+    this.subUpdate = this.search.queryUpdated$.pipe(startWith(undefined)).subscribe(
+      () => {
         this.taxonSelectFilters = {
-          informalTaxonGroup: this.searchQuery.query.informalGroupFilters,
-          onlyFinnish: this.searchQuery.query.onlyFinnish
+          informalTaxonGroups: this.search.filters.informalTaxonGroups,
+          finnish: this.search.filters.finnish
         };
-        if (res.formSubmit) {
-          this.queryToFormQuery();
-          this.onSubmit();
-        }
+        this.syncTypeOfOccurenceInFinland();
+        this.syncInvasiveStatusesFromSearch();
       });
+  }
+
+  onSearchChange() {
+    this.search.query = { ...this.search.query };
+    this.search.filters = { ...this.search.filters };
+    this.search.updateUrl();
+  }
+
+  private syncTypeOfOccurenceInFinland() {
+    this.typeOfOccurrenceInFinlandInclusions = this.search.filters.typeOfOccurrenceInFinland?.filter(v => !v.startsWith('!'));
+    this.typeOfOccurrenceInFinlandExclusions = this.search.filters.typeOfOccurrenceInFinland?.filter(v => v.startsWith('!')).map(v => v.slice(1));
+  }
+
+  onFinnishCheckboxValueChange(value: boolean) {
+    this.search.filters.finnish = value === true ? true : undefined;
+    this.onSearchChange();
   }
 
   ngOnDestroy() {
-    if (this.subUpdate) {
-      this.subUpdate.unsubscribe();
-    }
+    this.subUpdate?.unsubscribe();
   }
 
   onTaxonSelect(key: string) {
-    this.formQuery.taxon = key;
-    this.searchQuery.query.target = key;
-    this.onQueryChange();
+    this.search.taxonId = key;
+    this.onSearchChange();
   }
 
   onHabitatChange(habitats: any) {
-    this.searchQuery.query.primaryHabitat = habitats.primaryHabitat;
-    this.searchQuery.query.anyHabitat = habitats.anyHabitat;
-    this.onQueryChange();
-  }
-
-  onInvasiveChange(ids: (keyof SpeciesFormQuery)[]) {
-    const id = Util.arrayDiff(this.invasiveSelected, ids)[0];
-    if (id === 'onlyInvasive') {
-      this.onInvasiveToggle();
-    } else if (id === 'onlyNonInvasive') {
-      this.onNonInvasiveToggle();
-    } else {
-      this.onInvasiveCheckBoxToggle(id);
-    }
-  }
-
-  onBoldChange(checkboxStates: BoldField[]) {
-    const changedSelection = Util.arrayDiff(this.boldSelected, checkboxStates)[0];
-
-    if (changedSelection === 'onlyBold') {
-      this.formQuery.onlyBold = !this.formQuery.onlyBold;
-      if (this.formQuery.onlyBold) {
-        this.formQuery.onlyNonBold = false;
-      }
-
-    } else if (changedSelection === 'onlyNonBold') {
-      this.formQuery.onlyNonBold = !this.formQuery.onlyNonBold;
-      if (this.formQuery.onlyNonBold) {
-        this.formQuery.onlyBold = false;
-      }
-    }
-
-    this.updateBoldSelected();
-    this.onQueryChange();
+    this.search.filters['primaryHabitat.habitat'] = habitats.primaryHabitat;
+    this.search.filters['anyHabitatSearchStrings'] = habitats.anyHabitat;
+    this.onSearchChange();
   }
 
   updateTypesOfOccurrence(event: {true: string[]; false: string[]}) {
-    this.searchQuery.query.typesOfOccurrenceFilters = event.true;
-    this.searchQuery.query.typesOfOccurrenceNotFilters = event.false;
-    this.onQueryChange();
+    this.search.filters.typeOfOccurrenceInFinland = [...event.true, ...event.false.map(v => `!${v}`)];
+    this.onSearchChange();
   }
 
-  private updateInvasiveSelected() {
-    const invasiveSelected: (keyof SpeciesFormQuery)[] = [];
-    const allFields: (keyof Omit<SpeciesFormQuery, 'taxon'>)[] = [
-      'onlyInvasive',
-      'onlyNonInvasive',
-      'euInvasiveSpeciesList',
-      'controllingRisksOfInvasiveAlienSpecies',
-      'quarantinePlantPest',
-      'qualityPlantPest',
-      'otherPlantPest',
-      'nationalInvasiveSpeciesStrategy',
-      'otherInvasiveSpeciesList',
-      'allInvasiveSpecies',
-    ];
-    for (const i in allFields) {
-      if (this.formQuery[allFields[i]]) {
-        invasiveSelected.push(allFields[i]);
+  onInvasiveChange(value: (InvasiveStatus | 'allInvasiveSpecies' | 'onlyInvasive' | 'onlyNonInvasive')[]) {
+    let nextInvasiveSelected = value;
+
+    if (value.includes('onlyInvasive') && this.search.filters.invasiveSpecies !== true) {
+      nextInvasiveSelected = nextInvasiveSelected.filter(v => v !== 'onlyNonInvasive');
+      this.search.filters.invasiveSpecies = true;
+    }
+    if (value.includes('onlyNonInvasive') && this.search.filters.invasiveSpecies !== false) {
+      nextInvasiveSelected = nextInvasiveSelected.filter(v => v !== 'onlyInvasive');
+      this.search.filters.invasiveSpecies = false;
+    }
+    if (['onlyInvasive', 'onlyNonInvasive'].every(v => !value.includes(v as any))) {
+      this.search.filters.invasiveSpecies = undefined;
+      nextInvasiveSelected = nextInvasiveSelected.filter(v => v !== 'onlyNonInvasive' && v !== 'onlyInvasive');
+    }
+
+    if (value.includes('allInvasiveSpecies') && !this.invasiveSelected.includes('allInvasiveSpecies')) {
+      nextInvasiveSelected = [...nextInvasiveSelected, ...invasiveStatuses];
+    } else if (!value.includes('allInvasiveSpecies') &&  invasiveStatuses.every(status => nextInvasiveSelected.includes(status))) {
+      nextInvasiveSelected = [...nextInvasiveSelected, 'allInvasiveSpecies'];
+    }
+
+    if (!value.includes('allInvasiveSpecies') && this.invasiveSelected.includes('allInvasiveSpecies')) {
+      nextInvasiveSelected = nextInvasiveSelected.filter(v => !(invasiveStatusesDict as any)[v]);
+    }
+
+    if (invasiveStatuses.some(status => !nextInvasiveSelected.includes(status)) && this.invasiveSelected.includes('allInvasiveSpecies')) {
+      nextInvasiveSelected = nextInvasiveSelected.filter(v => v !== 'allInvasiveSpecies');
+    }
+
+    nextInvasiveSelected = [...new Set(nextInvasiveSelected)];
+    this.invasiveSelected = nextInvasiveSelected;
+
+    const administrativeStatuses = nextInvasiveSelected.filter(v => (invasiveStatuses as any)[v]);
+
+    this.search.filters.administrativeStatuses = [...new Set([
+      ...(this.search.filters.administrativeStatuses || []).filter(v => administrativeStatuses.includes(v as any)),
+      ...administrativeStatuses
+    ])];
+
+    this.onSearchChange();
+  }
+
+  private syncInvasiveStatusesFromSearch() {
+    const { administrativeStatuses, invasiveSpecies } = this.search.filters;
+
+    if (invasiveSpecies) {
+      this.invasiveSelected = ['onlyInvasive'];
+    } else if (invasiveSpecies === false) {
+      this.invasiveSelected = ['onlyNonInvasive'];
+    }
+    if (administrativeStatuses) {
+      this.invasiveSelected = [...invasiveStatuses.filter(v => administrativeStatuses.includes(v))];
+      if (invasiveStatuses.every(v => administrativeStatuses.includes(v))) {
+        this.invasiveSelected.push('allInvasiveSpecies');
       }
     }
-    this.invasiveSelected = invasiveSelected;
-  }
-
-  private updateBoldSelected() {
-    const boldSelected: BoldField[] = [];
-    const allBoldFields: BoldField[] = [
-      'onlyBold',
-      'onlyNonBold'
-    ];
-    for (const i in allBoldFields) {
-      if (this.formQuery[allBoldFields[i]]) {
-        boldSelected.push(allBoldFields[i]);
-      }
-    }
-    this.boldSelected = boldSelected;
-  }
-
-  private onInvasiveToggle() {
-    this.formQuery.onlyInvasive = !this.formQuery.onlyInvasive;
-    if (this.formQuery.onlyInvasive) {
-      this.formQuery.onlyNonInvasive = false;
-    }
-    this.updateInvasiveSelected();
-    this.onQueryChange();
-  }
-
-  private onNonInvasiveToggle() {
-    this.formQuery.onlyNonInvasive = !this.formQuery.onlyNonInvasive;
-    if (this.formQuery.onlyNonInvasive) {
-      this.formQuery.onlyInvasive = false;
-    }
-    this.updateInvasiveSelected();
-    this.onQueryChange();
-  }
-
-  private onInvasiveCheckBoxToggle(field: keyof SpeciesFormQuery) {
-    if (field === 'allInvasiveSpecies') {
-      this.formQuery.allInvasiveSpecies = !this.formQuery.allInvasiveSpecies;
-      this.invasiveStatuses.map(status => { this.formQuery[status] = this.formQuery.allInvasiveSpecies; });
-    } else {
-      (this.formQuery as any)[field] = !this.formQuery[field];
-      if (!this.formQuery[field] && this.formQuery.allInvasiveSpecies) {
-        this.formQuery.allInvasiveSpecies = false;
-      }
-    }
-    this.formQueryToQuery();
-    this.onAdministrativeStatusChange();
-  }
-
-  onAdministrativeStatusChange() {
-    const admins = this.searchQuery.query.adminStatusFilters;
-    let cnt = 0;
-    this.invasiveStatuses.map((key: keyof InvasiveStatuses) => {
-      const realKey = 'MX.' + key;
-      this.formQuery[key] = admins && admins.indexOf(realKey) > -1 || false;
-      if (this.formQuery[key]) {
-        cnt++;
-      }
-    });
-    this.formQuery.allInvasiveSpecies = cnt === this.invasiveStatuses.length;
-    this.updateInvasiveSelected();
-    this.onQueryChange();
-  }
-
-  onQueryChange(updateFormQuery?: boolean) {
-    if (updateFormQuery) {
-      this.queryToFormQuery();
-    }
-    this.onSubmit();
-  }
-
-  onSubmit() {
-    this.formQueryToQuery();
-    this.searchQuery.updateUrl();
-    this.searchQuery.query = { ...this.searchQuery.query };
-    this.formQuery.taxon = this.searchQuery.query.target ? this.formQuery.taxon : '';
-    return false;
-  }
-
-  updateQuery(key: string, value: any) {
-    (this.searchQuery.query as any)[key] = value;
-    this.onQueryChange();
-  }
-
-  private formQueryToQuery() {
-    const query = this.searchQuery.query;
-    query.onlyFinnish = this.formQuery.onlyFinnish ? true : undefined;
-    query.invasiveSpeciesFilter = this.formQuery.onlyInvasive ? true : (this.formQuery.onlyNonInvasive ? false : undefined);
-    query.hasBoldData = this.formQuery.onlyBold ? true : (this.formQuery.onlyNonBold ? false : undefined);
-
-    if (query.adminStatusFilters) {
-      query.adminStatusFilters = [...query.adminStatusFilters];
-    }
-
-    this.invasiveStatuses
-      .map((key) => {
-        const value = 'MX.' + key;
-        if (!this.formQuery[key]) {
-          if (query.adminStatusFilters) {
-            const idx = query.adminStatusFilters.indexOf(value);
-            if (idx > -1) {
-              query.adminStatusFilters.splice(idx, 1);
-            }
-          }
-          return;
-        }
-        if (!query.adminStatusFilters) {
-          query.adminStatusFilters = [];
-        }
-        if (query.adminStatusFilters.indexOf(value) === -1) {
-          query.adminStatusFilters.push(value);
-        }
-      });
-  }
-
-  private queryToFormQuery() {
-    const query = this.searchQuery.query;
-    this.formQuery = {
-      onlyFinnish: !!query.onlyFinnish,
-      onlyInvasive: query.invasiveSpeciesFilter === true,
-      onlyNonInvasive: query.invasiveSpeciesFilter === false,
-      taxon: query.target,
-      euInvasiveSpeciesList: this.hasInMulti(query.adminStatusFilters, 'MX.euInvasiveSpeciesList'),
-      qualityPlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.qualityPlantPest'),
-      otherPlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.otherPlantPest'),
-      quarantinePlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.quarantinePlantPest'),
-      nationalInvasiveSpeciesStrategy: this.hasInMulti(query.adminStatusFilters, 'MX.nationalInvasiveSpeciesStrategy'),
-      otherInvasiveSpeciesList: this.hasInMulti(query.adminStatusFilters, 'MX.otherInvasiveSpeciesList'),
-      controllingRisksOfInvasiveAlienSpecies: this.hasInMulti(query.adminStatusFilters, 'MX.controllingRisksOfInvasiveAlienSpecies'),
-      allInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, this.invasiveStatuses.map(val => 'MX.' + val)),
-      onlyBold: query.hasBoldData === true,
-      onlyNonBold: query.hasBoldData === false
-    };
-
-    this.updateInvasiveSelected();
-    this.updateBoldSelected();
-  }
-
-  private hasInMulti(multi: any, value: any, noOther = false): boolean {
-    if (Array.isArray(value)) {
-      return value.filter(val => !this.hasInMulti(multi, val, noOther)).length === 0;
-    }
-    if (Array.isArray(multi) && multi.indexOf(value) > -1) {
-      return noOther ? multi.length === (Array.isArray(value) ? value.length : 1) : true;
-    }
-    return false;
   }
 }

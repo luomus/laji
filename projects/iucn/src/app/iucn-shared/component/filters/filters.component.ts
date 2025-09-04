@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FilterQuery } from '../../service/result.service';
 import { Observable } from 'rxjs';
 import { SelectOption } from '../select/select.component';

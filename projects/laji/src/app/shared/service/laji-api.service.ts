@@ -9,7 +9,6 @@ import { Autocomplete } from '../model/Autocomplete';
 import { Checklist } from '../model/Checklist';
 import { PagedResult } from '../model/PagedResult';
 import { Source } from '../model/Source';
-import { Taxonomy } from '../model/Taxonomy';
 import { Form } from '../model/Form';
 import { Annotation } from '../model/Annotation';
 import { Notification } from '../model/Notification';
@@ -21,6 +20,9 @@ import { Image } from '../model/Image';
 import { AnnotationTag } from '../model/AnnotationTag';
 import { Collection } from '../model/Collection';
 import { Util } from './util.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 export namespace LajiApi {
 
@@ -201,7 +203,7 @@ export namespace LajiApi {
 
     export type SourceListResponse = PagedResult<Source>;
 
-    export type TaxonResponse = Taxonomy;
+    export type TaxonResponse = Taxon;
 
     export type ImageListResponse = PagedResult<Image>;
   }
@@ -237,7 +239,7 @@ export class LajiApiService {
   get(endpoint: LajiApi.Endpoints.information, id: string, query?: LajiApi.Query.InformationQuery): Observable<Information>;
   get(endpoint: LajiApi.Endpoints.news, id: string): Observable<News>;
   get(endpoint: LajiApi.Endpoints.publications, id: string, query: LajiApi.Query.PublicationQuery): Observable<Publication>;
-  get(endpoint: LajiApi.Endpoints.taxon, id: string, query: LajiApi.Query.TaxaQuery): Observable<Taxonomy>;
+  get(endpoint: LajiApi.Endpoints.taxon, id: string, query: LajiApi.Query.TaxaQuery): Observable<Taxon>;
   get<T>(endpoint: LajiApi.Endpoints, id: string, query: any = {}): Observable<T> {
     const url = `${environment.apiBase}/${endpoint}/${id}`;
     const options = { params: {...Util.removeUndefinedFromObject(query)} };

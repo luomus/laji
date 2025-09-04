@@ -2,7 +2,6 @@ import { map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { PagedResult } from '../../shared/model/PagedResult';
 
@@ -38,19 +37,8 @@ export class MainResultService {
   };
 
   constructor(
-    private warehouseApi: WarehouseApi,
-    private taxonomyApi: TaxonomyApi
+    private warehouseApi: WarehouseApi
   ) { }
-
-  getTaxon(taxonId: string) {
-    return this._fetch('taxon', taxonId, this.taxonomyApi.taxonomyFindBySubject(
-      taxonId,
-      'multi',
-      {
-        selectedFields: 'scientificName,vernacularName,cursiveName'
-      }
-    ));
-  }
 
   getResults(query: WarehouseQueryInterface, lang: string): Observable<any> {
     let vernacular = 'unit.linkings.taxon.nameFinnish';

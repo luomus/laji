@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { SourceService } from '../shared/service/source.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { HomeDataService, IHomeData } from './home-data.service';
@@ -25,7 +24,7 @@ export class HomeComponent implements OnInit {
   mapStartDate!: string;
   mapQueryParams!: Record<string, string>;
   dashboardLink!: MultiLanguage;
-  images$!: Observable<Image[]>;
+  images$!: Observable<Pick<Image, 'thumbnailURL'>[]>;
   homeData$!: Observable<IHomeData>;
   publications$!: Observable<Information>;
 
@@ -33,7 +32,6 @@ export class HomeComponent implements OnInit {
 
 
   constructor(
-    private sourceService: SourceService,
     private homeDataService: HomeDataService,
     public translate: TranslateService,
     public router: Router,

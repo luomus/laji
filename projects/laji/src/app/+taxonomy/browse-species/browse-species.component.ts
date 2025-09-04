@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TaxonomySearchQuery } from '../species/service/taxonomy-search-query';
+import { TaxonomySearch } from '../species/service/taxonomy-search.service';
 import { Subscription } from 'rxjs';
 import { LoadedElementsStore } from '../../../../../laji-ui/src/lib/tabs/tab-utils';
 
@@ -17,18 +17,20 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
   private queryParamsSubscription?: Subscription;
 
   constructor(
-    public searchQuery: TaxonomySearchQuery,
+    public search: TaxonomySearch,
     private route: ActivatedRoute,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
     this.loadedTabs.load(this.activeIndex);
-    this.searchQuery.setQueryFromParams({...this.route.snapshot.queryParams, onlyFinnish: 'true'});
+    this.search.setQueryFromParams({...this.route.snapshot.queryParams, finnish: 'true'});
 
     this.queryParamsSubscription = this.route.queryParams.subscribe(params => {
-      this.searchQuery.query.informalGroupFilters = params.informalGroupFilters;
-      this.searchQuery.updateUrl(['onlyFinnish']);
+      this.search.filters.informalTaxonGroups = params.informalTaxonGroups
+        ? [params.informalTaxonGroups]
+        : undefined;
+      this.search.updateUrl(['finnish']);
     });
   }
 
@@ -45,7 +47,7 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
   onPopState() {
     // Route snapshot is not populated with the latest info when this event is triggered. So we need to delay the execution little.
     setTimeout(() => {
-      this.searchQuery.setQueryFromParams({...this.route.snapshot.queryParams, onlyFinnish: 'true'});
+      this.search.setQueryFromParams({...this.route.snapshot.queryParams, finnish: 'true'});
       this.cd.markForCheck();
     });
   }

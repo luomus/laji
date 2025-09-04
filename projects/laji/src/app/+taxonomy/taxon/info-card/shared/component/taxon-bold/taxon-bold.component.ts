@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 interface BoldEntry {
   scientificName: string;
@@ -15,7 +17,7 @@ interface BoldEntry {
 })
 export class TaxonBoldComponent implements OnChanges {
 
-  @Input() taxon!: Taxonomy;
+  @Input() taxon!: Taxon;
 
   boldEntries: BoldEntry[] = [];
 
@@ -44,7 +46,7 @@ export class TaxonBoldComponent implements OnChanges {
     }
   }
 
-  getBoldEntry(taxon: Taxonomy) {
+  getBoldEntry(taxon: Taxon['synonyms'][number]) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     let scientificName = this.taxon.scientificName!;
     let publicRecords = 0;

@@ -1,12 +1,15 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { RedListEvaluation, Taxonomy } from '../../../../../laji/src/app/shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
-import { TaxonService } from '../../iucn-shared/service/taxon.service';
+import { ChecklistVersion, TaxonService } from '../../iucn-shared/service/taxon.service';
 import { ResultService } from '../../iucn-shared/service/result.service';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
+type RedListEvaluation = components['schemas']['Evaluation'];
 
 @Component({
   selector: 'iucn-info-card',
@@ -15,16 +18,16 @@ import { HeaderService } from 'projects/laji/src/app/shared/service/header.servi
 })
 export class InfoCardComponent implements OnChanges, OnInit {
   @Input() public year!: string;
-  @Input() public checklistId!: string;
+  @Input() public checklistId!: ChecklistVersion;
   @Input() public taxonId!: string;
 
-  public taxon: Taxonomy | undefined;
+  public taxon: Taxon| undefined;
   public latestStatus: RedListEvaluation | undefined | null;
   public isEndangered: boolean | undefined;
   public missing: boolean | undefined;
 
   years$!: Observable<{label: string; value: string}[]>;
-  species$: Observable<Taxonomy[]> | undefined;
+  species$: Observable<Taxon[]> | undefined;
 
   taxonSub: Subscription | undefined;
 
@@ -62,7 +65,7 @@ export class InfoCardComponent implements OnChanges, OnInit {
       return;
     }
 
-    this.taxonSub = this.taxonService.getTaxon(this.taxonId, this.translateService.currentLang, this.checklistId)
+    this.taxonSub = this.taxonService.getTaxon(this.taxonId, this.checklistId)
       .subscribe(taxon => {
         if (!taxon.species) {
           this.missing = true;
@@ -77,7 +80,6 @@ export class InfoCardComponent implements OnChanges, OnInit {
           this.latestStatus = null;
           this.species$ = this.taxonService.getTaxonSpeciesWithLatestEvaluation(
             taxon.id,
-            this.translateService.currentLang,
             this.checklistId
           );
         }

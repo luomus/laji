@@ -33,16 +33,19 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
   @Input() filterProperties: (keyof SelectOption)[] | undefined;
-  @Input() selected?: T[] = [];
+  @Input() selected?: T | T[];
   @Input() open = false;
   @Input() disabled = false;
+
+  /** true by default */
   @Input() multiple = true;
+
   @Input() info?: string;
   @Input() loading = false;
   @Input() checkboxType = CheckboxType.basic;
   @Input() classes: {options?: string; optionContainer?: string; menuContainer?: string} = {};
 
-  @Output() selectedChange = new EventEmitter<T[]>();
+  @Output() selectedChange = new EventEmitter<T | T[]>();
   @ViewChild('filter') filter!: ElementRef<HTMLInputElement>;
 
   selectedOptions: SelectOption[] = [];
@@ -77,6 +80,9 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
   }
 
   ngOnInit() {
+    if (this.selected === undefined && this.multiple) {
+      this.selected = [];
+    }
     this.filterInput
       .asObservable().pipe(
         takeUntil(this.unsubscribe$),
@@ -90,7 +96,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
 
   ngOnChanges() {
     if (this.disabled) {
-      this.selected = [];
+      this.selected = this.multiple ? [] : undefined;
       this.open = false;
     }
     this.initOptions(this.selected);
@@ -134,7 +140,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
         this.selected = [...this.selected, id] as T[];
       }
     } else {
-      this.selected = isBasic ? [id] as T[] : [option] as T[];
+      this.selected = isBasic ? id as T : option as T;
     }
     this.selectedIdx = -1;
     this.initOptions(this.selected);
@@ -143,7 +149,9 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
 
   remove(id: IdType, event: any) {
     if (this.checkboxType !== CheckboxType.basic) {
-      const select = this.selected?.find(item => this.isSelectOptions(item) && item.id === id);
+      const select = this.multiple
+        ? (this.selected as T[])?.find(item => this.isSelectOptions(item) && item.id === id)
+        : this.isSelectOptions(this.selected as T) && (this.selected as any).id === id;
 
       if (!select) {
         return;
@@ -153,7 +161,10 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
         return this.add(id, true);
       }
     }
-    this.selected = this.selected?.filter(value => this.isSelectOptions(value) ? value.id !== id : value !== id);
+    this.selected = this.multiple
+      ? (this.selected as T[])?.filter(value => this.isSelectOptions(value) ? value.id !== id : value !== id)
+      : undefined;
+
     this.selectedIdx = -1;
     this.initOptions(this.selected);
     this.selectedChange.emit(this.selected);
@@ -224,7 +235,14 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     return item.id;
   }
 
-  private initOptions(selected: T[] = []) {
+  private getSelectedWithDefault(selected?: T | T[]): T | T[] | undefined {
+    return selected !== undefined
+      ? selected
+      : this.multiple ? [] : undefined;
+  }
+
+  private initOptions(selected?: T | T[]) {
+    selected = this.getSelectedWithDefault(selected);
     if (!this.options) {
       return;
     }
@@ -233,10 +251,11 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     const unselectedOptions: SelectOption[] = [];
 
     this.options.forEach(option => {
-      const selectedItem = selected.find(select =>
-        (option.id === select as IdType) ||
-        (option.id === (select as SelectOption)?.id && ((select as SelectOption).checkboxValue === true || (select as SelectOption).checkboxValue === false))
-      );
+      const selectedItem = this.multiple
+        ? (selected as T[] || []).find(select =>
+          (option.id === select as IdType) ||
+          (option.id === (select as SelectOption)?.id && ((select as SelectOption).checkboxValue === true || (select as SelectOption).checkboxValue === false))
+        ) : option.id === this.selected ? this.selected : undefined;
       const targetOptions = selectedItem !== undefined ? selectedOptions : unselectedOptions;
       const checkboxValue = (selectedItem as SelectOption)?.checkboxValue ?? selectedItem !== undefined;
 

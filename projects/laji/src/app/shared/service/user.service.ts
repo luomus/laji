@@ -8,7 +8,7 @@ import {
   take,
   tap
 } from 'rxjs/operators';
-import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subject, Subscription, throwError } from 'rxjs';
+import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
@@ -207,7 +207,13 @@ export class UserService implements OnDestroy {
     }
     this.store.next({ ...this.store.value, loginState: { _tag: 'loading' }, user: { _tag: 'loading' } });
     return this.personApi.personFindByToken(token).pipe(
+      httpOkError([404, 400], null),
+      retryWithBackoff(300),
       tap(person => {
+        if (person === null) {
+          this.setNotLoggedIn();
+          return;
+        }
         // if person is valid, we have succesfully logged in
         this.persistentState = { ...this.persistentState, loginState: { _tag: 'logged_in', token }};
         this.store.next({
@@ -220,11 +226,9 @@ export class UserService implements OnDestroy {
           }
         });
       }),
-      map(_ => true),
-      httpOkError([404, 400], false),
-      retryWithBackoff(300),
-      catchError(_ => {
-        this.setNotLoggedIn();
+      map(person => person !== null),
+      catchError(err => {
+        console.error(err);
         return of(false);
       })
     );
@@ -263,7 +267,7 @@ export class UserService implements OnDestroy {
     if (registrationContacts?.[0]?.inheritedName) { params.push(`inheritedName=${registrationContacts?.[0]?.inheritedName}`); }
     if (registrationContacts?.[0]?.emailAddress) { params.push(`email=${registrationContacts?.[0]?.emailAddress}`); }
 
-    window.location.href = environment.registerUrl + '?' + params.join('&');
+    window.location.href = (environment as any).registerUrl + '?' + params.join('&');
   }
 
   getToken(): string {

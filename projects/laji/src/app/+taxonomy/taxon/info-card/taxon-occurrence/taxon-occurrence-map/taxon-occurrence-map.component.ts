@@ -1,5 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { Occurrence } from '../../../../../shared/model/Taxonomy';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Occurrence = components['schemas']['Occurrence'];
 
 @Component({
   selector: 'laji-taxon-occurrence-map',
