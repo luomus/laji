@@ -39,6 +39,9 @@
         {{ 'haseka.mobile.newObservation' | translate }}
       </button>
     </ng-container>
+    <ng-container *ngIf="data.form.options?.openForm">
+      <img src="/static/images/partner-logos/eu-funding.png" alt="Partly funded by the European Union." class="my-8">
+    </ng-container>
     <laji-haseka-latest [collectionID]="data.form.collectionID!"
                         [showFormNames]="false"
                         [complainLocality]="false"
