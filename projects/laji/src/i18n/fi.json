@@ -236,7 +236,7 @@
   "downloadRequest.fileDownload.format": "Tiedostomuoto",
   "downloadRequest.fileDownload.genericError": "Tiedoston lataaminen epäonnistui!",
   "downloadRequest.fileDownload.instructionLinks": "<a target=\"_blank\" href=\"https://info.laji.fi/etusivu/laji-fi/tiedostojen-vienti-exceliin/\">Tiedoston vienti Exceliin</a><br>\n<a target=\"_blank\" href=\"https://info.laji.fi/etusivu/paikkatieto/muut-paikkatieto-ohjeet/\">Havaintoaineiston vienti paikkatieto-ohjelmistoihin (ArcGIs, QGIS)</a><br>\n<a href=\"https://info.laji.fi/en/frontpage/finbif-portal/file-download-field-documentation/\" target=\"_blank\">Dokumentaatio tiedostojen sisällöstä (englanniksi)</a>",
-  "downloadRequest.fileDownload.licenseReminder": "Lataamalla tiedoston sitoudut noudattamaan alla mainittuja käyttöoikeuslisenssejä. Lisenssit löytyvät myös latauksen {{filename}} tiedostosta.",
+  "downloadRequest.fileDownload.licenseReminder": "Lataamalla tiedoston sitoudut noudattamaan alla mainittuja käyttöoikeuslisenssejä. Lisenssit löytyvät myös latauksen <code>fi_käyttöehdot.txt</code> tiedostosta.",
   "downloadRequest.fileDownload.type": "Tiedostotyyppi",
   "downloadRequest.fileDownload.type.gis": "GIS",
   "downloadRequest.fileDownload.type.gis.info": "Paikkatietomuotoisessa aineistolatauksessa voit itse määrittää aineiston tiedostomuodon, geometriatyypin ja koordinaattijärjestelmän.<br><br>Tiedostomuoto:<br>.gpkg = GeoPackage<br><br>Geometria:<br>point =  havaintojen sijaintien keskipisteet<br>footprint = havaintojen geometriat alkuperäisessä muodossaan: voi sisältää piste-, viiva- ja aluegeometrioita<br>bbox = havaintojen \"Bounding Box\" -aluerajaukset<br><br>CRS (koordinaattijärjestelmä):<br>euref (ETRS89-TM35FIN, epsg 3067)<br>wgs84 (epsg 4326)",
