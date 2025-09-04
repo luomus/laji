@@ -11,6 +11,7 @@ import { PinkkaComponent } from './pinkka/pinkka.component';
 import { BibliographyComponent } from './bibliography/bibliography.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
 import { ProtaxComponent } from './protax/protax.component';
+import { SoundIdentificationComponent } from './sound-identification/sound-identification.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { GeneticResourceLayoutComponent } from './genetic-resource/layout/genetic-resource-layout.component';
 import { GeneticResourceInstructionsComponent } from './genetic-resource/instructions/genetic-resource-instructions.component';
@@ -90,6 +91,7 @@ const routes: Routes = [
     loadChildren: () => import('../shared-modules/dataset-metadata/dataset-metadata.module').then(m => m.DatasetMetadataModule)
   },
   {path: 'protax', pathMatch: 'full', component: ProtaxComponent, data: {title: 'theme.protax'}},
+  {path: 'sound-identification', pathMatch: 'full', component: SoundIdentificationComponent, data: {title: 'theme.soundIdentification'}},
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
   {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
   {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},
