@@ -18,6 +18,9 @@
           <li *ngIf="('infoLinks.dataPolicy' | translate) as url">
             <a [href]="url" target="_blank">{{ 'footer2.section1.link.dataPolicy' | translate }}</a>
           </li>
+          <li *ngIf="('infoLinks.strategy' | translate) as url">
+            <a [href]="url" target="_blank">{{ 'footer2.section1.link.strategy' | translate }}</a>
+          </li>
         </ul>
       </div>
       <div>
@@ -28,6 +31,9 @@
           </li>
           <li *ngIf="('infoLinks.faq' | translate) as url">
             <a [href]="url" target="_blank">{{ 'footer2.section2.link.faq' | translate }}</a>
+          </li>
+          <li *ngIf="('infoLinks.sensitive' | translate) as url">
+            <a [href]="url" target="_blank">{{ 'footer2.section2.link.sensitive' | translate }}</a>
           </li>
           <li>{{ 'footer2.section2.link.guides' | translate }}
             <ul>
