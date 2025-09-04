@@ -4,11 +4,10 @@
       tabindex="0" role="button" luKeyboardClickable>{{ 'observation.active.informalTaxonGroupAll' | translate }}</a>
   </li>
   <li *ngIf="parentGroup">
-    <a [routerLink]="'/taxon/browse'" [queryParams]="{ informalGroupFilters: parentGroup.id }"
+    <a [routerLink]="'/taxon/browse'" [queryParams]="{ informalTaxonGroups: parentGroup.id }"
       tabindex="0" role="button" luKeyboardClickable>{{ parentGroup.name }}</a>
   </li>
   <li *ngIf="informalGroup" class="active">
     <span>{{ informalGroup.name }}</span>
-    <!--span *ngIf="!informalGroup.id">{{ 'observation.active.informalTaxonGroupAll' | translate }}</span-->
   </li>
 </ol>

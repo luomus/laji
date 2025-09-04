@@ -54,3 +54,7 @@
       {{ gathering.locality }}</li>
   </ul>
 </laji-row>
+
+<laji-row *ngIf="document?.referenceURL" [title]="'URL' | translate" [noTitleSpace]="false">
+  <a [href]="document.referenceURL" target="_blank" rel="noopener">{{ document.referenceURL }}</a>
+</laji-row>

@@ -2,8 +2,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 import { TaxonConceptService } from './taxon-concept.service';
 import { TaxonMatch } from './taxon-match.model';
 import { of, Subscription } from 'rxjs';
-import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 import { catchError } from 'rxjs/operators';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'laji-taxon-concept-info',
@@ -13,7 +15,7 @@ import { catchError } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonConceptInfoComponent implements OnChanges, OnDestroy {
-  @Input() taxon!: Taxonomy;
+  @Input() taxon!: Taxon;
 
   taxonConceptId?: string;
   matches!: TaxonMatch[];

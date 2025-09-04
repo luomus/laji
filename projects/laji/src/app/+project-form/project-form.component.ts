@@ -22,6 +22,7 @@ interface ViewModel {
   form: Form.SchemaForm;
   disabled: boolean;
   datasetsBreadcrumb?: Breadcrumb[];
+  rights: Rights;
 }
 
 function isViewModel(vm: ViewModel | NotFoundViewModel): vm is ViewModel {
@@ -169,7 +170,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
                 ? this.getNavLinks(projectForm, rights, queryParams)
                 : undefined,
               disabled: projectForm.form.options?.disabled && !rights?.ictAdmin,
-              datasetsBreadcrumb: this.getDatasetsBreadcrumb(projectForm.form)
+              datasetsBreadcrumb: this.getDatasetsBreadcrumb(projectForm.form),
+              rights
             };
           })
         )

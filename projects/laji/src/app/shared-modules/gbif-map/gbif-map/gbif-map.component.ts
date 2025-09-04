@@ -4,8 +4,10 @@ import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { PlatformService } from '../../../root/platform.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'laji-gbif-map',
@@ -15,7 +17,7 @@ import { PlatformService } from '../../../root/platform.service';
 export class GbifMapComponent implements OnChanges, OnDestroy {
   @ViewChild(LajiMapComponent, { static: true }) mapComponent?: LajiMapComponent;
 
-  @Input() taxon!: Taxonomy;
+  @Input() taxon!: Taxon;
   @Input() height = '605px';
   @Input() set mapOptions(mapOptions: Options) {
     this._mapOptions = {
@@ -132,7 +134,7 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
       strict: true
     };
 
-    for (const parent of ['kingdom', 'phylum', 'class', 'order', 'family', 'genus']) {
+    for (const parent of ['kingdom', 'phylum', 'class', 'order', 'family', 'genus'] as const) {
       if (this.taxon.parent?.[parent]) {
         params[parent] = this.taxon.parent[parent].scientificName;
       }

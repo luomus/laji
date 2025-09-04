@@ -19,8 +19,8 @@
 </div>
 <div>
   <laji-select
-    [(selected)]="query.keyword"
-    (selectedChange)="onQueryChange()"
+    [(ngModel)]="query.keyword"
+    (ngModelChange)="onQueryChange()"
     [multiple]="true"
     [useFilter]="false"
     [title]="'observation.form.sampleDataset' | translate"
