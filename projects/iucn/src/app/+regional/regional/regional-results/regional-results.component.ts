@@ -4,11 +4,13 @@ import { tap, map, switchMap } from 'rxjs/operators';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
 import { RegionalFilterQuery, RegionalService } from '../../../iucn-shared/service/regional.service';
 import { RegionalListType } from '../regional.component';
-import { TaxonService } from '../../../iucn-shared/service/taxon.service';
+import { ChecklistVersion, TaxonFilters, TaxonQuery, TaxonService } from '../../../iucn-shared/service/taxon.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Taxonomy } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
 import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 export type RedListRegionalStatusData = {
   [area: string]: number|string;
@@ -27,17 +29,18 @@ export type RedListRegionalStatusData = {
 export class RegionalResultsComponent implements OnChanges, OnDestroy {
   @Input() type: RegionalListType = 'status';
   @Input() query: RegionalFilterQuery = {};
-  @Input() checklist?: string;
+  @Input() checklist?: ChecklistVersion;
 
   @Output() queryChange = new EventEmitter<RegionalFilterQuery>();
 
   statusEvaluationYear?: string;
 
   cache: {[key: string]: any} = {};
-  baseQuery = {};
+  baseQuery: TaxonQuery = {};
+  baseFilters: TaxonFilters = {};
 
   redListStatusQuery$?: Observable<RedListRegionalStatusData[]>;
-  speciesQuery$?: Observable<Taxonomy[]>;
+  speciesQuery$?: Observable<Taxon[]>;
 
   speciesPageSize = 100;
   speciesPage = 1;
@@ -101,10 +104,7 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
   }
 
   changeSpeciesPage(page: number) {
-    this.changeQuery(
-      'page',
-      '' + page
-    );
+    this.changeQuery('page', page);
   }
 
   download(event: {type: string; fields: ISelectFields[]}) {
@@ -121,12 +121,13 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
   private initQueries() {
     this.baseQuery = Util.removeFromObject({
       checklistVersion: this.checklist,
-      id: this.query.taxon,
-      redListEvaluationGroups: this.query.redListGroup,
-      'latestRedListEvaluation.anyHabitat': this.query.habitat,
-      'latestRedListEvaluation.threatenedAtArea': (this.query.threatenedAtArea || []).join(','),
-      hasLatestRedListEvaluation: true,
       includeHidden: true
+    });
+    this.baseFilters = Util.removeFromObject({
+      redListEvaluationGroups: this.query.redListGroup,
+      'latestRedListEvaluation.anyHabitatSearchStrings': this.query.habitat,
+      'latestRedListEvaluation.threatenedAtArea': this.query.threatenedAtArea || [],
+      hasLatestRedListEvaluation: true,
     });
 
     this.selectedSpeciesFields = this.query.speciesFields ? this.query.speciesFields.split(',') : [];
@@ -141,15 +142,14 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
     const cacheKey = 'status';
     const statusField = 'latestRedListEvaluation.threatenedAtArea';
 
-    const query = {
-      ...this.baseQuery
-    };
+    const query = this.baseQuery;
+    const filters = this.baseFilters;
 
-    const currentQuery = JSON.stringify(query);
-    this.redListStatusQuery$ = this.hasCache(cacheKey, currentQuery) ?
+    const currentQueryAndFilters = JSON.stringify({ taxon: this.query.taxon, ...query, ...filters });
+    this.redListStatusQuery$ = this.hasCache(cacheKey, currentQueryAndFilters) ?
       of(this.cache[cacheKey]) :
-      this.taxonService.getRedListStatusQuery(query, lang, statusField, this.resultService.rootGroups).pipe(
-        tap(data => this.setCache(cacheKey, data, currentQuery))
+      this.taxonService.getRedListStatusQuery(this.query.taxon, query, filters, lang, statusField, this.resultService.rootGroups).pipe(
+        tap(data => this.setCache(cacheKey, data, currentQueryAndFilters))
       );
   }
 
@@ -157,7 +157,7 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
     return [
       'id',
       'scientificName',
-      'vernacularName.' + this.translate.currentLang,
+      'vernacularName',
       'cursiveName',
       'redListStatusesInFinland',
       'latestRedListEvaluation.threatenedAtArea',
@@ -174,7 +174,7 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
   private getSpeciesQuery() {
     return {
       ...this.baseQuery,
-      page: this.query.page || '1',
+      page: this.query.page || 1,
       selectedFields: this.getSpeciesFields().join(',')
     };
   }
@@ -182,23 +182,23 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
   private initSpeciesListQuery(): void  {
     const cacheKey = 'species';
     const query = this.getSpeciesQuery();
+    const filters = this.baseFilters;
 
-    const currentQuery = JSON.stringify(query);
-    this.speciesQuery$ = this.hasCache(cacheKey, currentQuery) ?
+    const currentQueryAndFilters = JSON.stringify({ taxon: this.query.taxon, ...query, ...filters });
+    this.speciesQuery$ = this.hasCache(cacheKey, currentQueryAndFilters) ?
       of(this.cache[cacheKey]) :
-      this.taxonService.getSpeciesList(query, this.translate.currentLang, this.speciesPageSize).pipe(
+      this.taxonService.getSpeciesList(this.query.taxon, query, filters, this.speciesPageSize).pipe(
         tap(data => {
           this.speciesPage = data.currentPage;
           this.speciesCount = data.total;
         }),
         map(data => data.results),
-        tap(data => this.setCache(cacheKey, data, currentQuery))
+        tap(data => this.setCache(cacheKey, data, currentQueryAndFilters))
       );
   }
 
-  private getAllSpecies(): Observable<Taxonomy[]> {
-    const query = this.getSpeciesQuery();
-    return this.taxonService.getAllSpecies(query, this.translate.currentLang);
+  private getAllSpecies(): Observable<Taxon[]> {
+    return this.taxonService.getAllSpecies(this.getSpeciesQuery(), this.baseFilters);
   }
 
   private setCache(key: string, data: any, query: string) {

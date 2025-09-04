@@ -69,17 +69,17 @@
     >
       <ul class="br-list">
         <li>
-          <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id}">
+          <a [routerLink]="'/observation/map' | localize" [queryParams]="{taxonId: taxon.id}">
             {{ 'taxonomy.browse' | translate }}
           </a>
         </li>
         <li [hidden]="!taxon.hasChildren">
-          <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id)}">
+          <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{taxonId: (taxon.id)}">
             {{ 'taxonomy.browse.downloadSpecies' | translate }}
           </a>
         </li>
         <li [hidden]="!taxon.hasChildren">
-          <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id), onlyFinnish: true}">
+          <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{taxonId: (taxon.id), onlyFinnish: true}">
             {{ 'taxonomy.browse.downloadSpeciesFinnish' | translate }}
           </a>
         </li>

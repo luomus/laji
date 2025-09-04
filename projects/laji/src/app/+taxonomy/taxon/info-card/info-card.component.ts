@@ -12,7 +12,6 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { Taxonomy, TaxonomyDescription } from '../../../shared/model/Taxonomy';
 import { GalleryService } from '../../../shared/gallery/service/gallery.service';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Image } from '../../../shared/gallery/image-gallery/image.interface';
@@ -22,7 +21,10 @@ import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderService } from '../../../shared/service/header.service';
-import { multiLangDescriptionToLang } from './shared/service/taxon-description-utils';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
+type TaxonDescription = components['schemas']['Content'][number];
 
 const TAB_ORDER = [ 'overview', 'images', 'identification', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];
@@ -40,7 +42,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   private tabOrder = TAB_ORDER;
   loadedTabs: LoadedElementsStore = new LoadedElementsStore(this.tabOrder);
 
-  @Input({ required: true }) taxon!: Taxonomy;
+  @Input({ required: true }) taxon!: Taxon;
   @Input({ required: true }) isFromMasterChecklist!: boolean;
   @Input({ required: true }) context!: string;
   @Input() set activeTab(tab: InfoCardTabType) {
@@ -54,8 +56,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   selectedTab = 'overview'; // stores which tab index was provided by @Input
 
-  taxonDescription!: Array<TaxonomyDescription>;
-  taxonImages!: Array<Image>;
+  taxonDescription!: TaxonDescription[];
+  taxonImages!: Image[];
 
   hasImageData?: boolean;
   hasBiologyData?: boolean;
@@ -114,16 +116,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
         }
         return img;
       });
-      this.taxonDescription = multiLangDescriptionToLang(
-        this.taxon.descriptions || [], this.translate.currentLang
-      ).reduce((prev: TaxonomyDescription[], current: TaxonomyDescription) => {
-        if (current.title) {
-          prev.push(current);
-        }
-        return prev;
-      }, []);
-
-      // this.hasBiologyData = !!this.taxon.primaryHabitat || !!this.taxon.secondaryHabitats || this.taxonDescription.length > 0;
+      this.taxonDescription = (this.taxon.descriptions || []).filter(desc => desc.title);
       this.hasBiologyData = this.taxonDescription.length > 0;
       this.isEndangered = this.getIsEndangered(this.taxon);
       this.isInvasive = this.taxon.invasiveSpecies;
@@ -215,7 +208,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     ).pipe(map(res => this.galleryService.getImages(res, limit)));
   }
 
-  private getIsEndangered(taxon: Taxonomy): boolean {
+  private getIsEndangered(taxon: Taxon): boolean {
     if (!taxon.latestRedListStatusFinland) {
       return false;
     }

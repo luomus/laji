@@ -1,41 +1,24 @@
-import {gql} from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { GraphQLService } from '../../graph-ql/service/graph-ql.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 export const MAX_TAXA_SIZE = 30;
 
 @Injectable()
 export class HorizontalChartDataService {
   constructor(
-    private graphQLService: GraphQLService
+    private api: LajiApiClientBService
   ) { }
 
 
-  getChartDataLabels(ids: string[]): Observable<{[key: string]: {vernacularName: string; scientificName: string}}> {
+  getChartDataLabels(ids: string[]): Observable<Record<string, {vernacularName: string; scientificName: string}>> {
     if (ids.length === 0) { return of({}); }
-    const params: string[] = [];
-    const queryParts: string[] = [];
-    const variables: Record<string, string> = {};
-    for (let i = 0; i < MAX_TAXA_SIZE; i++) {
-      const key = `t${i}`;
-      params.push(`$${key}: ID = ""`);
-      queryParts.push(`r${i}: taxon(id: $${key}) { vernacularName, scientificName }`);
-      variables[key] = ids[i];
-    }
-    return this.graphQLService.query<{[key: string]: {vernacularName: string; scientificName: string}}>({
-      query: gql`
-      query(${params.join(', ')}) {
-        ${queryParts.join('\n')}
-      }
-      `,
-      fetchPolicy: 'no-cache',
-      errorPolicy: 'all',
-      variables
-    }).pipe(
-      map(({data}) => data),
+    return this.api.get('/taxa', { query: { id: ids.join(','), pageSize: ids.length, selectedFields: 'id,vernacularName,scientificName' } }).pipe(
+      map(({ results }) => results.reduce((idToNames, {id, vernacularName, scientificName }) => {
+        idToNames[id] = { vernacularName, scientificName };
+        return idToNames;
+      }, {} as Record<string, {vernacularName: string; scientificName: string}>))
     );
   }
 }

@@ -33,9 +33,9 @@ const licenseLinkMap: Record<ImageModel.IntellectualRightsEnum, string> = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageModalOverlayComponent {
-  public img!: Image;
+  public img!: Partial<Image>;
   public currentImageIndex!: number;
-  public modalImages!: Image[];
+  public modalImages!: Partial<Image>[];
   public showLinkToSpeciesCard!: boolean;
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() showModal = new EventEmitter<boolean>();

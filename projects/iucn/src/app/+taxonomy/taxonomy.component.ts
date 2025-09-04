@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { ChecklistYear, DEFAULT_YEAR, ResultService } from '../iucn-shared/service/result.service';
+import { ChecklistVersion } from '../iucn-shared/service/taxon.service';
 
 @Component({
   selector: 'iucn-taxonomy',
@@ -17,7 +18,7 @@ import { ChecklistYear, DEFAULT_YEAR, ResultService } from '../iucn-shared/servi
 export class TaxonomyComponent implements OnInit, OnDestroy {
 
   taxon!: string;
-  checklist!: string;
+  checklist!: ChecklistVersion;
   year!: ChecklistYear;
   private subParam!: Subscription;
 

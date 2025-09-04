@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Form } from '../../../shared/model/Form';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 interface State {
   taxon: string | undefined;
@@ -32,7 +32,7 @@ export class WaterBirdCountResultComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private taxonApi: TaxonomyApi,
+    private api: LajiApiClientBService,
     private translate: TranslateService
   ) { }
 
@@ -42,14 +42,12 @@ export class WaterBirdCountResultComponent implements OnInit {
   }
 
   getTaxonOptions$(): Observable<{ label: string; value: string }[]> {
-    return this.taxonApi.taxonomyList(
-      this.translate.currentLang,
-      {
+    return this.api.post('/taxa', { query: {
         selectedFields: 'id,vernacularName,scientificName',
-        taxonSets: 'MX.taxonSetWaterbirdWaterbirds',
         pageSize: 10000
-      }
-    ).pipe(
+      } }, {
+        taxonSets: 'MX.taxonSetWaterbirdWaterbirds',
+      }).pipe(
       map(res => res.results),
       map(taxa => taxa.map(t => ({
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),

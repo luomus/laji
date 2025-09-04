@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@a
 import { Form } from '../../../shared/model/Form';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 enum Tabs {
   chart = 'chart',
@@ -51,8 +51,8 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private taxonApi: TaxonomyApi,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private api: LajiApiClientBService
   ) { }
 
   ngOnInit(): void {
@@ -70,16 +70,16 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
   }
 
   getTaxonOptions$(): Observable<{ label: string; value: string }[]> {
-    return this.taxonApi.taxonomyList(
-      this.translate.currentLang,
-      {
+    return this.api.post('/taxa', {
+      query: {
         selectedFields: 'id,vernacularName,scientificName',
-        informalGroupFilters: 'MVL.1',
-        taxonRanks: 'MX.species',
-        onlyFinnish: true,
         pageSize: 10000
       }
-    ).pipe(
+    }, {
+      finnish: true,
+      informalTaxonGroups: 'MVL.1',
+      taxonRank: 'MX.species'
+    }).pipe(
       map(res => res.results),
       map(taxa => taxa.map(t => ({
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),
