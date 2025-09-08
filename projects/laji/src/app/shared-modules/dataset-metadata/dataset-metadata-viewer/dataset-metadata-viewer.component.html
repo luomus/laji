@@ -124,7 +124,7 @@
     </div>
     <ng-container *ngIf="collectionCounts$ | async; let collectionCounts; else countsLoading">
       <div class="panel panel-default description-panel"
-        *ngIf="collectionCounts.specimen || collectionCounts.typeSpecimen || collectionCounts.observation"
+        *ngIf="collectionCounts.specimen || collectionCounts.typeSpecimen || collectionCounts.observation || collection.dataDownloadURL"
         laji-panel
         [title]="'collection.viewer.group.browse' | translate"
         [open]="true"
@@ -174,6 +174,13 @@
             class="glyphicon glyphicon-eye-open selection-link">
           </i>
         </a>
+        </laji-dataset-metadata-viewer-item>
+        <laji-dataset-metadata-viewer-item *ngIf="collection.dataDownloadURL" [title]="'collection.dataDownloadURL' | translate">
+          <ul class="separated-list">
+            <li *ngFor="let url of collection.dataDownloadURL">
+              <a [href]="url" target="_blank" rel="noopener">{{ url }}</a>
+            </li>
+          </ul>
         </laji-dataset-metadata-viewer-item>
       </div>
     </ng-container>

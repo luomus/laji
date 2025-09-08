@@ -127,6 +127,7 @@
   "collection.count.specimen": "Näytteiden lkm",
   "collection.count.typeSpecimen": "Tyyppinäytteiden lkm",
   "collection.coverageBasis": "Aineiston kattavuus",
+  "collection.dataDownloadURL": "Aineiston lataus",
   "collection.dataNotes": "Datan muistiinpanot",
   "collection.dataQuality": "Datan laatu",
   "collection.dataQualityDescription": "Datan laadun kuvaus",
