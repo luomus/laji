@@ -14000,7 +14000,7 @@ export interface components {
             type: "exactMatches" | "partialMatches" | "likelyMatches";
             key: string;
             value: string;
-        }[];
+        };
     };
     responses: never;
     parameters: never;
