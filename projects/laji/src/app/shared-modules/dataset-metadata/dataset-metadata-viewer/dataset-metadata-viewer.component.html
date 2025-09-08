@@ -176,7 +176,7 @@
         </a>
         </laji-dataset-metadata-viewer-item>
         <laji-dataset-metadata-viewer-item *ngIf="collection.dataDownloadURL" [title]="'collection.dataDownloadURL' | translate">
-          <ul class="separated-list">
+          <ul>
             <li *ngFor="let url of collection.dataDownloadURL">
               <a [href]="url" target="_blank" rel="noopener">{{ url }}</a>
             </li>
