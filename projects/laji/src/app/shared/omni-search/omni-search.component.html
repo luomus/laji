@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="taxon-match">
-      <h3><laji-taxon-name [capitalizeName]="true" [taxon]="taxon.payload"></laji-taxon-name></h3>
+      <h3><laji-taxon-name [capitalizeName]="true" [taxon]="taxon"></laji-taxon-name></h3>
 
       <div class="d-flex flex-gap-3">
         <div class="taxon-match-first-col">
@@ -50,7 +50,7 @@
         <div class="taxon-match-second-col d-flex flex-gap-2">
           <div>
             <div>
-              {{ 'omniSearch.rank' | translate }}: {{ taxon.payload.taxonRankId | label }}
+              {{ 'omniSearch.rank' | translate }}: {{ taxon.taxonRankId | label }}
             </div>
             <div>
               {{ 'omniSearch.groups' | translate }}: {{ taxon.informalTaxonGroups | multiLang | values }}

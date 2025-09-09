@@ -16,10 +16,11 @@ import {
   ViewChild
 } from '@angular/core';
 import { Observable, of, of as ObservableOf, Subscription, timer } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
-import { Autocomplete } from '../../shared/model/Autocomplete';
-import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+
+type TaxonAutocompleteResponse = components['schemas']['TaxonAutocompleteResponse'];
 
 @Component({
   selector: 'laji-taxon-autocomplete',
@@ -47,13 +48,13 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() whiteList?: string[];
   @Input() blackList?: string[];
   @Output() finish = new EventEmitter<void>();
-  @Output() taxonSelect = new EventEmitter<Autocomplete>();
+  @Output() taxonSelect = new EventEmitter<TaxonAutocompleteResponse>();
 
   @ViewChild('input') inputEl!: ElementRef;
 
   dataSource: Observable<any>;
   value: string | undefined = '';
-  result?: Autocomplete;
+  result?: TaxonAutocompleteResponse;
   loading = false;
   taxonSub?: Subscription;
 
@@ -61,8 +62,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   private destroyBlurListener?: () => void;
 
   constructor(
-    private lajiApi: LajiApiService,
-    private translateService: TranslateService,
+    private api: LajiApiClientBService,
     private cdr: ChangeDetectorRef,
     private taxonAutocompleteService: TaxonAutocompleteService,
     private renderer: Renderer2
@@ -111,46 +111,44 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  getTaxa(token: string, onlyExact = false): Observable<any> {
-    if (!token || token.length < this.tokenMinLength) {
+  getTaxa(query: string, onlyExact = false): Observable<any> {
+    if (!query || query.length < this.tokenMinLength) {
       return of([]);
     }
     this.loading = true;
     this.cdr.markForCheck();
     return timer(onlyExact ? this.index * 100 : 0).pipe(
-      switchMap(() => this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
-        q: token,
-        limit: '' + this.limit,
-        includePayload: true,
-        lang: this.translateService.currentLang,
-        matchType: LajiApi.AutocompleteMatchType.partial,
+      switchMap(() => this.api.get('/autocomplete/taxa', { query: {
+        query,
+        limit: this.limit,
+        matchType: 'partial',
         informalTaxonGroup: this.informalTaxonGroup,
         excludeNameTypes: this.excludeNameTypes,
         onlyFinnish: this.onlyFinnish,
         onlyInvasive: this.onlyInvasive,
         onlySpecies: this.onlySpecies
-      })),
-      map(data => {
+      }})),
+      map(({ results }) => {
         if (this.whiteList) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          data = data.filter(item => this.whiteList!.includes(item.key as any));
+          results = results.filter(item => this.whiteList!.includes(item.key as any));
         }
         if (this.blackList) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          data = data.filter(item => !this.blackList!.includes(item.key as any));
+          results = results.filter(item => !this.blackList!.includes(item.key as any));
         }
         if (onlyExact) {
-          if (data[0] && data[0].payload.matchType && data[0].payload.matchType === 'exactMatches' && (
-            !data[1] || data[1].payload.matchType && data[1].payload.matchType !== 'exactMatches'
+          if (results[0] && results[0].type && results[0].type === 'exactMatches' && (
+            !results[1] || results[1].type && results[1].type !== 'exactMatches'
           )) {
-            return data[0];
+            return results[0];
           }
           return {};
         }
-        return data.map(item => {
+        return results.map(item => {
           let groups = '';
-          if (item.payload && item.payload.informalTaxonGroups) {
-            groups = item.payload.informalTaxonGroups.reduce((prev: string, curr: any) => prev + ' ' + curr.id, groups);
+          if (item.informalGroups) {
+            groups = item.informalGroups.reduce((prev: string, curr: any) => prev + ' ' + curr.id, groups);
           }
           (item as any)['groups'] = groups;
           return item;
@@ -193,11 +191,12 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
     if (!this.allowEmpty && !this.value) {
       return;
     }
-    this.onTaxonSelect(<Autocomplete>{key: '', value: this.value, payload: {
-        key: '',
-        cursiveName: false,
-        vernacularName: this.value
-      }});
+    this.onTaxonSelect(<TaxonAutocompleteResponse>{
+      key: '',
+      value: this.value,
+      cursiveName: false,
+      vernacularName: this.value
+    });
   }
 
 }

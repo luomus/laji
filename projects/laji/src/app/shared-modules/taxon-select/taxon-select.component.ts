@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component,
 EventEmitter, Input, Output, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
-import { distinctUntilChanged, switchMap, take } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
-import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
+import { distinctUntilChanged, map, switchMap, take } from 'rxjs/operators';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 
 @Component({
@@ -64,8 +63,7 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
   public screenWidthSub?: Subscription;
 
   constructor(
-    private lajiApi: LajiApiService,
-    private translate: TranslateService,
+    private api: LajiApiClientBService,
     private cdr: ChangeDetectorRef,
     private browserService: BrowserService,
     private taxonAutocompleteService: TaxonAutocompleteService
@@ -163,13 +161,11 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
     this.typeahead.nativeElement.blur();
   }
 
-  public getTaxa(token: string): Observable<any> {
-    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
-      q: token,
-      includePayload: true,
-      limit: '' + this.typeaheadLimit,
-      lang: this.translate.currentLang,
+  public getTaxa(query: string) {
+    return this.api.get('/autocomplete/taxa', { query: {
+      query,
+      limit: this.typeaheadLimit,
       ...this.searchParams
-    });
+    } }).pipe(map(({results}) => results));
   }
 }

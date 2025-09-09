@@ -41,6 +41,9 @@ export class SpecialFriendComponent implements OnInit {
     this.friendsService.allFriends()
       .subscribe((friends) => {
         friends.forEach(friend => {
+          if (!friend.value) {
+            return;
+          }
           validValues.push(friend.value);
           validIds.push(friend.key);
         });

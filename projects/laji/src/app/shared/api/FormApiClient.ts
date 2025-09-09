@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { of } from 'rxjs';
 import { TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
 
-const AUTOCOMPLETE_TAXON_RESOURCE = '/autocomplete/taxon';
+const AUTOCOMPLETE_TAXON_RESOURCE = '/autocomplete/taxa';
 const MEDIA_RESOURCES = ['/images', '/audio'];
 
 @Injectable()
@@ -84,7 +84,7 @@ export class FormApiClient {
       }
     ).pipe(
       switchMap(response => resource === AUTOCOMPLETE_TAXON_RESOURCE ?
-        this.taxonAutocompleteService.getInfo(response.body as any[], queryParameters['q']).pipe(
+        this.taxonAutocompleteService.getInfo(response.body as any[], queryParameters['query']).pipe(
           map(taxa => ({
             ...response,
             body: taxa

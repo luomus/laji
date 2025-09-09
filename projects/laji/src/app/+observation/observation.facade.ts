@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, distinctUntilChanged, map, share, switchMap, take, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { distinctUntilChanged, map, switchMap, take, tap } from 'rxjs/operators';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
 import { BrowserService } from '../shared/service/browser.service';
-import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
-import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../shared/service/user.service';
-import { Autocomplete } from '../shared/model/Autocomplete';
 import { FooterService } from '../shared/service/footer.service';
-import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { ObservationDataService } from './observation-data.service';
 import { SearchQueryService } from './search-query.service';
 import { Util } from '../shared/service/util.service';
 import { LocalStorage } from 'ngx-webstorage';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type TaxonAutocompleteResponse = components['schemas']['TaxonAutocompleteResponse'];
 
 interface IPersistentState {
   showSearchButtonInfo: boolean;
@@ -32,7 +32,7 @@ interface IObservationState extends IPersistentState {
   loadingUnits: boolean;
 }
 
-interface ITaxonAutocomplete extends Autocomplete {
+export interface ITaxonAutocomplete extends TaxonAutocompleteResponse {
   groups: string;
 }
 
@@ -103,8 +103,7 @@ export class ObservationFacade {
 
   constructor(
     private browserService: BrowserService,
-    private lajiApi: LajiApiService,
-    private translateService: TranslateService,
+    private api: LajiApiClientBService,
     private userService: UserService,
     private footerService: FooterService,
     private observationDataService: ObservationDataService
@@ -174,19 +173,17 @@ export class ObservationFacade {
     this.updatePersistentState({...this.persistentState, showSearchButtonInfo: false});
   }
 
-  taxaAutocomplete(token: string, informalTaxonGroupId: string[]|undefined, limit: number): Observable<ITaxonAutocomplete[]> {
-    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
-      q: token,
-      limit: '' + limit,
-      includePayload: true,
-      lang: this.translateService.currentLang,
+  taxaAutocomplete(query: string, informalTaxonGroupId: string[] | undefined, limit: number): Observable<ITaxonAutocomplete[]> {
+    return this.api.get('/autocomplete/taxa', { query: {
+      query,
+      limit,
       informalTaxonGroup: informalTaxonGroupId?.toString(),
       excludeNameTypes: 'MX.hasMisspelledName,MX.hasMisappliedName'
-    } as LajiApi.Query.AutocompleteQuery).pipe(
-      map<Autocomplete[], ITaxonAutocomplete[]>(data => data.map(item => {
+    } }).pipe(
+      map(data => data.results.map(item => {
         let groups = '';
-        if (item.payload && item.payload.informalTaxonGroups) {
-          groups = item.payload.informalTaxonGroups.reduce((prev: string, curr: any) => prev + ' ' + curr.id, groups);
+        if (item.informalGroups) {
+          groups = item.informalGroups.reduce((prev: string, curr: any) => prev + ' ' + curr.id, groups);
         }
         return {...item, groups};
       }))
@@ -215,16 +212,6 @@ export class ObservationFacade {
       map(data => data.speciesCount!),
       tap(countTaxa => this.updateState({..._state, loadingTaxa: false, countTaxa})),
       tap(() => this.browserService.triggerResizeEvent())
-    );
-  }
-
-  private count(src: Observable<any>, loadingKey: keyof IObservationState, countKey:  keyof IObservationState) {
-    return src.pipe(
-      map(result => result.total),
-      catchError(() => of(null)),
-      distinctUntilChanged(),
-      tap((cnt) => this.updateState({..._state, [loadingKey]: false, [countKey]: cnt})),
-      share()
     );
   }
 
