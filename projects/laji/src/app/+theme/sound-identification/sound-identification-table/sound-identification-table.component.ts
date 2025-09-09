@@ -1,9 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, TemplateRef, Input } from '@angular/core';
 import { IdentificationData } from '../sound-identification-api';
 import { Observable } from 'rxjs';
-import { LajiApi, LajiApiService } from 'projects/laji/src/app/shared/service/laji-api.service';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
   selector: 'laji-sound-identification-table',
@@ -19,17 +19,11 @@ export class SoundIdentificationTableComponent implements OnInit {
   @Input() loading = false;
 
   columns!: DatatableColumn[];
-  vernacularCache: {
-    [key: string]: Observable<{
-      'fi'?: string;
-      'en'?: string;
-      'sv'?: string;
-    }>;
-  } = {};
+  vernacularCache: Record<string, Observable<string>> = {};
   lang!: string;
 
   constructor(
-    private lajiApiService: LajiApiService,
+    private api: LajiApiClientBService
   ) { }
 
   ngOnInit() {
@@ -61,15 +55,12 @@ export class SoundIdentificationTableComponent implements OnInit {
 
   getVernacularName(scientificName: string) {
     if (!this.vernacularCache[scientificName]) {
-      this.vernacularCache[scientificName] = this.lajiApiService
-        .get(LajiApi.Endpoints.autocomplete, 'taxon',
-          {
-            q: scientificName,
-            lang: 'multi',
-            includePayload: true,
-            matchType: LajiApi.AutocompleteMatchType.exact
-          } as LajiApi.Query.AutocompleteQuery).pipe(
-          map(data => data[0]?.payload.vernacularName),
+      this.vernacularCache[scientificName] = this.api.get('/autocomplete/taxa', { query: {
+            query: scientificName,
+            matchType: 'exact',
+        selectedFields: 'vernacularName'
+      }}).pipe(
+          map(data => data.results[0]?.vernacularName),
           shareReplay(1)
         );
     }

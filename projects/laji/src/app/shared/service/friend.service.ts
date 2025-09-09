@@ -1,21 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Autocomplete } from '../model/Autocomplete';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { UserService } from './user.service';
-import { LajiApi, LajiApiService } from './laji-api.service';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import type { paths } from 'projects/laji-api-client-b/generated/api';
+
+type FriendsAutocompleteResponse = paths['/autocomplete/friends']['get']['responses']['200']['content']['application/json']['results'];
 
 @Injectable({providedIn: 'root'})
 export class FriendService {
 
-  private friends?: Autocomplete[];
+  private friends?: FriendsAutocompleteResponse;
 
   constructor(
-    private lajiApi: LajiApiService,
+    private api: LajiApiClientBService,
     private userService: UserService
   ) { }
 
-  allFriends(): Observable<Autocomplete[]> {
+  allFriends(): Observable<FriendsAutocompleteResponse> {
     if (this.friends) {
       return ObservableOf(this.friends);
     }
@@ -25,9 +27,9 @@ export class FriendService {
         if (!login) {
           return ObservableOf([]);
         }
-        return this.lajiApi
-          .get(LajiApi.Endpoints.autocomplete, 'friends', {includeSelf: true, limit: '100', personToken: this.userService.getToken()})
-          .pipe(tap(data => this.friends = data));
+        return this.api.get('/autocomplete/friends', { query: {
+          query: '', pageSize: 1000, personToken: this.userService.getToken()
+        } }).pipe(map(({results}) => results), tap(data => this.friends = data));
       })
     );
   }
