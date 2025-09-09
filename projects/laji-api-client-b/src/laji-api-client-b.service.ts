@@ -125,7 +125,16 @@ export class LajiApiClientBService {
   }
 
   private getRequestOptions(queryParams: any, requestBody: any, lang: string) {
-    return { params: queryParams, body: requestBody, headers: {
+    return {
+      params: Object.keys((queryParams || {})).reduce((filteredQueryParams, key) => {
+        const param = (queryParams || {})[key];
+        if (param === undefined) {
+          return filteredQueryParams;
+        }
+        filteredQueryParams[key] = queryParams[key];
+        return filteredQueryParams;
+      }, {} as any),
+      body: requestBody, headers: {
 			'API-Version': '1',
 			'Accept-Language': lang
 		} };
