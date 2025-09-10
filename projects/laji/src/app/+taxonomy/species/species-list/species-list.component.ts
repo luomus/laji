@@ -80,7 +80,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.loading = true;
 
-    this.subQueryUpdate = this.search.queryUpdated$.subscribe(
+    this.subQueryUpdate = this.search.searchUpdated$.subscribe(
       () => {
         this.search.listOptions.page = 1;
         this.refreshSpeciesList();

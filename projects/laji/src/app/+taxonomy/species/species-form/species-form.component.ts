@@ -51,7 +51,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
     this.finnishCheckboxValue = this.search.filters.finnish !== undefined;
 
-    this.subUpdate = this.search.queryUpdated$.pipe(startWith(undefined)).subscribe(
+    this.subUpdate = this.search.searchUpdated$.pipe(startWith(undefined)).subscribe(
       () => {
         this.taxonSelectFilters = {
           informalTaxonGroups: this.search.filters.informalTaxonGroups,
@@ -70,7 +70,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
   private syncTypeOfOccurenceInFinland() {
     this.typeOfOccurrenceInFinlandInclusions = this.search.filters.typeOfOccurrenceInFinland?.filter(v => !v.startsWith('!'));
-    this.typeOfOccurrenceInFinlandExclusions = this.search.filters.typeOfOccurrenceInFinland?.filter(v => v.startsWith('!')).map(v => v.slice(1));
+    this.typeOfOccurrenceInFinlandExclusions = this.search.filters.typeOfOccurrenceInFinland?.filter(v => v.startsWith('!')).map(s => s.slice(1));
   }
 
   onFinnishCheckboxValueChange(value: boolean) {

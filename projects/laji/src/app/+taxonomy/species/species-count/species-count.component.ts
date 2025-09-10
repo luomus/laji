@@ -26,7 +26,7 @@ export class SpeciesCountComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subQueryUpdate = this.search.queryUpdated$.subscribe(
+    this.subQueryUpdate = this.search.searchUpdated$.subscribe(
       () => {
         this.updateCount();
       }

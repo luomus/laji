@@ -33,7 +33,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.refreshImages();
 
-    this.subQueryUpdate = this.search.queryUpdated$.subscribe(
+    this.subQueryUpdate = this.search.searchUpdated$.subscribe(
       () => {
         this.search.imageOptions.page = 1;
         this.refreshImages();
