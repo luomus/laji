@@ -205,22 +205,12 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       combineLatest([
         of(this.vm.form.options?.openForm),
         this.userService.isLoggedIn$.pipe(
-          take(1),
-          switchMap(isLoggedIn => {
-            if (isLoggedIn) {
-              return this.userService.user$.pipe(
-                take(1),
-                map(person => person?.emailAddress)
-              );
-            } else {
-              return of(undefined);
-            }
-          })
+          take(1)
         )
       ]).pipe(
         take(1),
-        switchMap(([openForm, emailAddress]) => {
-          if (!openForm) {
+        switchMap(([openForm, isLoggedIn]) => {
+          if (!openForm || isLoggedIn) {
             return of(true);
           }
 
@@ -228,7 +218,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
           const contactEmail = document?.contacts?.[0]?.emailAddress ?? '';
           return this.userService.emailHasAccount(contactEmail).pipe(
             switchMap(exists => {
-              if (exists && !emailAddress) {
+              if (exists) {
                 this.formPersistentState = document;
                 this.tmpID = document.id;
                 this.loginModal.show();
@@ -239,9 +229,6 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
                   }),
                   switchMap(() => of(false))
                 );
-              } else if (exists && emailAddress) {
-                const isUsersEmail = emailAddress?.includes(contactEmail);
-                return of(isUsersEmail);
               } else {
                 this.addContactEmailToDocument(document, contactEmail);
                 return of(true);
