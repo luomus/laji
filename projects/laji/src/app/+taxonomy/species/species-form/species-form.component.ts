@@ -68,6 +68,12 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.search.updateUrl();
   }
 
+  onActiveFiltersChange({ taxonId, filters }: Pick<TaxonomySearch, 'taxonId' | 'filters'>) {
+    this.search.taxonId = taxonId;
+    this.search.filters = filters;
+    this.onSearchChange();
+  }
+
   private syncTypeOfOccurenceInFinland() {
     this.typeOfOccurrenceInFinlandInclusions = this.search.filters.typeOfOccurrenceInFinland?.filter(v => !v.startsWith('!'));
     this.typeOfOccurrenceInFinlandExclusions = this.search.filters.typeOfOccurrenceInFinland?.filter(v => v.startsWith('!')).map(s => s.slice(1));

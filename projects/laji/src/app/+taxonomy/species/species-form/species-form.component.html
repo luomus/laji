@@ -1,8 +1,9 @@
 <div class="observation-active-container">
   <laji-observation-active
     [skip]="['finnish']"
-    [(query)]="search.filters"
-    (queryChange)="onSearchChange()"
+    [filters]="search.filters"
+    [taxonId]="search.taxonId"
+    (searchChange)="onActiveFiltersChange($event)"
     queryType="taxonomy"
   ></laji-observation-active>
 </div>

@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from '@angular/core';
 import { SearchQueryService } from '../../../+observation/search-query.service';
+import { TaxonomySearch } from '../../../+taxonomy/species/service/taxonomy-search.service';
 
-export const createActiveFiltersList = (query: Record<string, any>, skip: string[] = []) => {
-  const keys = Object.keys(query);
+export const createActiveFiltersList = (taxonId: TaxonomySearch['taxonId'], filters: TaxonomySearch['filters'], skip: string[] = []) => {
+  const flattenedSearch = { taxonId, ...filters };
+  const keys = Object.keys(flattenedSearch) as (keyof TaxonomySearch['filters'] | 'taxonId' )[];
   const doubles: Record<string, boolean> = {};
   const doubleKeys: Record<string, string> = {
     teamMember: 'teamMember',
@@ -10,20 +12,20 @@ export const createActiveFiltersList = (query: Record<string, any>, skip: string
     firstLoadedSameOrBefore: 'firstLoaded',
     firstLoadedSameOrAfter: 'firstLoaded'
   };
-  return keys.reduce((result, i) => {
-    if (skip.indexOf(i) > -1 || i.substr(0, 1) === '_') {
+  return keys.reduce((result, key) => {
+    if (skip.indexOf(key) > -1 || key.substr(0, 1) === '_') {
       return result;
     }
-    if (SearchQueryService.hasValue(query[i])) {
+    if (SearchQueryService.hasValue(flattenedSearch[key])) {
       // show only one filter in some cases
-      if (doubleKeys[i]) {
-        if (doubles[doubleKeys[i]]) {
+      if (doubleKeys[key]) {
+        if (doubles[doubleKeys[key]]) {
           return result;
         }
-        doubles[doubleKeys[i]] = true;
+        doubles[doubleKeys[key]] = true;
       }
 
-      result.push({field: i, value: query[i]});
+      result.push({field: key, value: flattenedSearch[key]});
     }
     return result;
   }, [] as ActiveFilter[]);
@@ -39,21 +41,24 @@ export class ObservationActiveComponent {
   @Input() skip: string[] = [];
   @Input() queryType = '';
 
-  @Output() queryChange = new EventEmitter<any>();
+  @Output() searchChange = new EventEmitter<Pick<TaxonomySearch, 'taxonId' | 'filters'>>();
 
   active: ActiveFilter[] = [];
   showList = false;
 
-  private _query: Record<string, any> = {};
+  private _taxonId: TaxonomySearch['taxonId'];
+  private _filters!: TaxonomySearch['filters'];
 
-  @Input()
-  set query(query: Record<string, any>) {
-    this._query = query;
-    this.active = createActiveFiltersList(this.query, this.skip);
+  @Input({ required: true })
+  set taxonId(taxonId: TaxonomySearch['taxonId']) {
+    this._taxonId = taxonId;
+    this.active = createActiveFiltersList(this._taxonId, this._filters, this.skip);
   }
 
-  get query() {
-    return this._query;
+  @Input()
+  set filters(filters: TaxonomySearch['filters']) {
+    this._filters = filters;
+    this.active = createActiveFiltersList(this._taxonId, this._filters, this.skip);
   }
 
   toggleActiveListClick(e: MouseEvent) {
@@ -69,30 +74,34 @@ export class ObservationActiveComponent {
   }
 
   remove(item: ActiveFilter) {
-    const query = {...this.query};
+    if (item.field === 'taxonId') {
+      this.taxonId = undefined;
+    }
+    const filters = { ...this._filters };
 
-    delete query[item.field];
+    delete filters[item.field as keyof TaxonomySearch['filters']];
     if (this.active && this.active.length < 2) {
       this.showList = false;
     }
-    this.queryChange.emit(query);
+    this.searchChange.emit({ taxonId: this.taxonId, filters });
   }
 
   removeAll() {
-    const query = {...this.query};
+    this.taxonId = undefined;
+    const filters = { ...this.filters };
 
-    Object.keys(query).map((key) => {
-      if (this.skip.indexOf(key) === -1 && typeof query[key] !== 'undefined') {
-        delete query[key];
+    (Object.keys(filters) as (keyof TaxonomySearch['filters'])[]).map(key => {
+      if (this.skip.indexOf(key) === -1 && typeof filters[key] !== 'undefined') {
+        delete filters[key];
       }
     });
     this.active = [];
     this.showList = false;
-    this.queryChange.emit(query);
+    this.searchChange.emit({ taxonId: this.taxonId, filters });
   }
 }
 
 interface ActiveFilter {
-  field: string;
+  field: keyof TaxonomySearch['filters'] | 'taxonId';
   value: any;
 }
