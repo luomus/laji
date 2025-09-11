@@ -62,8 +62,11 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     pageSize: 0
   };
 
+  private lastQuery: string | undefined;
   private subQueryUpdate: Subscription | undefined;
   private subFetch: Subscription | undefined;
+
+  private settingsLoaded = false;
 
   constructor(
     private userService: UserService,
@@ -91,6 +94,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
         if (data && data.selected) {
           this.search.listOptions.selected = data.selected;
         }
+        this.settingsLoaded = true;
         this.refreshSpeciesList();
       });
   }
@@ -144,6 +148,18 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   refreshSpeciesList() {
+    const cacheKey = JSON.stringify({
+          taxon: this.search.taxonId,
+          query: this.search.query,
+          filters: this.search.filters,
+          listOptions: this.search.listOptions
+        });
+    if (this.lastQuery === cacheKey || !this.settingsLoaded) {
+      return;
+    }
+    this.lastQuery = cacheKey;
+
+    console.log('refresh');
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }

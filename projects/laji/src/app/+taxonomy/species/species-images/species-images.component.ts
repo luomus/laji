@@ -21,6 +21,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   pageSize = 50;
   total = 0;
 
+  private lastQuery: string | undefined;
   private subFetch?: Subscription;
   private subQueryUpdate?: Subscription;
 
@@ -56,6 +57,15 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   }
 
   refreshImages() {
+    const cacheKey = JSON.stringify({
+      query: this.search.query,
+      imageOptions: this.search.imageOptions
+    });
+    if (this.lastQuery === cacheKey) {
+      return;
+    }
+    this.lastQuery = cacheKey;
+
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
