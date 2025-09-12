@@ -68,6 +68,17 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.search.updateUrl();
   }
 
+  onActiveFiltersChange(active: TaxonomySearch['filters'] & { taxonId?: string }) {
+    const { taxonId, ...filters } = active;
+    this.search.taxonId = taxonId;
+    this.search.filters = filters;
+  }
+
+  /** `laji-observation-active` is agnostic to the shape of the "active filters", thus we need to smuggle taxonId in */
+  getActiveFilters(): TaxonomySearch['filters'] & { taxonId?: string } {
+    return { taxonId: this.search.taxonId, ...this.search.filters };
+  }
+
   private syncTypeOfOccurenceInFinland() {
     this.typeOfOccurrenceInFinlandInclusions = this.search.filters.typeOfOccurrenceInFinland?.filter(v => !v.startsWith('!'));
     this.typeOfOccurrenceInFinlandExclusions = this.search.filters.typeOfOccurrenceInFinland?.filter(v => v.startsWith('!')).map(s => s.slice(1));
