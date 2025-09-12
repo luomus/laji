@@ -174,7 +174,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.requests = {};
     this.updateCount();
     this.updateCsvLink();
-    this.queryHasFilters = createActiveFiltersList(query.taxonId as string, query).length > 0;
+    this.queryHasFilters = createActiveFiltersList(query).length > 0;
   }
 
   get query(): WarehouseQueryInterface {
