@@ -81,7 +81,7 @@ export class TaxonService {
             isRoot: true
           };
         }
-        const node = this.findGroupFromTree(tree, filters[groupField][0]);
+        const node = this.findGroupFromTree(tree, (filters[groupField] as string));
         if (node?.hasIucnSubGroup) {
           return {
             groups: (node.hasIucnSubGroup as RedListTaxonGroup[]).map(v => v.id),
