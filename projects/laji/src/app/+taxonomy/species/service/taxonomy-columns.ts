@@ -103,7 +103,7 @@ export class TaxonomyColumns {
     },
     {
       name: 'occurrenceInFinlandPublications',
-      cellTemplate: 'publicationArray',
+      cellTemplate: 'publication',
       width: 200
     },
     {
