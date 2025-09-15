@@ -90,7 +90,7 @@ const convertOldParamModelToNew = (params: Params): Partial<Record<keyof TaxaSea
     adminStatusFilters: 'administrativeStatuses',
     taxonRanks: 'taxonRank',
     primaryHabitat: 'primaryHabitat.habitat',
-    anyHabitat: 'anyHabitatSearchStrings',
+    anyHabitat: 'primaryHabitatSearchStrings',
     typesOfOccurrenceFilters: 'typeOfOccurrenceInFinland',
   };
 

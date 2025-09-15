@@ -100,7 +100,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
   onHabitatChange(habitats: any) {
     this.search.filters['primaryHabitat.habitat'] = habitats.primaryHabitat;
-    this.search.filters['anyHabitatSearchStrings'] = habitats.anyHabitat;
+    this.search.filters['primaryHabitatSearchStrings'] = habitats.anyHabitat;
     this.onSearchChange();
   }
 
