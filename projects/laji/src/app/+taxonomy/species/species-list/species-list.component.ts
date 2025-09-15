@@ -158,6 +158,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
     this.lastQuery = cacheKey;
+    console.log('lol!');
 
     if (this.subFetch) {
       this.subFetch.unsubscribe();
