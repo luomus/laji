@@ -72,6 +72,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     const { taxonId, ...filters } = active;
     this.search.taxonId = taxonId;
     this.search.filters = filters;
+    this.search.updateUrl();
   }
 
   /** `laji-observation-active` is agnostic to the shape of the "active filters", thus we need to smuggle taxonId in */
