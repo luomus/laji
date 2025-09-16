@@ -72,7 +72,7 @@
 ></laji-metadata-select>
 
 <laji-habitat-select
-  [query]="{ primaryHabitat: search.filters['primaryHabitat.habitat'], anyHabitat: search.filters['anyHabitatSearchStrings'] }"
+  [query]="{ primaryHabitat: search.filters['primaryHabitatSearchStrings'], anyHabitat: search.filters['anyHabitatSearchStrings'] }"
   [info]="'species.info.habitat' | translate"
   (habitatSelect)="onHabitatChange($event)"
 ></laji-habitat-select>
