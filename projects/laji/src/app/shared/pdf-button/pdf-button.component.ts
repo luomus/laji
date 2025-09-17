@@ -4,6 +4,9 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@a
 import * as moment from 'moment';
 import { environment } from 'projects/laji/src/environments/environment';
 import { PlatformService } from '../../root/platform.service';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'laji-pdf-button',
@@ -18,6 +21,7 @@ export class PdfButtonComponent {
 
   constructor(
     private lajiApiService: LajiApiService,
+    private httpClient: HttpClient,
     private platformService: PlatformService,
     private cdr: ChangeDetectorRef
   ) {}
@@ -29,24 +33,39 @@ export class PdfButtonComponent {
     const fileName = this.fileName ?? `${base.replace(/https?:\/\//, '')}.${moment().format('YYYY-MM-DDTHH:mm')}`;
     this.loading = true;
     this.cdr.markForCheck();
+
     if (this.platformService.isBrowser) {
-      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, this.prepareHtml(document.getElementsByTagName('html')[0].innerHTML))
-        .subscribe((response) => {
-          FileSaver.saveAs(response, fileName + '.pdf');
-          this.loading = false;
-          this.cdr.markForCheck();
-        }, () => {
-          this.loading = false;
-          this.cdr.markForCheck();
-        });
+      this.prepareHtml(document.getElementsByTagName('html')[0].innerHTML).pipe(
+        switchMap(processedHtml => this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, processedHtml))
+      ).subscribe(response => {
+        FileSaver.saveAs(response, fileName + '.pdf');
+        this.loading = false;
+        this.cdr.markForCheck();
+      }, () => {
+        this.loading = false;
+        this.cdr.markForCheck();
+      });
     }
   }
 
-  private prepareHtml(s: string) {
+  private prepareHtml(s: string): Observable<string> {
     // Make absolute SVG ids relative
     s = s.replace(/xlink:href=".*?#/g, 'xlink:href="#');
     // Strip scripts
     s = s.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-    return s;
+
+    // Replace local stylesheet link with the styles
+    const stylesheetRegex = /<link.*?href="(styles.*?\.css)".*?>/;
+    const stylesheetFileName = s.match(stylesheetRegex)?.[1];
+
+    if (stylesheetFileName) {
+      return this.httpClient.get(stylesheetFileName, { responseType: 'text' }).pipe(map(styles => {
+        s = s.replace(stylesheetRegex, '<style>' + styles + '</style>');
+        s = s.replace(/<noscript><link.*?href="(styles.*?\.css)".*?><\/noscript>/, '');
+        return s;
+      }));
+    } else {
+      return of(s);
+    }
   }
 }
