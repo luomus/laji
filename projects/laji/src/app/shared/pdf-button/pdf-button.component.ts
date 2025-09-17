@@ -1,6 +1,6 @@
 import * as FileSaver from 'file-saver';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import * as moment from 'moment';
 import { environment } from 'projects/laji/src/environments/environment';
 import { PlatformService } from '../../root/platform.service';

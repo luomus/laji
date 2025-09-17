@@ -14,7 +14,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { UserSettings, UserService } from '../../shared/service/user.service';
-import { of, Observable, Subscription, BehaviorSubject } from 'rxjs';
+import { of, Observable, Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import type { Options, Lang, TileLayersOptions } from '@luomus/laji-map/lib/defs';
 import { Global } from '../../../environments/global';
@@ -59,7 +59,7 @@ export const getPointIconAsCircle = (po: PathOptions & { opacity: number }, feat
       <div class="loading-map loading" *ngIf="loading"></div>
       <ng-content></ng-content>
     </div>
-    <div #printControlWell [ngStyle]="{'display': 'none'}">
+    <div #printControlWell [ngStyle]="{'display': 'none'}" *ngIf="showPrintControl">
       <div class="print-mode-controls" [ngClass]="'print-mode-controls-' + printControlPosition" id="print-controls" #printControl>
         <laji-pdf-button [element]="printElement || lajiMapWrap"></laji-pdf-button>
         <button type="button" class="btn btn-danger mt-2" (click)="togglePrintMode($event)">{{ 'map.front.print.stop' | translate }}</button>
@@ -206,7 +206,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
                 this.printModeSideEffects();
               }, 0);
             }
-            this.loaded.emit(this.map);
+            this.loaded.emit();
           });
         } catch (e) {
           this.logger.error('Map initialization failed', e);
