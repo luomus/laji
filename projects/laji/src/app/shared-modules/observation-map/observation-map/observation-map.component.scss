@@ -74,7 +74,7 @@ $blur: 1px;
   border-radius: 100% !important;
 }
 
-:host ::ng-deep .coordinate-accuracy-cluster {
+.observation-map ::ng-deep .coordinate-accuracy-cluster {
   @include coordinateAccuracy();
   box-shadow: 1px 0 4px 0 rgba(#000, .6);
   height: 26px !important;
@@ -82,7 +82,7 @@ $blur: 1px;
   border-radius: 0 !important;
 }
 
-:host ::ng-deep .leaflet-marker-icon {
+.observation-map ::ng-deep .leaflet-marker-icon {
   &.coordinate-accuracy-0 {
     @include coordinateAccuracy();
   }
@@ -155,4 +155,51 @@ ul {
   border: 1px solid $neutral-6;
   align-self: flex-start;
   margin-top: 2px;
+}
+
+@media print {
+  .observation-map ::ng-deep .coordinate-accuracy-cluster {
+    box-shadow: 1px 0 4px 0 rgba(#000, .6) !important;
+  }
+
+  $print-colors: (
+    "white": #ffffff,
+    "blue": #348cf0,
+    "green": #90dacf,
+    "yellow": #ffffbf,
+    "orange": #fdbf66,
+    "red": #f26840
+  );
+
+  .observation-map ::ng-deep .leaflet-marker-icon {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+
+    @each $colorName, $color in $print-colors {
+      &.print-color-#{$colorName} {
+        background-color: rgba($color, 0.627) !important;
+      }
+    }
+  }
+
+  .observation-map ::ng-deep .leaflet-interactive {
+    @each $colorName, $color in $print-colors {
+      &.print-color-#{$colorName} {
+        stroke: $color !important;
+        fill: $color !important;
+        stroke-width: 1px;
+      }
+    }
+  }
+
+  .observation-map ::ng-deep .legend-circle {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+
+    @each $colorName, $color in $print-colors {
+      &.print-color-#{$colorName} {
+        background-color: $color !important;
+      }
+    }
+  }
 }

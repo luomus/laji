@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { LajiMapComponent } from './laji-map.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { InfoModule } from '../info/info.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     TranslateModule,
-    InfoModule
+    InfoModule,
+    SharedModule
   ],
   declarations: [ LajiMapComponent ],
   exports: [ LajiMapComponent ]

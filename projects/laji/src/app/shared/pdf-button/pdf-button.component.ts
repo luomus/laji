@@ -1,6 +1,6 @@
 import * as FileSaver from 'file-saver';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input } from '@angular/core';
 import * as moment from 'moment';
 import { environment } from 'projects/laji/src/environments/environment';
 import { PlatformService } from '../../root/platform.service';
@@ -15,6 +15,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PdfButtonComponent {
 
+  @Input() element?: HTMLElement;
   @Input() fileName?: string;
 
   public loading = false;
@@ -35,7 +36,13 @@ export class PdfButtonComponent {
     this.cdr.markForCheck();
 
     if (this.platformService.isBrowser) {
-      this.prepareHtml(document.getElementsByTagName('html')[0].innerHTML).pipe(
+      let html: string;
+      if (this.element) {
+        html = document.getElementsByTagName('head')[0].outerHTML + '<body style="padding: 0; margin: 0;">' + this.element.outerHTML + '</body>';
+      } else {
+        html = document.getElementsByTagName('html')[0].innerHTML;
+      }
+      this.prepareHtml(html).pipe(
         switchMap(processedHtml => this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, processedHtml))
       ).subscribe(response => {
         FileSaver.saveAs(response, fileName + '.pdf');

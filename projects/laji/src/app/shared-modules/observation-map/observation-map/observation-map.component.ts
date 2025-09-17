@@ -30,6 +30,7 @@ import { combineColors } from '@luomus/laji-map/lib/utils';
 import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, convertWgs84ToYkj, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 import {
+  colorClassNameMap,
   lajiMapObservationVisualization,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
@@ -135,8 +136,11 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   ];
   @Input() noClick = false;
   @Input() pointModeBreakpoint = 5000;
+  @Input() showPrintControl = false;
+  @Input() printMode = false;
 
   @Output() create = new EventEmitter();
+  @Output() printModeChange = new EventEmitter<boolean>();
 
   visualization = lajiMapObservationVisualization;
   visualizationMode: ObservationVisualizationMode = 'obsCount';
@@ -502,7 +506,11 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       : style.color;
     const maxColorChangeDecimal = 100;
     const color = combineColors(baseColor, ...(hovered ? ['#fff'] : []), maxColorChangeDecimal); // Highlight hovered item.
-    const className = [style.className, active && !isActiveBox ? 'laji-map-active-pointer' : undefined].filter(s => s).join(' ');
+    const className = [
+      style.className,
+      colorClassNameMap[style.color!],
+      active && !isActiveBox ? 'laji-map-active-pointer' : undefined
+    ].filter(s => s).join(' ');
     const _style = {...style, color, className};
     if (isActiveBox) {
       _style.weight = 3;
@@ -623,7 +631,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     icon.createIcon = (oldIcon: any) => {
       const iconDomElem = oldCreateFn.bind(icon)(oldIcon);
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      (iconDomElem.style as any)['background-color'] = this.visualization[this.visualizationMode].getClusterColor!(childMarkers) + opacityAsHexCode(this.opacity);
+      const clusterColor = this.visualization[this.visualizationMode].getClusterColor!(childMarkers);
+      (iconDomElem.style as any)['background-color'] = clusterColor + opacityAsHexCode(this.opacity);
+      iconDomElem.classList.add(colorClassNameMap[clusterColor]);
       return iconDomElem;
     };
 

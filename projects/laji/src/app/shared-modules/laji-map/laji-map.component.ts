@@ -14,7 +14,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { UserSettings, UserService } from '../../shared/service/user.service';
-import { of, Observable, Subscription } from 'rxjs';
+import { of, Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import type { Options, Lang, TileLayersOptions } from '@luomus/laji-map/lib/defs';
 import { Global } from '../../../environments/global';
@@ -54,11 +54,18 @@ export const getPointIconAsCircle = (po: PathOptions & { opacity: number }, feat
 @Component({
   selector: 'laji-map',
   template: `
-    <div class="laji-map-wrap">
+    <div #lajiMapWrap class="laji-map-wrap" [ngClass]="{'page': printMode}">
       <div #lajiMap class="laji-map"></div>
       <div class="loading-map loading" *ngIf="loading"></div>
       <ng-content></ng-content>
-    </div>`,
+    </div>
+    <div #printControlWell [ngStyle]="{'display': 'none'}">
+      <div class="print-mode-controls" [ngClass]="'print-mode-controls-' + printControlPosition" id="print-controls" #printControl>
+        <laji-pdf-button [element]="printElement || lajiMapWrap"></laji-pdf-button>
+        <button type="button" class="btn btn-danger mt-2" (click)="togglePrintMode($event)">{{ 'map.front.print.stop' | translate }}</button>
+      </div>
+    </div>
+  `,
   styleUrls: ['./laji-map.component.scss'],
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -67,14 +74,21 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   @Input() data: any = [];
   @Input() loading = false;
   @Input() showControls = true;
+  @Input() showPrintControl = false;
+  @Input() printControlPosition: 'topleft'|'topright' = 'topright';
+  @Input() printMode = false;
+  @Input() printElement?: HTMLElement;
   @Input() maxBounds?: [[number, number], [number, number]];
   @Input() onPopupClose?: (elem: string | HTMLElement) => void;
 
-  @Output() loaded = new EventEmitter();
+  @Output() loaded = new EventEmitter<any>();
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();
   @Output() tileLayersChange = new EventEmitter();
+  @Output() printModeChange = new EventEmitter<boolean>();
   @ViewChild('lajiMap', { static: true }) elemRef!: ElementRef;
+  @ViewChild('printControlWell') printControlsWell!: {nativeElement: HTMLDivElement};
+  @ViewChild('printControl') printControls!: {nativeElement: HTMLDivElement};
 
   lang?: string;
   map: any;
@@ -160,6 +174,16 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
         };
         if (!this.showControls) {
           options.controls = false;
+        } else if (this.showPrintControl) {
+          options.customControls = [
+            ...(options.customControls || []),
+            {
+              fn: this.printControlFn.bind(this) as (() => void),
+              iconCls: 'glyphicon glyphicon-print',
+              text: this.translate.instant('map.front.print.tooltip'),
+              position: this.printControlPosition
+            }
+          ];
         }
         try {
           this.map = new LajiMap(options);
@@ -176,7 +200,13 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
             this.drawToMapType = undefined;
           }
           this.zone.run(() => {
-            this.loaded.emit();
+            if (this.printMode) {
+              // ensure that the map is rendered
+              setTimeout(() => {
+                this.printModeSideEffects();
+              }, 0);
+            }
+            this.loaded.emit(this.map);
           });
         } catch (e) {
           this.logger.error('Map initialization failed', e);
@@ -269,5 +299,37 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
         }
       })
     );
+  }
+
+  togglePrintMode(e: MouseEvent) {
+    if (!this.platformService.isBrowser) {
+      return;
+    }
+
+    e.stopPropagation();
+
+    this.printMode = !this.printMode;
+    this.printModeSideEffects();
+    this.printModeChange.emit(this.printMode);
+  }
+
+  private printModeSideEffects() {
+    this.cd.detectChanges();
+    this.map.map.invalidateSize();
+
+    const printControlsElem = this.printControls.nativeElement;
+    const lajiMapPrintControl = document.querySelector('.laji-map .glyphicon-print')?.parentElement;
+    if (this.printMode) {
+      lajiMapPrintControl?.appendChild(printControlsElem);
+    } else {
+      this.printControlsWell.nativeElement.appendChild(printControlsElem);
+    }
+  }
+
+  private printControlFn(e: MouseEvent) {
+    this.zone.run(() => {
+      this.togglePrintMode(e);
+      this.cd.markForCheck();
+    });
   }
 }

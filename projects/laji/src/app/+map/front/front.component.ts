@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQueryService } from '../../+observation/search-query.service';
@@ -35,12 +35,7 @@ export class FrontComponent implements OnInit, OnDestroy {
         clear: true
       } as any,
       coordinates: true
-    },
-    customControls: [{
-      fn: this.togglePrintMode.bind(this) as (() => void),
-      iconCls: 'glyphicon glyphicon-print',
-      text: this.translate.instant('map.front.print.tooltip')
-    }]
+    }
   };
 
   drawData: any = {
@@ -60,7 +55,6 @@ export class FrontComponent implements OnInit, OnDestroy {
     public searchQuery: SearchQueryService,
     public translate: TranslateService,
     private footerService: FooterService,
-    private cdr: ChangeDetectorRef,
     private platformService: PlatformService
   ) {
   }
@@ -87,10 +81,6 @@ export class FrontComponent implements OnInit, OnDestroy {
   }
 
   onMapLoad() {
-    if (this.printMode) {
-      this.printModeSideEffects();
-    }
-
     const {coordinates, gridsquare} = this.route.snapshot.queryParams;
     if (gridsquare) {
       this.zoomToGrid(gridsquare);
@@ -109,30 +99,6 @@ export class FrontComponent implements OnInit, OnDestroy {
       relativeTo: this.route
     });
   }
-
-  togglePrintMode(e: MouseEvent) {
-    if (!this.platformService.isBrowser) {
-      return;
-    }
-
-    e.stopPropagation();
-    this.printMode = !this.printMode;
-    this.printModeSideEffects();
-  }
-
-  private printModeSideEffects() {
-    this.cdr.detectChanges();
-    this.lajiMap.map.map.invalidateSize();
-
-    const printControlsElem = this.printControls.nativeElement;
-    const lajiMapPrintControl = document.querySelector('.laji-map .glyphicon-print')?.parentElement;
-    if (this.printMode) {
-      lajiMapPrintControl?.appendChild(printControlsElem);
-    } else {
-      this.printControlsWell.nativeElement.appendChild(printControlsElem);
-    }
-  }
-
 
   private zoomToGrid(grid: string) {
     if (!this.platformService.isBrowser) {

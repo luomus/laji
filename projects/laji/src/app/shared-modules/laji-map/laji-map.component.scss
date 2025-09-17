@@ -56,3 +56,60 @@
   align-items: center;
   border: 1px solid $neutral-6;
 }
+
+@mixin print-map {
+  ::ng-deep .no-print:not(.pdf-btn) {
+    display: none;
+  }
+  ::ng-deep .leaflet-control {
+    background-color: white !important;
+  }
+  ::ng-deep .leaflet-bottom.leaflet-left {
+    z-index: 1001;
+  }
+}
+
+@page {
+  margin: 5mm;
+  size: 210mm 297mm;
+}
+
+.page {
+  position: absolute;
+  width: 200mm;
+  height: 287mm;
+  left: 50%;
+  transform: translateX(-50%);
+
+  @include print-map;
+}
+
+@media print {
+  .page {
+    left: 0;
+    transform: none;
+  }
+
+  ::ng-deep .leaflet-top {
+    display: none;
+  }
+  ::ng-deep .laji-map-coordinates-control {
+    display: none !important;
+  }
+}
+
+.print-mode-controls {
+  position: absolute;
+  top: -1px;
+}
+.print-mode-controls.print-mode-controls-topright {
+  right: -2px;
+}
+.print-mode-controls.print-mode-controls-topleft {
+  left: -2px;
+}
+
+::ng-deep .pdf-btn:disabled {
+  opacity: 1;
+  background: #dddddd !important;
+}

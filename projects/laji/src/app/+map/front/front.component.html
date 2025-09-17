@@ -1,4 +1,4 @@
-<div class="map-wrap" [ngClass]="{'page': printMode}">
+<div class="map-wrap" [ngClass]="{'print-map': printMode}">
   <div class="info no-print">
     <a [href]="'infoLinks.map' | translate" [luTooltip]="'haseka.instructions' | translate" placement="left" target="_blank" rel="noopener noreferrer">
       <i class="glyphicon glyphicon-info-sign"></i>
@@ -9,12 +9,8 @@
     (loaded)="onMapLoad()"
     [options]="mapOptions"
     [settingsKey]="''"
-    (create)="onCreate()"></laji-map>
-
-  <div #printControlWell [ngStyle]="{'display': 'none'}">
-    <div class="print-mode-controls" id="print-controls" #printControl>
-      <laji-pdf-button></laji-pdf-button>
-      <button type="button" class="btn btn-danger mt-2" (click)="togglePrintMode($event)">{{ 'map.front.print.stop' | translate }}</button>
-    </div>
-  </div>
+    [showPrintControl]="true"
+    [(printMode)]="printMode"
+    (create)="onCreate()"
+  ></laji-map>
 </div>
