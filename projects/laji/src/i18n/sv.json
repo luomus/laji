@@ -1791,7 +1791,7 @@
   "taxonomy.active.informalTaxonGroups": "Organismgrupp",
   "taxonomy.active.invasiveSpecies": "Främmande art status",
   "taxonomy.active.latestRedListStatusFinland.status": "Rödlistekategori",
-  "taxonomy.active.primaryHabitat.habitat": "Habitat",
+  "taxonomy.active.primaryHabitatSearchStrings": "Habitat",
   "taxonomy.active.taxonId": "Taksonomisk avgränsning",
   "taxonomy.active.taxonRank": "Taksonomisk nivå",
   "taxonomy.active.typeOfOccurrenceInFinland": "Status i Finland",

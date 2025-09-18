@@ -1791,7 +1791,7 @@
   "taxonomy.active.informalTaxonGroups": "Eliöryhmä",
   "taxonomy.active.invasiveSpecies": "Vieraslajistatus",
   "taxonomy.active.latestRedListStatusFinland.status": "Uhanalaisuus",
-  "taxonomy.active.primaryHabitat.habitat": "Elinympäristö",
+  "taxonomy.active.primaryHabitatSearchStrings": "Elinympäristö",
   "taxonomy.active.taxonId": "Taksonominen rajaus",
   "taxonomy.active.taxonRank": "Taksonominen taso",
   "taxonomy.active.typeOfOccurrenceInFinland": "Asema Suomessa",
