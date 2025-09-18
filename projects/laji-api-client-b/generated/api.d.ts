@@ -20766,7 +20766,10 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"];
+                    "application/json": {
+                        results: components["schemas"]["GetPersonsResponseDto"][];
+                        "@context": string;
+                    };
                 };
             };
         };
@@ -20792,7 +20795,10 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"];
+                    "application/json": {
+                        results: components["schemas"]["GetPersonsResponseDto"][];
+                        "@context": string;
+                    };
                 };
             };
         };
