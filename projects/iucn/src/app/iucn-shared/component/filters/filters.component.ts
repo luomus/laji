@@ -106,7 +106,9 @@ export class FiltersComponent {
 
   habitatChange(value: any) {
     if (!value) {
-      const newQuery = {...this.query, habitat: '', habitatSpecific: ''};
+      const newQuery = { ...this.query };
+      delete newQuery.habitat;
+      delete newQuery.habitatSpecific;
       this.queryChange.emit(newQuery);
     } else {
       this.change('habitat', value);

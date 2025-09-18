@@ -19,7 +19,7 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
   public groups: InformalTaxonGroup[] = [];
   public activeGroup: InformalTaxonGroup | undefined;
   public open = false;
-  public innerValue = '';
+  public innerValue = undefined;
   public currentValue: string | undefined;
   public label: string | undefined = '';
   public range!: number[];
@@ -55,11 +55,7 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
   }
 
   initGroups() {
-    let newValue = this.value;
-    newValue = newValue ? newValue : '';
-    if (this.currentValue === newValue) {
-      return;
-    }
+    const newValue = this.value;
     this.currentValue = newValue;
     (newValue ?
       this.getChildren(newValue, this.lang) :
@@ -102,6 +98,9 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
   }
 
   writeValue(value: any): void {
+    if (value === null) { // ControlValueAccessor initializes with null...
+      value = undefined;
+    }
     if (value !== this.innerValue) {
       this.innerValue = value;
       this.setLabel(value);
@@ -168,10 +167,10 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
   abstract convertToInformalTaxonGroup(group: T): InformalTaxonGroup;
 
   empty() {
-    if (this.value === '') {
+    if (this.value === undefined) {
       return this.close();
     }
-    this.value = '';
+    this.value = undefined;
     if (!this.open) {
       this.select.emit(this.value);
     }
