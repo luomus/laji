@@ -33,7 +33,7 @@ export class FindPersonComponent implements OnInit {
   }
 
   public getPerson(token: string): Observable<any> {
-    return this.api.get('/autocomplete/persons', { query: { query: token, pageSize: this.limit } })
+    return this.api.get('/autocomplete/persons', { query: { query: token, limit: this.limit } })
     .pipe(map(({ results }) => results));
   }
 

@@ -28,7 +28,7 @@ export class FriendService {
           return ObservableOf([]);
         }
         return this.api.get('/autocomplete/friends', { query: {
-          query: '', pageSize: 1000, personToken: this.userService.getToken()
+          query: '', limit: 1000, personToken: this.userService.getToken()
         } }).pipe(map(({results}) => results), tap(data => this.friends = data));
       })
     );
