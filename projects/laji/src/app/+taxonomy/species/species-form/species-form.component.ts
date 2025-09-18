@@ -51,7 +51,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
     this.finnishCheckboxValue = this.search.filters.finnish !== undefined;
 
-    this.subUpdate = this.search.queryUpdated$.pipe(startWith(undefined)).subscribe(
+    this.subUpdate = this.search.searchUpdated$.pipe(startWith(undefined)).subscribe(
       () => {
         this.taxonSelectFilters = {
           informalTaxonGroups: this.search.filters.informalTaxonGroups,
@@ -68,9 +68,21 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.search.updateUrl();
   }
 
+  onActiveFiltersChange(active: TaxonomySearch['filters'] & { taxonId?: string }) {
+    const { taxonId, ...filters } = active;
+    this.search.taxonId = taxonId;
+    this.search.filters = filters;
+    this.search.updateUrl();
+  }
+
+  /** `laji-observation-active` is agnostic to the shape of the "active filters", thus we need to smuggle taxonId in */
+  getActiveFilters(): TaxonomySearch['filters'] & { taxonId?: string } {
+    return { taxonId: this.search.taxonId, ...this.search.filters };
+  }
+
   private syncTypeOfOccurenceInFinland() {
     this.typeOfOccurrenceInFinlandInclusions = this.search.filters.typeOfOccurrenceInFinland?.filter(v => !v.startsWith('!'));
-    this.typeOfOccurrenceInFinlandExclusions = this.search.filters.typeOfOccurrenceInFinland?.filter(v => v.startsWith('!')).map(v => v.slice(1));
+    this.typeOfOccurrenceInFinlandExclusions = this.search.filters.typeOfOccurrenceInFinland?.filter(v => v.startsWith('!')).map(s => s.slice(1));
   }
 
   onFinnishCheckboxValueChange(value: boolean) {
@@ -88,7 +100,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   }
 
   onHabitatChange(habitats: any) {
-    this.search.filters['primaryHabitat.habitat'] = habitats.primaryHabitat;
+    this.search.filters['primaryHabitatSearchStrings'] = habitats.primaryHabitat;
     this.search.filters['anyHabitatSearchStrings'] = habitats.anyHabitat;
     this.onSearchChange();
   }
@@ -104,12 +116,10 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     if (value.includes('onlyInvasive') && this.search.filters.invasiveSpecies !== true) {
       nextInvasiveSelected = nextInvasiveSelected.filter(v => v !== 'onlyNonInvasive');
       this.search.filters.invasiveSpecies = true;
-    }
-    if (value.includes('onlyNonInvasive') && this.search.filters.invasiveSpecies !== false) {
+    } else if (value.includes('onlyNonInvasive') && this.search.filters.invasiveSpecies !== false) {
       nextInvasiveSelected = nextInvasiveSelected.filter(v => v !== 'onlyInvasive');
       this.search.filters.invasiveSpecies = false;
-    }
-    if (['onlyInvasive', 'onlyNonInvasive'].every(v => !value.includes(v as any))) {
+    } else if (['onlyInvasive', 'onlyNonInvasive'].every(v => !value.includes(v as any))) {
       this.search.filters.invasiveSpecies = undefined;
       nextInvasiveSelected = nextInvasiveSelected.filter(v => v !== 'onlyNonInvasive' && v !== 'onlyInvasive');
     }
@@ -131,7 +141,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     nextInvasiveSelected = [...new Set(nextInvasiveSelected)];
     this.invasiveSelected = nextInvasiveSelected;
 
-    const administrativeStatuses = nextInvasiveSelected.filter(v => (invasiveStatuses as any)[v]);
+    const administrativeStatuses = nextInvasiveSelected.filter(v => (invasiveStatusesDict as any)[v]);
 
     this.search.filters.administrativeStatuses = [...new Set([
       ...(this.search.filters.administrativeStatuses || []).filter(v => administrativeStatuses.includes(v as any)),
@@ -148,9 +158,11 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       this.invasiveSelected = ['onlyInvasive'];
     } else if (invasiveSpecies === false) {
       this.invasiveSelected = ['onlyNonInvasive'];
+    } else {
+      this.invasiveSelected = [];
     }
     if (administrativeStatuses) {
-      this.invasiveSelected = [...invasiveStatuses.filter(v => administrativeStatuses.includes(v))];
+      this.invasiveSelected = [...this.invasiveSelected, ...invasiveStatuses.filter(v => administrativeStatuses.includes(v))];
       if (invasiveStatuses.every(v => administrativeStatuses.includes(v))) {
         this.invasiveSelected.push('allInvasiveSpecies');
       }

@@ -7,6 +7,7 @@ type Query = NonNullable<operations['TaxaController_getPageWithFilters']['parame
 type RawFilters = NonNullable<operations['TaxaController_getPageWithFilters']['requestBody']>['content']['application/json'];
   // It allows non-array strings but we use only arrays to narrow down acrobatics with types.
 type Filters = { [K in keyof RawFilters]: Exclude<RawFilters[K], string> };
+export type TaxaSearchFilters = Filters;
 
 @Injectable()
 export class TaxonomySearch {
@@ -17,7 +18,7 @@ export class TaxonomySearch {
   ];
 
   private queryUpdatedSource = new Subject<void>();
-  queryUpdated$ = this.queryUpdatedSource.asObservable();
+  searchUpdated$ = this.queryUpdatedSource.asObservable();
 
   taxonId?: string;
   query!: Query;
@@ -61,11 +62,11 @@ export class TaxonomySearch {
     this.listOptions.selected = TaxonomySearch.defaultFields;
   }
 
-  public setQueryFromParams(rawParams: Record<string, string>) {
+  public setSearchFromParams(rawParams: Record<string, string>) {
     const { taxonId: newTaxonId, ...params } = rawParams;
 
     const newFilters = (Object.keys(params) as (keyof Filters)[]).reduce((filters, param) => {
-      const rawParam = params[param];
+      const rawParam = params[param] as string;
       filters[param] = (rawParam === 'true'
         ? true
         : rawParam === 'false'

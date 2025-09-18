@@ -46,6 +46,7 @@ export class ResultsComponent implements OnChanges {
   habitatIds: string[] = [];
 
   cache: any = {};
+  taxon?: string;
   baseQuery: TaxonAggregateQuery = {};
   baseFilters: TaxonAggregateFilters = {};
   statusMap: any = {};
@@ -135,6 +136,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   private initQueries() {
+    this.taxon = this.query.taxon;
     this.baseQuery = Util.removeFromObject({
       checklistVersion: this.checklist,
       includeHidden: true
@@ -208,7 +210,10 @@ export class ResultsComponent implements OnChanges {
 
     return this.hasCache(cacheKey, currentQueryAndFilters)
         ? ObservableOf(this.cache[cacheKey]) :
-        this.api.post('/taxa/species/aggregate', { query }, filters).pipe(
+        (this.taxon
+          ? this.api.post('/taxa/{id}/species/aggregate', { path: { id: this.taxon }, query }, filters)
+          : this.api.post('/taxa/species/aggregate', { query }, filters)
+        ).pipe(
           map((data: any) => {
           const lookup: any = {};
           const result: any[] = [];
@@ -275,7 +280,10 @@ export class ResultsComponent implements OnChanges {
 
     this.habitatQuery$ = this.hasCache(cacheKey, currentQueryAndFilters)
       ? ObservableOf(this.cache[cacheKey])
-      : this.api.post('/taxa/species/aggregate', { query }, filters).pipe(
+      : (this.taxon
+        ? this.api.post('/taxa/{id}/species/aggregate', { path: { id: this.taxon }, query }, filters)
+        : this.api.post('/taxa/species/aggregate', { query }, filters)
+      ).pipe(
         map(data => this.extractHabitat(data, primaryField, allField, statusField)),
         switchMap((data: any) => this.metadataService.getRange('MKV.habitatEnum').pipe(
           map(label => label.reduce((cumulative: any, current) => {
@@ -442,10 +450,10 @@ export class ResultsComponent implements OnChanges {
     const query = this.getSpeciesQuery();
     const filters = this.baseFilters;
 
-    const currentQueryAndFilters = JSON.stringify({ ...query, ...filters });
+    const currentQueryAndFilters = JSON.stringify({ taxon: this.taxon, ...query, ...filters });
     this.speciesQuery$ = this.hasCache(cacheKey, currentQueryAndFilters) ?
       ObservableOf(this.cache[cacheKey]) :
-      this.taxonService.getSpeciesList(undefined, query, filters, this.speciesPageSize).pipe(
+      this.taxonService.getSpeciesList(this.taxon, query, filters, this.speciesPageSize).pipe(
         tap(data => {
           this.speciesPage = data.currentPage;
           this.speciesCount = data.total;
@@ -466,10 +474,10 @@ export class ResultsComponent implements OnChanges {
     const query = this.baseQuery;
     const { 'latestRedListEvaluation.redListStatus': omitted, ...filters } = this.baseFilters;
 
-    const currentQueryAndFilters = JSON.stringify({ ...query, ...filters });
+    const currentQueryAndFilters = JSON.stringify({ taxon: this.taxon, ...query, ...filters });
     this.redListStatusQuery$ = this.hasCache(cacheKey, currentQueryAndFilters) ?
       ObservableOf(this.cache[cacheKey]) :
-      this.taxonService.getRedListStatusQuery(undefined, query, filters, this.lang, statusField).pipe(
+      this.taxonService.getRedListStatusQuery(this.taxon, query, filters, this.lang, statusField).pipe(
         tap(data => this.setCache(cacheKey, data, currentQueryAndFilters))
       );
   }

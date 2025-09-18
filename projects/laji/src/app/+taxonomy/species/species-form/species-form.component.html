@@ -1,8 +1,8 @@
 <div class="observation-active-container">
   <laji-observation-active
     [skip]="['finnish']"
-    [(query)]="search.filters"
-    (queryChange)="onSearchChange()"
+    [query]="getActiveFilters()"
+    (queryChange)="onActiveFiltersChange($event)"
     queryType="taxonomy"
   ></laji-observation-active>
 </div>
@@ -15,7 +15,7 @@
   {{ 'observation.active.informalTaxonGroupAll'|translate }}
 </laji-observation-group-select>
 
-<label>{{ 'species.form.specimen' | translate }}:</label>
+<label>{{ 'species.form.specimen' | translate }}</label>
 <laji-taxon-select
   (taxonIdChange)="onTaxonSelect($event)"
   [taxonId]="search.taxonId"
@@ -72,7 +72,7 @@
 ></laji-metadata-select>
 
 <laji-habitat-select
-  [query]="{ primaryHabitat: search.filters['primaryHabitat.habitat'], anyHabitat: search.filters['anyHabitatSearchStrings'] }"
+  [query]="{ primaryHabitat: search.filters['primaryHabitatSearchStrings'], anyHabitat: search.filters['anyHabitatSearchStrings'] }"
   [info]="'species.info.habitat' | translate"
   (habitatSelect)="onHabitatChange($event)"
 ></laji-habitat-select>

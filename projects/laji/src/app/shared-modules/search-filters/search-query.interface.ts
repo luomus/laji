@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 export interface SearchQueryInterface {
-  queryUpdated$: Observable<any>;
+  searchUpdated$: Observable<any>;
   query: any;
   queryType: string;
   skippedQueryParams?: string[];

@@ -24,7 +24,7 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadedTabs.load(this.activeIndex);
-    this.search.setQueryFromParams({...this.route.snapshot.queryParams, finnish: 'true'});
+    this.search.setSearchFromParams({...this.route.snapshot.queryParams, finnish: 'true'});
 
     this.queryParamsSubscription = this.route.queryParams.subscribe(params => {
       this.search.filters.informalTaxonGroups = params.informalTaxonGroups
@@ -47,7 +47,7 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
   onPopState() {
     // Route snapshot is not populated with the latest info when this event is triggered. So we need to delay the execution little.
     setTimeout(() => {
-      this.search.setQueryFromParams({...this.route.snapshot.queryParams, finnish: 'true'});
+      this.search.setSearchFromParams({...this.route.snapshot.queryParams, finnish: 'true'});
       this.cd.markForCheck();
     });
   }
