@@ -14,7 +14,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { UserSettings, UserService } from '../../shared/service/user.service';
-import { of, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import type { Options, Lang, TileLayersOptions } from '@luomus/laji-map/lib/defs';
 import { Global } from '../../../environments/global';
@@ -61,8 +61,19 @@ export const getPointIconAsCircle = (po: PathOptions & { opacity: number }, feat
     </div>
     <div #printControlWell [ngStyle]="{'display': 'none'}" *ngIf="showPrintControl">
       <div class="print-mode-controls" [ngClass]="'print-mode-controls-' + printControlPosition" id="print-controls" #printControl>
-        <laji-pdf-button [element]="printElement || lajiMapWrap" role="primary"></laji-pdf-button>
-        <button type="button" class="btn btn-danger mt-2" (click)="togglePrintMode($event)">{{ 'map.front.print.stop' | translate }}</button>
+        <laji-pdf-button
+          [element]="printElement || lajiMapWrap"
+          role="primary"
+          [title]="'map.front.print.pdf.tooltip' | translate"
+        ></laji-pdf-button>
+        <button
+          type="button"
+          class="btn btn-danger mt-2"
+          [title]="'map.front.print.stop.tooltip' | translate"
+          (click)="togglePrintMode($event)"
+        >
+          {{ 'map.front.print.stop' | translate }}
+        </button>
       </div>
     </div>
   `,
@@ -320,11 +331,13 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     this.map.map.invalidateSize();
 
     const printControlsElem = this.printControls.nativeElement;
-    const lajiMapPrintControl = document.querySelector('.laji-map .glyphicon-print')?.parentElement;
+    const lajiMapPrintControl = document.querySelector('.laji-map .glyphicon-print')?.parentElement?.parentElement;
     if (this.printMode) {
       lajiMapPrintControl?.appendChild(printControlsElem);
+      lajiMapPrintControl?.classList.add('transparent-border');
     } else {
       this.printControlsWell.nativeElement.appendChild(printControlsElem);
+      lajiMapPrintControl?.classList.remove('transparent-border');
     }
   }
 

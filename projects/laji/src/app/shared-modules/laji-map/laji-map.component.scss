@@ -113,3 +113,7 @@
   opacity: 1;
   background: #dddddd !important;
 }
+
+::ng-deep .transparent-border {
+  border-color: transparent !important;
+}

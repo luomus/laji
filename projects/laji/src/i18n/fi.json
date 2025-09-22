@@ -1012,6 +1012,8 @@
   "m-12": "joulukuu",
   "map.exitFullScreen": "Poistu kokoruututilasta",
   "map.front.print.stop": "Lopeta",
+  "map.front.print.stop.tooltip": "Poistu tulostustilasta",
+  "map.front.print.pdf.tooltip": "Tulosta",
   "map.front.print.tooltip": "Aloita tulostus",
   "map.fullScreen": "Avaa kartta kokoruututilassa",
   "media.fullResolutionMedia": "<a href='https://luomus-lv.creamailer.fi/survey/answer/7gqx4jlgy1t7n/' target='_blank'>Pyydä täysversio <i class='glyphicon glyphicon-save-file'></i></a>",

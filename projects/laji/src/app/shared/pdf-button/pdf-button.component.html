@@ -5,5 +5,5 @@
   [ngClass]="role === 'neutral' ? 'btn-default' : 'btn-primary'"
   (click)="print($event)"
 >
-  PDF <img [src]="role === 'neutral' ? '/static/images/icons/pdf_16x16.png' : '/static/images/icons/pdf_16x16_white.png'">
+  PDF <img [src]="role === 'neutral' || loading ? '/static/images/icons/pdf_16x16.png' : '/static/images/icons/pdf_16x16_white.png'">
 </button>
