@@ -61,7 +61,7 @@ export const getPointIconAsCircle = (po: PathOptions & { opacity: number }, feat
     </div>
     <div #printControlWell [ngStyle]="{'display': 'none'}" *ngIf="showPrintControl">
       <div class="print-mode-controls" [ngClass]="'print-mode-controls-' + printControlPosition" id="print-controls" #printControl>
-        <laji-pdf-button [element]="printElement || lajiMapWrap"></laji-pdf-button>
+        <laji-pdf-button [element]="printElement || lajiMapWrap" role="primary"></laji-pdf-button>
         <button type="button" class="btn btn-danger mt-2" (click)="togglePrintMode($event)">{{ 'map.front.print.stop' | translate }}</button>
       </div>
     </div>

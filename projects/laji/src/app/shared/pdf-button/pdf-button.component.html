@@ -1,1 +1,9 @@
-<button type="button" [disabled]="loading" class="btn btn-default no-print pdf-btn" (click)="print($event)">PDF <img src="/static/images/icons/pdf_16x16.png"></button>
+<button
+  type="button"
+  [disabled]="loading"
+  class="btn no-print pdf-btn"
+  [ngClass]="role === 'neutral' ? 'btn-default' : 'btn-primary'"
+  (click)="print($event)"
+>
+  PDF <img [src]="role === 'neutral' ? '/static/images/icons/pdf_16x16.png' : '/static/images/icons/pdf_16x16_white.png'">
+</button>

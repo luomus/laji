@@ -17,6 +17,7 @@ export class PdfButtonComponent {
 
   @Input() element?: HTMLElement;
   @Input() fileName?: string;
+  @Input() role?: 'neutral'|'primary' = 'neutral';
 
   public loading = false;
 
