@@ -6,7 +6,7 @@ import {
   filter,
   map,
   retryWhen,
-  shareReplay, startWith,
+  startWith,
   switchMap,
   take,
   tap,
@@ -52,7 +52,7 @@ import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
 import { DOCUMENT } from '@angular/common';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
