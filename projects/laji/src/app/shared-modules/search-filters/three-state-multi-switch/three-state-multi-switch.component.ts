@@ -20,7 +20,7 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
 
 
   lang!: string;
-  options$?: Observable<{ id: string, value: string }[]>;
+  options$?: Observable<{ id: string; value: string }[]>;
   open? = false;
 
   constructor(
