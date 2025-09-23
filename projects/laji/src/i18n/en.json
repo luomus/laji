@@ -127,6 +127,7 @@
   "collection.count.specimen": "Number of specimens",
   "collection.count.typeSpecimen": "Number of type specimens",
   "collection.coverageBasis": "Coverage basis",
+  "collection.dataDownloadURL": "Data downloads",
   "collection.dataNotes": "Notes for collection data",
   "collection.dataQuality": "Data quality",
   "collection.dataQualityDescription": "Data quality description",
