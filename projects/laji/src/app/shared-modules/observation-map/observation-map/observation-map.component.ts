@@ -1,11 +1,24 @@
-import { catchError, concat, debounceTime, delay, filter, map, retryWhen, switchMap, take, tap, timeout } from 'rxjs/operators';
+import {
+  catchError,
+  concat,
+  debounceTime,
+  delay,
+  filter,
+  map,
+  retryWhen,
+  shareReplay, startWith,
+  switchMap,
+  take,
+  tap,
+  timeout
+} from 'rxjs/operators';
 import { of, of as ObservableOf, Subscription, throwError as observableThrowError, Observable, forkJoin, Subject } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
+  EventEmitter, Inject,
   Input, NgZone,
   OnChanges,
   OnDestroy,
@@ -38,6 +51,8 @@ import type { DivIcon, LeafletEvent, MarkerCluster, PathOptions } from 'leaflet'
 import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
+import { DOCUMENT } from '@angular/common';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
@@ -160,6 +175,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   tableViewHeightOverride: number | undefined = -1;
   selectedObservationCoordinates: Coordinates | undefined;
 
+  href?: string;
+  today = new Date();
+
   private useFinnishMap = false;
   private drawData: DataOptions = {
     featureCollection: {type: 'FeatureCollection', features: []},
@@ -184,6 +202,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   private activeZoomThresholdBounds?: any;
   private mapMoveSubscription!: Subscription;
   private mapDataSubscription?: Subscription;
+  private routeChangeSubscription: Subscription;
   private activeGeometryHash!: string;
 
   constructor(
@@ -193,7 +212,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     private decorator: ValueDecoratorService,
     private logger: Logger,
     private cdr: ChangeDetectorRef,
-    private zone: NgZone
+    private zone: NgZone,
+    private router: Router,
+    @Inject(DOCUMENT) private document: Document
   ) {
     this.mapOptions = {
       controls: {
@@ -207,6 +228,16 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     if ((environment as any).observationMapOptions) {
       Object.assign(this.mapOptions, (environment as any).observationMapOptions);
     }
+
+    this.routeChangeSubscription = this.router.events.pipe(
+      map(() => undefined),
+      startWith(undefined)
+    ).subscribe(() => {
+      if (this.platformService.isBrowser) {
+        this.href = this.platformService.window.location.href;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -229,6 +260,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this.mapMoveSubscription?.unsubscribe();
     this.mapDataSubscription?.unsubscribe();
+    this.routeChangeSubscription?.unsubscribe();
   }
 
   onCreate(e: any) {

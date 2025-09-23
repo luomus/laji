@@ -163,19 +163,28 @@ ul {
 }
 
 .page {
-  position: absolute;
   width: 200mm;
   height: 287mm;
-  left: 50%;
-  transform: translateX(-50%);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+
+  .print-info {
+    flex: 0 0 auto;
+    font-family: "Times New Roman", serif;
+    font-size: small;
+
+    .print-info-url {
+      word-break: break-all;
+    }
+  }
+
+  laji-map {
+    flex: 1 1 auto;
+  }
 }
 
 @media print {
-  .page {
-    left: 0;
-    transform: none;
-  }
-
   .observation-map ::ng-deep .coordinate-accuracy-cluster {
     box-shadow: 1px 0 4px 0 rgba(#000, .6) !important;
   }
