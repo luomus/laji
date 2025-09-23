@@ -125,6 +125,9 @@ export class SpreadsheetService {
   }
 
   loadSheet(data: any, options: XLSX.ParsingOptions = {}): {data: any; errors: string[]} {
+    if (options.raw && !options.codepage) {
+      options = {...options, codepage: 65001}; // utf-8 encoding
+    }
     const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true, ...options});
     const sheetName: string = workBook.SheetNames[0];
     const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
