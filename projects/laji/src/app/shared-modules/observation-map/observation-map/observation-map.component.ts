@@ -6,7 +6,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Input,
+  Input, NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -112,6 +112,16 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() set viewLocked(viewLocked: boolean) {
     this.mapOptions = {...this.mapOptions, viewLocked};
   }
+  @Input() set showPrintControl(showPrintControl: boolean) {
+    this.mapOptions = {...this.mapOptions, customControls: showPrintControl ? [
+      {
+        fn: this.printControlFn.bind(this),
+        iconCls: 'glyphicon glyphicon-print',
+        text: this.translate.instant('map.front.print.tooltip'),
+        position: 'topleft'
+      }
+    ] : []};
+  }
   @Input() ready = true;
   /**
    * height < 0: fill remaining height in window
@@ -136,11 +146,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   ];
   @Input() noClick = false;
   @Input() pointModeBreakpoint = 5000;
-  @Input() showPrintControl = false;
   @Input() printMode = false;
 
   @Output() create = new EventEmitter();
-  @Output() printModeChange = new EventEmitter<boolean>();
 
   visualization = lajiMapObservationVisualization;
   visualizationMode: ObservationVisualizationMode = 'obsCount';
@@ -184,7 +192,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     public translate: TranslateService,
     private decorator: ValueDecoratorService,
     private logger: Logger,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone
   ) {
     this.mapOptions = {
       controls: {
@@ -649,5 +658,12 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       classNames = newClassNames;
     };
     return icon;
+  }
+
+  private printControlFn() {
+    this.zone.run(() => {
+      this.printMode = !this.printMode;
+      this.cdr.markForCheck();
+    });
   }
 }

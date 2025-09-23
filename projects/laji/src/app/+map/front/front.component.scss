@@ -23,6 +23,24 @@
   display: none !important;
 }
 
-.print-map .no-print {
+@page {
+  size: A4;
+}
+
+.page {
+  position: absolute;
+  width: 200mm;
+  height: 292mm;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.page .no-print {
   display: none;
+}
+
+@media print {
+  .page {
+    padding-top: 5mm;
+  }
 }

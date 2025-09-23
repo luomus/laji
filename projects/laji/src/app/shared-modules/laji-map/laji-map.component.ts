@@ -54,27 +54,10 @@ export const getPointIconAsCircle = (po: PathOptions & { opacity: number }, feat
 @Component({
   selector: 'laji-map',
   template: `
-    <div #lajiMapWrap class="laji-map-wrap" [ngClass]="{'page': printMode}">
+    <div #lajiMapWrap class="laji-map-wrap">
       <div #lajiMap class="laji-map"></div>
       <div class="loading-map loading" *ngIf="loading"></div>
       <ng-content></ng-content>
-    </div>
-    <div #printControlWell [ngStyle]="{'display': 'none'}" *ngIf="showPrintControl">
-      <div class="print-mode-controls" [ngClass]="'print-mode-controls-' + printControlPosition" id="print-controls" #printControl>
-        <laji-pdf-button
-          [element]="printElement || lajiMapWrap"
-          role="primary"
-          [title]="'map.front.print.pdf.tooltip' | translate"
-        ></laji-pdf-button>
-        <button
-          type="button"
-          class="btn btn-danger mt-2"
-          [title]="'map.front.print.stop.tooltip' | translate"
-          (click)="togglePrintMode($event)"
-        >
-          {{ 'map.front.print.stop' | translate }}
-        </button>
-      </div>
     </div>
   `,
   styleUrls: ['./laji-map.component.scss'],
@@ -87,10 +70,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   @Input() data: any = [];
   @Input() loading = false;
   @Input() showControls = true;
-  @Input() showPrintControl = false;
-  @Input() printControlPosition: 'topleft'|'topright' = 'topright';
-  @Input() printMode = false;
-  @Input() printElement?: HTMLElement;
   @Input() maxBounds?: [[number, number], [number, number]];
   @Input() onPopupClose?: (elem: string | HTMLElement) => void;
 
@@ -98,10 +77,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();
   @Output() tileLayersChange = new EventEmitter();
-  @Output() printModeChange = new EventEmitter<boolean>();
   @ViewChild('lajiMap', { static: true }) elemRef!: ElementRef;
-  @ViewChild('printControlWell') printControlsWell!: {nativeElement: HTMLDivElement};
-  @ViewChild('printControl') printControls!: {nativeElement: HTMLDivElement};
 
   lang?: string;
   map: any;
@@ -142,7 +118,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
       this.setData(this.data);
     }
 
-    if (changes.options || changes.settingsKey || changes.showControls || changes.showPrintControl || changes.printControlPosition) {
+    if (changes.options || changes.settingsKey || changes.showControls) {
       if (changes.options) {
         this.updateOptions();
       }
@@ -187,16 +163,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
         };
         if (!this.showControls) {
           options.controls = false;
-        } else if (this.showPrintControl) {
-          options.customControls = [
-            ...(options.customControls || []),
-            {
-              fn: this.printControlFn.bind(this) as (() => void),
-              iconCls: 'glyphicon glyphicon-print',
-              text: this.translate.instant('map.front.print.tooltip'),
-              position: this.printControlPosition
-            }
-          ];
         }
         try {
           this.map = new LajiMap(options);
@@ -213,12 +179,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
             this.drawToMapType = undefined;
           }
           this.zone.run(() => {
-            if (this.printMode) {
-              // ensure that the map is rendered
-              setTimeout(() => {
-                this.printModeSideEffects();
-              }, 0);
-            }
             this.loaded.emit();
           });
         } catch (e) {
@@ -312,39 +272,5 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
         }
       })
     );
-  }
-
-  togglePrintMode(e: MouseEvent) {
-    if (!this.platformService.isBrowser) {
-      return;
-    }
-
-    e.stopPropagation();
-
-    this.printMode = !this.printMode;
-    this.printModeSideEffects();
-    this.printModeChange.emit(this.printMode);
-  }
-
-  private printModeSideEffects() {
-    this.cd.detectChanges();
-    this.map.map.invalidateSize();
-
-    const printControlsElem = this.printControls.nativeElement;
-    const lajiMapPrintControl = document.querySelector('.laji-map .glyphicon-print')?.parentElement?.parentElement;
-    if (this.printMode) {
-      lajiMapPrintControl?.appendChild(printControlsElem);
-      lajiMapPrintControl?.classList.add('transparent-border');
-    } else {
-      this.printControlsWell.nativeElement.appendChild(printControlsElem);
-      lajiMapPrintControl?.classList.remove('transparent-border');
-    }
-  }
-
-  private printControlFn(e: MouseEvent) {
-    this.zone.run(() => {
-      this.togglePrintMode(e);
-      this.cd.markForCheck();
-    });
   }
 }

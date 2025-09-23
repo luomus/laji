@@ -157,7 +157,25 @@ ul {
   margin-top: 2px;
 }
 
+@page {
+  margin: 5mm;
+  size: 210mm 297mm;
+}
+
+.page {
+  position: absolute;
+  width: 200mm;
+  height: 287mm;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 @media print {
+  .page {
+    left: 0;
+    transform: none;
+  }
+
   .observation-map ::ng-deep .coordinate-accuracy-cluster {
     box-shadow: 1px 0 4px 0 rgba(#000, .6) !important;
   }

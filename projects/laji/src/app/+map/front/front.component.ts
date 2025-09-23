@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQueryService } from '../../+observation/search-query.service';
@@ -16,9 +24,7 @@ import { PlatformService } from '../../root/platform.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FrontComponent implements OnInit, OnDestroy {
-  @ViewChild(LajiMapComponent) lajiMap!: LajiMapComponent;
-  @ViewChild('printControlWell') printControlsWell!: {nativeElement: HTMLDivElement};
-  @ViewChild('printControl') printControls!: {nativeElement: HTMLDivElement};
+  @ViewChild(LajiMapComponent, {static: true}) lajiMap!: LajiMapComponent;
 
   mapOptions: Options = {
     center: [64.209802, 24.912872],
@@ -35,7 +41,14 @@ export class FrontComponent implements OnInit, OnDestroy {
         clear: true
       } as any,
       coordinates: true
-    }
+    },
+    customControls: [
+      {
+        fn: this.printControlFn.bind(this),
+        iconCls: 'glyphicon glyphicon-print',
+        text: this.translate.instant('map.front.print.tooltip')
+      }
+    ]
   };
 
   drawData: any = {
@@ -55,7 +68,9 @@ export class FrontComponent implements OnInit, OnDestroy {
     public searchQuery: SearchQueryService,
     public translate: TranslateService,
     private footerService: FooterService,
-    private platformService: PlatformService
+    private platformService: PlatformService,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
   ) {
   }
 
@@ -107,5 +122,12 @@ export class FrontComponent implements OnInit, OnDestroy {
 
     const geometry = latLngGridToGeoJSON(grid.split(':') as [string, string]);
     this.lajiMap.map.fitBounds((window.L as any).geoJSON(geometry).getBounds(), {paddingInMeters: 2000});
+  }
+
+  private printControlFn() {
+    this.zone.run(() => {
+      this.printMode = !this.printMode;
+      this.cd.markForCheck();
+    });
   }
 }
