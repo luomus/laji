@@ -34,7 +34,7 @@ export class IucnGroupSelectComponent extends GroupSelectComponent<RedListTaxonG
   }
 
   findById(groupId: string, lang: string | undefined): Observable<InformalTaxonGroup> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsFindById(groupId, lang);
+    return this.redListTaxonGroupApi.redListTaxonGroupsFindById(groupId ?? '', lang);
   }
 
   findByIds(groupIds: string[], lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
@@ -42,11 +42,11 @@ export class IucnGroupSelectComponent extends GroupSelectComponent<RedListTaxonG
   }
 
   getWithSiblings(groupId: string, lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsGetWithSiblings(groupId, lang);
+    return this.redListTaxonGroupApi.redListTaxonGroupsGetWithSiblings(groupId ?? '', lang);
   }
 
   getChildren(groupId: string, lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsGetChildren(groupId, lang);
+    return this.redListTaxonGroupApi.redListTaxonGroupsGetChildren(groupId ?? '', lang);
   }
 
   findRoots(lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
