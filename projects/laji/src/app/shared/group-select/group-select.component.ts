@@ -1,5 +1,5 @@
-import { map, switchMap } from 'rxjs/operators';
-import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output, Directive } from '@angular/core';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output, Directive, OnInit } from '@angular/core';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { ControlValueAccessor } from '@angular/forms';
 import { Observable, of as ObservableOf } from 'rxjs';
@@ -10,7 +10,7 @@ import { PagedResult } from '../model/PagedResult';
 import { ArrayResult } from '../model/ArrayResult';
 
 @Directive()
-export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges {
+export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges, OnInit {
   @Input() position: 'right'|'left' = 'right';
   @Input() rootGroups!: string[];
   @Output() select = new EventEmitter(); // eslint-disable-line @angular-eslint/no-output-native
@@ -25,6 +25,8 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
   public range!: number[];
 
   protected subLabel: any;
+
+  private initialized = false;
 
   onChange = (_: any) => {
   };
@@ -50,8 +52,18 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     this.lang = this.translate.currentLang;
   }
 
+  ngOnInit() {
+    if (!this.initialized) {
+      this.initGroups();
+      this.initialized = true;
+    }
+  }
+
   ngOnChanges() {
+    // ngOnChanges doesn't run if @Inputs don't have any values bound by the parent (AFAIK), so we need to run init also on ngOnInit
+    // The first ngOnChanges runs before ngOnInit
     this.initGroups();
+    this.initialized = true;
   }
 
   initGroups() {
