@@ -7,12 +7,13 @@
 
   <div class="well">
 
-    <laji-stepper [state]="vm.step"
-                  (activate)="activate($event)"
-                  (title)="currentTitle = $event"
+    <laji-stepper
+      [step]="vm.step"
+      (activate)="activate($event)"
+      (activePhaseChange)="currentTitle = $event.label"
     ></laji-stepper>
 
-    <h2>{{ currentTitle }}</h2>
+    <h2>{{ currentTitle | translate }}</h2>
 
     <lu-alert [type]="'danger'" *ngIf="vm.step === step.sheetLoadError">
       <div [innerHtml]="sheetLoadErrorMsg"></div>

@@ -1,31 +1,46 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, OnChanges, Output, SimpleChanges} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Step } from '../../spreadsheet.facade';
 
-const defaultMapping = {
-  [Step.empty]: 'file',
-  [Step.sheetLoadError]: 'file',
-  [Step.fileAlreadyUploadedPartially]: 'file',
-  [Step.fileAlreadyUploaded]: 'file',
-  [Step.invalidFileType]: 'file',
-  [Step.invalidFormId]: 'file',
-  [Step.importingFile]: 'file',
-  [Step.colMapping]: 'colMapping',
-  [Step.dataMapping]: 'valueMapping',
-  [Step.importReady]: 'send',
-  [Step.validating]: 'send',
-  [Step.invalidData]: 'send',
-  [Step.importing]: 'send',
-  [Step.doneWithErrors]: 'done',
-  [Step.doneOk]: 'done'
+enum Phase {
+  file,
+  colMapping,
+  valueMapping,
+  send,
+  done
+}
+
+interface StepperPhase {
+  phase: Phase;
+  label: string;
+  returnStep: number;
+}
+
+const defaultMapping: Record<Step, Phase> = {
+  [Step.empty]: Phase.file,
+  [Step.sheetLoadError]: Phase.file,
+  [Step.requiredFieldsNull]: Phase.file,
+  [Step.fileAlreadyUploadedPartially]: Phase.file,
+  [Step.fileAlreadyUploaded]: Phase.file,
+  [Step.invalidFileType]: Phase.file,
+  [Step.invalidFormId]: Phase.file,
+  [Step.importingFile]: Phase.file,
+  [Step.colMapping]: Phase.colMapping,
+  [Step.dataMapping]: Phase.valueMapping,
+  [Step.importReady]: Phase.send,
+  [Step.validating]: Phase.send,
+  [Step.invalidData]: Phase.send,
+  [Step.importing]: Phase.send,
+  [Step.doneWithErrors]: Phase.done,
+  [Step.doneOk]: Phase.done
 };
 
-const defaultSteps = [
-  {name: 'file', label: 'excel.step1', returnState: Step.empty},
-  {name: 'colMapping', label: 'excel.step2', returnState: Step.colMapping},
-  {name: 'valueMapping', label: 'excel.step3', returnState: Step.dataMapping},
-  {name: 'send', label: 'excel.step4', returnState: Step.empty},
-  {name: 'done', label: 'excel.step5', returnState: Step.importReady}
+const defaultPhases: StepperPhase[] = [
+  {phase: Phase.file, label: 'excel.step1', returnStep: Step.empty},
+  {phase: Phase.colMapping, label: 'excel.step2', returnStep: Step.colMapping},
+  {phase: Phase.valueMapping, label: 'excel.step3', returnStep: Step.dataMapping},
+  {phase: Phase.send, label: 'excel.step4', returnStep: Step.empty},
+  {phase: Phase.done, label: 'excel.step5', returnStep: Step.importReady}
 ];
 
 @Component({
@@ -34,41 +49,29 @@ const defaultSteps = [
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StepperComponent implements OnInit, OnChanges {
-  @Input() state!: Step;
-  @Input() mapping = defaultMapping;
-  @Input() steps: {name: string; label: string; returnState: number}[] = defaultSteps;
-  @Output() activate = new EventEmitter<number>();
-  @Output() title = new EventEmitter<string>();
+  @Input({ required: true }) step!: Step;
+  @Input() mapping: Record<Step, Phase> = defaultMapping;
+  @Input() phases: StepperPhase[] = defaultPhases;
 
-  currentStep = 0;
+  @Output() activate = new EventEmitter<number>();
+  @Output() activePhaseChange = new EventEmitter<StepperPhase>();
+
+  activePhaseIdx = 0;
   luStepperSteps!: string[];
 
-  private labels = false;
-
   constructor(
-    private translateService: TranslateService,
-    private cdr: ChangeDetectorRef
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
     this.updateSteps();
-    this.translateService.get(this.steps.map(step => step.label))
-      .subscribe(labels => {
-        this.steps.forEach(step => {
-          if (labels[step.label]) {
-            step.label = labels[step.label];
-          }
-        });
-        this.labels = true;
-        this.sendActive();
-        this.cdr.markForCheck();
-      });
+    this.sendActive();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.state) {
-      const mappedState = (this.mapping as any)[this.state] || 'file';
-      this.currentStep = this.steps.findIndex((item) => item.name === mappedState);
+      const mappedState = this.mapping[this.step] || 'file';
+      this.activePhaseIdx = this.phases.findIndex((item) => item.phase === mappedState);
       this.sendActive();
     }
 
@@ -78,18 +81,18 @@ export class StepperComponent implements OnInit, OnChanges {
   }
 
   onStepBack(idx: number) {
-    if (idx < this.currentStep) {
-      this.activate.emit(this.steps[idx].returnState);
+    if (idx < this.activePhaseIdx) {
+      this.activate.emit(this.phases[idx].returnStep);
     }
   }
 
   private updateSteps() {
-    this.luStepperSteps = this.steps.map(step => this.translateService.instant(step.label) || '');
+    this.luStepperSteps = this.phases.map(phase => this.translateService.instant(phase.label) || '');
   }
 
   private sendActive() {
-    if (this.currentStep > -1 && this.labels) {
-      this.title.emit(this.steps[this.currentStep].label);
+    if (this.activePhaseIdx > -1) {
+      this.activePhaseChange.emit(this.phases[this.activePhaseIdx]);
     }
   }
 }
