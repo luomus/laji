@@ -69,13 +69,13 @@ export class StepperComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.state) {
-      const mappedState = this.mapping[this.step] || 'file';
-      this.activePhaseIdx = this.phases.findIndex((item) => item.phase === mappedState);
+    if (changes.step) {
+      const mappedState = this.mapping[this.step] ?? Phase.file;
+      this.activePhaseIdx = this.phases.findIndex(item => item.phase === mappedState);
       this.sendActive();
     }
 
-    if (changes.steps) {
+    if (changes.phases) {
       this.updateSteps();
     }
   }
