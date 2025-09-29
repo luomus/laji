@@ -598,16 +598,14 @@ export class ImporterComponent implements OnInit, OnDestroy {
   }
 
   initParsedData() {
-    if (!this.parsedData) {
-      this.parsedData = this.importService.flatFieldsToDocuments(
-        this.data as any,
-        this.colMap as any,
-        this.fields as any,
-        this.formID as any,
-        this._onlyWithCount as any,
-        this.combineBy
-      );
-    }
+    this.parsedData = this.importService.flatFieldsToDocuments(
+      this.data as any,
+      this.colMap as any,
+      this.fields as any,
+      this.formID as any,
+      this._onlyWithCount as any,
+      this.combineBy
+    );
   }
 
   saveUserMapping() {
