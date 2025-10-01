@@ -1,5 +1,5 @@
-import { map, switchMap } from 'rxjs/operators';
-import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output, Directive } from '@angular/core';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output, Directive, OnInit } from '@angular/core';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { ControlValueAccessor } from '@angular/forms';
 import { Observable, of as ObservableOf } from 'rxjs';
@@ -10,7 +10,7 @@ import { PagedResult } from '../model/PagedResult';
 import { ArrayResult } from '../model/ArrayResult';
 
 @Directive()
-export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges {
+export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges, OnInit {
   @Input() position: 'right'|'left' = 'right';
   @Input() rootGroups!: string[];
   @Output() select = new EventEmitter(); // eslint-disable-line @angular-eslint/no-output-native
@@ -19,12 +19,14 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
   public groups: InformalTaxonGroup[] = [];
   public activeGroup: InformalTaxonGroup | undefined;
   public open = false;
-  public innerValue = '';
+  public innerValue = undefined;
   public currentValue: string | undefined;
   public label: string | undefined = '';
   public range!: number[];
 
   protected subLabel: any;
+
+  private initialized = false;
 
   onChange = (_: any) => {
   };
@@ -50,16 +52,22 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     this.lang = this.translate.currentLang;
   }
 
+  ngOnInit() {
+    if (!this.initialized) {
+      this.initGroups();
+      this.initialized = true;
+    }
+  }
+
   ngOnChanges() {
+    // ngOnChanges doesn't run if @Inputs don't have any values bound by the parent (AFAIK), so we need to run init also on ngOnInit
+    // The first ngOnChanges runs before ngOnInit
     this.initGroups();
+    this.initialized = true;
   }
 
   initGroups() {
-    let newValue = this.value;
-    newValue = newValue ? newValue : '';
-    if (this.currentValue === newValue) {
-      return;
-    }
+    const newValue = this.value;
     this.currentValue = newValue;
     (newValue ?
       this.getChildren(newValue, this.lang) :
@@ -102,6 +110,9 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
   }
 
   writeValue(value: any): void {
+    if (value === null) { // ControlValueAccessor initializes with null...
+      value = undefined;
+    }
     if (value !== this.innerValue) {
       this.innerValue = value;
       this.setLabel(value);
@@ -168,10 +179,10 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
   abstract convertToInformalTaxonGroup(group: T): InformalTaxonGroup;
 
   empty() {
-    if (this.value === '') {
+    if (this.value === undefined) {
       return this.close();
     }
-    this.value = '';
+    this.value = undefined;
     if (!this.open) {
       this.select.emit(this.value);
     }

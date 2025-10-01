@@ -28,7 +28,7 @@ export class FormSampleComponent extends ObservationFormComponent {
 
   onTaxonSelect(event: any) {
     if ((event.key === 'Enter' || (event.value && event.item)) && this.formQuery.taxon) {
-      const taxon = this.formQuery.taxon.endsWith('*') ? this.formQuery.taxon : this.formQuery.taxon + '*';
+      const taxon = this.formQuery.taxon;
       this.query['target'] = this.query['target'] ?
         [...this.query['target'], taxon] : [taxon];
       this.formQuery.taxon = '';
