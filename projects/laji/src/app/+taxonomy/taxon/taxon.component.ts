@@ -43,6 +43,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    console.log('init');
     this.footerService.footerVisible = false;
     this.subParam = combineLatest(
       [this.route.params, this.route.queryParams]
