@@ -42,3 +42,12 @@
     max-height: calc(50vh - 50px);
   }
 }
+
+.gbif-icon {
+  display: inline;
+  font-style: italic;
+  font-weight: normal;
+  img {
+    height: 17px;
+  }
+}

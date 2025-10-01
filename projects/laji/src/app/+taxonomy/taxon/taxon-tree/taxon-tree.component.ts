@@ -39,7 +39,6 @@ export class TaxonTreeComponent implements OnInit {
 
   getParents(id: string) {
     return this.taxonomyService.getParents(id);
-
   }
 
   setSkipParams() {
