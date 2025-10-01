@@ -97,7 +97,8 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
       selectedFields: 'id,vernacularName,scientificName,multimedia',
       includeMedia: true,
       page: this.search.imageOptions.page,
-      pageSize: 50
+      pageSize: 50,
+      checklist: 'MR.1,MR.2'
     };
     const filters = {
       ..._filters,

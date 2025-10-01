@@ -69,7 +69,7 @@ export class SpeciesCountComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.subFetch = this.api.post('/taxa/{id}/species', {
       path: { id: this.search.taxonId || 'MX.37600' },
-      query: { ...this.search.query, page: 1, pageSize: 0 }
+      query: { ...this.search.query, page: 1, pageSize: 0, checklist: 'MR.1,MR.2' }
     }, {
       ...this.search.filters,
       hasMultimedia: this.hasMediaFilter

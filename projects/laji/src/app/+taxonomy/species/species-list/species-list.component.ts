@@ -216,7 +216,8 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
         page,
         pageSize: 1000,
         sortOrder: this.search.listOptions.sortOrder,
-        selectedFields: this.getSelectedFields()
+        selectedFields: this.getSelectedFields(),
+        checklist: 'MR.1,MR.2'
       },
     }, filters).pipe(
         map(data => {

@@ -165,6 +165,7 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
     return this.api.get('/autocomplete/taxa', { query: {
       query,
       limit: this.typeaheadLimit,
+      checklist: 'MR.1,MR.2',
       ...this.searchParams
     } }).pipe(map(({results}) => results));
   }
