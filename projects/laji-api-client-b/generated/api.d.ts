@@ -701,7 +701,7 @@ export interface paths {
         /** Get species and subspecies of a taxon */
         get: operations["TaxaController_getTaxonSpeciesPage"];
         put?: never;
-        /** Get species and subspecies of a taxon */
+        /** Get species and subspecies of a taxon with filters */
         post: operations["TaxaController_getTaxonSpeciesPageWithFilters"];
         delete?: never;
         options?: never;
@@ -719,7 +719,7 @@ export interface paths {
         /** Get an aggregate of species and subspecies of a taxon */
         get: operations["TaxaController_getTaxonSpeciesAggregate"];
         put?: never;
-        /** Get an aggregate of species and subspecies of a taxon */
+        /** Get an aggregate of species and subspecies of a taxon with filters */
         post: operations["TaxaController_getTaxonSpeciesAggregateWithFilters"];
         delete?: never;
         options?: never;
@@ -1226,6 +1226,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/organizations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all organizations */
+        get: operations["OrganizationsController_getAll"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/organizations/{id}": {
         parameters: {
             query?: never;
@@ -1410,6 +1427,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/autocomplete/taxa": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["AutocompleteController_getTaxa"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/autocomplete/unit/list": {
         parameters: {
             query?: never;
@@ -1466,22 +1499,6 @@ export interface paths {
             cookie?: never;
         };
         get: operations["AutocompleteController_getWaterbirdPairCountUnitShorthandAutocomplete"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/autocomplete/taxa": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["AutocompleteController_getTaxa"];
         put?: never;
         post?: never;
         delete?: never;
@@ -8518,6 +8535,28 @@ export interface components {
             name?: string;
             group?: string;
         };
+        TaxonAutocompleteResponseDto: {
+            key: string;
+            value: string;
+        };
+        TripReportUnitListResultDto: {
+            results: Record<string, never>[];
+            count: number;
+            nonMatchingCount: number;
+        };
+        TripReportUnitShorthandResponseDto: {
+            key: string;
+            value: string;
+            isNonMatching?: boolean;
+            matchType?: string;
+            unit: Record<string, never>;
+            interpretedFrom: {
+                taxon: string;
+                count: string;
+                maleIndividualCount: string;
+                femaleIndividualCount: string;
+            };
+        };
         LineTransectUnitShorthandResponseDto: {
             key: string;
             value: string;
@@ -8529,10 +8568,6 @@ export interface components {
                 maleIndividualCount: string;
                 femaleIndividualCount: string;
             };
-        };
-        TaxonAutocompleteResponseDto: {
-            key: string;
-            value: string;
         };
         DwQuery_CountResponse: {
             total: number;
@@ -13945,6 +13980,14 @@ export interface components {
              */
             owner?: string;
         };
+        SensitiveOrganization: {
+            "@context": string;
+            organizationLevel1: string;
+            organizationLevel2?: string;
+            organizationLevel3?: string;
+            organizationLevel4?: string;
+            abbreviation?: string;
+        };
         informalTaxonGroup: {
             /** Context for the Informal Taxon Group */
             "@context"?: string;
@@ -15330,7 +15373,7 @@ export interface operations {
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
                 checklist?: string;
                 /** @description Filter based on taxon set(s). Multiple values are separated by a comma (,) */
-                taxonSets?: string;
+                taxonSet?: string;
                 /** @description Search taxa from specified informal taxon group(s). Multiple values are separated by a comma (,) */
                 informalTaxonGroup?: string;
                 /** @description Include hidden taxa in the response */
@@ -15351,8 +15394,6 @@ export interface operations {
                 onlyFinnish?: boolean;
                 /** @description Filter to include only invasive species */
                 onlyInvasive?: boolean;
-                /** @description If observationMode is set, "sp." is catenated to higher tax scientific names */
-                observationMode?: boolean;
                 /** @description Multiple values are separated by a comma (,) */
                 selectedFields?: string;
             };
@@ -20470,6 +20511,38 @@ export interface operations {
             };
         };
     };
+    OrganizationsController_getAll: {
+        parameters: {
+            query?: {
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
+                page?: number;
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        currentPage: number;
+                        pageSize: number;
+                        total: number;
+                        lastPage: number;
+                        prevPage?: number;
+                        nextPage?: number;
+                        results: components["schemas"]["SensitiveOrganization"][];
+                    };
+                };
+            };
+        };
+    };
     OrganizationsController_get: {
         parameters: {
             query?: never;
@@ -20486,7 +20559,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["organization"];
+                    "application/json": components["schemas"]["SensitiveOrganization"];
                 };
             };
         };
@@ -20679,8 +20752,8 @@ export interface operations {
             query: {
                 /** @description Search term */
                 query: string;
-                page?: number;
-                pageSize?: number;
+                /** @description Limit the size of results */
+                limit?: number;
             };
             header?: never;
             path?: never;
@@ -20695,10 +20768,6 @@ export interface operations {
                 content: {
                     "application/json": {
                         results: components["schemas"]["GetPersonsResponseDto"][];
-                        total: number;
-                        pageSize: number;
-                        currentPage: number;
-                        lastPage: number;
                         "@context": string;
                     };
                 };
@@ -20710,8 +20779,8 @@ export interface operations {
             query: {
                 /** @description Search term */
                 query: string;
-                page?: number;
-                pageSize?: number;
+                /** @description Limit the size of results */
+                limit?: number;
                 /** @description Person's authentication token */
                 personToken: string;
             };
@@ -20728,10 +20797,58 @@ export interface operations {
                 content: {
                     "application/json": {
                         results: components["schemas"]["GetPersonsResponseDto"][];
-                        total: number;
-                        pageSize: number;
-                        currentPage: number;
-                        lastPage: number;
+                        "@context": string;
+                    };
+                };
+            };
+        };
+    };
+    AutocompleteController_getTaxa: {
+        parameters: {
+            query: {
+                query: string;
+                /** @description Limit the size of results */
+                limit?: number;
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
+                /** @description Filter based on taxon set(s). Multiple values are separated by a comma (,) */
+                taxonSet?: string;
+                /** @description Search taxa from specified informal taxon group(s). Multiple values are separated by a comma (,) */
+                informalTaxonGroup?: string;
+                /** @description Include hidden taxa in the response */
+                includeHidden?: boolean;
+                /** @description Matching names have a type (e.g., MX.vernacularName, MX.hasMisappliedName). Multiple values are separated by a comma (,) */
+                includeNameTypes?: string;
+                /** @description Filter based on language of the matching name. Multiple values are separated by a comma (,) */
+                includeLanguages?: string;
+                /** @description Exclude taxa from specified informal taxon group(s). Multiple values are separated by a comma (,) */
+                excludedInformalTaxonGroup?: string;
+                /** @description Default: All match types; exact = exact matches, partial = partially matching, likely = fuzzy matching. Multiple values are separated by a comma (,) */
+                matchType?: "exact" | "partial" | "likely";
+                /** @description Matching names have a type (e.g., MX.vernacularName, MX.hasMisappliedName). Multiple values are separated by a comma (,) */
+                excludeNameTypes?: string;
+                /** @description Filter to include only species (and subspecies) */
+                onlySpecies?: boolean;
+                /** @description Filter to include only Finnish taxa */
+                onlyFinnish?: boolean;
+                /** @description Filter to include only invasive species */
+                onlyInvasive?: boolean;
+                /** @description Multiple values are separated by a comma (,) */
+                selectedFields?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: components["schemas"]["TaxonAutocompleteResponse"][];
                         "@context": string;
                     };
                 };
@@ -20755,14 +20872,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        results: components["schemas"]["GetPersonsResponseDto"][];
-                        total: number;
-                        pageSize: number;
-                        currentPage: number;
-                        lastPage: number;
-                        "@context": string;
-                    };
+                    "application/json": components["schemas"]["TripReportUnitListResultDto"];
                 };
             };
         };
@@ -20770,10 +20880,10 @@ export interface operations {
     AutocompleteController_getTripReportUnitShorthandAutocomplete: {
         parameters: {
             query: {
-                /** @description Limit the size of results */
-                limit?: number;
                 /** @description Search term */
                 query: string;
+                /** @description Limit the size of results */
+                limit?: number;
             };
             header?: never;
             path?: never;
@@ -20835,60 +20945,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LineTransectUnitShorthandResponseDto"];
-                };
-            };
-        };
-    };
-    AutocompleteController_getTaxa: {
-        parameters: {
-            query: {
-                query: string;
-                /** @description Limit the size of results */
-                limit?: number;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
-                /** @description Filter based on taxon set(s). Multiple values are separated by a comma (,) */
-                taxonSets?: string;
-                /** @description Search taxa from specified informal taxon group(s). Multiple values are separated by a comma (,) */
-                informalTaxonGroup?: string;
-                /** @description Include hidden taxa in the response */
-                includeHidden?: boolean;
-                /** @description Matching names have a type (e.g., MX.vernacularName, MX.hasMisappliedName). Multiple values are separated by a comma (,) */
-                includeNameTypes?: string;
-                /** @description Filter based on language of the matching name. Multiple values are separated by a comma (,) */
-                includeLanguages?: string;
-                /** @description Exclude taxa from specified informal taxon group(s). Multiple values are separated by a comma (,) */
-                excludedInformalTaxonGroup?: string;
-                /** @description Default: All match types; exact = exact matches, partial = partially matching, likely = fuzzy matching. Multiple values are separated by a comma (,) */
-                matchType?: "exact" | "partial" | "likely";
-                /** @description Matching names have a type (e.g., MX.vernacularName, MX.hasMisappliedName). Multiple values are separated by a comma (,) */
-                excludeNameTypes?: string;
-                /** @description Filter to include only species (and subspecies) */
-                onlySpecies?: boolean;
-                /** @description Filter to include only Finnish taxa */
-                onlyFinnish?: boolean;
-                /** @description Filter to include only invasive species */
-                onlyInvasive?: boolean;
-                /** @description If observationMode is set, "sp." is catenated to higher tax scientific names */
-                observationMode?: boolean;
-                /** @description Multiple values are separated by a comma (,) */
-                selectedFields?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        results: components["schemas"]["TaxonAutocompleteResponse"][];
-                        "@context": string;
-                    };
                 };
             };
         };
