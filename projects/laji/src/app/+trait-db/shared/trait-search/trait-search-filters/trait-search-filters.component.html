@@ -1,46 +1,27 @@
-<details class="lu-details my-6" open>
+<details [formGroup]="form" class="lu-details my-6" open>
   <summary>Filters</summary>
 
   <div class="mb-5 d-flex flex-gap-4">
     <div class="dataset-filter flex-grow">
       <label for="trait-search-filters-dataset">Dataset</label>
-      <select class="form-control" id="trait-search-filters-dataset" [formControl]="$any(form.get('dataset'))">
-        <option [value]="null">None</option>
+      <select class="form-control" id="trait-search-filters-dataset" formControlName="dataset">
+        <option [ngValue]="null">None</option>
         <option *ngFor="let dataset of (datasets$ | async)" [value]="dataset.id">{{ dataset.name }}</option>
       </select>
     </div>
 
     <div class="trait-filter flex-grow">
       <label for="trait-search-filters-trait">Trait</label>
-      <select class="form-control" id="trait-search-filters-trait" [formControl]="$any(form.get('trait'))">
-        <option [value]="null">None</option>
+      <select class="form-control" id="trait-search-filters-trait" formControlName="trait">
+        <option [ngValue]="null">None</option>
         <option *ngFor="let trait of (traits$ | async)" [value]="trait.id">{{ trait.name }}</option>
       </select>
     </div>
   </div>
 
-  <details class="lu-details" open>
-    <summary>Taxonomy</summary>
-    <fieldset class="lu-fieldset mb-4">
-      <legend>Taxonomy source:</legend>
-      <div>
-        <input [formControl]="$any(form.get('searchByTaxon'))" type="radio" id="finbif" value="FinBIF" checked/>
-        <label class="ml-2" for="finbif">FinBIF</label>
-      </div>
-      <div>
-        <input [formControl]="$any(form.get('searchByTaxon'))" type="radio" id="gbif" value="GBIF"/>
-        <label class="ml-2" for="gbif">GBIF</label>
-      </div>
-    </fieldset>
-    <div class="d-flex flex-gap-4 flex-wrap flex-row">
-      <div *ngFor="let higherTaxon of higherTaxa" class="higher-taxa">
-        <label for="trait-search-filters-kingdom">{{ higherTaxon }}</label>
-        <input [formControl]="$any(form.get(higherTaxon))" class="form-control" type="text" id="trait-search-filters-kingdom">
-      </div>
-    </div>
-  </details>
+  <laji-trait-rank-filter formControlName="rank"></laji-trait-rank-filter>
 
-  <laji-trait-search-additional-filters [initialValue]="form.get('additionalFilters')!.value!" (filterChange)="onAdditionalFiltersChange($event)"></laji-trait-search-additional-filters>
+  <laji-trait-search-additional-filters formControlName="additionalFilters"></laji-trait-search-additional-filters>
 
   <div class="d-flex flex-gap-4">
     <button (click)="onSearch()" class="btn btn-primary">Search</button>

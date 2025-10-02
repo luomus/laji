@@ -28,6 +28,7 @@ import { TraitDbDataEntryValidateComponent } from './trait-db-datasets/data-entr
 import { TraitDbDataEntryCheckComponent } from './trait-db-datasets/data-entry/check/data-entry-check.component';
 import { TraitDbDataEntryReadyComponent } from './trait-db-datasets/data-entry/ready/data-entry-ready.component';
 import { TraitDbDataEditorComponent } from './trait-db-datasets/data-editor/trait-db-data-editor.component';
+import { TraitRankFilterComponent } from './shared/trait-search/trait-search-filters/rank-filter/rank-filter.component';
 
 @NgModule({
   imports: [ routing, CommonModule, SharedModule, LajiUiModule, ReactiveFormsModule, DatatableModule ],
@@ -38,7 +39,7 @@ import { TraitDbDataEditorComponent } from './trait-db-datasets/data-editor/trai
     TraitDbTraitComponent, TraitSearchComponent, TraitSearchFiltersComponent, TraitSearchAdditionalFiltersComponent,
     TraitDbTraitEditorComponent, TraitEnumerationValueListComponent, TraitDbTraitGroupEditorComponent, TraitDbDataEntryComponent,
     TraitDbDataEntryImportComponent, TraitDbDataEntryValidateComponent, TraitDbDataEntryCheckComponent, TraitDbDataEntryReadyComponent,
-    TraitDbDataEditorComponent
+    TraitDbDataEditorComponent, TraitRankFilterComponent
   ]
 })
 export class TraitDbModule {}

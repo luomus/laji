@@ -3,7 +3,7 @@
   <div class="mb-4">
     <label for="trait-search-filters-additional-filter">Add a filter:</label>
     <select class="form-control" id="trait-search-filters-additional-filter" (change)="onSelectAdditionalFilter($event)">
-      <option [value]="null"></option>
+      <option [ngValue]="null"></option>
       <option *ngFor="let filterIdx of unselectedAdditionalFilters" [value]="filterIdx">{{ additionalFilters[filterIdx].prop }}</option>
     </select>
   </div>
@@ -63,7 +63,7 @@
   <div class="mb-2">
     <label [for]="'trait-search-filters-' + formKey">{{ prop }}
       <select [formControl]="$any(form.get(formKey))" class="form-control" [id]="'trait-search-filters-' + formKey">
-        <option [value]="null"></option>
+        <option [ngValue]="null"></option>
         <option *ngFor="let val of $any(additionalFiltersLookup)[formKey].range" [value]="val">{{ val }}</option>
       </select>
     </label>

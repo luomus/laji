@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { filters } from './filters';
 
 interface BaseFilter {
@@ -81,54 +81,59 @@ export type AdditionalFilterValues = Partial<{
   -readonly [K in keyof typeof additionalFilters as typeof additionalFilters[K]['prop']]: FilterTypeToValueType<typeof additionalFilters[K]['filterType']> | null
 }>;
 
-export const stripDefaultValues = (f: AdditionalFilterValues): Partial<AdditionalFilterValues> => {
-  const newFilters: Partial<AdditionalFilterValues> = {};
-  Object.entries(f).forEach(([k, v]) => {
-    const formKey = propToFormKey[k];
-    if (
-      v !== undefined
-      && v !== filterDefaultValues[formKey]
-      && !(Array.isArray(v) && v.length === 0)
-    ) {
-      newFilters[k as keyof AdditionalFilterValues] = v as any;
-    }
-  });
-  return newFilters;
-};
-
 @Component({
   selector: 'laji-trait-search-additional-filters',
   templateUrl: './additional-filters.component.html',
-  styleUrls: ['./additional-filters.component.scss']
+  styleUrls: ['./additional-filters.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => TraitSearchAdditionalFiltersComponent),
+      multi: true
+    }
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TraitSearchAdditionalFiltersComponent implements OnInit {
-  @Input() initialValue?: AdditionalFilterValues;
-  @Output() filterChange: Observable<AdditionalFilterValues>;
-
+export class TraitSearchAdditionalFiltersComponent implements ControlValueAccessor, OnDestroy {
   form: FormGroup<Record<keyof typeof additionalFilters, FormControl>>;
   additionalFilters!: AdditionalFilterWithFormKey[];
   additionalFiltersLookup = additionalFilters;
   unselectedAdditionalFilters = new Set<number>();
   selectedAdditionalFilters = new Set<number>();
 
-  constructor(private fb: FormBuilder) {
+  onChange: (value: AdditionalFilterValues | null) => void = () => {};
+  onTouched: () => void = () => {};
+  subscription!: Subscription;
+
+  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.form = this.fb.group(filterDefaultValues);
-    this.filterChange = this.form.valueChanges.pipe(
-      map(values =>
-        Object.entries(values)
-          .reduce((p, [k, v]) => { p[additionalFilters[k as unknown as keyof typeof additionalFilters].prop] = v; return p; }, {} as AdditionalFilterValues)
-      )
-    );
     this.additionalFilters = additionalFilterArr;
     this.additionalFilters.forEach((item, idx) => {
       this.unselectedAdditionalFilters.add(idx);
     });
+    this.subscription = this.form.valueChanges.pipe(
+      map(values =>
+        Object.entries(values)
+          .reduce((p, [k, v]) => {
+            if (values[k]) {
+              p[additionalFilters[k as unknown as keyof typeof additionalFilters].prop] = v;
+            }
+            return p;
+          }, {} as AdditionalFilterValues)
+      ),
+    ).subscribe(val => this.onChange(val));
   }
 
-  ngOnInit(): void {
-    if (this.initialValue) {
-      const propsMappedToFormKeys: any = {};
-      Object.entries(this.initialValue).forEach(([k, v]) => {
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  writeValue(obj: any): void {
+    const propsMappedToFormKeys: any = {};
+    this.selectedAdditionalFilters = new Set();
+    this.unselectedAdditionalFilters = new Set(new Array(this.additionalFilters.length).fill(null).map((_, idx) => idx));
+    if (obj) {
+      Object.entries(obj).forEach(([k, v]) => {
         propsMappedToFormKeys[propToFormKey[k as keyof typeof propToFormKey]] = v;
         if (v !== undefined && v !== null) {
           const idx = this.additionalFilters.findIndex(f => f.prop === k);
@@ -136,7 +141,24 @@ export class TraitSearchAdditionalFiltersComponent implements OnInit {
           this.selectedAdditionalFilters.add(idx);
         }
       });
-      this.form.setValue({ ...filterDefaultValues, ...propsMappedToFormKeys });
+    }
+    this.form.setValue({ ...filterDefaultValues, ...propsMappedToFormKeys });
+    this.cdr.markForCheck();
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    if (isDisabled) {
+      this.form.disable();
+    } else {
+      this.form.enable();
     }
   }
 

@@ -1,0 +1,23 @@
+
+<div class="d-flex flex-gap-3" [formGroup]="form">
+  <label class="d-flex flex-gap-3">
+    <div class="self-end whitespace-nowrap">Taxonomic rank:</div>
+    <select class="form-control" formControlName="rank">
+      <option *ngFor="let rank of taxonRanks" [value]="rank">{{ rank }}</option>
+    </select>
+  </label>
+  <input class="form-control" formControlName="search" placeholder="Scientific name...">
+  <fieldset>
+    <legend>
+      Taxonomy:
+    </legend>
+    <label>
+      <input type="radio" formControlName="source" value="FinBIF"/>
+      FinBIF
+    </label>
+    <label>
+      <input type="radio" formControlName="source" value="GBIF"/>
+      GBIF
+    </label>
+  </fieldset>
+</div>
