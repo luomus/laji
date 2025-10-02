@@ -61,7 +61,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   @Output() reorder = new EventEmitter<any>();
   @Output() datatableSelect = new EventEmitter<any>();
   @Output() rowSelect = new EventEmitter<any>();
-  @Output() activate = new EventEmitter<any>();
 
   filterByChange?: Subscription;
 
