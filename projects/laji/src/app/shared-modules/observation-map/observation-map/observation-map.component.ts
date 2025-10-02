@@ -18,8 +18,9 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter, Inject,
-  Input, NgZone,
+  EventEmitter,
+  Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -51,7 +52,6 @@ import type { DivIcon, LeafletEvent, MarkerCluster, PathOptions } from 'leaflet'
 import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
-import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 
 interface AggregateQueryResponse {
@@ -175,8 +175,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   tableViewHeightOverride: number | undefined = -1;
   selectedObservationCoordinates: Coordinates | undefined;
 
-  href?: string;
-  today = new Date();
+  href$: Observable<string>;
+  printDate = new Date();
 
   private useFinnishMap = false;
   private drawData: DataOptions = {
@@ -202,7 +202,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   private activeZoomThresholdBounds?: any;
   private mapMoveSubscription!: Subscription;
   private mapDataSubscription?: Subscription;
-  private routeChangeSubscription: Subscription;
   private activeGeometryHash!: string;
 
   constructor(
@@ -213,8 +212,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     private logger: Logger,
     private cdr: ChangeDetectorRef,
     private zone: NgZone,
-    private router: Router,
-    @Inject(DOCUMENT) private document: Document
+    private router: Router
   ) {
     this.mapOptions = {
       controls: {
@@ -229,15 +227,11 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       Object.assign(this.mapOptions, (environment as any).observationMapOptions);
     }
 
-    this.routeChangeSubscription = this.router.events.pipe(
-      map(() => undefined),
-      startWith(undefined)
-    ).subscribe(() => {
-      if (this.platformService.isBrowser) {
-        this.href = this.platformService.window.location.href;
-        this.cdr.markForCheck();
-      }
-    });
+    this.href$ = this.router.events.pipe(
+      map(() => this.getCurrentUrl()),
+      startWith(this.getCurrentUrl()),
+      filter((href): href is string => href !== undefined)
+    );
   }
 
   ngOnInit(): void {
@@ -260,7 +254,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this.mapMoveSubscription?.unsubscribe();
     this.mapDataSubscription?.unsubscribe();
-    this.routeChangeSubscription?.unsubscribe();
   }
 
   onCreate(e: any) {
@@ -692,9 +685,17 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     return icon;
   }
 
+  private getCurrentUrl(): string | undefined {
+    if (this.platformService.isBrowser) {
+      return this.platformService.window.location.href;
+    }
+    return undefined;
+  }
+
   private printControlFn() {
     this.zone.run(() => {
       this.printMode = !this.printMode;
+      this.printDate = new Date();
       this.cdr.markForCheck();
     });
   }

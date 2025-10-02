@@ -38,7 +38,7 @@
     </laji-legend>
   </laji-map>
   <div *ngIf="printMode" class="print-info">
-    <span class="print-info-url">{{ href }}</span>, {{ today | amDateFormat:'DD.MM.YYYY HH:mm' }}
+    <span class="print-info-url">{{ href$ | async }}</span>, {{ printDate | amDateFormat:'DD.MM.YYYY HH:mm' }}
   </div>
   <laji-map-print
     [lajiMap]="lajiMap"

@@ -54,7 +54,7 @@ export const getPointIconAsCircle = (po: PathOptions & { opacity: number }, feat
 @Component({
   selector: 'laji-map',
   template: `
-    <div #lajiMapWrap class="laji-map-wrap">
+    <div class="laji-map-wrap">
       <div #lajiMap class="laji-map"></div>
       <div class="loading-map loading" *ngIf="loading"></div>
       <ng-content></ng-content>
@@ -73,7 +73,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   @Input() maxBounds?: [[number, number], [number, number]];
   @Input() onPopupClose?: (elem: string | HTMLElement) => void;
 
-  @Output() loaded = new EventEmitter<any>();
+  @Output() loaded = new EventEmitter();
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();
   @Output() tileLayersChange = new EventEmitter();
