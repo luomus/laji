@@ -1,44 +1,58 @@
 .informal-group-image {
-    display: inline-block;
-    max-width: 100%;
-    padding-right: 30px;
-    height: 20px;
-    background-size: 20px 20px;
-    background-position: bottom center;
-  }
+  display: inline-block;
+  max-width: 100%;
+  padding-right: 30px;
+  height: 20px;
+  background-size: 20px 20px;
+  background-position: bottom center;
+}
 
-  
-  ::ng-deep typeahead-container .dropdown-menu {
-    position: relative;
-  }
+::ng-deep typeahead-container .gbif-icon-sizer {
+  height: 17px;
+  width: 17px;
+  margin-right: -11px;
+  float: left;
+  margin-top: 9px;
+  margin-right: 8px;
+}
+::ng-deep typeahead-container .gbif-icon {
+  background-image: url('/static/images/icons/gbif.svg');
+}
+::ng-deep typeahead-container .active .gbif-icon {
+  filter: brightness(0) invert(1);
+}
 
+::ng-deep typeahead-container .dropdown-menu {
+  position: relative;
+}
+
+::ng-deep typeahead-container ul li a span div {
+  display: inline-block;
+  float: right;
+  margin-left: 5px;
+  position: relative;
+  top: -5px;
+}
+
+
+@media only screen and (max-width : 767px) {
   ::ng-deep typeahead-container ul li a span div {
-    display: inline-block;
-    float: right;
-    margin-left: 5px;
-    position: relative;
-    top: -5px;
+    display: block;
+    float: none;
+    margin-left: 0px;
+    opacity: 0.7;
   }
-  
 
-  @media only screen and (max-width : 767px) {
-    ::ng-deep typeahead-container ul li a span div {
-      display: block;
-      float: none;
-      margin-left: 0px;
-      opacity: 0.7;
-    }
-
-    typeahead-container ul li a span span {
-     display: block
-    }
-
-    ::ng-deep typeahead-container {
-      margin-left: 0px;
-      width: 250px;
-    }
-
-    ::ng-deep typeahead-container ul{
-      width: 250px;
-    }
+  typeahead-container ul li a span span {
+    display: block
   }
+
+  ::ng-deep typeahead-container {
+    margin-left: 0px;
+    width: 250px;
+  }
+
+  ::ng-deep typeahead-container ul{
+    width: 250px;
+  }
+}
