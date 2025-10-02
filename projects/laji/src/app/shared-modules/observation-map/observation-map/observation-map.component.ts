@@ -1,18 +1,25 @@
 import {
   catchError,
-  concat,
   debounceTime,
   delay,
   filter,
   map,
   retryWhen,
-  startWith,
   switchMap,
   take,
   tap,
   timeout
 } from 'rxjs/operators';
-import { of, of as ObservableOf, Subscription, throwError as observableThrowError, Observable, forkJoin, Subject } from 'rxjs';
+import {
+  of,
+  Subscription,
+  throwError as observableThrowError,
+  Observable,
+  forkJoin,
+  Subject,
+  concat,
+  defer
+} from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -67,7 +74,7 @@ interface AggregateQueryResponse {
 // Given coordinates in warehouse query format
 // Returns features visualizing that set of coordinates
 const getFeaturesFromQueryCoordinates$ = (coordinates: string[]): Observable<Feature<Polygon>[]> => (
-  ObservableOf(coordinates
+  of(coordinates
     ? coordinates.map(
       (coord: string) => getFeatureFromGeometry(convertLajiEtlCoordinatesToGeometry(coord))
     ) : []
@@ -175,7 +182,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   tableViewHeightOverride: number | undefined = -1;
   selectedObservationCoordinates: Coordinates | undefined;
 
-  href$: Observable<string>;
+  href$: Observable<string | undefined>;
   printDate = new Date();
 
   private useFinnishMap = false;
@@ -227,10 +234,11 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       Object.assign(this.mapOptions, (environment as any).observationMapOptions);
     }
 
-    this.href$ = this.router.events.pipe(
-      map(() => this.getCurrentUrl()),
-      startWith(this.getCurrentUrl()),
-      filter((href): href is string => href !== undefined)
+    this.href$ = concat(
+      defer(() => of(this.getCurrentHref())),
+      this.router.events.pipe(
+        map(() => this.getCurrentHref())
+      )
     );
   }
 
@@ -505,7 +513,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       ? this.warehouseService.getPolygonFeatureCollection(polygonId.split(':')[0]).pipe(
           map(featureCollection => (featureCollection as any).features)
       )
-      : ObservableOf([]);
+      : of([]);
   }
 
   private getDrawData$(query: WarehouseQueryInterface): Observable<DataOptions> {
@@ -635,7 +643,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       // retry on timeout
       timeout(WarehouseApi.longTimeout * 3),
       delay(100),
-      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
+      retryWhen(errors => concat(errors.pipe(delay(1000), take(3)), observableThrowError(errors))),
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       map(d => this.featureCollectionToDataOptions(d!)),
       // update the map
@@ -685,7 +693,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     return icon;
   }
 
-  private getCurrentUrl(): string | undefined {
+  private getCurrentHref(): string | undefined {
     if (this.platformService.isBrowser) {
       return this.platformService.window.location.href;
     }
