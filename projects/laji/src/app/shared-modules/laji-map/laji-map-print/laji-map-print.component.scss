@@ -1,0 +1,34 @@
+.print-mode-controls {
+  position: absolute;
+  top: -1px;
+}
+.print-mode-controls.print-mode-controls-topright {
+  right: -2px;
+}
+.print-mode-controls.print-mode-controls-topleft {
+  left: -2px;
+}
+
+::ng-deep .pdf-btn:disabled {
+  opacity: 1;
+  background: #dddddd !important;
+}
+
+::ng-deep .transparent-border {
+  border-color: transparent !important;
+}
+
+@media print {
+  ::ng-deep .leaflet-top {
+    display: none;
+  }
+  ::ng-deep .laji-map-coordinates-control {
+    display: none !important;
+  }
+  ::ng-deep .leaflet-control {
+    background-color: white !important;
+  }
+  ::ng-deep .leaflet-bottom.leaflet-left {
+    z-index: 1001;
+  }
+}

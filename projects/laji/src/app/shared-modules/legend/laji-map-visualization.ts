@@ -8,5 +8,5 @@ export interface LajiMapVisualizationItem {
   getClusterColor?: (childMarkers: L.Marker[]) => string;
 }
 
-export interface LajiMapVisualizationCategory { color: string; label?: string };
+export interface LajiMapVisualizationCategory { color: string; label?: string; className?: string }
 export type LajiMapVisualization<T extends string> = Record<T, LajiMapVisualizationItem>;

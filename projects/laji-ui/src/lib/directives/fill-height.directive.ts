@@ -6,7 +6,7 @@ import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 export interface IFillHeightOptions {
   disabled?: boolean;
   minHeight?: number;
-  height?: number|undefined; // sets height to a constant value effectively disabling the fillHeight functionality
+  height?: number|string|undefined; // sets height to a constant value effectively disabling the fillHeight functionality
 }
 
 @Directive({
@@ -53,14 +53,17 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit, OnChanges 
   updateHeight() {
     if (this.options.disabled) { return; }
     const boundingRect = this.el.nativeElement.getBoundingClientRect();
-    let h = window.innerHeight - boundingRect.top;
+    let h: number|string = window.innerHeight - boundingRect.top;
     if (this.options.minHeight && h < this.options.minHeight) {
       h = this.options.minHeight;
     }
     if (this.options.height) {
       h = this.options.height;
     }
-    this.renderer.setStyle(this.el.nativeElement, 'height', h.toString() + 'px');
+    if (typeof h === 'number') {
+      h = h.toString() + 'px';
+    }
+    this.renderer.setStyle(this.el.nativeElement, 'height', h);
     Util.dispatchResizeEvent(this.platformService, 'ignore-fill-height');
   }
 

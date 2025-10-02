@@ -1,4 +1,8 @@
-import { LajiMapVisualization, LajiMapVisualizationItem } from '../../legend/laji-map-visualization';
+import {
+  LajiMapVisualization,
+  LajiMapVisualizationCategory,
+  LajiMapVisualizationItem
+} from '../../legend/laji-map-visualization';
 
 const BASE_FEATURE_STYLE = {
   weight: 1,
@@ -64,6 +68,9 @@ const getCoordinateAccuracyClassName = (coordinateAccuracy: number): string => {
   return 'coordinate-accuracy-' + (idx + 1);
 };
 
+const processCategories = (categories: LajiMapVisualizationCategory[]): LajiMapVisualizationCategory[] =>
+  categories.map(category => ({ ...category, className: colorClassNameMap[category.color] }));
+
 const visualizationModes = ['obsCount', 'recordQuality', 'redlistStatus', 'individualCount', 'recordAge'] as const;
 export type ObservationVisualizationMode = typeof visualizationModes[number];
 type ObservationVisualization = LajiMapVisualization<ObservationVisualizationMode> &
@@ -72,10 +79,19 @@ type ObservationVisualization = LajiMapVisualization<ObservationVisualizationMod
     getClusterColor: LajiMapVisualizationItem['getClusterColor'];
   }>;
 
+export const colorClassNameMap: Record<string, string> = {
+  '#ffffff': 'print-color-white',
+  '#348cf0': 'print-color-blue',
+  '#90dacf': 'print-color-green',
+  '#ffffbf': 'print-color-yellow',
+  '#fdbf66': 'print-color-orange',
+  '#f26840': 'print-color-red'
+};
+
 export const lajiMapObservationVisualization: ObservationVisualization = {
   obsCount: {
     label: 'laji-map.legend.mode.obsCount',
-    categories: [
+    categories: processCategories([
       {
         color: '#348cf0',
         label: '1-10'
@@ -96,7 +112,7 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
         color: '#f26840',
         label: '10001+'
       }
-    ],
+    ]),
     getFeatureStyle: (options) => ({
       ...BASE_FEATURE_STYLE,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -109,7 +125,7 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
   },
   recordQuality: {
     label: 'laji-map.legend.mode.recordQuality',
-    categories: [
+    categories: processCategories([
       {
         color: '#348cf0',
         label: 'laji-map.legend.mode.recordQuality.' + RecordQuality.ExpertVerified
@@ -130,7 +146,7 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
         color: '#f26840',
         label: 'laji-map.legend.mode.recordQuality.' + RecordQuality.Erroneous
       }
-    ],
+    ]),
     getFeatureStyle: (options) => ({
       ...BASE_FEATURE_STYLE,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -154,7 +170,7 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
   },
   redlistStatus: {
     label: 'laji-map.legend.mode.redlistStatus',
-    categories: [
+    categories: processCategories([
       {
         color: '#348cf0',
         label: 'LC, DD, NA, NE'
@@ -175,7 +191,7 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
         color: '#f26840',
         label: 'CR, RE, EW, EX'
       }
-    ],
+    ]),
     getFeatureStyle: (options) => ({
       ...BASE_FEATURE_STYLE,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -200,7 +216,7 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
   },
   individualCount: {
     label: 'laji-map.legend.mode.individualCount',
-    categories: [
+    categories: processCategories([
       {
         color: '#ffffff',
         label: '0'
@@ -225,7 +241,7 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
         color: '#f26840',
         label: '> 100'
       }
-    ],
+    ]),
     getFeatureStyle: (options) => ({
       ...BASE_FEATURE_STYLE,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -238,7 +254,7 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
   },
   recordAge: {
     label: 'laji-map.legend.mode.recordAge',
-    categories: [
+    categories: processCategories([
       {
         color: '#348cf0',
         label: `≥ ${RECORD_AGE_BREAKPOINTS[0]}`
@@ -259,7 +275,7 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
         color: '#f26840',
         label: `< ${RECORD_AGE_BREAKPOINTS[3]}`
       }
-    ],
+    ]),
     getFeatureStyle: (options) => ({
       ...BASE_FEATURE_STYLE,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
