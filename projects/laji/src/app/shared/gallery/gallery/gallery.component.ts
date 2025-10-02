@@ -10,13 +10,15 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { GalleryService } from '../service/gallery.service';
-import { TaxonomyImage } from '../../model/Taxonomy';
 import { WarehouseQueryInterface } from '../../model/WarehouseQueryInterface';
 import { Logger } from '../../logger/logger.service';
 import {catchError, delay, map, tap} from 'rxjs/operators';
 import { IImageSelectEvent } from '../image-gallery/image.interface';
 import { QueryParamsHandling } from '@angular/router';
 import { ViewType } from '../image-gallery';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type TaxonImage = components['schemas']['Image'];
 
 @Component({
   selector: 'laji-gallery',
@@ -45,14 +47,14 @@ export class GalleryComponent implements OnChanges {
   @Input() views: ViewType[] = ['compact', 'full'];
   @Output() selected = new EventEmitter<IImageSelectEvent>();
   @Output() hasData = new EventEmitter<boolean>();
-  @Output() images = new EventEmitter<TaxonomyImage[]>();
+  @Output() images = new EventEmitter<TaxonImage[]>();
 
   page = 1;
   total = 0;
   loading = false;
   paginatorNeeded = false;
 
-  images$!: Observable<TaxonomyImage[]>;
+  images$!: Observable<TaxonImage[]>;
 
   constructor(
     private logger: Logger,
@@ -97,7 +99,7 @@ export class GalleryComponent implements OnChanges {
         this.logger.error('Unable to fetch image from warehouse', err);
         return [];
       }),
-      tap((images: TaxonomyImage[]) => {
+      tap((images: TaxonImage[]) => {
         this.loading = false;
         this.hasData.emit(images.length > 0);
         this.images.emit(images);

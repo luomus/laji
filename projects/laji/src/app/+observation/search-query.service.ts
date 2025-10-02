@@ -13,9 +13,10 @@ interface WarehouseSearchQuery extends WarehouseQueryInterface {
 export class SearchQueryService implements SearchQueryInterface {
   public queryType = 'observation';
   public queryUpdatedSource = new Subject<any>();
-  public queryUpdated$ = this.queryUpdatedSource.asObservable();
+  public searchUpdated$ = this.queryUpdatedSource.asObservable();
 
-  public query: WarehouseSearchQuery = {};
+  public query = {};
+  public filters = {};
 
   private readonly separator: Record<string, string> = {
     teamMember: ';',
@@ -308,7 +309,7 @@ export class SearchQueryService implements SearchQueryInterface {
       }
     });
 
-    if (result['target'] && Array.isArray(result['target'])) {
+    if (Array.isArray(result['target'])) {
       result['target'] = (result['target'] as string[]).map(target => target.replace(/http:\/\/tun\.fi\//g, ''));
     }
 

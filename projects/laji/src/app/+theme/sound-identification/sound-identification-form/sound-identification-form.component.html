@@ -1,0 +1,75 @@
+<div class="soundIdentificationParams">
+  <div class="form-group d-inline-block">
+    <label for="threshold">
+      {{ 'theme.soundIdentification.probabilityThreshold' | translate }}
+      <laji-info [html]="'theme.soundIdentification.probabilityThreshold.info' | translate" [showOnHover]="true"></laji-info>
+    </label>
+    <input
+      [(ngModel)]="probabilityThreshold"
+      class="form-control input-sm"
+      type="number"
+      min="0.1"
+      max="1"
+      step="0.001"
+      id="threshold"
+    >
+  </div>
+
+  <div class="form-group d-inline-block">
+    <label for="overlap">
+      {{ 'theme.soundIdentification.overlap' | translate }}
+      <laji-info [html]="'theme.soundIdentification.overlap.info' | translate" [showOnHover]="true"></laji-info>
+    </label>
+    <input
+      [(ngModel)]="overlap"
+      class="form-control input-sm"
+      type="number"
+      min="0"
+      max="2"
+      step="0.001"
+      id="overlap"
+    >
+  </div>
+</div>
+
+<!--
+<div id="soundIdentificationParams">
+  <div class="form-group">
+    <lu-checkbox (input)="toggleIncludeSdm()" [checked]="includeSdm === true"><label for="includeSdm">{{ 'theme.soundIdentification.sdm' | translate }}</label></lu-checkbox>
+    <div *ngIf="includeSdm">
+      <input
+        [(ngModel)]="latitude"
+        class="form-control input-sm"
+        type="number"
+        id="latitude"
+        placeholder="{{'theme.soundIdentification.latitude' | translate}}"
+      >
+      <input
+        [(ngModel)]="longitude"
+        class="form-control input-sm"
+        type="number"
+        id="longitude"
+        placeholder="{{'theme.soundIdentification.longitude' | translate}}"
+      />
+      <laji-datepicker [(ngModel)]="date" [toLastOfYear]="true" class="time-end"></laji-datepicker>
+    </div>
+  </div>
+</div>
+-->
+
+
+<div class="form-group">
+  <p>{{ 'theme.soundIdentification.fileInput' | translate }}</p>
+  <input #fileInput class="form-control" type="file" style="height: auto" (change)="onFileInput($event)">
+</div>
+
+<div class="form-group">
+  <button class="btn btn-primary" [disabled]="(loading || isValidating)" (click)="submitForm()">
+    <ng-container *ngIf="!(loading || isValidating) else downloading">
+      {{ 'theme.soundIdentification.analyse' | translate }}
+    </ng-container>
+    <ng-template #downloading>
+      {{ 'theme.soundIdentification.loading' | translate }}
+    </ng-template>
+  </button>
+</div>

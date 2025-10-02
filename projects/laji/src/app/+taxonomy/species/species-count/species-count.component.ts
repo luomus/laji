@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
-import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
+import { TaxonomySearch } from '../service/taxonomy-search.service';
 import { Subscription } from 'rxjs';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
   selector: 'laji-species-count',
@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesCountComponent implements OnInit, OnDestroy {
-  @Input({ required: true }) searchQuery!: TaxonomySearchQuery;
+  @Input({ required: true }) search!: TaxonomySearch;
   @Input() hasMediaFilter?: boolean;
 
   count?: number;
@@ -21,12 +21,12 @@ export class SpeciesCountComponent implements OnInit, OnDestroy {
   private lastQuery?: string;
 
   constructor(
-    private taxonomyService: TaxonomyApi,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private api: LajiApiClientBService
   ) { }
 
   ngOnInit() {
-    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
+    this.subQueryUpdate = this.search.searchUpdated$.subscribe(
       () => {
         this.updateCount();
       }
@@ -45,7 +45,9 @@ export class SpeciesCountComponent implements OnInit, OnDestroy {
 
   private updateCount() {
     const cacheKey = JSON.stringify({
-      query: this.searchQuery.query,
+      taxonId: this.search.taxonId,
+      query: this.search.query,
+      filters: this.search.filters,
       hasMediaFilter: this.hasMediaFilter
     });
     if (this.lastQuery === cacheKey) {
@@ -57,7 +59,7 @@ export class SpeciesCountComponent implements OnInit, OnDestroy {
       this.subFetch.unsubscribe();
     }
 
-    if (this.searchQuery.query.taxonRanks && this.searchQuery.query.taxonRanks.indexOf('MX.species') === -1) {
+    if (this.search.filters.taxonRank && this.search.filters.taxonRank.indexOf('MX.species') === -1) {
       this.count = 0;
       this.loading = false;
       this.cd.markForCheck();
@@ -65,26 +67,14 @@ export class SpeciesCountComponent implements OnInit, OnDestroy {
     }
 
     this.loading = true;
-    this.subFetch = this.taxonomyService
-      .taxonomyFindSpecies(
-        this.searchQuery.query.target ? this.searchQuery.query.target : 'MX.37600',
-        'multi',
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        '1',
-        '0',
-        undefined,
-        {
-          ...this.searchQuery.query,
-          target: undefined,
-          taxonRanks: ['MX.species'],
-          hasMediaFilter: this.hasMediaFilter
-        }
-      )
-      .subscribe(res => {
+    this.subFetch = this.api.post('/taxa/{id}/species', {
+      path: { id: this.search.taxonId || 'MX.37600' },
+      query: { ...this.search.query, page: 1, pageSize: 0 }
+    }, {
+      ...this.search.filters,
+      hasMultimedia: this.hasMediaFilter,
+      taxonRank: 'MX.species'
+    }).subscribe(res => {
         this.count = res.total;
         this.loading = false;
         this.cd.markForCheck();

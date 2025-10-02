@@ -24,7 +24,7 @@
  */
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Profile } from '../model/Profile';
 import { Person } from '../model/Person';
 import { environment } from '../../../environments/environment';
@@ -155,5 +155,9 @@ export class PersonApi {
     }
     const url = `${this.basePath}/person-token/${token}`;
     return this.http.delete(url, {observe: 'body', responseType: 'text'});
+  }
+
+  public existsByEmail(email: string): Observable<HttpResponse<void>> {
+    return this.http.get<void>(`${this.basePath}/person/exists-by-email/${email}`, { observe: 'response' });
   }
 }

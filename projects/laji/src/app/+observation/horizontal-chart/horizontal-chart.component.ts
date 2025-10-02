@@ -125,18 +125,17 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
         switchMap(res => {
           const taxaIds = res.map((r: any) => this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
           return this.horizontalDataService.getChartDataLabels(taxaIds).pipe(
-            map(labels => res.map((r: any, idx: number) => ({
-                ...r,
-                label: labels['r' + idx]
-              })))
-          );
+            map(labels => res.map((r: any) => ({
+            ...r,
+            label: labels[this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ])]
+          }))));
         }),
         map(res => res.map((r: any) => {
-            this.resultList.push(r);
-            this.subDataBarChart.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
-            this.subBackgroundColors.push('#3498db');
-            this.subLabelBarChart.push(r.label ? (r.label.vernacularName || r.label.scientificName) : '');
-          }))
+          this.resultList.push(r);
+          this.subDataBarChart.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
+          this.subBackgroundColors.push('#3498db');
+          this.subLabelBarChart.push(r.label ? (r.label.vernacularName || r.label.scientificName) : '');
+        }))
       )
       .subscribe(() => {
         this.createSubArrayChart();

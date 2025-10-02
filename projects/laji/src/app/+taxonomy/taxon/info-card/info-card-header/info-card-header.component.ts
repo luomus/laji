@@ -8,9 +8,11 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'laji-info-card-header',
@@ -19,11 +21,11 @@ import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoCardHeaderComponent implements OnChanges {
-  @Input() taxon!: Taxonomy;
+  @Input() taxon!: Taxon;
   @Input() activeTab!: string;
 
-  parent: Taxonomy[] | undefined;
-  siblings: Taxonomy[] | undefined;
+  parent: Taxon[] | undefined;
+  siblings: Taxon[] | undefined;
 
   loadingParent = false;
   subParam: any;

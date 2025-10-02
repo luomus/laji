@@ -229,5 +229,8 @@ export const Global = { // eslint-disable-line @typescript-eslint/naming-convent
     simpleDownload: 10000
   },
   lajiMapSupportedLanguages: ['fi', 'en', 'sv'],
-  lajiAuthSupportedLanguages: ['fi', 'en', 'sv']
+  lajiAuthSupportedLanguages: ['fi', 'en', 'sv'],
+  formAliasMap: {
+    pyoriaiset: 'MHL.1156'
+  } as { [key: string]: string }
 };

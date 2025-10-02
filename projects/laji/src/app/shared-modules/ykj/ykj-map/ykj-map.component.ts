@@ -12,13 +12,15 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
 import type { Lang, Options } from '@luomus/laji-map';
 import { map } from 'rxjs/operators';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+type Taxon = components['schemas']['Taxon'];
 
 export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'individualCountMax'|'oldest'|'newest'|'pairCount'|
   'individualCountSumPer10km';
@@ -60,7 +62,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   get mapOptions() {
     return this._mapOptions;
   }
-  @Input() taxon?: Taxonomy;
+  @Input() taxon?: Taxon;
   @Input() useStatistics = false;
   @Input() loading = false;
 

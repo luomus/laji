@@ -1,4 +1,4 @@
-export interface TaxonomySearchQueryInterface {
+export interface TaxonomySearchInterface {
   informalGroupFilters?: string;
   target?: string;
   onlyFinnish?: boolean;

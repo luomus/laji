@@ -130,15 +130,14 @@ export class FormPermissionService {
         }
         return this.userService.user$.pipe(
           take(1),
-          switchMap(person =>
-              this.getFormPermission(collectionID, this.userService.getToken()).pipe(
-              catchError(() => of({
-                collectionID,
-                admins: [],
-                editors: []
-              } as unknown as FormPermission)),
-              map((formPermission: FormPermission) => ({person, formPermission}))
-              )),
+          switchMap(person => this.getFormPermission(collectionID, this.userService.getToken()).pipe(
+            catchError(() => of({
+              collectionID,
+              admins: [],
+              editors: []
+            } as unknown as FormPermission)),
+            map((formPermission: FormPermission) => ({person, formPermission}))
+          )),
           switchMap(({person, formPermission}) => person ? of({
             view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === RestrictAccess.restrictAccessLoose,
             edit: this.isEditAllowed(formPermission, person, form),

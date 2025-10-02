@@ -1,17 +1,16 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { map, catchError, concat, delay, filter, retryWhen, take, tap, switchMap } from 'rxjs/operators';
-import { Taxonomy } from '../../shared/model/Taxonomy';
-import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Logger } from '../../shared/logger';
-import { TranslateService } from '@ngx-translate/core';
 import { FooterService } from '../../shared/service/footer.service';
-import { DOCUMENT } from '@angular/common';
-import { CacheService } from '../../shared/service/cache.service';
 import { InfoCardTabType } from './info-card/info-card.component';
 import { getDescription, HeaderService } from '../../shared/service/header.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'laji-taxonomy',
@@ -20,7 +19,7 @@ import { getDescription, HeaderService } from '../../shared/service/header.servi
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonComponent implements OnInit, OnDestroy {
-  taxon: Taxonomy | null | undefined;
+  taxon: Taxon | null | undefined;
   isFromMasterChecklist: boolean | undefined;
   infoCardContext!: string;
   infoCardTab!: InfoCardTabType;
@@ -36,9 +35,8 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private taxonService: TaxonomyApi,
+    private api: LajiApiClientBService,
     private logger: Logger,
-    private translate: TranslateService,
     private footerService: FooterService,
     private cdr: ChangeDetectorRef,
     private headerService: HeaderService
@@ -128,20 +126,20 @@ export class TaxonComponent implements OnInit, OnDestroy {
     );
   }
 
-  private setHeaders(taxon: Taxonomy) {
-    const d = taxon?.descriptions?.[0]?.groups?.[0]?.variables?.[0]?.content[this.translate.currentLang];
+  private setHeaders(taxon: Taxon) {
+    const d = taxon?.descriptions?.[0]?.groups?.[0]?.variables?.[0]?.content;
     this.headerService.setHeaders({
       description: d ? getDescription(d) : undefined,
       image: taxon?.multimedia?.[0]?.thumbnailURL
     });
   }
 
-  private getTaxon(id: string): Observable<Taxonomy> {
-    return this.taxonService.taxonomyFindBySubject(id, 'multi', {
+  private getTaxon(id: string): Observable<Taxon> {
+    return this.api.get('/taxa/{id}', { path: { id }, query: {
       includeMedia: true,
       includeDescriptions: true,
-      includeRedListEvaluations: true,
-    });
+      includeRedListEvaluations: true
+    }});
   }
 
   private getIsFromMasterChecklist() {
@@ -149,10 +147,6 @@ export class TaxonComponent implements OnInit, OnDestroy {
     if (!this.taxon) {
       return false;
     }
-    if (this.taxon.checklist) {
-      return this.taxon.checklist.indexOf(masterChecklist) > -1;
-    }
     return this.taxon.nameAccordingTo === masterChecklist;
   }
 }
-

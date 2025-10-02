@@ -76,6 +76,7 @@ export namespace Form {
     dataset?: boolean;
     viewerType?: ViewerType;
     disabled?: boolean;
+    openForm?: boolean;
   }
 
   export interface FormOptions extends ListOptions {
@@ -83,6 +84,7 @@ export namespace Form {
     adminLockable?: boolean;
     warnEditingOldDocument?: boolean;
     mobile?: boolean;
+    openForm?: boolean;
     saveSuccessMessage?: string;
     saveDraftSuccessMessage?: string;
     saveErrorMessage?: string;
@@ -115,6 +117,7 @@ export namespace Form {
     formPermissionDescription?: string;
     formOwnSubmissionsLabel?: string;
     hideTES?: boolean;
+    privacyPolicy?: boolean;
     ownSubmissionsTitle?: string;
     ownSubmissionsAdminTitle?: string;
     shortTitleFromCollectionName?: boolean;

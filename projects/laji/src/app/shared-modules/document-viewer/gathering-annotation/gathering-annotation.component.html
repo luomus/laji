@@ -20,7 +20,7 @@
                         <laji-observation-effective-tags-taxon [unit]="unit" [annotationTags]="annotationTags" [showTitle]="true" [parentSubject]="parentSubject"></laji-observation-effective-tags-taxon>
                     </ng-container>
                 </ng-container>
-                <laji-gathering-annotations-rows [highlight]="highlight" [gathering]="gathering"></laji-gathering-annotations-rows>
+                <laji-gathering-annotations-rows [highlight]="highlight" [gathering]="gathering" [document]="document"></laji-gathering-annotations-rows>
                 <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>
             </ng-container>
 </div>

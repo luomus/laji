@@ -8,7 +8,7 @@ import {
   take,
   tap
 } from 'rxjs/operators';
-import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subject, Subscription, throwError } from 'rxjs';
+import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
@@ -23,6 +23,7 @@ import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
 import { Profile } from '../model/Profile';
 import { Global } from '../../../environments/global';
+import { RegistrationContact } from './project-form.service';
 
 export interface UserSettingsResultList {
   aggregateBy?: string[];
@@ -206,7 +207,13 @@ export class UserService implements OnDestroy {
     }
     this.store.next({ ...this.store.value, loginState: { _tag: 'loading' }, user: { _tag: 'loading' } });
     return this.personApi.personFindByToken(token).pipe(
+      httpOkError([404, 400], null),
+      retryWithBackoff(300),
       tap(person => {
+        if (person === null) {
+          this.setNotLoggedIn();
+          return;
+        }
         // if person is valid, we have succesfully logged in
         this.persistentState = { ...this.persistentState, loginState: { _tag: 'logged_in', token }};
         this.store.next({
@@ -219,11 +226,9 @@ export class UserService implements OnDestroy {
           }
         });
       }),
-      map(_ => true),
-      httpOkError([404, 400], false),
-      retryWithBackoff(300),
-      catchError(_ => {
-        this.setNotLoggedIn();
+      map(person => person !== null),
+      catchError(err => {
+        console.error(err);
         return of(false);
       })
     );
@@ -248,6 +253,21 @@ export class UserService implements OnDestroy {
       this.setNotLoggedIn();
       cb?.();
     });
+  }
+
+  register(registrationContacts: RegistrationContact[] | undefined): void {
+    const params: string[] = [
+      `next=${this.location.path(true)}`,
+      'redirectMethod=POST',
+      `locale=${this.translate.currentLang}`,
+      'permanent=false'
+    ];
+
+    if (registrationContacts?.[0]?.preferredName) { params.push(`preferredName=${registrationContacts?.[0]?.preferredName}`); }
+    if (registrationContacts?.[0]?.inheritedName) { params.push(`inheritedName=${registrationContacts?.[0]?.inheritedName}`); }
+    if (registrationContacts?.[0]?.emailAddress) { params.push(`email=${registrationContacts?.[0]?.emailAddress}`); }
+
+    window.location.href = (environment as any).registerUrl + '?' + params.join('&');
   }
 
   getToken(): string {
@@ -332,12 +352,23 @@ export class UserService implements OnDestroy {
   }
 
   getProfile(): Observable<Profile> {
-    return combineLatest([
-      this.personApi.personFindProfileByToken(this.getToken()),
-      this.user$
-    ]).pipe(
-      map(([profile, person]) => prepareProfile(profile, person)),
-      take(1)
+    if (this.getToken() === '') {
+      return of(prepareProfile(null, null));
+    } else {
+      return combineLatest([
+        this.personApi.personFindProfileByToken(this.getToken()),
+        this.user$
+      ]).pipe(
+        map(([profile, person]) => prepareProfile(profile, person)),
+        take(1)
+      );
+    }
+  }
+
+  emailHasAccount(email: string): Observable<boolean> {
+    return this.personApi.existsByEmail(email).pipe(
+      map(response => response.status === 204),
+      catchError(() => of(false))
     );
   }
 

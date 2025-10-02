@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { Image } from '../../../../shared/gallery/image-gallery/image.interface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Taxon = components['schemas']['Taxon'];
 
 @Component({
   selector: 'laji-taxon-images',
@@ -11,7 +13,7 @@ import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQuery
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonImagesComponent implements OnChanges {
-  @Input({ required: true }) taxon!: Taxonomy;
+  @Input({ required: true }) taxon!: Taxon;
   @Input() taxonImages!: Array<Image>;
   @Input() isFromMasterChecklist!: boolean;
 

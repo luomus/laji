@@ -7,6 +7,7 @@ import { Form } from '../model/Form';
 import { BehaviorSubject, combineLatest, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { NamedPlacesService } from './named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
+import { Global } from '../../../environments/global';
 
 export interface ProjectForm {
   form: Form.SchemaForm;
@@ -36,6 +37,12 @@ export interface ExcelFormOptions {
   allowGenerate: boolean;
 }
 
+export interface RegistrationContact {
+  preferredName?: string;
+  inheritedName?: string;
+  emailAddress?: string;
+}
+
 @Injectable({providedIn: 'root'})
 export class ProjectFormService {
   constructor(
@@ -43,13 +50,15 @@ export class ProjectFormService {
     private translate: TranslateService,
     private namedPlacesService: NamedPlacesService
   ) {
-    this.translate.onLangChange.subscribe(() => {
+    this.translate.onLangChange.subscribe(({ lang }) => {
       this.currentFormID = undefined;
+      this.localLang$.next(lang);
     });
   }
 
   private currentFormID?: string;
   private form$?: ReplaySubject<Form.SchemaForm>;
+  private registrationContacts?: RegistrationContact[];
 
   /** LajiFormBuilder can change the language of the form, without changing the lang of the whole page. */
   public localLang$ = new BehaviorSubject<string>(this.translate.currentLang);
@@ -60,6 +69,10 @@ export class ProjectFormService {
   }
 
   getForm$(id: string): Observable<Form.SchemaForm> {
+    if (Global.formAliasMap[id]) {
+      id = Global.formAliasMap[id];
+    }
+
     if (this.currentFormID === id) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return this.form$!;
@@ -185,5 +198,13 @@ export class ProjectFormService {
 
   remountLajiForm() {
     this.remountLajiForm$.next();
+  }
+
+  getRegistrationContacts() {
+    return this.registrationContacts;
+  }
+
+  setRegistrationContacts(contacts: RegistrationContact[] | undefined) {
+    this.registrationContacts = contacts;
   }
 }

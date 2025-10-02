@@ -12,5 +12,6 @@
     |
   </span>
   <a *ngIf="!_form.options?.hideTES" [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank" lajiFormOption="options.hideTES">{{ 'haseka.termsOfService' | translate }}</a>
+  <a *ngIf="_form.options?.privacyPolicy" [href]="['https://info.laji.fi/etusivu/lajitietokeskus/tietosuojaseloste/'] | localize" target="_blank" lajiFormOption="options.privacyPolicy">{{ 'haseka.privacyPolicy' | translate }}</a>
   <ng-content></ng-content>
 </div>

@@ -197,8 +197,8 @@
     [field]="areaType.Municipality"></laji-metadata-select>
 
   <laji-select
-    [selected]="[query.onlyNonStateLands!]"
-    (selectedChange)="indirectQueryChange('onlyNonStateLands', $event[0])"
+    [selected]="query.onlyNonStateLands"
+    (selectedChange)="indirectQueryChange('onlyNonStateLands', $event)"
     [multiple]="false"
     [useFilter]="false"
     [title]="'observation.form.onlyNonStateLands' | translate"
@@ -390,8 +390,8 @@
   </div>
   <div>
     <laji-select
-      [selected]="[query.local!]"
-      (selectedChange)="indirectQueryChange('local', $event[0])"
+      [selected]="query.local"
+      (selectedChange)="indirectQueryChange('local', $event)"
       [multiple]="false"
       [useFilter]="false"
       [title]="'observation.form.local' | translate"
@@ -403,8 +403,8 @@
   </div>
   <div>
     <laji-select
-      [selected]="[query.alive!]"
-      (selectedChange)="indirectQueryChange('alive', $event[0])"
+      [selected]="query.alive"
+      (selectedChange)="indirectQueryChange('alive', $event)"
       [multiple]="false"
       [useFilter]="false"
       [title]="'MY.alive' | label"
@@ -438,8 +438,8 @@
   </div>
   <div>
     <laji-select
-      [selected]="[query.breedingSite!]"
-      (selectedChange)="indirectQueryChange('breedingSite', $event[0])"
+      [selected]="query.breedingSite"
+      (selectedChange)="indirectQueryChange('breedingSite', $event)"
       [multiple]="false"
       [useFilter]="false"
       [title]="'observation.form.breedingSite' | translate"
@@ -543,8 +543,8 @@
 
 
   <laji-select
-    [selected]="[query.unidentified!]"
-    (selectedChange)="indirectQueryChange('unidentified', $event[0])"
+    [selected]="query.unidentified"
+    (selectedChange)="indirectQueryChange('unidentified', $event)"
     [multiple]="false"
     [useFilter]="false"
     [title]="'observation.form.identify' | translate"
@@ -555,8 +555,8 @@
       ]"></laji-select>
 
   <laji-select
-    [selected]="[query.needsCheck!]"
-    (selectedChange)="indirectQueryChange('needsCheck', $event[0])"
+    [selected]="query.needsCheck"
+    (selectedChange)="indirectQueryChange('needsCheck', $event)"
     [multiple]="false"
     [useFilter]="false"
     [title]="'observation.form.needsCheck' | translate"
@@ -568,8 +568,8 @@
 
   <ng-container>
     <laji-select
-      [selected]="[query.annotated!]"
-      (selectedChange)="indirectQueryChange('annotated', $event[0])"
+      [selected]="query.annotated"
+      (selectedChange)="indirectQueryChange('annotated', $event)"
       [multiple]="false"
       [useFilter]="false"
       [title]="'observation.form.annotated' | translate"
@@ -593,8 +593,8 @@
   </ng-container>
   <ng-container>
     <laji-select
-      [selected]="[query.qualityIssues!]"
-      (selectedChange)="indirectQueryChange('qualityIssues', $event[0])"
+      [selected]="query.qualityIssues"
+      (selectedChange)="indirectQueryChange('qualityIssues', $event)"
       [multiple]="false"
       [useFilter]="false"
       [title]="'observation.form.qualityIssues' | translate"
@@ -696,8 +696,8 @@
     [placeholder]="'MY.taxonRank' | label"
     [alt]="'MX.taxonRankEnum'"></laji-metadata-select>
   <laji-select
-    [selected]="[query.higherTaxon!]"
-    (selectedChange)="indirectQueryChange('higherTaxon', $event[0])"
+    [selected]="query.higherTaxon"
+    (selectedChange)="indirectQueryChange('higherTaxon', $event)"
     [multiple]="false"
     [useFilter]="false"
     [title]="'observation.form.higherTaxon' | translate"
@@ -806,8 +806,8 @@
 <!-- Concealment level -->
 <section class="laji-panel" laji-panel [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secure']!">
   <laji-select
-    [selected]="[query.secured!]"
-    (selectedChange)="indirectQueryChange('secured', $event[0])"
+    [selected]="query.secured"
+    (selectedChange)="indirectQueryChange('secured', $any($event))"
     [multiple]="false"
     [useFilter]="false"
     [title]="'observation.form.secured' | translate"
