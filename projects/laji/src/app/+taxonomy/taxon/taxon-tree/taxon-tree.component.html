@@ -42,7 +42,7 @@
       <laji-taxon-name [capitalizeName]="true" [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
     </a>
     <img *ngIf="value.finnish" src="/static/images/icons/flag_fi_small.png" class="small-flag"/>
-    <div *ngIf="value.nameAccordingTo === 'MR.2'" class="gbif-icon">
+    <div *ngIf="value.nameAccordingTo === 'MR.2'" class="gbif-icon" [luTooltip]="'species.tree.gbif.help' | translate">
       <img src="/static/images/icons/gbif.svg" />
       <small>GBIF</small>
     </div>
