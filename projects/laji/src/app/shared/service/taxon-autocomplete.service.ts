@@ -92,13 +92,14 @@ export class TaxonAutocompleteService {
     const taxonGroups = `<span class="container-taxon-group informal-group-image ${informalTaxonGroups.map(el => el.id).join(' ')}"></span>`;
     return `
       <span class="flag-taxonRank">
-        <span class="gbif-icon-sizer ${isGbif ? 'gbif-icon' : ''}"></span>
         ${(taxonRankId ? `(${taxonRankId})` : '')}
         <span class="container-flag-taxonRank">
           <span class="taxon-groups">${taxonGroups}</span>
           ${isFinnish
             ? '<span class="autocomplete-small-flag finnish-flag"></span>'
-            : '<span class="autocomplete-small-flag no-border"></span>'
+            : isGbif
+              ? '<span class="autocomplete-small-flag no-border gbif-icon" [luTooltip]="lol"></span>'
+              : '<span class="autocomplete-small-flag no-border"></span>'
           }
         </span>
       </span>
