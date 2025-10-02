@@ -7,17 +7,6 @@
   background-position: bottom center;
 }
 
-::ng-deep typeahead-container .gbif-icon-sizer {
-  height: 17px;
-  width: 17px;
-  margin-right: -11px;
-  float: left;
-  margin-top: 9px;
-  margin-right: 8px;
-}
-::ng-deep typeahead-container .gbif-icon {
-  background-image: url('/static/images/icons/gbif.svg');
-}
 ::ng-deep typeahead-container .active .gbif-icon {
   filter: brightness(0) invert(1);
 }
