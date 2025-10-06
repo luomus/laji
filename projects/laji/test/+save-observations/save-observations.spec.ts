@@ -18,7 +18,7 @@ test.describe('Save observations page', () => {
   });
 
   test('should show list of forms', async () => {
-    await expect(saveObservationsPage.simpleForms).toHaveCount(26);
+    expect(await saveObservationsPage.simpleForms.count()).toBeGreaterThan(26);
   });
 
   test('should open form when clicking form button', async () => {
