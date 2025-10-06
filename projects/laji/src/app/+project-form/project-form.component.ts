@@ -134,7 +134,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
      return [];
     }
     const _subForms = subForms.filter(_form => _form.options?.sidebarFormLabel);
-    return [form, ..._subForms].filter(_form =>
+    return [...(form.options.hideFromSidebar ? [] : [form]), ..._subForms].filter(_form =>
       _form.options?.useNamedPlaces && rights.view
       || !_form.options?.useNamedPlaces && rights.edit
     ).map(_form => ({
