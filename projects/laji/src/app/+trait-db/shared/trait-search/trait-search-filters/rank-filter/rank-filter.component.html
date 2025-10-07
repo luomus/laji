@@ -7,10 +7,8 @@
     </select>
   </label>
   <input class="form-control" formControlName="search" placeholder="Scientific name...">
-  <fieldset>
-    <legend>
-      Taxonomy:
-    </legend>
+  <div class="d-flex flex-gap-4 radio-group">
+    <span>Taxonomy:</span>
     <label>
       <input type="radio" formControlName="source" value="FinBIF"/>
       FinBIF
@@ -19,5 +17,5 @@
       <input type="radio" formControlName="source" value="GBIF"/>
       GBIF
     </label>
-  </fieldset>
+  </div>
 </div>
