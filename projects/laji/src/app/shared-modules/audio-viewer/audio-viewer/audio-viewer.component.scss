@@ -8,34 +8,21 @@
   position: relative;
 }
 
-alert {
-  position: absolute;
-  left: 0;
-  right: 0;
-}
-
-.spectrogram-container {
-  width: 100%;
-  position: relative;
-}
-
 .audio-controls {
   position: relative;
   display: inline-block;
   width: 100%;
 
-  > * {
+  laji-audio-viewer-controls {
+    display: inline-block;
     vertical-align: bottom;
   }
 
-  .btn-with-info {
+  .spectrogram-config {
     display: inline-block;
-    margin-right: 2px;
-  }
-
-  button, lu-button {
-    display: inline-block;
-    margin: 0 2px;
+    vertical-align: bottom;
+    margin-left: $sp-2;
+    margin-right: $sp-2;
   }
 
   .audio-info {
@@ -44,17 +31,21 @@ alert {
 }
 
 :host(.audio-viewer-responsive) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
   laji-spinner {
-    height: 100%;
+    flex: 1 1 100%;
     display: flex;
     flex-direction: column;
 
     .spectrogram-container {
       flex: 1 1 100%;
     }
+  }
 
-    .audio-controls {
-      flex: 0 0 auto;
-    }
+  .audio-controls {
+    flex: 0 0 auto;
   }
 }

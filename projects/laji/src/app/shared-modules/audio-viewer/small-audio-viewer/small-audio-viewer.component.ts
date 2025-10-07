@@ -1,5 +1,12 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { IAudio, IAudioViewerArea, ISpectrogramConfig } from '../models';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+} from '@angular/core';
+import { Audio, AudioViewerArea, AudioViewerFocusArea, SpectrogramConfig } from '../models';
 import { defaultSpectrogramConfig } from '../variables';
 
 @Component({
@@ -8,11 +15,14 @@ import { defaultSpectrogramConfig } from '../variables';
   styleUrls: ['./small-audio-viewer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SmallAudioViewerComponent {
-  @Input() audio?: IAudio;
-  @Input() area?: IAudioViewerArea;
+export class SmallAudioViewerComponent implements OnChanges {
+  @Input() audio?: Audio;
+  @Input() sampleRate = 44100;
+  @Input() area?: AudioViewerArea;
   @Input() areaColor?: string;
-  @Input() spectrogramConfig: ISpectrogramConfig = defaultSpectrogramConfig;
+  @Input() areaTimePadding?: number;
+  @Input() areaFrequencyPadding?: number;
+  @Input() spectrogramConfig: SpectrogramConfig = defaultSpectrogramConfig;
   @Input() label?: string;
   @Input() highlight = false;
   @Input() highlightType?: 'default'|'warning'|'danger';
@@ -25,4 +35,21 @@ export class SmallAudioViewerComponent {
 
   @Output() templateClick = new EventEmitter<number>();
   @Output() audioLoading = new EventEmitter<boolean>();
+
+  focusArea?: AudioViewerFocusArea;
+
+  ngOnChanges() {
+    if (this.area) {
+      this.focusArea = {
+        area: this.area,
+        color: this.areaColor,
+        zoomTime: true,
+        timePaddingOnZoom: this.areaTimePadding || 0.5,
+        zoomFrequency: true,
+        frequencyPaddingOnZoom: this.areaFrequencyPadding || 500
+      };
+    } else {
+      this.focusArea = undefined;
+    }
+  }
 }

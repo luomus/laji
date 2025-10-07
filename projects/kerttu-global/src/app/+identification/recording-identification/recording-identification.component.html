@@ -8,7 +8,9 @@
       <ng-template #identification>
         <bsg-identification-main
           [selectedSites]="selectedSites!"
-          (goBackToSiteSelection)="onSiteSelect([])"
+          [goBackBtnLabel]="'identification.backToSiteSelection' | translate"
+          [allRecordingsAnnotatedLabel]="'identification.allRecordingsAnnotated' | translate"
+          (goBackClick)="onSiteSelect([])"
         ></bsg-identification-main>
       </ng-template>
     </ng-container>

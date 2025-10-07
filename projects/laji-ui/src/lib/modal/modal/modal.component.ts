@@ -49,6 +49,7 @@ export class ModalComponent implements OnDestroy {
   @ViewChild('container', {static: false}) containerRef?: ElementRef;
 
   private originalBodyOverflow?: string;
+  private mousedownTarget?: HTMLElement;
 
   constructor(
     public elementRef: ElementRef,
@@ -71,9 +72,14 @@ export class ModalComponent implements OnDestroy {
     this.hide();
   }
 
-  @HostListener('click', ['$event.target'])
-  private onClick(target: HTMLElement) {
-    if (!this.noClose && target === this.containerRef?.nativeElement) {
+  @HostListener('mousedown', ['$event.target'])
+  private onMousedown(target: HTMLElement) {
+    this.mousedownTarget = target;
+  }
+
+  @HostListener('mouseup', ['$event.target'])
+  private onMouseup(target: HTMLElement) {
+    if (!this.noClose && target === this.containerRef?.nativeElement && target === this.mousedownTarget) {
       this.hide();
     }
   }

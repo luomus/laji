@@ -8,6 +8,7 @@
   <ng-container *ngIf="i < audioLoadingLimit">
     <laji-audio-viewer
       [audio]="recording.audio"
+      [sampleRate]="sampleRate"
       [spectrogramConfig]="spectrogramConfig"
       [spectrogramHeight]="80"
       [rectangles]="rectangles[i]"
@@ -23,6 +24,7 @@
         *ngFor="let candidate of recording.candidates"
         [audio]="recording.audio"
         [area]="candidate"
+        [sampleRate]="sampleRate"
         [spectrogramConfig]="spectrogramConfig"
         (templateClick)="onCandidateClick(recording.audio, candidate)"
       >

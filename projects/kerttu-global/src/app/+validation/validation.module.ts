@@ -26,6 +26,10 @@ import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-pag
 import { LicenseComponent } from './species-validation/species-template-validation/audio-info/license.component';
 import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
+import {
+  AudioViewerSettingsComponent
+} from './species-validation/species-template-validation/template/audio-viewer-settings/audio-viewer-settings.component';
+import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 
 @NgModule({
   imports: [
@@ -38,7 +42,8 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
     InfoPageModule,
     ValidationRoutingModule,
     ModalModule,
-    TooltipModule
+    TooltipModule,
+    JwBootstrapSwitchNg2Module
   ],
   declarations: [
     ValidationComponent,
@@ -55,7 +60,8 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
     AudioLocationPipe,
     SpeciesSelectComponent,
     ValidationInstructionsComponent,
-    LicenseComponent
+    LicenseComponent,
+    AudioViewerSettingsComponent
   ],
   providers: [
     SpeciesListQueryService,

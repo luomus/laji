@@ -12,14 +12,14 @@ export class AudioCacheLoaderService {
   ) {}
 
   setCacheSize(cacheSize: number) {
-    this.audioService.setCacheSize(cacheSize);
+    this.audioService.setBufferCacheSize(cacheSize);
   }
 
   loadAudioToCache(recording: IGlobalRecording): Observable<boolean> {
     const sampleRate = KerttuGlobalUtil.getDefaultSampleRate(recording.taxonType);
 
     try {
-      return this.audioService.getAudioBuffer(recording.url, recording.duration, sampleRate).pipe(map(() => true));
+      return this.audioService.getAudioBuffer(recording.url, sampleRate, recording.duration).pipe(map(() => true));
     } catch (e) {
       return of(false);
     }

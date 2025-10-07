@@ -1,0 +1,17 @@
+<h1>{{ 'speciesSelection.title' | translate }}</h1>
+<p>
+  {{ 'speciesSelection.description' | translate }}
+</p>
+<div class="mb-2">
+  <button class="btn btn-success" [disabled]="selectedSpecies.length < 1" (click)="onConfirm()">
+    {{ 'siteSelection.confirm' | translate }}
+  </button>
+</div>
+
+<bsg-species-table
+  [species]="species || []"
+  [unknownSpeciesRecordingCount]="unknownSpeciesRecordingCount || 0"
+  [loading]="!species"
+  [height]="height"
+  [(selectedSpecies)]="selectedSpecies"
+></bsg-species-table>
