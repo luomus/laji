@@ -231,6 +231,7 @@
   "speciesList.title": "Validate species templates",
   "speciesSelection.description": "Select one or more species by clicking a row in the table.",
   "speciesSelection.title": "Select a species",
+  "speciesSelection.unknownSpecies": "Unknown",
   "validation.audio": "Audio",
   "validation.cancel": "Cancel",
   "validation.candidates": "Candidates",

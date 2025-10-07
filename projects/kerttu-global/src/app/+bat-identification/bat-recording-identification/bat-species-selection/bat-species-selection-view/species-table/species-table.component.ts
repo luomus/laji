@@ -73,7 +73,7 @@ export class SpeciesTableComponent implements OnInit, OnChanges {
     if ((changes.species || changes.unknownSpeciesCount || changes.loading) && !this.loading) {
       if (this.unknownSpeciesRecordingCount > 0) {
         const unknownSpecies: SpeciesTableRow = {
-          scientificName: this.translate.instant('Unknown'),
+          scientificName: this.translate.instant('speciesSelection.unknownSpecies'),
           recordingCount: this.unknownSpeciesRecordingCount
         };
         this.rows = [...this.species, unknownSpecies];
