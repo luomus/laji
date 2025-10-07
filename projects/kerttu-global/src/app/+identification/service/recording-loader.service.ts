@@ -18,6 +18,7 @@ export class RecordingLoaderService implements OnDestroy {
 
   @LocalStorage('selected_sites') private selectedSites!: number[]|null;
   @LocalStorage('selected_species') private selectedSpecies!: number[]|null;
+  @LocalStorage('include_unknown_species') private unknownSpecies!: boolean|null;
   private fileNameFilter = '';
 
   @LocalStorage('previous_recordings') private previous!: number[];
@@ -58,6 +59,13 @@ export class RecordingLoaderService implements OnDestroy {
   setSelectedSpecies(selectedSpecies: number[]|null = null) {
     if (!(this.selectedSpecies === selectedSpecies || Util.equalsArray(this.selectedSpecies, selectedSpecies))) {
       this.selectedSpecies = selectedSpecies;
+      this.clearLoadedRecordings(true);
+    }
+  }
+
+  setUnknownSpecies(unknownSpecies: boolean|null = null) {
+    if (!this.unknownSpecies === unknownSpecies) {
+      this.unknownSpecies = unknownSpecies;
       this.clearLoadedRecordings(true);
     }
   }
@@ -136,6 +144,9 @@ export class RecordingLoaderService implements OnDestroy {
     if (!this.selectedSpecies) {
       this.selectedSpecies = null;
     }
+    if (!this.unknownSpecies) {
+      this.unknownSpecies = null;
+    }
     if (!this.previous) {
       this.previous = [];
     }
@@ -149,7 +160,14 @@ export class RecordingLoaderService implements OnDestroy {
       switchMap(previousId => {
         const excludedIds = this.current != null ? [this.current, ...this.next] : [...this.next];
         return this.kerttuGlobalApi.getNewIdentificationRecording(
-          this.userService.getToken(), this.translate.currentLang, this.selectedSites, this.selectedSpecies, previousId, excludedIds, this.fileNameFilter
+          this.userService.getToken(),
+          this.translate.currentLang,
+          this.selectedSites,
+          this.selectedSpecies,
+          this.unknownSpecies,
+          previousId,
+          excludedIds,
+          this.fileNameFilter
         );
       }),
       tap(result => {

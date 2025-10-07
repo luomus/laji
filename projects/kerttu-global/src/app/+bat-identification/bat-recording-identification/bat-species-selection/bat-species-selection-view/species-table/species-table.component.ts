@@ -13,6 +13,11 @@ import {
 import { IGlobalSpecies } from '../../../../../kerttu-global-shared/models';
 import { DatatableColumn } from '../../../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { SelectionType } from '@achimha/ngx-datatable';
+import { TranslateService } from '@ngx-translate/core';
+
+interface SpeciesTableRow extends Omit<IGlobalSpecies, 'id'> {
+  id?: number;
+}
 
 @Component({
   selector: 'bsg-species-table',
@@ -24,16 +29,23 @@ export class SpeciesTableComponent implements OnInit, OnChanges {
   @ViewChild('selectTpl', { static: true }) selectTpl!: TemplateRef<any>;
 
   @Input() species: IGlobalSpecies[] = [];
+  @Input() unknownSpeciesRecordingCount = 0;
   @Input() loading = false;
-  @Input() selectedSpecies: number[] = [];
+  @Input() selectedSpecies: (number|undefined)[] = [];
   @Input() height = '100%';
 
+  rows: SpeciesTableRow[] = [];
   columns: DatatableColumn[] = [];
-  selected: IGlobalSpecies[] = [];
+  selected: SpeciesTableRow[] = [];
 
   selectionType = SelectionType.checkbox;
 
-  @Output() selectedSpeciesChange = new EventEmitter<number[]>();
+  @Output() selectedSpeciesChange = new EventEmitter<(number|undefined)[]>();
+
+  constructor(
+    private translate: TranslateService
+  ) { }
+
 
   ngOnInit() {
     this.columns = [
@@ -58,9 +70,19 @@ export class SpeciesTableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.species || changes.selectedSpecies) {
-      this.selected = (this.species || []).filter(s => (this.selectedSpecies || []).includes(s.id));
+    if ((changes.species || changes.unknownSpeciesCount || changes.loading) && !this.loading) {
+      if (this.unknownSpeciesRecordingCount > 0) {
+        const unknownSpecies: SpeciesTableRow = {
+          scientificName: this.translate.instant('Unknown'),
+          recordingCount: this.unknownSpeciesRecordingCount
+        };
+        this.rows = [...this.species, unknownSpecies];
+      } else {
+        this.rows = this.species;
+      }
     }
+
+    this.selected = this.rows.filter(s => this.selectedSpecies.includes(s.id));
   }
 
   onSelect(event: { selected: IGlobalSpecies[] }) {

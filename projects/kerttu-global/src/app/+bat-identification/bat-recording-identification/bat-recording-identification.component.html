@@ -1,10 +1,12 @@
 <bsg-species-selection
-  *ngIf="(!selectedSpeciesIds || selectedSpeciesIds.length === 0) else identification"
+  *ngIf="(!selectedSpeciesIds?.length && !unknownSpecies) else identification"
   (speciesSelect)="onSpeciesSelect($event)"
 ></bsg-species-selection>
 <ng-template #identification>
   <bsg-identification-main
+    [selectedSites]="[10001]"
     [selectedSpecies]="selectedSpeciesIds!"
+    [unknownSpecies]="unknownSpecies"
     [goBackBtnLabel]="'identification.backToSpeciesSelection' | translate"
     [allRecordingsAnnotatedLabel]="'identification.allRecordingsAnnotatedForSpecies' | translate"
     (goBackClick)="onSpeciesSelect([])"

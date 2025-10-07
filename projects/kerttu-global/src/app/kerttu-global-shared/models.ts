@@ -16,6 +16,7 @@ export interface ISuccessResult {
 
 export interface IGlobalSpeciesListResult extends PagedResult<IGlobalSpecies> {
   hasModifications?: boolean;
+  unknownSpeciesRecordingCount?: number;
 }
 
 export interface IGlobalSpeciesQuery {
@@ -45,6 +46,7 @@ export interface IGlobalSpecies {
   hasModifications?: boolean;
   isLocked?: boolean;
   hasNotPossibleValidations?: boolean;
+  recordingCount?: number;
   isSpecies?: boolean;
   taxonOrder?: number;
   hasAudio?: boolean;

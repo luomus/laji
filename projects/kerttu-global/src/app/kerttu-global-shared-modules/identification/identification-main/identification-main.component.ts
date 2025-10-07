@@ -32,6 +32,7 @@ import { getTranslateKeyWithTaxonType } from '../../../kerttu-global-shared/pipe
 export class IdentificationMainComponent implements OnChanges {
   @Input() selectedSites?: number[];
   @Input() selectedSpecies?: number[];
+  @Input() unknownSpecies?: boolean;
   @Input({ required: true }) goBackBtnLabel!: string;
   @Input({ required: true }) allRecordingsAnnotatedLabel!: string;
 
@@ -62,6 +63,7 @@ export class IdentificationMainComponent implements OnChanges {
     this.clearIdentificationState();
     this.recordingLoaderService.setSelectedSites(this.selectedSites);
     this.recordingLoaderService.setSelectedSpecies(this.selectedSpecies);
+    this.recordingLoaderService.setUnknownSpecies(this.unknownSpecies);
     this.loadCurrentRecording();
   }
 

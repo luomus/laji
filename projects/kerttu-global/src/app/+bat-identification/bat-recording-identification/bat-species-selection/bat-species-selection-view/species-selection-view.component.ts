@@ -9,13 +9,14 @@ import { IGlobalSpecies } from '../../../../kerttu-global-shared/models';
 })
 export class SpeciesSelectionViewComponent {
   @Input({ required: true }) species: IGlobalSpecies[]|undefined;
+  @Input({ required: true }) unknownSpeciesRecordingCount: number|undefined;
 
-  selectedSites: number[] = [];
+  selectedSpecies: (number|undefined)[] = [];
   height = 'calc(100vh - 230px)';
 
-  @Output() speciesSelect = new EventEmitter<number[]>();
+  @Output() speciesSelect = new EventEmitter<(number|undefined)[]>();
 
   onConfirm() {
-    this.speciesSelect.emit(this.selectedSites);
+    this.speciesSelect.emit(this.selectedSpecies);
   }
 }

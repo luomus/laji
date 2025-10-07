@@ -127,6 +127,7 @@ export class KerttuGlobalApi {
     lang: string,
     siteIds: number[]|null,
     speciesIds: number[]|null,
+    unknownSpecies: boolean|null,
     previousRecordingId?: number|null,
     excludeRecordingIds?: (number|null)[],
     fileNameFilter?: string
@@ -139,6 +140,9 @@ export class KerttuGlobalApi {
     }
     if (speciesIds) {
       params = params.set('species', '' + speciesIds);
+    }
+    if (unknownSpecies != null) {
+      params = params.set('unknownSpecies', '' + unknownSpecies);
     }
     if (previousRecordingId != null) {
       params = params.set('previousRecording', '' + previousRecordingId);
