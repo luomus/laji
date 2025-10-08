@@ -6,10 +6,10 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TaxonomySearch } from './service/taxonomy-search.service';
+import { TaxaSearchFilters, TaxonomySearch } from './service/taxonomy-search.service';
 import { FooterService } from '../../shared/service/footer.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 
@@ -52,7 +52,7 @@ export class SpeciesComponent implements OnInit, OnDestroy {
         this.cd.markForCheck();
     });
 
-    this.search.setQueryFromParams(this.route.snapshot.queryParams);
+    this.search.setSearchFromParams(convertOldParamModelToNew(this.route.snapshot.queryParams));
   }
 
   ngOnDestroy() {
@@ -67,7 +67,7 @@ export class SpeciesComponent implements OnInit, OnDestroy {
   onPopState() {
     // Route snapshot is not populated with the latest info when this event is triggered. So we need to delay the execution little.
     setTimeout(() => {
-      this.search.setQueryFromParams(this.route.snapshot.queryParams);
+      this.search.setSearchFromParams(this.route.snapshot.queryParams);
       this.cd.markForCheck();
     });
   }
@@ -79,3 +79,39 @@ export class SpeciesComponent implements OnInit, OnDestroy {
     );
   }
 }
+
+const convertOldParamModelToNew = (params: Params): Partial<Record<keyof TaxaSearchFilters, string>> => {
+  const oldToNew: Record<string, keyof TaxaSearchFilters> = {
+    informalGroupFilters: 'informalTaxonGroups',
+    onlyFinnish: 'finnish',
+    invasiveSpeciesFilter: 'invasiveSpecies',
+    hasBoldData: 'hasBold',
+    redListStatusFilters: 'latestRedListStatusFinland.status',
+    adminStatusFilters: 'administrativeStatuses',
+    taxonRanks: 'taxonRank',
+    primaryHabitat: 'primaryHabitat.habitat',
+    anyHabitat: 'primaryHabitatSearchStrings',
+    typesOfOccurrenceFilters: 'typeOfOccurrenceInFinland',
+  };
+
+  const convertedParams = Object.keys(oldToNew).reduce<Partial<Record<keyof TaxaSearchFilters, string>>>((_params, oldKey) => {
+    if (oldKey in params) {
+      delete (_params as any)[oldKey];
+      const param = params[oldKey];
+      _params[oldToNew[oldKey]] = (param as any) instanceof Array ? param.join(',') : param;
+    }
+    return _params;
+  }, {...params});
+
+  const { typesOfOccurrenceNotFilters } = convertedParams as any;
+  if (typesOfOccurrenceNotFilters) {
+    convertedParams.typeOfOccurrenceInFinland = (convertedParams.typeOfOccurrenceInFinland || '') + [
+      ,
+      (typesOfOccurrenceNotFilters instanceof Array
+        ? typesOfOccurrenceNotFilters
+        : [typesOfOccurrenceNotFilters]).map(s => `!${s}`)
+    ].join(',');
+    delete (convertedParams as any).typesOfOccurrenceNotFilters;
+  }
+  return convertedParams;
+};

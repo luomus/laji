@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { CheckboxType } from '../../../../shared-modules/select/checkbox/checkbox.component';
 
 @Component({
@@ -7,9 +7,7 @@ import { CheckboxType } from '../../../../shared-modules/select/checkbox/checkbo
   styleUrls: ['./switch-row.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SwitchRowComponent implements OnChanges {
-
-  value = false;
+export class SwitchRowComponent implements OnChanges, OnInit {
 
   @Input() option?: {id: string; value: string};
   @Input() trueValue?: string[];
@@ -20,7 +18,15 @@ export class SwitchRowComponent implements OnChanges {
   state?: boolean;
   typeCheckbox = CheckboxType.excluded;
 
+  ngOnInit() {
+    this.syncState();
+  }
+
   ngOnChanges() {
+    this.syncState();
+  }
+
+  private syncState() {
     if (!this.option) {
       return;
     }
