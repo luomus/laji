@@ -84,7 +84,7 @@ export class FormApiClient {
       }
     ).pipe(
       switchMap(response => resource === AUTOCOMPLETE_TAXON_RESOURCE ?
-        this.taxonAutocompleteService.getInfo(response.body as any[], queryParameters['query']).pipe(
+        this.taxonAutocompleteService.getInfo((response.body as any).results, queryParameters['query']).pipe(
           map(taxa => ({
             ...response,
             body: taxa
