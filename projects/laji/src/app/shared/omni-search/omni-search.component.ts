@@ -17,10 +17,10 @@ import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { LajiApi, LajiApiService } from '../service/laji-api.service';
+import { LajiApiService } from '../service/laji-api.service';
 import { TaxaWithAutocomplete, TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
 import { TranslateService } from '@ngx-translate/core';
-
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 type InternalTaxon = TaxaWithAutocomplete & {count?: number; informalTaxonGroups?: any; informalTaxonGroupsClass?: any};
 
@@ -36,7 +36,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   @Input() limit = 5;
   @Input() delay = 200;
   @Input() selectTo = '/taxon';
-  @Input() matchType?: LajiApi.AutocompleteMatchType;
+  @Input() matchType?: 'exact' | 'partial' | 'likely';
   @Input() minLength = 3;
   @Input() expand = '';
   @Input() visible = true;
@@ -55,6 +55,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   private el: Element;
 
   constructor(private lajiApi: LajiApiService,
+              private api: LajiApiClientBService,
               private warehouseApi: WarehouseApi,
               private localizeRouterService: LocalizeRouterService,
               private router: Router,
@@ -77,7 +78,6 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-
   ngOnChanges() {
     this.updateTaxa();
   }
@@ -99,9 +99,9 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
     if (this.taxa[index]) {
       this.active = index;
       this.taxon = this.taxa[index];
-      this.taxon.informalTaxonGroupsClass = this.taxon.payload.informalTaxonGroups
+      this.taxon.informalTaxonGroupsClass = this.taxon.informalGroups
         .reduce((p: any, c: any) => p + ' ' + c.id, '');
-      this.taxon.informalTaxonGroups = this.taxon.payload.informalTaxonGroups
+      this.taxon.informalTaxonGroups = this.taxon.informalGroups
         .map((group: any) => group.name);
       this.subCnt =
         ObservableOf(this.taxon.key).pipe(combineLatest(
@@ -165,15 +165,12 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.loading = true;
-    this.subTaxa = this.lajiApi
-      .get(LajiApi.Endpoints.autocomplete, 'taxon', {
-        q: this.search,
-        limit: '' + this.limit,
-        includePayload: true,
-        lang: this.translate.currentLang,
-        matchType: this.matchType
-      }).pipe(
-        switchMap((taxa: any[]) => this.taxonAutocompleteService.getInfo(taxa, this.search))
+    this.subTaxa = this.api.get('/autocomplete/taxa', { query: {
+      query: this.search,
+      limit: this.limit,
+      matchType: this.matchType
+    }}).pipe(
+        switchMap(taxa => this.taxonAutocompleteService.getInfo(taxa.results, this.search))
       )
       .subscribe(
         data => {
