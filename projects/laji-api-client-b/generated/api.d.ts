@@ -57,7 +57,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/forms/{formID}/participants": {
+    "/forms/{id}/participants": {
         parameters: {
             query?: never;
             header?: never;
@@ -128,7 +128,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/person/{personToken}": {
+    "/person": {
         parameters: {
             query?: never;
             header?: never;
@@ -145,13 +145,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/person/{personToken}/profile": {
+    "/person/profile": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
+        /** Get profile */
         get: operations["PersonsController_findProfileByPersonToken"];
         /** Update profile */
         put: operations["PersonsController_updateProfile"];
@@ -163,7 +164,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/person/by-id/{personId}": {
+    "/person/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -180,14 +181,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/person/by-id/{personId}/profile": {
+    "/person/{id}/profile": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Find profile by user id (this will only return small subset of the full profile) */
+        /** Find profile by person id (this will only return small subset of the full profile) */
         get: operations["PersonsController_getProfileByPersonId"];
         put?: never;
         post?: never;
@@ -197,7 +198,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/person/{personToken}/friends/{friendPersonID}": {
+    "/person/friends/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -233,7 +234,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/person-token/{personToken}": {
+    "/authentication-event": {
         parameters: {
             query?: never;
             header?: never;
@@ -251,7 +252,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/notifications/{personToken}": {
+    "/notifications": {
         parameters: {
             query?: never;
             header?: never;
@@ -259,7 +260,7 @@ export interface paths {
             cookie?: never;
         };
         /** Get notifications */
-        get: operations["NotificationsController_getAll"];
+        get: operations["NotificationsController_getAllV1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -667,7 +668,8 @@ export interface paths {
         /** Get children of a taxon */
         get: operations["TaxaController_getTaxonChildren"];
         put?: never;
-        post?: never;
+        /** Get children of a taxon */
+        post: operations["TaxaController_getTaxonChildrenWithFilters"];
         delete?: never;
         options?: never;
         head?: never;
@@ -684,7 +686,8 @@ export interface paths {
         /** Get parents of a taxon */
         get: operations["TaxaController_getTaxonParents"];
         put?: never;
-        post?: never;
+        /** Get parents of a taxon */
+        post: operations["TaxaController_getTaxonParentsWithFilters"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1443,14 +1446,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/autocomplete/unit/list": {
+    "/shorthand/unit/trip-report": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["AutocompleteController_getTripReportUnitListAutocomplete"];
+        get: operations["ShorthandController_getTripReportUnitShorthandAutocomplete"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1459,14 +1462,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/autocomplete/unit/shorthand/trip-report": {
+    "/shorthand/unit/list": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["AutocompleteController_getTripReportUnitShorthandAutocomplete"];
+        get: operations["ShorthandController_getTripReportUnitListAutocomplete"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1475,14 +1478,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/autocomplete/unit/shorthand/line-transect": {
+    "/shorthand/unit/line-transect": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["AutocompleteController_getLineTransectUnitShorthandAutocomplete"];
+        get: operations["ShorthandController_getLineTransectUnitShorthandAutocomplete"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1491,14 +1494,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/autocomplete/unit/shorthand/water-bird-pair-count": {
+    "/shorthand/unit/water-bird-pair-count": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["AutocompleteController_getWaterbirdPairCountUnitShorthandAutocomplete"];
+        get: operations["ShorthandController_getWaterbirdPairCountUnitShorthandAutocomplete"];
         put?: never;
         post?: never;
         delete?: never;
@@ -5222,9 +5225,7 @@ export interface paths {
          */
         post: {
             parameters: {
-                query: {
-                    /** @description Person token is required to limit number of created polygon ids per day to 100 */
-                    personToken: string;
+                query?: {
                     /** @description Give coordinate reference system of the GeoJSON or WKT. Defaults to EUREF. (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
                     crs?: "WGS84" | "EUREF" | "YKJ";
                     /** @description Either this or wkt is required. The polygon as GeoJSON. */
@@ -5234,7 +5235,10 @@ export interface paths {
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "xml" | "plain";
                 };
-                header?: never;
+                header: {
+                    /** @description Person token is required to limit number of created polygon ids per day to 100 */
+                    "Person-Token": string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -5523,11 +5527,11 @@ export interface paths {
         /** Get trait input row by id */
         get: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the InputRow */
                     id: string;
@@ -5577,11 +5581,11 @@ export interface paths {
         /** Update an input row */
         put: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the InputRow */
                     id: string;
@@ -5654,11 +5658,11 @@ export interface paths {
         /** Delete an input row */
         delete: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id */
                     id: string;
@@ -5731,11 +5735,11 @@ export interface paths {
         /** Validate adding a new input row */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -5801,11 +5805,11 @@ export interface paths {
         /** Validate update of an input row */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the InputRow */
                     id: string;
@@ -5883,11 +5887,11 @@ export interface paths {
         /** Validate deleting input row */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id */
                     id: string;
@@ -5952,11 +5956,11 @@ export interface paths {
         /** Insert new input row */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -6032,12 +6036,13 @@ export interface paths {
         post: {
             parameters: {
                 query: {
-                    /** @description Identity of a logged in user */
-                    personToken?: string;
                     /** @description Id if the dataset */
                     datasetId: string;
                 };
-                header?: never;
+                header?: {
+                    /** @description Identity of a logged in user */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -6095,12 +6100,13 @@ export interface paths {
         post: {
             parameters: {
                 query: {
-                    /** @description Identity of a logged in user */
-                    personToken?: string;
                     /** @description Id if the dataset */
                     datasetId: string;
                 };
-                header?: never;
+                header?: {
+                    /** @description Identity of a logged in user */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -6166,11 +6172,11 @@ export interface paths {
         /** Validate adding a batch of input rows */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -6236,11 +6242,11 @@ export interface paths {
         /** Store a batch of input rows */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -6317,8 +6323,6 @@ export interface paths {
         get: {
             parameters: {
                 query: {
-                    /** @description Identity of a logged in user */
-                    personToken?: string;
                     /** @description Id if the dataset */
                     datasetId: string;
                     /** @description Page size */
@@ -6331,7 +6335,10 @@ export interface paths {
                         [key: string]: string;
                     };
                 };
-                header?: never;
+                header?: {
+                    /** @description Identity of a logged in user */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -6424,11 +6431,11 @@ export interface paths {
         /** Insert new dataset */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -6543,11 +6550,11 @@ export interface paths {
         /** Update a dataset */
         put: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the Dataset */
                     id: string;
@@ -6620,11 +6627,11 @@ export interface paths {
         /** Delete a dataset */
         delete: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id */
                     id: string;
@@ -6697,11 +6704,11 @@ export interface paths {
         /** Validate adding a new dataset */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -6767,11 +6774,11 @@ export interface paths {
         /** Validate dataset update */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the Dataset */
                     id: string;
@@ -6849,11 +6856,11 @@ export interface paths {
         /** Validate deleting a dataset */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id */
                     id: string;
@@ -6916,11 +6923,11 @@ export interface paths {
         /** Get users all permissions (defined by personToken or - in absence - of the access_token) */
         get: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -7015,11 +7022,11 @@ export interface paths {
         /** Update permissions of a dataset */
         put: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the dataset */
                     datasetId: string;
@@ -7107,11 +7114,11 @@ export interface paths {
         /** Validate permission submission */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the dataset */
                     datasetId: string;
@@ -8336,6 +8343,10 @@ export interface components {
             "@context": string;
         };
         Profile: {
+            /** @default {} */
+            settings: {
+                [key: string]: unknown;
+            };
             id: string;
             userID: string;
             profileDescription: string;
@@ -8350,8 +8361,6 @@ export interface components {
             blocked: string[];
             /** @default [] */
             friendRequests: string[];
-            /** @default {} */
-            settings: Record<string, never>;
         };
         StoreDeleteResponse: {
             affected: number;
@@ -8431,8 +8440,6 @@ export interface components {
             anyHabitatSearchStrings: string;
         };
         TaxonElastic: {
-            /** @default MZ.intellectualRightsCC-BY-4.0 */
-            intellectualRights: string;
             latestRedListEvaluation: components["schemas"]["RedListEvaluation"];
             isPartOf: Record<string, never>;
             isPartOfNonHidden: Record<string, never>;
@@ -8539,11 +8546,6 @@ export interface components {
             key: string;
             value: string;
         };
-        TripReportUnitListResultDto: {
-            results: Record<string, never>[];
-            count: number;
-            nonMatchingCount: number;
-        };
         TripReportUnitShorthandResponseDto: {
             key: string;
             value: string;
@@ -8556,6 +8558,11 @@ export interface components {
                 maleIndividualCount: string;
                 femaleIndividualCount: string;
             };
+        };
+        TripReportUnitListResultDto: {
+            results: Record<string, never>[];
+            count: number;
+            nonMatchingCount: number;
         };
         LineTransectUnitShorthandResponseDto: {
             key: string;
@@ -10717,6 +10724,11 @@ export interface components {
             hideCancelButton: boolean;
             /** hideDraftButton */
             hideDraftButton: boolean;
+            /**
+             * Hide from sidebar
+             * @description Defaults to false
+             */
+            hideFromSidebar: boolean;
             /**
              * Hide save button
              * @description Hides the save/edit button at form footer
@@ -12881,8 +12893,6 @@ export interface components {
              * @description Informal description of the habitat.
              */
             habitatDescription: string;
-            /** Habitat */
-            habitatIUCN: string;
             /**
              * Substrate
              * @description Type of substrate or name of substrate species.
@@ -13173,7 +13183,7 @@ export interface components {
              * @description Type of preparation/sample
              * @enum {string}
              */
-            preparationType: "MF.preparationTypeSkin" | "MF.preparationTypeSkeletal" | "MF.preparationTypeMount" | "MF.preparationTypeTissue" | "MF.preparationTypeTissueEcotoxicology" | "MF.preparationTypeLiquid" | "MF.preparationTypeMicroscopeSlide" | "MF.preparationTypeDNAExtract" | "MF.preparationTypeEgg" | "MF.preparationTypeNest" | "MF.preparationTypeOther";
+            preparationType: "MF.preparationTypeSkin" | "MF.preparationTypeSkeletal" | "MF.preparationTypeMount" | "MF.preparationTypeTissue" | "MF.preparationTypeTissueEcotoxicology" | "MF.preparationTypeLiquid" | "MF.preparationTypeMicroscopeSlide" | "MF.preparationTypeDNAExtract" | "MF.preparationTypeEgg" | "MF.preparationTypeNest" | "MF.preparationTypeFrozenSpecimen" | "MF.preparationTypeOther";
             preparations?: components["schemas"]["preparation"][];
             /**
              * Preparation/sample preservation
@@ -13428,6 +13438,64 @@ export interface components {
             wgs84centerPointLat: number;
             /** Longitude (center point) */
             wgs84centerPointLon: number;
+        };
+        profile: {
+            /** Context for the MA.profile */
+            "@context"?: string;
+            /** Id for the MA.profile */
+            id?: string;
+            /** Type for the MA.profile */
+            "@type"?: string;
+            birdSongRecognitionSkillLevels?: components["schemas"]["birdSongRecognitionSkillLevel"][];
+            /**
+             * User's activity level in birdwatching
+             * @enum {string}
+             */
+            birdwatchingActivityLevel?: "" | "MA.birdwatchingActivityLevelEnum1" | "MA.birdwatchingActivityLevelEnum2" | "MA.birdwatchingActivityLevelEnum3" | "MA.birdwatchingActivityLevelEnum4";
+            /** Blocked ppl */
+            blocked?: string[];
+            /**
+             * User's skill level in Finnish bird song recognition
+             * @enum {string}
+             */
+            finnishBirdSongRecognitionSkillLevel?: "" | "MA.finnishBirdSongRecognitionSkillLevelEnum1" | "MA.finnishBirdSongRecognitionSkillLevelEnum2" | "MA.finnishBirdSongRecognitionSkillLevelEnum3" | "MA.finnishBirdSongRecognitionSkillLevelEnum4";
+            /** Friend requests received */
+            friendRequests?: string[];
+            /** List of friends of the user */
+            friends?: string[];
+            /** Image for the profile */
+            image?: string;
+            /** Name is visible to others in Kerttu */
+            nameVisibleInKerttu?: boolean;
+            /** Own collection identifier */
+            personalCollectionIdentifier?: string;
+            /** Profile description */
+            profileDescription?: string;
+            /** Settings for the user */
+            settings?: Record<string, never>;
+            /** Expertise */
+            taxonExpertise?: string[];
+            /** Expertise notes */
+            taxonExpertiseNotes?: string;
+            /** This users profile */
+            userID: string;
+            /** profileKey */
+            profileKey?: string;
+        };
+        birdSongRecognitionSkillLevel: {
+            /** Context for the Instances of this class are bird song recognition skill levels of a certain area */
+            "@context"?: string;
+            /** Id for the Instances of this class are bird song recognition skill levels of a certain area */
+            id?: string;
+            /** Type for the Instances of this class are bird song recognition skill levels of a certain area */
+            "@type"?: string;
+            /** Area */
+            birdSongRecognitionArea: string;
+            /**
+             * Skill level
+             * @enum {string}
+             */
+            birdSongRecognitionSkillLevel: "MA.birdSongRecognitionSkillLevelEnum1" | "MA.birdSongRecognitionSkillLevelEnum2" | "MA.birdSongRecognitionSkillLevelEnum3" | "MA.birdSongRecognitionSkillLevelEnum4";
         };
         SensitivePerson: {
             id: string;
@@ -14055,11 +14123,11 @@ export type $defs = Record<string, never>;
 export interface operations {
     FormsController_getPermissions: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -14077,11 +14145,11 @@ export interface operations {
     };
     FormsController_getPermissionsByCollectionID: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 collectionID: string;
             };
@@ -14101,11 +14169,11 @@ export interface operations {
     };
     FormsController_requestAccess: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 collectionID: string;
             };
@@ -14125,13 +14193,14 @@ export interface operations {
     };
     FormsController_acceptAccess: {
         parameters: {
-            query: {
-                /** @description Person token who is authorised to accept requests */
-                personToken: string;
+            query?: {
                 /** @description Access type */
                 type?: "admin" | "editor";
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token who is authorizing the acception */
+                "Person-Token"?: string;
+            };
             path: {
                 collectionID: string;
                 personID: string;
@@ -14152,11 +14221,11 @@ export interface operations {
     };
     FormsController_revokeAccess: {
         parameters: {
-            query: {
-                /** @description Person token who is authorised to accept requests */
-                personToken: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token who is authorizing the removal */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 collectionID: string;
                 personID: string;
@@ -14178,9 +14247,12 @@ export interface operations {
     FormsController_getParticipants: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
-                formID: string;
+                id: string;
             };
             cookie?: never;
         };
@@ -14220,10 +14292,7 @@ export interface operations {
     };
     FormsController_create: {
         parameters: {
-            query: {
-                /** @description Person's authentication token */
-                personToken: string;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -14248,7 +14317,8 @@ export interface operations {
         parameters: {
             query?: {
                 format?: "schema" | "json";
-                /** @description Language of fields that have multiple languages. If multi is selected fields that can have multiple languages will contain language objects. Defaults to 'en' */
+                /** @description Language of fields that have multiple languages. If multi is selected fields that can have multiple languages will
+                 *     contain language objects. Defaults to 'en' */
                 lang?: "fi" | "sv" | "en" | "multi";
                 /** @description Expand response */
                 expand?: boolean;
@@ -14273,10 +14343,7 @@ export interface operations {
     };
     FormsController_update: {
         parameters: {
-            query: {
-                /** @description Person's authentication token */
-                personToken: string;
-            };
+            query?: never;
             header?: never;
             path: {
                 id: string;
@@ -14301,10 +14368,7 @@ export interface operations {
     };
     FormsController_remove: {
         parameters: {
-            query: {
-                /** @description Person's authentication token */
-                personToken: string;
-            };
+            query?: never;
             header?: never;
             path: {
                 id: string;
@@ -14325,10 +14389,9 @@ export interface operations {
     };
     FormsController_transform: {
         parameters: {
-            query: {
-                /** @description Person's authentication token */
-                personToken: string;
-                /** @description Language of fields that have multiple languages. If multi is selected fields that can have multiple languages will contain language objects. Defaults to 'en' */
+            query?: {
+                /** @description Language of fields that have multiple languages. If multi is selected fields that can have multiple languages will
+                 *     contain language objects. Defaults to 'en' */
                 lang?: "fi" | "sv" | "en" | "multi";
             };
             header?: never;
@@ -14354,10 +14417,11 @@ export interface operations {
     PersonsController_findPersonByToken: {
         parameters: {
             query?: never;
-            header?: never;
-            path: {
-                personToken: string;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
             };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -14375,10 +14439,11 @@ export interface operations {
     PersonsController_findProfileByPersonToken: {
         parameters: {
             query?: never;
-            header?: never;
-            path: {
-                personToken: string;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
             };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -14388,7 +14453,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": components["schemas"]["profile"];
                 };
             };
         };
@@ -14396,15 +14461,16 @@ export interface operations {
     PersonsController_updateProfile: {
         parameters: {
             query?: never;
-            header?: never;
-            path: {
-                personToken: string;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
             };
+            path?: never;
             cookie?: never;
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Profile"];
+                "application/json": components["schemas"]["profile"];
             };
         };
         responses: {
@@ -14413,7 +14479,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Profile"];
+                    "application/json": components["schemas"]["profile"];
                 };
             };
         };
@@ -14421,10 +14487,11 @@ export interface operations {
     PersonsController_createProfile: {
         parameters: {
             query?: never;
-            header?: never;
-            path: {
-                personToken: string;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
             };
+            path?: never;
             cookie?: never;
         };
         requestBody: {
@@ -14448,7 +14515,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                personId: string;
+                id: string;
             };
             cookie?: never;
         };
@@ -14469,7 +14536,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                personId: string;
+                id: string;
             };
             cookie?: never;
         };
@@ -14488,10 +14555,12 @@ export interface operations {
     PersonsController_acceptFriendRequest: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
-                personToken: string;
-                friendPersonID: string;
+                id: string;
             };
             cookie?: never;
         };
@@ -14501,17 +14570,21 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["profile"];
+                };
             };
         };
     };
     PersonsController_addFriendRequest: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
-                personToken: string;
-                friendPersonID: string;
+                id: string;
             };
             cookie?: never;
         };
@@ -14522,7 +14595,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": components["schemas"]["profile"];
                 };
             };
         };
@@ -14532,10 +14605,12 @@ export interface operations {
             query: {
                 block: boolean;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
-                personToken: string;
-                friendPersonID: string;
+                id: string;
             };
             cookie?: never;
         };
@@ -14545,7 +14620,9 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["profile"];
+                };
             };
         };
     };
@@ -14571,10 +14648,10 @@ export interface operations {
     PersonTokenController_getInfo: {
         parameters: {
             query?: never;
-            header?: never;
-            path: {
-                personToken: string;
+            header: {
+                "person-token": string;
             };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -14592,10 +14669,10 @@ export interface operations {
     PersonTokenController_delete: {
         parameters: {
             query?: never;
-            header?: never;
-            path: {
-                personToken: string;
+            header: {
+                "person-token": string;
             };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -14610,7 +14687,7 @@ export interface operations {
             };
         };
     };
-    NotificationsController_getAll: {
+    NotificationsController_getAllV1: {
         parameters: {
             query?: {
                 /** @description Return only notifications that have not been marked as seen. */
@@ -14618,10 +14695,11 @@ export interface operations {
                 page?: number;
                 pageSize?: number;
             };
-            header?: never;
-            path: {
-                personToken: string;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
             };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -14646,11 +14724,11 @@ export interface operations {
     };
     NotificationsController_update: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -14674,11 +14752,11 @@ export interface operations {
     };
     NotificationsController_delete: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -14832,11 +14910,11 @@ export interface operations {
     };
     DocumentsController_startBatchJob: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -14858,14 +14936,15 @@ export interface operations {
     };
     DocumentsController_getBatchJobStatus: {
         parameters: {
-            query: {
+            query?: {
                 validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
                 publicityRestrictions?: "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
                 dataOrigin?: "MY.dataOriginPaperForm" | "MY.dataOriginWebForm" | "MY.dataOriginSpreadsheetFile";
-                /** @description Person's authentication token */
-                personToken: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
                 jobID: string;
             };
@@ -14894,14 +14973,15 @@ export interface operations {
     };
     DocumentsController_completeBatchJob: {
         parameters: {
-            query: {
+            query?: {
                 validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
                 publicityRestrictions?: "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
                 dataOrigin?: "MY.dataOriginPaperForm" | "MY.dataOriginWebForm" | "MY.dataOriginSpreadsheetFile";
-                /** @description Person's authentication token */
-                personToken: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
                 jobID: string;
             };
@@ -14932,10 +15012,11 @@ export interface operations {
                 type?: "error" | "warning";
                 /** @description Format of validation error details */
                 validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
-                /** @description Person's authentication token */
-                personToken?: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -14953,17 +15034,18 @@ export interface operations {
     };
     DocumentsController_getCountByYear: {
         parameters: {
-            query: {
+            query?: {
                 /** @description Limit the list of documents to a certain collection */
                 collectionID?: string;
                 /** @description Limit the list of documents to a certain form */
                 formID?: string;
                 /** @description Limit the list of documents to a certain named place */
                 namedPlace?: string;
-                /** @description Person's authentication token */
-                personToken: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -15003,7 +15085,7 @@ export interface operations {
     };
     DocumentsController_getPage: {
         parameters: {
-            query: {
+            query?: {
                 /** @description Limit the list of documents to a certain named place */
                 namedPlace?: string;
                 /** @description Comma separated list of field names to include in the response */
@@ -15020,10 +15102,11 @@ export interface operations {
                 formID?: string;
                 page?: number;
                 pageSize?: number;
-                /** @description Person's authentication token */
-                personToken: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -15050,12 +15133,15 @@ export interface operations {
     DocumentsController_create: {
         parameters: {
             query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
                 /** @description Format of validation error details */
                 validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
+                /** @description Skip validations. Only available for the importer token */
+                skipValidations?: boolean;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -15077,11 +15163,11 @@ export interface operations {
     };
     DocumentsController_get: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -15101,13 +15187,16 @@ export interface operations {
     };
     DocumentsController_update: {
         parameters: {
-            query: {
-                /** @description Person's authentication token */
-                personToken: string;
+            query?: {
                 /** @description Format of validation error details */
                 validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
+                /** @description Skip validations. Only available for the importer token */
+                skipValidations?: boolean;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
                 id: string;
             };
@@ -15131,11 +15220,11 @@ export interface operations {
     };
     DocumentsController_delete: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -15155,25 +15244,22 @@ export interface operations {
     };
     NamedPlacesController_reserve: {
         parameters: {
-            query: {
-                /** @description Person's authentication token */
-                personToken: string;
+            query?: {
                 /** @description Id for the person (your own id will be used if you are not admin) */
                 personID?: string;
                 /** @description The date when the reservation expires */
                 until?: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
                 id: string;
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["namedPlace"];
-            };
-        };
+        requestBody?: never;
         responses: {
             201: {
                 headers: {
@@ -15187,11 +15273,11 @@ export interface operations {
     };
     NamedPlacesController_cancelReservation: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -15231,12 +15317,13 @@ export interface operations {
                 includePublic?: boolean;
                 /** @description Include units in prepopulated and accepted documents (only form forms with 'MHL.includeUnits' true). Defaults to false. */
                 includeUnits?: boolean;
-                /** @description Person's authentication token */
-                personToken?: string;
                 page?: number;
                 pageSize?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token. Necessary for fetching private places */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -15262,11 +15349,11 @@ export interface operations {
     };
     NamedPlacesController_create: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -15289,12 +15376,13 @@ export interface operations {
     NamedPlacesController_get: {
         parameters: {
             query?: {
-                /** @description Person's authentication token. Necessary for fetching non public places. */
-                personToken?: string;
                 /** @description Include units in prepopulated and accepted documents (only for forms with 'MHL.includeUnits' true). */
                 includeUnits?: boolean;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token. Necessary for fetching private places */
+                "Person-Token"?: string;
+            };
             path: {
                 id: string;
             };
@@ -15314,11 +15402,11 @@ export interface operations {
     };
     NamedPlacesController_update: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -15342,11 +15430,11 @@ export interface operations {
     };
     NamedPlacesController_delete: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -15419,14 +15507,14 @@ export interface operations {
     TaxaController_getPage: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 page?: number;
@@ -15481,10 +15569,10 @@ export interface operations {
     TaxaController_getPageWithFilters: {
         parameters: {
             query?: {
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
-                selectedFields?: string;
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
                 checklist?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 page?: number;
@@ -16077,6 +16165,8 @@ export interface operations {
     TaxaController_getAggregate: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -16089,8 +16179,6 @@ export interface operations {
                  *     or the name if it was given. */
                 aggregateBy?: string;
                 aggregateSize?: number;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -16124,6 +16212,8 @@ export interface operations {
     TaxaController_getAggregateWithFilters: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Aggregate by these fields. Multiple values are separated by a comma (,). Different aggregations can be made at the
                  *     same time using semicolon as separator (;) and aggregates can be named giving "=name" at the end of each
                  *     aggregation.
@@ -16131,8 +16221,6 @@ export interface operations {
                  *     Result will have aggregations property object where the keys of the object are either the field(s) that were used
                  *     or the name if it was given. */
                 aggregateBy?: string;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description Filter based on parent taxon id */
@@ -16705,14 +16793,14 @@ export interface operations {
     TaxaController_getSpeciesPage: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 page?: number;
@@ -16767,10 +16855,10 @@ export interface operations {
     TaxaController_getSpeciesPageWithFilters: {
         parameters: {
             query?: {
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
-                selectedFields?: string;
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
                 checklist?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 page?: number;
@@ -17363,6 +17451,8 @@ export interface operations {
     TaxaController_getSpeciesAggregate: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -17375,8 +17465,6 @@ export interface operations {
                  *     or the name if it was given. */
                 aggregateBy?: string;
                 aggregateSize?: number;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -17410,6 +17498,8 @@ export interface operations {
     TaxaController_getSpeciesAggregateWithFilters: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -17422,8 +17512,6 @@ export interface operations {
                  *     or the name if it was given. */
                 aggregateBy?: string;
                 aggregateSize?: number;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -18171,14 +18259,14 @@ export interface operations {
     TaxaController_getTaxonChildren: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -18225,17 +18313,78 @@ export interface operations {
             };
         };
     };
-    TaxaController_getTaxonParents: {
+    TaxaController_getTaxonChildrenWithFilters: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
+                /** @description Checklist version to be used. Defaults to the latest version. */
+                checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
+                /** @description true: Will include only invasive taxa.
+                 *     false: Will exclude invasive taxa. */
+                invasiveSpecies?: boolean;
+                /** @description true: Will include only finnish taxa.
+                 *     false: Will exclude finnish taxa. */
+                finnish?: boolean;
+                /** @description Include media objects in the response. Defaults to false. */
+                includeMedia?: boolean;
+                /** @description Include description objects in the response. Defaults to false. */
+                includeDescriptions?: boolean;
+                /** @description Include red list evaluations in the response. Defaults to false. */
+                includeRedListEvaluations?: boolean;
+                /** @description true: Will show hidden taxa
+                 *     false: Hidden taxa are skipped and their non-hidden children raised up in the tree. */
+                includeHidden?: boolean;
+                /** @description Sorting field of the species (one of 'taxonomic' | 'scientificName' | 'finnishName') and optional sort order 'desc' | 'asc'.
+                 *     Order defaults to 'asc'. The sort field and order are separated by a space character.
+                 *
+                 *     Defaults to 'taxonomic' */
+                sortOrder?: string;
+                /** @description Filter based on parent taxon id */
+                parentTaxonId?: string;
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Taxon"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: components["schemas"]["Taxon"][];
+                        "@context": string;
+                    };
+                };
+            };
+        };
+    };
+    TaxaController_getTaxonParents: {
+        parameters: {
+            query?: {
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
                 checklist?: string;
+                /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
+                informalTaxonGroups?: string;
+                /** @description Filter by comma separated ids */
+                id?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -18268,6 +18417,626 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: components["schemas"]["Taxon"][];
+                        "@context": string;
+                    };
+                };
+            };
+        };
+    };
+    TaxaController_getTaxonParentsWithFilters: {
+        parameters: {
+            query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
+                /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
+                informalTaxonGroups?: string;
+                /** @description Filter by comma separated ids */
+                id?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
+                /** @description Checklist version to be used. Defaults to the latest version. */
+                checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
+                /** @description true: Will include only invasive taxa.
+                 *     false: Will exclude invasive taxa. */
+                invasiveSpecies?: boolean;
+                /** @description true: Will include only finnish taxa.
+                 *     false: Will exclude finnish taxa. */
+                finnish?: boolean;
+                /** @description Include media objects in the response. Defaults to false. */
+                includeMedia?: boolean;
+                /** @description Include description objects in the response. Defaults to false. */
+                includeDescriptions?: boolean;
+                /** @description Include red list evaluations in the response. Defaults to false. */
+                includeRedListEvaluations?: boolean;
+                /** @description true: Will show hidden taxa
+                 *     false: Hidden taxa are skipped and their non-hidden children raised up in the tree. */
+                includeHidden?: boolean;
+                /** @description Sorting field of the species (one of 'taxonomic' | 'scientificName' | 'finnishName') and optional sort order 'desc' | 'asc'.
+                 *     Order defaults to 'asc'. The sort field and order are separated by a space character.
+                 *
+                 *     Defaults to 'taxonomic' */
+                sortOrder?: string;
+                /** @description Filter based on parent taxon id */
+                parentTaxonId?: string;
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    qname?: string | string[];
+                    id?: string | string[];
+                    uri?: string | string[];
+                    isPartOf?: string | string[];
+                    isPartOfNonHidden?: string | string[];
+                    parents?: string | string[];
+                    nonHiddenParents?: string | string[];
+                    parentsIncludeSelf?: string | string[];
+                    nonHiddenParentsIncludeSelf?: string | string[];
+                    hiddenTaxon?: boolean;
+                    nameAccordingTo?: string | string[];
+                    taxonRank?: string | string[];
+                    scientificName?: string | string[];
+                    scientificNameAuthorship?: string | string[];
+                    scientificNameDisplayName?: string | string[];
+                    cursiveName?: boolean;
+                    typeSpecimenURI?: string | string[];
+                    synonymNames?: string | string[];
+                    "basionyms.id"?: string | string[];
+                    "basionyms.scientificName"?: string | string[];
+                    "basionyms.scientificNameAuthorship"?: string | string[];
+                    "basionyms.vernacularName.fi"?: string | string[];
+                    "basionyms.vernacularName.sv"?: string | string[];
+                    "basionyms.vernacularName.en"?: string | string[];
+                    "basionyms.taxonRank"?: string | string[];
+                    "basionyms.cursiveName"?: boolean;
+                    "basionyms.notes"?: string | string[];
+                    "basionyms.bold.bins"?: string | string[];
+                    "basionyms.hasBold"?: boolean;
+                    "objectiveSynonyms.id"?: string | string[];
+                    "objectiveSynonyms.scientificName"?: string | string[];
+                    "objectiveSynonyms.scientificNameAuthorship"?: string | string[];
+                    "objectiveSynonyms.vernacularName.fi"?: string | string[];
+                    "objectiveSynonyms.vernacularName.sv"?: string | string[];
+                    "objectiveSynonyms.vernacularName.en"?: string | string[];
+                    "objectiveSynonyms.taxonRank"?: string | string[];
+                    "objectiveSynonyms.cursiveName"?: boolean;
+                    "objectiveSynonyms.notes"?: string | string[];
+                    "objectiveSynonyms.bold.bins"?: string | string[];
+                    "objectiveSynonyms.hasBold"?: boolean;
+                    "subjectiveSynonyms.id"?: string | string[];
+                    "subjectiveSynonyms.scientificName"?: string | string[];
+                    "subjectiveSynonyms.scientificNameAuthorship"?: string | string[];
+                    "subjectiveSynonyms.vernacularName.fi"?: string | string[];
+                    "subjectiveSynonyms.vernacularName.sv"?: string | string[];
+                    "subjectiveSynonyms.vernacularName.en"?: string | string[];
+                    "subjectiveSynonyms.taxonRank"?: string | string[];
+                    "subjectiveSynonyms.cursiveName"?: boolean;
+                    "subjectiveSynonyms.notes"?: string | string[];
+                    "subjectiveSynonyms.bold.bins"?: string | string[];
+                    "subjectiveSynonyms.hasBold"?: boolean;
+                    "homotypicSynonyms.id"?: string | string[];
+                    "homotypicSynonyms.scientificName"?: string | string[];
+                    "homotypicSynonyms.scientificNameAuthorship"?: string | string[];
+                    "homotypicSynonyms.vernacularName.fi"?: string | string[];
+                    "homotypicSynonyms.vernacularName.sv"?: string | string[];
+                    "homotypicSynonyms.vernacularName.en"?: string | string[];
+                    "homotypicSynonyms.taxonRank"?: string | string[];
+                    "homotypicSynonyms.cursiveName"?: boolean;
+                    "homotypicSynonyms.notes"?: string | string[];
+                    "homotypicSynonyms.bold.bins"?: string | string[];
+                    "homotypicSynonyms.hasBold"?: boolean;
+                    "heterotypicSynonyms.id"?: string | string[];
+                    "heterotypicSynonyms.scientificName"?: string | string[];
+                    "heterotypicSynonyms.scientificNameAuthorship"?: string | string[];
+                    "heterotypicSynonyms.vernacularName.fi"?: string | string[];
+                    "heterotypicSynonyms.vernacularName.sv"?: string | string[];
+                    "heterotypicSynonyms.vernacularName.en"?: string | string[];
+                    "heterotypicSynonyms.taxonRank"?: string | string[];
+                    "heterotypicSynonyms.cursiveName"?: boolean;
+                    "heterotypicSynonyms.notes"?: string | string[];
+                    "heterotypicSynonyms.bold.bins"?: string | string[];
+                    "heterotypicSynonyms.hasBold"?: boolean;
+                    "synonyms.id"?: string | string[];
+                    "synonyms.scientificName"?: string | string[];
+                    "synonyms.scientificNameAuthorship"?: string | string[];
+                    "synonyms.vernacularName.fi"?: string | string[];
+                    "synonyms.vernacularName.sv"?: string | string[];
+                    "synonyms.vernacularName.en"?: string | string[];
+                    "synonyms.taxonRank"?: string | string[];
+                    "synonyms.cursiveName"?: boolean;
+                    "synonyms.notes"?: string | string[];
+                    "synonyms.bold.bins"?: string | string[];
+                    "synonyms.hasBold"?: boolean;
+                    "misspelledNames.id"?: string | string[];
+                    "misspelledNames.scientificName"?: string | string[];
+                    "misspelledNames.scientificNameAuthorship"?: string | string[];
+                    "misspelledNames.vernacularName.fi"?: string | string[];
+                    "misspelledNames.vernacularName.sv"?: string | string[];
+                    "misspelledNames.vernacularName.en"?: string | string[];
+                    "misspelledNames.taxonRank"?: string | string[];
+                    "misspelledNames.cursiveName"?: boolean;
+                    "misspelledNames.notes"?: string | string[];
+                    "misspelledNames.bold.bins"?: string | string[];
+                    "misspelledNames.hasBold"?: boolean;
+                    "orthographicVariants.id"?: string | string[];
+                    "orthographicVariants.scientificName"?: string | string[];
+                    "orthographicVariants.scientificNameAuthorship"?: string | string[];
+                    "orthographicVariants.vernacularName.fi"?: string | string[];
+                    "orthographicVariants.vernacularName.sv"?: string | string[];
+                    "orthographicVariants.vernacularName.en"?: string | string[];
+                    "orthographicVariants.taxonRank"?: string | string[];
+                    "orthographicVariants.cursiveName"?: boolean;
+                    "orthographicVariants.notes"?: string | string[];
+                    "orthographicVariants.bold.bins"?: string | string[];
+                    "orthographicVariants.hasBold"?: boolean;
+                    "uncertainSynonyms.id"?: string | string[];
+                    "uncertainSynonyms.scientificName"?: string | string[];
+                    "uncertainSynonyms.scientificNameAuthorship"?: string | string[];
+                    "uncertainSynonyms.vernacularName.fi"?: string | string[];
+                    "uncertainSynonyms.vernacularName.sv"?: string | string[];
+                    "uncertainSynonyms.vernacularName.en"?: string | string[];
+                    "uncertainSynonyms.taxonRank"?: string | string[];
+                    "uncertainSynonyms.cursiveName"?: boolean;
+                    "uncertainSynonyms.notes"?: string | string[];
+                    "uncertainSynonyms.bold.bins"?: string | string[];
+                    "uncertainSynonyms.hasBold"?: boolean;
+                    "misappliedNames.id"?: string | string[];
+                    "misappliedNames.scientificName"?: string | string[];
+                    "misappliedNames.scientificNameAuthorship"?: string | string[];
+                    "misappliedNames.vernacularName.fi"?: string | string[];
+                    "misappliedNames.vernacularName.sv"?: string | string[];
+                    "misappliedNames.vernacularName.en"?: string | string[];
+                    "misappliedNames.taxonRank"?: string | string[];
+                    "misappliedNames.cursiveName"?: boolean;
+                    "misappliedNames.notes"?: string | string[];
+                    "misappliedNames.bold.bins"?: string | string[];
+                    "misappliedNames.hasBold"?: boolean;
+                    "alternativeNames.id"?: string | string[];
+                    "alternativeNames.scientificName"?: string | string[];
+                    "alternativeNames.scientificNameAuthorship"?: string | string[];
+                    "alternativeNames.vernacularName.fi"?: string | string[];
+                    "alternativeNames.vernacularName.sv"?: string | string[];
+                    "alternativeNames.vernacularName.en"?: string | string[];
+                    "alternativeNames.taxonRank"?: string | string[];
+                    "alternativeNames.cursiveName"?: boolean;
+                    "alternativeNames.notes"?: string | string[];
+                    "alternativeNames.bold.bins"?: string | string[];
+                    "alternativeNames.hasBold"?: boolean;
+                    "vernacularName.fi"?: string | string[];
+                    "vernacularName.sv"?: string | string[];
+                    "vernacularName.en"?: string | string[];
+                    "alternativeVernacularName.fi"?: string | string[];
+                    "alternativeVernacularName.sv"?: string | string[];
+                    "alternativeVernacularName.en"?: string | string[];
+                    "obsoleteVernacularName.fi"?: string | string[];
+                    "obsoleteVernacularName.sv"?: string | string[];
+                    "obsoleteVernacularName.en"?: string | string[];
+                    "colloquialVernacularName.fi"?: string | string[];
+                    "colloquialVernacularName.sv"?: string | string[];
+                    "colloquialVernacularName.en"?: string | string[];
+                    "tradeName.fi"?: string | string[];
+                    "tradeName.sv"?: string | string[];
+                    "tradeName.en"?: string | string[];
+                    informalTaxonGroups?: string | string[];
+                    threatenedStatus?: string | string[];
+                    redListEvaluationGroups?: string | string[];
+                    occurrenceInFinland?: string | string[];
+                    occurrenceInFinlandSpecimenURI?: string | string[];
+                    typeOfOccurrenceInFinland?: string | string[];
+                    occurrenceInFinlandPublications?: string | string[];
+                    typeOfOccurrenceInFinlandNotes?: string | string[];
+                    originalPublications?: string | string[];
+                    originalDescription?: string | string[];
+                    nameDecidedBy?: string | string[];
+                    nameDecidedDate?: string | string[];
+                    administrativeStatuses?: string | string[];
+                    "primaryHabitat.habitat"?: string | string[];
+                    "primaryHabitat.habitatSpecificTypes"?: string | string[];
+                    "primaryHabitat.id"?: string | string[];
+                    "secondaryHabitats.habitat"?: string | string[];
+                    "secondaryHabitats.habitatSpecificTypes"?: string | string[];
+                    "secondaryHabitats.id"?: string | string[];
+                    "latestRedListStatusFinland.status"?: string | string[];
+                    "redListStatusesInFinland.status"?: string | string[];
+                    taxonExpert?: string | string[];
+                    taxonEditor?: string | string[];
+                    invasiveSpeciesEstablishment?: string | string[];
+                    "multimedia.author"?: string | string[];
+                    "multimedia.caption"?: string | string[];
+                    "multimedia.captureDateTime"?: string | string[];
+                    "multimedia.copyrightOwner"?: string | string[];
+                    "multimedia.fullURL"?: string | string[];
+                    "multimedia.id"?: string | string[];
+                    "multimedia.keywords"?: string | string[];
+                    "multimedia.largeURL"?: string | string[];
+                    "multimedia.licenseAbbreviation"?: string | string[];
+                    "multimedia.licenseFullname.fi"?: string | string[];
+                    "multimedia.licenseFullname.sv"?: string | string[];
+                    "multimedia.licenseFullname.en"?: string | string[];
+                    "multimedia.licenseId"?: string | string[];
+                    "multimedia.lifeStage"?: string | string[];
+                    "multimedia.plantLifeStage"?: string | string[];
+                    "multimedia.sex"?: string | string[];
+                    "multimedia.side"?: string | string[];
+                    "multimedia.source"?: string | string[];
+                    "multimedia.squareThumbnailURL"?: string | string[];
+                    "multimedia.taxon.id"?: string | string[];
+                    "multimedia.taxon.scientificName"?: string | string[];
+                    "multimedia.taxon.scientificNameAuthorship"?: string | string[];
+                    "multimedia.taxon.vernacularName.fi"?: string | string[];
+                    "multimedia.taxon.vernacularName.sv"?: string | string[];
+                    "multimedia.taxon.vernacularName.en"?: string | string[];
+                    "multimedia.taxon.taxonRank"?: string | string[];
+                    "multimedia.taxon.cursiveName"?: boolean;
+                    "multimedia.taxon.notes"?: string | string[];
+                    "multimedia.taxon.bold.bins"?: string | string[];
+                    "multimedia.taxon.hasBold"?: boolean;
+                    "multimedia.taxonDescriptionCaption.fi"?: string | string[];
+                    "multimedia.taxonDescriptionCaption.sv"?: string | string[];
+                    "multimedia.taxonDescriptionCaption.en"?: string | string[];
+                    "multimedia.thumbnailURL"?: string | string[];
+                    "multimedia.type"?: string | string[];
+                    "multimedia.uploadDateTime"?: string | string[];
+                    "multimedia.primaryForTaxon"?: boolean;
+                    "descriptions.id"?: string | string[];
+                    "descriptions.title.fi"?: string | string[];
+                    "descriptions.title.sv"?: string | string[];
+                    "descriptions.title.en"?: string | string[];
+                    "descriptions.groups.group"?: string | string[];
+                    "descriptions.groups.title.fi"?: string | string[];
+                    "descriptions.groups.title.sv"?: string | string[];
+                    "descriptions.groups.title.en"?: string | string[];
+                    "descriptions.groups.variables.variable"?: string | string[];
+                    "descriptions.groups.variables.title.fi"?: string | string[];
+                    "descriptions.groups.variables.title.sv"?: string | string[];
+                    "descriptions.groups.variables.title.en"?: string | string[];
+                    "descriptions.groups.variables.content.fi"?: string | string[];
+                    "descriptions.groups.variables.content.sv"?: string | string[];
+                    "descriptions.groups.variables.content.en"?: string | string[];
+                    "descriptions.speciesCardAuthors.variable"?: string | string[];
+                    "descriptions.speciesCardAuthors.title.fi"?: string | string[];
+                    "descriptions.speciesCardAuthors.title.sv"?: string | string[];
+                    "descriptions.speciesCardAuthors.title.en"?: string | string[];
+                    "descriptions.speciesCardAuthors.content.fi"?: string | string[];
+                    "descriptions.speciesCardAuthors.content.sv"?: string | string[];
+                    "descriptions.speciesCardAuthors.content.en"?: string | string[];
+                    secureLevel?: string | string[];
+                    breedingSecureLevel?: string | string[];
+                    winteringSecureLevel?: string | string[];
+                    nestSiteSecureLevel?: string | string[];
+                    naturaAreaSecureLevel?: string | string[];
+                    sensitive?: boolean;
+                    autoNonWild?: boolean;
+                    "occurrences.area"?: string | string[];
+                    "occurrences.id"?: string | string[];
+                    "occurrences.notes"?: string | string[];
+                    "occurrences.specimenURI"?: string | string[];
+                    "occurrences.status"?: string | string[];
+                    "occurrences.threatened"?: boolean;
+                    "habitatOccurrenceCounts.habitat.fi"?: string | string[];
+                    "habitatOccurrenceCounts.habitat.sv"?: string | string[];
+                    "habitatOccurrenceCounts.habitat.en"?: string | string[];
+                    "habitatOccurrenceCounts.id"?: string | string[];
+                    birdlifeCode?: string | string[];
+                    euringCode?: string | string[];
+                    customReportFormLink?: string | string[];
+                    taxonConceptIds?: string | string[];
+                    additionalIds?: string | string[];
+                    "externalLinks.locale"?: string | string[];
+                    "externalLinks.uri"?: string | string[];
+                    finnish?: boolean;
+                    species?: boolean;
+                    finnishSpecies?: boolean;
+                    invasiveSpecies?: boolean;
+                    stableInFinland?: boolean;
+                    "bold.bins"?: string | string[];
+                    hasBold?: boolean;
+                    hasParent?: boolean;
+                    hasChildren?: boolean;
+                    hasMultimedia?: boolean;
+                    hasDescriptions?: boolean;
+                    invasiveSpeciesMainGroups?: string | string[];
+                    taxonSets?: string | string[];
+                    notes?: string | string[];
+                    "parent.domain.id"?: string | string[];
+                    "parent.domain.scientificName"?: string | string[];
+                    "parent.domain.scientificNameAuthorship"?: string | string[];
+                    "parent.domain.vernacularName.fi"?: string | string[];
+                    "parent.domain.vernacularName.sv"?: string | string[];
+                    "parent.domain.vernacularName.en"?: string | string[];
+                    "parent.domain.taxonRank"?: string | string[];
+                    "parent.domain.cursiveName"?: boolean;
+                    "parent.domain.notes"?: string | string[];
+                    "parent.domain.bold.bins"?: string | string[];
+                    "parent.domain.hasBold"?: boolean;
+                    "parent.kingdom.id"?: string | string[];
+                    "parent.kingdom.scientificName"?: string | string[];
+                    "parent.kingdom.scientificNameAuthorship"?: string | string[];
+                    "parent.kingdom.vernacularName.fi"?: string | string[];
+                    "parent.kingdom.vernacularName.sv"?: string | string[];
+                    "parent.kingdom.vernacularName.en"?: string | string[];
+                    "parent.kingdom.taxonRank"?: string | string[];
+                    "parent.kingdom.cursiveName"?: boolean;
+                    "parent.kingdom.notes"?: string | string[];
+                    "parent.kingdom.bold.bins"?: string | string[];
+                    "parent.kingdom.hasBold"?: boolean;
+                    "parent.phylum.id"?: string | string[];
+                    "parent.phylum.scientificName"?: string | string[];
+                    "parent.phylum.scientificNameAuthorship"?: string | string[];
+                    "parent.phylum.vernacularName.fi"?: string | string[];
+                    "parent.phylum.vernacularName.sv"?: string | string[];
+                    "parent.phylum.vernacularName.en"?: string | string[];
+                    "parent.phylum.taxonRank"?: string | string[];
+                    "parent.phylum.cursiveName"?: boolean;
+                    "parent.phylum.notes"?: string | string[];
+                    "parent.phylum.bold.bins"?: string | string[];
+                    "parent.phylum.hasBold"?: boolean;
+                    "parent.subphylum.id"?: string | string[];
+                    "parent.subphylum.scientificName"?: string | string[];
+                    "parent.subphylum.scientificNameAuthorship"?: string | string[];
+                    "parent.subphylum.vernacularName.fi"?: string | string[];
+                    "parent.subphylum.vernacularName.sv"?: string | string[];
+                    "parent.subphylum.vernacularName.en"?: string | string[];
+                    "parent.subphylum.taxonRank"?: string | string[];
+                    "parent.subphylum.cursiveName"?: boolean;
+                    "parent.subphylum.notes"?: string | string[];
+                    "parent.subphylum.bold.bins"?: string | string[];
+                    "parent.subphylum.hasBold"?: boolean;
+                    "parent.division.id"?: string | string[];
+                    "parent.division.scientificName"?: string | string[];
+                    "parent.division.scientificNameAuthorship"?: string | string[];
+                    "parent.division.vernacularName.fi"?: string | string[];
+                    "parent.division.vernacularName.sv"?: string | string[];
+                    "parent.division.vernacularName.en"?: string | string[];
+                    "parent.division.taxonRank"?: string | string[];
+                    "parent.division.cursiveName"?: boolean;
+                    "parent.division.notes"?: string | string[];
+                    "parent.division.bold.bins"?: string | string[];
+                    "parent.division.hasBold"?: boolean;
+                    "parent.class.id"?: string | string[];
+                    "parent.class.scientificName"?: string | string[];
+                    "parent.class.scientificNameAuthorship"?: string | string[];
+                    "parent.class.vernacularName.fi"?: string | string[];
+                    "parent.class.vernacularName.sv"?: string | string[];
+                    "parent.class.vernacularName.en"?: string | string[];
+                    "parent.class.taxonRank"?: string | string[];
+                    "parent.class.cursiveName"?: boolean;
+                    "parent.class.notes"?: string | string[];
+                    "parent.class.bold.bins"?: string | string[];
+                    "parent.class.hasBold"?: boolean;
+                    "parent.subclass.id"?: string | string[];
+                    "parent.subclass.scientificName"?: string | string[];
+                    "parent.subclass.scientificNameAuthorship"?: string | string[];
+                    "parent.subclass.vernacularName.fi"?: string | string[];
+                    "parent.subclass.vernacularName.sv"?: string | string[];
+                    "parent.subclass.vernacularName.en"?: string | string[];
+                    "parent.subclass.taxonRank"?: string | string[];
+                    "parent.subclass.cursiveName"?: boolean;
+                    "parent.subclass.notes"?: string | string[];
+                    "parent.subclass.bold.bins"?: string | string[];
+                    "parent.subclass.hasBold"?: boolean;
+                    "parent.order.id"?: string | string[];
+                    "parent.order.scientificName"?: string | string[];
+                    "parent.order.scientificNameAuthorship"?: string | string[];
+                    "parent.order.vernacularName.fi"?: string | string[];
+                    "parent.order.vernacularName.sv"?: string | string[];
+                    "parent.order.vernacularName.en"?: string | string[];
+                    "parent.order.taxonRank"?: string | string[];
+                    "parent.order.cursiveName"?: boolean;
+                    "parent.order.notes"?: string | string[];
+                    "parent.order.bold.bins"?: string | string[];
+                    "parent.order.hasBold"?: boolean;
+                    "parent.suborder.id"?: string | string[];
+                    "parent.suborder.scientificName"?: string | string[];
+                    "parent.suborder.scientificNameAuthorship"?: string | string[];
+                    "parent.suborder.vernacularName.fi"?: string | string[];
+                    "parent.suborder.vernacularName.sv"?: string | string[];
+                    "parent.suborder.vernacularName.en"?: string | string[];
+                    "parent.suborder.taxonRank"?: string | string[];
+                    "parent.suborder.cursiveName"?: boolean;
+                    "parent.suborder.notes"?: string | string[];
+                    "parent.suborder.bold.bins"?: string | string[];
+                    "parent.suborder.hasBold"?: boolean;
+                    "parent.superfamily.id"?: string | string[];
+                    "parent.superfamily.scientificName"?: string | string[];
+                    "parent.superfamily.scientificNameAuthorship"?: string | string[];
+                    "parent.superfamily.vernacularName.fi"?: string | string[];
+                    "parent.superfamily.vernacularName.sv"?: string | string[];
+                    "parent.superfamily.vernacularName.en"?: string | string[];
+                    "parent.superfamily.taxonRank"?: string | string[];
+                    "parent.superfamily.cursiveName"?: boolean;
+                    "parent.superfamily.notes"?: string | string[];
+                    "parent.superfamily.bold.bins"?: string | string[];
+                    "parent.superfamily.hasBold"?: boolean;
+                    "parent.family.id"?: string | string[];
+                    "parent.family.scientificName"?: string | string[];
+                    "parent.family.scientificNameAuthorship"?: string | string[];
+                    "parent.family.vernacularName.fi"?: string | string[];
+                    "parent.family.vernacularName.sv"?: string | string[];
+                    "parent.family.vernacularName.en"?: string | string[];
+                    "parent.family.taxonRank"?: string | string[];
+                    "parent.family.cursiveName"?: boolean;
+                    "parent.family.notes"?: string | string[];
+                    "parent.family.bold.bins"?: string | string[];
+                    "parent.family.hasBold"?: boolean;
+                    "parent.subfamily.id"?: string | string[];
+                    "parent.subfamily.scientificName"?: string | string[];
+                    "parent.subfamily.scientificNameAuthorship"?: string | string[];
+                    "parent.subfamily.vernacularName.fi"?: string | string[];
+                    "parent.subfamily.vernacularName.sv"?: string | string[];
+                    "parent.subfamily.vernacularName.en"?: string | string[];
+                    "parent.subfamily.taxonRank"?: string | string[];
+                    "parent.subfamily.cursiveName"?: boolean;
+                    "parent.subfamily.notes"?: string | string[];
+                    "parent.subfamily.bold.bins"?: string | string[];
+                    "parent.subfamily.hasBold"?: boolean;
+                    "parent.tribe.id"?: string | string[];
+                    "parent.tribe.scientificName"?: string | string[];
+                    "parent.tribe.scientificNameAuthorship"?: string | string[];
+                    "parent.tribe.vernacularName.fi"?: string | string[];
+                    "parent.tribe.vernacularName.sv"?: string | string[];
+                    "parent.tribe.vernacularName.en"?: string | string[];
+                    "parent.tribe.taxonRank"?: string | string[];
+                    "parent.tribe.cursiveName"?: boolean;
+                    "parent.tribe.notes"?: string | string[];
+                    "parent.tribe.bold.bins"?: string | string[];
+                    "parent.tribe.hasBold"?: boolean;
+                    "parent.subtribe.id"?: string | string[];
+                    "parent.subtribe.scientificName"?: string | string[];
+                    "parent.subtribe.scientificNameAuthorship"?: string | string[];
+                    "parent.subtribe.vernacularName.fi"?: string | string[];
+                    "parent.subtribe.vernacularName.sv"?: string | string[];
+                    "parent.subtribe.vernacularName.en"?: string | string[];
+                    "parent.subtribe.taxonRank"?: string | string[];
+                    "parent.subtribe.cursiveName"?: boolean;
+                    "parent.subtribe.notes"?: string | string[];
+                    "parent.subtribe.bold.bins"?: string | string[];
+                    "parent.subtribe.hasBold"?: boolean;
+                    "parent.genus.id"?: string | string[];
+                    "parent.genus.scientificName"?: string | string[];
+                    "parent.genus.scientificNameAuthorship"?: string | string[];
+                    "parent.genus.vernacularName.fi"?: string | string[];
+                    "parent.genus.vernacularName.sv"?: string | string[];
+                    "parent.genus.vernacularName.en"?: string | string[];
+                    "parent.genus.taxonRank"?: string | string[];
+                    "parent.genus.cursiveName"?: boolean;
+                    "parent.genus.notes"?: string | string[];
+                    "parent.genus.bold.bins"?: string | string[];
+                    "parent.genus.hasBold"?: boolean;
+                    "parent.subgenus.id"?: string | string[];
+                    "parent.subgenus.scientificName"?: string | string[];
+                    "parent.subgenus.scientificNameAuthorship"?: string | string[];
+                    "parent.subgenus.vernacularName.fi"?: string | string[];
+                    "parent.subgenus.vernacularName.sv"?: string | string[];
+                    "parent.subgenus.vernacularName.en"?: string | string[];
+                    "parent.subgenus.taxonRank"?: string | string[];
+                    "parent.subgenus.cursiveName"?: boolean;
+                    "parent.subgenus.notes"?: string | string[];
+                    "parent.subgenus.bold.bins"?: string | string[];
+                    "parent.subgenus.hasBold"?: boolean;
+                    "parent.aggregate.id"?: string | string[];
+                    "parent.aggregate.scientificName"?: string | string[];
+                    "parent.aggregate.scientificNameAuthorship"?: string | string[];
+                    "parent.aggregate.vernacularName.fi"?: string | string[];
+                    "parent.aggregate.vernacularName.sv"?: string | string[];
+                    "parent.aggregate.vernacularName.en"?: string | string[];
+                    "parent.aggregate.taxonRank"?: string | string[];
+                    "parent.aggregate.cursiveName"?: boolean;
+                    "parent.aggregate.notes"?: string | string[];
+                    "parent.aggregate.bold.bins"?: string | string[];
+                    "parent.aggregate.hasBold"?: boolean;
+                    "parent.species.id"?: string | string[];
+                    "parent.species.scientificName"?: string | string[];
+                    "parent.species.scientificNameAuthorship"?: string | string[];
+                    "parent.species.vernacularName.fi"?: string | string[];
+                    "parent.species.vernacularName.sv"?: string | string[];
+                    "parent.species.vernacularName.en"?: string | string[];
+                    "parent.species.taxonRank"?: string | string[];
+                    "parent.species.cursiveName"?: boolean;
+                    "parent.species.notes"?: string | string[];
+                    "parent.species.bold.bins"?: string | string[];
+                    "parent.species.hasBold"?: boolean;
+                    "synonymOf.id"?: string | string[];
+                    "synonymOf.scientificName"?: string | string[];
+                    "synonymOf.scientificNameAuthorship"?: string | string[];
+                    "synonymOf.vernacularName.fi"?: string | string[];
+                    "synonymOf.vernacularName.sv"?: string | string[];
+                    "synonymOf.vernacularName.en"?: string | string[];
+                    "synonymOf.taxonRank"?: string | string[];
+                    "synonymOf.cursiveName"?: boolean;
+                    "synonymOf.notes"?: string | string[];
+                    "synonymOf.bold.bins"?: string | string[];
+                    "synonymOf.hasBold"?: boolean;
+                    "latestRedListEvaluation.redListStatus"?: ("MX.iucnEX" | "MX.iucnEW" | "MX.iucnRE" | "MX.iucnCR" | "MX.iucnEN" | "MX.iucnVU" | "MX.iucnNT" | "MX.iucnLC" | "MX.iucnDD" | "MX.iucnNA" | "MX.iucnNE") | ("MX.iucnEX" | "MX.iucnEW" | "MX.iucnRE" | "MX.iucnCR" | "MX.iucnEN" | "MX.iucnVU" | "MX.iucnNT" | "MX.iucnLC" | "MX.iucnDD" | "MX.iucnNA" | "MX.iucnNE")[];
+                    "latestRedListEvaluation.externalPopulationImpactOnRedListStatus"?: ("MKV.externalPopulationImpactOnRedListStatusEnumMinus1" | "MKV.externalPopulationImpactOnRedListStatusEnumMinus2" | "MKV.externalPopulationImpactOnRedListStatusEnumPlus1" | "MKV.externalPopulationImpactOnRedListStatusEnumPlus2") | ("MKV.externalPopulationImpactOnRedListStatusEnumMinus1" | "MKV.externalPopulationImpactOnRedListStatusEnumMinus2" | "MKV.externalPopulationImpactOnRedListStatusEnumPlus1" | "MKV.externalPopulationImpactOnRedListStatusEnumPlus2")[];
+                    "latestRedListEvaluation.criteriaForStatus"?: string | string[];
+                    "latestRedListEvaluation.possiblyRE"?: ("MX.iucnRE" | "MX.iucnEW" | "MX.iucnEX") | ("MX.iucnRE" | "MX.iucnEW" | "MX.iucnEX")[];
+                    "latestRedListEvaluation.reasonForStatusChange"?: ("MKV.reasonForStatusChangeGenuine" | "MKV.reasonForStatusChangeGenuineBeforePreviousEvaluation" | "MKV.reasonForStatusChangeChangesInCriteria" | "MKV.reasonForStatusChangeMoreInformation" | "MKV.reasonForStatusChangeChangesInTaxonomy" | "MKV.reasonForStatusChangeError" | "MKV.reasonForStatusChangeErroneousInformation" | "MKV.reasonForStatusChangeOther") | ("MKV.reasonForStatusChangeGenuine" | "MKV.reasonForStatusChangeGenuineBeforePreviousEvaluation" | "MKV.reasonForStatusChangeChangesInCriteria" | "MKV.reasonForStatusChangeMoreInformation" | "MKV.reasonForStatusChangeChangesInTaxonomy" | "MKV.reasonForStatusChangeError" | "MKV.reasonForStatusChangeErroneousInformation" | "MKV.reasonForStatusChangeOther")[];
+                    "latestRedListEvaluation.lastSightingNotes"?: string | string[];
+                    "latestRedListEvaluation.primaryHabitat.habitat"?: string | string[];
+                    "latestRedListEvaluation.primaryHabitat.habitatSpecificTypes"?: string | string[];
+                    "latestRedListEvaluation.primaryHabitat.id"?: string | string[];
+                    "latestRedListEvaluation.secondaryHabitats.habitat"?: string | string[];
+                    "latestRedListEvaluation.secondaryHabitats.habitatSpecificTypes"?: string | string[];
+                    "latestRedListEvaluation.secondaryHabitats.id"?: string | string[];
+                    "latestRedListEvaluation.primaryHabitatSearchStrings"?: string | string[];
+                    "latestRedListEvaluation.anyHabitatSearchStrings"?: string | string[];
+                    "latestRedListEvaluation.endangermentReasons"?: string | string[];
+                    "latestRedListEvaluation.primaryEndangermentReason"?: string | string[];
+                    "latestRedListEvaluation.threats"?: string | string[];
+                    "latestRedListEvaluation.primaryThreat"?: string | string[];
+                    "latestRedListEvaluation.occurrences.area"?: string | string[];
+                    "latestRedListEvaluation.occurrences.id"?: string | string[];
+                    "latestRedListEvaluation.occurrences.notes"?: string | string[];
+                    "latestRedListEvaluation.occurrences.specimenURI"?: string | string[];
+                    "latestRedListEvaluation.occurrences.status"?: string | string[];
+                    "latestRedListEvaluation.occurrences.threatened"?: boolean;
+                    "latestRedListEvaluation.threatenedAtArea"?: string | string[];
+                    "latestRedListEvaluation.correctedStatusForRedListIndex"?: string | string[];
+                    hasLatestRedListEvaluation?: boolean;
+                    primaryHabitatSearchStrings?: string | string[];
+                    anyHabitatSearchStrings?: string | string[];
+                    "vernacularNameMultiLang.fi.fi"?: string | string[];
+                    "vernacularNameMultiLang.fi.sv"?: string | string[];
+                    "vernacularNameMultiLang.fi.en"?: string | string[];
+                    "vernacularNameMultiLang.sv.fi"?: string | string[];
+                    "vernacularNameMultiLang.sv.sv"?: string | string[];
+                    "vernacularNameMultiLang.sv.en"?: string | string[];
+                    "vernacularNameMultiLang.en.fi"?: string | string[];
+                    "vernacularNameMultiLang.en.sv"?: string | string[];
+                    "vernacularNameMultiLang.en.en"?: string | string[];
+                    "alternativeVernacularNameMultiLang.fi.fi"?: string | string[];
+                    "alternativeVernacularNameMultiLang.fi.sv"?: string | string[];
+                    "alternativeVernacularNameMultiLang.fi.en"?: string | string[];
+                    "alternativeVernacularNameMultiLang.sv.fi"?: string | string[];
+                    "alternativeVernacularNameMultiLang.sv.sv"?: string | string[];
+                    "alternativeVernacularNameMultiLang.sv.en"?: string | string[];
+                    "alternativeVernacularNameMultiLang.en.fi"?: string | string[];
+                    "alternativeVernacularNameMultiLang.en.sv"?: string | string[];
+                    "alternativeVernacularNameMultiLang.en.en"?: string | string[];
+                    "colloquialVernacularNameMultiLang.fi.fi"?: string | string[];
+                    "colloquialVernacularNameMultiLang.fi.sv"?: string | string[];
+                    "colloquialVernacularNameMultiLang.fi.en"?: string | string[];
+                    "colloquialVernacularNameMultiLang.sv.fi"?: string | string[];
+                    "colloquialVernacularNameMultiLang.sv.sv"?: string | string[];
+                    "colloquialVernacularNameMultiLang.sv.en"?: string | string[];
+                    "colloquialVernacularNameMultiLang.en.fi"?: string | string[];
+                    "colloquialVernacularNameMultiLang.en.sv"?: string | string[];
+                    "colloquialVernacularNameMultiLang.en.en"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.fi.fi"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.fi.sv"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.fi.en"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.sv.fi"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.sv.sv"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.sv.en"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.en.fi"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.en.sv"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.en.en"?: string | string[];
+                    "tradeNameMultiLang.fi.fi"?: string | string[];
+                    "tradeNameMultiLang.fi.sv"?: string | string[];
+                    "tradeNameMultiLang.fi.en"?: string | string[];
+                    "tradeNameMultiLang.sv.fi"?: string | string[];
+                    "tradeNameMultiLang.sv.sv"?: string | string[];
+                    "tradeNameMultiLang.sv.en"?: string | string[];
+                    "tradeNameMultiLang.en.fi"?: string | string[];
+                    "tradeNameMultiLang.en.sv"?: string | string[];
+                    "tradeNameMultiLang.en.en"?: string | string[];
+                };
+            };
+        };
         responses: {
             200: {
                 headers: {
@@ -18285,14 +19054,14 @@ export interface operations {
     TaxaController_getTaxonSpeciesPage: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 page?: number;
@@ -18349,14 +19118,14 @@ export interface operations {
     TaxaController_getTaxonSpeciesPageWithFilters: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 page?: number;
@@ -19002,6 +19771,8 @@ export interface operations {
     TaxaController_getTaxonSpeciesAggregate: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -19014,8 +19785,6 @@ export interface operations {
                  *     or the name if it was given. */
                 aggregateBy?: string;
                 aggregateSize?: number;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -19051,6 +19820,8 @@ export interface operations {
     TaxaController_getTaxonSpeciesAggregateWithFilters: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -19063,8 +19834,6 @@ export interface operations {
                  *     or the name if it was given. */
                 aggregateBy?: string;
                 aggregateSize?: number;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -19839,11 +20608,11 @@ export interface operations {
     };
     ImagesController_upload: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -19861,11 +20630,11 @@ export interface operations {
     };
     ImagesController_get: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -19885,11 +20654,11 @@ export interface operations {
     };
     ImagesController_updateMetadata: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -19913,11 +20682,11 @@ export interface operations {
     };
     ImagesController_delete: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -19935,11 +20704,11 @@ export interface operations {
     };
     ImagesController_findLarge: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -19957,11 +20726,11 @@ export interface operations {
     };
     ImagesController_findSquare: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -19979,11 +20748,11 @@ export interface operations {
     };
     ImagesController_findThumbnail: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20001,11 +20770,11 @@ export interface operations {
     };
     ImagesController_uploadMetadata: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 tempId: string;
             };
@@ -20029,11 +20798,11 @@ export interface operations {
     };
     AudioController_upload: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -20051,11 +20820,11 @@ export interface operations {
     };
     AudioController_get: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20075,11 +20844,11 @@ export interface operations {
     };
     AudioController_updateMetadata: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20103,11 +20872,11 @@ export interface operations {
     };
     AudioController_delete: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20125,11 +20894,11 @@ export interface operations {
     };
     AudioController_getMp3: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20147,11 +20916,11 @@ export interface operations {
     };
     AudioController_getThumbnail: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20169,11 +20938,11 @@ export interface operations {
     };
     AudioController_getWav: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20191,11 +20960,11 @@ export interface operations {
     };
     AudioController_findFlac: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20213,11 +20982,11 @@ export interface operations {
     };
     AudioController_uploadMetadata: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 tempId: string;
             };
@@ -20263,12 +21032,13 @@ export interface operations {
             query: {
                 /** @description Filter by root ID */
                 rootID: string;
-                /** @description Person's authentication token */
-                personToken: string;
                 page?: number;
                 pageSize?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -20294,11 +21064,11 @@ export interface operations {
     };
     AnnotationsController_create: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -20320,11 +21090,11 @@ export interface operations {
     };
     AnnotationsController_delete: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20781,10 +21551,11 @@ export interface operations {
                 query: string;
                 /** @description Limit the size of results */
                 limit?: number;
-                /** @description Person's authentication token */
-                personToken: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -20855,7 +21626,31 @@ export interface operations {
             };
         };
     };
-    AutocompleteController_getTripReportUnitListAutocomplete: {
+    ShorthandController_getTripReportUnitShorthandAutocomplete: {
+        parameters: {
+            query: {
+                /** @description Search term */
+                query: string;
+                /** @description Limit the size of results */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TripReportUnitShorthandResponseDto"][];
+                };
+            };
+        };
+    };
+    ShorthandController_getTripReportUnitListAutocomplete: {
         parameters: {
             query: {
                 /** @description Search term */
@@ -20877,34 +21672,7 @@ export interface operations {
             };
         };
     };
-    AutocompleteController_getTripReportUnitShorthandAutocomplete: {
-        parameters: {
-            query: {
-                /** @description Search term */
-                query: string;
-                /** @description Limit the size of results */
-                limit?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        results: components["schemas"]["TaxonSearchResponse"][];
-                        "@context": string;
-                    };
-                };
-            };
-        };
-    };
-    AutocompleteController_getLineTransectUnitShorthandAutocomplete: {
+    ShorthandController_getLineTransectUnitShorthandAutocomplete: {
         parameters: {
             query: {
                 /** @description Search term */
@@ -20926,7 +21694,7 @@ export interface operations {
             };
         };
     };
-    AutocompleteController_getWaterbirdPairCountUnitShorthandAutocomplete: {
+    ShorthandController_getWaterbirdPairCountUnitShorthandAutocomplete: {
         parameters: {
             query: {
                 taxonID: string;
