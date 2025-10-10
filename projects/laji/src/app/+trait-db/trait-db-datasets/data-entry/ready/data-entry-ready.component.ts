@@ -50,7 +50,7 @@ export class TraitDbDataEntryReadyComponent implements OnChanges {
     const d = { ...dataset };
     d.published = true;
     this.state$.next({ _tag: 'uploading' });
-    this.api.fetch('/trait/datasets/{id}', 'put', { path: { id: dataset.id }, query: { personToken: this.userService.getToken() } }, d)
+    this.api.fetch('/trait/datasets/{id}', 'put', { path: { id: dataset.id }  }, d)
       .subscribe(
         res => this.state$.next({  _tag: 'ready', dataset: res }),
         err => this.state$.next({  _tag: 'error', msg: err })

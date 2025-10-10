@@ -26,7 +26,7 @@ export class TraitDbMyDatasetsComponent implements OnInit {
     this.loggedIn$ = this.userService.isLoggedIn$;
     this.datasets$ = this.loggedIn$.pipe(
       filter(loggedIn => loggedIn),
-      switchMap(_ => this.api.fetch('/trait/dataset-permissions', 'get', { query: { personToken: this.userService.getToken() } })),
+      switchMap(_ => this.api.fetch('/trait/dataset-permissions', 'get')),
       switchMap(perms => this.api.fetch('/trait/datasets', 'get', {}).pipe(
         map(datasets => datasets.filter(dataset => perms.some(perm => perm.datasetId === dataset.id)))
       ))
