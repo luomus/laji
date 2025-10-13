@@ -29,7 +29,8 @@ export const formDefaultValues: FormValue = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitSearchFiltersComponent implements OnChanges {
-  @Input() initialValue: FormValue | undefined;
+  @Input() initialValue?: FormValue;
+  @Input() disabled?: Set<keyof FormValue>;
   @Output() filterChange: Observable<Partial<FormValue>>;
   @Output() searchClicked = new EventEmitter<void>();
 
@@ -50,6 +51,20 @@ export class TraitSearchFiltersComponent implements OnChanges {
     if (changes.initialValue?.currentValue) {
       Object.entries(changes.initialValue.currentValue).forEach(([k, v]) => {
         this.form.get(k)?.setValue(v === undefined ? null : v, { emitEvent: false });
+      });
+    }
+
+    if (changes.disabled) {
+      const prev = changes.disabled.previousValue ?? new Set();
+      const curr = changes.disabled.currentValue ?? new Set();
+      const combined = new Set<keyof FormValue>([...prev, ...curr]);
+      combined.forEach(k => {
+        if (prev.has(k) && !curr.has(k)) {
+          this.form.get(k)?.enable({ emitEvent: false });
+        }
+        if (!prev.has(k) && curr.has(k)) {
+          this.form.get(k)?.disable({ emitEvent: false });
+        }
       });
     }
   }

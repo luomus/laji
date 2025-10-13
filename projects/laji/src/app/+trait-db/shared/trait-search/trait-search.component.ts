@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
@@ -102,7 +102,9 @@ const queryParamsToFormValue = (queryParams: QueryParams): FormValue => {
   styleUrls: ['./trait-search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TraitSearchComponent implements OnInit, OnDestroy {
+export class TraitSearchComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() datasetId?: string;
+
   columns = cols.map(([prop, _]) => ({ title: prop as string, prop: prop as string, sortable: false }));
   initialFilters: FormValue | undefined;
   searchResult: SearchResult | undefined;
@@ -128,7 +130,16 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
       withLatestFrom(this.filterChangeSubject),
       tap(([[pageIdx, sorts], filters]) => {
         this.loading = true;
-        this.setQueryParams(pageIdx, sorts, filters);
+
+        if (this.datasetId) {
+          // if set, @Input properties should override query params
+          filters.dataset = null;
+          this.setQueryParams(pageIdx, sorts, filters);
+          filters.dataset = this.datasetId;
+        } else {
+          this.setQueryParams(pageIdx, sorts, filters);
+        }
+
         this.cdr.markForCheck();
       }),
       switchMap(([[pageIdx, sorts], filters]) =>
@@ -146,6 +157,12 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
     );
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.datasetId?.currentValue) {
+      this.initialFilters = { ...this.initialFilters, dataset: this.datasetId } as any;
+    }
+  }
+
   ngOnInit(): void {
     this.subscription.add(
       this.searchResult$.subscribe(),
@@ -159,7 +176,13 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
           return !(state['trait-search-ignore'] === this.queryParamChangeId);
         }),
         tap(queryParams => {
-          this.initialFilters = queryParamsToFormValue(queryParams);
+          const formValue = queryParamsToFormValue(queryParams);
+          if (this.datasetId) {
+            // if set, @Input properties should override query params
+            formValue.dataset = this.datasetId;
+          }
+          console.log(formValue);
+          this.initialFilters = formValue;
           this.filterChangeSubject.next(this.initialFilters!);
           this.currentPageIdx = (queryParams.page ?? 1) - 1;
           this.pageIdxSubject.next(this.currentPageIdx);
@@ -188,6 +211,13 @@ export class TraitSearchComponent implements OnInit, OnDestroy {
 
   onSort(sorts: Sort[]) {
     this.sortSubject.next(sorts);
+  }
+
+  getDisabledFilters(): Set<keyof FormValue> {
+    if (this.datasetId) {
+      return new Set(['dataset']);
+    }
+    return new Set();
   }
 
   getDownloadUrl(): string {
