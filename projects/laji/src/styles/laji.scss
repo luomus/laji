@@ -1279,6 +1279,15 @@ typeahead-container button {
   margin-left: 5px;
 }
 
+.gbif-icon {
+  height: 19px;
+  width: 19px;
+  margin-right: -11px;
+  margin-right: 4px;
+  background-image: url('/static/images/icons/gbif.svg');
+}
+
+
 .responsive_container {
   display: inline-block;
   float: right;

@@ -178,7 +178,8 @@ export class ObservationFacade {
       query,
       limit,
       informalTaxonGroup: informalTaxonGroupId?.toString(),
-      excludeNameTypes: 'MX.hasMisspelledName,MX.hasMisappliedName'
+      excludeNameTypes: 'MX.hasMisspelledName,MX.hasMisappliedName',
+      checklist: 'MR.1,MR.2'
     } }).pipe(
       map(data => data.results.map(item => {
         let groups = '';

@@ -9,7 +9,6 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  ViewContainerRef
 } from '@angular/core';
 import { of as ObservableOf, Subscription } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
@@ -17,7 +16,6 @@ import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { LajiApiService } from '../service/laji-api.service';
 import { TaxaWithAutocomplete, TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
@@ -52,20 +50,16 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   private subTaxa?: Subscription;
   private subCnt?: Subscription;
   private inputChange?: Subscription;
-  private el: Element;
 
-  constructor(private lajiApi: LajiApiService,
-              private api: LajiApiClientBService,
+  constructor(private api: LajiApiClientBService,
               private warehouseApi: WarehouseApi,
               private localizeRouterService: LocalizeRouterService,
               private router: Router,
               private changeDetector: ChangeDetectorRef,
-              viewContainerRef: ViewContainerRef,
               private logger: Logger,
               private taxonAutocompleteService: TaxonAutocompleteService,
               private translate: TranslateService
   ) {
-    this.el = viewContainerRef.element.nativeElement;
   }
 
   ngOnInit() {
@@ -168,7 +162,8 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.subTaxa = this.api.get('/autocomplete/taxa', { query: {
       query: this.search,
       limit: this.limit,
-      matchType: this.matchType
+      matchType: this.matchType,
+      checklist: 'MR.1,MR.2'
     }}).pipe(
         switchMap(taxa => this.taxonAutocompleteService.getInfo(taxa.results, this.search))
       )
