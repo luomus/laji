@@ -10,5 +10,5 @@ import { TaxonTypeEnum } from '../../kerttu-global-shared/models';
   `
 })
 export class BatIdentificationHistoryComponent {
-  taxonTypes = [TaxonTypeEnum.bat]
+  taxonTypes = [TaxonTypeEnum.bat];
 }
