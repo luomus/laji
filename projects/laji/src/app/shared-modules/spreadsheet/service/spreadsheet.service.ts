@@ -49,6 +49,7 @@ export class SpreadsheetService {
 
   private hiddenFields: {[formID: string]: string[]} = {
     '*': [
+      'editors[*]',
       'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID',
       'gatherings[*].images[*]',
       'gatherings[*].units[*].images[*]',

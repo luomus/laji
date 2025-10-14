@@ -6,6 +6,7 @@ import { NamedPlaceApi } from '../../../shared/api/NamedPlaceApi';
 import { UserService } from '../../../shared/service/user.service';
 import { Document } from '../../../shared/model/Document';
 import { DocumentService } from '../../own-submissions/service/document.service';
+import { MappingService } from './mapping.service';
 
 @Injectable()
 export class AugmentService {
@@ -16,10 +17,28 @@ export class AugmentService {
   constructor(
     private namedPlaceApi: NamedPlaceApi,
     private userService: UserService,
-    private documentService: DocumentService
+    private documentService: DocumentService,
+    private mappingService: MappingService,
   ) { }
 
-  augmentDocument(document: Document, excluded: string[] = []): Observable<Document> {
+  augmentDocument(document: Document, excludedFromCopy: string[] = []): Observable<Document> {
+    document = this.augmentEditors(document);
+    return this.augmentNamedPlaces(document, excludedFromCopy);
+  }
+
+  private augmentEditors(document: Document) {
+    if (!document.editors) {
+      const editors = (document.gatheringEvent?.leg || document.gatherings?.[0]?.leg || [])
+        .map(editor => this.mappingService.mapPerson(editor))
+        .filter((editor): editor is string => typeof editor === 'string');
+
+      this.augment(document, { editors });
+    }
+
+    return document;
+  }
+
+  private augmentNamedPlaces(document: Document, excluded: string[] = []): Observable<Document> {
     const namedPlaces: string[] = [];
     const idxLookup: Record<string, any> = {};
 
