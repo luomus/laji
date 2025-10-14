@@ -98,7 +98,7 @@ export class TaxonAutocompleteService {
           ${isFinnish
             ? '<span class="autocomplete-small-flag finnish-flag"></span>'
             : isGbif
-              ? '<span class="autocomplete-small-flag no-border gbif-icon" [luTooltip]="lol"></span>'
+              ? '<span class="autocomplete-small-flag no-border gbif-icon"></span>'
               : '<span class="autocomplete-small-flag no-border"></span>'
           }
         </span>
