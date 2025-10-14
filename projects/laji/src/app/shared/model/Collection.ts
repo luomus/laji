@@ -56,6 +56,11 @@ export interface Collection {
   dataQuarantinePeriod?: number;
 
   /**
+   * Data download URL
+   */
+  dataDownloadURL?: string[];
+
+  /**
    * isPartOf collection
    */
   isPartOf?: string;
