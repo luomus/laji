@@ -74,7 +74,7 @@ $blur: 1px;
   border-radius: 100% !important;
 }
 
-:host ::ng-deep .coordinate-accuracy-cluster {
+.observation-map ::ng-deep .coordinate-accuracy-cluster {
   @include coordinateAccuracy();
   box-shadow: 1px 0 4px 0 rgba(#000, .6);
   height: 26px !important;
@@ -82,7 +82,7 @@ $blur: 1px;
   border-radius: 0 !important;
 }
 
-:host ::ng-deep .leaflet-marker-icon {
+.observation-map ::ng-deep .leaflet-marker-icon {
   &.coordinate-accuracy-0 {
     @include coordinateAccuracy();
   }
@@ -155,4 +155,31 @@ ul {
   border: 1px solid $neutral-6;
   align-self: flex-start;
   margin-top: 2px;
+}
+
+@page {
+  margin: 5mm;
+  size: 210mm 297mm;
+}
+
+.page {
+  width: 200mm;
+  height: 287mm;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+
+  .print-info {
+    flex: 0 0 auto;
+    font-family: "Times New Roman", serif;
+    font-size: small;
+
+    .print-info-url {
+      word-break: break-all;
+    }
+  }
+
+  laji-map {
+    flex: 1 1 auto;
+  }
 }

@@ -1,7 +1,8 @@
-<div class="observation-map"
+<div #observationMap class="observation-map"
+    [ngClass]="{'page': printMode}"
     [luFillHeight]="{
       disabled: height === undefined || height === 0,
-      height: tableViewHeightOverride! > 0 ? tableViewHeightOverride : height > 0 ? height : undefined
+      height: printMode ? '287mm' : (tableViewHeightOverride! > 0 ? tableViewHeightOverride : height > 0 ? height : undefined)
     }"
      #mapContainer>
   <laji-map
@@ -11,7 +12,6 @@
           (create)="onCreate($event)"
           (tileLayersChange)="onTileLayersChange($event)"
           (move)="onMapPanOrZoom($event)"
-          (visualizationModeChange)="onVisualizationModeChange($any($event))"
           data-testid="observation-map"
   >
     <div class="loading-map loading" *ngIf="loading"></div>
@@ -37,6 +37,15 @@
       </ng-container>
     </laji-legend>
   </laji-map>
+  <div *ngIf="printMode" class="print-info">
+    <span class="print-info-url">{{ href$ | async }}</span>, {{ printDate | amDateFormat:'DD.MM.YYYY HH:mm' }}
+  </div>
+  <laji-map-print
+    [lajiMap]="lajiMap"
+    [(printMode)]="printMode"
+    [printElement]="observationMap"
+    [printControlPosition]="'topleft'"
+  ></laji-map-print>
 </div>
 <div *ngIf="selectedObservationCoordinates" class="cluster-info">
   <div class="d-flex justify-start">
