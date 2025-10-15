@@ -743,7 +743,12 @@ body > .ui-select-bootstrap.open {
     padding: 0;
   }
 
-  .no-print, .no-print *
+  * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .no-print, .no-print *, .navbar
   {
     display: none !important;
   }
