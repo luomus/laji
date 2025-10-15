@@ -51,7 +51,6 @@ import { combineColors } from '@luomus/laji-map/lib/utils';
 import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, convertWgs84ToYkj, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 import {
-  colorClassNameMap,
   lajiMapObservationVisualization,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
@@ -550,7 +549,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     const color = combineColors(baseColor, ...(hovered ? ['#fff'] : []), maxColorChangeDecimal); // Highlight hovered item.
     const className = [
       style.className,
-      colorClassNameMap[style.color!],
       active && !isActiveBox ? 'laji-map-active-pointer' : undefined
     ].filter(s => s).join(' ');
     const _style = {...style, color, className};
@@ -675,7 +673,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const clusterColor = this.visualization[this.visualizationMode].getClusterColor!(childMarkers);
       (iconDomElem.style as any)['background-color'] = clusterColor + opacityAsHexCode(this.opacity);
-      iconDomElem.classList.add(colorClassNameMap[clusterColor]);
       return iconDomElem;
     };
 
