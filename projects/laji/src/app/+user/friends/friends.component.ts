@@ -1,12 +1,11 @@
 import { switchMap } from 'rxjs/operators';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { Profile } from '../../shared/model/Profile';
-import { UserService } from '../../shared/service/user.service';
-import { PersonApi } from '../../shared/api/PersonApi';
 import { Logger } from '../../shared/logger/logger.service';
 import { DialogService } from '../../shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { of as ObservableOf } from 'rxjs';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { Profile } from '../../shared/model/Profile';
 
 @Component({
   selector: 'laji-friends',
@@ -20,11 +19,10 @@ export class FriendsComponent implements OnInit, OnChanges {
   public friends = [];
   private lastId: string | undefined;
 
-  constructor(private userService: UserService,
-              private personService: PersonApi,
-              private logger: Logger,
+  constructor(private logger: Logger,
               private translateService: TranslateService,
-              private dialogService: DialogService
+              private dialogService: DialogService,
+              private api: LajiApiClientBService
   ) {
   }
 
@@ -54,10 +52,7 @@ export class FriendsComponent implements OnInit, OnChanges {
   }
 
   sendFriendRequest(friendPersonID: string) {
-    this.personService.personAddFriendRequest(
-      this.userService.getToken(),
-      friendPersonID
-    ).subscribe(
+    return this.api.post('/person/friends/{id}', { path: { id: friendPersonID } }).subscribe(
       () => this.requestSend = true,
       () => this.requestSend = true
     );
@@ -66,12 +61,12 @@ export class FriendsComponent implements OnInit, OnChanges {
   removeFriend(userId: string, block = false) {
     this.translateService.get(['friend.blockConfirm', 'friend.removeConfirm']).pipe(
       switchMap(translation => this.dialogService.confirm(block ? translation['friend.blockConfirm'] : translation['friend.removeConfirm'])),
-      switchMap((confirm) => confirm ?
-        this.personService.personRemoveFriend(this.userService.getToken(), userId, block) :
-        ObservableOf(this.usersProfile)
+      switchMap((confirm) => confirm
+        ? this.api.delete('/person/friends/{id}', { path: { id: userId }, query: { block } })
+        : ObservableOf(this.usersProfile)
       ), )
       .subscribe(
-        profile => this.usersProfile = profile,
+        profile => this.usersProfile = profile as Profile,
         err => this.logger.warn('Failed remove friend', err)
       );
   }
@@ -79,17 +74,17 @@ export class FriendsComponent implements OnInit, OnChanges {
   removeBlock(userId: string) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.usersProfile.blocked = this.usersProfile.blocked!.filter(id => id !== userId);
-    this.personService.personUpdateProfileByToken(this.usersProfile, this.userService.getToken())
+    this.api.put('/person/profile', undefined, this.usersProfile as any)
       .subscribe(
-        profile => this.usersProfile = profile,
+        profile => this.usersProfile = profile as Profile,
         err => this.logger.warn('Failed remove block', err)
       );
   }
 
   acceptFriendRequest(userId: string) {
-    this.personService.personAcceptFriendRequest(this.userService.getToken(), userId)
+    this.api.put('/person/friends/{id}', { path: { id: userId } })
       .subscribe(
-        profile => this.usersProfile = profile,
+        profile => this.usersProfile = profile as Profile,
         err => this.logger.warn('Failed accept friend request', err)
       );
   }

@@ -18,7 +18,6 @@ import * as deepmerge from 'deepmerge';
 import * as moment from 'moment';
 import { LocalStorage } from 'ngx-webstorage';
 import { Global } from 'projects/laji/src/environments/global';
-import { PersonApi } from '../../../shared/api/PersonApi';
 import { Person } from '../../../shared/model/Person';
 import { Annotation } from '../../../shared/model/Annotation';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
@@ -26,6 +25,7 @@ import { Logger } from '../../../shared/logger';
 import { LajiFormUtil } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-util.service';
 import equals from 'deep-equal';
 import { ProjectFormService } from '../../../shared/service/project-form.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 export enum FormError {
   notFoundForm = 'notFoundForm',
@@ -100,10 +100,10 @@ export class DocumentFormFacade {
     private formPermissionService: FormPermissionService,
     private namedPlacesService: NamedPlacesService,
     private documentStorage: DocumentStorage,
-    private personApi: PersonApi,
     private lajiApi: LajiApiService,
     private logger: Logger,
-    private projectFormService: ProjectFormService
+    private projectFormService: ProjectFormService,
+    private api: LajiApiClientBService
   ) {
     this.footerService.footerVisible = false;
   }
@@ -464,7 +464,7 @@ export class DocumentFormFacade {
 
   private addCollectionID(form: Form.SchemaForm, data: Document): Observable<Document> {
     return form.id === Global.forms.privateCollection
-      ? this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(map(profile =>
+      ? this.api.get('/person/profile').pipe(map(profile =>
         typeof profile?.personalCollectionIdentifier === 'string'
           ? <Document>{
             ...(data || {}),

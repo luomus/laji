@@ -77,7 +77,7 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
         this.viewInit$
       ).pipe(
         switchMap(([datasetId, _0, _1]) => this.api.fetch('/trait/rows/search', 'get', {
-          query: { datasetId, pageSize: 1000, personToken: this.userService.getToken() } })
+          query: { datasetId, pageSize: 1000 } })
         ),
         map(rows => {
           const traitColsAcc: [string, LeafType][] = [];
@@ -166,8 +166,7 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
 
   onSubmitRow(row: FormGroup<any>, rowIdx: number) {
     const params = {
-      path: { id: row.get(['subject', 'id'])!.value },
-      query: { personToken: this.userService.getToken() }
+      path: { id: row.get(['subject', 'id'])!.value }
     };
     this.rowUploadState$.next({ ...this.rowUploadState$.value, [rowIdx]: { _tag: 'in-progress' } });
     this.api.fetch('/trait/rows/{id}', 'put', params, row.value).subscribe(
@@ -185,8 +184,7 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
 
   onDeleteRow(row: FormGroup<any>, rowIdx: number) {
     const params = {
-      path: { id: row.get(['subject', 'id'])!.value },
-      query: { personToken: this.userService.getToken() }
+      path: { id: row.get(['subject', 'id'])!.value }
     };
     this.rowUploadState$.next({ ...this.rowUploadState$.value, [rowIdx]: { _tag: 'deleting' } });
     this.api.fetch('/trait/rows/{id}', 'delete', params).subscribe(

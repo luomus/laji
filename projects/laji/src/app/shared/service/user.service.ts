@@ -11,7 +11,6 @@ import {
 import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Person } from '../model/Person';
-import { PersonApi } from '../api/PersonApi';
 import { LocalStorage, LocalStorageService, SessionStorage } from 'ngx-webstorage';
 import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
@@ -21,9 +20,10 @@ import { environment } from '../../../environments/environment';
 import { PlatformService } from '../../root/platform.service';
 import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
-import { Profile } from '../model/Profile';
 import { Global } from '../../../environments/global';
 import { RegistrationContact } from './project-form.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { Profile } from '../model/Profile';
 
 export interface UserSettingsResultList {
   aggregateBy?: string[];
@@ -89,9 +89,9 @@ interface UserServiceState extends PersistentState {
   allUsers: { [id: string]: Person | Observable<Person> };
 }
 
-export const prepareProfile = (profile: Profile | null, user: Person | null | undefined): Profile => {
+export const prepareProfile = (profile?: Profile, user?: Person): Profile => {
   if (!profile) {
-    profile = {};
+    profile = {} as Profile;
   }
   if (!user) {
     user = {};
@@ -103,10 +103,10 @@ export const prepareProfile = (profile: Profile | null, user: Person | null | un
       defaultMediaMetadata: {
         capturerVerbatim: user?.fullName ?? '',
         intellectualOwner: user?.fullName ?? '',
-        intellectualRights: Profile.IntellectualRights.intellectualRightsARR,
+        intellectualRights: 'MZ.intellectualRightsARR',
         ...(profile.settings?.defaultMediaMetadata || {}),
       }
-    }
+    } as any
   };
 };
 
@@ -179,13 +179,13 @@ export class UserService implements OnDestroy {
   );
 
   constructor(
-    private personApi: PersonApi,
     private location: Location,
     private logger: Logger,
     private translate: TranslateService,
     private localizeRouterService: LocalizeRouterService,
     private platformService: PlatformService,
-    private storage: LocalStorageService
+    private storage: LocalStorageService,
+    private api: LajiApiClientBService
   ) {}
 
   /**
@@ -198,6 +198,7 @@ export class UserService implements OnDestroy {
         && this.store.value.user._tag === 'ready'
         && this.persistentState.loginState.token === userToken
       ) || !this.platformService.isBrowser) {
+      this.api.setPersonToken(userToken);
       return of(true);
     }
     const token = userToken ?? (this.persistentState.loginState._tag === 'logged_in' ? this.persistentState.loginState.token : '') ?? '';
@@ -205,8 +206,9 @@ export class UserService implements OnDestroy {
       this.setNotLoggedIn();
       return of(false);
     }
+    this.api.setPersonToken(token);
     this.store.next({ ...this.store.value, loginState: { _tag: 'loading' }, user: { _tag: 'loading' } });
-    return this.personApi.personFindByToken(token).pipe(
+    return this.api.get('/person').pipe(
       httpOkError([404, 400], null),
       retryWithBackoff(300),
       tap(person => {
@@ -239,7 +241,7 @@ export class UserService implements OnDestroy {
       console.warn('Attempted logout while not being logged in.');
       return;
     }
-    this.subLogout = this.personApi.removePersonToken(this.persistentState.loginState.token).pipe(
+    this.subLogout = this.api.delete('/authentication-event').pipe(
       httpOkError([404, 400], false),
       retryWithBackoff(300),
       catchError((err) => {
@@ -299,7 +301,7 @@ export class UserService implements OnDestroy {
       return pickValue(of((this.store.value.user as any).person));
     }
 
-    this.store.value.allUsers[id] = this.personApi.personFindByUserId(id).pipe(
+    this.store.value.allUsers[id] = this.api.get('/person/{id}', { path: { id } }).pipe(
       catchError(() => of({
         id,
         fullName: id
@@ -353,10 +355,10 @@ export class UserService implements OnDestroy {
 
   getProfile(): Observable<Profile> {
     if (this.getToken() === '') {
-      return of(prepareProfile(null, null));
+      return of(prepareProfile());
     } else {
       return combineLatest([
-        this.personApi.personFindProfileByToken(this.getToken()),
+        this.api.get('/person/profile'),
         this.user$
       ]).pipe(
         map(([profile, person]) => prepareProfile(profile, person)),
@@ -366,8 +368,8 @@ export class UserService implements OnDestroy {
   }
 
   emailHasAccount(email: string): Observable<boolean> {
-    return this.personApi.existsByEmail(email).pipe(
-      map(response => response.status === 204),
+    return this.api.get('/person/exists-by-email/{email}', { path: { email } }).pipe(
+      map(() => true),
       catchError(() => of(false))
     );
   }
@@ -402,6 +404,7 @@ export class UserService implements OnDestroy {
         ...this.persistentState,
         user: { _tag: 'not_logged_in' }
       });
+      this.api.setPersonToken(undefined);
   }
 }
 
