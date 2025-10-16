@@ -60,7 +60,8 @@ export class TaxonTaxonomyService {
     if (!this.pendingChildren[id]) {
       this.pendingChildren[id] = this.api.get('/taxa/{id}/children', { path: { id }, query: {
           selectedFields: this.getSelectedFields(),
-          includeHidden: true
+          includeHidden: true,
+          checklist: 'MR.1,MR.2'
         } }).pipe(
           map(({ results }) => results),
           tap(children => {
@@ -101,7 +102,8 @@ export class TaxonTaxonomyService {
     if (!this.pendingParents[id]) {
 
       this.pendingParents[id] = this.api.get('/taxa/{id}/parents', { path: { id }, query: {
-        selectedFields: this.getSelectedFields()
+        selectedFields: this.getSelectedFields(),
+        checklist: 'MR.1,MR.2'
       } })
         .pipe(
           map(({ results }) => results),
@@ -165,7 +167,8 @@ export class TaxonTaxonomyService {
       'taxonRank',
       'finnish',
       'countOfFinnishSpecies',
-      'observationCountFinland'
+      'observationCountFinland',
+      'nameAccordingTo'
     ].join(',');
   }
 }

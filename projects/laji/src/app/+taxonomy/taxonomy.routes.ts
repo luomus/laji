@@ -13,8 +13,10 @@ export function decideSpeciesTab(url: UrlSegment[]) {
   return null;
 }
 
+const knownPrefixes = ['MX.', 'gbif:'];
+
 export function decideTaxonTab(url: UrlSegment[]) {
-  if (typeof url[0].path === 'string' && url[0].path.indexOf('MX.') === 0) {
+  if (typeof url[0].path === 'string' && knownPrefixes.some(prefix => url[0].path.startsWith(prefix))) {
     return url.length === 1 ?
       { consumed: url, posParams: {id: url[0]} } :
       { consumed: url, posParams: {id: url[0], tab: url[1]} };
