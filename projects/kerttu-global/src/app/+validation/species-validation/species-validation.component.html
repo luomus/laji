@@ -12,6 +12,7 @@
       [templates]="(activeTemplates$ | async) ?? undefined"
       [historyView]="(historyView$ | async) ?? undefined"
       [saving]="saving"
+      [sampleRate]="audioSampleRate"
       [spectrogramConfig]="spectrogramConfig"
       (save)="saveTemplates($event)"
       (cancel)="goToSpeciesList()"

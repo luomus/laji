@@ -20,7 +20,7 @@ export class Util {
    * Checks the equality of arrays
    * @returns boolean
    */
-  public static equalsArray(a1?: any[], a2?: any[]) {
+  public static equalsArray(a1?: any[]|null, a2?: any[]|null) {
     return a1 && a2 && a1.length === a2.length && a1.every((value) => a2.includes(value));
   }
 

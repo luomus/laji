@@ -1,20 +1,20 @@
 import { FFT } from './assets/FFT';
 import { gaussBlur_4 } from './assets/gaussian-blur';
-import { ISpectrogramConfig } from '../models';
-import { AudioViewerUtils } from './audio-viewer-utils';
+import { SpectrogramConfig } from '../models';
 import { defaultSpectrogramConfig } from '../variables';
+import { getSpectrogramSegmentLength } from './audio-viewer-utils';
 
-interface CompleteSpectrogramConfig extends ISpectrogramConfig {
+interface CompleteSpectrogramConfig extends SpectrogramConfig {
   nbrOfRowsRemovedFromStart: number;
   maxNbrOfColsForNoiseEstimation: number;
   noiseReductionParam: number;
   logRange: number;
   minFrequency: number;
+  maxFrequency: number;
 }
 
-const defaultConfig: ISpectrogramConfig = defaultSpectrogramConfig;
-
-export function getSpectrogramImageData(buffer: AudioBuffer, colormap: number[][], config?: ISpectrogramConfig): ImageData {
+export function getSpectrogramImageData(buffer: AudioBuffer, colormap: number[][], config?: SpectrogramConfig): ImageData {
+  const defaultConfig = {...defaultSpectrogramConfig, maxFrequency: buffer.sampleRate / 2};
   config = config ? {...defaultConfig, ...config} : defaultConfig;
 
   const {spectrogram, width, height} = computeSpectrogram(buffer, config as CompleteSpectrogramConfig);
@@ -44,7 +44,7 @@ function computeSpectrogram(buffer: AudioBuffer, config: CompleteSpectrogramConf
 } {
   const {data, sumByColumn} = getData(buffer, config);
   const meanNoise = getMeanNoiseColumn(data, sumByColumn, config);
-  const maxValue = filterNoiseAndFindMaxValue(data, meanNoise, config);
+  const maxValue = filterNoiseAndFindMaxValue(data, meanNoise, buffer.sampleRate, config);
 
   scaleSpectrogram(data, maxValue, config);
 
@@ -58,8 +58,8 @@ function computeSpectrogram(buffer: AudioBuffer, config: CompleteSpectrogramConf
   return {spectrogram: blurredData, width, height};
 }
 
-function getData(buffer: AudioBuffer, config: ISpectrogramConfig): {data: Float32Array[]; sumByColumn: number[]} {
-  const {nperseg, noverlap} = getSegmentSizeAndOverlap(config, buffer.sampleRate);
+function getData(buffer: AudioBuffer, config: SpectrogramConfig): {data: Float32Array[]; sumByColumn: number[]} {
+  const {nperseg, noverlap} = getSegmentSizeAndOverlap(buffer, config);
 
   const chanData = buffer.getChannelData(0);
   // @ts-ignore
@@ -110,28 +110,32 @@ function getMeanNoiseColumn(data: Float32Array[], sumByColumn: number[], config:
   return meanByRow;
 }
 
-function filterNoiseAndFindMaxValue(data: Float32Array[], meanNoise: Float32Array, config: CompleteSpectrogramConfig): number {
+function filterNoiseAndFindMaxValue(data: Float32Array[], meanNoise: Float32Array, sampleRate: number, config: CompleteSpectrogramConfig): number {
   let maxValue = 0;
   const columnLength = data[0].length;
-  const minColumn = Math.floor(config.minFrequency / ((config.sampleRate / 2) / columnLength));
-  const nbrOfRowsRemovedFromStart = Math.max(minColumn, config.nbrOfRowsRemovedFromStart);
+
+  let minRow = Math.floor(config.minFrequency / ((sampleRate / 2) / columnLength));
+  minRow = Math.max(minRow, config.nbrOfRowsRemovedFromStart);
+  const maxRow = Math.ceil(config.maxFrequency / ((sampleRate / 2) / columnLength));
 
   for (const item of data) {
     for (let j = 0; j < columnLength; j++) {
-      item[j] = item[j] - config.noiseReductionParam * meanNoise[j];
-      if (item[j] < 0) {
+      if (j < minRow || j > maxRow) {
         item[j] = 0;
-      }
-      // first rows are usually very noisy
-      if (j < nbrOfRowsRemovedFromStart) {
-        item[j] = 0;
-      }
+      } else {
+        item[j] = item[j] - config.noiseReductionParam * meanNoise[j];
 
-      if (item[j] > maxValue) {
-        maxValue = item[j];
+        if (item[j] < 0) {
+          item[j] = 0;
+        }
+
+        if (item[j] > maxValue) {
+          maxValue = item[j];
+        }
       }
     }
   }
+
   return maxValue;
 }
 
@@ -179,9 +183,16 @@ function convertRange(input: number, inputRange: number[], outputRange: number[]
   return percent * (outputRangeMax - outputRangeMin) + outputRangeMin;
 }
 
-function getSegmentSizeAndOverlap(config: ISpectrogramConfig, sampleRate: number): {nperseg: number; noverlap: number} {
-  const nperseg = AudioViewerUtils.getSpectrogramSegmentLength(config.targetWindowLengthInSeconds, sampleRate);
-  const noverlap = Math.round(config.targetWindowOverlapPercentage * nperseg);
+function getSegmentSizeAndOverlap(buffer: AudioBuffer, config: SpectrogramConfig): {nperseg: number; noverlap: number} {
+  const nperseg = getSpectrogramSegmentLength(config.targetWindowLengthInSeconds, buffer.sampleRate);
+
+  let targetWindowOverlapPercentage: number|undefined;
+  if (config.targetWindowOverlapPercentage === 'auto') {
+    targetWindowOverlapPercentage = convertRange(Math.min(Math.max(buffer.length, 100000), 1000000), [100000, 1000000], [0.95, 0.375]);
+  } else {
+    targetWindowOverlapPercentage = config.targetWindowOverlapPercentage;
+  }
+  const noverlap = Math.round(targetWindowOverlapPercentage * nperseg);
   return {nperseg, noverlap};
 }
 

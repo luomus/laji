@@ -1,7 +1,7 @@
 import {
-  IAudio,
-  IAudioViewerArea,
-  IAudioViewerRectangle, IAudioViewerRectangleGroup
+  Audio,
+  AudioViewerArea,
+  AudioViewerRectangle, AudioViewerRectangleGroup
 } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 import { Point } from 'geojson';
@@ -16,10 +16,15 @@ export interface ISuccessResult {
 
 export interface IGlobalSpeciesListResult extends PagedResult<IGlobalSpecies> {
   hasModifications?: boolean;
+  unknownSpeciesRecordingCount?: number;
 }
 
 export interface IGlobalSpeciesQuery {
   onlyUnvalidated?: boolean;
+  onlyWithValidationAudio?: boolean;
+  onlyWithSoundscapeRecordings?: boolean;
+  includeValidationStatus?: boolean;
+  includeAnnotationStatus?: boolean;
   continent?: number;
   order?: number;
   family?: number;
@@ -27,20 +32,21 @@ export interface IGlobalSpeciesQuery {
   page?: number;
   pageSize?: number;
   orderBy?: string[];
-  includeSpeciesWithoutAudio?: boolean;
   taxonType?: TaxonTypeEnum;
 }
 
 export interface IGlobalSpecies {
   id: number;
   scientificName: string;
-  commonName: string;
+  commonName?: string;
+  taxonType?: TaxonTypeEnum;
   versionCount?: number;
   validationCount?: number;
   userHasValidated?: boolean;
   hasModifications?: boolean;
   isLocked?: boolean;
   hasNotPossibleValidations?: boolean;
+  recordingCount?: number;
   isSpecies?: boolean;
   taxonOrder?: number;
   hasAudio?: boolean;
@@ -60,13 +66,13 @@ export interface IGlobalTemplateVersion {
 
 export interface IGlobalRecording {
   audio: IGlobalAudio;
-  candidates: IAudioViewerArea[];
+  candidates: AudioViewerArea[];
 }
 
 export interface IGlobalTemplate {
   id?: number;
   audioId: number;
-  area: IAudioViewerArea;
+  area: AudioViewerArea;
   comment?: IGlobalComment;
   validatedBy?: string[];
 }
@@ -79,7 +85,7 @@ export interface IGlobalComment {
   comment: string;
 }
 
-export interface IGlobalAudio extends IAudio {
+export interface IGlobalAudio extends Audio {
   id: number;
   species: IGlobalSpecies;
   recordist?: string;
@@ -108,7 +114,7 @@ export interface IUserStat {
   speciesValidated: number;
 }
 
-export interface IGlobalRecording extends IAudio {
+export interface IGlobalRecording extends Audio {
   id: number;
   dateTime: string;
   xRange: number[];
@@ -126,7 +132,7 @@ export interface IGlobalRecordingAnnotation {
   containsBirdsNotOnList?: boolean;
   birdsNotOnList?: string;
   hasBoxesForAllBirdSounds?: boolean;
-  nonBirdArea?: IAudioViewerArea;
+  nonBirdArea?: AudioViewerArea;
 
   speciesAnnotations?: IGlobalSpeciesAnnotation[];
 }
@@ -134,13 +140,13 @@ export interface IGlobalRecordingAnnotation {
 export interface IGlobalSpeciesAnnotation {
   speciesId: number;
   occurrence: SpeciesAnnotationEnum;
-  soundType?: SoundTypeEnum;
   boxes?: (IGlobalSpeciesAnnotationBox|IGlobalSpeciesAnnotationBoxGroup)[];
 }
 
 export interface IGlobalSpeciesAnnotationBox {
-  area: IAudioViewerArea;
+  area: AudioViewerArea;
   overlapsWithOtherSpecies?: boolean;
+  soundType?: SoundTypeEnum;
 }
 
 export interface IGlobalSpeciesAnnotationBoxGroup {
@@ -195,6 +201,7 @@ export interface IIdentificationHistoryQuery {
   speciesSearchQuery?: string;
   includeSkipped?: boolean;
   site?: number;
+  taxonTypes?: TaxonTypeEnum[];
 }
 
 export interface IIdentificationHistoryResponse {
@@ -234,7 +241,8 @@ export enum TaxonTypeEnum {
   bird = 0,
   bat = 1,
   insect = 2,
-  frog = 3
+  frog = 3,
+  other = 4
 }
 
 export enum AnnotationStatusEnum {

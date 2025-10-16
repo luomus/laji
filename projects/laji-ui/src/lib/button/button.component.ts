@@ -20,7 +20,7 @@ export type ButtonRole = 'primary' | 'secondary' | 'neutral' | 'success' | 'warn
 export class ButtonComponent implements OnChanges, OnInit {
   @Input() role: ButtonRole = 'secondary';
   @Input() loading?: boolean;
-  @Input() disabled = false; // note: can't disable anchors
+  @Input() disabled? = false; // note: can't disable anchors
   @Input() small = false;
   private _target?: string = undefined;
   @Input() set target(t) {

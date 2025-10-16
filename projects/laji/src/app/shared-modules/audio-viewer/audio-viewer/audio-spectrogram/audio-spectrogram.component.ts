@@ -15,14 +15,14 @@ import {
 
 import {
   AudioViewerMode,
-  IAudioViewerArea,
-  IAudioViewerRectangle,
-  IAudioViewerRectangleGroup,
-  ISpectrogramConfig
+  AudioViewerArea,
+  AudioViewerRectangle,
+  AudioViewerRectangleGroup,
+  SpectrogramConfig
 } from '../../models';
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { AudioViewerUtils } from '../../service/audio-viewer-utils';
+import { getSpectrogramSegmentLength } from '../../service/audio-viewer-utils';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -34,20 +34,22 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @ViewChild('container', {static: true}) containerRef!: ElementRef<HTMLDivElement>;
 
   @Input() buffer?: AudioBuffer;
-  @Input() view?: IAudioViewerArea;
-  @Input() defaultView?: IAudioViewerArea;
+  @Input() sampleRate?: number;
 
-  @Input() focusArea?: IAudioViewerArea;
-  @Input() highlightFocusArea = false;
-  @Input() onlyFocusAreaClickable = false;
-  @Input() onlyFocusAreaDrawable = false;
+  @Input() view?: AudioViewerArea;
+  @Input() defaultView?: AudioViewerArea;
+
+  @Input() focusArea?: Partial<AudioViewerArea>;
+  @Input() highlightFocusArea? = false;
+  @Input() onlyFocusAreaClickable? = false;
+  @Input() onlyFocusAreaDrawable? = false;
   @Input() focusAreaColor?: string;
-  @Input() showAxisLabels = true;
+  @Input() showAxisLabels? = true;
   @Input() axisFontSize = 10;
-  @Input() rectangles?: (IAudioViewerRectangle|IAudioViewerRectangleGroup)[];
+  @Input() rectangles?: (AudioViewerRectangle|AudioViewerRectangleGroup)[];
 
   @Input() pregeneratedSpectrogramUrl?: string;
-  @Input() config?: ISpectrogramConfig;
+  @Input() config?: SpectrogramConfig;
 
   @Input() currentTime?: number;
   @Input() mode?: AudioViewerMode;
@@ -55,15 +57,15 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Input() width?: number;
   @Input() height?: number;
   @Input() margin?: { top: number; bottom: number; left: number; right: number };
-  @Input() adaptToContainerHeight = false;
+  @Input() adaptToContainerHeight? = false;
 
   @Output() spectrogramLoading = new EventEmitter<boolean>();
   @Output() dragStart = new EventEmitter();
   @Output() dragEnd = new EventEmitter<number>();
   @Output() spectrogramClick = new EventEmitter<number>();
   @Output() spectrogramDblclick = new EventEmitter<number>();
-  @Output() zoomEnd = new EventEmitter<IAudioViewerArea>();
-  @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
+  @Output() zoomEnd = new EventEmitter<AudioViewerArea>();
+  @Output() drawEnd = new EventEmitter<AudioViewerArea>();
 
   _width!: number;
   _height!: number;
@@ -124,12 +126,18 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
       : this.containerRef
         ? Math.max(this.containerRef.nativeElement.offsetWidth - this._margin.left - this._margin.right, 0)
         : 0;
+
     this._height = this.height
       ? this.height
       : this.adaptToContainerHeight && this.containerRef
         ? Math.max(this.containerRef.nativeElement.offsetHeight - this._margin.top - this._margin.bottom, 0)
-        : this.config
-          ? (AudioViewerUtils.getSpectrogramSegmentLength(this.config.targetWindowLengthInSeconds, this.config.sampleRate) / 2)
+        : this.config && this.sampleRate !== undefined
+          ? (
+            getSpectrogramSegmentLength(
+              this.config.targetWindowLengthInSeconds,
+              this.defaultView ? this.defaultView.yRange[1] * 2 : this.sampleRate
+            ) / 2
+          )
           : 0;
   }
 }
