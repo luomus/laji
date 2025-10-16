@@ -89,7 +89,7 @@ export class TraitRankFilterComponent implements ControlValueAccessor, OnInit, O
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 

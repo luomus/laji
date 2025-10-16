@@ -181,7 +181,6 @@ export class TraitSearchComponent implements OnInit, OnDestroy, OnChanges {
             // if set, @Input properties should override query params
             formValue.dataset = this.datasetId;
           }
-          console.log(formValue);
           this.initialFilters = formValue;
           this.filterChangeSubject.next(this.initialFilters!);
           this.currentPageIdx = (queryParams.page ?? 1) - 1;

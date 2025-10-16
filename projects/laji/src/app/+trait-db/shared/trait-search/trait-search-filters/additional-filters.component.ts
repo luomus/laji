@@ -116,7 +116,7 @@ export class TraitSearchAdditionalFiltersComponent implements ControlValueAccess
         Object.entries(values)
           .reduce((p, [k, v]) => {
             if (values[k]) {
-              p[additionalFilters[k as unknown as keyof typeof additionalFilters].prop] = v;
+              p[additionalFilters[k].prop] = v;
             }
             return p;
           }, {} as AdditionalFilterValues)
@@ -128,13 +128,13 @@ export class TraitSearchAdditionalFiltersComponent implements ControlValueAccess
     this.subscription.unsubscribe();
   }
 
-  writeValue(obj: any): void {
-    const propsMappedToFormKeys: any = {};
+  writeValue(obj: AdditionalFilterValues | null): void {
+    const propsMappedToFormKeys: Record<string, any> = {};
     this.selectedAdditionalFilters = new Set();
     this.unselectedAdditionalFilters = new Set(new Array(this.additionalFilters.length).fill(null).map((_, idx) => idx));
     if (obj) {
       Object.entries(obj).forEach(([k, v]) => {
-        propsMappedToFormKeys[propToFormKey[k as keyof typeof propToFormKey]] = v;
+        propsMappedToFormKeys[propToFormKey[k]] = v;
         if (v !== undefined && v !== null) {
           const idx = this.additionalFilters.findIndex(f => f.prop === k);
           this.unselectedAdditionalFilters.delete(idx);
@@ -146,11 +146,11 @@ export class TraitSearchAdditionalFiltersComponent implements ControlValueAccess
     this.cdr.markForCheck();
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: AdditionalFilterValues | null) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -162,8 +162,8 @@ export class TraitSearchAdditionalFiltersComponent implements ControlValueAccess
     }
   }
 
-  onSelectAdditionalFilter(e: any) {
-    const idx = parseInt(e.target.value, 10);
+  onSelectAdditionalFilter(e: Event) {
+    const idx = parseInt((e.target as HTMLSelectElement).value, 10);
     if (!Number.isNaN(idx)) {
       this.unselectedAdditionalFilters.delete(idx);
       this.selectedAdditionalFilters.add(idx);
