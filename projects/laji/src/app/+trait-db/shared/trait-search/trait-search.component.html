@@ -1,8 +1,6 @@
-<h1>Trait search</h1>
-<p>Browse, search and download trait data published on the FinBIF Trait Database.</p>
-
 <laji-trait-search-filters
   [initialValue]="initialFilters"
+  [disabled]="getDisabledFilters()"
   (filterChange)="onFilterChange($event)"
   (searchClicked)="onFilterSearchClicked()"
 ></laji-trait-search-filters>
