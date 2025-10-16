@@ -86,7 +86,6 @@ export class AppComponent {
     this.translate.onLangChange
       .pipe(startWith({ lang: this.translate.currentLang }))
       .subscribe(({ lang }) => {
-        console.log('set lang from here', lang);
         this.api.setLang(lang);
       });
   }
