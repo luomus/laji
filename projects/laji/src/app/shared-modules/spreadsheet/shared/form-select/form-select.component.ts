@@ -4,13 +4,13 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Input,
-  Output
+  Input, OnChanges,
+  Output, SimpleChanges
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { from, Observable, of } from 'rxjs';
 import { FormService } from '../../../../shared/service/form.service';
 import { FormPermissionService } from '../../../../shared/service/form-permission.service';
+import { PlatformService } from '../../../../root/platform.service';
 
 interface FormList {
   id: string;
@@ -24,37 +24,38 @@ interface FormList {
   styleUrls: ['./form-select.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormSelectComponent {
-
+export class FormSelectComponent implements OnChanges{
+  @Input() forms?: string[] | null;
   @Input() formID? = '';
   @Input() disabled = false;
   @Output() selected = new EventEmitter<any>();
 
   forms$: Observable<FormList[]> = of([]);
   loaded = false;
-  _forms: string[] = [];
 
   constructor(
     private formService: FormService,
     private formPermissionService: FormPermissionService,
+    private platformService: PlatformService,
     private cdr: ChangeDetectorRef
   ) { }
 
-  @Input()
-  set forms(forms: string[]|null) {
-    this._forms = Array.isArray(forms) ? forms : [];
-    this.initForms();
-  }
-
-  get forms(): string[] {
-    return this._forms;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.forms) {
+      this.initForms();
+    }
   }
 
   private initForms() {
-    if (this.forms.length === 0) {
+    if (!this.platformService.isBrowser) {
+      return;
+    }
+
+    if (!this.forms?.length) {
       this.forms$ = of([]);
       return;
     }
+
     this.forms$ = from(this.forms).pipe(
       mergeMap(id => this.formService.getForm(id).pipe(
         switchMap(form => this.formPermissionService.hasAccessToForm(id).pipe(

@@ -1,8 +1,9 @@
-<div [class.hidden]="forms.length < 2">
+<div [class.hidden]="(forms?.length || 0) < 2">
   <select
     class="form-control"
     [ngModel]="formID"
-    (ngModelChange)="formSelected($event)" [disabled]="!loaded || disabled"
+    (ngModelChange)="formSelected($event)"
+    [disabled]="!loaded || disabled"
   >
     <option value="" selected disabled>{{ 'excel.select-form' | translate }}</option>
     <option *ngFor="let form of forms$ | async" [value]="form.id" [disabled]="form.disabled">
