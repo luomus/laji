@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Observable, Subscription, forkJoin } from 'rxjs';
-import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { Profile } from '../../../../../laji/src/app/shared/model/Profile';
 import BirdwatchingActivityLevelEnum = Profile.BirdwatchingActivityLevelEnum;
 import BirdSongRecognitionSkillLevel = Profile.BirdSongRecognitionSkillLevel;
@@ -37,7 +36,6 @@ export class ExpertiseComponent implements OnInit {
 
   constructor(
     private areaService: AreaService,
-    private userService: UserService,
     private dialogService: DialogService,
     private cdr: ChangeDetectorRef,
     private api: LajiApiClientBService
@@ -95,7 +93,7 @@ export class ExpertiseComponent implements OnInit {
     this.profile!.birdwatchingActivityLevel = this.birdwatchingActivityLevel as BirdwatchingActivityLevelEnum;
     this.profile!.birdSongRecognitionSkillLevels = this.birdSongRecognitionSkillLevels;
 
-    return this.api.put('/person/profile', undefined, this.profile! as any).subscribe(() => {
+    return this.api.put('/person/profile', undefined, this.profile).subscribe(() => {
       this.saving = false;
       this.cdr.markForCheck();
     }, () => {
