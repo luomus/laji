@@ -128,6 +128,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/person/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Find person by user id (this will not include email) */
+        get: operations["PersonsController_findPersonByPersonId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/person": {
         parameters: {
             query?: never;
@@ -158,23 +175,6 @@ export interface paths {
         put: operations["PersonsController_updateProfile"];
         /** Create profile */
         post: operations["PersonsController_createProfile"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/person/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Find person by user id (this will not include email) */
-        get: operations["PersonsController_findPersonByPersonId"];
-        put?: never;
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -241,11 +241,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Returns information about the token */
+        /** Information about the authentication event of a person token */
         get: operations["PersonTokenController_getInfo"];
         put?: never;
         post?: never;
-        /** Deletes the token */
+        /** Delete authentication session of a person token */
         delete: operations["PersonTokenController_delete"];
         options?: never;
         head?: never;
@@ -1510,6 +1510,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/coordinates/location": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["CoordinatesController_getLocationInformation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/warehouse/push": {
         parameters: {
             query?: never;
@@ -1679,18 +1695,21 @@ export interface paths {
                     format?: "json" | "xml";
                     /** @description Full document ID (URI identifier) */
                     documentId: string;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -1840,14 +1859,17 @@ export interface paths {
                     partition?: string;
                     /** @description Name (or names) of fields that must be non-null for the occurrence to be included to results. The field must be from level document, gathering or unit (not for example annotation) and must not be an array field. Also, when quering gathering level, unit fields can not be used, etc. When multiple fields are listed, this is an AND search (all must be non-null). Multiple values are seperated by ','. */
                     hasValue?: string;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "csv" | "tsv";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -2068,20 +2090,23 @@ export interface paths {
                     partition?: string;
                     /** @description Name (or names) of fields that must be non-null for the occurrence to be included to results. The field must be from level document, gathering or unit (not for example annotation) and must not be an array field. Also, when quering gathering level, unit fields can not be used, etc. When multiple fields are listed, this is an AND search (all must be non-null). Multiple values are seperated by ','. */
                     hasValue?: string;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "csv" | "tsv";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -2534,18 +2559,21 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -2878,20 +2906,23 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "rdf_xml";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -3239,20 +3270,23 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "csv" | "tsv";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -3755,20 +3789,23 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "rdf_xml";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -4102,20 +4139,23 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "rdf_xml";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -4465,20 +4505,23 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "rdf_xml";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -4826,20 +4869,23 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "csv" | "tsv";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -8576,6 +8622,11 @@ export interface components {
                 femaleIndividualCount: string;
             };
         };
+        MultiLangDto: string;
+        AddressComponent: {
+            long_name: string;
+            short_name: string;
+        };
         DwQuery_CountResponse: {
             total: number;
             cacheTimestamp: number;
@@ -10576,7 +10627,9 @@ export interface components {
             name: string;
             options: components["schemas"]["formOptions"];
             /** Patch form data */
-            patch: Record<string, never>[];
+            patch: {
+                [key: string]: unknown;
+            }[];
             /** Short description */
             shortDescription: string;
             /**
@@ -10589,9 +10642,13 @@ export interface components {
             /** Title */
             title: string;
             /** Translations */
-            translations: Record<string, never>;
+            translations: {
+                [key: string]: unknown;
+            };
             /** Specification for ui schema */
-            uiSchema: Record<string, never>;
+            uiSchema: {
+                [key: string]: unknown;
+            };
         };
         field: {
             /** Context for the MHLA.field */
@@ -11149,7 +11206,9 @@ export interface components {
              */
             URL?: string;
             /** Acknowledged warnings */
-            acknowledgedWarnings?: Record<string, never>[];
+            acknowledgedWarnings?: {
+                [key: string]: unknown;
+            }[];
             /**
              * Acquired from
              * @description From who/where the specimen was acquired (if not recorded as a transaction)
@@ -13472,7 +13531,9 @@ export interface components {
             /** Profile description */
             profileDescription?: string;
             /** Settings for the user */
-            settings?: Record<string, never>;
+            settings?: {
+                [key: string]: unknown;
+            };
             /** Expertise */
             taxonExpertise?: string[];
             /** Expertise notes */
@@ -14414,6 +14475,27 @@ export interface operations {
             };
         };
     };
+    PersonsController_findPersonByPersonId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SensitivePerson"];
+                };
+            };
+        };
+    };
     PersonsController_findPersonByToken: {
         parameters: {
             query?: never;
@@ -14496,7 +14578,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Profile"];
+                "application/json": components["schemas"]["profile"];
             };
         };
         responses: {
@@ -14505,28 +14587,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Profile"];
-                };
-            };
-        };
-    };
-    PersonsController_findPersonByPersonId: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SensitivePerson"];
+                    "application/json": components["schemas"]["profile"];
                 };
             };
         };
@@ -14649,7 +14710,7 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                "person-token": string;
+                "Person-Token": string;
             };
             path?: never;
             cookie?: never;
@@ -14670,20 +14731,18 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                "person-token": string;
+                "Person-Token": string;
             };
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            200: {
+            204: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": Record<string, never>;
-                };
+                content?: never;
             };
         };
     };
@@ -15135,8 +15194,6 @@ export interface operations {
             query?: {
                 /** @description Format of validation error details */
                 validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
-                /** @description Skip validations. Only available for the importer token */
-                skipValidations?: boolean;
             };
             header?: {
                 /** @description Person's authentication token. It is required. */
@@ -15188,10 +15245,10 @@ export interface operations {
     DocumentsController_update: {
         parameters: {
             query?: {
-                /** @description Format of validation error details */
-                validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
                 /** @description Skip validations. Only available for the importer token */
                 skipValidations?: boolean;
+                /** @description Format of validation error details */
+                validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
             };
             header?: {
                 /** @description Person's authentication token */
@@ -21714,6 +21771,23 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["LineTransectUnitShorthandResponseDto"];
                 };
+            };
+        };
+    };
+    CoordinatesController_getLocationInformation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
