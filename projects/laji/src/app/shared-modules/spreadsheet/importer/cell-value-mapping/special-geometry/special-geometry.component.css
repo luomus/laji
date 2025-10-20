@@ -1,3 +1,8 @@
+:host {
+  display: block;
+  overflow: auto;
+}
+
 .source-list {
   list-style: none;
   padding: 0;
@@ -11,13 +16,17 @@
   font-weight: bold;
 }
 
-.map-cell, .map-container {
-  width: 40vw;
-  max-width: 600px;
+.source-header {
+  white-space: nowrap;
+}
+
+.map-cell {
   min-width: 200px;
+  width: 80%;
 }
 
 .map-container {
+  width: 100%;
   min-height: 200px;
   height: 60vh;
 }

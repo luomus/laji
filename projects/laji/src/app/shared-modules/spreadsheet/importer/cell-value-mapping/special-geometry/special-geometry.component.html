@@ -1,17 +1,17 @@
 <table class="table" *ngIf="mapping">
   <thead>
     <tr>
-      <th>
+      <th class="source-header">
         {{ 'excel.map.value-user' | translate }}
       </th>
-      <th colspan="3">
+      <th [attr.colspan]="field && !field.required ? '3' : '2'">
         {{ 'excel.map.value-mapped' | translate }}
       </th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>
+      <td class="source-cell">
         <ul class="source-list">
           <li
             *ngFor="let invalidValue of invalidValues; let i = index"
@@ -29,9 +29,8 @@
           <laji-map [options]="lajiMapOptions" #lajiMap (loaded)="onMapLoad()"></laji-map>
         </div>
       </td>
-      <td>
+      <td *ngIf="field && !field.required">
         <button type="button"
-                *ngIf="field && !field.required"
                 [ngClass]="{'active btn-danger': mapping[value] === ignore}"
                 class="btn btn-sm"
                 (click)="valueMap(value, mapping[value] === ignore ? undefined : ignore)"
