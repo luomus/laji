@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Area } from '../model/Area';
-import { Autocomplete } from '../model/Autocomplete';
 import { Checklist } from '../model/Checklist';
 import { PagedResult } from '../model/PagedResult';
 import { Source } from '../model/Source';
@@ -30,7 +29,6 @@ export namespace LajiApi {
     annotationsTags = 'annotations/tags',
     annotations = 'annotations',
     areas = 'areas',
-    autocomplete = 'autocomplete',
     documentStats = 'documents/stats',
     checklists = 'checklists',
     collections = 'collections',
@@ -46,8 +44,6 @@ export namespace LajiApi {
     images = 'images'
   }
 
-  export type AutocompleteField = 'taxon'|'collection'|'friends'|'unit'|'person';
-
   export enum AreaType {
     country = 'country',
     biogeographicalProvince = 'biogeographicalProvince',
@@ -55,12 +51,6 @@ export namespace LajiApi {
     oldMunicipality = 'oldMunicipality',
     birdAssociationArea = 'birdAssociationArea',
     iucnEvaluationArea = 'iucnEvaluationArea'
-  }
-
-  export enum AutocompleteMatchType {
-    exact = <any> 'exact',
-    partial = <any> 'exact,partial',
-    likely = <any> 'exact,likely'
   }
 
   export namespace Query {
@@ -93,23 +83,6 @@ export namespace LajiApi {
     export interface AreaQuery extends Lang, Paged {
       type?: LajiApi.AreaType;
       idIn?: string;
-    }
-
-    export interface AutocompleteQuery {
-      q?: string;
-      limit?: string;
-      includePayload?: boolean;
-      includeSelf?: boolean;
-      lang?: string;
-      checklist?: string;
-      informalTaxonGroup?: string;
-      personToken?: string;
-      matchType?: LajiApi.AutocompleteMatchType;
-      onlySpecies?: boolean;
-      onlyFinnish?: boolean;
-      onlyInvasive?: boolean;
-      excludeNameTypes?: string;
-      formID?: string;
     }
 
     export interface ChecklistQuery extends Lang, Paged {
@@ -233,7 +206,6 @@ export class LajiApiService {
     return this.httpClient.get<T>(url, options);
   }
 
-  get(endpoint: LajiApi.Endpoints.autocomplete, id: LajiApi.AutocompleteField, query: LajiApi.Query.AutocompleteQuery): Observable<Autocomplete[]>;
   get(endpoint: LajiApi.Endpoints.forms, id: string, query: LajiApi.Query.FormsSchemaQuery): Observable<Form.SchemaForm>;
   get(endpoint: LajiApi.Endpoints.forms, id: string, query: LajiApi.Query.FormsQuery): Observable<any>;
   get(endpoint: LajiApi.Endpoints.information, id: string, query?: LajiApi.Query.InformationQuery): Observable<Information>;

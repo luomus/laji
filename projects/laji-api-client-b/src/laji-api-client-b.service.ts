@@ -125,6 +125,15 @@ export class LajiApiClientBService {
   }
 
   private getRequestOptions(queryParams: any, requestBody: any, lang: string, personToken?: string) {
+    const params = Object.keys((queryParams || {})).reduce((filteredQueryParams, key) => {
+      const param = (queryParams || {})[key];
+      if (param === undefined) {
+        return filteredQueryParams;
+      }
+      filteredQueryParams[key] = queryParams[key];
+      return filteredQueryParams;
+    }, {} as any);
+
     const headers: Record<string, string> = {
 			'API-Version': '1',
 			'Accept-Language': lang,
@@ -132,7 +141,7 @@ export class LajiApiClientBService {
     if (personToken) {
       headers['Person-Token'] = personToken;
     }
-    return { params: queryParams, body: requestBody, headers };
+    return { params, body: requestBody, headers };
   }
 
   fetch<P extends Path, M extends Method<P>, R extends Responses<P, M>>(
