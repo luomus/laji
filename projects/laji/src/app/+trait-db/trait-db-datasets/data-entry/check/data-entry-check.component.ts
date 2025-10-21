@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnChan
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { tap, map, switchMap } from 'rxjs/operators';
 
 interface NotInitialized {
@@ -135,11 +135,8 @@ export class TraitDbDataEntryCheckComponent implements OnChanges, AfterViewInit,
     if (!(state._tag === 'validation-complete' && state.validationResult.pass)) {
       return;
     }
-    const query = {
-      personToken: this.userService.getToken()
-    };
     this.state$.next({ _tag: 'submitting' });
-    this.api.fetch('/trait/rows/multi', 'post', { query }, state.result).subscribe(
+    this.api.fetch('/trait/rows/multi', 'post', undefined, state.result).subscribe(
       () => {
         this.submissionSuccess.emit();
       },
@@ -154,8 +151,7 @@ export class TraitDbDataEntryCheckComponent implements OnChanges, AfterViewInit,
     this.tsvChange.subscribe(() => {
       // transform tsv to rows
       const query = {
-        datasetId: this.datasetId,
-        personToken: this.userService.getToken()
+        datasetId: this.datasetId
       };
       this.state$.next({ _tag: 'tsv-in-progress' });
       this.api.fetch('/trait/rows/tsv2rows', 'post', { query }, this.tsv)
@@ -174,7 +170,7 @@ export class TraitDbDataEntryCheckComponent implements OnChanges, AfterViewInit,
             this.cdr.markForCheck();
           }),
           switchMap(res =>
-            this.api.fetch('/trait/rows/multi/validate', 'post', { query: { personToken: this.userService.getToken() } }, res).pipe(
+            this.api.fetch('/trait/rows/multi/validate', 'post', undefined, res).pipe(
               map(validationRes => ({_tag: 'validation-complete', result: res, validationResult: validationRes}) as ValidationComplete)
             )
           )

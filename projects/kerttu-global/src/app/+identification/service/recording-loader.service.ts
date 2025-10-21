@@ -16,7 +16,9 @@ export class RecordingLoaderService implements OnDestroy {
   private previousLimit = 1; // how many previous recordings are kept in memory
   private nextLimit = 5; // how many next recordings are loaded to memory
 
-  @LocalStorage('selected_sites') private selectedSites!: number[];
+  @LocalStorage('selected_sites') private selectedSites!: number[]|null;
+  @LocalStorage('selected_species') private selectedSpecies!: number[]|null;
+  @LocalStorage('include_unknown_species') private unknownSpecies!: boolean|null;
   private fileNameFilter = '';
 
   @LocalStorage('previous_recordings') private previous!: number[];
@@ -47,9 +49,23 @@ export class RecordingLoaderService implements OnDestroy {
     this.preloadAudioSub?.unsubscribe();
   }
 
-  setSelectedSites(selectedSites: number[]) {
-    if (!Util.equalsArray(this.selectedSites, selectedSites)) {
+  setSelectedSites(selectedSites: number[]|null = null) {
+    if (!(this.selectedSites === selectedSites || Util.equalsArray(this.selectedSites, selectedSites))) {
       this.selectedSites = selectedSites;
+      this.clearLoadedRecordings(true);
+    }
+  }
+
+  setSelectedSpecies(selectedSpecies: number[]|null = null) {
+    if (!(this.selectedSpecies === selectedSpecies || Util.equalsArray(this.selectedSpecies, selectedSpecies))) {
+      this.selectedSpecies = selectedSpecies;
+      this.clearLoadedRecordings(true);
+    }
+  }
+
+  setUnknownSpecies(unknownSpecies: boolean|null = null) {
+    if (!this.unknownSpecies === unknownSpecies) {
+      this.unknownSpecies = unknownSpecies;
       this.clearLoadedRecordings(true);
     }
   }
@@ -123,7 +139,13 @@ export class RecordingLoaderService implements OnDestroy {
 
   private initLocalStorageValues() {
     if (!this.selectedSites) {
-      this.selectedSites = [];
+      this.selectedSites = null;
+    }
+    if (!this.selectedSpecies) {
+      this.selectedSpecies = null;
+    }
+    if (!this.unknownSpecies) {
+      this.unknownSpecies = null;
     }
     if (!this.previous) {
       this.previous = [];
@@ -138,7 +160,14 @@ export class RecordingLoaderService implements OnDestroy {
       switchMap(previousId => {
         const excludedIds = this.current != null ? [this.current, ...this.next] : [...this.next];
         return this.kerttuGlobalApi.getNewIdentificationRecording(
-          this.userService.getToken(), this.translate.currentLang, this.selectedSites, previousId, excludedIds, this.fileNameFilter
+          this.userService.getToken(),
+          this.translate.currentLang,
+          this.selectedSites,
+          this.selectedSpecies,
+          this.unknownSpecies,
+          previousId,
+          excludedIds,
+          this.fileNameFilter
         );
       }),
       tap(result => {

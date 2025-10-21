@@ -1,13 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Observable, Subscription, forkJoin } from 'rxjs';
-import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { Profile } from '../../../../../laji/src/app/shared/model/Profile';
-import { PersonApi } from '../../../../../laji/src/app/shared/api/PersonApi';
 import BirdwatchingActivityLevelEnum = Profile.BirdwatchingActivityLevelEnum;
 import BirdSongRecognitionSkillLevel = Profile.BirdSongRecognitionSkillLevel;
 import BirdSongRecognitionSkillLevelEnum = Profile.BirdSongRecognitionSkillLevelEnum;
 import { AreaService } from '../../../../../laji/src/app/shared/service/area.service';
 import { DialogService } from '../../../../../laji/src/app/shared/service/dialog.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
   selector: 'bsg-expertise',
@@ -37,17 +36,16 @@ export class ExpertiseComponent implements OnInit {
 
   constructor(
     private areaService: AreaService,
-    private userService: UserService,
-    private personService: PersonApi,
     private dialogService: DialogService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private api: LajiApiClientBService
   ) {
     this.continents$ = this.areaService.getContinents('en');
   }
 
   ngOnInit() {
     this.profileSub = forkJoin([
-      this.personService.personFindProfileByToken(this.userService.getToken()),
+      this.api.get('/person/profile'),
       this.continents$
     ]).subscribe(([profile, continents]) => {
       this.profile = profile;
@@ -95,7 +93,7 @@ export class ExpertiseComponent implements OnInit {
     this.profile!.birdwatchingActivityLevel = this.birdwatchingActivityLevel as BirdwatchingActivityLevelEnum;
     this.profile!.birdSongRecognitionSkillLevels = this.birdSongRecognitionSkillLevels;
 
-    return this.personService.personUpdateProfileByToken(this.profile!, this.userService.getToken()).subscribe(() => {
+    return this.api.put('/person/profile', undefined, this.profile).subscribe(() => {
       this.saving = false;
       this.cdr.markForCheck();
     }, () => {

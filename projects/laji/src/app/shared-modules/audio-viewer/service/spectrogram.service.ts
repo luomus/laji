@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, share, tap } from 'rxjs/operators';
-import { ISpectrogramConfig } from '../models';
+import { SpectrogramConfig } from '../models';
 import { getSpectrogramImageData } from './spectrogram';
 
 type ColormapType = 'inferno' | 'viridis';
@@ -16,7 +16,7 @@ export class SpectrogramService {
     private httpClient: HttpClient
   ) {}
 
-  public getSpectrogramImageData(buffer: AudioBuffer, config?: ISpectrogramConfig): Observable<ImageData> {
+  public getSpectrogramImageData(buffer: AudioBuffer, config?: SpectrogramConfig): Observable<ImageData> {
     return this.getColormap().pipe(
       map(colormap => getSpectrogramImageData(buffer, colormap, config))
     );
