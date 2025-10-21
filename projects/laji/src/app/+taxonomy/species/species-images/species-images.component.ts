@@ -58,6 +58,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
 
   refreshImages() {
     const cacheKey = JSON.stringify({
+      taxon: this.search.taxonId,
       query: this.search.query,
       filters: this.search.filters,
       imageOptions: this.search.imageOptions
@@ -108,7 +109,8 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
       selectedFields: 'id,vernacularName,scientificName,multimedia',
       includeMedia: true,
       page: this.search.imageOptions.page,
-      pageSize: 50
+      pageSize: 50,
+      checklist: 'MR.1,MR.2'
     };
     const filters = {
       ..._filters,

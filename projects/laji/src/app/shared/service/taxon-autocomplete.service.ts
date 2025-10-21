@@ -3,13 +3,14 @@ import { from, Observable } from 'rxjs';
 import { map, concatMap, toArray } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from './triplestore-label.service';
-import { Autocomplete } from '../model/Autocomplete';
+import type { components } from 'projects/laji-api-client-b/generated/api';
 
-export interface TaxaWithAutocomplete extends Autocomplete {
+type TaxonAutocompleteResponse = components['schemas']['TaxonAutocompleteResponse'];
+
+export interface TaxaWithAutocomplete extends TaxonAutocompleteResponse {
   autocompleteDisplayName: string;
   autocompleteSelectedName: string;
 }
-
 
 @Injectable({
   providedIn: 'root'
@@ -21,13 +22,13 @@ export class TaxonAutocompleteService {
     private tripleStoreService: TriplestoreLabelService
   ) { }
 
-  getInfo(taxa: any[], text: string): Observable<TaxaWithAutocomplete[]> {
+  getInfo(taxa: TaxonAutocompleteResponse[], text: string): Observable<TaxaWithAutocomplete[]> {
     return from(taxa).pipe(
-      concatMap(taxon => this.tripleStoreService.get(taxon['payload']['taxonRankId'], this.translate.currentLang).pipe(
+      concatMap(taxon => this.tripleStoreService.get(taxon['taxonRank'], this.translate.currentLang).pipe(
         map(rank => ({
           ...taxon,
-          autocompleteDisplayName: this.getAutocompleteDisplayName(taxon['payload'], rank, text),
-          autocompleteSelectedName: this.getAutocompleteSelectedName(taxon['payload'])
+          autocompleteDisplayName: this.getAutocompleteDisplayName(taxon, rank, text),
+          autocompleteSelectedName: this.getAutocompleteSelectedName(taxon)
         }))
       )),
       toArray()
@@ -35,74 +36,100 @@ export class TaxonAutocompleteService {
   }
 
 
-  getAutocompleteDisplayName(payload: any, rank: string, text: string): string {
+  getAutocompleteDisplayName(taxon: TaxonAutocompleteResponse, rank: string, text: string): string {
+    const scientificName = (taxon['cursiveName'] ? '<i>' +
+      this.capitalizeFirstLetter(this.addBold(taxon['scientificName'], text)) + '</i>' : this.capitalizeFirstLetter(this.addBold(taxon['scientificName'], text)));
+    const vernacularName = this.addBold(taxon['vernacularName'], text);
+    const matchingName = this.addBold(taxon['matchingName'], text);
 
-    const scientificName = (payload['cursiveName'] ? '<i>' +
-      this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)) + '</i>' : this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)));
-    const vernacularName = this.addBold(payload['vernacularName'], text);
-    const matchingName = this.addBold(payload['matchingName'], text);
-    let string: string;
-
-    switch (payload['nameType']) {
+    switch (taxon['nameType']) {
       case 'MX.scientificName':
-        return this.createAutocompleteDisplayNameRow(scientificName, rank, payload['informalTaxonGroups'], payload['finnish']);
+        return scientificName + this.createAutocompleteDisplayNameRow(taxon, rank);
       case 'MX.birdlifeCode':
       case 'MX.euringCode':
-        string = matchingName + '<span class="taxon-second-element"> - ' + scientificName + '</span>';
-        return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
+        return `
+          ${matchingName}<span class="taxon-second-element"> - ${scientificName}</span>
+          ${this.createAutocompleteDisplayNameRow(taxon, rank)}
+        `;
       case 'MX.vernacularName':
-        string = (payload['vernacularName'] !== '' ? vernacularName + ' <span class="taxon-second-element">- ' + scientificName + '</span> '
-        : scientificName + '<span class="taxon-second-element"> (' + matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>' );
-        return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
+        return `
+          ${taxon['vernacularName'] !== ''
+            ? `${vernacularName} <span class="taxon-second-element">- ${scientificName}</span>`
+            : `${scientificName} <span class="taxon-second-element">(${matchingName}) - </span><span class="taxon-third-element">${scientificName}</span>`
+          }
+         ${this.createAutocompleteDisplayNameRow(taxon, rank)}
+        `;
       case 'MX.alternativeVernacularName':
       case 'MX.obsoleteVernacularName':
       case 'MX.tradeName':
-        string = (payload['vernacularName'] !== ''
-          ? vernacularName + '<span class="taxon-second-element"> - (' + matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>'
-          : scientificName + ' <span class="taxon-second-element">(' + matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>' );
-        return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
+        return `
+          ${taxon['vernacularName'] !== ''
+            ? `${vernacularName} <span class="taxon-second-element">- (${matchingName}) - </span><span class="taxon-third-element">${scientificName}</span>`
+            : `${scientificName} <span class="taxon-second-element">(${matchingName}) - </span><span class="taxon-third-element">${scientificName}</span>`
+          }
+          ${this.createAutocompleteDisplayNameRow(taxon, rank)}
+        `;
       case 'MX.colloquialVernacularName':
-        string = (payload['vernacularName'] !== ''
-          ? vernacularName + '<span class="taxon-second-element"> - ' + scientificName + '</span>' + '<span class="taxon-third-element"> (' + matchingName + ') </span>'
-          : scientificName + ' <span class="taxon-second-element">(' + matchingName + ')</span>' );
-        return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
+        return `
+          ${taxon['vernacularName'] !== ''
+            ? `${vernacularName} <span class="taxon-second-element">- ${scientificName}</span><span class="taxon-third-element"> (${matchingName}) </span>`
+            : `${scientificName} <span class="taxon-second-element">(${matchingName})</span>`}
+          ${this.createAutocompleteDisplayNameRow(taxon, rank)}
+        `;
       default:
-        string = scientificName + ' <span class="taxon-second-element">(' + matchingName + ')</span>';
-        return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
+        return `
+          ${scientificName} <span class="taxon-second-element">(${matchingName})</span>
+          ${this.createAutocompleteDisplayNameRow(taxon, rank)}
+        `;
     }
   }
 
-  private createAutocompleteDisplayNameRow(start: string, taxonRankId?: string, informalTaxonGroups?: {id: string}[], isFinnish?: boolean) {
-    const taxonGroups = '<span class="container-taxon-group informal-group-image ' + (informalTaxonGroups || []).map(el => el.id).join(' ') + '"></span>';
-    return start + '<span class="flag-taxonRank">' + (taxonRankId ? ' (' + taxonRankId + ') ' : '') +
-    '<span class="container-flag-taxonRank"><span class="taxon-groups">' + taxonGroups + '</span>' +
-    (isFinnish ? '<span class="autocomplete-small-flag finnish-flag"></span>' : '<span class="autocomplete-small-flag no-border"></span>' ) + '</span></span>';
+  private createAutocompleteDisplayNameRow(taxon: TaxonAutocompleteResponse, taxonRankId?: string) {
+    const informalTaxonGroups = taxon['informalGroups'] || [];
+    const isFinnish = taxon['finnish'];
+    const isGbif = taxon['checklist'] === 'MR.2';
+
+    const taxonGroups = `<span class="container-taxon-group informal-group-image ${informalTaxonGroups.map(el => el.id).join(' ')}"></span>`;
+    return `
+      <span class="flag-taxonRank">
+        ${(taxonRankId ? `(${taxonRankId})` : '')}
+        <span class="container-flag-taxonRank">
+          <span class="taxon-groups">${taxonGroups}</span>
+          ${isFinnish
+            ? '<span class="autocomplete-small-flag finnish-flag"></span>'
+            : isGbif
+              ? '<span class="autocomplete-small-flag no-border gbif-icon"></span>'
+              : '<span class="autocomplete-small-flag no-border"></span>'
+          }
+        </span>
+      </span>
+    `;
   }
 
-  getAutocompleteSelectedName(payload: any): string {
-    switch (payload['nameType']) {
+  getAutocompleteSelectedName(taxon: any): string {
+    switch (taxon['nameType']) {
       case 'MX.scientificName':
-        return payload['scientificName'];
+        return taxon['scientificName'];
       case 'MX.hasSynonym':
-        return payload['scientificName'];
+        return taxon['scientificName'];
       case 'MX.birdlifeCode':
       case 'MX.euringCode':
-        return payload['matchingName'].toLowerCase();
+        return taxon['matchingName'].toLowerCase();
       case 'MX.vernacularName':
-        return payload['vernacularName'] !== '' ? payload['vernacularName'] : payload['scientificName'];
+        return taxon['vernacularName'] !== '' ? taxon['vernacularName'] : taxon['scientificName'];
       case 'MX.alternativeVernacularName':
       case 'MX.obsoleteVernacularName':
       case 'MX.tradeName':
       case 'MX.colloquialVernacularName':
-        return payload['vernacularName'] !== '' ? payload['vernacularName'] : payload['scientificName'];
+        return taxon['vernacularName'] !== '' ? taxon['vernacularName'] : taxon['scientificName'];
       default:
-        return payload['scientificName'];
+        return taxon['scientificName'];
     }
   }
 
-  private addBold(original: string, substring: string): string {
+  private addBold(original: string | undefined, substring: string): string {
     // Pairs of bolded words and whether they've been bolded already (goal is to bold words only once).
-    const boldedWords: [string, boolean][] = original.split(' ').map(w => [w, false]);
+    const boldedWords: [string, boolean][] = (original || '').split(' ').map(w => [w, false]);
 
     substring.split(' ').forEach(w => {
       wordLoop: for (const i in boldedWords) { // eslint-disable-line guard-for-in

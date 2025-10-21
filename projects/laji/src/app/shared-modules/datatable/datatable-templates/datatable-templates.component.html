@@ -33,6 +33,7 @@
         target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings.taxon.id || value.linkings.taxon.qname) | toQName)] | localize" (click)="onTaxonLinkClick($event)">
         <i class="glyphicon glyphicon-tag"></i>
       </a>
+      <img *ngIf="value.linkings.taxon.checklist === 'http://tun.fi/MR.2'" class="gbif-icon" src="/static/images/icons/gbif.svg" [luTooltip]="'species.tree.gbif.help' | translate" />
     </span>
     <ng-template #taxonVerbatim>
       <span *ngIf="value.taxonVerbatim; else reportedInformalTaxonGroup" title="{{value.taxonVerbatim}}">{{ value.taxonVerbatim }}</span>

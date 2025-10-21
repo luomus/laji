@@ -1,5 +1,25 @@
-import { catchError, concat, debounceTime, delay, filter, map, retryWhen, switchMap, take, tap, timeout } from 'rxjs/operators';
-import { of, of as ObservableOf, Subscription, throwError as observableThrowError, Observable, forkJoin, Subject } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  delay,
+  filter,
+  map,
+  retryWhen,
+  switchMap,
+  take,
+  tap,
+  timeout
+} from 'rxjs/operators';
+import {
+  of,
+  Subscription,
+  throwError as observableThrowError,
+  Observable,
+  forkJoin,
+  Subject,
+  concat,
+  defer
+} from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,6 +27,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -37,6 +58,7 @@ import type { DivIcon, LeafletEvent, MarkerCluster, PathOptions } from 'leaflet'
 import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
+import { Router } from '@angular/router';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
@@ -51,7 +73,7 @@ interface AggregateQueryResponse {
 // Given coordinates in warehouse query format
 // Returns features visualizing that set of coordinates
 const getFeaturesFromQueryCoordinates$ = (coordinates: string[]): Observable<Feature<Polygon>[]> => (
-  ObservableOf(coordinates
+  of(coordinates
     ? coordinates.map(
       (coord: string) => getFeatureFromGeometry(convertLajiEtlCoordinatesToGeometry(coord))
     ) : []
@@ -111,6 +133,16 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() set viewLocked(viewLocked: boolean) {
     this.mapOptions = {...this.mapOptions, viewLocked};
   }
+  @Input() set showPrintControl(showPrintControl: boolean) {
+    this.mapOptions = {...this.mapOptions, customControls: showPrintControl ? [
+      {
+        fn: this.printControlFn.bind(this),
+        iconCls: 'glyphicon glyphicon-print',
+        text: this.translate.instant('map.front.print.tooltip'),
+        position: 'topleft'
+      }
+    ] : []};
+  }
   @Input() ready = true;
   /**
    * height < 0: fill remaining height in window
@@ -135,6 +167,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   ];
   @Input() noClick = false;
   @Input() pointModeBreakpoint = 5000;
+  @Input() printMode = false;
 
   @Output() create = new EventEmitter();
 
@@ -147,6 +180,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
 
   tableViewHeightOverride: number | undefined = -1;
   selectedObservationCoordinates: Coordinates | undefined;
+
+  href$: Observable<string | undefined>;
+  printDate = new Date();
 
   private useFinnishMap = false;
   private drawData: DataOptions = {
@@ -180,7 +216,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     public translate: TranslateService,
     private decorator: ValueDecoratorService,
     private logger: Logger,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone,
+    private router: Router
   ) {
     this.mapOptions = {
       controls: {
@@ -194,6 +232,13 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     if ((environment as any).observationMapOptions) {
       Object.assign(this.mapOptions, (environment as any).observationMapOptions);
     }
+
+    this.href$ = concat(
+      defer(() => of(this.getCurrentHref())),
+      this.router.events.pipe(
+        map(() => this.getCurrentHref())
+      )
+    );
   }
 
   ngOnInit(): void {
@@ -467,7 +512,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       ? this.warehouseService.getPolygonFeatureCollection(polygonId.split(':')[0]).pipe(
           map(featureCollection => (featureCollection as any).features)
       )
-      : ObservableOf([]);
+      : of([]);
   }
 
   private getDrawData$(query: WarehouseQueryInterface): Observable<DataOptions> {
@@ -502,7 +547,10 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       : style.color;
     const maxColorChangeDecimal = 100;
     const color = combineColors(baseColor, ...(hovered ? ['#fff'] : []), maxColorChangeDecimal); // Highlight hovered item.
-    const className = [style.className, active && !isActiveBox ? 'laji-map-active-pointer' : undefined].filter(s => s).join(' ');
+    const className = [
+      style.className,
+      active && !isActiveBox ? 'laji-map-active-pointer' : undefined
+    ].filter(s => s).join(' ');
     const _style = {...style, color, className};
     if (isActiveBox) {
       _style.weight = 3;
@@ -593,7 +641,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       // retry on timeout
       timeout(WarehouseApi.longTimeout * 3),
       delay(100),
-      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
+      retryWhen(errors => concat(errors.pipe(delay(1000), take(3)), observableThrowError(errors))),
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       map(d => this.featureCollectionToDataOptions(d!)),
       // update the map
@@ -623,7 +671,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     icon.createIcon = (oldIcon: any) => {
       const iconDomElem = oldCreateFn.bind(icon)(oldIcon);
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      (iconDomElem.style as any)['background-color'] = this.visualization[this.visualizationMode].getClusterColor!(childMarkers) + opacityAsHexCode(this.opacity);
+      const clusterColor = this.visualization[this.visualizationMode].getClusterColor!(childMarkers);
+      (iconDomElem.style as any)['background-color'] = clusterColor + opacityAsHexCode(this.opacity);
       return iconDomElem;
     };
 
@@ -639,5 +688,20 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       classNames = newClassNames;
     };
     return icon;
+  }
+
+  private getCurrentHref(): string | undefined {
+    if (this.platformService.isBrowser) {
+      return this.platformService.window.location.href;
+    }
+    return undefined;
+  }
+
+  private printControlFn() {
+    this.zone.run(() => {
+      this.printMode = !this.printMode;
+      this.printDate = new Date();
+      this.cdr.markForCheck();
+    });
   }
 }

@@ -1,14 +1,14 @@
 import { catchError, concatMap, map, take } from 'rxjs/operators';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { prepareProfile, UserService } from '../../shared/service/user.service';
-import { PersonApi } from '../../shared/api/PersonApi';
 import { Profile } from '../../shared/model/Profile';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin as ObservableForkJoin, of as ObservableOf, Subscription } from 'rxjs';
+import { Observable, forkJoin as ObservableForkJoin, of as ObservableOf, Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import { Person } from '../../shared/model/Person';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 
 @Component({
@@ -41,12 +41,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   intellectualRights = Profile.IntellectualRights;
 
   constructor(private userService: UserService,
-              private personService: PersonApi,
               private localizeRouterService: LocalizeRouterService,
               private route: ActivatedRoute,
               private router: Router,
               private logger: Logger,
-              private cdr: ChangeDetectorRef
+              private cdr: ChangeDetectorRef,
+              private api: LajiApiClientBService
   ) {
     this.personSelfUrl = environment.selfPage;
   }
@@ -61,8 +61,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       )),
       concatMap(({currentUser, id}) => {
         const empty$ = ObservableOf({} as Profile);
-        const null$ = ObservableOf(null);
-        const userProfile$ = this.personService.personFindProfileByToken(this.userService.getToken()).pipe(catchError(() => null$));
+        const undefined$ = ObservableOf(undefined);
+        const userProfile$ = this.api.get('/person/profile').pipe(catchError(() => undefined$));
         return ObservableForkJoin(
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           currentUser!.id
@@ -71,7 +71,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           currentUser!.id === id
             ? userProfile$
-            : this.personService.personFindProfileByUserId(id).pipe(catchError(() => empty$))
+            : this.api.get('/person/{id}/profile', { path: { id } }).pipe(catchError(() => empty$))
         ).pipe(
           map(([userProfile, currentProfile]) => ({
             id,
@@ -117,9 +117,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   saveProfile() {
     this.loading = true;
-    const method = this.isCreate ? 'personCreateProfileByToken' : 'personUpdateProfileByToken';
-    this.personService[method](this.getSaveProfile(), this.userService.getToken())
-      .subscribe(
+    ((this.isCreate
+      ? this.api.post('/person/profile', undefined, this.getSaveProfile() as any)
+      : this.api.put('/person/profile', undefined, this.getSaveProfile() as any)
+    ) as Observable<Profile>).subscribe(
         profile => {
           this.isCreate = false;
           this.currentProfile = profile;

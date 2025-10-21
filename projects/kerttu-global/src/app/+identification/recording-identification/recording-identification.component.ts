@@ -1,10 +1,10 @@
 import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy, ViewChild } from '@angular/core';
-import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { map } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PersonApi } from '../../../../../laji/src/app/shared/api/PersonApi';
-import { IdentificationMainComponent } from './identification-main/identification-main.component';
+import { IdentificationMainComponent } from '../../kerttu-global-shared-modules/identification/identification-main/identification-main.component';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
   selector: 'bsg-recording-identification',
@@ -22,15 +22,14 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   private siteIdsSub!: Subscription;
 
   constructor(
-    private personService: PersonApi,
-    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private api: LajiApiClientBService
   ) {}
 
   ngOnInit() {
-    this.expertiseMissingSub = this.personService.personFindProfileByToken(this.userService.getToken()).subscribe(profile => {
+    this.expertiseMissingSub = this.api.get('/person/profile').subscribe(profile => {
       this.expertiseMissing = !profile.birdwatchingActivityLevel || !profile.birdSongRecognitionSkillLevels?.length;
       this.cdr.markForCheck();
     });
