@@ -14,7 +14,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { UserSettings, UserService } from '../../shared/service/user.service';
-import { of, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import type { Options, Lang, TileLayersOptions } from '@luomus/laji-map/lib/defs';
 import { Global } from '../../../environments/global';
@@ -58,12 +58,15 @@ export const getPointIconAsCircle = (po: PathOptions & { opacity: number }, feat
       <div #lajiMap class="laji-map"></div>
       <div class="loading-map loading" *ngIf="loading"></div>
       <ng-content></ng-content>
-    </div>`,
+    </div>
+  `,
   styleUrls: ['./laji-map.component.scss'],
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LajiMapComponent implements OnDestroy, OnChanges {
+  @Input({ required: true }) options!: Options;
+  @Input() settingsKey?: keyof UserSettings;
   @Input() data: any = [];
   @Input() loading = false;
   @Input() showControls = true;
@@ -95,9 +98,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     private platformService: PlatformService
   ) { }
 
-  @Input() options!: Options;
-  @Input() settingsKey!: keyof UserSettings;
-
   ngOnDestroy() {
     try {
       this.map.destroy();
@@ -118,25 +118,28 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
       this.setData(this.data);
     }
 
-    if (changes.options || changes.settingsKey) {
-      if (this.updateSettingsSub) {
-        this.updateSettingsSub.unsubscribe();
-      }
-
+    if (changes.options || changes.settingsKey || changes.showControls) {
       if (changes.options) {
         this.updateOptions();
       }
 
-      let settings$ = of(this.userSettings);
+      if (changes.settingsKey) {
+        this.updateSettingsSub?.unsubscribe();
 
-      if (this.settingsKey && changes.settingsKey) {
-        settings$ = this.updateSettings();
+        if (this.settingsKey) {
+          this.updateSettingsSub = this.updateSettings(this.settingsKey).subscribe(() => {
+            this.initMap();
+            this.cd.markForCheck();
+          });
+          return;
+        } else {
+          this.userSettings = {};
+        }
       }
 
-      this.updateSettingsSub = settings$.subscribe(() => {
+      if (!this.updateSettingsSub || this.updateSettingsSub?.closed) {
         this.initMap();
-        this.cd.markForCheck();
-      });
+      }
     }
   }
 
@@ -259,8 +262,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     this._options = options;
   }
 
-  updateSettings(): Observable<Options> {
-    return this.userService.getUserSetting<Options>(this.settingsKey).pipe(
+  updateSettings(settingsKey: keyof UserSettings): Observable<Options> {
+    return this.userService.getUserSetting<Options>(settingsKey).pipe(
       take(1),
       tap(settings => {
         this.userSettings = settings || {};

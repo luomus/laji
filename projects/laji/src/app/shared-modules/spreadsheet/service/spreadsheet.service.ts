@@ -49,6 +49,7 @@ export class SpreadsheetService {
 
   private hiddenFields: {[formID: string]: string[]} = {
     '*': [
+      'editors[*]',
       'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID',
       'gatherings[*].images[*]',
       'gatherings[*].units[*].images[*]',
@@ -125,7 +126,7 @@ export class SpreadsheetService {
   }
 
   loadSheet(data: any, options: XLSX.ParsingOptions = {}): {data: any; errors: string[]} {
-    const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true, ...options});
+    const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true, codepage: 65001, ...options});
     const sheetName: string = workBook.SheetNames[0];
     const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
     this.setDateFormat(sheet, !!workBook.Workbook);

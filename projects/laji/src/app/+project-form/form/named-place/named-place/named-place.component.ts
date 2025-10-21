@@ -314,9 +314,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (!documentForm.options?.namedPlaceOptions?.hideMapTab) {
       selected.push('geometry');
     }
-    if (documentForm.options?.restrictAccess && selected.indexOf('reserve') === -1) {
-      selected.push('reserve');
-    }
+    selected.push('reserve');
     selected.push('id');
 
     const query: NamedPlaceQuery = {

@@ -1,8 +1,8 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { paths } from 'projects/laji-api-client-b/generated/api.d';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { shareReplay, switchMap, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { shareReplay, tap } from 'rxjs/operators';
 
 type WithResponses<T> = T & { responses: unknown };
 type Parameters<T> = 'parameters' extends keyof T ? T['parameters'] : never;
@@ -13,11 +13,6 @@ type ExtractRequestBodyIfExists<R> =
     : never;
 type HttpSuccessCodes = 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226;
 type IntersectUnionTypes<A, B> = A extends B ? A : never;
-type OptionalKeys<T, K extends string> = Omit<T, K> & Partial<Pick<T, Extract<K, keyof T>>>;
-
-type WithOptionalQuery<T, Q> = Q extends Record<string, never>
-    ? T | (T & { query: Q })
-    : T & { query: Q };
 
 type Path = keyof paths & string;
 type PathWithMethod<M extends string> =
@@ -40,7 +35,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 const ONE_DAY = 86400000;
 
-const sortRecordRecursively = (record: Record<string, unknown>): Record<string, unknown> => (
+const sortRecordRecursively = (record: Record<string, unknown> = {}): Record<string, unknown> => (
   Object.entries(record)
     .sort(([aKey, aVal], [bKey, bVal]) => aKey > bKey ? 1 : aKey < bKey ? -1 : 0)
     .reduce((acc, [key, value]) => {
@@ -82,12 +77,17 @@ export class LajiApiClientBService {
   // first levels are for different path segments separated by path variables
   // the last level is for query params
   private cache: Map<string, any> = new Map();
-  private lang$ = new BehaviorSubject('en');
+  private lang = 'en';
+  private personToken?: string;
 
-  constructor(private http: HttpClient, @Inject(API_BASE_URL) private baseUrl: string) { }
+  constructor(private http: HttpClient, @Inject(API_BASE_URL) private baseUrl: string) {}
 
   setLang(lang: string) {
-    this.lang$.next(lang);
+    this.lang = lang;
+  }
+
+  setPersonToken(personToken?: string) {
+    this.personToken = personToken;
   }
 
   get<P extends PathWithMethod<'get'>, R extends Responses<P, 'get' extends Method<P> ? 'get' : never>>(
@@ -124,11 +124,15 @@ export class LajiApiClientBService {
     return this.fetch(path, 'delete' as any, params as any, undefined, cacheInvalidationMs);
   }
 
-  private getRequestOptions(queryParams: any, requestBody: any, lang: string) {
-    return { params: queryParams, body: requestBody, headers: {
+  private getRequestOptions(queryParams: any, requestBody: any, lang: string, personToken?: string) {
+    const headers: Record<string, string> = {
 			'API-Version': '1',
-			'Accept-Language': lang
-		} };
+			'Accept-Language': lang,
+		};
+    if (personToken) {
+      headers['Person-Token'] = personToken;
+    }
+    return { params: queryParams, body: requestBody, headers };
   }
 
   fetch<P extends Path, M extends Method<P>, R extends Responses<P, M>>(
@@ -143,7 +147,11 @@ export class LajiApiClientBService {
 
     if (method !== 'get') {
       this._flush(pathSegments);
-      return this.http.request(method as string, requestUrl, this.getRequestOptions((params as any).query, requestBody, this.lang$.value)) as any;
+      return this.http.request(
+        method as string,
+        requestUrl,
+        this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken)
+      ) as any;
     }
 
     const cachedPath = this.getOrInitializeLastPathCacheLevel(pathSegments);
@@ -164,7 +172,7 @@ export class LajiApiClientBService {
       }
     }
 
-    const obs = this.http.request(method, requestUrl, this.getRequestOptions((params as any).query, requestBody, this.lang$.value)).pipe(
+    const obs = this.http.request(method, requestUrl, this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken)).pipe(
       tap(val => {
         cachedPath?.set(paramsHash, {
           _tag :'completed',

@@ -77,6 +77,7 @@ export namespace Form {
     viewerType?: ViewerType;
     disabled?: boolean;
     openForm?: boolean;
+    hideFromSidebar?: boolean;
   }
 
   export interface FormOptions extends ListOptions {

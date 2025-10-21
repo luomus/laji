@@ -58,6 +58,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
 
   refreshImages() {
     const cacheKey = JSON.stringify({
+      taxon: this.search.taxonId,
       query: this.search.query,
       filters: this.search.filters,
       imageOptions: this.search.imageOptions
