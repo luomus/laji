@@ -195,7 +195,7 @@ export class TraitSearchComponent implements OnInit, OnDestroy, OnChanges {
     this.subscription.unsubscribe();
   }
 
-  onFilterChange(filters: FormValue) {
+  onFilterChange(filters: Partial<FormValue>) {
     this.filterChangeSubject.next(filters);
   }
 

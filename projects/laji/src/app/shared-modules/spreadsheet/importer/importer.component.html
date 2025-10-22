@@ -13,7 +13,7 @@
       (activePhaseChange)="currentTitle = $event.label"
     ></laji-stepper>
 
-    <h2>{{ currentTitle | translate }}</h2>
+    <h2>{{ (currentTitle || '') | translate }}</h2>
 
     <lu-alert [type]="'danger'" *ngIf="vm.step === step.sheetLoadError">
       <div [innerHtml]="sheetLoadErrorMsg"></div>
