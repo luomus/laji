@@ -2,7 +2,6 @@ import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestro
 import { map } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { PersonApi } from '../../../../../laji/src/app/shared/api/PersonApi';
 import { IdentificationMainComponent } from '../../kerttu-global-shared-modules/identification/identification-main/identification-main.component';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 

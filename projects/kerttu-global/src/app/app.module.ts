@@ -22,6 +22,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-component/app-component.module';
 import { LajiUiModule } from '../../../laji-ui/src/lib/laji-ui.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
+import { API_BASE_URL } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -55,6 +56,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   providers: [
     {provide: APP_ID, useValue: 'laji-app'},
     {provide: APP_BASE_HREF, useValue: '/'},
+    {provide: API_BASE_URL, useValue: environment.apiBase},
     DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},
     LocalizeRouterService,
