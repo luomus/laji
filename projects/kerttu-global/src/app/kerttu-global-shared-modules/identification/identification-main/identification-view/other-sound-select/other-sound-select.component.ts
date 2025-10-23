@@ -1,5 +1,14 @@
 import { map } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../../../laji/src/app/shared/service/user.service';
@@ -12,12 +21,13 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./other-sound-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OtherSoundSelectComponent {
+export class OtherSoundSelectComponent implements OnChanges {
   @Input() taxonType = TaxonTypeEnum.bird;
 
+  selectedId?: number;
   options?: IGlobalSpecies[];
 
-  selectedId?: number;
+  private allOptions?: IGlobalSpecies[];
 
   @Output() soundSelect = new EventEmitter<IGlobalSpecies>();
 
@@ -28,9 +38,16 @@ export class OtherSoundSelectComponent {
     private cdr: ChangeDetectorRef
   ) {
     this.getOptions$().subscribe(options => {
-      this.options = options;
+      this.allOptions = options;
+      this.options = this.getFilteredOptions(this.allOptions, this.taxonType);
       this.cdr.markForCheck();
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.taxonType && this.allOptions) {
+      this.options = this.getFilteredOptions(this.allOptions, this.taxonType);
+    }
   }
 
   onSelect(selectedId?: number) {
@@ -54,5 +71,13 @@ export class OtherSoundSelectComponent {
     ).pipe(
       map(result => (result.results))
     );
+  }
+
+  private getFilteredOptions(options: IGlobalSpecies[], taxonType: TaxonTypeEnum): IGlobalSpecies[] {
+    return options.filter(option => (
+      (taxonType === TaxonTypeEnum.bird && option.scientificName !== 'Birds') ||
+      (taxonType === TaxonTypeEnum.bat && option.scientificName !== 'Bats') ||
+      (taxonType === TaxonTypeEnum.insect && option.scientificName !== 'Insects')
+    ));
   }
 }

@@ -9,9 +9,7 @@ import { IGlobalSpecies, TaxonTypeEnum } from '../models';
         <ng-container *ngIf="species.commonName">{{ species.commonName }} - </ng-container><i>{{ species.scientificName }}</i>
       </ng-container>
       <ng-template #otherSound>
-        {{ (species.scientificName === 'Other animals'
-        ? ('otherAnimalsThanBirds' | translateWithTaxonType: mainTaxonType)
-        : ('otherSounds.' + species.scientificName) | translate) }}
+        {{ 'otherSounds.' + species.scientificName | translate }}
       </ng-template>
     </ng-container>
   `
