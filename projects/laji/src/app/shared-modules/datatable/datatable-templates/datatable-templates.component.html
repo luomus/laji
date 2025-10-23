@@ -96,6 +96,7 @@
         target="{{column.target || '_self'}}" [routerLink]="['/taxon', (value.linkings.taxon.speciesId | toQName)] | localize">
         <i class="glyphicon glyphicon-tag"></i>
       </a>
+      <img *ngIf="value.linkings.taxon.speciesId.startsWith('https://www.gbif.org')" class="gbif-icon" src="/static/images/icons/gbif.svg" [luTooltip]="'species.tree.gbif.help' | translate" />
     </span>
     <ng-template #taxonVerbatim>
       {{ value.taxonVerbatim }}
@@ -146,9 +147,13 @@
   </span>
 </ng-template>
 <ng-template let-row="row" #taxonScientificNameLink>
-  <a *ngIf="row.scientificName" title="{{row.scientificName}}" [routerLink]="['/taxon/' + row.id] | localize">
-    <span [class.cursive]="row.cursiveName">{{ row.scientificName }}</span>
-  </a>
+  <span class="inline">
+    <a *ngIf="row.scientificName" title="{{row.scientificName}}" [routerLink]="['/taxon/' + row.id] | localize">
+      <span [class.cursive]="row.cursiveName">{{ row.scientificName }}</span>
+    </a>
+    <img *ngIf="row.id.startsWith('gbif:')" class="gbif-icon" src="/static/images/icons/gbif.svg" [luTooltip]="'species.tree.gbif.help' | translate" />
+  </span>
+
 </ng-template>
 <ng-template let-value="value" #scientificName>
   <span *ngIf="value.scientificName" title="{{value.scientificName}}" [class.cursive]="value.cursiveName">
