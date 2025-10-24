@@ -53,7 +53,7 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
       }
       this.synonymType = undefined;
 
-      if (!this.taxon.nameAccordingTo && this.taxon.synonymOf) {
+      if (this.taxon.synonymOf) {
         this.synonymSub = this.api.get('/taxa/{id}', {
           path: { id: this.taxon.synonymOf.id },
           query: {
