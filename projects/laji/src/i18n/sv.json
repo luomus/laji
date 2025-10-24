@@ -1773,7 +1773,7 @@
   "species.taxa": "Släktträd",
   "species.title.long": "Finlands Artdatacenter upprätthåller den nationella listan över finska arter. Du kan bekanta här med artinformation, förekomst, bilder och släktförhållanden med hjälp av mångsidiga sökningen.",
   "species.title.short": "Sök information om finska djur, växter och svampar.",
-  "species.tree.gbif.help": "GBIF:s checklist: Taxon som det finns observationer av men som saknas i Finlands Artdatacenters checklist, utredda enligt GBIF:s taxonomi",
+  "species.tree.gbif.help": "GBIF:s artlista: Taxon som det finns observationer av men som saknas i Finlands Artdatacenters artlista – utredda enligt GBIF:s taxonomi",
   "species.tree.info.showHidden": "Visar taxa som är dolda från klassificering.",
   "species.tree.info.showMainLevels": "Döljer taxa från klassificeringen vars taxonomiska nivå inte tillhör huvudnivåerna. Huvudnivåerna är liv, domän, rike, fylum, klass, ordning, familf, släkte och art.",
   "species.tree.showHidden": "Visa dolda taxa",
