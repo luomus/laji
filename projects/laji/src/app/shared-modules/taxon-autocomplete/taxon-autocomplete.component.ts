@@ -121,7 +121,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
       switchMap(() => this.api.get('/autocomplete/taxa', { query: {
         query,
         limit: this.limit,
-        matchType: 'partial',
+        matchType: 'exact,partial',
         informalTaxonGroup: this.informalTaxonGroup,
         excludeNameTypes: this.excludeNameTypes,
         onlyFinnish: this.onlyFinnish,
