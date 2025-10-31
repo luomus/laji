@@ -33,8 +33,8 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     published: [undefined as (boolean | undefined)], // only when editing existing dataset
     shareToFinBIF: [undefined as (boolean | undefined)], // hidden
     shareToGBIF: [undefined as (boolean | undefined)], // hidden
-    finbifDOI: [undefined as (string | undefined)], // uneditable
-    gbifDOI: [undefined as (string | undefined)], // uneditable
+    doi: [undefined as (string | undefined)], // uneditable
+    gbifDoi: [undefined as (string | undefined)], // uneditable
     name: [''],
     description: [''],
     citation: [''],
@@ -47,7 +47,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     temporalCoverage: [''],
     geographicCoverage: [''],
     coverageBasis: [''],
-    additionalIdentifiers: [[]],
+    additionalIdentifier: [[]],
   });
 
   externalValidationInProgress = false;
