@@ -128,6 +128,25 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/person/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get profile */
+        get: operations["PersonsController_findProfileByPersonToken"];
+        /** Update profile */
+        put: operations["PersonsController_updateProfile"];
+        /** Create profile */
+        post: operations["PersonsController_createProfile"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/person/{id}": {
         parameters: {
             query?: never;
@@ -156,25 +175,6 @@ export interface paths {
         get: operations["PersonsController_findPersonByToken"];
         put?: never;
         post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/person/profile": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get profile */
-        get: operations["PersonsController_findProfileByPersonToken"];
-        /** Update profile */
-        put: operations["PersonsController_updateProfile"];
-        /** Create profile */
-        post: operations["PersonsController_createProfile"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1520,6 +1520,92 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["CoordinatesController_getLocationInformation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/feedback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["FeedbackController_send"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/geo-convert/{fileId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** eslint-disable
+         *     Convert a FinBIF occurrence data file into a geographic data format */
+        get: operations["GeoConvertController_get"];
+        put?: never;
+        /** Convert a FinBIF occurrence data file into a geographic data format */
+        post: operations["GeoConvertController_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/geo-convert/status/{conversionId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get status of a conversion */
+        get: operations["GeoConvertController_status"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/geo-convert/output/{conversionId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get the output file of a conversion */
+        get: operations["GeoConvertController_output"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/html-to-pdf": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Convert HTML to PDF */
+        post: operations["HtmlToPdfController_htmlToPdf"];
         delete?: never;
         options?: never;
         head?: never;
@@ -8626,6 +8712,18 @@ export interface components {
         AddressComponent: {
             long_name: string;
             short_name: string;
+            types: string[];
+        };
+        Location: {
+            address_components: components["schemas"]["AddressComponent"][];
+            types: string[];
+            formatted_address?: string;
+            place_id: string;
+        };
+        FeedbackDto: {
+            subject: string;
+            message: string;
+            meta: string;
         };
         DwQuery_CountResponse: {
             total: number;
@@ -10278,9 +10376,9 @@ export interface components {
             temporalCoverage: string;
             geographicCoverage: string;
             coverageBasis: string;
-            finbifDOI?: string;
-            gbifDOI?: string;
-            additionalIdentifiers?: string[];
+            doi?: string;
+            gbifDoi?: string;
+            additionalIdentifier?: string[];
             published: boolean;
             shareToFinBIF: boolean;
             shareToGBIF: boolean;
@@ -10354,7 +10452,11 @@ export interface components {
             municipality?: string;
             locality?: string;
             locationIdentifiers?: string;
-            habitat?: string;
+            /**
+             * @description Qname identifier
+             * @enum {string}
+             */
+            habitat?: "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue146" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170";
             occurrenceRemarks?: string;
             measurementDeterminedBy?: string;
             /** Format: date */
@@ -10520,7 +10622,11 @@ export interface components {
             municipality: string;
             locality: string;
             locationIdentifiers: string;
-            habitat: string;
+            /**
+             * @description Qname identifier
+             * @enum {string}
+             */
+            habitat: "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue146" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170";
             occurrenceRemarks: string;
             measurementDeterminedBy: string;
             /** Format: date */
@@ -10563,9 +10669,9 @@ export interface components {
             contactEmail: string;
             methods: string;
             coverageBasis: string;
-            finbifDOI: string;
-            gbifDOI: string;
-            additionalIdentifiers: string[];
+            doi: string;
+            gbifDoi: string;
+            additionalIdentifier: string[];
         };
         HigherTaxa: {
             domain: string;
@@ -10661,25 +10767,37 @@ export interface components {
             name: string;
             fields: components["schemas"]["field"][];
             /** filters */
-            filters: Record<string, never>;
+            filters: {
+                [key: string]: unknown;
+            };
             /** label */
             label: string;
             /** Notice validators */
-            notices: Record<string, never>;
+            notices: {
+                [key: string]: unknown;
+            };
             /** Options */
-            options: Record<string, never>;
+            options: {
+                [key: string]: unknown;
+            };
             /** Required field */
             required: boolean;
             /** field type */
             type: string;
             /** UI instructions to field */
-            ui: Record<string, never>;
+            ui: {
+                [key: string]: unknown;
+            };
             /** validators */
-            validators: Record<string, never>;
+            validators: {
+                [key: string]: unknown;
+            };
             /** value */
             value: string;
             /** warning validators */
-            warnings: Record<string, never>;
+            warnings: {
+                [key: string]: unknown;
+            };
         };
         formOptions: {
             /** Context for the MHL.formOptionsClass */
@@ -10960,7 +11078,9 @@ export interface components {
              * Logos
              * @description Key is an image URI, value is the URI of the page clicking the image opens
              */
-            footerLogos: Record<string, never>;
+            footerLogos: {
+                [key: string]: unknown;
+            };
         };
         formNamedPlaceOptions: {
             /** Context for the MHL.formNamedPlaceOptionsClass */
@@ -11134,7 +11254,9 @@ export interface components {
              * Prepopulated document initialization
              * @description When a new named place is created, the prepopulatedDocument will be populated according to this.
              */
-            prepopulatedDocumentFields: Record<string, never>;
+            prepopulatedDocumentFields: {
+                [key: string]: unknown;
+            };
             /**
              * Print button label
              * @description Label for print button of named place viewer
@@ -13281,7 +13403,7 @@ export interface components {
              */
             sampleLocation?: string;
             /** Specimen ID */
-            specimenID: string;
+            specimenID?: string;
             /**
              * Preparation/sample status
              * @description Status of the preparation/sample. For specimen level status use the status field in the basic information section. Empty value means same as "ok" - that there is nothing special about the status of the sample.
@@ -14475,49 +14597,6 @@ export interface operations {
             };
         };
     };
-    PersonsController_findPersonByPersonId: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SensitivePerson"];
-                };
-            };
-        };
-    };
-    PersonsController_findPersonByToken: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description Person's authentication token */
-                "Person-Token"?: string;
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Person"];
-                };
-            };
-        };
-    };
     PersonsController_findProfileByPersonToken: {
         parameters: {
             query?: never;
@@ -14588,6 +14667,49 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["profile"];
+                };
+            };
+        };
+    };
+    PersonsController_findPersonByPersonId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SensitivePerson"];
+                };
+            };
+        };
+    };
+    PersonsController_findPersonByToken: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Person"];
                 };
             };
         };
@@ -15530,7 +15652,7 @@ export interface operations {
                 /** @description Exclude taxa from specified informal taxon group(s). Multiple values are separated by a comma (,) */
                 excludedInformalTaxonGroup?: string;
                 /** @description Default: All match types; exact = exact matches, partial = partially matching, likely = fuzzy matching. Multiple values are separated by a comma (,) */
-                matchType?: "exact" | "partial" | "likely";
+                matchType?: string;
                 /** @description Matching names have a type (e.g., MX.vernacularName, MX.hasMisappliedName). Multiple values are separated by a comma (,) */
                 excludeNameTypes?: string;
                 /** @description Filter to include only species (and subspecies) */
@@ -21652,7 +21774,7 @@ export interface operations {
                 /** @description Exclude taxa from specified informal taxon group(s). Multiple values are separated by a comma (,) */
                 excludedInformalTaxonGroup?: string;
                 /** @description Default: All match types; exact = exact matches, partial = partially matching, likely = fuzzy matching. Multiple values are separated by a comma (,) */
-                matchType?: "exact" | "partial" | "likely";
+                matchType?: string;
                 /** @description Matching names have a type (e.g., MX.vernacularName, MX.hasMisappliedName). Multiple values are separated by a comma (,) */
                 excludeNameTypes?: string;
                 /** @description Filter to include only species (and subspecies) */
@@ -21782,6 +21904,151 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: components["schemas"]["Location"][];
+                        "@context": string;
+                    };
+                };
+            };
+        };
+    };
+    FeedbackController_send: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FeedbackDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    GeoConvertController_get: {
+        parameters: {
+            query: {
+                /** @description The output file format (in the form of a file extension) for the geographic data */
+                outputFormat: "gpkg";
+                /** @description The geometry type of the output */
+                geometryType: "point" | "bbox" | "footprint";
+                /** @description The coordinate reference system for the output. One of "kkj", "euref", "wgs84" or any valid numeric EPSG code */
+                crs: string;
+            };
+            header?: {
+                /** @description For use with restricted data downloads */
+                "Person-Token"?: string;
+            };
+            path: {
+                fileId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GeoConvertController_post: {
+        parameters: {
+            query: {
+                /** @description The output file format (in the form of a file extension) for the geographic data */
+                outputFormat: "gpkg";
+                /** @description The geometry type of the output */
+                geometryType: "point" | "bbox" | "footprint";
+                /** @description The coordinate reference system for the output. One of "kkj", "euref", "wgs84" or any valid numeric EPSG code */
+                crs: string;
+            };
+            header?: never;
+            path: {
+                fileId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GeoConvertController_status: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GeoConvertController_output: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HtmlToPdfController_htmlToPdf: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "text/plain": string;
+            };
+        };
         responses: {
             200: {
                 headers: {
