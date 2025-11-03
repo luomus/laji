@@ -17,6 +17,7 @@
     <bsg-templates
       [templates]="templates!"
       [confirmedTemplates]="confirmedTemplates"
+      [sampleRate]="sampleRate"
       [spectrogramConfig]="spectrogramConfig"
       [audioIdMap]="audioIdMap"
       [highlightNonConfirmed]="!historyView"
@@ -69,6 +70,7 @@
       *ngIf="showCandidates"
       [recordings]="recordings"
       [templates]="templates"
+      [sampleRate]="sampleRate"
       [spectrogramConfig]="spectrogramConfig"
       (audioClick)="onAudioClick($event)"
       (candidateClick)="onCandidateClick($event)"
@@ -86,6 +88,7 @@
     [templateIdx]="activeTemplateIdx!"
     [isNewTemplate]="activeTemplateIsNew!"
     [audioFocusTime]="activeAudioFocusTime!"
+    [sampleRate]="sampleRate"
     [spectrogramConfig]="spectrogramConfig"
     [historyView]="historyView"
     (confirm)="onTemplateConfirm($event)"

@@ -17,9 +17,9 @@
     <div>temporal coverage: {{ data.dataset?.temporalCoverage }}</div>
     <div>geographic coverage: {{ data.dataset?.geographicCoverage }}</div>
     <div>coverage basis: {{ data.dataset?.coverageBasis }}</div>
-    <div *ngIf="data.dataset?.finbifDOI">FinBIF DOI: {{ data.dataset?.finbifDOI }}</div>
-    <div *ngIf="data.dataset?.gbifDOI">GBIF DOI: {{ data.dataset?.gbifDOI }}</div>
-    <div>additional identifiers: {{ data.dataset?.additionalIdentifiers }}</div>
+    <div *ngIf="data.dataset?.doi">FinBIF DOI: {{ data.dataset?.doi }}</div>
+    <div *ngIf="data.dataset?.gbifDoi">GBIF DOI: {{ data.dataset?.gbifDoi }}</div>
+    <div>additional identifiers: {{ data.dataset?.additionalIdentifier }}</div>
     <div>published: {{ data.dataset?.published }}</div>
 
     <ng-container *ngIf="data.perms !== undefined; else loading">
@@ -37,7 +37,7 @@
 
     <ng-container *ngIf="data.dataset?.published">
       <h3>Browse traits</h3>
-      table
+      <laji-trait-search [datasetId]="data.dataset?.id"></laji-trait-search>
     </ng-container>
   </ng-container>
 </ng-container>

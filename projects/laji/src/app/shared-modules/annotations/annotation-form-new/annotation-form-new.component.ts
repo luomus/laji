@@ -8,7 +8,6 @@ import { AnnotationService } from '../../document-viewer/service/annotation.serv
 import { Observable, Subscription } from 'rxjs';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { Global } from '../../../../environments/global';
 import { IdService } from '../../../shared/service/id.service';
@@ -110,7 +109,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   constructor(
     private annotationService: AnnotationService,
     private loggerService: Logger,
-    private lajiApi: LajiApiService,
     private api: LajiApiClientBService,
     private translate: TranslateService,
     private cd: ChangeDetectorRef,
@@ -136,18 +134,17 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     this.cd.detectChanges();
   }
 
-  public getTaxa(token: string): Observable<any> {
-    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
-      q: token,
-      limit: '10',
-      includePayload: true
-    }).pipe(
-      map(data => data.map((item: any) => {
+  public getTaxa(query: string) {
+    return this.api.get('/autocomplete/taxa', { query: {
+      query,
+      limit: 10
+    }}).pipe(
+      map(data => data.results.map(item => {
         let groups = '';
-        if (item.payload && item.payload.informalTaxonGroups) {
-          groups = item.payload.informalTaxonGroups.reduce((prev: string, curr: InformalTaxonGroup) => prev + ' ' + curr.id, groups);
+        if (item.informalGroups) {
+          groups = item.informalGroups.reduce((prev: string, curr: InformalTaxonGroup) => prev + ' ' + curr.id, groups);
         }
-        item['groups'] = groups;
+        (item as any)['groups'] = groups;
         return item;
       })));
   }

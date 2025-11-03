@@ -36,8 +36,8 @@
      </ng-template>
   </div>
   <div class="col-md-6 form-control-static" *ngIf="showResult">
-    <ng-container *ngIf="result && result.payload; else asIs">
-      <laji-taxon-name [capitalizeName]="true" [taxon]="result.payload" [taxonID]="result.key" [warningOnMissingTaxonID]="true"></laji-taxon-name>
+    <ng-container *ngIf="result; else asIs">
+      <laji-taxon-name [capitalizeName]="true" [taxon]="result" [taxonID]="result.id" [warningOnMissingTaxonID]="true"></laji-taxon-name>
     </ng-container>
     <ng-template #asIs>
       <ng-container *ngIf="useValue">

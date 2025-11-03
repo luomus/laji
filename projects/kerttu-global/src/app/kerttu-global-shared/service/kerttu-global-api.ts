@@ -21,7 +21,7 @@ import {
   IIdentificationSpeciesStat,
   IIdentificationHistoryResponse,
   IIdentificationHistoryQuery,
-  IGlobalRecordingWithAnnotation
+  IGlobalRecordingWithAnnotation, TaxonTypeEnum
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -123,11 +123,27 @@ export class KerttuGlobalApi {
   }
 
   public getNewIdentificationRecording(
-    personToken: string, lang: string, siteIds: number[], previousRecordingId?: number|null, excludeRecordingIds?: (number|null)[], fileNameFilter?: string
+    personToken: string,
+    lang: string,
+    siteIds: number[]|null,
+    speciesIds: number[]|null,
+    unknownSpecies: boolean|null,
+    previousRecordingId?: number|null,
+    excludeRecordingIds?: (number|null)[],
+    fileNameFilter?: string
   ): Observable<IGlobalRecordingWithAnnotation> {
     const path = this.basePath + '/identification/recordings/new';
-    let params = new HttpParams().set('personToken', personToken).set('lang', lang).set('sites', '' + siteIds);
 
+    let params = new HttpParams().set('personToken', personToken).set('lang', lang);
+    if (siteIds) {
+      params = params.set('sites', '' + siteIds);
+    }
+    if (speciesIds) {
+      params = params.set('species', '' + speciesIds);
+    }
+    if (unknownSpecies != null) {
+      params = params.set('unknownSpecies', '' + unknownSpecies);
+    }
     if (previousRecordingId != null) {
       params = params.set('previousRecording', '' + previousRecordingId);
     }
@@ -155,35 +171,56 @@ export class KerttuGlobalApi {
     return this.httpClient.post(path, annotation, { params });
   }
 
-  public getSites(personToken: string): Observable<IListResult<IGlobalSite>> {
+  public getSites(taxonTypes: TaxonTypeEnum[]|null, personToken: string): Observable<IListResult<IGlobalSite>> {
     const path = this.basePath + '/identification/sites';
-    const params = new HttpParams().set('personToken', personToken);
+
+    let params = new HttpParams().set('personToken', personToken);
+    if (taxonTypes) {
+      params = params.set('taxonTypes', '' + taxonTypes);
+    }
 
     return this.httpClient.get<IListResult<IGlobalSite>>(path, { params });
   }
 
-  public getIdentificationSiteStats(): Observable<IListResult<IIdentificationSiteStat>> {
+  public getIdentificationSiteStats(taxonTypes: TaxonTypeEnum[]|null): Observable<IListResult<IIdentificationSiteStat>> {
     const path = this.basePath + '/identification/statistics/sites';
 
-    return this.httpClient.get<IListResult<IIdentificationSiteStat>>(path);
+    let params = new HttpParams();
+    if (taxonTypes) {
+      params = params.set('taxonTypes', '' + taxonTypes);
+    }
+
+    return this.httpClient.get<IListResult<IIdentificationSiteStat>>(path, { params });
   }
 
-  public getIdentificationUserStats(): Observable<IIdentificationUserStatResult> {
+  public getIdentificationUserStats(taxonTypes: TaxonTypeEnum[]|null): Observable<IIdentificationUserStatResult> {
     const path = this.basePath + '/identification/statistics/users';
 
-    return this.httpClient.get<IIdentificationUserStatResult>(path);
+    let params = new HttpParams();
+    if (taxonTypes) {
+      params = params.set('taxonTypes', '' + taxonTypes);
+    }
+    return this.httpClient.get<IIdentificationUserStatResult>(path, { params });
   }
 
-  public getIdentificationSpeciesStats(lang: string): Observable<IListResult<IIdentificationSpeciesStat>> {
+  public getIdentificationSpeciesStats(taxonTypes: TaxonTypeEnum[]|null, lang: string): Observable<IListResult<IIdentificationSpeciesStat>> {
     const path = this.basePath + '/identification/statistics/species';
-    const params = new HttpParams().set('lang', lang);
+
+    let params = new HttpParams().set('lang', lang);
+    if (taxonTypes) {
+      params = params.set('taxonTypes', '' + taxonTypes);
+    }
 
     return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path, { params });
   }
 
-  public getIdentificationOwnSpeciesStats(personToken: string, lang: string): Observable<IListResult<IIdentificationSpeciesStat>> {
+  public getIdentificationOwnSpeciesStats(taxonTypes: TaxonTypeEnum[]|null, personToken: string, lang: string): Observable<IListResult<IIdentificationSpeciesStat>> {
     const path = this.basePath + '/identification/statistics/ownSpecies';
-    const params = new HttpParams().set('personToken', personToken).set('lang', lang);
+
+    let params = new HttpParams().set('personToken', personToken).set('lang', lang);
+    if (taxonTypes) {
+      params = params.set('taxonTypes', '' + taxonTypes);
+    }
 
     return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path, { params });
   }

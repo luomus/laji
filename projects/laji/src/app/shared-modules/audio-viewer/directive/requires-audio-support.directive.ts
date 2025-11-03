@@ -19,7 +19,7 @@ export class RequiresAudioSupportDirective {
     this.viewContainer.clear();
 
     const webAudioApiSupported = this.platformService.webAudioApiIsSupported;
-    if (webAudioApiSupported && this.audioService.setDefaultSampleRate(sampleRate)) {
+    if (webAudioApiSupported && this.audioService.sampleRateIsSupported(sampleRate)) {
       if (this.platformService.isIOS) {
         this.viewContainer.createComponent(AudioIosWarningComponent);
       }

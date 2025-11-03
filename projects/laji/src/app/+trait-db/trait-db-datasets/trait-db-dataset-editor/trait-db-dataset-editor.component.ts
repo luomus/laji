@@ -33,8 +33,8 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     published: [undefined as (boolean | undefined)], // only when editing existing dataset
     shareToFinBIF: [undefined as (boolean | undefined)], // hidden
     shareToGBIF: [undefined as (boolean | undefined)], // hidden
-    finbifDOI: [undefined as (string | undefined)], // uneditable
-    gbifDOI: [undefined as (string | undefined)], // uneditable
+    doi: [undefined as (string | undefined)], // uneditable
+    gbifDoi: [undefined as (string | undefined)], // uneditable
     name: [''],
     description: [''],
     citation: [''],
@@ -47,7 +47,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     temporalCoverage: [''],
     geographicCoverage: [''],
     coverageBasis: [''],
-    additionalIdentifiers: [[]],
+    additionalIdentifier: [[]],
   });
 
   externalValidationInProgress = false;
@@ -138,7 +138,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     this.externalValidationInProgress = true;
     const form = filterNullValues(this.datasetForm.value) as Dataset;
     this.datasetForm.disable();
-    this.api.fetch('/trait/datasets/validate', 'post', { query: { personToken: this.userService.getToken() } }, form, 0).pipe(
+    this.api.fetch('/trait/datasets/validate', 'post', undefined, form, 0).pipe(
       tap(res => {
         this.externalValidationInProgress = false;
         this.errors = res.pass ? undefined : res.errors;
@@ -150,7 +150,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
         this.uploadInProgress = true;
         this.datasetForm.disable();
       }),
-      switchMap(_ => this.api.fetch('/trait/datasets', 'post', { query: { personToken: this.userService.getToken() } }, form, 0))
+      switchMap(_ => this.api.fetch('/trait/datasets', 'post', undefined, form, 0))
     ).subscribe(res => {
       this.uploadInProgress = false;
       this.api.flush('/trait/dataset-permissions');
@@ -163,7 +163,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     this.externalValidationInProgress = true;
     const form = filterNullValues(this.datasetForm.value) as Dataset;
     this.datasetForm.disable();
-    this.api.fetch('/trait/datasets/validate-update/{id}', 'post', { path: { id: form.id }, query: { personToken: this.userService.getToken() } }, form).pipe(
+    this.api.fetch('/trait/datasets/validate-update/{id}', 'post', { path: { id: form.id }  }, form).pipe(
       tap(res => {
         this.externalValidationInProgress = false;
         this.errors = res.pass ? undefined : res.errors;
@@ -175,7 +175,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
         this.uploadInProgress = true;
         this.datasetForm.disable();
       }),
-      switchMap(_ => this.api.fetch('/trait/datasets/{id}', 'put', { path: { id: form.id }, query: { personToken: this.userService.getToken() } }, form))
+      switchMap(_ => this.api.fetch('/trait/datasets/{id}', 'put', { path: { id: form.id }  }, form))
     ).subscribe(res => {
       this.uploadInProgress = false;
       this.cdr.markForCheck();

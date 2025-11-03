@@ -743,7 +743,12 @@ body > .ui-select-bootstrap.open {
     padding: 0;
   }
 
-  .no-print, .no-print *
+  * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .no-print, .no-print *, .navbar
   {
     display: none !important;
   }
@@ -1278,6 +1283,14 @@ typeahead-container button {
   display: inline-block;
   margin-left: 5px;
 }
+
+.gbif-icon {
+  height: 19px;
+  width: 19px;
+  margin-right: 4px;
+  background-image: url('/static/images/icons/gbif.svg');
+}
+
 
 .responsive_container {
   display: inline-block;

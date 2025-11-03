@@ -1,0 +1,26 @@
+<div *ngIf="enableShowWholeTimeRangeSetting">
+  <label>{{ showWholeTimeRangeLabel }}</label>
+  <bSwitch
+    [switch-on-text]="'on' | translate"
+    [switch-off-text]="'off' | translate"
+    [switch-on-color]="'primary'"
+    [switch-size]="'small'"
+    [ngModel]="showWholeTimeRange"
+    (ngModelChange)="showWholeTimeRangeChange.emit($event)"
+    [switch-base-class]="'bootstrap-switch'">
+  </bSwitch>
+  <laji-info *ngIf="showWholeTimeRangeInfo" [placement]="'right'" [html]="showWholeTimeRangeInfo" [showOnHover]="true"></laji-info>
+</div>
+<div *ngIf="enableShowWholeFrequencyRangeSetting">
+  <label>{{ showWholeFrequencyRangeLabel }}</label>
+  <bSwitch
+    [switch-on-text]="'on' | translate"
+    [switch-off-text]="'off' | translate"
+    [switch-on-color]="'primary'"
+    [switch-size]="'small'"
+    [ngModel]="showWholeFrequencyRange"
+    (ngModelChange)="showWholeFrequencyRangeChange.emit($event)"
+    [switch-base-class]="'bootstrap-switch'">
+  </bSwitch>
+  <laji-info *ngIf="showWholeFrequencyRangeInfo" [placement]="'right'" [html]="showWholeFrequencyRangeInfo" [showOnHover]="true"></laji-info>
+</div>

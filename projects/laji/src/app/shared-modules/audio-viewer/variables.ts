@@ -1,12 +1,10 @@
-import { ISpectrogramConfig } from './models';
+import { SpectrogramConfig } from './models';
 
-export const defaultSpectrogramConfig: ISpectrogramConfig = {
-  sampleRate: 22050,
+export const defaultSpectrogramConfig: SpectrogramConfig = {
   targetWindowLengthInSeconds: 0.015,
-  targetWindowOverlapPercentage: 0.375,
+  targetWindowOverlapPercentage: 'auto',
   nbrOfRowsRemovedFromStart: 0,
   maxNbrOfColsForNoiseEstimation: 6000,
   noiseReductionParam: 2,
-  logRange: 3,
-  minFrequency: 0
+  logRange: 3
 };
