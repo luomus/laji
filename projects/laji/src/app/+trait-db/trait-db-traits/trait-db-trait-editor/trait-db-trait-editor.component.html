@@ -39,38 +39,7 @@
     <label for="base-unit">Base unit:</label>
     <select id="base-unit" class="form-control" formControlName="baseUnit">
       <option [value]="undefined" [attr.selected]="!form.get('baseUnit')?.value ? '' : null">None</option>
-      <option value="TDF.umNM">{{ 'TDF.umNM' | label }}</option>
-      <option value="TDF.umUM">{{ 'TDF.umUM' | label }}</option>
-      <option value="TDF.umMM">{{ 'TDF.umMM' | label }}</option>
-      <option value="TDF.umCM">{{ 'TDF.umCM' | label }}</option>
-      <option value="TDF.umM">{{ 'TDF.umM' | label }}</option>
-      <option value="TDF.umKM">{{ 'TDF.umKM' | label }}</option>
-      <option value="TDF.umG">{{ 'TDF.umG' | label }}</option>
-      <option value="TDF.umKG">{{ 'TDF.umKG' | label }}</option>
-      <option value="TDF.umA">{{ 'TDF.umA' | label }}</option>
-      <option value="TDF.umS">{{ 'TDF.umS' | label }}</option>
-      <option value="TDF.umML">{{ 'TDF.umML' | label }}</option>
-      <option value="TDF.umL">{{ 'TDF.umL' | label }}</option>
-      <option value="TDF.umMOL">{{ 'TDF.umMOL' | label }}</option>
-      <option value="TDF.umMMOL">{{ 'TDF.umMMOL' | label }}</option>
-      <option value="TDF.umUMOL">{{ 'TDF.umUMOL' | label }}</option>
-      <option value="TDF.umHZ">{{ 'TDF.umHZ' | label }}</option>
-      <option value="TDF.umP">{{ 'TDF.umP' | label }}</option>
-      <option value="TDF.umPPT">{{ 'TDF.umPPT' | label }}</option>
-      <option value="TDF.umPPM">{{ 'TDF.umPPM' | label }}</option>
-      <option value="TDF.umC">{{ 'TDF.umC' | label }}</option>
-      <option value="TDF.umMM2">{{ 'TDF.umMM2' | label }}</option>
-      <option value="TDF.umCM2">{{ 'TDF.umCM2' | label }}</option>
-      <option value="TDF.umM2">{{ 'TDF.umM2' | label }}</option>
-      <option value="TDF.umARE">{{ 'TDF.umARE' | label }}</option>
-      <option value="TDF.umHA">{{ 'TDF.umHA' | label }}</option>
-      <option value="TDF.umKM2">{{ 'TDF.umKM2' | label }}</option>
-      <option value="TDF.umMM3">{{ 'TDF.umMM3' | label }}</option>
-      <option value="TDF.umCM3">{{ 'TDF.umCM3' | label }}</option>
-      <option value="TDF.umM3">{{ 'TDF.umM3' | label }}</option>
-      <option value="TDF.umGMOL">{{ 'TDF.umGMOL' | label }}</option>
-      <option value="TDF.umGMOLL">{{ 'TDF.umGMOLL' | label }}</option>
-      <option value="TDF.umCM2H">{{ 'TDF.umCM2H' | label }}</option>
+      <option *ngFor="let u of (unitOfMeasurements$ | async)" [value]="u.id">{{ u.label }}</option>
     </select>
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'baseUnit' }"></ng-container>
   </div>
@@ -104,4 +73,3 @@
 <ng-template #errorsTmp let-prop>
   <div class="alert alert-danger" role="alert" *ngIf="errors?.[prop]">{{ errors?.[prop]}}</div>
 </ng-template>
-
