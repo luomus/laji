@@ -1,6 +1,4 @@
-<details [formGroup]="form" class="lu-details my-6" open>
-  <summary>Filters</summary>
-
+<div [formGroup]="form">
   <div class="mb-5 d-flex flex-gap-4">
     <div class="dataset-filter flex-grow">
       <label for="trait-search-filters-dataset">Dataset</label>
@@ -27,4 +25,4 @@
     <button (click)="onSearch()" class="btn btn-primary">Search</button>
     <button (click)="onClear()" class="btn btn-default">Clear</button>
   </div>
-</details>
+</div>

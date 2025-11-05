@@ -8,12 +8,19 @@ p {
   max-width: 600px;
 }
 
+h1 strong {
+  color: $primary-5;
+}
+
 .counts-item {
   padding: $sp-4 $sp-5;
-  background-color: $neutral-4;
+  background-color: $neutral-1;
+  border-radius: 4px;
+  border: 1px solid $info-3;
+  color: $info-8;
 
   strong {
     font-size: $fs-5;
+    color: $info-7;
   }
 }
-

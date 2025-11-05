@@ -1,11 +1,19 @@
-<laji-trait-search-filters
-  [initialValue]="initialFilters"
-  [disabled]="getDisabledFilters()"
-  (filterChange)="onFilterChange($event)"
-  (searchClicked)="onFilterSearchClicked()"
-></laji-trait-search-filters>
-
-<a class="btn btn-default" [href]="getDownloadUrl()" download="traits.zip">Download</a>
+<div class="d-flex flex-gap-3">
+  <button
+    class="btn btn-default"
+    [luPopover]="searchFilters"
+    [rootElement]="'body'"
+    [mode]="'click'"
+    placement="bottom"
+  >
+    <i class="glyphicon glyphicon-wrench"></i>
+    Filters
+  </button>
+  <a class="btn btn-default" [href]="getDownloadUrl()" download="traits.zip">
+    <i class="glyphicon glyphicon-download"></i>
+    Download
+  </a>
+</div>
 
 <lu-datatable
   [rows]="$any(searchResult?.res?.results) ?? []"
@@ -19,3 +27,13 @@
   (pageChange)="onChangePageIdx($event)"
   (sortChange)="onSort($event)"
 ></lu-datatable>
+
+<ng-template #searchFilters>
+  <laji-trait-search-filters
+    class="laji-page"
+    [initialValue]="initialFilters"
+    [disabled]="getDisabledFilters()"
+    (filterChange)="onFilterChange($event)"
+    (searchClicked)="onFilterSearchClicked()"
+  ></laji-trait-search-filters>
+</ng-template>

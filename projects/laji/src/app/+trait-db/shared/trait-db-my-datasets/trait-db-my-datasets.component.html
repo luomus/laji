@@ -15,9 +15,31 @@
 <ng-template #loggedInDatasets>
   <ng-container *ngIf="datasets$ | async as datasets; else loading">
     <div *ngIf="datasets.length > 0; else noDatasets">
-      <ul *ngFor="let dataset of datasets">
-        <li><a [routerLink]="['/trait-db/datasets/', dataset.id]">{{ dataset.name }}</a></li>
-      </ul>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Published</th>
+          <th>Shared to FinBIF</th>
+          <th>Shared to GBIF</th>
+          <th>Edit</th>
+        </tr>
+        <tr *ngFor="let dataset of datasets">
+          <td><a [routerLink]="['/trait-db/datasets/', dataset.id]">{{ dataset.name }}</a></td>
+          <td *ngIf="dataset.published; else notPublished">
+            <i class="glyphicon glyphicon-ok"></i>
+            Published</td>
+          <td *ngIf="dataset.shareToFinBIF; else notFinBIF">
+            <i class="glyphicon glyphicon-ok"></i>
+            On FinBIF</td>
+          <td *ngIf="dataset.shareToGBIF; else notGBIF">
+            <i class="glyphicon glyphicon-ok"></i>
+            On GBIF</td>
+          <td><a [routerLink]="['/trait-db/datasets/', dataset.id, 'edit']">Edit dataset</a></td>
+        </tr>
+      </table>
+      <ng-template #notPublished><td>Not published</td></ng-template>
+      <ng-template #notFinBIF><td>Not on FinBIF</td></ng-template>
+      <ng-template #notGBIF><td>Not on GBIF</td></ng-template>
     </div>
   </ng-container>
   <a routerLink="/trait-db/datasets/new" class="btn btn-default">Create dataset</a>
@@ -26,4 +48,3 @@
 <ng-template #noDatasets>
   <p>You have not created any datasets yet. Click below to start sharing trait data.</p>
 </ng-template>
-
