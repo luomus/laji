@@ -21,7 +21,7 @@ import { ToastsService } from '../../../../shared/service/toasts.service';
 import { concatMap, map, take } from 'rxjs/operators';
 import { Global } from '../../../../../environments/global';
 import { combineLatest, Subscription } from 'rxjs';
-import { DefaultMediaMetadata, Profile } from '../../../../shared/model/Profile';
+import { DefaultMediaMetadata } from '../../../../shared/model/Profile';
 import type LajiForm from '@luomus/laji-form/lib/index';
 import type { Theme as LajiFormTheme } from '@luomus/laji-form/lib/themes/theme';
 import { Form } from 'projects/laji/src/app/shared/model/Form';
@@ -29,6 +29,7 @@ import { environment } from 'projects/laji/src/environments/environment';
 import { ProjectFormService } from 'projects/laji/src/app/shared/service/project-form.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
+import { ErrorSchema } from '@rjsf/utils';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -345,6 +346,14 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
     this.ngZone.runOutsideAngular(() => {
       this.lajiFormWrapper.setState({lang: this.localLang as any});
       this.apiClient.lang = this.localLang;
+    });
+  }
+
+  setExtraErrors(extraErrors?: ErrorSchema) {
+    this.ngZone.runOutsideAngular(() => {
+      this.lajiFormWrapper.setState({
+        extraErrors
+      });
     });
   }
 }

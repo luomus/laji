@@ -18,6 +18,7 @@ import { ProjectFormService, RegistrationContact } from '../../../shared/service
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 import { LocalStorage } from 'ngx-webstorage';
 import { FormService } from '../../../shared/service/form.service';
+import { ErrorSchema } from '@rjsf/utils';
 
 @Component({
   selector: 'laji-document-form',
@@ -258,10 +259,15 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
          this.translate.instant('haseka.form.success')
       ));
       this.successNavigation();
-    }, () => {
+    }, (e) => {
       this.lajiForm.unBlock();
       this.saving = false;
-      this.lajiForm.displayErrorModal('saveError');
+      if (e.error?.errorCode === 'VALIDATION_EXCEPTION') {
+        this.lajiForm.setExtraErrors(apiValidationErrorsToRJSFErrorSchema(e.error.details as ApiValidationErrors))
+      } else {
+        this.lajiForm.displayErrorModal('saveError');
+        this.lajiForm.setExtraErrors(undefined);
+      }
     });
   };
 
@@ -371,3 +377,19 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     ) ?? defaultValue;
   }
 }
+
+interface ApiValidationErrors {
+  [field: string]: Record<string, ApiValidationErrors | string[]>
+};
+
+const apiValidationErrorsToRJSFErrorSchema = (errors: ApiValidationErrors) => Object.keys(errors).reduce((errorSchema, property) => {
+  const propertyErrors = errors[property];
+  if (Array.isArray(propertyErrors)) {
+    errorSchema[property] = {
+      __errors: [ ...(errorSchema[property]?.__errors || []), ...(propertyErrors as string[]) ]
+    } as ErrorSchema;
+  } else {
+    errorSchema[property] = apiValidationErrorsToRJSFErrorSchema(propertyErrors as ApiValidationErrors);
+  }
+  return errorSchema;
+}, {} as ErrorSchema);
