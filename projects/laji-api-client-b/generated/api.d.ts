@@ -8526,7 +8526,7 @@ export interface components {
         BatchJobValidationStatus: {
             percentage: number;
             /** @default 0 */
-            processed: Record<string, never>;
+            processed: number;
             total: number;
         };
         BatchJobValidationStatusResponse: {
@@ -8539,7 +8539,6 @@ export interface components {
             status: components["schemas"]["BatchJobValidationStatus"];
             personID: string;
         };
-        Object: Record<string, never>;
         DocumentCountItemResponse: {
             year: string;
             count: number;
@@ -8577,6 +8576,7 @@ export interface components {
             vernacularName: Record<string, never>;
             colloquialVernacularName: Record<string, never>;
         };
+        Object: Record<string, never>;
         ApiUserEntity: {
             id: number;
             email: string;
@@ -14317,6 +14317,17 @@ export interface operations {
                     "application/json": components["schemas"]["FormPermissionPersonDto"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -14340,6 +14351,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -14396,6 +14418,17 @@ export interface operations {
                     "application/json": components["schemas"]["FormPermissionDto"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -14419,6 +14452,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -14475,6 +14519,17 @@ export interface operations {
                     "application/json": components["schemas"]["FormPermissionDto"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -14498,6 +14553,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -14558,6 +14624,17 @@ export interface operations {
                     "application/json": components["schemas"]["FormPermissionDto"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -14581,6 +14658,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -14638,6 +14726,17 @@ export interface operations {
                     "application/json": components["schemas"]["FormPermissionDto"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -14661,6 +14760,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -14717,6 +14827,17 @@ export interface operations {
                     "application/json": components["schemas"]["Participant"][];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -14740,6 +14861,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -14794,6 +14926,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -14817,6 +14960,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -14872,6 +15026,17 @@ export interface operations {
                     "application/json": components["schemas"]["form"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -14895,6 +15060,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -14955,6 +15131,17 @@ export interface operations {
                     "application/json": components["schemas"]["form"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -14978,6 +15165,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15035,6 +15233,17 @@ export interface operations {
                     "application/json": components["schemas"]["form"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -15058,6 +15267,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15111,6 +15331,17 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -15134,6 +15365,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15193,6 +15435,17 @@ export interface operations {
                     "application/json": components["schemas"]["form"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -15216,6 +15469,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15270,6 +15534,17 @@ export interface operations {
                     "application/json": components["schemas"]["profile"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -15293,6 +15568,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15351,6 +15637,17 @@ export interface operations {
                     "application/json": components["schemas"]["profile"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -15374,6 +15671,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15432,6 +15740,17 @@ export interface operations {
                     "application/json": components["schemas"]["profile"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -15455,6 +15774,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15508,6 +15838,17 @@ export interface operations {
                     "application/json": components["schemas"]["SensitivePerson"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -15531,6 +15872,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15585,6 +15937,17 @@ export interface operations {
                     "application/json": components["schemas"]["Person"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -15608,6 +15971,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15661,6 +16035,17 @@ export interface operations {
                     "application/json": components["schemas"]["SensitiveProfile"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -15684,6 +16069,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15740,6 +16136,17 @@ export interface operations {
                     "application/json": components["schemas"]["profile"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -15763,6 +16170,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15819,6 +16237,17 @@ export interface operations {
                     "application/json": components["schemas"]["profile"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -15842,6 +16271,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15900,6 +16340,17 @@ export interface operations {
                     "application/json": components["schemas"]["profile"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -15923,6 +16374,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -15974,6 +16436,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -15997,6 +16470,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16050,6 +16534,17 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -16073,6 +16568,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16124,6 +16630,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -16147,6 +16664,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16214,6 +16742,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -16237,6 +16776,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16297,6 +16847,17 @@ export interface operations {
                     "application/json": components["schemas"]["notification"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -16320,6 +16881,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16376,6 +16948,17 @@ export interface operations {
                     "application/json": components["schemas"]["StoreDeleteResponse"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -16399,6 +16982,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16463,6 +17057,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -16486,6 +17091,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16548,6 +17164,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -16571,6 +17198,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16624,6 +17262,17 @@ export interface operations {
                     "application/json": components["schemas"]["collection"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -16647,6 +17296,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16711,6 +17371,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -16734,6 +17405,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16785,6 +17467,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -16808,6 +17501,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16866,6 +17570,17 @@ export interface operations {
                     "application/json": components["schemas"]["BatchJobValidationStatusResponse"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -16889,6 +17604,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -16926,7 +17652,7 @@ export interface operations {
     DocumentsController_getBatchJobStatus: {
         parameters: {
             query?: {
-                validationErrorFormat?: components["schemas"]["Object"];
+                validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
                 publicityRestrictions?: "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
                 dataOrigin?: "MY.dataOriginPaperForm" | "MY.dataOriginWebForm" | "MY.dataOriginSpreadsheetFile";
             };
@@ -16958,6 +17684,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -16981,6 +17718,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17018,7 +17766,7 @@ export interface operations {
     DocumentsController_completeBatchJob: {
         parameters: {
             query?: {
-                validationErrorFormat?: components["schemas"]["Object"];
+                validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
                 publicityRestrictions?: "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
                 dataOrigin?: "MY.dataOriginPaperForm" | "MY.dataOriginWebForm" | "MY.dataOriginSpreadsheetFile";
             };
@@ -17039,6 +17787,17 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BatchJobValidationStatusResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
             401: {
@@ -17064,6 +17823,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17110,7 +17880,7 @@ export interface operations {
                 /** @description Run validators of this type */
                 type?: "error" | "warning";
                 /** @description Format of validation error details */
-                validationErrorFormat?: components["schemas"]["Object"];
+                validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
             };
             header?: {
                 /** @description Person's authentication token. It is required. */
@@ -17127,6 +17897,17 @@ export interface operations {
                 };
                 content: {
                     "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
             401: {
@@ -17152,6 +17933,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17213,6 +18005,17 @@ export interface operations {
                     "application/json": components["schemas"]["DocumentCountItemResponse"][];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -17236,6 +18039,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17290,6 +18104,17 @@ export interface operations {
                     "application/json": components["schemas"]["StatisticsResponse"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -17313,6 +18138,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17391,6 +18227,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -17414,6 +18261,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17475,6 +18333,17 @@ export interface operations {
                     "application/json": components["schemas"]["document"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -17498,6 +18367,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17554,6 +18434,17 @@ export interface operations {
                     "application/json": components["schemas"]["document"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -17577,6 +18468,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17642,6 +18544,17 @@ export interface operations {
                     "application/json": components["schemas"]["document"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -17665,6 +18578,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17721,6 +18645,17 @@ export interface operations {
                     "application/json": components["schemas"]["StoreDeleteResponse"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -17744,6 +18679,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17805,6 +18751,17 @@ export interface operations {
                     "application/json": components["schemas"]["namedPlace"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -17828,6 +18785,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17884,6 +18852,17 @@ export interface operations {
                     "application/json": components["schemas"]["namedPlace"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -17907,6 +18886,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -17991,6 +18981,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -18014,6 +19015,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -18072,6 +19084,17 @@ export interface operations {
                     "application/json": components["schemas"]["namedPlace"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -18095,6 +19118,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -18154,6 +19188,17 @@ export interface operations {
                     "application/json": components["schemas"]["namedPlace"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -18177,6 +19222,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -18237,6 +19293,17 @@ export interface operations {
                     "application/json": components["schemas"]["namedPlace"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -18260,6 +19327,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -18316,6 +19394,17 @@ export interface operations {
                     "application/json": components["schemas"]["StoreDeleteResponse"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -18339,6 +19428,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -18423,6 +19523,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -18446,6 +19557,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -18540,6 +19662,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -18563,6 +19696,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -19191,6 +20335,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -19214,6 +20369,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -19293,6 +20459,17 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -19316,6 +20493,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -19929,6 +21117,17 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -19952,6 +21151,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -20046,6 +21256,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -20069,6 +21290,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -20697,6 +21929,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -20720,6 +21963,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -20799,6 +22053,17 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -20822,6 +22087,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -21419,6 +22695,17 @@ export interface operations {
                     "application/json": components["schemas"]["Taxon"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -21442,6 +22729,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -21670,6 +22968,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -21693,6 +23002,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -21782,6 +23102,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -21805,6 +23136,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -21898,6 +23240,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -21921,6 +23274,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -22010,6 +23374,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -22033,6 +23408,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -22685,6 +24071,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -22708,6 +24105,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -22804,6 +24212,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -22827,6 +24246,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -23512,6 +24942,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -23535,6 +24976,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -23616,6 +25068,17 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -23639,6 +25102,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24283,6 +25757,17 @@ export interface operations {
                     "application/json": components["schemas"]["Taxon"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -24306,6 +25791,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24367,6 +25863,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -24390,6 +25897,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24451,6 +25969,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -24474,6 +26003,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24527,6 +26067,17 @@ export interface operations {
                     "application/json": components["schemas"]["area"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -24550,6 +26101,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24617,6 +26179,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -24640,6 +26213,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24694,6 +26278,17 @@ export interface operations {
                     "application/json": components["schemas"]["ApiUserEntity"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -24717,6 +26312,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24770,6 +26376,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -24793,6 +26410,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24846,6 +26474,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -24869,6 +26508,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -24923,6 +26573,17 @@ export interface operations {
                     "application/json": components["schemas"]["FileUploadResponse"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -24946,6 +26607,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25002,6 +26674,17 @@ export interface operations {
                     "application/json": components["schemas"]["Image"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -25025,6 +26708,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25085,6 +26779,17 @@ export interface operations {
                     "application/json": components["schemas"]["Image"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -25108,6 +26813,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25162,6 +26878,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -25185,6 +26912,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25239,6 +26977,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -25262,6 +27011,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25316,6 +27076,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -25339,6 +27110,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25393,6 +27175,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -25416,6 +27209,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25476,6 +27280,17 @@ export interface operations {
                     "application/json": components["schemas"]["Image"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -25499,6 +27314,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25553,6 +27379,17 @@ export interface operations {
                     "application/json": components["schemas"]["FileUploadResponse"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -25576,6 +27413,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25632,6 +27480,17 @@ export interface operations {
                     "application/json": components["schemas"]["Audio"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -25655,6 +27514,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25715,6 +27585,17 @@ export interface operations {
                     "application/json": components["schemas"]["Audio"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -25738,6 +27619,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25792,6 +27684,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -25815,6 +27718,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25869,6 +27783,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -25892,6 +27817,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -25946,6 +27882,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -25969,6 +27916,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26023,6 +27981,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -26046,6 +28015,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26100,6 +28080,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -26123,6 +28114,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26183,6 +28185,17 @@ export interface operations {
                     "application/json": components["schemas"]["Audio"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -26206,6 +28219,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26257,6 +28281,17 @@ export interface operations {
                     "application/json": components["schemas"]["tag"][];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -26280,6 +28315,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26347,6 +28393,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -26370,6 +28427,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26428,6 +28496,17 @@ export interface operations {
                     "application/json": components["schemas"]["annotation"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -26451,6 +28530,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26507,6 +28597,17 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -26530,6 +28631,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26583,6 +28695,17 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -26606,6 +28729,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26659,6 +28793,17 @@ export interface operations {
                     "application/json": components["schemas"]["Information"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -26682,6 +28827,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26735,6 +28891,17 @@ export interface operations {
                     "application/json": components["schemas"]["Information"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -26758,6 +28925,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26811,6 +28989,17 @@ export interface operations {
                     "application/json": components["schemas"]["checklist"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -26834,6 +29023,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26898,6 +29098,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -26921,6 +29132,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -26974,6 +29196,17 @@ export interface operations {
                     "application/json": components["schemas"]["checklist"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -26997,6 +29230,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27061,6 +29305,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -27084,6 +29339,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27148,6 +29414,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -27171,6 +29448,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27224,6 +29512,17 @@ export interface operations {
                     "application/json": components["schemas"]["SensitiveOrganization"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -27247,6 +29546,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27311,6 +29621,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -27334,6 +29655,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27388,6 +29720,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -27411,6 +29754,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27465,6 +29819,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -27488,6 +29853,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27541,6 +29917,17 @@ export interface operations {
                     "application/json": components["schemas"]["informalTaxonGroup"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -27564,6 +29951,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27620,6 +30018,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -27643,6 +30052,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27696,6 +30116,17 @@ export interface operations {
                     "application/json": components["schemas"]["informalTaxonGroup"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -27719,6 +30150,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27775,6 +30217,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -27798,6 +30251,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27847,6 +30311,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -27870,6 +30345,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -27929,6 +30415,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -27952,6 +30449,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28014,6 +30522,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -28037,6 +30556,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28121,6 +30651,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -28144,6 +30685,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28200,6 +30752,17 @@ export interface operations {
                     "application/json": components["schemas"]["TripReportUnitShorthandResponseDto"][];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -28223,6 +30786,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28277,6 +30851,17 @@ export interface operations {
                     "application/json": components["schemas"]["TripReportUnitListResultDto"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -28300,6 +30885,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28354,6 +30950,17 @@ export interface operations {
                     "application/json": components["schemas"]["LineTransectUnitShorthandResponseDto"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -28377,6 +30984,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28432,6 +31050,17 @@ export interface operations {
                     "application/json": components["schemas"]["LineTransectUnitShorthandResponseDto"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -28455,6 +31084,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28509,6 +31149,17 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -28532,6 +31183,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28590,6 +31252,17 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -28613,6 +31286,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28674,6 +31358,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -28697,6 +31392,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28755,6 +31461,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -28778,6 +31495,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28829,6 +31557,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -28852,6 +31591,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28903,6 +31653,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -28926,6 +31687,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -28979,6 +31751,17 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -29002,6 +31785,17 @@ export interface operations {
                 };
             };
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
                 headers: {
                     [name: string]: unknown;
                 };
