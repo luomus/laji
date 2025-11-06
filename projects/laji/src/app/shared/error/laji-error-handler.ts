@@ -66,10 +66,16 @@ export class LajiErrorHandler extends ErrorHandler {
     this.pauseMessage();
 
     if (enabledEnvs.includes(environment.type)) {
-      this.getToastsService().showError(
-        this.getTranslateService().instant('error.500.intro'),
-        this.getTranslateService().instant('error.500.title')
-      );
+      const { title, message } = (error as any)?.error?.errorCode
+        ? {
+          title: (error as any)?.error?.errorCode,
+          message: (error as any)?.error?.message
+        } : {
+          title: this.getTranslateService().instant('error.500.title'),
+          message: this.getTranslateService().instant('error.500.intro')
+        };
+
+        this.getToastsService().showError(message, title, { tapToDismiss: false, disableTimeOut: true, closeButton: true });
     }
 
     return super.handleError(error);
