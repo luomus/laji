@@ -4,9 +4,11 @@ import { from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlaceApi } from '../../../shared/api/NamedPlaceApi';
 import { UserService } from '../../../shared/service/user.service';
-import { Document } from '../../../shared/model/Document';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { MappingService } from './mapping.service';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+type Document = components['schemas']['document'];
 
 @Injectable()
 export class AugmentService {
