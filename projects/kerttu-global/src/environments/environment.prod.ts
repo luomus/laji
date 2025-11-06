@@ -7,7 +7,7 @@ export const environment = {
   production: true,
   disableAnalytics: false,
   systemID: 'KE.1441',
-  apiBase: '/api',
+  apiBase: 'https://laji.fi/api',
   loginCheck: '',
   loginUrl: 'https://login.laji.fi/login',
   selfPage: 'https://login.laji.fi/self',
