@@ -53,7 +53,6 @@ export class FriendsComponent implements OnInit, OnChanges {
 
   sendFriendRequest(friendPersonID: string) {
     return this.api.post('/person/friends/{id}', { path: { id: friendPersonID } }).subscribe(
-      () => this.requestSend = true,
       () => this.requestSend = true
     );
   }
