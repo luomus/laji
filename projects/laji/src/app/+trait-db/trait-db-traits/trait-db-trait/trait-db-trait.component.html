@@ -1,20 +1,47 @@
 <ng-container *ngIf="trait$ | async; let trait; else loading">
-  <div *ngIf="{ val: loggedIn$ | async } as loggedIn; else loading">
-    <ng-container *ngIf="loggedIn.val">
-      <button class="btn btn-default" [routerLink]="['edit']">Edit</button>
+  <div class="d-flex justify-between mb-4">
+    <h2 class="mb-0">{{ trait.name }}</h2>
+    <ng-container *ngIf="{ val: loggedIn$ | async } as loggedIn; else loading">
+      <button *ngIf="loggedIn.val" [routerLink]="['edit']" class="btn btn-default">
+        <i class="glyphicon glyphicon-wrench"></i>
+        Edit trait
+      </button>
     </ng-container>
   </div>
+  <p>{{ trait.description }}</p>
 
-  <div>Group: {{ trait.group }}</div>
-  <div>Data entry name: {{ trait.dataEntryName }}</div>
-  <div>Example values: {{ trait.exampleValues }}</div>
-  <div>Range: {{ trait.range | label }}</div>
-  <div>Base unit of measurement: {{ trait.baseUnit | label }}</div>
-  <div>Reference: {{ trait.reference }}</div>
-  <div>Identifiers: {{ trait.identifiers | values }}</div>
+  <table class="props-table">
+    <tr>
+      <th scope="row">Group:</th>
+      <td>{{ trait.group }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Data entry name:</th>
+      <td>{{ trait.dataEntryName }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Example values:</th>
+      <td>{{ trait.exampleValues }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Range:</th>
+      <td>{{ trait.range | label }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Base unit of measurement:</th>
+      <td>{{ trait.baseUnit | label }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Reference:</th>
+      <td>{{ trait.reference }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Identifiers:</th>
+      <td>{{ trait.identifiers | values }}</td>
+    </tr>
+  </table>
 </ng-container>
 
 <ng-template #loading>
   <laji-spinner class="d-block m-6"></laji-spinner>
 </ng-template>
-
