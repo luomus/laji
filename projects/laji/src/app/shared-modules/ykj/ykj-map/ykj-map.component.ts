@@ -44,7 +44,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() type: MapBoxTypes = 'count';
   @Input() types: MapBoxTypes[] = ['count', 'individualCount', 'newest'];
   @Input() typeLabels: any = {};
-  @Input() colorRange: string[] = ['violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
+  @Input() colorRange: string[] = ['#ccebc5', '#a8ddb5', '#7bccc4', '#4eb3d3', '#2b8cbe', '#08589e'];
   @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', 'violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
   @Input() individualBreak: (number | null)[] = [0, null, 1, 10, 100, 1000, 10000, 100000];
   @Input() countBreak: number[] = [1, 10, 100, 1000, 10000, 100000];
@@ -168,10 +168,10 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
             }
           },
           getFeatureStyle: () => ({
-            weight: 0.2,
+            weight: .5,
             opacity: 1,
-            fillOpacity: 0.8,
-            color: '#000000'
+            fillOpacity: 1,
+            color: '#ccc'
           }),
           featureCollection: {
             type: 'FeatureCollection',
@@ -246,7 +246,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
     }
     dataLayer.eachLayer((layer: any) => {
       const color = col(layer.feature);
-      layer.setStyle({fillColor: color});
+      layer.setStyle({fillColor: color, fillOpacity: 1});
     });
     this.initLegend();
   }
