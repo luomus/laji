@@ -15,7 +15,7 @@ import {
 import { NgControl } from '@angular/forms';
 import { ComponentLoader, ComponentLoaderFactory } from './component-loader';
 
-import { EMPTY, from, isObservable, Observable, Subscription } from 'rxjs';
+import { EMPTY, of, isObservable, Observable, Subscription } from 'rxjs';
 import { debounceTime, filter, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
 import { TypeaheadOptionItemContext, TypeaheadOptionListContext } from './models';
 
@@ -485,7 +485,7 @@ export class TypeaheadDirective implements OnInit, OnDestroy {
               return EMPTY;
             }
 
-            const typeahead = isObservable(this.typeahead) ? this.typeahead : from(this.typeahead);
+            const typeahead: Observable<TypeaheadOption[]> = isObservable(this.typeahead) ? this.typeahead : of(this.typeahead);
 
             return typeahead
               .pipe(
