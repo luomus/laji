@@ -9,16 +9,14 @@ import { PlatformService } from '../../root/platform.service';
   providedIn: 'root'
 })
 export class GraphQLService {
-
   constructor(private apollo: Apollo, private platformService: PlatformService) { }
 
-  query<T, V = EmptyObject>(options: QueryOptions<V>): Observable<ApolloQueryResult<T>> {
+  query<T, V extends OperationVariables = OperationVariables>(options: QueryOptions<V>): Observable<ApolloQueryResult<T>> {
     if (this.platformService.isServer) {
       return EMPTY;
     }
     return this.apollo.query<T, V>(options);
   }
-
 
   watchQuery<TData, TVariables extends OperationVariables = EmptyObject>(options: WatchQueryOptions<TVariables, TData>): QueryRef<TData, TVariables>|undefined {
     if (this.platformService.isServer) {
@@ -29,7 +27,7 @@ export class GraphQLService {
 
   flushCache() {
     try {
-      this.apollo.getClient().cache.reset().then();
+      this.apollo.client.cache.reset().then();
     } catch (e) {}
   }
 }

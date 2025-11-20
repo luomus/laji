@@ -72,7 +72,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   @Input() unit: any;
   @Output() save = new EventEmitter<Annotation>();
   @Output() loading = new EventEmitter<boolean>();
-  @Output() cancel = new EventEmitter<any>();
+  @Output() annotationCancel = new EventEmitter<any>();
 
   @ViewChild('taxon') taxonElement!: ElementRef;
   @ViewChild('comment') commentElement!: ElementRef;
@@ -602,4 +602,3 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
 
 }
-

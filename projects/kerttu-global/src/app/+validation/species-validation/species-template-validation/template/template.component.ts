@@ -21,7 +21,7 @@ export class TemplateComponent {
   @Input() historyView?: boolean;
 
   @Output() confirm = new EventEmitter<IGlobalTemplate>();
-  @Output() cancel = new EventEmitter();
+  @Output() templateCancel = new EventEmitter();
   @Output() remove = new EventEmitter();
   @Output() comment = new EventEmitter<IGlobalComment>();
 

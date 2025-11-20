@@ -36,7 +36,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   subSpecies: IGlobalSpecies[] = [];
 
   @Output() save = new EventEmitter<{ templates: (IGlobalTemplate|null)[]; comments: IGlobalComment[] }>();
-  @Output() cancel = new EventEmitter();
+  @Output() templateCancel = new EventEmitter();
 
   constructor(
     private translate: TranslateService,

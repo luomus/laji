@@ -14,7 +14,7 @@ export class SelectedFieldItemComponent {
   @Input() len?: number;
   @Input() required?: boolean;
 
-  @Output() toggle = new EventEmitter<string>();
+  @Output() itemToggled = new EventEmitter<string>();
   @Output() moveUp = new EventEmitter<string[]>();
   @Output() moveDown = new EventEmitter<string[]>();
 

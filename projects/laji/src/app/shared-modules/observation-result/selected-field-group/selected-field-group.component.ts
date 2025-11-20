@@ -17,14 +17,14 @@ export class SelectedFieldGroupComponent {
 
   @Input() columnSelector?: ColumnSelector;
 
-  @Output() toggle = new EventEmitter<string>();
+  @Output() fieldToggled = new EventEmitter<string>();
   @Output() moveUp = new EventEmitter<string>();
   @Output() moveDown = new EventEmitter<string>();
 
   onToggle(field: string) {
     if (this.required.indexOf(field) === -1) {
       if (!this.isMultiColumnGisField(field)) {
-        this.toggle.emit(field);
+        this.fieldToggled.emit(field);
 
         if (this.columnSelector) {
           this.columnSelector.toggleSelectedField(field);

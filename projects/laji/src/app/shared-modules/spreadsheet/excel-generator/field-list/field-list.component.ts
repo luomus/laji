@@ -15,7 +15,7 @@ export class FieldListComponent implements OnChanges {
   @Input() title = '';
   @Input() showTitle = true;
 
-  @Output() toggle = new EventEmitter<IFormField|IFormField[]>();
+  @Output() fieldToggled = new EventEmitter<IFormField|IFormField[]>();
   @Output() selectedChange = new EventEmitter<string[]>();
 
   idx?: number;
@@ -32,14 +32,14 @@ export class FieldListComponent implements OnChanges {
 
   onClick(field: IFormField) {
     if (!field.required) {
-      this.toggle.emit(field);
+      this.fieldToggled.emit(field);
     }
   }
 
   onSubGroupClick(subGroup: string) {
     this.visibleFields.forEach(group => {
       if (group.subGroup === subGroup) {
-        this.toggle.emit(group.fields);
+        this.fieldToggled.emit(group.fields);
       }
     });
   }
@@ -49,7 +49,7 @@ export class FieldListComponent implements OnChanges {
     this.visibleFields.forEach(group => {
       allVisible.push(...group.fields);
     });
-    this.toggle.emit(allVisible);
+    this.fieldToggled.emit(allVisible);
   }
 
   trackFields(index: number, field: IFormField): string {

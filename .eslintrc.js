@@ -35,7 +35,6 @@ module.exports = {
 				"@angular-eslint/contextual-lifecycle": "error",
 				"@angular-eslint/directive-class-suffix": "error",
 				"@angular-eslint/no-conflicting-lifecycle": "error",
-				"@angular-eslint/no-host-metadata-property": "error",
 				"@angular-eslint/no-input-rename": "error",
 				"@angular-eslint/no-inputs-metadata-property": "error",
 				"@angular-eslint/no-output-native": "error",
@@ -267,6 +266,10 @@ module.exports = {
             ],
             "leadingUnderscore": "allow",
             "trailingUnderscore": "allow"
+          },
+          {
+            "selector": "import",
+            "format": null,
           },
           {
             "selector": "typeLike",
