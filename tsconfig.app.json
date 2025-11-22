@@ -2,14 +2,19 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": [],
+    "types": [
+      "node"
+    ],
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true
   },
   "files": [
     "projects/laji/src/main.ts",
-    "projects/laji/src/polyfills.ts"
+    "projects/laji/src/polyfills.ts",
+    "projects/laji/src/main.server.ts",
+    "projects/laji/server.ts",
+    "server.ts"
   ],
   "include": [
     "projects/laji/src/**/*.d.ts",

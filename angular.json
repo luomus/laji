@@ -10,13 +10,16 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/browser",
+            "outputPath": {
+              "base": "dist"
+            },
             "index": "projects/laji/src/index.html",
-            "main": "projects/laji/src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "polyfills": "projects/laji/src/polyfills.ts",
+            "polyfills": [
+              "projects/laji/src/polyfills.ts"
+            ],
             "assets": [
               "projects/laji/src/static",
               "projects/laji/src/favicon.ico",
@@ -49,12 +52,16 @@
               "file-saver",
               "laji-map"
             ],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "projects/laji/src/main.ts",
+            "server": "projects/laji/src/main.server.ts",
+            "prerender": true,
+            "ssr": {
+              "entry": "projects/laji/server.ts"
+            }
           },
           "configurations": {
             "production": {
@@ -73,8 +80,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "projects/laji/src/environments/environment.ts",
@@ -94,8 +99,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "projects/laji/src/environments/environment.ts",
@@ -114,8 +117,6 @@
               "outputHashing": "all",
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "projects/laji/src/environments/environment.ts",
@@ -135,8 +136,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "projects/laji/src/environments/environment.ts",
@@ -156,7 +155,6 @@
               "namedChunks": false,
               "aot": false,
               "extractLicenses": true,
-              "vendorChunk": false,
               "fileReplacements": [
                 {
                   "replace": "projects/laji/src/environments/environment.ts",
@@ -176,7 +174,6 @@
               "namedChunks": false,
               "aot": false,
               "extractLicenses": true,
-              "vendorChunk": false,
               "fileReplacements": [
                 {
                   "replace": "projects/laji/src/environments/environment.ts",
@@ -195,8 +192,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "projects/laji/src/environments/environment.ts",
@@ -212,7 +207,6 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "vendorChunk": false,
               "fileReplacements": [
                 {
                   "replace": "projects/laji/src/environments/environment.ts",
@@ -231,8 +225,7 @@
               "sourceMap": false,
               "namedChunks": false,
               "aot": false,
-              "extractLicenses": true,
-              "vendorChunk": false
+              "extractLicenses": true
             }
           },
           "defaultConfiguration": ""
@@ -311,138 +304,6 @@
             ]
           }
         },
-        "server": {
-          "builder": "@angular-devkit/build-angular:server",
-          "options": {
-            "outputPath": "dist/server",
-            "main": "projects/laji/server.ts",
-            "tsConfig": "tsconfig.server.json",
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/laji-ui/src/lib"
-              ]
-            },
-            "sourceMap": true,
-            "optimization": false,
-            "buildOptimizer": false
-          },
-          "configurations": {
-            "production": {
-              "outputHashing": "media",
-              "optimization": true,
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "fileReplacements": [
-                {
-                  "replace": "projects/laji/src/environments/environment.ts",
-                  "with": "projects/laji/src/environments/environment.prod.ts"
-                }
-              ],
-              "buildOptimizer": true
-            },
-            "beta": {
-              "outputHashing": "media",
-              "optimization": true,
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "fileReplacements": [
-                {
-                  "replace": "projects/laji/src/environments/environment.ts",
-                  "with": "projects/laji/src/environments/environment.beta.ts"
-                }
-              ],
-              "buildOptimizer": true
-            },
-            "dev": {
-              "outputHashing": "media",
-              "optimization": true,
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "buildOptimizer": true
-            },
-            "embedded": {
-              "outputHashing": "media",
-              "optimization": true,
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "fileReplacements": [
-                {
-                  "replace": "projects/laji/src/environments/environment.ts",
-                  "with": "projects/laji/src/environments/environment.embedded.ts"
-                }
-              ],
-              "buildOptimizer": true
-            },
-            "local": {
-              "outputHashing": "media",
-              "optimization": true,
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "fileReplacements": [
-                {
-                  "replace": "projects/laji/src/environments/environment.ts",
-                  "with": "projects/laji/src/environments/environment.local.ts"
-                }
-              ],
-              "buildOptimizer": true
-            },
-            "local-beta": {
-              "outputHashing": "media",
-              "optimization": true,
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "fileReplacements": [
-                {
-                  "replace": "projects/laji/src/environments/environment.ts",
-                  "with": "projects/laji/src/environments/environment.local-beta.ts"
-                }
-              ],
-              "buildOptimizer": true
-            },
-            "local-prod": {
-              "outputHashing": "media",
-              "optimization": true,
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "fileReplacements": [
-                {
-                  "replace": "projects/laji/src/environments/environment.ts",
-                  "with": "projects/laji/src/environments/environment.local-prod.ts"
-                }
-              ],
-              "buildOptimizer": true
-            }
-          },
-          "defaultConfiguration": ""
-        },
-        "serve-ssr": {
-          "builder": "@angular-devkit/build-angular:ssr-dev-server",
-          "options": {
-            "browserTarget": "laji:build",
-            "serverTarget": "laji:server"
-          },
-          "configurations": {
-            "local": {
-              "browserTarget": "laji:build:local",
-              "serverTarget": "laji:server:local"
-            },
-            "local-beta": {
-              "browserTarget": "laji:build:local-beta",
-              "serverTarget": "laji:server:local-beta"
-            },
-            "local-prod": {
-              "browserTarget": "laji:build:local-prod",
-              "serverTarget": "laji:server:local-prod"
-            }
-          }
-        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
@@ -501,12 +362,15 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/iucn",
+            "outputPath": {
+              "base": "dist/iucn"
+            },
             "index": "projects/iucn/src/index.html",
-            "main": "projects/iucn/src/main.ts",
-            "polyfills": "projects/iucn/src/polyfills.ts",
+            "polyfills": [
+              "projects/iucn/src/polyfills.ts"
+            ],
             "tsConfig": "projects/iucn/tsconfig.app.json",
             "assets": [
               "projects/iucn/src/favicon.ico",
@@ -530,12 +394,11 @@
               ]
             },
             "scripts": [],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "projects/iucn/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -554,8 +417,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "projects/iucn/src/environments/environment.ts",
@@ -580,9 +441,7 @@
                   "with": "projects/iucn/src/environments/environment.ts"
                 }
               ],
-              "outputHashing": "all",
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "outputHashing": "all"
             }
           },
           "defaultConfiguration": ""
@@ -642,12 +501,15 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/label-designer-electron",
+            "outputPath": {
+              "base": "dist/label-designer-electron"
+            },
             "index": "projects/label-designer-electron/src/index.html",
-            "main": "projects/label-designer-electron/src/main.ts",
-            "polyfills": "projects/label-designer-electron/src/polyfills.ts",
+            "polyfills": [
+              "projects/label-designer-electron/src/polyfills.ts"
+            ],
             "tsConfig": "projects/label-designer-electron/tsconfig.app.json",
             "assets": [
               "projects/label-designer-electron/src/favicon.ico",
@@ -657,12 +519,11 @@
               "projects/label-designer-electron/src/styles.css"
             ],
             "scripts": [],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "projects/label-designer-electron/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -677,8 +538,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -746,12 +605,15 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/label-designer-element",
+            "outputPath": {
+              "base": "dist/label-designer-element"
+            },
             "index": "projects/label-designer-element/src/index.html",
-            "main": "projects/label-designer-element/src/main.ts",
-            "polyfills": "projects/label-designer-element/src/polyfills.ts",
+            "polyfills": [
+              "projects/label-designer-element/src/polyfills.ts"
+            ],
             "tsConfig": "projects/label-designer-element/tsconfig.app.json",
             "assets": [
               "projects/label-designer-element/src/favicon.ico",
@@ -765,12 +627,11 @@
                 "input": "node_modules/document-register-element/build/document-register-element.js"
               }
             ],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "projects/label-designer-element/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -785,8 +646,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -926,12 +785,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/vir",
+            "outputPath": {
+              "base": "dist/vir"
+            },
             "index": "projects/vir/src/index.html",
-            "main": "projects/vir/src/main.ts",
-            "polyfills": "projects/vir/src/polyfills.ts",
+            "polyfills": [
+              "projects/vir/src/polyfills.ts"
+            ],
             "tsConfig": "projects/vir/tsconfig.app.json",
             "aot": false,
             "assets": [
@@ -956,12 +818,11 @@
               ]
             },
             "scripts": [],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "projects/vir/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -981,8 +842,6 @@
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -1017,8 +876,6 @@
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -1046,9 +903,7 @@
                 }
               ],
               "outputHashing": "all",
-              "aot": true,
-              "vendorChunk": false,
-              "buildOptimizer": false
+              "aot": true
             }
           },
           "defaultConfiguration": ""
@@ -1123,12 +978,15 @@
       "prefix": "es",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/exhibition-screen",
+            "outputPath": {
+              "base": "dist/exhibition-screen"
+            },
             "index": "projects/exhibition-screen/src/index.html",
-            "main": "projects/exhibition-screen/src/main.ts",
-            "polyfills": "projects/laji/src/polyfills.ts",
+            "polyfills": [
+              "projects/laji/src/polyfills.ts"
+            ],
             "tsConfig": "projects/exhibition-screen/tsconfig.json",
             "aot": false,
             "assets": [
@@ -1144,7 +1002,8 @@
                 "projects/exhibition-screen/src/styles"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "browser": "projects/exhibition-screen/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -1160,8 +1019,6 @@
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -1187,9 +1044,7 @@
               "outputHashing": "all",
               "sourceMap": true,
               "namedChunks": true,
-              "aot": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "aot": true
             }
           }
         },
@@ -1228,12 +1083,15 @@
       "prefix": "ba",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/bird-atlas",
+            "outputPath": {
+              "base": "dist/bird-atlas"
+            },
             "index": "projects/bird-atlas/src/index.html",
-            "main": "projects/bird-atlas/src/main.ts",
-            "polyfills": "projects/laji/src/polyfills.ts",
+            "polyfills": [
+              "projects/laji/src/polyfills.ts"
+            ],
             "tsConfig": "projects/bird-atlas/tsconfig.json",
             "aot": false,
             "assets": [
@@ -1250,7 +1108,8 @@
                 "projects/bird-atlas/src/styles"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "browser": "projects/bird-atlas/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -1274,8 +1133,6 @@
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -1302,8 +1159,6 @@
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -1334,9 +1189,7 @@
               "outputHashing": "all",
               "sourceMap": true,
               "namedChunks": true,
-              "aot": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "aot": true
             }
           }
         },
@@ -1367,12 +1220,15 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/kerttu-global",
+            "outputPath": {
+              "base": "dist/kerttu-global"
+            },
             "index": "projects/kerttu-global/src/index.html",
-            "main": "projects/kerttu-global/src/main.ts",
-            "polyfills": "projects/kerttu-global/src/polyfills.ts",
+            "polyfills": [
+              "projects/kerttu-global/src/polyfills.ts"
+            ],
             "tsConfig": "projects/kerttu-global/tsconfig.app.json",
             "assets": [
               "projects/kerttu-global/src/favicon.ico",
@@ -1401,12 +1257,11 @@
             "allowedCommonJsDependencies": [
               "laji-map"
             ],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "projects/kerttu-global/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -1429,8 +1284,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "projects/kerttu-global/src/environments/environment.ts",
@@ -1459,9 +1312,7 @@
                   "with": "projects/kerttu-global/src/environments/environment.dev.ts"
                 }
               ],
-              "outputHashing": "all",
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "outputHashing": "all"
             },
             "local": {
               "budgets": [
@@ -1476,9 +1327,7 @@
                   "with": "projects/kerttu-global/src/environments/environment.ts"
                 }
               ],
-              "outputHashing": "all",
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "outputHashing": "all"
             }
           },
           "defaultConfiguration": ""

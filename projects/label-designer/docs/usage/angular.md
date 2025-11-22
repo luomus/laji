@@ -7,13 +7,20 @@ where you want to use it.
 ```
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgxWebstorageModule } from 'ngx-webstorage';
+import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSessionStorage } from 'ngx-webstorage';
 import { LabelDesignerModule } from 'label-designer';
 @NgModule({
     imports: [
         BrowserModule,
         NgxWebstorageModule.forRoot({prefix: 'LD-', separator: ''}),
         LabelDesignerModule
+    ],
+    providers: [
+      provideNgxWebstorage(
+    		withNgxWebstorageConfig({ prefix: 'LD-', separator: '' }),
+    		withLocalStorage(),
+    		withSessionStorage()
+      ),
     ],
     bootstrap: [AppComponent]
 })
@@ -133,5 +140,3 @@ row on the excel.
 
 More information about all the available inputs, outputs and methods of the ll-label-designer
 component can found [here](../../components/LabelDesignerComponent.html).
-
-

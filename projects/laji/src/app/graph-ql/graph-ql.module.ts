@@ -2,7 +2,7 @@ import { provideApollo } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 import { NgModule, inject } from '@angular/core';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AcceptLanguageInterceptor } from './accept-language.interceptor';
 import { TranslateService } from '@ngx-translate/core';
@@ -31,20 +31,15 @@ export function createApollo(
   };
 }
 
-@NgModule({
-  imports: [HttpClientModule],
-  exports: [HttpClientModule],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AcceptLanguageInterceptor, multi: true },
-    provideApollo(() => {
-      const httpLink = inject(HttpLink);
-      const translateService = inject(TranslateService);
-      const platformService = inject(PlatformService);
-      return createApollo(
-        httpLink, translateService, platformService
-      );
-    }),
-    GraphQLService,
-  ]
-})
+@NgModule({ exports: [HttpClientModule], imports: [], providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: AcceptLanguageInterceptor, multi: true },
+        provideApollo(() => {
+            const httpLink = inject(HttpLink);
+            const translateService = inject(TranslateService);
+            const platformService = inject(PlatformService);
+            return createApollo(httpLink, translateService, platformService);
+        }),
+        GraphQLService,
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class GraphQLModule {}

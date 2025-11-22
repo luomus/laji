@@ -6,15 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpHeaders,
-  HttpInterceptor,
-  HttpParams,
-  HttpRequest,
-  HttpResponse
-} from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { ApplicationRef, Injectable, StateKey, TransferState, makeStateKey } from '@angular/core';
 import { Observable, of, of as observableOf } from 'rxjs';
 import { catchError, filter, take, tap, timeout } from 'rxjs/operators';

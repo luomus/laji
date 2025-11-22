@@ -5,12 +5,12 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LajiErrorHandler } from '../../../laji/src/app/shared/error/laji-error-handler';
 import { ConsoleLogger, HttpLogger, Logger, ILogger } from '../../../laji/src/app/shared/logger';
 import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
-import { NgxWebstorageModule } from 'ngx-webstorage';
+import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSessionStorage } from 'ngx-webstorage';
 import { LocalizeRouterService } from '../../../laji/src/app/locale/localize-router.service';
 import { environment } from '../environments/environment';
 import { DocumentService } from '../../../laji/src/app/shared-modules/own-submissions/service/document.service';
 import { ToastrModule } from 'ngx-toastr';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TransferHttpCacheModule } from '@angular/ssr';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -30,45 +30,43 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   return new ConsoleLogger();
 }
 
-@NgModule({
-  imports: [
-    GraphQLModule,
-    BrowserAnimationsModule,
-    BrowserModule,
-    CommonModule,
-    HttpClientModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useClass: LazyTranslateLoader
-      }
-    }),
-    ToastrModule.forRoot(),
-    SharedModule.forRoot(),
-    DropdownModule,
-    NgxWebstorageModule.forRoot({prefix: 'kerttu-global-', separator: ''}),
-    AppRoutingModule,
-    TransferHttpCacheModule,
-    AppComponentModule,
-    LajiUiModule
-  ],
-  providers: [
-    {provide: APP_ID, useValue: 'laji-app'},
-    {provide: APP_BASE_HREF, useValue: '/'},
-    DocumentService,
-    {provide: ErrorHandler, useClass: LajiErrorHandler},
-    LocalizeRouterService,
-    {provide: LocationStrategy, useClass: PathLocationStrategy},
-    {
-      provide: Logger,
-      deps: [LoggerApi],
-      useFactory: createLoggerLoader
-    }
-  ],
-  bootstrap: [AppComponent],
-  declarations: [
-    AppComponent,
-    NavbarComponent
-  ]
-})
+@NgModule({ bootstrap: [AppComponent],
+    declarations: [
+        AppComponent,
+        NavbarComponent
+    ], imports: [GraphQLModule,
+        BrowserAnimationsModule,
+        BrowserModule,
+        CommonModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useClass: LazyTranslateLoader
+            }
+        }),
+        ToastrModule.forRoot(),
+        SharedModule.forRoot(),
+        DropdownModule,
+        AppRoutingModule,
+        TransferHttpCacheModule,
+        AppComponentModule,
+        LajiUiModule], providers: [
+        { provide: APP_ID, useValue: 'laji-app' },
+        { provide: APP_BASE_HREF, useValue: '/' },
+        DocumentService,
+        { provide: ErrorHandler, useClass: LajiErrorHandler },
+        LocalizeRouterService,
+        { provide: LocationStrategy, useClass: PathLocationStrategy },
+        {
+            provide: Logger,
+            deps: [LoggerApi],
+            useFactory: createLoggerLoader
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideNgxWebstorage(
+      		withNgxWebstorageConfig({ prefix: 'kerttu-global-', separator: '' }),
+      		withLocalStorage(),
+      		withSessionStorage()
+        ),
+    ] })
 export class AppModule { }

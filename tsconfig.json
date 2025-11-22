@@ -6,7 +6,7 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "declaration": false,
-    "downlevelIteration": true,
+    "esModuleInterop": true,
     "module": "es2020",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
@@ -39,7 +39,6 @@
     ],
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
-    "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": false,
     "strict": true
   },

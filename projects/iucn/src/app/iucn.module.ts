@@ -7,12 +7,12 @@ import { ConsoleLogger, HttpLogger, Logger } from '../../../laji/src/app/shared/
 import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
 import { ILogger } from '../../../laji/src/app/shared/logger/logger.interface';
 import { TranslateFileLoader } from '../../../laji/src/app/shared/translate/translate-file-loader';
-import { NgxWebstorageModule } from 'ngx-webstorage';
+import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSessionStorage } from 'ngx-webstorage';
 import { LocalizeRouterService } from '../../../laji/src/app/locale/localize-router.service';
 import { environment } from '../environments/environment';
 import { DocumentService } from '../../../laji/src/app/shared-modules/own-submissions/service/document.service';
 import { ToastrModule } from 'ngx-toastr';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TransferHttpCacheModule } from '@angular/ssr';
 import { BrowserModule } from '@angular/platform-browser';
 import { IucnRoutingModule } from './iucn-routing.module';
@@ -31,45 +31,43 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
 }
 
 
-@NgModule({
-  imports: [
-    GraphQLModule,
-    AppComponentModule,
-    LocaleModule,
-    BrowserAnimationsModule,
-    BrowserModule,
-    CommonModule,
-    HttpClientModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useClass: TranslateFileLoader
-      }
-    }),
-    ToastrModule.forRoot(),
-    SharedModule.forRoot(),
-    NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
-    IucnRoutingModule,
-    TransferHttpCacheModule
-  ],
-  exports: [
-    TranslateModule
-  ],
-  providers: [
-    {provide: APP_ID, useValue: 'laji-app'},
-    {provide: APP_BASE_HREF, useValue: '/'},
-    {provide: API_BASE_URL, useValue: environment.apiBase},
-    DocumentService,
-    {provide: ErrorHandler, useClass: LajiErrorHandler},
-    LocalizeRouterService,
-    {provide: LocationStrategy, useClass: PathLocationStrategy},
-    {
-      provide: Logger,
-      deps: [LoggerApi],
-      useFactory: createLoggerLoader
-    }
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ exports: [
+        TranslateModule
+    ],
+    bootstrap: [AppComponent], imports: [GraphQLModule,
+        AppComponentModule,
+        LocaleModule,
+        BrowserAnimationsModule,
+        BrowserModule,
+        CommonModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useClass: TranslateFileLoader
+            }
+        }),
+        ToastrModule.forRoot(),
+        SharedModule.forRoot(),
+        IucnRoutingModule,
+        TransferHttpCacheModule], providers: [
+        { provide: APP_ID, useValue: 'laji-app' },
+        { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: API_BASE_URL, useValue: environment.apiBase },
+        DocumentService,
+        { provide: ErrorHandler, useClass: LajiErrorHandler },
+        LocalizeRouterService,
+        { provide: LocationStrategy, useClass: PathLocationStrategy },
+        {
+            provide: Logger,
+            deps: [LoggerApi],
+            useFactory: createLoggerLoader
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideNgxWebstorage(
+      		withNgxWebstorageConfig({ prefix: 'laji-', separator: '' }),
+      		withLocalStorage(),
+      		withSessionStorage()
+        ),
+    ] })
 export class IucnModule {
 }
