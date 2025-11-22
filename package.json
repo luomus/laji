@@ -123,7 +123,7 @@
     "@luomus/laji-map": "^5.1.16",
     "@ng-select/ng-select": "^12.0.7",
     "@ngx-translate/core": "^15.0.0",
-    "@servoy/jw-bootstrap-switch-ng2": "^16.0.0",
+    "@servoy/jw-bootstrap-switch-ng2": "^18.0.0",
     "@types/deep-diff": "^1.0.1",
     "angularx-qrcode": "^17.0.1",
     "apollo-angular": "^10.0.3",
@@ -231,12 +231,7 @@
   },
   "overrides": {
     "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "@servoy/jw-bootstrap-switch-ng2": {
-      "@angular/common": "^17",
-      "@angular/core": "^17",
-      "@angular/forms": "^17"
-    }
+    "react-dom": "17.0.2"
   },
   "keywords": [
     "laji.fi"
