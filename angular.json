@@ -36,7 +36,8 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "projects/laji-ui/src/lib"
+                "projects/laji-ui/src/lib",
+                "node_modules"
               ]
             },
             "scripts": [],
@@ -390,7 +391,8 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "projects/laji-ui/src/lib"
+                "projects/laji-ui/src/lib",
+                "node_modules"
               ]
             },
             "scripts": [],
@@ -814,7 +816,8 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "projects/laji-ui/src/lib"
+                "projects/laji-ui/src/lib",
+                "node_modules"
               ]
             },
             "scripts": [],
@@ -954,7 +957,8 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "projects/laji-ui/src/lib"
+                "projects/laji-ui/src/lib",
+                "node_modules"
               ]
             },
             "scripts": []
@@ -999,7 +1003,8 @@
             "stylePreprocessorOptions": {
               "includePaths": [
                 "projects/laji-ui/src/lib",
-                "projects/exhibition-screen/src/styles"
+                "projects/exhibition-screen/src/styles",
+                "node_modules"
               ]
             },
             "scripts": [],
@@ -1105,7 +1110,8 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "projects/bird-atlas/src/styles"
+                "projects/bird-atlas/src/styles",
+                "node_modules"
               ]
             },
             "scripts": [],
@@ -1250,7 +1256,8 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "projects/laji-ui/src/lib"
+                "projects/laji-ui/src/lib",
+                "node_modules"
               ]
             },
             "scripts": [],

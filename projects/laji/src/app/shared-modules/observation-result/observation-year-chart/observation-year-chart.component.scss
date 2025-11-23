@@ -1,4 +1,4 @@
-@import 'projects/laji-ui/src/lib/vars';
+@import 'vars';
 @import '../../../../styles/styles';
 
 :host ::ng-deep .year-chart .ngx-charts .bar {
@@ -17,5 +17,3 @@
 laji-chart {
   height: 450px;
 }
-
-
