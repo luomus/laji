@@ -4,7 +4,7 @@ import { ObservationFormQuery } from './observation-form-query.interface';
 import { WarehouseQueryInterface, WarehouseTimeQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable, of as ObservableOf, Subject, Subscription } from 'rxjs';
 import { Util } from '../../shared/service/util.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ObservationFacade } from '../observation.facade';
 import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';

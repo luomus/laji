@@ -18,7 +18,7 @@ import { LocalStorage } from 'ngx-webstorage';
 import { DocumentExportService } from './service/document-export.service';
 import { DownloadEvent, LabelEvent, RowDocument } from './own-datatable/own-datatable.component';
 import { DocumentInfoService } from '../../shared/service/document-info.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { FormService } from '../../shared/service/form.service';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { Logger } from '../../shared/logger';

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { LocaleComponent } from 'projects/laji/src/app/locale/locale.component';
-import * as moment from 'moment';
+import moment from 'moment';
 import 'moment/locale/zh-tw';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 

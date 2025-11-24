@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FileService } from './file.service';
-import * as JSZip from 'jszip';
+import JSZip from 'jszip';
 import { from, Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 

@@ -13,8 +13,7 @@
     "projects/laji/src/main.ts",
     "projects/laji/src/polyfills.ts",
     "projects/laji/src/main.server.ts",
-    "projects/laji/server.ts",
-    "server.ts"
+    "projects/laji/server.ts"
   ],
   "include": [
     "projects/laji/src/**/*.d.ts",

@@ -22,7 +22,7 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { LocalStorage } from 'ngx-webstorage';
-import * as Hash from 'object-hash';
+import Hash from 'object-hash';
 import { ImportTableColumn } from '../../../+haseka/tools/model/import-table-column';
 import { catchError, concatMap, filter, map, switchMap, takeUntil, tap, toArray } from 'rxjs/operators';
 import { ExcelToolService } from '../service/excel-tool.service';

@@ -1,5 +1,5 @@
 import { NavigationEnd, Event } from '@angular/router';
-import * as merge from 'deepmerge';
+import merge from 'deepmerge';
 import { Document } from '../model/Document';
 import { PlatformService } from '../../root/platform.service';
 

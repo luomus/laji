@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { LocaleComponent } from './locale.component';
-import * as moment from 'moment';
+import moment from 'moment';
 import { PlatformService } from '../root/platform.service';
 
 @Component({

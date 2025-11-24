@@ -31,7 +31,7 @@ export function createApollo(
   };
 }
 
-@NgModule({ exports: [HttpClientModule], imports: [], providers: [
+@NgModule({ exports: [], imports: [], providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AcceptLanguageInterceptor, multi: true },
         provideApollo(() => {
             const httpLink = inject(HttpLink);

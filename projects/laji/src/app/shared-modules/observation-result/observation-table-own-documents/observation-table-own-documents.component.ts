@@ -12,7 +12,7 @@ import {
   ViewChild,
   OnDestroy
 } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Document } from '../../../shared/model/Document';
 import { ObservationResultService } from '../service/observation-result.service';

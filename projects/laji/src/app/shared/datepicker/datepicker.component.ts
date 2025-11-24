@@ -38,7 +38,7 @@ import {
 } from '@angular/core';
 import { ENTER } from '@angular/cdk/keycodes';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as moment from 'moment';
+import moment from 'moment';
 
 export interface CalendarDate {
   day: string | null;

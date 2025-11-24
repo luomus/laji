@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { map, switchMap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { ExportService } from '../../../../shared/service/export.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { BookType } from 'xlsx';
 import { Form } from '../../../../shared/model/Form';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';

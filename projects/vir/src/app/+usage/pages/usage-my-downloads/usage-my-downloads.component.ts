@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef, Vie
 import { Observable } from 'rxjs';
 import { VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
 import { finalize, map, take } from 'rxjs/operators';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 

@@ -2,7 +2,7 @@ import { catchError, map, pairwise, startWith, switchMap, take, tap, shareReplay
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
 import { NpChooseComponent } from '../np-choose/np-choose.component';
-import * as moment from 'moment';
+import moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { Form } from '../../../../shared/model/Form';

@@ -13,7 +13,7 @@ import {
   VALUE_IGNORE
 } from '../model/excel';
 import { MappingService } from './mapping.service';
-import * as Hash from 'object-hash';
+import Hash from 'object-hash';
 import { catchError, delay, switchMap } from 'rxjs/operators';
 import { ArrayType } from '@angular/compiler';
 

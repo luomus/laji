@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@ang
 import { VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
