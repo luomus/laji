@@ -6,7 +6,7 @@
 ></laji-info-page>
 
 <p>
-  <a [routerLink]="'/about/4641' | localize">{{ 'datasets.generic.instructions' | translate }}</a>
+  <a [href]="'infoLinks.dataBank' | translate" target="_blank">{{ 'datasets.generic.instructions' | translate }}</a>
 </p>
 
 <div *ngIf="(stats$ | async) as stats; else loader" class="mt-5 mb-5">
