@@ -32,46 +32,51 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   return new ConsoleLogger();
 }
 
-
-@NgModule({ exports: [
-        TranslateModule
-    ], imports: [BrowserModule,
-        AppComponentModule,
-        LocaleModule,
-        GraphQLModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useClass: LazyTranslateLoader
-            }
-        }),
-        QuicklinkModule,
-        AppRoutingModule,
-        ToastrModule.forRoot(),
-        SharedModule.forRoot(),
-        LajiUiModule], providers: [
-        { provide: APP_ID, useValue: 'laji-app' },
-        { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: TransferHttpCacheInterceptor, multi: true },
-        { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: API_BASE_URL, useValue: environment.apiBase },
-        DocumentService,
-        { provide: ErrorHandler, useClass: LajiErrorHandler },
-        LocalizeRouterService,
-        { provide: LocationStrategy, useClass: PathLocationStrategy },
-        {
-            provide: Logger,
-            deps: [LoggerApi],
-            useFactory: createLoggerLoader
-        },
-        { provide: Title, useClass: LajiTitle },
-        provideClientHydration(),
-        provideHttpClient(withInterceptorsFromDi()),
-        provideNgxWebstorage(
-      		withNgxWebstorageConfig({ prefix: 'laji-', separator: '' }),
-      		withLocalStorage(),
-      		withSessionStorage()
-        ),
-    ] })
+@NgModule({
+  exports: [
+    TranslateModule
+  ],
+  imports: [
+    BrowserModule,
+    AppComponentModule,
+    LocaleModule,
+    GraphQLModule,
+    TranslateModule.forRoot({
+        loader: {
+            provide: TranslateLoader,
+            useClass: LazyTranslateLoader
+        }
+    }),
+    QuicklinkModule,
+    AppRoutingModule,
+    ToastrModule.forRoot(),
+    SharedModule.forRoot(),
+    LajiUiModule
+  ],
+  providers: [
+    { provide: APP_ID, useValue: 'laji-app' },
+    { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TransferHttpCacheInterceptor, multi: true },
+    { provide: APP_BASE_HREF, useValue: '/' },
+    { provide: API_BASE_URL, useValue: environment.apiBase },
+    DocumentService,
+    { provide: ErrorHandler, useClass: LajiErrorHandler },
+    LocalizeRouterService,
+    { provide: LocationStrategy, useClass: PathLocationStrategy },
+    {
+        provide: Logger,
+        deps: [LoggerApi],
+        useFactory: createLoggerLoader
+    },
+    { provide: Title, useClass: LajiTitle },
+    provideClientHydration(),
+    provideHttpClient(withInterceptorsFromDi()),
+    provideNgxWebstorage(
+  		withNgxWebstorageConfig({ prefix: 'laji-', separator: '' }),
+  		withLocalStorage(),
+  		withSessionStorage()
+    ),
+  ]
+})
 export class AppModule {
 }

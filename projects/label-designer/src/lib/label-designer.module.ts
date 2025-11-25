@@ -18,7 +18,6 @@ import { FieldSettingsComponent } from './label-designer/label-settings/field-se
 import { LabelFileComponent } from './label-designer/label-file/label-file.component';
 import { AvailableFieldsComponent } from './label-designer/label-settings/available-fields/available-fields.component';
 import { SearchFieldsPipe } from './label-designer/label-fields-available/search-fields.pipe';
-import { NgxWebstorageModule } from 'ngx-webstorage';
 import { RemoveSuffixPipe } from './label-designer/label-file/remove-suffix.pipe';
 import { InfoWindowComponent } from './info-window/info-window.component';
 import { IconComponent } from './icon/icon.component';
@@ -85,9 +84,11 @@ import { LabelBacksideSortPipe } from './pipe/label-backside-sort-pipe';
     CommonModule,
     DragDropModule,
     QRCodeModule,
-    NgxWebstorageModule,
   ],
-  providers: [TranslateService, LabelMakerFacade],
+  providers: [
+    TranslateService,
+    LabelMakerFacade,
+  ],
   exports: [LabelDesignerComponent, LabelPreviewComponent, LabelPrintComponent]
 })
 export class LabelDesignerModule { }
