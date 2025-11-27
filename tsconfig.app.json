@@ -16,7 +16,9 @@
     "projects/laji/server.ts"
   ],
   "include": [
+    "projects/laji/src/**/*.ts",
     "projects/laji/src/**/*.d.ts",
+    "node_modules/@luomus/laji-form/**/*.js",
     "node_modules/@luomus/laji-form/**/*.d.ts"
   ],
   "exclude": [

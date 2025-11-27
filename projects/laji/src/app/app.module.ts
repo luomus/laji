@@ -12,7 +12,7 @@ import { LocalizeRouterService } from './locale/localize-router.service';
 import { environment } from '../environments/environment';
 import { DocumentService } from './shared-modules/own-submissions/service/document.service';
 import { ToastrModule } from 'ngx-toastr';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 import { AppComponentModule } from './shared-modules/app-component/app-component.module';
 import { TimeoutInterceptor } from './shared/interceptor/timeout.interceptor';
 import { LazyTranslateLoader } from './shared/translate/lazy-translate-loader';
@@ -34,7 +34,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
 
 @NgModule({
   exports: [
-    TranslateModule
+    TranslateModule,
+    AppComponentModule
   ],
   imports: [
     BrowserModule,
@@ -70,7 +71,10 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     },
     { provide: Title, useClass: LajiTitle },
     provideClientHydration(),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(
+      withInterceptorsFromDi(),
+      withFetch()
+    ),
     provideNgxWebstorage(
   		withNgxWebstorageConfig({ prefix: 'laji-', separator: '' }),
   		withLocalStorage(),

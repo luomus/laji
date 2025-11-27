@@ -139,7 +139,6 @@
     "deep-equal": "^2.0.5",
     "deepmerge": "^4.2.2",
     "document-register-element": "^1.14.10",
-    "domino": "^2.1.6",
     "express": "^4.18.2",
     "file-saver": "^2.0.5",
     "graphql": "^15.8.0",
