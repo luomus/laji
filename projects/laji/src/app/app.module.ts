@@ -43,10 +43,10 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     LocaleModule,
     GraphQLModule,
     TranslateModule.forRoot({
-        loader: {
-            provide: TranslateLoader,
-            useClass: LazyTranslateLoader
-        }
+      loader: {
+        provide: TranslateLoader,
+        useClass: LazyTranslateLoader
+      }
     }),
     QuicklinkModule,
     AppRoutingModule,

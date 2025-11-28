@@ -7,6 +7,7 @@
     "skipLibCheck": true,
     "declaration": false,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "module": "es2020",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
@@ -48,4 +49,3 @@
     "strictTemplates": true
   }
 }
-
