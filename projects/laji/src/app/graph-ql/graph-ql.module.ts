@@ -16,7 +16,7 @@ export function createApollo(
   translateService: TranslateService,
   platformService: PlatformService
 ) {
-  const cache = new InMemoryCache({ addTypename: false });
+  const cache = new InMemoryCache();
 
   translateService.onLangChange
     .pipe(concatMap(() => from(cache.reset())))
