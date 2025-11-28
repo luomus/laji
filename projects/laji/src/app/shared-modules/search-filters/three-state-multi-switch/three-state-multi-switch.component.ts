@@ -28,7 +28,7 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
     private translate: TranslateService) { }
 
   ngOnInit() {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
     this.open =  (this.trueValue?.length as any) > 0 || (this.falseValue?.length as any) > 0 ? true : false;
   }
 

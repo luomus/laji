@@ -371,7 +371,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     if (form.options?.dataset) {
       title$ = forkJoin([
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.labelService.get(form.collectionID!, this.translate.currentLang),
+        this.labelService.get(form.collectionID!, this.translate.getCurrentLang()),
         this.translate.get('datasets.label')
       ]).pipe(
         map((result: string[]) => result.filter(res => !!res).join(' | '))

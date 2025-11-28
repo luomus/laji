@@ -137,7 +137,7 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
   }
 
   private initStatusQuery() {
-    const lang = this.translate.currentLang;
+    const lang = this.translate.getCurrentLang();
 
     const cacheKey = 'status';
     const statusField = 'latestRedListEvaluation.threatenedAtArea';
@@ -211,7 +211,7 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
   }
 
   private initAreaColumns() {
-    this.areaSub = this.resultService.getAreas(this.translate.currentLang).subscribe(areas => {
+    this.areaSub = this.resultService.getAreas(this.translate.getCurrentLang()).subscribe(areas => {
       const areaFields = [];
       const occurrenceFields = [];
 

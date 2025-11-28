@@ -24,7 +24,7 @@ export class TaxonAutocompleteService {
 
   getInfo(taxa: TaxonAutocompleteResponse[], text: string): Observable<TaxaWithAutocomplete[]> {
     return from(taxa).pipe(
-      concatMap(taxon => this.tripleStoreService.get(taxon['taxonRank'], this.translate.currentLang).pipe(
+      concatMap(taxon => this.tripleStoreService.get(taxon['taxonRank'], this.translate.getCurrentLang()).pipe(
         map(rank => ({
           ...taxon,
           autocompleteDisplayName: this.getAutocompleteDisplayName(taxon, rank, text),

@@ -261,7 +261,7 @@ export class UserService implements OnDestroy {
     const params: string[] = [
       `next=${this.location.path(true)}`,
       'redirectMethod=POST',
-      `locale=${this.translate.currentLang}`,
+      `locale=${this.translate.getCurrentLang()}`,
       'permanent=false'
     ];
 
@@ -320,7 +320,7 @@ export class UserService implements OnDestroy {
         take(1),
       ).subscribe(data => {
         this.returnUrl = data.loginLanding || returnUrl || this.location.path(true);
-        window.location.href = getLoginUrl(this.returnUrl, this.translate.currentLang);
+        window.location.href = getLoginUrl(this.returnUrl, this.translate.getCurrentLang());
       });
     }
   }
@@ -407,4 +407,3 @@ export class UserService implements OnDestroy {
       this.api.setPersonToken(undefined);
   }
 }
-

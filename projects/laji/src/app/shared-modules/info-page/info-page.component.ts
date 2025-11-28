@@ -123,7 +123,7 @@ export class InfoPageComponent implements OnChanges, OnDestroy {
     if (this.page) {
       return this.page;
     }
-    const lang = this.translateService.currentLang as keyof MultiLanguage;
+    const lang = this.translateService.getCurrentLang() as keyof MultiLanguage;
     if (this._rootPage) {
       return this._rootPage[lang] || this._rootPage['fi'] || '';
     }

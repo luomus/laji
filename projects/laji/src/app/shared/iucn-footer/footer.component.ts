@@ -61,14 +61,14 @@ export class IucnFooterComponent implements OnInit, OnDestroy {
   }
 
   currentLangIsFinnish() {
-    return this.translate.currentLang === 'fi';
+    return this.translate.getCurrentLang() === 'fi';
   }
 
   fetchTreeData(force = true) {
     if (!force && IucnFooterComponent.treeData) {
       return;
     }
-    this.lajiApi.get(LajiApi.Endpoints.information, 'index', {lang: this.translate.currentLang}).pipe(
+    this.lajiApi.get(LajiApi.Endpoints.information, 'index', {lang: this.translate.getCurrentLang()}).pipe(
       map(tree => tree.children || [])
     ).subscribe(
         tree => {

@@ -103,7 +103,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
       if (count > 0) {
         const label = child.vernacularName
           ? (typeof child.vernacularName  === 'object'
-            ? MultiLangService.getValue(child.vernacularName, this.translate.currentLang)
+            ? MultiLangService.getValue(child.vernacularName, this.translate.getCurrentLang())
             : child.vernacularName)
           : child.scientificName;
         accData.push({

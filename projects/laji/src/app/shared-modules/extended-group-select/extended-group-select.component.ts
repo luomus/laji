@@ -45,7 +45,7 @@ export abstract class ExtendedGroupSelectComponent<T extends RedListTaxonGroup|I
   ) {}
 
   ngOnInit() {
-    const lang = this.translate.currentLang;
+    const lang = this.translate.getCurrentLang();
     this.groupsTree$ = this.initGroupTree(lang).pipe(shareReplay(1));
     this.groups$ = this.initSelectionGroups(lang, this.includedOptions, this.excludedOptions);
   }
@@ -55,7 +55,7 @@ export abstract class ExtendedGroupSelectComponent<T extends RedListTaxonGroup|I
     if (!Util.equalsArray(this.includedOptions, includedOptions) || !Util.equalsArray(this.excludedOptions, excludedOptions)) {
       this.includedOptions = includedOptions;
       this.excludedOptions = excludedOptions;
-      this.groups$ = this.initSelectionGroups(this.translate.currentLang, this.includedOptions, this.excludedOptions);
+      this.groups$ = this.initSelectionGroups(this.translate.getCurrentLang(), this.includedOptions, this.excludedOptions);
     }
   }
 

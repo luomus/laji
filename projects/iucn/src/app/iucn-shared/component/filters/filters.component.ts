@@ -37,7 +37,7 @@ export class FiltersComponent {
     private areaService: AreaService,
     private translate: TranslateService
   ) {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
     this.redListStatuses$ = this.taxonService.getRedListStatusTree(this.lang).pipe(
       map(tree => this.mapStatusesToOptions(tree))
     );
@@ -50,7 +50,7 @@ export class FiltersComponent {
     this.habitatsSpecific$ = this.metadataService.getRange('MKV.habitatSpecificTypeEnum').pipe(
       map(meta => this.mapMetadataToOptions(meta))
     );
-    this.evaluationArea$ = this.areaService.getAreaType(this.translate.currentLang, Area.AreaType.IucnEvaluationArea).pipe(
+    this.evaluationArea$ = this.areaService.getAreaType(this.translate.getCurrentLang(), Area.AreaType.IucnEvaluationArea).pipe(
       map(meta => this.mapAreaDataToOptions(meta))
     );
    }

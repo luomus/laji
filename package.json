@@ -119,7 +119,7 @@
     "@luomus/laji-form-builder": "^1.1.3",
     "@luomus/laji-map": "^5.1.16",
     "@ng-select/ng-select": "^13.9.1",
-    "@ngx-translate/core": "^15.0.0",
+    "@ngx-translate/core": "^17.0.0",
     "@servoy/jw-bootstrap-switch-ng2": "^18.0.0",
     "@types/deep-diff": "^1.0.1",
     "angularx-qrcode": "^18.0.2",

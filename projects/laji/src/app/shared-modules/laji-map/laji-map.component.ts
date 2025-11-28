@@ -109,7 +109,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    const lang = this.translate.currentLang;
+    const lang = this.translate.getCurrentLang();
     if (Global.lajiMapSupportedLanguages.includes(lang)) {
       this.lang = lang;
     }

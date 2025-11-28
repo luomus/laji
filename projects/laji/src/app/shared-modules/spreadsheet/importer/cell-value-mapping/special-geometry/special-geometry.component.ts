@@ -65,7 +65,7 @@ export class SpecialGeometryComponent {
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef
   ) {
-    this.lajiMapOptions.lang = <Lang> this.translateService.currentLang;
+    this.lajiMapOptions.lang = <Lang> this.translateService.getCurrentLang();
   }
 
   onMapLoad() {

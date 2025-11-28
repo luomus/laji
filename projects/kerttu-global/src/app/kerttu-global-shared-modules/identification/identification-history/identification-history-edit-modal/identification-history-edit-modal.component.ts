@@ -58,7 +58,7 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
         this.loading = true;
       }),
       switchMap(recordingId => this.kerttuGlobalApi.getIdentificationRecording(
-        this.userService.getToken(), this.translate.currentLang, recordingId
+        this.userService.getToken(), this.translate.getCurrentLang(), recordingId
       ))
     ).subscribe((result) => {
       this.recording = result.recording;

@@ -52,12 +52,12 @@ export class IdentificationResultsComponent implements OnInit {
     this.userStats$ = this.kerttuGlobalApi.getIdentificationUserStats(this.taxonTypes).pipe(
       share()
     );
-    this.speciesStats$ = this.kerttuGlobalApi.getIdentificationSpeciesStats(this.taxonTypes, this.translate.currentLang).pipe(
+    this.speciesStats$ = this.kerttuGlobalApi.getIdentificationSpeciesStats(this.taxonTypes, this.translate.getCurrentLang()).pipe(
       map(result => result.results),
       shareReplay(1)
     );
     this.ownSpeciesStats$ = this.userService.isLoggedIn$.pipe(
-      switchMap(() => this.kerttuGlobalApi.getIdentificationOwnSpeciesStats(this.taxonTypes, this.userService.getToken(), this.translate.currentLang)),
+      switchMap(() => this.kerttuGlobalApi.getIdentificationOwnSpeciesStats(this.taxonTypes, this.userService.getToken(), this.translate.getCurrentLang())),
       map(result => result.results),
       shareReplay(1)
     );

@@ -16,7 +16,7 @@ export class VihkoHomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.currentLang = this.translate.currentLang;
+    this.currentLang = this.translate.getCurrentLang();
   }
 
 }

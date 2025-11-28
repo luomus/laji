@@ -251,7 +251,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.platformService.isBrowser) {
       return;
     }
-    this.decorator.lang = this.translate.currentLang;
+    this.decorator.lang = this.translate.getCurrentLang();
     if (changes['query'] || changes['ready']) {
       this.boxFeatureCollectionCache.reset();
       this.updateMap();

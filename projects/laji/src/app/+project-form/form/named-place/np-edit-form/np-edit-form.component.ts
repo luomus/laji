@@ -232,7 +232,7 @@ export class NpEditFormComponent implements OnInit {
   getPlaceForm(data: NamedPlacesRouteData): Observable<Form.SchemaForm> {
     const getAreaEnum = (
       type: keyof Pick<AreaService, 'getMunicipalities' | 'getBiogeographicalProvinces' | 'getBirdAssociationAreas'>
-    ): Observable<Form.IEnum> => (this.areaService[type](this.translate.currentLang)).pipe(
+    ): Observable<Form.IEnum> => (this.areaService[type](this.translate.getCurrentLang())).pipe(
       map(areas => areas.reduce((schema: Form.IEnum, area: {id: string; value: string}) => {
         schema.oneOf.push({const: area.id, title: area.value});
         return schema;

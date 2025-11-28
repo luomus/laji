@@ -86,10 +86,10 @@ export class LabelPipe implements PipeTransform, OnDestroy {
         );
       case 'fullUri':
         return key.indexOf('http') === 0 ?
-          this.triplestoreLabelService.get(IdService.getId(key), this.translate.currentLang) :
+          this.triplestoreLabelService.get(IdService.getId(key), this.translate.getCurrentLang()) :
           of(key);
       case 'withKey':
-        return this.triplestoreLabelService.get(key, this.translate.currentLang).pipe(
+        return this.triplestoreLabelService.get(key, this.translate.getCurrentLang()).pipe(
           map(value => value !== key ? `${value} (${key})` : value)
         );
       case 'emptyWhenMissing':
@@ -97,7 +97,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
           map(res => res === key ? '' : key)
         );
       default:
-        return this.triplestoreLabelService.get(key, this.translate.currentLang).pipe(
+        return this.triplestoreLabelService.get(key, this.translate.getCurrentLang()).pipe(
           map(res => res || key)
         );
     }

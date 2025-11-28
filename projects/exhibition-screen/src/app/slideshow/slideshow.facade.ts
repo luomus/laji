@@ -16,7 +16,7 @@ export class SlideshowFacade {
   constructor(private translate: TranslateService, private informationService: InformationService) {}
 
   loadSlides() {
-    this.informationService.getInformation(i18nMap.screenOne[<Lang>this.translate.currentLang], {}).pipe(
+    this.informationService.getInformation(i18nMap.screenOne[<Lang>this.translate.getCurrentLang()], {}).pipe(
       filter(information => {
         const a = !information.children;
         if (a) { console.warn(`The slideshow root element does not have children: ${information?.id}`); }

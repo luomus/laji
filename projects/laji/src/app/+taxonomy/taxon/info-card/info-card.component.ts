@@ -270,14 +270,14 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setTitle(tabName: string) {
-    let metaTitle = this.taxon.vernacularName && this.taxon.vernacularName[<any>this.translate.currentLang] || '';
+    let metaTitle = this.taxon.vernacularName && this.taxon.vernacularName[<any>this.translate.getCurrentLang()] || '';
     if (metaTitle) {
       const alternativeNames: string[] = [];
-      if (this.taxon?.alternativeVernacularName?.[<any>this.translate.currentLang]) {
-        alternativeNames.push(...this.taxon.alternativeVernacularName[<any>this.translate.currentLang]);
+      if (this.taxon?.alternativeVernacularName?.[<any>this.translate.getCurrentLang()]) {
+        alternativeNames.push(...this.taxon.alternativeVernacularName[<any>this.translate.getCurrentLang()]);
       }
-      if (this.taxon?.colloquialVernacularName?.[<any>this.translate.currentLang]) {
-        alternativeNames.push(...this.taxon.colloquialVernacularName[<any>this.translate.currentLang]);
+      if (this.taxon?.colloquialVernacularName?.[<any>this.translate.getCurrentLang()]) {
+        alternativeNames.push(...this.taxon.colloquialVernacularName[<any>this.translate.getCurrentLang()]);
       }
       metaTitle += alternativeNames.length ? ' (' + alternativeNames.join(', ') + ')' : '';
     }

@@ -111,7 +111,7 @@ const visualizationModeColNames = {
   }
 
   onServerSort(event: any) {
-    this.orderBy = getSortsFromCols(event, this.columns, this.translate.currentLang);
+    this.orderBy = getSortsFromCols(event, this.columns, this.translate.getCurrentLang());
     this.updateRows();
   }
 

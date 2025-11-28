@@ -166,7 +166,7 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
 
   private setLangParams(value: string) {
     return (value || '')
-      .replace('%longLang%', this.langMap[<keyof typeof this.langMap>this.translateService.currentLang] || 'Finnish');
+      .replace('%longLang%', this.langMap[<keyof typeof this.langMap>this.translateService.getCurrentLang()] || 'Finnish');
   }
 
 }

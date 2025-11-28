@@ -121,7 +121,7 @@ export class ResultsComponent implements OnChanges {
 
   ngOnChanges() {
     if (!this.init) {
-      this.lang = this.translate.currentLang;
+      this.lang = this.translate.getCurrentLang();
       this.init = true;
     }
     this.year = this.resultService.getYearFromChecklistVersion(this.checklist);

@@ -217,7 +217,7 @@ export class ObservationResultComponent implements OnChanges {
         const { error } = e;
         const {message, localizedMessage} = error;
         if (error.status >= 400 && message || localizedMessage) {
-          const localizedError = localizedMessage?.[this.translate.currentLang];
+          const localizedError = localizedMessage?.[this.translate.getCurrentLang()];
           this.toastsService.showError(localizedError ?? message);
           return EMPTY;
         } else {

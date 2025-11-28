@@ -28,7 +28,7 @@ export class SpeciesSelectionComponent {
     private kerttuGlobalApi: KerttuGlobalApi,
     private translate: TranslateService
   ) {
-    const speciesData$ = this.kerttuGlobalApi.getSpeciesList(this.userService.getToken(), this.translate.currentLang, {
+    const speciesData$ = this.kerttuGlobalApi.getSpeciesList(this.userService.getToken(), this.translate.getCurrentLang(), {
       page: 1,
       pageSize: 1000,
       taxonType: TaxonTypeEnum.bat,

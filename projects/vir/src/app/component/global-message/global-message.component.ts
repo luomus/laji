@@ -43,9 +43,9 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
           key => event.url.match(key)
         );
         const idsWithLang = Object.values(environment.globalMessageIds)[idx];
-        this.currentMessageId = idsWithLang?.[<'fi' | 'sv' | 'en'>this.translate.currentLang];
+        this.currentMessageId = idsWithLang?.[<'fi' | 'sv' | 'en'>this.translate.getCurrentLang()];
         if (this.currentMessageId) {
-          return this.api.get(LajiApi.Endpoints.information, this.currentMessageId, {lang: this.translate.currentLang});
+          return this.api.get(LajiApi.Endpoints.information, this.currentMessageId, {lang: this.translate.getCurrentLang()});
         } else {
           return of(undefined);
         }

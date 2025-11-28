@@ -19,7 +19,7 @@ export class TraitDbDataEntryImportComponent {
 
   data: string | null = null;
   headerReferenceContent$ = this.translate.onLangChange.pipe(
-    startWith({lang: this.translate.currentLang}),
+    startWith({lang: this.translate.getCurrentLang()}),
     map(event => headerReferenceCmsIds[event.lang as 'fi' | 'sv' | 'en']),
     switchMap(cmsId => of({ content: 'todo create cms page ' + cmsId }))
   );
@@ -74,4 +74,3 @@ export class TraitDbDataEntryImportComponent {
     return (this.fileSelector?.nativeElement.files?.length ?? -1) > 0;
   }
 }
-

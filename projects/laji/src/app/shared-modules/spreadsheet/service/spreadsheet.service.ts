@@ -70,8 +70,8 @@ export class SpreadsheetService {
     private formService: FormService
   ) {
     this.translateService.onLangChange.pipe(
-      map(() => this.translateService.currentLang),
-      startWith(this.translateService.currentLang),
+      map(() => this.translateService.getCurrentLang()),
+      startWith(this.translateService.getCurrentLang()),
       distinctUntilChanged(),
       switchMap(lang =>
         ObservableForkJoin([

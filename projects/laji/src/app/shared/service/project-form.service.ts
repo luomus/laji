@@ -61,7 +61,7 @@ export class ProjectFormService {
   private registrationContacts?: RegistrationContact[];
 
   /** LajiFormBuilder can change the language of the form, without changing the lang of the whole page. */
-  public localLang$ = new BehaviorSubject<string>(this.translate.currentLang);
+  public localLang$ = new BehaviorSubject<string>(this.translate.getCurrentLang());
   public remountLajiForm$ = new Subject<void>();
 
   getFormFromRoute$(route: ActivatedRoute): Observable<Form.SchemaForm> {

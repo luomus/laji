@@ -244,7 +244,7 @@ export class HeaderService implements OnDestroy {
       const titleString = Object.keys(titles).map(key => decodeURI(titles[key])).join(' | ');
       this.inferredHeaders.title = titleString;
       const c = getDeepestChildValue(this.router.routerState.snapshot.root, 'canonical', '');
-      const canonicalUrl = c ? this.localizeRouterService.translateRoute(c, this.translateService.currentLang) : newRoute;
+      const canonicalUrl = c ? this.localizeRouterService.translateRoute(c, this.translateService.getCurrentLang()) : newRoute;
       this.inferredHeaders.canonicalUrl = {href: canonicalUrl, rel: 'canonical'};
       this.inferredHeaders['og:url'] = canonicalUrl;
 

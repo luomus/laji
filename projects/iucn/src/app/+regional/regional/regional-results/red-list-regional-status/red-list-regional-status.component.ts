@@ -32,7 +32,7 @@ export class RedListRegionalStatusComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.areaSub = this.resultService.getAreas(this.translate.currentLang).subscribe(areas => {
+    this.areaSub = this.resultService.getAreas(this.translate.getCurrentLang()).subscribe(areas => {
       this.areas = areas;
       this.updateData(this._data);
       this.cdr.markForCheck();

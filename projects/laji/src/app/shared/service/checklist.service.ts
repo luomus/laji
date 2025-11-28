@@ -15,7 +15,7 @@ export class ChecklistService extends AbstractCachedHttpService<Checklist> {
     super('name');
   }
 
-  getAllAsLookUp(lang: string = this.translate.currentLang) {
+  getAllAsLookUp(lang: string = this.translate.getCurrentLang()) {
     return this.fetchLookup(this.lajiApi.getList(LajiApi.Endpoints.checklists, {lang, page: 1, pageSize: 1000}).pipe(
       map(paged => paged.results),
     ), lang);
@@ -27,4 +27,3 @@ export class ChecklistService extends AbstractCachedHttpService<Checklist> {
     );
   }
 }
-

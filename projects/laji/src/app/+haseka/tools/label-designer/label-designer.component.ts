@@ -43,7 +43,7 @@ export class LabelDesignerComponent implements OnInit {
       share()
     );
     const translations = this.translateService.instant('labelDesigner');
-    this.labelTranslations = this.translateService.currentLang !== 'en' && typeof translations === 'object' ? translations : {};
+    this.labelTranslations = this.translateService.getCurrentLang() !== 'en' && typeof translations === 'object' ? translations : {};
     this.newLabelFields$ = this.labelFields$;
     this.newSetup = {
       page: {

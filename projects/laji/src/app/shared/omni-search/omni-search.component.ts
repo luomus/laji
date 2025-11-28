@@ -178,7 +178,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         err => {
           this.logger.warn('OmniSearch failed to find data', {
             taxon: this.search,
-            lang: this.translate.currentLang,
+            lang: this.translate.getCurrentLang(),
             limit: this.limit,
             err
           });

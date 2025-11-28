@@ -37,7 +37,7 @@ export class DownloadRequestComponent implements OnChanges {
         if (collectionIds?.length > 0) {
           return this.lajiApi.getList(LajiApi.Endpoints.collections, {
             idIn: collectionIds.join(','),
-            lang: this.translate.currentLang,
+            lang: this.translate.getCurrentLang(),
             page: 1,
             pageSize: collectionIds.length
           }).pipe(

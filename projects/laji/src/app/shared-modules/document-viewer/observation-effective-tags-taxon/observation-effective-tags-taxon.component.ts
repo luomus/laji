@@ -48,7 +48,7 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
       switchMap(keys => this.annotationTags ?
         of(this.annotationTags.filter(item => keys.includes(item.id))) :
         from(keys).pipe(
-          concatMap(key => this.annotationService.getTag(key, this.translate.currentLang)),
+          concatMap(key => this.annotationService.getTag(key, this.translate.getCurrentLang())),
           toArray()
         )
       )

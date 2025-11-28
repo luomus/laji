@@ -43,7 +43,7 @@ export class NewsFacade {
   }
 
   loadPage(page: number): void {
-    const lang = this.translate.currentLang;
+    const lang = this.translate.getCurrentLang();
 
     if (this.listSub) {
       this.listSub.unsubscribe();

@@ -102,10 +102,10 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.subLang = this.translate.onLangChange.subscribe(() => {
-      this._mapOptions = {...this._mapOptions, lang: <Lang> this.translate.currentLang};
+      this._mapOptions = {...this._mapOptions, lang: <Lang> this.translate.getCurrentLang()};
       this.cd.markForCheck();
     });
-    this._mapOptions['lang'] = <Lang> this.translate.currentLang;
+    this._mapOptions['lang'] = <Lang> this.translate.getCurrentLang();
     this.onlyCount = this.types.includes('count') && this.types.length === 1;
   }
 

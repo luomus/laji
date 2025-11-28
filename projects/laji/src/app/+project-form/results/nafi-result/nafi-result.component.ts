@@ -52,7 +52,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
     this.subTrans = this.translate.onLangChange.subscribe(res => {
       this.lang = res.lang;
     });

@@ -171,7 +171,7 @@ export class NamedPlacesService {
         convert$ = this.translateService.get(value === true || value === 'true' ? 'yes' : 'no');
         break;
       case 'label':
-        convert$ = this.triplestoreLabelService.get(String(value), this.translateService.currentLang);
+        convert$ = this.triplestoreLabelService.get(String(value), this.translateService.getCurrentLang());
         break;
     }
     return convert$ ? (convert$.pipe(

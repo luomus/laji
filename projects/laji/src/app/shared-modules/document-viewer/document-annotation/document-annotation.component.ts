@@ -130,8 +130,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   ) { }
 
   ngOnInit() {
-    this.annotationTags$ = this.annotationService.getAllTags(this.translate.currentLang);
-    this.currentLang = this.translate.currentLang;
+    this.annotationTags$ = this.annotationService.getAllTags(this.translate.getCurrentLang());
+    this.currentLang = this.translate.getCurrentLang();
     this.metaFetch = this.userService.user$.subscribe(person => {
       if (!person) {
         this.personRoleAnnotation = Annotation.AnnotationRoleEnum.basic;
@@ -448,5 +448,3 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   }
 
 }
-
-

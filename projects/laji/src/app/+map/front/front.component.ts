@@ -76,7 +76,7 @@ export class FrontComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.footerService.footerVisible = false;
-    let options: Options = {lang: <Lang> this.translate.currentLang};
+    let options: Options = {lang: <Lang> this.translate.getCurrentLang()};
     const {layers = '', overlayNames = '', world, coordinates, print} = this.route.snapshot.queryParams;
     const _layers = (`${layers},${overlayNames}`.split(',') as string[])
       .filter(s => s)

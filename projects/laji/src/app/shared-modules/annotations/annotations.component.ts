@@ -88,7 +88,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
-    this.currentLang = this.translate.currentLang;
+    this.currentLang = this.translate.getCurrentLang();
     this.initEmptyAnnotation();
     this.findRendomKey1();
     if (this.identifying) {

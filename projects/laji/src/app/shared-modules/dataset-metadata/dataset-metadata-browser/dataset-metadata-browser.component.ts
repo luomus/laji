@@ -36,7 +36,7 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
     private translate: TranslateService,
     private cd: ChangeDetectorRef
   ) {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
   }
 
   ngOnChanges() {

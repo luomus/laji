@@ -247,7 +247,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     if (this.unit.linkings && (this.unit.linkings.originalTaxon || this.unit.linkings.taxon)) {
       const taxon = this.unit.linkings.taxon || this.unit.linkings.originalTaxon;
 
-      this.currentTaxonName = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.currentLang);
+      this.currentTaxonName = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.getCurrentLang());
     }
   }
 
@@ -255,7 +255,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     if (this.unit.linkings && (this.unit.linkings.originalTaxon || this.unit.linkings.taxon)) {
       const taxon = this.unit.linkings.taxon || this.unit.linkings.originalTaxon;
 
-      this.annotation.identification.taxon = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.currentLang);
+      this.annotation.identification.taxon = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.getCurrentLang());
       this.annotation.identification.taxonID = IdService.getId(taxon.id);
       this.taxonomy = {
         id: this.annotation.identification.taxonID,
@@ -292,7 +292,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   initAnnotationTags() {
-    this.annotationAddadableTags$ = this.annotationService.getAllAddableTags(this.translate.currentLang).pipe(
+    this.annotationAddadableTags$ = this.annotationService.getAllAddableTags(this.translate.getCurrentLang()).pipe(
       map(data => data.map(element => {
           if (element['id'] === 'MMAN.3') {
             return { id: element['id'], quality: element['type'] as any, position: 1 };
@@ -302,7 +302,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
         }))
     );
 
-    this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.currentLang).pipe(
+    this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.getCurrentLang()).pipe(
       map(
         data => data.filter(
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

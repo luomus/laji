@@ -87,7 +87,7 @@ export class ImportService {
   validateData(document: Document|Document[]): Observable<any> {
     return this.documentApi.validate(document, {
       personToken: this.userService.getToken(),
-      lang: this.translateService.currentLang,
+      lang: this.translateService.getCurrentLang(),
       validationErrorFormat: 'jsonPath'
     });
   }
@@ -122,7 +122,7 @@ export class ImportService {
     job: DocumentJobPayload
   ): Observable<any> {
     return this.documentApi.create(job, this.userService.getToken(), {
-      lang: this.translateService.currentLang
+      lang: this.translateService.getCurrentLang()
     });
   }
 

@@ -22,7 +22,7 @@
 
     <div class="button">
       <a class="btn herbButton btn-primary center-block"
-         [href]="'http://loydos.luomus.fi/forms/sammakot-ja-matelijat?language=' + translate.currentLang" role="button">{{ 'herpetology.form' | translate }}</a>
+         [href]="'http://loydos.luomus.fi/forms/sammakot-ja-matelijat?language=' + translate.getCurrentLang()" role="button">{{ 'herpetology.form' | translate }}</a>
     </div>
 
     <h2>{{ 'herpetology.search' | translate }}</h2>
@@ -41,7 +41,7 @@
           <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
           <h4>
             {{ taxon.taxon.vernacularName }}
-            <span *ngIf="translate.currentLang === 'fi'">
+            <span *ngIf="translate.getCurrentLang() === 'fi'">
           <br> {{ taxon.taxon.alternativeVernacularName }}
         </span>
           </h4>
@@ -57,7 +57,7 @@
           <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
           <h4>
             {{ taxon.taxon.vernacularName }}
-            <span *ngIf="translate.currentLang === 'fi'">
+            <span *ngIf="translate.getCurrentLang() === 'fi'">
               <br> {{ taxon.taxon.alternativeVernacularName }}
             </span>
           </h4>
@@ -72,7 +72,7 @@
           <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
           <h4>
             {{ taxon.taxon.vernacularName }}
-            <span *ngIf="translate.currentLang === 'fi'">
+            <span *ngIf="translate.getCurrentLang() === 'fi'">
               <br> {{ taxon.taxon.alternativeVernacularName }}
             </span>
           </h4>
@@ -109,5 +109,3 @@
   </div>
   <div id="header-author">{{ 'herpetology.cover' | translate }}</div>
 </div>
-
-

@@ -12,7 +12,7 @@ import { cmsIds } from '../locale/cms-ids';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   homeContent$ = this.translate.onLangChange.pipe(
-    startWith({lang: this.translate.currentLang}),
+    startWith({lang: this.translate.getCurrentLang()}),
     switchMap(event => this.api.getInformation(cmsIds['home'][<Lang>event.lang]))
   );
   constructor(private translate: TranslateService, private api: LajiApiService, private footer: FooterService) {}

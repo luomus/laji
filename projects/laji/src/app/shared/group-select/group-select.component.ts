@@ -49,7 +49,7 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     protected logger: Logger,
     protected translate: TranslateService
   ) {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
   }
 
   ngOnInit() {

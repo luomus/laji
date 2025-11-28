@@ -75,7 +75,7 @@ export class TaxonSelectComponent {
 
     return this.kerttuGlobalApi.getSpeciesList(
       this.userService.getToken(),
-      this.translate.currentLang,
+      this.translate.getCurrentLang(),
       {
         taxonType: this.taxonType,
         searchQuery: token,

@@ -51,7 +51,7 @@ export class FormService {
     return Object.keys(Global.formAliasMap).find(key => Global.formAliasMap[key] === formId);
   }
 
-  private setLang(lang = this.translate.currentLang) {
+  private setLang(lang = this.translate.getCurrentLang()) {
     if (this.currentLang !== lang) {
       this.allForms = undefined;
       this.currentLang = lang;
@@ -62,9 +62,9 @@ export class FormService {
     if (!formId) {
       return ObservableOf(undefined);
     }
-    const cacheKey = getCacheKey(formId, this.translate.currentLang);
+    const cacheKey = getCacheKey(formId, this.translate.getCurrentLang());
     if (!this.formCache[cacheKey]) {
-      this.formCache[cacheKey] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang: this.translate.currentLang}).pipe(
+      this.formCache[cacheKey] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang: this.translate.getCurrentLang()}).pipe(
         catchError(error => error.status === 404 ? ObservableOf(undefined) : observableThrowError(error)),
         retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
         shareReplay(1)
@@ -77,7 +77,7 @@ export class FormService {
     if (!formId) {
       return ObservableOf({} as Form.JsonForm);
     }
-    const lang = this.translate.currentLang;
+    const lang = this.translate.getCurrentLang();
     const cacheKey = getCacheKey(formId, lang);
     if (!this.jsonFormCache[cacheKey]) {
       this.jsonFormCache[cacheKey] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang, format: 'json'}).pipe(
@@ -93,7 +93,7 @@ export class FormService {
 
   getAllForms(): Observable<Form.List[]> {
     if (!this.allForms) {
-      this.allForms = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.translate.currentLang}).pipe(
+      this.allForms = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.translate.getCurrentLang()}).pipe(
         map(data => data.results),
         shareReplay(1)
       );

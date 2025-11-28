@@ -115,7 +115,7 @@ export class DocumentLocalComponent implements OnChanges {
 
   private getImages(obj: any): Observable<Image[]> {
     return this.lajiApi.getList(LajiApi.Endpoints.images, {
-      lang: this.translate.currentLang,
+      lang: this.translate.getCurrentLang(),
       page: 1,
       pageSize: 1000,
       idIn: obj.images.join(',')

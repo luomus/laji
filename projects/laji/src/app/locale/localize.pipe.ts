@@ -38,7 +38,7 @@ export class LocalizePipe implements PipeTransform, OnDestroy {
    */
   transform<T extends string|string[]>(query: T, lang?: string): T {
     if (!lang) {
-      lang = this.translateService.currentLang;
+      lang = this.translateService.getCurrentLang();
     }
     if (!query || query.length === 0 || !lang) {
       if (Array.isArray(query)) {

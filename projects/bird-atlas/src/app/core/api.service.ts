@@ -58,7 +58,7 @@ export class LajiApiService {
   constructor(private api: LajiApiClient, private translate: TranslateService) {}
 
   @cacheReturnObservable(86400000) // 1 day
-  getInformation(id: string, lang: Lang = <Lang>this.translate.currentLang): Observable<Information> {
+  getInformation(id: string, lang: Lang = <Lang>this.translate.getCurrentLang()): Observable<Information> {
     return this.api.get(
       LajiApiClient.Endpoints.information,
       id, {lang}
@@ -66,7 +66,7 @@ export class LajiApiService {
   }
 
   @cacheReturnObservable(60000) // 1 minute
-  getTaxon(id: string, params: LajiApiClient.TaxonFindParams = {}, lang: LangM = <Lang>this.translate.currentLang): Observable<Taxon> {
+  getTaxon(id: string, params: LajiApiClient.TaxonFindParams = {}, lang: LangM = <Lang>this.translate.getCurrentLang()): Observable<Taxon> {
     return this.api.get(
       LajiApiClient.Endpoints.taxon,
       id,
@@ -77,7 +77,7 @@ export class LajiApiService {
   }
 
   @cacheReturnObservable(86400000) // 1 day
-  getTaxa(id: string, params: LajiApiClient.TaxonFindParams = {}, lang: LangM = <Lang>this.translate.currentLang): Observable<PagedResult<Taxon>> {
+  getTaxa(id: string, params: LajiApiClient.TaxonFindParams = {}, lang: LangM = <Lang>this.translate.getCurrentLang()): Observable<PagedResult<Taxon>> {
     return this.api.get(
       LajiApiClient.Endpoints.taxon,
       '',

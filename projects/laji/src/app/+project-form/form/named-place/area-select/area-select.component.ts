@@ -35,7 +35,7 @@ export class AreaSelectComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
     this.initOptions();
   }
 

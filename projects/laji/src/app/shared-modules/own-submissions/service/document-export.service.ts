@@ -391,7 +391,7 @@ export class DocumentExportService {
 
     if (key.match(new RegExp('^' + this.valuePrefixes.collection + '\.[0-9]+$'))) {
       return this.collectionService
-        .getName$(key, this.translate.currentLang);
+        .getName$(key, this.translate.getCurrentLang());
     }
 
     return ObservableOf(key);
@@ -400,7 +400,7 @@ export class DocumentExportService {
   private getFieldLabel(fieldName: string): Observable<string> {
     if ((this.classPrefixes as any)[fieldName]) {
       return this.labelService
-        .get((this.classPrefixes as any)[fieldName] + '.' + fieldName, this.translate.currentLang)
+        .get((this.classPrefixes as any)[fieldName] + '.' + fieldName, this.translate.getCurrentLang())
         .pipe(
           map((label) => label || fieldName)
         );

@@ -86,7 +86,7 @@ export class ObservationMonthDayChartFacade {
 
   private getLifeStageLabel(lifeStage: string): Observable<string> {
     return this.valueMappingService.getSchemaKey(lifeStage).pipe(
-      switchMap(key => this.triplestoreLabelService.get(key, this.translate.currentLang)),
+      switchMap(key => this.triplestoreLabelService.get(key, this.translate.getCurrentLang())),
       map(label => label ? label.charAt(0).toUpperCase() + label.slice(1) : '')
     );
   }

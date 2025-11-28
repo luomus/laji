@@ -22,10 +22,10 @@ export class AreaNamePipe extends AbstractLabelPipe implements PipeTransform {
     return super.transform(value);
   }
 
-  protected _updateValue(key: string): Observable<string> {
+  protected _updateValue(key: string): Observable<any> {
     return this.type === 'provinceCode' ?
-      this.areaService.getProvinceCode(key, this.translate.currentLang) :
-      this.areaService.getName(key, this.translate.currentLang);
+      this.areaService.getProvinceCode(key, this.translate.getCurrentLang()) :
+      this.areaService.getName(key, this.translate.getCurrentLang());
   }
 
   protected _parseValue(res: string): string {

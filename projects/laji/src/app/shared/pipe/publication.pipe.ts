@@ -44,10 +44,9 @@ export class PublicationPipe implements PipeTransform {
       return of(value);
     }
 
-    return this.publicationService.getPublication(value, this.translate.currentLang)
+    return this.publicationService.getPublication(value, this.translate.getCurrentLang())
       .pipe(map((res: Publication) =>
         (res as any)?.[field] || ''
       ));
   }
 }
-

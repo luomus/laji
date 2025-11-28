@@ -66,13 +66,13 @@ export class SpeciesInfoComponent {
         )
       })),
       tap(data => {
-        const name: string = data.taxon!.vernacularName[<Lang>this.translate.currentLang];
+        const name: string = data.taxon!.vernacularName[<Lang>this.translate.getCurrentLang()];
         this.breadcrumbs.setBreadcrumbName(
           BreadcrumbId.SpeciesInfo,
           name.charAt(0).toUpperCase() + name.substring(1)
         );
         this.headerService.setHeaders({
-          title: `${capitalize(data.taxon!.vernacularName[<Lang>this.translate.currentLang])} | ${this.translate.instant('ba.header.title')}`
+          title: `${capitalize(data.taxon!.vernacularName[<Lang>this.translate.getCurrentLang()])} | ${this.translate.instant('ba.header.title')}`
         });
         this.loading = false;
         this.cdr.detectChanges();
@@ -82,14 +82,14 @@ export class SpeciesInfoComponent {
 
   getForeignVernacularNames(taxon: AtlasTaxon) {
     return ['fi', 'sv', 'en'].filter(
-      lang => lang !== this.translate.currentLang
+      lang => lang !== this.translate.getCurrentLang()
     ).map(
       lang => capitalize((taxon.vernacularName as any)[lang])
     ).join(', ');
   }
 
   getMapDownloadUrl(id: string) {
-    return `${environment.atlasApiBasePath}/map/${id}/atlas?lang=${this.translate.currentLang}&scaling=0`;
+    return `${environment.atlasApiBasePath}/map/${id}/atlas?lang=${this.translate.getCurrentLang()}&scaling=0`;
   };
 
   capitalize(str: string): string { return capitalize(str); }

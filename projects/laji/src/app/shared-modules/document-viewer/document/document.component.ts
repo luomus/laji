@@ -106,7 +106,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   ) { }
 
   ngOnInit() {
-    this.annotationTags$ = this.annotationService.getAllTags(this.translate.currentLang);
+    this.annotationTags$ = this.annotationService.getAllTags(this.translate.getCurrentLang());
 
     this.childComunicationsubscription = this.childComunication.childEventListner().subscribe(info => {
       this.childEvent = info;

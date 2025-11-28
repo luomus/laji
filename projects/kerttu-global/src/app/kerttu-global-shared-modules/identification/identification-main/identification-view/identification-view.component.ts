@@ -296,7 +296,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
 
     if (speciesAnnotations && speciesAnnotations.length > 0) {
       const observables: Observable<IGlobalSpeciesWithAnnotation>[] = speciesAnnotations!.map(
-        annotation => this.kerttuGlobalApi.getSpecies(this.translate.currentLang, annotation.speciesId, true).pipe(
+        annotation => this.kerttuGlobalApi.getSpecies(this.translate.getCurrentLang(), annotation.speciesId, true).pipe(
           map(species => ({ ...species, annotation }))
         )
       );

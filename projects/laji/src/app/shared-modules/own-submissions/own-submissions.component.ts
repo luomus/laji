@@ -417,7 +417,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     if (!taxonId || !taxonId.length || this.columns.indexOf('taxon') === -1 ||
     (gatheringInfo && gatheringInfo.unitList && gatheringInfo.unitList.length > 1)) { return ObservableOf(''); }
     return this.labelService.get(taxonId[0], 'multi').pipe(
-      map((langResult: any) => langResult[this.translate.currentLang])
+      map((langResult: any) => langResult[this.translate.getCurrentLang()])
     );
   }
 

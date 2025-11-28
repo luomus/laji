@@ -35,7 +35,7 @@ export class GeoapiComponent {
       'TSV_FLAT',
       'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
       this.searchQueryService.getQueryFromUrlQueryParams(VIR_FILTER_SHORTCUT_QUERY_PARAMS),
-      this.translate.currentLang,
+      this.translate.getCurrentLang(),
       'AUTHORITIES_VIRVA_GEOAPI_KEY',
       {
         dataUsePurpose: [req.reasonEnum, req.reason].filter(r => !!r).join(': '),

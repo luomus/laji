@@ -46,7 +46,7 @@ export class OtherSoundSelectComponent {
   private getOptions$(): Observable<IGlobalSpecies[]> {
     return this.kerttuGlobalApi.getSpeciesList(
       this.userService.getToken(),
-      this.translate.currentLang,
+      this.translate.getCurrentLang(),
       {
         taxonType: TaxonTypeEnum.other,
         pageSize: 1000

@@ -26,10 +26,10 @@ export class LocalizeGuard  {
     const defaultLang = (environment as any).defaultLang ?? 'fi';
     const lang = next.data['lang'] || defaultLang;
 
-    if (this.translateService.getDefaultLang() !== defaultLang && lang !== defaultLang) {
-      this.translateService.setDefaultLang(defaultLang);
+    if (this.translateService.getFallbackLang() !== defaultLang && lang !== defaultLang) {
+      this.translateService.setFallbackLang(defaultLang);
     }
-    if (this.translateService.currentLang !== lang) {
+    if (this.translateService.getCurrentLang() !== lang) {
       this.historyService.clear();
       return this.translateService.use(lang).pipe(
         map(() => true)

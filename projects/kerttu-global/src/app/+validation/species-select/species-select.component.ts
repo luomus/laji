@@ -72,7 +72,7 @@ export class SpeciesSelectComponent implements OnInit, OnDestroy {
     this.speciesListSub = this.userService.isLoggedIn$.pipe(
       switchMap(() => this.kerttuGlobalApi.getSpeciesList(
         this.userService.getToken(),
-        this.translate.currentLang,
+        this.translate.getCurrentLang(),
         { ...this.queryService.query, onlyWithValidationAudio: true, includeValidationStatus: true }
       ))
     ).subscribe(data => {

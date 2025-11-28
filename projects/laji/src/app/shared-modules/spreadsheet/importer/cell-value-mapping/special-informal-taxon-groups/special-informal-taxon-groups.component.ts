@@ -29,7 +29,7 @@ export class SpecialInformalTaxonGroupsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang).pipe(
+    this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.getCurrentLang()).pipe(
       map(results => results.results))
       .subscribe(groups => {
         const list = Array.isArray(groups) ?  MappingService.informalTaxonGroupsToList(groups) : [];

@@ -68,7 +68,7 @@ export class GeneratorService {
     ObservableForkJoin(
       this.userService.user$.pipe(take(1)),
       this.excelToolService.getNamedPlacesList(formID),
-      this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang).pipe(map(result => result.results))
+      this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.getCurrentLang()).pipe(map(result => result.results))
     ).pipe(
       map((data) => ({person: data[0], namedPlaces: data[1], informalTaxonGroups: data[2]}))
     )

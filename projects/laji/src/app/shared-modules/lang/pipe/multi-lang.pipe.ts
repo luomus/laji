@@ -45,7 +45,7 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
   }
 
   private pickLang(value: any, useFallback: boolean, lang?: string, fallbackFormat = '%value% (%lang%)') {
-    lang = lang || this.translate.currentLang;
+    lang = lang || this.translate.getCurrentLang();
     const hasLang = MultiLangService.hasValue(value, lang);
     if (!hasLang && !useFallback) {
       return '';

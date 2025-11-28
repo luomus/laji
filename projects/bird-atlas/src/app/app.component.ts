@@ -36,7 +36,7 @@ import { tap } from 'rxjs/operators';
 })
 export class AppComponent {
   breadcrumbs$: Observable<IBreadcrumb[]> = this.breadcrumbs.breadcrumbs$;
-  news$: Observable<News[]> = this.api.getNews({ tag: 'technical', pageSize: 5, lang: <Lang>this.translate.currentLang });
+  news$: Observable<News[]> = this.api.getNews({ tag: 'technical', pageSize: 5, lang: <Lang>this.translate.getCurrentLang() });
   showFooter$ = this.footerService.show$.pipe(tap(() => { setTimeout(() => { this.cdr.markForCheck(); }); }));
 
   constructor(

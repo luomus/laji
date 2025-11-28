@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AppComponent {
   constructor(translate: TranslateService) {
-    translate.setDefaultLang('fi');
+    translate.setFallbackLang('fi');
     translate.use('fi');
   }
 }
