@@ -157,7 +157,7 @@
                 }
               ],
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "namedChunks": false,
               "extractLicenses": true,
               "fileReplacements": [
@@ -177,7 +177,7 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": false,
+              "aot": true,
               "extractLicenses": true,
               "fileReplacements": [
                 {
@@ -227,9 +227,9 @@
                 }
               ],
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "namedChunks": false,
-              "aot": false,
+              "aot": true,
               "extractLicenses": true
             }
           },
@@ -801,7 +801,7 @@
               "projects/vir/src/polyfills.ts"
             ],
             "tsConfig": "projects/vir/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/vir/src/favicon.ico",
               "projects/vir/src/assets",
@@ -879,7 +879,7 @@
                 }
               },
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -996,7 +996,7 @@
               "projects/laji/src/polyfills.ts"
             ],
             "tsConfig": "projects/exhibition-screen/tsconfig.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/exhibition-screen/src/favicon.ico",
               "projects/exhibition-screen/src/assets"
@@ -1102,7 +1102,7 @@
               "projects/laji/src/polyfills.ts"
             ],
             "tsConfig": "projects/bird-atlas/tsconfig.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/bird-atlas/src/favicon.ico",
               "projects/bird-atlas/src/assets"
@@ -1165,7 +1165,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
