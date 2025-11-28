@@ -1,4 +1,3 @@
-/* tslint:disable:no-use-before-declare */
 import { map, shareReplay } from 'rxjs/operators';
 import { ChangeDetectorRef, EventEmitter, Input, OnInit, OnChanges, Output, Directive } from '@angular/core';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
