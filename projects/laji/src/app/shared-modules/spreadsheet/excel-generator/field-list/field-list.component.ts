@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { IFormField } from '../../model/excel';
 
 @Component({
-  selector: 'laji-field-list',
-  templateUrl: './field-list.component.html',
-  styleUrls: ['./field-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-field-list',
+    templateUrl: './field-list.component.html',
+    styleUrls: ['./field-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FieldListComponent implements OnChanges {
 

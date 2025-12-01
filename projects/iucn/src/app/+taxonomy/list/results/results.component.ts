@@ -23,10 +23,11 @@ export type TaxonAggregateQuery = operations['TaxaController_getAggregateWithFil
 export type TaxonAggregateFilters = NonNullable<operations['TaxaController_getAggregateWithFilters']['requestBody']>['content']['application/json'];
 
 @Component({
-  selector: 'iucn-results',
-  templateUrl: './results.component.html',
-  styleUrls: ['./results.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-results',
+    templateUrl: './results.component.html',
+    styleUrls: ['./results.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ResultsComponent implements OnChanges {
   @Input() type!: ListType;

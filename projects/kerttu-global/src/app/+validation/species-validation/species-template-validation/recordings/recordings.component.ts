@@ -3,10 +3,11 @@ import { SpectrogramConfig, AudioViewerRectangle, AudioViewerArea } from 'projec
 import { IGlobalAudio, IGlobalTemplate, IGlobalRecording } from '../../../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'bsg-recordings',
-  templateUrl: './recordings.component.html',
-  styleUrls: ['./recordings.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-recordings',
+    templateUrl: './recordings.component.html',
+    styleUrls: ['./recordings.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RecordingsComponent implements OnChanges {
   @Input() recordings?: IGlobalRecording[] = [];

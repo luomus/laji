@@ -20,11 +20,11 @@ import { AnnotationTag } from '../../shared/model/AnnotationTag';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'laji-annotations',
-  templateUrl: './annotations.component.html',
-  styleUrls: ['./annotations.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
-
+    selector: 'laji-annotations',
+    templateUrl: './annotations.component.html',
+    styleUrls: ['./annotations.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AnnotationsComponent implements OnInit, OnDestroy {
   @Input({ required: true }) rootID!: string;

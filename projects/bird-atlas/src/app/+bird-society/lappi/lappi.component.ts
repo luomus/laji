@@ -27,9 +27,10 @@ const downloadWithFilename = (encodedUri: string, filename: string) => {
 };
 
 @Component({
-  selector: 'ba-society-lappi',
-  templateUrl: './lappi.component.html',
-  styleUrls: ['./lappi.component.scss']
+    selector: 'ba-society-lappi',
+    templateUrl: './lappi.component.html',
+    styleUrls: ['./lappi.component.scss'],
+    standalone: false
 })
 export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
   @ViewChild('linkCell') linkCellTemplate!: TemplateRef<any>;

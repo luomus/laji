@@ -17,10 +17,11 @@ import { TranslateService } from '@ngx-translate/core';
 import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 
 @Component({
-  selector: 'laji-observation-year-chart',
-  templateUrl: './observation-year-chart.component.html',
-  styleUrls: ['./observation-year-chart.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-year-chart',
+    templateUrl: './observation-year-chart.component.html',
+    styleUrls: ['./observation-year-chart.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnInit {
   @Input() query: any;

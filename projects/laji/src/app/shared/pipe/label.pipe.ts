@@ -15,8 +15,9 @@ type LabelType = 'qname'|'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
  *   value | label
  */
 @Pipe({
-  name: 'label',
-  pure: false
+    name: 'label',
+    pure: false,
+    standalone: false
 })
 export class LabelPipe implements PipeTransform, OnDestroy {
   private value: string|string[] = '';

@@ -97,10 +97,11 @@ const observationProbabilityToVisCategory: Record<ObservationProbabilityType, Ca
 };
 
 @Component({
-  selector: 'laji-result-map',
-  templateUrl: './result-map.component.html',
-  styleUrls: ['./result-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-result-map',
+    templateUrl: './result-map.component.html',
+    styleUrls: ['./result-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ResultMapComponent implements OnInit, OnChanges {
   @Input() collections!: string[];

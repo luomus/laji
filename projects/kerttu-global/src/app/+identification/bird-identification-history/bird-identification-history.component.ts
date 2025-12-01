@@ -6,13 +6,14 @@ import { Observable } from 'rxjs';
 import { IGlobalSite, TaxonTypeEnum } from '../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'bsg-bird-identification-history',
-  template: `
+    selector: 'bsg-bird-identification-history',
+    template: `
     <bsg-identification-history
       [taxonTypes]="taxonTypes"
       [sites]="(sites$ | async) ?? []"
     ></bsg-identification-history>
-  `
+  `,
+    standalone: false
 })
 export class BirdIdentificationHistoryComponent {
   sites$: Observable<IGlobalSite[]>;

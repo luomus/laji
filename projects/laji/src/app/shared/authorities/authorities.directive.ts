@@ -2,7 +2,10 @@ import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
 
-@Directive({ selector: '[lajiAuthorities]' })
+@Directive({
+    selector: '[lajiAuthorities]',
+    standalone: false
+})
 export class AuthoritiesDirective {
   constructor(
     private templateRef: TemplateRef<any>,

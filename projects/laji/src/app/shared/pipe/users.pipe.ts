@@ -13,8 +13,9 @@ import { concatMap, toArray } from 'rxjs/operators';
  *   'MA.97' | users:'name'
  */
 @Pipe({
-  name: 'users',
-  pure: false
+    name: 'users',
+    pure: false,
+    standalone: false
 })
 export class UsersPipe implements PipeTransform {
   value: string|string[] = '';

@@ -16,7 +16,7 @@ interface ViewModel {
 }
 
 @Component({
-  template: `
+    template: `
     <ng-container *ngIf="(vm$ | async) as vm; else loader">
       <laji-document-form
         [formID]="vm.formID"
@@ -30,7 +30,8 @@ interface ViewModel {
       <laji-spinner></laji-spinner>
     </ng-template>
   `,
-  selector: 'laji-project-form-form'
+    selector: 'laji-project-form-form',
+    standalone: false
 })
 export class FormComponent implements OnInit {
 

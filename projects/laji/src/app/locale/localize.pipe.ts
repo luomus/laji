@@ -6,8 +6,10 @@ import { Subscription } from 'rxjs';
 
 @Injectable()
 @Pipe({
-  name: 'localize',
-  pure: false // required to update the value when the promise is resolved
+    name: 'localize',
+    pure: false // required to update the value when the promise is resolved
+    ,
+    standalone: false
 })
 export class LocalizePipe implements PipeTransform, OnDestroy {
   private value: any = '';

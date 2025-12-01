@@ -10,9 +10,10 @@ import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 import { Util } from 'projects/laji/src/app/shared/service/util.service';
 
 @Component({
-  templateUrl: 'bird-society-info.component.html',
-  styleUrls: ['bird-society-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: 'bird-society-info.component.html',
+    styleUrls: ['bird-society-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
   @ViewChild(BirdSocietyInfoSpeciesTableComponent) table!: BirdSocietyInfoSpeciesTableComponent;

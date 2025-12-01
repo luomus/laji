@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { IGlobalAudio } from '../../../../kerttu-global-shared/models';
 
 @Pipe({
-  name: 'audioLocation'
+    name: 'audioLocation',
+    standalone: false
 })
 export class AudioLocationPipe implements PipeTransform {
   constructor() {}

@@ -21,10 +21,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type TaxonImage = components['schemas']['Image'];
 
 @Component({
-  selector: 'laji-gallery',
-  styleUrls: ['./gallery.component.css'],
-  templateUrl: './gallery.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-gallery',
+    styleUrls: ['./gallery.component.css'],
+    templateUrl: './gallery.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GalleryComponent implements OnChanges {
   @Input() query!: WarehouseQueryInterface;

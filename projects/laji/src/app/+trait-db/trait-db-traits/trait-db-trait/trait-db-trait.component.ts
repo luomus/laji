@@ -9,7 +9,8 @@ import { UserService } from '../../../shared/service/user.service';
 export type Trait = components['schemas']['Trait'];
 
 @Component({
-  templateUrl: './trait-db-trait.component.html'
+    templateUrl: './trait-db-trait.component.html',
+    standalone: false
 })
 export class TraitDbTraitComponent implements OnInit {
   trait$!: Observable<Trait>;

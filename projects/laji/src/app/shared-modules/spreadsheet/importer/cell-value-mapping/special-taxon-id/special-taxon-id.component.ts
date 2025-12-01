@@ -4,10 +4,11 @@ import { Observable } from 'rxjs';
 import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 
 @Component({
-  selector: 'laji-special-taxon-id',
-  templateUrl: './special-taxon-id.component.html',
-  styleUrls: ['./special-taxon-id.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-special-taxon-id',
+    templateUrl: './special-taxon-id.component.html',
+    styleUrls: ['./special-taxon-id.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpecialTaxonIdComponent {
 

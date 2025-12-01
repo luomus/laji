@@ -12,9 +12,10 @@ import { LineWithLine } from 'projects/laji/src/app/shared-modules/chart/line-wi
 const tooltipPositionCursor = 'cursor' as any; // chart.js typings broken for custom tooltip position so we define it as 'any'.
 
 @Component({
-  selector: 'laji-line-transect-result-chart',
-  templateUrl: './line-transect-result-chart.component.html',
-  styleUrls: ['./line-transect-result-chart.component.css']
+    selector: 'laji-line-transect-result-chart',
+    templateUrl: './line-transect-result-chart.component.html',
+    styleUrls: ['./line-transect-result-chart.component.css'],
+    standalone: false
 })
 export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 

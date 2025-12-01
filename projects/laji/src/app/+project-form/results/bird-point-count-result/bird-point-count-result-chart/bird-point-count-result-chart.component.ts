@@ -44,10 +44,11 @@ interface DocumentCountObject {
 }
 
 @Component({
-  selector: 'laji-bird-point-count-result-chart',
-  templateUrl: './bird-point-count-result-chart.component.html',
-  styleUrls: ['./bird-point-count-result-chart.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-bird-point-count-result-chart',
+    templateUrl: './bird-point-count-result-chart.component.html',
+    styleUrls: ['./bird-point-count-result-chart.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
   readonly collections$ = new BehaviorSubject<string[]>([]);

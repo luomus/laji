@@ -7,9 +7,10 @@ import { SEASON } from '../wbc-result.service';
 import { BookType } from 'xlsx';
 
 @Component({
-  selector: 'laji-wbc-route-table',
-  templateUrl: './wbc-route-table.component.html',
-  styleUrls: ['./wbc-route-table.component.scss']
+    selector: 'laji-wbc-route-table',
+    templateUrl: './wbc-route-table.component.html',
+    styleUrls: ['./wbc-route-table.component.scss'],
+    standalone: false
 })
 export class WbcRouteTableComponent implements OnInit {
   @Input() routeId!: string;

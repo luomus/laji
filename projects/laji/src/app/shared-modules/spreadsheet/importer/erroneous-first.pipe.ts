@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'erroneousFirst'
+    name: 'erroneousFirst',
+    standalone: false
 })
 export class ErroneousFirstPipe implements PipeTransform {
 

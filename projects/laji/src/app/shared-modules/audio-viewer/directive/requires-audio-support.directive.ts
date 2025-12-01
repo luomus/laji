@@ -5,7 +5,10 @@ import { AudioIosWarningComponent } from './audio-ios-warning.component';
 import { AudioService } from '../service/audio.service';
 import { TranslateService } from '@ngx-translate/core';
 
-@Directive({ selector: '[lajiRequiresAudioSupport]' })
+@Directive({
+    selector: '[lajiRequiresAudioSupport]',
+    standalone: false
+})
 export class RequiresAudioSupportDirective {
   constructor(
     private templateRef: TemplateRef<any>,

@@ -27,15 +27,16 @@ const resizeCanvasToDisplaySize = (canvas: any): boolean => {
 };
 
 @Component({
-  selector: 'laji-model-viewer',
-  template: `
+    selector: 'laji-model-viewer',
+    template: `
 <canvas #canvas
   (mousedown)="onMouseDown($event)"
   (touchstart)="onTouchstart($event)"
   (wheel)="onWheel($event)"
 ></canvas>
   `,
-  styleUrls: ['./model-viewer.component.scss']
+    styleUrls: ['./model-viewer.component.scss'],
+    standalone: false
 })
 export class ModelViewerComponent implements AfterViewInit, OnDestroy {
   @Input() src!: string;

@@ -15,9 +15,10 @@ interface ThankYouData {
 }
 
 @Component({
-  selector: 'laji-thank-you',
-  templateUrl: './thank-you.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-thank-you',
+    templateUrl: './thank-you.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ThankYouComponent implements OnInit, OnDestroy {
 

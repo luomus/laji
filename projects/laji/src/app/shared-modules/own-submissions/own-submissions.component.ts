@@ -42,11 +42,12 @@ interface DocumentQuery {
 }
 
 @Component({
-  selector: 'laji-own-submissions',
-  templateUrl: './own-submissions.component.html',
-  styleUrls: ['./own-submissions.component.css'],
-  providers: [DocumentExportService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-own-submissions',
+    templateUrl: './own-submissions.component.html',
+    styleUrls: ['./own-submissions.component.css'],
+    providers: [DocumentExportService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
 

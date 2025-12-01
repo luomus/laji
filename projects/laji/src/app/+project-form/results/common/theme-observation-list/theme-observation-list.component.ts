@@ -4,9 +4,10 @@ import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 
 @Component({
-  selector: 'laji-theme-observation-list',
-  templateUrl: './theme-observation-list.component.html',
-  styleUrls: ['./theme-observation-list.component.css']
+    selector: 'laji-theme-observation-list',
+    templateUrl: './theme-observation-list.component.html',
+    styleUrls: ['./theme-observation-list.component.css'],
+    standalone: false
 })
 export class ThemeObservationListComponent {
 

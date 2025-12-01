@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { Document } from '../../../../shared/model/Document';
 
 @Component({
-  selector: 'laji-collection-contest-print',
-  templateUrl: './collection-contest-print.component.html',
-  styleUrls: ['./collection-contest-print.scss']
+    selector: 'laji-collection-contest-print',
+    templateUrl: './collection-contest-print.component.html',
+    styleUrls: ['./collection-contest-print.scss'],
+    standalone: false
 })
 export class CollectionContestPrintComponent {
   @Input({ required: true }) document!: Document;

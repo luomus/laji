@@ -20,9 +20,10 @@ interface ViewModel {
 }
 
 @Component({
-  selector: 'laji-named-place-linker',
-  templateUrl: './named-place-linker.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-named-place-linker',
+    templateUrl: './named-place-linker.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
   @Input() documentID!: string;

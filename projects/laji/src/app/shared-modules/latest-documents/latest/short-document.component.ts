@@ -9,9 +9,10 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { Form } from '../../../shared/model/Form';
 
 @Component({
-  selector: 'laji-short-document',
-  templateUrl: './short-document.component.html',
-  styleUrls: ['./short-document.component.scss']
+    selector: 'laji-short-document',
+    templateUrl: './short-document.component.html',
+    styleUrls: ['./short-document.component.scss'],
+    standalone: false
 })
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document!: Document & { id: string };

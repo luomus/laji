@@ -18,10 +18,11 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
 import {Subject, Subscription} from 'rxjs';
 
 @Component({
-  selector: 'laji-user-document-tools',
-  templateUrl: './user-document-tools.component.html',
-  styleUrls: ['./user-document-tools.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-user-document-tools',
+    templateUrl: './user-document-tools.component.html',
+    styleUrls: ['./user-document-tools.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UserDocumentToolsComponent implements OnInit {
 

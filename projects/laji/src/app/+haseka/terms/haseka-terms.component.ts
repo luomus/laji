@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { LocalStorage } from 'ngx-webstorage';
 
 @Component({
-  selector: 'laji-haseka-terms',
-  templateUrl: './haseka-terms.component.html',
-  styleUrls: ['./haseka-terms.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-haseka-terms',
+    templateUrl: './haseka-terms.component.html',
+    styleUrls: ['./haseka-terms.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HasekaTermsComponent implements OnInit{
 

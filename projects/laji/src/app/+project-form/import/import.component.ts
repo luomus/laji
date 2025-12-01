@@ -5,10 +5,11 @@ import { CombineToDocument, ImportService } from '../../shared-modules/spreadshe
 import { ProjectForm, ProjectFormService } from '../../shared/service/project-form.service';
 
 @Component({
-  selector: 'laji-import',
-  templateUrl: './import.component.html',
-  styleUrls: ['./import.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-import',
+    templateUrl: './import.component.html',
+    styleUrls: ['./import.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ImportComponent {
 

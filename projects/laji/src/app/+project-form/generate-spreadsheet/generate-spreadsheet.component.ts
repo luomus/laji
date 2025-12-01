@@ -5,10 +5,11 @@ import { map, switchMap } from 'rxjs/operators';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
 
 @Component({
-  selector: 'laji-generate-spreadsheet',
-  templateUrl: './generate-spreadsheet.component.html',
-  styleUrls: ['./generate-spreadsheet.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-generate-spreadsheet',
+    templateUrl: './generate-spreadsheet.component.html',
+    styleUrls: ['./generate-spreadsheet.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GenerateSpreadsheetComponent {
 

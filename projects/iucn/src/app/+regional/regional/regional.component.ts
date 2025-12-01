@@ -14,10 +14,11 @@ export interface QueryParams extends RegionalFilterQuery {
 }
 
 @Component({
-  selector: 'iucn-regional',
-  templateUrl: './regional.component.html',
-  styleUrls: ['./regional.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-regional',
+    templateUrl: './regional.component.html',
+    styleUrls: ['./regional.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RegionalComponent implements OnDestroy {
   types: {label: string; value: RegionalListType}[] = [

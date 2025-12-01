@@ -21,11 +21,12 @@ import { PlatformService } from '../../root/platform.service';
 import { NavbarService } from '../service/navbar.service';
 
 @Component({
-  selector: 'laji-navbar',
-  styleUrls: ['./navbar.component.scss'],
-  templateUrl: './navbar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NotificationsFacade]
+    selector: 'laji-navbar',
+    styleUrls: ['./navbar.component.scss'],
+    templateUrl: './navbar.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [NotificationsFacade],
+    standalone: false
 })
 export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   unsubscribe$ = new Subject<null>();

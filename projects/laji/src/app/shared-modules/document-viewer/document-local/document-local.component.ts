@@ -15,9 +15,10 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
 
 
 @Component({
-  selector: 'laji-document-local',
-  templateUrl: './document-local.component.html',
-  styleUrls: ['./document-local.component.css']
+    selector: 'laji-document-local',
+    templateUrl: './document-local.component.html',
+    styleUrls: ['./document-local.component.css'],
+    standalone: false
 })
 export class DocumentLocalComponent implements OnChanges {
   @Input({ required: true }) document!: Document;

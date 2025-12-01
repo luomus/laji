@@ -3,7 +3,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 export type TypeGuard<T> = (a: any) => a is T;
 
 @Pipe({
-  name: 'typeGuard'
+    name: 'typeGuard',
+    standalone: false
 })
 export class TypeGuardPipe implements PipeTransform {
 

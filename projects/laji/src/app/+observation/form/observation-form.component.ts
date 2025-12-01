@@ -48,10 +48,11 @@ interface ISections {
 }
 
 @Component({
-  selector: 'laji-observation-form',
-  templateUrl: './observation-form.component.html',
-  styleUrls: ['./observation-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-form',
+    templateUrl: './observation-form.component.html',
+    styleUrls: ['./observation-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationFormComponent implements OnInit, OnDestroy {
 

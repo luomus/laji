@@ -8,10 +8,11 @@ import { Rights } from '../../../shared/service/form-permission.service';
 
 
 @Component({
-  selector: 'laji-haseka-latest',
-  templateUrl: './haseka-users-latest.component.html',
-  styleUrls: ['./haseka-users-latest.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-haseka-latest',
+    templateUrl: './haseka-users-latest.component.html',
+    styleUrls: ['./haseka-users-latest.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UsersLatestComponent implements OnInit, OnDestroy {
   @Input() tmpOnly = false;

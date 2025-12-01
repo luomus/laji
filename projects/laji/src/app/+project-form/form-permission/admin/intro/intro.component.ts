@@ -5,9 +5,10 @@ import { ProjectFormService } from '../../../../shared/service/project-form.serv
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'laji-intro',
-  templateUrl: './intro.component.html',
-  styleUrls: ['./intro.component.css']
+    selector: 'laji-intro',
+    templateUrl: './intro.component.html',
+    styleUrls: ['./intro.component.css'],
+    standalone: false
 })
 export class IntroComponent implements OnInit {
 

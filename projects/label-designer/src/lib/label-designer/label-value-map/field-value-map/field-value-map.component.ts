@@ -4,9 +4,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
  * @internal
  */
 @Component({
-  selector: 'll-field-value-map',
-  templateUrl: './field-value-map.component.html',
-  styleUrls: ['./field-value-map.component.scss']
+    selector: 'll-field-value-map',
+    templateUrl: './field-value-map.component.html',
+    styleUrls: ['./field-value-map.component.scss'],
+    standalone: false
 })
 export class FieldValueMapComponent {
 

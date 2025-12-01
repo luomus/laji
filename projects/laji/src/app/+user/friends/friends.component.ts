@@ -8,8 +8,9 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { Profile } from '../../shared/model/Profile';
 
 @Component({
-  selector: 'laji-friends',
-  templateUrl: './friends.component.html'
+    selector: 'laji-friends',
+    templateUrl: './friends.component.html',
+    standalone: false
 })
 export class FriendsComponent implements OnInit, OnChanges {
   @Input() profile!: Profile;

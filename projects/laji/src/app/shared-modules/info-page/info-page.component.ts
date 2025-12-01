@@ -19,14 +19,15 @@ const filterParentsAboveId = (excludeIds: string[], parents: any[]): any[] => {
 };
 
 @Component({
-  selector: 'laji-info-page',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
+    selector: 'laji-info-page',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
 <div *ngIf="!loadingContent else loading" [innerHtml]="content | safe:'html'" lajiRouteTransformer></div>
 <ng-template #loading>
   <laji-info-page-loading></laji-info-page-loading>
 </ng-template>
-`
+`,
+    standalone: false
 })
 export class InfoPageComponent implements OnChanges, OnDestroy {
 

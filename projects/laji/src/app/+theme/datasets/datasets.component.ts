@@ -12,10 +12,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
 
 @Component({
-  selector: 'laji-generic-collections',
-  templateUrl: './datasets.component.html',
-  styleUrls: ['./datasets.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-generic-collections',
+    templateUrl: './datasets.component.html',
+    styleUrls: ['./datasets.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatasetsComponent {
 

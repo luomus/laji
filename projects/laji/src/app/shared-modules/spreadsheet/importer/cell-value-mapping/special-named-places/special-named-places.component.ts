@@ -5,10 +5,11 @@ import { map, share } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'laji-special-named-places',
-  templateUrl: './special-named-places.component.html',
-  styleUrls: ['./special-named-places.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-special-named-places',
+    templateUrl: './special-named-places.component.html',
+    styleUrls: ['./special-named-places.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpecialNamedPlacesComponent implements OnInit {
 

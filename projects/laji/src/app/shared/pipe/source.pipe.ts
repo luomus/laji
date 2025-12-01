@@ -5,8 +5,9 @@ import { SourceService } from '../service/source.service';
 import { Observable, of } from 'rxjs';
 
 @Pipe({
-  name: 'source',
-  pure: false
+    name: 'source',
+    pure: false,
+    standalone: false
 })
 export class SourcePipe extends AbstractLabelPipe implements PipeTransform {
   private sources?: Record<string, string>;

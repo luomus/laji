@@ -41,9 +41,10 @@ const targetPercentageComparator = (a: any, b: any, rowA: DatatableRow, rowB: Da
 };
 
 @Component({
-  templateUrl: 'bird-society-index.component.html',
-  styleUrls: ['bird-society-index.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: 'bird-society-index.component.html',
+    styleUrls: ['bird-society-index.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BirdSocietyIndexComponent implements AfterViewInit {
   @ViewChild('societyName') societyNameTemplate!: TemplateRef<any>;

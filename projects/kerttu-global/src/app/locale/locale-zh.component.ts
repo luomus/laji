@@ -5,8 +5,9 @@ import 'moment/locale/zh-tw';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 @Component({
-  selector: 'bsg-locale-zh',
-  template: '<router-outlet></router-outlet>'
+    selector: 'bsg-locale-zh',
+    template: '<router-outlet></router-outlet>',
+    standalone: false
 })
 export class LocaleZhComponent extends LocaleComponent {
 

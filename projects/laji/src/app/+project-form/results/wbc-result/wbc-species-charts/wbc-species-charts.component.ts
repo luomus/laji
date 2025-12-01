@@ -6,9 +6,10 @@ import { IdService } from '../../../../shared/service/id.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
-  selector: 'laji-wbc-species-charts',
-  templateUrl: './wbc-species-charts.component.html',
-  styleUrls: ['./wbc-species-charts.component.css']
+    selector: 'laji-wbc-species-charts',
+    templateUrl: './wbc-species-charts.component.html',
+    styleUrls: ['./wbc-species-charts.component.css'],
+    standalone: false
 })
 export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
   activeSpeciesId?: string;

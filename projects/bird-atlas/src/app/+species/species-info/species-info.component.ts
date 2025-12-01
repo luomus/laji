@@ -19,9 +19,10 @@ interface SpeciesInfoData {
 }
 
 @Component({
-  templateUrl: './species-info.component.html',
-  styleUrls: ['./species-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './species-info.component.html',
+    styleUrls: ['./species-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesInfoComponent {
   data$: Observable<SpeciesInfoData>;

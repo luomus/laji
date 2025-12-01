@@ -27,10 +27,11 @@ const licenseLinkMap: Record<ImageModel.IntellectualRightsEnum, string> = {
 };
 
 @Component({
-  selector: 'laji-image-gallery-overlay',
-  styleUrls: ['./image-modal.component.css'],
-  templateUrl: './image-modal-overlay.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-image-gallery-overlay',
+    styleUrls: ['./image-modal.component.css'],
+    templateUrl: './image-modal-overlay.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ImageModalOverlayComponent {
   public img!: Partial<Image>;

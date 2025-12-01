@@ -13,8 +13,8 @@ export interface DownloadParams {
 }
 
 @Component({
-  selector: 'laji-download',
-  template: `
+    selector: 'laji-download',
+    template: `
     <button [class]="'btn btn-' + role" [disabled]="disabled" (click)="openModal(modal)">
       <ng-content></ng-content>
     </button>
@@ -85,7 +85,8 @@ export interface DownloadParams {
       </div>
     </ng-template>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DownloadComponent implements OnChanges {
 

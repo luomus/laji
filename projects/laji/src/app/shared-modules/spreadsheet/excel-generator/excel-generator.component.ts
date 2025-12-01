@@ -7,10 +7,11 @@ import { map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
 @Component({
-  selector: 'laji-excel-generator',
-  templateUrl: './excel-generator.component.html',
-  styleUrls: ['./excel-generator.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-excel-generator',
+    templateUrl: './excel-generator.component.html',
+    styleUrls: ['./excel-generator.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ExcelGeneratorComponent {
 

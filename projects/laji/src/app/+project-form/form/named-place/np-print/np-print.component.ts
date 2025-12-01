@@ -7,10 +7,11 @@ import { FooterService } from '../../../../shared/service/footer.service';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';
 
 @Component({
-  selector: 'laji-np-print',
-  templateUrl: './np-print.component.html',
-  styleUrls: ['./np-print.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-np-print',
+    templateUrl: './np-print.component.html',
+    styleUrls: ['./np-print.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NpPrintComponent implements OnInit, OnDestroy {
 

@@ -34,10 +34,11 @@ export const METADATA_SELECT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'laji-metadata-select',
-  templateUrl: './metadata-select.component.html',
-  providers: [METADATA_SELECT_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-metadata-select',
+    templateUrl: './metadata-select.component.html',
+    providers: [METADATA_SELECT_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlValueAccessor {
   @Input() field?: string;

@@ -6,14 +6,15 @@ import { UserService } from '../../../../../../laji/src/app/shared/service/user.
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'bsg-site-selection',
-  template: `
+    selector: 'bsg-site-selection',
+    template: `
     <bsg-site-selection-view
       [sites]="(sites$ | async) ?? []"
       (siteSelect)="siteSelect.emit($event)"
     ></bsg-site-selection-view>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SiteSelectionComponent {
   sites$: Observable<IGlobalSite[]>;

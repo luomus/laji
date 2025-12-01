@@ -26,10 +26,11 @@ const indexAndArrAfterFilter = <T>(index: number, arr: Array<T>, fn: (element: T
 };
 
 @Component({
-  selector: 'laji-identification-list',
-  templateUrl: './identification-list.component.html',
-  styleUrls: ['./identification-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-identification-list',
+    templateUrl: './identification-list.component.html',
+    styleUrls: ['./identification-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationListComponent implements OnDestroy {
   @Input() taxon!: Taxon & { children?: Taxon[] };

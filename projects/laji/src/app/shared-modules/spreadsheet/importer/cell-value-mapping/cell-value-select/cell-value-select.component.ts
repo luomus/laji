@@ -3,10 +3,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 
 @Component({
-  selector: 'laji-cell-value-select',
-  templateUrl: './cell-value-select.component.html',
-  styleUrls: ['./cell-value-select.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-cell-value-select',
+    templateUrl: './cell-value-select.component.html',
+    styleUrls: ['./cell-value-select.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CellValueSelectComponent {
 

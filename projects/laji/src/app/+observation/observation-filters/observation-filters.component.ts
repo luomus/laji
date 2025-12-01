@@ -3,8 +3,9 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { IdService } from '../../shared/service/id.service';
 
 @Component({
-  selector: 'laji-observation-filters',
-  templateUrl: './observation-filters.component.html'
+    selector: 'laji-observation-filters',
+    templateUrl: './observation-filters.component.html',
+    standalone: false
 })
 export class ObservationFiltersComponent {
 

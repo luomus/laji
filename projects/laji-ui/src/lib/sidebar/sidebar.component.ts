@@ -11,42 +11,43 @@ import { Util } from 'projects/laji/src/app/shared/service/util.service';
 const mobileBreakpoint = 768;
 
 @Component({
-  selector: 'lu-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss'],
-  animations: [
-    trigger('sidebarOpen_wrapper', [
-      state('closed', style({
-        width: '{{sidebarMinWidth}}px'
-      }), {params: {sidebarMinWidth: 0}}),
-      state('open', style({
-        width: 'unset'
-      })),
-      transition('open=>closed', group([
-        query('@sidebarOpen_content', [
-          animateChild()
+    selector: 'lu-sidebar',
+    templateUrl: './sidebar.component.html',
+    styleUrls: ['./sidebar.component.scss'],
+    animations: [
+        trigger('sidebarOpen_wrapper', [
+            state('closed', style({
+                width: '{{sidebarMinWidth}}px'
+            }), { params: { sidebarMinWidth: 0 } }),
+            state('open', style({
+                width: 'unset'
+            })),
+            transition('open=>closed', group([
+                query('@sidebarOpen_content', [
+                    animateChild()
+                ]),
+                query('@sidebarOpen_menu', [
+                    animateChild()
+                ], { optional: true }),
+                animate('300ms ease')
+            ])),
+            transition('closed=>open', group([
+                animate('300ms ease'),
+            ])),
         ]),
-        query('@sidebarOpen_menu', [
-          animateChild()
-        ], {optional: true}),
-        animate('300ms ease')
-      ])),
-      transition('closed=>open', group([
-        animate('300ms ease'),
-      ])),
-    ]),
-    trigger('sidebarOpen_content', [
-      state('closed', style({
-        opacity: 0,
-        display: 'none'
-      })),
-      state('open', style({
-        opacity: 1,
-        display: 'flex'
-      })),
-      transition('closed<=>open', animate('300ms ease')),
-    ]),
-  ]
+        trigger('sidebarOpen_content', [
+            state('closed', style({
+                opacity: 0,
+                display: 'none'
+            })),
+            state('open', style({
+                opacity: 1,
+                display: 'flex'
+            })),
+            transition('closed<=>open', animate('300ms ease')),
+        ]),
+    ],
+    standalone: false
 })
 export class SidebarComponent implements OnDestroy, AfterViewInit {
   private unsubscribe$ = new Subject<null>();

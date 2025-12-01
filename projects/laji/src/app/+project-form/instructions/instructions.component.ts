@@ -6,9 +6,10 @@ import { ActivatedRoute } from '@angular/router';
 import { MultiLanguage } from '../../../../../laji-api-client/src/lib/models';
 
 @Component({
-  template: `
+    template: `
     <laji-info-page [page]="instructions$ | async | multiLang: true:undefined:'%value%'" lajiFormOption="options.instructions"></laji-info-page>`,
-  selector: 'laji-instructions'
+    selector: 'laji-instructions',
+    standalone: false
 })
 export class InstructionsComponent implements OnInit {
 

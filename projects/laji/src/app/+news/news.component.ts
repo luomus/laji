@@ -10,10 +10,11 @@ import { NewsFacade } from './news.facade';
 
 
 @Component({
-  selector: 'laji-news',
-  templateUrl: './news.component.html',
-  styleUrls: ['../../styles/information.scss', './news.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-news',
+    templateUrl: './news.component.html',
+    styleUrls: ['../../styles/information.scss', './news.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NewsComponent implements OnInit {
   public newsItem$!: Observable<News>;

@@ -12,8 +12,9 @@ type Taxon = components['schemas']['Taxon'];
  * This is meant for getting single taxon names and is not yet usable on lists
  */
 @Pipe({
-  name: 'taxon',
-  pure: false
+    name: 'taxon',
+    pure: false,
+    standalone: false
 })
 export class TaxonNamePipe extends AbstractLabelPipe implements PipeTransform {
   private type!: 'vernacular' | 'scientific';

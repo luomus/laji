@@ -12,9 +12,10 @@ type Taxon = components['schemas']['Taxon'];
 type RedListEvaluation = components['schemas']['Evaluation'];
 
 @Component({
-  selector: 'iucn-info-card',
-  templateUrl: './info-card.component.html',
-  styleUrls: ['./info-card.component.css']
+    selector: 'iucn-info-card',
+    templateUrl: './info-card.component.html',
+    styleUrls: ['./info-card.component.css'],
+    standalone: false
 })
 export class InfoCardComponent implements OnChanges, OnInit {
   @Input() public year!: string;

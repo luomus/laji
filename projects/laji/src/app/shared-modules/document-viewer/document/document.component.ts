@@ -37,10 +37,11 @@ import { FormService } from '../../../shared/service/form.service';
 import { Form } from '../../../shared/model/Form';
 
 @Component({
-  selector: 'laji-document',
-  templateUrl: './document.component.html',
-  styleUrls: ['./document.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-document',
+    templateUrl: './document.component.html',
+    styleUrls: ['./document.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent) map?: ViewerMapComponent;

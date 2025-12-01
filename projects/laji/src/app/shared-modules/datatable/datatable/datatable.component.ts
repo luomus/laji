@@ -22,10 +22,11 @@ interface DatatableRow {
 type DatatableTemplate = keyof DatatableTemplatesComponent;
 
 @Component({
-  selector: 'laji-datatable',
-  templateUrl: './datatable.component.html',
-  styleUrls: ['./datatable.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-datatable',
+    templateUrl: './datatable.component.html',
+    styleUrls: ['./datatable.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
   @ViewChild('dataTable') public datatable?: NgxDatatableComponent;

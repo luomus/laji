@@ -12,8 +12,9 @@ export function isRelativeDate(date?: string): boolean {
 }
 
 @Component({
-  selector: 'laji-date-form',
-  templateUrl: './date-form.component.html'
+    selector: 'laji-date-form',
+    templateUrl: './date-form.component.html',
+    standalone: false
 })
 export class DateFormComponent implements OnDestroy {
   private unsubscribe$ = new Subject();

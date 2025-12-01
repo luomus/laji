@@ -4,9 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { map, mergeMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'laji-viewer',
-  templateUrl: './viewer.component.html',
-  styleUrls: ['./viewer.component.css']
+    selector: 'laji-viewer',
+    templateUrl: './viewer.component.html',
+    styleUrls: ['./viewer.component.css'],
+    standalone: false
 })
 export class ViewerComponent implements OnInit, OnDestroy {
 

@@ -31,10 +31,11 @@ interface MapState {
 type State = StatisticsState | MapState;
 
 @Component({
-  selector: 'laji-biomon-result',
-  templateUrl: './biomon-result.component.html',
-  styleUrls: ['./biomon-result.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-biomon-result',
+    templateUrl: './biomon-result.component.html',
+    styleUrls: ['./biomon-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BiomonResultComponent implements OnInit, OnDestroy {
 

@@ -7,10 +7,11 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'laji-syke-insect-routes',
-  templateUrl: './syke-insect-routes.component.html',
-  styleUrls: ['./syke-insect-routes.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-syke-insect-routes',
+    templateUrl: './syke-insect-routes.component.html',
+    styleUrls: ['./syke-insect-routes.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SykeInsectRoutesComponent implements OnInit {
 

@@ -28,10 +28,11 @@ import { FormPermission } from 'projects/laji/src/app/shared/model/FormPermissio
 import { Person } from 'projects/laji/src/app/shared/model/Person';
 
 @Component({
-  selector: 'laji-accepted-document-approval',
-  templateUrl: './accepted-document-approval.component.html',
-  styleUrls: ['./accepted-document-approval.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-accepted-document-approval',
+    templateUrl: './accepted-document-approval.component.html',
+    styleUrls: ['./accepted-document-approval.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AcceptedDocumentApprovalComponent implements OnChanges {
 

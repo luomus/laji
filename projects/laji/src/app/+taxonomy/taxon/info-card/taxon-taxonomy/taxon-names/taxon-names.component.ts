@@ -17,10 +17,11 @@ interface AvailableLangs {
 };
 
 @Component({
-  selector: 'laji-taxon-names',
-  templateUrl: './taxon-names.component.html',
-  styleUrls: ['./taxon-names.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-names',
+    templateUrl: './taxon-names.component.html',
+    styleUrls: ['./taxon-names.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonNamesComponent {
   _taxon!: Taxon;

@@ -7,9 +7,10 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 
 
 @Component({
-  selector: 'laji-observation-count',
-  templateUrl: './observation-count.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-count',
+    templateUrl: './observation-count.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationCountComponent implements OnChanges {
 

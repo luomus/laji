@@ -12,9 +12,10 @@ import { Area } from '../../../../../../laji/src/app/shared/model/Area';
 import { RegionalFilterQuery } from '../../service/regional.service';
 
 @Component({
-  selector: 'iucn-filters',
-  templateUrl: './filters.component.html',
-  styleUrls: ['./filters.component.scss']
+    selector: 'iucn-filters',
+    templateUrl: './filters.component.html',
+    styleUrls: ['./filters.component.scss'],
+    standalone: false
 })
 export class FiltersComponent {
 

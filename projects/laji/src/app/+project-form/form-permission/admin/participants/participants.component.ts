@@ -11,9 +11,10 @@ import { Form } from '../../../../shared/model/Form';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';
 
 @Component({
-  selector: 'laji-form-participants',
-  templateUrl: './participants.component.html',
-  styleUrls: ['./participants.component.css']
+    selector: 'laji-form-participants',
+    templateUrl: './participants.component.html',
+    styleUrls: ['./participants.component.css'],
+    standalone: false
 })
 export class ParticipantsComponent implements OnInit, OnDestroy {
 

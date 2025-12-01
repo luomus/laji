@@ -6,8 +6,9 @@ import { Observable, of } from 'rxjs';
 import { Checklist } from 'projects/laji-api-client/src/lib/models/checklist';
 
 @Pipe({
-  name: 'checklist',
-  pure: false
+    name: 'checklist',
+    pure: false,
+    standalone: false
 })
 export class ChecklistPipe extends AbstractLabelPipe implements PipeTransform {
   private checklists?: {[id: string]: Checklist};

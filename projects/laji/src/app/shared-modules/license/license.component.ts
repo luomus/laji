@@ -95,8 +95,8 @@ const LICENSES: {[type: string]: ILicense} = {
 };
 
 @Component({
-  selector: 'laji-license',
-  template: `
+    selector: 'laji-license',
+    template: `
     <ng-container [ngSwitch]="_type">
         <ng-container *ngSwitchCase="'MZ.intellectualRightsARR'">
             © {{ _type | label }}
@@ -112,8 +112,9 @@ const LICENSES: {[type: string]: ILicense} = {
         </a>
     </ng-container>
   `,
-  styles: [],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styles: [],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LicenseComponent {
 

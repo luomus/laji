@@ -5,9 +5,10 @@ import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'laji-three-state-multi-switch',
-  templateUrl: './three-state-multi-switch.component.html',
-  styleUrls: ['./three-state-multi-switch.component.css']
+    selector: 'laji-three-state-multi-switch',
+    templateUrl: './three-state-multi-switch.component.html',
+    styleUrls: ['./three-state-multi-switch.component.css'],
+    standalone: false
 })
 export class ThreeStateMultiSwitchComponent implements OnInit {
 

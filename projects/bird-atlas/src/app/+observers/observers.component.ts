@@ -14,8 +14,9 @@ interface Row {
 }
 
 @Component({
-  templateUrl: './observers.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './observers.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObserversComponent implements OnInit {
   areaControl = new FormControl<string>('all');

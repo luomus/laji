@@ -5,10 +5,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'iucn-red-list-regional-status',
-  templateUrl: './red-list-regional-status.component.html',
-  styleUrls: ['./red-list-regional-status.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-red-list-regional-status',
+    templateUrl: './red-list-regional-status.component.html',
+    styleUrls: ['./red-list-regional-status.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RedListRegionalStatusComponent implements OnInit, OnDestroy {
 

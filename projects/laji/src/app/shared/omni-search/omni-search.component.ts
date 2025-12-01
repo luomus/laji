@@ -23,10 +23,11 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 type InternalTaxon = TaxaWithAutocomplete & {count?: number; informalTaxonGroups?: any; informalTaxonGroupsClass?: any};
 
 @Component({
-  selector: 'laji-omni-search',
-  templateUrl: './omni-search.component.html',
-  styleUrls: ['./omni-search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-omni-search',
+    templateUrl: './omni-search.component.html',
+    styleUrls: ['./omni-search.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
 

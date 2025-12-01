@@ -10,9 +10,10 @@ export type Dataset = components['schemas']['Dataset'];
 export type DatasetPermissions = components['schemas']['DatasetPermissions'];
 
 @Component({
-  templateUrl: './trait-db-dataset.component.html',
-  styleUrls: ['./trait-db-dataset.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './trait-db-dataset.component.html',
+    styleUrls: ['./trait-db-dataset.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDatasetComponent implements OnInit {
   // null represents a state where we are done querying the api so the loading indicator shouldnt be shown

@@ -13,10 +13,11 @@ export const getDownloadRequestType = (downloadRequest: DownloadRequest): Downlo
 );
 
 @Component({
-  selector: 'laji-download-request',
-  templateUrl: './download-request.component.html',
-  styleUrls: ['./download-request.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-download-request',
+    templateUrl: './download-request.component.html',
+    styleUrls: ['./download-request.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DownloadRequestComponent implements OnChanges {
   @Input() downloadRequest!: DownloadRequest;

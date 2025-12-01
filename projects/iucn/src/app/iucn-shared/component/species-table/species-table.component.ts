@@ -8,10 +8,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type Taxon = components['schemas']['Taxon'];
 
 @Component({
-  selector: 'iucn-species-table',
-  templateUrl: './species-table.component.html',
-  styleUrls: ['./species-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-species-table',
+    templateUrl: './species-table.component.html',
+    styleUrls: ['./species-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesTableComponent implements OnChanges {
   @ViewChild(DownloadComponent) speciesDownload!: DownloadComponent;

@@ -5,10 +5,11 @@ type Taxon = components['schemas']['Taxon'];
 type TaxonDescription = components['schemas']['Content'][number];
 
 @Component({
-  selector: 'laji-taxon-invasive',
-  templateUrl: './taxon-invasive.component.html',
-  styleUrls: ['./taxon-invasive.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-invasive',
+    templateUrl: './taxon-invasive.component.html',
+    styleUrls: ['./taxon-invasive.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonInvasiveComponent {
   @Input({ required: true }) taxon!: Taxon;

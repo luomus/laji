@@ -34,14 +34,15 @@ type TypeaheadOptionArr = TypeaheadOption[] | Observable<TypeaheadOption[]>;
  * which is ngx-bootstrap's latest version before ng@15 compatibility.
  */
 @Directive({
-  selector: '[luTypeahead]',
-  exportAs: 'luTypeahead',
-  host: {
-    '[attr.aria-activedescendant]': 'activeDescendant',
-    '[attr.aria-owns]': 'isOpen ? this._container.popupId : null',
-    '[attr.aria-expanded]': 'isOpen',
-    '[attr.aria-autocomplete]': 'list'
-  }
+    selector: '[luTypeahead]',
+    exportAs: 'luTypeahead',
+    host: {
+        '[attr.aria-activedescendant]': 'activeDescendant',
+        '[attr.aria-owns]': 'isOpen ? this._container.popupId : null',
+        '[attr.aria-expanded]': 'isOpen',
+        '[attr.aria-autocomplete]': 'list'
+    },
+    standalone: false
 })
 export class TypeaheadDirective implements OnInit, OnDestroy {
   /** options source, can be Array of strings, objects or

@@ -6,9 +6,10 @@ import { Document } from '../../../shared/model/Document';
 import {ModalComponent} from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 @Component({
-  selector: 'laji-viewer-modal',
-  templateUrl: './viewer-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-viewer-modal',
+    templateUrl: './viewer-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ViewerModalComponent implements OnDestroy {
 

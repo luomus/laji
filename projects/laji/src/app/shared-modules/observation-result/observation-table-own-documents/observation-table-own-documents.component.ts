@@ -40,11 +40,12 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
 
 
 @Component({
-  selector: 'laji-observation-table-own-documents',
-  templateUrl: './observation-table-own-documents.component.html',
-  styleUrls: ['./observation-table-own-documents.component.scss'],
-  providers: [ObservationResultService, ToQNamePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-table-own-documents',
+    templateUrl: './observation-table-own-documents.component.html',
+    styleUrls: ['./observation-table-own-documents.component.scss'],
+    providers: [ObservationResultService, ToQNamePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('dataTableOwn', { static: true }) public datatable?: DatatableOwnSubmissionsComponent;

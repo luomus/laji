@@ -6,9 +6,10 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'laji-wbc-species',
-  templateUrl: './wbc-species.component.html',
-  styleUrls: ['./wbc-species.component.css']
+    selector: 'laji-wbc-species',
+    templateUrl: './wbc-species.component.html',
+    styleUrls: ['./wbc-species.component.css'],
+    standalone: false
 })
 export class WbcSpeciesComponent implements OnInit {
   activeYear!: number;

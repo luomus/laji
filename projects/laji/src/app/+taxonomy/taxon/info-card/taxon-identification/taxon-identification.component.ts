@@ -54,10 +54,11 @@ interface Data {
 }
 
 @Component({
-  selector: 'laji-taxon-identification',
-  templateUrl: './taxon-identification.component.html',
-  styleUrls: ['./taxon-identification.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-identification',
+    templateUrl: './taxon-identification.component.html',
+    styleUrls: ['./taxon-identification.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, OnDestroy {
   private subscription: Subscription = new Subscription();

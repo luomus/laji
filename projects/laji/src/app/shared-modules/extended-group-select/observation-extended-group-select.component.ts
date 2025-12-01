@@ -17,11 +17,12 @@ export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'laji-observation-extended-group-select',
-  templateUrl: './extended-group-select.component.html',
-  styleUrls: ['./extended-group-select.component.css'],
-  providers: [OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-extended-group-select',
+    templateUrl: './extended-group-select.component.html',
+    styleUrls: ['./extended-group-select.component.css'],
+    providers: [OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationExtendedGroupSelectComponent extends ExtendedGroupSelectComponent<InformalTaxonGroup> {
 

@@ -3,10 +3,11 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 const EMPTY_VALUE = ' ';
 
 @Component({
-  selector: 'laji-print-row',
-  templateUrl: './print-row.component.html',
-  styleUrls: ['./print-row.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-print-row',
+    templateUrl: './print-row.component.html',
+    styleUrls: ['./print-row.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PrintRowComponent implements OnChanges {
 

@@ -6,10 +6,11 @@ import { ProjectFormService } from '../../shared/service/project-form.service';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'laji-project-form-templates',
-  templateUrl: './templates.component.html',
-  styleUrls: ['./templates.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-project-form-templates',
+    templateUrl: './templates.component.html',
+    styleUrls: ['./templates.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TemplatesComponent implements OnInit {
 

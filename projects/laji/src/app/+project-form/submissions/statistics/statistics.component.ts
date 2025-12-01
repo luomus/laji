@@ -11,10 +11,11 @@ import { Form } from '../../../shared/model/Form';
 import { NamedPlacesService } from '../../../shared/service/named-places.service';
 
 @Component({
-  selector: 'laji-statistics',
-  templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-statistics',
+    templateUrl: './statistics.component.html',
+    styleUrls: ['./statistics.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class StatisticsComponent implements OnInit {
 

@@ -55,10 +55,11 @@ export const atlasClassStyleLookup: Record<AtlasClass, {radius: number; fillColo
 };
 
 @Component({
-  selector: 'ba-bird-society-info-map',
-  templateUrl: './bird-society-info-map.component.html',
-  styleUrls: ['./bird-society-info-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'ba-bird-society-info-map',
+    templateUrl: './bird-society-info-map.component.html',
+    styleUrls: ['./bird-society-info-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() atlasGrid!: AtlasGridSquare[];

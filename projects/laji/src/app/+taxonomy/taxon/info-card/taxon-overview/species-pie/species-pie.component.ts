@@ -10,10 +10,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type Taxon = components['schemas']['Taxon'];
 
 @Component({
-  selector: 'laji-species-pie',
-  templateUrl: './species-pie.component.html',
-  styleUrls: ['./species-pie.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-species-pie',
+    templateUrl: './species-pie.component.html',
+    styleUrls: ['./species-pie.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesPieComponent implements OnInit, OnChanges {
   @Input() children!: Taxon[];

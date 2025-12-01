@@ -5,8 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'laji-named-place-wrapper',
-  template: `
+    selector: 'laji-named-place-wrapper',
+    template: `
     <ng-container *ngIf="data$ | async as data; else spinner">
       <laji-named-places [documentForm]="data.documentForm"
                          [activeId]="data.activeNP!"
@@ -27,7 +27,8 @@ import { take } from 'rxjs/operators';
       <laji-spinner></laji-spinner>
     </ng-template>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NamedPlaceWrapperComponent implements OnInit {
 

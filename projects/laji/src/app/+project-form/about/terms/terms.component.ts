@@ -6,10 +6,11 @@ import { Subscription } from 'rxjs';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 @Component({
-  selector: 'laji-project-form-terms',
-  templateUrl: './terms.component.html',
-  styleUrls: ['./terms.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-project-form-terms',
+    templateUrl: './terms.component.html',
+    styleUrls: ['./terms.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TermsComponent implements OnInit, OnDestroy, AfterViewInit {
 

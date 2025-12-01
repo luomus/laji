@@ -26,10 +26,11 @@ export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'indivi
   'individualCountSumPer10km';
 
 @Component({
-  selector: 'laji-ykj-map',
-  templateUrl: './ykj-map.component.html',
-  styleUrls: ['./ykj-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-ykj-map',
+    templateUrl: './ykj-map.component.html',
+    styleUrls: ['./ykj-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
 

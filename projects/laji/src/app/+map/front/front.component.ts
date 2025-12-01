@@ -18,10 +18,11 @@ import { latLngGridToGeoJSON } from '@luomus/laji-map/lib/utils';
 import { PlatformService } from '../../root/platform.service';
 
 @Component({
-  selector: 'laji-map-front',
-  templateUrl: './front.component.html',
-  styleUrls: ['./front.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-map-front',
+    templateUrl: './front.component.html',
+    styleUrls: ['./front.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FrontComponent implements OnInit, OnDestroy {
   @ViewChild(LajiMapComponent, {static: true}) lajiMap!: LajiMapComponent;

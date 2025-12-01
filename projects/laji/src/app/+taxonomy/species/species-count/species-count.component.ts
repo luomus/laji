@@ -4,10 +4,11 @@ import { Subscription } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
-  selector: 'laji-species-count',
-  templateUrl: './species-count.component.html',
-  styleUrls: ['./species-count.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-species-count',
+    templateUrl: './species-count.component.html',
+    styleUrls: ['./species-count.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesCountComponent implements OnInit, OnDestroy {
   @Input({ required: true }) search!: TaxonomySearch;

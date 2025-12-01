@@ -99,10 +99,11 @@ export interface Sort {
   </ng-template>
  */
 @Component({
-  selector: 'lu-datatable',
-  templateUrl: './datatable.component.html',
-  styleUrls: [ './datatable.component.scss' ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'lu-datatable',
+    templateUrl: './datatable.component.html',
+    styleUrls: ['./datatable.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
   @Input({ required: true }) rows!: DatatableRow<RowProp>[];

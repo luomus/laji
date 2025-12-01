@@ -4,10 +4,11 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'vir-usage-by-organization',
-  templateUrl: './usage-by-organization.component.html',
-  styleUrls: ['./usage-by-organization.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-usage-by-organization',
+    templateUrl: './usage-by-organization.component.html',
+    styleUrls: ['./usage-by-organization.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UsageByOrganizationComponent {
 

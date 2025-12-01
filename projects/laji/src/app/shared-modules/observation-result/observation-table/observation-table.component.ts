@@ -51,11 +51,12 @@ export const getSortsFromCols = (event: any, cols: ObservationTableColumn[], lan
 );
 
 @Component({
-  selector: 'laji-observation-table',
-  templateUrl: './observation-table.component.html',
-  styleUrls: ['./observation-table.component.css'],
-  providers: [ObservationResultService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-table',
+    templateUrl: './observation-table.component.html',
+    styleUrls: ['./observation-table.component.css'],
+    providers: [ObservationResultService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationTableComponent implements OnInit, OnChanges {
   @ViewChild('dataTable', { static: true }) public datatable?: DatatableComponent;

@@ -39,23 +39,23 @@ interface AnnotationTaxonomy {
 
 
 @Component({
-  selector: 'laji-annotation-form-new',
-  templateUrl: './annotation-form-new.component.html',
-  styleUrls: ['./annotation-form-new.component.scss'],
-  providers: [LabelPipe],
-  animations: [
-    trigger('fadeInOut', [
-      transition('void => *', [
-        style({opacity: 0}),
-        animate(400, style({opacity: 1}))
-      ]),
-      transition('* => void', [
-        animate(600, style({opacity: 0}))
-      ])
-    ])
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
-
+    selector: 'laji-annotation-form-new',
+    templateUrl: './annotation-form-new.component.html',
+    styleUrls: ['./annotation-form-new.component.scss'],
+    providers: [LabelPipe],
+    animations: [
+        trigger('fadeInOut', [
+            transition('void => *', [
+                style({ opacity: 0 }),
+                animate(400, style({ opacity: 1 }))
+            ]),
+            transition('* => void', [
+                animate(600, style({ opacity: 0 }))
+            ])
+        ])
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterContentChecked {
   static readonly lang = ['en', 'fi', 'sv'];

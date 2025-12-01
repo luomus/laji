@@ -5,8 +5,9 @@ import 'moment/locale/sv';
 import { PlatformService } from '../root/platform.service';
 
 @Component({
-  selector: 'laji-locale-sv',
-  template: '<router-outlet></router-outlet>'
+    selector: 'laji-locale-sv',
+    template: '<router-outlet></router-outlet>',
+    standalone: false
 })
 export class LocaleSvComponent extends LocaleComponent {
 

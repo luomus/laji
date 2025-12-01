@@ -6,10 +6,11 @@ import { SelectOptions } from '../select-subcategories/select-subcategories.comp
 
 
 @Component({
-  selector: 'laji-metadata-select-with-subcategories',
-  templateUrl: './metadata-select-with-subcategories.component.html',
-  styleUrls: ['./metadata-select-with-subcategories.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-metadata-select-with-subcategories',
+    templateUrl: './metadata-select-with-subcategories.component.html',
+    styleUrls: ['./metadata-select-with-subcategories.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComponent implements OnChanges {
   @Input({required: true}) query!: WarehouseQueryInterface;

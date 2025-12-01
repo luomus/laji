@@ -19,10 +19,11 @@ interface QueryResult {
 }
 
 @Component({
-  selector: 'laji-biomon-result-statistics',
-  templateUrl: './biomon-result-statistics.component.html',
-  styleUrls: ['./biomon-result-statistics.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-biomon-result-statistics',
+    templateUrl: './biomon-result-statistics.component.html',
+    styleUrls: ['./biomon-result-statistics.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BiomonResultStatisticsComponent implements OnInit {
   readonly collection$ = new BehaviorSubject<string>('');

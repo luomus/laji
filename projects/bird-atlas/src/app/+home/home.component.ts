@@ -6,9 +6,10 @@ import { FooterService } from '../core/footer.service';
 import { cmsIds } from '../locale/cms-ids';
 
 @Component({
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HomeComponent implements OnInit, OnDestroy {
   homeContent$ = this.translate.onLangChange.pipe(

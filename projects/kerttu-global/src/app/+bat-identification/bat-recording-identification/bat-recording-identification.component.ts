@@ -8,10 +8,11 @@ import { map } from 'rxjs/operators';
 import { ComponentCanDeactivate } from '../../../../../laji/src/app/shared/guards/document-de-activate.guard';
 
 @Component({
-  selector: 'bsg-bat-recording-identification',
-  templateUrl: './bat-recording-identification.component.html',
-  styleUrls: ['./bat-recording-identification.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bsg-bat-recording-identification',
+    templateUrl: './bat-recording-identification.component.html',
+    styleUrls: ['./bat-recording-identification.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BatRecordingIdentificationComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(IdentificationMainComponent) identificationComponent?: IdentificationMainComponent;

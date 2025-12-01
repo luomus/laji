@@ -5,10 +5,11 @@ import { DialogService } from '../../shared/service/dialog.service';
 import { CombinedData } from './sound-identification-form/sound-identification-form.component';
 
 @Component({
-  selector: 'laji-sound-identification',
-  templateUrl: './sound-identification.component.html',
-  styleUrls: ['./sound-identification.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-sound-identification',
+    templateUrl: './sound-identification.component.html',
+    styleUrls: ['./sound-identification.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SoundIdentificationComponent implements OnDestroy {
   loading = false;

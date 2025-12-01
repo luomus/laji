@@ -2,8 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { MultiLangService } from '../service/multi-lang.service';
 
 @Pipe({
-  name: 'multiLangAll',
-  pure: true
+    name: 'multiLangAll',
+    pure: true,
+    standalone: false
 })
 export class MultiLangAllPipe implements PipeTransform {
   public value = '';

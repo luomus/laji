@@ -3,8 +3,8 @@ import { CheckboxType } from '../../select/checkbox/checkbox.component';
 import { SelectedOption } from '../tree-select.component';
 
 @Component({
-  selector: 'laji-selected-tree-nodes',
-  template: `
+    selector: 'laji-selected-tree-nodes',
+    template: `
      <div>
       <div *ngIf="included">
       <h6>{{ includedTitle }}</h6>
@@ -24,8 +24,9 @@ import { SelectedOption } from '../tree-select.component';
       </div>
     </div>
   `,
-  styleUrls: ['./selected-tree-nodes.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./selected-tree-nodes.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SelectedTreeNodesComponent implements OnChanges {
   @Input({required: true}) selectedOptions!: SelectedOption[];

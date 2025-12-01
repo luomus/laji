@@ -82,17 +82,18 @@ export type AdditionalFilterValues = Partial<{
 }>;
 
 @Component({
-  selector: 'laji-trait-search-additional-filters',
-  templateUrl: './additional-filters.component.html',
-  styleUrls: ['./additional-filters.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TraitSearchAdditionalFiltersComponent),
-      multi: true
-    }
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-search-additional-filters',
+    templateUrl: './additional-filters.component.html',
+    styleUrls: ['./additional-filters.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => TraitSearchAdditionalFiltersComponent),
+            multi: true
+        }
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitSearchAdditionalFiltersComponent implements ControlValueAccessor, OnDestroy {
   form: FormGroup<Record<keyof typeof additionalFilters, FormControl>>;

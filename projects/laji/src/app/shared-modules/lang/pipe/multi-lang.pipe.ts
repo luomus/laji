@@ -4,8 +4,9 @@ import { MultiLangService } from '../service/multi-lang.service';
 import { Subscription } from 'rxjs';
 
 @Pipe({
-  name: 'multiLang',
-  pure: false
+    name: 'multiLang',
+    pure: false,
+    standalone: false
 })
 export class MultiLangPipe implements PipeTransform, OnDestroy {
 

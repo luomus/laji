@@ -5,9 +5,10 @@ import { map, mergeMap } from 'rxjs/operators';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
-  selector: 'laji-find-person',
-  templateUrl: './find-person.component.html',
-  styleUrls: ['./find-person.component.css']
+    selector: 'laji-find-person',
+    templateUrl: './find-person.component.html',
+    styleUrls: ['./find-person.component.css'],
+    standalone: false
 })
 export class FindPersonComponent implements OnInit {
 

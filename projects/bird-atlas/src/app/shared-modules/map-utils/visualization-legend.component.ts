@@ -29,14 +29,15 @@ export const legends: Record<VisualizationMode, { color: string; label: string }
 };
 
 @Component({
-  selector: 'ba-visualization-legend',
-  template: `
+    selector: 'ba-visualization-legend',
+    template: `
     <h6>{{ visualizationModeTitles[visualization] }}</h6>
     <div class="legend-row" *ngFor="let row of legends[visualization]">
       <span class="legend-sq" [ngStyle]="{'background-color': '#' + row.color}"></span>{{ row.label }}
     </div>
   `,
-  styleUrls: ['./visualization-legend.component.scss']
+    styleUrls: ['./visualization-legend.component.scss'],
+    standalone: false
 })
 export class VisualizationLegendComponent {
   @Input() visualization!: VisualizationMode;

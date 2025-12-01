@@ -12,17 +12,18 @@ import { SearchQueryService } from '../../+observation/search-query.service';
 import { ObservationDataService } from '../../+observation/observation-data.service';
 
 @Component({
-  selector: 'laji-genetic-resource',
-  templateUrl: './genetic-resource.component.html',
-  styleUrls: ['./genetic-resource.component.scss'],
-  providers: [
-    ObservationFacade,
-    WarehouseApi,
-    ObservationDataService,
-    {provide: TableColumnService, useClass: SampleTableColumnService},
-    ObservationResultService
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-genetic-resource',
+    templateUrl: './genetic-resource.component.html',
+    styleUrls: ['./genetic-resource.component.scss'],
+    providers: [
+        ObservationFacade,
+        WarehouseApi,
+        ObservationDataService,
+        { provide: TableColumnService, useClass: SampleTableColumnService },
+        ObservationResultService
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GeneticResourceComponent extends AbstractObservation implements OnInit, OnDestroy {
 

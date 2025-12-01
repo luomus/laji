@@ -4,10 +4,11 @@ import { TaxonTagEffectiveService } from '../taxon-tag-effective.service';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 @Component({
-  selector: 'laji-gathering',
-  templateUrl: './gathering.component.html',
-  styleUrls: ['./gathering.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-gathering',
+    templateUrl: './gathering.component.html',
+    styleUrls: ['./gathering.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GatheringComponent implements OnInit, OnDestroy {
 

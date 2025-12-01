@@ -12,8 +12,9 @@ type Trait = components['schemas']['Trait'];
 type ValidationResponse = components['schemas']['ValidationResponse'];
 
 @Component({
-  templateUrl: './trait-db-trait-editor.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './trait-db-trait-editor.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbTraitEditorComponent implements OnInit {
   form = this.fb.group<Partial<Trait>>({

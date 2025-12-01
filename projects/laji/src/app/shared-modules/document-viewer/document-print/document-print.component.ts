@@ -17,10 +17,11 @@ import { filter, map, switchMap, take } from 'rxjs/operators';
 import { Global } from '../../../../environments/global';
 
 @Component({
-  selector: 'laji-document-print',
-  templateUrl: './document-print.component.html',
-  styleUrls: ['../styles/document-print.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-document-print',
+    templateUrl: './document-print.component.html',
+    styleUrls: ['../styles/document-print.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DocumentPrintComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() uri?: string;

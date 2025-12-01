@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'subCategoryCheckboxValue'
+    name: 'subCategoryCheckboxValue',
+    standalone: false
 })
 export class SubCategoryCheckboxValuePipe implements PipeTransform {
 

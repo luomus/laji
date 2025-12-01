@@ -6,14 +6,15 @@ import { ChecklistYear, DEFAULT_YEAR, ResultService } from '../iucn-shared/servi
 import { ChecklistVersion } from '../iucn-shared/service/taxon.service';
 
 @Component({
-  selector: 'iucn-taxonomy',
-  template: `
+    selector: 'iucn-taxonomy',
+    template: `
     <iucn-simple-omni></iucn-simple-omni>
     <div class="container">
       <iucn-info-card [taxonId]="taxon" [year]="year.toString()" [checklistId]="checklist"></iucn-info-card>
     </div>
   `,
-  styles: []
+    styles: [],
+    standalone: false
 })
 export class TaxonomyComponent implements OnInit, OnDestroy {
 

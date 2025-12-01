@@ -11,10 +11,11 @@ import { ProjectFormService } from '../../../../shared/service/project-form.serv
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'laji-manage',
-  templateUrl: './manage.component.html',
-  styleUrls: ['./manage.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-manage',
+    templateUrl: './manage.component.html',
+    styleUrls: ['./manage.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ManageComponent extends AbstractPermission implements OnInit, OnDestroy {
   disabled: {[personId: string]: boolean} = {};

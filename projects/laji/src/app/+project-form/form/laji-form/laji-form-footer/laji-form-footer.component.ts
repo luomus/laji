@@ -8,10 +8,11 @@ import { PlatformService } from '../../../../root/platform.service';
 export type LajiFormFooterStatus = '' | 'success' | 'error' | 'unsaved';
 
 @Component({
-  selector: 'laji-form-footer',
-  templateUrl: './laji-form-footer.component.html',
-  styleUrls: ['./laji-form-footer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-form-footer',
+    templateUrl: './laji-form-footer.component.html',
+    styleUrls: ['./laji-form-footer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LajiFormFooterComponent {
   @Input() status: LajiFormFooterStatus = '';

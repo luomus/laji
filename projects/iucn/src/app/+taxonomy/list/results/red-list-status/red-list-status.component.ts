@@ -22,9 +22,10 @@ interface RedListStatusDataInternal extends RedListStatusData {
 }
 
 @Component({
-  selector: 'iucn-red-list-status',
-  templateUrl: './red-list-status.component.html',
-  styleUrls: ['./red-list-status.component.scss']
+    selector: 'iucn-red-list-status',
+    templateUrl: './red-list-status.component.html',
+    styleUrls: ['./red-list-status.component.scss'],
+    standalone: false
 })
 export class RedListStatusComponent {
 

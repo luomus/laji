@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { TeamMemberService } from '../team-member.service';
 
 @Component({
-  selector: 'laji-member-id-pill-list',
-  templateUrl: './member-id-pill-list.component.html',
-  styleUrls: ['./member-id-pill-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: true
+    selector: 'laji-member-id-pill-list',
+    templateUrl: './member-id-pill-list.component.html',
+    styleUrls: ['./member-id-pill-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    preserveWhitespaces: true,
+    standalone: false
 })
 export class MemberIdPillListComponent {
 

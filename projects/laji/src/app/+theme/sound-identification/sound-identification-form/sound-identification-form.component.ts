@@ -10,10 +10,11 @@ export interface CombinedData {
 }
 
 @Component({
-  selector: 'laji-sound-identification-form',
-  templateUrl: './sound-identification-form.component.html',
-  styleUrls: ['./sound-identification-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-sound-identification-form',
+    templateUrl: './sound-identification-form.component.html',
+    styleUrls: ['./sound-identification-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SoundIdentificationFormComponent implements OnChanges {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;

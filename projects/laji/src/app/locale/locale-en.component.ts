@@ -4,8 +4,9 @@ import moment from 'moment';
 import { PlatformService } from '../root/platform.service';
 
 @Component({
-  selector: 'laji-locale-en',
-  template: '<router-outlet></router-outlet>'
+    selector: 'laji-locale-en',
+    template: '<router-outlet></router-outlet>',
+    standalone: false
 })
 export class LocaleEnComponent extends LocaleComponent {
 

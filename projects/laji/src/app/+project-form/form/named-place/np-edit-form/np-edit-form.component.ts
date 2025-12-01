@@ -24,9 +24,10 @@ interface ViewModel extends NamedPlacesRouteData {
 }
 
 @Component({
-  selector: 'laji-np-edit-form',
-  templateUrl: './np-edit-form.component.html',
-  styleUrls: ['./np-edit-form.component.css']
+    selector: 'laji-np-edit-form',
+    templateUrl: './np-edit-form.component.html',
+    styleUrls: ['./np-edit-form.component.css'],
+    standalone: false
 })
 export class NpEditFormComponent implements OnInit {
   asyncData$!: Observable<ViewModel>;

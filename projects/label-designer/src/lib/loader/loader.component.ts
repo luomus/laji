@@ -4,14 +4,14 @@ import { Component, Input } from '@angular/core';
  * @internal
  */
 @Component({
-  selector: 'll-loader',
-  template: `
+    selector: 'll-loader',
+    template: `
       <div *ngIf="loading" class="ll-loader">
           <div></div>
           <div></div>
           <div></div>
       </div>`,
-  styles: [`
+    styles: [`
       .ll-loader {
           display: inline-block;
           position: relative;
@@ -52,7 +52,8 @@ import { Component, Input } from '@angular/core';
               height: 13px;
           }
       }
-  `]
+  `],
+    standalone: false
 })
 export class LoaderComponent {
   @Input() loading = false;

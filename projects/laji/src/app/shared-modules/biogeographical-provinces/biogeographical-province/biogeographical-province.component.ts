@@ -30,13 +30,14 @@ export interface BiogeographicalArea {
 }
 
 @Component({
-  selector: 'laji-biogeographical-province',
-  templateUrl: './biogeographical-province.component.html',
-  styles: [`
+    selector: 'laji-biogeographical-province',
+    templateUrl: './biogeographical-province.component.html',
+    styles: [`
     text {
         font-size: 30px;
     }
-  `]
+  `],
+    standalone: false
 })
 export class BiogeographicalProvinceComponent {
 

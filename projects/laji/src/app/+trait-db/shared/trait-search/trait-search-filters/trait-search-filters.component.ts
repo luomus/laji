@@ -23,10 +23,11 @@ export const formDefaultValues: FormValue = {
 };
 
 @Component({
-  selector: 'laji-trait-search-filters',
-  templateUrl: './trait-search-filters.component.html',
-  styleUrls: ['./trait-search-filters.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-search-filters',
+    templateUrl: './trait-search-filters.component.html',
+    styleUrls: ['./trait-search-filters.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitSearchFiltersComponent implements OnChanges {
   @Input() initialValue?: FormValue;

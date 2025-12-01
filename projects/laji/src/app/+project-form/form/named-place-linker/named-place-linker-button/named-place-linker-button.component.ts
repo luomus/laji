@@ -13,8 +13,8 @@ interface ViewModel {
 }
 
 @Component({
-  selector: 'laji-named-place-linker-button',
-  template: `
+    selector: 'laji-named-place-linker-button',
+    template: `
     <ng-container *ngIf="vm$ | async as vm">
       <lu-alert type="warning" *ngIf="vm.isLinkable">
         {{ 'np.linker.npMissing' | translate }} <br>
@@ -25,7 +25,8 @@ interface ViewModel {
       </lu-alert>
     </ng-container>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NamedPlaceLinkerButtonComponent implements OnInit {
 

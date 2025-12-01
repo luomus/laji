@@ -10,8 +10,8 @@ import { SpeciesListQueryService } from '../service/species-list-query.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'bsg-species-select',
-  template: `
+    selector: 'bsg-species-select',
+    template: `
     <bsg-species-list
       [(query)]="queryService.query"
       [filters]="(speciesFilters$ | async) ?? undefined"
@@ -21,14 +21,15 @@ import { TranslateService } from '@ngx-translate/core';
       (queryChange)="updateSpeciesList()"
     ></bsg-species-list>
   `,
-  styles: [`
+    styles: [`
     :host {
       flex: 1 0 auto;
       display: flex;
       flex-direction: column;
     }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesSelectComponent implements OnInit, OnDestroy {
   speciesFilters$: Observable<IGlobalSpeciesFilters>;

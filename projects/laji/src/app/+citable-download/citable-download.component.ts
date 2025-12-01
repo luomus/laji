@@ -8,7 +8,7 @@ import { HeaderService } from '../shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  template: `
+    template: `
     <div class="container laji-page" style="padding-bottom: 20px; padding-top: 20px;" *ngIf="downloadRequest$ | async as downloadRequest">
       <ng-container *ngIf="isDownloadRequest(downloadRequest) else notFound">
         <laji-download-request
@@ -22,8 +22,9 @@ import { TranslateService } from '@ngx-translate/core';
       </ng-template>
     </div>
   `,
-  selector: 'laji-citable-download',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-citable-download',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CitableDownloadComponent implements OnInit {
   downloadRequest$!: Observable<DownloadRequestResponse>;

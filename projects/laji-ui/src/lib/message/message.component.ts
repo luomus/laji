@@ -3,10 +3,11 @@ import { Component, ChangeDetectionStrategy, Input, HostBinding } from '@angular
 type Type = 'primary' | 'neutral' | 'success' | 'info' | 'warning' | 'danger';
 
 @Component({
-  selector: 'lu-message',
-  templateUrl: './message.component.html',
-  styleUrls: ['./message.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'lu-message',
+    templateUrl: './message.component.html',
+    styleUrls: ['./message.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MessageComponent {
 

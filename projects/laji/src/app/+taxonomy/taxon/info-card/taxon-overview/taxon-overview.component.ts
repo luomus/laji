@@ -12,10 +12,11 @@ type TaxonDescription = Taxon['descriptions'][number];
 type TaxonDescriptionVariable = TaxonDescription['groups'][number]['variables'][number];
 
 @Component({
-  selector: 'laji-taxon-overview',
-  templateUrl: './taxon-overview.component.html',
-  styleUrls: ['./taxon-overview.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-overview',
+    templateUrl: './taxon-overview.component.html',
+    styleUrls: ['./taxon-overview.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) taxon!: Taxon;

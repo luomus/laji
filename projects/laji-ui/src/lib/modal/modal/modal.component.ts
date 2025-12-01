@@ -7,8 +7,8 @@ import { filter } from 'rxjs/operators';
 export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
 
 @Component({
-  selector: 'lu-modal',
-  template:`
+    selector: 'lu-modal',
+    template: `
     <div class="lu-backdrop"></div>
     <div class="lu-modal-container" [class]="'lu-modal-' + size" *ngIf="isShown" #container>
       <lu-button-round *ngIf="!noClose" (click)="hide()" role="neutral" class="lu-modal-close-button">
@@ -19,8 +19,9 @@ export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
       </div>
     </div>
   `,
-  styleUrls: ['./modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ModalComponent implements OnDestroy {
 

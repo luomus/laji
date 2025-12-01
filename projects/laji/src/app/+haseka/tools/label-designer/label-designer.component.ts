@@ -12,10 +12,11 @@ import { Global } from '../../../../environments/global';
 import { PlatformService } from '../../../root/platform.service';
 
 @Component({
-  selector: 'laji-label-designer',
-  templateUrl: './label-designer.component.html',
-  styleUrls: ['./label-designer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-label-designer',
+    templateUrl: './label-designer.component.html',
+    styleUrls: ['./label-designer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelDesignerComponent implements OnInit {
 

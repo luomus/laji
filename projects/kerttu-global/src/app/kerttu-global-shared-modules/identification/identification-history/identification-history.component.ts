@@ -19,10 +19,11 @@ export interface IIdentificationHistoryResponseWithIndex extends IIdentification
 }
 
 @Component({
-  selector: 'bsg-identification-history',
-  templateUrl: './identification-history.component.html',
-  styleUrls: ['./identification-history.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-identification-history',
+    templateUrl: './identification-history.component.html',
+    styleUrls: ['./identification-history.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationHistoryComponent implements OnChanges {
   @Input() sites?: IGlobalSite[];

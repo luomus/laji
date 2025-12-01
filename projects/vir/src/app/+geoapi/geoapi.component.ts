@@ -10,9 +10,10 @@ import { VIR_FILTER_SHORTCUT_QUERY_PARAMS } from '../../../../laji/src/app/+obse
 import { SearchQueryService } from '../../../../laji/src/app/+observation/search-query.service';
 
 @Component({
-  selector: 'vir-geoapi',
-  templateUrl: './geoapi.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-geoapi',
+    templateUrl: './geoapi.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GeoapiComponent {
   constructor(

@@ -49,10 +49,11 @@ enum RequestStatus {
 }
 
 @Component({
-  selector: 'laji-observation-download',
-  templateUrl: './observation-download.component.html',
-  styleUrls: ['./observation-download.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-download',
+    templateUrl: './observation-download.component.html',
+    styleUrls: ['./observation-download.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationDownloadComponent implements OnDestroy {
 

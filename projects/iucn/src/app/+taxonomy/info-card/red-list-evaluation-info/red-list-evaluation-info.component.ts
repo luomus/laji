@@ -31,10 +31,11 @@ interface MinMaxType {
 }
 
 @Component({
-  selector: 'iucn-red-list-evaluation-info',
-  templateUrl: './red-list-evaluation-info.component.html',
-  styleUrls: ['./red-list-evaluation-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-red-list-evaluation-info',
+    templateUrl: './red-list-evaluation-info.component.html',
+    styleUrls: ['./red-list-evaluation-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RedListEvaluationInfoComponent {
 

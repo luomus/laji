@@ -6,17 +6,18 @@ type KindToConcreteType<K extends Kind> = K extends 'number' ? number : string;
 type ElementType<T extends { kind: Kind }> = KindToConcreteType<T['kind']>;
 
 @Component({
-  selector: 'lu-form-primitive-list',
-  templateUrl: 'primitive-list.component.html',
-  styleUrls: ['primitive-list.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => FormPrimitiveListComponent),
-      multi: true
-    }
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'lu-form-primitive-list',
+    templateUrl: 'primitive-list.component.html',
+    styleUrls: ['primitive-list.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => FormPrimitiveListComponent),
+            multi: true
+        }
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcreteType<K>> implements ControlValueAccessor {
   @Input() inputId?: string;

@@ -19,10 +19,11 @@ export interface SelectOptions extends SelectComponentOptions {
 }
 
 @Component({
-  selector: 'laji-select-subcategories',
-  templateUrl: './select-subcategories.component.html',
-  styleUrls: ['./select-subcategories.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-select-subcategories',
+    templateUrl: './select-subcategories.component.html',
+    styleUrls: ['./select-subcategories.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SelectSubcategoriesComponent implements OnChanges {
 

@@ -52,17 +52,18 @@ export const getPointIconAsCircle = (po: PathOptions & { opacity: number }, feat
 };
 
 @Component({
-  selector: 'laji-map',
-  template: `
+    selector: 'laji-map',
+    template: `
     <div class="laji-map-wrap">
       <div #lajiMap class="laji-map"></div>
       <div class="loading-map loading" *ngIf="loading"></div>
       <ng-content></ng-content>
     </div>
   `,
-  styleUrls: ['./laji-map.component.scss'],
-  providers: [],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./laji-map.component.scss'],
+    providers: [],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LajiMapComponent implements OnDestroy, OnChanges {
   @Input({ required: true }) options!: Options;

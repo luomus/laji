@@ -15,15 +15,16 @@ export interface SelectOption {
 }
 
 @Component({
-  selector: 'laji-select',
-  templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers:  [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => SelectComponent),
-    multi: true
-  }]
+    selector: 'laji-select',
+    templateUrl: './select.component.html',
+    styleUrls: ['./select.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [{
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => SelectComponent),
+            multi: true
+        }],
+    standalone: false
 })
 export class SelectComponent<T extends IdType|SelectOption = string> implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
   private unsubscribe$ = new Subject<null>();

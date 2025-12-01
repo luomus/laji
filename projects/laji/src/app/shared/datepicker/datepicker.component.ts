@@ -58,11 +58,12 @@ const FORMAT = 'YYYY-MM-DD'; // ISO-8601 format.
 const VIEW_FORMAT = 'D.M.YYYY'; // Allows e.g. '01.9.2022" and "1.09.2022".
 
 @Component({
-  selector: 'laji-datepicker',
-  templateUrl: './datepicker.component.html',
-  styleUrls: ['./datepicker.component.css'],
-  providers: [CALENDAR_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-datepicker',
+    templateUrl: './datepicker.component.html',
+    styleUrls: ['./datepicker.component.css'],
+    providers: [CALENDAR_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatePickerComponent implements ControlValueAccessor {
   @Input() toLastOfYear = false;

@@ -10,10 +10,11 @@ import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.compo
 import { Person } from 'projects/laji/src/app/shared/model/Person';
 
 @Component({
-  selector: 'vir-usage-admin',
-  templateUrl: './usage-admin.component.html',
-  styleUrls: ['./usage-admin.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-usage-admin',
+    templateUrl: './usage-admin.component.html',
+    styleUrls: ['./usage-admin.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UsageAdminComponent {
 

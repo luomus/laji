@@ -6,9 +6,10 @@ import { MostActiveUsersTable } from '../model/most-active-users-table';
 import moment from 'moment';
 
 @Component({
-  selector: 'laji-most-active-users-table',
-  templateUrl: './most-active-users-table.component.html',
-  styleUrls: ['./most-active-users-table.component.css']
+    selector: 'laji-most-active-users-table',
+    templateUrl: './most-active-users-table.component.html',
+    styleUrls: ['./most-active-users-table.component.css'],
+    standalone: false
 })
 export class MostActiveUsersTableComponent implements OnInit, OnChanges {
   @Input() maxLength = 50;

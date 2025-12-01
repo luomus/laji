@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DownloadRequest, DownloadRequestType } from '../models';
 
 @Component({
-  selector: 'laji-download-request-basic-info',
-  templateUrl: './download-request-basic-info.component.html',
-  styleUrls: ['./download-request-basic-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-download-request-basic-info',
+    templateUrl: './download-request-basic-info.component.html',
+    styleUrls: ['./download-request-basic-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DownloadRequestBasicInfoComponent {
   @Input() downloadRequest!: Partial<DownloadRequest>;

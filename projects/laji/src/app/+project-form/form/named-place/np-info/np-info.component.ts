@@ -29,10 +29,11 @@ import { LajiFormUtil } from 'projects/laji/src/app/+project-form/form/laji-form
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 @Component({
-  selector: 'laji-np-info',
-  templateUrl: './np-info.component.html',
-  styleUrls: ['./np-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-np-info',
+    templateUrl: './np-info.component.html',
+    styleUrls: ['./np-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace!: NamedPlace;

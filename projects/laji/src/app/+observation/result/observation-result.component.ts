@@ -21,10 +21,11 @@ import { Util } from '../../shared/service/util.service';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
-  selector: 'laji-observation-result',
-  templateUrl: './observation-result.component.html',
-  styleUrls: ['./observation-result.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-result',
+    templateUrl: './observation-result.component.html',
+    styleUrls: ['./observation-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationResultComponent implements OnChanges {
   private _visible: VisibleSections = {

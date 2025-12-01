@@ -7,9 +7,10 @@ import { InformalTaxonGroupApi } from '../../../../../shared/api/InformalTaxonGr
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'laji-special-informal-taxon-groups',
-  templateUrl: './special-informal-taxon-groups.component.html',
-  styleUrls: ['./special-informal-taxon-groups.component.css']
+    selector: 'laji-special-informal-taxon-groups',
+    templateUrl: './special-informal-taxon-groups.component.html',
+    styleUrls: ['./special-informal-taxon-groups.component.css'],
+    standalone: false
 })
 export class SpecialInformalTaxonGroupsComponent implements OnInit {
 

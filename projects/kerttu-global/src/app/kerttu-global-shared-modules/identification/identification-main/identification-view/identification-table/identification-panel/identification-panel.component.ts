@@ -23,10 +23,11 @@ interface BoxClickEvent {
 }
 
 @Component({
-  selector: 'bsg-identification-panel',
-  templateUrl: './identification-panel.component.html',
-  styleUrls: ['./identification-panel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-identification-panel',
+    templateUrl: './identification-panel.component.html',
+    styleUrls: ['./identification-panel.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationPanelComponent {
   @ViewChild('toggleDrawBtn', { static: false }) toggleDrawBtn?: ElementRef;

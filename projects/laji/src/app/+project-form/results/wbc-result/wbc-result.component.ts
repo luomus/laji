@@ -11,9 +11,10 @@ enum Tabs {
 }
 
 @Component({
-  selector: 'laji-wbc-result',
-  templateUrl: './wbc-result.component.html',
-  styleUrls: ['./wbc-result.component.css']
+    selector: 'laji-wbc-result',
+    templateUrl: './wbc-result.component.html',
+    styleUrls: ['./wbc-result.component.css'],
+    standalone: false
 })
 export class WbcResultComponent implements OnInit, OnDestroy {
 

@@ -10,9 +10,10 @@ import { TranslateService } from '@ngx-translate/core';
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({
-  selector: 'haseka',
-  templateUrl: './haseka.component.html',
-  styleUrls: ['./haseka.component.scss']
+    selector: 'haseka',
+    templateUrl: './haseka.component.html',
+    styleUrls: ['./haseka.component.scss'],
+    standalone: false
 })
 export class HasekaComponent implements OnInit, OnDestroy {
 

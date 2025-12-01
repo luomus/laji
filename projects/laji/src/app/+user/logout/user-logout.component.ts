@@ -5,8 +5,9 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'laji-logout',
-  templateUrl: './user-logout.component.html'
+    selector: 'laji-logout',
+    templateUrl: './user-logout.component.html',
+    standalone: false
 })
 export class UserLogoutComponent implements OnInit {
   constructor(

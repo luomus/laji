@@ -7,7 +7,8 @@ import { AccessLevel } from '../request.component';
     <p *ngIf="accessLevel === AccessLevel.Allowed">{{ 'form.permission.allowed' | translate }}</p>
     <p *ngIf="accessLevel === AccessLevel.Requested">{{ 'form.permission.requested' | translate }}</p>
     <p *ngIf="accessLevel === AccessLevel.NotRequested">{{ 'form.permission.notRequested' | translate }}</p>
-    `
+    `,
+    standalone: false
 })
 export class RequestDescriptionComponent {
     AccessLevel = AccessLevel; // eslint-disable-line @typescript-eslint/naming-convention

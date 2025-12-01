@@ -41,10 +41,11 @@ export const getGetFeatureStyle = (grid: AtlasGridSquare[], visualizationMode: V
 );
 
 @Component({
-  selector: 'ba-grid-index-map',
-  templateUrl: './grid-index-map.component.html',
-  styleUrls: ['./grid-index-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'ba-grid-index-map',
+    templateUrl: './grid-index-map.component.html',
+    styleUrls: ['./grid-index-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() atlasGrid!: AtlasGridResponse;

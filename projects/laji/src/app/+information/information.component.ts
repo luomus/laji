@@ -13,10 +13,11 @@ import { PlatformService } from '../root/platform.service';
 type Information = components['schemas']['Information'];
 
 @Component({
-  selector: 'laji-information',
-  templateUrl: './information.component.html',
-  styleUrls: ['../../styles/information.scss', './information.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-information',
+    templateUrl: './information.component.html',
+    styleUrls: ['../../styles/information.scss', './information.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InformationComponent {
 

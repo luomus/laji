@@ -19,9 +19,10 @@ interface ViewModel {
 }
 
 @Component({
-  selector: 'laji-request',
-  templateUrl: './request.component.html',
-  styleUrls: ['./request.component.css']
+    selector: 'laji-request',
+    templateUrl: './request.component.html',
+    styleUrls: ['./request.component.css'],
+    standalone: false
 })
 export class RequestComponent implements OnInit {
   // Allow use of AccessLevel Enum in templates

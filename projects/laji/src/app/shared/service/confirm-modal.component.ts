@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  template: `
+    template: `
     <p class="laji-dialog-message" [innerHTML]="message | translate"></p>
     <input *ngIf="prompt" #prompt
            class="form-control"
@@ -16,7 +16,8 @@ import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, AfterViewIni
               (click)="onCancel()">{{ cancelLabel | translate }}</button>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ConfirmModalComponent implements AfterViewInit {
 

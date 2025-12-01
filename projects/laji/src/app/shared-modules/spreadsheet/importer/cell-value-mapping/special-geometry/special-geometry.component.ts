@@ -14,10 +14,11 @@ import { Lang, Options } from '@luomus/laji-map/lib/defs';
 import { getFeatureCollectionFromGeometry, getGeometryFromFeatureCollection } from 'projects/laji/src/app/root/coordinate-utils';
 
 @Component({
-  selector: 'laji-special-geometry',
-  templateUrl: './special-geometry.component.html',
-  styleUrls: ['./special-geometry.component.css'],
-  changeDetection: ChangeDetectionStrategy.Default
+    selector: 'laji-special-geometry',
+    templateUrl: './special-geometry.component.html',
+    styleUrls: ['./special-geometry.component.css'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class SpecialGeometryComponent {
 

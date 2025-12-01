@@ -23,10 +23,11 @@ const tabIndexToName = {
 };
 
 @Component({
-  selector: 'laji-taxon-browse',
-  templateUrl: './species.component.html',
-  styleUrls: ['./species.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-browse',
+    templateUrl: './species.component.html',
+    styleUrls: ['./species.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesComponent implements OnInit, OnDestroy {
   public selectedIndex = 0;

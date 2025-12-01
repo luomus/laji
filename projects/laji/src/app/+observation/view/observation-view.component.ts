@@ -33,10 +33,11 @@ export interface VisibleSections {
 }
 
 @Component({
-  selector: 'laji-observation-view',
-  templateUrl: './observation-view.component.html',
-  styleUrls: ['./observation-view.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-view',
+    templateUrl: './observation-view.component.html',
+    styleUrls: ['./observation-view.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationViewComponent implements OnInit, OnDestroy {
 

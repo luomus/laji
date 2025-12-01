@@ -4,8 +4,9 @@ import { AnnotationTag } from '../model/AnnotationTag';
 import { IdService } from '../service/id.service';
 
 @Pipe({
-  name: 'activeTags',
-  pure: false
+    name: 'activeTags',
+    pure: false,
+    standalone: false
 })
 
 export class UniquePipe implements PipeTransform {

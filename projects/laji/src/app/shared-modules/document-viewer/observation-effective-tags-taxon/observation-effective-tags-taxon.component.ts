@@ -10,11 +10,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { switchMap, toArray, concatMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'laji-observation-effective-tags-taxon',
-  templateUrl: './observation-effective-tags-taxon.component.html',
-  styleUrls: ['./observation-effective-tags-taxon.component.scss'],
-  providers: [WarehousePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-effective-tags-taxon',
+    templateUrl: './observation-effective-tags-taxon.component.html',
+    styleUrls: ['./observation-effective-tags-taxon.component.scss'],
+    providers: [WarehousePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy {
 

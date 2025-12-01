@@ -107,9 +107,10 @@ const apiInputRowsToTable = (res: components['schemas']['InputRow'][]): { cols: 
 };
 
 @Component({
-  selector: 'laji-trait-db-data-entry-check',
-  templateUrl: './data-entry-check.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-db-data-entry-check',
+    templateUrl: './data-entry-check.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDataEntryCheckComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input({ required: true }) datasetId!: string;

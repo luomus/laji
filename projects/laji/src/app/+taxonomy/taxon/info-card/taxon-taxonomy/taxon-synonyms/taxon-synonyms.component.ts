@@ -9,10 +9,11 @@ type SimpleTaxonArrayKeys = {
 }[keyof Taxon];
 
 @Component({
-  selector: 'laji-taxon-synonyms',
-  templateUrl: './taxon-synonyms.component.html',
-  styleUrls: ['./taxon-synonyms.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-synonyms',
+    templateUrl: './taxon-synonyms.component.html',
+    styleUrls: ['./taxon-synonyms.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonSynonymsComponent {
   @Input() taxon!: Taxon;

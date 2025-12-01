@@ -5,10 +5,11 @@ import { FieldType, IFontStyle, ILabelField, QRCodeErrorCorrectionLevel } from '
  * @internal
  */
 @Component({
-  selector: 'll-label-item-field',
-  templateUrl: './label-item-field.component.html',
-  styleUrls: ['./label-item-field.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-label-item-field',
+    templateUrl: './label-item-field.component.html',
+    styleUrls: ['./label-item-field.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelItemFieldComponent {
 

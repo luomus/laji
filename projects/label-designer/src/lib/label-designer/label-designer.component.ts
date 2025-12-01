@@ -42,10 +42,11 @@ import { LabelDesignerHelper } from '../label-designer.helper';
  * Label designer window that can be used to load, edit, show preview and send the html from the labels to the host component.
  */
 @Component({
-  selector: 'll-label-designer',
-  templateUrl: './label-designer.component.html',
-  styleUrls: ['./label-designer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-label-designer',
+    templateUrl: './label-designer.component.html',
+    styleUrls: ['./label-designer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**

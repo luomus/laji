@@ -5,10 +5,11 @@ import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
-  selector: 'bsg-identification-species-table',
-  templateUrl: './identification-species-table.component.html',
-  styleUrls: ['./identification-species-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-identification-species-table',
+    templateUrl: './identification-species-table.component.html',
+    styleUrls: ['./identification-species-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationSpeciesTableComponent implements OnInit {
   @Input() data: IIdentificationSpeciesStat[] = [];

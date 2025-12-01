@@ -6,9 +6,10 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 
 @Component({
-  selector: 'laji-annotations-list',
-  templateUrl: './annotations-list.component.html',
-  styleUrls: ['./annotations-list.component.scss']
+    selector: 'laji-annotations-list',
+    templateUrl: './annotations-list.component.html',
+    styleUrls: ['./annotations-list.component.scss'],
+    standalone: false
 })
 export class AnnotationListComponent implements OnInit {
 

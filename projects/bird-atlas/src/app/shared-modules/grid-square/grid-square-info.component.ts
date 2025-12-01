@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { AtlasGridSquare } from '../../core/atlas-api.service';
 
 @Component({
-  selector: 'ba-grid-square-info',
-  templateUrl: './grid-square-info.component.html',
-  styleUrls: ['./grid-square-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'ba-grid-square-info',
+    templateUrl: './grid-square-info.component.html',
+    styleUrls: ['./grid-square-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GridSquareInfoComponent {
   @Input() square!: AtlasGridSquare;

@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ISelectFields } from './select-fields/select-fields.component';
 
 @Pipe({
-  name: 'removeByList'
+    name: 'removeByList',
+    standalone: false
 })
 export class RemoveByListPipe implements PipeTransform {
 

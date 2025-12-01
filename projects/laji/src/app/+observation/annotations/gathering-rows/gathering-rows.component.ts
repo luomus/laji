@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-gathering-rows',
-  templateUrl: './gathering-rows.component.html',
-  styleUrls: ['./gathering-rows.component.scss']
+    selector: 'laji-gathering-rows',
+    templateUrl: './gathering-rows.component.html',
+    styleUrls: ['./gathering-rows.component.scss'],
+    standalone: false
 })
 export class GatheringRowsComponent implements OnInit {
   @Input() gathering: any;

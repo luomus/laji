@@ -8,11 +8,12 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type Taxon = components['schemas']['Taxon'];
 
 @Component({
-  selector: 'laji-taxon-concept-info',
-  templateUrl: './taxon-concept-info.component.html',
-  styleUrls: ['./taxon-concept-info.component.css'],
-  providers: [TaxonConceptService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-concept-info',
+    templateUrl: './taxon-concept-info.component.html',
+    styleUrls: ['./taxon-concept-info.component.css'],
+    providers: [TaxonConceptService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonConceptInfoComponent implements OnChanges, OnDestroy {
   @Input() taxon!: Taxon;

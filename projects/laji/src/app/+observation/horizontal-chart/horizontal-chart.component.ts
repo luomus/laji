@@ -12,11 +12,12 @@ import { HorizontalChartDataService, MAX_TAXA_SIZE } from './horizontal-chart-da
 import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 
 @Component({
-  selector: 'laji-horizontal-chart',
-  templateUrl: './horizontal-chart.component.html',
-  styleUrls: ['./horizontal-chart.component.scss'],
-  providers: [InformalTaxonGroupApi, HorizontalChartDataService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-horizontal-chart',
+    templateUrl: './horizontal-chart.component.html',
+    styleUrls: ['./horizontal-chart.component.scss'],
+    providers: [InformalTaxonGroupApi, HorizontalChartDataService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HorizontalChartComponent implements OnInit, OnChanges {
   @Input({ required: true }) query!: WarehouseQueryInterface;

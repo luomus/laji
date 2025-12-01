@@ -29,10 +29,11 @@ import { TableColumnService } from '../service/table-column.service';
 
 interface Settings {[key: string]: DatatableColumn }
 @Component({
-  selector: 'laji-datatable-own-submissions',
-  templateUrl: './datatable-own-submissions.component.html',
-  styleUrls: ['./datatable-own-submissions.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-datatable-own-submissions',
+    templateUrl: './datatable-own-submissions.component.html',
+    styleUrls: ['./datatable-own-submissions.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, AfterViewInit {
 

@@ -7,9 +7,10 @@ import { tap } from 'rxjs/operators';
 import { PopstateService } from '../../core/popstate.service';
 
 @Component({
-  templateUrl: './grid-index.component.html',
-  styleUrls: ['./grid-index.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './grid-index.component.html',
+    styleUrls: ['./grid-index.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GridIndexComponent implements OnInit {
   grid$!: Observable<AtlasGridResponse>;

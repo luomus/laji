@@ -6,10 +6,11 @@ import { SelectedOption } from '../../tree-select/tree-select.component';
 import { CollectionService, CollectionTreeOptionsNode, ICollectionAggregate, ICollectionsTreeNode } from '../../../shared/service/collection.service';
 
 @Component({
-  selector: 'laji-dataset-metadata-browser',
-  templateUrl: './dataset-metadata-browser.component.html',
-  styleUrls: ['./dataset-metadata-browser.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-dataset-metadata-browser',
+    templateUrl: './dataset-metadata-browser.component.html',
+    styleUrls: ['./dataset-metadata-browser.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatasetMetadataBrowserComponent implements OnChanges {
   @Input() selected?: string;

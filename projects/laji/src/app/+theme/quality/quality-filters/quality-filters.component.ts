@@ -4,9 +4,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'laji-quality-filters',
-  templateUrl: './quality-filters.component.html',
-  styleUrls: ['./quality-filters.component.css']
+    selector: 'laji-quality-filters',
+    templateUrl: './quality-filters.component.html',
+    styleUrls: ['./quality-filters.component.css'],
+    standalone: false
 })
 export class QualityFiltersComponent implements OnInit, OnDestroy {
   @Output() filterSelect = new EventEmitter();

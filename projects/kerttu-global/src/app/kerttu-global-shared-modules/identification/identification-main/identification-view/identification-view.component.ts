@@ -63,10 +63,11 @@ const batSpectrogramConfig = {
 };
 
 @Component({
-  selector: 'bsg-identification-view',
-  templateUrl: './identification-view.component.html',
-  styleUrls: ['./identification-view.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-identification-view',
+    templateUrl: './identification-view.component.html',
+    styleUrls: ['./identification-view.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationViewComponent implements OnChanges, OnDestroy {
   @ViewChild('topContent') topContent?: ElementRef;

@@ -39,9 +39,10 @@ interface RowDeletionInProgress {
 type RowUploadState = RowUploadInProgress | RowUploadComplete | RowUploadError | RowDeletionInProgress;
 
 @Component({
-  templateUrl: './trait-db-data-editor.component.html',
-  styleUrls: ['./trait-db-data-editor.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './trait-db-data-editor.component.html',
+    styleUrls: ['./trait-db-data-editor.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('stringCell') stringCell!: TemplateRef<any>;

@@ -16,9 +16,10 @@ import { map, switchMap } from 'rxjs/operators';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 
 @Component({
-  selector: 'laji-wbc-species-list',
-  templateUrl: './wbc-species-list.component.html',
-  styleUrls: ['./wbc-species-list.component.css']
+    selector: 'laji-wbc-species-list',
+    templateUrl: './wbc-species-list.component.html',
+    styleUrls: ['./wbc-species-list.component.css'],
+    standalone: false
 })
 export class WbcSpeciesListComponent implements OnInit, OnChanges {
   @Input() year!: number;

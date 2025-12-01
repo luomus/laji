@@ -9,10 +9,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type Taxon = components['schemas']['Taxon'];
 
 @Component({
-  selector: 'laji-taxon-taxonomy',
-  templateUrl: './taxon-taxonomy.component.html',
-  styleUrls: ['./taxon-taxonomy.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-taxonomy',
+    templateUrl: './taxon-taxonomy.component.html',
+    styleUrls: ['./taxon-taxonomy.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) taxon!: Taxon;

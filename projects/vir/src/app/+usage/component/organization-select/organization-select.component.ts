@@ -4,10 +4,11 @@ import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'vir-organization-select',
-  templateUrl: './organization-select.component.html',
-  styleUrls: ['./organization-select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-organization-select',
+    templateUrl: './organization-select.component.html',
+    styleUrls: ['./organization-select.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class OrganizationSelectComponent implements OnInit {
 

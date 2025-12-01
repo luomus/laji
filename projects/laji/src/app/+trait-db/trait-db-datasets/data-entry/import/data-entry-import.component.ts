@@ -6,10 +6,11 @@ import { map, startWith, switchMap } from 'rxjs/operators';
 const headerReferenceCmsIds = { fi: '0', sv: '0', en: '0' };
 
 @Component({
-  selector: 'laji-trait-db-data-entry-import',
-  templateUrl: './data-entry-import.component.html',
-  styleUrls: ['./data-entry-import.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-db-data-entry-import',
+    templateUrl: './data-entry-import.component.html',
+    styleUrls: ['./data-entry-import.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDataEntryImportComponent {
   @Output() traitDataTsv = new EventEmitter<string | null>();

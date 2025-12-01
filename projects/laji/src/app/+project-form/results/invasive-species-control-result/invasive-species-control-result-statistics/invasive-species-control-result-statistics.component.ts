@@ -24,10 +24,11 @@ interface Row {
 }
 
 @Component({
-  selector: 'laji-invasive-species-control-result-statistics',
-  templateUrl: './invasive-species-control-result-statistics.component.html',
-  styleUrls: ['./invasive-species-control-result-statistics.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-invasive-species-control-result-statistics',
+    templateUrl: './invasive-species-control-result-statistics.component.html',
+    styleUrls: ['./invasive-species-control-result-statistics.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
 

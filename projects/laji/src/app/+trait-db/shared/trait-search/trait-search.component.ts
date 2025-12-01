@@ -97,10 +97,11 @@ const queryParamsToFormValue = (queryParams: QueryParams): FormValue => {
 
 
 @Component({
-  selector: 'laji-trait-search',
-  templateUrl: './trait-search.component.html',
-  styleUrls: ['./trait-search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-search',
+    templateUrl: './trait-search.component.html',
+    styleUrls: ['./trait-search.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitSearchComponent implements OnInit, OnDestroy, OnChanges {
   @Input() datasetId?: string;

@@ -23,11 +23,12 @@ import { LajiUiModule } from '../../../../../../laji-ui/src/lib/laji-ui.module';
 import { getTranslateKeyWithTaxonType } from '../../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
 
 @Component({
-  selector: 'bsg-identification-main',
-  templateUrl: './identification-main.component.html',
-  styleUrls: ['./identification-main.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [AudioService, AudioCacheLoaderService, RecordingLoaderService]
+    selector: 'bsg-identification-main',
+    templateUrl: './identification-main.component.html',
+    styleUrls: ['./identification-main.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [AudioService, AudioCacheLoaderService, RecordingLoaderService],
+    standalone: false
 })
 export class IdentificationMainComponent implements OnChanges {
   @Input() selectedSites?: number[];

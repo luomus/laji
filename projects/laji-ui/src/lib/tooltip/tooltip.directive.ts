@@ -4,7 +4,8 @@ import { DOCUMENT } from '@angular/common';
 import { Placement, PlacementService } from '../placement/placement.service';
 
 @Directive({
-  selector: '[luTooltip]'
+    selector: '[luTooltip]',
+    standalone: false
 })
 export class TooltipDirective implements OnDestroy {
   @Input() luTooltip?: string;

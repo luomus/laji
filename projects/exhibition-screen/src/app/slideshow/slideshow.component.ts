@@ -7,10 +7,11 @@ import { ISlideData } from './slide/slide.component';
 import { SlideshowFacade } from './slideshow.facade';
 
 @Component({
-  selector: 'es-slideshow',
-  templateUrl: 'slideshow.component.html',
-  styleUrls: ['slideshow.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'es-slideshow',
+    templateUrl: 'slideshow.component.html',
+    styleUrls: ['slideshow.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SlideshowComponent implements AfterViewInit, OnDestroy {
   slides: ISlideData[] = [];

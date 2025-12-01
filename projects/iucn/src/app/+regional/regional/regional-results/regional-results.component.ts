@@ -21,10 +21,11 @@ export type RedListRegionalStatusData = {
 };
 
 @Component({
-  selector: 'iucn-regional-results',
-  templateUrl: './regional-results.component.html',
-  styleUrls: ['./regional-results.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-regional-results',
+    templateUrl: './regional-results.component.html',
+    styleUrls: ['./regional-results.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RegionalResultsComponent implements OnChanges, OnDestroy {
   @Input() type: RegionalListType = 'status';

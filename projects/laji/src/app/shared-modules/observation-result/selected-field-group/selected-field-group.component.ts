@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
 
 @Component({
-  selector: 'laji-selected-field-group',
-  templateUrl: './selected-field-group.component.html',
-  styleUrls: ['./selected-field-group.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-selected-field-group',
+    templateUrl: './selected-field-group.component.html',
+    styleUrls: ['./selected-field-group.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SelectedFieldGroupComponent {
 

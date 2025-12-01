@@ -4,7 +4,8 @@ import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Directive({
-  selector: '[lajiLoggedIn]'
+    selector: '[lajiLoggedIn]',
+    standalone: false
 })
 export class LoggedInDirective implements OnInit, OnDestroy {
 

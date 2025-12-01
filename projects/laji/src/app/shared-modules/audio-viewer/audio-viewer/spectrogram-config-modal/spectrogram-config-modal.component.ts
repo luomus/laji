@@ -19,10 +19,11 @@ export function maxFrequencyGreaterThanMinFrequency(control: AbstractControl): V
 }
 
 @Component({
-  selector: 'laji-spectrogram-config-modal',
-  templateUrl: './spectrogram-config-modal.component.html',
-  styleUrls: ['./spectrogram-config-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-spectrogram-config-modal',
+    templateUrl: './spectrogram-config-modal.component.html',
+    styleUrls: ['./spectrogram-config-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpectrogramConfigModalComponent implements OnInit {
   @Input({ required: true }) minFrequencyLimit!: number;

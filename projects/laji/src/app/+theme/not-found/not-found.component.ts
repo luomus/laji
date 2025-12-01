@@ -6,10 +6,11 @@ import { FormService } from '../../shared/service/form.service';
 import { map, take } from 'rxjs/operators';
 
 @Component({
-  selector: 'laji-theme-not-found',
-  templateUrl: './not-found.component.html',
-  styleUrls: ['./not-found.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-theme-not-found',
+    templateUrl: './not-found.component.html',
+    styleUrls: ['./not-found.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NotFoundComponent implements OnInit {
 

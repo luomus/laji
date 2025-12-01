@@ -8,9 +8,10 @@ import { Util } from '../../shared/service/util.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 @Component({
-  selector: 'laji-collections-select',
-  templateUrl: './collections-select.component.html',
-  styleUrls: ['./collections-select.component.scss']
+    selector: 'laji-collections-select',
+    templateUrl: './collections-select.component.html',
+    styleUrls: ['./collections-select.component.scss'],
+    standalone: false
 })
 export class CollectionsSelectComponent implements OnInit, OnChanges {
   @Input({required: true}) title!: string;

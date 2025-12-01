@@ -14,9 +14,10 @@ interface Counts {
 export type Dataset = components['schemas']['Dataset'];
 
 @Component({
-  templateUrl: './trait-db-main.component.html',
-  styleUrls: ['./trait-db-main.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './trait-db-main.component.html',
+    styleUrls: ['./trait-db-main.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbMainComponent implements OnInit {
   counts$!: Observable<Counts>;

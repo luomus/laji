@@ -7,9 +7,10 @@ import { map } from 'rxjs/operators';
 export type Dataset = components['schemas']['Dataset'];
 
 @Component({
-  templateUrl: './trait-db-datasets.component.html',
-  styleUrls: ['./trait-db-datasets.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './trait-db-datasets.component.html',
+    styleUrls: ['./trait-db-datasets.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDatasetsComponent implements OnInit {
   datasets$!: Observable<Dataset[]>;

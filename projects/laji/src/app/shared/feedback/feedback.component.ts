@@ -12,9 +12,10 @@ import { PlatformService } from '../../root/platform.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
-  selector: 'laji-feedback',
-  styleUrls: ['./feedback.component.scss'],
-  templateUrl: './feedback.component.html'
+    selector: 'laji-feedback',
+    styleUrls: ['./feedback.component.scss'],
+    templateUrl: './feedback.component.html',
+    standalone: false
 })
 export class FeedbackComponent {
 

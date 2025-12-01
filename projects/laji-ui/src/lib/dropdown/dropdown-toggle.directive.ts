@@ -12,7 +12,8 @@ import { Util } from 'projects/laji/src/app/shared/service/util.service';
  * use the attribute `luDropdownNoClose` on it.
  */
 @Directive({
-  selector: '[luDropdownToggle]'
+    selector: '[luDropdownToggle]',
+    standalone: false
 })
 export class DropdownToggleDirective {
 

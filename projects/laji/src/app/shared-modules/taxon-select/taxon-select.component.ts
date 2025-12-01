@@ -8,8 +8,8 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 
 
 @Component({
-  selector: 'laji-taxon-select',
-  template: `<input
+    selector: 'laji-taxon-select',
+    template: `<input
     #typeahead
     [ngClass]="{loading: typeaheadLoading}"
     type="text"
@@ -35,8 +35,9 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
      <span class="autocomplete-container" [innerHtml]="model['autocompleteDisplayName' ]"></span>
     </ng-template>
   `,
-  styleUrls: ['taxon-select.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['taxon-select.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonSelectComponent implements OnInit, OnDestroy {
   @Input() searchParams = {};

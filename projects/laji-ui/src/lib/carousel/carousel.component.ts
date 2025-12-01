@@ -2,12 +2,13 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, Que
 import { CarouselSlideComponent } from './slide/carousel-slide.component';
 
 @Component({
-  selector: 'lu-carousel',
-  template: `<ng-content></ng-content>
+    selector: 'lu-carousel',
+    template: `<ng-content></ng-content>
              <button (click)="onSpinLeft()" id="left"></button>
              <button (click)="onSpinRight()" id="right"></button>`,
-  styleUrls: ['./carousel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./carousel.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CarouselComponent implements AfterViewInit {
   @ContentChildren(CarouselSlideComponent) slides!: QueryList<CarouselSlideComponent>;

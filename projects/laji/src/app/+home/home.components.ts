@@ -14,10 +14,11 @@ import { environment } from '../../environments/environment';
 
 
 @Component({
-  selector: 'laji-home',
-  styleUrls: ['./home.component.scss'],
-  templateUrl: './home.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-home',
+    styleUrls: ['./home.component.scss'],
+    templateUrl: './home.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HomeComponent implements OnInit {
 

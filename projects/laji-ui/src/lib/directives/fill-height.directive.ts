@@ -10,7 +10,8 @@ export interface IFillHeightOptions {
 }
 
 @Directive({
-  selector: '[luFillHeight]'
+    selector: '[luFillHeight]',
+    standalone: false
 })
 export class FillHeightDirective implements OnDestroy, AfterViewInit, OnChanges {
   @Input('luFillHeight') options!: IFillHeightOptions;

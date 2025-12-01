@@ -5,8 +5,9 @@ import { AbstractLabelPipe } from './abstract-label.pipe';
 import { Observable } from 'rxjs';
 
 @Pipe({
-  name: 'collectionName',
-  pure: false
+    name: 'collectionName',
+    pure: false,
+    standalone: false
 })
 export class CollectionNamePipe extends AbstractLabelPipe implements PipeTransform {
   key!: string;

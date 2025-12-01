@@ -3,9 +3,10 @@ import { IFormField } from '../../model/excel';
 import { toHtmlSelectElement } from '../../../../shared/service/html-element.service';
 
 @Component({
-  selector: 'laji-field-item',
-  templateUrl: './field-item.component.html',
-  styleUrls: ['./field-item.component.scss']
+    selector: 'laji-field-item',
+    templateUrl: './field-item.component.html',
+    styleUrls: ['./field-item.component.scss'],
+    standalone: false
 })
 export class FieldItemComponent implements OnChanges {
 

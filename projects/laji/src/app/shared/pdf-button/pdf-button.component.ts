@@ -9,9 +9,10 @@ import { map, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'laji-pdf-button',
-  templateUrl: './pdf-button.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-pdf-button',
+    templateUrl: './pdf-button.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PdfButtonComponent {
 

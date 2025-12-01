@@ -71,10 +71,11 @@ const getAnnotationTmpFullImgUrl = (img: Partial<Image>): string | undefined => 
 };
 
 @Component({
-  selector: 'laji-image-gallery',
-  styleUrls: ['./image-modal.component.css'],
-  templateUrl: './image-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-image-gallery',
+    styleUrls: ['./image-modal.component.css'],
+    templateUrl: './image-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   public opened = false;

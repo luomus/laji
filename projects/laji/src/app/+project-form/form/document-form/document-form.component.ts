@@ -20,13 +20,14 @@ import { LocalStorage } from 'ngx-webstorage';
 import { FormService } from '../../../shared/service/form.service';
 
 @Component({
-  selector: 'laji-document-form',
-  templateUrl: './document-form.component.html',
-  styleUrls: ['./document-form.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    DocumentFormFacade
-  ]
+    selector: 'laji-document-form',
+    templateUrl: './document-form.component.html',
+    styleUrls: ['./document-form.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        DocumentFormFacade
+    ],
+    standalone: false
 })
 export class DocumentFormComponent implements OnInit, OnDestroy {
   @ViewChild(LajiFormComponent) lajiForm!: LajiFormComponent;

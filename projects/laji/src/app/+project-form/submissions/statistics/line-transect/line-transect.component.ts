@@ -29,10 +29,11 @@ interface LineTransectCount {
 }
 
 @Component({
-  selector: 'laji-line-transect-stats',
-  templateUrl: './line-transect.component.html',
-  styleUrls: ['./line-transect.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-line-transect-stats',
+    templateUrl: './line-transect.component.html',
+    styleUrls: ['./line-transect.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LineTransectComponent implements OnChanges {
   @Input() document!: Document;

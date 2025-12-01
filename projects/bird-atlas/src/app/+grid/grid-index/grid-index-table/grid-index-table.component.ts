@@ -7,10 +7,11 @@ import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { AtlasGridSquare } from '../../../core/atlas-api.service';
 
 @Component({
-  selector: 'ba-grid-index-table',
-  templateUrl: './grid-index-table.component.html',
-  styleUrls: ['./grid-index-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'ba-grid-index-table',
+    templateUrl: './grid-index-table.component.html',
+    styleUrls: ['./grid-index-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GridIndexTableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() atlasGrid!: AtlasGridSquare[];

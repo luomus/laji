@@ -46,10 +46,11 @@ const visualizationModeColNames = {
 };
 
 @Component({
-  selector: 'laji-observation-map-table',
-  templateUrl: './observation-map-table.component.html',
-  styleUrls: ['./observation-map-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-map-table',
+    templateUrl: './observation-map-table.component.html',
+    styleUrls: ['./observation-map-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
   export class ObservationMapTableComponent implements OnInit, OnChanges {
   @Input() query!: WarehouseQueryInterface;

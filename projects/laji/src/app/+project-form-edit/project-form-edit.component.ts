@@ -9,14 +9,15 @@ interface ViewModel {
 }
 
 @Component({
-  template: `
+    template: `
   <ng-container>
     <router-outlet></router-outlet>
     <ng-container *ngIf="vm$ | async as vm">
       <laji-form-builder [id]="vm.id!"></laji-form-builder>
     </ng-container>
   </ng-container>`,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ProjectFormEditComponent implements OnInit {
   vm$!: Observable<ViewModel>;

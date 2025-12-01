@@ -12,10 +12,11 @@ interface DatasetStats {
 }
 
 @Component({
-  selector: 'laji-dataset-about[form]',
-  templateUrl: './dataset-about.component.html',
-  styleUrls: ['./dataset-about.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-dataset-about[form]',
+    templateUrl: './dataset-about.component.html',
+    styleUrls: ['./dataset-about.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatasetAboutComponent implements OnChanges {
   @Input() form!: Form.SchemaForm;

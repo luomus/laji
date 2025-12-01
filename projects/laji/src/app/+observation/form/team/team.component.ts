@@ -6,10 +6,11 @@ import { TeamMemberService } from './team-member.service';
 import { BrowserService } from '../../../shared/service/browser.service';
 
 @Component({
-  selector: 'laji-team',
-  templateUrl: './team.component.html',
-  styleUrls: ['./team.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-team',
+    templateUrl: './team.component.html',
+    styleUrls: ['./team.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TeamComponent implements OnInit, OnDestroy {
 

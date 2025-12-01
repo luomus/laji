@@ -33,10 +33,11 @@ const BASE_PATH = '/taxon';
 export type InfoCardTabType = 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'specimens'|'endangerment'|'invasive';
 
 @Component({
-  selector: 'laji-info-card',
-  templateUrl: './info-card.component.html',
-  styleUrls: ['./info-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-info-card',
+    templateUrl: './info-card.component.html',
+    styleUrls: ['./info-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   private tabOrder = TAB_ORDER;

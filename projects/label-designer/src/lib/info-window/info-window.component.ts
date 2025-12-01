@@ -8,10 +8,11 @@ import { IInfoWindow } from '../label-designer.interface';
  * @internal
  */
 @Component({
-  selector: 'll-info-window',
-  templateUrl: './info-window.component.html',
-  styleUrls: ['./info-window.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-info-window',
+    templateUrl: './info-window.component.html',
+    styleUrls: ['./info-window.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InfoWindowComponent implements OnInit {
 

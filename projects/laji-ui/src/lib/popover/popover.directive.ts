@@ -10,7 +10,8 @@ export type PopoverMode = 'hover' | 'click' | 'disabled';
 export type PopoverRootElement = 'component' | 'body';
 
 @Directive({
-  selector: '[luPopover]'
+    selector: '[luPopover]',
+    standalone: false
 })
 export class PopoverDirective implements AfterViewInit, OnDestroy {
   @Input() luPopover!: TemplateRef<null>;

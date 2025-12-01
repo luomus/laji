@@ -6,8 +6,9 @@ import { forkJoin, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Pipe({
-  name: 'publication',
-  pure: false
+    name: 'publication',
+    pure: false,
+    standalone: false
 })
 export class PublicationPipe implements PipeTransform {
   value: any;

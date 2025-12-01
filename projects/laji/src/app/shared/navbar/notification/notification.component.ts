@@ -4,10 +4,11 @@ import { Notification } from '../../model/Notification';
 import { IdService } from '../../service/id.service';
 
 @Component({
-  selector: '[laji-notification]',
-  templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: '[laji-notification]',
+    templateUrl: './notification.component.html',
+    styleUrls: ['./notification.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NotificationComponent {
   targetPath!: string;

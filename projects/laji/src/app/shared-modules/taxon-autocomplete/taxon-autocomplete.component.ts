@@ -23,10 +23,11 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 type TaxonAutocompleteResponse = components['schemas']['TaxonAutocompleteResponse'];
 
 @Component({
-  selector: 'laji-taxon-autocomplete',
-  templateUrl: './taxon-autocomplete.component.html',
-  styleUrls: ['./taxon-autocomplete.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-autocomplete',
+    templateUrl: './taxon-autocomplete.component.html',
+    styleUrls: ['./taxon-autocomplete.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
 

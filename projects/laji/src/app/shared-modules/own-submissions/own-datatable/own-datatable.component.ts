@@ -78,24 +78,25 @@ export interface OwnDatatableColumn {
 }
 
 @Component({
-  selector: 'laji-own-datatable',
-  templateUrl: './own-datatable.component.html',
-  styleUrls: ['./own-datatable.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    trigger('labelFilter', [
-      state('close', style({
-        height: '0',
-        padding: '0 15px'
-      })),
-      state('open', style({
-        height: '*',
-        padding: '*'
-      })),
-      transition('close=>open', animate('500ms ease-out')),
-      transition('open=>close', animate('100ms ease-in'))
-    ]),
-  ]
+    selector: 'laji-own-datatable',
+    templateUrl: './own-datatable.component.html',
+    styleUrls: ['./own-datatable.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [
+        trigger('labelFilter', [
+            state('close', style({
+                height: '0',
+                padding: '0 15px'
+            })),
+            state('open', style({
+                height: '*',
+                padding: '*'
+            })),
+            transition('close=>open', animate('500ms ease-out')),
+            transition('open=>close', animate('100ms ease-in'))
+        ]),
+    ],
+    standalone: false
 })
 export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestroy {
   @Input() year?: string;

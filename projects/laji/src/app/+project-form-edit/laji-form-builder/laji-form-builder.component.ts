@@ -16,11 +16,12 @@ import { map, shareReplay, tap } from 'rxjs/operators';
 import { environment } from 'projects/laji/src/environments/environment';
 
 @Component({
-  selector: 'laji-form-builder',
-  template: `<div #lajiFormBuilder></div>`,
-  styleUrls: ['./laji-form-builder.component.scss'],
-  providers: [FormApiClient],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-form-builder',
+    template: `<div #lajiFormBuilder></div>`,
+    styleUrls: ['./laji-form-builder.component.scss'],
+    providers: [FormApiClient],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   @Input() id?: string;

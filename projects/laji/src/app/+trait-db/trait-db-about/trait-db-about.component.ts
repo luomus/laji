@@ -7,12 +7,13 @@ import { map, startWith, switchMap } from 'rxjs/operators';
 const cmsIds = { fi: '6491', sv: '6491', en: '6491' };
 
 @Component({
-  template: `
+    template: `
 <ng-container *ngIf="content$ | async; let information">
   <div [innerHtml]="information?.content"></div>
 </ng-container>
 `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbAboutComponent {
   content$ = this.translate.onLangChange.pipe(

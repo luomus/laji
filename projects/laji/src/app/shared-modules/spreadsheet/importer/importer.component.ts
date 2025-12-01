@@ -37,10 +37,11 @@ import { toHtmlSelectElement } from '../../../shared/service/html-element.servic
 import {ModalRef, ModalService} from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
-  selector: 'laji-importer',
-  templateUrl: './importer.component.html',
-  styleUrls: ['./importer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-importer',
+    templateUrl: './importer.component.html',
+    styleUrls: ['./importer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ImporterComponent implements OnInit, OnDestroy {
 

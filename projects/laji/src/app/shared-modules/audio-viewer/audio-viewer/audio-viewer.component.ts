@@ -34,10 +34,11 @@ import { SpectrogramConfigModalComponent } from './spectrogram-config-modal/spec
 import equals from 'deep-equal';
 
 @Component({
-  selector: 'laji-audio-viewer',
-  templateUrl: './audio-viewer.component.html',
-  styleUrls: ['./audio-viewer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-audio-viewer',
+    templateUrl: './audio-viewer.component.html',
+    styleUrls: ['./audio-viewer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AudioViewerComponent implements OnChanges {
   @Input({ required: true }) audio!: Audio;

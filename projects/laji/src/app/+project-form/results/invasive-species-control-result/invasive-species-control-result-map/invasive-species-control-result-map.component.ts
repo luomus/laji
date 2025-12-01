@@ -47,10 +47,11 @@ const effectivenessToVisCategory: Record<Exclude<InvasiveControlEffectiveness, '
 };
 
 @Component({
-  selector: 'laji-invasive-species-control-result-map',
-  templateUrl: './invasive-species-control-result-map.component.html',
-  styleUrls: ['./invasive-species-control-result-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-invasive-species-control-result-map',
+    templateUrl: './invasive-species-control-result-map.component.html',
+    styleUrls: ['./invasive-species-control-result-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InvasiveSpeciesControlResultMapComponent implements OnInit {
 

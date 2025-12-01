@@ -10,9 +10,10 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type Taxon = components['schemas']['Taxon'];
 
 @Component({
-  selector: 'laji-gbif-map',
-  templateUrl: './gbif-map.component.html',
-  styleUrls: ['./gbif-map.component.scss']
+    selector: 'laji-gbif-map',
+    templateUrl: './gbif-map.component.html',
+    styleUrls: ['./gbif-map.component.scss'],
+    standalone: false
 })
 export class GbifMapComponent implements OnChanges, OnDestroy {
   @ViewChild(LajiMapComponent, { static: true }) mapComponent?: LajiMapComponent;

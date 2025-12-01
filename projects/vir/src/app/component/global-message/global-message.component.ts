@@ -11,12 +11,13 @@ import { Util } from 'projects/laji/src/app/shared/service/util.service';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 @Component({
-  selector: 'vir-global-message',
-  templateUrl: './global-message.component.html',
-  styleUrls: [
-    './global-message.component.scss'
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-global-message',
+    templateUrl: './global-message.component.html',
+    styleUrls: [
+        './global-message.component.scss'
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GlobalMessageComponent implements OnDestroy, OnInit {
   private unsubscribe$ = new Subject();

@@ -8,9 +8,10 @@ import { LajiApi, LajiApiService } from '../service/laji-api.service';
 import { filter, map } from 'rxjs/operators';
 
 @Component({
-  selector: 'laji-iucn-footer',
-  styleUrls: ['./iucn-footer.component.css'],
-  templateUrl: './iucn-footer.component.html'
+    selector: 'laji-iucn-footer',
+    styleUrls: ['./iucn-footer.component.css'],
+    templateUrl: './iucn-footer.component.html',
+    standalone: false
 })
 export class IucnFooterComponent implements OnInit, OnDestroy {
 

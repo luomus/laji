@@ -9,10 +9,11 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { DialogService } from '../../service/dialog.service';
 
 @Component({
-  selector: 'laji-notifications',
-  templateUrl: './notifications.component.html',
-  styleUrls: ['./notifications.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-notifications',
+    templateUrl: './notifications.component.html',
+    styleUrls: ['./notifications.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NotificationsComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject<void>();

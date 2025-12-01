@@ -5,8 +5,9 @@ import { AbstractLabelPipe } from './abstract-label.pipe';
 import { Observable } from 'rxjs';
 
 @Pipe({
-  name: 'area',
-  pure: false
+    name: 'area',
+    pure: false,
+    standalone: false
 })
 export class AreaNamePipe extends AbstractLabelPipe implements PipeTransform {
   private type!: 'name' | 'provinceCode';

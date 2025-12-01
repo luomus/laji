@@ -55,11 +55,12 @@ const BAR_CHART_OPTIONS: ChartOptions = {
 };
 
 @Component({
-  selector: 'laji-observation-month-day-chart',
-  templateUrl: './observation-month-day-chart.component.html',
-  styleUrls: ['./observation-month-day-chart.component.scss'],
-  providers: [LabelPipe, ObservationMonthDayChartFacade],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-month-day-chart',
+    templateUrl: './observation-month-day-chart.component.html',
+    styleUrls: ['./observation-month-day-chart.component.scss'],
+    providers: [LabelPipe, ObservationMonthDayChartFacade],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, OnInit {
   private unsubscribe$ = new Subject<void>();

@@ -25,10 +25,11 @@ interface ISaveData {
  * @internal
  */
 @Component({
-  selector: 'll-label-file',
-  templateUrl: './label-file.component.html',
-  styleUrls: ['./label-file.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-label-file',
+    templateUrl: './label-file.component.html',
+    styleUrls: ['./label-file.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelFileComponent {
 

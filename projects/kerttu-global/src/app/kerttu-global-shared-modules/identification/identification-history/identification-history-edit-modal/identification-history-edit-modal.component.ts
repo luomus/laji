@@ -17,11 +17,12 @@ import equals from 'deep-equal';
 import { getTranslateKeyWithTaxonType } from '../../../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
 
 @Component({
-  selector: 'bsg-identification-history-edit-modal',
-  templateUrl: './identification-history-edit-modal.component.html',
-  styleUrls: ['./identification-history-edit-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [AudioService, SpectrogramService]
+    selector: 'bsg-identification-history-edit-modal',
+    templateUrl: './identification-history-edit-modal.component.html',
+    styleUrls: ['./identification-history-edit-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [AudioService, SpectrogramService],
+    standalone: false
 })
 export class IdentificationHistoryEditModalComponent implements OnInit, OnDestroy {
   @Input({ required: true }) index!: number;

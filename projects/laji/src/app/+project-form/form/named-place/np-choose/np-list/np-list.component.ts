@@ -24,11 +24,12 @@ import { SelectionType, SortType } from '@achimha/ngx-datatable';
 import { NpInfoComponent } from '../../np-info/np-info.component';
 
 @Component({
-  selector: 'laji-np-list',
-  templateUrl: './np-list.component.html',
-  styleUrls: ['./np-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ BoolToStringPipe, AreaNamePipe ]
+    selector: 'laji-np-list',
+    templateUrl: './np-list.component.html',
+    styleUrls: ['./np-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [BoolToStringPipe, AreaNamePipe],
+    standalone: false
 })
 export class NpListComponent implements OnDestroy {
   _namedPlaces?: NamedPlace[];

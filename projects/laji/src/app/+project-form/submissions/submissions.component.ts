@@ -15,9 +15,10 @@ interface ViewModel {
 }
 
 @Component({
-  selector: 'laji-submissions',
-  templateUrl: './submissions.component.html',
-  styleUrls: ['./submissions.component.scss']
+    selector: 'laji-submissions',
+    templateUrl: './submissions.component.html',
+    styleUrls: ['./submissions.component.scss'],
+    standalone: false
 })
 export class SubmissionsComponent implements OnInit {
 

@@ -10,8 +10,8 @@ import { FooterService } from './core/footer.service';
 import { tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'ba-app',
-  template: `
+    selector: 'ba-app',
+    template: `
     <ba-navbar></ba-navbar>
     <div class="main-view">
       <ng-container *ngIf="breadcrumbs$ | async; let breadcrumbs">
@@ -29,10 +29,11 @@ import { tap } from 'rxjs/operators';
     </div>
     <ba-footer [displayFull]="(showFooter$ | async) ?? false"></ba-footer>
   `,
-  styleUrls: [
-    './app.component.scss'
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: [
+        './app.component.scss'
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AppComponent {
   breadcrumbs$: Observable<IBreadcrumb[]> = this.breadcrumbs.breadcrumbs$;

@@ -2,8 +2,8 @@ import { Input, Component } from '@angular/core';
 import { IGlobalSpecies, TaxonTypeEnum } from '../models';
 
 @Component({
-  selector: 'bsg-species-name',
-  template: `
+    selector: 'bsg-species-name',
+    template: `
     <ng-container *ngIf="species">
       <ng-container *ngIf="species.taxonType !== taxonTypeEnum.other else otherSound">
         <ng-container *ngIf="species.commonName">{{ species.commonName }} - </ng-container><i>{{ species.scientificName }}</i>
@@ -14,7 +14,8 @@ import { IGlobalSpecies, TaxonTypeEnum } from '../models';
         : ('otherSounds.' + species.scientificName) | translate) }}
       </ng-template>
     </ng-container>
-  `
+  `,
+    standalone: false
 })
 export class SpeciesNameComponent {
   @Input() species?: IGlobalSpecies;

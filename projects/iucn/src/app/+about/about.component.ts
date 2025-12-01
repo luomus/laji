@@ -5,8 +5,8 @@ import { Title } from '@angular/platform-browser';
 import { InformationItem } from 'projects/laji/src/app/shared/model/InformationItem';
 
 @Component({
-  selector: 'iucn-about',
-  template: `
+    selector: 'iucn-about',
+    template: `
     <iucn-simple-omni></iucn-simple-omni>
     <div class="container">
       <div id="wrapper" class="row">
@@ -47,7 +47,7 @@ import { InformationItem } from 'projects/laji/src/app/shared/model/InformationI
       </div>
     </div>
   `,
-  styles: [`
+    styles: [`
     :host {
       flex: 1 0 auto;
       display: flex;
@@ -72,7 +72,8 @@ import { InformationItem } from 'projects/laji/src/app/shared/model/InformationI
         display: flex;
       }
     }
-  `]
+  `],
+    standalone: false
 })
 export class AboutComponent implements OnInit, OnDestroy {
   activePage = '';

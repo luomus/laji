@@ -11,10 +11,11 @@ type Taxon = components['schemas']['Taxon'];
 type TaxonImage = components['schemas']['Image'];
 
 @Component({
-  selector: 'laji-herpetology',
-  templateUrl: './herpetology.component.html',
-  styleUrls: ['./herpetology.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-herpetology',
+    templateUrl: './herpetology.component.html',
+    styleUrls: ['./herpetology.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HerpetologyComponent implements OnInit {
   currentYear: string;

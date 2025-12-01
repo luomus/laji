@@ -6,10 +6,11 @@ import { DatatableColumn } from '../../../shared-modules/datatable/model/datatab
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
-  selector: 'laji-sound-identification-table',
-  templateUrl: './sound-identification-table.component.html',
-  styleUrls: ['./sound-identification-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-sound-identification-table',
+    templateUrl: './sound-identification-table.component.html',
+    styleUrls: ['./sound-identification-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SoundIdentificationTableComponent implements OnInit {
   @ViewChild('clipSpan', { static: true }) clipSpanTemplate!: TemplateRef<any>;

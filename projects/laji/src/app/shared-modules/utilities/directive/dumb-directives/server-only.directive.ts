@@ -1,7 +1,10 @@
 import { Directive, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { PlatformService } from '../../../../root/platform.service';
 
-@Directive({ selector: '[lajiServerOnly]' })
+@Directive({
+    selector: '[lajiServerOnly]',
+    standalone: false
+})
 export class ServerOnlyDirective implements OnInit {
   constructor(
     private templateRef: TemplateRef<any>,

@@ -35,10 +35,11 @@ interface DerivedFromInput {
 }
 
 @Component({
-  selector: 'laji-named-places',
-  templateUrl: './named-place.component.html',
-  styleUrls: ['./named-place.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-named-places',
+    templateUrl: './named-place.component.html',
+    styleUrls: ['./named-place.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NamedPlaceComponent implements OnInit, OnDestroy {
 

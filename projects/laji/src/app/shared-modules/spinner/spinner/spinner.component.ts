@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-spinner',
-  template: `
+    selector: 'laji-spinner',
+    template: `
 <div class="spinner three-bounce-spinner"
   *ngIf="spinning"
   [ngClass]="{'overlay-spinner': overlay, 'inline-spinner': !overlay, 'light': light}">
@@ -11,8 +11,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   <div class="bounce3"></div>
 </div>
 <ng-content *ngIf="!hideContentWhileLoading || !spinning"></ng-content>`,
-  styleUrls: ['./spinner.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./spinner.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpinnerComponent {
 

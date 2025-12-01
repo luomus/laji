@@ -94,11 +94,12 @@ const BOX_QUERY_AGGREGATE_LEVELS = [
 const ACTIVE_COLOR = '#6ca31d';
 
 @Component({
-  selector: 'laji-observation-map',
-  templateUrl: './observation-map.component.html',
-  styleUrls: ['./observation-map.component.scss'],
-  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-map',
+    templateUrl: './observation-map.component.html',
+    styleUrls: ['./observation-map.component.scss'],
+    providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(LajiMapComponent) lajiMap!: LajiMapComponent;

@@ -7,10 +7,11 @@ import { IdentificationMainComponent } from '../../kerttu-global-shared-modules/
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
-  selector: 'bsg-recording-identification',
-  templateUrl: './recording-identification.component.html',
-  styleUrls: ['./recording-identification.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bsg-recording-identification',
+    templateUrl: './recording-identification.component.html',
+    styleUrls: ['./recording-identification.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   @ViewChild(IdentificationMainComponent) identificationComponent?: IdentificationMainComponent;

@@ -53,9 +53,10 @@ interface BadgeTemplate {
 }
 
 @Component({
-  templateUrl: `./project-form.component.html`,
-  styleUrls: ['./project-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: `./project-form.component.html`,
+    styleUrls: ['./project-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ProjectFormComponent implements OnInit, OnDestroy {
   vm$!: Observable<ViewModel | NotFoundViewModel>;

@@ -15,9 +15,10 @@ import { TranslateService } from '@ngx-translate/core';
 declare const ga: (eventName: string, hitType: string, data: string) => void;
 
 @Component({
-  selector: 'laji-app',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'laji-app',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent {
 

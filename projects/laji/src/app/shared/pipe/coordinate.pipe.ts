@@ -4,7 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 const locationCache: any = {};
 
 @Pipe({
-  name: 'coordinate'
+    name: 'coordinate',
+    standalone: false
 })
 export class CoordinatePipe implements PipeTransform {
 

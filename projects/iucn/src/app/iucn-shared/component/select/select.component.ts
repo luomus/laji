@@ -7,9 +7,10 @@ export interface SelectOption {
 }
 
 @Component({
-  selector: 'select[iucn-dropdown]',
-  templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss']
+    selector: 'select[iucn-dropdown]',
+    templateUrl: './select.component.html',
+    styleUrls: ['./select.component.scss'],
+    standalone: false
 })
 export class SelectComponent {
 

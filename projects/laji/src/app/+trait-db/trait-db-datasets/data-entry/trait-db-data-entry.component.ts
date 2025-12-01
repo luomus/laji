@@ -28,8 +28,9 @@ interface ReadyStep {
 type Step = ImportStep | ValidateStep | CheckStep | ReadyStep;
 
 @Component({
-  templateUrl: './trait-db-data-entry.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './trait-db-data-entry.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDataEntryComponent implements OnInit, OnDestroy {
   stepStack$ = new BehaviorSubject<Step[]>([]);

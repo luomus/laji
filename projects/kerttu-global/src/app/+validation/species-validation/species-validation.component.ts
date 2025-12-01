@@ -21,10 +21,11 @@ import { defaultSpectrogramConfig } from '../../../../../laji/src/app/shared-mod
 import { defaultAudioSampleRate } from '../../kerttu-global-shared/variables';
 
 @Component({
-  selector: 'bsg-species-validation',
-  templateUrl: './species-validation.component.html',
-  styleUrls: ['./species-validation.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-species-validation',
+    templateUrl: './species-validation.component.html',
+    styleUrls: ['./species-validation.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesValidationComponent implements OnInit, OnDestroy {
   species$!: Observable<IGlobalSpecies>;

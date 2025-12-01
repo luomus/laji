@@ -13,10 +13,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type Taxon = components['schemas']['Taxon'];
 
 @Component({
-  selector: 'laji-taxonomy',
-  templateUrl: './taxon.component.html',
-  styleUrls: ['./taxon.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxonomy',
+    templateUrl: './taxon.component.html',
+    styleUrls: ['./taxon.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonComponent implements OnInit, OnDestroy {
   taxon: Taxon | null | undefined;

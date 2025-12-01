@@ -6,8 +6,8 @@ import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'laji-result-service',
-  template: `
+    selector: 'laji-result-service',
+    template: `
     <div [ngSwitch]="(form$ | async)!.options?.resultServiceType" lajiFormOption="options.resultServiceType">
       <div *ngSwitchCase="ResultServiceType.winterBirdCount">
         <laji-wbc-result [form]="(form$ | async)!"></laji-wbc-result>
@@ -35,7 +35,8 @@ import { ActivatedRoute } from '@angular/router';
       </div>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ResultsComponent implements OnInit {
 

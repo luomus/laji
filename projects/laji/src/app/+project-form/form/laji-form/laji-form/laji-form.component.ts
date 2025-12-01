@@ -41,11 +41,12 @@ interface ErrorModal {
 }
 
 @Component({
-  selector: 'laji-form',
-  templateUrl: './laji-form.component.html',
-  styleUrls: ['./laji-form.component.scss'],
-  providers: [FormApiClient],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-form',
+    templateUrl: './laji-form.component.html',
+    styleUrls: ['./laji-form.component.scss'],
+    providers: [FormApiClient],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
 

@@ -22,10 +22,11 @@ import { LabelDesignerHelper } from '../../label-designer.helper';
  * @internal
  */
 @Component({
-  selector: 'll-label-fields-available',
-  templateUrl: './label-fields-available.component.html',
-  styleUrls: ['./label-fields-available.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-label-fields-available',
+    templateUrl: './label-fields-available.component.html',
+    styleUrls: ['./label-fields-available.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
 

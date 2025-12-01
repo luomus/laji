@@ -2,8 +2,9 @@
 import { Component, ElementRef, HostListener, Input, OnChanges, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'iucn',
-  templateUrl: './iucn.component.html'
+    selector: 'iucn',
+    templateUrl: './iucn.component.html',
+    standalone: false
 })
 export class IUCNComponent implements OnInit, OnChanges {
   @Input() height = 60;

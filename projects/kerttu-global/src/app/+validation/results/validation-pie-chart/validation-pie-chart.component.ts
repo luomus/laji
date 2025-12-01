@@ -4,10 +4,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { ChartData, ChartOptions } from 'chart.js';
 
 @Component({
-  selector: 'bsg-validation-pie-chart',
-  templateUrl: './validation-pie-chart.component.html',
-  styleUrls: ['./validation-pie-chart.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-validation-pie-chart',
+    templateUrl: './validation-pie-chart.component.html',
+    styleUrls: ['./validation-pie-chart.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ValidationPieChartComponent {
   options: ChartOptions = {

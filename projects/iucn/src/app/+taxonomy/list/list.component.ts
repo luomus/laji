@@ -15,9 +15,10 @@ export interface QueryParams extends FilterQuery {
 }
 
 @Component({
-  selector: 'iucn-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+    selector: 'iucn-list',
+    templateUrl: './list.component.html',
+    styleUrls: ['./list.component.css'],
+    standalone: false
 })
 export class ListComponent implements OnInit, OnDestroy {
   types: {label: string; value: ListType; labelLong?: string}[] = [

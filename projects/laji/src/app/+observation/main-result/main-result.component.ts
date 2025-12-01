@@ -22,11 +22,12 @@ import { tap } from 'rxjs/operators';
 const DEFAULT_PAGE_SIZE = 1000;
 
 @Component({
-  selector: 'laji-main-result',
-  templateUrl: './main-result.component.html',
-  styleUrls: ['./main-result.component.css'],
-  providers: [MainResultService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-main-result',
+    templateUrl: './main-result.component.html',
+    styleUrls: ['./main-result.component.css'],
+    providers: [MainResultService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MainResultComponent implements OnInit, OnChanges {
   private static readonly defaultFields: string[] = [

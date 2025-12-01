@@ -52,9 +52,10 @@ interface GridInfoData {
 }
 
 @Component({
-  templateUrl: './grid-info.component.html',
-  styleUrls: ['./grid-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './grid-info.component.html',
+    styleUrls: ['./grid-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GridInfoComponent implements AfterViewInit, OnDestroy {
   @ViewChild('lajiMap', { static: false }) lajiMapElem!: ElementRef;

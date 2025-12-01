@@ -7,15 +7,16 @@ import { TranslateService } from '@ngx-translate/core';
 import { map, share } from 'rxjs/operators';
 
 @Component({
-  selector: 'bsg-species-selection',
-  template: `
+    selector: 'bsg-species-selection',
+    template: `
     <bsg-species-selection-view
       [species]="(species$ | async) ?? undefined"
       [unknownSpeciesRecordingCount]="(unknownSpeciesRecordingCount | async) ?? undefined"
       (speciesSelect)="speciesSelect.emit($event)"
     ></bsg-species-selection-view>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesSelectionComponent {
   species$: Observable<IGlobalSpecies[]>;

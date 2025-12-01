@@ -7,10 +7,11 @@ import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/d
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
-  selector: 'vir-usage-by-collection',
-  templateUrl: './usage-downloads.component.html',
-  styleUrls: ['./usage-downloads.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-usage-by-collection',
+    templateUrl: './usage-downloads.component.html',
+    styleUrls: ['./usage-downloads.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UsageDownloadsComponent {
   @ViewChild('downloadModal', { static: true }) downloadModal!: TemplateRef<any>;

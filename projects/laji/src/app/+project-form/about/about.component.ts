@@ -22,9 +22,10 @@ interface AboutData {
 }
 
 @Component({
-  selector: 'laji-about',
-  templateUrl: './about.component.html',
-  styleUrls: ['./about.component.scss']
+    selector: 'laji-about',
+    templateUrl: './about.component.html',
+    styleUrls: ['./about.component.scss'],
+    standalone: false
 })
 export class AboutComponent implements OnInit {
 

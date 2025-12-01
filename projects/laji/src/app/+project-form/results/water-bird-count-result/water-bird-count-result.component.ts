@@ -13,10 +13,11 @@ interface State {
 }
 
 @Component({
-  selector: 'laji-water-bird-count-result',
-  templateUrl: './water-bird-count-result.component.html',
-  styleUrls: ['./water-bird-count-result.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-water-bird-count-result',
+    templateUrl: './water-bird-count-result.component.html',
+    styleUrls: ['./water-bird-count-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class WaterBirdCountResultComponent implements OnInit {
   @Input() form!: Form.SchemaForm;

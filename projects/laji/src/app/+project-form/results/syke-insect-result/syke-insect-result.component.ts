@@ -16,10 +16,11 @@ enum Tabs {
 }
 
 @Component({
-  selector: 'laji-syke-insect-result',
-  templateUrl: './syke-insect-result.component.html',
-  styleUrls: ['./syke-insect-result.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-syke-insect-result',
+    templateUrl: './syke-insect-result.component.html',
+    styleUrls: ['./syke-insect-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SykeInsectResultComponent implements OnInit, OnDestroy {
 

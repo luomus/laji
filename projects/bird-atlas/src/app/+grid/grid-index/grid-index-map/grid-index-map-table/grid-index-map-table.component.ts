@@ -11,8 +11,8 @@ type AugmentedLegend = {
 
 // Augments the activity category legend with counts and displays it as a table
 @Component({
-  selector: 'ba-grid-index-map-table',
-  template: `
+    selector: 'ba-grid-index-map-table',
+    template: `
 <table>
   <tr>
     <th>Väri</th>
@@ -26,8 +26,9 @@ type AugmentedLegend = {
   </tr>
 </table>
 `,
-  styleUrls: ['../../../../shared-modules/map-utils/visualization-legend.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['../../../../shared-modules/map-utils/visualization-legend.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GridIndexMapTableComponent implements OnChanges {
   @Input() activityCategoryStats!: ActivityCategoryStatsObject;

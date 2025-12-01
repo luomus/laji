@@ -21,9 +21,10 @@ const invasiveStatusesDict = invasiveStatuses.reduce((dict, status) => {
 type InvasiveStatus = typeof invasiveStatuses[number];
 
 @Component({
-  selector: 'laji-species-form[search]',
-  templateUrl: './species-form.component.html',
-  styleUrls: ['./species-form.component.css']
+    selector: 'laji-species-form[search]',
+    templateUrl: './species-form.component.html',
+    styleUrls: ['./species-form.component.css'],
+    standalone: false
 })
 export class SpeciesFormComponent implements OnInit, OnDestroy {
   @Input() search!: TaxonomySearch;

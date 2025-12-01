@@ -14,10 +14,11 @@ import { toHtmlInputElement } from 'projects/laji/src/app/shared/service/html-el
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'bsg-identification-results',
-  templateUrl: './identification-results.component.html',
-  styleUrls: ['./identification-results.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-identification-results',
+    templateUrl: './identification-results.component.html',
+    styleUrls: ['./identification-results.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationResultsComponent implements OnInit {
   @Input() taxonTypes: TaxonTypeEnum[]|null = null;

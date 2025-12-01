@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'vir-theme',
-  templateUrl: './theme.component.html',
-  styleUrls: [
-    '../../../../laji/src/app/+theme/theme.component.scss',
-    './theme.component.scss'
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-theme',
+    templateUrl: './theme.component.html',
+    styleUrls: [
+        '../../../../laji/src/app/+theme/theme.component.scss',
+        './theme.component.scss'
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ThemeComponent {
 

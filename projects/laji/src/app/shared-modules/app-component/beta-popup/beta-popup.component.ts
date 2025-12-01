@@ -3,8 +3,8 @@ import { LocalStorage } from 'ngx-webstorage';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
-  selector: 'laji-beta-popup',
-  template: `
+    selector: 'laji-beta-popup',
+    template: `
   <div class="laji-beta-popup" *ngIf="open">
     <div class="d-flex justify-between">
       <p [innerHtml]="'betapopup.desc' | translate"></p>
@@ -14,8 +14,9 @@ import { isPlatformBrowser } from '@angular/common';
     </div>
   </div>
 `,
-  styleUrls: ['./beta-popup.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./beta-popup.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BetaPopupComponent implements OnInit {
   @LocalStorage('betapopup', true) betaPopup!: boolean;

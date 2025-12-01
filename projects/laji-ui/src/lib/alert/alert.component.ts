@@ -3,10 +3,11 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, On
 export type AlertType = 'info' | 'warning' | 'success' | 'danger';
 
 @Component({
-  selector: 'lu-alert',
-  template: `<ng-content></ng-content><button *ngIf="dismissible" class="dismiss" (click)="dismiss()">✕</button>`,
-  styleUrls: ['./alert.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'lu-alert',
+    template: `<ng-content></ng-content><button *ngIf="dismissible" class="dismiss" (click)="dismiss()">✕</button>`,
+    styleUrls: ['./alert.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AlertComponent implements OnInit, OnChanges {
   @Input() type: AlertType = 'warning';
