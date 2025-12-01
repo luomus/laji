@@ -1,6 +1,6 @@
 {
   "name": "@luomus/label-designer",
-  "version": "18.0.0",
+  "version": "19.0.0",
   "author": "Ville-Matti Riihikoski",
   "contributors": [
     "Ville-Matti Riihikoski <ville-matti.riihikoski@helsinki.fi>",
@@ -21,13 +21,13 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@angular/common": "^18",
-    "@angular/core": "^18",
-    "@angular/cdk": "^18",
-    "angularx-qrcode": "^18",
+    "@angular/common": "^19",
+    "@angular/core": "^19",
+    "@angular/cdk": "^19",
+    "angularx-qrcode": "^19",
     "jszip": ">=3.2.0",
     "file-saver": ">=2.0.0",
-    "ngx-webstorage": "^18",
+    "ngx-webstorage": "^19",
     "xlsx": ">=0.17.5"
   },
   "publishConfig": {

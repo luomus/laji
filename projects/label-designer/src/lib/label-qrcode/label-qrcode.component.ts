@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { QRCodeErrorCorrectionLevel } from '../label-designer.interface';
+import { QRCodeComponent } from 'angularx-qrcode';
 
 @Component({
-    selector: 'll-label-qrcode',
-    template: `
+  selector: 'll-label-qrcode',
+  template: `
     <qrcode
       [style.display]="'block'"
       [style.width]="size + 'px'"
@@ -15,9 +16,9 @@ import { QRCodeErrorCorrectionLevel } from '../label-designer.interface';
       elementType="img"
     ></qrcode>
   `,
-    styleUrls: ['./label-qrcode.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  imports: [QRCodeComponent],
+  styleUrls: ['./label-qrcode.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LabelQRCodeComponent {
 

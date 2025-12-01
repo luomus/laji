@@ -7,7 +7,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { EditorItemComponent } from './label-designer/label-editor/editor-item/editor-item.component';
 import { LabelItemComponent } from './label-preview/label-item/label-item.component';
-import { QRCodeModule } from 'angularx-qrcode';
 import { RulerComponent } from './ruler/ruler.component';
 import { LabelSettingsComponent } from './label-designer/label-settings/label-settings.component';
 import { LabelFieldsAvailableComponent } from './label-designer/label-fields-available/label-fields-available.component';
@@ -77,13 +76,12 @@ import { LabelBacksideSortPipe } from './pipe/label-backside-sort-pipe';
     SeparatorPipe,
     FieldKeyPipe,
     IsNumericPipe,
-    LabelQRCodeComponent,
     LabelBacksideSortPipe
   ],
   imports: [
     CommonModule,
     DragDropModule,
-    QRCodeModule,
+    LabelQRCodeComponent,
   ],
   providers: [
     TranslateService,
