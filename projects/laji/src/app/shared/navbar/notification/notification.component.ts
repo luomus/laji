@@ -17,8 +17,8 @@ export class NotificationComponent {
   by!: string | undefined;
   type!: 'annotation'|'annotationCommented'|'friendRequest'|'friendRequestAccepted';
 
-  private _notification!: Notification;
-  @Input({required: true}) set notification(notification: Notification) {
+  private _notification: Notification | undefined;
+  @Input({required: true}) set notification(notification: Notification | undefined) {
     this._notification = notification;
     this.initTargets();
   }
