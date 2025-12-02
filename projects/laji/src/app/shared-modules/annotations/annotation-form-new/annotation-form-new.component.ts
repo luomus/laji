@@ -1,14 +1,12 @@
 import {map,  mergeMap, switchMap } from 'rxjs/operators';
-import { Component, EventEmitter, Input, OnChanges, OnInit,
+import { Component, EventEmitter, Input, OnInit,
 Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener,
 ChangeDetectionStrategy, AfterContentChecked } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Annotation } from '../../../shared/model/Annotation';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { Observable, Subscription } from 'rxjs';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { Global } from '../../../../environments/global';
 import { IdService } from '../../../shared/service/id.service';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
@@ -20,13 +18,13 @@ import { TypeaheadMatch } from '../../../../../../laji-ui/src/lib/typeahead/type
 import { DialogService } from '../../../shared/service/dialog.service';
 import { SelectStyle } from '../../select/metadata-select/metadata-select.component';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { WithNonNullableKeys } from '../../../shared/service/util.service';
 
-export interface AnnotationFormAnnotation extends Annotation {
-  identification: Annotation.Identification;
-  addedTags: string[];
-  removedTags: string[];
-  atlasCode?: string;
-}
+type Annotation = components['schemas']['annotation'];
+type AnnotationTag = components['schemas']['tag'];
+
+export type AnnotationFormAnnotation = WithNonNullableKeys<Annotation, 'identification' | 'addedTags' | 'removedTags'>;
 
 interface AnnotationTaxonomy {
   id: string|null;
@@ -36,7 +34,6 @@ interface AnnotationTaxonomy {
   vernacularName: string|null;
   scientificNameAuthorship: string|null;
 }
-
 
 @Component({
   selector: 'laji-annotation-form-new',
@@ -57,12 +54,12 @@ interface AnnotationTaxonomy {
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })
-export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterContentChecked {
+export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
   static readonly lang = ['en', 'fi', 'sv'];
 
   @Input() isEditor?: boolean;
   @Input() personID?: string;
-  @Input() personRoleAnnotation?: Annotation.AnnotationRoleEnum;
+  @Input() personRoleAnnotation?: Annotation['byRole'];
   @Input() annotations?: Annotation[];
   @Input({ required: true }) annotation!: AnnotationFormAnnotation;
   @Input() identifying?: boolean;
@@ -80,15 +77,13 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   error: any;
   unIdentifyable = false;
   sending = false;
-  needsAck?: boolean;
-  annotationAddadableTags$!: Observable<AnnotationTag[]>;
+  annotationAddableTags$!: Observable<AnnotationTag[]>;
   annotationRemovableTags$!: Observable<AnnotationTag[]>;
   annotationSub?: Subscription;
   alertNotSpamVerified?: boolean;
   typeaheadLoading = false;
-  types = Annotation.TypeEnum;
   selectedOptions: string[] = [];
-  tmpTags?: Annotation[];
+  tmpTags?: AnnotationTag[];
   isFocusedTaxonComment: any;
   inputType: any;
   inputName: any;
@@ -103,8 +98,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   currentTaxonName = '';
   selectStyleBasic = SelectStyle.basic;
   annotationTagsObservation: Record<string, { value: string; quality: string; type: string }> = Global.annotationTags;
-  annotationRole = Annotation.AnnotationRoleEnum;
-
 
   constructor(
     private annotationService: AnnotationService,
@@ -160,10 +153,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
         }
       });
     });
-  }
-
-  ngOnChanges() {
-    this.initAnnotation();
   }
 
   select(event: TypeaheadMatch) {
@@ -292,28 +281,22 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   initAnnotationTags() {
-    this.annotationAddadableTags$ = this.annotationService.getAllAddableTags(this.translate.currentLang).pipe(
+    this.annotationAddableTags$ = this.annotationService.getAllAddableTags().pipe(
       map(data => data.map(element => {
           if (element['id'] === 'MMAN.3') {
-            return { id: element['id'], quality: element['type'] as any, position: 1 };
+            return { ...element, position: 1 };
           } else {
-            return { id: element['id'], quality: element['type'] as any, position: 0 };
+            return { ...element, position: 0 };
           }
         }))
     );
 
-    this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.currentLang).pipe(
+    this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags().pipe(
       map(
         data => data.filter(
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          tag => this.labelPipe.transform((this.unit.interpretations.effectiveTags || []), 'warehouse').indexOf(tag['name']!) !== -1 )
+          tag => this.labelPipe.transform((this.unit.interpretations.effectiveTags || []), 'warehouse').indexOf(tag['name']) !== -1 )
         )
       );
-  }
-
-
-  initAnnotation() {
-    this.needsAck = this.annotations && this.annotations[0] && this.annotations[0].type !== Annotation.TypeEnum.TypeAcknowledged;
   }
 
   filterBasicForm() {
@@ -347,7 +330,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     }
     this.sending = true;
     if (this.unIdentifyable) {
-      this.annotation.type = Annotation.TypeEnum.TypeUnidentifiable;
+      this.annotation.type = 'MAN.typeUnidentifiable';
     }
 
     if (!this.expert) {
@@ -512,9 +495,9 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     (
       (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined) &&
       (this.annotation.addedTags.indexOf('MMAN.5') !== -1 || this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1) &&
-      (this.personRoleAnnotation === this.annotationRole.expert) && this.expert && !this.isEditor)
+      (this.personRoleAnnotation === 'MMAN.expert') && this.expert && !this.isEditor)
     ||
-    ((((this.personRoleAnnotation === this.annotationRole.expert) && !this.expert) || (this.personRoleAnnotation === this.annotationRole.basic && this.expert)) &&
+    ((((this.personRoleAnnotation === 'MMAN.expert') && !this.expert) || (this.personRoleAnnotation === 'MMAN.basic' && this.expert)) &&
     ((this.annotation.addedTags.length === 0 || (this.annotation.addedTags.length === 1 && (this.annotation.addedTags.indexOf('MMAN.5') !== -1 ||
     this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1)
     || (!checkTypeTagPasses)) || (this.annotation.addedTags.length > 1 && !checkTypeTagPasses)) &&

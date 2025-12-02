@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AnnotationTag } from '../../../shared/model/AnnotationTag';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
 
+type AnnotationTag = components['schemas']['tag'];
 
 @Component({
   selector: 'laji-annotation-item',
