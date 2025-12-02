@@ -1218,7 +1218,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** Delete an annotation */
+        /** Delete an annotation. It's a soft delete, a succesful delete returns the updated annotation */
         delete: operations["AnnotationsController_delete"];
         options?: never;
         head?: never;
@@ -14286,7 +14286,7 @@ export interface components {
             public?: boolean;
             reserve?: components["schemas"]["reserve"];
             /** Tags */
-            tags?: ("" | "MNP.tagAccessibilityEasy" | "MNP.tagAccessibilityModerate" | "MNP.tagAccessibilityDifficult" | "MNP.tagHabitatImportant" | "MNP.tagCensusRare" | "MNP.tagHabitatFarmland" | "MNP.tagHabitatMire" | "MNP.tagHabitatMountain" | "MNP.tagSuitable")[];
+            tags?: ("" | "MNP.tagAccessibilityEasy" | "MNP.tagAccessibilityModerate" | "MNP.tagAccessibilityDifficult" | "MNP.tagHabitatImportant" | "MNP.tagCensusRare" | "MNP.tagHabitatFarmland" | "MNP.tagHabitatMire" | "MNP.tagHabitatMountain" | "MNP.tagSuitable" | "MNP.tagTypeIsland" | "MNP.tagTypePartialIsland" | "MNP.tagTypeIslandGroup" | "MNP.tagTypeWater" | "MNP.tagTypeMixed" | "MNP.tagTypeUnknown")[];
             /** Taxa */
             taxonIDs?: string[];
             /** Sampling method notes */
@@ -29633,7 +29633,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": components["schemas"]["annotation"];
                 };
             };
             400: {
