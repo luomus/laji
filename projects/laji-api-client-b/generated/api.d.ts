@@ -4,59 +4,6 @@
  */
 
 export interface paths {
-    "/forms/permissions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get form permissions for a person */
-        get: operations["FormsController_getPermissions"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/forms/permissions/{collectionID}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get form permissions for a person, and the form information about whether it has MHL.restrictAccess or MHL.hasAdmins */
-        get: operations["FormsController_getPermissionsByCollectionID"];
-        put?: never;
-        /** Request access to form */
-        post: operations["FormsController_requestAccess"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/forms/permissions/{collectionID}/{personID}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Accept access to form */
-        put: operations["FormsController_acceptAccess"];
-        post?: never;
-        /** Remove access to form */
-        delete: operations["FormsController_revokeAccess"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/forms/{id}/participants": {
         parameters: {
             query?: never;
@@ -284,6 +231,125 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/metadata/classes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all classes */
+        get: operations["MetadataController_getClasses"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/metadata/classes/{class}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a class by name */
+        get: operations["MetadataController_getClass"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/metadata/classes/{class}/properties": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get class' properties by name */
+        get: operations["MetadataController_getClassProperty"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/metadata/properties": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all properties */
+        get: operations["MetadataController_getProperties"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/metadata/properties/{property}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a property by name */
+        get: operations["MetadataController_getProperty"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/metadata/properties/{property}/alt": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get property's alt by property name */
+        get: operations["MetadataController_getPropertyAlt"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/metadata/alts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all alts as a lookup object where keys are property names and values are alts */
+        get: operations["MetadataController_getAlts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/collections": {
         parameters: {
             query?: never;
@@ -364,6 +430,59 @@ export interface paths {
         put?: never;
         post?: never;
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/form-permissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get form permissions for a person */
+        get: operations["FormPermissionsController_getPermissions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/form-permissions/{collectionID}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get form permissions for a person, and the form information about whether it has MHL.restrictAccess or MHL.hasAdmins */
+        get: operations["FormPermissionsController_getPermissionsByCollectionID"];
+        put?: never;
+        /** Request access to form */
+        post: operations["FormPermissionsController_requestAccess"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/form-permissions/{collectionID}/{personID}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Accept access to form */
+        put: operations["FormPermissionsController_acceptAccess"];
+        post?: never;
+        /** Remove access to form */
+        delete: operations["FormPermissionsController_revokeAccess"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1099,7 +1218,7 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** Delete an annotation */
+        /** Delete an annotation. It's a soft delete, a succesful delete returns the updated annotation */
         delete: operations["AnnotationsController_delete"];
         options?: never;
         head?: never;
@@ -1600,6 +1719,175 @@ export interface paths {
         put?: never;
         /** Convert HTML to PDF */
         post: operations["HtmlToPdfController_htmlToPdf"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/logger/{level}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send a log event */
+        post: operations["LoggerController_log"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/logger/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get info if there's log events */
+        get: operations["LoggerController_getStatus"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sources/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all sources */
+        get: operations["SourcesController_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/sources": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a source by id */
+        get: operations["SourcesController_getPage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/red-list-evaluation-groups/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a red list evaluation group by id */
+        get: operations["RedListEvaluationGroupsController_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get temp token and login url to be used for the user authentication */
+        get: operations["LoginController_getTmpToken"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/login/check": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Check if the user has authenticated */
+        post: operations["LoginController_checkTmpToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/publications/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["PublicationsController_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/news": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a page of news */
+        get: operations["NewsController_getPage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/news/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get news item */
+        get: operations["NewsController_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -8426,20 +8714,6 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        FormPermissionPersonDto: {
-            admins: string[];
-            editors: string[];
-            permissionRequests: string[];
-        };
-        FormPermissionDto: {
-            /** @enum {string} */
-            restrictAccess?: "MHL.restrictAccessStrict" | "MHL.restrictAccessLoose";
-            admins: string[];
-            editors: string[];
-            permissionRequests: string[];
-            collectionID: string;
-            hasAdmins?: boolean;
-        };
         Participant: {
             id: string;
             fullName: string;
@@ -8491,6 +8765,30 @@ export interface components {
         StoreDeleteResponse: {
             affected: number;
         };
+        MultiLangDto: string;
+        MetadataClass: {
+            class: string;
+            label: string;
+            shortName: string;
+        };
+        Property: {
+            domain: string[];
+            maxOccurs: string;
+            minOccurs: string;
+            required: boolean;
+            property: string;
+            multiLanguage: boolean;
+            shortName: string;
+            range: string;
+            label: string;
+            hasMany: boolean;
+            sortOrder: number;
+            isEmbeddable: boolean;
+        };
+        Alt: {
+            id: string;
+            value: string;
+        };
         Collection: {
             collectionName: Record<string, never>;
             description?: Record<string, never>;
@@ -8522,6 +8820,20 @@ export interface components {
             collectionType: Record<string, never>;
             intellectualRights: Record<string, never>;
         };
+        FormPermissionPersonDto: {
+            admins: string[];
+            editors: string[];
+            permissionRequests: string[];
+        };
+        FormPermissionDto: {
+            /** @enum {string} */
+            restrictAccess?: "MHL.restrictAccessStrict" | "MHL.restrictAccessLoose";
+            admins: string[];
+            editors: string[];
+            permissionRequests: string[];
+            collectionID: string;
+            hasAdmins?: boolean;
+        };
         ErrorsObj: Record<string, never>;
         BatchJobValidationStatus: {
             percentage: number;
@@ -8531,7 +8843,7 @@ export interface components {
         };
         BatchJobValidationStatusResponse: {
             /** @enum {string} */
-            phase: "VALIDATING" | "READY_TO_COMPLETE" | "COMPLETING" | "COMPLETED";
+            phase: "VALIDATING" | "READY_TO_COMPLETE" | "COMPLETING" | "COMPLETED" | "FAILED_UPON_VALIDATION" | "FAILED_UPON_COMPLETION";
             /** @default [] */
             errors: (components["schemas"]["ErrorsObj"] | null)[];
             id: string;
@@ -8703,7 +9015,6 @@ export interface components {
                 femaleIndividualCount: string;
             };
         };
-        MultiLangDto: string;
         AddressComponent: {
             long_name: string;
             short_name: string;
@@ -8719,6 +9030,11 @@ export interface components {
             subject: string;
             message: string;
             meta: string;
+        };
+        Source: {
+            id?: string;
+            name: string;
+            description: string;
         };
         DwQuery_CountResponse: {
             total: number;
@@ -10111,6 +10427,8 @@ export interface components {
             occurrenceCountInvasiveFinland: number;
             bold: components["schemas"]["BoldRecords"];
             hasBold: boolean;
+            /** @description Qname identifier */
+            isPartOfSynonym: string;
             hasParent: boolean;
             hasChildren: boolean;
             hasMultimedia: boolean;
@@ -13080,8 +13398,6 @@ export interface components {
             id: string;
             /** Type for the Identification */
             "@type": string;
-            /** herbo:sortOrder */
-            "herbo:sortOrder": number;
             /**
              * Associated observation taxa
              * @description Write associated observation taxa names here, separated by a semicolon (;). E.g.: "Betula pendula; Betula pubescens; Poaceae". These will form their own units of the type observation.
@@ -13970,7 +14286,7 @@ export interface components {
             public?: boolean;
             reserve?: components["schemas"]["reserve"];
             /** Tags */
-            tags?: ("" | "MNP.tagAccessibilityEasy" | "MNP.tagAccessibilityModerate" | "MNP.tagAccessibilityDifficult" | "MNP.tagHabitatImportant" | "MNP.tagCensusRare" | "MNP.tagHabitatFarmland" | "MNP.tagHabitatMire" | "MNP.tagHabitatMountain" | "MNP.tagSuitable")[];
+            tags?: ("" | "MNP.tagAccessibilityEasy" | "MNP.tagAccessibilityModerate" | "MNP.tagAccessibilityDifficult" | "MNP.tagHabitatImportant" | "MNP.tagCensusRare" | "MNP.tagHabitatFarmland" | "MNP.tagHabitatMire" | "MNP.tagHabitatMountain" | "MNP.tagSuitable" | "MNP.tagTypeIsland" | "MNP.tagTypePartialIsland" | "MNP.tagTypeIslandGroup" | "MNP.tagTypeWater" | "MNP.tagTypeMixed" | "MNP.tagTypeUnknown")[];
             /** Taxa */
             taxonIDs?: string[];
             /** Sampling method notes */
@@ -14288,6 +14604,26 @@ export interface components {
             key: string;
             value: string;
         };
+        SensitiveSource: {
+            id?: string;
+            name: string;
+            description: string;
+        };
+        iucnRedListTaxonGroup: {
+            /** Context for the IUCN Red List Evaluation Informal Taxon Group */
+            "@context"?: string;
+            /** Id for the IUCN Red List Evaluation Informal Taxon Group */
+            id?: string;
+            /** Type for the IUCN Red List Evaluation Informal Taxon Group */
+            "@type"?: string;
+            /** Has sub group */
+            hasIucnSubGroup?: string[];
+            /** Includes informal taxon group */
+            includesInformalTaxonGroup?: string[];
+            /** Includes taxon */
+            includesTaxon?: string[];
+            name: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -14297,514 +14633,6 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    FormsController_getPermissions: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description Person's authentication token */
-                "Person-Token"?: string;
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FormPermissionPersonDto"];
-                };
-            };
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            406: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-        };
-    };
-    FormsController_getPermissionsByCollectionID: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description Person's authentication token. It is required. */
-                "Person-Token"?: string;
-            };
-            path: {
-                collectionID: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FormPermissionDto"];
-                };
-            };
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            406: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-        };
-    };
-    FormsController_requestAccess: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description Person's authentication token */
-                "Person-Token"?: string;
-            };
-            path: {
-                collectionID: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FormPermissionDto"];
-                };
-            };
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            406: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-        };
-    };
-    FormsController_acceptAccess: {
-        parameters: {
-            query?: {
-                /** @description Access type */
-                type?: "admin" | "editor";
-            };
-            header?: {
-                /** @description Person's authentication token who is authorizing the acception */
-                "Person-Token"?: string;
-            };
-            path: {
-                collectionID: string;
-                personID: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FormPermissionDto"];
-                };
-            };
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            406: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-        };
-    };
-    FormsController_revokeAccess: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description Person's authentication token who is authorizing the removal */
-                "Person-Token"?: string;
-            };
-            path: {
-                collectionID: string;
-                personID: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FormPermissionDto"];
-                };
-            };
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            406: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-        };
-    };
     FormsController_getParticipants: {
         parameters: {
             query?: never;
@@ -17027,6 +16855,697 @@ export interface operations {
             };
         };
     };
+    MetadataController_getClasses: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: components["schemas"]["MetadataClass"][];
+                        "@context": string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    MetadataController_getClass: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                class: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MetadataClass"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    MetadataController_getClassProperty: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                class: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Property"][];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    MetadataController_getProperties: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: components["schemas"]["Property"][];
+                        "@context": string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    MetadataController_getProperty: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                property: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Property"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    MetadataController_getPropertyAlt: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                property: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: components["schemas"]["Alt"][];
+                        "@context": string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    MetadataController_getAlts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: components["schemas"]["Alt"];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
     CollectionsController_getPage: {
         parameters: {
             query?: {
@@ -17546,6 +18065,514 @@ export interface operations {
             };
         };
     };
+    FormPermissionsController_getPermissions: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FormPermissionPersonDto"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    FormPermissionsController_getPermissionsByCollectionID: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
+            };
+            path: {
+                collectionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FormPermissionDto"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    FormPermissionsController_requestAccess: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
+            path: {
+                collectionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FormPermissionDto"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    FormPermissionsController_acceptAccess: {
+        parameters: {
+            query?: {
+                /** @description Access type */
+                type?: "admin" | "editor";
+            };
+            header?: {
+                /** @description Person's authentication token who is authorizing the acception */
+                "Person-Token"?: string;
+            };
+            path: {
+                collectionID: string;
+                personID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FormPermissionDto"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    FormPermissionsController_revokeAccess: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Person's authentication token who is authorizing the removal */
+                "Person-Token"?: string;
+            };
+            path: {
+                collectionID: string;
+                personID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FormPermissionDto"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
     DocumentsController_startBatchJob: {
         parameters: {
             query?: never;
@@ -17674,7 +18701,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         /** @enum {string} */
-                        phase: "VALIDATING" | "READY_TO_COMPLETE" | "COMPLETING" | "COMPLETED";
+                        phase: "VALIDATING" | "READY_TO_COMPLETE" | "COMPLETING" | "COMPLETED" | "FAILED_UPON_VALIDATION" | "FAILED_UPON_COMPLETION";
                         /** @default [] */
                         errors: (components["schemas"]["ErrorsObj"] | null)[];
                         id: string;
@@ -20070,6 +21097,7 @@ export interface operations {
                     stableInFinland?: boolean;
                     "bold.bins"?: string | string[];
                     hasBold?: boolean;
+                    isPartOfSynonym?: string | string[];
                     hasParent?: boolean;
                     hasChildren?: boolean;
                     hasMultimedia?: boolean;
@@ -20860,6 +21888,7 @@ export interface operations {
                     stableInFinland?: boolean;
                     "bold.bins"?: string | string[];
                     hasBold?: boolean;
+                    isPartOfSynonym?: string | string[];
                     hasParent?: boolean;
                     hasChildren?: boolean;
                     hasMultimedia?: boolean;
@@ -21664,6 +22693,7 @@ export interface operations {
                     stableInFinland?: boolean;
                     "bold.bins"?: string | string[];
                     hasBold?: boolean;
+                    isPartOfSynonym?: string | string[];
                     hasParent?: boolean;
                     hasChildren?: boolean;
                     hasMultimedia?: boolean;
@@ -22438,6 +23468,7 @@ export interface operations {
                     stableInFinland?: boolean;
                     "bold.bins"?: string | string[];
                     hasBold?: boolean;
+                    isPartOfSynonym?: string | string[];
                     hasParent?: boolean;
                     hasChildren?: boolean;
                     hasMultimedia?: boolean;
@@ -22907,6 +23938,8 @@ export interface operations {
                         occurrenceCountInvasiveFinland: number;
                         bold: components["schemas"]["BoldRecords"];
                         hasBold: boolean;
+                        /** @description Qname identifier */
+                        isPartOfSynonym: string;
                         hasParent: boolean;
                         hasChildren: boolean;
                         hasMultimedia: boolean;
@@ -23766,6 +24799,7 @@ export interface operations {
                     stableInFinland?: boolean;
                     "bold.bins"?: string | string[];
                     hasBold?: boolean;
+                    isPartOfSynonym?: string | string[];
                     hasParent?: boolean;
                     hasChildren?: boolean;
                     hasMultimedia?: boolean;
@@ -24632,6 +25666,7 @@ export interface operations {
                     stableInFinland?: boolean;
                     "bold.bins"?: string | string[];
                     hasBold?: boolean;
+                    isPartOfSynonym?: string | string[];
                     hasParent?: boolean;
                     hasChildren?: boolean;
                     hasMultimedia?: boolean;
@@ -25455,6 +26490,7 @@ export interface operations {
                     stableInFinland?: boolean;
                     "bold.bins"?: string | string[];
                     hasBold?: boolean;
+                    isPartOfSynonym?: string | string[];
                     hasParent?: boolean;
                     hasChildren?: boolean;
                     hasMultimedia?: boolean;
@@ -28278,7 +29314,10 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["tag"][];
+                    "application/json": {
+                        results: components["schemas"]["tag"][];
+                        "@context": string;
+                    };
                 };
             };
             400: {
@@ -28594,7 +29633,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": components["schemas"]["annotation"];
                 };
             };
             400: {
@@ -31136,7 +32175,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": Record<string, never>;
+            };
+        };
         responses: {
             200: {
                 headers: {
@@ -31335,7 +32378,7 @@ export interface operations {
         parameters: {
             query: {
                 /** @description The output file format (in the form of a file extension) for the geographic data */
-                outputFormat: "gpkg";
+                lang: "fi" | "en" | "tech";
                 /** @description The geometry type of the output */
                 geometryType: "point" | "bbox" | "footprint";
                 /** @description The coordinate reference system for the output. One of "kkj", "euref", "wgs84" or any valid numeric EPSG code */
@@ -31441,7 +32484,7 @@ export interface operations {
         parameters: {
             query: {
                 /** @description The output file format (in the form of a file extension) for the geographic data */
-                outputFormat: "gpkg";
+                lang: "fi" | "en" | "tech";
                 /** @description The geometry type of the output */
                 geometryType: "point" | "bbox" | "footprint";
                 /** @description The coordinate reference system for the output. One of "kkj", "euref", "wgs84" or any valid numeric EPSG code */
@@ -31750,6 +32793,1001 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    LoggerController_log: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Log level */
+                level: "error" | "info" | "warn";
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": Record<string, never>;
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    LoggerController_getStatus: {
+        parameters: {
+            query: {
+                minutesBack: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    SourcesController_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SensitiveSource"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    SourcesController_getPage: {
+        parameters: {
+            query?: {
+                /** @description Comma separated ids */
+                idIn?: string;
+                page?: number;
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        currentPage: number;
+                        pageSize: number;
+                        total: number;
+                        lastPage: number;
+                        prevPage?: number;
+                        nextPage?: number;
+                        results: components["schemas"]["SensitiveSource"][];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    RedListEvaluationGroupsController_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["iucnRedListTaxonGroup"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    LoginController_getTmpToken: {
+        parameters: {
+            query: {
+                offerPermanent: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    LoginController_checkTmpToken: {
+        parameters: {
+            query: {
+                tmpToken: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    PublicationsController_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    NewsController_getPage: {
+        parameters: {
+            query?: {
+                /** @description Show only news with the given tag(s). Multiple values are separated by a comma (,). */
+                tag?: string;
+                page?: number;
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    NewsController_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
             };
             400: {
                 headers: {
