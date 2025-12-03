@@ -1,4 +1,4 @@
-import { filter, map, merge, switchMap, tap } from 'rxjs/operators';
+import { filter, map, merge, mergeWith, switchMap, tap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { forkJoin as ObservableForkJoin, of } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -87,7 +87,7 @@ export class HerpetologyComponent implements OnInit {
     );
 
     of(this.herpetology).pipe(
-      merge(fetchData$.pipe(tap(data => this.herpetology = data))),
+      mergeWith(fetchData$.pipe(tap(data => this.herpetology = data))),
       filter(data => !!data))
       .subscribe(data => {
           this.amphibianTaxa = data[0];

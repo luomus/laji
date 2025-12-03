@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { ExcelToolService } from '../../../service/excel-tool.service';
-import { map, share } from 'rxjs/operators';
+import { map, share } from 'rxjs';
 import { Observable } from 'rxjs';
 
 @Component({

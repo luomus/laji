@@ -4,7 +4,7 @@ import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.servic
 import * as FileSaver from 'file-saver';
 import { PdfLabelService } from '../../../shared/service/pdf-label.service';
 import { Observable, of } from 'rxjs';
-import { share } from 'rxjs/operators';
+import { share } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../../environments/environment';

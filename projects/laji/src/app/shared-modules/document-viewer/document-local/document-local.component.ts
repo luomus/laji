@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges,
 Output, EventEmitter, HostListener } from '@angular/core';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
-import {delay, map, switchMap, tap} from 'rxjs/operators';
+import {delay, map, switchMap, tap} from 'rxjs';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { FormService } from '../../../shared/service/form.service';
 import { Document } from '../../../shared/model/Document';

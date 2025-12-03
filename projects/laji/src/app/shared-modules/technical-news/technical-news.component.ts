@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs';
 import { Observable, of } from 'rxjs';
 import { HomeDataService } from '../../+home/home-data.service';
 import { News } from '../../shared/model/News';

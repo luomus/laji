@@ -1,4 +1,4 @@
-import { take, tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,

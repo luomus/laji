@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type Taxon = components['schemas']['Taxon'];

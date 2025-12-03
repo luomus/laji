@@ -1,7 +1,7 @@
 /**
  * TODO: Change this to use taxon-select component
  */
-import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,

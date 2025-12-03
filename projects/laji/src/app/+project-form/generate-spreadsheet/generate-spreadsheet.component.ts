@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectFormService } from '../../shared/service/project-form.service';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
 
 @Component({

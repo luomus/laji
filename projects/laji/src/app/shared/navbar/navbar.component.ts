@@ -1,4 +1,4 @@
-import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -29,7 +29,7 @@ import { NavbarService } from '../service/navbar.service';
     standalone: false
 })
 export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
-  unsubscribe$ = new Subject<null>();
+  unsubscribe$ = new Subject<void>();
 
   mobile = false;
   openMenu = false;

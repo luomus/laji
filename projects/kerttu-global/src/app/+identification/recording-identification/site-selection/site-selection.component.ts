@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { IGlobalSite, TaxonTypeEnum } from '../../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 @Component({
     selector: 'bsg-site-selection',

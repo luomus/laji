@@ -4,7 +4,7 @@ import { Document } from '../../../shared/model/Document';
 import { Person } from '../../../shared/model/Person';
 import { Observable, of } from 'rxjs';
 import { FormPermissionService } from '../../../shared/service/form-permission.service';
-import { switchMap, map, catchError } from 'rxjs/operators';
+import { switchMap, map, catchError } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
 import { DocumentService } from '../../own-submissions/service/document.service';
 

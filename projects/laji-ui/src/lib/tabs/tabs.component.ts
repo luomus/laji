@@ -5,7 +5,7 @@ import {
 import { TabComponent } from './tab/tab.component';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { color } from '../vars';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { Subject } from 'rxjs';
 
 @Component({

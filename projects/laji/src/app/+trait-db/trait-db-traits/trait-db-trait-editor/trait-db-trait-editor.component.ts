@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable } from 'rxjs';
-import { map, filter, switchMap, tap } from 'rxjs/operators';
+import { map, filter, switchMap, tap } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
 import { filterNullValues } from '../../trait-db-datasets/trait-db-dataset-editor/trait-db-dataset-editor.component';
 
@@ -135,4 +135,3 @@ export class TraitDbTraitEditorComponent implements OnInit {
     });
   }
 }
-

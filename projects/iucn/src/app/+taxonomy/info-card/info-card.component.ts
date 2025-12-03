@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ChecklistVersion, TaxonService } from '../../iucn-shared/service/taxon.service';
 import { ResultService } from '../../iucn-shared/service/result.service';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';

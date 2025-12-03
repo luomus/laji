@@ -4,7 +4,7 @@ import { toHtmlInputElement } from '../../../shared/service/html-element.service
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Collection } from '../../../shared/model/Collection';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { switchMap, map, tap } from 'rxjs/operators';
+import { switchMap, map, tap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 export const getDownloadRequestType = (downloadRequest: DownloadRequest): DownloadRequestType => (

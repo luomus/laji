@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, OnChanges, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs';
 import { CollectionService, CollectionTreeOptionsNode, ICollectionAggregate, ICollectionsTreeNode } from '../../shared/service/collection.service';
 import { BehaviorSubject, Observable, zip, of } from 'rxjs';
 import { SelectedOption, TreeOptionsChangeEvent } from '../tree-select/tree-select.component';

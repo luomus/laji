@@ -18,7 +18,7 @@ import { FormApiClient } from '../../../../shared/api/FormApiClient';
 import { UserSettings, UserService } from '../../../../shared/service/user.service';
 import { Logger } from '../../../../shared/logger/logger.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
-import { concatMap, map, take } from 'rxjs/operators';
+import { concatMap, map, take } from 'rxjs';
 import { Global } from '../../../../../environments/global';
 import { combineLatest, Subscription } from 'rxjs';
 import { DefaultMediaMetadata, Profile } from '../../../../shared/model/Profile';

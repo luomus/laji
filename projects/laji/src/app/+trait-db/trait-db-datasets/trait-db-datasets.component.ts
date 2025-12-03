@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 export type Dataset = components['schemas']['Dataset'];
 
@@ -23,4 +23,3 @@ export class TraitDbDatasetsComponent implements OnInit {
     );
   }
 }
-

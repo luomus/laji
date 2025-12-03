@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
-import { map, distinctUntilChanged, tap, takeUntil, switchMap, take } from 'rxjs/operators';
+import { map, distinctUntilChanged, tap, takeUntil, switchMap, take } from 'rxjs';
 import { IdentificationChildrenDataSource } from './identification-children-data-source';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { MetadataService } from 'projects/laji/src/app/shared/service/metadata.service';

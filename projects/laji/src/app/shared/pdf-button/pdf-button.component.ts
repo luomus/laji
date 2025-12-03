@@ -5,7 +5,7 @@ import moment from 'moment';
 import { environment } from 'projects/laji/src/environments/environment';
 import { PlatformService } from '../../root/platform.service';
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Component({

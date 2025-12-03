@@ -10,7 +10,7 @@ import {
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { DatatableSort } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs';
 import { IdentificationHistoryEditModalComponent } from './identification-history-edit-modal/identification-history-edit-modal.component';
 import { ModalService } from '../../../../../../laji-ui/src/lib/modal/modal.service';
 

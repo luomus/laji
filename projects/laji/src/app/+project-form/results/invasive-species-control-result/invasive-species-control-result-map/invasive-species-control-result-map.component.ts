@@ -7,7 +7,7 @@ import { LajiMapVisualization } from 'projects/laji/src/app/shared-modules/legen
 import { YearInfoItem } from 'projects/laji/src/app/shared-modules/year-slider/year-slider.component';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { map, tap, switchMap } from 'rxjs/operators';
+import { map, tap, switchMap } from 'rxjs';
 import { InvasiveControlEffectiveness } from '../invasive-species-control-result.component';
 
 interface QueryResult {

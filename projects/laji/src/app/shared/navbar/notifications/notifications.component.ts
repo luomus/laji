@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnDestroy, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { of, Subject } from 'rxjs';
-import { switchMap, takeUntil, filter, tap, map } from 'rxjs/operators';
+import { switchMap, takeUntil, filter, tap, map } from 'rxjs';
 import { NotificationsFacade } from './notifications.facade';
 import { NotificationDataSource } from './notification-data-source';
 import { TranslateService } from '@ngx-translate/core';

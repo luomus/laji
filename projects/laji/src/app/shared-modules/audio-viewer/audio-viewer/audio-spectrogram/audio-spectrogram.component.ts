@@ -21,7 +21,7 @@ import {
   SpectrogramConfig
 } from '../../models';
 import { timer } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 import { getSpectrogramSegmentLength } from '../../service/audio-viewer-utils';
 
 @Component({

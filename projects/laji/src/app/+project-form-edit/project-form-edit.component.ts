@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectFormService } from '../shared/service/project-form.service';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 interface ViewModel {
   id: string | undefined;
@@ -30,7 +30,7 @@ export class ProjectFormEditComponent implements OnInit {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.vm$ = this.route.firstChild!.firstChild
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      ? this.projectFormService.getFormFromRoute$(this.route.firstChild!.firstChild).pipe(map(form => ({id: form.id})))
+      ? this.projectFormService.getFormFromRoute$(this.route.firstChild!.firstChild).pipe(map(form => ({id: form?.id})))
       : of({id: undefined});
   }
 }

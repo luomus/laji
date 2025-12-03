@@ -11,7 +11,7 @@ import { WarehouseQueryInterface } from '../../../../../shared/model/WarehouseQu
 import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.service';
 import { YkjMapComponent } from '../../../../../shared-modules/ykj/ykj-map/ykj-map.component';
 import { forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { PlatformService } from '../../../../../root/platform.service';
 import { TileLayerName } from '@luomus/laji-map/lib/defs';
 

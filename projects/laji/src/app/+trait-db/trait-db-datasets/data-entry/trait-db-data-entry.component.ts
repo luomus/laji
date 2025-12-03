@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 interface ImportStep {
   _tag: 'import';
@@ -85,4 +85,3 @@ export class TraitDbDataEntryComponent implements OnInit, OnDestroy {
     this.stepStack$.next(newSteps);
   }
 }
-

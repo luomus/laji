@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { startWith, switchMap } from 'rxjs/operators';
+import { startWith, switchMap } from 'rxjs';
 import { LajiApiService, Lang } from '../core/api.service';
 import { FooterService } from '../core/footer.service';
 import { cmsIds } from '../locale/cms-ids';

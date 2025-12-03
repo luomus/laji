@@ -3,7 +3,7 @@ import { LocalStorage } from 'ngx-webstorage';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectFormService } from '../../shared/service/project-form.service';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 @Component({
     selector: 'laji-project-form-templates',
@@ -29,7 +29,7 @@ export class TemplatesComponent implements OnInit {
       this.showTemplateIntro = true;
     }
     this.collectionID$ = this.projectFormService.getFormFromRoute$(this.route).pipe(
-      map(form => form.collectionID)
+      map(form => form?.collectionID)
     );
   }
 
@@ -38,4 +38,3 @@ export class TemplatesComponent implements OnInit {
   }
 
 }
-

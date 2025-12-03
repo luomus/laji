@@ -1,4 +1,4 @@
-import { map, mergeMap, switchMap } from 'rxjs/operators';
+import { map, mergeMap, switchMap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from './form.service';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -57,18 +57,18 @@ export class ProjectFormService {
   }
 
   private currentFormID?: string;
-  private form$?: ReplaySubject<Form.SchemaForm>;
+  private form$?: ReplaySubject<Form.SchemaForm | undefined>;
   private registrationContacts?: RegistrationContact[];
 
   /** LajiFormBuilder can change the language of the form, without changing the lang of the whole page. */
   public localLang$ = new BehaviorSubject<string>(this.translate.getCurrentLang());
   public remountLajiForm$ = new Subject<void>();
 
-  getFormFromRoute$(route: ActivatedRoute): Observable<Form.SchemaForm> {
+  getFormFromRoute$(route: ActivatedRoute): Observable<Form.SchemaForm | undefined> {
     return this.getFormID(route).pipe(switchMap(formID => this.getForm$(formID)));
   }
 
-  getForm$(id: string): Observable<Form.SchemaForm> {
+  getForm$(id: string): Observable<Form.SchemaForm | undefined> {
     if (Global.formAliasMap[id]) {
       id = Global.formAliasMap[id];
     }
@@ -102,7 +102,7 @@ export class ProjectFormService {
     const form$ = this.getFormFromRoute$(route);
     return form$.pipe(
       switchMap(form => {
-        const { forms } = form.options;
+        const forms = form?.options.forms;
         if (!forms?.length) {
           return of({ form, subForms: [] });
         }
@@ -113,10 +113,10 @@ export class ProjectFormService {
             return dict;
           }, {} as Record<string, Form.List>);
 
-          return {form, subForms: forms.map(id => allFormsDict[id]) };
+          return {form, subForms: forms.map(id => allFormsDict[id]) } as ProjectForm;
         }));
       })
-    );
+    ) as Observable<ProjectForm>;
   }
 
   getProjectRootRoute$(route: ActivatedRoute): Observable<ActivatedRoute> {
@@ -179,7 +179,7 @@ export class ProjectFormService {
         return combineLatest(documentForm$, namedPlace$).pipe(
           map(([
             documentForm,
-            namedPlace ]) => ({documentForm, namedPlace, ...this.queryToModelFormat(queryParams)}))
+            namedPlace ]) => ({documentForm, namedPlace, ...this.queryToModelFormat(queryParams)} as NamedPlacesRouteData))
         );
       })
     );

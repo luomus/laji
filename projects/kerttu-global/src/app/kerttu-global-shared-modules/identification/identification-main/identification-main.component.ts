@@ -5,7 +5,7 @@ import {
   IGlobalRecordingWithAnnotation,
   KerttuGlobalErrorEnum
 } from '../../../kerttu-global-shared/models';
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 import { Observable, of } from 'rxjs';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
 import equals from 'deep-equal';

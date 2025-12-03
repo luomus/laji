@@ -7,7 +7,7 @@ import {
   startWith,
   take,
   tap
-} from 'rxjs/operators';
+} from 'rxjs';
 import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Person } from '../model/Person';

@@ -6,7 +6,7 @@ import { LajiMap, DataOptions, TileLayersOptions, Lang, GetFeatureStyleOptions }
 import { PathOptions } from 'leaflet';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs';
 import { AtlasGridResponse, AtlasGridSquare } from '../../../core/atlas-api.service';
 import { PopstateService } from '../../../core/popstate.service';
 import {getFeatureColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';

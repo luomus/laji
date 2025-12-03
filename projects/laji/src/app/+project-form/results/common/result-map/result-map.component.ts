@@ -7,7 +7,7 @@ import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from 'projects/laji/src/app/shared/model/WarehouseQueryInterface';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { cacheReturnObservable } from 'projects/bird-atlas/src/app/core/api.service';
 import G, { Feature, GeoJsonProperties, Polygon } from 'geojson';

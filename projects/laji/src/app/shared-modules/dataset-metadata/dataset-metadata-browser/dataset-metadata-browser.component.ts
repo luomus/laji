@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnChanges, Output, Input, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { zip } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { SelectedOption } from '../../tree-select/tree-select.component';
 import { CollectionService, CollectionTreeOptionsNode, ICollectionAggregate, ICollectionsTreeNode } from '../../../shared/service/collection.service';
 

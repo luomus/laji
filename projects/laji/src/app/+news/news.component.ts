@@ -3,7 +3,7 @@ import { isPlatformServer } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { News } from '../shared/model/News';
-import { map, switchMap, tap, filter, delay } from 'rxjs/operators';
+import { map, switchMap, tap, filter, delay } from 'rxjs';
 import { getDescription, HeaderService } from '../shared/service/header.service';
 import { Title } from '@angular/platform-browser';
 import { NewsFacade } from './news.facade';

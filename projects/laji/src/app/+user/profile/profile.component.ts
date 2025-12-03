@@ -1,4 +1,4 @@
-import { catchError, concatMap, map, take } from 'rxjs/operators';
+import { catchError, concatMap, map, take } from 'rxjs';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { prepareProfile, UserService } from '../../shared/service/user.service';
 import { Profile } from '../../shared/model/Profile';

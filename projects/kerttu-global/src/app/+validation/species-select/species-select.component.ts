@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { IGlobalSpeciesFilters, IGlobalSpeciesListResult } from '../../kerttu-global-shared/models';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
 import { SpeciesListQueryService } from '../service/species-list-query.service';
 import { TranslateService } from '@ngx-translate/core';

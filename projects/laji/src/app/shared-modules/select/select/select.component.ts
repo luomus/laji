@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Even
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, timer } from 'rxjs';
-import { debounceTime, take, takeUntil } from 'rxjs/operators';
+import { debounceTime, take, takeUntil } from 'rxjs';
 import { FilterService } from '../../../shared/service/filter.service';
 import { CheckboxType } from '../checkbox/checkbox.component';
 
@@ -27,7 +27,7 @@ export interface SelectOption {
     standalone: false
 })
 export class SelectComponent<T extends IdType|SelectOption = string> implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
-  private unsubscribe$ = new Subject<null>();
+  private unsubscribe$ = new Subject<void>();
 
   @Input({required: true}) options!: SelectOption[];
   @Input() title?: string;
@@ -279,4 +279,3 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     return typeof option === 'object';
   }
 }
-

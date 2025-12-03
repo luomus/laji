@@ -6,7 +6,7 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import { environment } from '../../environments/environment';
 import { AcceptLanguageInterceptor } from './accept-language.interceptor';
 import { TranslateService } from '@ngx-translate/core';
-import { concatMap } from 'rxjs/operators';
+import { concatMap } from 'rxjs';
 import { from } from 'rxjs';
 import { GraphQLService } from './service/graph-ql.service';
 import { PlatformService } from '../root/platform.service';

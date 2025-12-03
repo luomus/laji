@@ -1,5 +1,5 @@
 import { Observable, Subscription } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 import {
   AfterViewChecked,
   ChangeDetectionStrategy,

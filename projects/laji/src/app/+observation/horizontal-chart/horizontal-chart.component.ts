@@ -1,4 +1,4 @@
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges,
 OnInit, ChangeDetectorRef} from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';

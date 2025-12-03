@@ -1,4 +1,4 @@
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, of } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormPermissionService, Rights } from '../../shared/service/form-permission.service';
@@ -23,7 +23,7 @@ interface ViewModel {
 export class SubmissionsComponent implements OnInit {
 
   collectionID!: string;
-  vm$!: Observable<ViewModel>;
+  vm$!: Observable<ViewModel | undefined>;
 
   constructor(
     private formPermissionService: FormPermissionService,
@@ -33,7 +33,7 @@ export class SubmissionsComponent implements OnInit {
 
   ngOnInit() {
     this.vm$ = this.projectFormService.getFormFromRoute$(this.route).pipe(
-      mergeMap(form => this.formPermissionService.getRights(form).pipe(
+      mergeMap(form => !form ? of(undefined) : this.formPermissionService.getRights(form).pipe(
         map(rights => ({
             rights,
             collectionID: form.collectionID,
@@ -48,4 +48,3 @@ export class SubmissionsComponent implements OnInit {
   }
 
 }
-

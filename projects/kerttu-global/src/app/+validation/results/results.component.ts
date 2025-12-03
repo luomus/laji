@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IGlobalSpeciesFilters, IGlobalSpeciesQuery, IUserStat, IValidationStat } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, switchMap, startWith } from 'rxjs/operators';
+import { map, switchMap, startWith } from 'rxjs';
 
 @Component({
     selector: 'bsg-results',

@@ -13,7 +13,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute } from '@angular/router';
 import type { LajiMapEvent } from '@luomus/laji-map';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import G from 'geojson';

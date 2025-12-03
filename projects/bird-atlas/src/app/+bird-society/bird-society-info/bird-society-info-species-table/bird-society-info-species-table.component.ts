@@ -6,7 +6,7 @@ import {
 import { SelectionType, TableColumn } from '@achimha/ngx-datatable';
 import { AtlasTaxon } from '../../../core/atlas-api.service';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { debounceTime, filter, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, takeUntil } from 'rxjs';
 
 type AugmentedAtlasTaxon = AtlasTaxon & {
   classCounts: {

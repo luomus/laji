@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
+import { filter, map, shareReplay, switchMap } from 'rxjs';
 import { UserService } from '../../../../laji/src/app/shared/service/user.service';
 import { DownloadRequest } from '../../../../laji/src/app/shared-modules/download-request/models';
 

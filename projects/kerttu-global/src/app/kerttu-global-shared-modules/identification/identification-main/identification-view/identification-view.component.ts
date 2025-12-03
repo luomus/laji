@@ -32,7 +32,7 @@ import {
   AudioViewerRectangleGroup,
   SpectrogramConfig
 } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../kerttu-global-shared/service/kerttu-global-api';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';

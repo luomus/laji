@@ -10,7 +10,7 @@ import { NamedPlacesService } from '../../../shared/service/named-places.service
 import { TranslateService } from '@ngx-translate/core';
 import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
 import { ExportService } from '../../../shared/service/export.service';
-import { map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 import { ExcelToolService } from './excel-tool.service';
 
 @Injectable()

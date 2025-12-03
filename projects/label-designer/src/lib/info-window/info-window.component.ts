@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { InfoWindowService } from './info-window.service';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 import { IInfoWindow } from '../label-designer.interface';
 
 /**

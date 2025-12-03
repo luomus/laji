@@ -4,7 +4,7 @@ import { TableColumn } from '@achimha/ngx-datatable';
 import { TileLayerName, LajiMap } from '@luomus/laji-map';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs';
 import { AtlasApiService, AtlasGridSquare } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 import { convertYkjToGeoJsonFeature } from '../../../../../laji/src/app/root/coordinate-utils';

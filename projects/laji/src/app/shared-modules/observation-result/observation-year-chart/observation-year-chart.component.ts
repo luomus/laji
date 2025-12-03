@@ -10,7 +10,7 @@ import {
   Output
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { ChartDataset, ChartOptions, Tooltip } from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';

@@ -39,8 +39,7 @@ import { ActivatedRoute } from '@angular/router';
     standalone: false
 })
 export class ResultsComponent implements OnInit {
-
-  form$!: Observable<Form.SchemaForm>;
+  form$!: Observable<Form.SchemaForm | undefined>;
 
   ResultServiceType = ResultServiceType; // eslint-disable-line @typescript-eslint/naming-convention
 

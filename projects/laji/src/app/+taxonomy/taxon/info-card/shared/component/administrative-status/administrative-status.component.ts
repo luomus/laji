@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { MetadataService } from '../../../../../../shared/service/metadata.service';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 @Component({
     selector: 'laji-administrative-status',

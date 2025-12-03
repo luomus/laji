@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { trigger, state, style, transition, animate, group, query, animateChild } from '@angular/animations';
 import { fromEvent, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 import { SidebarLinkComponent } from './sidebar-link/sidebar-link.component';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 import { Util } from 'projects/laji/src/app/shared/service/util.service';
@@ -50,7 +50,7 @@ const mobileBreakpoint = 768;
     standalone: false
 })
 export class SidebarComponent implements OnDestroy, AfterViewInit {
-  private unsubscribe$ = new Subject<null>();
+  private unsubscribe$ = new Subject<void>();
 
   @Input() position: 'left' | 'right' = 'left';
   @Input() staticWidth?: number;

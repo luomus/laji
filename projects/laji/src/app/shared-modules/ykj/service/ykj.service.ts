@@ -1,4 +1,4 @@
-import { concat, delay, map, retryWhen, take } from 'rxjs/operators';
+import { concat, concatWith, delay, map, retryWhen, take, throwError } from 'rxjs';
 import { Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as MapUtil from '@luomus/laji-map/lib/utils';
@@ -64,7 +64,7 @@ export class YkjService {
         false,
         enableOnlyCount
       ).pipe(
-        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
+        retryWhen(errors => errors.pipe(delay(1000), take(3), concatWith(throwError(() => errors)))),
         map(data => data.results)
       );
     return this.pending;

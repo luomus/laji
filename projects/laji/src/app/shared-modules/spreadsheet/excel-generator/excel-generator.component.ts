@@ -3,7 +3,7 @@ import { FormService } from '../../../shared/service/form.service';
 import { IFormField } from '../model/excel';
 import { SpreadsheetService } from '../service/spreadsheet.service';
 import { GeneratorService } from '../service/generator.service';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { Observable, of } from 'rxjs';
 
 @Component({

@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { SEASON, WbcResultService } from '../../wbc-result.service';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 
 @Component({

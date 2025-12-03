@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TaxonomyTableColumn } from '../model/taxonomy-table-column';
 import { from, Observable, of } from 'rxjs';
-import { concatMap, filter, map, toArray } from 'rxjs/operators';
+import { concatMap, filter, map, toArray } from 'rxjs';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { TranslateService } from '@ngx-translate/core';
 

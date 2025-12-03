@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { Observable } from 'rxjs';
 import { IGlobalSite, TaxonTypeEnum } from '../../kerttu-global-shared/models';
 

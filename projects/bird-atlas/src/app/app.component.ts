@@ -7,7 +7,7 @@ import { News } from 'projects/laji-api-client/src/public-api';
 import { LajiApiService, Lang } from './core/api.service';
 import { PopstateService } from './core/popstate.service';
 import { FooterService } from './core/footer.service';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 
 @Component({
     selector: 'ba-app',

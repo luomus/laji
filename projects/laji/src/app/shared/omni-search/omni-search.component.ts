@@ -1,4 +1,4 @@
-import { combineLatest, debounceTime, tap, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { combineLatest, debounceTime, tap, switchMap, distinctUntilChanged, of, map } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -98,19 +98,24 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         .reduce((p: any, c: any) => p + ' ' + c.id, '');
       this.taxon.informalTaxonGroups = this.taxon.informalGroups
         .map((group: any) => group.name);
-      this.subCnt =
-        ObservableOf(this.taxon.key).pipe(combineLatest(
-          this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key, cache: true}),
-          (id, cnt) => ({id, cnt: cnt.total})
-        )).subscribe(data => {
-          this.taxa.map(auto => {
-            if (auto.key === data.id ) {
-              auto['count'] = data.cnt;
-            }
-          });
-          this.visibleTaxon.emit(this.taxa[index]);
-          this.changeDetector.markForCheck();
+
+      this.subCnt = combineLatest([
+        of(this.taxon.key),
+        this.warehouseApi.warehouseQueryCountGet({
+          taxonId: this.taxon.key,
+          cache: true
+        })
+      ]).pipe(
+        map(([id, cnt]) => ({ id, cnt: cnt.total }))
+      ).subscribe(data => {
+        this.taxa.map(auto => {
+          if (auto.key === data.id ) {
+            auto['count'] = data.cnt;
+          }
         });
+        this.visibleTaxon.emit(this.taxa[index]);
+        this.changeDetector.markForCheck();
+      });
     } else {
       this.taxon = undefined;
     }

@@ -1,4 +1,4 @@
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   Component,

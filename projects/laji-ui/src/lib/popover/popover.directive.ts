@@ -3,7 +3,7 @@ import { AfterViewInit, Directive, Input, TemplateRef, ViewContainerRef, Embedde
 import { PopoverContainerComponent } from './popover-container.component';
 import { DOCUMENT } from '@angular/common';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, debounceTime, filter } from 'rxjs/operators';
+import { distinctUntilChanged, debounceTime, filter } from 'rxjs';
 import { Placement, PlacementService } from '../placement/placement.service';
 
 export type PopoverMode = 'hover' | 'click' | 'disabled';

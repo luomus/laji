@@ -5,7 +5,7 @@ import { of, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../logger/logger.service';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
-import { filter, map } from 'rxjs/operators';
+import { filter, map } from 'rxjs';
 
 @Component({
     selector: 'laji-iucn-footer',

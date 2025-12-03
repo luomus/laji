@@ -1,4 +1,4 @@
-import { first, map, switchMap, tap } from 'rxjs/operators';
+import { first, map, switchMap, tap } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,

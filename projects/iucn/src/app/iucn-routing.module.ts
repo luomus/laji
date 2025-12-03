@@ -5,7 +5,7 @@ import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from '../../../laji/src/app/locale/locale-en.component';
 import { LocaleSvComponent } from '../../../laji/src/app/locale/locale-sv.component';
 import { LocaleFiComponent } from '../../../laji/src/app/locale/locale-fi.component';
-import { catchError, flatMap } from 'rxjs/operators';
+import { catchError, flatMap } from 'rxjs';
 import { LocalizeGuard } from '../../../laji/src/app/locale/localize.guard';
 import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-found.component';
 

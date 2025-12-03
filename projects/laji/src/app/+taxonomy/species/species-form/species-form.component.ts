@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { TaxonomySearch } from '../service/taxonomy-search.service';
-import { startWith } from 'rxjs/operators';
+import { startWith } from 'rxjs';
 
 const invasiveStatuses = [
     'MX.euInvasiveSpeciesList',

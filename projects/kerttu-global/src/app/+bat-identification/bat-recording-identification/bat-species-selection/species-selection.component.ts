@@ -4,7 +4,7 @@ import { IGlobalSpecies, TaxonTypeEnum } from '../../../kerttu-global-shared/mod
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
-import { map, share } from 'rxjs/operators';
+import { map, share } from 'rxjs';
 
 @Component({
     selector: 'bsg-species-selection',

@@ -8,7 +8,7 @@ import {
   AnnotationFormAnnotation,
   AnnotationFormNewComponent
 } from './annotation-form-new/annotation-form-new.component';
-import {map, switchMap } from 'rxjs/operators';
+import {map, switchMap } from 'rxjs';
 import { Subscription, timer } from 'rxjs';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';

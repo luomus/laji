@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, OnDest
 import { ActivatedRoute } from '@angular/router';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { UserService } from '../../../shared/service/user.service';
-import { map, tap, filter, switchMap } from 'rxjs/operators';
+import { map, tap, filter, switchMap } from 'rxjs';
 import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { cols as subjectCols } from './data-editor-search-table-columns';
@@ -234,4 +234,3 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
     return formArray;
   }
 }
-

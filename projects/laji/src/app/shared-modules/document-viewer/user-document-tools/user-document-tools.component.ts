@@ -11,7 +11,7 @@ import { DocumentService } from '../../own-submissions/service/document.service'
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { Logger } from '../../../shared/logger';
 import { ReloadObservationViewService } from '../../../shared/service/reload-observation-view.service';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs';
 import { Global } from '../../../../environments/global';
 import { DocumentViewerFacade } from '../document-viewer.facade';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';

@@ -9,7 +9,7 @@ import {
   take,
   tap,
   timeout
-} from 'rxjs/operators';
+} from 'rxjs';
 import {
   of,
   Subscription,

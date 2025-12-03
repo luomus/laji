@@ -6,7 +6,7 @@ import { IdService } from '../../../shared/service/id.service';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { AbstractCachedHttpService } from '../../../shared/service/abstract-cached-http.service';
-import { map, switchMap, take } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 
 @Injectable({providedIn: 'root'})

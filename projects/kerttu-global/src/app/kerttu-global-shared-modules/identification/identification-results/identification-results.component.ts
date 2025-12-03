@@ -7,7 +7,7 @@ import {
   IIdentificationUserStatResult,
   IIdentificationSpeciesStat, TaxonTypeEnum
 } from '../../../kerttu-global-shared/models';
-import { map, share, shareReplay, switchMap } from 'rxjs/operators';
+import { map, share, shareReplay, switchMap } from 'rxjs';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { toHtmlInputElement } from 'projects/laji/src/app/shared/service/html-element.service';

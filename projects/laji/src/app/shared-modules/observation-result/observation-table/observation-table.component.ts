@@ -23,7 +23,7 @@ import {
   IColumnGroup,
   TableColumnService
 } from '../../datatable/service/table-column.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 import { ExportService } from '../../../shared/service/export.service';
 import { BookType } from 'xlsx';
 import { Global } from '../../../../environments/global';

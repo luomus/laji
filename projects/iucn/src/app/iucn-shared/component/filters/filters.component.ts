@@ -3,7 +3,7 @@ import { FilterQuery } from '../../service/result.service';
 import { Observable } from 'rxjs';
 import { SelectOption } from '../select/select.component';
 import { TaxonService } from '../../service/taxon.service';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { RedListTaxonGroup } from '../../../../../../laji/src/app/shared/model/RedListTaxonGroup';
 import { MetadataService } from '../../../../../../laji/src/app/shared/service/metadata.service';
 import { TranslateService } from '@ngx-translate/core';

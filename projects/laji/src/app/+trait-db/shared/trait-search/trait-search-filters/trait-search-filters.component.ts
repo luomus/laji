@@ -6,7 +6,7 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { Observable } from 'rxjs';
 import { AdditionalFilterValues } from './additional-filters.component';
 import { RankFilterValue } from './rank-filter/rank-filter.component';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 
 export interface FormValue {
   dataset: string | null;

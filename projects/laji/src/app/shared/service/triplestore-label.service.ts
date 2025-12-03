@@ -6,7 +6,7 @@ import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { SourceService } from './source.service';
 import { UserService } from './user.service';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { catchError, map, share, take, tap } from 'rxjs/operators';
+import { catchError, map, share, take, tap } from 'rxjs';
 import { AreaService } from './area.service';
 import { RedListTaxonGroupApi } from '../api/RedListTaxonGroupApi';
 import { Publication } from '../model/Publication';

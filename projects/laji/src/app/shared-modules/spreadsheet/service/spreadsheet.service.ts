@@ -6,7 +6,7 @@ import { TriplestoreLabelService } from '../../../shared/service/triplestore-lab
 
 import { IFormField, LEVEL_DOCUMENT } from '../model/excel';
 import { MappingService } from './mapping.service';
-import { distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs';
 import { GeneratorService } from './generator.service';
 import { Util } from '../../../shared/service/util.service';
 import { Form } from '../../../shared/model/Form';

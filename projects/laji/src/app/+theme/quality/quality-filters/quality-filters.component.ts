@@ -1,4 +1,4 @@
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime } from 'rxjs';
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
@@ -18,7 +18,7 @@ export class QualityFiltersComponent implements OnInit, OnDestroy {
     timeEnd: ''
   };
 
-  private delayedSearchSource = new Subject<any>();
+  private delayedSearchSource = new Subject<void>();
   private delayedSearch = this.delayedSearchSource.asObservable();
   private debouchAfterChange = 500;
   private subSearch!: Subscription;

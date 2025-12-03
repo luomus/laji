@@ -24,7 +24,7 @@ import {
 import { defaultSpectrogramConfig } from '../variables';
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerView } from '../service/audio-viewer-view';
-import { delay } from 'rxjs/operators';
+import { delay } from 'rxjs';
 import { getMaxFreq, rangeIsInsideRange } from '../service/audio-viewer-utils';
 import { Subscription } from 'rxjs';
 import { AudioService } from '../service/audio.service';

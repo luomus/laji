@@ -1,4 +1,4 @@
-import { map, shareReplay, switchMap, take, tap, catchError } from 'rxjs/operators';
+import { map, shareReplay, switchMap, take, tap, catchError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';

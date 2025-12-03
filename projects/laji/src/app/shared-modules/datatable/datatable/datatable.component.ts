@@ -1,4 +1,4 @@
-import { debounceTime, tap, map } from 'rxjs/operators';
+import { debounceTime, tap, map } from 'rxjs';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input,
   NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { DatatableColumn, DatatableSort } from '../model/datatable-column';
@@ -75,7 +75,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
 
   initialized = false;
   sortLoading = false;
-  private filterChange$ = new Subject();
+  private filterChange$ = new Subject<void>();
 
   private sortTemplates: Record<string, DatatableTemplate> = {};
   private sortValues: Record<number, Record<string, any>> = {};

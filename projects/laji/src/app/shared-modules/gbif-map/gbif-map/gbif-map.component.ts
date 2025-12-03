@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChange
 import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { PlatformService } from '../../../root/platform.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';

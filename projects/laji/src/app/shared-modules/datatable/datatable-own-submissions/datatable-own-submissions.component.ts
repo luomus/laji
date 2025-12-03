@@ -81,7 +81,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
 
   initialized = false;
   displayMode?: string;
-  private filterChange$ = new Subject();
+  private filterChange$ = new Subject<void>();
   allColumns: ObservationTableColumn[];
   private lastSort: any;
   @LocalStorage('data-table-settings', {}) private dataTableSettings!: Settings;

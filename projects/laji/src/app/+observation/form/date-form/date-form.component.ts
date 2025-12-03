@@ -17,7 +17,7 @@ export function isRelativeDate(date?: string): boolean {
     standalone: false
 })
 export class DateFormComponent implements OnDestroy {
-  private unsubscribe$ = new Subject();
+  private unsubscribe$ = new Subject<void>();
 
   @Input({ required: true }) query!: WarehouseQueryInterface;
   @Input({ required: true }) formQuery!: ObservationFormQuery;

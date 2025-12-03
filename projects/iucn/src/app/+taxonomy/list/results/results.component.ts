@@ -3,7 +3,7 @@ import { ListType } from '../list.component';
 import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.service';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf} from 'rxjs';
 import { RedListStatusData } from './red-list-status/red-list-status.component';
-import { map, share, switchMap, tap } from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
 import { TriplestoreLabelService } from '../../../../../../laji/src/app/shared/service/triplestore-label.service';
 import { ChecklistVersion, TaxonService } from '../../../iucn-shared/service/taxon.service';

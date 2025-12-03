@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { forkJoin as ObservableForkJoin, from, Observable, of as ObservableOf } from 'rxjs';
-import { concatMap, map, toArray } from 'rxjs/operators';
+import { concatMap, map, toArray } from 'rxjs';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { PublicationService } from '../../../shared/service/publication.service';

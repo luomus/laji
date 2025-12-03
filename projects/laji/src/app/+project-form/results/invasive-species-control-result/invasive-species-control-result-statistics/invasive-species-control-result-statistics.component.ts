@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { Area } from 'projects/laji/src/app/shared/model/Area';
 import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { map, switchMap, share, tap } from 'rxjs/operators';
+import { map, switchMap, share, tap } from 'rxjs';
 import { InvasiveControlEffectiveness } from '../invasive-species-control-result.component';
 
 export interface InvasiveControlEffectivenessStatisticsQueryResult {

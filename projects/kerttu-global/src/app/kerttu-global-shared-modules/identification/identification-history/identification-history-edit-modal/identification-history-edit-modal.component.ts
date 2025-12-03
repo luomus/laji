@@ -11,7 +11,7 @@ import { AudioService } from '../../../../../../../laji/src/app/shared-modules/a
 import { SpectrogramService } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/service/spectrogram.service';
 import { DialogService } from '../../../../../../../laji/src/app/shared/service/dialog.service';
 import { Observable, of, Subscription } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs';
 import { Util } from '../../../../../../../laji/src/app/shared/service/util.service';
 import equals from 'deep-equal';
 import { getTranslateKeyWithTaxonType } from '../../../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';

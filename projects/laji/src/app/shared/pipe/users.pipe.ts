@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { Person } from '../model/Person';
 import { from, of } from 'rxjs';
-import { concatMap, toArray } from 'rxjs/operators';
+import { concatMap, toArray } from 'rxjs';
 
 /**
  * Return users data from strings

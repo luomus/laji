@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, T
 import { AtlasActivityCategory, AtlasActivityCategoryElement, AtlasApiService, AtlasSocietyStatsResponseElement } from '../../core/atlas-api.service';
 import { TableColumn } from '@achimha/ngx-datatable';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 interface DatatableRow extends AtlasSocietyStatsResponseElement {
   [activityCategory: number]: AtlasActivityCategoryElement;

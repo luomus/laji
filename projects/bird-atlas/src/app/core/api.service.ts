@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Information, LajiApiClient, News, PagedResult, Taxon } from 'projects/laji-api-client/src/public-api';
 import { Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs';
 
 export type LangM = LajiApiClient.LangWithMultiEnum;
 export type Lang = LajiApiClient.LangEnum;

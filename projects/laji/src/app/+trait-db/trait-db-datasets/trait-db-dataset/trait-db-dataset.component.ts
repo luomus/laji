@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { combineLatest, Observable, of } from 'rxjs';
-import { map, filter, distinctUntilChanged, switchMap, startWith, catchError, tap } from 'rxjs/operators';
+import { map, filter, distinctUntilChanged, switchMap, startWith, catchError, tap } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
 
 export type Dataset = components['schemas']['Dataset'];
@@ -49,4 +49,3 @@ export class TraitDbDatasetComponent implements OnInit {
     );
   }
 }
-

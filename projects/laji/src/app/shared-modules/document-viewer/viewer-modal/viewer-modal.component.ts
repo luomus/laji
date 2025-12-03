@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
 import { DocumentViewerFacade, IViewerState } from '../document-viewer.facade';
 import { Observable, Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { filter, tap } from 'rxjs';
 import { Document } from '../../../shared/model/Document';
 import {ModalComponent} from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 

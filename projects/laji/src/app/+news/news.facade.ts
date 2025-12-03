@@ -4,7 +4,7 @@ import {
   catchError,
   distinctUntilChanged,
   map, switchMap, take
-} from 'rxjs/operators';
+} from 'rxjs';
 import { News } from '../shared/model/News';
 import { PagedResult } from '../shared/model/PagedResult';
 import { NewsService } from '../shared/service/news.service';

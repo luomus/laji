@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { defaultIfEmpty, map, switchMap, tap } from 'rxjs/operators';
+import { defaultIfEmpty, map, switchMap, tap } from 'rxjs';
 import { BehaviorSubject, Observable, forkJoin } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { TranslateService } from '@ngx-translate/core';

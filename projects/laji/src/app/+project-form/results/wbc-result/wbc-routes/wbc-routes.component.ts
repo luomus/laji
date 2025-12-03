@@ -3,7 +3,7 @@ import { WbcResultService } from '../wbc-result.service';
 import { IdService } from '../../../../shared/service/id.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/tab-utils';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { Observable } from 'rxjs';
 
 @Component({

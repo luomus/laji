@@ -2,7 +2,7 @@ import { TableColumn } from '@achimha/ngx-datatable';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { forkJoin, Observable } from 'rxjs';
-import { tap, map, switchMap, startWith } from 'rxjs/operators';
+import { tap, map, switchMap, startWith } from 'rxjs';
 import { AtlasApiService, KeyValueObject, ObserverStatsParams } from '../core/atlas-api.service';
 
 interface Row {
@@ -62,4 +62,3 @@ export class ObserversComponent implements OnInit {
     this.societies$ = this.atlasApi.getBirdSocieties();
   }
 }
-

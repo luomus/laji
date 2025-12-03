@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { mergeMap, take, tap, delay, map, scan, filter, switchMap } from 'rxjs/operators';
+import { mergeMap, take, tap, delay, map, scan, filter, switchMap } from 'rxjs';
 import { combineLatest, Observable, of, Subject, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';

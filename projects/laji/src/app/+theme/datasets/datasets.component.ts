@@ -3,7 +3,7 @@ import { FormService } from '../../shared/service/form.service';
 import { forkJoin, Observable } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { MultiLanguage } from '../../../../../laji-api-client/src/lib/models';
 import { Form } from '../../shared/model/Form';
 import { FormPermissionService } from '../../shared/service/form-permission.service';

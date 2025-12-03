@@ -12,7 +12,7 @@ import { Observable, Subscription, from, of } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { Lang } from '@luomus/laji-form-builder/lib/model';
 import { UserService } from '../../shared/service/user.service';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs';
 import { environment } from 'projects/laji/src/environments/environment';
 
 @Component({

@@ -1,4 +1,4 @@
-import { map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';

@@ -4,7 +4,7 @@ import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { BehaviorSubject } from 'rxjs';
-import { tap, map, switchMap } from 'rxjs/operators';
+import { tap, map, switchMap } from 'rxjs';
 
 interface NotInitialized {
   _tag: 'not-initialized';
@@ -198,4 +198,3 @@ export class TraitDbDataEntryCheckComponent implements OnChanges, AfterViewInit,
     this.tsvChange.complete();
   }
 }
-

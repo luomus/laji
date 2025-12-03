@@ -1,6 +1,6 @@
 import { Injectable, Renderer2 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { throttleTime } from 'rxjs/operators';
+import { throttleTime } from 'rxjs';
 
 export type Placement = 'top' | 'bottom' | 'left' | 'right';
 
@@ -168,4 +168,3 @@ export class PlacementService {
     });
   }
 }
-

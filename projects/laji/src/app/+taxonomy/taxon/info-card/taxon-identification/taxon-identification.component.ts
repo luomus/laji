@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges,
   ViewChild, ElementRef, Inject, ChangeDetectorRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { TaxonIdentificationFacade } from './taxon-identification.facade';
 import { Observable, merge, Subscription, BehaviorSubject, fromEvent, Subject } from 'rxjs';
-import { map, switchMap, distinctUntilChanged, filter, startWith, take, tap } from 'rxjs/operators';
+import { map, switchMap, distinctUntilChanged, filter, startWith, take, tap } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { CollectionViewer } from '@angular/cdk/collections';
 import { PlatformService } from '../../../../root/platform.service';

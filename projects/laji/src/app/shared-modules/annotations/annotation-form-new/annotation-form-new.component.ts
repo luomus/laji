@@ -1,4 +1,4 @@
-import {map,  mergeMap, switchMap } from 'rxjs/operators';
+import {map,  mergeMap, switchMap } from 'rxjs';
 import { Component, EventEmitter, Input, OnChanges, OnInit,
 Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener,
 ChangeDetectionStrategy, AfterContentChecked } from '@angular/core';

@@ -1,4 +1,4 @@
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Logger } from '../../shared/logger/logger.service';
 import { DialogService } from '../../shared/service/dialog.service';

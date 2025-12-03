@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { Observable } from 'rxjs';
 import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute } from '@angular/router';
@@ -21,7 +21,7 @@ export class InstructionsComponent implements OnInit {
 
   ngOnInit() {
     this.instructions$ = this.projectFormService.getFormFromRoute$(this.route)
-      .pipe(map(form => form.options.instructions));
+      .pipe(map(form => form?.options.instructions));
   }
 
 }

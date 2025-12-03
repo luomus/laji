@@ -14,7 +14,7 @@ import {
 } from '../model/excel';
 import { MappingService } from './mapping.service';
 import Hash from 'object-hash';
-import { catchError, delay, switchMap } from 'rxjs/operators';
+import { catchError, delay, switchMap } from 'rxjs';
 import { ArrayType } from '@angular/compiler';
 
 export interface IData {

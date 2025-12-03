@@ -1,4 +1,4 @@
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { Observable, of, Subscription } from 'rxjs';
 import {
   ChangeDetectionStrategy,

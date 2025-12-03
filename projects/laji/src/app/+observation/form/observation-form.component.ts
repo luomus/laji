@@ -1,4 +1,4 @@
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
 import { WarehouseQueryInterface, WarehouseTimeQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -105,7 +105,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     secure: ['secured', 'secureLevel'],
   };
 
-  delayedSearch = new Subject();
+  delayedSearch = new Subject<void>();
   delayedSub: Subscription;
   screenWidthSub?: Subscription;
   containerTypeAhead?: string;

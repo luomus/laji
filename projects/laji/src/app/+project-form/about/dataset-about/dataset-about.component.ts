@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { Form } from '../../../shared/model/Form';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';

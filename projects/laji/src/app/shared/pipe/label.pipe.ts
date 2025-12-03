@@ -1,4 +1,4 @@
-import { concatMap, map, switchMap, toArray } from 'rxjs/operators';
+import { concatMap, map, switchMap, toArray } from 'rxjs';
 import { Observable, from, of, Subscription } from 'rxjs';
 import { ChangeDetectorRef, Pipe, PipeTransform, OnDestroy } from '@angular/core';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';

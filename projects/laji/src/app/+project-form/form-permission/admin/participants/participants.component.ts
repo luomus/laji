@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormService, Participant } from '../../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { ExportService } from '../../../../shared/service/export.service';
 import moment from 'moment';
@@ -18,7 +18,7 @@ import { ProjectFormService } from '../../../../shared/service/project-form.serv
 })
 export class ParticipantsComponent implements OnInit, OnDestroy {
 
-  form!: Form.SchemaForm;
+  form: Form.SchemaForm | undefined;
   loaded = false;
   fetching = false;
 
@@ -77,9 +77,12 @@ export class ParticipantsComponent implements OnInit, OnDestroy {
 
   getParticipants(type: string) {
     this.fetching = true;
+    if (!this.form) {
+      return;
+    }
     this.participants$ = this.formService.getParticipants(this.form).pipe(
       map(this.formatData),
-      switchMap(data => this.exportService.exportFromData(data, this.columns, type as BookType, `laji-${this.form.id}-participants`))
+      switchMap(data => this.exportService.exportFromData(data, this.columns, type as BookType, `laji-${this.form!.id}-participants`))
     ).subscribe(() => {
       this.fetching = false;
     });

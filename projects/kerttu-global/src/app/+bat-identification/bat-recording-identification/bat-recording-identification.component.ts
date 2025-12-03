@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import {
   IdentificationMainComponent
 } from '../../kerttu-global-shared-modules/identification/identification-main/identification-main.component';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { ComponentCanDeactivate } from '../../../../../laji/src/app/shared/guards/document-de-activate.guard';
 
 @Component({

@@ -16,7 +16,7 @@ import { NgControl } from '@angular/forms';
 import { ComponentLoader, ComponentLoaderFactory } from './component-loader';
 
 import { EMPTY, of, isObservable, Observable, Subscription } from 'rxjs';
-import { debounceTime, filter, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
+import { debounceTime, filter, mergeMap, switchMap, tap, toArray } from 'rxjs';
 import { TypeaheadOptionItemContext, TypeaheadOptionListContext } from './models';
 
 import { TypeaheadContainerComponent } from './typeahead-container.component';

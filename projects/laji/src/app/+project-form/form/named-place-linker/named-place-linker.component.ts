@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormService } from '../../../shared/service/form.service';
 import { Form } from '../../../shared/model/Form';
-import { catchError, map, switchMap, take } from 'rxjs/operators';
+import { catchError, map, switchMap, take } from 'rxjs';
 import { combineLatest, EMPTY, Observable, of, Subscription } from 'rxjs';
 import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';

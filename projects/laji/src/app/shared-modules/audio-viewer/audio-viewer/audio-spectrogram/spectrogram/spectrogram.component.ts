@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, Input, SimpleChanges, OnChanges, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { Subscription, Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs';
 import { AudioViewerArea, SpectrogramConfig } from '../../../models';
 import { AudioService } from '../../../service/audio.service';
 import { SpectrogramService } from '../../../service/spectrogram.service';

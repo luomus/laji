@@ -16,7 +16,7 @@ import { NpInfoRow } from './np-info-row/np-info-row.component';
 import { ClipboardService } from 'ngx-clipboard';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { Form } from '../../../../shared/model/Form';
 import { Document } from '../../../../shared/model/Document';

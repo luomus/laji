@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
+import { catchError, map, shareReplay, switchMap } from 'rxjs';
 import { combineLatest, EMPTY, Observable, of } from 'rxjs';
 import { FormService } from '../../../../shared/service/form.service';
 import { UserService } from '../../../../shared/service/user.service';

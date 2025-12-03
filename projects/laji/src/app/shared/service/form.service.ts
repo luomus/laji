@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
+import { concatWith, Observable, of as ObservableOf, throwError as observableThrowError, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { LajiApi, LajiApiService } from './laji-api.service';
 import { Global } from '../../../environments/global';
-import { catchError, concat, delay, map, retryWhen, shareReplay, take } from 'rxjs/operators';
+import { catchError, concat, delay, map, retryWhen, shareReplay, take } from 'rxjs';
 import { Form } from '../model/Form';
 import { UserService } from './user.service';
 import { HttpClient } from '@angular/common/http';
@@ -65,8 +65,8 @@ export class FormService {
     const cacheKey = getCacheKey(formId, this.translate.getCurrentLang());
     if (!this.formCache[cacheKey]) {
       this.formCache[cacheKey] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang: this.translate.getCurrentLang()}).pipe(
-        catchError(error => error.status === 404 ? ObservableOf(undefined) : observableThrowError(error)),
-        retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
+        catchError(error => error.status === 404 ? ObservableOf(undefined) : throwError(() => error)),
+        retryWhen(errors => errors.pipe(delay(1000), take(2), concatWith(throwError(() => errors)))),
         shareReplay(1)
       );
     }

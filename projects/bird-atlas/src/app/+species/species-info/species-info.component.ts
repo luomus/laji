@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'projects/bird-atlas/src/env/environment';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs';
 import { AtlasApiService, AtlasTaxon, TaxonStatsResponse } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 import { Lang } from '../../core/api.service';

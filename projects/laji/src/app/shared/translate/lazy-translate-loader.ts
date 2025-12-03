@@ -1,6 +1,6 @@
 import { TranslateLoader } from '@ngx-translate/core';
 import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 export class LazyTranslateLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<any> {

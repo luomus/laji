@@ -1,4 +1,4 @@
-import { switchMap, take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs';
 import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { SessionStorage } from 'ngx-webstorage';

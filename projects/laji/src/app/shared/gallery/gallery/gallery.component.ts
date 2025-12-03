@@ -12,7 +12,7 @@ import {
 import { GalleryService } from '../service/gallery.service';
 import { WarehouseQueryInterface } from '../../model/WarehouseQueryInterface';
 import { Logger } from '../../logger/logger.service';
-import {catchError, delay, map, tap} from 'rxjs/operators';
+import {catchError, delay, map, tap} from 'rxjs';
 import { IImageSelectEvent } from '../image-gallery/image.interface';
 import { QueryParamsHandling } from '@angular/router';
 import { ViewType } from '../image-gallery';

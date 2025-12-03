@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, switchMap, takeUntil } from 'rxjs';
 import { of, Subject } from 'rxjs';
 import { LajiApi, LajiApiService } from 'projects/laji/src/app/shared/service/laji-api.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -20,7 +20,7 @@ import { PlatformService } from 'projects/laji/src/app/root/platform.service';
     standalone: false
 })
 export class GlobalMessageComponent implements OnDestroy, OnInit {
-  private unsubscribe$ = new Subject();
+  private unsubscribe$ = new Subject<void>();
 
   message: any;
   currentMessageId: string | undefined = undefined;

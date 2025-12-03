@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { Util } from '../../../../../shared/service/util.service';
-import { map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 import { forkJoin } from 'rxjs';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
 import { BoolToStringPipe } from '../../../../../shared/pipe/bool-to-string.pipe';
@@ -245,7 +245,7 @@ export class NpListComponent implements OnDestroy {
     }
     if (municipalities$.length) {
       forkJoin(...municipalities$).subscribe((municipalityTuples) => {
-        municipalityTuples.forEach(([row, municipalityLabel]: [any, string[]]) => {
+        (municipalityTuples as any).forEach(([row, municipalityLabel]: [any, string[]]) => {
           row['$.municipality'] = municipalityLabel.join(', ');
         });
         this.data = results;

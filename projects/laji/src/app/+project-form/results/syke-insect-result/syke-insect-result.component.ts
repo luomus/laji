@@ -5,7 +5,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { ResultService } from '../common/service/result.service';
 import { Form } from '../../../shared/model/Form';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
 type Taxon = components['schemas']['Taxon'];

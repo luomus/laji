@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 @Component({

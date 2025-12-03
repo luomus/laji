@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { TaxaSearchFilters, TaxonomySearch } from './service/taxonomy-search.service';
 import { FooterService } from '../../shared/service/footer.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';

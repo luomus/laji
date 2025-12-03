@@ -2,7 +2,7 @@ import { Form } from '../shared/model/Form';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs/operators';
+import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs';
 import { combineLatest, merge, Observable, of, Subscription, Subject, BehaviorSubject, forkJoin } from 'rxjs';
 import { UserService } from '../shared/service/user.service'; import { Document } from '../shared/model/Document';
 import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
@@ -182,7 +182,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     const form$ = this.projectFormService.getFormFromRoute$(this.route);
     const initialFp$ = form$.pipe(
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      switchMap(form => this.formPermissionService.getFormPermission(form.collectionID!, this.userService.getToken())),
+      switchMap(form => this.formPermissionService.getFormPermission(form?.collectionID!, this.userService.getToken())),
       take(1)
     );
 
@@ -205,8 +205,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           map(form =>
             userToggledSidebar !== false
             && !(
-              (!form.options?.useNamedPlaces && url.match(/\/form$/))
-              || (form.options?.useNamedPlaces && url.match(/\/places\/MNP\.\d+$/))
+              (!form?.options?.useNamedPlaces && url.match(/\/form$/))
+              || (form?.options?.useNamedPlaces && url.match(/\/places\/MNP\.\d+$/))
               || (url.match(/\/form\/(.*\/)?((JX\.)|(T:))\d+$/))
             )
           )

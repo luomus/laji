@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter,
 Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
-import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, switchMap } from 'rxjs';
 import { TeamMemberService } from './team-member.service';
 import { BrowserService } from '../../../shared/service/browser.service';
 

@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { UserService } from '../../../shared/service/user.service';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 

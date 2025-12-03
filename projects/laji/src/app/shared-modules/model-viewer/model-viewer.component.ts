@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { from } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 import { ModelViewerService } from './model-viewer.service';
 import { GLB } from './webgl/glb-parser';
 import { M4, V3 } from './webgl/math-3d';

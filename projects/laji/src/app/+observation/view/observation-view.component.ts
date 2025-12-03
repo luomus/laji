@@ -6,7 +6,7 @@ import { ObservationResultComponent } from '../result/observation-result.compone
 import { Router } from '@angular/router';
 import { IObservationViewModel, ObservationFacade } from '../observation.facade';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 import { BrowserService } from '../../shared/service/browser.service';
 import { UserSettingsResultList, UserService } from '../../shared/service/user.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';

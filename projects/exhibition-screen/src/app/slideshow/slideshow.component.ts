@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { filter, startWith } from 'rxjs/operators';
+import { filter, startWith } from 'rxjs';
 import { Lang } from '../core/i18n-map';
 import { BugAnimation } from './bug-animation';
 import { ISlideData } from './slide/slide.component';

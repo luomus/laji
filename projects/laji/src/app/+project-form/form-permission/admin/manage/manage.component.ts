@@ -1,4 +1,4 @@
-import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { map, mergeMap, switchMap, tap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -39,7 +39,7 @@ export class ManageComponent extends AbstractPermission implements OnInit, OnDes
   ngOnInit() {
     this.subParam = this.projectFormService.getFormFromRoute$(this.route).pipe(
       mergeMap(form => this.route.params.pipe(map(params =>
-        [form.collectionID, params['type'] || 'editors']
+        [form?.collectionID, params['type'] || 'editors']
       ))),
       tap(([collectionId, type]) => {
         this.collectionId = collectionId;

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs';
 import { ChecklistYear, DEFAULT_YEAR, ResultService } from '../iucn-shared/service/result.service';
 import { ChecklistVersion } from '../iucn-shared/service/taxon.service';
 

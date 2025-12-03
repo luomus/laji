@@ -7,7 +7,7 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { TranslateService } from '@ngx-translate/core';
-import { switchMap, toArray, concatMap } from 'rxjs/operators';
+import { switchMap, toArray, concatMap } from 'rxjs';
 
 @Component({
     selector: 'laji-observation-effective-tags-taxon',

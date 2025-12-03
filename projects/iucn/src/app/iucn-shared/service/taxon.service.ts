@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
-import { map, share, switchMap, tap } from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs';
 import { RedListTaxonGroup } from '../../../../../laji/src/app/shared/model/RedListTaxonGroup';
 import { RedListTaxonGroupApi } from '../../../../../laji/src/app/shared/api/RedListTaxonGroupApi';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';

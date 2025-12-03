@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../../../laji/src/app/shared/service/user.service';
 import { Subject } from 'rxjs';
@@ -15,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class NavbarComponent implements OnInit, OnDestroy {
   openMenu = false;
 
-  private unsubscribe$ = new Subject<null>();
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     public userService: UserService,

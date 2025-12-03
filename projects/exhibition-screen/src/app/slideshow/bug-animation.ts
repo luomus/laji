@@ -1,6 +1,6 @@
 import { ElementRef, Renderer2 } from '@angular/core';
 import { interval, Subject } from 'rxjs';
-import { delay, switchMap, takeUntil } from 'rxjs/operators';
+import { delay, switchMap, takeUntil } from 'rxjs';
 import { ConfusedCurveFollower } from '../../animations/animatables/confused-curve-follower';
 import { EsAnimatable } from '../../animations/animatables/es-animatable';
 import { PathFollower } from '../../animations/animatables/path-follower';

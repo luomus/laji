@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, of } from 'rxjs';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { flatMap, map, take, tap } from 'rxjs/operators';
+import { flatMap, map, take, tap } from 'rxjs';
 import { UserService } from '../../shared/service/user.service';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';

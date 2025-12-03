@@ -17,7 +17,7 @@ import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
 import type { Lang, Options } from '@luomus/laji-map';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
 type Taxon = components['schemas']['Taxon'];

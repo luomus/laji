@@ -2,7 +2,7 @@ import { Component, ViewContainerRef } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
-import { filter, startWith } from 'rxjs/operators';
+import { filter, startWith } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { RouteDataService } from '../../shared/service/route-data.service';
 import { HeaderService } from '../../shared/service/header.service';

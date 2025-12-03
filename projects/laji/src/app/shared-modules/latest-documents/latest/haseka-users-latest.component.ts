@@ -3,7 +3,7 @@ import { Document } from '../../../shared/model/Document';
 import { Observable, Subscription } from 'rxjs';
 import { LatestDocumentsFacade } from '../latest-documents.facade';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 import { Rights } from '../../../shared/service/form-permission.service';
 
 

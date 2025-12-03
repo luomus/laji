@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Observable } from 'rxjs';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs';
 import { IdService } from '../../../shared/service/id.service';
 
 export interface BiogeographicalArea {

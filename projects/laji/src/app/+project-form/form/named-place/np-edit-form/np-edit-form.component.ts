@@ -10,7 +10,7 @@ import { DialogService } from '../../../../shared/service/dialog.service';
 import { Form } from '../../../../shared/model/Form';
 import { NamedPlacesService } from '../../../../shared/service/named-places.service';
 import { forkJoin, Observable, of } from 'rxjs';
-import { map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { map, mergeMap, switchMap, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NamedPlacesQuery, NamedPlacesRouteData, ProjectFormService } from '../../../../shared/service/project-form.service';
 import { AreaService } from '../../../../shared/service/area.service';

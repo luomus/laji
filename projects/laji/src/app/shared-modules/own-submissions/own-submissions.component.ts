@@ -1,4 +1,4 @@
-import { catchError, concatMap, map, mergeMap, share, switchMap, tap, toArray } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap, share, switchMap, tap, toArray } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,

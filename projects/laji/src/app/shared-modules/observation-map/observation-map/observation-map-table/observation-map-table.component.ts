@@ -11,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from 'projects/laji/src/app/shared/model/WarehouseQueryInterface';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs';
 import { IColumns } from '../../../datatable/service/observation-table-column.service';
 import { TableColumnService } from '../../../datatable/service/table-column.service';
 import { DocumentViewerFacade } from '../../../document-viewer/document-viewer.facade';
