@@ -1,8 +1,8 @@
-const config = require('./config');
+require('dotenv').config();
 
 module.exports = {
   '/api/**': {
-    target: config.api_base,
+    target:  process.env.API_BASE || "https://apitest.laji.fi",
     changeOrigin: true,
     xfwd: true,
     secure: false,
@@ -10,12 +10,7 @@ module.exports = {
       '^/api/': 'v0/'
     },
     headers: {
-      Authorization: config.access_token
-    },
-    rewrite: function(req) {
-      req.url = req.url.replace(/^\/api/, 'v0') +
-        (req.url.indexOf('?') === -1 ? '?' : '&' ) +
-        'access_token=' + config.access_token;
+      Authorization: process.env.ACCESS_TOKEN
     }
   }
 };
