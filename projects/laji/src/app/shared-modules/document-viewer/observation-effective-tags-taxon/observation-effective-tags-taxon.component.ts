@@ -3,11 +3,12 @@ import { Subject, Subscription, of, from, Observable } from 'rxjs';
 import { LoadingElementsService } from '../loading-elements.service';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { AnnotationService } from '../service/annotation.service';
-import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
-import { TranslateService } from '@ngx-translate/core';
 import { switchMap, toArray, concatMap } from 'rxjs/operators';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type AnnotationTag = components['schemas']['tag'];
 
 @Component({
   selector: 'laji-observation-effective-tags-taxon',
@@ -37,7 +38,6 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
     private toQname: ToQNamePipe,
     private loadingElements: LoadingElementsService,
     private annotationService: AnnotationService,
-    private translate: TranslateService,
     private warehouseValueMappingService: WarehouseValueMappingService
     ) { }
 
@@ -48,7 +48,7 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
       switchMap(keys => this.annotationTags ?
         of(this.annotationTags.filter(item => keys.includes(item.id))) :
         from(keys).pipe(
-          concatMap(key => this.annotationService.getTag(key, this.translate.currentLang)),
+          concatMap(key => this.annotationService.getTag(key)),
           toArray()
         )
       )

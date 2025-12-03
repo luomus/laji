@@ -19,13 +19,14 @@ import * as moment from 'moment';
 import { LocalStorage } from 'ngx-webstorage';
 import { Global } from 'projects/laji/src/environments/global';
 import { Person } from '../../../shared/model/Person';
-import { Annotation } from '../../../shared/model/Annotation';
-import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Logger } from '../../../shared/logger';
 import { LajiFormUtil } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-util.service';
 import equals from 'deep-equal';
 import { ProjectFormService } from '../../../shared/service/project-form.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Annotation = components['schemas']['annotation'];
 
 export enum FormError {
   notFoundForm = 'notFoundForm',
@@ -100,7 +101,6 @@ export class DocumentFormFacade {
     private formPermissionService: FormPermissionService,
     private namedPlacesService: NamedPlacesService,
     private documentStorage: DocumentStorage,
-    private lajiApi: LajiApiService,
     private logger: Logger,
     private projectFormService: ProjectFormService,
     private api: LajiApiClientBService
@@ -508,7 +508,7 @@ export class DocumentFormFacade {
     return this.getAnnotations(documentID).pipe(
       shareReplay(),
       map((annotations) => (annotations || []).reduce<Form.IAnnotationMap>((cumulative, current) => {
-        if ((current.byRole || [] as any[]).includes('MMAN.formAdmin')) {
+        if (current.byRole?.includes('MMAN.formAdmin')) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           cumulative[current.targetID!] = [current];
         }
@@ -526,10 +526,7 @@ export class DocumentFormFacade {
 
     this.annotationCache[cacheKey] = (!documentID || FormService.isTmpId(documentID))
     ?  of([])
-    : this.lajiApi.getList(
-      LajiApi.Endpoints.annotations,
-      {personToken: this.userService.getToken(), rootID: documentID, pageSize: 100, page}
-    ).pipe(
+    : this.api.get('/annotations', { query: { rootID: documentID, pageSize: 100, page } }).pipe(
       mergeMap(result => (result.currentPage < result.lastPage) ?
         this.getAnnotations(documentID, result.currentPage + 1, [...results, ...result.results]) :
         of([...results, ...result.results])),

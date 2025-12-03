@@ -6,8 +6,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
-import { AnnotationTag } from '../../shared/model/AnnotationTag';
 import { DeleteOwnDocumentService } from '../../shared/service/delete-own-document.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type AnnotationTag = components['schemas']['tag'];
 
 @Component({
   selector: 'laji-annotations',
@@ -51,13 +53,12 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
     private translations: TranslateService,
     private cd: ChangeDetectorRef,
     private annotationService: AnnotationService,
-    private translate: TranslateService,
     private deleteOwnDocument: DeleteOwnDocumentService
   ) { }
 
   ngOnInit() {
     this.lang = this.translations.currentLang;
-    this.annotationTags$ = this.annotationService.getAllTags(this.lang);
+    this.annotationTags$ = this.annotationService.getAllTags();
 
     this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(info => {
       this.childEvent = info;

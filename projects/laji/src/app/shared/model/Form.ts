@@ -2,8 +2,10 @@
  * Form interface
  */
 import { Document } from './Document';
-import { Annotation } from './Annotation';
 import { MultiLanguage } from './MultiLanguage';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Annotation = components['schemas']['annotation'];
 
 export namespace Form {
   export enum PrintType {

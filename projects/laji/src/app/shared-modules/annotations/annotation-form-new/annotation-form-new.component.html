@@ -12,7 +12,7 @@
       class="form-control input-sm taxon-input"
       name="opinion"
       [disabled]="unIdentifyable"
-      [required]="expert && (personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin' ) && (annotation.addedTags.length > 0)"
+      [required]="expert && (personRoleAnnotation=== 'MMAN.expert' || personRoleAnnotation === 'MMAN.ictAdmin' ) && (annotation.addedTags.length > 0)"
       [(ngModel)]="annotation.identification.taxon"
       [luTypeahead]="taxonAutocomplete"
       [luTypeaheadOptionsLimit]="20"
@@ -48,33 +48,34 @@
 <div class="lu tags-step-1" *ngIf="expert else checkTags">
   <label>{{ 'annotation.addTags' | translate }}</label>
   <div class="d-flex flex-row flex-wrap margin-top-10">
-    <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typePositiveQuality','MMAN.typeNegativeQuality']: 'include': 'id': [] | sort: 'position'; let i = index;" class="tag-value">
+    <div *ngFor="let item of annotationAddableTags$ | async | filterValue: 'type': ['MMAN.typePositiveQuality','MMAN.typeNegativeQuality']: 'include': 'id': [] | sort: 'position'; let i = index;" class="tag-value">
       <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-        <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': (item.quality==='MMAN.typeNegativeQuality' || item.quality==='MMAN.typeAdmin'), 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
+        <div class="pill" [ngClass]="{'success': item.type ===' MMAN.typePositiveQuality', 'warning':
+        item.type==='MMAN.typeCheck', 'danger': (item.type ===' MMAN.typeNegativeQuality' || item.type === 'MMAN.typeAdmin'), 'info': item.type ==='self' }">{{ item.id | toQName | label }}</div>
       </lu-checkbox>
     </div>
     <ng-container *ngIf="personRoleAnnotation === 'MMAN.expert'">
-      <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeAdmin']: 'exclude': 'id': [] | sort: 'position'; let i = index;" class="tag-value">
+      <div *ngFor="let item of annotationAddableTags$ | async | filterValue: 'type': ['MMAN.typeAdmin']: 'exclude': 'id': [] | sort: 'position'; let i = index;" class="tag-value">
         <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-          <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='MMAN.typeNegativeQuality', 'admin': item.quality==='MMAN.typeAdmin', 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
+          <div class="pill" [ngClass]="{'success': item.type==='MMAN.typePositiveQuality', 'warning': item.type === 'MMAN.typeCheck', 'danger': item.type === 'MMAN.typeNegativeQuality', 'admin': item.type==='MMAN.typeAdmin', 'info': item.type ==='self' }">{{ item.id | toQName | label }}</div>
         </lu-checkbox>
       </div>
     </ng-container>
   </div>
   <div class="d-flex flex-row flex-wrap margin-top-10">
     <ng-container *ngIf="personRoleAnnotation === 'MMAN.expert'">
-      <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeInfo']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
+      <div *ngFor="let item of annotationAddableTags$ | async | filterValue: 'quality': ['MMAN.typeInfo']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
         <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-          <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='MMAN.typeNegativeQuality', 'info': item.quality ==='MMAN.typeInfo' }">{{ item.id | toQName | label }}</div>
+          <div class="pill" [ngClass]="{'success': item.type==='MMAN.typePositiveQuality', 'warning': item.type==='MMAN.typeCheck', 'danger': item.type==='MMAN.typeNegativeQuality', 'info': item.type ==='MMAN.typeInfo' }">{{ item.id | toQName | label }}</div>
         </lu-checkbox>
       </div>
     </ng-container>
   </div>
   <div class="d-flex flex-row flex-wrap margin-top-10">
     <ng-container *ngIf="annotation.addedTags.indexOf('MMAN.5') === -1 && annotation.addedTags.indexOf('MMAN.3') === -1">
-      <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
+      <div *ngFor="let item of annotationAddableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
         <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-          <div class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='MMAN.typeNegativeQuality', 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</div>
+          <div class="pill" [ngClass]="{'success': item.type==='MMAN.typePositiveQuality', 'warning': item.type==='MMAN.typeCheck', 'danger': item.type==='MMAN.typeNegativeQuality', 'info': item.type ==='self' }">{{ item.id | toQName | label }}</div>
         </lu-checkbox>
       </div>
     </ng-container>
@@ -84,9 +85,9 @@
 <div class="lu tags-step-1">
     <label>{{ 'annotation.addTags' | translate }}</label>
     <div class="d-flex flex-row flex-wrap margin-top-10">
-      <div *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
+      <div *ngFor="let item of annotationAddableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
         <lu-checkbox  (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-          <div class="pill" [ngClass]="{'success': item.quality==='typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='typeNegativeQuality' }">{{ item.id | toQName | label }} </div>
+          <div class="pill" [ngClass]="{'success': item.type==='typePositiveQuality', 'warning': item.type==='MMAN.typeCheck', 'danger': item.type==='typeNegativeQuality' }">{{ item.id | toQName | label }} </div>
         </lu-checkbox>
       </div>
     </div>
@@ -98,86 +99,19 @@
          <div *ngFor="let item of annotationRemovableTags$ | async " class="list-checkbox">
            <main class="lu">
                <lu-checkbox (input)="addToRemoveTags(item.id)" [disabled]="((annotation.addedTags.indexOf('MMAN.5') !== -1 && item.id !== 'MMAN.52') || annotation.addedTags.indexOf('MMAN.3') !== -1)" [checked]="annotation.removedTags.indexOf(item.id) !== -1">
-                 <div class="pill" [ngClass]="{'success': item.quality==='positive', 'warning': item.quality==='check', 'danger': item.quality==='negative' }">{{ item.id | toQName | label }}</div>
+                 <div class="pill" [ngClass]="{'success': item.type==='positive', 'warning': item.type==='check', 'danger': item.type==='negative' }">{{ item.id | toQName | label }}</div>
                </lu-checkbox>
             </main>
           </div>
       </div>
 </div>
-<!--
-<div class="d-flex flex-row flex-nowrap">
-  <ng-container *ngIf="expert else checkTags">
-    <lu-combo-checkbox [title]="'annotation.addTags' | translate" [small]="true" class="mr-2">
-      <lu-combo-checkbox-row
-        *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typePositiveQuality','MMAN.typeNegativeQuality']: 'include': 'id': [] | sort: 'position'; let i = index;"
-        (checked)="addToAddTags(item)"
-        [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1"
-      >
-        <span class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': (item.quality==='MMAN.typeNegativeQuality' || item.quality==='MMAN.typeAdmin'), 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</span>
-      </lu-combo-checkbox-row>
-      <ng-container *ngIf="personRoleAnnotation === 'MMAN.expert'">
-        <lu-combo-checkbox-row
-          *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeAdmin']: 'exclude': 'id': [] | sort: 'position'; let i = index;"
-          (checked)="addToAddTags(item)"
-          [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1"
-        >
-          <span class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': (item.quality==='MMAN.typeNegativeQuality' || item.quality==='MMAN.typeAdmin'), 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</span>
-        </lu-combo-checkbox-row>
-      </ng-container>
-      <hr>
-      <ng-container *ngIf="personRoleAnnotation === 'MMAN.expert'">
-        <lu-combo-checkbox-row
-          *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeInfo']: 'exclude': 'id': [''] | sort: 'position'; let i = index;"
-          (checked)="addToAddTags(item)"
-          [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1"
-        >
-          <span class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': (item.quality==='MMAN.typeNegativeQuality' || item.quality==='MMAN.typeAdmin'), 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</span>
-        </lu-combo-checkbox-row>
-      </ng-container>
-      <hr>
-      <ng-container *ngIf="annotation.addedTags.indexOf('MMAN.5') === -1 && annotation.addedTags.indexOf('MMAN.3') === -1">
-        <lu-combo-checkbox-row
-          *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;"
-          (checked)="addToAddTags(item)"
-          [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1"
-        >
-          <span class="pill" [ngClass]="{'success': item.quality==='MMAN.typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': (item.quality==='MMAN.typeNegativeQuality' || item.quality==='MMAN.typeAdmin'), 'info': item.quality ==='self' }">{{ item.id | toQName | label }}</span>
-        </lu-combo-checkbox-row>
-      </ng-container>
-    </lu-combo-checkbox>
-  </ng-container>
-  <ng-template #checkTags>
-    <lu-combo-checkbox [title]="'annotation.addTags' | translate" [small]="true">
-      <lu-combo-checkbox-row
-        *ngFor="let item of annotationAddadableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;"
-        (checked)="addToAddTags(item)"
-        [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1"
-      >
-        <span class="pill" [ngClass]="{'success': item.quality==='typePositiveQuality', 'warning': item.quality==='MMAN.typeCheck', 'danger': item.quality==='typeNegativeQuality' }">{{ item.id | toQName | label }}</span>
-      </lu-combo-checkbox-row>
-    </lu-combo-checkbox>
-  </ng-template>
-
-  <lu-combo-checkbox [title]="'annotation.removeTags' | translate" [small]="true"
-    *ngIf="(annotationRemovableTags$ | async)?.length > 0 && expert && (personRoleAnnotation === 'MMAN.expert' || personRoleAnnotation === 'MMAN.ictAdmin' ) && (unit.interpretations && unit.interpretations.effectiveTags && unit.interpretations.effectiveTags.length > 0)"
-  >
-    <lu-combo-checkbox-row
-      *ngFor="let item of annotationRemovableTags$ | async "
-      (checked)="addToRemoveTags(item.id)"
-      [disabled]="((annotation.addedTags.indexOf('MMAN.5') !== -1 || annotation.addedTags.indexOf('MMAN.3') !== -1))"
-      [checked]="annotation.removedTags.indexOf(item.id) !== -1"
-    >
-      <span class="pill" [ngClass]="{'success': item.quality==='positive', 'warning': item.quality==='check', 'danger': item.quality==='negative' }">{{ item.id | toQName | label }}</span>
-    </lu-combo-checkbox-row>
-  </lu-combo-checkbox>
-</div> -->
 
 <div class="alert alert-warning" *ngIf="alertNotSpamVerified">
   In this type of annotation, you need to add at lest 1 check tag or a taxon
 </div>
 
 <ng-container *ngIf="!isEditor">
-  <div class="mb-4" *ngIf="(personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
+  <div class="mb-4" *ngIf="(personRoleAnnotation === 'MMAN.expert' || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
     <h5>{{ 'annotation.taxonSpecifier' | translate }} <laji-info>{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info></h5>
     <input
     type="text"
@@ -188,7 +122,7 @@
     (focus)="onFocus($event)"
     (blur)="onBlur($event)">
   </div>
-  <div class="mb-4" *ngIf="(personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
+  <div class="mb-4" *ngIf="(personRoleAnnotation === 'MMAN.expert' || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
     <h5>{{ 'MAN.atlasCode' | label }}</h5>
     <laji-metadata-select
       [(ngModel)]="annotation.atlasCode"
@@ -210,13 +144,12 @@
   <textarea #comment
             name="notes"
             class="form-control feedback-text input-sm"
-            [required]="(!expert || (personRoleAnnotation!==annotationRole.expert && personRoleAnnotation!==annotationRole.ictAdmin)) || (((annotation.addedTags && annotation.addedTags.length > 0) && (annotation.identification && annotation.identification.taxon == '')) || (annotation.identification && annotation.identification.taxon == ''))"
+            [required]="(!expert || (personRoleAnnotation!== 'MMAN.expert' && personRoleAnnotation !== 'MMAN.ictAdmin')) || (((annotation.addedTags && annotation.addedTags.length > 0) && (annotation.identification && annotation.identification.taxon == '')) || (annotation.identification && annotation.identification.taxon == ''))"
             [(ngModel)]="annotation.notes"
             (focus)="onFocus($event)"
             (blur)="onBlur($event)"></textarea>
 </div>
 
-<!-- <button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{ 'feedback.cancel' | translate }}</button> -->
 <button class="btn btn-default" (click)="trySavingAnnotation()" [disabled]="disableSend()">{{ 'annotation.sendAnnotation' | translate }}</button>
 
 </div>

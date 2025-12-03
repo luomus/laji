@@ -8,10 +8,11 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { Annotation } from '../../../shared/model/Annotation';
-import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
 
+type AnnotationTag = components['schemas']['tag'];
+type AnnotationDW = components['schemas']['DwQuery_Annotation'];
 
 @Component({
   selector: 'laji-annotation-list',
@@ -22,15 +23,14 @@ import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
 })
 export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
 
-  @Input({ required: true }) annotations!: Annotation[];
+  @Input({ required: true }) annotations!: AnnotationDW[];
   @Input() personID?: string;
   @Input() showLinks = true;
   @Input() lastAnnotationAddedId?: string;
-  @Input() effectiveTags?: Annotation[];
+  @Input() effectiveTags?: AnnotationTag[];
   @Input() annotationTags?: AnnotationTag[] | null;
-  @Output() remove = new EventEmitter<Annotation>();
+  @Output() remove = new EventEmitter<AnnotationDW>();
 
-  types = Annotation.TypeEnum;
   lastFalse?: number;
   hasNextTrue?: boolean;
   open?: boolean[] = undefined;
@@ -69,7 +69,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
     this.populateArrayShowItem(this.annotations);
   }
 
-  populateArrayShowItem(array: Annotation[]) {
+  populateArrayShowItem(array: AnnotationDW[]) {
     const showItem: boolean[] = [];
     array.forEach(element => {
       if (element['deleted'] || !element['valid']) {
@@ -81,7 +81,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
     this.showItem = showItem;
   }
 
-  findLastIndex(annotation: Annotation[], field: keyof Annotation, value: any) {
+  findLastIndex(annotation: AnnotationDW[], field: keyof AnnotationDW, value: any) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     annotation.sort((a, b) => (a.created! > b.created!) ? 1 : -1);
     const index = annotation.slice().reverse().findIndex(x => (x[field] === value && x['deleted'] === false));

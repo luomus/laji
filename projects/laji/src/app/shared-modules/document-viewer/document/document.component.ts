@@ -21,12 +21,10 @@ import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../../shared/service/id.service';
 import { UserService } from '../../../shared/service/user.service';
 import { Global } from '../../../../environments/global';
-import { TranslateService } from '@ngx-translate/core';
 import { DocumentViewerChildComunicationService } from '../document-viewer-child-comunication.service';
 import { TaxonTagEffectiveService } from '../taxon-tag-effective.service';
 import { DocumentToolsService } from '../document-tools.service';
 import { AnnotationService } from '../service/annotation.service';
-import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
@@ -35,6 +33,9 @@ import { HistoryService } from '../../../shared/service/history.service';
 import { DocumentPermissionService } from '../service/document-permission.service';
 import { FormService } from '../../../shared/service/form.service';
 import { Form } from '../../../shared/model/Form';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type AnnotationTag = components['schemas']['tag'];
 
 @Component({
   selector: 'laji-document',
@@ -96,7 +97,6 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     private taxonTagEffective: TaxonTagEffectiveService,
     private annotationService: AnnotationService,
     private documentToolsService: DocumentToolsService,
-    private translate: TranslateService,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private deleteDocumentService: DeleteOwnDocumentService,
@@ -106,7 +106,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   ) { }
 
   ngOnInit() {
-    this.annotationTags$ = this.annotationService.getAllTags(this.translate.currentLang);
+    this.annotationTags$ = this.annotationService.getAllTags();
 
     this.childComunicationsubscription = this.childComunication.childEventListner().subscribe(info => {
       this.childEvent = info;
