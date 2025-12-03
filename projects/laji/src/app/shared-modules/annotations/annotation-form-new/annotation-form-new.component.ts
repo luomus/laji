@@ -228,7 +228,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
   verifyCurrentTaxon() {
     this.copyCurrentTaxon();
     if (!this.annotation.addedTags.includes('MMAN.5')) {
-      this.addToAddTags({id: 'MMAN.5', quality: 'MMAN.typePositiveQuality'});
+      this.addToAddTags({id: 'MMAN.5', type: 'MMAN.typePositiveQuality'});
     }
   }
 
@@ -361,8 +361,8 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
   }
 
 
-  addToAddTags(value: { id: string; quality: string }) {
-    if ( value.quality === 'MMAN.typePositiveQuality' || value.quality === 'MMAN.typeNegativeQuality' || value.id === 'MMAN.3') {
+  addToAddTags(value: Pick<AnnotationTag, 'id' | 'type'>) {
+    if ( value.type === 'MMAN.typePositiveQuality' || value.type === 'MMAN.typeNegativeQuality' || value.id === 'MMAN.3') {
       const index = this.annotation.addedTags.indexOf(
         this.findFirstTagNegativePositive(this.annotation.addedTags)
       );
@@ -396,7 +396,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
     this.annotation.addedTags = [...this.annotation.addedTags];
   }
 
-  checkInsideRemovableTags(value: { id: string; quality: string }) {
+  checkInsideRemovableTags(value: Pick<AnnotationTag, 'id' | 'type'>) {
     this.annotationRemovableTags$.subscribe(data => {
       this.tmpTags = data;
       if (this.annotation.addedTags.indexOf('MMAN.5') === -1 && this.annotation.addedTags.indexOf('MMAN.8') === -1
@@ -461,7 +461,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
   removeAllTagsByCategory(array: string[], category: string) {
     let index = array.length - 1;
     while (index >= 0) {
-      if (this.annotationTagsObservation[this.annotation.addedTags[index]].quality === category) {
+      if (this.annotationTagsObservation[this.annotation.addedTags[index]].type === category) {
         array.splice(index, 1);
       }
 
@@ -563,11 +563,11 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
       }
 
       if (this.expert && e.keyCode === 49 && e.altKey) { // alt + 1 --> add convincing
-          this.addToAddTags({id: 'MMAN.5', quality: 'MMAN.typePositiveQuality'});
+          this.addToAddTags({id: 'MMAN.5', type: 'MMAN.typePositiveQuality'});
       }
 
       if (this.expert && e.keyCode === 48 && e.altKey) { // alt + 0 --> add erroneus
-        this.addToAddTags({id: 'MMAN.8', quality: 'MMAN.typeNegativeQuality'});
+        this.addToAddTags({id: 'MMAN.8', type: 'MMAN.typeNegativeQuality'});
       }
 
       if (e.keyCode === 82 && e.altKey) { // alt + r --> delete all added tags
