@@ -1,4 +1,4 @@
-<ng-container *ngIf="labelFields">
+<ng-container *ngIf="defaultAvailableFields.length > 0">
   <ll-label-designer
     [translations]="translations"
     defaultDomain="http://tun.fi/"
@@ -14,8 +14,8 @@
     (fileColumnMapChange)="fileColumnMap = $event"
     [availableFields]="availableFields!"
     (availableFieldsChange)="changeAvailableFields($event)"
-    [defaultAvailableFields]="labelFields"
-    (setupChange)="defaultSetup = $event"
+    [defaultAvailableFields]="defaultAvailableFields"
+    (setupChange)="setupChange($event)"
     (html)="htmlToPdf($event)"
   ></ll-label-designer>
 </ng-container>

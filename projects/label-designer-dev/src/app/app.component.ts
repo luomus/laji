@@ -15,8 +15,8 @@ import * as FileSaver from 'file-saver';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  availableFields?: ILabelField[] = [];
-  labelFields?: ILabelField[] = [];
+  defaultAvailableFields: ILabelField[] = [];
+  availableFields: ILabelField[] = [];
 
   translations = {};
 
@@ -78,8 +78,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.allPossibleFields().subscribe(labelFields => {
+      this.defaultAvailableFields = labelFields;
       this.availableFields = labelFields;
-      this.labelFields = labelFields;
       this.cdr.markForCheck();
     });
     this.translateService.get('labelDesigner').subscribe(translations => {
@@ -109,7 +109,6 @@ export class AppComponent implements OnInit {
   }
 
   changeAvailableFields(event: ILabelField[]) {
-    console.log(event);
     this.setup = {
       ...this.setup,
       labelItems: [
@@ -119,7 +118,11 @@ export class AppComponent implements OnInit {
         }))
       ]
     };
-    this.labelFields = event;
+    this.availableFields = event;
+  }
+
+  setupChange(event: ISetup) {
+    this.setup = {...event};
   }
 
   private allPossibleFields(): Observable<ILabelField[]> {
