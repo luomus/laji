@@ -1,0 +1,21 @@
+<ng-container *ngIf="labelFields">
+  <ll-label-designer
+    [translations]="translations"
+    defaultDomain="http://tun.fi/"
+    [showIntro]="false"
+    [(pdfLoading)]="downloading"
+    [data]="data"
+    [allowLabelItemRepeat]="true"
+    [viewSettings]="viewSettings"
+    (viewSettingsChange)="viewSettings = $event"
+    [defaultSetup]="defaultSetup"
+    [setup]="setup"
+    [fileColumnMap]="fileColumnMap"
+    (fileColumnMapChange)="fileColumnMap = $event"
+    [availableFields]="availableFields!"
+    (availableFieldsChange)="changeAvailableFields($event)"
+    [defaultAvailableFields]="labelFields"
+    (setupChange)="defaultSetup = $event"
+    (html)="htmlToPdf($event)"
+  ></ll-label-designer>
+</ng-container>

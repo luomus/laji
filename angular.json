@@ -1569,6 +1569,66 @@
           }
         }
       }
+    },
+    "label-designer-dev": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/label-designer-dev",
+      "sourceRoot": "projects/label-designer-dev/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/label-designer-dev",
+            "index": "projects/label-designer-dev/src/index.html",
+            "main": "projects/label-designer-dev/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/label-designer-dev/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/label-designer-dev/src/favicon.ico"
+            ],
+            "styles": [
+              "projects/label-designer-dev/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "local": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "local"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "local": {
+              "proxyConfig": "proxy.conf.js",
+              "browserTarget": "label-designer-dev:build:local"
+            }
+          },
+          "defaultConfiguration": "local"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "label-designer-dev:build"
+          }
+        }
+      }
     }
   },
   "schematics": {

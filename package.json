@@ -24,6 +24,7 @@
     "start:exhibition-screen:prod": "npm run ng-high-memory -- serve exhibition-screen --configuration=production --host 0.0.0.0 --port 3000",
     "start:bird-atlas": "npm run ng-high-memory -- serve bird-atlas --configuration=local --host 0.0.0.0 --port 3000",
     "start:bird-atlas:prod": "npm run ng-high-memory -- serve bird-atlas --configuration=production --host 0.0.0.0 --port 3000",
+    "start:label-designer-dev": "npm run ng-high-memory -- serve label-designer-dev --configuration=local --host 0.0.0.0 --port 3000",
     "start:label-designer-element": "ng serve label-designer-element --host 0.0.0.0",
     "start:label-designer:element": "npm run build:label-designer-electron && electron ./dist/electron",
     "start:label-designer-electron": "ng serve label-designer-electron --host 0.0.0.0",
