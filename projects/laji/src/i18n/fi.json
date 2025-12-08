@@ -1093,6 +1093,8 @@
   "notification.markAll": "Merkitse nähdyiksi",
   "notification.title": "Ilmoitukset",
   "noYear": "vuosi puuttuu",
+  "np.archipelago.alternativeIDs": "Reitin nimi",
+  "np.archipelago.tags": "Saaristotyyppi",
   "np.biogeographicalProvince": "Eliömaakunta",
   "np.chooseLabel": "Valitse alla olevasta luettelosta",
   "np.copyAddress": "Kopioi linkki",

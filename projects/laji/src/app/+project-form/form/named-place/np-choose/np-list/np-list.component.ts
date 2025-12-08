@@ -110,6 +110,16 @@ export class NpListComponent implements OnDestroy {
       '$.locality': {
         label: 'np.locality'
       },
+      '$.alternativeIDs': {
+        label: 'np.archipelago.alternativeIDs',
+        cellTemplate: 'labelIDTpl',
+        width: 100
+      },
+      '$.tags': {
+        label: 'np.archipelago.tags',
+        cellTemplate: 'labelIDTpl',
+        width: 100
+      },
       '$.prepopulatedDocument.gatherings[0].invasiveControlOpen': {
         label: 'np.invasiveControlOpen',
         cellTemplate: 'boolToStrTpl'
