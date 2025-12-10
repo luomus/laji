@@ -1,6 +1,9 @@
-import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input,
-  OnChanges, Output, QueryList, Renderer2, RendererStyleFlags2, SimpleChanges, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
+
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input,
+  OnChanges, Output, QueryList, Renderer2, RendererStyleFlags2, SimpleChanges, TemplateRef, ViewChild, ViewChildren,
+  DOCUMENT
+} from '@angular/core';
 
 type Keyable = string | number | symbol;
 type SortFn<T extends Keyable> = <U extends DatatableRow<T>>(rowA: U, rowB: U) => number;

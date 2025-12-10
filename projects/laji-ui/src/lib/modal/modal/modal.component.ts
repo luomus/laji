@@ -1,7 +1,10 @@
 /* eslint-disable @angular-eslint/no-output-on-prefix */
-import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Inject, Input, OnDestroy, Output, Renderer2,
-  ViewChild } from '@angular/core';
+
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Inject, Input, OnDestroy, Output, Renderer2,
+  ViewChild,
+  DOCUMENT
+} from '@angular/core';
 import { filter } from 'rxjs';
 
 export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';

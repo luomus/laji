@@ -1,7 +1,10 @@
-import { AfterViewInit, Directive, Input, TemplateRef, ViewContainerRef, EmbeddedViewRef,
-        ElementRef, Renderer2, ComponentRef, OnDestroy, Injector, EnvironmentInjector, ChangeDetectorRef, Inject, HostListener } from '@angular/core';
+import {
+  AfterViewInit, Directive, Input, TemplateRef, ViewContainerRef, EmbeddedViewRef,
+  ElementRef, Renderer2, ComponentRef, OnDestroy, Injector, EnvironmentInjector, ChangeDetectorRef, Inject, HostListener,
+  DOCUMENT
+} from '@angular/core';
 import { PopoverContainerComponent } from './popover-container.component';
-import { DOCUMENT } from '@angular/common';
+
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, debounceTime, filter } from 'rxjs';
 import { Placement, PlacementService } from '../placement/placement.service';

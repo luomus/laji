@@ -198,7 +198,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     this._preselectedRowIndex = index;
     const postSortIndex = (this._rows || []).findIndex((element) => element.preSortIndex === this._preselectedRowIndex);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.selected = [this._rows![postSortIndex]] || []; // TODO should be fixed
+    const selectedRow = postSortIndex > -1 ? this._rows?.[postSortIndex] : undefined;
+    this.selected = selectedRow ? [selectedRow] : []; // TODO should be fixed
     if (!this.selected.length) {
       return;
     }

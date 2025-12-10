@@ -12,13 +12,14 @@ import {
   HostListener,
   OnChanges,
   Inject,
-  EnvironmentInjector
+  EnvironmentInjector,
+  DOCUMENT
 } from '@angular/core';
 import { IImageSelectEvent, Image } from './image.interface';
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
 import { QueryParamsHandling } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+
 
 /**
  * Originally from here https://github.com/vimalavinisha/angular2-image-popup

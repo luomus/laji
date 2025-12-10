@@ -109,7 +109,7 @@ export class BaseDataService implements OnDestroy {
     this.query?.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       map(({data}) => data)
-    ).subscribe(data => this.baseDataSub.next(data));
+    ).subscribe(data => this.baseDataSub.next(data as IBaseData | undefined));
 
     this.baseData$.pipe(
       takeUntil(this.unsubscribe$)

@@ -138,7 +138,8 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
 
   @Input() set preselectedRowIndex(index: number) {
     this._preselectedRowIndex = index;
-    this.selected = [this._rows[this._preselectedRowIndex]] || [];
+    const row = index > -1 ? this._rows?.[index] : undefined;
+    this.selected = row ? [row] : [];
   }
 
   /**

@@ -12,7 +12,8 @@ import {
   Output,
   Renderer2,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  DOCUMENT
 } from '@angular/core';
 import {
   IGlobalRecording,
@@ -40,7 +41,7 @@ import { KerttuGlobalUtil } from '../../../../kerttu-global-shared/service/kertt
 import { IdentificationTableComponent } from './identification-table/identification-table.component';
 import { defaultSpectrogramConfig } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/variables';
 import { lowAudioSampleRate } from '../../../../kerttu-global-shared/variables';
-import { DOCUMENT } from '@angular/common';
+
 import { Util } from '../../../../../../../laji/src/app/shared/service/util.service';
 import {
   AudioViewerComponent

@@ -1,5 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { Directive, ElementRef, HostBinding, HostListener, Inject } from '@angular/core';
+
+import { Directive, ElementRef, HostBinding, HostListener, Inject, DOCUMENT } from '@angular/core';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 import { Util } from 'projects/laji/src/app/shared/service/util.service';
 

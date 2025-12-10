@@ -176,7 +176,7 @@ export class NamedPlacesService {
     }
     return convert$ ? (convert$.pipe(
       map(label => {
-        JSONPath({json: np, path, callback: (v, t, payload) => {
+        JSONPath({json: np, path, callback: (v: any, t: any, payload: any) => {
             try {
               payload.parent[payload.parentProperty] = label;
             } catch (e) {}

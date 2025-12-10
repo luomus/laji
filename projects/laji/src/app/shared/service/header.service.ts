@@ -1,8 +1,8 @@
-import { Inject, Injectable, OnDestroy, Renderer2, RendererFactory2, ViewEncapsulation } from '@angular/core';
+import { Inject, Injectable, OnDestroy, Renderer2, RendererFactory2, ViewEncapsulation, DOCUMENT } from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs';
-import { DOCUMENT, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
 import { Meta, Title } from '@angular/platform-browser';
