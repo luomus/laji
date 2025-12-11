@@ -37,14 +37,17 @@ export class NpChooseComponent implements OnInit, OnChanges {
   @Input() formRights?: Rights;
 
   @Output() activePlaceChange = new EventEmitter<string>();
+  @Output() filterChange = new EventEmitter<string>();
   @Output() tabChange = new EventEmitter();
 
   sent = this.isSent.bind(this);
 
   private seasonStart?: Date;
   private seasonEnd?: Date;
+  private queryParamTab?: string;
 
   _activeNP?: string;
+  _filterBy?: string;
 
   formOptionToClassName = formOptionToClassName;
 
@@ -59,6 +62,10 @@ export class NpChooseComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['documentForm']) {
+      if (this.queryParamTab !== undefined) {
+        return;
+      }
+      // use named place options if query params do not specify tab
       if (this._documentForm?.options?.namedPlaceOptions?.startWithMap) {
         this.activeIndex = this.loadedTabs.getIdxFromName('map');
         this.loadedTabs.load(this.activeIndex);
@@ -111,6 +118,22 @@ export class NpChooseComponent implements OnInit, OnChanges {
     this._activeNP = id;
   }
 
+  @Input() set filterBy(id: string|undefined) {
+    this._filterBy = id;
+  }
+
+  @Input() set tab(tab: string|undefined) {
+    this.queryParamTab = tab;
+
+    if (tab) {
+      const idx = this.loadedTabs.getIdxFromName(tab);
+      if (idx !== -1) {
+        this.activeIndex = idx;
+        this.loadedTabs.load(idx);
+      }
+    }
+  }
+
   private findNPIdByIndex(idx: number) {
     return this._namedPlaces[idx].id;
   }
@@ -125,6 +148,11 @@ export class NpChooseComponent implements OnInit, OnChanges {
   onActivePlaceChange(idx: number) {
     this.activeNP = this.findNPIdByIndex(idx);
     this.activePlaceChange.emit(this._activeNP);
+  }
+
+  onFilterChange(filterBy: string) {
+    this.filterBy = filterBy;
+    this.filterChange.emit(this._filterBy);
   }
 
   isSent(np: NamedPlace) {

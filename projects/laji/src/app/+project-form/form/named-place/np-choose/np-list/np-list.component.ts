@@ -40,7 +40,6 @@ export class NpListComponent implements OnDestroy {
   selectionType = SelectionType;
   showLegendList? = false;
   multisort? = false;
-  filterBy?: string;
   legendList = [
     {label: 'Vapaa', color: '#ffffff'},
     {label: 'Varattu', color: '#d1c400'},
@@ -61,8 +60,10 @@ export class NpListComponent implements OnDestroy {
   @ViewChild('dataTable', { static: true }) public datatable!: DatatableComponent;
 
   @Output() activePlaceChange = new EventEmitter<number>();
+  @Output() filterChange = new EventEmitter<string>();
 
   @Input() activeNP?: number|null;
+  @Input() filterBy?: string;
   @Input({ required: true }) height!: string;
   @Input() listColumnNameMapping?: { [key: string]: string};
 
@@ -223,6 +224,7 @@ export class NpListComponent implements OnDestroy {
 
   updateFilter(event: any) {
     this.filterBy = event.target.value;
+    this.filterChange.emit(this.filterBy);
   }
 
   private initData() {

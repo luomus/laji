@@ -2,9 +2,10 @@
   <div class="col-sm-12">
     <div class="filterBy">
       <input class="form-control inline-block"
-             type='text'
-             placeholder="{{'haseka.submissions.filter' | translate}}"
-             (keyup)="updateFilter($event)">
+        type='text'
+        placeholder="{{'haseka.submissions.filter' | translate}}"
+        [value]="filterBy ? filterBy : ''"
+        (keyup)="updateFilter($event)">
     </div>
   </div>
 </div>

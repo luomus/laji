@@ -29,9 +29,11 @@
                     [placeForm]="placeForm"
                     [listColumnNameMapping]="_documentForm.options?.namedPlaceOptions?.listColumnNameMapping"
                     [activeNP]="findNPIndexById(_activeNP)"
+                    [filterBy]="_filterBy"
                     [formRights]="formRights"
                     [visible]="loadedTabs.getNameFromIdx(activeIndex) === 'list'"
-                    (activePlaceChange)="onActivePlaceChange($event)">
+                    (activePlaceChange)="onActivePlaceChange($event)"
+                    (filterChange)="onFilterChange($event)">
         ></laji-np-list>
     </div>
   </ng-template>
