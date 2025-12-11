@@ -26,10 +26,7 @@ import { LocaleModule } from './locale/locale.module';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
-  if (environment.production) {
-    return new HttpLogger(api);
-  }
-  return new ConsoleLogger();
+  return new HttpLogger(api);
 }
 
 
