@@ -4,7 +4,6 @@ import { SharedModule } from './shared/shared.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { ConsoleLogger, HttpLogger, Logger } from './shared/logger';
-import { LoggerApi } from './shared/api/LoggerApi';
 import { ILogger } from './shared/logger/logger.interface';
 import { AppRoutingModule } from './app-routing.modules';
 import { NgxWebstorageModule } from 'ngx-webstorage';
