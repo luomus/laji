@@ -1657,57 +1657,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/geo-convert/{fileId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["GeoConvertController_get"];
-        put?: never;
-        /** Convert a FinBIF occurrence data file into a geographic data format */
-        post: operations["GeoConvertController_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/geo-convert/status/{conversionId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get status of a conversion */
-        get: operations["GeoConvertController_status"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/geo-convert/output/{conversionId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get the output file of a conversion */
-        get: operations["GeoConvertController_output"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/html-to-pdf": {
         parameters: {
             query?: never;
@@ -10767,7 +10716,7 @@ export interface components {
              * @description Qname identifier
              * @enum {string}
              */
-            habitat?: "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue146" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170";
+            habitat?: "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170";
             occurrenceRemarks?: string;
             measurementDeterminedBy?: string;
             /** Format: date */
@@ -10937,7 +10886,7 @@ export interface components {
              * @description Qname identifier
              * @enum {string}
              */
-            habitat: "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue146" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170";
+            habitat: "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170";
             occurrenceRemarks: string;
             measurementDeterminedBy: string;
             /** Format: date */
@@ -12572,7 +12521,7 @@ export interface components {
              * Gathering event type
              * @enum {string}
              */
-            gatheringType: "" | "MY.gatheringTypeForagingArea" | "MY.gatheringTypeBreedingAndRestingArea" | "MY.gatheringTypeCavityTree" | "MY.gatheringTypeDroppingsTree" | "MY.gatheringTypeNestTree" | "MY.gatheringTypeLolifeAccess" | "MY.gatheringTypeLolifeCoreZone" | "MY.gatheringTypeLolifeHabitatZone" | "MY.gatheringTypeLolifeApplicableZone" | "MY.gatheringTypeWaterbirdPoint" | "MY.gatheringTypeWaterbirdRound";
+            gatheringType: "" | "MY.gatheringTypeForagingArea" | "MY.gatheringTypeBreedingAndRestingArea" | "MY.gatheringTypeCavityTree" | "MY.gatheringTypeDroppingsTree" | "MY.gatheringTypeNestTree" | "MY.gatheringTypeLolifeAccess" | "MY.gatheringTypeLolifeCoreZone" | "MY.gatheringTypeLolifeHabitatZone" | "MY.gatheringTypeLolifeApplicableZone" | "MY.gatheringTypeWaterbirdPoint" | "MY.gatheringTypeWaterbirdRound" | "MY.gatheringTypeBoatCount" | "MY.gatheringTypeNestCount";
             geometry: components["schemas"]["geometry"];
             /**
              * Georeferencing source
@@ -12581,7 +12530,7 @@ export interface components {
              */
             georeferenceSource: "" | "MY.georeferenceSourceKotka" | "MY.georeferenceSourceKarttapaikka" | "MY.georeferenceSourcePaikkatietoikkuna" | "MY.georeferenceSourceKarjalankartat" | "MY.georeferenceSourceRetkikartta" | "MY.georeferenceSourceGoogle" | "MY.georeferenceSourcePeruskartta" | "MY.georeferenceSourcePapermap" | "MY.georeferenceSourceOtherpaper" | "MY.georeferenceSourceOtherweb" | "MY.georeferenceSourceCatalogue" | "MY.georeferenceSourceBiogeomancer" | "MY.georeferenceSourceGeolocate" | "MY.georeferenceSourceOther" | "MY.georeferenceSourceUnknown";
             /** Habitat */
-            habitat: ("" | "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue146" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170")[];
+            habitat: ("" | "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170")[];
             /** Additional information of habitat */
             habitatAttributes: ("" | "MY.habitatAttributesEnumValue1" | "MY.habitatAttributesEnumValue2" | "MY.habitatAttributesEnumValue3" | "MY.habitatAttributesEnumValue4" | "MY.habitatAttributesEnumValue5" | "MY.habitatAttributesEnumValue6" | "MY.habitatAttributesEnumValue7" | "MY.habitatAttributesEnumValue8" | "MY.habitatAttributesEnumValue9" | "MY.habitatAttributesEnumValue10" | "MY.habitatAttributesEnumValue11" | "MY.habitatAttributesEnumValue12" | "MY.habitatAttributesEnumValue13" | "MY.habitatAttributesEnumValue14" | "MY.habitatAttributesEnumValue15" | "MY.habitatAttributesEnumValue16" | "MY.habitatAttributesEnumValue17" | "MY.habitatAttributesEnumValue18" | "MY.habitatAttributesEnumValue19" | "MY.habitatAttributesEnumValue20" | "MY.habitatAttributesEnumValue21" | "MY.habitatAttributesEnumValue22")[];
             /**
@@ -12911,7 +12860,7 @@ export interface components {
              */
             growthTemperature: string;
             /** Habitat */
-            habitat: ("" | "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue146" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170")[];
+            habitat: ("" | "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170")[];
             /** hasIdentification */
             hasIdentification: string[];
             /** hasSubUnit */
@@ -32374,407 +32323,6 @@ export interface operations {
             };
         };
     };
-    GeoConvertController_get: {
-        parameters: {
-            query: {
-                /** @description The output file format (in the form of a file extension) for the geographic data */
-                lang: "fi" | "en" | "tech";
-                /** @description The geometry type of the output */
-                geometryType: "point" | "bbox" | "footprint";
-                /** @description The coordinate reference system for the output. One of "kkj", "euref", "wgs84" or any valid numeric EPSG code */
-                crs: string;
-            };
-            header?: {
-                /** @description For use with restricted data downloads */
-                "Person-Token"?: string;
-            };
-            path: {
-                fileId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            406: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-        };
-    };
-    GeoConvertController_post: {
-        parameters: {
-            query: {
-                /** @description The output file format (in the form of a file extension) for the geographic data */
-                lang: "fi" | "en" | "tech";
-                /** @description The geometry type of the output */
-                geometryType: "point" | "bbox" | "footprint";
-                /** @description The coordinate reference system for the output. One of "kkj", "euref", "wgs84" or any valid numeric EPSG code */
-                crs: string;
-            };
-            header?: never;
-            path: {
-                fileId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            406: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-        };
-    };
-    GeoConvertController_status: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                conversionId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            406: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-        };
-    };
-    GeoConvertController_output: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                conversionId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            406: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                    };
-                };
-            };
-        };
-    };
     HtmlToPdfController_htmlToPdf: {
         parameters: {
             query?: never;
@@ -32885,7 +32433,9 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": Record<string, never>;
+                "application/json": {
+                    [key: string]: unknown;
+                };
             };
         };
         responses: {
