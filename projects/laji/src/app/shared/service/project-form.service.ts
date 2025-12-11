@@ -69,22 +69,23 @@ export class ProjectFormService {
   }
 
   getForm$(id: string): Observable<Form.SchemaForm> {
-    if (Global.formAliasMap[id]) {
-      id = Global.formAliasMap[id];
-    }
-
-    if (this.currentFormID === id) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return this.form$!;
-    }
-    this.currentFormID = id;
-    this.form$?.complete();
-    this.form$ = new ReplaySubject(1);
-    this.formService.getForm(id).subscribe(form => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.form$!.next(form);
-    });
-    return this.form$;
+    throw new Error("ERROR ADF");
+    // if (Global.formAliasMap[id]) {
+    //   id = Global.formAliasMap[id];
+    // }
+    //
+    // if (this.currentFormID === id) {
+    //   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    //   return this.form$!;
+    // }
+    // this.currentFormID = id;
+    // this.form$?.complete();
+    // this.form$ = new ReplaySubject(1);
+    // this.formService.getForm(id).subscribe(form => {
+    //   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    //   this.form$!.next(form);
+    // });
+    // return this.form$;
   }
 
   updateLocalForm(form: Form.SchemaForm) {
