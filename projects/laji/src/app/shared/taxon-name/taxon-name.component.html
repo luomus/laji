@@ -1,12 +1,12 @@
 <ng-container *ngIf="taxon">
-  <ng-container *ngIf="(taxon.vernacularName | multiLang:false)" [ngTemplateOutlet]="vernacularName"></ng-container>
-  <ng-container *ngIf="(taxon.vernacularName | multiLang:false) && (taxon.colloquialVernacularName | multiLang:false)">
-    (<ul class="separated-list colloquialVernacularName">
-      <li *ngFor="let obj of (taxon.colloquialVernacularName | multiLang:false)">{{obj}}</li>
+  <ng-container *ngIf="taxon.vernacularNameMultiLang | multiLang:false" [ngTemplateOutlet]="vernacularName"></ng-container>
+  <ng-container *ngIf="(taxon.vernacularNameMultiLang | multiLang:false) && (taxon.colloquialVernacularNameMultiLang | multiLang:false)">
+    (<ul class="separated-list colloquialVernacularNameMultiLang">
+      <li *ngFor="let obj of taxon.colloquialVernacularNameMultiLang">{{obj}}</li>
     </ul>
     <laji-info [placement]="'top'">{{ 'taxonomy.vernacular.colloquial.info' | translate }}</laji-info>)
   </ng-container>
-  <ng-container *ngIf="((taxon.vernacularName | multiLang:false) || taxon.alternativeVernacularName | multiLang:false | values) && taxon.scientificName">
+  <ng-container *ngIf="((taxon.vernacularNameMultiLang | multiLang:false) || taxon.alternativeVernacularNameMultiLang | multiLang:false | values) && taxon.scientificName">
     &ndash;
   </ng-container>
   <ng-container [ngTemplateOutlet]="scientificName"></ng-container>
@@ -21,13 +21,13 @@
       <span class="glyphicon glyphicon-warning-sign"></span>
   </ng-container>
 	<img *ngIf="((taxon.id || taxon.qname || taxonID) | toQName)?.startsWith('gbif:')" class="gbif-icon" src="/static/images/icons/gbif.svg" [luTooltip]="'species.tree.gbif.help' | translate" />
-  <div class="alternative-names mt-2" *ngIf="!hideObsoleteVernacularName && taxon?.obsoleteVernacularName | multiLang:false | values; let obsoleteVernacularName">
+  <div class="alternative-names mt-2" *ngIf="!hideObsoleteVernacularName && taxon?.obsoleteVernacularName | values; let obsoleteVernacularName">
     {{ obsoleteVernacularName }}
   </div>
   <ng-template #scientificName><ng-container *ngIf="taxon.cursiveName; else noCursive"><em>{{ taxon.scientificName }}</em></ng-container><ng-template #noCursive>{{ taxon.scientificName }}</ng-template></ng-template>
   <ng-template #vernacularName>
-    {{ capitalizeName ? (taxon.vernacularName | multiLang | capitalize) : (taxon.vernacularName | multiLang) }}
-    <ng-container *ngIf="taxon?.alternativeVernacularName | multiLang:false | values; let alternativeVernacularName">
+    {{ capitalizeName ? (taxon.vernacularNameMultiLang | multiLang:false |  capitalize) : taxon.vernacularNameMultiLang | multiLang:false }}
+    <ng-container *ngIf="taxon?.alternativeVernacularNameMultiLang | multiLang:false | values; let alternativeVernacularName">
       ({{ alternativeVernacularName }})
     </ng-container>
   </ng-template>
