@@ -263,7 +263,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       this.lajiForm.unBlock();
       this.saving = false;
       if (e.error?.errorCode === 'VALIDATION_EXCEPTION') {
-        this.lajiForm.setExtraErrors(apiValidationErrorsToRJSFErrorSchema(e.error.details as ApiValidationErrors))
+        this.lajiForm.setExtraErrors(apiValidationErrorsToRJSFErrorSchema(e.error.details as ApiValidationErrors));
       } else {
         this.lajiForm.displayErrorModal('saveError');
         this.lajiForm.setExtraErrors(undefined);
@@ -379,7 +379,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 }
 
 interface ApiValidationErrors {
-  [field: string]: Record<string, ApiValidationErrors | string[]>
+  [field: string]: Record<string, ApiValidationErrors | string[]>;
 };
 
 const apiValidationErrorsToRJSFErrorSchema = (errors: ApiValidationErrors) => Object.keys(errors).reduce((errorSchema, property) => {
