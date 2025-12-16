@@ -89,6 +89,9 @@ export class LajiMapPrintComponent implements OnChanges, OnDestroy {
   }
 
   private printModeSideEffects() {
+    if (!this.platformService.isBrowser) {
+      return;
+    }
     this.cd.detectChanges();
     this.lajiMap?.map?.map.invalidateSize();
 
