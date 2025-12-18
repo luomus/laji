@@ -99,7 +99,7 @@ export class GeoConvertService {
       map((result) => {
         let outputLink: string | undefined;
         if (result.status === 'complete') {
-          outputLink = `${environment.apiBase}//geo-convert/output/${conversionId}`;
+          outputLink = `${environment.apiBase}/geo-convert/output/${conversionId}`;
           if (personToken) {
             outputLink += '?personToken=' + personToken;
           }
