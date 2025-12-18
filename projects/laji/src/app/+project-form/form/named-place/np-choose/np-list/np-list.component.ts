@@ -11,7 +11,7 @@ import {
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { Util } from '../../../../../shared/service/util.service';
 import { map, take } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
 import { BoolToStringPipe } from '../../../../../shared/pipe/bool-to-string.pipe';
 import Timeout = NodeJS.Timeout;
@@ -238,35 +238,34 @@ export class NpListComponent implements OnDestroy {
     if (!this._fields || !this._namedPlaces) {
       return;
     }
+
     const results: any[] = [];
-    const municipalities$ = [];
+    const observables: Observable<any>[] = [];
+
     for (const namedPlace of this._namedPlaces) {
       const row: any = {};
+
       for (const path of this._fields) {
-        let value = Util.parseJSONPath(namedPlace, path);
-        if (value && value.length && (
-          path === '$.prepopulatedDocument.gatheringEvent.dateBegin'
-          || path === '$.prepopulatedDocument.gatheringEvent.dateEnd'
-        )) {
-          value = value.split('.').reverse().join('-');
-        }
+        const value = Util.parseJSONPath(namedPlace, path);
         row[path] = value;
+        const observable = this.datatableUtil.getVisibleValue(value, namedPlace, 'label');
+        observables.push(
+          observable.pipe(
+            map(visibleValue => {
+              if (visibleValue && visibleValue.length > 0) {
+                row[path] = visibleValue;
+              }
+            })
+          )
+        );
       }
-      const municipality = row['$.municipality'];
-      if (municipality && municipality.length) {
-        municipalities$.push(forkJoin(
-          ...municipality.map((_muni: string) => this.areaNamePipe.updateValue(_muni)
-            .pipe(take(1)))
-        ).pipe(map(areaLabel => [row, areaLabel])));
-      }
+
       row['$.id'] = namedPlace.id;
       results.push(row);
     }
-    if (municipalities$.length) {
-      forkJoin(...municipalities$).subscribe((municipalityTuples) => {
-        municipalityTuples.forEach(([row, municipalityLabel]: [any, string[]]) => {
-          row['$.municipality'] = municipalityLabel.join(', ');
-        });
+
+    if (observables.length > 0) {
+      forkJoin(observables).subscribe(() => {
         this.data = results;
         this.cd.markForCheck();
       });
