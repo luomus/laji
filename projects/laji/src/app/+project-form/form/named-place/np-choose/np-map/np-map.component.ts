@@ -39,7 +39,8 @@ export class NpMapComponent implements OnInit, OnChanges {
   @Input() reservable?: boolean;
   @Input() placeForm: any;
   @Input({ required: true }) documentForm!: Form.SchemaForm;
-  @Output() activePlaceChange = new EventEmitter<number>();
+  @Input() filteredIDs: string[] = [];
+  @Output() activePlaceChange = new EventEmitter<string>();
 
   visualization?: LajiMapVisualization<any>;
   listItems: NpInfoRow[] = [];
@@ -70,7 +71,7 @@ export class NpMapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['namedPlaces']) {
+    if (changes['namedPlaces'] || changes['filteredIDs']) {
       this.initMapData();
     }
     if (changes['visible'] && changes['visible'].currentValue === true && this._lastVisibleActiveNP !== this.activeNP) {
@@ -192,16 +193,18 @@ export class NpMapComponent implements OnInit, OnChanges {
         },
         featureCollection: {
           type: 'FeatureCollection',
-          features: this.namedPlaces.map(np => ({
-            type: 'Feature',
-            geometry: np.geometry,
-            properties: {
-              reserved: np._status,
-              name: np.name,
-              municipality: np.municipality,
-              taxon: np.taxonIDs
-            }
-          }))
+          features: this.namedPlaces
+            .filter(np => this.filteredIDs.length === 0 || this.filteredIDs.includes(np.id))
+            .map(np => ({
+              type: 'Feature',
+              geometry: np.geometry,
+              properties: {
+                reserved: np._status,
+                name: np.name,
+                municipality: np.municipality,
+                taxon: np.taxonIDs
+              }
+            }))
         },
         getPopup: ({featureIdx, feature}: {featureIdx: number; feature: string}, cb: (elem: string | HTMLElement) => void) => {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

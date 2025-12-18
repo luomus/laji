@@ -17,12 +17,13 @@
                     lajiFormOption="options.namedPlaceOptions.reservationUntil"
                     [placeForm]="placeForm"
                     [documentForm]="_documentForm"
+                    [filteredIDs]="filteredIDs"
                     (activePlaceChange)="onActivePlaceChange($event)"></laji-np-map>
       </ng-container>
     </lu-tab>
   </lu-tabs>
   <ng-template #listTemplate>
-    <div id="list-container" *ngIf="loadedTabs.isLoaded('list')">
+    <div id="list-container">
       <laji-np-list [height]="height"
                     [namedPlaces]="_namedPlaces"
                     [documentForm]="_documentForm"
@@ -33,8 +34,8 @@
                     [formRights]="formRights"
                     [visible]="loadedTabs.getNameFromIdx(activeIndex) === 'list'"
                     (activePlaceChange)="onActivePlaceChange($event)"
-                    (filterChange)="onFilterChange($event)">
-        ></laji-np-list>
+                    (filterChange)="onFilterChange($event)"
+                    (filteredIDs)="onFilteredIDsChange($event)"></laji-np-list>
     </div>
   </ng-template>
 </div>

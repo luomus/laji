@@ -26,6 +26,7 @@ import { formOptionToClassName } from '../../../../shared/directive/project-form
 export class NpChooseComponent implements OnInit, OnChanges {
   activeIndex = 0;
   loadedTabs = new LoadedElementsStore(['list', 'map']);
+  filteredIDs: string[] = [];
 
   height = '600px';
   _namedPlaces: ExtendedNamedPlace[] = [];
@@ -135,7 +136,11 @@ export class NpChooseComponent implements OnInit, OnChanges {
   }
 
   private findNPIdByIndex(idx: number) {
-    return this._namedPlaces[idx].id;
+    if (this.filteredIDs.length === 0) {
+      return this._namedPlaces[idx]?.id;
+    } else {
+      return this.filteredIDs[idx];
+    }
   }
 
   findNPIndexById(id?: string) {
@@ -153,6 +158,10 @@ export class NpChooseComponent implements OnInit, OnChanges {
   onFilterChange(filterBy: string) {
     this.filterBy = filterBy;
     this.filterChange.emit(this._filterBy);
+  }
+
+  onFilteredIDsChange(ids: string[]) {
+    this.filteredIDs = ids;
   }
 
   isSent(np: NamedPlace) {

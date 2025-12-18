@@ -16,6 +16,7 @@
     #dataTable
     class="observation-table"
     (rowSelect)="changeActivePlace($event)"
+    (filteredIDs)="changeFilteredIDs($event)"
     [getRowClass]="getRowClass"
     [virtualScrolling]="true"
     [clientSideSorting]="true"
@@ -31,6 +32,7 @@
     [columns]="columns!"
     [selectionType]="selectionType.single"
     [preselectedRowIndex]="activeNP!"
+    [visible]="_visible"
     >
   </laji-datatable>
   <div class="test"></div>

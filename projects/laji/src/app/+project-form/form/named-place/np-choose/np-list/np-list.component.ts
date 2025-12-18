@@ -22,6 +22,7 @@ import { DatatableColumn } from '../../../../../shared-modules/datatable/model/d
 import { DatatableComponent } from '../../../../../shared-modules/datatable/datatable/datatable.component';
 import { SelectionType, SortType } from '@achimha/ngx-datatable';
 import { NpInfoComponent } from '../../np-info/np-info.component';
+import { DatatableUtil } from '../../../../../shared-modules/datatable/service/datatable-util.service';
 
 @Component({
   selector: 'laji-np-list',
@@ -47,7 +48,7 @@ export class NpListComponent implements OnDestroy {
     {label: 'Ilmoitettu', color: '#00aa00'}
   ];
   columnsMetaData: {[columnName: string]: DatatableColumn};
-  private _visible?: boolean;
+  _visible = true;
   private _visibleTimeout?: Timeout;
   private _formRights?: Rights;
   private _documentForm!: Form.SchemaForm;
@@ -61,6 +62,7 @@ export class NpListComponent implements OnDestroy {
 
   @Output() activePlaceChange = new EventEmitter<number>();
   @Output() filterChange = new EventEmitter<string>();
+  @Output() filteredIDs = new EventEmitter<string[]>();
 
   @Input() activeNP?: number|null;
   @Input() filterBy?: string;
@@ -68,7 +70,8 @@ export class NpListComponent implements OnDestroy {
   @Input() listColumnNameMapping?: { [key: string]: string};
 
   constructor(private cd: ChangeDetectorRef,
-              private areaNamePipe: AreaNamePipe
+              private areaNamePipe: AreaNamePipe,
+              private datatableUtil: DatatableUtil
 ) {
   this.columnsMetaData = {
       '$.alternativeIDs[0]': {
@@ -145,6 +148,10 @@ export class NpListComponent implements OnDestroy {
     this.activePlaceChange.emit(this.data.indexOf(event.row));
   }
 
+  changeFilteredIDs(event: string[]) {
+    this.filteredIDs.emit(event);
+  }
+
   getRowClass(row: any) {
     const status = row['$._status'];
     if (status !== 'free') { return status; }
@@ -217,7 +224,7 @@ export class NpListComponent implements OnDestroy {
       this._visibleTimeout = setTimeout(() => {
         this.datatable.showActiveRow();
         this._visibleTimeout = undefined;
-      }, 10);
+      }, 100);
     }
     this._visible = visibility;
   }
@@ -252,6 +259,7 @@ export class NpListComponent implements OnDestroy {
             .pipe(take(1)))
         ).pipe(map(areaLabel => [row, areaLabel])));
       }
+      row['$.id'] = namedPlace.id;
       results.push(row);
     }
     if (municipalities$.length) {
