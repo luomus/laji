@@ -136,11 +136,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
   }
 
   private findNPIdByIndex(idx: number) {
-    if (this.filteredIDs.length === 0) {
-      return this._namedPlaces[idx]?.id;
-    } else {
-      return this.filteredIDs[idx];
-    }
+    return this._namedPlaces[idx]?.id;
   }
 
   findNPIndexById(id?: string) {
