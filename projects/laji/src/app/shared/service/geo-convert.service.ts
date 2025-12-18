@@ -3,7 +3,7 @@ import { Observable, interval, throwError } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { switchMap, concatMap, map, catchError, takeWhile } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { environment } from '../../../../../exhibition-screen/src/env/environment';
+import { environment } from '../../../environments/environment';
 
 export type GeoConversionStatus = 'pending'|'complete';
 
