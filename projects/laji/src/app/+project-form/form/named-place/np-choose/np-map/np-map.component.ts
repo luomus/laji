@@ -50,6 +50,7 @@ export class NpMapComponent implements OnInit, OnChanges {
   private _popupCallback?: (elemOrString: HTMLElement | string) => void;
   private _zoomOnNextTick = false;
   private _lastVisibleActiveNP?: number|null;
+  private _pendingFilteredIdx?: number;
 
   private placeColor = '#5294cc';
   private placeActiveColor = '#375577';
@@ -73,6 +74,7 @@ export class NpMapComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['namedPlaces'] || changes['filteredIDs']) {
       this.initMapData();
+      this.setActivePlaceByFilteredListIndex(this.activeNP ?? undefined);
     }
     if (changes['visible'] && changes['visible'].currentValue === true && this._lastVisibleActiveNP !== this.activeNP) {
       this._zoomOnNextTick = true;
@@ -81,14 +83,8 @@ export class NpMapComponent implements OnInit, OnChanges {
       if (this.visible) {
         this._lastVisibleActiveNP = this.activeNP;
       }
-      // Transform selected place's index in all places list to index in filtered places list
       const fullIdx = changes['activeNP'].currentValue;
-      if (fullIdx !== undefined && fullIdx !== -1) {
-        const namedPlace = this.namedPlaces![fullIdx];
-        const filteredPlaces = this.namedPlaces!.filter(np => this.filteredIDs.length === 0 || this.filteredIDs.includes(np.id));
-        const filteredIdx = filteredPlaces.findIndex(np => np.id === namedPlace.id);
-        this.setNewActivePlace(filteredIdx);
-      }
+      this.setActivePlaceByFilteredListIndex(fullIdx);
     }
   }
 
@@ -97,6 +93,12 @@ export class NpMapComponent implements OnInit, OnChanges {
     if (popup && this._popupCallback) {
       this._popupCallback(popup);
     }
+
+    if (this._pendingFilteredIdx !== undefined) {
+      this.setNewActivePlace(this._pendingFilteredIdx);
+      this._pendingFilteredIdx = undefined;
+    }
+
     if (this._zoomOnNextTick) {
       this._zoomOnNextTick = false;
       if (this.activeNP !== undefined && this.activeNP !== -1) {
@@ -117,6 +119,21 @@ export class NpMapComponent implements OnInit, OnChanges {
     try {
       this.lajiMap.map.setActive(this.lajiMap.map.getLayerByIdxTuple([0, newActive]));
     } catch (e) {}
+  }
+
+  private setActivePlaceByFilteredListIndex(fullIdx?: number | null) {
+    // Transform selected place's index in all places list to index in filtered places list
+    if (fullIdx !== undefined && fullIdx !== null && fullIdx !== -1) {
+      const namedPlace = this.namedPlaces![fullIdx];
+      const filteredPlaces = this.namedPlaces!.filter(np => this.filteredIDs.length === 0 || this.filteredIDs.includes(np.id));
+      const filteredIdx = filteredPlaces.findIndex(np => np.id === namedPlace.id);
+      // Apply immediately if map is ready, or store as pending if not
+      if (this.lajiMap.map) {
+        this.setNewActivePlace(filteredIdx);
+      } else {
+        this._pendingFilteredIdx = filteredIdx;
+      }
+    }
   }
 
   private initLegend() {
