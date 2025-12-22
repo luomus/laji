@@ -40,7 +40,7 @@ export class NpMapComponent implements OnInit, OnChanges {
   @Input() placeForm: any;
   @Input({ required: true }) documentForm!: Form.SchemaForm;
   @Input() filteredIDs: string[] = [];
-  @Output() activePlaceChange = new EventEmitter<string>();
+  @Output() activePlaceChange = new EventEmitter<number>();
 
   visualization?: LajiMapVisualization<any>;
   listItems: NpInfoRow[] = [];
@@ -81,7 +81,14 @@ export class NpMapComponent implements OnInit, OnChanges {
       if (this.visible) {
         this._lastVisibleActiveNP = this.activeNP;
       }
-      this.setNewActivePlace(changes['activeNP'].currentValue);
+      // Transform selected place's index in all places list to index in filtered places list
+      const fullIdx = changes['activeNP'].currentValue;
+      if (fullIdx !== undefined && fullIdx !== -1) {
+        const namedPlace = this.namedPlaces![fullIdx];
+        const filteredPlaces = this.namedPlaces!.filter(np => this.filteredIDs.length === 0 || this.filteredIDs.includes(np.id));
+        const filteredIdx = filteredPlaces.findIndex(np => np.id === namedPlace.id);
+        this.setNewActivePlace(filteredIdx);
+      }
     }
   }
 
@@ -185,9 +192,15 @@ export class NpMapComponent implements OnInit, OnChanges {
         onChange: (events: any) => {
           events.forEach((e: any) => {
             if (e.type === 'active') {
-              this.zone.run(() => {
-                this.activePlaceChange.emit(e.idx);
-              });
+              // Transform selected place's index in filtered places list to index in all places list before emitting
+              const filteredPlaces = this.namedPlaces!.filter(np => this.filteredIDs.length === 0 || this.filteredIDs.includes(np.id));
+              const selectedPlace = filteredPlaces[e.idx];
+              if (selectedPlace) {
+                const fullIdx = this.namedPlaces!.findIndex(np => np.id === selectedPlace.id);
+                this.zone.run(() => {
+                  this.activePlaceChange.emit(fullIdx);
+                });
+              }
             }
           });
         },
