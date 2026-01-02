@@ -1,5 +1,7 @@
 <div class="slide-container" #slideContainer>
-  <es-slide *ngFor="let d of slides" [data]="d"></es-slide>
+  @for (d of slides; track d) {
+    <es-slide [data]="d"></es-slide>
+  }
 </div>
 <div class="lang-select">
   <a (click)="onLangChange('fi')">Suomi</a>

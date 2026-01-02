@@ -1,9 +1,13 @@
-<ng-container *ngIf="secureLevel && secureLevel !== 'NONE'">
+@if (secureLevel && secureLevel !== 'NONE') {
   <strong>{{ 'observation.active.secureLevel' | translate }}:</strong>
   {{ secureLevel | label: 'warehouse' }}
   <br>
-</ng-container>
-<ng-container *ngIf="secureReasons">
-  <strong>{{ 'result.document.secureReasons' | translate }}:</strong>
-  <span *ngFor="let reason of secureReasons; let i=index"><span *ngIf="i > 0">,</span> {{ reason | label: 'warehouse' }}</span>
-</ng-container>
+  }
+  @if (secureReasons) {
+    <strong>{{ 'result.document.secureReasons' | translate }}:</strong>
+    @for (reason of secureReasons; track reason; let i = $index) {
+      <span>@if (i > 0) {
+        <span>,</span>
+      } {{ reason | label: 'warehouse' }}</span>
+    }
+  }

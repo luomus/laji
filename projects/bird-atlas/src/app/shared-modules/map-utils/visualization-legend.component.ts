@@ -32,10 +32,12 @@ export const legends: Record<VisualizationMode, { color: string; label: string }
     selector: 'ba-visualization-legend',
     template: `
     <h6>{{ visualizationModeTitles[visualization] }}</h6>
-    <div class="legend-row" *ngFor="let row of legends[visualization]">
-      <span class="legend-sq" [ngStyle]="{'background-color': '#' + row.color}"></span>{{ row.label }}
-    </div>
-  `,
+    @for (row of legends[visualization]; track row) {
+      <div class="legend-row">
+        <span class="legend-sq" [ngStyle]="{'background-color': '#' + row.color}"></span>{{ row.label }}
+      </div>
+    }
+    `,
     styleUrls: ['./visualization-legend.component.scss'],
     standalone: false
 })

@@ -1,99 +1,108 @@
-<ng-container *ngIf="activeTemplateIdx == null else templateView">
+@if (activeTemplateIdx == null) {
   <div id="species-template-validation-header">
-    <h1 *ngIf="species" class="d-inline-block">
-      <bsg-species-name [species]="species"></bsg-species-name>
-    </h1>
-    <div class="gray" *ngIf="subSpecies.length > 0">
-      {{ 'validation.includingSubspecies' | translate }}:
-      <ng-container *ngFor="let sub of subSpecies">
-        <br>
-        <bsg-species-name [species]="sub"></bsg-species-name>
-      </ng-container>
+    @if (species) {
+      <h1 class="d-inline-block">
+        <bsg-species-name [species]="species"></bsg-species-name>
+      </h1>
+    }
+    @if (subSpecies.length > 0) {
+      <div class="gray">
+        {{ 'validation.includingSubspecies' | translate }}:
+        @for (sub of subSpecies; track sub) {
+          <br>
+            <bsg-species-name [species]="sub"></bsg-species-name>
+          }
+        </div>
+      }
     </div>
-  </div>
-  <h2 class="mt-0">{{ 'validation.templates' | translate }}</h2>
-  <p>{{ ('validation.description' + (historyView ? '.oldVersion' : (hasAllTemplatesInitially ? '.confirm' : ''))) | translate }}</p>
-  <laji-spinner [spinning]="!templates || !recordings" [hideContentWhileLoading]="true">
-    <bsg-templates
-      [templates]="templates!"
-      [confirmedTemplates]="confirmedTemplates"
-      [sampleRate]="sampleRate"
-      [spectrogramConfig]="spectrogramConfig"
-      [audioIdMap]="audioIdMap"
-      [highlightNonConfirmed]="!historyView"
-      (templateClick)="onTemplateClick($event)"
-    ></bsg-templates>
-    <div class="clearfix mt-3">
-      <label class="selectable" *ngIf="!hasAllTemplatesInitially && !historyView">
-        <input type="checkbox" [disabled]="saving" [(ngModel)]="creatingAllTemplatesIsNotPossible">
-        {{ 'validation.saveAsNotPossible' | translate }}
-      </label>
-      <button
-        *ngIf="hasAllTemplatesInitially && !historyView"
-        class="btn btn-primary"
-        [disabled]="saving"
-        (click)="confirmAllTemplates()"
-      >
-        {{ 'validation.confirmAll' | translate }}
-      </button>
-      <div class="pull-right">
-        <button
-          class="btn btn-default"
-          [disabled]="saving"
-          (click)="cancel.emit()"
-        >
-          {{ 'validation.cancel' | translate }}
-        </button>
-        <button
-          class="btn btn-success ml-3"
-          [disabled]="saving || historyView"
-          (click)="saveTemplates()"
-        >
-          {{ 'validation.saveAndReturn' | translate }}
-        </button>
+    <h2 class="mt-0">{{ 'validation.templates' | translate }}</h2>
+    <p>{{ ('validation.description' + (historyView ? '.oldVersion' : (hasAllTemplatesInitially ? '.confirm' : ''))) | translate }}</p>
+    <laji-spinner [spinning]="!templates || !recordings" [hideContentWhileLoading]="true">
+      <bsg-templates
+        [templates]="templates!"
+        [confirmedTemplates]="confirmedTemplates"
+        [sampleRate]="sampleRate"
+        [spectrogramConfig]="spectrogramConfig"
+        [audioIdMap]="audioIdMap"
+        [highlightNonConfirmed]="!historyView"
+        (templateClick)="onTemplateClick($event)"
+      ></bsg-templates>
+      <div class="clearfix mt-3">
+        @if (!hasAllTemplatesInitially && !historyView) {
+          <label class="selectable">
+            <input type="checkbox" [disabled]="saving" [(ngModel)]="creatingAllTemplatesIsNotPossible">
+            {{ 'validation.saveAsNotPossible' | translate }}
+          </label>
+        }
+        @if (hasAllTemplatesInitially && !historyView) {
+          <button
+            class="btn btn-primary"
+            [disabled]="saving"
+            (click)="confirmAllTemplates()"
+            >
+            {{ 'validation.confirmAll' | translate }}
+          </button>
+        }
+        <div class="pull-right">
+          <button
+            class="btn btn-default"
+            [disabled]="saving"
+            (click)="cancel.emit()"
+            >
+            {{ 'validation.cancel' | translate }}
+          </button>
+          <button
+            class="btn btn-success ml-3"
+            [disabled]="saving || historyView"
+            (click)="saveTemplates()"
+            >
+            {{ 'validation.saveAndReturn' | translate }}
+          </button>
+        </div>
       </div>
-    </div>
-  </laji-spinner>
-  <hr>
-  <p>{{ ('validation.candidates.description' + (historyView ? '.oldVersion' : '')) | translate }}</p>
-  <laji-spinner [spinning]="!recordings" [hideContentWhileLoading]="true">
-    <div class="text-center mb-3">
-      <button
-        class="btn btn-default"
-        (click)="setShowCandidates(!showCandidates)"
-      >
-        {{ 'validation.candidates.' + (showCandidates ? 'hide' : 'show') | translate }}
-        <span class="fa" [ngClass]="{ 'fa-angle-up': showCandidates, 'fa-angle-down': !showCandidates }"></span>
-      </button>
-    </div>
-    <bsg-recordings
-      *ngIf="showCandidates"
-      [recordings]="recordings"
-      [templates]="templates"
-      [sampleRate]="sampleRate"
-      [spectrogramConfig]="spectrogramConfig"
-      (audioClick)="onAudioClick($event)"
-      (candidateClick)="onCandidateClick($event)"
-    ></bsg-recordings>
-  </laji-spinner>
-</ng-container>
+    </laji-spinner>
+    <hr>
+      <p>{{ ('validation.candidates.description' + (historyView ? '.oldVersion' : '')) | translate }}</p>
+      <laji-spinner [spinning]="!recordings" [hideContentWhileLoading]="true">
+        <div class="text-center mb-3">
+          <button
+            class="btn btn-default"
+            (click)="setShowCandidates(!showCandidates)"
+            >
+            {{ 'validation.candidates.' + (showCandidates ? 'hide' : 'show') | translate }}
+            <span class="fa" [ngClass]="{ 'fa-angle-up': showCandidates, 'fa-angle-down': !showCandidates }"></span>
+          </button>
+        </div>
+        @if (showCandidates) {
+          <bsg-recordings
+            [recordings]="recordings"
+            [templates]="templates"
+            [sampleRate]="sampleRate"
+            [spectrogramConfig]="spectrogramConfig"
+            (audioClick)="onAudioClick($event)"
+            (candidateClick)="onCandidateClick($event)"
+          ></bsg-recordings>
+        }
+      </laji-spinner>
+    } @else {
+      @if (activeAudio) {
+        <h1 class="d-inline-block">
+          <bsg-species-name [species]="activeAudio.species"></bsg-species-name>
+        </h1>
+      }
+      <bsg-template
+        [audio]="activeAudio!"
+        [template]="activeTemplate"
+        [templateIdx]="activeTemplateIdx!"
+        [isNewTemplate]="activeTemplateIsNew!"
+        [audioFocusTime]="activeAudioFocusTime!"
+        [sampleRate]="sampleRate"
+        [spectrogramConfig]="spectrogramConfig"
+        [historyView]="historyView"
+        (confirm)="onTemplateConfirm($event)"
+        (templateCancel)="onTemplateCancel()"
+        (remove)="onTemplateRemove()"
+        (comment)="onComment($event)"
+      ></bsg-template>
+    }
 
-<ng-template #templateView>
-  <h1 *ngIf="activeAudio" class="d-inline-block">
-    <bsg-species-name [species]="activeAudio.species"></bsg-species-name>
-  </h1>
-  <bsg-template
-    [audio]="activeAudio!"
-    [template]="activeTemplate"
-    [templateIdx]="activeTemplateIdx!"
-    [isNewTemplate]="activeTemplateIsNew!"
-    [audioFocusTime]="activeAudioFocusTime!"
-    [sampleRate]="sampleRate"
-    [spectrogramConfig]="spectrogramConfig"
-    [historyView]="historyView"
-    (confirm)="onTemplateConfirm($event)"
-    (templateCancel)="onTemplateCancel()"
-    (remove)="onTemplateRemove()"
-    (comment)="onComment($event)"
-  ></bsg-template>
-</ng-template>

@@ -22,10 +22,11 @@ const filterParentsAboveId = (excludeIds: string[], parents: any[]): any[] => {
     selector: 'laji-info-page',
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
-<div *ngIf="!loadingContent else loading" [innerHtml]="content | safe:'html'" lajiRouteTransformer></div>
-<ng-template #loading>
+@if (!loadingContent) {
+  <div [innerHtml]="content | safe:'html'" lajiRouteTransformer></div>
+} @else {
   <laji-info-page-loading></laji-info-page-loading>
-</ng-template>
+}
 `,
     standalone: false
 })

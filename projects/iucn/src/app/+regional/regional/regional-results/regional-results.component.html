@@ -1,8 +1,9 @@
-<ng-container [ngSwitch]="type">
-  <ng-container *ngSwitchCase="'status'">
+
+@switch (type) {
+  @case ('status') {
     <iucn-red-list-regional-status (groupSelect)="changeQuery('redListGroup', $event)" [data]="(redListStatusQuery$ | async)!"></iucn-red-list-regional-status>
-  </ng-container>
-  <ng-container *ngSwitchCase="'species'">
+  }
+  @case ('species') {
     <iucn-species-table
       [species]="(speciesQuery$ | async)!"
       [defaultFields]="defaultSpeciesFields"
@@ -18,5 +19,5 @@
       (fieldsChange)="newFields($event)"
       (download)="download($event)"
     ></iucn-species-table>
-  </ng-container>
-</ng-container>
+  }
+}

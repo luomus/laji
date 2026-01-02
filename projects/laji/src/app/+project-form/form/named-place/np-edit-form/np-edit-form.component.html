@@ -1,14 +1,14 @@
 <div class="laji-form" *lajiLoggedIn="true">
-  <ng-container *ngIf="(asyncData$) | async as data; else spinner">
+  @if ((asyncData$) | async; as data) {
     <laji-project-form-header [form]="data.documentForm"
-                              [description]="data.description"
-                               lajiFormOption="options.namedPlaceOptions.createDescription options.namedPlaceOptions.editDescription"
-                              class="no-flex"></laji-project-form-header>
+      [description]="data.description"
+      lajiFormOption="options.namedPlaceOptions.createDescription options.namedPlaceOptions.editDescription"
+    class="no-flex"></laji-project-form-header>
     <laji-form
       [form]="data.placeForm"
       [formData]="data.formData"
       (dataChange)="onChange()"
-      (dataSubmit)="onSubmit($event)"></laji-form>
+    (dataSubmit)="onSubmit($event)"></laji-form>
     <laji-form-footer
       [form]="data.placeForm"
       [status]="status"
@@ -19,7 +19,9 @@
       (submitPrivate)="submitPrivate()"
       (leave)="discard()"
     ></laji-form-footer>
-  </ng-container>
+  } @else {
+    <laji-spinner></laji-spinner>
+  }
 </div>
 <div class="row" *lajiLoggedIn="false">
   <div class="col-sm-8">
@@ -28,4 +30,3 @@
     </lu-alert>
   </div>
 </div>
-<ng-template #spinner><laji-spinner></laji-spinner></ng-template>

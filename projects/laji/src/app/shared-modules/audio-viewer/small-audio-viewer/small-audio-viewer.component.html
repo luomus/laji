@@ -3,29 +3,31 @@
     'warning': highlightType === 'warning',
     'danger': highlightType === 'danger'
   }" [style.width]="width">
-  <label *ngIf="label" [style.padding-left]="margin.left + 'px'">{{ label }}</label>
-  <laji-audio-viewer
-    *ngIf="audio else emptyAudio"
-    [audio]="audio"
-    [sampleRate]="sampleRate"
-    [focusArea]="focusArea"
-    [spectrogramConfig]="spectrogramConfig"
-    [showAxisLabels]="false"
-    [axisFontSize]="7"
-    [playOnlyOnSingleClick]="true"
-    [spectrogramWidth]="spectrogramWidth"
-    [spectrogramHeight]="spectrogramHeight"
-    [spectrogramMargin]="margin"
-    [showControls]="false"
-    (spectrogramDblclick)="templateClick.emit()"
-    (audioLoading)="audioLoading.emit($event)"
-  ></laji-audio-viewer>
-  <ng-template #emptyAudio>
+  @if (label) {
+    <label [style.padding-left]="margin.left + 'px'">{{ label }}</label>
+  }
+  @if (audio) {
+    <laji-audio-viewer
+      [audio]="audio"
+      [sampleRate]="sampleRate"
+      [focusArea]="focusArea"
+      [spectrogramConfig]="spectrogramConfig"
+      [showAxisLabels]="false"
+      [axisFontSize]="7"
+      [playOnlyOnSingleClick]="true"
+      [spectrogramWidth]="spectrogramWidth"
+      [spectrogramHeight]="spectrogramHeight"
+      [spectrogramMargin]="margin"
+      [showControls]="false"
+      (spectrogramDblclick)="templateClick.emit()"
+      (audioLoading)="audioLoading.emit($event)"
+    ></laji-audio-viewer>
+  } @else {
     <div [style.padding]="margin.top + 'px ' + margin.right + 'px ' + margin.bottom + 'px ' + margin.left + 'px'">
       <div class="empty-audio" [style.height]="spectrogramHeight + 'px'" [style.line-height]="spectrogramHeight + 'px'">
         {{ emptyAudioText }}
       </div>
     </div>
-  </ng-template>
+  }
   <ng-content></ng-content>
 </div>

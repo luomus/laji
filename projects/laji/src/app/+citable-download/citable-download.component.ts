@@ -9,19 +9,20 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     template: `
-    <div class="container laji-page" style="padding-bottom: 20px; padding-top: 20px;" *ngIf="downloadRequest$ | async as downloadRequest">
-      <ng-container *ngIf="isDownloadRequest(downloadRequest) else notFound">
-        <laji-download-request
-          [downloadRequest]="asDownloadRequest(downloadRequest)"
-          [showTitle]="true"
-          [showDownload]="'publicOnly'"
-        ></laji-download-request>
-      </ng-container>
-      <ng-template #notFound>
-        {{ 'downloadRequest.notFound' | translate:{ id } }}
-      </ng-template>
-    </div>
-  `,
+    @if (downloadRequest$ | async; as downloadRequest) {
+      <div class="container laji-page" style="padding-bottom: 20px; padding-top: 20px;">
+        @if (isDownloadRequest(downloadRequest)) {
+          <laji-download-request
+            [downloadRequest]="asDownloadRequest(downloadRequest)"
+            [showTitle]="true"
+            [showDownload]="'publicOnly'"
+          ></laji-download-request>
+        } @else {
+          {{ 'downloadRequest.notFound' | translate:{ id } }}
+        }
+      </div>
+    }
+    `,
     selector: 'laji-citable-download',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false

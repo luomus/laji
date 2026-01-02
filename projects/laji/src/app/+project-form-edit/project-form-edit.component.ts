@@ -12,9 +12,9 @@ interface ViewModel {
     template: `
   <ng-container>
     <router-outlet></router-outlet>
-    <ng-container *ngIf="vm$ | async as vm">
+    @if (vm$ | async; as vm) {
       <laji-form-builder [id]="vm.id!"></laji-form-builder>
-    </ng-container>
+    }
   </ng-container>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false

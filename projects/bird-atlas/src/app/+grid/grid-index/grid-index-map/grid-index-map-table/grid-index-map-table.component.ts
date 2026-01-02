@@ -19,11 +19,13 @@ type AugmentedLegend = {
     <th>Ruutuja (%)</th>
     <th>Selvitysaste</th>
   </tr>
-  <tr *ngFor="let row of legend">
-    <td><span class="legend-sq" [ngStyle]="{'background-color': '#' + row.color}"></span></td>
-    <td style="text-align: right">{{ row.countString ? row.countString : '-' }}</td>
-    <td>{{ row.label }}</td>
-  </tr>
+  @for (row of legend; track row) {
+    <tr>
+      <td><span class="legend-sq" [ngStyle]="{'background-color': '#' + row.color}"></span></td>
+      <td style="text-align: right">{{ row.countString ? row.countString : '-' }}</td>
+      <td>{{ row.label }}</td>
+    </tr>
+  }
 </table>
 `,
     styleUrls: ['../../../../shared-modules/map-utils/visualization-legend.component.scss'],

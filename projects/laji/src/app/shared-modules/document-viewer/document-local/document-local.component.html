@@ -1,25 +1,31 @@
 <laji-spinner [spinning]="loading && showSpinner" [overlay]="true">
-  <ng-container *ngIf="!loading">
-    <laji-document-local-viewer-view *ngIf="view === 'viewer'"
-                                     [document]="document"
-                                     [fields]="fields"
-                                     [imageData]="imageData"
-                                     [mapData]="mapData"
-                                     [zoomToData]="zoomToData"
-                                     (documentDeleted)="closeDocument()"
-    ></laji-document-local-viewer-view>
-    <laji-document-local-print-view *ngIf="view === 'print' && document.formID !== collectionContestFormId"
-                                    [document]="document"
-                                    [fields]="fields"
-                                    [imageData]="imageData"
-                                    [mapData]="mapData"
-    ></laji-document-local-print-view>
-    <laji-collection-contest-print *ngIf="view === 'print' && document.formID === collectionContestFormId"
-                                         [document]="document"
-                                         [fields]="fields"
-                                         [imageData]="imageData"
-                                         [mapData]="mapData"
-                                         [formLogo]="formLogo">
-    </laji-collection-contest-print>
-  </ng-container>
+  @if (!loading) {
+    @if (view === 'viewer') {
+      <laji-document-local-viewer-view
+        [document]="document"
+        [fields]="fields"
+        [imageData]="imageData"
+        [mapData]="mapData"
+        [zoomToData]="zoomToData"
+        (documentDeleted)="closeDocument()"
+      ></laji-document-local-viewer-view>
+    }
+    @if (view === 'print' && document.formID !== collectionContestFormId) {
+      <laji-document-local-print-view
+        [document]="document"
+        [fields]="fields"
+        [imageData]="imageData"
+        [mapData]="mapData"
+      ></laji-document-local-print-view>
+    }
+    @if (view === 'print' && document.formID === collectionContestFormId) {
+      <laji-collection-contest-print
+        [document]="document"
+        [fields]="fields"
+        [imageData]="imageData"
+        [mapData]="mapData"
+        [formLogo]="formLogo">
+      </laji-collection-contest-print>
+    }
+  }
 </laji-spinner>

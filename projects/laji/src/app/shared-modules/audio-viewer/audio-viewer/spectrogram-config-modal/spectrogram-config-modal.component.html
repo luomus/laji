@@ -1,15 +1,17 @@
 <ng-template #validationAlert let-name>
-  <div class="alert alert-danger" *ngIf="name.invalid">
-    <ng-container *ngIf="name.hasError('required')">
-      {{ 'forms.validation.required' | translate }}
-    </ng-container>
-    <ng-container *ngIf="name.hasError('min')">
-      {{ 'forms.validation.min' | translate: { value: name.getError('min').min } }}
-    </ng-container>
-    <ng-container *ngIf="name.hasError('max')">
-      {{ 'forms.validation.max' | translate: { value: name.getError('max').max } }}
-    </ng-container>
-  </div>
+  @if (name.invalid) {
+    <div class="alert alert-danger">
+      @if (name.hasError('required')) {
+        {{ 'forms.validation.required' | translate }}
+      }
+      @if (name.hasError('min')) {
+        {{ 'forms.validation.min' | translate: { value: name.getError('min').min } }}
+      }
+      @if (name.hasError('max')) {
+        {{ 'forms.validation.max' | translate: { value: name.getError('max').max } }}
+      }
+    </div>
+  }
 </ng-template>
 <form [formGroup]="spectrogramConfigForm" (ngSubmit)="onSubmit()">
   <h2>{{ 'audioViewer.spectrogramSettings' | translate }}</h2>
@@ -20,25 +22,27 @@
         <input class="form-control" id="minFreq" type="number" [min]="minFrequencyLimit / 1000" [max]="maxFrequencyLimit / 1000" formControlName="minFrequency" required>
         <span class="input-group-addon">kHz</span>
       </div>
-      <ng-container *ngIf="spectrogramConfigForm.get('minFrequency') as minFrequency">
+      @if (spectrogramConfigForm.get('minFrequency'); as minFrequency) {
         <ng-container *ngTemplateOutlet="validationAlert; context: {$implicit: minFrequency}"></ng-container>
-      </ng-container>
+      }
       <label for="maxFreq">Max frequency</label>
       <div class="input-group">
         <input class="form-control" id="maxFreq" type="number" [min]="minFrequencyLimit / 1000" [max]="maxFrequencyLimit / 1000" formControlName="maxFrequency" required>
         <span class="input-group-addon">kHz</span>
       </div>
-      <ng-container *ngIf="spectrogramConfigForm.get('maxFrequency') as maxFrequency">
+      @if (spectrogramConfigForm.get('maxFrequency'); as maxFrequency) {
         <ng-container *ngTemplateOutlet="validationAlert; context: {$implicit: maxFrequency}"></ng-container>
-      </ng-container>
-      <div class="alert alert-danger" *ngIf="!spectrogramConfigForm.get('maxFrequency')?.invalid && spectrogramConfigForm.hasError('maxFrequencyGreaterThanMinFrequency')">
-        {{ 'audioViewer.maxFrequencyGreaterThanMinFrequency' | translate }}
-      </div>
+      }
+      @if (!spectrogramConfigForm.get('maxFrequency')?.invalid && spectrogramConfigForm.hasError('maxFrequencyGreaterThanMinFrequency')) {
+        <div class="alert alert-danger">
+          {{ 'audioViewer.maxFrequencyGreaterThanMinFrequency' | translate }}
+        </div>
+      }
       <label for="noiseReduction">Noise reduction</label>
       <input class="form-control" id="noiseReduction" type="number" min="0" formControlName="noiseReduction" required>
-      <ng-container *ngIf="spectrogramConfigForm.get('noiseReduction') as noiseReduction">
+      @if (spectrogramConfigForm.get('noiseReduction'); as noiseReduction) {
         <ng-container *ngTemplateOutlet="validationAlert; context: {$implicit: noiseReduction}"></ng-container>
-      </ng-container>
+      }
     </div>
   </div>
   <div class="mt-5">

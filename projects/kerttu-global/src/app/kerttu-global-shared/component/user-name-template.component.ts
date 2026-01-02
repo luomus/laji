@@ -7,12 +7,18 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
     selector: 'bsg-user-name-template',
     template: `
     <ng-template let-value="value" #userName>
-      <span *ngIf="value" title="{{ value | label }}">
-        <em *ngIf="value == userId else otherUser">{{ value | label }}</em>
-        <ng-template #otherUser>{{ value | label }}</ng-template>
-      </span>
+      @if (value) {
+        <span title="{{ value | label }}">
+          @if (value == userId) {
+            <em>{{ value | label }}</em>
+          } @else {
+            {{ value | label }}
+          }
+          <ng-template #otherUser>{{ value | label }}</ng-template>
+        </span>
+      }
     </ng-template>
-  `,
+    `,
     standalone: false
 })
 export class UserNameTemplateComponent implements OnDestroy {

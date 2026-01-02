@@ -14,21 +14,29 @@ import { tap } from 'rxjs';
     template: `
     <ba-navbar></ba-navbar>
     <div class="main-view">
-      <ng-container *ngIf="breadcrumbs$ | async; let breadcrumbs">
-        <div class="container" *ngIf="breadcrumbs.length > 0">
+      @if (breadcrumbs$ | async; as breadcrumbs) {
+        @if (breadcrumbs.length > 0) {
+          <div class="container">
             <ol class="breadcrumb">
-              <li *ngFor="let b of breadcrumbs; trackBy: trackBy; let last = last" [ngClass]="{active: last}">
-                <a *ngIf="!last" [routerLink]="b.link">{{ b.name ?? b.translateId | translate }}</a>
-                <ng-container *ngIf="last">{{ b.name ?? b.translateId | translate }}</ng-container>
-              </li>
+              @for (b of breadcrumbs; track trackBy($index, b); let last = $last) {
+                <li [ngClass]="{active: last}">
+                  @if (!last) {
+                    <a [routerLink]="b.link">{{ b.name ?? b.translateId | translate }}</a>
+                  }
+                  @if (last) {
+                    {{ b.name ?? b.translateId | translate }}
+                  }
+                </li>
+              }
             </ol>
-        </div>
-      </ng-container>
+          </div>
+        }
+      }
       <laji-technical-news-dumb [news]="news$ | async" [absoluteLink]="'http://laji.fi/'" class="container"></laji-technical-news-dumb>
       <router-outlet></router-outlet>
     </div>
     <ba-footer [displayFull]="(showFooter$ | async) ?? false"></ba-footer>
-  `,
+    `,
     styleUrls: [
         './app.component.scss'
     ],

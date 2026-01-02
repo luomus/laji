@@ -1,58 +1,88 @@
 <div [ngStyle]="{'width': staticWidth ? (staticWidth - 50) +'px': undefined}" class="fixedDimension">
 
-  <div *ngIf="unsaved" class="unsaved" [luTooltip]="'haseka.users.unsaved.doc' | translate" [placement]="'left'">
-    <div>!</div>
-  </div>
+  @if (unsaved) {
+    <div class="unsaved" [luTooltip]="'haseka.users.unsaved.doc' | translate" [placement]="'left'">
+      <div>!</div>
+    </div>
+  }
 
   <header>
-    <h1 *ngIf="locality">{{ locality }}</h1>
-    <div class="label label-warning" *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
-      {{ 'result.latestObservationsLabel' | translate }}
-    </div>
-    <div *ngIf="showFormName" class="label label-default form-name">{{ document.formID | formName }}</div>
+    @if (locality) {
+      <h1>{{ locality }}</h1>
+    }
+    @if (document.publicityRestrictions === publicity.publicityRestrictionsPrivate) {
+      <div class="label label-warning">
+        {{ 'result.latestObservationsLabel' | translate }}
+      </div>
+    }
+    @if (showFormName) {
+      <div class="label label-default form-name">{{ document.formID | formName }}</div>
+    }
   </header>
 
   <section>
-    <div class="observation-last-edit" *ngIf="!changingLocale && document.dateEdited"><span class="glyphicon glyphicon-edit"></span> {{ document.dateEdited | dateCutoffFuture | amTimeAgo }}</div>
-    <div class="observation-start" *ngIf="gatheringDates.start"> <span class="glyphicon glyphicon-time"></span> {{ gatheringDates.start | amDateFormat:'DD.MM.YYYY' }} </div>
-    <div class="observation-end" *ngIf="gatheringDates.end && gatheringDates.end !== gatheringDates.start">- {{ gatheringDates.end | amDateFormat:'DD.MM.YYYY' }}</div>
+    @if (!changingLocale && document.dateEdited) {
+      <div class="observation-last-edit"><span class="glyphicon glyphicon-edit"></span> {{ document.dateEdited | dateCutoffFuture | amTimeAgo }}</div>
+    }
+    @if (gatheringDates.start) {
+      <div class="observation-start"> <span class="glyphicon glyphicon-time"></span> {{ gatheringDates.start | amDateFormat:'DD.MM.YYYY' }} </div>
+    }
+    @if (gatheringDates.end && gatheringDates.end !== gatheringDates.start) {
+      <div class="observation-end">- {{ gatheringDates.end | amDateFormat:'DD.MM.YYYY' }}</div>
+    }
   </section>
 
   <section class="unit-list">
-    <div *ngIf="document.gatherings?.length ?? 0 > 1">({{ document.gatherings!.length - 1 }} {{ 'haseka.users.latest.other' | translate }})</div>
+    @if (document.gatherings?.length ?? 0 > 1) {
+      <div>({{ document.gatherings!.length - 1 }} {{ 'haseka.users.latest.other' | translate }})</div>
+    }
     <div>
-      <div *ngIf="unitList && unitList.length < 1" class="d-inline-block">
-        <span>{{ unitList.length }} </span>
-        <span>{{ 'haseka.users.latest.gathered' | translate }}</span>
-      </div>
-      <div *ngIf="unitList && unitList.length > 0" class="link d-inline-block" (click)="showUnitList($event)">
-        <span>{{ unitList.length }} </span>
-        <span *ngIf="unitList.length === 1">{{ 'haseka.users.latest.gathered.singular' | translate }} </span>
-        <span *ngIf="unitList.length !== 1">{{ 'haseka.users.latest.gathered' | translate }} </span>
-        <span class="glyphicon"
-          style="font-size:0.8em"
+      @if (unitList && unitList.length < 1) {
+        <div class="d-inline-block">
+          <span>{{ unitList.length }} </span>
+          <span>{{ 'haseka.users.latest.gathered' | translate }}</span>
+        </div>
+      }
+      @if (unitList && unitList.length > 0) {
+        <div class="link d-inline-block" (click)="showUnitList($event)">
+          <span>{{ unitList.length }} </span>
+          @if (unitList.length === 1) {
+            <span>{{ 'haseka.users.latest.gathered.singular' | translate }} </span>
+          }
+          @if (unitList.length !== 1) {
+            <span>{{ 'haseka.users.latest.gathered' | translate }} </span>
+          }
+          <span class="glyphicon"
+            style="font-size:0.8em"
           [ngClass]="{ 'glyphicon-triangle-bottom': showList, 'glyphicon-triangle-right': !showList }"></span>
-      </div>
+        </div>
+      }
     </div>
 
-    <ul *ngIf="showList">
-      <li *ngFor="let taxon of unitList | slice:0:5;">
-        {{ taxon }}
-      </li>
-      <li *ngIf="unitList.length > 5">{{ unitList.length - 5 }} {{ 'haseka.users.latest.other' | translate }}</li>
-    </ul>
+    @if (showList) {
+      <ul>
+        @for (taxon of unitList | slice:0:5; track taxon) {
+          <li>
+            {{ taxon }}
+          </li>
+        }
+        @if (unitList.length > 5) {
+          <li>{{ unitList.length - 5 }} {{ 'haseka.users.latest.other' | translate }}</li>
+        }
+      </ul>
+    }
   </section>
 
   <section class="d-flex flex-row flex-nowrap justify-end">
     <button class="btn btn-default btn-sm ml-2"
-         (click)="onShowViewer($event)"
-         role="button" tabindex="0" luKeyboardClickable>
+      (click)="onShowViewer($event)"
+      role="button" tabindex="0" luKeyboardClickable>
       <span class="glyphicon glyphicon-eye-open"></span>
       {{ 'haseka.submissions.view' | translate }}
     </button>
     <a class="btn btn-default btn-sm ml-2"
-         [routerLink]="editDocumentRoute"
-         role="button" tabindex="0" luKeyboardClickable>
+      [routerLink]="editDocumentRoute"
+      role="button" tabindex="0" luKeyboardClickable>
       <span class="glyphicon glyphicon-edit"></span>
       {{ 'haseka.submissions.edit' | translate }}
     </a>

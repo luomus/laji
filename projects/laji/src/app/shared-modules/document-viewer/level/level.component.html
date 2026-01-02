@@ -1,35 +1,53 @@
 <div class="row">
   <div class="col-sm-12">
-    <h3 *ngIf="showTitle">{{ level }}</h3>
+    @if (showTitle) {
+      <h3>{{ level }}</h3>
+    }
     <div class="level {{level}}">
-      <ng-container *ngFor="let curr of items">
-        <ng-container [ngSwitch]="curr.type">
-          <div *ngSwitchCase="'subArray'">
-            <div *ngFor="let sub of curr.value">
-              <laji-level [item]="sub" [subLevels]="subLevels" [level]="curr.key " [skip]="skip" [keyMap]="keyMap"></laji-level>
+      @for (curr of items; track curr) {
+        @switch (curr.type) {
+          @case ('subArray') {
+            <div>
+              @for (sub of curr.value; track sub) {
+                <div>
+                  <laji-level [item]="sub" [subLevels]="subLevels" [level]="curr.key " [skip]="skip" [keyMap]="keyMap"></laji-level>
+                </div>
+              }
             </div>
-          </div>
-          <div *ngSwitchCase="'subObject'">
-            <laji-level [item]="curr.value" [subLevels]="subLevels" [level]="curr.key " [skip]="skip" [keyMap]="keyMap"></laji-level>
-          </div>
-          <div *ngSwitchCase="'array'">
-            <div *ngFor="let sub of curr.value">
-              <laji-level [item]="sub" [subLevels]="subLevels" [level]="curr.key" [skip]="skip" [showTitle]="false" [keyMap]="keyMap"></laji-level>
+          }
+          @case ('subObject') {
+            <div>
+              <laji-level [item]="curr.value" [subLevels]="subLevels" [level]="curr.key " [skip]="skip" [keyMap]="keyMap"></laji-level>
             </div>
-          </div>
-          <div *ngSwitchCase="'object'">
-            <laji-level [item]="curr.value" [subLevels]="subLevels" [level]="curr.key" [skip]="skip" [showTitle]="false" [keyMap]="keyMap"></laji-level>
-          </div>
-          <div *ngSwitchDefault class="row">
-            <div class="key-{{curr.key}} key col-sm-4">
-              {{ curr.key | label: 'warehouse' }}<span *ngIf="curr.key">:</span>
+          }
+          @case ('array') {
+            <div>
+              @for (sub of curr.value; track sub) {
+                <div>
+                  <laji-level [item]="sub" [subLevels]="subLevels" [level]="curr.key" [skip]="skip" [showTitle]="false" [keyMap]="keyMap"></laji-level>
+                </div>
+              }
+            </div>
+          }
+          @case ('object') {
+            <div>
+              <laji-level [item]="curr.value" [subLevels]="subLevels" [level]="curr.key" [skip]="skip" [showTitle]="false" [keyMap]="keyMap"></laji-level>
+            </div>
+          }
+          @default {
+            <div class="row">
+              <div class="key-{{curr.key}} key col-sm-4">
+                {{ curr.key | label: 'warehouse' }}@if (curr.key) {
+                <span>:</span>
+              }
             </div>
             <div class="value col-sm-8">
               {{ curr.value | label: 'warehouse' }}
             </div>
           </div>
-        </ng-container>
-      </ng-container>
-    </div>
+        }
+      }
+    }
   </div>
+</div>
 </div>

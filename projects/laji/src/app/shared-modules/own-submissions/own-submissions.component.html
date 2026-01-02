@@ -1,10 +1,14 @@
-<h4 *ngIf="header">{{ header | translate }}</h4>
-<lu-alert *ngIf="yearInfoError" type="danger">{{ yearInfoError }}</lu-alert>
-<ng-container *ngIf="!yearInfoError">
-  <ng-container *ngIf="!onlyTemplates && !namedPlace">
+@if (header) {
+  <h4>{{ header | translate }}</h4>
+}
+@if (yearInfoError) {
+  <lu-alert type="danger">{{ yearInfoError }}</lu-alert>
+}
+@if (!yearInfoError) {
+  @if (!onlyTemplates && !namedPlace) {
     <laji-year-slider [year]="year" [showCounts]="!formID"
-                      (rangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo$ | async"></laji-year-slider>
-  </ng-container>
+    (rangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo$ | async"></laji-year-slider>
+  }
   <div class="own-submissions-container">
     <laji-spinner [spinning]="loading" [overlay]="true">
     </laji-spinner>
@@ -22,6 +26,6 @@
       [loadError]="documentError"
       [onlyTemplates]="onlyTemplates"
       [year]="year"
-      [documents]="documents$ | async"></laji-own-datatable>
+    [documents]="documents$ | async"></laji-own-datatable>
   </div>
-</ng-container>
+}

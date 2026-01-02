@@ -1,5 +1,6 @@
-<ng-container [ngSwitch]="selectStyle">
-  <ng-template [ngSwitchCase]="selectStyles.advanced">
+
+@switch (selectStyle) {
+  @case (selectStyles.advanced) {
     <laji-select
       [options]="_options || []"
       [title]="placeholder | translate"
@@ -13,19 +14,23 @@
       [disabled]="disabled"
       [loading]="_options === null"
       (selectedChange)="refreshValue($event)"
-    >
+      >
     </laji-select>
-  </ng-template>
-  <ng-template [ngSwitchCase]="selectStyles.basic">
+  }
+  @case (selectStyles.basic) {
     <select
       [(ngModel)]="value"
       class="form-control"
       [disabled]="disabled || _options === null"
-    >
-      <option value="" *ngIf="placeholder">{{ placeholder | translate }}</option>
-      <ng-container *ngIf="_options">
-        <option *ngFor="let option of _options; trackBy: trackingBy" [value]="option.id">{{ option.value }}</option>
-      </ng-container>
+      >
+      @if (placeholder) {
+        <option value="">{{ placeholder | translate }}</option>
+      }
+      @if (_options) {
+        @for (option of _options; track trackingBy($index, option)) {
+          <option [value]="option.id">{{ option.value }}</option>
+        }
+      }
     </select>
-  </ng-template>
-</ng-container>
+  }
+}

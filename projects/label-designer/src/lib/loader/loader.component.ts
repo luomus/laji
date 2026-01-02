@@ -6,11 +6,13 @@ import { Component, Input } from '@angular/core';
 @Component({
     selector: 'll-loader',
     template: `
-      <div *ngIf="loading" class="ll-loader">
+      @if (loading) {
+        <div class="ll-loader">
           <div></div>
           <div></div>
           <div></div>
-      </div>`,
+        </div>
+      }`,
     styles: [`
       .ll-loader {
           display: inline-block;

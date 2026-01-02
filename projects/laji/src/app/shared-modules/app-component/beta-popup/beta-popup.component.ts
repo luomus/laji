@@ -5,15 +5,17 @@ import { isPlatformBrowser } from '@angular/common';
 @Component({
     selector: 'laji-beta-popup',
     template: `
-  <div class="laji-beta-popup" *ngIf="open">
-    <div class="d-flex justify-between">
-      <p [innerHtml]="'betapopup.desc' | translate"></p>
-      <lu-button-round (click)="close()" role="neutral">
-        <lu-icon type="close"></lu-icon>
-      </lu-button-round>
+  @if (open) {
+    <div class="laji-beta-popup">
+      <div class="d-flex justify-between">
+        <p [innerHtml]="'betapopup.desc' | translate"></p>
+        <lu-button-round (click)="close()" role="neutral">
+          <lu-icon type="close"></lu-icon>
+        </lu-button-round>
+      </div>
     </div>
-  </div>
-`,
+  }
+  `,
     styleUrls: ['./beta-popup.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false

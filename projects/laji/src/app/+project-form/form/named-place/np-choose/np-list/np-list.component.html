@@ -2,68 +2,82 @@
   <div class="col-sm-12">
     <div class="filterBy">
       <input class="form-control inline-block"
-             type='text'
-             placeholder="{{'haseka.submissions.filter' | translate}}"
-             (keyup)="updateFilter($event)">
+        type='text'
+        placeholder="{{'haseka.submissions.filter' | translate}}"
+        (keyup)="updateFilter($event)">
+      </div>
     </div>
   </div>
-</div>
-<div class="table-responsive np-list"
+  <div class="table-responsive np-list"
      lajiFormOption="options.namedPlaceOptions.listColumns options.namedPlaceOptions.listColumnsMultisort options.namedPlaceOptions.showLegendList
      options.namedPlaceOptions.showLegendList options.namedPlaceOptions.reservationUntil options.namedPlaceOptions.listColumnNameMapping">
-  <laji-datatable
-    #dataTable
-    class="observation-table"
-    (rowSelect)="changeActivePlace($event)"
-    [getRowClass]="getRowClass"
-    [virtualScrolling]="true"
-    [clientSideSorting]="true"
-    [height]="height"
-    [rows]="data"
-    [filterBy]="filterBy"
-    [loading]="false"
-    [count]="data.length"
-    [sorts]="sorts"
-    [sortType]="multisort ? sortType.multi : sortType.single"
-    [page]="1"
-    [pageSize]="data.length"
-    [columns]="columns!"
-    [selectionType]="selectionType.single"
-    [preselectedRowIndex]="activeNP!"
-    >
-  </laji-datatable>
-  <div class="test"></div>
-  <ul class="legend" *ngIf="showLegendList">
-    <li *ngFor="let leg of legendList">
-      <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{ leg.label }}
-    </li>
-  </ul>
-</div>
+    <laji-datatable
+      #dataTable
+      class="observation-table"
+      (rowSelect)="changeActivePlace($event)"
+      [getRowClass]="getRowClass"
+      [virtualScrolling]="true"
+      [clientSideSorting]="true"
+      [height]="height"
+      [rows]="data"
+      [filterBy]="filterBy"
+      [loading]="false"
+      [count]="data.length"
+      [sorts]="sorts"
+      [sortType]="multisort ? sortType.multi : sortType.single"
+      [page]="1"
+      [pageSize]="data.length"
+      [columns]="columns!"
+      [selectionType]="selectionType.single"
+      [preselectedRowIndex]="activeNP!"
+      >
+    </laji-datatable>
+    <div class="test"></div>
+    @if (showLegendList) {
+      <ul class="legend">
+        @for (leg of legendList; track leg) {
+          <li>
+            <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{ leg.label }}
+          </li>
+        }
+      </ul>
+    }
+  </div>
 
-<ng-template let-value="value" ngx-datatable-cell-template #label>
-  <span *ngIf="value">
-    {{ value | label }}
-  </span>
-</ng-template>
+  <ng-template let-value="value" ngx-datatable-cell-template #label>
+    @if (value) {
+      <span>
+        {{ value | label }}
+      </span>
+    }
+  </ng-template>
 
-<ng-template let-value="value" ngx-datatable-cell-template #boolToStr>
-  <span *ngIf="value">
-    {{ value | boolToString }}
-  </span>
-</ng-template>
+  <ng-template let-value="value" ngx-datatable-cell-template #boolToStr>
+    @if (value) {
+      <span>
+        {{ value | boolToString }}
+      </span>
+    }
+  </ng-template>
 
-<ng-template let-value="value" ngx-datatable-cell-template #status>
-  <ng-container *ngIf="value">
-    <ng-container [ngSwitch]="value">
-      <span *ngSwitchCase="'free'" >
-        Vapaa
-      </span>
-      <span *ngSwitchCase="'sent'">
-        Ilmoitettu
-      </span>
-      <span *ngSwitchDefault>
-        Varattu
-      </span>
-    </ng-container>
-  </ng-container>
-</ng-template>
+  <ng-template let-value="value" ngx-datatable-cell-template #status>
+    @if (value) {
+      @switch (value) {
+        @case ('free') {
+          <span >
+            Vapaa
+          </span>
+        }
+        @case ('sent') {
+          <span>
+            Ilmoitettu
+          </span>
+        }
+        @default {
+          <span>
+            Varattu
+          </span>
+        }
+      }
+    }
+  </ng-template>

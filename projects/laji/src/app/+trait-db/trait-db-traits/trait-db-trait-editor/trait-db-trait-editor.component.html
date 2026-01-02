@@ -1,12 +1,17 @@
 <form [formGroup]="form" (submit)="onSubmit()">
-  <div *ngIf="groups$ | async; let groups; else loadingGroups">
-    <label for="group">Group*:</label>
-    <select id="group" class="form-control" formControlName="group">
-      <option *ngFor="let group of groups" [value]="group.id">{{ group.name }}</option>
-    </select>
-    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'group' }"></ng-container>
-  </div>
-  <ng-template #loadingGroups>Loading trait groups...</ng-template>
+  @if (groups$ | async; as groups) {
+    <div>
+      <label for="group">Group*:</label>
+      <select id="group" class="form-control" formControlName="group">
+        @for (group of groups; track group) {
+          <option [value]="group.id">{{ group.name }}</option>
+        }
+      </select>
+      <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'group' }"></ng-container>
+    </div>
+  } @else {
+    Loading trait groups...
+  }
   <div>
     <label for="name">Name*:</label>
     <input id="name" class="form-control" formControlName="name" type="text">
@@ -91,17 +96,25 @@
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'identifiers' }"></ng-container>
   </div>
 
-  <ng-container *ngIf="form.get('id')?.value">
+  @if (form.get('id')?.value) {
     <button class="btn btn-default" (click)="onDelete()">DELETE TRAIT</button>
-  </ng-container>
+  }
 
   <button type="submit" class="btn btn-default" [disabled]="submissionState !== 'none'">Submit</button>
-  <div *ngIf="submissionState === 'externalValidation'">Server is validating...</div>
-  <div *ngIf="submissionState === 'uploading'">Uploading trait...</div>
-  <div *ngIf="submissionState === 'deleting'">Deleting trait...</div>
+  @if (submissionState === 'externalValidation') {
+    <div>Server is validating...</div>
+  }
+  @if (submissionState === 'uploading') {
+    <div>Uploading trait...</div>
+  }
+  @if (submissionState === 'deleting') {
+    <div>Deleting trait...</div>
+  }
 </form>
 
 <ng-template #errorsTmp let-prop>
-  <div class="alert alert-danger" role="alert" *ngIf="errors?.[prop]">{{ errors?.[prop]}}</div>
+  @if (errors?.[prop]) {
+    <div class="alert alert-danger" role="alert">{{ errors?.[prop]}}</div>
+  }
 </ng-template>
 

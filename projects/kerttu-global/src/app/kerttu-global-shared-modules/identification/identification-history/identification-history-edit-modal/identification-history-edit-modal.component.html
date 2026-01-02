@@ -14,14 +14,15 @@
   <div class="modal-body flex-container">
     <div class="laji-page flex-container">
       <laji-spinner [spinning]="loading" [overlay]="true" class="flex-container">
-        <bsg-identification-view
-          class="flex-container"
-          *ngIf="recording && annotation"
-          [recording]="recording"
-          [(annotation)]="annotation"
-          [buttonsDisabled]="saving || loading"
-          (annotationChange)="onAnnotationChange()"
-        ></bsg-identification-view>
+        @if (recording && annotation) {
+          <bsg-identification-view
+            class="flex-container"
+            [recording]="recording"
+            [(annotation)]="annotation"
+            [buttonsDisabled]="saving || loading"
+            (annotationChange)="onAnnotationChange()"
+          ></bsg-identification-view>
+        }
       </laji-spinner>
     </div>
   </div>

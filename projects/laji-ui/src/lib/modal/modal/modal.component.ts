@@ -13,15 +13,19 @@ export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
     selector: 'lu-modal',
     template: `
     <div class="lu-backdrop"></div>
-    <div class="lu-modal-container" [class]="'lu-modal-' + size" *ngIf="isShown" #container>
-      <lu-button-round *ngIf="!noClose" (click)="hide()" role="neutral" class="lu-modal-close-button">
-        <lu-icon type="close"></lu-icon>
-      </lu-button-round>
-      <div [class]="['lu-modal-content', contentClass === null ? '' : contentClass]" role="dialog">
-        <ng-content></ng-content>
+    @if (isShown) {
+      <div class="lu-modal-container" [class]="'lu-modal-' + size" #container>
+        @if (!noClose) {
+          <lu-button-round (click)="hide()" role="neutral" class="lu-modal-close-button">
+            <lu-icon type="close"></lu-icon>
+          </lu-button-round>
+        }
+        <div [class]="['lu-modal-content', contentClass === null ? '' : contentClass]" role="dialog">
+          <ng-content></ng-content>
+        </div>
       </div>
-    </div>
-  `,
+    }
+    `,
     styleUrls: ['./modal.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false

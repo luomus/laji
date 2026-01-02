@@ -17,14 +17,16 @@
   </ng-template>
 
   <ng-template let-row="row" #vernacularName>
-    <ng-container *ngIf="(getVernacularName(row.scientific_name) | async); let vernacularName; else spinner">
+    @if ((getVernacularName(row.scientific_name) | async); as vernacularName) {
       <span>
         {{vernacularName}}
       </span>
-    </ng-container>
+    } @else {
+      <div><laji-spinner class="d-block m-6"></laji-spinner></div>
+    }
   </ng-template>
 
   <ng-template #spinner>
-  <div><laji-spinner class="d-block m-6"></laji-spinner></div>
-</ng-template>
+    <div><laji-spinner class="d-block m-6"></laji-spinner></div>
+  </ng-template>
 </div>

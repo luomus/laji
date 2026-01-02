@@ -1,68 +1,85 @@
-<div *ngIf="loading" class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
-<div *ngIf="!loading" [ngClass]="displayModeLarge ? 'container-fluid' : 'container'">
-  <div class="d-flex justify-between flex-wrap">
-    <h1>{{ birdSociety!.birdAssociationArea?.value }}</h1>
-    <div class="d-flex flex-wrap">
-      <div><button class="btn btn-default mr-3" (click)="onExportSquares()">Lataa ruutujen selvitysasteet</button></div>
-      <div><button class="btn btn-default" (click)="onResize()">
-        <i *ngIf="displayModeLarge" class="glyphicon glyphicon-resize-small"></i>
-        <i *ngIf="!displayModeLarge" class="glyphicon glyphicon-resize-full"></i>
-      </button></div>
-    </div>
-  </div>
-  <div class="d-flex flex-row flex-wrap">
-    <div class="map-panel flex-grow d-flex flex-col">
-      <ba-bird-society-info-map
-        [atlasGrid]="birdSociety!.gridSquares"
-        [selectedDataIdx]="selectedDataIdx"
-        [visualizationMode]="visualizationMode"
-        [taxonVisualization]="taxonVisualization"
-        [style]="displayModeLarge ? 'height: 100%' : 'height: 500px'"
-        (selectDataIdx)="onSelectDataIdx($event)"
-        class="mr-5"
-      ></ba-bird-society-info-map>
-      <div class="d-flex flex-row flex-wrap my-4 legend-container">
-        <ba-visualization-legend [visualization]="visualizationMode"></ba-visualization-legend>
-        <ba-visualization-selector [visualization]="visualizationMode" (visualizationChange)="onVisualizationChange($event)"></ba-visualization-selector>
-        <ba-bird-society-species-legend *ngIf="selectedTaxon"></ba-bird-society-species-legend>
+@if (loading) {
+  <div class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
+}
+@if (!loading) {
+  <div [ngClass]="displayModeLarge ? 'container-fluid' : 'container'">
+    <div class="d-flex justify-between flex-wrap">
+      <h1>{{ birdSociety!.birdAssociationArea?.value }}</h1>
+      <div class="d-flex flex-wrap">
+        <div><button class="btn btn-default mr-3" (click)="onExportSquares()">Lataa ruutujen selvitysasteet</button></div>
+        <div><button class="btn btn-default" (click)="onResize()">
+          @if (displayModeLarge) {
+            <i class="glyphicon glyphicon-resize-small"></i>
+          }
+          @if (!displayModeLarge) {
+            <i class="glyphicon glyphicon-resize-full"></i>
+          }
+        </button></div>
       </div>
     </div>
-    <div class="info-panel">
-      <ng-container *ngIf="selectedDataIdx >= 0 else society">
-        <ng-container *ngTemplateOutlet="square"></ng-container>
-      </ng-container>
-    <ng-container *ngIf="taxonVisualizationLoading"><laji-spinner class="d-block m-4"></laji-spinner></ng-container>
-    <button *ngIf="selectedTaxon" class="pill" (click)="onTaxonDeselect()" role="button">{{ selectedTaxon.vernacularName.fi }} <span class="glyphicon glyphicon-remove"></span></button> 
-    <ba-bird-society-info-species-table class="d-block my-4" [taxa]="birdSociety!.taxa" (rowClick)="onTableRowClick($event)"></ba-bird-society-info-species-table>
+    <div class="d-flex flex-row flex-wrap">
+      <div class="map-panel flex-grow d-flex flex-col">
+        <ba-bird-society-info-map
+          [atlasGrid]="birdSociety!.gridSquares"
+          [selectedDataIdx]="selectedDataIdx"
+          [visualizationMode]="visualizationMode"
+          [taxonVisualization]="taxonVisualization"
+          [style]="displayModeLarge ? 'height: 100%' : 'height: 500px'"
+          (selectDataIdx)="onSelectDataIdx($event)"
+          class="mr-5"
+        ></ba-bird-society-info-map>
+        <div class="d-flex flex-row flex-wrap my-4 legend-container">
+          <ba-visualization-legend [visualization]="visualizationMode"></ba-visualization-legend>
+          <ba-visualization-selector [visualization]="visualizationMode" (visualizationChange)="onVisualizationChange($event)"></ba-visualization-selector>
+          @if (selectedTaxon) {
+            <ba-bird-society-species-legend></ba-bird-society-species-legend>
+          }
+        </div>
+      </div>
+      <div class="info-panel">
+        @if (selectedDataIdx >= 0) {
+          <ng-container *ngTemplateOutlet="square"></ng-container>
+        } @else {
+          <h3 class="mt-2">{{ 'ba.bird-society-info.activityCategoryTable' | translate }}</h3>
+          <table>
+            <tr>
+              <th>{{ 'ba.bird-society-info.activityCategoryTable.cat' | translate }}</th>
+              <th>{{ 'ba.bird-society-info.activityCategoryTable.percent' | translate }}</th>
+              <th>{{ 'ba.bird-society-info.activityCategoryTable.squareSum' | translate }}</th>
+            </tr>
+            @for (cat of getActivityCategoriesAsList(); track cat) {
+              <tr>
+                <td>{{ cat.name }}</td>
+                <td>{{ cat.squarePercentage | number: '1.0-2'}}</td>
+                <td>{{ cat.squareSum }}</td>
+              </tr>
+            }
+          </table>
+          <p>Yhteensä {{ getGridSquareCount() }} ruutua.</p>
+          <p>{{ 'ba.bird-society-info.selectionInstruction' | translate }}</p>
+        }
+        @if (taxonVisualizationLoading) {
+          <laji-spinner class="d-block m-4"></laji-spinner>
+        }
+        @if (selectedTaxon) {
+          <button class="pill" (click)="onTaxonDeselect()" role="button">{{ selectedTaxon.vernacularName.fi }} <span class="glyphicon glyphicon-remove"></span></button>
+        }
+        <ba-bird-society-info-species-table class="d-block my-4" [taxa]="birdSociety!.taxa" (rowClick)="onTableRowClick($event)"></ba-bird-society-info-species-table>
+      </div>
     </div>
   </div>
-</div>
+}
 
-<ng-template #society>
-  <h3 class="mt-2">{{ 'ba.bird-society-info.activityCategoryTable' | translate }}</h3>
-  <table>
-    <tr>
-      <th>{{ 'ba.bird-society-info.activityCategoryTable.cat' | translate }}</th>
-      <th>{{ 'ba.bird-society-info.activityCategoryTable.percent' | translate }}</th>
-      <th>{{ 'ba.bird-society-info.activityCategoryTable.squareSum' | translate }}</th>
-    </tr>
-    <tr *ngFor="let cat of getActivityCategoriesAsList()">
-      <td>{{ cat.name }}</td>
-      <td>{{ cat.squarePercentage | number: '1.0-2'}}</td>
-      <td>{{ cat.squareSum }}</td>
-    </tr>
-  </table>
-  <p>Yhteensä {{ getGridSquareCount() }} ruutua.</p>
-  <p>{{ 'ba.bird-society-info.selectionInstruction' | translate }}</p>
-</ng-template>
 
 <ng-template #square>
-  <div class="grid-square-panel" *ngIf="birdSociety!.gridSquares[selectedDataIdx] as selected">
-    <div class="d-flex flex-row justify-between">
-      <h3 class="mr-4">{{ selected.name }} <span class="coords">({{selected.coordinates}})</span></h3>
-      <button class="btn btn-default close-btn" (click)="resetSelected()">X</button>
+  @if (birdSociety!.gridSquares[selectedDataIdx]; as selected) {
+    <div class="grid-square-panel">
+      <div class="d-flex flex-row justify-between">
+        <h3 class="mr-4">{{ selected.name }} <span class="coords">({{selected.coordinates}})</span></h3>
+        <button class="btn btn-default close-btn" (click)="resetSelected()">X</button>
+      </div>
+      <ba-grid-square-info [square]="selected"></ba-grid-square-info>
+      <p><a [routerLink]="'/grid/' + selected.coordinates">{{ 'ba.bird-society-info.square.gridPageLink' | translate }}</a></p>
     </div>
-    <ba-grid-square-info [square]="selected"></ba-grid-square-info>
-    <p><a [routerLink]="'/grid/' + selected.coordinates">{{ 'ba.bird-society-info.square.gridPageLink' | translate }}</a></p>
-  </div>
+  }
 </ng-template>

@@ -1,9 +1,14 @@
-<ng-container *ngFor="let val of _values">
+@for (val of _values; track val) {
   <h3>
-    <ng-container *ngIf="val.translate; else field">{{ val.translate | translate }}</ng-container>
-    <ng-template #field>{{ val.key | label }}</ng-template>
+    @if (val.translate) {
+      {{ val.translate | translate }}
+    } @else {
+      {{ val.key | label }}
+    }
   </h3>
   <ul class="{{val.key}}">
-    <li *ngFor="let v of val.value" [innerHTML]="v | label"></li>
+    @for (v of val.value; track v) {
+      <li [innerHTML]="v | label"></li>
+    }
   </ul>
-</ng-container>
+}

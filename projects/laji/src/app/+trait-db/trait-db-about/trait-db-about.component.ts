@@ -8,9 +8,9 @@ const cmsIds = { fi: '6491', sv: '6491', en: '6491' };
 
 @Component({
     template: `
-<ng-container *ngIf="content$ | async; let information">
+@if (content$ | async; as information) {
   <div [innerHtml]="information?.content"></div>
-</ng-container>
+}
 `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false

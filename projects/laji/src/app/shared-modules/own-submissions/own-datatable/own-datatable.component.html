@@ -1,54 +1,59 @@
-<ng-container *ngIf="visibleRows">
+@if (visibleRows) {
   <div id="filter-row-container" class="row">
     <div class="col-sm-12">
-      <div id="download-button-container" *ngIf="showDownloadAll">
-        <lu-button (click)="openChooseFileTypeModal()">
-          <span><i class="glyphicon glyphicon-download-alt"></i> {{ "haseka.submissions.download" | translate }} {{ "haseka.submissions.submissions" | translate }}</span>
-        </lu-button>
-      </div>
-
-      <div class="print-actions" *ngIf="showPrintLabels">
-        <lu-button *ngIf="printState === 'none'" (click)="doLabels()">
-          <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.select.label' | translate }}</span>
-        </lu-button>
-        <ng-container *ngIf="printState === 'select'">
-          <div class="btn-group">
-            <laji-spinner [spinning]="labelLoading" [overlay]="true"></laji-spinner>
-            <lu-button (click)="doLabels()" [disabled]="!selected || selected.length === 0 || labelLoading">
-              <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.make' | translate }}</span>
+      @if (showDownloadAll) {
+        <div id="download-button-container">
+          <lu-button (click)="openChooseFileTypeModal()">
+            <span><i class="glyphicon glyphicon-download-alt"></i> {{ "haseka.submissions.download" | translate }} {{ "haseka.submissions.submissions" | translate }}</span>
+          </lu-button>
+        </div>
+      }
+      @if (showPrintLabels) {
+        <div class="print-actions">
+          @if (printState === 'none') {
+            <lu-button (click)="doLabels()">
+              <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.select.label' | translate }}</span>
             </lu-button>
-            <lu-button (click)="cancelLabels()">
-              <span><i class="glyphicon glyphicon-remove"></i></span>
-            </lu-button>
-          </div>
-        </ng-container>
-      </div>
-
-      <div *ngIf="printState === 'select'" class="print-actions text-block" [innerHtml]="'label.select.intro' | translate">
-      </div>
-
+          }
+          @if (printState === 'select') {
+            <div class="btn-group">
+              <laji-spinner [spinning]="labelLoading" [overlay]="true"></laji-spinner>
+              <lu-button (click)="doLabels()" [disabled]="!selected || selected.length === 0 || labelLoading">
+                <span><i class="glyphicon glyphicon-qrcode"></i> {{ 'label.make' | translate }}</span>
+              </lu-button>
+              <lu-button (click)="cancelLabels()">
+                <span><i class="glyphicon glyphicon-remove"></i></span>
+              </lu-button>
+            </div>
+          }
+        </div>
+      }
+      @if (printState === 'select') {
+        <div class="print-actions text-block" [innerHtml]="'label.select.intro' | translate">
+        </div>
+      }
       <input class="form-control inline-block"
-             type='text'
-             placeholder="{{'haseka.submissions.filter' | translate}}"
-             (keyup)='updateFilter($event)'/>
+        type='text'
+        placeholder="{{'haseka.submissions.filter' | translate}}"
+        (keyup)='updateFilter($event)'/>
+      </div>
     </div>
-  </div>
-  <div class="label-filters" [@labelFilter]="printState === 'select' ? 'open' : 'close'">
-    <ng-container *ngIf="labelFilter$ | async as labelFilter">
-      <div class="label-filter-field"><label><input type="checkbox" (change)="updateLabelFilter('onlyPreservedSpecimen', !labelFilter.onlyPreservedSpecimen)" [checked]="labelFilter.onlyPreservedSpecimen"> {{ 'observations.label.onlyPreserved' | translate }}</label></div>
-      <div class="label-filter-field"><label><input type="checkbox" (change)="updateLabelFilter('multiplyByCount', !labelFilter.multiplyByCount)" [checked]="labelFilter.multiplyByCount"> {{ 'observations.label.multiplyByCount' | translate }}</label></div>
-      <div class="label-filter-field">
-        <label>{{ 'observations.label.detAfter' | translate }}&nbsp;</label>
-        <div class="date-picker-wrapper"><laji-datepicker
-        [(ngModel)]="labelFilter.detLaterThan"
-        [popoverAlign]="'left'"
-        (dateSelect)="updateLabelFilter('detLaterThan', labelFilter.detLaterThan)"
-        (change)="updateLabelFilter('detLaterThan', labelFilter.detLaterThan)"></laji-datepicker></div></div>
-    </ng-container>
-  </div>
-  <ngx-datatable
-    *lajiBrowserOnly
-    class="material striped"
+    <div class="label-filters" [@labelFilter]="printState === 'select' ? 'open' : 'close'">
+      @if (labelFilter$ | async; as labelFilter) {
+        <div class="label-filter-field"><label><input type="checkbox" (change)="updateLabelFilter('onlyPreservedSpecimen', !labelFilter.onlyPreservedSpecimen)" [checked]="labelFilter.onlyPreservedSpecimen"> {{ 'observations.label.onlyPreserved' | translate }}</label></div>
+        <div class="label-filter-field"><label><input type="checkbox" (change)="updateLabelFilter('multiplyByCount', !labelFilter.multiplyByCount)" [checked]="labelFilter.multiplyByCount"> {{ 'observations.label.multiplyByCount' | translate }}</label></div>
+        <div class="label-filter-field">
+          <label>{{ 'observations.label.detAfter' | translate }}&nbsp;</label>
+          <div class="date-picker-wrapper"><laji-datepicker
+            [(ngModel)]="labelFilter.detLaterThan"
+            [popoverAlign]="'left'"
+            (dateSelect)="updateLabelFilter('detLaterThan', labelFilter.detLaterThan)"
+          (change)="updateLabelFilter('detLaterThan', labelFilter.detLaterThan)"></laji-datepicker></div></div>
+        }
+      </div>
+      <ngx-datatable
+        *lajiBrowserOnly
+        class="material striped"
     [cssClasses]="{
       sortAscending: 'glyphicon glyphicon-chevron-down',
       sortDescending: 'glyphicon glyphicon-chevron-up',
@@ -57,172 +62,191 @@
       pagerPrevious: 'glyphicon glyphicon-step-backward',
       pagerNext: 'glyphicon glyphicon-step-forward'
     }"
-    [selectionType]="selectionType!"
-    (select)='onSelect($event)'
-    [selectAllRowsOnPage]="false"
-    [rows]="visibleRows"
-    [rowIdentity]="rowIdentity"
-    [externalSorting]="true"
-    [sorts]="defaultSort"
-    [columnMode]="'flex'"
-    [headerHeight]="38"
-    [rowHeight]="'auto'"
-    [limit]="20"
-    [footerHeight]="30"
-    [messages]="{emptyMessage: loadError, totalMessage: totalMessage}"
-    (sort)="onSort($event)"
-  >
-    <ngx-datatable-row-detail [rowHeight]="undefined!">
-      <ng-template let-row="row" ngx-datatable-row-detail-template>
-        <div *ngFor="let col of useColumns | filterColumns:displayMode:true" style="padding-left: 35px">
-          <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>
-          <span>{{ row[col.prop] }}</span>
-        </div>
-      </ng-template>
-    </ngx-datatable-row-detail>
-
-    <ngx-datatable-column
-      *ngIf="!!selectionType"
-      [width]="30"
-      [sortable]="false"
-      [canAutoResize]="false"
-      [draggable]="false"
-      [resizeable]="false"
-      [headerCheckboxable]="true"
-      [checkboxable]="true">
-    </ngx-datatable-column>
-
-    <ngx-datatable-column [flexGrow]="undefined!" [resizeable]="false"
-                          [draggable]="false" *ngIf="displayMode !== 'large'" [headerClass]="'empty-header'">
-      <ng-template ngx-datatable-header-template><span></span></ng-template>
-      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-        <span class="link">
-          <i class="glyphicon"
-            [ngClass]="{'glyphicon-chevron-right': !expanded, 'glyphicon-chevron-down': expanded}"
-            (click)="toggleExpandRow(row)"></i>
-        </span>
-      </ng-template>
-    </ngx-datatable-column>
-
-    <ngx-datatable-column *ngIf="actions" [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate" [cellClass]="'center-text'"
-                          [flexGrow]="3" [resizeable]="true" [draggable]="false" [headerClass]="'empty-header'" ngPreserveWhitespaces>
-      <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-        <span class="datatable-header-cell-wrapper link"><span></span></span>
-      </ng-template>
-      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-        <div class="mb-2 mr-2" *ngIf="(actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
-          <button
-            class="btn btn-success btn-xs view-button"
-            (click)="showViewer(row.id)">
-            <i class="glyphicon glyphicon-eye-open"></i>
-            <span class="text-button">{{ 'haseka.submissions.view' | translate }}</span>
-          </button>
-        </div>
-        <div class="mb-2 mr-2" *ngIf="(actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPrivate">
-          <button
-            class="btn btn-warning btn-xs view-button"
-            (click)="showViewer(row.id)">
-            <i class="glyphicon glyphicon-eye-close"></i>
-            <span class="text-button">{{ 'haseka.submissions.view' | translate }}</span>
-          </button>
-        </div>
-        <div class="mb-2 mr-2">
-          <a *ngIf="(actions | includes:'edit')"
-            class="btn btn-default btn-xs"
-            [ngClass]="{'edit-button': !onlyTemplates, 'template-button': onlyTemplates}"
-            [routerLink]="row._editUrl | localize">
-            <i class="glyphicon glyphicon-edit"></i>
-            <span class="text-button" *ngIf="onlyTemplates; else noTemplates">{{ 'haseka.submissions.use' | translate }}</span>
-            <ng-template #noTemplates>
-              <span class="text-button">{{ 'haseka.submissions.edit' | translate }}</span>
+        [selectionType]="selectionType!"
+        (select)='onSelect($event)'
+        [selectAllRowsOnPage]="false"
+        [rows]="visibleRows"
+        [rowIdentity]="rowIdentity"
+        [externalSorting]="true"
+        [sorts]="defaultSort"
+        [columnMode]="'flex'"
+        [headerHeight]="38"
+        [rowHeight]="'auto'"
+        [limit]="20"
+        [footerHeight]="30"
+        [messages]="{emptyMessage: loadError, totalMessage: totalMessage}"
+        (sort)="onSort($event)"
+        >
+        <ngx-datatable-row-detail [rowHeight]="undefined!">
+          <ng-template let-row="row" ngx-datatable-row-detail-template>
+            @for (col of useColumns | filterColumns:displayMode:true; track col) {
+              <div style="padding-left: 35px">
+                <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>
+                <span>{{ row[col.prop] }}</span>
+              </div>
+            }
+          </ng-template>
+        </ngx-datatable-row-detail>
+        @if (!!selectionType) {
+          <ngx-datatable-column
+            [width]="30"
+            [sortable]="false"
+            [canAutoResize]="false"
+            [draggable]="false"
+            [resizeable]="false"
+            [headerCheckboxable]="true"
+            [checkboxable]="true">
+          </ngx-datatable-column>
+        }
+        @if (displayMode !== 'large') {
+          <ngx-datatable-column [flexGrow]="undefined!" [resizeable]="false"
+            [draggable]="false" [headerClass]="'empty-header'">
+            <ng-template ngx-datatable-header-template><span></span></ng-template>
+            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+              <span class="link">
+                <i class="glyphicon"
+                  [ngClass]="{'glyphicon-chevron-right': !expanded, 'glyphicon-chevron-down': expanded}"
+                (click)="toggleExpandRow(row)"></i>
+              </span>
             </ng-template>
-          </a>
-        </div>
-      </ng-template>
-    </ngx-datatable-column>
-
-    <ngx-datatable-column *ngFor="let col of useColumns | filterColumns:displayMode"
-                          [prop]="col.prop"
-                          [resizeable]="false"
-                          [draggable]="false"
+          </ngx-datatable-column>
+        }
+        @if (actions) {
+          <ngx-datatable-column [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate" [cellClass]="'center-text'"
+            [flexGrow]="3" [resizeable]="true" [draggable]="false" [headerClass]="'empty-header'" ngPreserveWhitespaces>
+            <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+              <span class="datatable-header-cell-wrapper link"><span></span></span>
+            </ng-template>
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              @if ((actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPublic) {
+                <div class="mb-2 mr-2">
+                  <button
+                    class="btn btn-success btn-xs view-button"
+                    (click)="showViewer(row.id)">
+                    <i class="glyphicon glyphicon-eye-open"></i>
+                    <span class="text-button">{{ 'haseka.submissions.view' | translate }}</span>
+                  </button>
+                </div>
+              }
+              @if ((actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPrivate) {
+                <div class="mb-2 mr-2">
+                  <button
+                    class="btn btn-warning btn-xs view-button"
+                    (click)="showViewer(row.id)">
+                    <i class="glyphicon glyphicon-eye-close"></i>
+                    <span class="text-button">{{ 'haseka.submissions.view' | translate }}</span>
+                  </button>
+                </div>
+              }
+              <div class="mb-2 mr-2">
+                @if ((actions | includes:'edit')) {
+                  <a
+                    class="btn btn-default btn-xs"
+                    [ngClass]="{'edit-button': !onlyTemplates, 'template-button': onlyTemplates}"
+                    [routerLink]="row._editUrl | localize">
+                    <i class="glyphicon glyphicon-edit"></i>
+                    @if (onlyTemplates) {
+                      <span class="text-button">{{ 'haseka.submissions.use' | translate }}</span>
+                    } @else {
+                      <span class="text-button">{{ 'haseka.submissions.edit' | translate }}</span>
+                    }
+                  </a>
+                }
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+        }
+        @for (col of useColumns | filterColumns:displayMode; track col) {
+          <ngx-datatable-column
+            [prop]="col.prop"
+            [resizeable]="false"
+            [draggable]="false"
                           [name]="(columnNameMapping && columnNameMapping[col.prop])
                                   ? columnNameMapping[col.prop]
                                   : 'haseka.submissions.' + col.prop | translate"
-                          [flexGrow]="3"
-                          [cellClass]="'break-word'">
-      <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-        <span class="datatable-header-cell-wrapper"
-              (click)="sort()"
-              title="{{column.name}}">
-          <span class="datatable-header-cell-label draggable">
-            {{ column.name }}
-          </span>
-        </span>
-      </ng-template>
-    </ngx-datatable-column>
+            [flexGrow]="3"
+            [cellClass]="'break-word'">
+            <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+              <span class="datatable-header-cell-wrapper"
+                (click)="sort()"
+                title="{{column.name}}">
+                <span class="datatable-header-cell-label draggable">
+                  {{ column.name }}
+                </span>
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
+        }
+        @if (actions | includes:['download', 'stats', 'delete']) {
+          <ngx-datatable-column [width]="100" [flexGrow]="4" [draggable]="false" [resizeable]="true" [cellClass]="'center-text'">
+            <ng-template ngx-datatable-header-template><span></span></ng-template>
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              <div ngPreserveWhitespaces>
+                <div class="mb-2 mr-2">
+                  @if ((actions | includes:'download') && onlyTemplates === false) {
+                    <button
+                      class="btn btn-default btn-xs download-button"
+                      (click)="openChooseFileTypeModal(row.id)">
+                      <i class="glyphicon glyphicon-download-alt"></i>
+                      <span class="text-button">{{ 'haseka.submissions.downloadFile' | translate }}</span>
+                    </button>
+                  }
+                  @if (forms$ | async; as forms) {
+                    @if ((actions | includes:'stats') && forms[row.formID]?.options?.viewerType) {
+                      <button
+                        class="btn btn-default btn-xs"
+                        [routerLink]="'/project/' + row.formID + '/submissions/' + row.id">
+                        <i class="glyphicon glyphicon-stats"></i>
+                        <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
+                      </button>
+                    }
+                  }
+                </div>
+                @if ((actions | includes:'delete') && (admin || row.creator === usersId)) {
+                  <button
+                    class="btn btn-danger btn-xs delete-button"
+                    [luTooltip]="'friend.remove' | translate"
+                    [placement]="'left'"
+                    (click)="deleteDialog(row)">
+                    <i class="glyphicon glyphicon-remove"></i>
+                    <span class="text-button">{{ 'np.delete' | translate }}</span>
+                  </button>
+                }
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+        }
+      </ngx-datatable>
+    }
 
-    <ngx-datatable-column *ngIf="actions | includes:['download', 'stats', 'delete']" [width]="100" [flexGrow]="4" [draggable]="false" [resizeable]="true" [cellClass]="'center-text'">
-      <ng-template ngx-datatable-header-template><span></span></ng-template>
-      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-        <div ngPreserveWhitespaces>
-          <div class="mb-2 mr-2">
-            <button *ngIf="(actions | includes:'download') && onlyTemplates === false"
-              class="btn btn-default btn-xs download-button"
-              (click)="openChooseFileTypeModal(row.id)">
-              <i class="glyphicon glyphicon-download-alt"></i>
-              <span class="text-button">{{ 'haseka.submissions.downloadFile' | translate }}</span>
-            </button>
-            <ng-container *ngIf="forms$ | async as forms">
-              <button *ngIf="(actions | includes:'stats') && forms[row.formID]?.options?.viewerType"
-                class="btn btn-default btn-xs"
-                [routerLink]="'/project/' + row.formID + '/submissions/' + row.id">
-                <i class="glyphicon glyphicon-stats"></i>
-                <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
-              </button>
-            </ng-container>
-          </div>
-          <button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
-            class="btn btn-danger btn-xs delete-button"
-            [luTooltip]="'friend.remove' | translate"
-            [placement]="'left'"
-            (click)="deleteDialog(row)">
-            <i class="glyphicon glyphicon-remove"></i>
-            <span class="text-button">{{ 'np.delete' | translate }}</span>
-          </button>
+    <lu-modal #chooseFileTypeModal size="sm">
+      <h4>{{ 'haseka.submissions.chooseFormat' | translate }}</h4>
+      <div>
+        <div class="radio">
+          <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="csv">.csv</label>
         </div>
-      </ng-template>
-    </ngx-datatable-column>
-  </ngx-datatable>
-</ng-container>
+        <div class="radio">
+          <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="tsv">.tsv</label>
+        </div>
+        <div class="radio">
+          <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="ods">.ods</label>
+        </div>
+        <div class="radio">
+          <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">.xlsx</label>
+        </div>
+      </div>
+      <div class="lu-modal-footer">
+        <button type="button" class="btn btn-default" (click)="download.emit({fileType: fileType, documentId: downloadedDocumentId})">
+          <span>{{ "haseka.submissions.download" | translate }}</span>
+        </button>
+      </div>
+    </lu-modal>
 
-<lu-modal #chooseFileTypeModal size="sm">
-  <h4>{{ 'haseka.submissions.chooseFormat' | translate }}</h4>
-  <div>
-    <div class="radio">
-      <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="csv">.csv</label>
-    </div>
-    <div class="radio">
-      <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="tsv">.tsv</label>
-    </div>
-    <div class="radio">
-      <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="ods">.ods</label>
-    </div>
-    <div class="radio">
-      <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">.xlsx</label>
-    </div>
-  </div>
-  <div class="lu-modal-footer">
-    <button type="button" class="btn btn-default" (click)="download.emit({fileType: fileType, documentId: downloadedDocumentId})">
-      <span>{{ "haseka.submissions.download" | translate }}</span>
-    </button>
-  </div>
-</lu-modal>
-
-<lu-modal #deleteModal size="sm" contentClass="datatable-delete-modal">
-  <h4 class="modal-title" [innerHtml]="(onlyTemplates ? 'haseka.delete.template' : 'haseka.delete.description') | translate:{id: deleteRow?.id, name: deleteRow?.templateName}"></h4>
-  <div class="lu-modal-footer">
-    <button type="button" class="btn btn-danger" [disabled]="deleting" (click)="deleteDocument()">
-      <span>{{ "haseka.delete.ok" | translate }}</span>
-    </button>
-  </div>
-</lu-modal>
+    <lu-modal #deleteModal size="sm" contentClass="datatable-delete-modal">
+      <h4 class="modal-title" [innerHtml]="(onlyTemplates ? 'haseka.delete.template' : 'haseka.delete.description') | translate:{id: deleteRow?.id, name: deleteRow?.templateName}"></h4>
+      <div class="lu-modal-footer">
+        <button type="button" class="btn btn-danger" [disabled]="deleting" (click)="deleteDocument()">
+          <span>{{ "haseka.delete.ok" | translate }}</span>
+        </button>
+      </div>
+    </lu-modal>

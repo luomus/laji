@@ -1,26 +1,37 @@
-<div class="unit" *ngIf="unit">
-    <div class="image" *ngIf="unit.media">
+@if (unit) {
+  <div class="unit">
+    @if (unit.media) {
+      <div class="image">
         <img [src]="unit.media[0].thumbnailURL" />
-        <div class="number-images" *ngIf="unit.media.length > 1"><span>{{ unit.media.length }}</span></div>
-    </div>
-    <div class="image no-media" *ngIf="!unit.media"><span>{{ 'annotation.noImages' | translate }}</span></div>
-    <div class="status-annotation" *ngIf="unit.status"><span class="need-id"></span></div>
-    <div *ngIf="(unit.linkings && (unit.linkings.taxon || unit.linkings.originalTaxon)); else informalTaxonGroup">
+        @if (unit.media.length > 1) {
+          <div class="number-images"><span>{{ unit.media.length }}</span></div>
+        }
+      </div>
+    }
+    @if (!unit.media) {
+      <div class="image no-media"><span>{{ 'annotation.noImages' | translate }}</span></div>
+    }
+    @if (unit.status) {
+      <div class="status-annotation"><span class="need-id"></span></div>
+    }
+    @if ((unit.linkings && (unit.linkings.taxon || unit.linkings.originalTaxon))) {
+      <div>
         <div class="taxon">
-            <ng-container *ngIf="unit.linkings.taxon; then originalTaxon; else originalTaxon">
-                <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.taxon"></laji-taxon-name>
-            </ng-container>
-            <ng-template #originalTaxon>
-                <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
-            </ng-template>
+          @if (unit.linkings.taxon) {
+            <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
+          } @else {
+            <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
+          }
         </div>
-    </div>
-    <ng-template #informalTaxonGroup>
-        <div class="taxon">{{ unit.reportedInformalTaxonGroup | toQName | label }}</div>
-    </ng-template>
-    <laji-annotation-item-status
-    *ngIf="unit.interpretations && (unit.interpretations.needsCheck || unit.interpretations.needsIdentification)"
-    [interpretation]="unit.interpretations"
-    [text]="true"
-    ></laji-annotation-item-status>
-</div>
+      </div>
+    } @else {
+      <div class="taxon">{{ unit.reportedInformalTaxonGroup | toQName | label }}</div>
+    }
+    @if (unit.interpretations && (unit.interpretations.needsCheck || unit.interpretations.needsIdentification)) {
+      <laji-annotation-item-status
+        [interpretation]="unit.interpretations"
+        [text]="true"
+      ></laji-annotation-item-status>
+    }
+  </div>
+}

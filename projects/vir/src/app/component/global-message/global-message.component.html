@@ -1,8 +1,10 @@
-<div class="global-message" *ngIf="message">
-  <ng-container *ngIf="!isCurrentPageClosed()">
-    <div class="global-message-inner">
-      <h1 class="global-message-title">{{ message.title }}</h1>
-      <div [innerHTML]="message.content"></div>
-    </div>
-  </ng-container>
-</div>
+@if (message) {
+  <div class="global-message">
+    @if (!isCurrentPageClosed()) {
+      <div class="global-message-inner">
+        <h1 class="global-message-title">{{ message.title }}</h1>
+        <div [innerHTML]="message.content"></div>
+      </div>
+    }
+  </div>
+}

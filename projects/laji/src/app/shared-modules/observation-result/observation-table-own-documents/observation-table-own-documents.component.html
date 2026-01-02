@@ -1,5 +1,6 @@
 <laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
-<div class="observation-table-wrapper" *ngIf="result.results.length > 0 && !loading">
+@if (result.results.length > 0 && !loading) {
+  <div class="observation-table-wrapper">
     <laji-datatable-header
       [downloadText]="'haseka.submissions.download' | translate"
       [downloadLoading]="downloadLoading"
@@ -28,7 +29,10 @@
       [totalMessage]="'haseka.submissions.total' | translate"
       [columns]="columns">
     </laji-datatable-own-submissions>
-</div>
-<div *ngIf="result.results.length === 0 && !loading">
- {{ 'result.notOwnDocuments' | translate}}
-</div>
+  </div>
+}
+@if (result.results.length === 0 && !loading) {
+  <div>
+    {{ 'result.notOwnDocuments' | translate}}
+  </div>
+}

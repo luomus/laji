@@ -1,6 +1,12 @@
-<div *ngFor="let data of _errors">
-  <strong *ngIf="fields[data.field]">{{ fields[data.field].fullLabel }}</strong>
-  <ul class="errors">
-    <li *ngFor="let error of data.errors">{{ error | translate }}</li>
-  </ul>
-</div>
+@for (data of _errors; track data) {
+  <div>
+    @if (fields[data.field]) {
+      <strong>{{ fields[data.field].fullLabel }}</strong>
+    }
+    <ul class="errors">
+      @for (error of data.errors; track error) {
+        <li>{{ error | translate }}</li>
+      }
+    </ul>
+  </div>
+}

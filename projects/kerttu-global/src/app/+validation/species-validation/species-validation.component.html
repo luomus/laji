@@ -1,4 +1,4 @@
-<ng-container *ngIf="hasLock else noLock">
+@if (hasLock) {
   <ng-container *lajiRequiresAudioSupport="audioSampleRate">
     <bsg-version-nav
       class="pull-right"
@@ -18,14 +18,12 @@
       (templateCancel)="goToSpeciesList()"
     ></bsg-species-template-validation>
   </ng-container>
-</ng-container>
-<ng-template #noLock>
-  <ng-container *ngIf="hasLock === false else loading">
+} @else {
+  @if (hasLock === false) {
     <div class="alert alert-danger">
       {{ 'validation.noLock' | translate }}
     </div>
-  </ng-container>
-</ng-template>
-<ng-template #loading>
-  <laji-spinner></laji-spinner>
-</ng-template>
+  } @else {
+    <laji-spinner></laji-spinner>
+  }
+}

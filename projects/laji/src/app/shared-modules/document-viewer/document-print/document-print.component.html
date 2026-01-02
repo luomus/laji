@@ -1,44 +1,54 @@
-<div class="page" *ngIf="hasDoc && document">
-  <div>
-    <div class="page-header">
-      <h3>
-        {{ 'viewer.document' | translate }}
-        <small>
-          {{ document.documentId }}
-        </small>
-      </h3>
-    </div>
-    <laji-issues [data]="document" [hideTooltips]="true"></laji-issues>
-    <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionId | toQName | collectionName" ngPreserveWhitespaces></laji-row>
-    <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
-    <laji-row [title]="'MY.keywords' | label" [value]="document.keywords"></laji-row>
-    <laji-facts [show]="showFacts" [facts]="document.facts | factNotIn:['http://tun.fi/MY.formID','http://tun.fi/MZ.publicityRestrictions']"></laji-facts>
-    <laji-print-images *ngIf="document.media" [images]="document.media"></laji-print-images>
-  </div>
-
-  <div class="gathering" *ngFor="let gathering of document.gatherings; let i=index">
-    <h4 class="page-header">{{ 'viewer.print.place' | translate }} {{ i + 1 }}</h4>
+@if (hasDoc && document) {
+  <div class="page">
     <div>
-      <div [ngClass]="{'half-page-block padding-right': mapData[i]}">
+      <div class="page-header">
+        <h3>
+          {{ 'viewer.document' | translate }}
+          <small>
+            {{ document.documentId }}
+          </small>
+        </h3>
+      </div>
+      <laji-issues [data]="document" [hideTooltips]="true"></laji-issues>
+      <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionId | toQName | collectionName" ngPreserveWhitespaces></laji-row>
+      <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
+      <laji-row [title]="'MY.keywords' | label" [value]="document.keywords"></laji-row>
+      <laji-facts [show]="showFacts" [facts]="document.facts | factNotIn:['http://tun.fi/MY.formID','http://tun.fi/MZ.publicityRestrictions']"></laji-facts>
+      @if (document.media) {
+        <laji-print-images [images]="document.media"></laji-print-images>
+      }
+    </div>
+    @for (gathering of document.gatherings; track gathering; let i = $index) {
+      <div class="gathering">
+        <h4 class="page-header">{{ 'viewer.print.place' | translate }} {{ i + 1 }}</h4>
         <div>
-          <laji-issues [data]="gathering" [hideTooltips]="true"></laji-issues>
-          <laji-gathering-rows [gathering]="gathering" [hideTooltips]="true"></laji-gathering-rows>
-          <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>
+          <div [ngClass]="{'half-page-block padding-right': mapData[i]}">
+            <div>
+              <laji-issues [data]="gathering" [hideTooltips]="true"></laji-issues>
+              <laji-gathering-rows [gathering]="gathering" [hideTooltips]="true"></laji-gathering-rows>
+              <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>
+            </div>
+          </div>
+          @if (mapData[i]) {
+            <div class="half-page-block padding-left">
+              <laji-print-map [data]="mapData[i]"></laji-print-map>
+            </div>
+          }
+          @if (gathering.media) {
+            <laji-print-images [images]="gathering.media"></laji-print-images>
+          }
         </div>
-      </div>
-      <div *ngIf="mapData[i]" class="half-page-block padding-left">
-        <laji-print-map [data]="mapData[i]"></laji-print-map>
-      </div>
-      <laji-print-images *ngIf="gathering.media" [images]="gathering.media"></laji-print-images>
+        <div>
+          @for (unit of gathering.units; track unit) {
+            <hr>
+              <laji-unit-rows [unit]="unit" [showFacts]="showFacts" [showLinks]="false"></laji-unit-rows>
+              <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
+              @if (unit.media) {
+                <laji-print-images [images]="unit.media"></laji-print-images>
+              }
+            }
+          </div>
+        </div>
+      }
     </div>
-
-    <div>
-      <ng-container *ngFor="let unit of gathering.units">
-        <hr>
-        <laji-unit-rows [unit]="unit" [showFacts]="showFacts" [showLinks]="false"></laji-unit-rows>
-        <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
-        <laji-print-images *ngIf="unit.media" [images]="unit.media"></laji-print-images>
-      </ng-container>
-    </div>
-  </div>
-</div>
+  }

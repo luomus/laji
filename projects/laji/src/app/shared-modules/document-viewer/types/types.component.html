@@ -1,15 +1,18 @@
-<ng-container *ngIf="!!types && types.length !== 0">
-  <ng-container *ngIf="showFacts; else rowView">
+@if (!!types && types.length !== 0) {
+  @if (showFacts) {
     <laji-row [title]="'viewer.types' | translate" value=" "></laji-row>
-    <div class="inset" *ngFor="let type of types">
-      <laji-type [type]="type" [showFacts]="showFacts"></laji-type>
-    </div>
-  </ng-container>
-      <ng-template #rowView>
-      <laji-row [title]="'viewer.types' | translate">
-        <div *ngFor="let type of types">
+    @for (type of types; track type) {
+      <div class="inset">
+        <laji-type [type]="type" [showFacts]="showFacts"></laji-type>
+      </div>
+    }
+  } @else {
+    <laji-row [title]="'viewer.types' | translate">
+      @for (type of types; track type) {
+        <div>
           <laji-type [type]="type" [showFacts]="showFacts"></laji-type>
         </div>
-      </laji-row>
-    </ng-template>
-</ng-container>
+      }
+    </laji-row>
+  }
+}

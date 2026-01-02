@@ -56,10 +56,12 @@ export const getPointIconAsCircle = (po: PathOptions & { opacity: number }, feat
     template: `
     <div class="laji-map-wrap">
       <div #lajiMap class="laji-map"></div>
-      <div class="loading-map loading" *ngIf="loading"></div>
+      @if (loading) {
+        <div class="loading-map loading"></div>
+      }
       <ng-content></ng-content>
     </div>
-  `,
+    `,
     styleUrls: ['./laji-map.component.scss'],
     providers: [],
     changeDetection: ChangeDetectionStrategy.OnPush,

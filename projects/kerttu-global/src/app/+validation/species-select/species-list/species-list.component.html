@@ -4,10 +4,12 @@
   [filters]="filters"
   (queryChange)="onQueryChange($event)"
 ></bsg-species-list-filters>
-<p class="text-danger" *ngIf="speciesList.hasModifications">
-  <i class="fa fa-exclamation-circle"></i>
-  {{ 'speciesList.hasModifications' | translate }}
-</p>
+@if (speciesList.hasModifications) {
+  <p class="text-danger">
+    <i class="fa fa-exclamation-circle"></i>
+    {{ 'speciesList.hasModifications' | translate }}
+  </p>
+}
 <bsg-species-table
   class="d-block"
   [luFillHeight]="{ minHeight: 500 }"

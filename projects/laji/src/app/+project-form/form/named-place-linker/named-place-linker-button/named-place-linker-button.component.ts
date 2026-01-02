@@ -15,16 +15,18 @@ interface ViewModel {
 @Component({
     selector: 'laji-named-place-linker-button',
     template: `
-    <ng-container *ngIf="vm$ | async as vm">
-      <lu-alert type="warning" *ngIf="vm.isLinkable">
-        {{ 'np.linker.npMissing' | translate }} <br>
-        <lu-button
-          [anchor]="['/project', vm.formID, 'form', vm.documentID, 'link'] | localize"
-          id="link-to-np"
+    @if (vm$ | async; as vm) {
+      @if (vm.isLinkable) {
+        <lu-alert type="warning">
+          {{ 'np.linker.npMissing' | translate }} <br>
+          <lu-button
+            [anchor]="['/project', vm.formID, 'form', vm.documentID, 'link'] | localize"
+            id="link-to-np"
           (click)="this.link.emit($event)">{{ 'np.linker.start' | translate }}</lu-button>
-      </lu-alert>
-    </ng-container>
-  `,
+        </lu-alert>
+      }
+    }
+    `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })

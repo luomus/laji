@@ -3,17 +3,19 @@
     {{ 'excel.map.value-intro' | translate }}
   </p>
 
-  <h4 *ngIf="field">{{ field.fullLabel }}</h4>
-  <ng-container [ngSwitch]="special">
-    <ng-container *ngSwitchCase="specials.person">
+  @if (field) {
+    <h4>{{ field.fullLabel }}</h4>
+  }
+  @switch (special) {
+    @case (specials.person) {
       <laji-special-friend
         [field]="field"
         [invalidValues]="invalid"
         [mapping]="valueMap[field.key]"
         (mappingChanged)="onMapping($event)"
       ></laji-special-friend>
-    </ng-container>
-    <ng-container *ngSwitchCase="specials.geometry">
+    }
+    @case (specials.geometry) {
       <laji-special-geometry
         [field]="field"
         [invalidValues]="invalid"
@@ -21,32 +23,32 @@
         (mappingChanged)="onMapping($event)"
         (done)="analyseNextColumn()"
       ></laji-special-geometry>
-    </ng-container>
-    <ng-container *ngSwitchCase="specials.taxonID">
+    }
+    @case (specials.taxonID) {
       <laji-special-taxon-id
         [field]="field"
         [invalidValues]="invalid"
         [mapping]="valueMap[field.key]"
         (mappingChanged)="onMapping($event)"
       ></laji-special-taxon-id>
-    </ng-container>
-    <ng-container *ngSwitchCase="specials.informalTaxonGroupID">
+    }
+    @case (specials.informalTaxonGroupID) {
       <laji-special-informal-taxon-groups
         [field]="field"
         [invalidValues]="invalid"
         [mapping]="valueMap[field.key]"
         (mappingChanged)="onMapping($event)"
       ></laji-special-informal-taxon-groups>
-    </ng-container>
-    <ng-container *ngSwitchCase="specials.unitTaxon">
+    }
+    @case (specials.unitTaxon) {
       <laji-special-taxon-name
         [field]="field"
         [invalidValues]="invalid"
         [mapping]="valueMap[field.key]"
         (mappingChanged)="onMapping($event)"
       ></laji-special-taxon-name>
-    </ng-container>
-    <ng-container *ngSwitchCase="specials.namedPlaceID">
+    }
+    @case (specials.namedPlaceID) {
       <laji-special-named-places
         [formID]="formID"
         [field]="field"
@@ -54,16 +56,16 @@
         [mapping]="valueMap[field.key]"
         (mappingChanged)="onMapping($event)"
       ></laji-special-named-places>
-    </ng-container>
-    <ng-container *ngSwitchDefault>
+    }
+    @default {
       <laji-cell-value-select
         [field]="field"
         [invalidValues]="invalid"
         [mapping]="valueMap[field.key]"
         (mappingChanged)="onMapping($event)"
       ></laji-cell-value-select>
-    </ng-container>
-  </ng-container>
+    }
+  }
 
   <div class="row">
     <div class="col-sm-12">

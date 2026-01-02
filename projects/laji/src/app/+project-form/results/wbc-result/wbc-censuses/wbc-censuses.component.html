@@ -1,14 +1,14 @@
 <h3>{{ 'wbc.stats.censuses' | translate }}</h3>
 
 <laji-wbc-result-filters (yearChange)="activeYear = $event; onFilterChange()"
-                         (seasonChange)="activeSeason = $event; onFilterChange()"
-                         [yearRequired]="true"
-                         [showAreaFilter]="false"
+  (seasonChange)="activeSeason = $event; onFilterChange()"
+  [yearRequired]="true"
+  [showAreaFilter]="false"
 ></laji-wbc-result-filters>
 
 <lu-tabs [selectedIndex]="activeIndex" (selectedChange)="setActive($event)">
   <lu-tab [heading]="'np.list' | translate">
-    <ng-container *ngIf="loadedTabs.isLoaded('list')">
+    @if (loadedTabs.isLoaded('list')) {
       <laji-wbc-routes-list
         [rows]="rows"
         [selected]="selected"
@@ -18,10 +18,10 @@
         [countLabel]="'wbc.stats.route.count'"
         (rowSelect)="openViewer($event['document.documentId'])"
       ></laji-wbc-routes-list>
-    </ng-container>
+    }
   </lu-tab>
   <lu-tab [heading]="'np.map' | translate">
-    <ng-container *ngIf="loadedTabs.isLoaded('map')">
+    @if (loadedTabs.isLoaded('map')) {
       <laji-wbc-routes-map
         [data]="rows"
         [showNameAsLink]="false"
@@ -29,6 +29,6 @@
         [countLabel]="'wbc.stats.censusCount'"
         (rowSelect)="openViewer($event['document.documentId'])"
       ></laji-wbc-routes-map>
-    </ng-container>
+    }
   </lu-tab>
 </lu-tabs>

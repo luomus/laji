@@ -1,17 +1,20 @@
-<video *ngIf="data.bgIsVideo" autoplay loop [muted]="'muted'">
-  <source [src]="data.bgSrc" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+@if (data.bgIsVideo) {
+  <video autoplay loop [muted]="'muted'">
+    <source [src]="data.bgSrc" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+}
 <div class="d-flex content-container" [ngClass]="data.contentPlacement === 'left' ? 'justify-start' : 'justify-end'">
   <div>
-    <ng-container *ngIf="data.style === 'front' else default">
+    @if (data.style === 'front') {
       <h1 class="front-title">{{ data.title }}</h1>
       <div class="front-content" [innerHTML]="data.content"></div>
-    </ng-container>
+    } @else {
+      <div class="panel" [innerHTML]="data.content"></div>
+    }
   </div>
 </div>
-<div class="caption" *ngIf="data.bgCaption">{{ data.bgCaption }}</div>
+@if (data.bgCaption) {
+  <div class="caption">{{ data.bgCaption }}</div>
+}
 
-<ng-template #default>
-  <div class="panel" [innerHTML]="data.content"></div>
-</ng-template>

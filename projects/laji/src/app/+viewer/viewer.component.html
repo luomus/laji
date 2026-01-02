@@ -1,6 +1,7 @@
 <div class="container-fluid" style="padding-bottom: 20px; padding-top: 20px;">
-  <laji-document-annotation *ngIf="openAnnotation; else normalViewer" [uri]="uri!" [highlight]="highlight" [own]="own" [showTitle]="true" [openAnnotation]="openAnnotation"></laji-document-annotation>
-  <ng-template #normalViewer>
+  @if (openAnnotation) {
+    <laji-document-annotation [uri]="uri!" [highlight]="highlight" [own]="own" [showTitle]="true" [openAnnotation]="openAnnotation"></laji-document-annotation>
+  } @else {
     <laji-document [uri]="uri!" [highlight]="highlight" [own]="own" [showTitle]="true" [openAnnotation]="openAnnotation!"></laji-document>
-  </ng-template>
+  }
 </div>

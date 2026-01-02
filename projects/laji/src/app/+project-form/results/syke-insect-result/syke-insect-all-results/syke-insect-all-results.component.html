@@ -1,15 +1,17 @@
 <h3>
-    {{ 'sykeInsect.stats.allResults' | translate }}
-    <span *ngIf="fromYear">
+  {{ 'sykeInsect.stats.allResults' | translate }}
+  @if (fromYear) {
+    <span>
       {{ fromMonth | translate }}
       {{ fromYear }}
     </span>
-  </h3>
-  <div class="row">
-    <div class="col-sm-12">
-      <p>
-        {{ 'nafi.stats.times' | translate }}
-        <br>
+  }
+</h3>
+<div class="row">
+  <div class="col-sm-12">
+    <p>
+      {{ 'nafi.stats.times' | translate }}
+      <br>
         <a [routerLink]="[]" [queryParams]="{tab: 'species', time: 'all'}">{{ 'theme.filterAllNoYears' | translate }}</a> |
         <a [routerLink]="[]" [queryParams]="{tab: 'species', time: currentYear}">{{ 'theme.filterCurrentYear' | translate }}</a> |
         <a [routerLink]="[]" [queryParams]="{tab: 'species', time: year}">{{ 'theme.filterLastYear' | translate }}</a>
@@ -31,19 +33,21 @@
       </laji-ykj-map>
     </div>
     <div class="col-sm-7 col-sm-pull-5 table-col">
-      <laji-theme-result
-              *ngIf="query && !query.ykj10kmCenter"
-              (nameClick)="navigate($event)"
-              [useStatistics]="true"
-              [query]="resultQuery"
-              [height]="'calc(80vh - 50px)'"
-      ></laji-theme-result>
-      <laji-theme-observation-list
-              *ngIf="query && query.ykj10kmCenter"
-              (listClose)="closeList()"
-              [query]="query"
-              [height]="'calc(80vh - 50px)'"
-      ></laji-theme-observation-list>
+      @if (query && !query.ykj10kmCenter) {
+        <laji-theme-result
+          (nameClick)="navigate($event)"
+          [useStatistics]="true"
+          [query]="resultQuery"
+          [height]="'calc(80vh - 50px)'"
+        ></laji-theme-result>
+      }
+      @if (query && query.ykj10kmCenter) {
+        <laji-theme-observation-list
+          (listClose)="closeList()"
+          [query]="query"
+          [height]="'calc(80vh - 50px)'"
+        ></laji-theme-observation-list>
+      }
     </div>
   </div>
-  
+

@@ -6,37 +6,37 @@
     [nodes]="optionsTree"
     [options]="options"
     (initialized)="treeInit()"
-  >
+    >
     <ng-template #treeNodeWrapperTemplate let-node>
       <div class="node-wrapper">
         <tree-node-expander [node]="node"></tree-node-expander>
         <div [class]="node.getClass()" [style.padding-left]="node.getNodePadding()"
-             [class.node-content-wrapper-active]="node.isActive"
-             [class.node-content-wrapper-focused]="node.isFocused"
-             (click)="node.mouseAction('click', $event)">
-          <ng-container *ngIf="includeQualityIcon && node.data.quality">
+          [class.node-content-wrapper-active]="node.isActive"
+          [class.node-content-wrapper-focused]="node.isFocused"
+          (click)="node.mouseAction('click', $event)">
+          @if (includeQualityIcon && node.data.quality) {
             <img class="quality-image" [src]="node.data.quality | qualityUrl" [luTooltip]="node.data.quality | label">
-          </ng-container>
-          <ng-container *ngIf="includeCheckbox">
+          }
+          @if (includeCheckbox) {
             <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(node.data.id)"></laji-checkbox>
-          </ng-container>
-          <span *ngIf="includeCount then withCount; else withoutCount"></span>
-          <ng-template #withCount>
+          }
+          @if (includeCount) {
             <span>{{ node.data.name }} ({{ node.data.count | countRounding }})</span>
-          </ng-template>
-          <ng-template #withoutCount>
+          } @else {
             <span>{{ node.data.name }}</span>
-          </ng-template>
-          <span *ngIf="includeLink">
+          }
+          @if (includeLink) {
+            <span>
               <a
                 id="selectionLink"
                 [luTooltip]="'openCollectionPage' | translate"
                 target="_blank" [href]="node.data.id | toFullUri">
                 <i
                   id="selectionLink"
-                  class="glyphicon glyphicon-eye-open selection-link"></i>
+                class="glyphicon glyphicon-eye-open selection-link"></i>
               </a>
             </span>
+          }
         </div>
       </div>
     </ng-template>

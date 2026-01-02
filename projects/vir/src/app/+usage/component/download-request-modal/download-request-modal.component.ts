@@ -7,7 +7,7 @@ import {
 @Component({
     selector: 'vir-download-request-modal',
     template: `
-    <ng-container *ngIf="downloadRequest">
+    @if (downloadRequest) {
       <h4>
         {{ 'downloadRequest.' + (getDownloadRequestType(downloadRequest)) | translate }}
         {{ downloadRequest.id | toFullUri }}
@@ -17,8 +17,8 @@ import {
         [showPerson]="showPerson"
         [showDownload]="showFileDownload ? 'always' : 'never'"
       ></laji-download-request>
-    </ng-container>
-  `,
+    }
+    `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })

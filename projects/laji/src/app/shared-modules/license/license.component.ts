@@ -97,21 +97,26 @@ const LICENSES: {[type: string]: ILicense} = {
 @Component({
     selector: 'laji-license',
     template: `
-    <ng-container [ngSwitch]="_type">
-        <ng-container *ngSwitchCase="'MZ.intellectualRightsARR'">
-            © {{ _type | label }}
-        </ng-container>
-        <ng-container *ngSwitchCase="'MZ.intellectualRightsPD'">
-            {{ _type | label }}
-        </ng-container>
-        <a *ngSwitchDefault [href]="_license.link" target="_blank" rel="noopener nofollow">
-            <img *ngIf="_license.img; else noImg" [src]="'static/images/license-icons/' + _license.img"
-                 [alt]="_sort"
-                 style="height: 18px">
-            <ng-template #noImg>{{ _type | label }}</ng-template>
-        </a>
-    </ng-container>
-  `,
+@switch (_type) {
+  @case ('MZ.intellectualRightsARR') {
+    © {{ _type | label }}
+  }
+  @case ('MZ.intellectualRightsPD') {
+    {{ _type | label }}
+  }
+  @default {
+    <a [href]="_license.link" target="_blank" rel="noopener nofollow">
+      @if (_license.img) {
+        <img [src]="'static/images/license-icons/' + _license.img"
+          [alt]="_sort"
+          style="height: 18px">
+      } @else {
+        {{ _type | label }}
+      }
+    </a>
+  }
+}
+`,
     styles: [],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false

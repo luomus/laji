@@ -1,37 +1,41 @@
 <h3>{{ 'validation.audio' | translate }}</h3>
-<p *ngIf="!historyView">{{ 'validation.template.audio.description' | translate }}</p>
-<div class="audio-viewer-with-settings" *ngIf="audio">
-  <bsg-audio-viewer-settings
-    [(zoomed)]="zoomFrequency"
-    [(xRangePadding)]="timePadding"
-    [defaultZoomed]="defaultZoomFrequency"
-    [defaultXRangePadding]="defaultTimePadding"
-    [displayInline]="true"
-  ></bsg-audio-viewer-settings>
-  <laji-audio-viewer
-    [audio]="audio"
-    [sampleRate]="sampleRate"
-    [spectrogramConfig]="spectrogramConfig"
-    [mode]="audioViewerMode"
+@if (!historyView) {
+  <p>{{ 'validation.template.audio.description' | translate }}</p>
+}
+@if (audio) {
+  <div class="audio-viewer-with-settings">
+    <bsg-audio-viewer-settings
+      [(zoomed)]="zoomFrequency"
+      [(xRangePadding)]="timePadding"
+      [defaultZoomed]="defaultZoomFrequency"
+      [defaultXRangePadding]="defaultTimePadding"
+      [displayInline]="true"
+    ></bsg-audio-viewer-settings>
+    <laji-audio-viewer
+      [audio]="audio"
+      [sampleRate]="sampleRate"
+      [spectrogramConfig]="spectrogramConfig"
+      [mode]="audioViewerMode"
     [focusArea]="{
       area: template ? template.area : { 'xRange': [audioFocusTime!, audioFocusTime!] },
       zoomTime: true,
       timePaddingOnZoom: template ? timePadding : 60,
       zoomFrequency: template ? zoomFrequency : false
     }"
-    [spectrogramHeight]="150"
-    [controls]="{ zoomControl: true }"
-    [audioInfoTpl]="audioInfoTpl"
-    (drawEnd)="onDrawEnd($event)"
-  ></laji-audio-viewer>
-</div>
+      [spectrogramHeight]="150"
+      [controls]="{ zoomControl: true }"
+      [audioInfoTpl]="audioInfoTpl"
+      (drawEnd)="onDrawEnd($event)"
+    ></laji-audio-viewer>
+  </div>
+}
 <div class="mt-3">
   <button
     class="btn btn-primary"
     [disabled]="historyView"
     [ngClass]="{ 'active': audioViewerMode === 'draw' }"
     (click)="toggleDrawMode()"
-  >
+    >
     {{ ('validation.template.' + (template ? 'reframe' : 'frame')) | translate }}
   </button>
 </div>
@@ -39,88 +43,95 @@
 <div class="row mt-5">
   <div class="col-sm-4">
     <h3 class="d-inline-block">{{ ('validation.template.' + (historyView ? 'oldVersion' : (isNewTemplate ? 'new' : 'current'))) | translate }} T{{ templateIdx + 1 }}</h3>
-    <p *ngIf="!historyView">{{ 'validation.template.description' | translate }}</p>
-    <p *ngIf="template?.validatedBy">
-      {{ 'validation.template.validatedBy' | translate }}: {{ template!.validatedBy | users | values }}
-    </p>
+    @if (!historyView) {
+      <p>{{ 'validation.template.description' | translate }}</p>
+    }
+    @if (template?.validatedBy) {
+      <p>
+        {{ 'validation.template.validatedBy' | translate }}: {{ template!.validatedBy | users | values }}
+      </p>
+    }
   </div>
   <div class="col-sm-8">
-    <laji-audio-viewer
-      *ngIf="template"
-      [audio]="audio"
-      [sampleRate]="sampleRate"
-      [spectrogramConfig]="spectrogramConfig"
+    @if (template) {
+      <laji-audio-viewer
+        [audio]="audio"
+        [sampleRate]="sampleRate"
+        [spectrogramConfig]="spectrogramConfig"
       [focusArea]="{
         area: template.area,
         zoomTime: true,
         timePaddingOnZoom: 0.5,
         zoomFrequency: true
       }"
-      [spectrogramHeight]="150"
-      [showAxisLabels]="false"
-      [showControls]="false"
-      [mode]="audioViewerMode"
-      (drawEnd)="onDrawEnd($event)"
-    ></laji-audio-viewer>
+        [spectrogramHeight]="150"
+        [showAxisLabels]="false"
+        [showControls]="false"
+        [mode]="audioViewerMode"
+        (drawEnd)="onDrawEnd($event)"
+      ></laji-audio-viewer>
+    }
   </div>
 </div>
-<div class="mt-5" *ngIf="template?.comment">
-  <h3>{{ 'validation.template.comment' | translate }}</h3>
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <p>
-        {{ template!.comment!.created | amDateFormat: 'DD.MM.YYYY HH:mm:ss' }}
+@if (template?.comment) {
+  <div class="mt-5">
+    <h3>{{ 'validation.template.comment' | translate }}</h3>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <p>
+          {{ template!.comment!.created | amDateFormat: 'DD.MM.YYYY HH:mm:ss' }}
         <span [ngClass]="{
           'text-danger': template!.comment!.type === commentTypeEnum.replace,
           'text-warning': template!.comment!.type === commentTypeEnum.reframe
         }" class="text-danger">
-          {{ 'validation.template.' + (template!.comment!.type === commentTypeEnum.replace ? 'removed' : 'reframed') | translate }}
-        </span>
-      </p>
-      <p>
-        {{ template!.comment!.userId | users }}:
-        <br>
-        {{ template!.comment!.comment }}
-      </p>
+            {{ 'validation.template.' + (template!.comment!.type === commentTypeEnum.replace ? 'removed' : 'reframed') | translate }}
+          </span>
+        </p>
+        <p>
+          {{ template!.comment!.userId | users }}:
+          <br>
+            {{ template!.comment!.comment }}
+          </p>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-<div class="mt-3 mb-5">
-  <button
-    class="btn btn-success mr-3"
-    [disabled]="!template || historyView"
-    (click)="onConfirm()"
-  >
-    {{ 'validation.template.confirm' | translate }}
-  </button>
-  <button
-    class="btn btn-default mr-3"
-    (click)="cancel.emit()"
-  >
-    {{ 'validation.cancel' | translate }}
-  </button>
-  <button
-    class="btn btn-danger"
-    [disabled]="!template || isNewTemplate || historyView"
-    (click)="onRemove()"
-  >
-    {{ 'validation.template.remove' | translate }}
-  </button>
-</div>
-
-<ng-template #commentModal>
-  <p>{{ 'validation.template.confirmAndComment' | translate }}</p>
-  <textarea id="comment" class="form-control" [(ngModel)]="commentText" name="comment" rows="7"></textarea>
-  <div class="lu-modal-footer">
-    <button type="button" class="btn btn-default" (click)="hideCommentModal()">
-      <span>{{ 'validation.cancel' | translate }}</span>
+  }
+  <div class="mt-3 mb-5">
+    <button
+      class="btn btn-success mr-3"
+      [disabled]="!template || historyView"
+      (click)="onConfirm()"
+      >
+      {{ 'validation.template.confirm' | translate }}
     </button>
-    <button type="button" class="btn btn-success" [disabled]="!commentText" (click)="this.confirmComment()">
-      <span>{{ 'validation.template.confirm' | translate }}</span>
+    <button
+      class="btn btn-default mr-3"
+      (click)="cancel.emit()"
+      >
+      {{ 'validation.cancel' | translate }}
+    </button>
+    <button
+      class="btn btn-danger"
+      [disabled]="!template || isNewTemplate || historyView"
+      (click)="onRemove()"
+      >
+      {{ 'validation.template.remove' | translate }}
     </button>
   </div>
-</ng-template>
 
-<ng-template #audioInfo let-audio="audio">
-  <bsg-audio-info [audio]="audio"></bsg-audio-info>
-</ng-template>
+  <ng-template #commentModal>
+    <p>{{ 'validation.template.confirmAndComment' | translate }}</p>
+    <textarea id="comment" class="form-control" [(ngModel)]="commentText" name="comment" rows="7"></textarea>
+    <div class="lu-modal-footer">
+      <button type="button" class="btn btn-default" (click)="hideCommentModal()">
+        <span>{{ 'validation.cancel' | translate }}</span>
+      </button>
+      <button type="button" class="btn btn-success" [disabled]="!commentText" (click)="this.confirmComment()">
+        <span>{{ 'validation.template.confirm' | translate }}</span>
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #audioInfo let-audio="audio">
+    <bsg-audio-info [audio]="audio"></bsg-audio-info>
+  </ng-template>

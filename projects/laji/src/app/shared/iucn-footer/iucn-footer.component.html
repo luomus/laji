@@ -1,70 +1,76 @@
-<footer *ngIf="footerService.footerVisible">
-  <div class="partners-footer">
-    <div class="container">
+@if (footerService.footerVisible) {
+  <footer>
+    <div class="partners-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 partners front" [ngClass]="{hidden: !onFrontPage}">
+            <ul>
+              <li>
+                <a href="http://www.ym.fi" target="_blank">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/ymparistoministerio.png" alt="Ympäristöministeriö">
+                </a>
+              </li>
+              <li>
+                <a href="http://www.syke.fi" target="_blank">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/syke_logo_2019.png" alt="SYKE">
+                </a>
+              </li>
+              <li>
+                <a href="http://luomus.fi" target="_blank">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/luomus_fi_blue_smaller.gif" alt="LUOMUS - Luonnontieteellinen keskusmuseo">
+                </a>
+              </li>
+              <li>
+                <a href="http://laji.fi" target="_blank">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/logos/LAJI_FI_sin.png" alt="Laji.fi - Suomen Lajitietokeskus">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.csc.fi/" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/logos/csc-logo-teksti-fi.png" alt="CSC" height="40px">
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container info-footer">
       <div class="row">
-        <div class="col-sm-12 partners front" [ngClass]="{hidden: !onFrontPage}">
+        <div class="col-sm-4">
+          <h3>{{ 'iucn.home.title' | translate }}</h3>
+          <p class="intro"><strong>{{ 'iucn.home.intro' | translate }}</strong></p>
           <ul>
-            <li>
-              <a href="http://www.ym.fi" target="_blank">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/ymparistoministerio.png" alt="Ympäristöministeriö">
-              </a>
-            </li>
-            <li>
-              <a href="http://www.syke.fi" target="_blank">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/syke_logo_2019.png" alt="SYKE">
-              </a>
-            </li>
-            <li>
-              <a href="http://luomus.fi" target="_blank">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/luomus_fi_blue_smaller.gif" alt="LUOMUS - Luonnontieteellinen keskusmuseo">
-              </a>
-            </li>
-            <li>
-              <a href="http://laji.fi" target="_blank">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/LAJI_FI_sin.png" alt="Laji.fi - Suomen Lajitietokeskus">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.csc.fi/" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/csc-logo-teksti-fi.png" alt="CSC" height="40px">
-              </a>
-            </li>
+            <li><a [routerLink]="[{'fi': '/about/713', 'en': '/en/about/848'} | multiLang]">{{ 'iucn.footer.privacyPolicy' | translate }}</a></li>
+            <li><laji-feedback></laji-feedback></li>
+          </ul>
+        </div>
+        <div class="col-sm-offset-1 col-sm-4">
+          <h3>&nbsp;</h3>
+          <ul style="margin-bottom: 15px;">
+            <li><a href="{{{'fi': 'https://www.ymparisto.fi/punainenlista', 'en': 'https://www.ymparisto.fi/en-US/Nature/Species/Threatened_species/The_2019_Red_List_of_Finnish_species', 'sv': 'https://www.ymparisto.fi/sv-FI/Natur/Arter/Hotade_arter/Rodlistade_arter_i_Finland_2019'} | multiLang}}" rel="noopener" target="_blank">{{ 'iucn.footer.syke' | translate }}</a></li>
+            <li><a href="{{{'fi': 'https://laji.fi', 'en': 'https://laji.fi/en', 'sv': 'https://laji.fi/sv'} | multiLang}}" rel="noopener" target="_blank">{{ 'home.main-page.title' | translate }}</a></li>
+            <li><a href="https://www.iucnredlist.org/" rel="noopener" target="_blank">IUCN</a></li>
+            @if (currentLangIsFinnish()) {
+              <li><a href="https://luontotyyppienuhanalaisuus.ymparisto.fi/" rel="noopener" target="_blank">Luontotyyppien punaisen kirjan verkkopalvelu</a></li>
+            }
+          </ul>
+          <ul>
+            <li><a href="http://hdl.handle.net/10138/299501" rel="noopener">{{ 'iucn.footer.pdf' | translate }}</a></li>
+            <li><a [routerLink]="['/publications'] | localize">{{ 'iucn.footer.openData' | translate }}</a></li>
           </ul>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="container info-footer">
-    <div class="row">
-      <div class="col-sm-4">
-        <h3>{{ 'iucn.home.title' | translate }}</h3>
-        <p class="intro"><strong>{{ 'iucn.home.intro' | translate }}</strong></p>
-        <ul>
-          <li><a [routerLink]="[{'fi': '/about/713', 'en': '/en/about/848'} | multiLang]">{{ 'iucn.footer.privacyPolicy' | translate }}</a></li>
-          <li><laji-feedback></laji-feedback></li>
-        </ul>
-      </div>
-      <div class="col-sm-offset-1 col-sm-4">
-        <h3>&nbsp;</h3>
-        <ul style="margin-bottom: 15px;">
-          <li><a href="{{{'fi': 'https://www.ymparisto.fi/punainenlista', 'en': 'https://www.ymparisto.fi/en-US/Nature/Species/Threatened_species/The_2019_Red_List_of_Finnish_species', 'sv': 'https://www.ymparisto.fi/sv-FI/Natur/Arter/Hotade_arter/Rodlistade_arter_i_Finland_2019'} | multiLang}}" rel="noopener" target="_blank">{{ 'iucn.footer.syke' | translate }}</a></li>
-          <li><a href="{{{'fi': 'https://laji.fi', 'en': 'https://laji.fi/en', 'sv': 'https://laji.fi/sv'} | multiLang}}" rel="noopener" target="_blank">{{ 'home.main-page.title' | translate }}</a></li>
-          <li><a href="https://www.iucnredlist.org/" rel="noopener" target="_blank">IUCN</a></li>
-          <li *ngIf="currentLangIsFinnish()"><a href="https://luontotyyppienuhanalaisuus.ymparisto.fi/" rel="noopener" target="_blank">Luontotyyppien punaisen kirjan verkkopalvelu</a></li>
-        </ul>
-        <ul>
-          <li><a href="http://hdl.handle.net/10138/299501" rel="noopener">{{ 'iucn.footer.pdf' | translate }}</a></li>
-          <li><a [routerLink]="['/publications'] | localize">{{ 'iucn.footer.openData' | translate }}</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="row" *ngIf="onFrontPage">
-      <div class="col-sm-11 col-sm-offset-1">
-        <div class="pull-right info">
-          {{ 'footer.image.attribution' | translate }}:
-          Vappu Ormio
+      @if (onFrontPage) {
+        <div class="row">
+          <div class="col-sm-11 col-sm-offset-1">
+            <div class="pull-right info">
+              {{ 'footer.image.attribution' | translate }}:
+              Vappu Ormio
+            </div>
+          </div>
         </div>
-      </div>
+      }
     </div>
-  </div>
-</footer>
+  </footer>
+}

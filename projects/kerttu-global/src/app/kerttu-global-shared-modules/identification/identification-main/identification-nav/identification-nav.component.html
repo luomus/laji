@@ -5,7 +5,7 @@
         class="btn btn-default"
         [disabled]="buttonsDisabled"
         (click)="goBackClick.emit()"
-      >
+        >
         {{ goBackBtnLabel | translate }}
       </button>
     </div>
@@ -14,7 +14,7 @@
         class="btn btn-default"
         [disabled]="buttonsDisabled || saveDisabled"
         (click)="skipClick.emit()"
-      >
+        >
         {{ 'identification.skip' | translate }}
       </button>
     </div>
@@ -23,7 +23,7 @@
         class="btn btn-default"
         [disabled]="!hasPreviousRecording || buttonsDisabled"
         (click)="previousRecordingClick.emit()"
-      >
+        >
         {{ 'identification.previousRecording' | translate }}
       </button>
       <laji-info [html]="'identification.previousRecording.info' | translate" [showOnHover]="true"></laji-info>
@@ -33,7 +33,7 @@
         class="btn btn-default"
         [disabled]="buttonsDisabled || saveDisabled"
         (click)="saveClick.emit()"
-      >
+        >
         {{ 'save' | translate }}
       </button>
       <laji-info [html]="'identification.saveRecording.info' | translate" [showOnHover]="true"></laji-info>
@@ -43,7 +43,7 @@
         class="btn btn-success"
         [disabled]="buttonsDisabled || saveDisabled"
         (click)="nextRecordingClick.emit()"
-      >
+        >
         {{ 'identification.nextRecording' | translate }}
       </button>
       <laji-info [html]="'identification.nextBirdRecording.info' | translateWithTaxonType: taxonType" [showOnHover]="true"></laji-info>
@@ -53,11 +53,13 @@
         class="btn btn-default"
         [disabled]="buttonsDisabled"
         (click)="onFilterButtonClick()"
-      >
-        {{ 'identification.filter' | translate }} <span *ngIf="fileNameFilter" class="badge">1</span>
-      </button>
-    </div>
+        >
+        {{ 'identification.filter' | translate }} @if (fileNameFilter) {
+        <span class="badge">1</span>
+      }
+    </button>
   </div>
+</div>
 </div>
 
 <ng-template #filterModal>

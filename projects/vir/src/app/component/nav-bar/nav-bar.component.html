@@ -4,7 +4,7 @@
       <div class="col-sm-12">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                  aria-controls="navbar" (click)="toggleMenu()">
+            aria-controls="navbar" (click)="toggleMenu()">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -20,7 +20,7 @@
               (visibleTaxon)="updateView()"
               [visible]="showSearch"
               [expand]="'right'"
-              luDropdownNoClose></laji-omni-search>
+            luDropdownNoClose></laji-omni-search>
           </div>
         </div>
         <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
@@ -77,24 +77,25 @@
                 [placeholder]="'species.search' | translate"
                 (visibleTaxon)="updateView()"
                 [visible]="showSearch"
-                [expand]="'right'"></laji-omni-search>
+              [expand]="'right'"></laji-omni-search>
             </li>
             <ng-container *lajiBrowserOnly>
               <ng-container>
-                <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async">
-                  <a luDropdownToggle class="link user">
-                    <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
-                    <i class="glyphicon glyphicon-user"></i>
-<!--                     <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{ notificationsNotSeen }}</span> -->
-                  </a>
-                  <ul luDropdownMenu class="right">
-                    <li role="menuitem">
-                      <a [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
-                    </li>
-                    <li role="menuitem">
-                      <a [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
-                    </li>
-<!--                     <ng-container *ngIf="(notificationsTotal$ | async) > 0">
+                @if (userService.isLoggedIn$ | async) {
+                  <li [routerLinkActive]="['active']">
+                    <a luDropdownToggle class="link user">
+                      <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
+                      <i class="glyphicon glyphicon-user"></i>
+                      <!--                     <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{ notificationsNotSeen }}</span> -->
+                    </a>
+                    <ul luDropdownMenu class="right">
+                      <li role="menuitem">
+                        <a [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
+                      </li>
+                      <li role="menuitem">
+                        <a [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
+                      </li>
+                      <!--                     <ng-container *ngIf="(notificationsTotal$ | async) > 0">
                       <li role="separator" class="divider"></li>
                       <li>
                         <laji-notifications (notificationsClose)="onClose()"></laji-notifications>
@@ -102,7 +103,9 @@
                     </ng-container> -->
                   </ul>
                 </li>
-                <li *ngIf="!(userService.isLoggedIn$ | async)">
+              }
+              @if (!(userService.isLoggedIn$ | async)) {
+                <li>
                   <a id="login-link" href="#login" (click)="doLogin($event)">
                     <small class="hidden-sm">
                       {{ 'navigation.user.login' | translate }}
@@ -112,36 +115,49 @@
                     </small>
                   </a>
                 </li>
-              </ng-container>
+              }
             </ng-container>
-            <li>
-              <a luDropdownToggle class="link language-toggle">
-                <i class="glyphicon glyphicon-globe"></i>
-                <span *ngIf="'fi' === translate.getCurrentLang()">
+          </ng-container>
+          <li>
+            <a luDropdownToggle class="link language-toggle">
+              <i class="glyphicon glyphicon-globe"></i>
+              @if ('fi' === translate.getCurrentLang()) {
+                <span>
                   FI
                 </span>
-                <span *ngIf="'sv' === translate.getCurrentLang()">
+              }
+              @if ('sv' === translate.getCurrentLang()) {
+                <span>
                   SV
                 </span>
-                <span *ngIf="'en' === translate.getCurrentLang()">
+              }
+              @if ('en' === translate.getCurrentLang()) {
+                <span>
                   EN
                 </span>
-              </a>
-              <ul luDropdownMenu class="right">
-                <li *ngIf="'fi' !== translate.getCurrentLang()" role="menuitem">
+              }
+            </a>
+            <ul luDropdownMenu class="right">
+              @if ('fi' !== translate.getCurrentLang()) {
+                <li role="menuitem">
                   <a rel="alternate" hreflang="fi" class="navbar-link link" [routerLink]="[] | localize:'fi'" queryParamsHandling="preserve">Suomeksi</a>
                 </li>
-                <li *ngIf="'sv' !== translate.getCurrentLang()" role="menuitem">
+              }
+              @if ('sv' !== translate.getCurrentLang()) {
+                <li role="menuitem">
                   <a rel="alternate" hreflang="sv" class="navbar-link link" [routerLink]="[] | localize:'sv'" queryParamsHandling="preserve">På svenska</a>
                 </li>
-                <li *ngIf="'en' !== translate.getCurrentLang()" role="menuitem">
+              }
+              @if ('en' !== translate.getCurrentLang()) {
+                <li role="menuitem">
                   <a rel="alternate" hreflang="en" class="navbar-link link" [routerLink]="[] | localize:'en'" queryParamsHandling="preserve">In English</a>
                 </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+              }
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
+</div>
 </nav>

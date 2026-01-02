@@ -6,12 +6,13 @@
       </td>
       <td style="width: 70%">
         <label class="link fill" for="excel-file">
-          <span style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 240px; display: block" *ngIf="filename; else noFile">
-            {{ filename }}
-          </span>
-          <ng-template #noFile>
+          @if (filename) {
+            <span style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 240px; display: block">
+              {{ filename }}
+            </span>
+          } @else {
             {{ 'Choose the file (XLS, CSV or ODS)' | translate }}
-          </ng-template>
+          }
         </label>
         <input class="inputfile" type="file" name="file" id="excel-file" (change)="onExcelFileChange($event)">
       </td>
@@ -20,7 +21,9 @@
       <td>{{ 'Sheet' | translate }}:</td>
       <td>
         <select style="width: 100%" class="form-control input-sm" (change)="loadSheet($any($event.target).value)">
-          <option *ngFor="let sheet of sheets" [value]="sheet">{{ sheet }}</option>
+          @for (sheet of sheets; track sheet) {
+            <option [value]="sheet">{{ sheet }}</option>
+          }
         </select>
       </td>
     </tr>
@@ -29,55 +32,67 @@
       <td>
         <input class="form-control input-sm" type="number" [value]="dataStarts" (change)="dataStarts =
         $any($event.target).value" (keyup)="dataStarts = $any($event.target).value">
-      </td>
-    </tr>
-    <tr style="padding-top: 5px; padding-bottom: 5px">
-      <td>{{ 'Map column' | translate }}:</td>
-      <td>
-        <div style="display: inline-block; width: 50%" class="link" (click)="hasColumnMap = true">
-          <div style="display: inline-block; width: 25px; text-align: right">
-            <ll-icon *ngIf="hasColumnMap" [type]="'check'" [size]="20"></ll-icon>
-          </div>
-          {{ 'Yes' | translate }}
-        </div>
-        <div style="display: inline-block; width: 50%" class="link" (click)="hasColumnMap = false">
-          <div style="display: inline-block; width: 25px; text-align: right">
-            <ll-icon *ngIf="!hasColumnMap" [type]="'check'" [size]="20"></ll-icon>
-          </div>
-          {{ 'No' | translate }}
-        </div>
-      </td>
-    </tr>
-    <tr *ngIf="!hasColumnMap">
-      <td style="vertical-align: top; padding-top: 4px;"><input id="importFields" type="checkbox" [checked]="!importFields" (change)="importFields = !importFields"></td>
-      <td>
-        <label for="importFields">
-          {{ 'Import only data' | translate }}
-        </label>
-      </td>
-    </tr>
-    <ng-container *ngIf="filename">
-      <tr style="padding-top: 5px;" *ngIf="!hasColumnMap">
-        <td>{{ 'Id column' | translate }}:</td>
-        <td>
-          <select style="width: 100%" class="form-control input-sm" (change)="changeIdCol($any($event.target).value)">
-            <option *ngFor="let header of headers" [value]="header" [selected]="header === uriCol">{{ header }}</option>
-          </select>
         </td>
       </tr>
-      <tr *ngFor="let header of headers" [hidden]="!hasColumnMap">
+      <tr style="padding-top: 5px; padding-bottom: 5px">
+        <td>{{ 'Map column' | translate }}:</td>
         <td>
-          <span [title]="header" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 85px; display: block">{{ header }}</span>
-        </td>
-        <td>
-          <ll-available-fields
-            [includeTextField]="false"
-            [availableFields]="availableFields"
-            [value]="columnMap[header] || ''"
-            (valueChange)="onColumnMap(header, $any($event))"
-            placeholder="Field"></ll-available-fields>
+          <div style="display: inline-block; width: 50%" class="link" (click)="hasColumnMap = true">
+            <div style="display: inline-block; width: 25px; text-align: right">
+              @if (hasColumnMap) {
+                <ll-icon [type]="'check'" [size]="20"></ll-icon>
+              }
+            </div>
+            {{ 'Yes' | translate }}
+          </div>
+          <div style="display: inline-block; width: 50%" class="link" (click)="hasColumnMap = false">
+            <div style="display: inline-block; width: 25px; text-align: right">
+              @if (!hasColumnMap) {
+                <ll-icon [type]="'check'" [size]="20"></ll-icon>
+              }
+            </div>
+            {{ 'No' | translate }}
+          </div>
         </td>
       </tr>
-    </ng-container>
-  </table>
-</div>
+      @if (!hasColumnMap) {
+        <tr>
+          <td style="vertical-align: top; padding-top: 4px;"><input id="importFields" type="checkbox" [checked]="!importFields" (change)="importFields = !importFields"></td>
+          <td>
+            <label for="importFields">
+              {{ 'Import only data' | translate }}
+            </label>
+          </td>
+        </tr>
+      }
+      @if (filename) {
+        @if (!hasColumnMap) {
+          <tr style="padding-top: 5px;">
+            <td>{{ 'Id column' | translate }}:</td>
+            <td>
+              <select style="width: 100%" class="form-control input-sm" (change)="changeIdCol($any($event.target).value)">
+                @for (header of headers; track header) {
+                  <option [value]="header" [selected]="header === uriCol">{{ header }}</option>
+                }
+              </select>
+            </td>
+          </tr>
+        }
+        @for (header of headers; track header) {
+          <tr [hidden]="!hasColumnMap">
+            <td>
+              <span [title]="header" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 85px; display: block">{{ header }}</span>
+            </td>
+            <td>
+              <ll-available-fields
+                [includeTextField]="false"
+                [availableFields]="availableFields"
+                [value]="columnMap[header] || ''"
+                (valueChange)="onColumnMap(header, $any($event))"
+              placeholder="Field"></ll-available-fields>
+            </td>
+          </tr>
+        }
+      }
+    </table>
+  </div>

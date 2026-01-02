@@ -4,9 +4,15 @@ import { AccessLevel } from '../request.component';
 @Component({
     selector: 'laji-request-description',
     template: `
-    <p *ngIf="accessLevel === AccessLevel.Allowed">{{ 'form.permission.allowed' | translate }}</p>
-    <p *ngIf="accessLevel === AccessLevel.Requested">{{ 'form.permission.requested' | translate }}</p>
-    <p *ngIf="accessLevel === AccessLevel.NotRequested">{{ 'form.permission.notRequested' | translate }}</p>
+    @if (accessLevel === AccessLevel.Allowed) {
+      <p>{{ 'form.permission.allowed' | translate }}</p>
+    }
+    @if (accessLevel === AccessLevel.Requested) {
+      <p>{{ 'form.permission.requested' | translate }}</p>
+    }
+    @if (accessLevel === AccessLevel.NotRequested) {
+      <p>{{ 'form.permission.notRequested' | translate }}</p>
+    }
     `,
     standalone: false
 })

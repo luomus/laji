@@ -1,9 +1,11 @@
-<h5 *ngIf="header">
-  {{ header | translate }}
-</h5>
+@if (header) {
+  <h5>
+    {{ header | translate }}
+  </h5>
+}
 <ul class="list-group">
-  <ng-container *ngFor="let field of fields">
-    <ng-container *ngIf="getFieldColumnArray(field) as columns">
+  @for (field of fields; track field) {
+    @if (getFieldColumnArray(field); as columns) {
       <li class="list-group-item link"
         (click)="onToggle(field)"
         [ngClass]="{active: (selected | includes:columns[0]), disabled: (required | includes:columns[0])}">
@@ -18,6 +20,6 @@
           (moveDown)="onMoveDown($event)"
         ></laji-selected-field-item>
       </li>
-    </ng-container>
-  </ng-container>
+    }
+  }
 </ul>

@@ -33,10 +33,18 @@
     <p translate>vihko.home.form.collection.desc</p>
     <ul>
       <li>
-        <div [ngSwitch]="currentLang">
-          <a *ngSwitchCase="'sv'" [routerLink]="['/about', '3830'] | localize" translate>vihko.home.form.collection.1</a>
-          <a *ngSwitchCase="'en'" [routerLink]="['/about', '3825'] | localize" translate>vihko.home.form.collection.1</a>
-          <a *ngSwitchCase="'fi'" [routerLink]="['/about', '3712'] | localize" translate>vihko.home.form.collection.1</a>
+        <div>
+          @switch (currentLang) {
+            @case ('sv') {
+              <a [routerLink]="['/about', '3830'] | localize" translate>vihko.home.form.collection.1</a>
+            }
+            @case ('en') {
+              <a [routerLink]="['/about', '3825'] | localize" translate>vihko.home.form.collection.1</a>
+            }
+            @case ('fi') {
+              <a [routerLink]="['/about', '3712'] | localize" translate>vihko.home.form.collection.1</a>
+            }
+          }
         </div>
       </li>
       <li>
