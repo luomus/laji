@@ -34,7 +34,7 @@ export class NpEditFormComponent implements OnInit {
 
   lang?: string;
   saving = false;
-  status: LajiFormFooterStatus = '';
+  status: LajiFormFooterStatus = 'none';
   error = '';
 
   private hasChanges = false;
@@ -120,7 +120,7 @@ export class NpEditFormComponent implements OnInit {
 
           setTimeout(() => {
             if (this.status === 'error') {
-              this.status = '';
+              this.status = 'none';
             }
           }, 5000);
         });

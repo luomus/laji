@@ -5,7 +5,7 @@ import { LajiFormUtil } from '../laji-form-util.service';
 import { Readonly } from '../../../../shared-modules/own-submissions/service/document.service';
 import { PlatformService } from '../../../../root/platform.service';
 
-export type LajiFormFooterStatus = '' | 'success' | 'error' | 'unsaved';
+export type LajiFormFooterStatus = 'none' | 'success' | 'error' | 'unsaved';
 
 @Component({
     selector: 'laji-form-footer',
@@ -15,7 +15,7 @@ export type LajiFormFooterStatus = '' | 'success' | 'error' | 'unsaved';
     standalone: false
 })
 export class LajiFormFooterComponent {
-  @Input() status: LajiFormFooterStatus = '';
+  @Input() status: LajiFormFooterStatus = 'none';
   @Input() saving = false;
   @Input() readonly!: Readonly;
   @Input() edit = false;
