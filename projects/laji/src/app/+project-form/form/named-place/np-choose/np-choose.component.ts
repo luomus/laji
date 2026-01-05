@@ -151,8 +151,8 @@ export class NpChooseComponent implements OnInit, OnChanges {
     this.activePlaceChange.emit(this._activeNP);
   }
 
-  onFilterChange(filterBy: string) {
-    this.filterBy = filterBy;
+  updateFilter(event: any) {
+    this._filterBy = event.target.value;
     this.filterChange.emit(this._filterBy);
   }
 

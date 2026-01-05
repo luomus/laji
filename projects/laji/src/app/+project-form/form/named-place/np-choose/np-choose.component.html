@@ -1,4 +1,15 @@
 <div *ngIf="visible">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="filterBy">
+        <input class="form-control inline-block"
+          type='text'
+          placeholder="{{'haseka.submissions.filter' | translate}}"
+          [value]="_filterBy ? _filterBy : ''"
+          (keyup)="updateFilter($event)">
+      </div>
+    </div>
+  </div>
   <lu-tabs *ngIf="!_documentForm.options?.namedPlaceOptions?.hideMapTab else listTemplate"
            [tabsListClass]="formOptionToClassName('options.namedPlaceOptions.hideMapTab options.namedPlaceOptions.startWithMap')"
            [selectedIndex]="activeIndex"
@@ -17,6 +28,7 @@
                     lajiFormOption="options.namedPlaceOptions.reservationUntil"
                     [placeForm]="placeForm"
                     [documentForm]="_documentForm"
+                    [filterBy]="_filterBy"
                     [filteredIDs]="filteredIDs"
                     (activePlaceChange)="onActivePlaceChange($event)"></laji-np-map>
       </ng-container>
@@ -34,7 +46,6 @@
                     [formRights]="formRights"
                     [visible]="loadedTabs.getNameFromIdx(activeIndex) === 'list'"
                     (activePlaceChange)="onActivePlaceChange($event)"
-                    (filterChange)="onFilterChange($event)"
                     (filteredIDs)="onFilteredIDsChange($event)"></laji-np-list>
     </div>
   </ng-template>
