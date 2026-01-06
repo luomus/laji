@@ -1,46 +1,7 @@
-@if (position === 'right') {
-} @else {
-  @if (displayNav) {
-    <div class="sidebar"
-      [ngClass]="{'left': position === 'left', 'right': position === 'right', 'mobile': mobile, 'open': open, 'no-print': noPrint}"
-       [@sidebarOpen_wrapper]="{
-         value: (dragging || preCheckScreenWidth) ? 'disabled' : (open ? 'open' : 'closed'),
-         params: {
-           sidebarMinWidth: sidebarMinWidth
-         }
-        }"
-    (@sidebarOpen_wrapper.done)="onResizeAnimationComplete()"
-    #sidebarRef>
-    @if (!mobile && !staticWidth) {
-      <div class="dragbar" (mousedown)="onDragStart()"></div>
-    }
-    <div class="sidebar-content-wrapper"
-      [class]="contentWrapperClass!"
-      [@sidebarOpen_content]="open ? 'open' : 'closed'"
-      [ngClass]="{'static-width': staticWidth}"
-      [ngStyle]="{'width': staticWidth ? staticWidth+'px': undefined}">
-      @if (displayNavHeader) {
-        <div class="sidebar-header">
-          <ng-container *ngTemplateOutlet="closeBtn"></ng-container>
-          <ng-content select=".nav-header"></ng-content>
-        </div>
-      }
-      <div class="sidebar-content">
-        @if (!displayNavHeader) {
-          <ng-container *ngTemplateOutlet="closeBtn"></ng-container>
-        }
-        <ng-content select="nav"></ng-content>
-      </div>
-    </div>
-    @if (!mobile) {
-      <div tabindex="0" class="open-btn" [ngClass]="{'hide-sidebar-button': open}" role="button" (click)="onSwitchOpen()" luKeyboardClickable>
-        <!-- Open menu -->
-        <lu-icon type="menu"></lu-icon>
-      </div>
-    }
-  </div>
+@if (position === 'left') {
+  <ng-container *ngTemplateOutlet="sidebar"></ng-container>
 }
-}
+
 <div class="lu-content" #contentRef
   [ngClass]="{'mobile': mobile}"
   [ngStyle]="{
@@ -58,8 +19,11 @@
   <ng-content select="main"></ng-content>
 </div>
 
-@if (position === 'left') {
-} @else {
+@if (position === 'right') {
+  <ng-container *ngTemplateOutlet="sidebar"></ng-container>
+}
+
+<ng-template #sidebar>
   @if (displayNav) {
     <div class="sidebar"
       [ngClass]="{'left': position === 'left', 'right': position === 'right', 'mobile': mobile, 'open': open, 'no-print': noPrint}"
@@ -100,8 +64,8 @@
     }
   </div>
 }
-}
 
+</ng-template>
 
 <ng-template #closeBtn>
   <div class="close-wrapper">

@@ -181,7 +181,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize() {
+  onResize(event: any) {
     if (this.infoBox.nativeElement.offsetParent !== null) {
       if (this.modalIsVisible) {
         this.modal.hide();

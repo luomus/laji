@@ -46,7 +46,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize() {
+  onResize(event: any) {
     clearTimeout(this.resize);
     const that = this;
     this.resize = setTimeout(function() {

@@ -316,7 +316,7 @@
           @if (addedTag | warehouse; as warehouseTag) {
             @if (annotationTagsObservation[warehouseTag]) {
               <div>
-                @case (annotationTagsObservation[warehouseTag ].value) {
+                @if (annotationTagsObservation[warehouseTag].value) {
                   <div
                     class="annotation-marker"
                 [ngClass]="{
@@ -350,7 +350,7 @@
           @if (addedTag | warehouse; as warehouseTag) {
             @if (annotationTagsObservation[warehouseTag]) {
               <div>
-                @case (annotationTagsObservation[warehouseTag].value) {
+                @if (annotationTagsObservation[warehouseTag].value) {
                   <div
                     class="annotation-marker"
                 [ngClass]="{

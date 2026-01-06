@@ -27,7 +27,7 @@ export class DropdownToggleDirective {
   ) { }
 
   @HostListener('click', ['$event'])
-  onClick() {
+  onClick(event: Event) {
     const dropdownMenuElement = this.getMenuElement();
 
     const isDisplayed = dropdownMenuElement.style.display !== 'none';
@@ -36,7 +36,7 @@ export class DropdownToggleDirective {
   }
 
   @HostListener('document:click', ['$event.target'])
-  onDocumentClick(target: HTMLElement) {
+  onDocumentClick(target: EventTarget | null) {
     const menu = this.getMenuElement();
     if (menu.style.display === 'none') {
       return;
@@ -44,7 +44,7 @@ export class DropdownToggleDirective {
 
     const clickedInside = this.elementRef.nativeElement.contains(target);
 
-    let iteratedElem: HTMLElement | null = target;
+    let iteratedElem = <HTMLElement | null>target;
     while (iteratedElem && iteratedElem !== this.document.body) {
       if (iteratedElem.hasAttribute('luDropdownNoClose')) {
         return;

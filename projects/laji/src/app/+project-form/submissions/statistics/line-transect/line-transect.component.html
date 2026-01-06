@@ -46,7 +46,7 @@
             })
           </td>
         </tr>
-        @if (stats$ | async let diff) {
+        @if (stats$ | async; as diff) {
           <tr>
             <th>Poikkeama laskentapäivän mediaanista</th>
             <td>

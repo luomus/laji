@@ -35,11 +35,11 @@ export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcrete
   @ViewChild('selectElem') selectElem?: ElementRef;
 
   @HostListener('keydown.enter', ['$event'])
-  onKeyDownEnter(event: KeyboardEvent) {
+  onKeyDownEnter(event: Event) {
     event.preventDefault();
   }
   @HostListener('keyup.enter', ['$event'])
-  onKeyUpEnter(event: KeyboardEvent) {
+  onKeyUpEnter(event: Event) {
     event.preventDefault();
     this.add();
   }
@@ -95,4 +95,3 @@ export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcrete
   }
   // ------------------------------- //
 }
-

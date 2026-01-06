@@ -1,5 +1,5 @@
 <div class="editor-container" [class.fullscreen]="viewSettings.fullscreen">
-  @if (newLabelFields$ | async let newLabelFields) {
+  @if (newLabelFields$ | async; as newLabelFields) {
     <ll-label-designer
       [translations]="labelTranslations"
       defaultDomain="http://tun.fi/"

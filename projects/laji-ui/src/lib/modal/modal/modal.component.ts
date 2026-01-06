@@ -57,7 +57,7 @@ export class ModalComponent implements OnDestroy {
   @ViewChild('container', {static: false}) containerRef?: ElementRef;
 
   private originalBodyOverflow?: string;
-  private mousedownTarget?: HTMLElement;
+  private mousedownTarget?: EventTarget | null;
 
   constructor(
     public elementRef: ElementRef,
@@ -73,7 +73,7 @@ export class ModalComponent implements OnDestroy {
   }
 
   @HostListener('document:keydown.escape')
-  private hideOnEsc() {
+  hideOnEsc() {
     if (this.noClose) {
       return;
     }
@@ -81,12 +81,12 @@ export class ModalComponent implements OnDestroy {
   }
 
   @HostListener('mousedown', ['$event.target'])
-  private onMousedown(target: HTMLElement) {
+  onMousedown(target: EventTarget | null) {
     this.mousedownTarget = target;
   }
 
   @HostListener('mouseup', ['$event.target'])
-  private onMouseup(target: HTMLElement) {
+  onMouseup(target: EventTarget | null) {
     if (!this.noClose && target === this.containerRef?.nativeElement && target === this.mousedownTarget) {
       this.hide();
     }
