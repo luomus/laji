@@ -105,7 +105,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
 
   updateHeight() {
     if (this.platformService.isBrowser) {
-      this.height = Math.min(window.innerHeight - 70, 490) + 'px';
+      this.height = Math.min(window.innerHeight - 70, 600) + 'px';
     }
   }
 
