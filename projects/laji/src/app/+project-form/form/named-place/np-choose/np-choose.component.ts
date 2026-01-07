@@ -158,7 +158,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
 
   onFilteredIDsChange(ids: string[]) {
     this.filteredIDs = ids;
-    if (this._activeNP && this.filteredIDs.length > 0 && !this.filteredIDs.includes(this._activeNP)) {
+    if (this._activeNP && !this.filteredIDs.includes(this._activeNP)) {
       this._activeNP = undefined;
       this.onActivePlaceChange(-1);
     }
