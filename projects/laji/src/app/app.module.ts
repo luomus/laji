@@ -4,7 +4,6 @@ import { SharedModule } from './shared/shared.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { ConsoleLogger, HttpLogger, Logger } from './shared/logger';
-import { LoggerApi } from './shared/api/LoggerApi';
 import { ILogger } from './shared/logger/logger.interface';
 import { AppRoutingModule } from './app-routing.modules';
 import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSessionStorage } from 'ngx-webstorage';
@@ -23,11 +22,11 @@ import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http
 import { BrowserModule, provideClientHydration, Title } from '@angular/platform-browser';
 import { LajiTitle } from './shared/service/laji-title';
 import { LocaleModule } from './locale/locale.module';
-import { API_BASE_URL } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
-export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
+export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
-    return new HttpLogger(loggerApi);
+    return new HttpLogger(api);
   }
   return new ConsoleLogger();
 }
@@ -65,9 +64,9 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     LocalizeRouterService,
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     {
-        provide: Logger,
-        deps: [LoggerApi],
-        useFactory: createLoggerLoader
+      provide: Logger,
+      deps: [LajiApiClientBService],
+      useFactory: createLoggerLoader
     },
     { provide: Title, useClass: LajiTitle },
     provideClientHydration(),
