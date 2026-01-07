@@ -75,7 +75,6 @@ export class NpMapComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['namedPlaces'] || changes['filteredIDs']) {
       this.initMapData();
-      this.setActivePlaceByFilteredListIndex(this.activeNP ?? undefined);
     }
     if (changes['visible'] && changes['visible'].currentValue === true && this._lastVisibleActiveNP !== this.activeNP) {
       this._zoomOnNextTick = true;
@@ -85,7 +84,13 @@ export class NpMapComponent implements OnInit, OnChanges {
         this._lastVisibleActiveNP = this.activeNP;
       }
       const fullIdx = changes['activeNP'].currentValue;
-      this.setActivePlaceByFilteredListIndex(fullIdx);
+      const filteredIdx = this.getFilteredIdx(fullIdx);
+      // Apply immediately if map is ready, or store as pending if not
+      if (this.lajiMap.map) {
+        this.setNewActivePlace(filteredIdx);
+      } else {
+        this._pendingFilteredIdx = filteredIdx;
+      }
     }
   }
 
@@ -114,27 +119,24 @@ export class NpMapComponent implements OnInit, OnChanges {
     }
   }
 
+  private getFilteredIdx(fullIdx: any): number {
+    // Transform selected place's index in all places list to index in filtered places list
+    if (fullIdx !== undefined && fullIdx !== null && fullIdx !== -1) {
+      const namedPlace = this.namedPlaces![fullIdx];
+      const filteredPlaces = this.namedPlaces!.filter(np => !this.filterBy || this.filteredIDs.includes(np.id));
+      const filteredIdx = filteredPlaces.findIndex(np => np.id === namedPlace.id);
+      return filteredIdx;
+    } else {
+      return -1;
+    }
+  }
+
   private setNewActivePlace(newActive: number) {
     if (!this.lajiMap.map) { return; }
 
     try {
       this.lajiMap.map.setActive(this.lajiMap.map.getLayerByIdxTuple([0, newActive]));
     } catch (e) {}
-  }
-
-  private setActivePlaceByFilteredListIndex(fullIdx?: number | null) {
-    // Transform selected place's index in all places list to index in filtered places list
-    if (fullIdx !== undefined && fullIdx !== null && fullIdx !== -1) {
-      const namedPlace = this.namedPlaces![fullIdx];
-      const filteredPlaces = this.namedPlaces!.filter(np => !this.filterBy || this.filteredIDs.includes(np.id));
-      const filteredIdx = filteredPlaces.findIndex(np => np.id === namedPlace.id);
-      // Apply immediately if map is ready, or store as pending if not
-      if (this.lajiMap.map) {
-        this.setNewActivePlace(filteredIdx);
-      } else {
-        this._pendingFilteredIdx = filteredIdx;
-      }
-    }
   }
 
   private initLegend() {
@@ -243,7 +245,7 @@ export class NpMapComponent implements OnInit, OnChanges {
           this._popupCallback = cb;
           this.cdr.markForCheck();
         },
-        activeIdx: this.activeNP,
+        activeIdx: this.getFilteredIdx(this.activeNP),
         cluster: mapCluster
       };
     } catch (e) { }
