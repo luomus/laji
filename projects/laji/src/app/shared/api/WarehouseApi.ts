@@ -23,7 +23,7 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { PagedResult } from '../model/PagedResult';
 import { WarehouseQueryInterface } from '../model/WarehouseQueryInterface';
 import { SearchQueryService } from '../../+observation/search-query.service';

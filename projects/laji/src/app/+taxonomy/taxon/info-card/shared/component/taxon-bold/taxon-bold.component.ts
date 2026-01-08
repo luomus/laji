@@ -11,9 +11,10 @@ interface BoldEntry {
 }
 
 @Component({
-  selector: 'laji-taxon-bold',
-  templateUrl: './taxon-bold.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-bold',
+    templateUrl: './taxon-bold.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonBoldComponent implements OnChanges {
 

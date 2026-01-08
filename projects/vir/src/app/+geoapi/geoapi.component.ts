@@ -10,9 +10,10 @@ import { VIR_FILTER_SHORTCUT_QUERY_PARAMS } from '../../../../laji/src/app/+obse
 import { SearchQueryService } from '../../../../laji/src/app/+observation/search-query.service';
 
 @Component({
-  selector: 'vir-geoapi',
-  templateUrl: './geoapi.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-geoapi',
+    templateUrl: './geoapi.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GeoapiComponent {
   constructor(
@@ -35,7 +36,7 @@ export class GeoapiComponent {
       'TSV_FLAT',
       'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
       this.searchQueryService.getQueryFromUrlQueryParams(VIR_FILTER_SHORTCUT_QUERY_PARAMS),
-      this.translate.currentLang,
+      this.translate.getCurrentLang(),
       'AUTHORITIES_VIRVA_GEOAPI_KEY',
       {
         dataUsePurpose: [req.reasonEnum, req.reason].filter(r => !!r).join(': '),

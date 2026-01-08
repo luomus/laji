@@ -1,9 +1,9 @@
 <div [ngClass]="!isMobile ? 'selector-container' : 'mobile-selector-container'">
-  <ng-container *ngIf="!loading; else loadingSpinner">
+  @if (!loading) {
     <div>
       <label>
         <laji-checkbox [value]="showEmpty" (valueChange)="toggleShowEmpty()"></laji-checkbox>
-        {{ 'theme.dataset-metadata.showEmpty' | translate }} 
+        {{ 'theme.dataset-metadata.showEmpty' | translate }}
       </label>
     </div>
     <div>
@@ -23,11 +23,10 @@
       [openOnSelect]="true"
       [useVirtualScroll]="false"
       (emitSelect)="changeSelected($event)"
-    >
+      >
     </laji-tree-selector>
-  </ng-container>
-  <ng-template #loadingSpinner>
+  } @else {
     <laji-spinner [overlay]="true">
     </laji-spinner>
-  </ng-template>
+  }
 </div>

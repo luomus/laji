@@ -3,13 +3,14 @@ import { ActivatedRoute } from '@angular/router';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable } from 'rxjs';
-import { map, filter, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { map, filter, distinctUntilChanged, switchMap } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
 
 export type Trait = components['schemas']['Trait'];
 
 @Component({
-  templateUrl: './trait-db-trait.component.html'
+    templateUrl: './trait-db-trait.component.html',
+    standalone: false
 })
 export class TraitDbTraitComponent implements OnInit {
   trait$!: Observable<Trait>;
@@ -31,4 +32,3 @@ export class TraitDbTraitComponent implements OnInit {
     this.loggedIn$ = this.userService.isLoggedIn$;
   }
 }
-

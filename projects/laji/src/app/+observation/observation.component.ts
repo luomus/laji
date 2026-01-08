@@ -11,9 +11,9 @@ import { environment } from '../../environments/environment';
 
 
 @Component({
-  selector: 'laji-observation',
-  templateUrl: './observation.component.html',
-  styles: [`
+    selector: 'laji-observation',
+    templateUrl: './observation.component.html',
+    styles: [`
     :host {
       flex: 1 0 auto;
       display: flex;
@@ -21,8 +21,9 @@ import { environment } from '../../environments/environment';
       z-index: auto;
     }
   `],
-  providers: [SearchQueryService, ObservationFacade],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    providers: [SearchQueryService, ObservationFacade],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationComponent extends AbstractObservation implements OnInit, OnDestroy {
   reloadSubscription?: Subscription;

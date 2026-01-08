@@ -1,4 +1,4 @@
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs';
 import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output, Directive, OnInit } from '@angular/core';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { ControlValueAccessor } from '@angular/forms';
@@ -49,7 +49,7 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     protected logger: Logger,
     protected translate: TranslateService
   ) {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
   }
 
   ngOnInit() {

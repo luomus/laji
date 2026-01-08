@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { TaxonTypeEnum } from '../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'bsg-bird-identification-history',
-  template: `
+    selector: 'bsg-bird-identification-history',
+    template: `
     <bsg-identification-results
       [taxonTypes]="taxonTypes"
     ></bsg-identification-results>
-  `
+  `,
+    standalone: false
 })
 export class BirdIdentificationResultsComponent {
   taxonTypes = [TaxonTypeEnum.bird];

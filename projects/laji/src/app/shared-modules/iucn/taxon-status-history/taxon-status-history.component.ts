@@ -4,9 +4,10 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type LatestRedListStatusFinland = components['schemas']['Taxon']['latestRedListStatusFinland'];
 
 @Component({
-  selector: 'laji-taxon-status-history',
-  templateUrl: './taxon-status-history.component.html',
-  styleUrls: ['./taxon-status-history.component.css']
+    selector: 'laji-taxon-status-history',
+    templateUrl: './taxon-status-history.component.html',
+    styleUrls: ['./taxon-status-history.component.css'],
+    standalone: false
 })
 export class TaxonStatusHistoryComponent {
 

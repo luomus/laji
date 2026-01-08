@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { FormService } from '../../../shared/service/form.service';
 import { NamedPlacesService } from '../../../shared/service/named-places.service';
 import { UserService } from '../../../shared/service/user.service';

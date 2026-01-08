@@ -1,106 +1,124 @@
 <div class="container-fluid" style="width: 100%" >
-  <div id="container" class="row np-row" *ngIf="(vm$ | async) as data; else spinner ">
-    <laji-project-form-header *ngIf="displayHeader"
-                              [form]="data.documentForm!"
-                              [description]="data.description"
-                              class="no-flex"
-                              lajiFormOption="logo title options.hideTES"></laji-project-form-header>
-
-    <lu-alert *ngIf="errorMsg" type="danger">{{ errorMsg }}</lu-alert>
-
-    <ng-container *lajiLoggedIn="true">
-      <div *ngIf='data.namedPlaces' class="choose-label">
-        <span lajiFormOption="options.namedPlaceOptions.createNewButtonPrependingTextLabel">
-          {{data.documentForm!.options?.namedPlaceOptions?.createNewButtonPrependingTextLabel || 'np.chooseLabel' | translate}}
-        </span>
-        <ng-container *ngIf="data.allowEdit">
-          <span class="choose-or">{{'or' | translate}}</span>
-        <lu-button (click)='onCreateNew()' lajiFormOption="options.namedPlaceOptions.createNewButtonLabel">
-          {{ data.documentForm!.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}
-        </lu-button>
-        </ng-container>
-      </div>
-    </ng-container>
-    <div *ngIf="data.documentForm?.options?.namedPlaceOptions?.filterByMunicipality"
+  @if ((vm$ | async); as data) {
+    <div id="container" class="row np-row">
+      @if (displayHeader) {
+        <laji-project-form-header
+          [form]="data.documentForm!"
+          [description]="data.description"
+          class="no-flex"
+        lajiFormOption="logo title options.hideTES"></laji-project-form-header>
+      }
+      @if (errorMsg) {
+        <lu-alert type="danger">{{ errorMsg }}</lu-alert>
+      }
+      <ng-container *lajiLoggedIn="true">
+        @if (data.namedPlaces) {
+          <div class="choose-label">
+            <span lajiFormOption="options.namedPlaceOptions.createNewButtonPrependingTextLabel">
+              {{data.documentForm!.options?.namedPlaceOptions?.createNewButtonPrependingTextLabel || 'np.chooseLabel' | translate}}
+            </span>
+            @if (data.allowEdit) {
+              <span class="choose-or">{{'or' | translate}}</span>
+              <lu-button (click)='onCreateNew()' lajiFormOption="options.namedPlaceOptions.createNewButtonLabel">
+                {{ data.documentForm!.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}
+              </lu-button>
+            }
+          </div>
+        }
+      </ng-container>
+      @if (data.documentForm?.options?.namedPlaceOptions?.filterByMunicipality) {
+        <div
           lajiFormOption="options.namedPlaceOptions.filterByMunicipality"
           class="form-group col-xs-12">
-      <div class="row">
-        <label class="col-xs-12">{{ 'MNP.municipality' | label }}</label>
-        <laji-area-select class="col-sm-12 col-md-4 col-lg-3"
-                          [field]="areaTypes.Municipality"
-                          [allOptionEnabled]='true'
-                          [selectOptionEnabled]='false'
-                          (areaSelect)="onMunicipalityChange($any($event))"
-                          [value]="[data.municipality!]"></laji-area-select>
+          <div class="row">
+            <label class="col-xs-12">{{ 'MNP.municipality' | label }}</label>
+            <laji-area-select class="col-sm-12 col-md-4 col-lg-3"
+              [field]="areaTypes.Municipality"
+              [allOptionEnabled]='true'
+              [selectOptionEnabled]='false'
+              (areaSelect)="onMunicipalityChange($any($event))"
+            [value]="[data.municipality!]"></laji-area-select>
+          </div>
         </div>
-    </div>
-    <div *ngIf="data.documentForm?.options?.namedPlaceOptions?.filterByBirdAssociationArea"
-         lajiFormOption="options.namedPlaceOptions.filterByBirdAssociationArea"
-         class="form-group col-xs-12" >
-      <div class="row">
-        <div class="col-xs-12">
-          <label>{{ 'MNP.birdAssociationArea' | label }}</label>
-          <laji-info placement="right">
-            <strong>{{ 'MNP.birdAssociationArea' | label }}</strong>
-            <br>
-            {{ data.documentForm?.options?.namedPlaceOptions?.birdAssociationAreaHelp }}
-          </laji-info>
-        </div>
-        <laji-area-select class="col-sm-12 col-md-4 col-lg-3"
-                          [field]="areaTypes.BirdAssociationArea"
-                          [allOptionEnabled]="true"
-                          [allOptionLabel]="'area-select.allRoutes'"
-                          [allOptionLast]="true"
-                          (areaSelect)="onBirdAssociationAreaChange($event)"
-                          [value]="[data.birdAssociationArea!]"></laji-area-select>
+      }
+      @if (data.documentForm?.options?.namedPlaceOptions?.filterByBirdAssociationArea) {
+        <div
+          lajiFormOption="options.namedPlaceOptions.filterByBirdAssociationArea"
+          class="form-group col-xs-12" >
+          <div class="row">
+            <div class="col-xs-12">
+              <label>{{ 'MNP.birdAssociationArea' | label }}</label>
+              <laji-info placement="right">
+                <strong>{{ 'MNP.birdAssociationArea' | label }}</strong>
+                <br>
+                  {{ data.documentForm?.options?.namedPlaceOptions?.birdAssociationAreaHelp }}
+                </laji-info>
+              </div>
+              <laji-area-select class="col-sm-12 col-md-4 col-lg-3"
+                [field]="areaTypes.BirdAssociationArea"
+                [allOptionEnabled]="true"
+                [allOptionLabel]="'area-select.allRoutes'"
+                [allOptionLast]="true"
+                (areaSelect)="onBirdAssociationAreaChange($event)"
+              [value]="[data.birdAssociationArea!]"></laji-area-select>
+            </div>
+          </div>
+        }
+        @if (data.documentForm?.options?.namedPlaceOptions?.filterByTags) {
+          <laji-metadata-select
+            lajiFormOption="options.namedPlaceOptions.filterByTags"
+            [alt]="'MNP.tagEnum'"
+            [ngModel]="data.tags"
+            (ngModelChange)="onTagsChange($event)"
+            [multiple]="true"
+            [useFilter]="false"
+            placeholder="np.tag"
+          [open]="true"></laji-metadata-select>
+        }
+        <laji-spinner [spinning]="loading" [overlay]="true">
+          @if (data.namedPlaces && data.documentForm && !errorMsg) {
+            <div>
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                <laji-np-choose [namedPlaces]="data.namedPlaces"
+                  [documentForm]="data.documentForm"
+                  [placeForm]="data.placeForm"
+                  [userID]="data.user?.id"
+                  [activeNP]="data.activeNP?.id"
+                  [formRights]="data.formRights"
+                (activePlaceChange)="onActivePlaceChange($event)"></laji-np-choose>
+                <ng-container *lajiLoggedIn="true">
+                  @if (data.allowEdit) {
+                    <lu-button
+                      lajiFormOption="options.namedPlaceOptions.createNewButtonLabel"
+                    (click)="onCreateNew()">{{ data.documentForm.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}</lu-button>
+                  }
+                </ng-container>
+              </div>
+              <div [ngClass]="{'col-lg-6': true, 'nav-margin': data.showMap}">
+                @if (data.activeNP) {
+                  <laji-np-info
+                    [namedPlace]="data.activeNP"
+                    [formRights]="data.formRights!"
+                    [placeForm]="data.placeForm!"
+                    [documentForm]="data.documentForm"
+                    [collectionId]="data.collectionId!"
+                    [allowEdit]="data.allowEdit"
+                    [loading]="loading"
+                    [useLabel]="useLabel"
+                    [useDisabled]="useDisabled"
+                    [reloadSubmissions$]="reloadSubmissions$"
+                    (releaseButtonClick)="onRelease($event)"
+                    (reserveButtonClick)="onReserve($event)"
+                    (editButtonClick)="onEdit()"
+                    (deleteButtonClick)="confirmDelete($event)"
+                  (useButtonClick)="useClick()"></laji-np-info>
+                }
+              </div>
+            </div>
+          }
+        </laji-spinner>
       </div>
-    </div>
-    <laji-metadata-select
-      *ngIf="data.documentForm?.options?.namedPlaceOptions?.filterByTags"
-      lajiFormOption="options.namedPlaceOptions.filterByTags"
-      [alt]="'MNP.tagEnum'"
-      [ngModel]="data.tags"
-      (ngModelChange)="onTagsChange($event)"
-      [multiple]="true"
-      [useFilter]="false"
-      placeholder="np.tag"
-      [open]="true"></laji-metadata-select>
-    <laji-spinner [spinning]="loading" [overlay]="true">
-      <div *ngIf="data.namedPlaces && data.documentForm && !errorMsg">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-          <laji-np-choose [namedPlaces]="data.namedPlaces"
-                          [documentForm]="data.documentForm"
-                          [placeForm]="data.placeForm"
-                          [userID]="data.user?.id"
-                          [activeNP]="data.activeNP?.id"
-                          [formRights]="data.formRights"
-                          (activePlaceChange)="onActivePlaceChange($event)"></laji-np-choose>
-          <ng-container *lajiLoggedIn="true">
-            <lu-button *ngIf="data.allowEdit"
-                       lajiFormOption="options.namedPlaceOptions.createNewButtonLabel"
-                       (click)="onCreateNew()">{{ data.documentForm.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}</lu-button>
-          </ng-container>
-        </div>
-        <div [ngClass]="{'col-lg-6': true, 'nav-margin': data.showMap}">
-          <laji-np-info *ngIf="data.activeNP"
-                        [namedPlace]="data.activeNP"
-                        [formRights]="data.formRights!"
-                        [placeForm]="data.placeForm!"
-                        [documentForm]="data.documentForm"
-                        [collectionId]="data.collectionId!"
-                        [allowEdit]="data.allowEdit"
-                        [loading]="loading"
-                        [useLabel]="useLabel"
-                        [useDisabled]="useDisabled"
-                        [reloadSubmissions$]="reloadSubmissions$"
-                        (releaseButtonClick)="onRelease($event)"
-                        (reserveButtonClick)="onReserve($event)"
-                        (editButtonClick)="onEdit()"
-                        (deleteButtonClick)="confirmDelete($event)"
-                        (useButtonClick)="useClick()"></laji-np-info>
-        </div>
-      </div>
-    </laji-spinner>
+    } @else {
+      <laji-spinner></laji-spinner>
+    }
   </div>
-</div>
-<ng-template #spinner><laji-spinner></laji-spinner></ng-template>

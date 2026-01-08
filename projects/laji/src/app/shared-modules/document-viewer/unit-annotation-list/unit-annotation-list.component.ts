@@ -6,10 +6,11 @@ import { Annotation } from '../../../shared/model/Annotation';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 @Component({
-  selector: 'laji-unit-annotation-list',
-  templateUrl: './unit-annotation-list.component.html',
-  styleUrls: ['./unit-annotation-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-unit-annotation-list',
+    templateUrl: './unit-annotation-list.component.html',
+    styleUrls: ['./unit-annotation-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UnitAnnotationListComponent implements OnInit, OnDestroy {
   @Input() isEditor?: boolean;

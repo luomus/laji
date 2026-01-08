@@ -1,29 +1,31 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { DownloadRequestResponse, isDownloadRequest, asDownloadRequest } from '../shared-modules/download-request/models';
 import { HeaderService } from '../shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  template: `
-    <div class="container laji-page" style="padding-bottom: 20px; padding-top: 20px;" *ngIf="downloadRequest$ | async as downloadRequest">
-      <ng-container *ngIf="isDownloadRequest(downloadRequest) else notFound">
-        <laji-download-request
-          [downloadRequest]="asDownloadRequest(downloadRequest)"
-          [showTitle]="true"
-          [showDownload]="'publicOnly'"
-        ></laji-download-request>
-      </ng-container>
-      <ng-template #notFound>
-        {{ 'downloadRequest.notFound' | translate:{ id } }}
-      </ng-template>
-    </div>
-  `,
-  selector: 'laji-citable-download',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    template: `
+    @if (downloadRequest$ | async; as downloadRequest) {
+      <div class="container laji-page" style="padding-bottom: 20px; padding-top: 20px;">
+        @if (isDownloadRequest(downloadRequest)) {
+          <laji-download-request
+            [downloadRequest]="asDownloadRequest(downloadRequest)"
+            [showTitle]="true"
+            [showDownload]="'publicOnly'"
+          ></laji-download-request>
+        } @else {
+          {{ 'downloadRequest.notFound' | translate:{ id } }}
+        }
+      </div>
+    }
+    `,
+    selector: 'laji-citable-download',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CitableDownloadComponent implements OnInit {
   downloadRequest$!: Observable<DownloadRequestResponse>;

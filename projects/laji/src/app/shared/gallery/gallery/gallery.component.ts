@@ -12,7 +12,7 @@ import {
 import { GalleryService } from '../service/gallery.service';
 import { WarehouseQueryInterface } from '../../model/WarehouseQueryInterface';
 import { Logger } from '../../logger/logger.service';
-import {catchError, delay, map, tap} from 'rxjs/operators';
+import {catchError, delay, map, tap} from 'rxjs';
 import { IImageSelectEvent } from '../image-gallery/image.interface';
 import { QueryParamsHandling } from '@angular/router';
 import { ViewType } from '../image-gallery';
@@ -21,10 +21,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type TaxonImage = components['schemas']['Image'];
 
 @Component({
-  selector: 'laji-gallery',
-  styleUrls: ['./gallery.component.css'],
-  templateUrl: './gallery.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-gallery',
+    styleUrls: ['./gallery.component.css'],
+    templateUrl: './gallery.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GalleryComponent implements OnChanges {
   @Input() query!: WarehouseQueryInterface;

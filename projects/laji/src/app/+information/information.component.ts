@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Logger } from '../shared/logger/logger.service';
 import { Title } from '@angular/platform-browser';
 import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
-import { catchError, delay, filter, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, delay, filter, map, switchMap, tap } from 'rxjs';
 import { getDescription, HeaderService } from '../shared/service/header.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api';
@@ -13,10 +13,11 @@ import { PlatformService } from '../root/platform.service';
 type Information = components['schemas']['Information'];
 
 @Component({
-  selector: 'laji-information',
-  templateUrl: './information.component.html',
-  styleUrls: ['../../styles/information.scss', './information.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-information',
+    templateUrl: './information.component.html',
+    styleUrls: ['../../styles/information.scss', './information.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InformationComponent {
 

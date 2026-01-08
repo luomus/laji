@@ -1,243 +1,268 @@
-<ng-container *ngIf="vm$ | async as vm">
+@if (vm$ | async; as vm) {
   <div class="row data-container">
     <div class="col-sm-10">
-      <span *ngIf="vm.filename">{{ 'excel.import.workingOn' | translate }} <strong>{{ vm.filename }}</strong></span>&nbsp;
+      @if (vm.filename) {
+        <span>{{ 'excel.import.workingOn' | translate }} <strong>{{ vm.filename }}</strong></span>
+        }&nbsp;
+      </div>
     </div>
-  </div>
-
-  <div class="well">
-
-    <laji-stepper
-      [step]="vm.step"
-      (activate)="activate($event)"
-      (activePhaseChange)="currentTitle = $event.label"
-    ></laji-stepper>
-
-    <h2>{{ (currentTitle || '') | translate }}</h2>
-
-    <lu-alert [type]="'danger'" *ngIf="vm.step === step.sheetLoadError">
-      <div [innerHtml]="sheetLoadErrorMsg"></div>
-    </lu-alert>
-    <lu-alert [type]="'danger'" *ngIf="vm.step === step.requiredFieldsNull">
-      <div [innerHtml]="'excel.import.error.requiredFieldsNull' | translate"></div>
-    </lu-alert>
-    <lu-alert [type]="'danger'" *ngIf="vm.step === step.fileAlreadyUploadedPartially">
-      <div [innerHtml]="'excel.import.error.alreadyUploadedPartially' | translate"></div>
-    </lu-alert>
-    <lu-alert [type]="'danger'" *ngIf="vm.step === step.fileAlreadyUploaded">
-      <div [innerHtml]="'excel.import.error.alreadyUploaded' | translate"></div>
-    </lu-alert>
-    <lu-alert [type]="'danger'" *ngIf="vm.step === step.invalidFileType">
-      <div [innerHtml]="'excel.import.error.invalidFileType' | translate"></div>
-    </lu-alert>
-    <lu-alert [type]="'danger'" *ngIf="vm.step === step.invalidFormId">
-      <div [innerHtml]="'excel.import.error.invalidFormId' | translate: {formId: formID}"></div>
-    </lu-alert>
-
-    <ng-container *ngIf="[step.empty, step.importingFile, step.sheetLoadError, step.requiredFieldsNull, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.invalidFormId].indexOf(vm.step) > -1">
-       <div class="row data-container spacer">
-        <div class="col-sm-9">
-          <ng-container *ngIf="vm.hasUserMapping">
-            <span [innerHtml]="'excel.import.step1.hasUserMapping' | translate"></span><br>
-          </ng-container>
-          <ng-container *ngIf="!vm.filename; else fileExists">
-            <input type="file" class="form-control" (change)="onFileChange($event)" />
-          </ng-container>
-          <ng-template #fileExists>
-            <strong>{{ vm.filename }}</strong>&nbsp;&nbsp;<i class="link glyphicon glyphicon-remove" (click)="clearFile()"></i>
-          </ng-template>
-          <span *ngIf="fileLoading">{{ 'loading' | translate }}</span>
-        </div>
-        <div class="col-sm-3 map-buttons">
-          <div class="row">
-            <div class="col-xs-12">
-              <laji-user-mapping-button
-                [hasUserMapping]="vm.hasUserMapping"
-                (loadError)="userMappingLoadingFailed()"
-                (userMapping)="useUserMapping($event)"
-                (clearUserMapping)="clearUserMapping()"
-              ></laji-user-mapping-button>
-            </div>
+    <div class="well">
+      <laji-stepper
+        [step]="vm.step"
+        (activate)="activate($event)"
+        (activePhaseChange)="currentTitle = $event.label"
+      ></laji-stepper>
+      <h2>{{ (currentTitle || '') | translate }}</h2>
+      @if (vm.step === step.sheetLoadError) {
+        <lu-alert [type]="'danger'">
+          <div [innerHtml]="sheetLoadErrorMsg"></div>
+        </lu-alert>
+      }
+      @if (vm.step === step.requiredFieldsNull) {
+        <lu-alert [type]="'danger'">
+          <div [innerHtml]="'excel.import.error.requiredFieldsNull' | translate"></div>
+        </lu-alert>
+      }
+      @if (vm.step === step.fileAlreadyUploadedPartially) {
+        <lu-alert [type]="'danger'">
+          <div [innerHtml]="'excel.import.error.alreadyUploadedPartially' | translate"></div>
+        </lu-alert>
+      }
+      @if (vm.step === step.fileAlreadyUploaded) {
+        <lu-alert [type]="'danger'">
+          <div [innerHtml]="'excel.import.error.alreadyUploaded' | translate"></div>
+        </lu-alert>
+      }
+      @if (vm.step === step.invalidFileType) {
+        <lu-alert [type]="'danger'">
+          <div [innerHtml]="'excel.import.error.invalidFileType' | translate"></div>
+        </lu-alert>
+      }
+      @if (vm.step === step.invalidFormId) {
+        <lu-alert [type]="'danger'">
+          <div [innerHtml]="'excel.import.error.invalidFormId' | translate: {formId: formID}"></div>
+        </lu-alert>
+      }
+      @if ([step.empty, step.importingFile, step.sheetLoadError, step.requiredFieldsNull, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.invalidFormId].indexOf(vm.step) > -1) {
+        <div class="row data-container spacer">
+          <div class="col-sm-9">
+            @if (vm.hasUserMapping) {
+              <span [innerHtml]="'excel.import.step1.hasUserMapping' | translate"></span><br>
+            }
+            @if (!vm.filename) {
+              <input type="file" class="form-control" (change)="onFileChange($event)" />
+            } @else {
+              <strong>{{ vm.filename }}</strong>&nbsp;&nbsp;<i class="link glyphicon glyphicon-remove" (click)="clearFile()"></i>
+            }
+            <ng-template #fileExists>
+              <strong>{{ vm.filename }}</strong>&nbsp;&nbsp;<i class="link glyphicon glyphicon-remove" (click)="clearFile()"></i>
+            </ng-template>
+            @if (fileLoading) {
+              <span>{{ 'loading' | translate }}</span>
+            }
           </div>
-          <div class="pull-right mapping-file-name">{{ vm.mappingFilename }}</div>
-        </div>
-      </div>
-      <div class="row data-container">
-        <div class="col-sm-5">
-          <ng-container *ngIf="!formID && !!bstr">
-            <laji-form-select [forms]="_forms | async" [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
-          </ng-container>
-        </div>
-        <div class="col-sm-7">
-          <button class="btn btn-primary pull-right" [disabled]="!formID || !vm.filename || vm.step === step.fileAlreadyUploadedPartially || vm.step === step.fileAlreadyUploaded" (click)="activate(step.colMapping)">{{ 'paginator.next' | translate }}</button>
-        </div>
-      </div>
-    </ng-container>
-
-    <laji-col-mapper
-      *ngIf="[step.empty, step.importingFile, step.sheetLoadError, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.invalidFormId].indexOf($any(vm.step)) === -1"
-      [hidden]="vm.step !== step.colMapping"
-      (mappingDone)="colMappingDone($event)"
-      [fields]="fields!"
-      [headers]="header!"
-      [colMapping]="colMap!"
-      (fieldSelected)="mapCol($event)"></laji-col-mapper>
-
-
-    <laji-cell-value-mapping
-      *ngIf="vm.step === step.dataMapping"
-      (done)="rowMappingDone($event)"
-      [formID]="formID!"
-      [valueMap]="valueMap"
-      [fields]="fields!"
-      [data]="data!"
-      [colMapping]="colMap!"></laji-cell-value-mapping>
-
-
-    <ng-container *ngIf="vm.step === step.importReady || vm.step === step.invalidData || vm.step === step.validating">
-      <div class="row">
-        <div class="col-sm-12 spacer">
-          <ng-container *ngIf="vm.step === step.validating">
-            <lu-progressbar [max]="total" [value]="current">{{ current }}/{{ total }}</lu-progressbar>
-          </ng-container>
-          <ng-container *ngIf="vm.step === step.invalidData">
-            <p>{{ 'excel.import.step4.invalidData' | translate }}</p>
+          <div class="col-sm-3 map-buttons">
             <div class="row">
-              <div class="col-sm-9">
-                <input type="file" class="form-control" (change)="onFileChange($event)" />
-                <span *ngIf="fileLoading">{{ 'loading' | translate }}</span>
+              <div class="col-xs-12">
+                <laji-user-mapping-button
+                  [hasUserMapping]="vm.hasUserMapping"
+                  (loadError)="userMappingLoadingFailed()"
+                  (userMapping)="useUserMapping($event)"
+                  (clearUserMapping)="clearUserMapping()"
+                ></laji-user-mapping-button>
               </div>
             </div>
-          </ng-container>
-          <ng-container *ngIf="vm.step === step.importReady">
-            <div class="row">
-              <div class="col-sm-6">
-                <p class="action">{{ 'excel.import.step4.importReady' | translate }}</p>
+            <div class="pull-right mapping-file-name">{{ vm.mappingFilename }}</div>
+          </div>
+        </div>
+        <div class="row data-container">
+          <div class="col-sm-5">
+            @if (!formID && !!bstr) {
+              <laji-form-select [forms]="_forms | async" [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
+            }
+          </div>
+          <div class="col-sm-7">
+            <button class="btn btn-primary pull-right" [disabled]="!formID || !vm.filename || vm.step === step.fileAlreadyUploadedPartially || vm.step === step.fileAlreadyUploaded" (click)="activate(step.colMapping)">{{ 'paginator.next' | translate }}</button>
+          </div>
+        </div>
+      }
+      @if ([step.empty, step.importingFile, step.sheetLoadError, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.invalidFormId].indexOf($any(vm.step)) === -1) {
+        <laji-col-mapper
+          [hidden]="vm.step !== step.colMapping"
+          (mappingDone)="colMappingDone($event)"
+          [fields]="fields!"
+          [headers]="header!"
+          [colMapping]="colMap!"
+        (fieldSelected)="mapCol($event)"></laji-col-mapper>
+      }
+      @if (vm.step === step.dataMapping) {
+        <laji-cell-value-mapping
+          (done)="rowMappingDone($event)"
+          [formID]="formID!"
+          [valueMap]="valueMap"
+          [fields]="fields!"
+          [data]="data!"
+        [colMapping]="colMap!"></laji-cell-value-mapping>
+      }
+      @if (vm.step === step.importReady || vm.step === step.invalidData || vm.step === step.validating) {
+        <div class="row">
+          <div class="col-sm-12 spacer">
+            @if (vm.step === step.validating) {
+              <lu-progressbar [max]="total" [value]="current">{{ current }}/{{ total }}</lu-progressbar>
+            }
+            @if (vm.step === step.invalidData) {
+              <p>{{ 'excel.import.step4.invalidData' | translate }}</p>
+              <div class="row">
+                <div class="col-sm-9">
+                  <input type="file" class="form-control" (change)="onFileChange($event)" />
+                  @if (fileLoading) {
+                    <span>{{ 'loading' | translate }}</span>
+                  }
+                </div>
               </div>
-              <div class="col-sm-6">
-                <div class="row">
-                  <div class="col-sm-12" lajiFormOption="options.hideDraftButton">
-                    <button type="button" (click)="save(publ)" class="btn btn-success pull-right action public">
-                      {{ buttonLabel('save') | translate }}
-                    </button>
-                    <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action no-public" *ngIf="!this.form?.options?.hideDraftButton">
-                      {{ buttonLabel('temp') | translate }}
-                    </button>
-                    <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [luTooltip]="'excel.import.step4.userMapping' | translate" placement="left">
-                      <i class="glyphicon glyphicon-open"></i>
+            }
+            @if (vm.step === step.importReady) {
+              <div class="row">
+                <div class="col-sm-6">
+                  <p class="action">{{ 'excel.import.step4.importReady' | translate }}</p>
+                </div>
+                <div class="col-sm-6">
+                  <div class="row">
+                    <div class="col-sm-12" lajiFormOption="options.hideDraftButton">
+                      <button type="button" (click)="save(publ)" class="btn btn-success pull-right action public">
+                        {{ buttonLabel('save') | translate }}
+                      </button>
+                      @if (!this.form?.options?.hideDraftButton) {
+                        <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action no-public">
+                          {{ buttonLabel('temp') | translate }}
+                        </button>
+                      }
+                      <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [luTooltip]="'excel.import.step4.userMapping' | translate" placement="left">
+                        <i class="glyphicon glyphicon-open"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <span class="pull-right doc-count" [innerHTML]="'excel.import.observations' | translate:{cnt:docCnt}"></span><br>
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <span class="pull-right doc-count" [innerHTML]="'excel.import.observations' | translate:{cnt:docCnt}"></span><br>
-                  </div>
+              </div>
+            }
+            @if (vm.step !== step.validating) {
+              <div class="row" style="margin-top: 15px;">
+                <div class="col-sm-4">
+                  <select name="row-handling" class="form-control" (change)="changeImportType(toHtmlSelectElement($event.target).value)">
+                    @for (item of combineOptions; track item) {
+                      <option [selected]="item === combineBy" [value]="item">{{ 'excel.combine.' + item | translate }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="col-sm-3">
+                  <select name="count-handling" class="form-control" (change)="changeImportType(toHtmlSelectElement($event.target).value)" lajiFormOption="options.emptyOnNoCount">
+                    <option [selected]="true === _onlyWithCount" [value]="true">{{ 'excel.import.onlyWithCount' | translate }}</option>
+                    @if (!form?.options?.emptyOnNoCount) {
+                      <option [selected]="false === _onlyWithCount" [value]="false">{{ 'excel.import.alsoEmptyCount' | translate }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="col-sm-5 checkbox">
+                  <label class="pull-right">
+                    <input type="checkbox"[(ngModel)]="showOnlyErroneous" />
+                    {{ 'excel.import.onlyErroneous' | translate }}
+                  </label>
                 </div>
               </div>
-            </div>
-          </ng-container>
-          <div class="row" style="margin-top: 15px;" *ngIf="vm.step !== step.validating">
-            <div class="col-sm-4">
-              <select name="row-handling" class="form-control" (change)="changeImportType(toHtmlSelectElement($event.target).value)">
-                <option *ngFor="let item of combineOptions" [selected]="item === combineBy" [value]="item">{{ 'excel.combine.' + item | translate }}</option>
-              </select>
-            </div>
-            <div class="col-sm-3">
-              <select name="count-handling" class="form-control" (change)="changeImportType(toHtmlSelectElement($event.target).value)" lajiFormOption="options.emptyOnNoCount">
-                <option [selected]="true === _onlyWithCount" [value]="true">{{ 'excel.import.onlyWithCount' | translate }}</option>
-                <option *ngIf="!form?.options?.emptyOnNoCount" [selected]="false === _onlyWithCount" [value]="false">{{ 'excel.import.alsoEmptyCount' | translate }}</option>
-              </select>
-            </div>
-            <div class="col-sm-5 checkbox">
-              <label class="pull-right">
-                <input type="checkbox"[(ngModel)]="showOnlyErroneous" />
-                {{ 'excel.import.onlyErroneous' | translate }}
-              </label>
-            </div>
+            }
           </div>
         </div>
-      </div>
-
-      <div class="data-container" *ngIf="vm.step !== step.validating">
-        <ng-container [ngTemplateOutlet]="importData"></ng-container>
-      </div>
-    </ng-container>
-
-    <ng-container *ngIf="vm.step === step.importing">
-      <h4>{{ 'sending' | translate }}</h4>
-      <lu-progressbar [max]="total" [value]="current">{{ current }}/{{ total }}</lu-progressbar>
-    </ng-container>
-
-    <ng-container *ngIf="vm.step === step.doneOk || vm.step === step.doneWithErrors">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [luTooltip]="'excel.import.step4.userMapping' | translate" placement="left">
-            <i class="glyphicon glyphicon-save"></i>
+        @if (vm.step !== step.validating) {
+          <div class="data-container">
+            <ng-container [ngTemplateOutlet]="importData"></ng-container>
           </div>
-          <p *ngIf="vm.step === step.doneOk">
-            {{ 'excel.import.done' | translate }}
-          </p>
+        }
+      }
+      @if (vm.step === step.importing) {
+        <h4>{{ 'sending' | translate }}</h4>
+        <lu-progressbar [max]="total" [value]="current">{{ current }}/{{ total }}</lu-progressbar>
+      }
+      @if (vm.step === step.doneOk || vm.step === step.doneWithErrors) {
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [luTooltip]="'excel.import.step4.userMapping' | translate" placement="left">
+              <i class="glyphicon glyphicon-save"></i>
+            </div>
+            @if (vm.step === step.doneOk) {
+              <p>
+                {{ 'excel.import.done' | translate }}
+              </p>
+            }
+          </div>
         </div>
-      </div>
-      <lu-alert [type]="'danger'"  *ngIf="vm.step === step.doneWithErrors">
-        <div [innerHtml]="'excel.import.error.doneWithErrors' | translate"></div>
-      </lu-alert>
-      <div class="row">
-        <div class="col-sm-12 checkbox">
-          <label class="pull-right">
-            <input type="checkbox"[(ngModel)]="showOnlyErroneous" />
-            {{ 'excel.import.onlyErroneous' | translate }}
-          </label>
+        @if (vm.step === step.doneWithErrors) {
+          <lu-alert [type]="'danger'" >
+            <div [innerHtml]="'excel.import.error.doneWithErrors' | translate"></div>
+          </lu-alert>
+        }
+        <div class="row">
+          <div class="col-sm-12 checkbox">
+            <label class="pull-right">
+              <input type="checkbox"[(ngModel)]="showOnlyErroneous" />
+              {{ 'excel.import.onlyErroneous' | translate }}
+            </label>
+          </div>
         </div>
-      </div>
-      <div class="data-container">
-        <ng-container [ngTemplateOutlet]="importData"></ng-container>
-      </div>
-    </ng-container>
-  </div>
-</ng-container>
+        <div class="data-container">
+          <ng-container [ngTemplateOutlet]="importData"></ng-container>
+        </div>
+      }
+    </div>
+  }
 
-<ng-template let-rowIndex="rowIndex" #rowNumber>
-  {{ rowIndex + 2 }}
-</ng-template>
+  <ng-template let-rowIndex="rowIndex" #rowNumber>
+    {{ rowIndex + 2 }}
+  </ng-template>
 
-<ng-template let-value="value" let-column="column" #valueCol>
-  <ng-container *ngIf="column.externalLabel; else valueAsIs">
-    {{ value | label:'withKey' | values:separator }}
-  </ng-container>
-  <ng-template #valueAsIs>{{ value | values:separator }}</ng-template>
-</ng-template>
+  <ng-template let-value="value" let-column="column" #valueCol>
+    @if (column.externalLabel) {
+      {{ value | label:'withKey' | values:separator }}
+    } @else {
+      {{ value | values:separator }}
+    }
+    <ng-template #valueAsIs>{{ value | values:separator }}</ng-template>
+  </ng-template>
 
-<ng-template let-value="value" #statusCol>
-  <laji-status-cell [value]="value" [fields]="fields!"></laji-status-cell>
-</ng-template>
+  <ng-template let-value="value" #statusCol>
+    <laji-status-cell [value]="value" [fields]="fields!"></laji-status-cell>
+  </ng-template>
 
-<ng-template #importData>
-  <button type="button" (click)="openMapModal()" class="btn btn-default mb-3">
-    {{ 'excel.import.step4.showObservationMap' | translate }}
-  </button>
+  <ng-template #importData>
+    <button type="button" (click)="openMapModal()" class="btn btn-default mb-3">
+      {{ 'excel.import.step4.showObservationMap' | translate }}
+    </button>
 
-  <laji-datatable
-    #dataTable
-    class="import-table"
-    [showRowAsLink]="false"
-    [showFooter]="false"
-    [virtualScrolling]="true"
-    [clientSideSorting]="false"
-    [height]="'50vh'"
-    [rows]='mappedData | onlyErroneous:showOnlyErroneous | erroneousFirst'
-    [count]="mappedData!.length"
-    [page]="1"
-    [pageSize]="mappedData!.length"
-    [columns]="dataColumns!">
-  </laji-datatable>
-</ng-template>
+    <laji-datatable
+      #dataTable
+      class="import-table"
+      [showRowAsLink]="false"
+      [showFooter]="false"
+      [virtualScrolling]="true"
+      [clientSideSorting]="false"
+      [height]="'50vh'"
+      [rows]='mappedData | onlyErroneous:showOnlyErroneous | erroneousFirst'
+      [count]="mappedData!.length"
+      [page]="1"
+      [pageSize]="mappedData!.length"
+      [columns]="dataColumns!">
+    </laji-datatable>
+  </ng-template>
 
-<ng-template #mapModal>
-  <h4 class="modal-title">{{ 'excel.import.observationMap' | translate }}</h4>
+  <ng-template #mapModal>
+    <h4 class="modal-title">{{ 'excel.import.observationMap' | translate }}</h4>
     <laji-import-map
       [data]="mappedData | onlyErroneous:showOnlyErroneous"
       [colMap]="colMap!"
       [height]="'50vh'"
     ></laji-import-map>
-</ng-template>
+  </ng-template>

@@ -7,13 +7,14 @@ import {
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 @Component({
-  selector: 'laji-conservation-filter',
-  templateUrl: `./conservation-filter.component.html`,
-  styleUrls: ['./conservation-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-conservation-filter',
+    templateUrl: `./conservation-filter.component.html`,
+    styleUrls: ['./conservation-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ConservationFilterComponent {
   @Input() administrativeStatus?: string[];

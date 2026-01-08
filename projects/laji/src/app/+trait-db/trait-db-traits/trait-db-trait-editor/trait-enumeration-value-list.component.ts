@@ -9,17 +9,18 @@ type TraitEnumerationValueFormGroup = FormGroup<{
 }>;
 
 @Component({
-  selector: 'laji-trait-enumeration-value-list',
-  templateUrl: './trait-enumeration-value-list.component.html',
-  styleUrls: ['./trait-enumeration-value-list.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TraitEnumerationValueListComponent),
-      multi: true
-    }
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-enumeration-value-list',
+    templateUrl: './trait-enumeration-value-list.component.html',
+    styleUrls: ['./trait-enumeration-value-list.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => TraitEnumerationValueListComponent),
+            multi: true
+        }
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitEnumerationValueListComponent implements ControlValueAccessor, OnInit, OnDestroy {
   form = this.fb.array<TraitEnumerationValueFormGroup>([]);

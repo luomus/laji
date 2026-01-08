@@ -6,14 +6,17 @@ interface ILicense {
 }
 
 @Component({
-  selector: 'bsg-license',
-  template: `
-    <a *ngIf="license" [href]="license.link" target="_blank" rel="noopener nofollow">
-      <img [src]="'static/images/license-icons/' + license.img" style="height: 18px">
-    </a>
-  `,
-  styles: [],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-license',
+    template: `
+    @if (license) {
+      <a [href]="license.link" target="_blank" rel="noopener nofollow">
+        <img [src]="'static/images/license-icons/' + license.img" style="height: 18px">
+      </a>
+    }
+    `,
+    styles: [],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LicenseComponent {
   license?: ILicense;

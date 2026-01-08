@@ -1,8 +1,8 @@
-import { catchError, map, pairwise, startWith, switchMap, take, tap, shareReplay } from 'rxjs/operators';
+import { catchError, map, pairwise, startWith, switchMap, take, tap, shareReplay } from 'rxjs';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
 import { NpChooseComponent } from '../np-choose/np-choose.component';
-import * as moment from 'moment';
+import moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { Form } from '../../../../shared/model/Form';
@@ -35,10 +35,11 @@ interface DerivedFromInput {
 }
 
 @Component({
-  selector: 'laji-named-places',
-  templateUrl: './named-place.component.html',
-  styleUrls: ['./named-place.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-named-places',
+    templateUrl: './named-place.component.html',
+    styleUrls: ['./named-place.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NamedPlaceComponent implements OnInit, OnDestroy {
 
@@ -106,8 +107,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     private formService: FormService
   ) {}
 
-  static getMapOptions(documentForm: Form.SchemaForm) {
-    const uiSchema = documentForm.uiSchema;
+  static getMapOptions(documentForm: Form.SchemaForm | undefined) {
+    const uiSchema = documentForm?.uiSchema;
 
     if (!uiSchema) {
       return null;
@@ -176,7 +177,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           user,
           formRights
         ]) => ({
-          collectionId: documentForm.collectionID,
+          collectionId: documentForm?.collectionID,
           documentForm,
           placeForm,
           namedPlaces,
@@ -186,10 +187,10 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           municipality,
           tags,
           activeNP,
-          description: documentForm.options?.namedPlaceOptions?.chooseDescription ?? 'np.defaultDescription',
+          description: documentForm?.options?.namedPlaceOptions?.chooseDescription ?? 'np.defaultDescription',
           allowEdit: (documentForm?.options?.namedPlaceOptions?.allowAddingPublic || formRights.admin) && !this.readonly,
           mapOptionsData: NamedPlaceComponent.getMapOptions(documentForm),
-          showMap: !documentForm.options?.namedPlaceOptions?.hideMapTab
+          showMap: !documentForm?.options?.namedPlaceOptions?.hideMapTab
         }
       )),
       shareReplay(1)

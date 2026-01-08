@@ -7,17 +7,18 @@ import {
   IIdentificationUserStatResult,
   IIdentificationSpeciesStat, TaxonTypeEnum
 } from '../../../kerttu-global-shared/models';
-import { map, share, shareReplay, switchMap } from 'rxjs/operators';
+import { map, share, shareReplay, switchMap } from 'rxjs';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { toHtmlInputElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'bsg-identification-results',
-  templateUrl: './identification-results.component.html',
-  styleUrls: ['./identification-results.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-identification-results',
+    templateUrl: './identification-results.component.html',
+    styleUrls: ['./identification-results.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationResultsComponent implements OnInit {
   @Input() taxonTypes: TaxonTypeEnum[]|null = null;
@@ -52,12 +53,12 @@ export class IdentificationResultsComponent implements OnInit {
     this.userStats$ = this.kerttuGlobalApi.getIdentificationUserStats(this.taxonTypes).pipe(
       share()
     );
-    this.speciesStats$ = this.kerttuGlobalApi.getIdentificationSpeciesStats(this.taxonTypes, this.translate.currentLang).pipe(
+    this.speciesStats$ = this.kerttuGlobalApi.getIdentificationSpeciesStats(this.taxonTypes, this.translate.getCurrentLang()).pipe(
       map(result => result.results),
       shareReplay(1)
     );
     this.ownSpeciesStats$ = this.userService.isLoggedIn$.pipe(
-      switchMap(() => this.kerttuGlobalApi.getIdentificationOwnSpeciesStats(this.taxonTypes, this.userService.getToken(), this.translate.currentLang)),
+      switchMap(() => this.kerttuGlobalApi.getIdentificationOwnSpeciesStats(this.taxonTypes, this.userService.getToken(), this.translate.getCurrentLang())),
       map(result => result.results),
       shareReplay(1)
     );

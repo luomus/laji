@@ -1,8 +1,8 @@
-import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
+import { Inject, Injectable, NgZone, OnDestroy, DOCUMENT } from '@angular/core';
 import { BehaviorSubject, fromEvent, Subject, Subscription } from 'rxjs';
 import { PlatformService } from '../../root/platform.service';
-import { DOCUMENT, Location } from '@angular/common';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { Location } from '@angular/common';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { HistoryService } from './history.service';
 import { Util } from './util.service';
 
@@ -33,7 +33,7 @@ export class BrowserService implements OnDestroy {
   private resizeSub?: Subscription;
   private visibilityChangeEvent?: string;
   private handlerForVisibilityChange?: EventListener;
-  private resize = new Subject();
+  private resize = new Subject<void>();
 
   constructor(
     @Inject(DOCUMENT) public readonly document: Document,

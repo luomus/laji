@@ -11,17 +11,18 @@ import { AudioService } from '../../../../../../../laji/src/app/shared-modules/a
 import { SpectrogramService } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/service/spectrogram.service';
 import { DialogService } from '../../../../../../../laji/src/app/shared/service/dialog.service';
 import { Observable, of, Subscription } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs';
 import { Util } from '../../../../../../../laji/src/app/shared/service/util.service';
 import equals from 'deep-equal';
 import { getTranslateKeyWithTaxonType } from '../../../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
 
 @Component({
-  selector: 'bsg-identification-history-edit-modal',
-  templateUrl: './identification-history-edit-modal.component.html',
-  styleUrls: ['./identification-history-edit-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [AudioService, SpectrogramService]
+    selector: 'bsg-identification-history-edit-modal',
+    templateUrl: './identification-history-edit-modal.component.html',
+    styleUrls: ['./identification-history-edit-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [AudioService, SpectrogramService],
+    standalone: false
 })
 export class IdentificationHistoryEditModalComponent implements OnInit, OnDestroy {
   @Input({ required: true }) index!: number;
@@ -58,7 +59,7 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
         this.loading = true;
       }),
       switchMap(recordingId => this.kerttuGlobalApi.getIdentificationRecording(
-        this.userService.getToken(), this.translate.currentLang, recordingId
+        this.userService.getToken(), this.translate.getCurrentLang(), recordingId
       ))
     ).subscribe((result) => {
       this.recording = result.recording;

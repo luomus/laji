@@ -3,10 +3,11 @@ import { Collection } from '../../../shared/model/Collection';
 import { DatatableColumn } from '../../datatable/model/datatable-column';
 
 @Component({
-  selector: 'laji-collection-table',
-  templateUrl: './collection-table.component.html',
-  styleUrls: ['./collection-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-collection-table',
+    templateUrl: './collection-table.component.html',
+    styleUrls: ['./collection-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CollectionTableComponent {
   @Input() collections: Collection[] = [];

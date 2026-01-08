@@ -3,9 +3,10 @@ import { ImporterComponent } from '../../../shared-modules/spreadsheet/importer/
 import { ImportService } from '../../../shared-modules/spreadsheet/service/import.service';
 
 @Component({
-  selector: 'laji-sheet-importer',
-  templateUrl: './sheet-importer.component.html',
-  styleUrls: ['./sheet-importer.component.scss']
+    selector: 'laji-sheet-importer',
+    templateUrl: './sheet-importer.component.html',
+    styleUrls: ['./sheet-importer.component.scss'],
+    standalone: false
 })
 export class SheetImporterComponent {
   @ViewChild(ImporterComponent) importerComponent!: ImporterComponent;

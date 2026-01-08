@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { FormService } from '../../shared/service/form.service';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Form } from '../../shared/model/Form';
@@ -22,15 +22,16 @@ interface AboutData {
 }
 
 @Component({
-  selector: 'laji-about',
-  templateUrl: './about.component.html',
-  styleUrls: ['./about.component.scss']
+    selector: 'laji-about',
+    templateUrl: './about.component.html',
+    styleUrls: ['./about.component.scss'],
+    standalone: false
 })
 export class AboutComponent implements OnInit {
 
   Rights = Rights; // eslint-disable-line @typescript-eslint/naming-convention
 
-  aboutData$!: Observable<AboutData>;
+  aboutData$!: Observable<AboutData | undefined>;
 
   constructor(private userService: UserService,
               private formService: FormService,
@@ -44,7 +45,7 @@ export class AboutComponent implements OnInit {
   ngOnInit() {
     this.aboutData$ = this.userService.isLoggedIn$.pipe(
       mergeMap(loggedIn => this.projectFormService.getFormFromRoute$(this.route).pipe(
-        mergeMap(form => this.formPermissionService.getRights(form).pipe(
+        mergeMap(form => !form ? of(undefined) : this.formPermissionService.getRights(form).pipe(
           map((rights) => ({
             loggedIn,
             rights: rights.edit === true ? Rights.Allowed : Rights.NotAllowed,

@@ -1,26 +1,29 @@
 <h3>{{ form.collectionID! | label }}</h3>
 
-<laji-info-page
-  *ngIf="(form.options?.about | multiLang)"
-  [page]="form.options?.about | multiLang: true:undefined:'%value%'"
-></laji-info-page>
+@if ((form.options?.about | multiLang)) {
+  <laji-info-page
+    [page]="form.options?.about | multiLang: true:undefined:'%value%'"
+  ></laji-info-page>
+}
 
 <p>
   <a [routerLink]="'/about/4641' | localize">{{ 'datasets.generic.instructions' | translate }}</a>
 </p>
 
-<div *ngIf="(stats$ | async) as stats; else loader" class="mt-5 mb-5">
-  <p [innerHtml]="'datasets.stats.count' | translate: { count: stats.count || 0, speciesCount: stats.speciesCount || 0 }"></p>
-  <p
-    *ngIf="stats.firstLoadDateMax"
-    [innerHtml]="'datasets.stats.lastLoad' | translate: { maxLastLoadTimestamp: stats.firstLoadDateMax | amDateFormat: 'DD.MM.YYYY' }"
-  ></p>
-</div>
+@if ((stats$ | async); as stats) {
+  <div class="mt-5 mb-5">
+    <p [innerHtml]="'datasets.stats.count' | translate: { count: stats.count || 0, speciesCount: stats.speciesCount || 0 }"></p>
+    @if (stats.firstLoadDateMax) {
+      <p
+        [innerHtml]="'datasets.stats.lastLoad' | translate: { maxLastLoadTimestamp: stats.firstLoadDateMax | amDateFormat: 'DD.MM.YYYY' }"
+      ></p>
+    }
+  </div>
+} @else {
+  <laji-spinner></laji-spinner>
+}
 
 <p>
   <a [routerLink]="'/observation/list' | localize" [queryParams]="{collectionId: form.collectionID}">{{ 'datasets.observations.list' | translate }}</a>
 </p>
 
-<ng-template #loader>
-  <laji-spinner></laji-spinner>
-</ng-template>

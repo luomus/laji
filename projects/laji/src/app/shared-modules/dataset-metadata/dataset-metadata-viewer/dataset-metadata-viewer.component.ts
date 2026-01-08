@@ -3,10 +3,11 @@ import { ICollection, ICollectionCounts } from '../../../shared/service/collecti
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'laji-dataset-metadata-viewer',
-  templateUrl: './dataset-metadata-viewer.component.html',
-  styleUrls: ['./dataset-metadata-viewer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-dataset-metadata-viewer',
+    templateUrl: './dataset-metadata-viewer.component.html',
+    styleUrls: ['./dataset-metadata-viewer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatasetMetadataViewerComponent {
   @Input() collection$!: Observable<ICollection>;

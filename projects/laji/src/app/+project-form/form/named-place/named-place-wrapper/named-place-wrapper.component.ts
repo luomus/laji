@@ -2,32 +2,32 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Observable } from 'rxjs';
 import { NamedPlacesQuery, NamedPlacesRouteData, ProjectFormService } from '../../../../shared/service/project-form.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 
 @Component({
-  selector: 'laji-named-place-wrapper',
-  template: `
-    <ng-container *ngIf="data$ | async as data; else spinner">
+    selector: 'laji-named-place-wrapper',
+    template: `
+    @if (data$ | async; as data) {
       <laji-named-places [documentForm]="data.documentForm"
-                         [activeId]="data.activeNP!"
-                         [municipality]="data.municipality!"
-                         [birdAssociationArea]="data.birdAssociationArea!"
-                         [tags]="data.tags!"
-                         (municipalityChange)="onMunicipalityChange($event)"
-                         (birdAssociationAreaChange)="onBirdAssociationAreaChange($event)"
-                         (tagsChange)="onTagsChange($event)"
-                         (activeIdChange)="onActiveIdChange($event!)"
-                         (use)="use($event!)"
-                         (edit)="edit($event!)"
-                         (create)="create()"
-                         lajiFormOption="options.useNamedPlaces options.namedPlaceOptions"
+        [activeId]="data.activeNP!"
+        [municipality]="data.municipality!"
+        [birdAssociationArea]="data.birdAssociationArea!"
+        [tags]="data.tags!"
+        (municipalityChange)="onMunicipalityChange($event)"
+        (birdAssociationAreaChange)="onBirdAssociationAreaChange($event)"
+        (tagsChange)="onTagsChange($event)"
+        (activeIdChange)="onActiveIdChange($event!)"
+        (use)="use($event!)"
+        (edit)="edit($event!)"
+        (create)="create()"
+        lajiFormOption="options.useNamedPlaces options.namedPlaceOptions"
       ></laji-named-places>
-    </ng-container>
-    <ng-template #spinner>
+    } @else {
       <laji-spinner></laji-spinner>
-    </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    }
+    `,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NamedPlaceWrapperComponent implements OnInit {
 

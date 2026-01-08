@@ -10,7 +10,7 @@ import { NamedPlacesService } from '../../../shared/service/named-places.service
 import { TranslateService } from '@ngx-translate/core';
 import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
 import { ExportService } from '../../../shared/service/export.service';
-import { map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 import { ExcelToolService } from './excel-tool.service';
 
 @Injectable()
@@ -68,7 +68,7 @@ export class GeneratorService {
     ObservableForkJoin(
       this.userService.user$.pipe(take(1)),
       this.excelToolService.getNamedPlacesList(formID),
-      this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang).pipe(map(result => result.results))
+      this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.getCurrentLang()).pipe(map(result => result.results))
     ).pipe(
       map((data) => ({person: data[0], namedPlaces: data[1], informalTaxonGroups: data[2]}))
     )

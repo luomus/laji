@@ -7,10 +7,11 @@ type Taxon = components['schemas']['Taxon'];
 type TaxonDescription = components['schemas']['Content'][number];
 
 @Component({
-  selector: 'laji-taxon-occurrence',
-  templateUrl: './taxon-occurrence.component.html',
-  styleUrls: ['./taxon-occurrence.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-occurrence',
+    templateUrl: './taxon-occurrence.component.html',
+    styleUrls: ['./taxon-occurrence.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonOccurrenceComponent implements OnChanges {
   @Input({ required: true }) taxon!: Taxon;

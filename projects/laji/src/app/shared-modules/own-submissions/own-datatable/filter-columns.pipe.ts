@@ -1,8 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'filterColumns',
-  pure: true
+    name: 'filterColumns',
+    pure: true,
+    standalone: false
 })
 export class FilterColumnsPipe implements PipeTransform {
   transform(columns: any[], displaySize?: string, reverse = false): any[] {

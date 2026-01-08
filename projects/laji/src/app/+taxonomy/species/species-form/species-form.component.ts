@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { TaxonomySearch } from '../service/taxonomy-search.service';
-import { startWith } from 'rxjs/operators';
+import { startWith } from 'rxjs';
 
 const invasiveStatuses = [
     'MX.euInvasiveSpeciesList',
@@ -21,9 +21,10 @@ const invasiveStatusesDict = invasiveStatuses.reduce((dict, status) => {
 type InvasiveStatus = typeof invasiveStatuses[number];
 
 @Component({
-  selector: 'laji-species-form[search]',
-  templateUrl: './species-form.component.html',
-  styleUrls: ['./species-form.component.css']
+    selector: 'laji-species-form[search]',
+    templateUrl: './species-form.component.html',
+    styleUrls: ['./species-form.component.css'],
+    standalone: false
 })
 export class SpeciesFormComponent implements OnInit, OnDestroy {
   @Input() search!: TaxonomySearch;

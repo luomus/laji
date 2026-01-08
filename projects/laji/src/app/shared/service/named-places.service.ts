@@ -1,4 +1,4 @@
-import { map, mergeMap, catchError, shareReplay, switchMap, tap, toArray } from 'rxjs/operators';
+import { map, mergeMap, catchError, shareReplay, switchMap, tap, toArray } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { NamedPlaceApi, NamedPlaceQuery } from '../api/NamedPlaceApi';
 import { NamedPlace } from '../model/NamedPlace';
@@ -171,12 +171,12 @@ export class NamedPlacesService {
         convert$ = this.translateService.get(value === true || value === 'true' ? 'yes' : 'no');
         break;
       case 'label':
-        convert$ = this.triplestoreLabelService.get(String(value), this.translateService.currentLang);
+        convert$ = this.triplestoreLabelService.get(String(value), this.translateService.getCurrentLang());
         break;
     }
     return convert$ ? (convert$.pipe(
       map(label => {
-        JSONPath({json: np, path, callback: (v, t, payload) => {
+        JSONPath({json: np, path, callback: (v: any, t: any, payload: any) => {
             try {
               payload.parent[payload.parentProperty] = label;
             } catch (e) {}

@@ -7,9 +7,10 @@ import { AnnotationTableColumn } from '../model/annotation-table-column';
 import { DocumentViewerFacade } from '../../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({
-  selector: 'laji-annotation-table',
-  templateUrl: './annotation-table.component.html',
-  styleUrls: ['./annotation-table.component.css']
+    selector: 'laji-annotation-table',
+    templateUrl: './annotation-table.component.html',
+    styleUrls: ['./annotation-table.component.css'],
+    standalone: false
 })
 export class AnnotationTableComponent implements OnInit, OnChanges {
   @Input() pageSize = 50;
@@ -166,7 +167,7 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
 
   private setLangParams(value: string) {
     return (value || '')
-      .replace('%longLang%', this.langMap[<keyof typeof this.langMap>this.translateService.currentLang] || 'Finnish');
+      .replace('%longLang%', this.langMap[<keyof typeof this.langMap>this.translateService.getCurrentLang()] || 'Finnish');
   }
 
 }

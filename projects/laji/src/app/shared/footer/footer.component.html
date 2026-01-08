@@ -1,205 +1,247 @@
-<footer *ngIf="footerVisible$ | async">
-  <div class="info-footer d-flex flex-col items-center">
-    <div class="d-flex flex-wrap info-footer-content mb-4 flex-gap-3">
-      <div>
-        <h3>{{ 'footer2.section1.title' | translate }}</h3>
-        <p>{{ 'footer2.section1.desc' | translate }} <a [href]="'infoLinks.base' | translate" target="_blank">{{ 'footer2.section1.readmore' | translate }}</a></p>
-        <ul>
-          <li *ngIf="('infoLinks.contact' | translate) as url">
-            <a [href]="url" target="_blank">{{ 'footer2.section1.link.contact' | translate }}</a>
-          </li>
-          <li><laji-feedback></laji-feedback></li>
-          <li *ngIf="('infoLinks.privacyPolicy' | translate) as url">
-            <a [href]="url" target="_blank">{{ 'footer2.section1.link.privacyPolicy' | translate }}</a>
-          </li>
-          <li *ngIf="('infoLinks.accessibility' | translate) as url">
-            <a [href]="url" target="_blank">{{ 'footer2.section1.link.accessibilty' | translate }}</a>
-          </li>
-          <li *ngIf="('infoLinks.dataPolicy' | translate) as url">
-            <a [href]="url" target="_blank">{{ 'footer2.section1.link.dataPolicy' | translate }}</a>
-          </li>
-          <li *ngIf="('infoLinks.strategy' | translate) as url">
-            <a [href]="url" target="_blank">{{ 'footer2.section1.link.strategy' | translate }}</a>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <h3>{{ 'footer2.section2.title' | translate }}</h3>
-        <ul>
-          <li *ngIf="('infoLinks.base' | translate) as url">
-            <a [href]="url" target="_blank">{{ 'footer2.section2.link.help' | translate }}</a>
-          </li>
-          <li *ngIf="('infoLinks.faq' | translate) as url">
-            <a [href]="url" target="_blank">{{ 'footer2.section2.link.faq' | translate }}</a>
-          </li>
-          <li *ngIf="('infoLinks.sensitive' | translate) as url">
-            <a [href]="url" target="_blank">{{ 'footer2.section2.link.sensitive' | translate }}</a>
-          </li>
-          <li>{{ 'footer2.section2.link.guides' | translate }}
-            <ul>
-              <li *ngIf="('infoLinks.guide.dataUsers' | translate) as url">
-                <a [href]="url" target="_blank">{{ 'footer2.section2.link.dataUsers' | translate }}</a>
-              </li>
-              <li *ngIf="('infoLinks.guide.researchers' | translate) as url">
-                <a [href]="url" target="_blank">{{ 'footer2.section2.link.researchers' | translate }}</a>
-              </li>
-              <li *ngIf="('infoLinks.guide.hobbyists' | translate) as url">
-                <a [href]="url" target="_blank">{{ 'footer2.section2.link.hobbyists' | translate }}</a>
-              </li>
-              <li *ngIf="('infoLinks.guide.dataHolders' | translate) as url">
-                <a [href]="url" target="_blank">{{ 'footer2.section2.link.dataHolders' | translate }}</a>
-              </li>
-              <li *ngIf="('infoLinks.guide.developers' | translate) as url">
-                <a [href]="url" target="_blank">{{ 'footer2.section2.link.developers' | translate }}</a>
-              </li>
-              <li *ngIf="('infoLinks.guide.media' | translate) as url">
-                <a [href]="url" target="_blank">{{ 'footer2.section2.link.media' | translate }}</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <h3>{{ 'footer2.section3.title' | translate }}</h3>
-        <ul>
-          <li *ngIf="('infoLinks.taxa' | translate) as url">
-            <a [href]="url" target="_blank">{{ 'footer2.section3.link.taxonomy' | translate }}</a>
-          </li>
-          <li *ngIf="('infoLinks.observations' | translate) as observationsUrl">
-            <a [href]="observationsUrl" target="_blank">{{ 'footer2.section3.link.observations' | translate }}</a>
-            <ng-container *ngIf="('infoLinks.gis' | translate) as gisServicesUrl"> &#38; <a [href]="gisServicesUrl" target="_blank">{{ 'footer2.section3.link.gis' | translate }}</a></ng-container>
-          </li>
-          <li *ngIf="('infoLinks.citizenScience' | translate) as url">
-            <a [href]="url" target="_blank">{{ 'footer2.section3.link.citizenScience' | translate }}</a>
-          </li>
-          <li>
-            <a [href]="'links.pinkka' | translate" target="_blank">{{ 'footer2.section3.link.pinkka' | translate }}</a>
-            <ng-container *ngIf="('infoLinks.identification' | translate) as url"> &#38; <a [href]="url" target="_blank">{{ 'footer2.section3.link.identification' | translate }}</a></ng-container>
-          </li>
-          <li><a [href]="'links.redList' | translate" target="_blank">{{ 'footer2.section3.link.redList' | translate }}</a></li>
-          <li><a [href]="'links.ias' | translate" target="_blank">{{ 'footer2.section3.link.invasive' | translate }}</a></li>
-          <li *ngIf="('infoLinks.guide.developers' | translate) as url">
-            <a [href]="url" target="_blank">{{ 'footer2.section3.link.api' | translate }}</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="info-footer-bottom-section d-flex flex-row justify-between">
-      <div>
-        <a [href]="'infoLinks.restApi' | translate" target="_blank">REST API</a> - <a [href]="'infoLinks.rApi' | translate" target="_blank">R API</a> - <a [href]="'infoLinks.gis' | translate" target="_blank">GIS</a> - <a href="https://github.com/luomus/laji/" target="_blank">{{ 'footer2.github' | translate }}</a>
-      </div>
-      <a class="d-block core-trust-seal" href="https://amt.coretrustseal.org/certificates" target="_blank"><img lajiLazyImage src="https://cdn.laji.fi/images/partners/CoreTrustSeal-logo-transparent.png" alt="Core Trust Seal"></a>
-    </div>
-  </div>
-  <div class="partners-footer">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-offset-1 col-sm-11 partners front" [ngClass]="{hidden: !onFrontPage}">
-          <span class="title">{{ 'footer.partners' | translate }}</span>
+@if (footerVisible$ | async) {
+  <footer>
+    <div class="info-footer d-flex flex-col items-center">
+      <div class="d-flex flex-wrap info-footer-content mb-4 flex-gap-3">
+        <div>
+          <h3>{{ 'footer2.section1.title' | translate }}</h3>
+          <p>{{ 'footer2.section1.desc' | translate }} <a [href]="'infoLinks.base' | translate" target="_blank">{{ 'footer2.section1.readmore' | translate }}</a></p>
           <ul>
-            <li>
-              <a href="https://luomus.fi" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/luomus_fi_blue_smaller.gif" alt="LUOMUS - Luonnontieteellinen keskusmuseo">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.syke.fi" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/syke_logo_2023.png" alt="SYKE">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.luke.fi/" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/logo_luke.png" alt="LUKE">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.mmm.fi" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/mmm_logo.png" alt="MMM">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.ely-keskus.fi" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/ely.jpg" alt="ELY">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.metsa.fi" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/MH-suomi-ruotsi-VARI.png" alt="Metsähallitus">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.ym.fi" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/ymparistoministerio_logo_2023.png" alt="Ympäristöministeriö">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.csc.fi/" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/csc-logo-teksti-fi.png" alt="CSC" height="40px">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.helsinki.fi/fi" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/HY_en.jpg" alt="Helsingin yliopisto">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.utu.fi" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/turun_yliopisto_logo_rgb.png" alt="UTU">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.oulu.fi/yliopisto/" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/oulun yliopisto_logo_2023.png" alt="Oulun yliopisto">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.jyu.fi/" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/jyu.png" alt="Jyväskylän yliopisto">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.uef.fi" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/UEF_musta_logo-engl.jpg" alt="UEF">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.aka.fi/tutkimusrahoitus/ohjelmat-ja-muut-rahoitusmuodot/tutkimusinfrastruktuurit/" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/AKA_FIR1.png" alt="FIRI">
-              </a>
-            </li>
-            <li>
-              <a href="https://ec.europa.eu/regional_policy/en/funding/erdf/" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/eu.png" alt="European Regional Development Fund">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.centralbaltic.eu/" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/partners/interreg.png" alt="Central Baltic Interreg Programme">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.dissco.eu//" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/dissco-logo-high-res.png" alt="Distributed System of Scientific Collections">
-              </a>
-            </li>
-            <li>
-              <a href="https://earthcape.com/" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/earthcape_logo.png" alt="Earthcape">
-              </a>
-            </li>
-            <li>
-              <a href="https://www.gbif.org/" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/GBIF-2015.png" alt="Global Biodiversity Information Facility">
-              </a>
-            </li>
-            <li>
-              <a href="https://inaturalist.laji.fi/" target="_blank" rel="noopener nofollow">
-                <img lajiLazyImage src="https://cdn.laji.fi/images/logos/iNaturalist.png" alt="iNaturalist" height="40px">
-              </a>
+            @if (('infoLinks.contact' | translate); as url) {
+              <li>
+                <a [href]="url" target="_blank">{{ 'footer2.section1.link.contact' | translate }}</a>
+              </li>
+            }
+            <li><laji-feedback></laji-feedback></li>
+            @if (('infoLinks.privacyPolicy' | translate); as url) {
+              <li>
+                <a [href]="url" target="_blank">{{ 'footer2.section1.link.privacyPolicy' | translate }}</a>
+              </li>
+            }
+            @if (('infoLinks.accessibility' | translate); as url) {
+              <li>
+                <a [href]="url" target="_blank">{{ 'footer2.section1.link.accessibilty' | translate }}</a>
+              </li>
+            }
+            @if (('infoLinks.dataPolicy' | translate); as url) {
+              <li>
+                <a [href]="url" target="_blank">{{ 'footer2.section1.link.dataPolicy' | translate }}</a>
+              </li>
+            }
+            @if (('infoLinks.strategy' | translate); as url) {
+              <li>
+                <a [href]="url" target="_blank">{{ 'footer2.section1.link.strategy' | translate }}</a>
+              </li>
+            }
+          </ul>
+        </div>
+        <div>
+          <h3>{{ 'footer2.section2.title' | translate }}</h3>
+          <ul>
+            @if (('infoLinks.base' | translate); as url) {
+              <li>
+                <a [href]="url" target="_blank">{{ 'footer2.section2.link.help' | translate }}</a>
+              </li>
+            }
+            @if (('infoLinks.faq' | translate); as url) {
+              <li>
+                <a [href]="url" target="_blank">{{ 'footer2.section2.link.faq' | translate }}</a>
+              </li>
+            }
+            @if (('infoLinks.sensitive' | translate); as url) {
+              <li>
+                <a [href]="url" target="_blank">{{ 'footer2.section2.link.sensitive' | translate }}</a>
+              </li>
+            }
+            <li>{{ 'footer2.section2.link.guides' | translate }}
+              <ul>
+                @if (('infoLinks.guide.dataUsers' | translate); as url) {
+                  <li>
+                    <a [href]="url" target="_blank">{{ 'footer2.section2.link.dataUsers' | translate }}</a>
+                  </li>
+                }
+                @if (('infoLinks.guide.researchers' | translate); as url) {
+                  <li>
+                    <a [href]="url" target="_blank">{{ 'footer2.section2.link.researchers' | translate }}</a>
+                  </li>
+                }
+                @if (('infoLinks.guide.hobbyists' | translate); as url) {
+                  <li>
+                    <a [href]="url" target="_blank">{{ 'footer2.section2.link.hobbyists' | translate }}</a>
+                  </li>
+                }
+                @if (('infoLinks.guide.dataHolders' | translate); as url) {
+                  <li>
+                    <a [href]="url" target="_blank">{{ 'footer2.section2.link.dataHolders' | translate }}</a>
+                  </li>
+                }
+                @if (('infoLinks.guide.developers' | translate); as url) {
+                  <li>
+                    <a [href]="url" target="_blank">{{ 'footer2.section2.link.developers' | translate }}</a>
+                  </li>
+                }
+                @if (('infoLinks.guide.media' | translate); as url) {
+                  <li>
+                    <a [href]="url" target="_blank">{{ 'footer2.section2.link.media' | translate }}</a>
+                  </li>
+                }
+              </ul>
             </li>
           </ul>
         </div>
+        <div>
+          <h3>{{ 'footer2.section3.title' | translate }}</h3>
+          <ul>
+            @if (('infoLinks.taxa' | translate); as url) {
+              <li>
+                <a [href]="url" target="_blank">{{ 'footer2.section3.link.taxonomy' | translate }}</a>
+              </li>
+            }
+            @if (('infoLinks.observations' | translate); as observationsUrl) {
+              <li>
+                <a [href]="observationsUrl" target="_blank">{{ 'footer2.section3.link.observations' | translate }}</a>
+                @if (('infoLinks.gis' | translate); as gisServicesUrl) {
+                  &#38; <a [href]="gisServicesUrl" target="_blank">{{ 'footer2.section3.link.gis' | translate }}</a>
+                }
+              </li>
+            }
+            @if (('infoLinks.citizenScience' | translate); as url) {
+              <li>
+                <a [href]="url" target="_blank">{{ 'footer2.section3.link.citizenScience' | translate }}</a>
+              </li>
+            }
+            <li>
+              <a [href]="'links.pinkka' | translate" target="_blank">{{ 'footer2.section3.link.pinkka' | translate }}</a>
+              @if (('infoLinks.identification' | translate); as url) {
+                &#38; <a [href]="url" target="_blank">{{ 'footer2.section3.link.identification' | translate }}</a>
+              }
+            </li>
+            <li><a [href]="'links.redList' | translate" target="_blank">{{ 'footer2.section3.link.redList' | translate }}</a></li>
+            <li><a [href]="'links.ias' | translate" target="_blank">{{ 'footer2.section3.link.invasive' | translate }}</a></li>
+            @if (('infoLinks.guide.developers' | translate); as url) {
+              <li>
+                <a [href]="url" target="_blank">{{ 'footer2.section3.link.api' | translate }}</a>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+      <div class="info-footer-bottom-section d-flex flex-row justify-between">
+        <div>
+          <a [href]="'infoLinks.restApi' | translate" target="_blank">REST API</a> - <a [href]="'infoLinks.rApi' | translate" target="_blank">R API</a> - <a [href]="'infoLinks.gis' | translate" target="_blank">GIS</a> - <a href="https://github.com/luomus/laji/" target="_blank">{{ 'footer2.github' | translate }}</a>
+        </div>
+        <a class="d-block core-trust-seal" href="https://amt.coretrustseal.org/certificates" target="_blank"><img lajiLazyImage src="https://cdn.laji.fi/images/partners/CoreTrustSeal-logo-transparent.png" alt="Core Trust Seal"></a>
       </div>
     </div>
-  </div>
-</footer>
+    <div class="partners-footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-offset-1 col-sm-11 partners front" [ngClass]="{hidden: !onFrontPage}">
+            <span class="title">{{ 'footer.partners' | translate }}</span>
+            <ul>
+              <li>
+                <a href="https://luomus.fi" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/luomus_fi_blue_smaller.gif" alt="LUOMUS - Luonnontieteellinen keskusmuseo">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.syke.fi" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/syke_logo_2023.png" alt="SYKE">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.luke.fi/" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/logo_luke.png" alt="LUKE">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.mmm.fi" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/mmm_logo.png" alt="MMM">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.ely-keskus.fi" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/ely.jpg" alt="ELY">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.metsa.fi" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/logos/MH-suomi-ruotsi-VARI.png" alt="Metsähallitus">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.ym.fi" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/ymparistoministerio_logo_2023.png" alt="Ympäristöministeriö">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.csc.fi/" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/logos/csc-logo-teksti-fi.png" alt="CSC" height="40px">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.helsinki.fi/fi" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/HY_en.jpg" alt="Helsingin yliopisto">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.utu.fi" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/turun_yliopisto_logo_rgb.png" alt="UTU">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.oulu.fi/yliopisto/" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/oulun yliopisto_logo_2023.png" alt="Oulun yliopisto">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.jyu.fi/" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/jyu.png" alt="Jyväskylän yliopisto">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.uef.fi" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/UEF_musta_logo-engl.jpg" alt="UEF">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.aka.fi/tutkimusrahoitus/ohjelmat-ja-muut-rahoitusmuodot/tutkimusinfrastruktuurit/" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/AKA_FIR1.png" alt="FIRI">
+                </a>
+              </li>
+              <li>
+                <a href="https://ec.europa.eu/regional_policy/en/funding/erdf/" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/eu.png" alt="European Regional Development Fund">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.centralbaltic.eu/" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/partners/interreg.png" alt="Central Baltic Interreg Programme">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.dissco.eu//" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/logos/dissco-logo-high-res.png" alt="Distributed System of Scientific Collections">
+                </a>
+              </li>
+              <li>
+                <a href="https://earthcape.com/" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/logos/earthcape_logo.png" alt="Earthcape">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.gbif.org/" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/logos/GBIF-2015.png" alt="Global Biodiversity Information Facility">
+                </a>
+              </li>
+              <li>
+                <a href="https://inaturalist.laji.fi/" target="_blank" rel="noopener nofollow">
+                  <img lajiLazyImage src="https://cdn.laji.fi/images/logos/iNaturalist.png" alt="iNaturalist" height="40px">
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+}

@@ -17,14 +17,15 @@
     <div class="option-handle"><ll-icon [size]="18" type="edit" (click)="showSettings.emit(_item)"></ll-icon></div>
     <div class="done-handle"><ll-icon [size]="20" type="check" (click)="done.emit()"></ll-icon></div>
     <div class="editor-item-content ellipsis" (click)="itemClick.emit(_item)">
-      <ng-container *ngFor="let field of _item.fields; let l=last">
-        <ng-container *ngIf="field.type === fieldType.qrCode; else plainText">
+      @for (field of _item.fields; track field; let l = $last) {
+        @if (field.type === fieldType.qrCode) {
           <ll-label-qrcode [qrdata]="field.content!" [size]="size" [level]="QRCodeErrorCorrectionLevel.levelM"></ll-label-qrcode>
-        </ng-container>
-        <ng-template #plainText>
-          {{ field.label }}<span *ngIf="!l" [innerHTML]="field.separator | separator"></span>
-        </ng-template>
-      </ng-container>
-    </div>
+        } @else {
+          {{ field.label }}@if (!l) {
+          <span [innerHTML]="field.separator | separator"></span>
+        }
+      }
+    }
   </div>
+</div>
 </div>

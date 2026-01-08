@@ -5,8 +5,9 @@ import { PlatformService } from '../../root/platform.service';
 import { BaseDataService } from '../../graph-ql/service/base-data.service';
 
 @Component({
-  selector: 'laji-external-redirect',
-  template: `<div></div>`
+    selector: 'laji-external-redirect',
+    template: `<div></div>`,
+    standalone: false
 })
 export class ExternalRedirectComponent {
   constructor(

@@ -5,9 +5,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
 
 @Component({
-  selector: 'laji-np-info-map',
-  templateUrl: './np-info-map.component.html',
-  styleUrls: ['./np-info-map.component.css']
+    selector: 'laji-np-info-map',
+    templateUrl: './np-info-map.component.html',
+    styleUrls: ['./np-info-map.component.css'],
+    standalone: false
 })
 export class NpInfoMapComponent implements OnInit, OnChanges {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap!: LajiMapComponent;
@@ -45,7 +46,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize() {
+  onResize(event: any) {
     clearTimeout(this.resize);
     const that = this;
     this.resize = setTimeout(function() {

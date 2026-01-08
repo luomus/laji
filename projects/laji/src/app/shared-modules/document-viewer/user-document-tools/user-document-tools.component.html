@@ -1,17 +1,25 @@
 <ng-container>
-  <a [routerLink]="[linkLocation] | localize" target="_blank" class="btn btn-primary btn-sm margin-right-10" *ngIf="(actions | includes:'edit') && hasEditRights && linkLocation" [luTooltip]="'haseka.submissions.toEdit' | translate">
-    {{ 'np.edit' | translate }}
-    <i class="glyphicon glyphicon-edit"></i>
-  </a>
-  <a (click)="makeTemplate()" class="btn btn-default btn-sm margin-right-10" *ngIf="(actions | includes:'template') && hasEditRights && linkLocation && showMakeTemplate(_formID)" [luTooltip]="'haseka.form.saveTemplate' | translate">
-    {{ 'np.template' | translate }}
-    <i class="glyphicon glyphicon-floppy-disk"></i>
-  </a>
-  <a (click)="makeDelete()" class="btn btn-default btn-sm margin-right-10" *ngIf="(actions | includes:'delete') && hasDeleteRights" [luTooltip]="'haseka.delete.title' | translate">
-    {{ 'np.delete' | translate }}
-    <i class="glyphicon glyphicon-remove"></i>
-  </a>
-  <small><laji-named-place-linker-button [documentID]="_documentID" (link)="onLinkNp()" *ngIf="hasEditRights"></laji-named-place-linker-button></small>
+  @if ((actions | includes:'edit') && hasEditRights && linkLocation) {
+    <a [routerLink]="[linkLocation] | localize" target="_blank" class="btn btn-primary btn-sm margin-right-10" [luTooltip]="'haseka.submissions.toEdit' | translate">
+      {{ 'np.edit' | translate }}
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+  }
+  @if ((actions | includes:'template') && hasEditRights && linkLocation && showMakeTemplate(_formID)) {
+    <a (click)="makeTemplate()" class="btn btn-default btn-sm margin-right-10" [luTooltip]="'haseka.form.saveTemplate' | translate">
+      {{ 'np.template' | translate }}
+      <i class="glyphicon glyphicon-floppy-disk"></i>
+    </a>
+  }
+  @if ((actions | includes:'delete') && hasDeleteRights) {
+    <a (click)="makeDelete()" class="btn btn-default btn-sm margin-right-10" [luTooltip]="'haseka.delete.title' | translate">
+      {{ 'np.delete' | translate }}
+      <i class="glyphicon glyphicon-remove"></i>
+    </a>
+  }
+  <small>@if (hasEditRights) {
+    <laji-named-place-linker-button [documentID]="_documentID" (link)="onLinkNp()"></laji-named-place-linker-button>
+  }</small>
 </ng-container>
 
 <ng-template #saveAsTemplate>

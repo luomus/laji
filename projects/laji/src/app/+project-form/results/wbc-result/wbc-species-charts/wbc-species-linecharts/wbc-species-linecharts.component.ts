@@ -8,9 +8,10 @@ import { LineWithLine } from '../../../../../shared-modules/chart/line-with-line
 // Chart.register(LineWithLine);
 
 @Component({
-  selector: 'laji-wbc-species-linecharts',
-  templateUrl: './wbc-species-linecharts.component.html',
-  styleUrls: ['./wbc-species-linecharts.component.css']
+    selector: 'laji-wbc-species-linecharts',
+    templateUrl: './wbc-species-linecharts.component.html',
+    styleUrls: ['./wbc-species-linecharts.component.css'],
+    standalone: false
 })
 export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
   @Input() taxonId: string | undefined;

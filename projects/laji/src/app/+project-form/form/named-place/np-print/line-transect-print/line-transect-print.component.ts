@@ -7,10 +7,11 @@ import { convertWgs84ToYkj } from '../../../../../root/coordinate-utils';
 import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
 
 @Component({
-  selector: 'laji-line-transect-print',
-  templateUrl: './line-transect-print.component.html',
-  styleUrls: ['./line-transect-print.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-line-transect-print',
+    templateUrl: './line-transect-print.component.html',
+    styleUrls: ['./line-transect-print.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LineTransectPrintComponent implements OnChanges {
 

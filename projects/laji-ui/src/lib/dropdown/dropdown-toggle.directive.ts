@@ -1,5 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { Directive, ElementRef, HostBinding, HostListener, Inject } from '@angular/core';
+
+import { Directive, ElementRef, HostBinding, HostListener, Inject, DOCUMENT } from '@angular/core';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 import { Util } from 'projects/laji/src/app/shared/service/util.service';
 
@@ -12,7 +12,8 @@ import { Util } from 'projects/laji/src/app/shared/service/util.service';
  * use the attribute `luDropdownNoClose` on it.
  */
 @Directive({
-  selector: '[luDropdownToggle]'
+    selector: '[luDropdownToggle]',
+    standalone: false
 })
 export class DropdownToggleDirective {
 
@@ -26,7 +27,7 @@ export class DropdownToggleDirective {
   ) { }
 
   @HostListener('click', ['$event'])
-  onClick() {
+  onClick(event: Event) {
     const dropdownMenuElement = this.getMenuElement();
 
     const isDisplayed = dropdownMenuElement.style.display !== 'none';
@@ -35,7 +36,7 @@ export class DropdownToggleDirective {
   }
 
   @HostListener('document:click', ['$event.target'])
-  onDocumentClick(target: HTMLElement) {
+  onDocumentClick(target: EventTarget | null) {
     const menu = this.getMenuElement();
     if (menu.style.display === 'none') {
       return;
@@ -43,7 +44,7 @@ export class DropdownToggleDirective {
 
     const clickedInside = this.elementRef.nativeElement.contains(target);
 
-    let iteratedElem: HTMLElement | null = target;
+    let iteratedElem = <HTMLElement | null>target;
     while (iteratedElem && iteratedElem !== this.document.body) {
       if (iteratedElem.hasAttribute('luDropdownNoClose')) {
         return;

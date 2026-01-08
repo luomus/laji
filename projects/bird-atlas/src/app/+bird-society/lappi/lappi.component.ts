@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { AtlasApiService, LappiStatsResponseElement } from '../../core/atlas-api.service';
 import { SelectionType, TableColumn } from '@achimha/ngx-datatable';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { LappiModalComponent } from './lappi-modal.component';
 import { Subscription } from 'rxjs';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
@@ -27,9 +27,10 @@ const downloadWithFilename = (encodedUri: string, filename: string) => {
 };
 
 @Component({
-  selector: 'ba-society-lappi',
-  templateUrl: './lappi.component.html',
-  styleUrls: ['./lappi.component.scss']
+    selector: 'ba-society-lappi',
+    templateUrl: './lappi.component.html',
+    styleUrls: ['./lappi.component.scss'],
+    standalone: false
 })
 export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
   @ViewChild('linkCell') linkCellTemplate!: TemplateRef<any>;

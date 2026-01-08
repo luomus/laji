@@ -6,8 +6,9 @@ import { Observable, of } from 'rxjs';
 import { Checklist } from 'projects/laji-api-client/src/lib/models/checklist';
 
 @Pipe({
-  name: 'checklist',
-  pure: false
+    name: 'checklist',
+    pure: false,
+    standalone: false
 })
 export class ChecklistPipe extends AbstractLabelPipe implements PipeTransform {
   private checklists?: {[id: string]: Checklist};
@@ -22,7 +23,7 @@ export class ChecklistPipe extends AbstractLabelPipe implements PipeTransform {
     if (this.checklists) {
       return of(this.checklists);
     }
-    const value$ = this.checklistService.getAllAsLookUp(this.translate.currentLang);
+    const value$ = this.checklistService.getAllAsLookUp(this.translate.getCurrentLang());
     value$.subscribe(checklists => {
       this.checklists = checklists;
     });
@@ -30,6 +31,7 @@ export class ChecklistPipe extends AbstractLabelPipe implements PipeTransform {
   }
 
   protected _parseValue(checklists: any): string {
-    return this.key !== undefined && checklists[this.key] || this.key;
+    const item = this.key && checklists[this.key];
+    return item ? item.name : this.key!;
   }
 }

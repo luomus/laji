@@ -9,10 +9,11 @@ import { LabelMakerFacade } from '../label-maker.facade';
  * @internal
  */
 @Component({
-  selector: 'll-label-settings',
-  templateUrl: './label-settings.component.html',
-  styleUrls: ['./label-settings.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-label-settings',
+    templateUrl: './label-settings.component.html',
+    styleUrls: ['./label-settings.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelSettingsComponent {
 

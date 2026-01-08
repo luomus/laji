@@ -3,24 +3,27 @@
 
 <laji-trait-db-my-datasets></laji-trait-db-my-datasets>
 
-<table *ngIf="datasets$ | async; let datasets; else loading">
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Taxonomic coverage</th>
-    <th>Owner</th>
-    <th>Citation</th>
-  </tr>
-  <tr *ngFor="let dataset of datasets">
-    <td><a [routerLink]="[dataset.id]">{{ dataset.name }}</a></td>
-    <td>{{ dataset.description }}</td>
-    <td>{{ dataset.taxonomicCoverage }}</td>
-    <td>{{ dataset.intellectualOwner }}</td>
-    <td>{{ dataset.citation }}</td>
-  </tr>
-</table>
-
-<ng-template #loading>
+@if (datasets$ | async; as datasets) {
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Taxonomic coverage</th>
+      <th>Owner</th>
+      <th>Citation</th>
+    </tr>
+    @for (dataset of datasets; track dataset) {
+      <tr>
+        <td><a [routerLink]="[dataset.id]">{{ dataset.name }}</a></td>
+        <td>{{ dataset.description }}</td>
+        <td>{{ dataset.taxonomicCoverage }}</td>
+        <td>{{ dataset.intellectualOwner }}</td>
+        <td>{{ dataset.citation }}</td>
+      </tr>
+    }
+  </table>
+} @else {
   <laji-spinner class="d-block m-6"></laji-spinner>
-</ng-template>
+}
+
 

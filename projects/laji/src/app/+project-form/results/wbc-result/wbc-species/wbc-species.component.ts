@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { SEASON } from '../wbc-result.service';
 import { IdService } from '../../../../shared/service/id.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'laji-wbc-species',
-  templateUrl: './wbc-species.component.html',
-  styleUrls: ['./wbc-species.component.css']
+    selector: 'laji-wbc-species',
+    templateUrl: './wbc-species.component.html',
+    styleUrls: ['./wbc-species.component.css'],
+    standalone: false
 })
 export class WbcSpeciesComponent implements OnInit {
   activeYear!: number;

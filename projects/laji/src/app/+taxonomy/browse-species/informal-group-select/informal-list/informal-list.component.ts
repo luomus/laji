@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, Output, Renderer2 } from '@angular/core
 import { InformalTaxonGroup } from '../../../../shared/model/InformalTaxonGroup';
 
 @Component({
-  selector: 'laji-informal-list',
-  templateUrl: './informal-list.component.html',
-  styleUrls: ['./informal-list.component.scss'],
-
+    selector: 'laji-informal-list',
+    templateUrl: './informal-list.component.html',
+    styleUrls: ['./informal-list.component.scss'],
+    standalone: false
 })
 export class InformalListComponent {
   @Input() informalTaxonGroups!: InformalTaxonGroup[];

@@ -5,10 +5,10 @@
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
             aria-controls="navbar" (click)="toggleMenu()">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" [routerLink]="['/'] | localize">
             <div class="env" [ngClass]="{dev: devRibbon}"></div>
@@ -20,130 +20,150 @@
               [placeholder]="'species.search' | translate"
               (visibleTaxon)="updateView()"
               [visible]="showSearch"
-              [expand]="'right'"></laji-omni-search>
+            [expand]="'right'"></laji-omni-search>
           </div>
         </div>
         <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
-          <ul class="nav navbar-nav" *ngIf="navbarService.navbarVisible$ | async">
-            <ng-container *lajiForTypes="['iucn']">
-              <li [routerLinkActive]="['active']">
-                <a [routerLink]="['/results'] | localize">{{ 'iucn.taxon.title' | translate }}</a>
-              </li>
-              <li [routerLinkActive]="['active']">
-                <a [routerLink]="['/regional'] | localize">{{ 'iucn.regional.title' | translate }}</a>
-              </li>
-              <li [routerLinkActive]="['active']">
-                <a [routerLink]="['/publications'] | localize">{{ 'iucn.publications.title' | translate }}</a>
-              </li>
-              <li [routerLinkActive]="['active']">
-                <a [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
-              </li>
-            </ng-container>
-            <li *lajiForTypes="['dev', 'prod', 'beta']">
-              <a luDropdownToggle class="link user">
-                {{ 'navigation.taxonomy' | translate }}
-                <span class="glyphicon glyphicon-triangle-bottom"></span>
-              </a>
-              <laji-taxon-dropdown luDropdownMenu></laji-taxon-dropdown>
-            </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
-              <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
-            </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
-              <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveObservations' | translate }}</a>
-            </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
-            <a [routerLink]="['/vihko'] | localize">{{ 'navigation.vihko' | translate }}</a>
-            </li>
-            <li *lajiForTypes="['dev', 'prod', 'beta']">
-              <a luDropdownToggle class="link">
-                {{ 'navigation.more' | translate }}
-                <span class="glyphicon glyphicon-triangle-bottom"></span>
-              </a>
-              <ul luDropdownMenu class="user-dropdown">
-                <li role="menuitem">
-                  <a [href]="'infoLinks.base' | translate" target="_blank" class="navbar-link link">{{ 'navigation.more.help' | translate }} <span class="glyphicon glyphicon-link"></span></a>
+          @if (navbarService.navbarVisible$ | async) {
+            <ul class="nav navbar-nav">
+              <ng-container *lajiForTypes="['iucn']">
+                <li [routerLinkActive]="['active']">
+                  <a [routerLink]="['/results'] | localize">{{ 'iucn.taxon.title' | translate }}</a>
                 </li>
-                <li role="menuitem">
-                  <a [routerLink]="['/theme'] | localize" class="navbar-link link">{{ 'navigation.more.services' | translate }}</a>
+                <li [routerLinkActive]="['active']">
+                  <a [routerLink]="['/regional'] | localize">{{ 'iucn.regional.title' | translate }}</a>
                 </li>
-                <li role="menuitem">
-                  <a href="http://foorumi.laji.fi/" target="_blank" class="navbar-link link">{{ 'navigation.more.forum' | translate }} <span class="glyphicon glyphicon-link"></span></a>
+                <li [routerLinkActive]="['active']">
+                  <a [routerLink]="['/publications'] | localize">{{ 'iucn.publications.title' | translate }}</a>
                 </li>
-                <li role="menuitem" class="feedback">
-                  <laji-feedback></laji-feedback>
+                <li [routerLinkActive]="['active']">
+                  <a [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
                 </li>
-              </ul>
-            </li>
-          </ul>
+              </ng-container>
+              <li *lajiForTypes="['dev', 'prod', 'beta']">
+                <a luDropdownToggle class="link user">
+                  {{ 'navigation.taxonomy' | translate }}
+                  <span class="glyphicon glyphicon-triangle-bottom"></span>
+                </a>
+                <laji-taxon-dropdown luDropdownMenu></laji-taxon-dropdown>
+              </li>
+              <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
+                <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
+              </li>
+              <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
+                <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveObservations' | translate }}</a>
+              </li>
+              <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
+                <a [routerLink]="['/vihko'] | localize">{{ 'navigation.vihko' | translate }}</a>
+              </li>
+              <li *lajiForTypes="['dev', 'prod', 'beta']">
+                <a luDropdownToggle class="link">
+                  {{ 'navigation.more' | translate }}
+                  <span class="glyphicon glyphicon-triangle-bottom"></span>
+                </a>
+                <ul luDropdownMenu class="user-dropdown">
+                  <li role="menuitem">
+                    <a [href]="'infoLinks.base' | translate" target="_blank" class="navbar-link link">{{ 'navigation.more.help' | translate }} <span class="glyphicon glyphicon-link"></span></a>
+                  </li>
+                  <li role="menuitem">
+                    <a [routerLink]="['/theme'] | localize" class="navbar-link link">{{ 'navigation.more.services' | translate }}</a>
+                  </li>
+                  <li role="menuitem">
+                    <a href="http://foorumi.laji.fi/" target="_blank" class="navbar-link link">{{ 'navigation.more.forum' | translate }} <span class="glyphicon glyphicon-link"></span></a>
+                  </li>
+                  <li role="menuitem" class="feedback">
+                    <laji-feedback></laji-feedback>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          }
           <ul class="nav navbar-nav pull-right">
             <li class="hidden-xs search" *lajiForTypes="['dev', 'prod', 'beta']">
               <laji-omni-search
                 [placeholder]="'species.search' | translate"
                 (visibleTaxon)="updateView()"
                 [visible]="showSearch"
-                [expand]="'right'"></laji-omni-search>
+              [expand]="'right'"></laji-omni-search>
             </li>
             <ng-container *lajiBrowserOnly>
               <ng-container *lajiForTypes="['dev', 'prod', 'beta']">
-                <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" #loginElem>
-                  <a luDropdownToggle class="link user" (click)="scroll(loginElem)">
-                    <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
-                    <i class="glyphicon glyphicon-user"></i>
-                    <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{ notificationsNotSeen }}</span>
-                  </a>
-                  <ul luDropdownMenu class="user-dropdown" [ngClass]="{'right': !mobile}">
-                    <li role="menuitem">
-                      <a [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
-                    </li>
-                    <li role="menuitem">
-                      <a [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
-                    </li>
-                    <ng-container *lajiForTypes="['dev', 'prod', 'beta']">
-                      <ng-container *ngIf="(notificationsTotal$ | async)! > 0">
-                        <li role="separator" class="divider"></li>
-                        <li>
-                          <laji-notifications></laji-notifications>
-                        </li>
+                @if (userService.isLoggedIn$ | async) {
+                  <li [routerLinkActive]="['active']" #loginElem>
+                    <a luDropdownToggle class="link user" (click)="scroll(loginElem)">
+                      <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
+                      <i class="glyphicon glyphicon-user"></i>
+                      @if (notificationsNotSeen > 0) {
+                        <span class="badge badge-danger">{{ notificationsNotSeen }}</span>
+                      }
+                    </a>
+                    <ul luDropdownMenu class="user-dropdown" [ngClass]="{'right': !mobile}">
+                      <li role="menuitem">
+                        <a [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
+                      </li>
+                      <li role="menuitem">
+                        <a [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
+                      </li>
+                      <ng-container *lajiForTypes="['dev', 'prod', 'beta']">
+                        @if ((notificationsTotal$ | async)! > 0) {
+                          <li role="separator" class="divider"></li>
+                          <li>
+                            <laji-notifications></laji-notifications>
+                          </li>
+                        }
                       </ng-container>
-                    </ng-container>
-                  </ul>
-                </li>
-                <li *ngIf="!(userService.isLoggedIn$ | async)">
-                  <a id="login-link" href="#login" (click)="doLogin($event)">
-                    <small class="hidden-sm">
-                      {{ 'navigation.user.login' | translate }}
-                    </small>
-                    <small class="visible-sm">
-                      {{ 'login' | translate }}
-                    </small>
-                  </a>
-                </li>
+                    </ul>
+                  </li>
+                }
+                @if (!(userService.isLoggedIn$ | async)) {
+                  <li>
+                    <a id="login-link" href="#login" (click)="doLogin($event)">
+                      <small class="hidden-sm">
+                        {{ 'navigation.user.login' | translate }}
+                      </small>
+                      <small class="visible-sm">
+                        {{ 'login' | translate }}
+                      </small>
+                    </a>
+                  </li>
+                }
               </ng-container>
             </ng-container>
             <li *lajiForTypes="['dev', 'prod', 'iucn', 'beta']" #lang>
               <a luDropdownToggle class="link language-toggle" (click)="scroll(lang)">
                 <i class="glyphicon glyphicon-globe"></i>
-                <span *ngIf="'fi' === translate.currentLang">
-                  FI
-                </span>
-                <span *ngIf="'sv' === translate.currentLang">
-                  SV
-                </span>
-                <span *ngIf="'en' === translate.currentLang">
-                  EN
-                </span>
+                @if ('fi' === translate.getCurrentLang()) {
+                  <span>
+                    FI
+                  </span>
+                }
+                @if ('sv' === translate.getCurrentLang()) {
+                  <span>
+                    SV
+                  </span>
+                }
+                @if ('en' === translate.getCurrentLang()) {
+                  <span>
+                    EN
+                  </span>
+                }
               </a>
               <ul luDropdownMenu class="lang-dropdown" [ngClass]="{'right': !mobile}">
-                <li *ngIf="'fi' !== translate.currentLang" role="menuitem">
-                  <a rel="alternate" hreflang="fi" class="navbar-link link" [routerLink]="[] | localize:'fi'" queryParamsHandling="preserve">Suomeksi</a>
-                </li>
-                <li *ngIf="'sv' !== translate.currentLang" role="menuitem">
-                  <a rel="alternate" hreflang="sv" class="navbar-link link" [routerLink]="[] | localize:'sv'" queryParamsHandling="preserve">På svenska</a>
-                </li>
-                <li *ngIf="'en' !== translate.currentLang" role="menuitem">
-                  <a rel="alternate" hreflang="en" class="navbar-link link" [routerLink]="[] | localize:'en'" queryParamsHandling="preserve">In English</a>
-                </li>
+                @if ('fi' !== translate.getCurrentLang()) {
+                  <li role="menuitem">
+                    <a rel="alternate" hreflang="fi" class="navbar-link link" [routerLink]="[] | localize:'fi'" queryParamsHandling="preserve">Suomeksi</a>
+                  </li>
+                }
+                @if ('sv' !== translate.getCurrentLang()) {
+                  <li role="menuitem">
+                    <a rel="alternate" hreflang="sv" class="navbar-link link" [routerLink]="[] | localize:'sv'" queryParamsHandling="preserve">På svenska</a>
+                  </li>
+                }
+                @if ('en' !== translate.getCurrentLang()) {
+                  <li role="menuitem">
+                    <a rel="alternate" hreflang="en" class="navbar-link link" [routerLink]="[] | localize:'en'" queryParamsHandling="preserve">In English</a>
+                  </li>
+                }
               </ul>
             </li>
           </ul>

@@ -29,10 +29,11 @@ import { TableColumnService } from '../service/table-column.service';
 
 interface Settings {[key: string]: DatatableColumn }
 @Component({
-  selector: 'laji-datatable-own-submissions',
-  templateUrl: './datatable-own-submissions.component.html',
-  styleUrls: ['./datatable-own-submissions.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-datatable-own-submissions',
+    templateUrl: './datatable-own-submissions.component.html',
+    styleUrls: ['./datatable-own-submissions.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, AfterViewInit {
 
@@ -80,7 +81,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
 
   initialized = false;
   displayMode?: string;
-  private filterChange$ = new Subject();
+  private filterChange$ = new Subject<void>();
   allColumns: ObservationTableColumn[];
   private lastSort: any;
   @LocalStorage('data-table-settings', {}) private dataTableSettings!: Settings;
@@ -137,7 +138,8 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
 
   @Input() set preselectedRowIndex(index: number) {
     this._preselectedRowIndex = index;
-    this.selected = [this._rows[this._preselectedRowIndex]] || [];
+    const row = index > -1 ? this._rows?.[index] : undefined;
+    this.selected = row ? [row] : [];
   }
 
   /**

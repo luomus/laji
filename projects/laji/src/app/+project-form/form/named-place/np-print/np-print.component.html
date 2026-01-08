@@ -1,8 +1,8 @@
-<ng-container *ngIf="(namedPlace$ | async) as namedPlace">
+@if ((namedPlace$ | async); as namedPlace) {
   <laji-pdf-button [fileName]="namedPlace.name" [element]="printElem"></laji-pdf-button>
   <div #printElem>
     <laji-line-transect-print
       [namedPlace]="namedPlace"
     ></laji-line-transect-print>
   </div>
-</ng-container>
+}

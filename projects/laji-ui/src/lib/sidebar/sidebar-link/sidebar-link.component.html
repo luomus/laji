@@ -1,4 +1,6 @@
 <a class="d-block" [routerLink]="link" [queryParams]="linkParams" [ngClass]="{'active': active}" (click)="onClick($event)">
   <ng-content select="*"></ng-content>
 </a>
-<ng-content *ngIf="active" select="lu-sidebar-link"></ng-content>
+@if (active) {
+  <ng-content select="lu-sidebar-link"></ng-content>
+}

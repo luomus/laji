@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@a
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
-  selector: 'es-pdf-modal',
-  template: `
+    selector: 'es-pdf-modal',
+    template: `
     <div class="panel"><iframe [src]="safeUrl" frameborder="0"></iframe></div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PdfModalComponent {
   public safeUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl('');

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TaxonomyTableColumn } from '../model/taxonomy-table-column';
 import { from, Observable, of } from 'rxjs';
-import { concatMap, filter, map, toArray } from 'rxjs/operators';
+import { concatMap, filter, map, toArray } from 'rxjs';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -256,7 +256,7 @@ export class TaxonomyColumns {
         toArray()
       );
     }
-    return this.triplestoreLabelService.get(label, this.translateService.currentLang).pipe(
+    return this.triplestoreLabelService.get(label, this.translateService.getCurrentLang()).pipe(
       map(l => capitalize && l ? l.charAt(0).toUpperCase() + l.slice(1) : l)
     );
   }

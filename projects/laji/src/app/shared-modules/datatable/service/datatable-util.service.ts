@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { forkJoin as ObservableForkJoin, from, Observable, of as ObservableOf } from 'rxjs';
-import { concatMap, map, toArray } from 'rxjs/operators';
+import { concatMap, map, toArray } from 'rxjs';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { PublicationService } from '../../../shared/service/publication.service';
@@ -60,7 +60,7 @@ export class DatatableUtil {
         observable = this.getLabels(value);
         break;
       case 'multiLang':
-        observable = ObservableOf(MultiLangService.getValue(value, this.translate.currentLang, '%value% (%lang%)'));
+        observable = ObservableOf(MultiLangService.getValue(value, this.translate.getCurrentLang(), '%value% (%lang%)'));
         break;
       case 'multiLangAll':
         observable = ObservableOf(MultiLangService.valueToString(value));
@@ -130,8 +130,8 @@ export class DatatableUtil {
     }
 
     return this.getArray(occurrences, (occurrence) => ObservableForkJoin([
-      this.areaService.getProvinceCode(IdService.getId(occurrence.area), this.translate.currentLang),
-      this.labelService.get(IdService.getId(occurrence.status), this.translate.currentLang)
+      this.areaService.getProvinceCode(IdService.getId(occurrence.area), this.translate.getCurrentLang()),
+      this.labelService.get(IdService.getId(occurrence.status), this.translate.getCurrentLang())
     ]).pipe(
       map(data => data[0]+ ': ' + data[1])
     ), '; ');
@@ -139,12 +139,12 @@ export class DatatableUtil {
 
   private getWarehouseLabels(values: any): Observable<string> {
     return this.getArray(values, (value) => this.warehouseValueMappingService.getSchemaKey(value).pipe(
-        concatMap(key => this.labelService.get(IdService.getId(key), this.translate.currentLang))
+        concatMap(key => this.labelService.get(IdService.getId(key), this.translate.getCurrentLang()))
       ), '; ');
   }
 
   private getLabels(values: any): Observable<string> {
-    return this.getArray(values, (value) => this.labelService.get(IdService.getId(value), this.translate.currentLang), '; ');
+    return this.getArray(values, (value) => this.labelService.get(IdService.getId(value), this.translate.getCurrentLang()), '; ');
   }
 
   private getPublications(values: any): Observable<string> {
@@ -154,7 +154,7 @@ export class DatatableUtil {
     const labelObservables = [];
     for (const item of values) {
       labelObservables.push(
-        this.publicationService.getPublication(item, this.translate.currentLang).pipe(
+        this.publicationService.getPublication(item, this.translate.getCurrentLang()).pipe(
           map((res: Publication) => res && res.name ? res.name : item))
       );
     }
@@ -185,7 +185,7 @@ export class DatatableUtil {
 
   private getTaxon(value: any, sciName: 'scientificName' | 'speciesScientificName' = 'scientificName'): Observable<string> {
     if (value.linkings && value.linkings.taxon && value.linkings.taxon.id) {
-      return ObservableOf(MultiLangService.getValue(value.linkings.taxon.vernacularName, this.translate.currentLang, '%value% (%lang%)') +
+      return ObservableOf(MultiLangService.getValue(value.linkings.taxon.vernacularName, this.translate.getCurrentLang(), '%value% (%lang%)') +
         (value.linkings.taxon[sciName] && value.linkings.taxon.vernacularName  ? ' — ' + value.linkings.taxon[sciName] :
         (value.linkings.taxon[sciName] || '')));
     } else if (value.taxonVerbatim) {

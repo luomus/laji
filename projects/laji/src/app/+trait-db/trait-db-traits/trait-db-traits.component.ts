@@ -8,8 +8,9 @@ type Trait = components['schemas']['Trait'];
 type TraitGroup = components['schemas']['TraitGroup'];
 
 @Component({
-  templateUrl: 'trait-db-traits.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: 'trait-db-traits.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbTraitsComponent implements OnInit, OnDestroy {
   private filteredTraits = new BehaviorSubject<Trait[] | undefined>(undefined);

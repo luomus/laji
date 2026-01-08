@@ -1,7 +1,7 @@
 <details class="lu-details">
-  <ng-container *ngIf="headerReferenceContent$ | async; let information">
+  @if (headerReferenceContent$ | async; as information) {
     <div [innerHtml]="information?.content"></div>
-  </ng-container>
+  }
   <summary>Column header reference</summary>
 </details>
 <div>Download example file: <a href="https://cdn.laji.fi/images/partners/CoreTrustSeal-logo-transparent.png" target="_blank">todo-add-to-cms.tsv</a></div>
@@ -22,7 +22,7 @@
   [disabled]="isFileAttached()"
   id="manual-data-entry"
   (keydown)="onTextAreaKeyDown($event)"
-  (input)="onTextAreaInput($event)"></textarea>
+(input)="onTextAreaInput($event)"></textarea>
 
 <button class="btn btn-default d-block my-4" [disabled]="!data" (click)="onSubmit()">Continue</button>
 

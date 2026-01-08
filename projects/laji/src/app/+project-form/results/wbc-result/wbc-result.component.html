@@ -13,20 +13,30 @@
     </div>
     <div class="col-sm-4">
       <div class="form-logo pull-right">
-        <img *ngIf="form.logo" src="{{form.logo}}">
+        @if (form.logo) {
+          <img src="{{form.logo}}">
+        }
       </div>
     </div>
   </div>
   <hr style="width: 100%">
-  <div [ngSwitch]="tab$ | async">
-    <div *ngSwitchCase="Tabs.species">
-      <laji-wbc-species></laji-wbc-species>
-    </div>
-    <div *ngSwitchCase="Tabs.routes">
-      <laji-wbc-routes></laji-wbc-routes>
-    </div>
-    <div *ngSwitchCase="Tabs.censuses">
-      <laji-wbc-censuses></laji-wbc-censuses>
-    </div>
+  <div>
+    @switch (tab$ | async) {
+      @case (Tabs.species) {
+        <div>
+          <laji-wbc-species></laji-wbc-species>
+        </div>
+      }
+      @case (Tabs.routes) {
+        <div>
+          <laji-wbc-routes></laji-wbc-routes>
+        </div>
+      }
+      @case (Tabs.censuses) {
+        <div>
+          <laji-wbc-censuses></laji-wbc-censuses>
+        </div>
+      }
+    }
   </div>
 </div>

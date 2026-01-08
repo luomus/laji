@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { map, share, switchMap, tap } from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs';
 import {
   IGlobalComment,
   IGlobalRecording,
@@ -21,10 +21,11 @@ import { defaultSpectrogramConfig } from '../../../../../laji/src/app/shared-mod
 import { defaultAudioSampleRate } from '../../kerttu-global-shared/variables';
 
 @Component({
-  selector: 'bsg-species-validation',
-  templateUrl: './species-validation.component.html',
-  styleUrls: ['./species-validation.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-species-validation',
+    templateUrl: './species-validation.component.html',
+    styleUrls: ['./species-validation.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesValidationComponent implements OnInit, OnDestroy {
   species$!: Observable<IGlobalSpecies>;
@@ -76,10 +77,10 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
       this.cd.markForCheck();
     });
     this.species$ = this.speciesId$.pipe(
-      switchMap(speciesId => this.kerttuGlobalApi.getSpecies(this.translate.currentLang, speciesId))
+      switchMap(speciesId => this.kerttuGlobalApi.getSpecies(this.translate.getCurrentLang(), speciesId))
     );
     this.recordings$ = this.speciesId$.pipe(
-      switchMap(speciesId => this.kerttuGlobalApi.getRecordings(this.translate.currentLang, speciesId).pipe(
+      switchMap(speciesId => this.kerttuGlobalApi.getRecordings(this.translate.getCurrentLang(), speciesId).pipe(
         map(data => data.results),
         tap(recordings => {
           this.audioService.setBufferCacheSize(recordings.length);

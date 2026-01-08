@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs';
 import { PopstateService } from '../../../core/popstate.service';
 import { AtlasTaxon } from '../../../core/atlas-api.service';
 
 @Component({
-  selector: 'ba-species-index-list',
-  templateUrl: './species-index-list.component.html',
-  styleUrls: ['./species-index-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'ba-species-index-list',
+    templateUrl: './species-index-list.component.html',
+    styleUrls: ['./species-index-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesIndexListComponent implements OnInit, OnDestroy {
   @Input() atlasTaxa!: AtlasTaxon[];

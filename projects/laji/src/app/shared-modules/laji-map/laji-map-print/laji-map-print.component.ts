@@ -15,8 +15,8 @@ import { LajiMapComponent } from '../laji-map.component';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'laji-map-print',
-  template: `
+    selector: 'laji-map-print',
+    template: `
     <div #printControlWell [ngStyle]="{'display': 'none'}">
       <div class="print-mode-controls" [ngClass]="'print-mode-controls-' + printControlPosition" id="print-controls" #printControl>
         <laji-pdf-button
@@ -35,9 +35,10 @@ import { Subscription } from 'rxjs';
       </div>
     </div>
   `,
-  styleUrls: ['./laji-map-print.component.scss'],
-  providers: [],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./laji-map-print.component.scss'],
+    providers: [],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LajiMapPrintComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) lajiMap: LajiMapComponent | undefined;

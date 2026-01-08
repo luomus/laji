@@ -2,7 +2,8 @@ import { Directive, HostListener, EventEmitter, Output } from '@angular/core';
 import { ESCAPE } from '@angular/cdk/keycodes';
 
 @Directive({
-  selector: '[luCloseOnEsc]'
+    selector: '[luCloseOnEsc]',
+    standalone: false
 })
 export class CloseOnEscDirective {
   @Output() luCloseOnEsc = new EventEmitter();

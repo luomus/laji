@@ -4,13 +4,13 @@ import { LocalDb } from '../shared/local-db/local-db.abstract';
 import { Document } from '../shared/model/Document';
 import { EMPTY, from, Observable, of, Subject } from 'rxjs';
 import { Person } from '../shared/model/Person';
-import { catchError, map, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap, toArray } from 'rxjs';
 import { FormService } from '../shared/service/form.service';
 
 @Injectable({providedIn: 'root'})
 export class DocumentStorage extends LocalDb<Document & { id: string }> {
 
-  private deletesSource = new Subject();
+  private deletesSource = new Subject<void>();
   deletes$ = this.deletesSource.asObservable();
 
   static key(documentId: string, person: string | Person): string {

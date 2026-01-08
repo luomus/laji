@@ -1,82 +1,99 @@
 <ng-template #primarySpecimenHideFacts>
-  <ng-container *ngIf="!showFacts then primarySpecimen"></ng-container>
+  @if (!showFacts) {
+    @if (unit.primarySpecimen) {
+      <div class="primary-specimen">{{ "result.unit.primarySpecimen" | translate }}</div>
+    }
+  }
 </ng-template>
 <ng-template #primarySpecimen>
-  <ng-container *ngIf="unit.primarySpecimen">
+  @if (unit.primarySpecimen) {
     <div class="primary-specimen">{{ "result.unit.primarySpecimen" | translate }}</div>
-  </ng-container>
+  }
 </ng-template>
-<laji-row [title]="'result.unit.id' | translate" *ngIf="showFacts">
-  <ng-container>
-    <a *ngIf="showLinks; else nonlink" target="_blank" href="{{ unit.unitId }}" class="tag">{{ unit.unitId }}</a>
-    <ng-container *ngTemplateOutlet="primarySpecimen"></ng-container>
-  </ng-container>
-  <ng-template #nonlink>
-    <small class="tag">({{ unit.unitId }})</small>
-    <ng-container *ngTemplateOutlet="primarySpecimen"></ng-container>
-  </ng-template>
-</laji-row>
-<laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon; else taxonVerbatim" [title]="'result.unit.taxonVerbatim' | translate">
-  <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.originalTaxon" [addLink]="showLinks" class="tag"></laji-taxon-name>
-  <ng-container *ngTemplateOutlet="primarySpecimenHideFacts"></ng-container>
-</laji-row>
-<ng-template #taxonVerbatim>
-  <laji-row *ngIf="unit.taxonVerbatim; else reportedInformalTaxonGroup" [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.taxonVerbatim">
+@if (showFacts) {
+  <laji-row [title]="'result.unit.id' | translate">
+    <ng-container>
+      @if (showLinks) {
+        <a target="_blank" href="{{ unit.unitId }}" class="tag">{{ unit.unitId }}</a>
+      } @else {
+        <small class="tag">({{ unit.unitId }})</small>
+        <ng-container *ngTemplateOutlet="primarySpecimen"></ng-container>
+      }
+      <ng-container *ngTemplateOutlet="primarySpecimen"></ng-container>
+    </ng-container>
+  </laji-row>
+}
+@if (unit.linkings && unit.linkings.originalTaxon) {
+  <laji-row [title]="'result.unit.taxonVerbatim' | translate">
+    <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.originalTaxon" [addLink]="showLinks" class="tag"></laji-taxon-name>
     <ng-container *ngTemplateOutlet="primarySpecimenHideFacts"></ng-container>
   </laji-row>
-</ng-template>
-<ng-template #reportedInformalTaxonGroup>
-  <laji-row [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.reportedInformalTaxonGroup | toQName | label">
-    <ng-container *ngTemplateOutlet="primarySpecimenHideFacts"></ng-container>
+} @else {
+  @if (unit.taxonVerbatim) {
+    <laji-row [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.taxonVerbatim">
+      <ng-container *ngTemplateOutlet="primarySpecimenHideFacts"></ng-container>
+    </laji-row>
+  } @else {
+    <laji-row [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.reportedInformalTaxonGroup | toQName | label">
+      <ng-container *ngTemplateOutlet="primarySpecimenHideFacts"></ng-container>
+    </laji-row>
+  }
+}
+@if (unit.linkings && unit.linkings.taxon && ((unit.linkings.originalTaxon && unit.linkings.taxon.id !== unit.linkings.originalTaxon.id) || !unit.linkings.originalTaxon)) {
+  <laji-row
+    [title]="'viewer.fixedName'|translate">
+    <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.taxon" [addLink]="showLinks"></laji-taxon-name>
   </laji-row>
-</ng-template>
-<laji-row
-  *ngIf="unit.linkings && unit.linkings.taxon && ((unit.linkings.originalTaxon && unit.linkings.taxon.id !== unit.linkings.originalTaxon.id) || !unit.linkings.originalTaxon)"
-  [title]="'viewer.fixedName'|translate">
-  <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.taxon" [addLink]="showLinks"></laji-taxon-name>
-</laji-row>
-<laji-row *ngIf="showFacts" [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
-<laji-row *ngIf="showFacts" [title]="'MY.recordBasis' | label" [value]="unit.recordBasis | label: 'warehouse'"></laji-row>
-<laji-row *ngIf="showFacts && unit.keywords && unit.keywords.length > 0" [title]="'observation.active.keyword' | translate">
-  <ul class="separated-list">
-    <li *ngFor="let key of unit.keywords">
-      {{ key }}
-    </li>
-  </ul>
-</laji-row>
+}
+@if (showFacts) {
+  <laji-row [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
+}
+@if (showFacts) {
+  <laji-row [title]="'MY.recordBasis' | label" [value]="unit.recordBasis | label: 'warehouse'"></laji-row>
+}
+@if (showFacts && unit.keywords && unit.keywords.length > 0) {
+  <laji-row [title]="'observation.active.keyword' | translate">
+    <ul class="separated-list">
+      @for (key of unit.keywords; track key) {
+        <li>
+          {{ key }}
+        </li>
+      }
+    </ul>
+  </laji-row>
+}
 <!--<ng-container>
-  <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="unit.wild ? (unit.wild === true ? ('yes' | translate) : ('No' | translate)) : ('yes' | translate)"></laji-row>
+<laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="unit.wild ? (unit.wild === true ? ('yes' | translate) : ('No' | translate)) : ('yes' | translate)"></laji-row>
 </ng-container> -->
-<ng-container *ngIf="unit.wild === false">
+@if (unit.wild === false) {
   <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="'observation.active.nativeOccurrence.notWild' | translate"></laji-row>
-</ng-container>
-<ng-container *ngIf="unit.wild === true && showFacts">
+}
+@if (unit.wild === true && showFacts) {
   <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="'observation.active.nativeOccurrence.Wild' | translate"></laji-row>
-</ng-container>
+}
 <laji-row [title]="'MY.det' | label" [value]="unit.det"></laji-row>
-<ng-container *ngIf="unit.reportedTaxonConfidence && (showFacts || unit.reportedTaxonConfidence !== 'SURE')">
+@if (unit.reportedTaxonConfidence && (showFacts || unit.reportedTaxonConfidence !== 'SURE')) {
   <laji-row [title]="'result.unit.reportedTaxonConfidence' | translate" [value]="unit.reportedTaxonConfidence | label: 'warehouse'"></laji-row>
-</ng-container>
-<ng-container *ngIf="unit.interpretations && unit.interpretations.recordQuality && (showFacts || unit.interpretations.recordQuality !== 'NEUTRAL')">
+}
+@if (unit.interpretations && unit.interpretations.recordQuality && (showFacts || unit.interpretations.recordQuality !== 'NEUTRAL')) {
   <laji-row [title]="'result.unit.quality.taxon'|translate">
     <laji-quality-row
-      [quality]="unit.interpretations.recordQuality | label:'warehouse'" 
+      [quality]="unit.interpretations.recordQuality | label:'warehouse'"
       [qualityIcon]="unit.interpretations.recordQuality | qualityUrl">
     </laji-quality-row>
   </laji-row>
-</ng-container>
+}
 <laji-issues [data]="unit"></laji-issues>
-<ng-container *ngIf="!unit.abundanceUnit; else abundanceUnit">
+@if (!unit.abundanceUnit) {
   <laji-row [title]="'MY.count' | label" [value]="unit.abundanceString"></laji-row>
-</ng-container>
-<ng-template #abundanceUnit>
-  <laji-row [title]="'MY.count' | label"> 
+} @else {
+  <laji-row [title]="'MY.count' | label">
     <laji-abundance-row
       [abundanceString]="unit.abundanceString"
       [abundanceUnit]="unit.abundanceUnit | label: 'warehouse'">
     </laji-abundance-row>
   </laji-row>
-</ng-template>
+}
 <laji-row [title]="'MY.femaleIndividualCount' | label" [value]="unit.individualCountFemale"></laji-row>
 <laji-row [title]="'MY.maleIndividualCount' | label" [value]="unit.individualCountMale"></laji-row>
 <!--
@@ -91,6 +108,8 @@
 <laji-row [title]="'MY.atlasCode' | label" [value]="unit.atlasCode | label: 'fullUri'"></laji-row>
 <laji-row [title]="'MY.atlasClass' | label" [value]="unit.atlasClass | label: 'fullUri'"></laji-row>
 <laji-row [title]="'MY.notes' | label" [value]="unit.notes"></laji-row>
-<laji-row [title]="'audio.spectrum' | translate" *ngIf="unit.audioCount > 0">
-  <laji-audio-player [audioFiles]="unit.media"></laji-audio-player>
-</laji-row>
+@if (unit.audioCount > 0) {
+  <laji-row [title]="'audio.spectrum' | translate">
+    <laji-audio-player [audioFiles]="unit.media"></laji-audio-player>
+  </laji-row>
+}

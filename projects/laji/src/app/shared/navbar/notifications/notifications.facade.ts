@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, from, EMPTY } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, tap, take, concatMap, toArray, filter, catchError } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, tap, take, concatMap, toArray, filter, catchError } from 'rxjs';
 import { GraphQLService } from '../../../graph-ql/service/graph-ql.service';
 import gql from 'graphql-tag';
 import { PagedResult } from '../../model/PagedResult';
@@ -120,21 +120,27 @@ export class NotificationsFacade {
       map(({data}) => data),
       catchError(() => of({unseenCount: {total: 0}, notifications: {total: 0, results: []}}))
     ).subscribe((data) => {
-      this.unseenCountReducer(data.unseenCount.total);
+      if (!data) {
+        return;
+      }
+
+      const unseenTotal = data.unseenCount?.total ?? 0;
+      this.unseenCountReducer(unseenTotal);
       const curr = this.store$.getValue();
+      const notifications = data.notifications;
+      const notificationsTotal = notifications?.total ?? 0;
 
       // get total count from graphql to avoid api query until the dropdown is opened
-      if (curr.notifications.total === 0 && data.notifications.total !== 0) {
-        this.totalReducer(data.notifications.total);
+      if (curr.notifications.total === 0 && notificationsTotal !== 0) {
+        this.totalReducer(notificationsTotal);
       }
 
       // reload if new notifications are detected
       if (
-        data.notifications &&
-        data.notifications.total > 0 &&
+        notificationsTotal > 0 &&
         // no need to reload notifications if the dropdown has not been opened
         curr.notifications?.pageSize > 0 &&
-        curr.notifications?.results[0]?.id !== data.notifications.results[0].id
+        curr.notifications?.results[0]?.id !== notifications?.results?.[0]?.id
       ) {
         this.loadNotifications(1);
       }

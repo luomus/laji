@@ -4,9 +4,10 @@ import { Observable } from 'rxjs';
 import { HeaderImage, HeaderImageService } from '../../shared/service/header-image.service';
 
 @Component({
-  selector: 'laji-image-header',
-  templateUrl: './image-header.component.html',
-  styleUrls: ['./image-header.component.scss']
+    selector: 'laji-image-header',
+    templateUrl: './image-header.component.html',
+    styleUrls: ['./image-header.component.scss'],
+    standalone: false
 })
 export class ImageHeaderComponent implements OnInit {
   headerImage!: HeaderImage;

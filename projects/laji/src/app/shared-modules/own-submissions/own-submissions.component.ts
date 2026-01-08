@@ -1,4 +1,4 @@
-import { catchError, concatMap, map, mergeMap, share, switchMap, tap, toArray } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap, share, switchMap, tap, toArray } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -18,7 +18,7 @@ import { LocalStorage } from 'ngx-webstorage';
 import { DocumentExportService } from './service/document-export.service';
 import { DownloadEvent, LabelEvent, RowDocument } from './own-datatable/own-datatable.component';
 import { DocumentInfoService } from '../../shared/service/document-info.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { FormService } from '../../shared/service/form.service';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { Logger } from '../../shared/logger';
@@ -42,11 +42,12 @@ interface DocumentQuery {
 }
 
 @Component({
-  selector: 'laji-own-submissions',
-  templateUrl: './own-submissions.component.html',
-  styleUrls: ['./own-submissions.component.css'],
-  providers: [DocumentExportService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-own-submissions',
+    templateUrl: './own-submissions.component.html',
+    styleUrls: ['./own-submissions.component.css'],
+    providers: [DocumentExportService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
 
@@ -417,7 +418,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     if (!taxonId || !taxonId.length || this.columns.indexOf('taxon') === -1 ||
     (gatheringInfo && gatheringInfo.unitList && gatheringInfo.unitList.length > 1)) { return ObservableOf(''); }
     return this.labelService.get(taxonId[0], 'multi').pipe(
-      map((langResult: any) => langResult[this.translate.currentLang])
+      map((langResult: any) => langResult[this.translate.getCurrentLang()])
     );
   }
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, share, tap } from 'rxjs/operators';
+import { map, share, tap } from 'rxjs';
 import { SpectrogramConfig } from '../models';
 import { getSpectrogramImageData } from './spectrogram';
 

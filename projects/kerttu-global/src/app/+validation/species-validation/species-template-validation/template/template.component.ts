@@ -5,10 +5,11 @@ import { CommentType, IGlobalAudio, IGlobalComment, IGlobalTemplate } from '../.
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
-  selector: 'bsg-template',
-  templateUrl: './template.component.html',
-  styleUrls: ['./template.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-template',
+    templateUrl: './template.component.html',
+    styleUrls: ['./template.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TemplateComponent {
   @Input() template?: IGlobalTemplate|null;
@@ -21,7 +22,7 @@ export class TemplateComponent {
   @Input() historyView?: boolean;
 
   @Output() confirm = new EventEmitter<IGlobalTemplate>();
-  @Output() cancel = new EventEmitter();
+  @Output() templateCancel = new EventEmitter();
   @Output() remove = new EventEmitter();
   @Output() comment = new EventEmitter<IGlobalComment>();
 

@@ -5,10 +5,11 @@ import { IdService } from '../../../../shared/service/id.service';
 
 
 @Component({
-  selector: 'laji-theme-result',
-  templateUrl: './theme-result.component.html',
-  styleUrls: ['./theme-result.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-theme-result',
+    templateUrl: './theme-result.component.html',
+    styleUrls: ['./theme-result.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ThemeResultComponent {
 

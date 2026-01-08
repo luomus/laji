@@ -1,6 +1,7 @@
-import { map, shareReplay, switchMap, take, tap, catchError } from 'rxjs/operators';
+import { map, shareReplay, switchMap, take, tap, catchError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 import { MetadataApi } from '../api/MetadataApi';
 import { AbstractCachedHttpService } from './abstract-cached-http.service';
 import { WarehouseApi } from '../api/WarehouseApi';
@@ -162,9 +163,7 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
       errorPolicy: 'all',
       fetchPolicy: 'cache-first',
       context: {
-        headers: {
-          'x-timeout': '180000'
-        }
+        headers: new HttpHeaders({'x-timeout': '180000'})
       }
 
     }).pipe(
@@ -172,8 +171,7 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
         console.error('GraphQL error when getting collections tree: ', err, caught);
         return of({data: { collection: [] }});
       }),
-      map(({data}) => data),
-      map(({collection}) => collection)
+      map(result => (result?.data?.collection ?? []).filter((node): node is ICollectionsTreeNode => !!node))
     );
   }
 

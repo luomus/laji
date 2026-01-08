@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Information } from 'projects/laji/src/app/shared/model/Information';
 import { BehaviorSubject, forkJoin } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs';
 import { InformationService } from '../core/information.service';
 import { ISlideData } from './slide/slide.component';
 import { i18nMap, Lang } from '../core/i18n-map';
@@ -16,7 +16,7 @@ export class SlideshowFacade {
   constructor(private translate: TranslateService, private informationService: InformationService) {}
 
   loadSlides() {
-    this.informationService.getInformation(i18nMap.screenOne[<Lang>this.translate.currentLang], {}).pipe(
+    this.informationService.getInformation(i18nMap.screenOne[<Lang>this.translate.getCurrentLang()], {}).pipe(
       filter(information => {
         const a = !information.children;
         if (a) { console.warn(`The slideshow root element does not have children: ${information?.id}`); }

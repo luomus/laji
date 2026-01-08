@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'collectionLang'
+    name: 'collectionLang',
+    standalone: false
 })
 export class CollectionLangPipe implements PipeTransform {
   collectionLangs = ['finnish', 'english', 'swedish', 'mixed'];

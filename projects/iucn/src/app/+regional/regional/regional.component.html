@@ -15,25 +15,27 @@
 
   <div style="margin-top: 15px;">
     <ul class="nav nav-tabs">
-      <li *ngFor="let option of types" role="presentation" class="link" [ngClass]="{'active dark-bg': option.value === queryParams.type}">
-        <a (click)="queryParamChange('type', option.value)">
-          {{ option.label | translate }}
-        </a>
-      </li>
+      @for (option of types; track option) {
+        <li role="presentation" class="link" [ngClass]="{'active dark-bg': option.value === queryParams.type}">
+          <a (click)="queryParamChange('type', option.value)">
+            {{ option.label | translate }}
+          </a>
+        </li>
+      }
     </ul>
   </div>
   <div class="well">
     <iucn-filters [type]="'regional'" [query]="queryParams" [groupSelectRootGroups]="groupSelectRootGroups" (queryChange)="queryChange($event)"></iucn-filters>
   </div>
   <div style="margin-top: 15px;">
-    <ng-container *ngFor="let option of types">
-      <ng-container *ngIf="option.value === queryParams.type">
+    @for (option of types; track option) {
+      @if (option.value === queryParams.type) {
         <h3 role="presentation" class="active" >
           {{ (option.label) | translate }}
         </h3>
         <iucn-active-filters [query]="queryParams"></iucn-active-filters>
-      </ng-container>
-    </ng-container>
+      }
+    }
   </div>
   <iucn-regional-results [type]="queryParams.type!" [query]="queryParams" [checklist]="checklist" (queryChange)="queryChange($event)"></iucn-regional-results>
 </div>

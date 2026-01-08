@@ -3,7 +3,7 @@ import { Injectable, NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from '../../../laji/src/app/locale/locale-en.component';
-import { catchError, flatMap } from 'rxjs/operators';
+import { catchError, flatMap } from 'rxjs';
 import { LocalizeGuard } from '../../../laji/src/app/locale/localize.guard';
 import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-found.component';
 import { CheckLoginGuard } from '../../../laji/src/app/shared/guards/check-login.guard';
@@ -70,7 +70,6 @@ const allRoutes: Routes = [
   imports: [RouterModule.forRoot(allRoutes, {
     enableTracing: false,
     preloadingStrategy: PreloadSelectedModulesList,
-    initialNavigation: 'enabledBlocking'
 })],
   exports: [RouterModule],
   providers: [PreloadSelectedModulesList]

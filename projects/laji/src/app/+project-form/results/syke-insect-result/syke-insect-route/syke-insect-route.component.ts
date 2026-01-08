@@ -5,10 +5,11 @@ import { SykeInsectResultService } from '../syke-insect-result.service';
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({
-  selector: 'laji-syke-insect-route',
-  templateUrl: './syke-insect-route.component.html',
-  styleUrls: ['./syke-insect-route.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-syke-insect-route',
+    templateUrl: './syke-insect-route.component.html',
+    styleUrls: ['./syke-insect-route.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SykeInsectRouteComponent implements OnInit, OnDestroy {
 

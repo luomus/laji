@@ -5,7 +5,7 @@ import { FormPermission } from '../model/FormPermission';
 import { Person } from '../model/Person';
 import { Form } from '../model/Form';
 import { isIctAdmin, UserService } from './user.service';
-import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, take, tap } from 'rxjs';
 import { FormService } from './form.service';
 import { PlatformService } from '../../root/platform.service';
 import RestrictAccess = Form.RestrictAccess;

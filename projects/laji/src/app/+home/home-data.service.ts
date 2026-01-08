@@ -1,9 +1,9 @@
 import {gql} from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs';
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { GraphQLService } from '../graph-ql/service/graph-ql.service';
 import { HistoryService } from '../shared/service/history.service';
 import { Image } from '../shared/gallery/image-gallery/image.interface';

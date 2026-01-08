@@ -12,13 +12,14 @@ import {
 } from '@angular/core';
 import { SEASON, WbcResultService } from '../../wbc-result.service';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 
 @Component({
-  selector: 'laji-wbc-species-list',
-  templateUrl: './wbc-species-list.component.html',
-  styleUrls: ['./wbc-species-list.component.css']
+    selector: 'laji-wbc-species-list',
+    templateUrl: './wbc-species-list.component.html',
+    styleUrls: ['./wbc-species-list.component.css'],
+    standalone: false
 })
 export class WbcSpeciesListComponent implements OnInit, OnChanges {
   @Input() year!: number;

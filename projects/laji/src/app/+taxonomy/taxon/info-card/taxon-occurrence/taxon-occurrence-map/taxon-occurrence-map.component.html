@@ -5,10 +5,12 @@
   ></laji-biogeographical-province>
   <div class="legend">
     <ul>
-      <li *ngFor="let status of statusList">
-        <span class="color" [ngStyle]="{'background-color': colorByStatus[status]}"></span>
-        {{ status | label }}
-      </li>
+      @for (status of statusList; track status) {
+        <li>
+          <span class="color" [ngStyle]="{'background-color': colorByStatus[status]}"></span>
+          {{ status | label }}
+        </li>
+      }
     </ul>
   </div>
 </div>

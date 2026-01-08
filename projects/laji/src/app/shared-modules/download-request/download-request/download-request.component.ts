@@ -4,7 +4,7 @@ import { toHtmlInputElement } from '../../../shared/service/html-element.service
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Collection } from '../../../shared/model/Collection';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { switchMap, map, tap } from 'rxjs/operators';
+import { switchMap, map, tap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 export const getDownloadRequestType = (downloadRequest: DownloadRequest): DownloadRequestType => (
@@ -13,10 +13,11 @@ export const getDownloadRequestType = (downloadRequest: DownloadRequest): Downlo
 );
 
 @Component({
-  selector: 'laji-download-request',
-  templateUrl: './download-request.component.html',
-  styleUrls: ['./download-request.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-download-request',
+    templateUrl: './download-request.component.html',
+    styleUrls: ['./download-request.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DownloadRequestComponent implements OnChanges {
   @Input() downloadRequest!: DownloadRequest;
@@ -37,7 +38,7 @@ export class DownloadRequestComponent implements OnChanges {
         if (collectionIds?.length > 0) {
           return this.lajiApi.getList(LajiApi.Endpoints.collections, {
             idIn: collectionIds.join(','),
-            lang: this.translate.currentLang,
+            lang: this.translate.getCurrentLang(),
             page: 1,
             pageSize: collectionIds.length
           }).pipe(

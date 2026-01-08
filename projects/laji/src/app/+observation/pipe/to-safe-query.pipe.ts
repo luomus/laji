@@ -3,7 +3,8 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { SearchQueryService } from '../search-query.service';
 
 @Pipe({
-  name: 'toSafeQuery'
+    name: 'toSafeQuery',
+    standalone: false
 })
 export class ToSafeQueryPipe implements PipeTransform {
 

@@ -6,10 +6,11 @@ import { FileFormat, FileGeometry, FileCrs } from '../../../shared/service/geo-c
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'laji-file-download',
-  templateUrl: './file-download.component.html',
-  styleUrls: ['./file-download.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-file-download',
+    templateUrl: './file-download.component.html',
+    styleUrls: ['./file-download.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class FileDownloadComponent implements OnDestroy {

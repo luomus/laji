@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import { TranslateService } from '../../translate/translate.service';
 import { LabelMakerFacade } from '../label-maker.facade';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 import { LabelDesignerHelper } from '../../label-designer.helper';
 
 export interface ILoadSetup {
@@ -25,10 +25,11 @@ interface ISaveData {
  * @internal
  */
 @Component({
-  selector: 'll-label-file',
-  templateUrl: './label-file.component.html',
-  styleUrls: ['./label-file.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-label-file',
+    templateUrl: './label-file.component.html',
+    styleUrls: ['./label-file.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelFileComponent {
 

@@ -3,10 +3,11 @@ import { DatatableColumn, DatatableSort } from 'projects/laji/src/app/shared-mod
 import { IGlobalSpeciesListResult } from '../../../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'bsg-species-table',
-  templateUrl: './species-table.component.html',
-  styleUrls: ['./species-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-species-table',
+    templateUrl: './species-table.component.html',
+    styleUrls: ['./species-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesTableComponent implements OnInit {
   @Input() data: IGlobalSpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0, lastPage: 0 };

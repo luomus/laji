@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges,
 Output, EventEmitter, HostListener } from '@angular/core';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
-import {delay, map, switchMap, tap} from 'rxjs/operators';
+import {delay, map, switchMap, tap} from 'rxjs';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { FormService } from '../../../shared/service/form.service';
 import { Document } from '../../../shared/model/Document';
@@ -15,9 +15,10 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
 
 
 @Component({
-  selector: 'laji-document-local',
-  templateUrl: './document-local.component.html',
-  styleUrls: ['./document-local.component.css']
+    selector: 'laji-document-local',
+    templateUrl: './document-local.component.html',
+    styleUrls: ['./document-local.component.css'],
+    standalone: false
 })
 export class DocumentLocalComponent implements OnChanges {
   @Input({ required: true }) document!: Document;
@@ -115,7 +116,7 @@ export class DocumentLocalComponent implements OnChanges {
 
   private getImages(obj: any): Observable<Image[]> {
     return this.lajiApi.getList(LajiApi.Endpoints.images, {
-      lang: this.translate.currentLang,
+      lang: this.translate.getCurrentLang(),
       page: 1,
       pageSize: 1000,
       idIn: obj.images.join(',')

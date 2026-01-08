@@ -7,10 +7,11 @@ import { DocumentViewerFacade } from '../document-viewer.facade';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 @Component({
-  selector: 'laji-unit',
-  templateUrl: './unit.component.html',
-  styleUrls: ['./unit.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-unit',
+    templateUrl: './unit.component.html',
+    styleUrls: ['./unit.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UnitComponent implements OnInit {
 

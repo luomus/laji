@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VirOrganisationService } from '../../../service/vir-organisation.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 @Component({
-  selector: 'vir-usage-by-organization',
-  templateUrl: './usage-by-organization.component.html',
-  styleUrls: ['./usage-by-organization.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-usage-by-organization',
+    templateUrl: './usage-by-organization.component.html',
+    styleUrls: ['./usage-by-organization.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UsageByOrganizationComponent {
 

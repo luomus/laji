@@ -21,10 +21,11 @@ export interface RedListHabitatData {
 }
 
 @Component({
-  selector: 'iucn-red-list-habitat',
-  templateUrl: './red-list-habitat.component.html',
-  styleUrls: ['./red-list-habitat.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-red-list-habitat',
+    templateUrl: './red-list-habitat.component.html',
+    styleUrls: ['./red-list-habitat.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RedListHabitatComponent {
 

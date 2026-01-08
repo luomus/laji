@@ -1,15 +1,16 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, TemplateRef, Input } from '@angular/core';
 import { IdentificationData } from '../sound-identification-api';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
-  selector: 'laji-sound-identification-table',
-  templateUrl: './sound-identification-table.component.html',
-  styleUrls: ['./sound-identification-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-sound-identification-table',
+    templateUrl: './sound-identification-table.component.html',
+    styleUrls: ['./sound-identification-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SoundIdentificationTableComponent implements OnInit {
   @ViewChild('clipSpan', { static: true }) clipSpanTemplate!: TemplateRef<any>;

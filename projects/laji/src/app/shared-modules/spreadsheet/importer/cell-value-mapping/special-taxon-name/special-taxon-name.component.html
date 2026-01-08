@@ -1,7 +1,9 @@
 <button class="btn btn-default toggle-linked" [class.disabled]="!allCompleted" (click)="toggleLinkedVisible()">
   {{ (linkedVisible ? 'excel.import.hideMappings' : 'excel.import.showMappings') | translate }}
 </button><br>
-<lu-progressbar *ngIf="!allCompleted" [max]="invalidValues?.length!" [value]="completedCnt">{{ completedCnt }}/{{ invalidValues?.length }}</lu-progressbar>
+@if (!allCompleted) {
+  <lu-progressbar [max]="invalidValues?.length!" [value]="completedCnt">{{ completedCnt }}/{{ invalidValues?.length }}</lu-progressbar>
+}
 <table class="table">
   <thead>
     <tr>
@@ -14,33 +16,33 @@
     </tr>
   </thead>
   <tbody>
-  <ng-container *ngFor="let value of invalidValues; let i=index">
-    <tr [ngClass]="{'hidden': hiddenValues[value]}">
-      <td class="value-col">
-        <div class="form-control-static">
-          {{ value }}
-        </div>
-      </td>
-      <td class="mapping-col">
-        <laji-taxon-autocomplete
-          excludeNameTypes="MX.hasMisappliedName"
-          [allowInvalid]="true"
-          [placeholder]="'Etsi haluttu laji'"
-          [taxon]="value"
-          [index]="i"
-          [useValue]="useAsIs && mapping ? mapping[value] : ''"
-          (finish)="onSearchComplete()"
-          (taxonSelect)="onTaxonSelect(value, $event)"
-        ></laji-taxon-autocomplete>
-      </td>
-      <td class="result-col">
-        {{ lajiValue(value) }}
-      </td>
-      <td class="ok-col">
-        <laji-tool-success [success]="mapping?.[value]"></laji-tool-success>
-      </td>
-    </tr>
-  </ng-container>
+    @for (value of invalidValues; track value; let i = $index) {
+      <tr [ngClass]="{'hidden': hiddenValues[value]}">
+        <td class="value-col">
+          <div class="form-control-static">
+            {{ value }}
+          </div>
+        </td>
+        <td class="mapping-col">
+          <laji-taxon-autocomplete
+            excludeNameTypes="MX.hasMisappliedName"
+            [allowInvalid]="true"
+            [placeholder]="'Etsi haluttu laji'"
+            [taxon]="value"
+            [index]="i"
+            [useValue]="useAsIs && mapping ? mapping[value] : ''"
+            (searchComplete)="onSearchComplete()"
+            (taxonSelect)="onTaxonSelect(value, $event)"
+          ></laji-taxon-autocomplete>
+        </td>
+        <td class="result-col">
+          {{ lajiValue(value) }}
+        </td>
+        <td class="ok-col">
+          <laji-tool-success [success]="mapping?.[value]"></laji-tool-success>
+        </td>
+      </tr>
+    }
   </tbody>
 </table>
 <button class="btn btn-default pull-left lower-btn" [class.disabled]="!allCompleted" (click)="acceptAllAsIs()">

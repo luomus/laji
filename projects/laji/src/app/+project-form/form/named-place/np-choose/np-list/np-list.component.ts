@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { Util } from '../../../../../shared/service/util.service';
-import { map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 import { forkJoin } from 'rxjs';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
 import { BoolToStringPipe } from '../../../../../shared/pipe/bool-to-string.pipe';
@@ -24,11 +24,12 @@ import { SelectionType, SortType } from '@achimha/ngx-datatable';
 import { NpInfoComponent } from '../../np-info/np-info.component';
 
 @Component({
-  selector: 'laji-np-list',
-  templateUrl: './np-list.component.html',
-  styleUrls: ['./np-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ BoolToStringPipe, AreaNamePipe ]
+    selector: 'laji-np-list',
+    templateUrl: './np-list.component.html',
+    styleUrls: ['./np-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [BoolToStringPipe, AreaNamePipe],
+    standalone: false
 })
 export class NpListComponent implements OnDestroy {
   _namedPlaces?: NamedPlace[];
@@ -244,7 +245,7 @@ export class NpListComponent implements OnDestroy {
     }
     if (municipalities$.length) {
       forkJoin(...municipalities$).subscribe((municipalityTuples) => {
-        municipalityTuples.forEach(([row, municipalityLabel]: [any, string[]]) => {
+        (municipalityTuples as any).forEach(([row, municipalityLabel]: [any, string[]]) => {
           row['$.municipality'] = municipalityLabel.join(', ');
         });
         this.data = results;

@@ -12,15 +12,16 @@ import { Observable, Subscription, from, of } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { Lang } from '@luomus/laji-form-builder/lib/model';
 import { UserService } from '../../shared/service/user.service';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs';
 import { environment } from 'projects/laji/src/environments/environment';
 
 @Component({
-  selector: 'laji-form-builder',
-  template: `<div #lajiFormBuilder></div>`,
-  styleUrls: ['./laji-form-builder.component.scss'],
-  providers: [FormApiClient],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-form-builder',
+    template: `<div #lajiFormBuilder></div>`,
+    styleUrls: ['./laji-form-builder.component.scss'],
+    providers: [FormApiClient],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   @Input() id?: string;
@@ -54,7 +55,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
 
   private mount() {
     this.ngZone.runOutsideAngular(() => {
-      this.apiClient.lang = this.translate.currentLang;
+      this.apiClient.lang = this.translate.getCurrentLang();
       this.apiClient.personToken = this.userService.getToken();
       this.updateLajiFormBuilder();
     });
@@ -71,7 +72,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
         rootElem: this.lajiFormBuilderRoot.nativeElement,
         theme: lajiFormBuilderBs3Theme,
         apiClient: this.apiClient,
-        lang: this.translate.currentLang as Lang,
+        lang: this.translate.getCurrentLang() as Lang,
         onLangChange: this.onLangChange.bind(this),
         primaryDataBankFormID: Global.forms.databankPrimary,
         secondaryDataBankFormID: Global.forms.databankSecondary,

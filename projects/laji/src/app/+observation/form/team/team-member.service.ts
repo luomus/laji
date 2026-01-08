@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { map, share, tap } from 'rxjs/operators';
+import { map, share, tap } from 'rxjs';
 import { Observable, of as ObservableOf } from 'rxjs';
 
 @Injectable({

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy, ViewChild } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PersonApi } from '../../../../../laji/src/app/shared/api/PersonApi';
@@ -7,10 +7,11 @@ import { IdentificationMainComponent } from '../../kerttu-global-shared-modules/
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
-  selector: 'bsg-recording-identification',
-  templateUrl: './recording-identification.component.html',
-  styleUrls: ['./recording-identification.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bsg-recording-identification',
+    templateUrl: './recording-identification.component.html',
+    styleUrls: ['./recording-identification.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   @ViewChild(IdentificationMainComponent) identificationComponent?: IdentificationMainComponent;

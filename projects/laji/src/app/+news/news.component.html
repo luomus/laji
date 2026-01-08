@@ -5,21 +5,24 @@
         <ol class="breadcrumb">
           <li class="active">{{ 'news.title' | translate }}</li>
         </ol>
-        <ng-container *ngIf="newsItem$ | async as newsItem; else loading">
+        @if (newsItem$ | async; as newsItem) {
           <div class="laji-page">
             <h2 class="mb-3">{{ newsItem.title }}</h2>
             <div class="mb-5"><small>
               {{ (newsItem.posted ?? '') | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }} - {{ newsItem.author }}
-              <span *ngIf="newsItem.modified">({{ 'news.updated' | translate }}: {{ newsItem.modified | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})</span>
+              @if (newsItem.modified) {
+                <span>({{ 'news.updated' | translate }}: {{ newsItem.modified | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})</span>
+              }
             </small></div>
-            <img *ngIf="newsItem.featuredImage" class="mb-4" [src]="getFeaturedImageUrl(newsItem)"/>
+            @if (newsItem.featuredImage) {
+              <img class="mb-4" [src]="getFeaturedImageUrl(newsItem)"/>
+            }
             <div [innerHtml]="newsItem.content" lajiRouteTransformer></div>
           </div>
-        </ng-container>
-        <ng-template #loading>
+        } @else {
           <laji-spinner>
           </laji-spinner>
-        </ng-template>
+        }
       </div>
     </div>
   </main>

@@ -3,13 +3,14 @@ import { WbcResultService } from '../wbc-result.service';
 import { IdService } from '../../../../shared/service/id.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/tab-utils';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'laji-wbc-routes',
-  templateUrl: './wbc-routes.component.html',
-  styleUrls: ['./wbc-routes.component.css']
+    selector: 'laji-wbc-routes',
+    templateUrl: './wbc-routes.component.html',
+    styleUrls: ['./wbc-routes.component.css'],
+    standalone: false
 })
 export class WbcRoutesComponent implements OnInit {
   activeIndex = 0;

@@ -5,10 +5,11 @@ import { IUserStat } from '../../../kerttu-global-shared/models';
 import { UserNameTemplateComponent } from '../../../kerttu-global-shared/component/user-name-template.component';
 
 @Component({
-  selector: 'bsg-user-table',
-  templateUrl: './user-table.component.html',
-  styleUrls: ['./user-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-user-table',
+    templateUrl: './user-table.component.html',
+    styleUrls: ['./user-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UserTableComponent implements OnInit {
   @ViewChild(UserNameTemplateComponent, { static: true }) public userNameTemplate!: UserNameTemplateComponent;

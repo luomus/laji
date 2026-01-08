@@ -4,10 +4,11 @@ import { Placement } from 'projects/laji-ui/src/lib/placement/placement.service'
 import { PlatformService } from '../../../root/platform.service';
 
 @Component({
-  selector: 'laji-info',
-  templateUrl: './info.component.html',
-  styleUrls: ['./info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-info',
+    templateUrl: './info.component.html',
+    styleUrls: ['./info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InfoComponent {
   @Input() placement: Placement = 'bottom';
@@ -31,7 +32,7 @@ export class InfoComponent {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize() {
+  onResize(event: any) {
     // window.innerWidth is undefined for node env, we don't want to show the modal for server-side rendered version.
     if (!this.platformService.isBrowser) {
       return;

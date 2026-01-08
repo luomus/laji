@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs';
 import { AtlasApiService, AtlasTaxon, BirdSociety, BirdSocietyTaxaResponseElem } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 import { PopstateService } from '../../core/popstate.service';
@@ -10,9 +10,10 @@ import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 import { Util } from 'projects/laji/src/app/shared/service/util.service';
 
 @Component({
-  templateUrl: 'bird-society-info.component.html',
-  styleUrls: ['bird-society-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: 'bird-society-info.component.html',
+    styleUrls: ['bird-society-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
   @ViewChild(BirdSocietyInfoSpeciesTableComponent) table!: BirdSocietyInfoSpeciesTableComponent;

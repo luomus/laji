@@ -9,10 +9,11 @@ import { DialogService } from '../../../../../laji/src/app/shared/service/dialog
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
-  selector: 'bsg-expertise',
-  templateUrl: './expertise.component.html',
-  styleUrls: ['./expertise.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-expertise',
+    templateUrl: './expertise.component.html',
+    styleUrls: ['./expertise.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ExpertiseComponent implements OnInit {
   continents$: Observable<{id: string; value: string}[]>;

@@ -15,10 +15,11 @@ export interface ISlideData {
 }
 
 @Component({
-  selector: 'es-slide',
-  templateUrl: 'slide.component.html',
-  styleUrls: ['slide.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'es-slide',
+    templateUrl: 'slide.component.html',
+    styleUrls: ['slide.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SlideComponent implements OnChanges, AfterViewChecked {
   @Input() data!: ISlideData;

@@ -10,10 +10,11 @@ import { AnnotationTag } from '../../shared/model/AnnotationTag';
 import { DeleteOwnDocumentService } from '../../shared/service/delete-own-document.service';
 
 @Component({
-  selector: 'laji-annotations',
-  templateUrl: './annotations.component.html',
-  styleUrls: ['./annotations.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-annotations',
+    templateUrl: './annotations.component.html',
+    styleUrls: ['./annotations.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
 

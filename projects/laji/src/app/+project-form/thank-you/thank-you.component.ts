@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Form } from '../../shared/model/Form';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ProjectFormService, RegistrationContact } from '../../shared/service/project-form.service';
 import { UserService } from '../../shared/service/user.service';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
 import { ActivatedRoute } from '@angular/router';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs';
 import { Rights } from '../about/about.component';
 
 interface ThankYouData {
@@ -15,13 +15,14 @@ interface ThankYouData {
 }
 
 @Component({
-  selector: 'laji-thank-you',
-  templateUrl: './thank-you.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-thank-you',
+    templateUrl: './thank-you.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ThankYouComponent implements OnInit, OnDestroy {
 
-  thankYouData$!: Observable<ThankYouData>;
+  thankYouData$!: Observable<ThankYouData | undefined>;
   registrationContacts?: RegistrationContact[] | undefined;
 
   constructor(private userService: UserService,
@@ -34,9 +35,12 @@ export class ThankYouComponent implements OnInit, OnDestroy {
     this.thankYouData$ = this.userService.isLoggedIn$.pipe(
       mergeMap(loggedIn => this.projectFormService.getFormFromRoute$(this.route).pipe(
         mergeMap(form => {
-          if (form.options?.openForm ?? false) {
+          if (form?.options?.openForm ?? false) {
             const contacts = this.projectFormService.getRegistrationContacts();
             this.registrationContacts = contacts;
+          }
+          if (!form) {
+            return of(undefined);
           }
           return this.formPermissionService.getRights(form).pipe(
             map((rights) => ({

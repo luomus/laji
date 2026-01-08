@@ -16,7 +16,8 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
         .container {
             padding: 2em 1em;
         }
-    `]
+    `],
+    standalone: false
 })
 export class RequestWrapperComponent implements OnInit, OnDestroy {
     collectionId!: string;

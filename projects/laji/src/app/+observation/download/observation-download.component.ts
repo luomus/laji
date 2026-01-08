@@ -1,4 +1,4 @@
-import { first, map, switchMap, tap } from 'rxjs/operators';
+import { first, map, switchMap, tap } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -49,10 +49,11 @@ enum RequestStatus {
 }
 
 @Component({
-  selector: 'laji-observation-download',
-  templateUrl: './observation-download.component.html',
-  styleUrls: ['./observation-download.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-download',
+    templateUrl: './observation-download.component.html',
+    styleUrls: ['./observation-download.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationDownloadComponent implements OnDestroy {
 
@@ -192,7 +193,7 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   updateCsvLink() {
     const queryParams = this.searchQuery.getQueryObject(this.query);
-    queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang as keyof { en: string; fi: string; sv: string }];
+    queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.getCurrentLang() as keyof { en: string; fi: string; sv: string }];
     queryParams['includeNonValidTaxa'] = 'false';
     queryParams['pageSize'] = '' + this.taxaLimit;
     queryParams['format'] = 'csv';
@@ -249,7 +250,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       'TSV_FLAT',
       'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
       this.query,
-      this.translate.currentLang,
+      this.translate.getCurrentLang(),
       undefined,
       {
         dataUsePurpose: [this.reasonEnum, this.reason].filter(r => !!r).join(': ')
@@ -298,7 +299,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       this._originalQuery,
       this.tableColumnService.getSelectFields(selected, this.query),
       [],
-      this.translate.currentLang,
+      this.translate.getCurrentLang(),
       true,
       environment.type === Global.type.vir || isGisDownload,
       [this.reasonEnum, this.reason].filter(r => !!r).join(': ')
@@ -332,7 +333,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       'TSV_FLAT',
       'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
       this.query,
-      this.translate.currentLang,
+      this.translate.getCurrentLang(),
       'AUTHORITIES_API_KEY',
       {
         dataUsePurpose: [req.reasonEnum, req.reason].filter(r => !!r).join(': '),

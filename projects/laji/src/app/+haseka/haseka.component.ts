@@ -1,4 +1,4 @@
-import { filter, map, startWith } from 'rxjs/operators';
+import { filter, map, startWith } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../shared/service/user.service';
 import { NavigationEnd, Router } from '@angular/router';
@@ -10,9 +10,10 @@ import { TranslateService } from '@ngx-translate/core';
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({
-  selector: 'haseka',
-  templateUrl: './haseka.component.html',
-  styleUrls: ['./haseka.component.scss']
+    selector: 'haseka',
+    templateUrl: './haseka.component.html',
+    styleUrls: ['./haseka.component.scss'],
+    standalone: false
 })
 export class HasekaComponent implements OnInit, OnDestroy {
 
@@ -32,7 +33,7 @@ export class HasekaComponent implements OnInit, OnDestroy {
   ) {
   }
 
-  lang = this.translate.currentLang;
+  lang = this.translate.getCurrentLang();
 
   ngOnInit() {
     this.subRoute = this.router.events.pipe(

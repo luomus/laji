@@ -15,10 +15,11 @@ import { DatatableColumn, DatatableSort } from '../../../../../../../laji/src/ap
 import { IIdentificationHistoryResponseWithIndex } from '../identification-history.component';
 
 @Component({
-  selector: 'bsg-identification-history-table',
-  templateUrl: './identification-history-table.component.html',
-  styleUrls: ['./identification-history-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-identification-history-table',
+    templateUrl: './identification-history-table.component.html',
+    styleUrls: ['./identification-history-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationHistoryTableComponent implements OnInit, OnChanges {
   @ViewChild('speciesListTpl', { static: true }) public speciesListTemplate!: TemplateRef<any>;

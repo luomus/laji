@@ -10,7 +10,7 @@ import {
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { DatatableSort } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs';
 import { IdentificationHistoryEditModalComponent } from './identification-history-edit-modal/identification-history-edit-modal.component';
 import { ModalService } from '../../../../../../laji-ui/src/lib/modal/modal.service';
 
@@ -19,10 +19,11 @@ export interface IIdentificationHistoryResponseWithIndex extends IIdentification
 }
 
 @Component({
-  selector: 'bsg-identification-history',
-  templateUrl: './identification-history.component.html',
-  styleUrls: ['./identification-history.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-identification-history',
+    templateUrl: './identification-history.component.html',
+    styleUrls: ['./identification-history.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationHistoryComponent implements OnChanges {
   @Input() sites?: IGlobalSite[];

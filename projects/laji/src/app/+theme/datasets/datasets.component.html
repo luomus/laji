@@ -1,7 +1,9 @@
 <div class="container mb-8">
   <laji-theme-breadcrumb [breadcrumb]="(breadcrumb$ | async)!"></laji-theme-breadcrumb>
   <div class="laji-page">
-    <laji-info-page *ngIf="instructions" [rootPage]="instructions"></laji-info-page>
+    @if (instructions) {
+      <laji-info-page [rootPage]="instructions"></laji-info-page>
+    }
     <ng-container *lajiBrowserOnly>
       <div class="row" *lajiLoggedIn="false">
         <div class="col-sm-8">
@@ -11,30 +13,33 @@
         </div>
       </div>
     </ng-container>
-    <ng-container *ngIf="forms$ | async; let forms">
+    @if (forms$ | async; as forms) {
       <h3>{{ 'datasets.accessTo' | translate }}</h3>
       <ul class="dataset-items">
-        <li *ngIf="forms.length === 0">
-          {{ 'datasets.accessNone' | translate }}
-        </li>
-        <li *ngFor="let form of forms">
-          <ng-container *ngIf="form !== false">
-            <a [routerLink]="['/project/', form?.id!] | localize">
-              {{ form?.collectionID! | label }},
-              <ng-container *ngIf="form?.options?.secondaryCopy; else primary">
-                {{ 'datasets.secondary' | translate }}
-              </ng-container>
-            </a>
-          </ng-container>
-        </li>
-        <ng-template #primary>
-          {{ 'datasets.primary' | translate }}
-        </ng-template>
+        @if (forms.length === 0) {
+          <li>
+            {{ 'datasets.accessNone' | translate }}
+          </li>
+        }
+        @for (form of forms; track form) {
+          <li>
+            @if (form !== false) {
+              <a [routerLink]="['/project/', form?.id!] | localize">
+                {{ form?.collectionID! | label }},
+                @if (form?.options?.secondaryCopy) {
+                  {{ 'datasets.secondary' | translate }}
+                } @else {
+                  {{ 'datasets.primary' | translate }}
+                }
+              </a>
+            }
+          </li>
+        }
       </ul>
       <p>{{ 'datasets.new.help' | translate }}</p>
       <h3>{{ 'datasets.new.title' | translate }}</h3>
       <p>{{ 'datasets.new.intro' | translate }}</p>
       <lu-button target="_blank" anchor="https://luomus-lv.creamailer.fi/survey/qnqqmh0tjgohg" role="primary">{{ 'datasets.new.title' | translate }}</lu-button>
-    </ng-container>
+    }
   </div>
 </div>

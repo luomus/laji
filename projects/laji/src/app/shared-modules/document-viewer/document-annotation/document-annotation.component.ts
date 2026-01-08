@@ -1,5 +1,5 @@
 
-import { tap, map, filter, switchMap, take, catchError } from 'rxjs/operators';
+import { tap, map, filter, switchMap, take, catchError } from 'rxjs';
 import {
   AfterViewInit,
   ApplicationRef,
@@ -39,20 +39,21 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
 import { DocumentPermissionService } from '../service/document-permission.service';
 
 @Component({
-  selector: 'laji-document-annotation',
-  templateUrl: './document-annotation.component.html',
-  styleUrls: ['./document-annotation.component.scss'],
-  animations: [
-    trigger('shortcutsInOut', [
-        transition('void => *', [
-           style({opacity: 0, transform: 'translateX(-30px)'}),
-            animate(400, style({transform: 'translateX(0px)', opacity: 1 }))
-        ]),
-        transition('* => void', [
-            animate(400, style({opacity: 0, transform: 'translateX(-30px)'}))
+    selector: 'laji-document-annotation',
+    templateUrl: './document-annotation.component.html',
+    styleUrls: ['./document-annotation.component.scss'],
+    animations: [
+        trigger('shortcutsInOut', [
+            transition('void => *', [
+                style({ opacity: 0, transform: 'translateX(-30px)' }),
+                animate(400, style({ transform: 'translateX(0px)', opacity: 1 }))
+            ]),
+            transition('* => void', [
+                animate(400, style({ opacity: 0, transform: 'translateX(-30px)' }))
+            ])
         ])
-    ])
-  ]
+    ],
+    standalone: false
 })
 export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent) map?: ViewerMapComponent;
@@ -130,8 +131,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   ) { }
 
   ngOnInit() {
-    this.annotationTags$ = this.annotationService.getAllTags(this.translate.currentLang);
-    this.currentLang = this.translate.currentLang;
+    this.annotationTags$ = this.annotationService.getAllTags(this.translate.getCurrentLang());
+    this.currentLang = this.translate.getCurrentLang();
     this.metaFetch = this.userService.user$.subscribe(person => {
       if (!person) {
         this.personRoleAnnotation = Annotation.AnnotationRoleEnum.basic;
@@ -448,5 +449,3 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   }
 
 }
-
-

@@ -1,17 +1,18 @@
 import * as FileSaver from 'file-saver';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { environment } from 'projects/laji/src/environments/environment';
 import { PlatformService } from '../../root/platform.service';
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'laji-pdf-button',
-  templateUrl: './pdf-button.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-pdf-button',
+    templateUrl: './pdf-button.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PdfButtonComponent {
 

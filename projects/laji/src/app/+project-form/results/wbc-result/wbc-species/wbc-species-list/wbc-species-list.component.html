@@ -17,28 +17,30 @@
 </laji-datatable>
 
 <ng-template let-value="value" let-row="row" #vernacularName>
-  <a
-    *ngIf="value"
-    [routerLink]="[]"
-    [queryParams]="{species: (row['unit.linkings.taxon.speciesId'] | toQName)}"
-    queryParamsHandling="merge"
-    (click)="$event.stopPropagation()"
-    title="{{ value }}"
-  >
-    {{ value }}
-  </a>
+  @if (value) {
+    <a
+      [routerLink]="[]"
+      [queryParams]="{species: (row['unit.linkings.taxon.speciesId'] | toQName)}"
+      queryParamsHandling="merge"
+      (click)="$event.stopPropagation()"
+      title="{{ value }}"
+      >
+      {{ value }}
+    </a>
+  }
 </ng-template>
 <ng-template let-value="value" let-row="row" #scientificName>
-  <a
-    *ngIf="value"
-    [routerLink]="[]"
-    [queryParams]="{species: (row['unit.linkings.taxon.speciesId'] | toQName)}"
-    queryParamsHandling="merge"
-    (click)="$event.stopPropagation()"
-    title="{{ value }}"
-  >
-    <span class="cursive">
-    {{ value }}
-    </span>
-  </a>
+  @if (value) {
+    <a
+      [routerLink]="[]"
+      [queryParams]="{species: (row['unit.linkings.taxon.speciesId'] | toQName)}"
+      queryParamsHandling="merge"
+      (click)="$event.stopPropagation()"
+      title="{{ value }}"
+      >
+      <span class="cursive">
+        {{ value }}
+      </span>
+    </a>
+  }
 </ng-template>

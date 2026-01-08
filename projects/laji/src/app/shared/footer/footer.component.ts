@@ -3,10 +3,11 @@ import { Observable } from 'rxjs';
 import { FooterService } from '../service/footer.service';
 
 @Component({
-  selector: 'laji-footer',
-  styleUrls: ['./footer.component.scss'],
-  templateUrl: './footer.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-footer',
+    styleUrls: ['./footer.component.scss'],
+    templateUrl: './footer.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FooterComponent {
   @Input() onFrontPage = false;

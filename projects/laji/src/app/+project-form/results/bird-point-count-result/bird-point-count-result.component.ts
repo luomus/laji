@@ -3,7 +3,7 @@ import { Form } from '../../../shared/model/Form';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
@@ -27,10 +27,11 @@ interface MapState {
 type State = ChartState | MapState;
 
 @Component({
-  selector: 'laji-bird-point-count-result',
-  templateUrl: './bird-point-count-result.component.html',
-  styleUrls: ['./bird-point-count-result.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-bird-point-count-result',
+    templateUrl: './bird-point-count-result.component.html',
+    styleUrls: ['./bird-point-count-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BirdPointCountResultComponent implements OnInit, OnDestroy {
   @Input() form!: Form.SchemaForm;

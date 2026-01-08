@@ -1,9 +1,9 @@
 <div>
   <div #lajiForm></div>
   <lu-modal #errorModal [noClose]="true">
-    <ng-container *ngIf="errorModalData">
+    @if (errorModalData) {
       <ng-container *ngTemplateOutlet="modalContent; context: errorModalData"></ng-container>
-    </ng-container>
+    }
   </lu-modal>
 </div>
 
@@ -11,9 +11,9 @@
   <div class="alert alert-danger" role="alert">
     <span>{{ description | translate }}</span><br />
   </div>
-  <ng-container *ngFor="let button of buttons">
+  @for (button of buttons; track button) {
     <ng-component *ngTemplateOutlet="modalButton; context: button"></ng-component>
-  </ng-container>
+  }
 </ng-template>
 
 <ng-template #modalButton let-label="label" let-fn="fn">

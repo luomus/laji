@@ -1,25 +1,38 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
-  <ng-container *ngIf="taxon">
-    <lu-sidebar *ngIf="canShowTree else infoCard" [open]="showTree" (toggled)="showTree = $event; updateRoute()">
-      <nav>
-        <laji-taxon-tree
-          [activeId]="taxon.id"
-          [activeTab]="infoCardTab"
-          [showHidden]="showHidden"
-          (routeUpdate)="updateRoute(undefined, undefined, undefined, showTree, undefined, $event.showHidden)"
-        ></laji-taxon-tree>
-      </nav>
-      <main>
-        <laji-technical-news></laji-technical-news>
-        <ng-container *ngTemplateOutlet="infoCard"></ng-container>
-      </main>
-    </lu-sidebar>
-  </ng-container>
-  <div class="container-fluid" *ngIf="taxon === null">
-    <h1>
-      {{ 'taxonomy.notFound' | translate }}
-    </h1>
-  </div>
+  @if (taxon) {
+    @if (canShowTree) {
+      <lu-sidebar [open]="showTree" (toggled)="showTree = $event; updateRoute()">
+        <nav>
+          <laji-taxon-tree
+            [activeId]="taxon.id"
+            [activeTab]="infoCardTab"
+            [showHidden]="showHidden"
+            (routeUpdate)="updateRoute(undefined, undefined, undefined, showTree, undefined, $event.showHidden)"
+          ></laji-taxon-tree>
+        </nav>
+        <main>
+          <laji-technical-news></laji-technical-news>
+          <ng-container *ngTemplateOutlet="infoCard"></ng-container>
+        </main>
+      </lu-sidebar>
+    } @else {
+      <laji-info-card
+        [taxon]="taxon!"
+        [isFromMasterChecklist]="isFromMasterChecklist!"
+        [activeTab]="infoCardTab"
+        [context]="infoCardContext"
+        (routeUpdate)="updateRoute($event.id, $event.tab, $event.context, showTree, $event.replaceUrl)"
+        [class.sidebar-hidden]="!showTree && canShowTree"
+      ></laji-info-card>
+    }
+  }
+  @if (taxon === null) {
+    <div class="container-fluid">
+      <h1>
+        {{ 'taxonomy.notFound' | translate }}
+      </h1>
+    </div>
+  }
 </laji-spinner>
 
 <ng-template #infoCard>

@@ -7,7 +7,7 @@ import L, { LatLngTuple } from 'leaflet';
 import { PathOptions } from 'leaflet';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs';
 import { AtlasClass, AtlasGridSquare, BirdSocietyTaxaResponseElem } from '../../../core/atlas-api.service';
 import { PopstateService } from '../../../core/popstate.service';
 import { getFeatureColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
@@ -55,10 +55,11 @@ export const atlasClassStyleLookup: Record<AtlasClass, {radius: number; fillColo
 };
 
 @Component({
-  selector: 'ba-bird-society-info-map',
-  templateUrl: './bird-society-info-map.component.html',
-  styleUrls: ['./bird-society-info-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'ba-bird-society-info-map',
+    templateUrl: './bird-society-info-map.component.html',
+    styleUrls: ['./bird-society-info-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() atlasGrid!: AtlasGridSquare[];

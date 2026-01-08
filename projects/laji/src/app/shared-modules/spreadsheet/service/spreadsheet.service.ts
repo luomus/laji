@@ -6,7 +6,7 @@ import { TriplestoreLabelService } from '../../../shared/service/triplestore-lab
 
 import { IFormField, LEVEL_DOCUMENT } from '../model/excel';
 import { MappingService } from './mapping.service';
-import { distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs';
 import { GeneratorService } from './generator.service';
 import { Util } from '../../../shared/service/util.service';
 import { Form } from '../../../shared/model/Form';
@@ -70,8 +70,8 @@ export class SpreadsheetService {
     private formService: FormService
   ) {
     this.translateService.onLangChange.pipe(
-      map(() => this.translateService.currentLang),
-      startWith(this.translateService.currentLang),
+      map(() => this.translateService.getCurrentLang()),
+      startWith(this.translateService.getCurrentLang()),
       distinctUntilChanged(),
       switchMap(lang =>
         ObservableForkJoin([

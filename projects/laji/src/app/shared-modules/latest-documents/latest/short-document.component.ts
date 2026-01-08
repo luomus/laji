@@ -1,4 +1,4 @@
-import { delay, tap } from 'rxjs/operators';
+import { delay, tap } from 'rxjs';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
@@ -9,9 +9,10 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { Form } from '../../../shared/model/Form';
 
 @Component({
-  selector: 'laji-short-document',
-  templateUrl: './short-document.component.html',
-  styleUrls: ['./short-document.component.scss']
+    selector: 'laji-short-document',
+    templateUrl: './short-document.component.html',
+    styleUrls: ['./short-document.component.scss'],
+    standalone: false
 })
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document!: Document & { id: string };

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs';
 import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
 import { Document } from '../../shared/model/Document';
 import { IdService } from '../../shared/service/id.service';

@@ -1,27 +1,32 @@
 <select [ngModel]="_value" (ngModelChange)="selected.emit($event)" class="form-control" [disabled]="disabled || (disabledWhenNoOptions && !options)">
-  <ng-container *ngIf="_fields; else valueOption">
+  @if (_fields) {
     <option value="" disabled>{{ 'excel.map.col-select' | translate }}</option>
     <option [value]="skipValue">{{ 'ignore'| translate }}</option>
-    <optgroup *ngFor="let group of fieldGroups | removeEmpty" [label]="fieldGroupsLabel[group]">
-      <option *ngFor="let key of groups![group] | removeEmpty" [value]="key">
-        {{ key === skipValue ? ('ignore'| translate) : (_fields[key] && _fields[key].label || key) }}
-      </option>
-    </optgroup>
-  </ng-container>
-  <ng-template #valueOption>
+    @for (group of fieldGroups | removeEmpty; track group) {
+      <optgroup [label]="fieldGroupsLabel[group]">
+        @for (key of groups![group] | removeEmpty; track key) {
+          <option [value]="key">
+            {{ key === skipValue ? ('ignore'| translate) : (_fields[key] && _fields[key].label || key) }}
+          </option>
+        }
+      </optgroup>
+    }
+  } @else {
     <option value="" disabled>{{ 'excel.map.value-select' | translate }}</option>
-    <option *ngFor="let key of options | removeEmpty" [value]="key">
-      <ng-container [ngSwitch]="key">
-        <ng-container *ngSwitchCase="skipValue">
-          {{ 'ignore'| translate }}
-        </ng-container>
-        <ng-container *ngSwitchCase="asIsValue">
-          {{ 'asIs'| translate }}
-        </ng-container>
-        <ng-container *ngSwitchDefault>
-          {{ key }}
-        </ng-container>
-      </ng-container>
-    </option>
-  </ng-template>
+    @for (key of options | removeEmpty; track key) {
+      <option [value]="key">
+        @switch (key) {
+          @case (skipValue) {
+            {{ 'ignore'| translate }}
+          }
+          @case (asIsValue) {
+            {{ 'asIs'| translate }}
+          }
+          @default {
+            {{ key }}
+          }
+        }
+      </option>
+    }
+  }
 </select>

@@ -21,14 +21,15 @@ import {
   SpectrogramConfig
 } from '../../models';
 import { timer } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 import { getSpectrogramSegmentLength } from '../../service/audio-viewer-utils';
 
 @Component({
-  selector: 'laji-audio-spectrogram',
-  templateUrl: './audio-spectrogram.component.html',
-  styleUrls: ['./audio-spectrogram.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-audio-spectrogram',
+    templateUrl: './audio-spectrogram.component.html',
+    styleUrls: ['./audio-spectrogram.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @ViewChild('container', {static: true}) containerRef!: ElementRef<HTMLDivElement>;
@@ -90,7 +91,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   }
 
   @HostListener('window:resize')
-  private onResize() {
+  onResize() {
     this.updateMargin();
     this.updateWidthAndHeight();
   }

@@ -2,14 +2,16 @@ import {
   catchError,
   concat,
   concatMap,
+  concatWith,
   delay,
   map,
   retryWhen,
   shareReplay,
   switchMap,
   take,
+  throwError,
   toArray
-} from 'rxjs/operators';
+} from 'rxjs';
 import {
   from,
   Observable, of,
@@ -91,7 +93,7 @@ export class ObservationResultService {
         false,
         false
       ).pipe(
-        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
+        retryWhen(errors => errors.pipe(delay(1000), take(3), concatWith(throwError(() => errors)), ))).pipe(
         map(data => Util.clone(data)),
         map(data => this.convertAggregateResult(data))).pipe(
         switchMap(data => this.openValues(data, aggregateBy)),
@@ -122,7 +124,7 @@ export class ObservationResultService {
         pageSize,
         page
       ).pipe(
-        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
+        retryWhen(errors => errors.pipe(delay(1000), take(3), concatWith(throwError(() => errors)), ))).pipe(
         map(data => Util.clone(data))).pipe(
         switchMap(data => this.openValues(data, selected)),
         shareReplay(1)

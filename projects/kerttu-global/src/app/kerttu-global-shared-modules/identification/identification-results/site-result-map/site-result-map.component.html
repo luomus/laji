@@ -3,7 +3,7 @@
     [loading]="!sites || !siteStats"
     [options]="mapOptions"
     (loaded)="onMapLoaded()"
-  >
+    >
     <div class="map-color-legend">
       <span class="map-color-legend-cnt capitalize">
         {{ 'results.sites' | translate }}
@@ -12,11 +12,13 @@
         {{ 'results.annotations' | translate }}
       </span>
       <ul>
-        <li *ngFor="let leg of legendList">
-          <span [ngStyle]="{'background-color': leg.color}" class="map-color-legend-color"></span>
-          {{ leg.label }}
-          <span class="map-color-legend-cnt">{{ countByLegend[leg.label] || 0 }}</span>
-        </li>
+        @for (leg of legendList; track leg) {
+          <li>
+            <span [ngStyle]="{'background-color': leg.color}" class="map-color-legend-color"></span>
+            {{ leg.label }}
+            <span class="map-color-legend-cnt">{{ countByLegend[leg.label] || 0 }}</span>
+          </li>
+        }
         <li>
           {{ 'results.total' | translate }}
           <span class="map-color-legend-cnt">{{ countByLegend['total'] }} {{ 'results.sites' | translate }}</span>

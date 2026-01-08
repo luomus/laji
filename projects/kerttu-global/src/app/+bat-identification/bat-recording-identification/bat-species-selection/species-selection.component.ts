@@ -4,18 +4,19 @@ import { IGlobalSpecies, TaxonTypeEnum } from '../../../kerttu-global-shared/mod
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
-import { map, share } from 'rxjs/operators';
+import { map, share } from 'rxjs';
 
 @Component({
-  selector: 'bsg-species-selection',
-  template: `
+    selector: 'bsg-species-selection',
+    template: `
     <bsg-species-selection-view
       [species]="(species$ | async) ?? undefined"
       [unknownSpeciesRecordingCount]="(unknownSpeciesRecordingCount | async) ?? undefined"
       (speciesSelect)="speciesSelect.emit($event)"
     ></bsg-species-selection-view>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesSelectionComponent {
   species$: Observable<IGlobalSpecies[]>;
@@ -28,7 +29,7 @@ export class SpeciesSelectionComponent {
     private kerttuGlobalApi: KerttuGlobalApi,
     private translate: TranslateService
   ) {
-    const speciesData$ = this.kerttuGlobalApi.getSpeciesList(this.userService.getToken(), this.translate.currentLang, {
+    const speciesData$ = this.kerttuGlobalApi.getSpeciesList(this.userService.getToken(), this.translate.getCurrentLang(), {
       page: 1,
       pageSize: 1000,
       taxonType: TaxonTypeEnum.bat,

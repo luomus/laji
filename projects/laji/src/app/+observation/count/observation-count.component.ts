@@ -1,4 +1,4 @@
-import { catchError, concat, delay, map, retryWhen, take, tap } from 'rxjs/operators';
+import { catchError, concat, concatWith, delay, map, retryWhen, take, tap, throwError } from 'rxjs';
 import { Observable, of, throwError as observableThrowError } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
@@ -7,9 +7,10 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 
 
 @Component({
-  selector: 'laji-observation-count',
-  templateUrl: './observation-count.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-count',
+    templateUrl: './observation-count.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationCountComponent implements OnChanges {
 
@@ -60,7 +61,7 @@ export class ObservationCountComponent implements OnChanges {
 
   private normalCount(query: WarehouseQueryInterface): Observable<number | undefined> {
     return this.warehouseService.warehouseQueryCountGet(query).pipe(
-      retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
+      retryWhen(errors => errors.pipe(delay(1000), take(2), concatWith(throwError(() => errors)))),
       map(result => result.total)
     );
   }
@@ -73,7 +74,7 @@ export class ObservationCountComponent implements OnChanges {
     }
 
     return this.warehouseService.warehouseQueryAggregateGet(query, [this.field], undefined, pageSize).pipe(
-      retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
+      retryWhen(errors => errors.pipe(delay(1000), take(2), concatWith(throwError(() => errors)))),
       map(result => {
         if (this.pick && result.results) {
           return result.results

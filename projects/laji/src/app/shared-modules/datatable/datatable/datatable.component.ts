@@ -1,4 +1,4 @@
-import { debounceTime, tap, map } from 'rxjs/operators';
+import { debounceTime, tap, map } from 'rxjs';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input,
   NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { DatatableColumn, DatatableSort } from '../model/datatable-column';
@@ -22,10 +22,11 @@ interface DatatableRow {
 type DatatableTemplate = keyof DatatableTemplatesComponent;
 
 @Component({
-  selector: 'laji-datatable',
-  templateUrl: './datatable.component.html',
-  styleUrls: ['./datatable.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-datatable',
+    templateUrl: './datatable.component.html',
+    styleUrls: ['./datatable.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
   @ViewChild('dataTable') public datatable?: NgxDatatableComponent;
@@ -74,7 +75,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
 
   initialized = false;
   sortLoading = false;
-  private filterChange$ = new Subject();
+  private filterChange$ = new Subject<void>();
 
   private sortTemplates: Record<string, DatatableTemplate> = {};
   private sortValues: Record<number, Record<string, any>> = {};
@@ -197,7 +198,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     this._preselectedRowIndex = index;
     const postSortIndex = (this._rows || []).findIndex((element) => element.preSortIndex === this._preselectedRowIndex);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.selected = [this._rows![postSortIndex]] || []; // TODO should be fixed
+    const selectedRow = postSortIndex > -1 ? this._rows?.[postSortIndex] : undefined;
+    this.selected = selectedRow ? [selectedRow] : []; // TODO should be fixed
     if (!this.selected.length) {
       return;
     }

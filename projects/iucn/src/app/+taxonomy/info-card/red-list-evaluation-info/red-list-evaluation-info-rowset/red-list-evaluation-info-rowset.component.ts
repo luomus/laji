@@ -11,10 +11,11 @@ interface IInternalRow extends IRow {
 }
 
 @Component({
-  selector: 'iucn-red-list-evaluation-info-rowset',
-  templateUrl: './red-list-evaluation-info-rowset.component.html',
-  styleUrls: ['./red-list-evaluation-info-rowset.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-red-list-evaluation-info-rowset',
+    templateUrl: './red-list-evaluation-info-rowset.component.html',
+    styleUrls: ['./red-list-evaluation-info-rowset.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RedListEvaluationInfoRowsetComponent {
 

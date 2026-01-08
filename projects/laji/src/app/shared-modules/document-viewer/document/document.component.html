@@ -1,40 +1,46 @@
-<ng-container *ngIf="hasDoc && document">
-  <div *ngIf="annotationResolving" class="refresh alert alert-warning"><span>Refreshing data...</span></div>
+@if (hasDoc && document) {
+  @if (annotationResolving) {
+    <div class="refresh alert alert-warning"><span>Refreshing data...</span></div>
+  }
   <div class="row">
     <div class="col-sm-7">
-      <div class="page-header" *ngIf="!hideHeader" [ngClass]="{tight: !showTitle}">
-        <h3>
-          {{ 'viewer.document' | translate }}
-          <small>
-            <a [routerLink]="['/view'] | localize" [queryParams]="{uri: document.documentId}" target="_blank">
-              {{ document.documentId }}
+      @if (!hideHeader) {
+        <div class="page-header" [ngClass]="{tight: !showTitle}">
+          <h3>
+            {{ 'viewer.document' | translate }}
+            <small>
+              <a [routerLink]="['/view'] | localize" [queryParams]="{uri: document.documentId}" target="_blank">
+                {{ document.documentId }}
+              </a>
+            </small>
+            <a type="button"
+              class="btn btn-sm btn-default"
+              [routerLink]="['/view/print'] | localize"
+              [queryParams]="(document.formId | toQName) === collectionContestFormId && own ? {id: (document.documentId | toQName), showFacts: showFacts} : {uri: document.documentId, own: own, showFacts: showFacts}"
+              target="_blank"
+              [luTooltip]="'haseka.submissions.toPrint' | translate">
+              {{ 'print' | translate }}
+              <img src="/static/images/icons/pdf_16x16.png">
             </a>
-          </small>
-          <a type="button"
-             class="btn btn-sm btn-default"
-             [routerLink]="['/view/print'] | localize"
-             [queryParams]="(document.formId | toQName) === collectionContestFormId && own ? {id: (document.documentId | toQName), showFacts: showFacts} : {uri: document.documentId, own: own, showFacts: showFacts}"
-             target="_blank"
-             [luTooltip]="'haseka.submissions.toPrint' | translate">
-            {{ 'print' | translate }}
-            <img src="/static/images/icons/pdf_16x16.png">
-          </a>
-          <div>
-            <laji-user-document-tools
-              *lajiAuthorities="false"
-            [hasEditRights]="hasEditRights"
-            [hasDeleteRights]="hasDeleteRights"
-            [documentID]="document.documentId"
-            [formID]="document.formId"
-            (documentDeleted)="onDocumentDeleted($event)"
-          ></laji-user-document-tools>
-          </div>
-        </h3>
-      </div>
+            <div>
+              <laji-user-document-tools
+                *lajiAuthorities="false"
+                [hasEditRights]="hasEditRights"
+                [hasDeleteRights]="hasDeleteRights"
+                [documentID]="document.documentId"
+                [formID]="document.formId"
+                (documentDeleted)="onDocumentDeleted($event)"
+              ></laji-user-document-tools>
+            </div>
+          </h3>
+        </div>
+      }
       <laji-issues [data]="document"></laji-issues>
       <laji-row [title]="'vihko.home.form.collection' | translate" ngPreserveWhitespaces>
         <span>{{ document.collectionId | toQName | collectionName }}</span>
-        <span *ngIf="showFacts"><a target="_blank" href="{{document.collectionId}}">{{ document.collectionId }}</a></span>
+        @if (showFacts) {
+          <span><a target="_blank" href="{{document.collectionId}}">{{ document.collectionId }}</a></span>
+        }
       </laji-row>
       <laji-row [title]="'annotation.collectionQuality' | translate">
         <laji-quality-row
@@ -45,123 +51,149 @@
       <laji-row [title]="'document.dataSource' | translate" [value]="document.dataSource"></laji-row>
       <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
       <laji-row [title]="'MY.keywords' | label" [value]="document.keywords"></laji-row>
-      <laji-row title="URL" *ngIf="document.referenceURL">
-        <a [href]="document.referenceURL" target="_blank" rel="noopener">{{ document.referenceURL }}</a>
-      </laji-row>
-      <laji-row *ngIf="document?.gatherings?.[0]?.units?.[0]?.externalMediaCount"
-                [title]="'document.externalMediaCount' | translate"
-                [value]="document.gatherings[0].units[0].externalMediaCount">
-      </laji-row>
+      @if (document.referenceURL) {
+        <laji-row title="URL">
+          <a [href]="document.referenceURL" target="_blank" rel="noopener">{{ document.referenceURL }}</a>
+        </laji-row>
+      }
+      @if (document?.gatherings?.[0]?.units?.[0]?.externalMediaCount) {
+        <laji-row
+          [title]="'document.externalMediaCount' | translate"
+          [value]="document.gatherings[0].units[0].externalMediaCount">
+        </laji-row>
+      }
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
       <laji-facts [show]="showFacts" [facts]="document.facts | factNotIn:['http://tun.fi/MY.formID','http://tun.fi/MZ.publicityRestrictions']"></laji-facts>
     </div>
     <div class="col-sm-5">
       <div class="row">
-        <div class="col-sm-12 doc-meta" *ngIf="!hideHeader">
-          <ng-template #docMeta>
-            <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors[0] && document.linkings.editors[0].fullName">
-              {{ document.linkings.editors | values:', ':'fullName' }}
-            </laji-row>
-            <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
-            <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
-            <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
-          </ng-template>
-          <a class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
-             *ngIf="externalViewUrl"
-             href="{{externalViewUrl}}" rel="noopener" target="_blank"
-              [luTooltip]="'information.more' | translate"
-              placement="left">
-            <i class="glyphicon glyphicon-new-window small"></i>
-          </a>
-          <button class="btn btn-default btn-xs pull-right popover-btn" style="margin-left: 10px;"
-                  [luPopover]="docMeta"
-                  placement="left"><i class="glyphicon glyphicon-user"></i>
-          </button>
-          <button class="btn btn-default btn-xs pull-right"
-                  (click)="toggleFacts()">
-            {{ showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate) }}
-            <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
-          </button>
-          <div style="margin-top: 35px;">
-            <lu-alert [type]="document.secured ?  'warning' : 'info'">
-              <span *ngIf="document.partial && !document.secured; else partial">
-                {{ 'viewer.secured.removed' | translate }}
-              </span>
-
-              <ng-template #partial>
-                <span *ngIf="document.partial; else notSecured">
-                  {{ 'viewer.secured.partial' | translate }}
-                </span>
-              </ng-template>
-
-              <ng-template #notSecured>
-                <span *ngIf="!document.secured; else isSecured">
-                  {{ 'viewer.secured.none' | translate }}
-                </span>
-              </ng-template>
-
-              <ng-template #isSecured>
-                <span *ngIf="document.public">
-                  {{ 'viewer.secured.secured' | translate }}
-                </span>
-                <span *ngIf="!document.public">
-                  {{ 'viewer.secured.own1' | translate }}
-                  <ng-container *lajiForTypes="['vir']; exclude: true">
-                    (<a [routerLink]="['/view'] | localize"
-                        [queryParams]="{uri: document.documentId,highlight: highlight}"
-                        target="_blank">{{ 'viewer.secured.own2' | translate }}</a>).
-                  </ng-container>
-                </span>
-              </ng-template>
-
-              <div *ngIf="document.secured">
-                <laji-secure-info
-                  [secureLevel]="document.secureLevel"
-                  [secureReasons]="document.secureReasons"
-                ></laji-secure-info>
-                <ng-container *ngIf="document.secureReasons | includes:'DEFAULT_TAXON_CONSERVATION'">
-                  <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
-                </ng-container>
-              </div>
+        @if (!hideHeader) {
+          <div class="col-sm-12 doc-meta">
+            <ng-template #docMeta>
+              @if (document.linkings && document.linkings.editors && document.linkings.editors[0] && document.linkings.editors[0].fullName) {
+                <laji-row [title]="'MZ.editor' | label">
+                  {{ document.linkings.editors | values:', ':'fullName' }}
+                </laji-row>
+              }
+              <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
+              <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
+              <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
+            </ng-template>
+            @if (externalViewUrl) {
+              <a class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
+                href="{{externalViewUrl}}" rel="noopener" target="_blank"
+                [luTooltip]="'information.more' | translate"
+                placement="left">
+                <i class="glyphicon glyphicon-new-window small"></i>
+              </a>
+            }
+            <button class="btn btn-default btn-xs pull-right popover-btn" style="margin-left: 10px;"
+              [luPopover]="docMeta"
+              placement="left"><i class="glyphicon glyphicon-user"></i>
+            </button>
+            <button class="btn btn-default btn-xs pull-right"
+              (click)="toggleFacts()">
+              {{ showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate) }}
+              <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
+            </button>
+            <div style="margin-top: 35px;">
+              <lu-alert [type]="document.secured ?  'warning' : 'info'">
+                @if (document.partial && !document.secured) {
+                  <span>
+                    {{ 'viewer.secured.removed' | translate }}
+                  </span>
+                } @else {
+                  @if (document.partial) {
+                    <span>
+                      {{ 'viewer.secured.partial' | translate }}
+                    </span>
+                  } @else {
+                    @if (!document.secured) {
+                      <span>
+                        {{ 'viewer.secured.none' | translate }}
+                      </span>
+                    } @else {
+                      @if (document.public) {
+                        <span>
+                          {{ 'viewer.secured.secured' | translate }}
+                        </span>
+                      }
+                      @if (!document.public) {
+                        <span>
+                          {{ 'viewer.secured.own1' | translate }}
+                          <ng-container *lajiForTypes="['vir']; exclude: true">
+                            (<a [routerLink]="['/view'] | localize"
+                            [queryParams]="{uri: document.documentId,highlight: highlight}"
+                          target="_blank">{{ 'viewer.secured.own2' | translate }}</a>).
+                        </ng-container>
+                      </span>
+                    }
+                  }
+                }
+              }
+              @if (document.secured) {
+                <div>
+                  <laji-secure-info
+                    [secureLevel]="document.secureLevel"
+                    [secureReasons]="document.secureReasons"
+                  ></laji-secure-info>
+                  @if (document.secureReasons | includes:'DEFAULT_TAXON_CONSERVATION') {
+                    <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
+                  }
+                </div>
+              }
             </lu-alert>
           </div>
         </div>
-      </div>
-      <div class="row" *ngIf="document.media">
+      }
+    </div>
+    @if (document.media) {
+      <div class="row">
         <div class="col-sm-12">
           <laji-image-gallery [modalImages]="document.media" [showOverlay]="true" (showModal)="onShowModalChange($event)"></laji-image-gallery>
         </div>
       </div>
-    </div>
+    }
   </div>
-  <div *ngIf="document.gatherings && document.gatherings.length > 1 && !showOnlyHighlighted" class="gatherings">
+</div>
+@if (document.gatherings && document.gatherings.length > 1 && !showOnlyHighlighted) {
+  <div class="gatherings">
     <ul class="nav nav-tabs link">
-      <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
-        <a (click)="setActive(i)">
-         {{ i + 1 }}
-        </a>
-      </li>
+      @for (gathering of document.gatherings; track gathering; let i = $index) {
+        <li [ngClass]="{active: active === i}">
+          <a (click)="setActive(i)">
+            {{ i + 1 }}
+          </a>
+        </li>
+      }
     </ul>
   </div>
-  <div class="row">
-    <div class="col-sm-7">
-      <ng-container *ngFor="let gathering of document.gatherings; let i=index">
-        <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt"
-                        [showOnlyHighlighted]="showOnlyHighlighted" [highlightParents]="highlightParents" [showFacts]="showFacts" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [annotationTags]="annotationTags$ | async" [visible]="active === i"></laji-gathering>
-      </ng-container>
-    </div>
-    <div class="col-sm-5">
-      <laji-viewer-map [useWorldMap]="useWorldMap" [active]="active" *ngIf="hasMapData" [data]="mapData"></laji-viewer-map>
-      <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media" [showOverlay]="true" (showModal)="onShowModalChange($event)"></laji-image-gallery>
-    </div>
+}
+<div class="row">
+  <div class="col-sm-7">
+    @for (gathering of document.gatherings; track gathering; let i = $index) {
+      <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt"
+      [showOnlyHighlighted]="showOnlyHighlighted" [highlightParents]="highlightParents" [showFacts]="showFacts" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [annotationTags]="annotationTags$ | async" [visible]="active === i"></laji-gathering>
+    }
   </div>
-  <div style="margin-top: 10px" *ngIf="document.licenseId">
+  <div class="col-sm-5">
+    @if (hasMapData) {
+      <laji-viewer-map [useWorldMap]="useWorldMap" [active]="active" [data]="mapData"></laji-viewer-map>
+    }
+    @if (activeGathering && activeGathering.media) {
+      <laji-image-gallery [modalImages]="activeGathering.media" [showOverlay]="true" (showModal)="onShowModalChange($event)"></laji-image-gallery>
+    }
+  </div>
+</div>
+@if (document.licenseId) {
+  <div style="margin-top: 10px">
     <laji-license [type]="document.licenseId"></laji-license>
   </div>
-</ng-container>
-<ng-container *ngIf="hasDoc === false">
+}
+}
+@if (hasDoc === false) {
   <div class="page-header">
     <h2>{{ 'viewer.notFound' | translate }}</h2>
   </div>
-</ng-container>
+}
 <!--<pre>{{document | json}}</pre>-->

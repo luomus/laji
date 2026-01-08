@@ -1,4 +1,6 @@
-<h3>{{ routeId | label }}<span *ngIf="season"> - {{ 'wbc.season.' + season | translate }}</span></h3>
+<h3>{{ routeId | label }}@if (season) {
+  <span> - {{ 'wbc.season.' + season | translate }}</span>
+}</h3>
 
 <div class="panel panel-default" style="max-width: 400px">
   <div class="panel-heading">
@@ -13,7 +15,7 @@
   </div>
 </div>
 
-<ng-container *ngIf="!season">
+@if (!season) {
   <h4>{{ 'wbc.stats.route.censuses' | translate }}</h4>
   <laji-wbc-routes-list
     [showFilter]="false"
@@ -26,11 +28,13 @@
     [countLabel]="'wbc.stats.route.count'"
     (rowSelect)="openViewer($event['document.documentId'])"
   ></laji-wbc-routes-list>
-</ng-container>
+}
 
-<laji-wbc-route-table *ngIf="season"
-                      (documentClick)="openViewer($event)"
-                      [data]="observationStats ? observationStats[season] : undefined"
-                      [routeId]="routeId"
-                      [season]="season"
-></laji-wbc-route-table>
+@if (season) {
+  <laji-wbc-route-table
+    (documentClick)="openViewer($event)"
+    [data]="observationStats ? observationStats[season] : undefined"
+    [routeId]="routeId"
+    [season]="season"
+  ></laji-wbc-route-table>
+}

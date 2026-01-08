@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
+import { combineLatest, concatWith, Observable, of, Subscription, throwError } from 'rxjs';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { map, catchError, concat, delay, filter, retryWhen, take, tap, switchMap } from 'rxjs/operators';
+import { map, catchError, concat, delay, filter, retryWhen, take, tap, switchMap } from 'rxjs';
 import { Logger } from '../../shared/logger';
 import { FooterService } from '../../shared/service/footer.service';
 import { InfoCardTabType } from './info-card/info-card.component';
@@ -13,10 +13,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type Taxon = components['schemas']['Taxon'];
 
 @Component({
-  selector: 'laji-taxonomy',
-  templateUrl: './taxon.component.html',
-  styleUrls: ['./taxon.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxonomy',
+    templateUrl: './taxon.component.html',
+    styleUrls: ['./taxon.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonComponent implements OnInit, OnDestroy {
   taxon: Taxon | null | undefined;
@@ -62,7 +63,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
         // if the error was a 404 we don't need to retry
         error.status === 404 ? of(null) : throwError(error)
       )),
-      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), )),
+      retryWhen(errors => errors.pipe(delay(1000), take(3), concatWith(throwError(() => errors)), )),
       catchError(error => {
         this.logger.warn('Failed to fetch taxon by id', error);
         return of(null);

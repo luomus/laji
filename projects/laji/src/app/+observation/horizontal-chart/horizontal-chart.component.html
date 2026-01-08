@@ -1,29 +1,35 @@
 <div class="observation-chart-wrapper">
-    <div class="lu observation-chart" style="min-height: 100px">
-      <laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
-      <div style="position: relative;" *ngIf="!loading">
+  <div class="lu observation-chart" style="min-height: 100px">
+    <laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
+    @if (!loading) {
+      <div style="position: relative;">
         <select [(ngModel)]="classificationValue" (ngModelChange)="changeClassification()">
-          <option *ngFor="let option of classification" [value]="option.data" [selected]="option.data === 'classificationValue'" >{{ option.label }}</option>
+          @for (option of classification; track option) {
+            <option [value]="option.data" [selected]="option.data === 'classificationValue'" >{{ option.label }}</option>
+          }
         </select>
       </div>
-      <div class="stat-info">
-        <laji-info [placement]="'left'">{{ 'observation.info.stats' | translate }}</laji-info>
-      </div>
-      <ng-container *ngIf="!loading">
-        <div style="position: relative;">
-          <div [style.height.px]="componentHeight">
-            <laji-chart
-              [datasets]="barChartData"
-              [labels]="barChartLabels"
-              [options]="barChartOptions"
-              [legend]="false"
-              chartType="bar"
-            ></laji-chart>
-          </div>
-          <button (click)="toggleShowAllData()" class="btn btn-default" *ngIf="allDataBarChart.length > 10">
-              {{ (barChartData[0].data.length < allDataBarChart.length ? 'taxonomy.observations.showMore' : 'taxonomy.observations.hideMore') | translate }}
-          </button>
-        </div>
-      </ng-container>
+    }
+    <div class="stat-info">
+      <laji-info [placement]="'left'">{{ 'observation.info.stats' | translate }}</laji-info>
     </div>
+    @if (!loading) {
+      <div style="position: relative;">
+        <div [style.height.px]="componentHeight">
+          <laji-chart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [legend]="false"
+            chartType="bar"
+          ></laji-chart>
+        </div>
+        @if (allDataBarChart.length > 10) {
+          <button (click)="toggleShowAllData()" class="btn btn-default">
+            {{ (barChartData[0].data.length < allDataBarChart.length ? 'taxonomy.observations.showMore' : 'taxonomy.observations.hideMore') | translate }}
+          </button>
+        }
+      </div>
+    }
   </div>
+</div>

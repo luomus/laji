@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 @Component({
-  selector: 'laji-informal-group-redirect',
-  template: ''
+    selector: 'laji-informal-group-redirect',
+    template: '',
+    standalone: false
 })
 export class InformalGroupRedirectComponent implements OnInit {
 

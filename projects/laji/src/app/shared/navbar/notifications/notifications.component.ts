@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnDestroy, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { of, Subject } from 'rxjs';
-import { switchMap, takeUntil, filter, tap, map } from 'rxjs/operators';
+import { switchMap, takeUntil, filter, tap, map } from 'rxjs';
 import { NotificationsFacade } from './notifications.facade';
 import { NotificationDataSource } from './notification-data-source';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,10 +9,11 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { DialogService } from '../../service/dialog.service';
 
 @Component({
-  selector: 'laji-notifications',
-  templateUrl: './notifications.component.html',
-  styleUrls: ['./notifications.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-notifications',
+    templateUrl: './notifications.component.html',
+    styleUrls: ['./notifications.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NotificationsComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject<void>();

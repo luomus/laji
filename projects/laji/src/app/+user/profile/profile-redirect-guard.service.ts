@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs';
 import { UserService } from '../../shared/service/user.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 

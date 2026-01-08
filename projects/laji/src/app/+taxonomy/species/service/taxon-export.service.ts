@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
 import { ExportService } from '../../../shared/service/export.service';
-import { concatMap, map, toArray } from 'rxjs/operators';
+import { concatMap, map, toArray } from 'rxjs';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { BookType } from 'xlsx';
 import { components } from 'projects/laji-api-client-b/generated/api.d';

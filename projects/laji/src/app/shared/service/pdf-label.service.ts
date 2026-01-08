@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FieldType, ILabelField } from '@luomus/label-designer';
 import { from, Observable, of } from 'rxjs';
 import { Document } from '../model/Document';
-import { concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
+import { concatMap, map, switchMap, tap, toArray } from 'rxjs';
 import { FormService as ToolsFormService } from './form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { IdService } from './id.service';
@@ -237,7 +237,7 @@ export class PdfLabelService {
     const unique = [...new Set(keys)];
     const keyMap: {[key: string]: string} = {};
     return from(unique).pipe(
-      concatMap(id => this.triplestoreLabelService.get(id, this.translateService.currentLang).pipe(
+      concatMap(id => this.triplestoreLabelService.get(id, this.translateService.getCurrentLang()).pipe(
         tap(value => keyMap[id] = value)
       )),
       toArray(),

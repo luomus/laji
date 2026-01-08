@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { HistoryService } from '../shared/service/history.service';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 /**
@@ -26,10 +26,10 @@ export class LocalizeGuard  {
     const defaultLang = (environment as any).defaultLang ?? 'fi';
     const lang = next.data['lang'] || defaultLang;
 
-    if (this.translateService.getDefaultLang() !== defaultLang && lang !== defaultLang) {
-      this.translateService.setDefaultLang(defaultLang);
+    if (this.translateService.getFallbackLang() !== defaultLang && lang !== defaultLang) {
+      this.translateService.setFallbackLang(defaultLang);
     }
-    if (this.translateService.currentLang !== lang) {
+    if (this.translateService.getCurrentLang() !== lang) {
       this.historyService.clear();
       return this.translateService.use(lang).pipe(
         map(() => true)

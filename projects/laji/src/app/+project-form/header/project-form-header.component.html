@@ -1,17 +1,27 @@
-<div class="row form-header" *ngIf="_form">
-  <div class="form-logo pull-right" *ngIf="_form.logo" lajiFormOption="logo">
-    <img src="{{_form.logo}}">
-  </div>
-  <h3 lajiFormOption="title">{{ _form.title }}</h3>
-  <ng-container *ngIf="description">
-    <div [innerHtml]="description | translate"></div>
-    <br>
-  </ng-container>
-  <span *ngIf="displayInstructions && _form.options?.instructions && $any(_form.options.instructions)[translate.currentLang]">
-    <a href="{{$any(_form.options.instructions)[translate.currentLang]}}" target="_blank">{{ 'haseka.instructions' | translate }}</a>
-    |
-  </span>
-  <a *ngIf="!_form.options?.hideTES" [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank" lajiFormOption="options.hideTES">{{ 'haseka.termsOfService' | translate }}</a>
-  <a *ngIf="_form.options?.privacyPolicy" [href]="['https://info.laji.fi/etusivu/lajitietokeskus/tietosuojaseloste/'] | localize" target="_blank" lajiFormOption="options.privacyPolicy">{{ 'haseka.privacyPolicy' | translate }}</a>
-  <ng-content></ng-content>
-</div>
+@if (_form) {
+  <div class="row form-header">
+    @if (_form.logo) {
+      <div class="form-logo pull-right" lajiFormOption="logo">
+        <img src="{{_form.logo}}">
+      </div>
+    }
+    <h3 lajiFormOption="title">{{ _form.title }}</h3>
+    @if (description) {
+      <div [innerHtml]="description | translate"></div>
+      <br>
+      }
+      @if (displayInstructions && _form.options?.instructions && $any(_form.options.instructions)[translate.getCurrentLang()]) {
+        <span>
+          <a href="{{$any(_form.options.instructions)[translate.getCurrentLang()]}}" target="_blank">{{ 'haseka.instructions' | translate }}</a>
+          |
+        </span>
+      }
+      @if (!_form.options?.hideTES) {
+        <a [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank" lajiFormOption="options.hideTES">{{ 'haseka.termsOfService' | translate }}</a>
+      }
+      @if (_form.options?.privacyPolicy) {
+        <a [href]="['https://info.laji.fi/etusivu/lajitietokeskus/tietosuojaseloste/'] | localize" target="_blank" lajiFormOption="options.privacyPolicy">{{ 'haseka.privacyPolicy' | translate }}</a>
+      }
+      <ng-content></ng-content>
+    </div>
+  }

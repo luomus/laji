@@ -6,8 +6,10 @@ import { Subscription } from 'rxjs';
 
 @Injectable()
 @Pipe({
-  name: 'localize',
-  pure: false // required to update the value when the promise is resolved
+    name: 'localize',
+    pure: false // required to update the value when the promise is resolved
+    ,
+    standalone: false
 })
 export class LocalizePipe implements PipeTransform, OnDestroy {
   private value: any = '';
@@ -38,7 +40,7 @@ export class LocalizePipe implements PipeTransform, OnDestroy {
    */
   transform<T extends string|string[]>(query: T, lang?: string): T {
     if (!lang) {
-      lang = this.translateService.currentLang;
+      lang = this.translateService.getCurrentLang();
     }
     if (!query || query.length === 0 || !lang) {
       if (Array.isArray(query)) {

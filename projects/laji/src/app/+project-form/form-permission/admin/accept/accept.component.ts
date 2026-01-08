@@ -7,13 +7,14 @@ import { LocalizeRouterService } from '../../../../locale/localize-router.servic
 import { AbstractPermission } from '../abstract-permission';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs';
 
 @Component({
-  selector: 'laji-accept',
-  templateUrl: './accept.component.html',
-  styleUrls: ['./accept.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-accept',
+    templateUrl: './accept.component.html',
+    styleUrls: ['./accept.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AcceptComponent extends AbstractPermission implements OnInit, OnDestroy {
   disabled: {[personId: string]: boolean} = {};
@@ -33,7 +34,7 @@ export class AcceptComponent extends AbstractPermission implements OnInit, OnDes
 
   ngOnInit() {
     this.subParam = this.projectFormService.getFormFromRoute$(this.route).pipe(
-      tap(form => this.collectionId = form.collectionID as string),
+      tap(form => this.collectionId = form?.collectionID as string),
       switchMap(() => this.updateFormPermission$())
     ).subscribe(() => this.cdr.markForCheck());
   }

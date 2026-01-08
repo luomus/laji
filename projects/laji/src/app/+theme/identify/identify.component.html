@@ -33,20 +33,20 @@
   </div>
   <div class="row">
     <div class="col-sm-12 image-container">
-      <ng-container *ngIf="query">
+      @if (query) {
         <laji-gallery
-        [showPopover]="true"
-        [shortcut]="false"
-        [view]="'full'"
-        [sort]="['document.firstLoadDate DESC']"
-        [showViewSwitch]="true"
-        [query]="query"
-        [eventOnImageClick]="true"
-        (selected)="onImageSelect($event)"
-        (images)="onImagesInit($event)"
-        >
-      </laji-gallery>
-      </ng-container>
+          [showPopover]="true"
+          [shortcut]="false"
+          [view]="'full'"
+          [sort]="['document.firstLoadDate DESC']"
+          [showViewSwitch]="true"
+          [query]="query"
+          [eventOnImageClick]="true"
+          (selected)="onImageSelect($event)"
+          (images)="onImagesInit($event)"
+          >
+        </laji-gallery>
+      }
     </div>
   </div>
   <div class="row">

@@ -1,4 +1,3 @@
-/* tslint:disable:no-use-before-declare */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef } from '@angular/core';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -18,11 +17,12 @@ export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'laji-observation-extended-group-select',
-  templateUrl: './extended-group-select.component.html',
-  styleUrls: ['./extended-group-select.component.css'],
-  providers: [OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-extended-group-select',
+    templateUrl: './extended-group-select.component.html',
+    styleUrls: ['./extended-group-select.component.css'],
+    providers: [OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationExtendedGroupSelectComponent extends ExtendedGroupSelectComponent<InformalTaxonGroup> {
 

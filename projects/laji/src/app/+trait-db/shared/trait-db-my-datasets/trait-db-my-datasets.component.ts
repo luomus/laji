@@ -1,17 +1,18 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { tap, map, switchMap, filter } from 'rxjs/operators';
+import { tap, map, switchMap, filter } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
 import { components } from 'projects/laji-api-client-b/generated/api';
 
 export type Dataset = components['schemas']['Dataset'];
 
 @Component({
-  selector: 'laji-trait-db-my-datasets',
-  templateUrl: './trait-db-my-datasets.component.html',
-  styleUrls: ['./trait-db-my-datasets.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-db-my-datasets',
+    templateUrl: './trait-db-my-datasets.component.html',
+    styleUrls: ['./trait-db-my-datasets.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbMyDatasetsComponent implements OnInit {
   loggedIn$!: Observable<boolean>;
@@ -38,4 +39,3 @@ export class TraitDbMyDatasetsComponent implements OnInit {
     this.userService.redirectToLogin();
   }
 }
-

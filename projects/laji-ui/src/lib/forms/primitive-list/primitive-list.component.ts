@@ -6,17 +6,18 @@ type KindToConcreteType<K extends Kind> = K extends 'number' ? number : string;
 type ElementType<T extends { kind: Kind }> = KindToConcreteType<T['kind']>;
 
 @Component({
-  selector: 'lu-form-primitive-list',
-  templateUrl: 'primitive-list.component.html',
-  styleUrls: ['primitive-list.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => FormPrimitiveListComponent),
-      multi: true
-    }
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'lu-form-primitive-list',
+    templateUrl: 'primitive-list.component.html',
+    styleUrls: ['primitive-list.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => FormPrimitiveListComponent),
+            multi: true
+        }
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcreteType<K>> implements ControlValueAccessor {
   @Input() inputId?: string;
@@ -34,11 +35,11 @@ export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcrete
   @ViewChild('selectElem') selectElem?: ElementRef;
 
   @HostListener('keydown.enter', ['$event'])
-  onKeyDownEnter(event: KeyboardEvent) {
+  onKeyDownEnter(event: Event) {
     event.preventDefault();
   }
   @HostListener('keyup.enter', ['$event'])
-  onKeyUpEnter(event: KeyboardEvent) {
+  onKeyUpEnter(event: Event) {
     event.preventDefault();
     this.add();
   }
@@ -94,4 +95,3 @@ export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcrete
   }
   // ------------------------------- //
 }
-

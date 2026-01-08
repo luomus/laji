@@ -3,7 +3,7 @@ import { ListType } from '../list.component';
 import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.service';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf} from 'rxjs';
 import { RedListStatusData } from './red-list-status/red-list-status.component';
-import { map, share, switchMap, tap } from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
 import { TriplestoreLabelService } from '../../../../../../laji/src/app/shared/service/triplestore-label.service';
 import { ChecklistVersion, TaxonService } from '../../../iucn-shared/service/taxon.service';
@@ -23,10 +23,11 @@ export type TaxonAggregateQuery = operations['TaxaController_getAggregateWithFil
 export type TaxonAggregateFilters = NonNullable<operations['TaxaController_getAggregateWithFilters']['requestBody']>['content']['application/json'];
 
 @Component({
-  selector: 'iucn-results',
-  templateUrl: './results.component.html',
-  styleUrls: ['./results.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-results',
+    templateUrl: './results.component.html',
+    styleUrls: ['./results.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ResultsComponent implements OnChanges {
   @Input() type!: ListType;
@@ -121,7 +122,7 @@ export class ResultsComponent implements OnChanges {
 
   ngOnChanges() {
     if (!this.init) {
-      this.lang = this.translate.currentLang;
+      this.lang = this.translate.getCurrentLang();
       this.init = true;
     }
     this.year = this.resultService.getYearFromChecklistVersion(this.checklist);

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { mergeMap, take, tap, delay, map, scan, filter, switchMap } from 'rxjs/operators';
+import { mergeMap, take, tap, delay, map, scan, filter, switchMap } from 'rxjs';
 import { combineLatest, Observable, of, Subject, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
@@ -20,13 +20,14 @@ import { LocalStorage } from 'ngx-webstorage';
 import { FormService } from '../../../shared/service/form.service';
 
 @Component({
-  selector: 'laji-document-form',
-  templateUrl: './document-form.component.html',
-  styleUrls: ['./document-form.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    DocumentFormFacade
-  ]
+    selector: 'laji-document-form',
+    templateUrl: './document-form.component.html',
+    styleUrls: ['./document-form.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        DocumentFormFacade
+    ],
+    standalone: false
 })
 export class DocumentFormComponent implements OnInit, OnDestroy {
   @ViewChild(LajiFormComponent) lajiForm!: LajiFormComponent;

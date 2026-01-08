@@ -44,9 +44,7 @@ const allRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(allRoutes, {
-    initialNavigation: 'enabledBlocking'
-})],
+  imports: [RouterModule.forRoot(allRoutes)],
   exports: [RouterModule]
 })
 export class BaRoutingModule { }

@@ -6,8 +6,9 @@ import { getDescription, HeaderService } from '../shared/service/header.service'
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  templateUrl: `./save-observations.component.html`,
-  styleUrls: ['./save-observations.component.scss']
+    templateUrl: `./save-observations.component.html`,
+    styleUrls: ['./save-observations.component.scss'],
+    standalone: false
 })
 export class SaveObservationsComponent implements OnInit {
   citizenScienceForms$!: Observable<Form.List[]>;

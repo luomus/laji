@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, interval, throwError } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { switchMap, concatMap, map, catchError, takeWhile } from 'rxjs/operators';
+import { switchMap, concatMap, map, catchError, takeWhile } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 export type GeoConversionStatus = 'pending'|'complete';

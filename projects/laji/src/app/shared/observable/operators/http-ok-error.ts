@@ -1,5 +1,5 @@
 import { Observable, of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 

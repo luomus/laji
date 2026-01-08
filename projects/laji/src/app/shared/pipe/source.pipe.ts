@@ -5,8 +5,9 @@ import { SourceService } from '../service/source.service';
 import { Observable, of } from 'rxjs';
 
 @Pipe({
-  name: 'source',
-  pure: false
+    name: 'source',
+    pure: false,
+    standalone: false
 })
 export class SourcePipe extends AbstractLabelPipe implements PipeTransform {
   private sources?: Record<string, string>;
@@ -17,11 +18,11 @@ export class SourcePipe extends AbstractLabelPipe implements PipeTransform {
     super(translate, _ref);
   }
 
-  protected _updateValue(): Observable<any> {
+  protected _updateValue(key: string): Observable<any> {
     if (this.sources) {
       return of(this.sources);
     }
-    const value$ = this.sourceService.getAllAsLookUp(this.translate.currentLang);
+    const value$ = this.sourceService.getAllAsLookUp(this.translate.getCurrentLang());
     value$.subscribe(sources => {
       this.sources = sources;
     });

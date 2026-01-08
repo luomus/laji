@@ -3,8 +3,8 @@ import { HeaderService } from '../../../laji/src/app/shared/service/header.servi
 import { HistoryService } from '../../../laji/src/app/shared/service/history.service';
 
 @Component({
-  selector: 'bsg-app',
-  template: `
+    selector: 'bsg-app',
+    template: `
     <bsg-navbar></bsg-navbar>
     <div id="content" class="content">
       <div class="router-content">
@@ -13,10 +13,11 @@ import { HistoryService } from '../../../laji/src/app/shared/service/history.ser
     </div>
     <laji-feedback [iconOnly]="true"></laji-feedback>
   `,
-  styleUrls: [
-    './app.component.scss'
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: [
+        './app.component.scss'
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AppComponent {
   constructor(

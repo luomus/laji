@@ -4,7 +4,7 @@ import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-globa
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, Subject, Subscription } from 'rxjs';
-import { switchMap, tap, share, take } from 'rxjs/operators';
+import { switchMap, tap, share, take } from 'rxjs';
 import { LocalStorage } from 'ngx-webstorage';
 import { Util } from '../../../../../laji/src/app/shared/service/util.service';
 import { AudioCacheLoaderService } from './audio-cache-loader.service';
@@ -88,7 +88,7 @@ export class RecordingLoaderService implements OnDestroy {
       if (this.dataByRecordingId[this.current]) {
         data$ = of(this.dataByRecordingId[this.current]);
       } else {
-        data$ = this.kerttuGlobalApi.getIdentificationRecording(this.userService.getToken(), this.translate.currentLang, this.current).pipe(
+        data$ = this.kerttuGlobalApi.getIdentificationRecording(this.userService.getToken(), this.translate.getCurrentLang(), this.current).pipe(
           tap(result => {
             this.dataByRecordingId[result.recording.id] = result;
           })
@@ -161,7 +161,7 @@ export class RecordingLoaderService implements OnDestroy {
         const excludedIds = this.current != null ? [this.current, ...this.next] : [...this.next];
         return this.kerttuGlobalApi.getNewIdentificationRecording(
           this.userService.getToken(),
-          this.translate.currentLang,
+          this.translate.getCurrentLang(),
           this.selectedSites,
           this.selectedSpecies,
           this.unknownSpecies,

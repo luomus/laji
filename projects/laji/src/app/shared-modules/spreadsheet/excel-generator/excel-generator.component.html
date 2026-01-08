@@ -4,7 +4,7 @@
       [forms]="_forms | async"
       [formID]="formID"
       (selected)="formSelected($event)"
-      [disabled]="generating"></laji-form-select>
+    [disabled]="generating"></laji-form-select>
   </div>
   <div class="col-sm-5">
     <button (click)="selectAll()" type="button" class="btn btn-default" [class.disabled]="!formID || generating">
@@ -28,28 +28,52 @@
     -->
   </div>
 </div>
-<ng-container *ngIf="formID">
+@if (formID) {
   <div class="row">
-    <div class="col-sm-4" *ngIf="parents | includes:['document', 'gatheringEvent', 'taxonCensus']">
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.document' | label" [fields]="fields" parent="document" *ngIf="parents | includes:'document'"></laji-field-list>
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MZ.gatheringEvent' | label" [fields]="fields" parent="gatheringEvent" *ngIf="parents | includes:'gatheringEvent'"></laji-field-list>
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.taxonCensusClass' | label" [fields]="fields" parent="taxonCensus" *ngIf="parents | includes:'taxonCensus'"></laji-field-list>
-    </div>
-    <div class="col-sm-4" *ngIf="parents | includes:['gatherings', 'gatheringFact']">
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.gathering' | label" [fields]="fields" parent="gatherings" *ngIf="parents | includes:'gatherings'"></laji-field-list>
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.gatheringFactClass' | label" [fields]="fields" parent="gatheringFact" *ngIf="parents | includes:'gatheringFact'"></laji-field-list>
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MZ.unitGathering' | label" [fields]="fields" parent="unitGathering" *ngIf="parents | includes:'unitGathering'"></laji-field-list>
-    </div>
-    <div class="col-sm-4" *ngIf="parents | includes:['identifications', 'units', 'unitFact']">
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.identification' | label" [fields]="fields" parent="identifications" *ngIf="parents | includes:'identifications'"></laji-field-list>
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.unit' | label" [fields]="fields" parent="units" *ngIf="parents | includes:'units'"></laji-field-list>
-      <laji-field-list (toggle)="toggleField($event)" [(selected)]="selected" [title]="'MY.unitFactClass' | label" [fields]="fields" parent="unitFact" *ngIf="parents | includes:'unitFact'"></laji-field-list>
-    </div>
+    @if (parents | includes:['document', 'gatheringEvent', 'taxonCensus']) {
+      <div class="col-sm-4">
+        @if (parents | includes:'document') {
+          <laji-field-list (fieldToggled)="toggleField($event)" [(selected)]="selected" [title]="'MY.document' | label" [fields]="fields" parent="document"></laji-field-list>
+        }
+        @if (parents | includes:'gatheringEvent') {
+          <laji-field-list (fieldToggled)="toggleField($event)" [(selected)]="selected" [title]="'MZ.gatheringEvent' | label" [fields]="fields" parent="gatheringEvent"></laji-field-list>
+        }
+        @if (parents | includes:'taxonCensus') {
+          <laji-field-list (fieldToggled)="toggleField($event)" [(selected)]="selected" [title]="'MY.taxonCensusClass' | label" [fields]="fields" parent="taxonCensus"></laji-field-list>
+        }
+      </div>
+    }
+    @if (parents | includes:['gatherings', 'gatheringFact']) {
+      <div class="col-sm-4">
+        @if (parents | includes:'gatherings') {
+          <laji-field-list (fieldToggled)="toggleField($event)" [(selected)]="selected" [title]="'MY.gathering' | label" [fields]="fields" parent="gatherings"></laji-field-list>
+        }
+        @if (parents | includes:'gatheringFact') {
+          <laji-field-list (fieldToggled)="toggleField($event)" [(selected)]="selected" [title]="'MY.gatheringFactClass' | label" [fields]="fields" parent="gatheringFact"></laji-field-list>
+        }
+        @if (parents | includes:'unitGathering') {
+          <laji-field-list (fieldToggled)="toggleField($event)" [(selected)]="selected" [title]="'MZ.unitGathering' | label" [fields]="fields" parent="unitGathering"></laji-field-list>
+        }
+      </div>
+    }
+    @if (parents | includes:['identifications', 'units', 'unitFact']) {
+      <div class="col-sm-4">
+        @if (parents | includes:'identifications') {
+          <laji-field-list (fieldToggled)="toggleField($event)" [(selected)]="selected" [title]="'MY.identification' | label" [fields]="fields" parent="identifications"></laji-field-list>
+        }
+        @if (parents | includes:'units') {
+          <laji-field-list (fieldToggled)="toggleField($event)" [(selected)]="selected" [title]="'MY.unit' | label" [fields]="fields" parent="units"></laji-field-list>
+        }
+        @if (parents | includes:'unitFact') {
+          <laji-field-list (fieldToggled)="toggleField($event)" [(selected)]="selected" [title]="'MY.unitFactClass' | label" [fields]="fields" parent="unitFact"></laji-field-list>
+        }
+      </div>
+    }
   </div>
   <p>
     <span class="required">*</span> {{ 'required' | translate }}
   </p>
-</ng-container>
+}
 <!--
 <pre>{{fields | json}}</pre>
 -->

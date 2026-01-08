@@ -16,11 +16,12 @@ export const IUCN_GROUP_SELECT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'laji-iucn-group-select',
-  templateUrl: './group-select.component.html',
-  styleUrls: ['./group-select.component.css'],
-  providers: [IUCN_GROUP_SELECT_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-iucn-group-select',
+    templateUrl: './group-select.component.html',
+    styleUrls: ['./group-select.component.css'],
+    providers: [IUCN_GROUP_SELECT_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IucnGroupSelectComponent extends GroupSelectComponent<RedListTaxonGroup> {
 

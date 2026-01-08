@@ -7,10 +7,11 @@ import { ColumnMode } from '@achimha/ngx-datatable';
 
 
 @Component({
-  selector: 'laji-syke-insect-routes-list',
-  templateUrl: './syke-insect-routes-list.component.html',
-  styleUrls: ['./syke-insect-routes-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-syke-insect-routes-list',
+    templateUrl: './syke-insect-routes-list.component.html',
+    styleUrls: ['./syke-insect-routes-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SykeInsectRoutesListComponent implements OnChanges {
 

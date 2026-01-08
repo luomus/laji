@@ -3,13 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AtlasApiService, AtlasGridResponse } from '../../core/atlas-api.service';
 import { LoadedElementsStore } from 'projects/laji-ui/src/lib/tabs/tab-utils';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 import { PopstateService } from '../../core/popstate.service';
 
 @Component({
-  templateUrl: './grid-index.component.html',
-  styleUrls: ['./grid-index.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './grid-index.component.html',
+    styleUrls: ['./grid-index.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GridIndexComponent implements OnInit {
   grid$!: Observable<AtlasGridResponse>;

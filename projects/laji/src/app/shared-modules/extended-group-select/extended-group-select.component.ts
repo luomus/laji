@@ -1,5 +1,4 @@
-/* tslint:disable:no-use-before-declare */
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs';
 import { ChangeDetectorRef, EventEmitter, Input, OnInit, OnChanges, Output, Directive } from '@angular/core';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { Observable, of } from 'rxjs';
@@ -45,7 +44,7 @@ export abstract class ExtendedGroupSelectComponent<T extends RedListTaxonGroup|I
   ) {}
 
   ngOnInit() {
-    const lang = this.translate.currentLang;
+    const lang = this.translate.getCurrentLang();
     this.groupsTree$ = this.initGroupTree(lang).pipe(shareReplay(1));
     this.groups$ = this.initSelectionGroups(lang, this.includedOptions, this.excludedOptions);
   }
@@ -55,7 +54,7 @@ export abstract class ExtendedGroupSelectComponent<T extends RedListTaxonGroup|I
     if (!Util.equalsArray(this.includedOptions, includedOptions) || !Util.equalsArray(this.excludedOptions, excludedOptions)) {
       this.includedOptions = includedOptions;
       this.excludedOptions = excludedOptions;
-      this.groups$ = this.initSelectionGroups(this.translate.currentLang, this.includedOptions, this.excludedOptions);
+      this.groups$ = this.initSelectionGroups(this.translate.getCurrentLang(), this.includedOptions, this.excludedOptions);
     }
   }
 

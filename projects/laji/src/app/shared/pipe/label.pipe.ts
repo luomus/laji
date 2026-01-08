@@ -1,4 +1,4 @@
-import { concatMap, map, switchMap, toArray } from 'rxjs/operators';
+import { concatMap, map, switchMap, toArray } from 'rxjs';
 import { Observable, from, of, Subscription } from 'rxjs';
 import { ChangeDetectorRef, Pipe, PipeTransform, OnDestroy } from '@angular/core';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
@@ -15,8 +15,9 @@ type LabelType = 'qname'|'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
  *   value | label
  */
 @Pipe({
-  name: 'label',
-  pure: false
+    name: 'label',
+    pure: false,
+    standalone: false
 })
 export class LabelPipe implements PipeTransform, OnDestroy {
   private value: string|string[] = '';
@@ -86,10 +87,10 @@ export class LabelPipe implements PipeTransform, OnDestroy {
         );
       case 'fullUri':
         return key.indexOf('http') === 0 ?
-          this.triplestoreLabelService.get(IdService.getId(key), this.translate.currentLang) :
+          this.triplestoreLabelService.get(IdService.getId(key), this.translate.getCurrentLang()) :
           of(key);
       case 'withKey':
-        return this.triplestoreLabelService.get(key, this.translate.currentLang).pipe(
+        return this.triplestoreLabelService.get(key, this.translate.getCurrentLang()).pipe(
           map(value => value !== key ? `${value} (${key})` : value)
         );
       case 'emptyWhenMissing':
@@ -97,7 +98,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
           map(res => res === key ? '' : key)
         );
       default:
-        return this.triplestoreLabelService.get(key, this.translate.currentLang).pipe(
+        return this.triplestoreLabelService.get(key, this.translate.getCurrentLang()).pipe(
           map(res => res || key)
         );
     }

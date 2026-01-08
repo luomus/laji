@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, DOCUMENT } from '@angular/core';
 import { IdService } from '../../../../shared/service/id.service';
-import { DOCUMENT } from '@angular/common';
+
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
@@ -9,10 +9,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type Taxon = components['schemas']['Taxon'];
 
 @Component({
-  selector: 'laji-taxon-specimens',
-  templateUrl: './taxon-specimens.component.html',
-  styleUrls: ['./taxon-specimens.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-specimens',
+    templateUrl: './taxon-specimens.component.html',
+    styleUrls: ['./taxon-specimens.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonSpecimensComponent implements OnChanges {
   @Input({ required: true }) taxon!: Taxon;

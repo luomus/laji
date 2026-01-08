@@ -4,7 +4,7 @@ import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.servic
 import * as FileSaver from 'file-saver';
 import { PdfLabelService } from '../../../shared/service/pdf-label.service';
 import { Observable, of } from 'rxjs';
-import { share } from 'rxjs/operators';
+import { share } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../../environments/environment';
@@ -12,10 +12,11 @@ import { Global } from '../../../../environments/global';
 import { PlatformService } from '../../../root/platform.service';
 
 @Component({
-  selector: 'laji-label-designer',
-  templateUrl: './label-designer.component.html',
-  styleUrls: ['./label-designer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-label-designer',
+    templateUrl: './label-designer.component.html',
+    styleUrls: ['./label-designer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelDesignerComponent implements OnInit {
 
@@ -43,7 +44,7 @@ export class LabelDesignerComponent implements OnInit {
       share()
     );
     const translations = this.translateService.instant('labelDesigner');
-    this.labelTranslations = this.translateService.currentLang !== 'en' && typeof translations === 'object' ? translations : {};
+    this.labelTranslations = this.translateService.getCurrentLang() !== 'en' && typeof translations === 'object' ? translations : {};
     this.newLabelFields$ = this.labelFields$;
     this.newSetup = {
       page: {

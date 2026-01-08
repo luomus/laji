@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars, max-len */
 
 
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';

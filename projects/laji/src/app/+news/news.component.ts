@@ -3,17 +3,18 @@ import { isPlatformServer } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { News } from '../shared/model/News';
-import { map, switchMap, tap, filter, delay } from 'rxjs/operators';
+import { map, switchMap, tap, filter, delay } from 'rxjs';
 import { getDescription, HeaderService } from '../shared/service/header.service';
 import { Title } from '@angular/platform-browser';
 import { NewsFacade } from './news.facade';
 
 
 @Component({
-  selector: 'laji-news',
-  templateUrl: './news.component.html',
-  styleUrls: ['../../styles/information.scss', './news.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-news',
+    templateUrl: './news.component.html',
+    styleUrls: ['../../styles/information.scss', './news.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NewsComponent implements OnInit {
   public newsItem$!: Observable<News>;

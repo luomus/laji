@@ -1,6 +1,6 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { BehaviorSubject, from, Observable, of, Subscription } from 'rxjs';
-import { catchError, distinctUntilChanged, map, mergeMap, take, tap, toArray } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, map, mergeMap, take, tap, toArray } from 'rxjs';
 import { Document } from '../../shared/model/Document';
 import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
 import { UserService } from '../../shared/service/user.service';

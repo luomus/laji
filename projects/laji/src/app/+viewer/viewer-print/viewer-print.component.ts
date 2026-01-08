@@ -8,9 +8,10 @@ import { ActivatedRoute } from '@angular/router';
 import { PlatformService } from '../../root/platform.service';
 
 @Component({
-  selector: 'laji-viewer-print',
-  templateUrl: './viewer-print.component.html',
-  styleUrls: ['./viewer-print.component.css']
+    selector: 'laji-viewer-print',
+    templateUrl: './viewer-print.component.html',
+    styleUrls: ['./viewer-print.component.css'],
+    standalone: false
 })
 export class ViewerPrintComponent implements OnInit, OnDestroy {
   uri: string | undefined;

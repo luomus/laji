@@ -1,86 +1,94 @@
-<ng-container *ngIf="vm$ | async as vm; else loader">
-  <ng-container *ngIf="isViewModel(vm)">
-    <ng-container *ngIf="!vm.disabled; else disabled">
-      <lu-sidebar *ngIf="!vm.form.options?.simple && !vm.form.options?.mobile; else simpleContent"
-                  [open]="(showNav$ | async)!"
-                  [noPrint]="(isPrintPage$ | async)!"
-                  [staticWidth]="300"
-                  (toggled)="navBarToggled($event)"
-                  [contentWrapperClass]="formOptionToClassName('options.simple options.mobile options.instructions options.resultServiceType options.allowExcel options.secondaryCopy options.allowTemplate options.hasAdmins')">
-        <nav>
-          <h5 lajiFormOption="title shortTitle collectionID options.shortTitleFromCollectionName options.secondaryCopy">
-            <span [innerHTML]="vm.form.options?.shortTitleFromCollectionName && (vm.form.collectionID! | label) || vm.form.shortTitle || vm.form.title"></span>
-            <small *ngIf="vm.form.options?.secondaryCopy"><br>{{ 'datasets.secondary.subtitle' | translate }}</small>
-          </h5>
-          <ng-container *ngTemplateOutlet="sidebarLinks; context:{ $implicit: vm.navLinks}"></ng-container>
-          <laji-haseka-latest [collectionID]="vm.form.collectionID!"
-                              [tmpOnly]="false"
-                              [rights]="vm.rights"
-                              (showViewer)="showDocumentViewer($event)"
-                              [showFormNames]="false"
-                              *ngIf="(userService.isLoggedIn$ | async)">
-          </laji-haseka-latest>
-        </nav>
-        <main>
-          <laji-theme-breadcrumb *ngIf="vm.datasetsBreadcrumb!.length > 0" [breadcrumb]="vm.datasetsBreadcrumb"></laji-theme-breadcrumb>
-          <ng-container *ngTemplateOutlet="content"></ng-container>
-        </main>
-      </lu-sidebar>
-    </ng-container>
-  </ng-container>
-  <ng-container *ngIf="isNotFoundViewModel(vm)">
+@if (vm$ | async; as vm) {
+  @if (isViewModel(vm)) {
+    @if (!vm.disabled) {
+      @if (!vm.form.options?.simple && !vm.form.options?.mobile) {
+        <lu-sidebar
+          [open]="(showNav$ | async)!"
+          [noPrint]="(isPrintPage$ | async)!"
+          [staticWidth]="300"
+          (toggled)="navBarToggled($event)"
+          [contentWrapperClass]="formOptionToClassName('options.simple options.mobile options.instructions options.resultServiceType options.allowExcel options.secondaryCopy options.allowTemplate options.hasAdmins')">
+          <nav>
+            <h5 lajiFormOption="title shortTitle collectionID options.shortTitleFromCollectionName options.secondaryCopy">
+              <span [innerHTML]="vm.form.options?.shortTitleFromCollectionName && (vm.form.collectionID! | label) || vm.form.shortTitle || vm.form.title"></span>
+              @if (vm.form.options?.secondaryCopy) {
+                <small><br>{{ 'datasets.secondary.subtitle' | translate }}</small>
+              }
+            </h5>
+            <ng-container *ngTemplateOutlet="sidebarLinks; context:{ $implicit: vm.navLinks}"></ng-container>
+            @if ((userService.isLoggedIn$ | async)) {
+              <laji-haseka-latest [collectionID]="vm.form.collectionID!"
+                [tmpOnly]="false"
+                [rights]="vm.rights"
+                (showViewer)="showDocumentViewer($event)"
+                [showFormNames]="false"
+                >
+              </laji-haseka-latest>
+            }
+          </nav>
+          <main>
+            @if (vm.datasetsBreadcrumb!.length > 0) {
+              <laji-theme-breadcrumb [breadcrumb]="vm.datasetsBreadcrumb"></laji-theme-breadcrumb>
+            }
+            <ng-container *ngTemplateOutlet="content"></ng-container>
+          </main>
+        </lu-sidebar>
+      } @else {
+        <div class="container-fluid">
+          <ng-container [ngTemplateOutlet]="content"></ng-container>
+        </div>
+      }
+    } @else {
+      <div class="container-fluid mt-5">
+        <laji-project-form-disabled></laji-project-form-disabled>
+      </div>
+    }
+  }
+  @if (isNotFoundViewModel(vm)) {
     <div class="container-fluid mt-5">
       <lu-alert type="danger">
         {{ 'haseka.form.formNotFound' | translate:{formId: vm.formID} }}
       </lu-alert>
     </div>
-  </ng-container>
-</ng-container>
+  }
+} @else {
+  <laji-spinner></laji-spinner>
+}
 
 
 
-<ng-template #disabled>
-  <div class="container-fluid mt-5">
-  <laji-project-form-disabled></laji-project-form-disabled>
-  </div>
-</ng-template>
 
-<ng-template #simpleContent>
-  <div class="container-fluid">
-  <ng-container [ngTemplateOutlet]="content"></ng-container>
-  </div>
-</ng-template>
 <ng-template #content>
   <router-outlet></router-outlet>
 </ng-template>
 
 <ng-template #sidebarLinks let-navLinks>
-  <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel"
-                   [link]="link.link | localize"
-                   routerLinkActive [linkParams]="link.linkParams"
-                   [active]="link.active"
-                   (clicked)="clickedSidebarLink()"
-                   [lajiFormOption]="link.lajiFormOption">
-    {{ link.label | translate }}
-    <ng-container [ngSwitch]="link.content?.template">
-      <ng-container *ngSwitchCase="'badge'">
-        <ng-container *ngTemplateOutlet="badge; context:{ $implicit: link.content }"> </ng-container>
-      </ng-container>
-    </ng-container>
-    <ng-container ngProjectAs="lu-sidebar-link" *ngTemplateOutlet="sidebarLinks; context:{ $implicit: link.children }"></ng-container>
-  </lu-sidebar-link>
+  @for (link of navLinks; track trackByLabel($index, link)) {
+    <lu-sidebar-link
+      [link]="link.link | localize"
+      routerLinkActive [linkParams]="link.linkParams"
+      [active]="link.active"
+      (clicked)="clickedSidebarLink()"
+      [lajiFormOption]="link.lajiFormOption">
+      {{ link.label | translate }}
+      @switch (link.content?.template) {
+        @case ('badge') {
+          <ng-container *ngTemplateOutlet="badge; context:{ $implicit: link.content }"> </ng-container>
+        }
+      }
+      <ng-container ngProjectAs="lu-sidebar-link" *ngTemplateOutlet="sidebarLinks; context:{ $implicit: link.children }"></ng-container>
+    </lu-sidebar-link>
+  }
 </ng-template>
 
 <ng-template #badge let-badge>
-  <ng-container *ngIf="$any(formPermissions$ | async) as formPermissions">
+  @if ($any(formPermissions$ | async); as formPermissions) {
+    @if (formPermissions?.[badge.count]) {
       <span
-        *ngIf="formPermissions?.[badge.count]"
         class="badge pull-right">
-          {{ formPermissions[badge.count].length }}
+        {{ formPermissions[badge.count].length }}
       </span>
-  </ng-container>
+    }
+  }
 </ng-template>
 
-<ng-template #loader>
-  <laji-spinner></laji-spinner>
-</ng-template>

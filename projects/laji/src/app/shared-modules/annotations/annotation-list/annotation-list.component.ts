@@ -14,11 +14,12 @@ import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
 
 
 @Component({
-  selector: 'laji-annotation-list',
-  templateUrl: './annotation-list.component.html',
-  styleUrls: ['./annotation-list.component.scss'],
-  providers: [WarehousePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-annotation-list',
+    templateUrl: './annotation-list.component.html',
+    styleUrls: ['./annotation-list.component.scss'],
+    providers: [WarehousePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
 

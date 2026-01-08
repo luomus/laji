@@ -6,10 +6,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { Area } from '../../../../shared/model/Area';
 
 @Component({
-  selector: 'laji-area-select',
-  templateUrl: './area-select.component.html',
-  styleUrls: ['./area-select.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-area-select',
+    templateUrl: './area-select.component.html',
+    styleUrls: ['./area-select.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AreaSelectComponent implements OnInit {
 
@@ -35,7 +36,7 @@ export class AreaSelectComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
     this.initOptions();
   }
 

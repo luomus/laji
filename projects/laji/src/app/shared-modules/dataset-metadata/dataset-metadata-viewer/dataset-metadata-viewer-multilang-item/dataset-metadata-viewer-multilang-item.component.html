@@ -1,3 +1,5 @@
 <ng-container>
-    <p *ngFor="let value of values">{{ value }}</p>
+  @for (value of values; track value) {
+    <p>{{ value }}</p>
+  }
 </ng-container>

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
+import { catchError, map, shareReplay, switchMap } from 'rxjs';
 import { combineLatest, EMPTY, Observable, of } from 'rxjs';
 import { FormService } from '../../../../shared/service/form.service';
 import { UserService } from '../../../../shared/service/user.service';
@@ -13,19 +13,22 @@ interface ViewModel {
 }
 
 @Component({
-  selector: 'laji-named-place-linker-button',
-  template: `
-    <ng-container *ngIf="vm$ | async as vm">
-      <lu-alert type="warning" *ngIf="vm.isLinkable">
-        {{ 'np.linker.npMissing' | translate }} <br>
-        <lu-button
-          [anchor]="['/project', vm.formID, 'form', vm.documentID, 'link'] | localize"
-          id="link-to-np"
+    selector: 'laji-named-place-linker-button',
+    template: `
+    @if (vm$ | async; as vm) {
+      @if (vm.isLinkable) {
+        <lu-alert type="warning">
+          {{ 'np.linker.npMissing' | translate }} <br>
+          <lu-button
+            [anchor]="['/project', vm.formID, 'form', vm.documentID, 'link'] | localize"
+            id="link-to-np"
           (click)="this.link.emit($event)">{{ 'np.linker.start' | translate }}</lu-button>
-      </lu-alert>
-    </ng-container>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+        </lu-alert>
+      }
+    }
+    `,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NamedPlaceLinkerButtonComponent implements OnInit {
 

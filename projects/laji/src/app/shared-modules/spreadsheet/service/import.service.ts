@@ -13,8 +13,8 @@ import {
   VALUE_IGNORE
 } from '../model/excel';
 import { MappingService } from './mapping.service';
-import * as Hash from 'object-hash';
-import { catchError, delay, switchMap } from 'rxjs/operators';
+import Hash from 'object-hash';
+import { catchError, delay, switchMap } from 'rxjs';
 import { ArrayType } from '@angular/compiler';
 
 export interface IData {
@@ -87,7 +87,7 @@ export class ImportService {
   validateData(document: Document|Document[]): Observable<any> {
     return this.documentApi.validate(document, {
       personToken: this.userService.getToken(),
-      lang: this.translateService.currentLang,
+      lang: this.translateService.getCurrentLang(),
       validationErrorFormat: 'jsonPath'
     });
   }
@@ -122,7 +122,7 @@ export class ImportService {
     job: DocumentJobPayload
   ): Observable<any> {
     return this.documentApi.create(job, this.userService.getToken(), {
-      lang: this.translateService.currentLang
+      lang: this.translateService.getCurrentLang()
     });
   }
 

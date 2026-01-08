@@ -7,14 +7,15 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { TranslateService } from '@ngx-translate/core';
-import { switchMap, toArray, concatMap } from 'rxjs/operators';
+import { switchMap, toArray, concatMap } from 'rxjs';
 
 @Component({
-  selector: 'laji-observation-effective-tags-taxon',
-  templateUrl: './observation-effective-tags-taxon.component.html',
-  styleUrls: ['./observation-effective-tags-taxon.component.scss'],
-  providers: [WarehousePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-effective-tags-taxon',
+    templateUrl: './observation-effective-tags-taxon.component.html',
+    styleUrls: ['./observation-effective-tags-taxon.component.scss'],
+    providers: [WarehousePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy {
 
@@ -48,7 +49,7 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
       switchMap(keys => this.annotationTags ?
         of(this.annotationTags.filter(item => keys.includes(item.id))) :
         from(keys).pipe(
-          concatMap(key => this.annotationService.getTag(key, this.translate.currentLang)),
+          concatMap(key => this.annotationService.getTag(key, this.translate.getCurrentLang())),
           toArray()
         )
       )

@@ -3,11 +3,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { PublicationService } from '../service/publication.service';
 import { Publication } from '../model/Publication';
 import { forkJoin, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 @Pipe({
-  name: 'publication',
-  pure: false
+    name: 'publication',
+    pure: false,
+    standalone: false
 })
 export class PublicationPipe implements PipeTransform {
   value: any;
@@ -44,10 +45,9 @@ export class PublicationPipe implements PipeTransform {
       return of(value);
     }
 
-    return this.publicationService.getPublication(value, this.translate.currentLang)
+    return this.publicationService.getPublication(value, this.translate.getCurrentLang())
       .pipe(map((res: Publication) =>
         (res as any)?.[field] || ''
       ));
   }
 }
-

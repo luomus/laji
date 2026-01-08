@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, switchMap, takeUntil } from 'rxjs';
 import { of, Subject } from 'rxjs';
 import { LajiApi, LajiApiService } from 'projects/laji/src/app/shared/service/laji-api.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,15 +11,16 @@ import { Util } from 'projects/laji/src/app/shared/service/util.service';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 @Component({
-  selector: 'vir-global-message',
-  templateUrl: './global-message.component.html',
-  styleUrls: [
-    './global-message.component.scss'
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-global-message',
+    templateUrl: './global-message.component.html',
+    styleUrls: [
+        './global-message.component.scss'
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GlobalMessageComponent implements OnDestroy, OnInit {
-  private unsubscribe$ = new Subject();
+  private unsubscribe$ = new Subject<void>();
 
   message: any;
   currentMessageId: string | undefined = undefined;
@@ -43,9 +44,9 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
           key => event.url.match(key)
         );
         const idsWithLang = Object.values(environment.globalMessageIds)[idx];
-        this.currentMessageId = idsWithLang?.[<'fi' | 'sv' | 'en'>this.translate.currentLang];
+        this.currentMessageId = idsWithLang?.[<'fi' | 'sv' | 'en'>this.translate.getCurrentLang()];
         if (this.currentMessageId) {
-          return this.api.get(LajiApi.Endpoints.information, this.currentMessageId, {lang: this.translate.currentLang});
+          return this.api.get(LajiApi.Endpoints.information, this.currentMessageId, {lang: this.translate.getCurrentLang()});
         } else {
           return of(undefined);
         }

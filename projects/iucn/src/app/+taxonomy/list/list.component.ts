@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
-import { delay, map, startWith, switchMap } from 'rxjs/operators';
+import { delay, map, startWith, switchMap } from 'rxjs';
 import { DEFAULT_YEAR, FilterQuery, ResultService } from '../../iucn-shared/service/result.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
@@ -15,9 +15,10 @@ export interface QueryParams extends FilterQuery {
 }
 
 @Component({
-  selector: 'iucn-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+    selector: 'iucn-list',
+    templateUrl: './list.component.html',
+    styleUrls: ['./list.component.css'],
+    standalone: false
 })
 export class ListComponent implements OnInit, OnDestroy {
   types: {label: string; value: ListType; labelLong?: string}[] = [

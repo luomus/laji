@@ -12,7 +12,8 @@ import {
   Output,
   Renderer2,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  DOCUMENT
 } from '@angular/core';
 import {
   IGlobalRecording,
@@ -32,7 +33,7 @@ import {
   AudioViewerRectangleGroup,
   SpectrogramConfig
 } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../kerttu-global-shared/service/kerttu-global-api';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -40,7 +41,7 @@ import { KerttuGlobalUtil } from '../../../../kerttu-global-shared/service/kertt
 import { IdentificationTableComponent } from './identification-table/identification-table.component';
 import { defaultSpectrogramConfig } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/variables';
 import { lowAudioSampleRate } from '../../../../kerttu-global-shared/variables';
-import { DOCUMENT } from '@angular/common';
+
 import { Util } from '../../../../../../../laji/src/app/shared/service/util.service';
 import {
   AudioViewerComponent
@@ -63,10 +64,11 @@ const batSpectrogramConfig = {
 };
 
 @Component({
-  selector: 'bsg-identification-view',
-  templateUrl: './identification-view.component.html',
-  styleUrls: ['./identification-view.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-identification-view',
+    templateUrl: './identification-view.component.html',
+    styleUrls: ['./identification-view.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationViewComponent implements OnChanges, OnDestroy {
   @ViewChild('topContent') topContent?: ElementRef;
@@ -296,7 +298,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
 
     if (speciesAnnotations && speciesAnnotations.length > 0) {
       const observables: Observable<IGlobalSpeciesWithAnnotation>[] = speciesAnnotations!.map(
-        annotation => this.kerttuGlobalApi.getSpecies(this.translate.currentLang, annotation.speciesId, true).pipe(
+        annotation => this.kerttuGlobalApi.getSpecies(this.translate.getCurrentLang(), annotation.speciesId, true).pipe(
           map(species => ({ ...species, annotation }))
         )
       );

@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-unit-rows',
-  templateUrl: './unit-rows.component.html',
-  styleUrls: ['./unit-rows.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-unit-rows',
+    templateUrl: './unit-rows.component.html',
+    styleUrls: ['./unit-rows.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class UnitRowsComponent {

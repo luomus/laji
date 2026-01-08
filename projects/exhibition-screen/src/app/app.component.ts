@@ -2,18 +2,19 @@ import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'es-app',
-  template: `
+    selector: 'es-app',
+    template: `
   <es-slideshow></es-slideshow>
   `,
-  styleUrls: [
-    './app.component.scss'
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: [
+        './app.component.scss'
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AppComponent {
   constructor(translate: TranslateService) {
-    translate.setDefaultLang('fi');
+    translate.setFallbackLang('fi');
     translate.use('fi');
   }
 }
