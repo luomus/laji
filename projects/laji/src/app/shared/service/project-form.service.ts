@@ -101,16 +101,21 @@ export class ProjectFormService {
   getProjectFormFromRoute$(route: ActivatedRoute): Observable<ProjectForm> {
     const form$ = this.getFormFromRoute$(route);
     return form$.pipe(
-      mergeMap(form =>
-        (form?.options?.forms
-            ? this.formService.getAllForms().pipe(map(forms => forms.filter(f =>
-                form!.options.forms!.indexOf(f.id) > -1)) // eslint-disable-line @typescript-eslint/no-non-null-assertion
-            )
-            : of([])
-        ).pipe(
-          map(forms => ({form, subForms: forms}))
-        )
-      )
+      switchMap(form => {
+        const { forms } = form.options;
+        if (!forms?.length) {
+          return of({ form, subForms: [] });
+        }
+
+        return this.formService.getAllForms().pipe(map(allForms => {
+          const allFormsDict = allForms.reduce((dict, obj) => {
+            dict[obj.id] = obj;
+            return dict;
+          }, {} as Record<string, Form.List>);
+
+          return {form, subForms: forms.map(id => allFormsDict[id]) };
+        }));
+      })
     );
   }
 

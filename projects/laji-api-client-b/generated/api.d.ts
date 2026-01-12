@@ -57,7 +57,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/forms/{formID}/participants": {
+    "/forms/{id}/participants": {
         parameters: {
             query?: never;
             header?: never;
@@ -128,30 +128,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/person/{personToken}": {
+    "/person/profile": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Find person by person token */
-        get: operations["PersonsController_findPersonByToken"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/person/{personToken}/profile": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
+        /** Get profile */
         get: operations["PersonsController_findProfileByPersonToken"];
         /** Update profile */
         put: operations["PersonsController_updateProfile"];
@@ -163,7 +147,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/person/by-id/{personId}": {
+    "/person/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -180,14 +164,31 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/person/by-id/{personId}/profile": {
+    "/person": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Find profile by user id (this will only return small subset of the full profile) */
+        /** Find person by person token */
+        get: operations["PersonsController_findPersonByToken"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/person/{id}/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Find profile by person id (this will only return small subset of the full profile) */
         get: operations["PersonsController_getProfileByPersonId"];
         put?: never;
         post?: never;
@@ -197,7 +198,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/person/{personToken}/friends/{friendPersonID}": {
+    "/person/friends/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -233,33 +234,32 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/person-token/{personToken}": {
+    "/authentication-event": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Returns information about the token */
+        /** Information about the authentication event of a person token */
         get: operations["PersonTokenController_getInfo"];
         put?: never;
         post?: never;
-        /** Deletes the token */
+        /** Delete authentication session of a person token */
         delete: operations["PersonTokenController_delete"];
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/notifications/{personToken}": {
+    "/notifications": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get notifications */
-        get: operations["NotificationsController_getAll"];
+        get: operations["NotificationsController_getAllV1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -276,10 +276,8 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /** Update notification */
         put: operations["NotificationsController_update"];
         post?: never;
-        /** Delete notification */
         delete: operations["NotificationsController_delete"];
         options?: never;
         head?: never;
@@ -667,7 +665,8 @@ export interface paths {
         /** Get children of a taxon */
         get: operations["TaxaController_getTaxonChildren"];
         put?: never;
-        post?: never;
+        /** Get children of a taxon */
+        post: operations["TaxaController_getTaxonChildrenWithFilters"];
         delete?: never;
         options?: never;
         head?: never;
@@ -684,7 +683,8 @@ export interface paths {
         /** Get parents of a taxon */
         get: operations["TaxaController_getTaxonParents"];
         put?: never;
-        post?: never;
+        /** Get parents of a taxon */
+        post: operations["TaxaController_getTaxonParentsWithFilters"];
         delete?: never;
         options?: never;
         head?: never;
@@ -802,7 +802,6 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Returns info about user based on the access token */
         get: operations["ApiUsersController_getInfo"];
         put?: never;
         /** Register as an api user (access token will be sent to your email) */
@@ -1443,14 +1442,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/autocomplete/unit/list": {
+    "/shorthand/unit/trip-report": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["AutocompleteController_getTripReportUnitListAutocomplete"];
+        get: operations["ShorthandController_getTripReportUnitShorthandAutocomplete"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1459,14 +1458,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/autocomplete/unit/shorthand/trip-report": {
+    "/shorthand/unit/list": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["AutocompleteController_getTripReportUnitShorthandAutocomplete"];
+        get: operations["ShorthandController_getTripReportUnitListAutocomplete"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1475,14 +1474,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/autocomplete/unit/shorthand/line-transect": {
+    "/shorthand/unit/line-transect": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["AutocompleteController_getLineTransectUnitShorthandAutocomplete"];
+        get: operations["ShorthandController_getLineTransectUnitShorthandAutocomplete"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1491,16 +1490,116 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/autocomplete/unit/shorthand/water-bird-pair-count": {
+    "/shorthand/unit/water-bird-pair-count": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["AutocompleteController_getWaterbirdPairCountUnitShorthandAutocomplete"];
+        get: operations["ShorthandController_getWaterbirdPairCountUnitShorthandAutocomplete"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/coordinates/location": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["CoordinatesController_getLocationInformation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/feedback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["FeedbackController_send"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/geo-convert/{fileId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GeoConvertController_get"];
+        put?: never;
+        /** Convert a FinBIF occurrence data file into a geographic data format */
+        post: operations["GeoConvertController_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/geo-convert/status/{conversionId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get status of a conversion */
+        get: operations["GeoConvertController_status"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/geo-convert/output/{conversionId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get the output file of a conversion */
+        get: operations["GeoConvertController_output"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/html-to-pdf": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Convert HTML to PDF */
+        post: operations["HtmlToPdfController_htmlToPdf"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1676,18 +1775,21 @@ export interface paths {
                     format?: "json" | "xml";
                     /** @description Full document ID (URI identifier) */
                     documentId: string;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -1837,14 +1939,17 @@ export interface paths {
                     partition?: string;
                     /** @description Name (or names) of fields that must be non-null for the occurrence to be included to results. The field must be from level document, gathering or unit (not for example annotation) and must not be an array field. Also, when quering gathering level, unit fields can not be used, etc. When multiple fields are listed, this is an AND search (all must be non-null). Multiple values are seperated by ','. */
                     hasValue?: string;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "csv" | "tsv";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -2065,20 +2170,23 @@ export interface paths {
                     partition?: string;
                     /** @description Name (or names) of fields that must be non-null for the occurrence to be included to results. The field must be from level document, gathering or unit (not for example annotation) and must not be an array field. Also, when quering gathering level, unit fields can not be used, etc. When multiple fields are listed, this is an AND search (all must be non-null). Multiple values are seperated by ','. */
                     hasValue?: string;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "csv" | "tsv";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -2531,18 +2639,21 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -2875,20 +2986,23 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "rdf_xml";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -3236,20 +3350,23 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "csv" | "tsv";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -3752,20 +3869,23 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "rdf_xml";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -4099,20 +4219,23 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "rdf_xml";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -4462,20 +4585,23 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "rdf_xml";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -4823,20 +4949,23 @@ export interface paths {
                     atlasClass?: string;
                     /** @description Filter to occurrences that are not on state lands (true) or to occurrences that are only from state lands (false) */
                     onlyNonStateLands?: boolean;
-                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! */
-                    editorPersonToken?: string;
-                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! */
-                    observerPersonToken?: string;
-                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! */
-                    editorOrObserverPersonToken?: string;
-                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). */
-                    editorOrObserverIsNotPersonToken?: string;
-                    /** @description Use granted permissions to search the private warehouse */
-                    permissionToken?: string;
+                    /** @description Search for records the user has save or modified. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditor?: boolean;
+                    /** @description Search for records where the user has been marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsObserver?: boolean;
+                    /** @description Search for records the user has saved OR where marked as the observer. When using this filter, results come from the private warehouse! You  must provide a Person-Token header when using this filter. */
+                    selfAsEditorOrObserver?: boolean;
+                    /** @description Search for records where the user has not saved or observed the record (= everyone else's records). These come from the public warehouse! -> Results may contain records that have actually been saved by the user, but the info is not available in public (has been secured). You  must provide a Person-Token header when using this filter. */
+                    selfIsNotEditorOrObserver?: boolean;
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "geojson" | "xml" | "csv" | "tsv";
                 };
-                header?: never;
+                header?: {
+                    /** @description Use granted permissions to search the private warehouse */
+                    "Permission-Token"?: string;
+                    /** @description Provide identify of the user that is using [selfAsEditor, selfAsObserver, selfAsEditorOrObserver, selfIsNotEditorOrObserver] filters. */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -5222,9 +5351,7 @@ export interface paths {
          */
         post: {
             parameters: {
-                query: {
-                    /** @description Person token is required to limit number of created polygon ids per day to 100 */
-                    personToken: string;
+                query?: {
                     /** @description Give coordinate reference system of the GeoJSON or WKT. Defaults to EUREF. (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
                     crs?: "WGS84" | "EUREF" | "YKJ";
                     /** @description Either this or wkt is required. The polygon as GeoJSON. */
@@ -5234,7 +5361,10 @@ export interface paths {
                     /** @description Alternative way to Accept header to define content type of the response. */
                     format?: "json" | "xml" | "plain";
                 };
-                header?: never;
+                header: {
+                    /** @description Person token is required to limit number of created polygon ids per day to 100 */
+                    "Person-Token": string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -5523,11 +5653,11 @@ export interface paths {
         /** Get trait input row by id */
         get: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the InputRow */
                     id: string;
@@ -5577,11 +5707,11 @@ export interface paths {
         /** Update an input row */
         put: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the InputRow */
                     id: string;
@@ -5654,11 +5784,11 @@ export interface paths {
         /** Delete an input row */
         delete: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id */
                     id: string;
@@ -5731,11 +5861,11 @@ export interface paths {
         /** Validate adding a new input row */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -5801,11 +5931,11 @@ export interface paths {
         /** Validate update of an input row */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the InputRow */
                     id: string;
@@ -5883,11 +6013,11 @@ export interface paths {
         /** Validate deleting input row */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id */
                     id: string;
@@ -5952,11 +6082,11 @@ export interface paths {
         /** Insert new input row */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -6032,12 +6162,13 @@ export interface paths {
         post: {
             parameters: {
                 query: {
-                    /** @description Identity of a logged in user */
-                    personToken?: string;
                     /** @description Id if the dataset */
                     datasetId: string;
                 };
-                header?: never;
+                header?: {
+                    /** @description Identity of a logged in user */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -6095,12 +6226,13 @@ export interface paths {
         post: {
             parameters: {
                 query: {
-                    /** @description Identity of a logged in user */
-                    personToken?: string;
                     /** @description Id if the dataset */
                     datasetId: string;
                 };
-                header?: never;
+                header?: {
+                    /** @description Identity of a logged in user */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -6166,11 +6298,11 @@ export interface paths {
         /** Validate adding a batch of input rows */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -6236,11 +6368,11 @@ export interface paths {
         /** Store a batch of input rows */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -6317,8 +6449,6 @@ export interface paths {
         get: {
             parameters: {
                 query: {
-                    /** @description Identity of a logged in user */
-                    personToken?: string;
                     /** @description Id if the dataset */
                     datasetId: string;
                     /** @description Page size */
@@ -6331,7 +6461,10 @@ export interface paths {
                         [key: string]: string;
                     };
                 };
-                header?: never;
+                header?: {
+                    /** @description Identity of a logged in user */
+                    "Person-Token"?: string;
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -6424,11 +6557,11 @@ export interface paths {
         /** Insert new dataset */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -6543,11 +6676,11 @@ export interface paths {
         /** Update a dataset */
         put: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the Dataset */
                     id: string;
@@ -6620,11 +6753,11 @@ export interface paths {
         /** Delete a dataset */
         delete: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id */
                     id: string;
@@ -6697,11 +6830,11 @@ export interface paths {
         /** Validate adding a new dataset */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -6767,11 +6900,11 @@ export interface paths {
         /** Validate dataset update */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the Dataset */
                     id: string;
@@ -6849,11 +6982,11 @@ export interface paths {
         /** Validate deleting a dataset */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id */
                     id: string;
@@ -6916,11 +7049,11 @@ export interface paths {
         /** Get users all permissions (defined by personToken or - in absence - of the access_token) */
         get: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path?: never;
                 cookie?: never;
             };
@@ -7015,11 +7148,11 @@ export interface paths {
         /** Update permissions of a dataset */
         put: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the dataset */
                     datasetId: string;
@@ -7107,11 +7240,11 @@ export interface paths {
         /** Validate permission submission */
         post: {
             parameters: {
-                query?: {
+                query?: never;
+                header?: {
                     /** @description Identity of a logged in user */
-                    personToken?: string;
+                    "Person-Token"?: string;
                 };
-                header?: never;
                 path: {
                     /** @description Id of the dataset */
                     datasetId: string;
@@ -8336,6 +8469,10 @@ export interface components {
             "@context": string;
         };
         Profile: {
+            /** @default {} */
+            settings: {
+                [key: string]: unknown;
+            };
             id: string;
             userID: string;
             profileDescription: string;
@@ -8350,8 +8487,6 @@ export interface components {
             blocked: string[];
             /** @default [] */
             friendRequests: string[];
-            /** @default {} */
-            settings: Record<string, never>;
         };
         StoreDeleteResponse: {
             affected: number;
@@ -8391,7 +8526,7 @@ export interface components {
         BatchJobValidationStatus: {
             percentage: number;
             /** @default 0 */
-            processed: Record<string, never>;
+            processed: number;
             total: number;
         };
         BatchJobValidationStatusResponse: {
@@ -8431,8 +8566,6 @@ export interface components {
             anyHabitatSearchStrings: string;
         };
         TaxonElastic: {
-            /** @default MZ.intellectualRightsCC-BY-4.0 */
-            intellectualRights: string;
             latestRedListEvaluation: components["schemas"]["RedListEvaluation"];
             isPartOf: Record<string, never>;
             isPartOfNonHidden: Record<string, never>;
@@ -8443,6 +8576,7 @@ export interface components {
             vernacularName: Record<string, never>;
             colloquialVernacularName: Record<string, never>;
         };
+        Object: Record<string, never>;
         ApiUserEntity: {
             id: number;
             email: string;
@@ -8539,11 +8673,6 @@ export interface components {
             key: string;
             value: string;
         };
-        TripReportUnitListResultDto: {
-            results: Record<string, never>[];
-            count: number;
-            nonMatchingCount: number;
-        };
         TripReportUnitShorthandResponseDto: {
             key: string;
             value: string;
@@ -8557,6 +8686,11 @@ export interface components {
                 femaleIndividualCount: string;
             };
         };
+        TripReportUnitListResultDto: {
+            results: Record<string, never>[];
+            count: number;
+            nonMatchingCount: number;
+        };
         LineTransectUnitShorthandResponseDto: {
             key: string;
             value: string;
@@ -8568,6 +8702,23 @@ export interface components {
                 maleIndividualCount: string;
                 femaleIndividualCount: string;
             };
+        };
+        MultiLangDto: string;
+        AddressComponent: {
+            long_name: string;
+            short_name: string;
+            types: string[];
+        };
+        Location: {
+            address_components: components["schemas"]["AddressComponent"][];
+            types: string[];
+            formatted_address?: string;
+            place_id: string;
+        };
+        FeedbackDto: {
+            subject: string;
+            message: string;
+            meta: string;
         };
         DwQuery_CountResponse: {
             total: number;
@@ -9845,8 +9996,6 @@ export interface components {
              * @enum {string}
              */
             type: "exactMatches" | "partialMatches" | "likelyMatches";
-            key: string;
-            value: string;
         }[];
         TaxonSearchError: {
             error: {
@@ -10220,9 +10369,9 @@ export interface components {
             temporalCoverage: string;
             geographicCoverage: string;
             coverageBasis: string;
-            finbifDOI?: string;
-            gbifDOI?: string;
-            additionalIdentifiers?: string[];
+            doi?: string;
+            gbifDoi?: string;
+            additionalIdentifier?: string[];
             published: boolean;
             shareToFinBIF: boolean;
             shareToGBIF: boolean;
@@ -10296,7 +10445,11 @@ export interface components {
             municipality?: string;
             locality?: string;
             locationIdentifiers?: string;
-            habitat?: string;
+            /**
+             * @description Qname identifier
+             * @enum {string}
+             */
+            habitat?: "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue146" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170";
             occurrenceRemarks?: string;
             measurementDeterminedBy?: string;
             /** Format: date */
@@ -10462,7 +10615,11 @@ export interface components {
             municipality: string;
             locality: string;
             locationIdentifiers: string;
-            habitat: string;
+            /**
+             * @description Qname identifier
+             * @enum {string}
+             */
+            habitat: "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue146" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170";
             occurrenceRemarks: string;
             measurementDeterminedBy: string;
             /** Format: date */
@@ -10505,9 +10662,9 @@ export interface components {
             contactEmail: string;
             methods: string;
             coverageBasis: string;
-            finbifDOI: string;
-            gbifDOI: string;
-            additionalIdentifiers: string[];
+            doi: string;
+            gbifDoi: string;
+            additionalIdentifier: string[];
         };
         HigherTaxa: {
             domain: string;
@@ -10569,7 +10726,9 @@ export interface components {
             name: string;
             options: components["schemas"]["formOptions"];
             /** Patch form data */
-            patch: Record<string, never>[];
+            patch: {
+                [key: string]: unknown;
+            }[];
             /** Short description */
             shortDescription: string;
             /**
@@ -10582,9 +10741,13 @@ export interface components {
             /** Title */
             title: string;
             /** Translations */
-            translations: Record<string, never>;
+            translations: {
+                [key: string]: unknown;
+            };
             /** Specification for ui schema */
-            uiSchema: Record<string, never>;
+            uiSchema: {
+                [key: string]: unknown;
+            };
         };
         field: {
             /** Context for the MHLA.field */
@@ -10597,25 +10760,37 @@ export interface components {
             name: string;
             fields: components["schemas"]["field"][];
             /** filters */
-            filters: Record<string, never>;
+            filters: {
+                [key: string]: unknown;
+            };
             /** label */
             label: string;
             /** Notice validators */
-            notices: Record<string, never>;
+            notices: {
+                [key: string]: unknown;
+            };
             /** Options */
-            options: Record<string, never>;
+            options: {
+                [key: string]: unknown;
+            };
             /** Required field */
             required: boolean;
             /** field type */
             type: string;
             /** UI instructions to field */
-            ui: Record<string, never>;
+            ui: {
+                [key: string]: unknown;
+            };
             /** validators */
-            validators: Record<string, never>;
+            validators: {
+                [key: string]: unknown;
+            };
             /** value */
             value: string;
             /** warning validators */
-            warnings: Record<string, never>;
+            warnings: {
+                [key: string]: unknown;
+            };
         };
         formOptions: {
             /** Context for the MHL.formOptionsClass */
@@ -10717,6 +10892,11 @@ export interface components {
             hideCancelButton: boolean;
             /** hideDraftButton */
             hideDraftButton: boolean;
+            /**
+             * Hide from sidebar
+             * @description Defaults to false
+             */
+            hideFromSidebar: boolean;
             /**
              * Hide save button
              * @description Hides the save/edit button at form footer
@@ -10891,7 +11071,9 @@ export interface components {
              * Logos
              * @description Key is an image URI, value is the URI of the page clicking the image opens
              */
-            footerLogos: Record<string, never>;
+            footerLogos: {
+                [key: string]: unknown;
+            };
         };
         formNamedPlaceOptions: {
             /** Context for the MHL.formNamedPlaceOptionsClass */
@@ -11065,7 +11247,9 @@ export interface components {
              * Prepopulated document initialization
              * @description When a new named place is created, the prepopulatedDocument will be populated according to this.
              */
-            prepopulatedDocumentFields: Record<string, never>;
+            prepopulatedDocumentFields: {
+                [key: string]: unknown;
+            };
             /**
              * Print button label
              * @description Label for print button of named place viewer
@@ -11137,7 +11321,9 @@ export interface components {
              */
             URL?: string;
             /** Acknowledged warnings */
-            acknowledgedWarnings?: Record<string, never>[];
+            acknowledgedWarnings?: {
+                [key: string]: unknown;
+            }[];
             /**
              * Acquired from
              * @description From who/where the specimen was acquired (if not recorded as a transaction)
@@ -12881,8 +13067,6 @@ export interface components {
              * @description Informal description of the habitat.
              */
             habitatDescription: string;
-            /** Habitat */
-            habitatIUCN: string;
             /**
              * Substrate
              * @description Type of substrate or name of substrate species.
@@ -13173,7 +13357,7 @@ export interface components {
              * @description Type of preparation/sample
              * @enum {string}
              */
-            preparationType: "MF.preparationTypeSkin" | "MF.preparationTypeSkeletal" | "MF.preparationTypeMount" | "MF.preparationTypeTissue" | "MF.preparationTypeTissueEcotoxicology" | "MF.preparationTypeLiquid" | "MF.preparationTypeMicroscopeSlide" | "MF.preparationTypeDNAExtract" | "MF.preparationTypeEgg" | "MF.preparationTypeNest" | "MF.preparationTypeOther";
+            preparationType: "MF.preparationTypeSkin" | "MF.preparationTypeSkeletal" | "MF.preparationTypeMount" | "MF.preparationTypeTissue" | "MF.preparationTypeTissueEcotoxicology" | "MF.preparationTypeLiquid" | "MF.preparationTypeMicroscopeSlide" | "MF.preparationTypeDNAExtract" | "MF.preparationTypeEgg" | "MF.preparationTypeNest" | "MF.preparationTypeFrozenSpecimen" | "MF.preparationTypeOther";
             preparations?: components["schemas"]["preparation"][];
             /**
              * Preparation/sample preservation
@@ -13212,7 +13396,7 @@ export interface components {
              */
             sampleLocation?: string;
             /** Specimen ID */
-            specimenID: string;
+            specimenID?: string;
             /**
              * Preparation/sample status
              * @description Status of the preparation/sample. For specimen level status use the status field in the basic information section. Empty value means same as "ok" - that there is nothing special about the status of the sample.
@@ -13428,6 +13612,66 @@ export interface components {
             wgs84centerPointLat: number;
             /** Longitude (center point) */
             wgs84centerPointLon: number;
+        };
+        profile: {
+            /** Context for the MA.profile */
+            "@context"?: string;
+            /** Id for the MA.profile */
+            id?: string;
+            /** Type for the MA.profile */
+            "@type"?: string;
+            birdSongRecognitionSkillLevels?: components["schemas"]["birdSongRecognitionSkillLevel"][];
+            /**
+             * User's activity level in birdwatching
+             * @enum {string}
+             */
+            birdwatchingActivityLevel?: "" | "MA.birdwatchingActivityLevelEnum1" | "MA.birdwatchingActivityLevelEnum2" | "MA.birdwatchingActivityLevelEnum3" | "MA.birdwatchingActivityLevelEnum4";
+            /** Blocked ppl */
+            blocked?: string[];
+            /**
+             * User's skill level in Finnish bird song recognition
+             * @enum {string}
+             */
+            finnishBirdSongRecognitionSkillLevel?: "" | "MA.finnishBirdSongRecognitionSkillLevelEnum1" | "MA.finnishBirdSongRecognitionSkillLevelEnum2" | "MA.finnishBirdSongRecognitionSkillLevelEnum3" | "MA.finnishBirdSongRecognitionSkillLevelEnum4";
+            /** Friend requests received */
+            friendRequests?: string[];
+            /** List of friends of the user */
+            friends?: string[];
+            /** Image for the profile */
+            image?: string;
+            /** Name is visible to others in Kerttu */
+            nameVisibleInKerttu?: boolean;
+            /** Own collection identifier */
+            personalCollectionIdentifier?: string;
+            /** Profile description */
+            profileDescription?: string;
+            /** Settings for the user */
+            settings?: {
+                [key: string]: unknown;
+            };
+            /** Expertise */
+            taxonExpertise?: string[];
+            /** Expertise notes */
+            taxonExpertiseNotes?: string;
+            /** This users profile */
+            userID: string;
+            /** profileKey */
+            profileKey?: string;
+        };
+        birdSongRecognitionSkillLevel: {
+            /** Context for the Instances of this class are bird song recognition skill levels of a certain area */
+            "@context"?: string;
+            /** Id for the Instances of this class are bird song recognition skill levels of a certain area */
+            id?: string;
+            /** Type for the Instances of this class are bird song recognition skill levels of a certain area */
+            "@type"?: string;
+            /** Area */
+            birdSongRecognitionArea: string;
+            /**
+             * Skill level
+             * @enum {string}
+             */
+            birdSongRecognitionSkillLevel: "MA.birdSongRecognitionSkillLevelEnum1" | "MA.birdSongRecognitionSkillLevelEnum2" | "MA.birdSongRecognitionSkillLevelEnum3" | "MA.birdSongRecognitionSkillLevelEnum4";
         };
         SensitivePerson: {
             id: string;
@@ -14055,11 +14299,11 @@ export type $defs = Record<string, never>;
 export interface operations {
     FormsController_getPermissions: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -14073,15 +14317,92 @@ export interface operations {
                     "application/json": components["schemas"]["FormPermissionPersonDto"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     FormsController_getPermissionsByCollectionID: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 collectionID: string;
             };
@@ -14097,15 +14418,92 @@ export interface operations {
                     "application/json": components["schemas"]["FormPermissionDto"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     FormsController_requestAccess: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 collectionID: string;
             };
@@ -14121,17 +14519,95 @@ export interface operations {
                     "application/json": components["schemas"]["FormPermissionDto"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     FormsController_acceptAccess: {
         parameters: {
-            query: {
-                /** @description Person token who is authorised to accept requests */
-                personToken: string;
+            query?: {
                 /** @description Access type */
                 type?: "admin" | "editor";
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token who is authorizing the acception */
+                "Person-Token"?: string;
+            };
             path: {
                 collectionID: string;
                 personID: string;
@@ -14146,17 +14622,94 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["FormPermissionDto"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
     };
     FormsController_revokeAccess: {
         parameters: {
-            query: {
-                /** @description Person token who is authorised to accept requests */
-                personToken: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token who is authorizing the removal */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 collectionID: string;
                 personID: string;
@@ -14171,6 +14724,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["FormPermissionDto"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -14178,9 +14808,12 @@ export interface operations {
     FormsController_getParticipants: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
-                formID: string;
+                id: string;
             };
             cookie?: never;
         };
@@ -14192,6 +14825,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Participant"][];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -14216,14 +14926,88 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     FormsController_create: {
         parameters: {
-            query: {
-                /** @description Person's authentication token */
-                personToken: string;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -14242,13 +15026,91 @@ export interface operations {
                     "application/json": components["schemas"]["form"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     FormsController_getOne: {
         parameters: {
             query?: {
                 format?: "schema" | "json";
-                /** @description Language of fields that have multiple languages. If multi is selected fields that can have multiple languages will contain language objects. Defaults to 'en' */
+                /** @description Language of fields that have multiple languages. If multi is selected fields that can have multiple languages will
+                 *     contain language objects. Defaults to 'en' */
                 lang?: "fi" | "sv" | "en" | "multi";
                 /** @description Expand response */
                 expand?: boolean;
@@ -14269,14 +15131,88 @@ export interface operations {
                     "application/json": components["schemas"]["form"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     FormsController_update: {
         parameters: {
-            query: {
-                /** @description Person's authentication token */
-                personToken: string;
-            };
+            query?: never;
             header?: never;
             path: {
                 id: string;
@@ -14297,14 +15233,88 @@ export interface operations {
                     "application/json": components["schemas"]["form"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     FormsController_remove: {
         parameters: {
-            query: {
-                /** @description Person's authentication token */
-                personToken: string;
-            };
+            query?: never;
             header?: never;
             path: {
                 id: string;
@@ -14321,14 +15331,90 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     FormsController_transform: {
         parameters: {
-            query: {
-                /** @description Person's authentication token */
-                personToken: string;
-                /** @description Language of fields that have multiple languages. If multi is selected fields that can have multiple languages will contain language objects. Defaults to 'en' */
+            query?: {
+                /** @description Language of fields that have multiple languages. If multi is selected fields that can have multiple languages will
+                 *     contain language objects. Defaults to 'en' */
                 lang?: "fi" | "sv" | "en" | "multi";
             };
             header?: never;
@@ -14349,25 +15435,81 @@ export interface operations {
                     "application/json": components["schemas"]["form"];
                 };
             };
-        };
-    };
-    PersonsController_findPersonByToken: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                personToken: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Person"];
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -14375,10 +15517,11 @@ export interface operations {
     PersonsController_findProfileByPersonToken: {
         parameters: {
             query?: never;
-            header?: never;
-            path: {
-                personToken: string;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
             };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -14388,7 +15531,84 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": components["schemas"]["profile"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -14396,15 +15616,16 @@ export interface operations {
     PersonsController_updateProfile: {
         parameters: {
             query?: never;
-            header?: never;
-            path: {
-                personToken: string;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
             };
+            path?: never;
             cookie?: never;
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Profile"];
+                "application/json": components["schemas"]["profile"];
             };
         };
         responses: {
@@ -14413,7 +15634,84 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Profile"];
+                    "application/json": components["schemas"]["profile"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -14421,15 +15719,16 @@ export interface operations {
     PersonsController_createProfile: {
         parameters: {
             query?: never;
-            header?: never;
-            path: {
-                personToken: string;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
             };
+            path?: never;
             cookie?: never;
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Profile"];
+                "application/json": components["schemas"]["profile"];
             };
         };
         responses: {
@@ -14438,7 +15737,84 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Profile"];
+                    "application/json": components["schemas"]["profile"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -14448,7 +15824,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                personId: string;
+                id: string;
             };
             cookie?: never;
         };
@@ -14462,6 +15838,182 @@ export interface operations {
                     "application/json": components["schemas"]["SensitivePerson"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    PersonsController_findPersonByToken: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Person"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     PersonsController_getProfileByPersonId: {
@@ -14469,7 +16021,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                personId: string;
+                id: string;
             };
             cookie?: never;
         };
@@ -14483,15 +16035,94 @@ export interface operations {
                     "application/json": components["schemas"]["SensitiveProfile"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     PersonsController_acceptFriendRequest: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
-                personToken: string;
-                friendPersonID: string;
+                id: string;
             };
             cookie?: never;
         };
@@ -14501,17 +16132,98 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["profile"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
             };
         };
     };
     PersonsController_addFriendRequest: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
-                personToken: string;
-                friendPersonID: string;
+                id: string;
             };
             cookie?: never;
         };
@@ -14522,7 +16234,84 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": components["schemas"]["profile"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -14532,10 +16321,12 @@ export interface operations {
             query: {
                 block: boolean;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
-                personToken: string;
-                friendPersonID: string;
+                id: string;
             };
             cookie?: never;
         };
@@ -14545,7 +16336,86 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["profile"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
             };
         };
     };
@@ -14566,15 +16436,92 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     PersonTokenController_getInfo: {
         parameters: {
             query?: never;
-            header?: never;
-            path: {
-                personToken: string;
+            header: {
+                "Person-Token": string;
             };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -14585,6 +16532,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -14592,25 +16616,100 @@ export interface operations {
     PersonTokenController_delete: {
         parameters: {
             query?: never;
-            header?: never;
-            path: {
-                personToken: string;
+            header: {
+                "Person-Token": string;
             };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            200: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
     };
-    NotificationsController_getAll: {
+    NotificationsController_getAllV1: {
         parameters: {
             query?: {
                 /** @description Return only notifications that have not been marked as seen. */
@@ -14618,10 +16717,11 @@ export interface operations {
                 page?: number;
                 pageSize?: number;
             };
-            header?: never;
-            path: {
-                personToken: string;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
             };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -14642,15 +16742,92 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     NotificationsController_update: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -14670,15 +16847,92 @@ export interface operations {
                     "application/json": components["schemas"]["notification"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     NotificationsController_delete: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -14692,6 +16946,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["StoreDeleteResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -14726,6 +17057,83 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     CollectionsController_findRoots: {
@@ -14756,6 +17164,83 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     CollectionsController_get: {
@@ -14775,6 +17260,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["collection"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -14809,6 +17371,83 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     JsonLdController_getContext: {
@@ -14828,15 +17467,92 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     DocumentsController_startBatchJob: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -14854,18 +17570,96 @@ export interface operations {
                     "application/json": components["schemas"]["BatchJobValidationStatusResponse"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     DocumentsController_getBatchJobStatus: {
         parameters: {
-            query: {
+            query?: {
                 validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
                 publicityRestrictions?: "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
                 dataOrigin?: "MY.dataOriginPaperForm" | "MY.dataOriginWebForm" | "MY.dataOriginSpreadsheetFile";
-                /** @description Person's authentication token */
-                personToken: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
                 jobID: string;
             };
@@ -14890,18 +17684,96 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     DocumentsController_completeBatchJob: {
         parameters: {
-            query: {
+            query?: {
                 validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
                 publicityRestrictions?: "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
                 dataOrigin?: "MY.dataOriginPaperForm" | "MY.dataOriginWebForm" | "MY.dataOriginSpreadsheetFile";
-                /** @description Person's authentication token */
-                personToken: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
                 jobID: string;
             };
@@ -14915,6 +17787,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BatchJobValidationStatusResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -14932,10 +17881,11 @@ export interface operations {
                 type?: "error" | "warning";
                 /** @description Format of validation error details */
                 validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
-                /** @description Person's authentication token */
-                personToken?: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -14949,21 +17899,99 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     DocumentsController_getCountByYear: {
         parameters: {
-            query: {
+            query?: {
                 /** @description Limit the list of documents to a certain collection */
                 collectionID?: string;
                 /** @description Limit the list of documents to a certain form */
                 formID?: string;
                 /** @description Limit the list of documents to a certain named place */
                 namedPlace?: string;
-                /** @description Person's authentication token */
-                personToken: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -14975,6 +18003,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DocumentCountItemResponse"][];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -14999,18 +18104,94 @@ export interface operations {
                     "application/json": components["schemas"]["StatisticsResponse"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     DocumentsController_getPage: {
         parameters: {
-            query: {
+            query?: {
                 /** @description Limit the list of documents to a certain named place */
                 namedPlace?: string;
                 /** @description Comma separated list of field names to include in the response */
                 selectedFields?: string;
                 /** @description Limit the list of documents to a certain observation year */
                 observationYear?: number;
-                /** @description Fetch only templates */
                 templates?: boolean;
                 /** @description Collection id. Child collections are also fetched. */
                 collectionID?: string;
@@ -15020,10 +18201,11 @@ export interface operations {
                 formID?: string;
                 page?: number;
                 pageSize?: number;
-                /** @description Person's authentication token */
-                personToken: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -15045,17 +18227,95 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     DocumentsController_create: {
         parameters: {
             query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
                 /** @description Format of validation error details */
                 validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -15073,15 +18333,92 @@ export interface operations {
                     "application/json": components["schemas"]["document"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     DocumentsController_get: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -15097,17 +18434,97 @@ export interface operations {
                     "application/json": components["schemas"]["document"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     DocumentsController_update: {
         parameters: {
-            query: {
-                /** @description Person's authentication token */
-                personToken: string;
+            query?: {
+                /** @description Skip validations. Only available for the importer token */
+                skipValidations?: boolean;
                 /** @description Format of validation error details */
                 validationErrorFormat?: "remote" | "object" | "jsonPointer" | "jsonPath" | "dotNotation";
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
                 id: string;
             };
@@ -15127,15 +18544,92 @@ export interface operations {
                     "application/json": components["schemas"]["document"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     DocumentsController_delete: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -15151,29 +18645,103 @@ export interface operations {
                     "application/json": components["schemas"]["StoreDeleteResponse"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     NamedPlacesController_reserve: {
         parameters: {
-            query: {
-                /** @description Person's authentication token */
-                personToken: string;
+            query?: {
                 /** @description Id for the person (your own id will be used if you are not admin) */
                 personID?: string;
                 /** @description The date when the reservation expires */
                 until?: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path: {
                 id: string;
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["namedPlace"];
-            };
-        };
+        requestBody?: never;
         responses: {
             201: {
                 headers: {
@@ -15183,15 +18751,92 @@ export interface operations {
                     "application/json": components["schemas"]["namedPlace"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     NamedPlacesController_cancelReservation: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -15205,6 +18850,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["namedPlace"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -15231,12 +18953,13 @@ export interface operations {
                 includePublic?: boolean;
                 /** @description Include units in prepopulated and accepted documents (only form forms with 'MHL.includeUnits' true). Defaults to false. */
                 includeUnits?: boolean;
-                /** @description Person's authentication token */
-                personToken?: string;
                 page?: number;
                 pageSize?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token. Necessary for fetching private places */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -15258,15 +18981,92 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     NamedPlacesController_create: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -15284,17 +19084,95 @@ export interface operations {
                     "application/json": components["schemas"]["namedPlace"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     NamedPlacesController_get: {
         parameters: {
             query?: {
-                /** @description Person's authentication token. Necessary for fetching non public places. */
-                personToken?: string;
                 /** @description Include units in prepopulated and accepted documents (only for forms with 'MHL.includeUnits' true). */
                 includeUnits?: boolean;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token. Necessary for fetching private places */
+                "Person-Token"?: string;
+            };
             path: {
                 id: string;
             };
@@ -15310,15 +19188,92 @@ export interface operations {
                     "application/json": components["schemas"]["namedPlace"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     NamedPlacesController_update: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -15338,15 +19293,92 @@ export interface operations {
                     "application/json": components["schemas"]["namedPlace"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     NamedPlacesController_delete: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -15360,6 +19392,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["StoreDeleteResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -15385,7 +19494,7 @@ export interface operations {
                 /** @description Exclude taxa from specified informal taxon group(s). Multiple values are separated by a comma (,) */
                 excludedInformalTaxonGroup?: string;
                 /** @description Default: All match types; exact = exact matches, partial = partially matching, likely = fuzzy matching. Multiple values are separated by a comma (,) */
-                matchType?: "exact" | "partial" | "likely";
+                matchType?: string;
                 /** @description Matching names have a type (e.g., MX.vernacularName, MX.hasMisappliedName). Multiple values are separated by a comma (,) */
                 excludeNameTypes?: string;
                 /** @description Filter to include only species (and subspecies) */
@@ -15414,19 +19523,96 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     TaxaController_getPage: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 page?: number;
@@ -15473,6 +19659,83 @@ export interface operations {
                         prevPage?: number;
                         nextPage?: number;
                         results: components["schemas"]["Taxon"][];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
                     };
                 };
             };
@@ -15481,10 +19744,10 @@ export interface operations {
     TaxaController_getPageWithFilters: {
         parameters: {
             query?: {
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
-                selectedFields?: string;
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
                 checklist?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 page?: number;
@@ -16069,6 +20332,83 @@ export interface operations {
                         prevPage?: number;
                         nextPage?: number;
                         results: components["schemas"]["Taxon"][];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
                     };
                 };
             };
@@ -16077,6 +20417,8 @@ export interface operations {
     TaxaController_getAggregate: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -16089,8 +20431,6 @@ export interface operations {
                  *     or the name if it was given. */
                 aggregateBy?: string;
                 aggregateSize?: number;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -16119,11 +20459,90 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     TaxaController_getAggregateWithFilters: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Aggregate by these fields. Multiple values are separated by a comma (,). Different aggregations can be made at the
                  *     same time using semicolon as separator (;) and aggregates can be named giving "=name" at the end of each
                  *     aggregation.
@@ -16131,8 +20550,6 @@ export interface operations {
                  *     Result will have aggregations property object where the keys of the object are either the field(s) that were used
                  *     or the name if it was given. */
                 aggregateBy?: string;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description Filter based on parent taxon id */
@@ -16700,19 +21117,96 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     TaxaController_getSpeciesPage: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 page?: number;
@@ -16759,6 +21253,83 @@ export interface operations {
                         prevPage?: number;
                         nextPage?: number;
                         results: components["schemas"]["Taxon"][];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
                     };
                 };
             };
@@ -16767,10 +21338,10 @@ export interface operations {
     TaxaController_getSpeciesPageWithFilters: {
         parameters: {
             query?: {
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
-                selectedFields?: string;
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
                 checklist?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 page?: number;
@@ -17358,11 +21929,90 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     TaxaController_getSpeciesAggregate: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -17375,8 +22025,6 @@ export interface operations {
                  *     or the name if it was given. */
                 aggregateBy?: string;
                 aggregateSize?: number;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -17405,11 +22053,90 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     TaxaController_getSpeciesAggregateWithFilters: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -17422,8 +22149,6 @@ export interface operations {
                  *     or the name if it was given. */
                 aggregateBy?: string;
                 aggregateSize?: number;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -17968,6 +22693,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Taxon"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -18166,19 +22968,96 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     TaxaController_getTaxonChildren: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -18220,6 +23099,221 @@ export interface operations {
                     "application/json": {
                         results: components["schemas"]["Taxon"][];
                         "@context": string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    TaxaController_getTaxonChildrenWithFilters: {
+        parameters: {
+            query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
+                /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
+                informalTaxonGroups?: string;
+                /** @description Filter by comma separated ids */
+                id?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
+                /** @description Checklist version to be used. Defaults to the latest version. */
+                checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
+                /** @description true: Will include only invasive taxa.
+                 *     false: Will exclude invasive taxa. */
+                invasiveSpecies?: boolean;
+                /** @description true: Will include only finnish taxa.
+                 *     false: Will exclude finnish taxa. */
+                finnish?: boolean;
+                /** @description Include media objects in the response. Defaults to false. */
+                includeMedia?: boolean;
+                /** @description Include description objects in the response. Defaults to false. */
+                includeDescriptions?: boolean;
+                /** @description Include red list evaluations in the response. Defaults to false. */
+                includeRedListEvaluations?: boolean;
+                /** @description true: Will show hidden taxa
+                 *     false: Hidden taxa are skipped and their non-hidden children raised up in the tree. */
+                includeHidden?: boolean;
+                /** @description Sorting field of the species (one of 'taxonomic' | 'scientificName' | 'finnishName') and optional sort order 'desc' | 'asc'.
+                 *     Order defaults to 'asc'. The sort field and order are separated by a space character.
+                 *
+                 *     Defaults to 'taxonomic' */
+                sortOrder?: string;
+                /** @description Filter based on parent taxon id */
+                parentTaxonId?: string;
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Taxon"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: components["schemas"]["Taxon"][];
+                        "@context": string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
                     };
                 };
             };
@@ -18228,14 +23322,14 @@ export interface operations {
     TaxaController_getTaxonParents: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -18280,19 +23374,793 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
-    TaxaController_getTaxonSpeciesPage: {
+    TaxaController_getTaxonParentsWithFilters: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
+                /** @description Checklist version to be used. Defaults to the latest version. */
+                checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
+                /** @description true: Will include only invasive taxa.
+                 *     false: Will exclude invasive taxa. */
+                invasiveSpecies?: boolean;
+                /** @description true: Will include only finnish taxa.
+                 *     false: Will exclude finnish taxa. */
+                finnish?: boolean;
+                /** @description Include media objects in the response. Defaults to false. */
+                includeMedia?: boolean;
+                /** @description Include description objects in the response. Defaults to false. */
+                includeDescriptions?: boolean;
+                /** @description Include red list evaluations in the response. Defaults to false. */
+                includeRedListEvaluations?: boolean;
+                /** @description true: Will show hidden taxa
+                 *     false: Hidden taxa are skipped and their non-hidden children raised up in the tree. */
+                includeHidden?: boolean;
+                /** @description Sorting field of the species (one of 'taxonomic' | 'scientificName' | 'finnishName') and optional sort order 'desc' | 'asc'.
+                 *     Order defaults to 'asc'. The sort field and order are separated by a space character.
+                 *
+                 *     Defaults to 'taxonomic' */
+                sortOrder?: string;
+                /** @description Filter based on parent taxon id */
+                parentTaxonId?: string;
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    qname?: string | string[];
+                    id?: string | string[];
+                    uri?: string | string[];
+                    isPartOf?: string | string[];
+                    isPartOfNonHidden?: string | string[];
+                    parents?: string | string[];
+                    nonHiddenParents?: string | string[];
+                    parentsIncludeSelf?: string | string[];
+                    nonHiddenParentsIncludeSelf?: string | string[];
+                    hiddenTaxon?: boolean;
+                    nameAccordingTo?: string | string[];
+                    taxonRank?: string | string[];
+                    scientificName?: string | string[];
+                    scientificNameAuthorship?: string | string[];
+                    scientificNameDisplayName?: string | string[];
+                    cursiveName?: boolean;
+                    typeSpecimenURI?: string | string[];
+                    synonymNames?: string | string[];
+                    "basionyms.id"?: string | string[];
+                    "basionyms.scientificName"?: string | string[];
+                    "basionyms.scientificNameAuthorship"?: string | string[];
+                    "basionyms.vernacularName.fi"?: string | string[];
+                    "basionyms.vernacularName.sv"?: string | string[];
+                    "basionyms.vernacularName.en"?: string | string[];
+                    "basionyms.taxonRank"?: string | string[];
+                    "basionyms.cursiveName"?: boolean;
+                    "basionyms.notes"?: string | string[];
+                    "basionyms.bold.bins"?: string | string[];
+                    "basionyms.hasBold"?: boolean;
+                    "objectiveSynonyms.id"?: string | string[];
+                    "objectiveSynonyms.scientificName"?: string | string[];
+                    "objectiveSynonyms.scientificNameAuthorship"?: string | string[];
+                    "objectiveSynonyms.vernacularName.fi"?: string | string[];
+                    "objectiveSynonyms.vernacularName.sv"?: string | string[];
+                    "objectiveSynonyms.vernacularName.en"?: string | string[];
+                    "objectiveSynonyms.taxonRank"?: string | string[];
+                    "objectiveSynonyms.cursiveName"?: boolean;
+                    "objectiveSynonyms.notes"?: string | string[];
+                    "objectiveSynonyms.bold.bins"?: string | string[];
+                    "objectiveSynonyms.hasBold"?: boolean;
+                    "subjectiveSynonyms.id"?: string | string[];
+                    "subjectiveSynonyms.scientificName"?: string | string[];
+                    "subjectiveSynonyms.scientificNameAuthorship"?: string | string[];
+                    "subjectiveSynonyms.vernacularName.fi"?: string | string[];
+                    "subjectiveSynonyms.vernacularName.sv"?: string | string[];
+                    "subjectiveSynonyms.vernacularName.en"?: string | string[];
+                    "subjectiveSynonyms.taxonRank"?: string | string[];
+                    "subjectiveSynonyms.cursiveName"?: boolean;
+                    "subjectiveSynonyms.notes"?: string | string[];
+                    "subjectiveSynonyms.bold.bins"?: string | string[];
+                    "subjectiveSynonyms.hasBold"?: boolean;
+                    "homotypicSynonyms.id"?: string | string[];
+                    "homotypicSynonyms.scientificName"?: string | string[];
+                    "homotypicSynonyms.scientificNameAuthorship"?: string | string[];
+                    "homotypicSynonyms.vernacularName.fi"?: string | string[];
+                    "homotypicSynonyms.vernacularName.sv"?: string | string[];
+                    "homotypicSynonyms.vernacularName.en"?: string | string[];
+                    "homotypicSynonyms.taxonRank"?: string | string[];
+                    "homotypicSynonyms.cursiveName"?: boolean;
+                    "homotypicSynonyms.notes"?: string | string[];
+                    "homotypicSynonyms.bold.bins"?: string | string[];
+                    "homotypicSynonyms.hasBold"?: boolean;
+                    "heterotypicSynonyms.id"?: string | string[];
+                    "heterotypicSynonyms.scientificName"?: string | string[];
+                    "heterotypicSynonyms.scientificNameAuthorship"?: string | string[];
+                    "heterotypicSynonyms.vernacularName.fi"?: string | string[];
+                    "heterotypicSynonyms.vernacularName.sv"?: string | string[];
+                    "heterotypicSynonyms.vernacularName.en"?: string | string[];
+                    "heterotypicSynonyms.taxonRank"?: string | string[];
+                    "heterotypicSynonyms.cursiveName"?: boolean;
+                    "heterotypicSynonyms.notes"?: string | string[];
+                    "heterotypicSynonyms.bold.bins"?: string | string[];
+                    "heterotypicSynonyms.hasBold"?: boolean;
+                    "synonyms.id"?: string | string[];
+                    "synonyms.scientificName"?: string | string[];
+                    "synonyms.scientificNameAuthorship"?: string | string[];
+                    "synonyms.vernacularName.fi"?: string | string[];
+                    "synonyms.vernacularName.sv"?: string | string[];
+                    "synonyms.vernacularName.en"?: string | string[];
+                    "synonyms.taxonRank"?: string | string[];
+                    "synonyms.cursiveName"?: boolean;
+                    "synonyms.notes"?: string | string[];
+                    "synonyms.bold.bins"?: string | string[];
+                    "synonyms.hasBold"?: boolean;
+                    "misspelledNames.id"?: string | string[];
+                    "misspelledNames.scientificName"?: string | string[];
+                    "misspelledNames.scientificNameAuthorship"?: string | string[];
+                    "misspelledNames.vernacularName.fi"?: string | string[];
+                    "misspelledNames.vernacularName.sv"?: string | string[];
+                    "misspelledNames.vernacularName.en"?: string | string[];
+                    "misspelledNames.taxonRank"?: string | string[];
+                    "misspelledNames.cursiveName"?: boolean;
+                    "misspelledNames.notes"?: string | string[];
+                    "misspelledNames.bold.bins"?: string | string[];
+                    "misspelledNames.hasBold"?: boolean;
+                    "orthographicVariants.id"?: string | string[];
+                    "orthographicVariants.scientificName"?: string | string[];
+                    "orthographicVariants.scientificNameAuthorship"?: string | string[];
+                    "orthographicVariants.vernacularName.fi"?: string | string[];
+                    "orthographicVariants.vernacularName.sv"?: string | string[];
+                    "orthographicVariants.vernacularName.en"?: string | string[];
+                    "orthographicVariants.taxonRank"?: string | string[];
+                    "orthographicVariants.cursiveName"?: boolean;
+                    "orthographicVariants.notes"?: string | string[];
+                    "orthographicVariants.bold.bins"?: string | string[];
+                    "orthographicVariants.hasBold"?: boolean;
+                    "uncertainSynonyms.id"?: string | string[];
+                    "uncertainSynonyms.scientificName"?: string | string[];
+                    "uncertainSynonyms.scientificNameAuthorship"?: string | string[];
+                    "uncertainSynonyms.vernacularName.fi"?: string | string[];
+                    "uncertainSynonyms.vernacularName.sv"?: string | string[];
+                    "uncertainSynonyms.vernacularName.en"?: string | string[];
+                    "uncertainSynonyms.taxonRank"?: string | string[];
+                    "uncertainSynonyms.cursiveName"?: boolean;
+                    "uncertainSynonyms.notes"?: string | string[];
+                    "uncertainSynonyms.bold.bins"?: string | string[];
+                    "uncertainSynonyms.hasBold"?: boolean;
+                    "misappliedNames.id"?: string | string[];
+                    "misappliedNames.scientificName"?: string | string[];
+                    "misappliedNames.scientificNameAuthorship"?: string | string[];
+                    "misappliedNames.vernacularName.fi"?: string | string[];
+                    "misappliedNames.vernacularName.sv"?: string | string[];
+                    "misappliedNames.vernacularName.en"?: string | string[];
+                    "misappliedNames.taxonRank"?: string | string[];
+                    "misappliedNames.cursiveName"?: boolean;
+                    "misappliedNames.notes"?: string | string[];
+                    "misappliedNames.bold.bins"?: string | string[];
+                    "misappliedNames.hasBold"?: boolean;
+                    "alternativeNames.id"?: string | string[];
+                    "alternativeNames.scientificName"?: string | string[];
+                    "alternativeNames.scientificNameAuthorship"?: string | string[];
+                    "alternativeNames.vernacularName.fi"?: string | string[];
+                    "alternativeNames.vernacularName.sv"?: string | string[];
+                    "alternativeNames.vernacularName.en"?: string | string[];
+                    "alternativeNames.taxonRank"?: string | string[];
+                    "alternativeNames.cursiveName"?: boolean;
+                    "alternativeNames.notes"?: string | string[];
+                    "alternativeNames.bold.bins"?: string | string[];
+                    "alternativeNames.hasBold"?: boolean;
+                    "vernacularName.fi"?: string | string[];
+                    "vernacularName.sv"?: string | string[];
+                    "vernacularName.en"?: string | string[];
+                    "alternativeVernacularName.fi"?: string | string[];
+                    "alternativeVernacularName.sv"?: string | string[];
+                    "alternativeVernacularName.en"?: string | string[];
+                    "obsoleteVernacularName.fi"?: string | string[];
+                    "obsoleteVernacularName.sv"?: string | string[];
+                    "obsoleteVernacularName.en"?: string | string[];
+                    "colloquialVernacularName.fi"?: string | string[];
+                    "colloquialVernacularName.sv"?: string | string[];
+                    "colloquialVernacularName.en"?: string | string[];
+                    "tradeName.fi"?: string | string[];
+                    "tradeName.sv"?: string | string[];
+                    "tradeName.en"?: string | string[];
+                    informalTaxonGroups?: string | string[];
+                    threatenedStatus?: string | string[];
+                    redListEvaluationGroups?: string | string[];
+                    occurrenceInFinland?: string | string[];
+                    occurrenceInFinlandSpecimenURI?: string | string[];
+                    typeOfOccurrenceInFinland?: string | string[];
+                    occurrenceInFinlandPublications?: string | string[];
+                    typeOfOccurrenceInFinlandNotes?: string | string[];
+                    originalPublications?: string | string[];
+                    originalDescription?: string | string[];
+                    nameDecidedBy?: string | string[];
+                    nameDecidedDate?: string | string[];
+                    administrativeStatuses?: string | string[];
+                    "primaryHabitat.habitat"?: string | string[];
+                    "primaryHabitat.habitatSpecificTypes"?: string | string[];
+                    "primaryHabitat.id"?: string | string[];
+                    "secondaryHabitats.habitat"?: string | string[];
+                    "secondaryHabitats.habitatSpecificTypes"?: string | string[];
+                    "secondaryHabitats.id"?: string | string[];
+                    "latestRedListStatusFinland.status"?: string | string[];
+                    "redListStatusesInFinland.status"?: string | string[];
+                    taxonExpert?: string | string[];
+                    taxonEditor?: string | string[];
+                    invasiveSpeciesEstablishment?: string | string[];
+                    "multimedia.author"?: string | string[];
+                    "multimedia.caption"?: string | string[];
+                    "multimedia.captureDateTime"?: string | string[];
+                    "multimedia.copyrightOwner"?: string | string[];
+                    "multimedia.fullURL"?: string | string[];
+                    "multimedia.id"?: string | string[];
+                    "multimedia.keywords"?: string | string[];
+                    "multimedia.largeURL"?: string | string[];
+                    "multimedia.licenseAbbreviation"?: string | string[];
+                    "multimedia.licenseFullname.fi"?: string | string[];
+                    "multimedia.licenseFullname.sv"?: string | string[];
+                    "multimedia.licenseFullname.en"?: string | string[];
+                    "multimedia.licenseId"?: string | string[];
+                    "multimedia.lifeStage"?: string | string[];
+                    "multimedia.plantLifeStage"?: string | string[];
+                    "multimedia.sex"?: string | string[];
+                    "multimedia.side"?: string | string[];
+                    "multimedia.source"?: string | string[];
+                    "multimedia.squareThumbnailURL"?: string | string[];
+                    "multimedia.taxon.id"?: string | string[];
+                    "multimedia.taxon.scientificName"?: string | string[];
+                    "multimedia.taxon.scientificNameAuthorship"?: string | string[];
+                    "multimedia.taxon.vernacularName.fi"?: string | string[];
+                    "multimedia.taxon.vernacularName.sv"?: string | string[];
+                    "multimedia.taxon.vernacularName.en"?: string | string[];
+                    "multimedia.taxon.taxonRank"?: string | string[];
+                    "multimedia.taxon.cursiveName"?: boolean;
+                    "multimedia.taxon.notes"?: string | string[];
+                    "multimedia.taxon.bold.bins"?: string | string[];
+                    "multimedia.taxon.hasBold"?: boolean;
+                    "multimedia.taxonDescriptionCaption.fi"?: string | string[];
+                    "multimedia.taxonDescriptionCaption.sv"?: string | string[];
+                    "multimedia.taxonDescriptionCaption.en"?: string | string[];
+                    "multimedia.thumbnailURL"?: string | string[];
+                    "multimedia.type"?: string | string[];
+                    "multimedia.uploadDateTime"?: string | string[];
+                    "multimedia.primaryForTaxon"?: boolean;
+                    "descriptions.id"?: string | string[];
+                    "descriptions.title.fi"?: string | string[];
+                    "descriptions.title.sv"?: string | string[];
+                    "descriptions.title.en"?: string | string[];
+                    "descriptions.groups.group"?: string | string[];
+                    "descriptions.groups.title.fi"?: string | string[];
+                    "descriptions.groups.title.sv"?: string | string[];
+                    "descriptions.groups.title.en"?: string | string[];
+                    "descriptions.groups.variables.variable"?: string | string[];
+                    "descriptions.groups.variables.title.fi"?: string | string[];
+                    "descriptions.groups.variables.title.sv"?: string | string[];
+                    "descriptions.groups.variables.title.en"?: string | string[];
+                    "descriptions.groups.variables.content.fi"?: string | string[];
+                    "descriptions.groups.variables.content.sv"?: string | string[];
+                    "descriptions.groups.variables.content.en"?: string | string[];
+                    "descriptions.speciesCardAuthors.variable"?: string | string[];
+                    "descriptions.speciesCardAuthors.title.fi"?: string | string[];
+                    "descriptions.speciesCardAuthors.title.sv"?: string | string[];
+                    "descriptions.speciesCardAuthors.title.en"?: string | string[];
+                    "descriptions.speciesCardAuthors.content.fi"?: string | string[];
+                    "descriptions.speciesCardAuthors.content.sv"?: string | string[];
+                    "descriptions.speciesCardAuthors.content.en"?: string | string[];
+                    secureLevel?: string | string[];
+                    breedingSecureLevel?: string | string[];
+                    winteringSecureLevel?: string | string[];
+                    nestSiteSecureLevel?: string | string[];
+                    naturaAreaSecureLevel?: string | string[];
+                    sensitive?: boolean;
+                    autoNonWild?: boolean;
+                    "occurrences.area"?: string | string[];
+                    "occurrences.id"?: string | string[];
+                    "occurrences.notes"?: string | string[];
+                    "occurrences.specimenURI"?: string | string[];
+                    "occurrences.status"?: string | string[];
+                    "occurrences.threatened"?: boolean;
+                    "habitatOccurrenceCounts.habitat.fi"?: string | string[];
+                    "habitatOccurrenceCounts.habitat.sv"?: string | string[];
+                    "habitatOccurrenceCounts.habitat.en"?: string | string[];
+                    "habitatOccurrenceCounts.id"?: string | string[];
+                    birdlifeCode?: string | string[];
+                    euringCode?: string | string[];
+                    customReportFormLink?: string | string[];
+                    taxonConceptIds?: string | string[];
+                    additionalIds?: string | string[];
+                    "externalLinks.locale"?: string | string[];
+                    "externalLinks.uri"?: string | string[];
+                    finnish?: boolean;
+                    species?: boolean;
+                    finnishSpecies?: boolean;
+                    invasiveSpecies?: boolean;
+                    stableInFinland?: boolean;
+                    "bold.bins"?: string | string[];
+                    hasBold?: boolean;
+                    hasParent?: boolean;
+                    hasChildren?: boolean;
+                    hasMultimedia?: boolean;
+                    hasDescriptions?: boolean;
+                    invasiveSpeciesMainGroups?: string | string[];
+                    taxonSets?: string | string[];
+                    notes?: string | string[];
+                    "parent.domain.id"?: string | string[];
+                    "parent.domain.scientificName"?: string | string[];
+                    "parent.domain.scientificNameAuthorship"?: string | string[];
+                    "parent.domain.vernacularName.fi"?: string | string[];
+                    "parent.domain.vernacularName.sv"?: string | string[];
+                    "parent.domain.vernacularName.en"?: string | string[];
+                    "parent.domain.taxonRank"?: string | string[];
+                    "parent.domain.cursiveName"?: boolean;
+                    "parent.domain.notes"?: string | string[];
+                    "parent.domain.bold.bins"?: string | string[];
+                    "parent.domain.hasBold"?: boolean;
+                    "parent.kingdom.id"?: string | string[];
+                    "parent.kingdom.scientificName"?: string | string[];
+                    "parent.kingdom.scientificNameAuthorship"?: string | string[];
+                    "parent.kingdom.vernacularName.fi"?: string | string[];
+                    "parent.kingdom.vernacularName.sv"?: string | string[];
+                    "parent.kingdom.vernacularName.en"?: string | string[];
+                    "parent.kingdom.taxonRank"?: string | string[];
+                    "parent.kingdom.cursiveName"?: boolean;
+                    "parent.kingdom.notes"?: string | string[];
+                    "parent.kingdom.bold.bins"?: string | string[];
+                    "parent.kingdom.hasBold"?: boolean;
+                    "parent.phylum.id"?: string | string[];
+                    "parent.phylum.scientificName"?: string | string[];
+                    "parent.phylum.scientificNameAuthorship"?: string | string[];
+                    "parent.phylum.vernacularName.fi"?: string | string[];
+                    "parent.phylum.vernacularName.sv"?: string | string[];
+                    "parent.phylum.vernacularName.en"?: string | string[];
+                    "parent.phylum.taxonRank"?: string | string[];
+                    "parent.phylum.cursiveName"?: boolean;
+                    "parent.phylum.notes"?: string | string[];
+                    "parent.phylum.bold.bins"?: string | string[];
+                    "parent.phylum.hasBold"?: boolean;
+                    "parent.subphylum.id"?: string | string[];
+                    "parent.subphylum.scientificName"?: string | string[];
+                    "parent.subphylum.scientificNameAuthorship"?: string | string[];
+                    "parent.subphylum.vernacularName.fi"?: string | string[];
+                    "parent.subphylum.vernacularName.sv"?: string | string[];
+                    "parent.subphylum.vernacularName.en"?: string | string[];
+                    "parent.subphylum.taxonRank"?: string | string[];
+                    "parent.subphylum.cursiveName"?: boolean;
+                    "parent.subphylum.notes"?: string | string[];
+                    "parent.subphylum.bold.bins"?: string | string[];
+                    "parent.subphylum.hasBold"?: boolean;
+                    "parent.division.id"?: string | string[];
+                    "parent.division.scientificName"?: string | string[];
+                    "parent.division.scientificNameAuthorship"?: string | string[];
+                    "parent.division.vernacularName.fi"?: string | string[];
+                    "parent.division.vernacularName.sv"?: string | string[];
+                    "parent.division.vernacularName.en"?: string | string[];
+                    "parent.division.taxonRank"?: string | string[];
+                    "parent.division.cursiveName"?: boolean;
+                    "parent.division.notes"?: string | string[];
+                    "parent.division.bold.bins"?: string | string[];
+                    "parent.division.hasBold"?: boolean;
+                    "parent.class.id"?: string | string[];
+                    "parent.class.scientificName"?: string | string[];
+                    "parent.class.scientificNameAuthorship"?: string | string[];
+                    "parent.class.vernacularName.fi"?: string | string[];
+                    "parent.class.vernacularName.sv"?: string | string[];
+                    "parent.class.vernacularName.en"?: string | string[];
+                    "parent.class.taxonRank"?: string | string[];
+                    "parent.class.cursiveName"?: boolean;
+                    "parent.class.notes"?: string | string[];
+                    "parent.class.bold.bins"?: string | string[];
+                    "parent.class.hasBold"?: boolean;
+                    "parent.subclass.id"?: string | string[];
+                    "parent.subclass.scientificName"?: string | string[];
+                    "parent.subclass.scientificNameAuthorship"?: string | string[];
+                    "parent.subclass.vernacularName.fi"?: string | string[];
+                    "parent.subclass.vernacularName.sv"?: string | string[];
+                    "parent.subclass.vernacularName.en"?: string | string[];
+                    "parent.subclass.taxonRank"?: string | string[];
+                    "parent.subclass.cursiveName"?: boolean;
+                    "parent.subclass.notes"?: string | string[];
+                    "parent.subclass.bold.bins"?: string | string[];
+                    "parent.subclass.hasBold"?: boolean;
+                    "parent.order.id"?: string | string[];
+                    "parent.order.scientificName"?: string | string[];
+                    "parent.order.scientificNameAuthorship"?: string | string[];
+                    "parent.order.vernacularName.fi"?: string | string[];
+                    "parent.order.vernacularName.sv"?: string | string[];
+                    "parent.order.vernacularName.en"?: string | string[];
+                    "parent.order.taxonRank"?: string | string[];
+                    "parent.order.cursiveName"?: boolean;
+                    "parent.order.notes"?: string | string[];
+                    "parent.order.bold.bins"?: string | string[];
+                    "parent.order.hasBold"?: boolean;
+                    "parent.suborder.id"?: string | string[];
+                    "parent.suborder.scientificName"?: string | string[];
+                    "parent.suborder.scientificNameAuthorship"?: string | string[];
+                    "parent.suborder.vernacularName.fi"?: string | string[];
+                    "parent.suborder.vernacularName.sv"?: string | string[];
+                    "parent.suborder.vernacularName.en"?: string | string[];
+                    "parent.suborder.taxonRank"?: string | string[];
+                    "parent.suborder.cursiveName"?: boolean;
+                    "parent.suborder.notes"?: string | string[];
+                    "parent.suborder.bold.bins"?: string | string[];
+                    "parent.suborder.hasBold"?: boolean;
+                    "parent.superfamily.id"?: string | string[];
+                    "parent.superfamily.scientificName"?: string | string[];
+                    "parent.superfamily.scientificNameAuthorship"?: string | string[];
+                    "parent.superfamily.vernacularName.fi"?: string | string[];
+                    "parent.superfamily.vernacularName.sv"?: string | string[];
+                    "parent.superfamily.vernacularName.en"?: string | string[];
+                    "parent.superfamily.taxonRank"?: string | string[];
+                    "parent.superfamily.cursiveName"?: boolean;
+                    "parent.superfamily.notes"?: string | string[];
+                    "parent.superfamily.bold.bins"?: string | string[];
+                    "parent.superfamily.hasBold"?: boolean;
+                    "parent.family.id"?: string | string[];
+                    "parent.family.scientificName"?: string | string[];
+                    "parent.family.scientificNameAuthorship"?: string | string[];
+                    "parent.family.vernacularName.fi"?: string | string[];
+                    "parent.family.vernacularName.sv"?: string | string[];
+                    "parent.family.vernacularName.en"?: string | string[];
+                    "parent.family.taxonRank"?: string | string[];
+                    "parent.family.cursiveName"?: boolean;
+                    "parent.family.notes"?: string | string[];
+                    "parent.family.bold.bins"?: string | string[];
+                    "parent.family.hasBold"?: boolean;
+                    "parent.subfamily.id"?: string | string[];
+                    "parent.subfamily.scientificName"?: string | string[];
+                    "parent.subfamily.scientificNameAuthorship"?: string | string[];
+                    "parent.subfamily.vernacularName.fi"?: string | string[];
+                    "parent.subfamily.vernacularName.sv"?: string | string[];
+                    "parent.subfamily.vernacularName.en"?: string | string[];
+                    "parent.subfamily.taxonRank"?: string | string[];
+                    "parent.subfamily.cursiveName"?: boolean;
+                    "parent.subfamily.notes"?: string | string[];
+                    "parent.subfamily.bold.bins"?: string | string[];
+                    "parent.subfamily.hasBold"?: boolean;
+                    "parent.tribe.id"?: string | string[];
+                    "parent.tribe.scientificName"?: string | string[];
+                    "parent.tribe.scientificNameAuthorship"?: string | string[];
+                    "parent.tribe.vernacularName.fi"?: string | string[];
+                    "parent.tribe.vernacularName.sv"?: string | string[];
+                    "parent.tribe.vernacularName.en"?: string | string[];
+                    "parent.tribe.taxonRank"?: string | string[];
+                    "parent.tribe.cursiveName"?: boolean;
+                    "parent.tribe.notes"?: string | string[];
+                    "parent.tribe.bold.bins"?: string | string[];
+                    "parent.tribe.hasBold"?: boolean;
+                    "parent.subtribe.id"?: string | string[];
+                    "parent.subtribe.scientificName"?: string | string[];
+                    "parent.subtribe.scientificNameAuthorship"?: string | string[];
+                    "parent.subtribe.vernacularName.fi"?: string | string[];
+                    "parent.subtribe.vernacularName.sv"?: string | string[];
+                    "parent.subtribe.vernacularName.en"?: string | string[];
+                    "parent.subtribe.taxonRank"?: string | string[];
+                    "parent.subtribe.cursiveName"?: boolean;
+                    "parent.subtribe.notes"?: string | string[];
+                    "parent.subtribe.bold.bins"?: string | string[];
+                    "parent.subtribe.hasBold"?: boolean;
+                    "parent.genus.id"?: string | string[];
+                    "parent.genus.scientificName"?: string | string[];
+                    "parent.genus.scientificNameAuthorship"?: string | string[];
+                    "parent.genus.vernacularName.fi"?: string | string[];
+                    "parent.genus.vernacularName.sv"?: string | string[];
+                    "parent.genus.vernacularName.en"?: string | string[];
+                    "parent.genus.taxonRank"?: string | string[];
+                    "parent.genus.cursiveName"?: boolean;
+                    "parent.genus.notes"?: string | string[];
+                    "parent.genus.bold.bins"?: string | string[];
+                    "parent.genus.hasBold"?: boolean;
+                    "parent.subgenus.id"?: string | string[];
+                    "parent.subgenus.scientificName"?: string | string[];
+                    "parent.subgenus.scientificNameAuthorship"?: string | string[];
+                    "parent.subgenus.vernacularName.fi"?: string | string[];
+                    "parent.subgenus.vernacularName.sv"?: string | string[];
+                    "parent.subgenus.vernacularName.en"?: string | string[];
+                    "parent.subgenus.taxonRank"?: string | string[];
+                    "parent.subgenus.cursiveName"?: boolean;
+                    "parent.subgenus.notes"?: string | string[];
+                    "parent.subgenus.bold.bins"?: string | string[];
+                    "parent.subgenus.hasBold"?: boolean;
+                    "parent.aggregate.id"?: string | string[];
+                    "parent.aggregate.scientificName"?: string | string[];
+                    "parent.aggregate.scientificNameAuthorship"?: string | string[];
+                    "parent.aggregate.vernacularName.fi"?: string | string[];
+                    "parent.aggregate.vernacularName.sv"?: string | string[];
+                    "parent.aggregate.vernacularName.en"?: string | string[];
+                    "parent.aggregate.taxonRank"?: string | string[];
+                    "parent.aggregate.cursiveName"?: boolean;
+                    "parent.aggregate.notes"?: string | string[];
+                    "parent.aggregate.bold.bins"?: string | string[];
+                    "parent.aggregate.hasBold"?: boolean;
+                    "parent.species.id"?: string | string[];
+                    "parent.species.scientificName"?: string | string[];
+                    "parent.species.scientificNameAuthorship"?: string | string[];
+                    "parent.species.vernacularName.fi"?: string | string[];
+                    "parent.species.vernacularName.sv"?: string | string[];
+                    "parent.species.vernacularName.en"?: string | string[];
+                    "parent.species.taxonRank"?: string | string[];
+                    "parent.species.cursiveName"?: boolean;
+                    "parent.species.notes"?: string | string[];
+                    "parent.species.bold.bins"?: string | string[];
+                    "parent.species.hasBold"?: boolean;
+                    "synonymOf.id"?: string | string[];
+                    "synonymOf.scientificName"?: string | string[];
+                    "synonymOf.scientificNameAuthorship"?: string | string[];
+                    "synonymOf.vernacularName.fi"?: string | string[];
+                    "synonymOf.vernacularName.sv"?: string | string[];
+                    "synonymOf.vernacularName.en"?: string | string[];
+                    "synonymOf.taxonRank"?: string | string[];
+                    "synonymOf.cursiveName"?: boolean;
+                    "synonymOf.notes"?: string | string[];
+                    "synonymOf.bold.bins"?: string | string[];
+                    "synonymOf.hasBold"?: boolean;
+                    "latestRedListEvaluation.redListStatus"?: ("MX.iucnEX" | "MX.iucnEW" | "MX.iucnRE" | "MX.iucnCR" | "MX.iucnEN" | "MX.iucnVU" | "MX.iucnNT" | "MX.iucnLC" | "MX.iucnDD" | "MX.iucnNA" | "MX.iucnNE") | ("MX.iucnEX" | "MX.iucnEW" | "MX.iucnRE" | "MX.iucnCR" | "MX.iucnEN" | "MX.iucnVU" | "MX.iucnNT" | "MX.iucnLC" | "MX.iucnDD" | "MX.iucnNA" | "MX.iucnNE")[];
+                    "latestRedListEvaluation.externalPopulationImpactOnRedListStatus"?: ("MKV.externalPopulationImpactOnRedListStatusEnumMinus1" | "MKV.externalPopulationImpactOnRedListStatusEnumMinus2" | "MKV.externalPopulationImpactOnRedListStatusEnumPlus1" | "MKV.externalPopulationImpactOnRedListStatusEnumPlus2") | ("MKV.externalPopulationImpactOnRedListStatusEnumMinus1" | "MKV.externalPopulationImpactOnRedListStatusEnumMinus2" | "MKV.externalPopulationImpactOnRedListStatusEnumPlus1" | "MKV.externalPopulationImpactOnRedListStatusEnumPlus2")[];
+                    "latestRedListEvaluation.criteriaForStatus"?: string | string[];
+                    "latestRedListEvaluation.possiblyRE"?: ("MX.iucnRE" | "MX.iucnEW" | "MX.iucnEX") | ("MX.iucnRE" | "MX.iucnEW" | "MX.iucnEX")[];
+                    "latestRedListEvaluation.reasonForStatusChange"?: ("MKV.reasonForStatusChangeGenuine" | "MKV.reasonForStatusChangeGenuineBeforePreviousEvaluation" | "MKV.reasonForStatusChangeChangesInCriteria" | "MKV.reasonForStatusChangeMoreInformation" | "MKV.reasonForStatusChangeChangesInTaxonomy" | "MKV.reasonForStatusChangeError" | "MKV.reasonForStatusChangeErroneousInformation" | "MKV.reasonForStatusChangeOther") | ("MKV.reasonForStatusChangeGenuine" | "MKV.reasonForStatusChangeGenuineBeforePreviousEvaluation" | "MKV.reasonForStatusChangeChangesInCriteria" | "MKV.reasonForStatusChangeMoreInformation" | "MKV.reasonForStatusChangeChangesInTaxonomy" | "MKV.reasonForStatusChangeError" | "MKV.reasonForStatusChangeErroneousInformation" | "MKV.reasonForStatusChangeOther")[];
+                    "latestRedListEvaluation.lastSightingNotes"?: string | string[];
+                    "latestRedListEvaluation.primaryHabitat.habitat"?: string | string[];
+                    "latestRedListEvaluation.primaryHabitat.habitatSpecificTypes"?: string | string[];
+                    "latestRedListEvaluation.primaryHabitat.id"?: string | string[];
+                    "latestRedListEvaluation.secondaryHabitats.habitat"?: string | string[];
+                    "latestRedListEvaluation.secondaryHabitats.habitatSpecificTypes"?: string | string[];
+                    "latestRedListEvaluation.secondaryHabitats.id"?: string | string[];
+                    "latestRedListEvaluation.primaryHabitatSearchStrings"?: string | string[];
+                    "latestRedListEvaluation.anyHabitatSearchStrings"?: string | string[];
+                    "latestRedListEvaluation.endangermentReasons"?: string | string[];
+                    "latestRedListEvaluation.primaryEndangermentReason"?: string | string[];
+                    "latestRedListEvaluation.threats"?: string | string[];
+                    "latestRedListEvaluation.primaryThreat"?: string | string[];
+                    "latestRedListEvaluation.occurrences.area"?: string | string[];
+                    "latestRedListEvaluation.occurrences.id"?: string | string[];
+                    "latestRedListEvaluation.occurrences.notes"?: string | string[];
+                    "latestRedListEvaluation.occurrences.specimenURI"?: string | string[];
+                    "latestRedListEvaluation.occurrences.status"?: string | string[];
+                    "latestRedListEvaluation.occurrences.threatened"?: boolean;
+                    "latestRedListEvaluation.threatenedAtArea"?: string | string[];
+                    "latestRedListEvaluation.correctedStatusForRedListIndex"?: string | string[];
+                    hasLatestRedListEvaluation?: boolean;
+                    primaryHabitatSearchStrings?: string | string[];
+                    anyHabitatSearchStrings?: string | string[];
+                    "vernacularNameMultiLang.fi.fi"?: string | string[];
+                    "vernacularNameMultiLang.fi.sv"?: string | string[];
+                    "vernacularNameMultiLang.fi.en"?: string | string[];
+                    "vernacularNameMultiLang.sv.fi"?: string | string[];
+                    "vernacularNameMultiLang.sv.sv"?: string | string[];
+                    "vernacularNameMultiLang.sv.en"?: string | string[];
+                    "vernacularNameMultiLang.en.fi"?: string | string[];
+                    "vernacularNameMultiLang.en.sv"?: string | string[];
+                    "vernacularNameMultiLang.en.en"?: string | string[];
+                    "alternativeVernacularNameMultiLang.fi.fi"?: string | string[];
+                    "alternativeVernacularNameMultiLang.fi.sv"?: string | string[];
+                    "alternativeVernacularNameMultiLang.fi.en"?: string | string[];
+                    "alternativeVernacularNameMultiLang.sv.fi"?: string | string[];
+                    "alternativeVernacularNameMultiLang.sv.sv"?: string | string[];
+                    "alternativeVernacularNameMultiLang.sv.en"?: string | string[];
+                    "alternativeVernacularNameMultiLang.en.fi"?: string | string[];
+                    "alternativeVernacularNameMultiLang.en.sv"?: string | string[];
+                    "alternativeVernacularNameMultiLang.en.en"?: string | string[];
+                    "colloquialVernacularNameMultiLang.fi.fi"?: string | string[];
+                    "colloquialVernacularNameMultiLang.fi.sv"?: string | string[];
+                    "colloquialVernacularNameMultiLang.fi.en"?: string | string[];
+                    "colloquialVernacularNameMultiLang.sv.fi"?: string | string[];
+                    "colloquialVernacularNameMultiLang.sv.sv"?: string | string[];
+                    "colloquialVernacularNameMultiLang.sv.en"?: string | string[];
+                    "colloquialVernacularNameMultiLang.en.fi"?: string | string[];
+                    "colloquialVernacularNameMultiLang.en.sv"?: string | string[];
+                    "colloquialVernacularNameMultiLang.en.en"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.fi.fi"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.fi.sv"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.fi.en"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.sv.fi"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.sv.sv"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.sv.en"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.en.fi"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.en.sv"?: string | string[];
+                    "obsoleteVernacularNameMultiLang.en.en"?: string | string[];
+                    "tradeNameMultiLang.fi.fi"?: string | string[];
+                    "tradeNameMultiLang.fi.sv"?: string | string[];
+                    "tradeNameMultiLang.fi.en"?: string | string[];
+                    "tradeNameMultiLang.sv.fi"?: string | string[];
+                    "tradeNameMultiLang.sv.sv"?: string | string[];
+                    "tradeNameMultiLang.sv.en"?: string | string[];
+                    "tradeNameMultiLang.en.fi"?: string | string[];
+                    "tradeNameMultiLang.en.sv"?: string | string[];
+                    "tradeNameMultiLang.en.en"?: string | string[];
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: components["schemas"]["Taxon"][];
+                        "@context": string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    TaxaController_getTaxonSpeciesPage: {
+        parameters: {
+            query?: {
                 /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
                 checklist?: string;
+                /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
+                informalTaxonGroups?: string;
+                /** @description Filter by comma separated ids */
+                id?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 page?: number;
@@ -18344,19 +24212,96 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     TaxaController_getTaxonSpeciesPageWithFilters: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 page?: number;
@@ -18997,11 +24942,90 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     TaxaController_getTaxonSpeciesAggregate: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -19014,8 +25038,6 @@ export interface operations {
                  *     or the name if it was given. */
                 aggregateBy?: string;
                 aggregateSize?: number;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -19046,11 +25068,90 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     TaxaController_getTaxonSpeciesAggregateWithFilters: {
         parameters: {
             query?: {
+                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
+                checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -19063,8 +25164,6 @@ export interface operations {
                  *     or the name if it was given. */
                 aggregateBy?: string;
                 aggregateSize?: number;
-                /** @description Search taxon from specified checklist (defaults to FinBIF master checklist) */
-                checklist?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
                 /** @description true: Will include only invasive taxa.
@@ -19658,6 +25757,83 @@ export interface operations {
                     "application/json": components["schemas"]["Taxon"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     TaxaController_getTaxonDescriptions: {
@@ -19684,6 +25860,83 @@ export interface operations {
                     "application/json": {
                         results: components["schemas"]["Content"][];
                         "@context": string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
                     };
                 };
             };
@@ -19716,6 +25969,83 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     AreaController_get: {
@@ -19737,6 +26067,83 @@ export interface operations {
                     "application/json": components["schemas"]["area"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     AreaController_getPage: {
@@ -19744,6 +26151,7 @@ export interface operations {
             query?: {
                 /** @description Include only items with the given ids. Multiple values are separated by a comma (,). */
                 idIn?: string;
+                type?: components["schemas"]["Object"];
                 /** @description Area type */
                 areaType?: "ML.country" | "ML.biogeographicalProvince" | "ML.municipality" | "ML.oldMunicipality" | "ML.birdAssociationArea" | "ML.iucnEvaluationArea";
                 page?: number;
@@ -19771,6 +26179,83 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     ApiUsersController_getInfo: {
@@ -19791,6 +26276,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ApiUserEntity"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -19814,6 +26376,83 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     ApiUsersController_renew: {
@@ -19835,15 +26474,92 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     ImagesController_upload: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -19855,17 +26571,94 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["FileUploadResponse"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
     };
     ImagesController_get: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -19881,15 +26674,92 @@ export interface operations {
                     "application/json": components["schemas"]["Image"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     ImagesController_updateMetadata: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -19909,15 +26779,92 @@ export interface operations {
                     "application/json": components["schemas"]["Image"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     ImagesController_delete: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -19931,15 +26878,92 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     ImagesController_findLarge: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -19952,16 +26976,93 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
             };
         };
     };
     ImagesController_findSquare: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -19974,16 +27075,93 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
             };
         };
     };
     ImagesController_findThumbnail: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -19997,15 +27175,92 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     ImagesController_uploadMetadata: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 tempId: string;
             };
@@ -20025,15 +27280,92 @@ export interface operations {
                     "application/json": components["schemas"]["Image"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     AudioController_upload: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -20047,15 +27379,92 @@ export interface operations {
                     "application/json": components["schemas"]["FileUploadResponse"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     AudioController_get: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20071,15 +27480,92 @@ export interface operations {
                     "application/json": components["schemas"]["Audio"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     AudioController_updateMetadata: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20099,15 +27585,92 @@ export interface operations {
                     "application/json": components["schemas"]["Audio"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     AudioController_delete: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20121,15 +27684,92 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     AudioController_getMp3: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20142,16 +27782,93 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
             };
         };
     };
     AudioController_getThumbnail: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20164,16 +27881,93 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
             };
         };
     };
     AudioController_getWav: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20186,16 +27980,93 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
             };
         };
     };
     AudioController_findFlac: {
         parameters: {
-            query?: {
-                /** @description Person's authentication token */
-                personToken?: string;
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20209,15 +28080,92 @@ export interface operations {
                 };
                 content?: never;
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     AudioController_uploadMetadata: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 tempId: string;
             };
@@ -20235,6 +28183,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Audio"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -20256,6 +28281,83 @@ export interface operations {
                     "application/json": components["schemas"]["tag"][];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     AnnotationsController_getPage: {
@@ -20263,12 +28365,13 @@ export interface operations {
             query: {
                 /** @description Filter by root ID */
                 rootID: string;
-                /** @description Person's authentication token */
-                personToken: string;
                 page?: number;
                 pageSize?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -20290,15 +28393,92 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     AnnotationsController_create: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -20316,15 +28496,92 @@ export interface operations {
                     "application/json": components["schemas"]["annotation"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     AnnotationsController_delete: {
         parameters: {
-            query: {
+            query?: never;
+            header?: {
                 /** @description Person's authentication token */
-                personToken: string;
+                "Person-Token"?: string;
             };
-            header?: never;
             path: {
                 id: string;
             };
@@ -20338,6 +28595,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -20361,6 +28695,83 @@ export interface operations {
                     "application/json": Record<string, never>;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     InformationController_get: {
@@ -20380,6 +28791,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Information"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -20403,6 +28891,83 @@ export interface operations {
                     "application/json": components["schemas"]["Information"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     ChecklistController_get: {
@@ -20422,6 +28987,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["checklist"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -20456,6 +29098,83 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     ChecklistVersionsController_get: {
@@ -20475,6 +29194,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["checklist"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -20506,6 +29302,83 @@ export interface operations {
                         prevPage?: number;
                         nextPage?: number;
                         results: components["schemas"]["checklist"][];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
                     };
                 };
             };
@@ -20541,6 +29414,83 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     OrganizationsController_get: {
@@ -20560,6 +29510,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SensitiveOrganization"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -20594,6 +29621,83 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     InformalTaxonGroupsController_getTree: {
@@ -20613,6 +29717,83 @@ export interface operations {
                     "application/json": {
                         results: components["schemas"]["informalTaxonGroup"][];
                         "@context": string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
                     };
                 };
             };
@@ -20638,6 +29819,83 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     InformalTaxonGroupsController_get: {
@@ -20657,6 +29915,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["informalTaxonGroup"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -20683,6 +30018,83 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     InformalTaxonGroupsController_getParent: {
@@ -20702,6 +30114,83 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["informalTaxonGroup"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };
@@ -20728,6 +30217,83 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     SoundIdentificationController_proxy: {
@@ -20744,6 +30310,83 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
             };
         };
     };
@@ -20772,6 +30415,83 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
     AutocompleteController_getFriends: {
@@ -20781,10 +30501,11 @@ export interface operations {
                 query: string;
                 /** @description Limit the size of results */
                 limit?: number;
-                /** @description Person's authentication token */
-                personToken: string;
             };
-            header?: never;
+            header?: {
+                /** @description Person's authentication token */
+                "Person-Token"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -20798,6 +30519,83 @@ export interface operations {
                     "application/json": {
                         results: components["schemas"]["GetPersonsResponseDto"][];
                         "@context": string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
                     };
                 };
             };
@@ -20824,7 +30622,7 @@ export interface operations {
                 /** @description Exclude taxa from specified informal taxon group(s). Multiple values are separated by a comma (,) */
                 excludedInformalTaxonGroup?: string;
                 /** @description Default: All match types; exact = exact matches, partial = partially matching, likely = fuzzy matching. Multiple values are separated by a comma (,) */
-                matchType?: "exact" | "partial" | "likely";
+                matchType?: string;
                 /** @description Matching names have a type (e.g., MX.vernacularName, MX.hasMisappliedName). Multiple values are separated by a comma (,) */
                 excludeNameTypes?: string;
                 /** @description Filter to include only species (and subspecies) */
@@ -20853,9 +30651,187 @@ export interface operations {
                     };
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
-    AutocompleteController_getTripReportUnitListAutocomplete: {
+    ShorthandController_getTripReportUnitShorthandAutocomplete: {
+        parameters: {
+            query: {
+                /** @description Search term */
+                query: string;
+                /** @description Limit the size of results */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TripReportUnitShorthandResponseDto"][];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    ShorthandController_getTripReportUnitListAutocomplete: {
         parameters: {
             query: {
                 /** @description Search term */
@@ -20875,36 +30851,86 @@ export interface operations {
                     "application/json": components["schemas"]["TripReportUnitListResultDto"];
                 };
             };
-        };
-    };
-    AutocompleteController_getTripReportUnitShorthandAutocomplete: {
-        parameters: {
-            query: {
-                /** @description Search term */
-                query: string;
-                /** @description Limit the size of results */
-                limit?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["TaxonSearchResponse"][];
-                        "@context": string;
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
                     };
                 };
             };
         };
     };
-    AutocompleteController_getLineTransectUnitShorthandAutocomplete: {
+    ShorthandController_getLineTransectUnitShorthandAutocomplete: {
         parameters: {
             query: {
                 /** @description Search term */
@@ -20924,9 +30950,86 @@ export interface operations {
                     "application/json": components["schemas"]["LineTransectUnitShorthandResponseDto"];
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
-    AutocompleteController_getWaterbirdPairCountUnitShorthandAutocomplete: {
+    ShorthandController_getWaterbirdPairCountUnitShorthandAutocomplete: {
         parameters: {
             query: {
                 taxonID: string;
@@ -20945,6 +31048,784 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LineTransectUnitShorthandResponseDto"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    CoordinatesController_getLocationInformation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: components["schemas"]["Location"][];
+                        "@context": string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    FeedbackController_send: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Person's authentication token. It is required. */
+                "Person-Token"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FeedbackDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    GeoConvertController_get: {
+        parameters: {
+            query: {
+                /** @description The output file format (in the form of a file extension) for the geographic data */
+                outputFormat: "gpkg";
+                /** @description The geometry type of the output */
+                geometryType: "point" | "bbox" | "footprint";
+                /** @description The coordinate reference system for the output. One of "kkj", "euref", "wgs84" or any valid numeric EPSG code */
+                crs: string;
+            };
+            header?: {
+                /** @description For use with restricted data downloads */
+                "Person-Token"?: string;
+            };
+            path: {
+                fileId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    GeoConvertController_post: {
+        parameters: {
+            query: {
+                /** @description The output file format (in the form of a file extension) for the geographic data */
+                outputFormat: "gpkg";
+                /** @description The geometry type of the output */
+                geometryType: "point" | "bbox" | "footprint";
+                /** @description The coordinate reference system for the output. One of "kkj", "euref", "wgs84" or any valid numeric EPSG code */
+                crs: string;
+            };
+            header?: never;
+            path: {
+                fileId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    GeoConvertController_status: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    GeoConvertController_output: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    HtmlToPdfController_htmlToPdf: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "text/plain": string;
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                    };
                 };
             };
         };

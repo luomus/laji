@@ -12,7 +12,6 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, from as ObservableFrom, Observable, of } from 'rxjs';
-import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
 import { IFormField, VALUE_IGNORE } from '../model/excel';
 import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
@@ -32,9 +31,14 @@ import { FileService, instanceOfFileLoad } from '../service/file.service';
 import { IUserMappingFile, MappingFileService } from '../service/mapping-file.service';
 import { Form } from '../../../shared/model/Form';
 import { Logger } from '../../../shared/logger';
-import { DocumentJobPayload } from '../../../shared/api/DocumentApi';
 import { toHtmlSelectElement } from '../../../shared/service/html-element.service';
-import {ModalRef, ModalService} from 'projects/laji-ui/src/lib/modal/modal.service';
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
+
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+type Document = components['schemas']['document'];
+type PublicityRestrictions = Document['publicityRestrictions'];
+type BatchJob = components['schemas']['BatchJobValidationStatusResponse'];
 
 @Component({
   selector: 'laji-importer',
@@ -72,7 +76,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   header?: {[key: string]: string};
   fields?: {[key: string]: IFormField};
   dataColumns?: ImportTableColumn[];
-  jobPayload?: DocumentJobPayload;
+  job?: BatchJob;
   docCnt = 0;
   origColMap?: {[key: string]: string};
   colMap?: {[key: string]: string};
@@ -83,8 +87,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
   mimeType?: string;
   errors: any;
   valid = false;
-  priv = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
-  publ = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
+  priv: PublicityRestrictions = 'MZ.publicityRestrictionsPrivate';
+  publ: PublicityRestrictions = 'MZ.publicityRestrictionsPublic';
   excludedFromCopy: string[] = [];
   userMappings: any;
   separator = MappingService.valueSplitter;
@@ -456,9 +460,9 @@ export class ImporterComponent implements OnInit, OnDestroy {
     ObservableFrom(rowData).pipe(
       concatMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy)),
       toArray(),
-      switchMap(documents => this.importService.validateData(documents)),
-      tap(job => this.jobPayload = job),
-      switchMap(job => this.importService.waitToComplete('validate', job, (status) => {
+      switchMap(documents => this.importService.startBatchJob(documents)),
+      tap(job => this.job = job),
+      switchMap(job => this.importService.waitToComplete(job, (status) => {
         this.current = status.processed;
         this.cdr.markForCheck();
       })),
@@ -508,7 +512,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
       );
   }
 
-  save(publicityRestrictions: Document.PublicityRestrictionsEnum) {
+  save(publicityRestrictions: PublicityRestrictions) {
     this.spreadsheetFacade.goToStep(Step.importing);
     this.showOnlyErroneous = false;
     let success = true;
@@ -522,14 +526,14 @@ export class ImporterComponent implements OnInit, OnDestroy {
     const rowData = this.parsedData!.filter(data => data.document !== null);
 
     this.importService.sendData({
-      ...this.jobPayload,
-      dataOrigin: [Document.DataOriginEnum.dataOriginSpreadsheetFile],
+      ...this.job,
+      dataOrigin: 'MY.dataOriginSpreadsheetFile',
       publicityRestrictions
     } as any).pipe(
-      switchMap(() => this.importService.waitToComplete('create', this.jobPayload as any, (status) => {
+      switchMap(() => this.importService.waitToComplete(this.job!, (status) => {
         ticker += add;
         this.current = status.processed === this.total ?
-          status.processed :
+          status.processed:
           Math.min(Math.max(this.total - 1, 0), ticker);
         this.cdr.markForCheck();
       })),
@@ -598,16 +602,14 @@ export class ImporterComponent implements OnInit, OnDestroy {
   }
 
   initParsedData() {
-    if (!this.parsedData) {
-      this.parsedData = this.importService.flatFieldsToDocuments(
-        this.data as any,
-        this.colMap as any,
-        this.fields as any,
-        this.formID as any,
-        this._onlyWithCount as any,
-        this.combineBy
-      );
-    }
+    this.parsedData = this.importService.flatFieldsToDocuments(
+      this.data as any,
+      this.colMap as any,
+      this.fields as any,
+      this.formID as any,
+      this._onlyWithCount as any,
+      this.combineBy
+    );
   }
 
   saveUserMapping() {

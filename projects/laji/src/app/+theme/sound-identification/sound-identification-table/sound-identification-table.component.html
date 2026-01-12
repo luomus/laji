@@ -12,14 +12,14 @@
 
   <ng-template let-row="row" #clipSpan>
     <span>
-      {{row.start_time + "-" + row.end_time + "s"}} 
+      {{row.start_time + "-" + row.end_time + "s"}}
     </span>
   </ng-template>
 
   <ng-template let-row="row" #vernacularName>
-    <ng-container *ngIf="(getVernacularName(row.scientific_name) | async | multiLang); let vernacularName; else spinner">
+    <ng-container *ngIf="(getVernacularName(row.scientific_name) | async); let vernacularName; else spinner">
       <span>
-        {{vernacularName}} 
+        {{vernacularName}}
       </span>
     </ng-container>
   </ng-template>

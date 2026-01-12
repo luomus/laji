@@ -21,6 +21,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   pageSize = 50;
   total = 0;
 
+  private lastQuery: string | undefined;
   private subFetch?: Subscription;
   private subQueryUpdate?: Subscription;
 
@@ -33,7 +34,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.refreshImages();
 
-    this.subQueryUpdate = this.search.queryUpdated$.subscribe(
+    this.subQueryUpdate = this.search.searchUpdated$.subscribe(
       () => {
         this.search.imageOptions.page = 1;
         this.refreshImages();
@@ -56,6 +57,17 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   }
 
   refreshImages() {
+    const cacheKey = JSON.stringify({
+      taxon: this.search.taxonId,
+      query: this.search.query,
+      filters: this.search.filters,
+      imageOptions: this.search.imageOptions
+    });
+    if (this.lastQuery === cacheKey) {
+      return;
+    }
+    this.lastQuery = cacheKey;
+
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
@@ -97,7 +109,8 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
       selectedFields: 'id,vernacularName,scientificName,multimedia',
       includeMedia: true,
       page: this.search.imageOptions.page,
-      pageSize: 50
+      pageSize: 50,
+      checklist: 'MR.1,MR.2'
     };
     const filters = {
       ..._filters,

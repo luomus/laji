@@ -42,10 +42,16 @@
       <laji-taxon-name [capitalizeName]="true" [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
     </a>
     <img *ngIf="value.finnish" src="/static/images/icons/flag_fi_small.png" class="small-flag"/>
+    <div *ngIf="value.nameAccordingTo === 'MR.2'" class="taxon-tree-gbif-icon" [luTooltip]="'species.tree.gbif.help' | translate">
+      <small>GBIF</small>
+    </div>
   </ng-container>
   <strong *ngIf="value.id === activeId">
     <laji-taxon-name [capitalizeName]="true" [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
     <img *ngIf="value.finnish" src="/static/images/icons/flag_fi_small.png" class="small-flag"/>
+    <div *ngIf="value.nameAccordingTo === 'MR.2'" class="taxon-tree-gbif-icon" [luTooltip]="'species.tree.gbif.help' | translate">
+      <small>GBIF</small>
+    </div>
   </strong>
   <span class="rank">{{ value.taxonRank | label }}</span>
 </ng-template>

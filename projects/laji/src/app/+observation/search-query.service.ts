@@ -13,7 +13,7 @@ interface WarehouseSearchQuery extends WarehouseQueryInterface {
 export class SearchQueryService implements SearchQueryInterface {
   public queryType = 'observation';
   public queryUpdatedSource = new Subject<any>();
-  public queryUpdated$ = this.queryUpdatedSource.asObservable();
+  public searchUpdated$ = this.queryUpdatedSource.asObservable();
 
   public query = {};
   public filters = {};

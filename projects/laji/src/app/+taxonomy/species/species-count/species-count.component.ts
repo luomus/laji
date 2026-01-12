@@ -26,7 +26,7 @@ export class SpeciesCountComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subQueryUpdate = this.search.queryUpdated$.subscribe(
+    this.subQueryUpdate = this.search.searchUpdated$.subscribe(
       () => {
         this.updateCount();
       }
@@ -69,10 +69,11 @@ export class SpeciesCountComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.subFetch = this.api.post('/taxa/{id}/species', {
       path: { id: this.search.taxonId || 'MX.37600' },
-      query: { ...this.search.query, page: 1, pageSize: 0 }
+      query: { ...this.search.query, page: 1, pageSize: 0, checklist: 'MR.1,MR.2' }
     }, {
       ...this.search.filters,
-      hasMultimedia: this.hasMediaFilter
+      hasMultimedia: this.hasMediaFilter,
+      taxonRank: 'MX.species'
     }).subscribe(res => {
         this.count = res.total;
         this.loading = false;

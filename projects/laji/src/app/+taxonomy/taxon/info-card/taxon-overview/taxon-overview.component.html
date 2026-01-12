@@ -79,7 +79,7 @@
           </a>
         </li>
         <li [hidden]="!taxon.hasChildren">
-          <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{taxonId: (taxon.id), onlyFinnish: true}">
+          <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{taxonId: (taxon.id), finnish: true}">
             {{ 'taxonomy.browse.downloadSpeciesFinnish' | translate }}
           </a>
         </li>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 
 export enum CheckboxType {
   basic = 'basic',
@@ -13,7 +13,7 @@ export enum CheckboxType {
   styleUrls: ['./checkbox.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CheckboxComponent {
+export class CheckboxComponent implements OnChanges {
 
   @ViewChild('checkbox', { static: true }) checkbox!: ElementRef<HTMLInputElement>;
 
@@ -23,30 +23,39 @@ export class CheckboxComponent {
   _value?: boolean;
   stateClass = 'clear';
 
+  ngOnChanges(changes: SimpleChanges) {
+    if ('value' in changes || 'checkboxType' in changes) {
+      this.sync();
+    }
+  }
+
   @Input()
   set value(value: boolean|undefined) {
     this._value = value;
-    if (value === true) {
+  }
+
+  private sync() {
+    if (this._value === true) {
       this.checkbox.nativeElement.checked = true;
       this.stateClass = 'checked';
-    } else if (value === false) {
+    } else if (this._value === false) {
       this.checkbox.nativeElement.indeterminate = true;
       switch (this.checkboxType) {
         case CheckboxType.basic: {
-           this.stateClass = 'clear';
-           break;
+          this.stateClass = 'clear';
+          break;
         }
         case CheckboxType.excluded: {
           this.stateClass = 'excluded';
-           break;
+          break;
         }
         case CheckboxType.partial: {
           this.stateClass = 'negative';
-           break;
+          break;
         }
         default: {
           this.stateClass = 'clear';
-           break;
+          break;
         }
      }
     } else {

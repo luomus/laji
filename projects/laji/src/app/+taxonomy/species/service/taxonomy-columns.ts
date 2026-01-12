@@ -54,37 +54,37 @@ export class TaxonomyColumns {
       width: 200
     },
     {
-      name: 'vernacularName.fi',
+      name: 'vernacularNameMultiLang.fi',
       label: 'taxonomy.vernacular.name.fi',
       selectField: 'vernacularName',
       width: 200
     },
     {
-      name: 'vernacularName.sv',
+      name: 'vernacularNameMultiLang.sv',
       label: 'taxonomy.vernacular.name.sv',
       selectField: 'vernacularName',
       width: 200
     },
     {
-      name: 'vernacularName.en',
+      name: 'vernacularNameMultiLang.en',
       label: 'taxonomy.vernacular.name.en',
       selectField: 'vernacularName',
       width: 200
     },
     {
-      name: 'alternativeVernacularName',
+      name: 'alternativeVernacularNameMultiLang',
       label: 'taxonomy.alternative.vernacular.names',
       cellTemplate: 'multiLangAll',
       width: 200
     },
     {
-      name: 'obsoleteVernacularName',
+      name: 'obsoleteVernacularNameMultiLang',
       label: 'taxonomy.obsolete.vernacular.name',
       cellTemplate: 'multiLangAll',
       width: 200
     },
     {
-      name: 'tradeName',
+      name: 'tradeNameMultiLang',
       label: 'taxonomy.trade.name',
       cellTemplate: 'multiLangAll',
       width: 200
@@ -103,7 +103,7 @@ export class TaxonomyColumns {
     },
     {
       name: 'occurrenceInFinlandPublications',
-      cellTemplate: 'publicationArray',
+      cellTemplate: 'publication',
       width: 200
     },
     {
