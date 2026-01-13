@@ -92,6 +92,7 @@ export class TaxonIdentificationFacade implements OnDestroy {
       sortOrder: 'observationCountFinland desc',
       selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren,countOfSpecies,observationCountFinland,descriptions,multimedia',
       includeMedia: true,
+      pageSize: 1000,
     } }, {
       taxonRank: rank
     }).pipe(switchMap(res => {
