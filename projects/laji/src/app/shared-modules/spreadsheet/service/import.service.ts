@@ -90,7 +90,7 @@ export class ImportService {
     return this.api.get('/documents/batch/{jobID}', { path: { jobID: job.id }, query: { validationErrorFormat: 'dotNotation' } }).pipe(
       switchMap(response => {
         processCB(response.status);
-        if (response.phase === 'READY_TO_COMPLETE' || 'COMPLETED') {
+        if (!['VALIDATING', 'COMPLETING'].includes(response.phase)) {
           return of(response);
         }
         return of(response).pipe(
