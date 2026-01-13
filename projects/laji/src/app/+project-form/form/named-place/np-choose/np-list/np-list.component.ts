@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { Util } from '../../../../../shared/service/util.service';
-import { map, take } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
 import { BoolToStringPipe } from '../../../../../shared/pipe/bool-to-string.pipe';
@@ -245,7 +245,7 @@ export class NpListComponent implements OnDestroy {
         const observable = this.datatableUtil.getVisibleValue(value, namedPlace, 'label');
         observables.push(
           observable.pipe(
-            map(visibleValue => {
+            tap(visibleValue => {
               if (visibleValue && visibleValue.length > 0) {
                 row[path] = visibleValue;
               }
