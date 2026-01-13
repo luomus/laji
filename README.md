@@ -6,27 +6,33 @@ found at [api.laji.fi](https://apitest.laji.fi/explorer/).
 This repo contains 3 main branches. Follow guidelines set in [wiki](http://wiki.helsinki.fi/display/luomusict/Laji.fi+front+kehitysohjeet) for developing.
 
 ## Development server
+
+## Installation
+
+Make sure to use the correct node version marked in `.nvmrc`. You can use for example volta or nvm.
+
+Install dependencies
 ```bash
-
-# clone branch
-git clone git@github.com:luomus/laji.git
-cd laji
-
-# Install application dependencies
-# Redis and make sure that it's running
-# Python and maker sure that the python executable is in the path
-
-# Install js dependencies (node >= v14)
 npm ci
-
-# Run the environment
-npm start
-
-# Go with your browser to http://localhost:3000/
 ```
 
+Fill in the development access token to `.env` like so:
+
+```
+ACCESS_TOKEN=<YOUR ACCESS TOKEN>
+```
+
+The access token needs to be connected to laji.fi's "system id". Ask one from your colleagues.
+
+## Running
+```bash
+npm start
+```
+
+Go with your browser to http://localhost:3000/
+
 ## Running end-to-end tests
-1. Create an empty `.env` file at the root of the repository:
+1. Add the following to `.env` file at the root of the repository:
 ```
 E2E_PERSON_TOKEN=
 E2E_USER=
