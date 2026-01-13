@@ -25,7 +25,7 @@ export class LajiErrorHandler extends ErrorHandler {
     super();
   }
 
-  handleError(error: { message: string | string[]; toString: () => any }) {
+  handleError(error: any) {
     if (this.pause || !error || (typeof error === 'object' && typeof error.message === 'string' && error.message.length === 0)) {
       return super.handleError(error);
     }
