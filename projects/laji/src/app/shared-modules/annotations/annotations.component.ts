@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild,
 ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { AnnotationService } from '../document-viewer/service/annotation.service';
-import { Annotation } from '../../shared/model/Annotation';
 import { IdService } from '../../shared/service/id.service';
 import { DocumentViewerFacade } from '../document-viewer/document-viewer.facade';
 import {
@@ -16,8 +15,12 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { TaxonTagEffectiveService } from '../document-viewer/taxon-tag-effective.service';
 import { LoadingElementsService } from '../document-viewer/loading-elements.service';
 import { PlatformService } from '../../root/platform.service';
-import { AnnotationTag } from '../../shared/model/AnnotationTag';
 import { TranslateService } from '@ngx-translate/core';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { Unsaved } from '../../shared/service/util.service';
+
+type Annotation = components['schemas']['annotation'];
+type AnnotationTag = components['schemas']['tag'];
 
 @Component({
   selector: 'laji-annotations',
@@ -32,7 +35,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   @Input() documentID?: string;
   @Input() isEditor?: boolean;
   @Input() personID?: string;
-  @Input() personRoleAnnotation?: Annotation.AnnotationRoleEnum;
+  @Input() personRoleAnnotation?: Annotation['byRole'];
   @Input() identifying? = false;
   @Input() unit: any;
   @Input() gathering: any;
@@ -49,9 +52,8 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   error = false;
   adding = false;
   expert = true;
-  type?: Annotation.TypeEnum;
-  annotation!: AnnotationFormAnnotation;
-  annotationRole = Annotation.AnnotationRoleEnum;
+  type?: Annotation['type'];
+  annotation!: Unsaved<AnnotationFormAnnotation>;
   loading = false;
   lastAnnotationAddedId?: string;
   result: PagedResult<any> = {
@@ -128,7 +130,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
       addedTags: [],
       removedTags: [],
       deleted: false,
-      type: Annotation.TypeEnum.TypeOpinion,
+      type: 'MAN.typeOpinion',
       occurrenceAtTimeOfAnnotation: {
         countryVerbatim: this.gathering && this.gathering.country ? this.gathering.country : '',
         dateBegin: this.gathering && this.gathering.eventDate && this.gathering.eventDate.begin ? this.gathering.eventDate.begin : '',
@@ -180,10 +182,10 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     this.loadingElements.emitChildEvent(true);
     this.annotationService.delete(annotation)
       .subscribe(
-        (data: Annotation) => {
-          const foundIndex = this.annotations.findIndex(x => IdService.getId(x.id) === IdService.getId(data.id));
-          this.annotations[foundIndex] = data;
-          this.saveDone(data);
+        (updatedAnnotation) => {
+          const foundIndex = this.annotations.findIndex(x => IdService.getId(x.id) === IdService.getId(updatedAnnotation.id));
+          this.annotations[foundIndex] = updatedAnnotation;
+          this.saveDone(updatedAnnotation);
         },
         (e) => {
           this.loading = false;

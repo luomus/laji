@@ -120,10 +120,9 @@ export class TriplestoreLabelService {
           return this.sourceService.getName(key, lang);
         case 'MMAN':
           if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.annotationService.getTag(key, 'multi').pipe(
+            TriplestoreLabelService.requestCache[key] = this.annotationService.getTag(key).pipe(
               map(tag => tag.name),
               tap(name => TriplestoreLabelService.cache[key] = name),
-              map(name => MultiLangService.getValue((name as any), lang)),
               share()
             );
           }

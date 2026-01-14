@@ -1,7 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Annotation } from '../model/Annotation';
-import { AnnotationTag } from '../model/AnnotationTag';
 import { IdService } from '../service/id.service';
+
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Annotation = components['schemas']['annotation'];
+type AnnotationTag = components['schemas']['tag'];
 
 @Pipe({
   name: 'activeTags',
