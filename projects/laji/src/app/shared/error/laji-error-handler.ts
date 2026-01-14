@@ -25,7 +25,7 @@ export class LajiErrorHandler extends ErrorHandler {
     super();
   }
 
-  handleError(error: { message: string | string[]; toString: () => any }) {
+  handleError(error: any) {
     if (this.pause || !error || (typeof error === 'object' && typeof error.message === 'string' && error.message.length === 0)) {
       return super.handleError(error);
     }
@@ -66,10 +66,16 @@ export class LajiErrorHandler extends ErrorHandler {
     this.pauseMessage();
 
     if (enabledEnvs.includes(environment.type)) {
-      this.getToastsService().showError(
-        this.getTranslateService().instant('error.500.intro'),
-        this.getTranslateService().instant('error.500.title')
-      );
+      const { title, message } = (error as any)?.error?.errorCode
+        ? {
+          title: (error as any)?.error?.errorCode,
+          message: (error as any)?.error?.message
+        } : {
+          title: this.getTranslateService().instant('error.500.title'),
+          message: this.getTranslateService().instant('error.500.intro')
+        };
+
+        this.getToastsService().showError(message, title, { tapToDismiss: false, disableTimeOut: true, closeButton: true });
     }
 
     return super.handleError(error);
