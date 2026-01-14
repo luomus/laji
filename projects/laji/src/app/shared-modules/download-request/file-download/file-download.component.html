@@ -20,12 +20,6 @@
   </div>
   <div *ngIf="downloadService.fileType === fileTypeEnum.gis" class="row">
     <div class="col-sm-4">
-      <label for="format">{{ 'downloadRequest.fileDownload.format' | translate }}:</label>
-      <select id="format" name="format" class="form-control" [(ngModel)]="downloadService.format">
-        <option *ngFor="let option of fileFormatEnum | keyvalue: sortNull" [ngValue]="option.value">{{ '.' + option.value }}</option>
-      </select>
-    </div>
-    <div class="col-sm-4">
       <label for="geometry">{{ 'download.geometry' | translate }}:</label>
       <select id="geometry" name="geometry" class="form-control" [(ngModel)]="downloadService.geometry">
         <option *ngFor="let option of fileGeometryEnum | keyvalue: sortNull" [ngValue]="option.value">{{ option.value }}</option>

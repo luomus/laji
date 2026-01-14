@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 import { FileType, FileDownloadService } from '../file-download.service';
 import { DownloadRequest } from '../models';
 import { KeyValue } from '@angular/common';
-import { FileFormat, FileGeometry, FileCrs } from '../../../shared/service/geo-convert.service';
+import { FileGeometry, FileCrs } from '../../../shared/service/geo-convert.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -16,7 +16,6 @@ export class FileDownloadComponent implements OnDestroy {
   @Input() downloadRequest!: DownloadRequest;
 
   fileTypeEnum = FileType;
-  fileFormatEnum = FileFormat;
   fileGeometryEnum = FileGeometry;
   fileCrsEnum = FileCrs;
 

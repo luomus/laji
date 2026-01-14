@@ -4,7 +4,6 @@ import { tap, first, map } from 'rxjs/operators';
 import { UserService } from '../../shared/service/user.service';
 import { DialogService } from '../../shared/service/dialog.service';
 import {
-  FileFormat,
   FileGeometry,
   FileCrs,
   GeoConvertService,
@@ -21,7 +20,6 @@ export enum FileType {
 @Injectable({providedIn: 'root'})
 export class FileDownloadService {
   fileType: FileType = FileType.standard;
-  format: FileFormat = FileFormat.gpkg;
   geometry: FileGeometry = FileGeometry.point;
   crs: FileCrs = FileCrs.euref;
   loading = false;
@@ -41,7 +39,7 @@ export class FileDownloadService {
     this.loading = true;
     this.progressPercentage = undefined;
 
-    this.getDownloadLink(id, isPublic, this.fileType, this.format, this.geometry, this.crs).subscribe(res => {
+    this.getDownloadLink(id, isPublic, this.fileType, this.geometry, this.crs).subscribe(res => {
       this.platformService.window.location.href = res;
       this.loading = false;
       this.progressPercentage = undefined;
@@ -56,12 +54,12 @@ export class FileDownloadService {
   }
 
   private getDownloadLink(
-    id: string, isPublic: boolean, type: FileType, format: FileFormat, geometry: FileGeometry, crs: FileCrs
+    id: string, isPublic: boolean, type: FileType, geometry: FileGeometry, crs: FileCrs
   ): Observable<string> {
     const personToken = isPublic ? null : this.userService.getToken();
     if (type === FileType.gis) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return this.geoConvertService.geoConvertFile(id, format, geometry, crs, personToken!).pipe(
+      return this.geoConvertService.geoConvertFile(id, geometry, crs, personToken).pipe(
         tap(response => {
           this.progressPercentage = response.progressPercent;
           this.fileDownloadStateChangeSubject.next();
