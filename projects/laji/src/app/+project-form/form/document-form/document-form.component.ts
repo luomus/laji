@@ -215,7 +215,8 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
           }
 
           this.setRegistrationContacts(document?.contacts);
-          const contactEmail = document?.contacts?.[0]?.emailAddress ?? '';
+          const contacts = document?.contacts;
+          const contactEmail = contacts?.[0]?.emailAddress ?? '';
           return this.userService.emailHasAccount(contactEmail).pipe(
             switchMap(exists => {
               if (exists) {
@@ -230,7 +231,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
                   switchMap(() => of(false))
                 );
               } else {
-                this.addContactEmailToDocument(document, contactEmail);
+                this.writeRegistrationContactsToDocument(document, contacts);
                 return of(true);
               }
             })
@@ -300,10 +301,21 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  addContactEmailToDocument(document: Document, email: string) {
+  writeRegistrationContactsToDocument(document: Document, contacts: RegistrationContact[] | undefined) {
+    const preferredName = contacts?.[0]?.preferredName;
+    const inheritedName = contacts?.[0]?.inheritedName;
+    if (preferredName && inheritedName && document.gatheringEvent) {
+      document.gatheringEvent.leg = [preferredName + ' ' + inheritedName];
+    }
+
+    const email = contacts?.[0]?.emailAddress;
+    if (!email) {
+      return;
+    }
+
     const prefixedEmail = 'vihko:' + email;
     if (document.gatheringEvent) {
-      document.gatheringEvent.leg = [prefixedEmail];
+      document.gatheringEvent.legUserID = [prefixedEmail];
     }
     document.creator = prefixedEmail;
     document.editor = prefixedEmail;
