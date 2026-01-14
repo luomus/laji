@@ -1,16 +1,21 @@
 require('dotenv').config();
 
-module.exports = {
-  '/api/**': {
-    target:  process.env.API_BASE || "https://apitest.laji.fi",
-    changeOrigin: true,
-    xfwd: true,
-    secure: false,
-    pathRewrite: {
-      '^/api/': 'v0/'
-    },
-    headers: {
-      Authorization: process.env.ACCESS_TOKEN
-    }
+const proxyConfig = {
+  target:  process.env.API_BASE || "https://dev.laji.fi/api",
+  changeOrigin: true,
+  xfwd: true,
+  secure: false,
+  pathRewrite: {
+    '^/api/': 'v0/'
   }
+};
+
+if (process.env.ACCESS_TOKEN) {
+  proxyConfig.headers = {
+    Authorization: process.env.ACCESS_TOKEN
+  }
+}
+
+module.exports = {
+  '/api/**': proxyConfig
 };
