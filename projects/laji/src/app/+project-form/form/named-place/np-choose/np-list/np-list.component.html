@@ -1,13 +1,3 @@
-<div class="row">
-  <div class="col-sm-12">
-    <div class="filterBy">
-      <input class="form-control inline-block"
-             type='text'
-             placeholder="{{'haseka.submissions.filter' | translate}}"
-             (keyup)="updateFilter($event)">
-    </div>
-  </div>
-</div>
 <div class="table-responsive np-list"
      lajiFormOption="options.namedPlaceOptions.listColumns options.namedPlaceOptions.listColumnsMultisort options.namedPlaceOptions.showLegendList
      options.namedPlaceOptions.showLegendList options.namedPlaceOptions.reservationUntil options.namedPlaceOptions.listColumnNameMapping">
@@ -15,6 +5,7 @@
     #dataTable
     class="observation-table"
     (rowSelect)="changeActivePlace($event)"
+    (filteredIDs)="changeFilteredIDs($event)"
     [getRowClass]="getRowClass"
     [virtualScrolling]="true"
     [clientSideSorting]="true"
@@ -30,6 +21,7 @@
     [columns]="columns!"
     [selectionType]="selectionType.single"
     [preselectedRowIndex]="activeNP!"
+    [visible]="_visible"
     >
   </laji-datatable>
   <div class="test"></div>

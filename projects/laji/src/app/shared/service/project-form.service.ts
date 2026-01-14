@@ -19,6 +19,8 @@ export interface NamedPlacesQuery {
   birdAssociationArea?: string;
   municipality?: string;
   activeNP?: string;
+  filterBy?: string;
+  tab?: string;
 }
 export interface NamedPlacesQueryModel {
   tags?: string[];
@@ -30,6 +32,8 @@ export interface NamedPlacesQueryModel {
 export interface NamedPlacesRouteData extends NamedPlacesQueryModel {
   documentForm: Form.SchemaForm;
   namedPlace?: NamedPlace;
+  filterBy?: string;
+  tab?: string;
 }
 
 export interface ExcelFormOptions {
