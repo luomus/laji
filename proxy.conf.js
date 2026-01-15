@@ -6,7 +6,7 @@ const proxyConfig = {
   xfwd: true,
   secure: false,
   pathRewrite: {
-    '^/api/': 'v0/'
+    '^/api/': '/'
   }
 };
 
