@@ -11,8 +11,8 @@ import {
 import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type AnnotationTag = components['schemas']['tag'];
-type AnnotationDW = components['schemas']['DwQuery_Annotation'];
+export type AnnotationTag = components['schemas']['tag'];
+export type AnnotationDW = components['schemas']['DwQuery_Annotation'];
 
 @Component({
   selector: 'laji-annotation-list',
