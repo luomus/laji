@@ -120,7 +120,7 @@
                   [secureReasons]="document.secureReasons"
                 ></laji-secure-info>
                 <ng-container *ngIf="document.secureReasons | includes:'DEFAULT_TAXON_CONSERVATION'">
-                  <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
+                  <br><a [href]="'infoLinks.sensitive' | translate" target="_blank">{{ 'information.more' | translate }}</a>
                 </ng-container>
               </div>
             </lu-alert>

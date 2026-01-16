@@ -40,7 +40,7 @@
         <h3>{{ 'iucn.home.title' | translate }}</h3>
         <p class="intro"><strong>{{ 'iucn.home.intro' | translate }}</strong></p>
         <ul>
-          <li><a [routerLink]="[{'fi': '/about/713', 'en': '/en/about/848'} | multiLang]">{{ 'iucn.footer.privacyPolicy' | translate }}</a></li>
+          <li><a [href]="'infoLinks.privacyPolicy' | translate" target="_blank">{{ 'iucn.footer.privacyPolicy' | translate }}</a></li>
           <li><laji-feedback></laji-feedback></li>
         </ul>
       </div>
