@@ -87,7 +87,7 @@ export class WbcResultService {
   }
 
   getRouteCountBySpecies(year: number, season?: SEASON, birdAssociationArea?: string): Observable<any> {
-    let getPage$ = (pageNumber: number) => this.warehouseApi.warehouseQueryStatisticsGet(
+    const getPage$ = (pageNumber: number) => this.warehouseApi.warehouseQueryStatisticsGet(
       this.getFilterParams(year, season, birdAssociationArea, [this.birdId, this.mammalId]),
       ['unit.linkings.taxon.speciesId', 'document.namedPlaceId'],
       undefined,
@@ -97,7 +97,7 @@ export class WbcResultService {
     return getPage$(1).pipe(
       switchMap(res => {
         if (res.lastPage > res.currentPage) {
-          let remainingPages: number[] = new Array(res.lastPage - res.currentPage).fill(0).map((_, idx) => res.currentPage + idx + 1);
+          const remainingPages: number[] = new Array(res.lastPage - res.currentPage).fill(0).map((_, idx) => res.currentPage + idx + 1);
           return forkJoin(of(res), ...remainingPages.map(pageNumber => getPage$(pageNumber)));
         }
         return of([res]);
