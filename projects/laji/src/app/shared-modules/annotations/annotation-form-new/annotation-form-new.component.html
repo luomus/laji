@@ -99,7 +99,7 @@
          <div *ngFor="let item of annotationRemovableTags$ | async " class="list-checkbox">
            <main class="lu">
                <lu-checkbox (input)="addToRemoveTags(item.id)" [disabled]="((annotation.addedTags.indexOf('MMAN.5') !== -1 && item.id !== 'MMAN.52') || annotation.addedTags.indexOf('MMAN.3') !== -1)" [checked]="annotation.removedTags.indexOf(item.id) !== -1">
-                 <div class="pill" [ngClass]="{'success': item.type==='positive', 'warning': item.type==='check', 'danger': item.type==='negative' }">{{ item.id | toQName | label }}</div>
+                 <div class="pill" [ngClass]="{'success': item.type==='MMAN.typePositiveQuality', 'warning': item.type==='MMAN.typeCheck', 'danger': item.type==='MMAN.typeNegativeQuality' }">{{ item.id | toQName | label }}</div>
                </lu-checkbox>
             </main>
           </div>

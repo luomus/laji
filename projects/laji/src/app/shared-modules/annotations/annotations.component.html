@@ -3,7 +3,7 @@
   <laji-annotation-list
     *ngIf="!loading && listVisible"
     [personID]="personID"
-    [annotations]="annotations"
+    [annotations]="$any(annotations)"
     [lastAnnotationAddedId]="lastAnnotationAddedId"
     [annotationTags]="annotationTags"
     [effectiveTags]="activeTags"
@@ -65,7 +65,7 @@
     <laji-annotation-form-new #formAnnotation
     [identifying]="identifying"
     [annotations]="annotations"
-    [annotation]="annotation"
+    [annotation]="$any(annotation)"
     [personID]="personID"
     [personRoleAnnotation]="personRoleAnnotation"
     [isEditor]="isEditor"

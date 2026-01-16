@@ -18,6 +18,7 @@ import { PlatformService } from '../../root/platform.service';
 import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 import { Unsaved } from '../../shared/service/util.service';
+import { AnnotationDW } from './annotation-list/annotation-list.component';
 
 type Annotation = components['schemas']['annotation'];
 type AnnotationTag = components['schemas']['tag'];
@@ -69,7 +70,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   subscribeRefreshedAnnotations?: Subscription;
   subscribeRefreshedAnnotations1?: Subscription;
   query: WarehouseQueryInterface = {};
-  activeTags?: Annotation[];
+  activeTags?: AnnotationTag[];
   deleting = false;
   statusAction = {
     status: false,
@@ -171,7 +172,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
    this.cd.markForCheck();
   }
 
-  onDelete(annotation: Annotation) {
+  onDelete(annotation: AnnotationDW) {
     this.loading = true;
     this.deleting = true;
     this.statusAction = {

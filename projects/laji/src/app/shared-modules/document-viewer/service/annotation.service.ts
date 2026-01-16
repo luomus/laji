@@ -6,6 +6,7 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 import { IdService } from '../../../shared/service/id.service';
+import { AnnotationDW } from '../../annotations/annotation-list/annotation-list.component';
 
 type Annotation = components['schemas']['annotation'];
 type AnnotationTag = components['schemas']['tag'];
@@ -20,7 +21,7 @@ export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> 
     super();
   }
 
-  delete(annotation: Annotation) {
+  delete(annotation: AnnotationDW) {
     return this.api.delete('/annotations/{id}', { path: { id: IdService.getId(annotation.id)! } });
   }
 
