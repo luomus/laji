@@ -540,7 +540,7 @@
   "haseka.submissions.edit": "Redigera",
   "haseka.submissions.filter": "Begränsa...",
   "haseka.submissions.form": "Formulär",
-  "haseka.submissions.gatheringsCount": "Gatherings",
+  "haseka.submissions.gatheringsCount": "Platser",
   "haseka.submissions.id": "Identifierare",
   "haseka.submissions.latest": "Senaste",
   "haseka.submissions.loadError": "Nedladdningen av {{year}}-observationerna misslyckades. Vänligen försök igen om en stund.",

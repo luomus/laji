@@ -540,7 +540,7 @@
   "haseka.submissions.edit": "Muokkaa",
   "haseka.submissions.filter": "Rajaa...",
   "haseka.submissions.form": "Lomake",
-  "haseka.submissions.gatheringsCount": "Gatherings",
+  "haseka.submissions.gatheringsCount": "Paikat",
   "haseka.submissions.id": "Tunniste",
   "haseka.submissions.latest": "Uusimmat",
   "haseka.submissions.loadError": "Vuoden {{year}} havaintoerien lataus epäonnistui. Yritä hetken kuluttua uudelleen.",
