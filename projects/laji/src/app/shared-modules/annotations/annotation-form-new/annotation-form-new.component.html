@@ -87,7 +87,7 @@
     <div class="d-flex flex-row flex-wrap margin-top-10">
       <div *ngFor="let item of annotationAddableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
         <lu-checkbox  (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
-          <div class="pill" [ngClass]="{'success': item.type==='typePositiveQuality', 'warning': item.type==='MMAN.typeCheck', 'danger': item.type==='typeNegativeQuality' }">{{ item.id | toQName | label }} </div>
+          <div class="pill" [ngClass]="{'success': item.type==='MMAN.typePositiveQuality', 'warning': item.type==='MMAN.typeCheck', 'danger': item.type==='MMAN.typeNegativeQuality' }">{{ item.id | toQName | label }} </div>
         </lu-checkbox>
       </div>
     </div>
