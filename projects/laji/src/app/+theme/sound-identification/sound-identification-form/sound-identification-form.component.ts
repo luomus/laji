@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, ViewChild, ElementRef } from '@angular/core';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { toHtmlInputElement } from '../../../shared/service/html-element.service';
 import { from, Observable, of } from 'rxjs';
@@ -15,7 +15,7 @@ export interface CombinedData {
   styleUrls: ['./sound-identification-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SoundIdentificationFormComponent implements OnChanges {
+export class SoundIdentificationFormComponent {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   @Input() loading = false;
@@ -37,11 +37,6 @@ export class SoundIdentificationFormComponent implements OnChanges {
     private dialogService: DialogService
   ) { }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.loading && changes.loading.previousValue) {
-      this.fileInput.nativeElement.value = '';
-    }
-  }
 
   toggleIncludeSdm() {
     this.includeSdm = !this.includeSdm;
@@ -111,6 +106,7 @@ export class SoundIdentificationFormComponent implements OnChanges {
   private isValidAudioFormat(file: File): boolean {
     return this.acceptedFormats.some(format => file.name.toLowerCase().endsWith(format));
   }
+
   private getAudioDuration(file: File): Observable<number> {
     return from(file.arrayBuffer()).pipe(
       switchMap((audioBuffer: ArrayBuffer) => {
