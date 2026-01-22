@@ -90,10 +90,11 @@ export class LajiApiClientBService {
     this.personToken = personToken;
   }
 
+  /** @param cacheInvalidationMs number for ms cache invalidation, false for disabling caching. Defaults to one day. */
   get<P extends PathWithMethod<'get'>, R extends Responses<P, 'get' extends Method<P> ? 'get' : never>>(
     path: P,
     params?: Parameters<paths[P]['get']>,
-    cacheInvalidationMs = ONE_DAY
+    cacheInvalidationMs: number | false = ONE_DAY
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     return this.fetch(path, 'get' as any, params as any, undefined, cacheInvalidationMs);
   }
@@ -101,27 +102,24 @@ export class LajiApiClientBService {
   put<P extends PathWithMethod<'put'>, R extends Responses<P, 'put' extends Method<P> ? 'put' : never>>(
     path: P,
     params?: Parameters<paths[P]['put']>,
-    requestBody?: ExtractRequestBodyIfExists<paths[P]['put']>,
-    cacheInvalidationMs = ONE_DAY
+    requestBody?: ExtractRequestBodyIfExists<paths[P]['put']>
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
-    return this.fetch(path, 'put' as any, params as any, requestBody, cacheInvalidationMs);
+    return this.fetch(path, 'put' as any, params as any, requestBody);
   }
 
   post<P extends PathWithMethod<'post'>, R extends Responses<P, 'post' extends Method<P> ? 'post' : never>>(
     path: P,
     params?: Parameters<paths[P]['post']>,
     requestBody?: ExtractRequestBodyIfExists<paths[P]['post']>,
-    cacheInvalidationMs = ONE_DAY
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
-    return this.fetch(path, 'post' as any, params as any, requestBody, cacheInvalidationMs);
+    return this.fetch(path, 'post' as any, params as any, requestBody);
   }
 
   delete<P extends PathWithMethod<'delete'>, R extends Responses<P, 'delete' extends Method<P> ? 'delete' : never>>(
     path: P,
     params?: Parameters<paths[P]['delete']>,
-    cacheInvalidationMs = ONE_DAY
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
-    return this.fetch(path, 'delete' as any, params as any, undefined, cacheInvalidationMs);
+    return this.fetch(path, 'delete' as any, params as any, undefined);
   }
 
   private getRequestOptions(queryParams: any, requestBody: any, lang: string, personToken?: string) {
@@ -149,13 +147,15 @@ export class LajiApiClientBService {
     method: M,
     params?: Parameters<paths[P][M]>,
     requestBody?: ExtractRequestBodyIfExists<paths[P][M]>,
-    cacheInvalidationMs = ONE_DAY
+    cacheInvalidationMs: number | false = ONE_DAY
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     const pathSegments = splitAndResolvePath(path, params);
     const requestUrl = this.baseUrl + pathSegments.join('');
 
-    if (method !== 'get') {
-      this._flush(pathSegments);
+    if (method !== 'get' || cacheInvalidationMs === false) {
+      if (method !== 'get') {
+        this._flush(pathSegments);
+      }
       return this.http.request(
         method as string,
         requestUrl,
@@ -190,7 +190,7 @@ export class LajiApiClientBService {
         });
       }),
       shareReplay(1)
-    ) as any;
+    );
 
     cachedPath?.set(paramsHash, {
       _tag: 'loading', obs

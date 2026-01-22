@@ -35,9 +35,9 @@ import { toHtmlSelectElement } from '../../../shared/service/html-element.servic
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 import type { components } from 'projects/laji-api-client-b/generated/api';
+import type { paths } from 'projects/laji-api-client-b/generated/api';
 
-type Document = components['schemas']['document'];
-type PublicityRestrictions = Document['publicityRestrictions'];
+type PublicityRestrictions = NonNullable<paths['/documents/batch/{jobID}']['post']['parameters']['query']>['publicityRestrictions'];
 type BatchJob = components['schemas']['BatchJobValidationStatusResponse'];
 
 @Component({
@@ -525,11 +525,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
     const rowData = this.parsedData!.filter(data => data.document !== null);
 
-    this.importService.sendData({
-      ...this.job,
-      dataOrigin: 'MY.dataOriginSpreadsheetFile',
-      publicityRestrictions
-    } as any).pipe(
+    this.importService.sendData(this.job!.id,  'MY.dataOriginSpreadsheetFile', publicityRestrictions).pipe(
       switchMap(() => this.importService.waitToComplete(this.job!, (status) => {
         ticker += add;
         this.current = status.processed === this.total ?
