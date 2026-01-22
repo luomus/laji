@@ -101,12 +101,10 @@ export class ImportService {
           switchMap(() => this.waitToComplete(job, processCB))
         );
       }),
-      catchError((e) => {
-        return of(e).pipe(
-          delay(1000),
-          switchMap(() => this.waitToComplete(job, processCB))
-        );
-      })
+      catchError((e) => of(e).pipe(
+        delay(1000),
+        switchMap(() => this.waitToComplete(job, processCB))
+      ))
     );
     obs.subscribe();
     return obs;
