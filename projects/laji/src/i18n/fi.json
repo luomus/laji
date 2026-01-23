@@ -2132,7 +2132,7 @@
   "theme.soundIdentification.audioFile": "Valitse ensin äänitiedosto tietostovalitsimella.",
   "theme.soundIdentification.dayOfYear": "Päivä",
   "theme.soundIdentification.downloading": "Ladataan",
-  "theme.soundIdentification.file.info": "Sallitut tiedostoformaatit ovat mp3, wav ja flac, ja suurin sallittu äänitteen pituus on 60s.",
+  "theme.soundIdentification.file.info": "Sallitut tiedostoformaatit ovat mp3, wav ja flac, ja suurin sallittu äänitteen pituus on 60 s.",
   "theme.soundIdentification.fileInput": "Tiedostovalitsin",
   "theme.soundIdentification.genericError": "Tiedoston käsittelyssä tapahtui virhe.",
   "theme.soundIdentification.intro": "Tällä sovelluksella voit tunnistaa suomalaisia lintuja.",
