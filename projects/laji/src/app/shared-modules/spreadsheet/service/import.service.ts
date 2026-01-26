@@ -90,13 +90,13 @@ export class ImportService {
   }
 
   waitToComplete(job: BatchJob, processCB: (status: BatchJob['status']) => void): Observable<BatchJob> {
-    const req$ = this.api.get('/documents/batch/{jobID}', { path: { jobID: job.id } }, 0);
-    return req$.pipe(
+    const req$ = () => this.api.get('/documents/batch/{jobID}', { path: { jobID: job.id } }, 0);
+    return req$().pipe(
       expand(response => {
         processCB(response.status);
         return !['VALIDATING', 'COMPLETING'].includes(response.phase)
           ? EMPTY
-          : req$.pipe(delay(1000));
+          : req$().pipe(delay(1000));
       })
     );
   }
