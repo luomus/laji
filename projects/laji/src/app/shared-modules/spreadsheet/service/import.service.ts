@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable, of, Subject, timer } from 'rxjs';
 import {
   IFormField,
   LEVEL_DOCUMENT,
@@ -10,12 +10,15 @@ import {
 } from '../model/excel';
 import { MappingService } from './mapping.service';
 import * as Hash from 'object-hash';
-import { catchError, delay, switchMap } from 'rxjs/operators';
+import { catchError, delay, expand, switchMap, tap } from 'rxjs/operators';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import type { components } from 'projects/laji-api-client-b/generated/api';
+import type { paths } from 'projects/laji-api-client-b/generated/api';
 
 type Document = components['schemas']['document'];
 type BatchJob = components['schemas']['BatchJobValidationStatusResponse'];
+type DataOrigin = NonNullable<paths['/documents/batch/{jobID}']['post']['parameters']['query']>['dataOrigin'];
+type PublicityRestrictions = NonNullable<paths['/documents/batch/{jobID}']['post']['parameters']['query']>['publicityRestrictions'];
 
 export interface IData {
   rowIdx: number;
@@ -87,31 +90,23 @@ export class ImportService {
   }
 
   waitToComplete(job: BatchJob, processCB: (status: BatchJob['status']) => void): Observable<BatchJob> {
-    return this.api.get('/documents/batch/{jobID}', { path: { jobID: job.id }, query: { validationErrorFormat: 'dotNotation' } }).pipe(
-      switchMap(response => {
+    const req$ = () => this.api.get('/documents/batch/{jobID}', { path: { jobID: job.id } }, 0);
+    return req$().pipe(
+      expand(response => {
         processCB(response.status);
-        if (!['VALIDATING', 'COMPLETING'].includes(response.phase)) {
-          return of(response);
-        }
-        return of(response).pipe(
-          delay(1000),
-          switchMap(() => this.waitToComplete(job, processCB))
-        );
-      }),
-      catchError((e) => {
-        console.log('ERROR', e);
-        return of(e).pipe(
-          delay(1000),
-          switchMap(() => this.waitToComplete(job, processCB))
-        );
+        return !['VALIDATING', 'COMPLETING'].includes(response.phase)
+          ? EMPTY
+          : req$().pipe(delay(1000));
       })
     );
   }
 
   sendData(
-    job: BatchJob
-  ): Observable<any> {
-    return this.api.post('/documents/batch/{jobID}', { path: { jobID: job.id } });
+    jobID: string,
+    dataOrigin: DataOrigin,
+    publicityRestrictions: PublicityRestrictions
+  ) {
+    return this.api.post('/documents/batch/{jobID}', { path: { jobID }, query: { dataOrigin, publicityRestrictions } });
   }
 
   flatFieldsToDocuments(
