@@ -476,6 +476,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
         })))
     ).subscribe(
         (response: any) => {
+          console.log("success", response, skipped);
           if (skipped) {
             return;
           }
@@ -493,15 +494,18 @@ export class ImporterComponent implements OnInit, OnDestroy {
             }
           }
           this.mappedData = [...this.mappedData as any];
+          console.log('done');
           this.cdr.markForCheck();
         },
         (err) => {
+          console.log("finalyly");
           this.valid = false;
           this.spreadsheetFacade.goToStep(Step.invalidData);
           this.cdr.markForCheck();
           this.logger.error('Import validation failed', err);
         },
         () => {
+          console.log("complete");
           if (skipped) {
             return;
           }

@@ -96,6 +96,7 @@ export class ImportService {
       if (this.counter < 2) {
         result = {...result, phase: 'VALIDATING'};
       }
+      console.log(result, this.counter);
       this.counter++;
       return result;
     }));
