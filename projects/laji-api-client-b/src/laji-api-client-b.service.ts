@@ -2,7 +2,7 @@ import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { paths } from 'projects/laji-api-client-b/generated/api.d';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, share, shareReplay, tap } from 'rxjs/operators';
+import { shareReplay, tap } from 'rxjs/operators';
 
 type WithResponses<T> = T & { responses: unknown };
 type Parameters<T> = 'parameters' extends keyof T ? T['parameters'] : never;
@@ -153,21 +153,6 @@ export class LajiApiClientBService {
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     const pathSegments = splitAndResolvePath(path, params);
     const requestUrl = this.baseUrl + pathSegments.join('');
-
-    console.log(cacheInvalidationMs, method);
-    // /documents/batch/{jobID} lands here
-    if (method === 'get' && cacheInvalidationMs === 0) {
-      const reqOptions = this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken)
-      reqOptions.headers['X-Debug--fuckery'] = Date.now().toString();
-      reqOptions.headers['cache-control'] = 'no-store';
-      return this.http.request(method, requestUrl, reqOptions).pipe(
-        tap(
-          (r) => {console.log("REQUEST REALLY", path, r);},
-          (r) => {console.log("REQUEST FAIL", path, r);},
-          () => {console.log("REQUEST COPMLETED", path);},
-        )
-      ) as any;
-    }
 
     if (method !== 'get') {
       this._flush(pathSegments);
