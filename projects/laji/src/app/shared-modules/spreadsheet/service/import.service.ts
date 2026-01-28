@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable, of, Subject, timer } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import {
   IFormField,
   LEVEL_DOCUMENT,
@@ -10,7 +10,7 @@ import {
 } from '../model/excel';
 import { MappingService } from './mapping.service';
 import * as Hash from 'object-hash';
-import { catchError, delay, expand, switchMap, tap } from 'rxjs/operators';
+import { delay, expand } from 'rxjs/operators';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 import type { paths } from 'projects/laji-api-client-b/generated/api';
@@ -90,7 +90,7 @@ export class ImportService {
   }
 
   waitToComplete(job: BatchJob, processCB: (status: BatchJob['status']) => void): Observable<BatchJob> {
-    const req$ = () => this.api.get('/documents/batch/{jobID}', { path: { jobID: job.id } }, 0);
+    const req$ = () => this.api.get('/documents/batch/{jobID}', { path: { jobID: job.id }, query: { timestamp: Date.now() } as any }, 0);
     return req$().pipe(
       expand(response => {
         processCB(response.status);

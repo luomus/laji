@@ -115,7 +115,7 @@ export class GeoConvertService {
   }
 
   private getGeoConversionStatus(conversionId: string, personToken?: string | null): Observable<GeoConversionStatusApiResponse> {
-    const queryParams: any = {};
+    const queryParams: any = { timestamp: Date.now() };
     if (personToken) {
       queryParams['personToken'] = personToken;
     }
