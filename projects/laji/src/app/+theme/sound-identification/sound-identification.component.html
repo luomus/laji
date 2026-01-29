@@ -11,7 +11,9 @@
   </ng-container>
 
   <ng-container *ngIf="data?.length === 0">
-    <span>{{"theme.soundIdentification.noIdentification" | translate}}</span>
+    <div class="alert alert-warning">
+      <span>{{"theme.soundIdentification.noIdentification" | translate}}</span>
+    </div>
   </ng-container>
 
   <laji-info-page page="8876"></laji-info-page>
