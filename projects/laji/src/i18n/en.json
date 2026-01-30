@@ -185,7 +185,7 @@
   "dataset-metadata.label": "Collection metadata",
   "datasets.accessNone": "You do not have access to any dataset.",
   "datasets.accessTo": "Datasets that you have access to",
-  "datasets.generic.instructions": "<p><strong>Instructions</strong></p>\n\n<ul>\n  <li><a href='https://info.laji.fi/etusivu/aineistot-ja-niiden-kaytto/aineistopankin-kaytto/'>Generic instructions</a> (in Finnish)</li></ul>",
+  "datasets.generic.instructions": "Generic instructions (in Finnish)",
   "datasets.intro": "Publish your dataset at FinBIF as primary- or secondary data.",
   "datasets.label": "Data bank",
   "datasets.new.help": "You can request access to datasets from your organization/group contact person.",

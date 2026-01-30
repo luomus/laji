@@ -185,7 +185,7 @@
   "dataset-metadata.label": "Metadata för dataset",
   "datasets.accessNone": "Du har inte tillgång till någon dataset.",
   "datasets.accessTo": "Dataseten som du har tillgång till",
-  "datasets.generic.instructions": "<p><strong>Ohjeita</strong></p>\n\n<ul>\n<li><a href='https://info.laji.fi/etusivu/aineistot-ja-niiden-kaytto/aineistopankin-kaytto/'>Aineistopankin ohjeet</a></li>\n</ul>",
+  "datasets.generic.instructions": "Databankinstruktioner",
   "datasets.intro": "Vie oma havaintoaineistosi Lajitietokeskukseen primääri tai sekundääridatana.",
   "datasets.label": "Databank",
   "datasets.new.help": "Du kan begära åtkomst till dataseten från en kontaktperson i din organisation eller grupp.",
