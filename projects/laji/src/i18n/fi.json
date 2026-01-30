@@ -185,7 +185,7 @@
   "dataset-metadata.label": "Aineistojen metatiedot",
   "datasets.accessNone": "Sinulla ei ole pääsyä mihinkään aineistoon.",
   "datasets.accessTo": "Aineistot, joihin sinulla on pääsy",
-  "datasets.generic.instructions": "<p><strong>Ohjeita</strong></p>\n\n<ul>\n  <li><a href='https://info.laji.fi/etusivu/aineistot-ja-niiden-kaytto/aineistopankin-kaytto/'>Aineistopankin ohjeet</li>\n</ul>",
+  "datasets.generic.instructions": "Aineistopankin ohjeet",
   "datasets.intro": "Vie oma havainto- tai kokoelma-aineistosi Lajitietokeskuksen Aineistopankkiin primääri- tai sekundääridatana. (<a href=\"https://info.laji.fi/etusivu/nain-liitat-aineistosi/\"> Lue lisää: Näin liität aineistosi</a>)",
   "datasets.label": "Aineistopankki",
   "datasets.new.help": "Voit pyytää pääsyä aineistoihin oman organisaatiosi tai ryhmäsi yhteyshenkilöltä.",
