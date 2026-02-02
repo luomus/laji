@@ -1,6 +1,6 @@
 <div class="laji-page">
-  <img src="https://placehold.co/800x300"/>
-  <h1>FinBIF Trait Database</h1>
+  <!-- <img src="https://placehold.co/800x300"/> -->
+  <h1 class="mb-7"><strong>FinBIF</strong> Trait Database</h1>
   <div class="d-flex flex-gap-5 mb-6" *ngIf="counts$ | async; else loading; let counts">
     <div class="counts-item"><strong>{{ counts.entries }}</strong> trait entries</div>
     <div class="counts-item"><strong>{{ counts.traits }}</strong> traits</div>
@@ -47,4 +47,3 @@
 <ng-template #loading>
   <laji-spinner class="d-block m-6"></laji-spinner>
 </ng-template>
-

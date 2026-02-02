@@ -5,6 +5,7 @@ import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable } from 'rxjs';
 import { map, filter, switchMap, tap } from 'rxjs/operators';
+import { MetadataService } from '../../../shared/service/metadata.service';
 import { UserService } from '../../../shared/service/user.service';
 import { filterNullValues } from '../../trait-db-datasets/trait-db-dataset-editor/trait-db-dataset-editor.component';
 
@@ -33,13 +34,15 @@ export class TraitDbTraitEditorComponent implements OnInit {
   errors: ValidationResponse['errors'] | undefined;
 
   groups$!: Observable<components['schemas']['TraitGroup'][]>;
+  unitOfMeasurements$!: Observable<{id: string; label: string }[]>;
 
   constructor(
     private route: ActivatedRoute,
     private api: LajiApiClientBService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private metadataService: MetadataService
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +55,8 @@ export class TraitDbTraitEditorComponent implements OnInit {
         this.form.get(key)?.setValue(val);
       });
     });
+
+    this.unitOfMeasurements$ = this.metadataService.getRange('TDF.unitOfMeasurementEnum');
 
     this.groups$ = this.api.fetch('/trait/trait-groups', 'get', {});
   }
@@ -134,4 +139,3 @@ export class TraitDbTraitEditorComponent implements OnInit {
     });
   }
 }
-
