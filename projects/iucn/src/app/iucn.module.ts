@@ -4,7 +4,6 @@ import { SharedModule } from '../../../laji/src/app/shared/shared.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LajiErrorHandler } from '../../../laji/src/app/shared/error/laji-error-handler';
 import { ConsoleLogger, HttpLogger, Logger } from '../../../laji/src/app/shared/logger/index';
-import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
 import { ILogger } from '../../../laji/src/app/shared/logger/logger.interface';
 import { TranslateFileLoader } from '../../../laji/src/app/shared/translate/translate-file-loader';
 import { NgxWebstorageModule } from 'ngx-webstorage';
@@ -21,11 +20,11 @@ import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-com
 import { AppComponent } from '../../../laji/src/app/shared-modules/app-component/app.component';
 import { GraphQLModule } from '../../../laji/src/app/graph-ql/graph-ql.module';
 import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
-import { API_BASE_URL } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
-export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
+export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
-    return new HttpLogger(loggerApi);
+    return new HttpLogger(api);
   }
   return new ConsoleLogger();
 }
@@ -65,7 +64,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     {
       provide: Logger,
-      deps: [LoggerApi],
+      deps: [LajiApiClientBService],
       useFactory: createLoggerLoader
     }
   ],

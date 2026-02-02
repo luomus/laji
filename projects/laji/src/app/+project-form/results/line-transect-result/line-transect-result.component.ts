@@ -9,5 +9,5 @@ export class LineTransectResultComponent {
   public tab?: string;
   informalTaxonGroup = 'MVL.1';
   defaultTaxonId = 'MX.37580';
-  collectionId = 'HR.61,HR.2691';
+  collectionId = 'HR.6778,HR.2691,HR.4731';
 }
