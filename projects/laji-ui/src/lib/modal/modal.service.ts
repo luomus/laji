@@ -1,4 +1,7 @@
-import { ApplicationRef, ComponentRef, createComponent, EmbeddedViewRef, Inject, Injectable, Renderer2, RendererFactory2, TemplateRef, Type, DOCUMENT } from '@angular/core';
+import {
+  ApplicationRef, ComponentRef, createComponent, EmbeddedViewRef, Inject, Injectable,
+  Renderer2, RendererFactory2, TemplateRef, Type, DOCUMENT
+} from '@angular/core';
 import { ModalComponent, ModalSize } from './modal/modal.component';
 
 

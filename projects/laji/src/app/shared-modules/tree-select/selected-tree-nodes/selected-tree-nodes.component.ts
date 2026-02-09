@@ -12,7 +12,8 @@ import { SelectedOption } from '../tree-select.component';
            @for (option of included; track track($index, option)) {
              <span class="lj-container">
                <label class="lj-item selected">
-                 <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(option.id)" (valueChange)="deselect(option.id)"></laji-checkbox> {{ option.value }}
+                 <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(option.id)"
+                  (valueChange)="deselect(option.id)"></laji-checkbox> {{ option.value }}
                </label>
              </span>
            }
@@ -24,7 +25,8 @@ import { SelectedOption } from '../tree-select.component';
            @for (option of excluded; track track($index, option)) {
              <span class="lj-container">
                <label class="lj-item selected">
-                 <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(option.id)" (valueChange)="deselect(option.id)"></laji-checkbox> {{ option.value }}
+                 <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(option.id)"
+                  (valueChange)="deselect(option.id)"></laji-checkbox> {{ option.value }}
                </label>
              </span>
            }
