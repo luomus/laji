@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'nlToBr'
+    name: 'nlToBr',
+    standalone: false
 })
 export class NlToBrPipe implements PipeTransform {
 

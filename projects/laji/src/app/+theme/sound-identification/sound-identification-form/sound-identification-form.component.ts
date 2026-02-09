@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, OnChan
 import { DialogService } from '../../../shared/service/dialog.service';
 import { toHtmlInputElement } from '../../../shared/service/html-element.service';
 import { from, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 
 export interface CombinedData {
   params: {[key: string]: any};
@@ -10,10 +10,11 @@ export interface CombinedData {
 }
 
 @Component({
-  selector: 'laji-sound-identification-form',
-  templateUrl: './sound-identification-form.component.html',
-  styleUrls: ['./sound-identification-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-sound-identification-form',
+    templateUrl: './sound-identification-form.component.html',
+    styleUrls: ['./sound-identification-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SoundIdentificationFormComponent implements OnChanges {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;

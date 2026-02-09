@@ -5,10 +5,11 @@ import { Global } from '../../environments/global';
 import { Form } from '../../../../laji/src/app/shared/model/Form';
 
 @Component({
-  selector: 'vir-monitoring',
-  templateUrl: './monitoring.component.html',
-  styleUrls: ['./monitoring.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-monitoring',
+    templateUrl: './monitoring.component.html',
+    styleUrls: ['./monitoring.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MonitoringComponent implements OnInit {
   monitoringForms$!: Observable<Form.List[]>;

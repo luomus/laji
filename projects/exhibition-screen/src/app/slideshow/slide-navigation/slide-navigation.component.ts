@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { ISlideData } from '../slide/slide.component';
 
 @Component({
-  selector: 'es-slide-navigation',
-  templateUrl: 'slide-navigation.component.html',
-  styleUrls: ['slide-navigation.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'es-slide-navigation',
+    templateUrl: 'slide-navigation.component.html',
+    styleUrls: ['slide-navigation.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SlideNavigationComponent {
   @Input() slides!: ISlideData[];

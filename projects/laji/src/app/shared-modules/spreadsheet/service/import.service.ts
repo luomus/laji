@@ -9,8 +9,9 @@ import {
   VALUE_IGNORE
 } from '../model/excel';
 import { MappingService } from './mapping.service';
-import * as Hash from 'object-hash';
-import { delay, expand } from 'rxjs/operators';
+import Hash from 'object-hash';
+import { catchError, delay, switchMap, expand } from 'rxjs';
+import { ArrayType } from '@angular/compiler';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 import type { paths } from 'projects/laji-api-client-b/generated/api';

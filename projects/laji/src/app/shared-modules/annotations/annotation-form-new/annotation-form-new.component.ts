@@ -1,4 +1,4 @@
-import {map,  mergeMap, switchMap } from 'rxjs/operators';
+import {map,  mergeMap, switchMap } from 'rxjs';
 import { Component, EventEmitter, Input, OnInit,
 Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener,
 ChangeDetectionStrategy, AfterContentChecked } from '@angular/core';
@@ -36,23 +36,23 @@ interface AnnotationTaxonomy {
 }
 
 @Component({
-  selector: 'laji-annotation-form-new',
-  templateUrl: './annotation-form-new.component.html',
-  styleUrls: ['./annotation-form-new.component.scss'],
-  providers: [LabelPipe],
-  animations: [
-    trigger('fadeInOut', [
-      transition('void => *', [
-        style({opacity: 0}),
-        animate(400, style({opacity: 1}))
-      ]),
-      transition('* => void', [
-        animate(600, style({opacity: 0}))
-      ])
-    ])
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
-
+    selector: 'laji-annotation-form-new',
+    templateUrl: './annotation-form-new.component.html',
+    styleUrls: ['./annotation-form-new.component.scss'],
+    providers: [LabelPipe],
+    animations: [
+        trigger('fadeInOut', [
+            transition('void => *', [
+                style({ opacity: 0 }),
+                animate(400, style({ opacity: 1 }))
+            ]),
+            transition('* => void', [
+                animate(600, style({ opacity: 0 }))
+            ])
+        ])
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
   static readonly lang = ['en', 'fi', 'sv'];
@@ -69,7 +69,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
   @Input() unit: any;
   @Output() save = new EventEmitter<Annotation>();
   @Output() loading = new EventEmitter<boolean>();
-  @Output() cancel = new EventEmitter<any>();
+  @Output() annotationCancel = new EventEmitter<any>();
 
   @ViewChild('taxon') taxonElement!: ElementRef;
   @ViewChild('comment') commentElement!: ElementRef;
@@ -236,7 +236,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
     if (this.unit.linkings && (this.unit.linkings.originalTaxon || this.unit.linkings.taxon)) {
       const taxon = this.unit.linkings.taxon || this.unit.linkings.originalTaxon;
 
-      this.currentTaxonName = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.currentLang);
+      this.currentTaxonName = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.getCurrentLang());
     }
   }
 
@@ -244,7 +244,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
     if (this.unit.linkings && (this.unit.linkings.originalTaxon || this.unit.linkings.taxon)) {
       const taxon = this.unit.linkings.taxon || this.unit.linkings.originalTaxon;
 
-      this.annotation.identification.taxon = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.currentLang);
+      this.annotation.identification.taxon = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.getCurrentLang());
       this.annotation.identification.taxonID = IdService.getId(taxon.id);
       this.taxonomy = {
         id: this.annotation.identification.taxonID,
@@ -585,4 +585,3 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
 
 
 }
-

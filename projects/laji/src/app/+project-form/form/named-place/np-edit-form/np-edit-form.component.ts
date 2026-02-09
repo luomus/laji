@@ -5,12 +5,12 @@ import { UserService } from '../../../../shared/service/user.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import { Util } from '../../../../shared/service/util.service';
-import * as merge from 'deepmerge';
+import merge from 'deepmerge';
 import { DialogService } from '../../../../shared/service/dialog.service';
 import { Form } from '../../../../shared/model/Form';
 import { NamedPlacesService } from '../../../../shared/service/named-places.service';
 import { forkJoin, Observable, of } from 'rxjs';
-import { map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { map, mergeMap, switchMap, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NamedPlacesQuery, NamedPlacesRouteData, ProjectFormService } from '../../../../shared/service/project-form.service';
 import { AreaService } from '../../../../shared/service/area.service';
@@ -24,16 +24,17 @@ interface ViewModel extends NamedPlacesRouteData {
 }
 
 @Component({
-  selector: 'laji-np-edit-form',
-  templateUrl: './np-edit-form.component.html',
-  styleUrls: ['./np-edit-form.component.css']
+    selector: 'laji-np-edit-form',
+    templateUrl: './np-edit-form.component.html',
+    styleUrls: ['./np-edit-form.component.css'],
+    standalone: false
 })
 export class NpEditFormComponent implements OnInit {
   asyncData$!: Observable<ViewModel>;
 
   lang?: string;
   saving = false;
-  status: LajiFormFooterStatus = '';
+  status: LajiFormFooterStatus = 'none';
   error = '';
 
   private hasChanges = false;
@@ -119,7 +120,7 @@ export class NpEditFormComponent implements OnInit {
 
           setTimeout(() => {
             if (this.status === 'error') {
-              this.status = '';
+              this.status = 'none';
             }
           }, 5000);
         });
@@ -232,7 +233,7 @@ export class NpEditFormComponent implements OnInit {
   getPlaceForm(data: NamedPlacesRouteData): Observable<Form.SchemaForm> {
     const getAreaEnum = (
       type: keyof Pick<AreaService, 'getMunicipalities' | 'getBiogeographicalProvinces' | 'getBirdAssociationAreas'>
-    ): Observable<Form.IEnum> => (this.areaService[type](this.translate.currentLang)).pipe(
+    ): Observable<Form.IEnum> => (this.areaService[type](this.translate.getCurrentLang())).pipe(
       map(areas => areas.reduce((schema: Form.IEnum, area: {id: string; value: string}) => {
         schema.oneOf.push({const: area.id, title: area.value});
         return schema;

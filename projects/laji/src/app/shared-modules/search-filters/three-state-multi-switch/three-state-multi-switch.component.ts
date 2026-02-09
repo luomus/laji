@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MetadataService } from '../../../shared/service/metadata.service';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'laji-three-state-multi-switch',
-  templateUrl: './three-state-multi-switch.component.html',
-  styleUrls: ['./three-state-multi-switch.component.css']
+    selector: 'laji-three-state-multi-switch',
+    templateUrl: './three-state-multi-switch.component.html',
+    styleUrls: ['./three-state-multi-switch.component.css'],
+    standalone: false
 })
 export class ThreeStateMultiSwitchComponent implements OnInit {
 
@@ -28,7 +29,7 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
     private translate: TranslateService) { }
 
   ngOnInit() {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
     this.open =  (this.trueValue?.length as any) > 0 || (this.falseValue?.length as any) > 0 ? true : false;
   }
 

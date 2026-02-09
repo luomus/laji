@@ -4,9 +4,10 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type RedListEvaluation = components['schemas']['Evaluation'];
 
 @Component({
-  selector: 'laji-status-mark',
-  templateUrl: './status-mark.component.html',
-  styleUrls: ['./status-mark.component.scss']
+    selector: 'laji-status-mark',
+    templateUrl: './status-mark.component.html',
+    styleUrls: ['./status-mark.component.scss'],
+    standalone: false
 })
 export class StatusMarkComponent {
 

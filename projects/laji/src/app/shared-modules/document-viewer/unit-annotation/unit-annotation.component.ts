@@ -4,9 +4,10 @@ import { IdService } from '../../../shared/service/id.service';
 import { Annotation } from '../../../shared/model/Annotation';
 
 @Component({
-  selector: 'laji-unit-annotation',
-  templateUrl: './unit-annotation.component.html',
-  styleUrls: ['./unit-annotation.component.scss']
+    selector: 'laji-unit-annotation',
+    templateUrl: './unit-annotation.component.html',
+    styleUrls: ['./unit-annotation.component.scss'],
+    standalone: false
 })
 export class UnitAnnotationComponent implements OnInit {
 

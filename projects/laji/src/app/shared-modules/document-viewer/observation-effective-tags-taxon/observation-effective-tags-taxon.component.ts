@@ -5,17 +5,18 @@ import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { AnnotationService } from '../service/annotation.service';
 import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
-import { switchMap, toArray, concatMap } from 'rxjs/operators';
+import { switchMap, toArray, concatMap } from 'rxjs';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type AnnotationTag = components['schemas']['tag'];
 
 @Component({
-  selector: 'laji-observation-effective-tags-taxon',
-  templateUrl: './observation-effective-tags-taxon.component.html',
-  styleUrls: ['./observation-effective-tags-taxon.component.scss'],
-  providers: [WarehousePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-effective-tags-taxon',
+    templateUrl: './observation-effective-tags-taxon.component.html',
+    styleUrls: ['./observation-effective-tags-taxon.component.scss'],
+    providers: [WarehousePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy {
 

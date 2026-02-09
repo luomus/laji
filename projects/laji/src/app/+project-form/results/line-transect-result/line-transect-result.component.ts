@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'laji-line-transect-result',
-  templateUrl: './line-transect-result.component.html',
-  styleUrls: ['./line-transect-result.component.css']
+    selector: 'laji-line-transect-result',
+    templateUrl: './line-transect-result.component.html',
+    styleUrls: ['./line-transect-result.component.css'],
+    standalone: false
 })
 export class LineTransectResultComponent {
   public tab?: string;

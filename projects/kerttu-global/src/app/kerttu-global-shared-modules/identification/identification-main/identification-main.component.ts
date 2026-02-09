@@ -5,7 +5,7 @@ import {
   IGlobalRecordingWithAnnotation,
   KerttuGlobalErrorEnum
 } from '../../../kerttu-global-shared/models';
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 import { Observable, of } from 'rxjs';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
 import equals from 'deep-equal';
@@ -18,16 +18,17 @@ import { AudioService } from '../../../../../../laji/src/app/shared-modules/audi
 import { AudioCacheLoaderService } from '../../../+identification/service/audio-cache-loader.service';
 import { IdentificationNavComponent } from './identification-nav/identification-nav.component';
 import { IdentificationViewComponent } from './identification-view/identification-view.component';
-import { NgIf } from '@angular/common';
+
 import { LajiUiModule } from '../../../../../../laji-ui/src/lib/laji-ui.module';
 import { getTranslateKeyWithTaxonType } from '../../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
 
 @Component({
-  selector: 'bsg-identification-main',
-  templateUrl: './identification-main.component.html',
-  styleUrls: ['./identification-main.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [AudioService, AudioCacheLoaderService, RecordingLoaderService]
+    selector: 'bsg-identification-main',
+    templateUrl: './identification-main.component.html',
+    styleUrls: ['./identification-main.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [AudioService, AudioCacheLoaderService, RecordingLoaderService],
+    standalone: false
 })
 export class IdentificationMainComponent implements OnChanges {
   @Input() selectedSites?: number[];

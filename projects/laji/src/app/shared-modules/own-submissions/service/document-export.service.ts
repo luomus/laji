@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { Util } from '../../../shared/service/util.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
@@ -8,13 +7,14 @@ import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { geoJSONToISO6709 } from '@luomus/laji-map/lib/utils';
 import { BookType } from 'xlsx';
-import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, of } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { ExportService } from '../../../shared/service/export.service';
 import { DocumentField } from '../models/document-field';
 import { FeatureCollection } from 'geojson';
 import { Form } from '../../../shared/model/Form';
+import { Injectable } from '@angular/core';
 
 
 @Injectable()
@@ -67,7 +67,7 @@ export class DocumentExportService {
                   return arr;
                 }, dataObservables);
 
-                return (dataObservables.length > 0 ? ObservableForkJoin(dataObservables) : ObservableOf([]))
+                return (dataObservables.length > 0 ? ObservableForkJoin(...dataObservables) : of([]))
                   .pipe(
                     map((data: any[]) => {
                       const mergedData = [].concat.apply([], data);
@@ -391,7 +391,7 @@ export class DocumentExportService {
 
     if (key.match(new RegExp('^' + this.valuePrefixes.collection + '\.[0-9]+$'))) {
       return this.collectionService
-        .getName$(key, this.translate.currentLang);
+        .getName$(key, this.translate.getCurrentLang());
     }
 
     return ObservableOf(key);
@@ -400,7 +400,7 @@ export class DocumentExportService {
   private getFieldLabel(fieldName: string): Observable<string> {
     if ((this.classPrefixes as any)[fieldName]) {
       return this.labelService
-        .get((this.classPrefixes as any)[fieldName] + '.' + fieldName, this.translate.currentLang)
+        .get((this.classPrefixes as any)[fieldName] + '.' + fieldName, this.translate.getCurrentLang())
         .pipe(
           map((label) => label || fieldName)
         );

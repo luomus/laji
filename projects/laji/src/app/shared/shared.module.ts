@@ -16,7 +16,6 @@ import { ToQNamePipe } from './pipe/to-qname.pipe';
 import { ToFullUriPipe } from './pipe/to-full-uri';
 import { GalleryComponent } from './gallery/gallery/gallery.component';
 import { AuthoritiesDirective } from './authorities/authorities.directive';
-import { NgxWebstorageModule } from 'ngx-webstorage';
 import { ImageComponent } from './gallery/image/image.component';
 import { ValuesPipe } from './pipe/values.pipe';
 import { CollectionNamePipe } from './pipe/collection-name.pipe';
@@ -84,6 +83,7 @@ import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 import { ExternalRedirectComponent } from './external-redirect/external-redirect.component';
+import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSessionStorage } from 'ngx-webstorage';
 
 @NgModule({
     declarations: [
@@ -141,14 +141,20 @@ import { ExternalRedirectComponent } from './external-redirect/external-redirect
         PaginatorModule,
         ScrollingModule,
         LajiUiModule,
-        DropdownModule, AlertModule, NgxWebstorageModule, PopoverModule,
+        DropdownModule, AlertModule, PopoverModule,
         UtilitiesModule,
         InfoModule,
         LayoutModule,
         ModelViewerModule,
         TooltipModule
     ],
-    providers: [],
+    providers: [
+      provideNgxWebstorage(
+    		withNgxWebstorageConfig({ prefix: 'ba-', separator: '' }),
+    		withLocalStorage(),
+    		withSessionStorage()
+      ),
+    ],
     exports: [
         CommonModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent, NotificationsComponent,
         TaxonDropdownComponent, AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
@@ -182,7 +188,6 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
-        NgxWebstorageModule,
         DateFormatPipe,
         FormattedNumber,
         ToQNamePipe,

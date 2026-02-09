@@ -2,10 +2,11 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
 import { IGlobalSpeciesFilters, IGlobalSpeciesQuery } from '../../models';
 
 @Component({
-  selector: 'bsg-species-list-filters',
-  templateUrl: './species-list-filters.component.html',
-  styleUrls: ['./species-list-filters.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-species-list-filters',
+    templateUrl: './species-list-filters.component.html',
+    styleUrls: ['./species-list-filters.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesListFiltersComponent {
   @Input() filters?: IGlobalSpeciesFilters = { continent: [], order: [], family: [] };

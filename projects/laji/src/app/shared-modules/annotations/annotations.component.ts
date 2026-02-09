@@ -7,7 +7,7 @@ import {
   AnnotationFormAnnotation,
   AnnotationFormNewComponent
 } from './annotation-form-new/annotation-form-new.component';
-import {map, switchMap } from 'rxjs/operators';
+import {map, switchMap } from 'rxjs';
 import { Subscription, timer } from 'rxjs';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -24,11 +24,11 @@ type Annotation = components['schemas']['annotation'];
 type AnnotationTag = components['schemas']['tag'];
 
 @Component({
-  selector: 'laji-annotations',
-  templateUrl: './annotations.component.html',
-  styleUrls: ['./annotations.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
-
+    selector: 'laji-annotations',
+    templateUrl: './annotations.component.html',
+    styleUrls: ['./annotations.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AnnotationsComponent implements OnInit, OnDestroy {
   @Input({ required: true }) rootID!: string;
@@ -91,7 +91,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
-    this.currentLang = this.translate.currentLang;
+    this.currentLang = this.translate.getCurrentLang();
     this.initEmptyAnnotation();
     this.findRendomKey1();
     if (this.identifying) {

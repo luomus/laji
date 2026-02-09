@@ -1,60 +1,94 @@
 <h4>{{ 'annotation.currentOccurrenceInformation' | translate }}</h4>
 <laji-issues [data]="gathering"></laji-issues>
-<ng-container *ngFor="let unit of gathering?.units">
-  <ng-container *ngIf="(unit.unitId === highlight) && (unit.taxonVerbatim || unit.reportedTaxonId)">
-    <laji-row *ngIf="unit.taxonVerbatim; else reportedTaxonId" [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim">
-      <span *ngIf="unit.reportedTaxonConfidence && unit.reportedTaxonConfidence === 'UNSURE'" class="taxonConfidence" [ngClass]="{'green-color': unit.reportedTaxonConfidence === 'SURE', 'red-color': unit.reportedTaxonConfidence !== 'SURE' }">{{ unit.reportedTaxonConfidence | label: 'warehouse' }}</span>
-    </laji-row>
-    <ng-template #reportedTaxonId>
-      <laji-row [title]="'viewer.taxonVerbatim' | translate" [value]="unit.reportedTaxonId | toQName | label">
-        <span *ngIf="unit.reportedTaxonConfidence && unit.reportedTaxonConfidence === 'UNSURE'" class="taxonConfidence" [ngClass]="{'green-color': unit.reportedTaxonConfidence === 'SURE', 'red-color': unit.reportedTaxonConfidence !== 'SURE' }">{{ unit.reportedTaxonConfidence | label: 'warehouse' }}</span>
+@for (unit of gathering?.units; track unit) {
+  @if ((unit.unitId === highlight) && (unit.taxonVerbatim || unit.reportedTaxonId)) {
+    @if (unit.taxonVerbatim) {
+      <laji-row [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim">
+        @if (unit.reportedTaxonConfidence && unit.reportedTaxonConfidence === 'UNSURE') {
+          <span class="taxonConfidence" [ngClass]="{'green-color': unit.reportedTaxonConfidence === 'SURE', 'red-color': unit.reportedTaxonConfidence !== 'SURE' }">{{ unit.reportedTaxonConfidence | label: 'warehouse' }}</span>
+        }
       </laji-row>
-    </ng-template>
-    <laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon" [title]="'annotation.title.taxon' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
-      <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
-    </laji-row>
-  </ng-container> 
-  <ng-container *ngIf="unit.unitId === highlight && unit.wild === false">
+    } @else {
+      <laji-row [title]="'viewer.taxonVerbatim' | translate" [value]="unit.reportedTaxonId | toQName | label">
+        @if (unit.reportedTaxonConfidence && unit.reportedTaxonConfidence === 'UNSURE') {
+          <span class="taxonConfidence" [ngClass]="{'green-color': unit.reportedTaxonConfidence === 'SURE', 'red-color': unit.reportedTaxonConfidence !== 'SURE' }">{{ unit.reportedTaxonConfidence | label: 'warehouse' }}</span>
+        }
+      </laji-row>
+    }
+    @if (unit.linkings && unit.linkings.originalTaxon) {
+      <laji-row [title]="'annotation.title.taxon' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+        <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
+      </laji-row>
+    }
+  }
+  @if (unit.unitId === highlight && unit.wild === false) {
     <laji-row [title]="'observation.active.nativeOccurrenceWild' | translate" [value]="'observation.active.nativeOccurrence.notWild' | translate "></laji-row>
-  </ng-container>
-</ng-container>
-<laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime" [noTitleSpace]="false">
-  {{ date | amDateFormat:'L' }} {{ time }}
-</laji-row>
-<laji-row *ngIf="gathering.team" [title]="'observation.form.observer' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
-  <span>
-   <ul class="separated-list">
-     <li *ngFor="let user of gathering.team; let i=index">{{ user | toQName | label }}</li> 
+  }
+}
+@if (gathering.displayDateTime) {
+  <laji-row [title]="'viewer.field.time' | translate" [noTitleSpace]="false">
+    {{ date | amDateFormat:'L' }} {{ time }}
+  </laji-row>
+}
+@if (gathering.team) {
+  <laji-row [title]="'observation.form.observer' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+    <span>
+      <ul class="separated-list">
+        @for (user of gathering.team; track user; let i = $index) {
+          <li>{{ user | toQName | label }}</li>
+        }
+      </ul>
+    </span>
+  </laji-row>
+}
+@if (gathering.interpretations) {
+  <laji-row [title]="'result.gathering.conversions.wgs84CenterPoint' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+    <ul class="separated-list">
+      @if (gathering.higherGeography) {
+        <li [luTooltip]="'MY.higherGeography' | label" [isDisabled]="hideTooltips">
+        {{ gathering.higherGeography }}</li>
+      }
+      @if (gathering.interpretations?.country) {
+        <li [luTooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
+        {{ gathering.interpretations.country | toQName | area }}</li>
+      }
+      @if (!gathering.interpretations?.country && gathering.country) {
+        <li [luTooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
+        {{ gathering.country }}</li>
+      }
+      @if (gathering.province) {
+        <li [luTooltip]="'MY.province' | label" [isDisabled]="hideTooltips">
+        {{ gathering.province }}</li>
+      }
+      @if (gathering.interpretations?.biogeographicalProvince) {
+        <li [luTooltip]="'MY.biologicalProvince' | label" [isDisabled]="hideTooltips">{{ gathering.interpretations.biogeographicalProvince | toQName | area }}
+        ({{ gathering.interpretations.biogeographicalProvince | toQName | area:'provinceCode' }})</li>
+      }
+      @if (!gathering.interpretations?.biogeographicalProvince && gathering.biogeographicalProvince) {
+        <li [luTooltip]="'MY.biologicalProvince' | label"
+          [isDisabled]="hideTooltips"
+          >
+        {{ gathering.biogeographicalProvince }}</li>
+      }
+      @if (gathering.interpretations?.finnishMunicipalities) {
+        <li [luTooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
+        {{ gathering.interpretations.finnishMunicipalities | toQName | area | values }}</li>
+      } @else {
+        @if (gathering.municipality) {
+          <li [luTooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
+          {{ gathering.municipality }}</li>
+        }
+      }
+      @if (gathering.locality) {
+        <li [luTooltip]="'MY.locality' | label" [isDisabled]="hideTooltips">
+        {{ gathering.locality }}</li>
+      }
     </ul>
-  </span>
-</laji-row>
-<laji-row *ngIf="gathering.interpretations" [title]="'result.gathering.conversions.wgs84CenterPoint' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
-  <ul class="separated-list">
-    <li *ngIf="gathering.higherGeography" [luTooltip]="'MY.higherGeography' | label" [isDisabled]="hideTooltips">
-      {{ gathering.higherGeography }}</li>
-    <li *ngIf="gathering.interpretations?.country" [luTooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
-      {{ gathering.interpretations.country | toQName | area }}</li>
-    <li *ngIf="!gathering.interpretations?.country && gathering.country" [luTooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
-      {{ gathering.country }}</li>
-    <li *ngIf="gathering.province" [luTooltip]="'MY.province' | label" [isDisabled]="hideTooltips">
-      {{ gathering.province }}</li>
-    <li *ngIf="gathering.interpretations?.biogeographicalProvince" [luTooltip]="'MY.biologicalProvince' | label" [isDisabled]="hideTooltips">{{ gathering.interpretations.biogeographicalProvince | toQName | area }}
-      ({{ gathering.interpretations.biogeographicalProvince | toQName | area:'provinceCode' }})</li>
-    <li [luTooltip]="'MY.biologicalProvince' | label"
-        [isDisabled]="hideTooltips"
-        *ngIf="!gathering.interpretations?.biogeographicalProvince && gathering.biogeographicalProvince">
-      {{ gathering.biogeographicalProvince }}</li>
-    <li *ngIf="gathering.interpretations?.finnishMunicipalities; else municipality" [luTooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
-      {{ gathering.interpretations.finnishMunicipalities | toQName | area | values }}</li>
-    <ng-template #municipality>
-      <li *ngIf="gathering.municipality" [luTooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
-        {{ gathering.municipality }}</li>
-    </ng-template>
-    <li *ngIf="gathering.locality" [luTooltip]="'MY.locality' | label" [isDisabled]="hideTooltips">
-      {{ gathering.locality }}</li>
-  </ul>
-</laji-row>
+  </laji-row>
+}
 
-<laji-row *ngIf="document?.referenceURL" [title]="'URL' | translate" [noTitleSpace]="false">
-  <a [href]="document.referenceURL" target="_blank" rel="noopener">{{ document.referenceURL }}</a>
-</laji-row>
+@if (document?.referenceURL) {
+  <laji-row [title]="'URL' | translate" [noTitleSpace]="false">
+    <a [href]="document.referenceURL" target="_blank" rel="noopener">{{ document.referenceURL }}</a>
+  </laji-row>
+}

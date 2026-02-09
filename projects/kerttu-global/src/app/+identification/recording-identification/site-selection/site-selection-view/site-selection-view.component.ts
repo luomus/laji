@@ -3,10 +3,11 @@ import { IGlobalSite } from '../../../../kerttu-global-shared/models';
 import { SiteSelectionMapComponent } from './site-selection-map/site-selection-map.component';
 
 @Component({
-  selector: 'bsg-site-selection-view',
-  templateUrl: './site-selection-view.component.html',
-  styleUrls: ['./site-selection-view.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-site-selection-view',
+    templateUrl: './site-selection-view.component.html',
+    styleUrls: ['./site-selection-view.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SiteSelectionViewComponent {
   @ViewChild(SiteSelectionMapComponent, { static: true }) siteMap!: SiteSelectionMapComponent;

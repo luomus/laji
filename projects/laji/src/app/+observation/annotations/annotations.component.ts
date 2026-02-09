@@ -12,10 +12,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type AnnotationTag = components['schemas']['tag'];
 
 @Component({
-  selector: 'laji-annotations',
-  templateUrl: './annotations.component.html',
-  styleUrls: ['./annotations.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-annotations',
+    templateUrl: './annotations.component.html',
+    styleUrls: ['./annotations.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
 

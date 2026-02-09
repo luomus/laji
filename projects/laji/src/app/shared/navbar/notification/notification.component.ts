@@ -4,10 +4,11 @@ import { Notification } from '../../model/Notification';
 import { IdService } from '../../service/id.service';
 
 @Component({
-  selector: '[laji-notification]',
-  templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: '[laji-notification]',
+    templateUrl: './notification.component.html',
+    styleUrls: ['./notification.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NotificationComponent {
   targetPath!: string;
@@ -16,8 +17,8 @@ export class NotificationComponent {
   by!: string | undefined;
   type!: 'annotation'|'annotationCommented'|'friendRequest'|'friendRequestAccepted';
 
-  private _notification!: Notification;
-  @Input({required: true}) set notification(notification: Notification) {
+  private _notification: Notification | undefined;
+  @Input({required: true}) set notification(notification: Notification | undefined) {
     this._notification = notification;
     this.initTargets();
   }

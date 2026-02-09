@@ -1,6 +1,6 @@
 import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
 import { Observable, of, Subject, forkJoin } from 'rxjs';
-import { takeUntil, tap, map, concatMap } from 'rxjs/operators';
+import { takeUntil, tap, map, concatMap } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 

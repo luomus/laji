@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { IGlobalSpeciesFilters, IGlobalSpeciesQuery, IUserStat, IValidationStat } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, switchMap, startWith } from 'rxjs/operators';
+import { map, switchMap, startWith } from 'rxjs';
 
 @Component({
-  selector: 'bsg-results',
-  template: `
+    selector: 'bsg-results',
+    template: `
     <h1>{{ 'results.title' | translate }}</h1>
     <bsg-species-list-filters
       [query]="(speciesQuery$ | async) ?? {}"
@@ -23,7 +23,8 @@ import { map, switchMap, startWith } from 'rxjs/operators';
     <bsg-user-table
       [data]="(userStats$ | async) ?? undefined"
     ></bsg-user-table>
-  `
+  `,
+    standalone: false
 })
 export class ResultsComponent {
   speciesFilters$: Observable<IGlobalSpeciesFilters>;

@@ -6,8 +6,9 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 
 @Component({
-  selector: 'laji-user-login',
-  templateUrl: './user-login.component.html'
+    selector: 'laji-user-login',
+    templateUrl: './user-login.component.html',
+    standalone: false
 })
 export class UserLoginComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(

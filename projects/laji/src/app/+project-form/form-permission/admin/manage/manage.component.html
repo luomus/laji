@@ -1,26 +1,36 @@
-<div class="row" *ngIf="formPermission">
-  <div class="col-12">
-    <h3 *ngIf="type === 'admins'; else editorsTitle">
-      {{ 'form.permission.admin.admins' | translate }}<br>
-      <small>{{ 'form.permission.admin.admins.description' | translate }}</small>
-    </h3>
-    <ng-template #editorsTitle>
-      <h3>{{ 'form.permission.admin.editors' | translate }}</h3>
-    </ng-template>
-    <p *ngIf="!$any(formPermission)[type] || $any(formPermission)[type].length === 0; else list">
-      {{ 'form.permission.admin.noBody' | translate }}
-    </p>
-    <ng-template #list>
-      <ul>
-        <li *ngFor="let person of $any(formPermission)[type]">
-          <button class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'reject')">{{ 'form.permission.admin.removeAccess' | translate}}</button>
-          <button *ngIf="type === 'admins'" class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'acceptEditor')">{{ 'form.permission.admin.removeAdminRights' | translate }}</button>
-          <button *ngIf="type === 'editors'" class="btn btn-danger btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'acceptAdmin')">{{ 'form.permission.admin.grantAdminRights' | translate }}</button>
-          <b class="form-control-static">
-              {{ person | users }} ({{ person }})
-          </b>
-        </li>
-      </ul>
-    </ng-template>
+@if (formPermission) {
+  <div class="row">
+    <div class="col-12">
+      @if (type === 'admins') {
+        <h3>
+          {{ 'form.permission.admin.admins' | translate }}<br>
+          <small>{{ 'form.permission.admin.admins.description' | translate }}</small>
+        </h3>
+      } @else {
+        <h3>{{ 'form.permission.admin.editors' | translate }}</h3>
+      }
+      @if (!$any(formPermission)[type] || $any(formPermission)[type].length === 0) {
+        <p>
+          {{ 'form.permission.admin.noBody' | translate }}
+        </p>
+      } @else {
+        <ul>
+          @for (person of $any(formPermission)[type]; track person) {
+            <li>
+              <button class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'reject')">{{ 'form.permission.admin.removeAccess' | translate}}</button>
+              @if (type === 'admins') {
+                <button class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'acceptEditor')">{{ 'form.permission.admin.removeAdminRights' | translate }}</button>
+              }
+              @if (type === 'editors') {
+                <button class="btn btn-danger btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'acceptAdmin')">{{ 'form.permission.admin.grantAdminRights' | translate }}</button>
+              }
+              <b class="form-control-static">
+                {{ person | users }} ({{ person }})
+              </b>
+            </li>
+          }
+        </ul>
+      }
+    </div>
   </div>
-</div>
+}

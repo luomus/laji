@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'laji-sheet-generator',
-  templateUrl: './sheet-generator.component.html',
-  styleUrls: ['./sheet-generator.component.scss']
+    selector: 'laji-sheet-generator',
+    templateUrl: './sheet-generator.component.html',
+    styleUrls: ['./sheet-generator.component.scss'],
+    standalone: false
 })
 export class SheetGeneratorComponent {}

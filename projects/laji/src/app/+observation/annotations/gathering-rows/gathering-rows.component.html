@@ -1,31 +1,49 @@
 <div class="position">
   <ul class="separated-list">
-       <div class="container-icon-text">
-            <div class="icon"><li class="no-comma" [luTooltip]="'result.gathering.locality' | translate" *ngIf="gathering.country || gathering.biogeographicalProvince || gathering.municipality || gathering.locality"><i class="glyphicon glyphicon-map-marker"></i></li></div>
-            <div class="text">
-                  <li *ngIf="gathering.country">{{ gathering.country }}</li>
-                  <li *ngIf="gathering.biogeographicalProvince">{{ gathering.biogeographicalProvince }}</li>
-                  <li *ngIf="gathering.municipality">{{ gathering.municipality }}</li>
-                  <li *ngIf="gathering.locality">{{ gathering.locality | truncate : 80 : true }}</li>
-            </div>
-       </div> 
-   </ul>
+    <div class="container-icon-text">
+      <div class="icon">@if (gathering.country || gathering.biogeographicalProvince || gathering.municipality || gathering.locality) {
+        <li class="no-comma" [luTooltip]="'result.gathering.locality' | translate"><i class="glyphicon glyphicon-map-marker"></i></li>
+      }</div>
+      <div class="text">
+        @if (gathering.country) {
+          <li>{{ gathering.country }}</li>
+        }
+        @if (gathering.biogeographicalProvince) {
+          <li>{{ gathering.biogeographicalProvince }}</li>
+        }
+        @if (gathering.municipality) {
+          <li>{{ gathering.municipality }}</li>
+        }
+        @if (gathering.locality) {
+          <li>{{ gathering.locality | truncate : 80 : true }}</li>
+        }
+      </div>
+    </div>
+  </ul>
 </div>
 
 <div class="date">
-      <span *ngIf="gathering.displayDateTime">
-            <div class="container-icon-text">
-                  <div class="icon"><i [luTooltip]="'viewer.field.time' | translate" class="glyphicon glyphicon-time"></i></div>
-                  <div class="text"> {{ date | amDateFormat:'L' }} {{ time }}</div>
-            </div>
-      </span>
+  @if (gathering.displayDateTime) {
+    <span>
+      <div class="container-icon-text">
+        <div class="icon"><i [luTooltip]="'viewer.field.time' | translate" class="glyphicon glyphicon-time"></i></div>
+        <div class="text"> {{ date | amDateFormat:'L' }} {{ time }}</div>
+      </div>
+    </span>
+  }
 </div>
 
-<div class="author" *ngIf="gathering.team">
-      <ul class="separated-list">
-            <div class="container-icon-text">
-                  <div class="icon"><li [luTooltip]="'viewer.field.observer' | translate" class="no-comma" *ngIf="gathering.team.length > 0"><i class="glyphicon glyphicon-user"></i></li></div>
-                  <div class="text"><li *ngFor="let member of gathering.team"><span class="member">{{ member }}</span></li></div>
-            </div>
-      </ul>
-</div>
+@if (gathering.team) {
+  <div class="author">
+    <ul class="separated-list">
+      <div class="container-icon-text">
+        <div class="icon">@if (gathering.team.length > 0) {
+          <li [luTooltip]="'viewer.field.observer' | translate" class="no-comma"><i class="glyphicon glyphicon-user"></i></li>
+        }</div>
+        <div class="text">@for (member of gathering.team; track member) {
+          <li><span class="member">{{ member }}</span></li>
+        }</div>
+      </div>
+    </ul>
+  </div>
+}

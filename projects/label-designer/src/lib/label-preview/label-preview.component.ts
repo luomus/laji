@@ -20,10 +20,11 @@ import { LabelService } from '../label.service';
  * </ll-label-preview>
  */
 @Component({
-  selector: 'll-label-preview',
-  templateUrl: './label-preview.component.html',
-  styleUrls: ['../../styles/ll-label.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-label-preview',
+    templateUrl: './label-preview.component.html',
+    styleUrls: ['../../styles/ll-label.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelPreviewComponent implements OnChanges {
 

@@ -5,10 +5,11 @@ import { toHtmlSelectElement } from '../../../../shared/service/html-element.ser
 
 
 @Component({
-  selector: 'laji-syke-insect-result-filters',
-  templateUrl: './syke-insect-result-filters.component.html',
-  styleUrls: ['./syke-insect-result-filters.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-syke-insect-result-filters',
+    templateUrl: './syke-insect-result-filters.component.html',
+    styleUrls: ['./syke-insect-result-filters.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SykeInsectResultFiltersComponent implements OnInit, OnChanges {
 

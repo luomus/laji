@@ -23,13 +23,13 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { PagedResult } from '../model/PagedResult';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Util } from '../service/util.service';
 import { Document } from '../model/Document';
 import { environment } from '../../../environments/environment';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { of } from 'rxjs';
 
 'use strict';

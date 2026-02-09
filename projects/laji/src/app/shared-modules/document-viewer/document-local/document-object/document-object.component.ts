@@ -1,9 +1,10 @@
 import { Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'laji-document-object',
-  templateUrl: './document-object.component.html',
-  styleUrls: ['./document-object.component.css']
+    selector: 'laji-document-object',
+    templateUrl: './document-object.component.html',
+    styleUrls: ['./document-object.component.css'],
+    standalone: false
 })
 export class DocumentObjectComponent implements OnChanges {
   @Input() object: any;

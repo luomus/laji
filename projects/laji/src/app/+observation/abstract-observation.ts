@@ -3,7 +3,7 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { SearchQueryService } from './search-query.service';
 import { ObservationFacade } from './observation.facade';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 
 @Directive()

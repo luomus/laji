@@ -1,9 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges,
-  ViewChild, ElementRef, Inject, ChangeDetectorRef, AfterViewInit, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges,
+  ViewChild, ElementRef, Inject, ChangeDetectorRef, AfterViewInit, OnDestroy,
+  DOCUMENT
+} from '@angular/core';
 import { TaxonIdentificationFacade } from './taxon-identification.facade';
 import { Observable, merge, Subscription, BehaviorSubject, fromEvent, Subject } from 'rxjs';
-import { map, switchMap, distinctUntilChanged, filter, startWith, take, tap } from 'rxjs/operators';
-import { DOCUMENT } from '@angular/common';
+import { map, switchMap, distinctUntilChanged, filter, startWith, take, tap } from 'rxjs';
+
 import { CollectionViewer } from '@angular/cdk/collections';
 import { PlatformService } from '../../../../root/platform.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
@@ -54,10 +57,11 @@ interface Data {
 }
 
 @Component({
-  selector: 'laji-taxon-identification',
-  templateUrl: './taxon-identification.component.html',
-  styleUrls: ['./taxon-identification.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-identification',
+    templateUrl: './taxon-identification.component.html',
+    styleUrls: ['./taxon-identification.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, OnDestroy {
   private subscription: Subscription = new Subscription();

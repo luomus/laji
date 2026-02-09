@@ -10,18 +10,19 @@ type Annotation = components['schemas']['annotation'];
 type AnnotationTag = components['schemas']['tag'];
 
 @Component({
-  selector: 'laji-gathering-annotation',
-  templateUrl: './gathering-annotation.component.html',
-  styleUrls: ['./gathering-annotation.component.scss'],
-  animations: [
-      trigger('message', [
-        transition(':leave', [
-          style({opacity: 1}),
-          animate('500ms', style({ opacity: 0}))
+    selector: 'laji-gathering-annotation',
+    templateUrl: './gathering-annotation.component.html',
+    styleUrls: ['./gathering-annotation.component.scss'],
+    animations: [
+        trigger('message', [
+            transition(':leave', [
+                style({ opacity: 1 }),
+                animate('500ms', style({ opacity: 0 }))
+            ])
         ])
-    ])
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GatheringAnnotationComponent implements OnDestroy {
 

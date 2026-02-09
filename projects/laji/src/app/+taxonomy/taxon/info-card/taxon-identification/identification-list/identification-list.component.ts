@@ -1,9 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input,
-ElementRef, ViewChild, Renderer2, ComponentRef, ViewContainerRef, OnDestroy, EnvironmentInjector, Inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, Input,
+  ElementRef, ViewChild, Renderer2, ComponentRef, ViewContainerRef, OnDestroy, EnvironmentInjector, Inject,
+  DOCUMENT
+} from '@angular/core';
 import { ImageModalOverlayComponent } from 'projects/laji/src/app/shared/gallery/image-gallery/image-modal-overlay.component';
 import { Image } from 'projects/laji/src/app/shared/gallery/image-gallery/image.interface';
 import { Subscription } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
@@ -26,10 +29,11 @@ const indexAndArrAfterFilter = <T>(index: number, arr: Array<T>, fn: (element: T
 };
 
 @Component({
-  selector: 'laji-identification-list',
-  templateUrl: './identification-list.component.html',
-  styleUrls: ['./identification-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-identification-list',
+    templateUrl: './identification-list.component.html',
+    styleUrls: ['./identification-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationListComponent implements OnDestroy {
   @Input() taxon!: Taxon & { children?: Taxon[] };

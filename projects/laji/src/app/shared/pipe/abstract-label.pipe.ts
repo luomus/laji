@@ -3,7 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 
 @Pipe({
-  name: 'abstract-label-pipe'
+    name: 'abstract-label-pipe',
+    standalone: false
 })
 export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
   value = '';

@@ -1,15 +1,18 @@
-<ng-container *ngIf="!multiselect">
+@if (!multiselect) {
+  @if (options.length > 0) {
     <select class="form-control" #areaSelectElem
-            *ngIf="options.length > 0"
-            (change)="areaSelect.emit(areaSelectElem.value)"
-            [disabled]="disabled"
-            [value]="value">
-      <option *ngFor="let option of options" [value]="option.id" [selected]="option.id === value[0]">
-        {{ option.translate ? (option.value | translate) : option.value }}
-      </option>
+      (change)="areaSelect.emit(areaSelectElem.value)"
+      [disabled]="disabled"
+      [value]="value">
+      @for (option of options; track option) {
+        <option [value]="option.id" [selected]="option.id === value[0]">
+          {{ option.translate ? (option.value | translate) : option.value }}
+        </option>
+      }
     </select>
-</ng-container>
-<ng-container *ngIf="multiselect">
+  }
+}
+@if (multiselect) {
   <laji-select
     [options]="options || []"
     [filterPlaceHolder]="'haseka.submissions.filter' | translate"
@@ -17,6 +20,6 @@
     [selected]="value"
     (selectedChange)="areaSelect.emit($any($event))"
     [open]="true"
-  >
+    >
   </laji-select>
-</ng-container>
+}

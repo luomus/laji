@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { filter, shareReplay, switchMap, map, share } from 'rxjs/operators';
+import { filter, shareReplay, switchMap, map, share } from 'rxjs';
 import { UserService } from '../../../../laji/src/app/shared/service/user.service';
 import { Person } from 'projects/laji/src/app/shared/model/Person';
 

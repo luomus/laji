@@ -7,10 +7,11 @@ export interface ISelectFields {
 }
 
 @Component({
-  selector: 'laji-select-fields',
-  templateUrl: './select-fields.component.html',
-  styleUrls: ['./select-fields.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-select-fields',
+    templateUrl: './select-fields.component.html',
+    styleUrls: ['./select-fields.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SelectFieldsComponent {
 

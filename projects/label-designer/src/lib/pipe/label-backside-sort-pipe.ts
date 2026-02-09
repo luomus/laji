@@ -10,7 +10,8 @@ import { IPageLayout } from '../label-designer.interface';
  * 3 6 9      9 6 3
  */
 @Pipe({
-  name: 'labelBacksideSort'
+    name: 'labelBacksideSort',
+    standalone: false
 })
 export class LabelBacksideSortPipe implements PipeTransform {
   transform(data: Record<string, any>[], dim: IPageLayout): Record<string, any>[] {

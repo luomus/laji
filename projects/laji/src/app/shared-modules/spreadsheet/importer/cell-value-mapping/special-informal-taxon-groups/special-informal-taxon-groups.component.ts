@@ -1,4 +1,4 @@
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { MappingService } from '../../../service/mapping.service';
@@ -7,9 +7,10 @@ import { InformalTaxonGroupApi } from '../../../../../shared/api/InformalTaxonGr
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'laji-special-informal-taxon-groups',
-  templateUrl: './special-informal-taxon-groups.component.html',
-  styleUrls: ['./special-informal-taxon-groups.component.css']
+    selector: 'laji-special-informal-taxon-groups',
+    templateUrl: './special-informal-taxon-groups.component.html',
+    styleUrls: ['./special-informal-taxon-groups.component.css'],
+    standalone: false
 })
 export class SpecialInformalTaxonGroupsComponent implements OnInit {
 
@@ -29,7 +30,7 @@ export class SpecialInformalTaxonGroupsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang).pipe(
+    this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.getCurrentLang()).pipe(
       map(results => results.results))
       .subscribe(groups => {
         const list = Array.isArray(groups) ?  MappingService.informalTaxonGroupsToList(groups) : [];

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
-import { map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs';
 import { InformationItem } from '../../shared/model/InformationItem';
 import { MultiLanguage } from '../../shared/model/MultiLanguage';
 import { Subscription } from 'rxjs';
@@ -19,14 +19,16 @@ const filterParentsAboveId = (excludeIds: string[], parents: any[]): any[] => {
 };
 
 @Component({
-  selector: 'laji-info-page',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-<div *ngIf="!loadingContent else loading" [innerHtml]="content | safe:'html'" lajiRouteTransformer></div>
-<ng-template #loading>
+    selector: 'laji-info-page',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
+@if (!loadingContent) {
+  <div [innerHtml]="content | safe:'html'" lajiRouteTransformer></div>
+} @else {
   <laji-info-page-loading></laji-info-page-loading>
-</ng-template>
-`
+}
+`,
+    standalone: false
 })
 export class InfoPageComponent implements OnChanges, OnDestroy {
 
@@ -123,7 +125,7 @@ export class InfoPageComponent implements OnChanges, OnDestroy {
     if (this.page) {
       return this.page;
     }
-    const lang = this.translateService.currentLang as keyof MultiLanguage;
+    const lang = this.translateService.getCurrentLang() as keyof MultiLanguage;
     if (this._rootPage) {
       return this._rootPage[lang] || this._rootPage['fi'] || '';
     }

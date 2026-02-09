@@ -11,10 +11,11 @@ import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { FormService } from '../../../../shared/service/form.service';
 
 @Component({
-  selector: 'laji-bird-point-count-stats',
-  templateUrl: './bird-point-count-stats.component.html',
-  styleUrls: ['./bird-point-count-stats.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-bird-point-count-stats',
+    templateUrl: './bird-point-count-stats.component.html',
+    styleUrls: ['./bird-point-count-stats.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BirdPointCountStatsComponent implements OnChanges {
   @Input() document!: Document;

@@ -4,7 +4,7 @@ import { LajiApi } from 'projects/laji/src/app/shared/service/laji-api.service';
 import { Information } from 'projects/laji/src/app/shared/model/Information';
 import { Observable, of } from 'rxjs';
 import { environment } from 'projects/exhibition-screen/src/env/environment';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 import { Util } from 'projects/laji/src/app/shared/service/util.service';
 
 @Injectable({providedIn: 'root'})

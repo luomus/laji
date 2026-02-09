@@ -2,8 +2,8 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { PlatformService } from '../../root/platform.service';
 
 @Component({
-  selector: 'laji-copy-to-clipboard',
-  template: `
+    selector: 'laji-copy-to-clipboard',
+    template: `
     <div
       class="copy-to-clipboard"
       [ngClass]="{'wrap-text': wrapText, 'd-flex': !wrapText}"
@@ -14,8 +14,9 @@ import { PlatformService } from '../../root/platform.service';
       <span class="glyphicon glyphicon-paperclip mr-2"></span> {{ visibleText ? visibleText : value }}
     </div>
   `,
-  styleUrls: ['./copy-to-clipboard.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./copy-to-clipboard.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class CopyToClipboardComponent {

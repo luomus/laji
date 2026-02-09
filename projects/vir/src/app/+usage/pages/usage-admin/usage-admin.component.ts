@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { IVirUser, VirOrganisationService } from '../../../service/vir-organisation.service';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
-import { map, switchMap, tap, take } from 'rxjs/operators';
+import { map, switchMap, tap, take } from 'rxjs';
 import { SelectionType } from '@achimha/ngx-datatable';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -10,10 +10,11 @@ import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.compo
 import { Person } from 'projects/laji/src/app/shared/model/Person';
 
 @Component({
-  selector: 'vir-usage-admin',
-  templateUrl: './usage-admin.component.html',
-  styleUrls: ['./usage-admin.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-usage-admin',
+    templateUrl: './usage-admin.component.html',
+    styleUrls: ['./usage-admin.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UsageAdminComponent {
 

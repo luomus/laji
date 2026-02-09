@@ -5,8 +5,9 @@ import { AbstractLabelPipe } from './abstract-label.pipe';
 import { Observable } from 'rxjs';
 
 @Pipe({
-  name: 'collectionName',
-  pure: false
+    name: 'collectionName',
+    pure: false,
+    standalone: false
 })
 export class CollectionNamePipe extends AbstractLabelPipe implements PipeTransform {
   key!: string;
@@ -19,7 +20,7 @@ export class CollectionNamePipe extends AbstractLabelPipe implements PipeTransfo
 
   protected _updateValue(key: string): Observable<string> {
     this.key = key;
-    return this.collectionService.getName$(key, this.translate.currentLang, '');
+    return this.collectionService.getName$(key, this.translate.getCurrentLang(), '');
   }
 
   protected _parseValue(res: string): string {

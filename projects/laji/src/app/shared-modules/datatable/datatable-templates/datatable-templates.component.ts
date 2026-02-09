@@ -5,9 +5,10 @@ import { Global } from '../../../../environments/global';
 import { toHtmlSpanElement } from '../../../shared/service/html-element.service';
 
 @Component({
-  selector: 'laji-datatable-templates',
-  templateUrl: './datatable-templates.component.html',
-  styleUrls: ['./datatable-templates.component.scss']
+    selector: 'laji-datatable-templates',
+    templateUrl: './datatable-templates.component.html',
+    styleUrls: ['./datatable-templates.component.scss'],
+    standalone: false
 })
 export class DatatableTemplatesComponent {
   @ViewChild('defaultHeaderTpl', { static: true }) dafaultHeader!: TemplateRef<any>;

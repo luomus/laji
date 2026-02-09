@@ -1,15 +1,18 @@
-<ng-container *ngIf="!!identifications && identifications.length !== 0">
-  <ng-container *ngIf="showFacts; else rowView">
+@if (!!identifications && identifications.length !== 0) {
+  @if (showFacts) {
     <laji-row [title]="'viewer.identifications' | translate" value=" "></laji-row>
-    <div class="ml-5" *ngFor="let identification of identifications">
-      <laji-identification [identification]="identification" [showFacts]="showFacts"></laji-identification>
-    </div>
-  </ng-container>
-      <ng-template #rowView>
-      <laji-row [title]="'viewer.identifications' | translate">
-        <div *ngFor="let identification of identifications">
+    @for (identification of identifications; track identification) {
+      <div class="ml-5">
+        <laji-identification [identification]="identification" [showFacts]="showFacts"></laji-identification>
+      </div>
+    }
+  } @else {
+    <laji-row [title]="'viewer.identifications' | translate">
+      @for (identification of identifications; track identification) {
+        <div>
           <laji-identification [identification]="identification" [showFacts]="showFacts"></laji-identification>
         </div>
-      </laji-row>
-    </ng-template>
-</ng-container>
+      }
+    </laji-row>
+  }
+}

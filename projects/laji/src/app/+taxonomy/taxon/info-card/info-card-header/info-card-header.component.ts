@@ -15,10 +15,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type Taxon = components['schemas']['Taxon'];
 
 @Component({
-  selector: 'laji-info-card-header',
-  templateUrl: './info-card-header.component.html',
-  styleUrls: ['./info-card-header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-info-card-header',
+    templateUrl: './info-card-header.component.html',
+    styleUrls: ['./info-card-header.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InfoCardHeaderComponent implements OnChanges {
   @Input() taxon!: Taxon;

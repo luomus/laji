@@ -3,10 +3,11 @@ import { Form } from '../../shared/model/Form';
 import { Global } from '../../../environments/global';
 
 @Component({
-  selector: 'laji-survey-box',
-  templateUrl: './survey-box.component.html',
-  styleUrls: ['./survey-box.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-survey-box',
+    templateUrl: './survey-box.component.html',
+    styleUrls: ['./survey-box.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SurveyBoxComponent {
   @Input() form!: Form.List;

@@ -6,10 +6,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type AnnotationTag = components['schemas']['tag'];
 
 @Component({
-  selector: 'laji-gathering',
-  templateUrl: './gathering.component.html',
-  styleUrls: ['./gathering.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-gathering',
+    templateUrl: './gathering.component.html',
+    styleUrls: ['./gathering.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GatheringComponent implements OnInit, OnDestroy {
 

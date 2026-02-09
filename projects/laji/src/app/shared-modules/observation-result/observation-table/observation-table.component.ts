@@ -23,7 +23,7 @@ import {
   IColumnGroup,
   TableColumnService
 } from '../../datatable/service/table-column.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 import { ExportService } from '../../../shared/service/export.service';
 import { BookType } from 'xlsx';
 import { Global } from '../../../../environments/global';
@@ -51,11 +51,12 @@ export const getSortsFromCols = (event: any, cols: ObservationTableColumn[], lan
 );
 
 @Component({
-  selector: 'laji-observation-table',
-  templateUrl: './observation-table.component.html',
-  styleUrls: ['./observation-table.component.css'],
-  providers: [ObservationResultService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-table',
+    templateUrl: './observation-table.component.html',
+    styleUrls: ['./observation-table.component.css'],
+    providers: [ObservationResultService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationTableComponent implements OnInit, OnChanges {
   @ViewChild('dataTable', { static: true }) public datatable?: DatatableComponent;
@@ -168,7 +169,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
     this.initColumns();
     this.fetchPage(this.page);
   }

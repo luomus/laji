@@ -5,10 +5,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type TaxonDescription = components['schemas']['Content'][number];
 
 @Component({
-  selector: 'laji-taxon-description-source',
-  templateUrl: './taxon-description-source.component.html',
-  styleUrls: ['./taxon-description-source.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-description-source',
+    templateUrl: './taxon-description-source.component.html',
+    styleUrls: ['./taxon-description-source.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonDescriptionSourceComponent implements OnChanges {
   @Input() taxonDescription!: TaxonDescription;

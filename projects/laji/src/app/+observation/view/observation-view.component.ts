@@ -6,7 +6,7 @@ import { ObservationResultComponent } from '../result/observation-result.compone
 import { Router } from '@angular/router';
 import { IObservationViewModel, ObservationFacade } from '../observation.facade';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 import { BrowserService } from '../../shared/service/browser.service';
 import { UserSettingsResultList, UserService } from '../../shared/service/user.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
@@ -33,10 +33,11 @@ export interface VisibleSections {
 }
 
 @Component({
-  selector: 'laji-observation-view',
-  templateUrl: './observation-view.component.html',
-  styleUrls: ['./observation-view.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-view',
+    templateUrl: './observation-view.component.html',
+    styleUrls: ['./observation-view.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationViewComponent implements OnInit, OnDestroy {
 

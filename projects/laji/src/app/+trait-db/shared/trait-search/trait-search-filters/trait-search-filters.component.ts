@@ -6,7 +6,7 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { Observable } from 'rxjs';
 import { AdditionalFilterValues } from './additional-filters.component';
 import { RankFilterValue } from './rank-filter/rank-filter.component';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 
 export interface FormValue {
   dataset: string | null;
@@ -23,10 +23,11 @@ export const formDefaultValues: FormValue = {
 };
 
 @Component({
-  selector: 'laji-trait-search-filters',
-  templateUrl: './trait-search-filters.component.html',
-  styleUrls: ['./trait-search-filters.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-search-filters',
+    templateUrl: './trait-search-filters.component.html',
+    styleUrls: ['./trait-search-filters.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitSearchFiltersComponent implements OnChanges {
   @Input() initialValue?: FormValue;

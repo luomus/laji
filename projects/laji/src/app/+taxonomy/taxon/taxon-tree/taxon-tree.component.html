@@ -17,41 +17,51 @@
       name="showMainLevels"
       role="checkbox"
       luKeyboardClickable
-    >
-    {{ 'species.tree.showMainLevels' | translate }}
-  </label>
-  <laji-info [placement]="'right'">{{ 'species.tree.info.showMainLevels' | translate }}</laji-info>
-  <br/>
-  <label>
-    <input
-      type="checkbox"
-      [(ngModel)]="showHidden"
-      (ngModelChange)="setSkipParams()"
-      name="showHidden"
-      role="checkbox"
-      luKeyboardClickable
-    >
-    {{ 'species.tree.showHidden' | translate }}
-  </label>
-  <laji-info [placement]="'right'">{{ 'species.tree.info.showHidden' | translate }}</laji-info>
-</div>
+      >
+      {{ 'species.tree.showMainLevels' | translate }}
+    </label>
+    <laji-info [placement]="'right'">{{ 'species.tree.info.showMainLevels' | translate }}</laji-info>
+    <br/>
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="showHidden"
+        (ngModelChange)="setSkipParams()"
+        name="showHidden"
+        role="checkbox"
+        luKeyboardClickable
+        >
+        {{ 'species.tree.showHidden' | translate }}
+      </label>
+      <laji-info [placement]="'right'">{{ 'species.tree.info.showHidden' | translate }}</laji-info>
+    </div>
 
-<ng-template #label let-value="value">
-  <ng-container *ngIf="value.id !== activeId">
-    <a [routerLink]="'/taxon/' + value.id + (activeTab === 'overview' ? '' : '/' + activeTab) | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
-      <laji-taxon-name [capitalizeName]="true" [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
-    </a>
-    <img *ngIf="value.finnish" src="/static/images/icons/flag_fi_small.png" class="small-flag"/>
-    <div *ngIf="value.nameAccordingTo === 'MR.2'" class="taxon-tree-gbif-icon" [luTooltip]="'species.tree.gbif.help' | translate">
-      <small>GBIF</small>
-    </div>
-  </ng-container>
-  <strong *ngIf="value.id === activeId">
-    <laji-taxon-name [capitalizeName]="true" [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
-    <img *ngIf="value.finnish" src="/static/images/icons/flag_fi_small.png" class="small-flag"/>
-    <div *ngIf="value.nameAccordingTo === 'MR.2'" class="taxon-tree-gbif-icon" [luTooltip]="'species.tree.gbif.help' | translate">
-      <small>GBIF</small>
-    </div>
-  </strong>
-  <span class="rank">{{ value.taxonRank | label }}</span>
-</ng-template>
+    <ng-template #label let-value="value">
+      @if (value.id !== activeId) {
+        <a [routerLink]="'/taxon/' + value.id + (activeTab === 'overview' ? '' : '/' + activeTab) | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
+          <laji-taxon-name [capitalizeName]="true" [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
+        </a>
+        @if (value.finnish) {
+          <img src="/static/images/icons/flag_fi_small.png" class="small-flag"/>
+        }
+        @if (value.nameAccordingTo === 'MR.2') {
+          <div class="taxon-tree-gbif-icon" [luTooltip]="'species.tree.gbif.help' | translate">
+            <small>GBIF</small>
+          </div>
+        }
+      }
+      @if (value.id === activeId) {
+        <strong>
+          <laji-taxon-name [capitalizeName]="true" [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
+          @if (value.finnish) {
+            <img src="/static/images/icons/flag_fi_small.png" class="small-flag"/>
+          }
+          @if (value.nameAccordingTo === 'MR.2') {
+            <div class="taxon-tree-gbif-icon" [luTooltip]="'species.tree.gbif.help' | translate">
+              <small>GBIF</small>
+            </div>
+          }
+        </strong>
+      }
+      <span class="rank">{{ value.taxonRank | label }}</span>
+    </ng-template>

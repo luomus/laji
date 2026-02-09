@@ -2,19 +2,23 @@
   {{ 'observation.active' | translate }}
   <span class="badge" [ngClass]="{has: active.length > 0}">{{ active.length }}</span>
 </button>
-<div class="active-list" *ngIf="showList" (lajiClickOutSide)="toggleActiveList()">
-  <ul>
-    <li>
-      <span>
-        {{ 'observation.form.empty' | translate }}
-        <span (click)="removeAll()" class="label label-danger link" tabindex="0" role="button" luKeyboardClickable><i class="glyphicon glyphicon-remove"></i></span>
-      </span>
-    </li>
-    <li *ngFor="let item of active">
-      <span>
-        {{ queryType + '.active.' + item.field | translate }}
-        <span id="{{ queryType }}-active-{{ item.field }}-remove-btn" (click)="remove(item)" class="label label-danger link" tabindex="0" role="button" luKeyboardClickable><i class="glyphicon glyphicon-remove"></i></span>
-      </span>
-    </li>
-  </ul>
-</div>
+@if (showList) {
+  <div class="active-list" (lajiClickOutSide)="toggleActiveList()">
+    <ul>
+      <li>
+        <span>
+          {{ 'observation.form.empty' | translate }}
+          <span (click)="removeAll()" class="label label-danger link" tabindex="0" role="button" luKeyboardClickable><i class="glyphicon glyphicon-remove"></i></span>
+        </span>
+      </li>
+      @for (item of active; track item) {
+        <li>
+          <span>
+            {{ queryType + '.active.' + item.field | translate }}
+            <span id="{{ queryType }}-active-{{ item.field }}-remove-btn" (click)="remove(item)" class="label label-danger link" tabindex="0" role="button" luKeyboardClickable><i class="glyphicon glyphicon-remove"></i></span>
+          </span>
+        </li>
+      }
+    </ul>
+  </div>
+}

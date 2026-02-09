@@ -1,5 +1,5 @@
-import { Injectable, ElementRef, RendererFactory2, Inject, PLATFORM_ID, NgZone, Renderer2 } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Injectable, ElementRef, RendererFactory2, Inject, PLATFORM_ID, NgZone, Renderer2, DOCUMENT } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 import { positionElements } from './ng-positioning';
 

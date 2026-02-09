@@ -4,14 +4,14 @@ import { Observable, Subscription } from 'rxjs';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { IGlobalSpeciesFilters, IGlobalSpeciesListResult } from '../../kerttu-global-shared/models';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
 import { SpeciesListQueryService } from '../service/species-list-query.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'bsg-species-select',
-  template: `
+    selector: 'bsg-species-select',
+    template: `
     <bsg-species-list
       [(query)]="queryService.query"
       [filters]="(speciesFilters$ | async) ?? undefined"
@@ -21,14 +21,15 @@ import { TranslateService } from '@ngx-translate/core';
       (queryChange)="updateSpeciesList()"
     ></bsg-species-list>
   `,
-  styles: [`
+    styles: [`
     :host {
       flex: 1 0 auto;
       display: flex;
       flex-direction: column;
     }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesSelectComponent implements OnInit, OnDestroy {
   speciesFilters$: Observable<IGlobalSpeciesFilters>;
@@ -72,7 +73,7 @@ export class SpeciesSelectComponent implements OnInit, OnDestroy {
     this.speciesListSub = this.userService.isLoggedIn$.pipe(
       switchMap(() => this.kerttuGlobalApi.getSpeciesList(
         this.userService.getToken(),
-        this.translate.currentLang,
+        this.translate.getCurrentLang(),
         { ...this.queryService.query, onlyWithValidationAudio: true, includeValidationStatus: true }
       ))
     ).subscribe(data => {

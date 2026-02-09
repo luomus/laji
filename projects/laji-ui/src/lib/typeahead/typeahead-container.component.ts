@@ -26,19 +26,18 @@ import { TypeaheadOptionItemContext, TypeaheadOptionListContext, TypeaheadTempla
 let nextWindowId = 0;
 
 @Component({
-  selector: 'typeahead-container',
-  templateUrl: './typeahead-container.component.html',
-  // eslint-disable-next-line @angular-eslint/no-host-metadata-property
-  host: {
-    class: 'dropdown open bottom dropdown-menu',
-    '[style.height]': `needScrollbar ? guiHeight: 'auto'`,
-    '[style.visibility]': `'inherit'`,
-    '[class.dropup]': 'dropup',
-    style: 'position: absolute;display: block;',
-    '[attr.role]': `'listbox'`
-  },
-  styles: [
-    `
+    selector: 'typeahead-container',
+    templateUrl: './typeahead-container.component.html',
+    host: {
+        class: 'dropdown open bottom dropdown-menu',
+        '[style.height]': `needScrollbar ? guiHeight: 'auto'`,
+        '[style.visibility]': `'inherit'`,
+        '[class.dropup]': 'dropup',
+        style: 'position: absolute;display: block;',
+        '[attr.role]': `'listbox'`
+    },
+    styles: [
+        `
     :host.dropdown {
       z-index: 1000;
     }
@@ -54,8 +53,9 @@ let nextWindowId = 0;
       z-index: 10000 !important;
     }
   `
-  ],
-  animations: [typeaheadAnimation]
+    ],
+    animations: [typeaheadAnimation],
+    standalone: false
 })
 
 export class TypeaheadContainerComponent implements OnDestroy {

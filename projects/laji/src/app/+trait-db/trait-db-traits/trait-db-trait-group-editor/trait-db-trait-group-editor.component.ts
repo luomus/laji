@@ -3,15 +3,16 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { tap, filter, switchMap } from 'rxjs/operators';
+import { tap, filter, switchMap } from 'rxjs';
 import { filterNullValues } from '../../trait-db-datasets/trait-db-dataset-editor/trait-db-dataset-editor.component';
 
 type TraitGroup = components['schemas']['TraitGroup'];
 type ValidationResponse = components['schemas']['ValidationResponse'];
 
 @Component({
-  templateUrl: './trait-db-trait-group-editor.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './trait-db-trait-group-editor.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbTraitGroupEditorComponent {
   form = this.fb.group<Partial<TraitGroup>>({
@@ -54,4 +55,3 @@ export class TraitDbTraitGroupEditorComponent {
     }, err => { this.form.enable(); });
   }
 }
-

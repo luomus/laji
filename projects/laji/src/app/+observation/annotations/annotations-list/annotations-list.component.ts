@@ -7,9 +7,10 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type AnnotationTag = components['schemas']['tag'];
 
 @Component({
-  selector: 'laji-annotations-list',
-  templateUrl: './annotations-list.component.html',
-  styleUrls: ['./annotations-list.component.scss']
+    selector: 'laji-annotations-list',
+    templateUrl: './annotations-list.component.html',
+    styleUrls: ['./annotations-list.component.scss'],
+    standalone: false
 })
 export class AnnotationListComponent implements OnInit {
 

@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { DELETE_FIELD, IFormField, VALUE_IGNORE } from '../../model/excel';
 
 @Component({
-  selector: 'laji-col-mapper',
-  templateUrl: './col-mapper.component.html',
-  styleUrls: ['./col-mapper.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-col-mapper',
+    templateUrl: './col-mapper.component.html',
+    styleUrls: ['./col-mapper.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ColMapperComponent implements OnChanges {
 

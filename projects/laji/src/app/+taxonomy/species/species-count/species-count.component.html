@@ -1,3 +1,5 @@
 <laji-spinner [spinning]="loading">
-  <span [innerHtml]="count | formattedNumber:'&nbsp'" *ngIf="!loading"></span>
+  @if (!loading) {
+    <span [innerHtml]="count | formattedNumber:'&nbsp'"></span>
+  }
 </laji-spinner>

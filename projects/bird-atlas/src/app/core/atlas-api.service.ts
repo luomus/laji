@@ -154,7 +154,7 @@ export class AtlasApiService {
   constructor(private http: HttpClient, private translate: TranslateService) {}
 
   @cacheReturnObservable(60000) // 1 minute
-  getSpeciesMap(speciesId: string, lang: Lang = <Lang>this.translate.currentLang): Observable<AtlasMap> {
+  getSpeciesMap(speciesId: string, lang: Lang = <Lang>this.translate.getCurrentLang()): Observable<AtlasMap> {
     const url = `${BASE_URL}/map/${speciesId}/atlas`;
     return this.http.get(url, {responseType: 'text', params: {lang, scaling: 0}});
   }

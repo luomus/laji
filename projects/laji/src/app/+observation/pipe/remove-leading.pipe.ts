@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'removeLeading'
+    name: 'removeLeading',
+    standalone: false
 })
 export class RemoveLeadingPipe implements PipeTransform {
 

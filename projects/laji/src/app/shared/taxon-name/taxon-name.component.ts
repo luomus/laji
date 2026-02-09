@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-taxon-name',
-  templateUrl: './taxon-name.component.html',
-  styleUrls: ['./taxon-name.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-name',
+    templateUrl: './taxon-name.component.html',
+    styleUrls: ['./taxon-name.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonNameComponent {
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, mergeMap, switchMap, take, tap, filter, distinctUntilChanged, mapTo, shareReplay, distinctUntilKeyChanged } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, take, tap, filter, distinctUntilChanged, mapTo, shareReplay, distinctUntilKeyChanged } from 'rxjs';
 import { combineLatest, concat, merge, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
@@ -14,8 +14,8 @@ import { UserService } from '../../../shared/service/user.service';
 import { FormPermissionService, Rights } from '../../../shared/service/form-permission.service';
 import { NamedPlacesService } from '../../../shared/service/named-places.service';
 import { DocumentStorage } from '../../../storage/document.storage';
-import * as deepmerge from 'deepmerge';
-import * as moment from 'moment';
+import deepmerge from 'deepmerge';
+import moment from 'moment';
 import { LocalStorage } from 'ngx-webstorage';
 import { Global } from 'projects/laji/src/environments/global';
 import { Person } from '../../../shared/model/Person';
@@ -119,13 +119,15 @@ export class DocumentFormFacade {
 
     const form$: Observable<Form.SchemaForm | FormError> = combineLatest([formID$, template$]).pipe(
       switchMap(([formID, template]) => this.projectFormService.getForm$(formID).pipe(
-        switchMap(form => template && !form.options?.allowTemplate
+        switchMap(form => template && !form?.options?.allowTemplate
           ? of(FormError.templateDisallowed)
-          : this.formPermissionService.getRights(form).pipe(map(rights =>
-            (rights.edit === false && !form.options.openForm)
-              ? FormError.noAccess
-              : form
-          ))
+          : !form
+            ? of(FormError.notFoundForm)
+            : this.formPermissionService.getRights(form).pipe(map(rights =>
+              (rights.edit === false && !form?.options.openForm)
+                ? FormError.noAccess
+                : form
+            ))
         ),
         catchError((error) => {
           this.logger.error('Failed to load form', {error});
@@ -358,7 +360,7 @@ export class DocumentFormFacade {
     return undefined;
   }
 
-  private getNamedPlaceHeader(form: Form.SchemaForm, namedPlace: NamedPlace): string[] {
+  private getNamedPlaceHeader(form: Form.SchemaForm, namedPlace: NamedPlace | undefined): string[] {
     if (!form || !namedPlace) {
       return [];
     }

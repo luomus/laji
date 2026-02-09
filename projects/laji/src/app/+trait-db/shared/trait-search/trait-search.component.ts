@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
-import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { Sort } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 import { FormValue } from './trait-search-filters/trait-search-filters.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -97,10 +97,11 @@ const queryParamsToFormValue = (queryParams: QueryParams): FormValue => {
 
 
 @Component({
-  selector: 'laji-trait-search',
-  templateUrl: './trait-search.component.html',
-  styleUrls: ['./trait-search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-search',
+    templateUrl: './trait-search.component.html',
+    styleUrls: ['./trait-search.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitSearchComponent implements OnInit, OnDestroy, OnChanges {
   @Input() datasetId?: string;

@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angul
 import { environment } from '../../../../environments/environment';
 
 @Component({
-  selector: 'vir-collection-select',
-  templateUrl: './collection-select.component.html',
-  styleUrls: ['./collection-select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-collection-select',
+    templateUrl: './collection-select.component.html',
+    styleUrls: ['./collection-select.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CollectionSelectComponent {
 

@@ -8,8 +8,8 @@ import { SelectionType } from '@achimha/ngx-datatable';
 type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin';
 
 @Component({
-  selector: 'vir-data-table',
-  template: `
+    selector: 'vir-data-table',
+    template: `
       <div class="observation-table-wrapper">
           <laji-datatable-header
                   [downloadText]="'haseka.submissions.download' | translate"
@@ -43,7 +43,8 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin';
                   >
           </laji-datatable>
       </div>
-  `
+  `,
+    standalone: false
 })
 export class DataTableComponent implements AfterViewInit {
   @ViewChild(DatatableHeaderComponent) header!: DatatableHeaderComponent;

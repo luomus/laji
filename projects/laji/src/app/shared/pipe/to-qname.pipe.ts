@@ -7,7 +7,8 @@ import { IdService } from '../service/id.service';
  *   value | qname
  */
 @Pipe({
-  name: 'toQName'
+    name: 'toQName',
+    standalone: false
 })
 export class ToQNamePipe implements PipeTransform {
   transform(value: string | string[] | undefined): any {

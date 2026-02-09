@@ -1,5 +1,5 @@
 <div class="editor-container" [class.fullscreen]="viewSettings.fullscreen">
-  <ng-container *ngIf="newLabelFields$ | async let newLabelFields">
+  @if (newLabelFields$ | async; as newLabelFields) {
     <ll-label-designer
       [translations]="labelTranslations"
       defaultDomain="http://tun.fi/"
@@ -19,6 +19,6 @@
       (setupChange)="setup = $event"
       (html)="htmlToPdf($event)"
     ></ll-label-designer>
-  </ng-container>
+  }
 </div>
 <div class="editor-placeholder"></div>

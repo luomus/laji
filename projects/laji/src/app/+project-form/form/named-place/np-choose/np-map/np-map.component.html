@@ -6,17 +6,17 @@
 		          tileLayerOpacity: 0.5,
 		          controls: {location: false}, popupOnHover: true
 				   }"
-            [onPopupClose]="onPopupClose"
-            [data]="_data"
-            (loaded)="onMapLoad()"
-            lajiFormOption="options.namedPlaceOptions.mapOptions options.namedPlaceOptions.zoomToData"
+    [onPopupClose]="onPopupClose"
+    [data]="_data"
+    (loaded)="onMapLoad()"
+    lajiFormOption="options.namedPlaceOptions.mapOptions options.namedPlaceOptions.zoomToData"
   ></laji-map>
   <laji-legend [visualization]="visualization"></laji-legend>
   <div style="display: none;">
     <div #popup>
-	    <ng-container *ngFor="let i of listItems">
-	  	  <laji-np-info-row [title]="i.title" [value]="i.value" [pipe]="i.pipe"></laji-np-info-row>
-	    </ng-container>
+      @for (i of listItems; track i) {
+        <laji-np-info-row [title]="i.title" [value]="i.value" [pipe]="i.pipe"></laji-np-info-row>
+      }
     </div>
   </div>
 </div>

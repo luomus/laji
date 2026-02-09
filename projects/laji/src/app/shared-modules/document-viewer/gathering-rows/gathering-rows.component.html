@@ -1,36 +1,59 @@
 <laji-row [title]="'viewer.field.observer' | translate" [value]="gathering.team | values:'; '"></laji-row>
-<laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.displayDateTime">
-  {{ gathering.displayDateTime }}
-</laji-row>
+@if (gathering.displayDateTime) {
+  <laji-row [title]="'viewer.field.time' | translate">
+    {{ gathering.displayDateTime }}
+  </laji-row>
+}
 <laji-row [title]="'MY.locality' | label">
   <ul class="separated-list">
-    <li *ngIf="gathering.higherGeography" [luTooltip]="'MY.higherGeography' | label" [isDisabled]="hideTooltips">
+    @if (gathering.higherGeography) {
+      <li [luTooltip]="'MY.higherGeography' | label" [isDisabled]="hideTooltips">
       {{ gathering.higherGeography }}</li>
-    <li *ngIf="gathering.interpretations?.country" [luTooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
+    }
+    @if (gathering.interpretations?.country) {
+      <li [luTooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
       {{ gathering.interpretations.country | toQName | area }}</li>
-    <li *ngIf="!gathering.interpretations?.country && gathering.country" [luTooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
+    }
+    @if (!gathering.interpretations?.country && gathering.country) {
+      <li [luTooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
       {{ gathering.country }}</li>
-    <li *ngIf="gathering.province" [luTooltip]="'MY.province' | label" [isDisabled]="hideTooltips">
+    }
+    @if (gathering.province) {
+      <li [luTooltip]="'MY.province' | label" [isDisabled]="hideTooltips">
       {{ gathering.province }}</li>
-    <li *ngIf="gathering.interpretations?.biogeographicalProvince" [luTooltip]="'MY.biologicalProvince' | label" [isDisabled]="hideTooltips">{{ gathering.interpretations.biogeographicalProvince | toQName | area }}
+    }
+    @if (gathering.interpretations?.biogeographicalProvince) {
+      <li [luTooltip]="'MY.biologicalProvince' | label" [isDisabled]="hideTooltips">{{ gathering.interpretations.biogeographicalProvince | toQName | area }}
       ({{ gathering.interpretations.biogeographicalProvince | toQName | area:'provinceCode' }})</li>
-    <li [luTooltip]="'MY.biologicalProvince' | label"
+    }
+    @if (!gathering.interpretations?.biogeographicalProvince && gathering.biogeographicalProvince) {
+      <li [luTooltip]="'MY.biologicalProvince' | label"
         [isDisabled]="hideTooltips"
-        *ngIf="!gathering.interpretations?.biogeographicalProvince && gathering.biogeographicalProvince">
+        >
       {{ gathering.biogeographicalProvince }}</li>
-    <li *ngIf="gathering.interpretations?.finnishMunicipalities; else municipality" [luTooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
+    }
+    @if (gathering.interpretations?.finnishMunicipalities) {
+      <li [luTooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
       {{ gathering.interpretations.finnishMunicipalities | toQName | area | values }}</li>
-    <ng-template #municipality>
-      <li *ngIf="gathering.municipality" [luTooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
+    } @else {
+      @if (gathering.municipality) {
+        <li [luTooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
         {{ gathering.municipality }}</li>
-    </ng-template>
-    <li *ngIf="gathering.locality" [luTooltip]="'MY.locality' | label" [isDisabled]="hideTooltips">
+      }
+    }
+    @if (gathering.locality) {
+      <li [luTooltip]="'MY.locality' | label" [isDisabled]="hideTooltips">
       {{ gathering.locality }}</li>
+    }
   </ul>
 </laji-row>
 <laji-row [title]="'MY.notes' | label" [value]="gathering.notes"></laji-row>
-<laji-row [title]="'MY.taxonCensus' | label" *ngIf="gathering.taxonCensus">
-  <ul class="separated-list">
-    <li *ngFor="let census of gathering.taxonCensus" [luTooltip]="census.type | toQName | label" [isDisabled]="hideTooltips">{{ census.taxonId | toQName | taxon }}</li>
-  </ul>
-</laji-row>
+@if (gathering.taxonCensus) {
+  <laji-row [title]="'MY.taxonCensus' | label">
+    <ul class="separated-list">
+      @for (census of gathering.taxonCensus; track census) {
+        <li [luTooltip]="census.type | toQName | label" [isDisabled]="hideTooltips">{{ census.taxonId | toQName | taxon }}</li>
+      }
+    </ul>
+  </laji-row>
+}

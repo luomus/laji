@@ -1,6 +1,6 @@
 import { ApplicationRef, Injectable, makeStateKey, TransferState  } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError, filter, map, take, timeout } from 'rxjs/operators';
+import { catchError, filter, map, take, timeout } from 'rxjs';
 import { PlatformService } from '../../root/platform.service';
 
 @Injectable({providedIn: 'root'})

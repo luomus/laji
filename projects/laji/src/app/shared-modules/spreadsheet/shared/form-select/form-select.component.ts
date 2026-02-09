@@ -1,4 +1,4 @@
-import { catchError, map, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap, toArray } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -19,10 +19,11 @@ interface FormList {
 }
 
 @Component({
-  selector: 'laji-form-select',
-  templateUrl: './form-select.component.html',
-  styleUrls: ['./form-select.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-form-select',
+    templateUrl: './form-select.component.html',
+    styleUrls: ['./form-select.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FormSelectComponent implements OnChanges{
   @Input() forms?: string[] | null;

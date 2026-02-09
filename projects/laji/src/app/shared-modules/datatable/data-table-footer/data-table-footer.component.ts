@@ -9,10 +9,11 @@ export interface IPageChange {
 }
 
 @Component({
-  selector: 'laji-data-table-footer',
-  templateUrl: './data-table-footer.component.html',
-  styleUrls: ['./data-table-footer.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-data-table-footer',
+    templateUrl: './data-table-footer.component.html',
+    styleUrls: ['./data-table-footer.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DataTableFooterComponent {
 

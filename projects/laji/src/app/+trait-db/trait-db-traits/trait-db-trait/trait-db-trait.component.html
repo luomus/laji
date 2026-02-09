@@ -1,13 +1,19 @@
-<ng-container *ngIf="trait$ | async; let trait; else loading">
-  <div class="d-flex justify-between mb-4">
-    <h2 class="mb-0">{{ trait.name }}</h2>
-    <ng-container *ngIf="{ val: loggedIn$ | async } as loggedIn; else loading">
-      <button *ngIf="loggedIn.val" [routerLink]="['edit']" class="btn btn-default">
-        <i class="glyphicon glyphicon-wrench"></i>
-        Edit trait
-      </button>
-    </ng-container>
-  </div>
+@if (trait$ | async; as trait) {
+  @if ({ val: loggedIn$ | async }; as loggedIn) {
+    <div class="d-flex justify-between mb-4">
+      <h2 class="mb-0">{{ trait.name }}</h2>
+      @if (loggedIn.val) {
+        <button *ngIf="loggedIn.val" [routerLink]="['edit']" class="btn btn-default">
+          <i class="glyphicon glyphicon-wrench"></i>
+          Edit trait
+        </button>
+      } @else {
+        <laji-spinner class="d-block m-6"></laji-spinner>
+      }
+    </div>
+  } @else {
+    <laji-spinner class="d-block m-6"></laji-spinner>
+  }
   <p>{{ trait.description }}</p>
 
   <table class="props-table">
@@ -40,8 +46,6 @@
       <td>{{ trait.identifiers | values }}</td>
     </tr>
   </table>
-</ng-container>
-
-<ng-template #loading>
+} @else {
   <laji-spinner class="d-block m-6"></laji-spinner>
-</ng-template>
+}

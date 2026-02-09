@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs';
 import { FormService } from '../../../../laji/src/app/shared/service/form.service';
 import { Form } from '../../../../laji/src/app/shared/model/Form';
 

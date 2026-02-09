@@ -3,10 +3,11 @@ import { ModalRef, ModalService } from '../../../../../../../laji-ui/src/lib/mod
 import { TaxonTypeEnum } from '../../../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'bsg-identification-nav',
-  templateUrl: './identification-nav.component.html',
-  styleUrls: ['./identification-nav.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-identification-nav',
+    templateUrl: './identification-nav.component.html',
+    styleUrls: ['./identification-nav.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationNavComponent {
   @ViewChild('filterModal', { static: true }) filterModal!: TemplateRef<any>;

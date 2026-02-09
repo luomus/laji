@@ -1,4 +1,4 @@
-import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, take, tap } from 'rxjs';
 import {
   AfterViewInit,
   ApplicationRef,
@@ -38,10 +38,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type AnnotationTag = components['schemas']['tag'];
 
 @Component({
-  selector: 'laji-document',
-  templateUrl: './document.component.html',
-  styleUrls: ['./document.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-document',
+    templateUrl: './document.component.html',
+    styleUrls: ['./document.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent) map?: ViewerMapComponent;

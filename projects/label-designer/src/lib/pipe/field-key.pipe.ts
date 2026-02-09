@@ -5,7 +5,8 @@ import { ILabelField } from '../label-designer.interface';
  * @internal
  */
 @Pipe({
-  name: 'fieldKey'
+    name: 'fieldKey',
+    standalone: false
 })
 export class FieldKeyPipe implements PipeTransform {
 

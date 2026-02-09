@@ -5,7 +5,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { ResultService } from '../common/service/result.service';
 import { Form } from '../../../shared/model/Form';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
 type Taxon = components['schemas']['Taxon'];
@@ -16,10 +16,11 @@ enum Tabs {
 }
 
 @Component({
-  selector: 'laji-syke-insect-result',
-  templateUrl: './syke-insect-result.component.html',
-  styleUrls: ['./syke-insect-result.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-syke-insect-result',
+    templateUrl: './syke-insect-result.component.html',
+    styleUrls: ['./syke-insect-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SykeInsectResultComponent implements OnInit, OnDestroy {
 

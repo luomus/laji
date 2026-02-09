@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { PlatformService } from '../../root/platform.service';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { EMPTY, Observable, throwError } from 'rxjs';
-import { catchError, timeout } from 'rxjs/operators';
+import { catchError, timeout } from 'rxjs';
 
 const SSR_TIMEOUT = 500;
 const GLOBAL_TIMEOUT = 30000;

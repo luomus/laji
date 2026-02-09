@@ -11,14 +11,15 @@ import { WarehouseQueryInterface } from '../../../../../shared/model/WarehouseQu
 import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.service';
 import { YkjMapComponent } from '../../../../../shared-modules/ykj/ykj-map/ykj-map.component';
 import { forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { PlatformService } from '../../../../../root/platform.service';
 import { TileLayerName } from '@luomus/laji-map/lib/defs';
 
 @Component({
-  selector: 'laji-wbc-species-maps',
-  templateUrl: './wbc-species-maps.component.html',
-  styleUrls: ['./wbc-species-maps.component.css']
+    selector: 'laji-wbc-species-maps',
+    templateUrl: './wbc-species-maps.component.html',
+    styleUrls: ['./wbc-species-maps.component.css'],
+    standalone: false
 })
 export class WbcSpeciesMapsComponent implements OnChanges {
   @ViewChildren('maps') mapComponents!: QueryList<YkjMapComponent>;

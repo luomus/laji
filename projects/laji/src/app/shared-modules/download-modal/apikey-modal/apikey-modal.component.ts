@@ -18,10 +18,11 @@ export interface ApiKeyRequest {
 }
 
 @Component({
-  selector: 'laji-apikey-modal',
-  templateUrl: './apikey-modal.component.html',
-  styleUrls: ['./apikey-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-apikey-modal',
+    templateUrl: './apikey-modal.component.html',
+    styleUrls: ['./apikey-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ApikeyModalComponent implements OnChanges, OnInit {
   @Input() disabled = false;

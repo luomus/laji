@@ -1,4 +1,4 @@
 {{ status | label }}
-<ng-container *ngIf="status$ | async | adminStatusInfo; let statusInfo">
+@if (status$ | async | adminStatusInfo; as statusInfo) {
   <laji-info [html]="statusInfo"></laji-info>
-</ng-container>
+}

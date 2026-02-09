@@ -4,9 +4,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
  * @internal
  */
 @Component({
-  selector: 'll-label-preview-pager',
-  templateUrl: './label-preview-pager.component.html',
-  styleUrls: ['./label-preview-pager.component.scss']
+    selector: 'll-label-preview-pager',
+    templateUrl: './label-preview-pager.component.html',
+    styleUrls: ['./label-preview-pager.component.scss'],
+    standalone: false
 })
 export class LabelPreviewPagerComponent {
 

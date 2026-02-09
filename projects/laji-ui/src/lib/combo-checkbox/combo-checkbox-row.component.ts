@@ -2,14 +2,15 @@ import { ChangeDetectionStrategy, Component, ElementRef, Output, EventEmitter, I
 import { CheckboxComponent } from '../checkbox/checkbox.component';
 
 @Component({
-  selector: 'lu-combo-checkbox-row',
-  template: '<lu-checkbox [disabled]="disabled" (checked)="onCheck($event)"><ng-content></ng-content></lu-checkbox>',
-  styles: [`
+    selector: 'lu-combo-checkbox-row',
+    template: '<lu-checkbox [disabled]="disabled" (checked)="onCheck($event)"><ng-content></ng-content></lu-checkbox>',
+    styles: [`
 :host {
   display: block;
 }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ComboCheckboxRowComponent {
   @ViewChild(CheckboxComponent, { static: true }) cb!: CheckboxComponent;

@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'laji-annotation-data-observation',
-  templateUrl: './annotation-data-observation.component.html',
-  styleUrls: ['./annotation-data-observation.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-annotation-data-observation',
+    templateUrl: './annotation-data-observation.component.html',
+    styleUrls: ['./annotation-data-observation.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AnnotationDataObservationComponent implements OnInit {
   @Input() gathering: any;

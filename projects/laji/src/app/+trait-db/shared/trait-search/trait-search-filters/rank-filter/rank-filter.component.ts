@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, forwardRef, OnDestroy, OnInit } fro
 import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR, NonNullableFormBuilder } from '@angular/forms';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs';
 
 type TaxonRank = keyof components['schemas']['HigherTaxa'];
 type TaxonSource = 'FinBIF' | 'GBIF';
@@ -36,17 +36,18 @@ type RankFilterFormGroup = FormGroup<{
 }>;
 
 @Component({
-  selector: 'laji-trait-rank-filter',
-  templateUrl: './rank-filter.component.html',
-  styleUrls: ['./rank-filter.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TraitRankFilterComponent),
-      multi: true
-    }
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-rank-filter',
+    templateUrl: './rank-filter.component.html',
+    styleUrls: ['./rank-filter.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => TraitRankFilterComponent),
+            multi: true
+        }
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitRankFilterComponent implements ControlValueAccessor, OnInit, OnDestroy {
   form: RankFilterFormGroup = this.fb.group({

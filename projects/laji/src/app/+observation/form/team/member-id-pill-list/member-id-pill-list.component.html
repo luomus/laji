@@ -1,1 +1,5 @@
-<ng-container *ngIf="_list"><ng-container *ngFor="let item of _list"><span class="label label-success link" (click)="remove(item)">{{ getName(item) | async }} x</span> </ng-container></ng-container>
+@if (_list) {
+  @for (item of _list; track item) {
+    <span class="label label-success link" (click)="remove(item)">{{ getName(item) | async }} x</span>
+  }
+}

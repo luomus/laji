@@ -7,8 +7,9 @@ type Annotation = components['schemas']['annotation'];
 type AnnotationTag = components['schemas']['tag'];
 
 @Pipe({
-  name: 'activeTags',
-  pure: false
+    name: 'activeTags',
+    pure: false,
+    standalone: false
 })
 
 export class UniquePipe implements PipeTransform {

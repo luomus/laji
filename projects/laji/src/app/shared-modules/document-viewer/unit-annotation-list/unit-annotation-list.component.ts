@@ -8,10 +8,11 @@ type Annotation = components['schemas']['annotation'];
 type AnnotationTag = components['schemas']['tag'];
 
 @Component({
-  selector: 'laji-unit-annotation-list',
-  templateUrl: './unit-annotation-list.component.html',
-  styleUrls: ['./unit-annotation-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-unit-annotation-list',
+    templateUrl: './unit-annotation-list.component.html',
+    styleUrls: ['./unit-annotation-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UnitAnnotationListComponent implements OnInit, OnDestroy {
   @Input() isEditor?: boolean;

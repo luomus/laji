@@ -1,4 +1,4 @@
-@import 'projects/laji-ui/src/lib/vars';
+@import 'vars';
 
 :host ::ng-deep .datatable-body-row.active {
   background-color: $primary-1 !important;

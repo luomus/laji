@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { News } from '../../../shared/model/News';
 
 @Component({
-  selector: 'laji-technical-news-dumb',
-  templateUrl: './technical-news-dumb.component.html',
-  styleUrls: ['./technical-news-dumb.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-technical-news-dumb',
+    templateUrl: './technical-news-dumb.component.html',
+    styleUrls: ['./technical-news-dumb.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TechnicalNewsDumbComponent {
   @Input() set news(news: News[] | null) {

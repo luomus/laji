@@ -1,5 +1,5 @@
 @import '../../../../styles/styles';
-@import 'projects/laji-ui/src/lib/vars';
+@import 'vars';
 
 :host {
   color: $neutral-9;
@@ -189,8 +189,3 @@ h5 {
       float: left;
     }
   }
-
-
-
-
-

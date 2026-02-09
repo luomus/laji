@@ -8,10 +8,11 @@ import {PlatformService} from '../../root/platform.service';
 const mobileBreakpoint = 768;
 
 @Component({
-  selector: 'laji-dataset-metadata',
-  templateUrl: './dataset-metadata.component.html',
-  styleUrls: ['./dataset-metadata.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-dataset-metadata',
+    templateUrl: './dataset-metadata.component.html',
+    styleUrls: ['./dataset-metadata.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewInit {
   collectionId?: string;

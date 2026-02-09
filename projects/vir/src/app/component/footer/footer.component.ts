@@ -3,13 +3,14 @@ import { Observable } from 'rxjs';
 import { FooterService } from 'projects/laji/src/app/shared/service/footer.service';
 
 @Component({
-  selector: 'vir-footer',
-  templateUrl: './footer.component.html',
-  styleUrls: [
-    '../../../../../laji/src/app/shared/footer/footer.component.scss',
-    './footer.component.scss'
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-footer',
+    templateUrl: './footer.component.html',
+    styleUrls: [
+        '../../../../../laji/src/app/shared/footer/footer.component.scss',
+        './footer.component.scss'
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FooterComponent {
   @Input() onFrontPage = false;

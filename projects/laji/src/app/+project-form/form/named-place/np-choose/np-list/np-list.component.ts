@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { Util } from '../../../../../shared/service/util.service';
-import { tap } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs';
 import { forkJoin, Observable } from 'rxjs';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
 import { BoolToStringPipe } from '../../../../../shared/pipe/bool-to-string.pipe';
@@ -25,11 +25,12 @@ import { NpInfoComponent } from '../../np-info/np-info.component';
 import { DatatableUtil } from '../../../../../shared-modules/datatable/service/datatable-util.service';
 
 @Component({
-  selector: 'laji-np-list',
-  templateUrl: './np-list.component.html',
-  styleUrls: ['./np-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ BoolToStringPipe, AreaNamePipe ]
+    selector: 'laji-np-list',
+    templateUrl: './np-list.component.html',
+    styleUrls: ['./np-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [BoolToStringPipe, AreaNamePipe],
+    standalone: false
 })
 export class NpListComponent implements OnDestroy {
   _namedPlaces?: NamedPlace[];
@@ -257,7 +258,6 @@ export class NpListComponent implements OnDestroy {
       row['$.id'] = namedPlace.id;
       results.push(row);
     }
-
     if (observables.length > 0) {
       forkJoin(observables).subscribe(() => {
         this.data = results;

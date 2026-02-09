@@ -18,7 +18,7 @@ import { FormApiClient } from '../../../../shared/api/FormApiClient';
 import { UserSettings, UserService } from '../../../../shared/service/user.service';
 import { Logger } from '../../../../shared/logger/logger.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
-import { concatMap, map, take } from 'rxjs/operators';
+import { concatMap, map, take } from 'rxjs';
 import { Global } from '../../../../../environments/global';
 import { combineLatest, Subscription } from 'rxjs';
 import { DefaultMediaMetadata } from '../../../../shared/model/Profile';
@@ -42,11 +42,12 @@ interface ErrorModal {
 }
 
 @Component({
-  selector: 'laji-form',
-  templateUrl: './laji-form.component.html',
-  styleUrls: ['./laji-form.component.scss'],
-  providers: [FormApiClient],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-form',
+    templateUrl: './laji-form.component.html',
+    styleUrls: ['./laji-form.component.scss'],
+    providers: [FormApiClient],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
 

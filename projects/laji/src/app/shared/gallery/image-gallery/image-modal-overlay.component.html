@@ -1,59 +1,103 @@
-<div class="ng-overlay" *ngIf="modalImages">
-  <div class="ng-gallery-content">
-    <a href="{{img.fullURL || img.largeURL}}" target="_blank" download="{{img.fullURL || img.largeURL}}" class="download-img">
-      <i class="glyphicon glyphicon-download-alt"></i>
-    </a>
-    <a class="close-popup" (click)="closeGallery()"><i class="glyphicon glyphicon-remove"></i></a>
-    <a class="nav-left" *ngIf="modalImages.length > 1" (click)="prevImage()"><i class="glyphicon glyphicon-chevron-left"></i></a>
-    <ng-container *ngIf="img">
-      <ng-container [ngSwitch]="img.mediaType">
-        <laji-image-modal-video
-          *ngSwitchCase="'VIDEO'"
-          [source]="img"
-        ></laji-image-modal-video>
-        <laji-image-modal-model
-          *ngSwitchCase="'MODEL'"
-          [src]="img.lowDetailModelURL!"
-        ></laji-image-modal-model>
-        <laji-image
-          *ngSwitchDefault
-          id="openseadragon-wrapper"
-          [src]="img.fullURL || img.largeURL"
-          class="effect"
-        ></laji-image>
-      </ng-container>
-    </ng-container>
-    <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
-    <span class="info-text" *ngIf="img">
-      <ng-container *ngIf="showLinkToSpeciesCard && img.taxonId; else name">
-        <a class="link" [routerLink]="'/taxon/' + img.taxonId | localize" target="_blank"><ng-container *ngTemplateOutlet="name"></ng-container></a>
-      </ng-container>
-      <ng-template #name>
-        <ng-container *ngIf="img.vernacularName">{{ img.vernacularName | multiLang }}</ng-container>
-        <ng-container *ngIf="img.vernacularName && img.scientificName"> - </ng-container>
-        <ng-container *ngIf="img.scientificName"><em class="scientificName">{{ img.scientificName | label:'fullUri' }}</em></ng-container>
-        <ng-container *ngIf="img.taxonId && !img.vernacularName && !img.scientificName">{{ img.taxonId | label }}</ng-container>
-      </ng-template>
-      <br>
-      <ng-container *ngIf="img.caption">
-        <span [innerHTML]="img.caption | multiLang"></span>
-        <br>
-      </ng-container>
-      <ng-container *ngIf="img.taxonDescriptionCaption">
-        <span [innerHTML]="img.taxonDescriptionCaption | multiLang"></span>
-        <br>
-      </ng-container>
-      <span *ngIf="img.author">{{ img.author }}, </span>
-      <span *ngIf="img.copyrightOwner && (!img.author || img.author.indexOf(img.copyrightOwner) === -1)">
-        {{ img.copyrightOwner }},
-      </span>
-      <a *ngIf="img.licenseId" class="link" [href]="getLicenseLink(img.licenseId)" target="_blank">{{ img.licenseId | toQName | label }}</a>
-      <span *ngIf="img.licenseAbbreviation && !img.licenseId" [innerHtml]="img.licenseAbbreviation"></span>
-      <br *ngIf="img.author || img.copyrightOwner || img.licenseId || img.licenseAbbreviation">
-      <a *ngIf="img.documentId" target="_blank" [routerLink]="'/view' | localize" [queryParams]="{'uri':img.documentId, highlight: img.unitId}">
-        {{ 'more' | translate }}
+@if (modalImages) {
+  <div class="ng-overlay">
+    <div class="ng-gallery-content">
+      <a href="{{img.fullURL || img.largeURL}}" target="_blank" download="{{img.fullURL || img.largeURL}}" class="download-img">
+        <i class="glyphicon glyphicon-download-alt"></i>
       </a>
-     ({{ currentImageIndex + 1 }}/{{ modalImages.length }})
-     </span>
-  </div>
-</div>
+      <a class="close-popup" (click)="closeGallery()"><i class="glyphicon glyphicon-remove"></i></a>
+      @if (modalImages.length > 1) {
+        <a class="nav-left" (click)="prevImage()"><i class="glyphicon glyphicon-chevron-left"></i></a>
+      }
+      @if (img) {
+        @switch (img.mediaType) {
+          @case ('VIDEO') {
+            <laji-image-modal-video
+              [source]="img"
+            ></laji-image-modal-video>
+          }
+          @case ('MODEL') {
+            <laji-image-modal-model
+              [src]="img.lowDetailModelURL!"
+            ></laji-image-modal-model>
+          }
+          @default {
+            <laji-image
+              id="openseadragon-wrapper"
+              [src]="img.fullURL || img.largeURL"
+              class="effect"
+            ></laji-image>
+          }
+        }
+      }
+      @if (modalImages.length > 1) {
+        <a class="nav-right" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
+      }
+      @if (img) {
+        <span class="info-text">
+          @if (showLinkToSpeciesCard && img.taxonId) {
+            <a class="link" [routerLink]="'/taxon/' + img.taxonId | localize" target="_blank"><ng-container *ngTemplateOutlet="name"></ng-container></a>
+          } @else {
+            @if (img.vernacularName) {
+              {{ img.vernacularName | multiLang }}
+            }
+            @if (img.vernacularName && img.scientificName) {
+              -
+            }
+            @if (img.scientificName) {
+              <em class="scientificName">{{ img.scientificName | label:'fullUri' }}</em>
+            }
+            @if (img.taxonId && !img.vernacularName && !img.scientificName) {
+              {{ img.taxonId | label }}
+            }
+          }
+          <ng-template #name>
+            @if (img.vernacularName) {
+              {{ img.vernacularName | multiLang }}
+            }
+            @if (img.vernacularName && img.scientificName) {
+              -
+            }
+            @if (img.scientificName) {
+              <em class="scientificName">{{ img.scientificName | label:'fullUri' }}</em>
+            }
+            @if (img.taxonId && !img.vernacularName && !img.scientificName) {
+              {{ img.taxonId | label }}
+            }
+          </ng-template>
+          <br>
+            @if (img.caption) {
+              <span [innerHTML]="img.caption | multiLang"></span>
+              <br>
+              }
+              @if (img.taxonDescriptionCaption) {
+                <span [innerHTML]="img.taxonDescriptionCaption | multiLang"></span>
+                <br>
+                }
+                @if (img.author) {
+                  <span>{{ img.author }}, </span>
+                }
+                @if (img.copyrightOwner && (!img.author || img.author.indexOf(img.copyrightOwner) === -1)) {
+                  <span>
+                    {{ img.copyrightOwner }},
+                  </span>
+                }
+                @if (img.licenseId) {
+                  <a class="link" [href]="getLicenseLink(img.licenseId)" target="_blank">{{ img.licenseId | toQName | label }}</a>
+                }
+                @if (img.licenseAbbreviation && !img.licenseId) {
+                  <span [innerHtml]="img.licenseAbbreviation"></span>
+                }
+                @if (img.author || img.copyrightOwner || img.licenseId || img.licenseAbbreviation) {
+                  <br>
+                  }
+                  @if (img.documentId) {
+                    <a target="_blank" [routerLink]="'/view' | localize" [queryParams]="{'uri':img.documentId, highlight: img.unitId}">
+                      {{ 'more' | translate }}
+                    </a>
+                  }
+                  ({{ currentImageIndex + 1 }}/{{ modalImages.length }})
+                </span>
+              }
+            </div>
+          </div>
+        }

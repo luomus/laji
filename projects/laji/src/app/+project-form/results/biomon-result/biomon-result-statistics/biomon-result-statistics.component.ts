@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs';
 
 interface Row {
   observer: string;
@@ -19,10 +19,11 @@ interface QueryResult {
 }
 
 @Component({
-  selector: 'laji-biomon-result-statistics',
-  templateUrl: './biomon-result-statistics.component.html',
-  styleUrls: ['./biomon-result-statistics.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-biomon-result-statistics',
+    templateUrl: './biomon-result-statistics.component.html',
+    styleUrls: ['./biomon-result-statistics.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BiomonResultStatisticsComponent implements OnInit {
   readonly collection$ = new BehaviorSubject<string>('');

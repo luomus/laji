@@ -2,9 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { APP_ID, ErrorHandler, NgModule } from '@angular/core';
 import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { NgxWebstorageModule } from 'ngx-webstorage';
-import { TransferHttpCacheModule } from '@nguniversal/common';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSessionStorage } from 'ngx-webstorage';
+import { TransferHttpCacheModule } from '@angular/ssr';
 import { ToastrModule } from 'ngx-toastr';
 import { VirRoutingModule } from './vir-routing.module';
 import { GraphQLModule } from '../../../laji/src/app/graph-ql/graph-ql.module';
@@ -35,52 +35,50 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   return new ConsoleLogger();
 }
 
-@NgModule({
-  imports: [
-    GraphQLModule,
-    AppComponentModule,
-    LocaleModule,
-    BrowserAnimationsModule,
-    BrowserModule,
-    CommonModule,
-    HttpClientModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useClass: LazyTranslateLoader
-      }
-    }),
-    ToastrModule.forRoot(),
-    SharedModule.forRoot(),
-    DropdownModule,
-    NgxWebstorageModule.forRoot({prefix: 'vir-', separator: ''}),
-    VirRoutingModule,
-    TransferHttpCacheModule,
-    DocumentViewerModule
-  ],
-  exports: [
-    TranslateModule
-  ],
-  providers: [
-    {provide: APP_ID, useValue: 'vir-app'},
-    {provide: APP_BASE_HREF, useValue: '/'},
-    {provide: API_BASE_URL, useValue: environment.apiBase},
-    DocumentService,
-    {provide: ErrorHandler, useClass: LajiErrorHandler},
-    LocalizeRouterService,
-    {provide: LocationStrategy, useClass: PathLocationStrategy},
-    {
-      provide: Logger,
-      deps: [LajiApiClientBService],
-      useFactory: createLoggerLoader
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: VirAuthenticatedHttpInterceptor,
-      multi: true
-    }
-  ],
-  bootstrap: [VirAppComponent],
-  declarations: [VirAppComponent, NavBarComponent, GlobalMessageComponent, FooterComponent, UsageDropdownComponent]
-})
+@NgModule({ exports: [
+        TranslateModule
+    ],
+    bootstrap: [VirAppComponent],
+    declarations: [VirAppComponent, NavBarComponent, GlobalMessageComponent, FooterComponent, UsageDropdownComponent], imports: [GraphQLModule,
+        AppComponentModule,
+        LocaleModule,
+        BrowserAnimationsModule,
+        BrowserModule,
+        CommonModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useClass: LazyTranslateLoader
+            }
+        }),
+        ToastrModule.forRoot(),
+        SharedModule.forRoot(),
+        DropdownModule,
+        VirRoutingModule,
+        TransferHttpCacheModule,
+        DocumentViewerModule], providers: [
+        { provide: APP_ID, useValue: 'vir-app' },
+        { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: API_BASE_URL, useValue: environment.apiBase },
+        DocumentService,
+        { provide: ErrorHandler, useClass: LajiErrorHandler },
+        LocalizeRouterService,
+        { provide: LocationStrategy, useClass: PathLocationStrategy },
+        {
+            provide: Logger,
+            deps: [LajiApiClientBService],
+            useFactory: createLoggerLoader
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: VirAuthenticatedHttpInterceptor,
+            multi: true
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideNgxWebstorage(
+      		withNgxWebstorageConfig({ prefix: 'vir-', separator: '' }),
+      		withLocalStorage(),
+      		withSessionStorage()
+        ),
+    ] })
 export class AppModule { }

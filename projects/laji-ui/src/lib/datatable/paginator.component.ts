@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'lu-datatable-paginator',
-  templateUrl: './paginator.component.html',
-  styleUrls: [ './paginator.component.scss' ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'lu-datatable-paginator',
+    templateUrl: './paginator.component.html',
+    styleUrls: ['./paginator.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatatablePaginatorComponent {
   @Input() totalPages!: number;

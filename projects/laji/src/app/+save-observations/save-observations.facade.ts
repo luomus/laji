@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { map, distinctUntilChanged } from 'rxjs/operators';
+import { map, distinctUntilChanged } from 'rxjs';
 import { FormService } from '../shared/service/form.service';
 import { Form } from '../shared/model/Form';
 import { Global } from '../../environments/global';

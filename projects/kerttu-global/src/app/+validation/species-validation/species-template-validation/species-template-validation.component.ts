@@ -5,10 +5,11 @@ import { DialogService } from 'projects/laji/src/app/shared/service/dialog.servi
 import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGlobalSpecies } from '../../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'bsg-species-template-validation',
-  templateUrl: './species-template-validation.component.html',
-  styleUrls: ['./species-template-validation.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-species-template-validation',
+    templateUrl: './species-template-validation.component.html',
+    styleUrls: ['./species-template-validation.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesTemplateValidationComponent implements OnChanges {
   @Input() species?: IGlobalSpecies;
@@ -36,7 +37,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   subSpecies: IGlobalSpecies[] = [];
 
   @Output() save = new EventEmitter<{ templates: (IGlobalTemplate|null)[]; comments: IGlobalComment[] }>();
-  @Output() cancel = new EventEmitter();
+  @Output() templateCancel = new EventEmitter();
 
   constructor(
     private translate: TranslateService,

@@ -1,4 +1,4 @@
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Logger } from '../../shared/logger/logger.service';
 import { DialogService } from '../../shared/service/dialog.service';
@@ -8,8 +8,9 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { Profile } from '../../shared/model/Profile';
 
 @Component({
-  selector: 'laji-friends',
-  templateUrl: './friends.component.html'
+    selector: 'laji-friends',
+    templateUrl: './friends.component.html',
+    standalone: false
 })
 export class FriendsComponent implements OnInit, OnChanges {
   @Input() profile!: Profile;

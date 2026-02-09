@@ -23,10 +23,11 @@ import { LajiMapVisualization } from '../../../../../shared-modules/legend/laji-
 import { TileLayerName, OverlayName } from '@luomus/laji-map/lib/defs';
 
 @Component({
-  selector: 'laji-np-map',
-  templateUrl: './np-map.component.html',
-  styleUrls: ['./np-map.component.css'],
-  providers: [ LabelPipe, AreaNamePipe ]
+    selector: 'laji-np-map',
+    templateUrl: './np-map.component.html',
+    styleUrls: ['./np-map.component.css'],
+    providers: [LabelPipe, AreaNamePipe],
+    standalone: false
 })
 export class NpMapComponent implements OnInit, OnChanges {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap!: LajiMapComponent;

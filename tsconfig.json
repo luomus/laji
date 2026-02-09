@@ -6,9 +6,10 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "declaration": false,
-    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "module": "es2020",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
@@ -33,13 +34,8 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "lib": [
-      "es2018",
-      "dom"
-    ],
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
-    "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": false,
     "strict": true
   },
@@ -49,4 +45,3 @@
     "strictTemplates": true
   }
 }
-

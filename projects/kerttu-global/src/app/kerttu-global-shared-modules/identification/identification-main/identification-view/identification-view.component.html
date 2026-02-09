@@ -39,146 +39,148 @@
       ></bsg-audio-viewer-custom-controls>
     </ng-template>
     <ng-template #audioInfo let-audio="audio">
-      <ng-container *ngIf="audio.targetSpecies">
+      @if (audio.targetSpecies) {
         <span>
           <bsg-species-name [species]="audio.targetSpecies"></bsg-species-name>
         </span>
         <br>
-      </ng-container>
-      <span>
-        {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
-        {{ audio.locality ? (audio.locality | titlecase) : audio.site.name }}<ng-container *ngIf="audio.site.country">, {{ audio.site.country }}</ng-container>
+        }
+        <span>
+          {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
+          {{ audio.locality ? (audio.locality | titlecase) : audio.site.name }}@if (audio.site.country) {
+          , {{ audio.site.country }}
+        }
       </span>
       <span class="ml-2"><i [luPopover]="audioInfoPopover" [placement]="'left'" [mode]="'click'" [rootElement]="'body'" class="glyphicon glyphicon-info-sign info-sign"></i></span>
       <ng-template #audioInfoPopover>
         <div (click)="$event.stopPropagation()">
           <label class="mb-0">{{ 'identification.fileName' | translate }}:</label>
           <br>
-          <span class="audio-url">{{ audio.url | fileName }}</span>
-        </div>
+            <span class="audio-url">{{ audio.url | fileName }}</span>
+          </div>
+        </ng-template>
       </ng-template>
-    </ng-template>
-    <div *lajiIfWidthAboveBreakpoint="'sm'" class="dragbar" (mousedown)="onDragStart()"></div>
-  </div>
-  <div class="bottom-content">
-    <h2 class="mt-3">
-      {{ 'identification.identify' | translate }}
-      <laji-info [html]="'identification.identify.info' | translate" [showOnHover]="true"></laji-info>
-    </h2>
-    <div class="general-annotation-section mb-5">
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" [(ngModel)]="annotation.isLowQuality" (change)="updateAnnotation()"/>{{ 'identification.isLowQuality' | translate }}
-            </label>
-            <laji-info [placement]="'right'" [html]="'identification.isLowQuality.info' | translate" [showOnHover]="true"></laji-info>
+      <div *lajiIfWidthAboveBreakpoint="'sm'" class="dragbar" (mousedown)="onDragStart()"></div>
+    </div>
+    <div class="bottom-content">
+      <h2 class="mt-3">
+        {{ 'identification.identify' | translate }}
+        <laji-info [html]="'identification.identify.info' | translate" [showOnHover]="true"></laji-info>
+      </h2>
+      <div class="general-annotation-section mb-5">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="annotation.isLowQuality" (change)="updateAnnotation()"/>{{ 'identification.isLowQuality' | translate }}
+              </label>
+              <laji-info [placement]="'right'" [html]="'identification.isLowQuality.info' | translate" [showOnHover]="true"></laji-info>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="annotation.containsHumanSpeech" (change)="updateAnnotation()">{{ 'identification.containsHumanSpeech' | translate }}
+              </label>
+              <laji-info [placement]="'right'" [html]="'identification.containsHumanSpeech.info' | translate" [showOnHover]="true"></laji-info>
+            </div>
           </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" [(ngModel)]="annotation.containsHumanSpeech" (change)="updateAnnotation()">{{ 'identification.containsHumanSpeech' | translate }}
-            </label>
-            <laji-info [placement]="'right'" [html]="'identification.containsHumanSpeech.info' | translate" [showOnHover]="true"></laji-info>
+          <div class="col-sm-6">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="annotation.containsUnknownBirds" (change)="updateAnnotation()">{{ 'identification.containsUnknownBirds' | translateWithTaxonType: recording.taxonType }}
+              </label>
+              <laji-info [html]="'identification.containsUnknownBirds.info' | translateWithTaxonType: recording.taxonType" [showOnHover]="true"></laji-info>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="annotation.doesNotContainBirds" (change)="updateAnnotation()">{{ 'identification.doesNotContainBirds' | translateWithTaxonType: recording.taxonType }}
+              </label>
+              <laji-info [html]="'identification.doesNotContainBirds.info' | translateWithTaxonType: recording.taxonType" [showOnHover]="true"></laji-info>
+            </div>
           </div>
         </div>
-        <div class="col-sm-6">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" [(ngModel)]="annotation.containsUnknownBirds" (change)="updateAnnotation()">{{ 'identification.containsUnknownBirds' | translateWithTaxonType: recording.taxonType }}
-            </label>
-            <laji-info [html]="'identification.containsUnknownBirds.info' | translateWithTaxonType: recording.taxonType" [showOnHover]="true"></laji-info>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="annotation.containsBirdsNotOnList" (change)="updateAnnotation()">{{ 'identification.containsBirdsNotOnList' | translateWithTaxonType: recording.taxonType }}:
+              </label>
+              <laji-info [placement]="'right'" [html]="'identification.containsBirdsNotOnList.info' | translateWithTaxonType : recording.taxonType" [showOnHover]="true"></laji-info>
+            </div>
+            <input class="form-control input-sm" type="text" [(ngModel)]="annotation.birdsNotOnList" [disabled]="!annotation.containsBirdsNotOnList" maxlength="100">
           </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" [(ngModel)]="annotation.doesNotContainBirds" (change)="updateAnnotation()">{{ 'identification.doesNotContainBirds' | translateWithTaxonType: recording.taxonType }}
-            </label>
-            <laji-info [html]="'identification.doesNotContainBirds.info' | translateWithTaxonType: recording.taxonType" [showOnHover]="true"></laji-info>
+          <div class="col-sm-6">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" [(ngModel)]="annotation.hasBoxesForAllBirdSounds" (change)="updateAnnotation()">{{ 'identification.hasBoxesForAllBirdSounds' | translateWithTaxonType: recording.taxonType }}
+              </label>
+            </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" [(ngModel)]="annotation.containsBirdsNotOnList" (change)="updateAnnotation()">{{ 'identification.containsBirdsNotOnList' | translateWithTaxonType: recording.taxonType }}:
-            </label>
-            <laji-info [placement]="'right'" [html]="'identification.containsBirdsNotOnList.info' | translateWithTaxonType : recording.taxonType" [showOnHover]="true"></laji-info>
-          </div>
-          <input class="form-control input-sm" type="text" [(ngModel)]="annotation.birdsNotOnList" [disabled]="!annotation.containsBirdsNotOnList" maxlength="100">
+      <div class="mb-5">
+        <div class="form-group">
+          <h4>
+            {{ 'identification.listBirdSpecies' | translateWithTaxonType: recording.taxonType }}
+            <laji-info [placement]="'right'" [html]="'identification.listSpecies.info' | translate" [showOnHover]="true"></laji-info>
+          </h4>
+          <bsg-taxon-select
+            id="species-select"
+            [taxonType]="recording.taxonType"
+            (taxonSelect)="addToIdentifications($event)"
+            [placeholder]="'identification.taxonSelectPlaceholder' | translate"
+          ></bsg-taxon-select>
         </div>
-        <div class="col-sm-6">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" [(ngModel)]="annotation.hasBoxesForAllBirdSounds" (change)="updateAnnotation()">{{ 'identification.hasBoxesForAllBirdSounds' | translateWithTaxonType: recording.taxonType }}
-            </label>
-          </div>
+        <bsg-identification-table
+          #speciesIdentificationTable
+          [componentId]="0"
+          [recording]="recording"
+          [(identifications)]="selectedSpecies"
+          [loading]="loadingSpecies"
+          [showSoundTypeSelect]="recording.taxonType === taxonTypeEnum.bird"
+          [showDrawRelatedBoxBtn]="recording.taxonType === taxonTypeEnum.insect"
+          [buttonsDisabled]="buttonsDisabled || loadingSpecies"
+          [birdRectangleColor]="speciesRectangleColor"
+          [overlappingBirdRectangleColor]="overlappingSpeciesRectangleColor"
+          [sampleRate]="sampleRate"
+          [spectrogramConfig]="spectrogramConfig"
+          [drawActive]="speciesBoxDrawState.active && speciesBoxDrawState.type === 'species'"
+          (drawBoxClick)="onDrawBirdClick('species', $event)"
+          (drawRelatedBoxClick)="onDrawBirdClick('species', $event)"
+          (deleteBoxClick)="removeDrawing('species', $event)"
+          (identificationsChange)="updateSpectrogramAndAnnotation()"
+        ></bsg-identification-table>
+      </div>
+      <div class="mb-5">
+        <div class="form-group">
+          <h4>
+            {{ 'identification.listNonBirdSpecies' | translateWithTaxonType: recording.taxonType }}
+          </h4>
+          <bsg-other-sound-select
+            id="other-species-select"
+            [taxonType]="recording.taxonType"
+            (soundSelect)="addToIdentifications($event)"
+          ></bsg-other-sound-select>
         </div>
+        <bsg-identification-table
+          #otherSoundsIdentificationTable
+          [componentId]="1"
+          [recording]="recording"
+          [(identifications)]="selectedOtherSounds"
+          [loading]="loadingSpecies"
+          [showSoundTypeSelect]="false"
+          [showOverlapsWithOtherSpeciesCheck]="false"
+          [showDrawRelatedBoxBtn]="false"
+          [buttonsDisabled]="buttonsDisabled || loadingSpecies"
+          [birdRectangleColor]="otherSoundRectangleColor"
+          [overlappingBirdRectangleColor]="overlappingSpeciesRectangleColor"
+          [sampleRate]="sampleRate"
+          [spectrogramConfig]="spectrogramConfig"
+          [drawActive]="speciesBoxDrawState.active && speciesBoxDrawState.type === 'otherSound'"
+          (drawBoxClick)="onDrawBirdClick('otherSound', $event)"
+          (drawRelatedBoxClick)="onDrawBirdClick('otherSound', $event)"
+          (deleteBoxClick)="removeDrawing('otherSound', $event)"
+          (identificationsChange)="updateSpectrogramAndAnnotation()"
+        ></bsg-identification-table>
       </div>
     </div>
-    <div class="mb-5">
-      <div class="form-group">
-        <h4>
-          {{ 'identification.listBirdSpecies' | translateWithTaxonType: recording.taxonType }}
-          <laji-info [placement]="'right'" [html]="'identification.listSpecies.info' | translate" [showOnHover]="true"></laji-info>
-        </h4>
-        <bsg-taxon-select
-          id="species-select"
-          [taxonType]="recording.taxonType"
-          (taxonSelect)="addToIdentifications($event)"
-          [placeholder]="'identification.taxonSelectPlaceholder' | translate"
-        ></bsg-taxon-select>
-      </div>
-      <bsg-identification-table
-        #speciesIdentificationTable
-        [componentId]="0"
-        [recording]="recording"
-        [(identifications)]="selectedSpecies"
-        [loading]="loadingSpecies"
-        [showSoundTypeSelect]="recording.taxonType === taxonTypeEnum.bird"
-        [showDrawRelatedBoxBtn]="recording.taxonType === taxonTypeEnum.insect"
-        [buttonsDisabled]="buttonsDisabled || loadingSpecies"
-        [birdRectangleColor]="speciesRectangleColor"
-        [overlappingBirdRectangleColor]="overlappingSpeciesRectangleColor"
-        [sampleRate]="sampleRate"
-        [spectrogramConfig]="spectrogramConfig"
-        [drawActive]="speciesBoxDrawState.active && speciesBoxDrawState.type === 'species'"
-        (drawBoxClick)="onDrawBirdClick('species', $event)"
-        (drawRelatedBoxClick)="onDrawBirdClick('species', $event)"
-        (deleteBoxClick)="removeDrawing('species', $event)"
-        (identificationsChange)="updateSpectrogramAndAnnotation()"
-      ></bsg-identification-table>
-    </div>
-    <div class="mb-5">
-      <div class="form-group">
-        <h4>
-          {{ 'identification.listNonBirdSpecies' | translateWithTaxonType: recording.taxonType }}
-        </h4>
-        <bsg-other-sound-select
-          id="other-species-select"
-          [taxonType]="recording.taxonType"
-          (soundSelect)="addToIdentifications($event)"
-        ></bsg-other-sound-select>
-      </div>
-      <bsg-identification-table
-        #otherSoundsIdentificationTable
-        [componentId]="1"
-        [recording]="recording"
-        [(identifications)]="selectedOtherSounds"
-        [loading]="loadingSpecies"
-        [showSoundTypeSelect]="false"
-        [showOverlapsWithOtherSpeciesCheck]="false"
-        [showDrawRelatedBoxBtn]="false"
-        [buttonsDisabled]="buttonsDisabled || loadingSpecies"
-        [birdRectangleColor]="otherSoundRectangleColor"
-        [overlappingBirdRectangleColor]="overlappingSpeciesRectangleColor"
-        [sampleRate]="sampleRate"
-        [spectrogramConfig]="spectrogramConfig"
-        [drawActive]="speciesBoxDrawState.active && speciesBoxDrawState.type === 'otherSound'"
-        (drawBoxClick)="onDrawBirdClick('otherSound', $event)"
-        (drawRelatedBoxClick)="onDrawBirdClick('otherSound', $event)"
-        (deleteBoxClick)="removeDrawing('otherSound', $event)"
-        (identificationsChange)="updateSpectrogramAndAnnotation()"
-      ></bsg-identification-table>
-    </div>
-  </div>
-</ng-container>
+  </ng-container>

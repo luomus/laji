@@ -5,9 +5,10 @@ import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 @Component({
-  selector: 'laji-species-list-options-modal',
-  templateUrl: './species-list-options-modal.component.html',
-  styleUrls: ['./species-list-options-modal.component.css']
+    selector: 'laji-species-list-options-modal',
+    templateUrl: './species-list-options-modal.component.html',
+    styleUrls: ['./species-list-options-modal.component.css'],
+    standalone: false
 })
 export class SpeciesListOptionsModalComponent {
   @ViewChild('settingsModal', { static: true }) modalRef!: ModalComponent;

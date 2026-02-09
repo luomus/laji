@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'includes'
+    name: 'includes',
+    standalone: false
 })
 export class IncludesPipe implements PipeTransform {
 

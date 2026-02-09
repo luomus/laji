@@ -17,7 +17,7 @@ import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
 import type { Lang, Options } from '@luomus/laji-map';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
 type Taxon = components['schemas']['Taxon'];
@@ -26,10 +26,11 @@ export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'indivi
   'individualCountSumPer10km';
 
 @Component({
-  selector: 'laji-ykj-map',
-  templateUrl: './ykj-map.component.html',
-  styleUrls: ['./ykj-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-ykj-map',
+    templateUrl: './ykj-map.component.html',
+    styleUrls: ['./ykj-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -102,10 +103,10 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.subLang = this.translate.onLangChange.subscribe(() => {
-      this._mapOptions = {...this._mapOptions, lang: <Lang> this.translate.currentLang};
+      this._mapOptions = {...this._mapOptions, lang: <Lang> this.translate.getCurrentLang()};
       this.cd.markForCheck();
     });
-    this._mapOptions['lang'] = <Lang> this.translate.currentLang;
+    this._mapOptions['lang'] = <Lang> this.translate.getCurrentLang();
     this.onlyCount = this.types.includes('count') && this.types.length === 1;
   }
 

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges,
 Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
@@ -9,10 +9,11 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 type Taxon = components['schemas']['Taxon'];
 
 @Component({
-  selector: 'laji-taxon-taxonomy',
-  templateUrl: './taxon-taxonomy.component.html',
-  styleUrls: ['./taxon-taxonomy.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-taxonomy',
+    templateUrl: './taxon-taxonomy.component.html',
+    styleUrls: ['./taxon-taxonomy.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) taxon!: Taxon;

@@ -23,7 +23,7 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { PagedResult } from '../model/PagedResult';
 import { NamedPlace } from '../model/NamedPlace';
 import { HttpClient } from '@angular/common/http';

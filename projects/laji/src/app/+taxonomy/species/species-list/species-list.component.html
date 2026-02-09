@@ -16,13 +16,15 @@
         </option>
       </select>
     </div>
-    <div *ngIf="countStartText" class="counts">
-      <strong>
-        {{ countStartText }}
-        <laji-species-count [search]="search"></laji-species-count>
-        {{ countEndText }}
-      </strong>
-    </div>
+    @if (countStartText) {
+      <div class="counts">
+        <strong>
+          {{ countStartText }}
+          <laji-species-count [search]="search"></laji-species-count>
+          {{ countEndText }}
+        </strong>
+      </div>
+    }
   </div>
   <div class="species-table-wrapper">
     <laji-datatable-header
@@ -55,6 +57,6 @@
 </div>
 
 <laji-species-list-options-modal #settingsModal
-                                 (settingsChange)="onSettingsChange()"
-                                 [search]="search">
+  (settingsChange)="onSettingsChange()"
+  [search]="search">
 </laji-species-list-options-modal>

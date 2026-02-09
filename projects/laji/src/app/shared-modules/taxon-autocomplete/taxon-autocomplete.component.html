@@ -21,32 +21,33 @@
         autocomplete="off"
         autocorrect="off"
         #input
-      >
-      <ng-container *ngIf="allowInvalid && renderButton">
-        <span class="input-group-btn">
-          <button class="btn btn-default btn-sm"
-                  [class.disabled]="!value"
-                  (click)="useCurrentValue()"
-          ><i class="glyphicon glyphicon-arrow-right"></i></button>
-        </span>
-      </ng-container>
-    </div>
-    <ng-template #taxonItem let-model="item">
-      <span class="autocomplete-container" [innerHtml]="model['autocompleteDisplayName' ]"></span>
-     </ng-template>
-  </div>
-  <div class="col-md-6 form-control-static" *ngIf="showResult">
-    <ng-container *ngIf="result; else asIs">
-      <laji-taxon-name [capitalizeName]="true" [taxon]="result" [taxonID]="result.id" [warningOnMissingTaxonID]="true"></laji-taxon-name>
-    </ng-container>
-    <ng-template #asIs>
-      <ng-container *ngIf="useValue">
+        >
+        @if (allowInvalid && renderButton) {
+          <span class="input-group-btn">
+            <button class="btn btn-default btn-sm"
+              [class.disabled]="!value"
+              (click)="useCurrentValue()"
+              ><i class="glyphicon glyphicon-arrow-right"></i></button>
+            </span>
+          }
+        </div>
+        <ng-template #taxonItem let-model="item">
+          <span class="autocomplete-container" [innerHtml]="model['autocompleteDisplayName' ]"></span>
+        </ng-template>
+      </div>
+      @if (showResult) {
+        <div class="col-md-6 form-control-static">
+          @if (result) {
+            <laji-taxon-name [capitalizeName]="true" [taxon]="result" [taxonID]="result.id" [warningOnMissingTaxonID]="true"></laji-taxon-name>
+          } @else {
+            @if (useValue) {
         <laji-taxon-name [taxon]="{
           id: '',
           cursiveName: false,
           vernacularName: useValue
         }" [taxonID]="''" [warningOnMissingTaxonID]="true" [capitalizeName]="true"></laji-taxon-name>
-      </ng-container>
-    </ng-template>
-  </div>
-</div>
+            }
+          }
+        </div>
+      }
+    </div>

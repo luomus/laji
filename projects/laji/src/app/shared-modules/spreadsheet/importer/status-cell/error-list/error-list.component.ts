@@ -9,10 +9,11 @@ interface ErrorGroup {
 }
 
 @Component({
-  selector: 'laji-error-list',
-  templateUrl: './error-list.component.html',
-  styleUrls: ['./error-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-error-list',
+    templateUrl: './error-list.component.html',
+    styleUrls: ['./error-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ErrorListComponent implements OnChanges {
 

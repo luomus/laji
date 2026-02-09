@@ -28,9 +28,10 @@ type ExternalValidationState = ValidationNotStarted | ValidationInProgress | Val
 const parseTsv = (tsv: string): string[][] => tsv.replace(/\r/g, '').split('\n').map(line => line.split('\t'));
 
 @Component({
-  selector: 'laji-trait-db-data-entry-validate',
-  templateUrl: './data-entry-validate.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-db-data-entry-validate',
+    templateUrl: './data-entry-validate.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDataEntryValidateComponent implements OnChanges, OnDestroy, AfterViewInit {
   @Input({ required: true }) datasetId!: string;

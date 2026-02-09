@@ -1,236 +1,272 @@
 
-<strong class="counts" style="padding: 0" *ngIf="!(visible.countTaxa && visible.countHits) && visible.countHits">
-  <laji-observation-count
-    [loading]="loadingUnits"
+@if (!(visible.countTaxa && visible.countHits) && visible.countHits) {
+  <strong class="counts" style="padding: 0">
+    <laji-observation-count
+      [loading]="loadingUnits"
     [value]="unitCount"></laji-observation-count>
-  {{ 'observation.results.hits' | translate }}
-</strong>
-<div class="finnish-selector" *ngIf="visible.finnish || (visible.countTaxa && visible.countHits)">
-  <ng-container *ngIf="visible.countTaxa || visible.countHits">
-    <ng-container *ngIf="mode === 'all'">
-      <div>
-        <strong>
-          <laji-observation-count
-            *ngIf="visible.countHits"
-            [loading]="loadingUnits"
-            [value]="unitCount"></laji-observation-count>
-        </strong>
-        {{ 'observation.results.observation' | translate }}
-      </div>
-      <div>
-        <strong>
-          <laji-observation-count
-            *ngIf="visible.countTaxa"
-            [loading]="loadingTaxa"
-            [value]="speciesCount"></laji-observation-count>
-        </strong>
-        {{ 'observation.results.species' | translate }}
-      </div>
-    </ng-container>
-    <ng-container *ngIf="mode === 'finnish'">
-      <div>
-        <strong>
-          <laji-observation-count
-            *ngIf="visible.countHits"
-            [overrideInQuery]="{countryId: ['ML.206']}"
-            [query]="activeQuery"></laji-observation-count>
-        </strong>
-        {{ 'observation.results.observation' | translate }}
-      </div>
-      <div>
-        <strong>
-          <laji-observation-count
-            *ngIf="visible.countTaxa"
-            [overrideInQuery]="{countryId: ['ML.206'], includeNonValidTaxa: false}"
-            [query]="activeQuery"
-            [field]="'unit.linkings.taxon.speciesId'"></laji-observation-count>
-          {{ 'observation.results.species' | translate }}
-        </strong>
-      </div>
-    </ng-container>
-  </ng-container>
-  <button class="btn btn-primary" *ngIf="visible.download" (click)="openDownloadModal()">{{ 'search.result.load' | translate }}</button>
-  <div class="flex-grow"></div>
-  <div class="finnish-selector-buttons" *ngIf="visible.finnish">
-    <lu-button [routerLink]="(activeTab ? ['/observation', activeTab] : ['/observation']) | localize" [queryParams]="activeQuery | toSafeQuery:skipUrlParameters" [disabled]="mode !== 'finnish'">
-      {{ 'search.result.all' | translate }}</lu-button>
-    <lu-button [routerLink]="'/observation/finnish' | localize" [queryParams]="activeQuery | toSafeQuery:skipUrlParameters" [disabled]="mode === 'finnish'">
-      {{ 'search.result.finnish' | translate }}</lu-button>
-  </div>
-</div>
-
-<lu-tabs *ngIf="loadedModes.isLoaded('all')" [hidden]="mode !== 'all'" [selectedIndex]="selectedTabIdx"
-         (selectedChange)="onSelect($event)">
-  <lu-tab *ngIf="visible.list" [heading]="'search.result.list' | translate" headerClass="obs-filter-list">
-    <laji-observation-result-list
-      *ngIf="loadedTabs.isLoaded('list')"
-      [resultBase]="resultBase"
-      [showDownloadMenu]="visible.downloadList"
-      [settings]="listSettings"
-      (settingsChange)="listSettingsChange.emit($event)"
-      [visible]="activeTab === 'list'"
-      [query]="activeQuery"
-    ></laji-observation-result-list>
-  </lu-tab>
-  <lu-tab *ngIf="visible.map" [heading]="'search.result.map' | translate" headerClass="obs-filter-map">
-    <laji-observation-map
-      *ngIf="loadedTabs.isLoaded('map')"
-      [ready]="!loadingUnits"
-      [height]="-1"
-      [query]="activeQuery"
-      [draw]="{rectangle: true, marker: false, polygon: true, polyline: false, circle: false, single: true}"
-      [initWithWorldMap]="true"
-      [showPrintControl]="true"
-      (create)="pickLocation($event)"
-    ></laji-observation-map>
-  </lu-tab>
-  <lu-tab *ngIf="visible.images" [heading]="'search.result.images' | translate">
-    <div style="min-height: 180px; padding: 0 10px 0 0"
-      *ngIf="loadedTabs.isLoaded('images')"
-    >
-      <laji-gallery
-        [showPopover]="true"
-        [showViewSwitch]="true"
-        [shortcut]="false"
-        [query]="activeQuery">
-      </laji-gallery>
-    </div>
-  </lu-tab>
-  <lu-tab *ngIf="visible.species" [heading]="'search.result.species' | translate">
-    <div class="species-list"
-      *ngIf="loadedTabs.isLoaded('species')"
-    >
-      <div class="row">
-        <div class="col-sm-12">
-          <laji-observation-table
-            [visible]="activeTab === 'species'"
-            [pageSize]="100"
-            [height]="'calc(80vh - 40px)'"
-            [query]="activeQuery"
-            [showSettingsMenu]="false"
-            [showRowAsLink]="false"
-            [isAggregate]="true"
-            [selected]="['unit.species', 'individualCountSum']"
-          ></laji-observation-table>
+    {{ 'observation.results.hits' | translate }}
+  </strong>
+}
+@if (visible.finnish || (visible.countTaxa && visible.countHits)) {
+  <div class="finnish-selector">
+    @if (visible.countTaxa || visible.countHits) {
+      @if (mode === 'all') {
+        <div>
+          <strong>
+            @if (visible.countHits) {
+              <laji-observation-count
+                [loading]="loadingUnits"
+              [value]="unitCount"></laji-observation-count>
+            }
+          </strong>
+          {{ 'observation.results.observation' | translate }}
         </div>
+        <div>
+          <strong>
+            @if (visible.countTaxa) {
+              <laji-observation-count
+                [loading]="loadingTaxa"
+              [value]="speciesCount"></laji-observation-count>
+            }
+          </strong>
+          {{ 'observation.results.species' | translate }}
+        </div>
+      }
+      @if (mode === 'finnish') {
+        <div>
+          <strong>
+            @if (visible.countHits) {
+              <laji-observation-count
+                [overrideInQuery]="{countryId: ['ML.206']}"
+              [query]="activeQuery"></laji-observation-count>
+            }
+          </strong>
+          {{ 'observation.results.observation' | translate }}
+        </div>
+        <div>
+          <strong>
+            @if (visible.countTaxa) {
+              <laji-observation-count
+                [overrideInQuery]="{countryId: ['ML.206'], includeNonValidTaxa: false}"
+                [query]="activeQuery"
+              [field]="'unit.linkings.taxon.speciesId'"></laji-observation-count>
+            }
+            {{ 'observation.results.species' | translate }}
+          </strong>
+        </div>
+      }
+    }
+    @if (visible.download) {
+      <button class="btn btn-primary" (click)="openDownloadModal()">{{ 'search.result.load' | translate }}</button>
+    }
+    <div class="flex-grow"></div>
+    @if (visible.finnish) {
+      <div class="finnish-selector-buttons">
+        <lu-button [routerLink]="(activeTab ? ['/observation', activeTab] : ['/observation']) | localize" [queryParams]="activeQuery | toSafeQuery:skipUrlParameters" [disabled]="mode !== 'finnish'">
+        {{ 'search.result.all' | translate }}</lu-button>
+        <lu-button [routerLink]="'/observation/finnish' | localize" [queryParams]="activeQuery | toSafeQuery:skipUrlParameters" [disabled]="mode === 'finnish'">
+        {{ 'search.result.finnish' | translate }}</lu-button>
       </div>
-    </div>
-  </lu-tab>
-  <lu-tab *ngIf="visible.statistics" [heading]="'search.result.stats' | translate">
-    <div class="lu">
-      <strong _ngcontent-laji-app-c27="" class="panel-title">{{ 'taxonomy.chooseStats' | translate }}</strong>
-      <div class="stats-buttons">
-        <lu-checkbox (input)="toggleOnlyCount()" [checked]="onlyCount===true">
-          <div class="pill" class="pill info">{{ 'taxonomy.observationCount' | translate }}</div>
-        </lu-checkbox>
-        <lu-checkbox (input)="toggleOnlyCount()" [checked]="onlyCount===false">
-          <div class="pill" class="pill info">{{ 'observation.form.count' | translate }}</div>
-        </lu-checkbox>
-      </div>
-    </div>
-    <ng-container *ngIf="loadedTabs.isLoaded('statistics')">
-      <div class="row">
-        <div class="col-xs-12">
-          <div
-            class="panel panel-default"
-            laji-panel
-            [title]="'observation.horizontalBar.title' | translate"
-            [open]="true"
-            [autoToggle]="true"
-            [hidden]="!hasTaxonData"
-          >
-            <laji-horizontal-chart
-              [lang]="lang"
-              [query]="activeQuery"
-              (queryChange)="activeQueryChange.emit($event)"
-              [height]="300"
-              [showLegend]="true"
-              [visible]="true"
-              (hasData)="hasTaxonData = $event"
-            ></laji-horizontal-chart>
+    }
+  </div>
+}
+
+@if (loadedModes.isLoaded('all')) {
+  <lu-tabs [hidden]="mode !== 'all'" [selectedIndex]="selectedTabIdx"
+    (selectedChange)="onSelect($event)">
+    @if (visible.list) {
+      <lu-tab [heading]="'search.result.list' | translate" headerClass="obs-filter-list">
+        @if (loadedTabs.isLoaded('list')) {
+          <laji-observation-result-list
+            [resultBase]="resultBase"
+            [showDownloadMenu]="visible.downloadList"
+            [settings]="listSettings"
+            (settingsChange)="listSettingsChange.emit($event)"
+            [visible]="activeTab === 'list'"
+            [query]="activeQuery"
+          ></laji-observation-result-list>
+        }
+      </lu-tab>
+    }
+    @if (visible.map) {
+      <lu-tab [heading]="'search.result.map' | translate" headerClass="obs-filter-map">
+        @if (loadedTabs.isLoaded('map')) {
+          <laji-observation-map
+            [ready]="!loadingUnits"
+            [height]="-1"
+            [query]="activeQuery"
+            [draw]="{rectangle: true, marker: false, polygon: true, polyline: false, circle: false, single: true}"
+            [initWithWorldMap]="true"
+            [showPrintControl]="true"
+            (create)="pickLocation($event)"
+          ></laji-observation-map>
+        }
+      </lu-tab>
+    }
+    @if (visible.images) {
+      <lu-tab [heading]="'search.result.images' | translate">
+        @if (loadedTabs.isLoaded('images')) {
+          <div style="min-height: 180px; padding: 0 10px 0 0"
+            >
+            <laji-gallery
+              [showPopover]="true"
+              [showViewSwitch]="true"
+              [shortcut]="false"
+              [query]="activeQuery">
+            </laji-gallery>
+          </div>
+        }
+      </lu-tab>
+    }
+    @if (visible.species) {
+      <lu-tab [heading]="'search.result.species' | translate">
+        @if (loadedTabs.isLoaded('species')) {
+          <div class="species-list"
+            >
+            <div class="row">
+              <div class="col-sm-12">
+                <laji-observation-table
+                  [visible]="activeTab === 'species'"
+                  [pageSize]="100"
+                  [height]="'calc(80vh - 40px)'"
+                  [query]="activeQuery"
+                  [showSettingsMenu]="false"
+                  [showRowAsLink]="false"
+                  [isAggregate]="true"
+                  [selected]="['unit.species', 'individualCountSum']"
+                ></laji-observation-table>
+              </div>
+            </div>
+          </div>
+        }
+      </lu-tab>
+    }
+    @if (visible.statistics) {
+      <lu-tab [heading]="'search.result.stats' | translate">
+        <div class="lu">
+          <strong _ngcontent-laji-app-c27="" class="panel-title">{{ 'taxonomy.chooseStats' | translate }}</strong>
+          <div class="stats-buttons">
+            <lu-checkbox (input)="toggleOnlyCount()" [checked]="onlyCount===true">
+              <div class="pill" class="pill info">{{ 'taxonomy.observationCount' | translate }}</div>
+            </lu-checkbox>
+            <lu-checkbox (input)="toggleOnlyCount()" [checked]="onlyCount===false">
+              <div class="pill" class="pill info">{{ 'observation.form.count' | translate }}</div>
+            </lu-checkbox>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div [hidden]="!hasYearData"
+        @if (loadedTabs.isLoaded('statistics')) {
+          <div class="row">
+            <div class="col-xs-12">
+              <div
+                class="panel panel-default"
+                laji-panel
+                [title]="'observation.horizontalBar.title' | translate"
+                [open]="true"
+                [autoToggle]="true"
+                [hidden]="!hasTaxonData"
+                >
+                <laji-horizontal-chart
+                  [lang]="lang"
+                  [query]="activeQuery"
+                  (queryChange)="activeQueryChange.emit($event)"
+                  [height]="300"
+                  [showLegend]="true"
+                  [visible]="true"
+                  (hasData)="hasTaxonData = $event"
+                ></laji-horizontal-chart>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <div [hidden]="!hasYearData"
                 class="panel panel-default"
                 laji-panel
                 [title]="'observation.results.yearChart' | translate"
                 [open]="true"
                 [autoToggle]="true"
-          >
-            <p class="disclaimer">
-              {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
-            </p>
-            <laji-observation-year-chart
-              [query]="activeQuery"
-              [enableOnlyCount]="false"
-              (hasData)="hasYearData = $event"
-            ></laji-observation-year-chart>
-          </div>
-          <div [hidden]="!hasMonthDayData"
+                >
+                <p class="disclaimer">
+                  {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
+                </p>
+                <laji-observation-year-chart
+                  [query]="activeQuery"
+                  [enableOnlyCount]="false"
+                  (hasData)="hasYearData = $event"
+                ></laji-observation-year-chart>
+              </div>
+              <div [hidden]="!hasMonthDayData"
                 class="panel panel-default"
                 laji-panel
                 [title]="'observation.results.monthDayChart' | translate"
                 [open]="true"
                 [autoToggle]="true"
-          >
-            <laji-observation-month-day-chart
-              [query]="activeQuery"
-              [useIndividualCount]="!onlyCount"
-              (hasData)="hasMonthDayData = $event"
-            ></laji-observation-month-day-chart>
+                >
+                <laji-observation-month-day-chart
+                  [query]="activeQuery"
+                  [useIndividualCount]="!onlyCount"
+                  (hasData)="hasMonthDayData = $event"
+                ></laji-observation-month-day-chart>
+              </div>
+            </div>
           </div>
+          <div class="form-group spacer">
+            <div class="col-lg-12">
+              <laji-observation-filters [visible]="activeTab === 'statistics'" [query]="activeQuery" [onlyCount]="onlyCount" (queryChange)="activeQueryChange.emit($event)"></laji-observation-filters>
+            </div>
+          </div>
+          <div class="lu">
+            <strong _ngcontent-laji-app-c27="" class="panel-title">{{ 'taxonomy.chooseStats' | translate }}</strong>
+            <div class="stats-buttons">
+              <lu-checkbox (input)="toggleOnlyCount()" [checked]="onlyCount===true">
+                <div class="pill" class="pill info">{{ 'taxonomy.observationCount' | translate }}</div>
+              </lu-checkbox>
+              <lu-checkbox (input)="toggleOnlyCount()" [checked]="onlyCount===false">
+                <div class="pill" class="pill info">{{ 'observation.form.count' | translate }}</div>
+              </lu-checkbox>
+            </div>
+          </div>
+        }
+      </lu-tab>
+    }
+    @if (visible.annotations) {
+      <lu-tab [heading]="'search.result.annotation' | translate">
+        @if (loadedTabs.isLoaded('annotations')) {
+          <laji-annotations [query]="activeQuery"
+          ></laji-annotations>
+        }
+      </lu-tab>
+    }
+    @if (visible.own && (activeQuery.editorPersonToken || activeQuery.observerPersonToken || activeQuery.editorOrObserverPersonToken)) {
+      <lu-tab [heading]="'haseka.ownSubmissions.title' | translate">
+        <div>
+          <laji-observation-table-own-documents
+            [visible]="true"
+            [pageSize]="100"
+            [height]="'calc(80vh - 40px)'"
+            [overrideInQuery]="{collectionIdNot: ['HR.3211']}"
+            [query]="activeQuery"
+            [showRowAsLink]="false"
+            [isAggregate]="true"
+            [hideDefaultCountColumn]="false"
+            [selected]="['document.createdDate','document.documentId','document.formId','document.loadDate','document.namedPlace.id','gathering.locality','gathering.municipality','gathering.team']"
+          ></laji-observation-table-own-documents>
         </div>
-      </div>
-      <div class="form-group spacer">
-        <div class="col-lg-12">
-          <laji-observation-filters [visible]="activeTab === 'statistics'" [query]="activeQuery" [onlyCount]="onlyCount" (queryChange)="activeQueryChange.emit($event)"></laji-observation-filters>
-        </div>
-      </div>
-      <div class="lu">
-        <strong _ngcontent-laji-app-c27="" class="panel-title">{{ 'taxonomy.chooseStats' | translate }}</strong>
-        <div class="stats-buttons">
-          <lu-checkbox (input)="toggleOnlyCount()" [checked]="onlyCount===true">
-            <div class="pill" class="pill info">{{ 'taxonomy.observationCount' | translate }}</div>
-          </lu-checkbox>
-          <lu-checkbox (input)="toggleOnlyCount()" [checked]="onlyCount===false">
-            <div class="pill" class="pill info">{{ 'observation.form.count' | translate }}</div>
-          </lu-checkbox>
-        </div>
-      </div>
-    </ng-container>
-  </lu-tab>
-  <lu-tab *ngIf="visible.annotations" [heading]="'search.result.annotation' | translate">
-    <laji-annotations [query]="activeQuery"
-        *ngIf="loadedTabs.isLoaded('annotations')"
-    ></laji-annotations>
-  </lu-tab>
-  <lu-tab *ngIf="visible.own && (activeQuery.editorPersonToken || activeQuery.observerPersonToken || activeQuery.editorOrObserverPersonToken)" [heading]="'haseka.ownSubmissions.title' | translate">
-    <div>
-      <laji-observation-table-own-documents
-      [visible]="true"
-      [pageSize]="100"
-      [height]="'calc(80vh - 40px)'"
-      [overrideInQuery]="{collectionIdNot: ['HR.3211']}"
-      [query]="activeQuery"
-      [showRowAsLink]="false"
-      [isAggregate]="true"
-      [hideDefaultCountColumn]="false"
-      [selected]="['document.createdDate','document.documentId','document.formId','document.loadDate','document.namedPlace.id','gathering.locality','gathering.municipality','gathering.team']"
-      ></laji-observation-table-own-documents>
-    </div>
-  </lu-tab>
-</lu-tabs>
-<laji-observation-result-front
-  *ngIf="mode === 'all' && !activeTab"
-  [query]="activeQuery"
-></laji-observation-result-front>
+      </lu-tab>
+    }
+  </lu-tabs>
+}
+@if (mode === 'all' && !activeTab) {
+  <laji-observation-result-front
+    [query]="activeQuery"
+  ></laji-observation-result-front>
+}
 
-<div [hidden]="mode !== 'finnish'" *ngIf="loadedModes.isLoaded('finnish') && visible.finnish">
-  <laji-main-result [query]="activeQuery" [visible]="mode === 'finnish'"></laji-main-result>
-</div>
+@if (loadedModes.isLoaded('finnish') && visible.finnish) {
+  <div [hidden]="mode !== 'finnish'">
+    <laji-main-result [query]="activeQuery" [visible]="mode === 'finnish'"></laji-main-result>
+  </div>
+}
 
 <laji-observation-download
   [settings]="listSettings"

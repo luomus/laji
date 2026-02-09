@@ -1,10 +1,14 @@
 <h3>{{ 'haseka.templates.title' | translate }}</h3>
 <div class="row">
-  <div class="pull-right toggle-intro" *ngIf="!showTemplateIntro" (click)="toggleInfo()" >
-    <i class="link glyphicon glyphicon-info-sign"></i>
-  </div>
+  @if (!showTemplateIntro) {
+    <div class="pull-right toggle-intro" (click)="toggleInfo()" >
+      <i class="link glyphicon glyphicon-info-sign"></i>
+    </div>
+  }
 </div>
-<lu-alert *ngIf="showTemplateIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-  <p>{{ 'haseka.templates.intro' | translate }}</p>
-</lu-alert>
+@if (showTemplateIntro) {
+  <lu-alert [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+    <p>{{ 'haseka.templates.intro' | translate }}</p>
+  </lu-alert>
+}
 <laji-own-submissions [onlyTemplates]="true"></laji-own-submissions>

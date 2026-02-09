@@ -27,9 +27,10 @@ interface Error {
 type DatasetState = Loading | Ready | Uploading | Error;
 
 @Component({
-  selector: 'laji-trait-db-data-entry-ready',
-  templateUrl: './data-entry-ready.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-db-data-entry-ready',
+    templateUrl: './data-entry-ready.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDataEntryReadyComponent implements OnChanges {
   @Input({ required: true }) datasetId!: string;

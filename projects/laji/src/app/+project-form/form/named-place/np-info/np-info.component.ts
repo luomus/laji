@@ -16,7 +16,7 @@ import { NpInfoRow } from './np-info-row/np-info-row.component';
 import { ClipboardService } from 'ngx-clipboard';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { Form } from '../../../../shared/model/Form';
 import { Document } from '../../../../shared/model/Document';
@@ -29,10 +29,11 @@ import { LajiFormUtil } from 'projects/laji/src/app/+project-form/form/laji-form
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 @Component({
-  selector: 'laji-np-info',
-  templateUrl: './np-info.component.html',
-  styleUrls: ['./np-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-np-info',
+    templateUrl: './np-info.component.html',
+    styleUrls: ['./np-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace!: NamedPlace;
@@ -180,7 +181,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize() {
+  onResize(event: any) {
     if (this.infoBox.nativeElement.offsetParent !== null) {
       if (this.modalIsVisible) {
         this.modal.hide();

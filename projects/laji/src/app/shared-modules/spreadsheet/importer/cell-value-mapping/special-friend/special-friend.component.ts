@@ -3,10 +3,11 @@ import { IFormField, VALUE_AS_IS, VALUE_IGNORE } from '../../../model/excel';
 import { FriendService } from '../../../../../shared/service/friend.service';
 
 @Component({
-  selector: 'laji-special-friend',
-  templateUrl: './special-friend.component.html',
-  styleUrls: ['./special-friend.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-special-friend',
+    templateUrl: './special-friend.component.html',
+    styleUrls: ['./special-friend.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpecialFriendComponent implements OnInit {
 

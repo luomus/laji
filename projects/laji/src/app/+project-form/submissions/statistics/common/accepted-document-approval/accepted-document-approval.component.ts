@@ -8,8 +8,8 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { Observable, of as ObservableOf } from 'rxjs';
-import { combineLatest, take } from 'rxjs/operators';
+import { map, Observable, of as ObservableOf } from 'rxjs';
+import { combineLatest, take } from 'rxjs';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { UserService } from '../../../../../shared/service/user.service';
 import { FormPermissionService } from '../../../../../shared/service/form-permission.service';
@@ -28,10 +28,11 @@ import { FormPermission } from 'projects/laji/src/app/shared/model/FormPermissio
 import { Person } from 'projects/laji/src/app/shared/model/Person';
 
 @Component({
-  selector: 'laji-accepted-document-approval',
-  templateUrl: './accepted-document-approval.component.html',
-  styleUrls: ['./accepted-document-approval.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-accepted-document-approval',
+    templateUrl: './accepted-document-approval.component.html',
+    styleUrls: ['./accepted-document-approval.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AcceptedDocumentApprovalComponent implements OnChanges {
 
@@ -77,11 +78,15 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
     if (!this.namedPlace || !this.namedPlace.collectionID) {
       return ObservableOf(null);
     }
-    return this.formPermissionService.getFormPermission(this.namedPlace.collectionID, this.userService.getToken()).pipe(
-      combineLatest(
-        this.userService.user$.pipe(take(1)),
-        (formPermission, user) => ({formPermission, user})
-      ));
+    return combineLatest([
+      this.formPermissionService.getFormPermission(
+        this.namedPlace.collectionID,
+        this.userService.getToken()
+      ),
+      this.userService.user$.pipe(take(1))
+    ]).pipe(
+      map(([formPermission, user]) => ({ formPermission, user }))
+    );
   }
 
   onMapLoad() {

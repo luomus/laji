@@ -6,8 +6,9 @@ import { Observable } from 'rxjs';
 import { Form } from '../model/Form';
 
 @Pipe({
-  name: 'formName',
-  pure: false
+    name: 'formName',
+    pure: false,
+    standalone: false
 })
 export class FormNamePipe extends AbstractLabelPipe implements PipeTransform {
   constructor(protected translate: TranslateService,

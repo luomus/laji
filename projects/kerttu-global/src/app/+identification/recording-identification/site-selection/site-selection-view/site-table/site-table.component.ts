@@ -14,10 +14,11 @@ import { IGlobalSite } from '../../../../../kerttu-global-shared/models';
 import { DatatableColumn } from '../../../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 
 @Component({
-  selector: 'bsg-site-table',
-  templateUrl: './site-table.component.html',
-  styleUrls: ['./site-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-site-table',
+    templateUrl: './site-table.component.html',
+    styleUrls: ['./site-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SiteTableComponent implements OnInit, OnChanges {
   @ViewChild('deleteTpl', { static: true }) deleteTpl!: TemplateRef<any>;

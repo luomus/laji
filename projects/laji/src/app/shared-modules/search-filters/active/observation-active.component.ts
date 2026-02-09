@@ -30,10 +30,11 @@ export const createActiveFiltersList = (query: Record<string, any>, skip: string
 };
 
 @Component({
-  selector: 'laji-observation-active',
-  templateUrl: './observation-active.component.html',
-  styleUrls: ['./observation-active.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-active',
+    templateUrl: './observation-active.component.html',
+    styleUrls: ['./observation-active.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationActiveComponent {
   @Input() skip: string[] = [];

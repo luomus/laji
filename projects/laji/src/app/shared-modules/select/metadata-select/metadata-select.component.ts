@@ -1,4 +1,4 @@
-import { catchError, concatMap, filter, map, switchMap, toArray } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, toArray } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { from, Observable, of, Subscription } from 'rxjs';
@@ -34,10 +34,11 @@ export const METADATA_SELECT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'laji-metadata-select',
-  templateUrl: './metadata-select.component.html',
-  providers: [METADATA_SELECT_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-metadata-select',
+    templateUrl: './metadata-select.component.html',
+    providers: [METADATA_SELECT_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlValueAccessor {
   @Input() field?: string;
@@ -103,7 +104,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   onTouched = () => {};
 
   ngOnChanges(changes: SimpleChanges) {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
     this.initOptions();
   }
 
@@ -134,7 +135,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       switchMap(options => this.mapToWarehouse ? this.optionsToWarehouseID(options) : of(options)),
       map(options => this.labelAsValue ? options.map(o => ({...o, id: o.value})) : options),
       map(options => this.firstOptions?.length > 0 ? this.sortOptionsByAnotherList(options) : (
-        this._shouldSort ? options.sort((a, b) => a.value.localeCompare(b.value)) : options
+        this._shouldSort ? options.sort((a, b) => a.value && b.value ? a.value.localeCompare(b.value) : 0) : options
       ))
     ).subscribe(options => {
         this.setOptions(options);

@@ -5,9 +5,10 @@ type TaxonDescription = components['schemas']['Content'][number];
 type TaxonDescriptionGroup = TaxonDescription['groups'][number];
 
 @Component({
-  selector: 'laji-taxon-description',
-  templateUrl: './taxon-description.component.html',
-  styleUrls: ['./taxon-description.component.scss']
+    selector: 'laji-taxon-description',
+    templateUrl: './taxon-description.component.html',
+    styleUrls: ['./taxon-description.component.scss'],
+    standalone: false
 })
 export class TaxonDescriptionComponent implements OnChanges {
   @Input() taxonDescriptions?: TaxonDescription[];

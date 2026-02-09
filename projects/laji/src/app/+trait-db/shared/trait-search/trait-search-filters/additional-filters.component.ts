@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs';
 import { filters } from './filters';
 
 interface BaseFilter {
@@ -82,17 +82,18 @@ export type AdditionalFilterValues = Partial<{
 }>;
 
 @Component({
-  selector: 'laji-trait-search-additional-filters',
-  templateUrl: './additional-filters.component.html',
-  styleUrls: ['./additional-filters.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TraitSearchAdditionalFiltersComponent),
-      multi: true
-    }
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-search-additional-filters',
+    templateUrl: './additional-filters.component.html',
+    styleUrls: ['./additional-filters.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => TraitSearchAdditionalFiltersComponent),
+            multi: true
+        }
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitSearchAdditionalFiltersComponent implements ControlValueAccessor, OnDestroy {
   form: FormGroup<Record<keyof typeof additionalFilters, FormControl>>;

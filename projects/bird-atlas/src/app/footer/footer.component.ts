@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'ba-footer',
-  templateUrl: './footer.component.html',
-  styleUrls: ['footer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'ba-footer',
+    templateUrl: './footer.component.html',
+    styleUrls: ['footer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FooterComponent {
   @Input() displayFull = true;

@@ -16,36 +16,46 @@
   <a [href]="'infoLinks.changelog' | translate" target="_blank">
     <b>{{ 'home.changelog' | translate }}</b>
   </a>
-  <ng-container *ngIf="news$ | async; let news">
-    <div *ngFor="let item of news.results" class="media">
-      <div class="media-body">
-        <div *ngIf="item.external">
-          <a href="{{item.externalURL}}" target="_blank">
-            <span class="media-heading">{{ item.title }} <i class="glyphicon glyphicon-new-window small"></i></span>
-          </a>
-        </div>
-        <div *ngIf="!item.external">
-          <a [routerLink]="['/news/' + item.id | localize]">
-            <span class="media-heading">{{ item.title }}</span>
-          </a>
-        </div>
-        <div>
-          <span class="label label-default">{{ item.tag! | translate }}</span>
-          <span class="pull-right">{{ item.posted! | amFromUnix | amDateFormat:'DD.MM.YYYY' }}</span>
+  @if (news$ | async; as news) {
+    @for (item of news.results; track item) {
+      <div class="media">
+        <div class="media-body">
+          @if (item.external) {
+            <div>
+              <a href="{{item.externalURL}}" target="_blank">
+                <span class="media-heading">{{ item.title }} <i class="glyphicon glyphicon-new-window small"></i></span>
+              </a>
+            </div>
+          }
+          @if (!item.external) {
+            <div>
+              <a [routerLink]="['/news/' + item.id | localize]">
+                <span class="media-heading">{{ item.title }}</span>
+              </a>
+            </div>
+          }
+          <div>
+            <span class="label label-default">{{ item.tag! | translate }}</span>
+            <span class="pull-right">{{ item.posted! | amFromUnix | amDateFormat:'DD.MM.YYYY' }}</span>
+          </div>
         </div>
       </div>
-    </div>
+    }
     <div class="row mt-4">
-      <div class="col-xs-6" *ngIf="news.nextPage">
-        <a (click)="gotoPage(news.nextPage)" class="link goto-page" tabindex="0" role="button" luKeyboardClickable>
-          <i class="glyphicon glyphicon-arrow-left"></i> {{ 'news.earlier' | translate }}
-        </a>
-      </div>
-      <div class="col-xs-6" *ngIf="news.prevPage" style="text-align: right">
-        <a (click)="gotoPage(news.prevPage)" class="link goto-page" tabindex="0" role="button" luKeyboardClickable>
-          {{ 'news.newer' | translate }} <i class="glyphicon glyphicon-arrow-right"></i>
-        </a>
-      </div>
+      @if (news.nextPage) {
+        <div class="col-xs-6">
+          <a (click)="gotoPage(news.nextPage)" class="link goto-page" tabindex="0" role="button" luKeyboardClickable>
+            <i class="glyphicon glyphicon-arrow-left"></i> {{ 'news.earlier' | translate }}
+          </a>
+        </div>
+      }
+      @if (news.prevPage) {
+        <div class="col-xs-6" style="text-align: right">
+          <a (click)="gotoPage(news.prevPage)" class="link goto-page" tabindex="0" role="button" luKeyboardClickable>
+            {{ 'news.newer' | translate }} <i class="glyphicon glyphicon-arrow-right"></i>
+          </a>
+        </div>
+      }
     </div>
-  </ng-container>
+  }
 </div>

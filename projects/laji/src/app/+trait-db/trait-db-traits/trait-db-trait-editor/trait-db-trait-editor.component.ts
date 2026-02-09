@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable } from 'rxjs';
-import { map, filter, switchMap, tap } from 'rxjs/operators';
+import { map, filter, switchMap, tap } from 'rxjs';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { UserService } from '../../../shared/service/user.service';
 import { filterNullValues } from '../../trait-db-datasets/trait-db-dataset-editor/trait-db-dataset-editor.component';
@@ -13,8 +13,9 @@ type Trait = components['schemas']['Trait'];
 type ValidationResponse = components['schemas']['ValidationResponse'];
 
 @Component({
-  templateUrl: './trait-db-trait-editor.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './trait-db-trait-editor.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbTraitEditorComponent implements OnInit {
   form = this.fb.group<Partial<Trait>>({

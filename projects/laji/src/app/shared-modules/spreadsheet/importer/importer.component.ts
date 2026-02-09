@@ -21,9 +21,9 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { LocalStorage } from 'ngx-webstorage';
-import * as Hash from 'object-hash';
+import Hash from 'object-hash';
 import { ImportTableColumn } from '../../../+haseka/tools/model/import-table-column';
-import { catchError, concatMap, filter, map, switchMap, takeUntil, tap, toArray } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, takeUntil, tap, toArray } from 'rxjs';
 import { ExcelToolService } from '../service/excel-tool.service';
 import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.facade';
 import { ISpreadsheetState, SpreadsheetFacade, Step } from '../spreadsheet.facade';
@@ -41,10 +41,11 @@ type PublicityRestrictions = NonNullable<paths['/documents/batch/{jobID}']['post
 type BatchJob = components['schemas']['BatchJobValidationStatusResponse'];
 
 @Component({
-  selector: 'laji-importer',
-  templateUrl: './importer.component.html',
-  styleUrls: ['./importer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-importer',
+    templateUrl: './importer.component.html',
+    styleUrls: ['./importer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ImporterComponent implements OnInit, OnDestroy {
 

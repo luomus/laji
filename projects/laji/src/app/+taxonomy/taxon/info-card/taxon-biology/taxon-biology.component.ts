@@ -6,10 +6,11 @@ type Taxon = components['schemas']['Taxon'];
 type TaxonDescription = components['schemas']['Content'][number];
 
 @Component({
-  selector: 'laji-taxon-biology',
-  templateUrl: './taxon-biology.component.html',
-  styleUrls: ['./taxon-biology.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-biology',
+    templateUrl: './taxon-biology.component.html',
+    styleUrls: ['./taxon-biology.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonBiologyComponent implements OnChanges {
   @Input({ required: true }) taxon!: Taxon;

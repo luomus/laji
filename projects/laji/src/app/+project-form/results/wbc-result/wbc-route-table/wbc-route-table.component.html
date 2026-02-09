@@ -1,16 +1,20 @@
-<div class="toggle-intro" *ngIf="!showWbcRouteTableInfo">
-  <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
-</div>
-<lu-alert *ngIf="showWbcRouteTableInfo" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-  <p>{{ 'wbc.stats.route.table.info' | translate }}</p>
-</lu-alert>
+@if (!showWbcRouteTableInfo) {
+  <div class="toggle-intro">
+    <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+  </div>
+}
+@if (showWbcRouteTableInfo) {
+  <lu-alert [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+    <p>{{ 'wbc.stats.route.table.info' | translate }}</p>
+  </lu-alert>
+}
 
 <div class="download-row">
   <laji-download
     [downloadLoading]="downloadLoading"
     [formats]="['csv', 'tsv', 'ods', 'xlsx']"
     (download)="download($event.fileType)"
-  ><span><i class="glyphicon glyphicon-download-alt"></i> {{ 'wbc.stats.route.table.download' | translate }} </span>
+    ><span><i class="glyphicon glyphicon-download-alt"></i> {{ 'wbc.stats.route.table.download' | translate }} </span>
   </laji-download>
 </div>
 
@@ -32,25 +36,47 @@
 </laji-datatable>
 
 <ng-template let-value="value" let-row="row" #textOrTranslationKey>
-  <ng-container *ngIf="row.name.indexOf('SpeciesCount') === -1 && row.name.indexOf('IndividualCount') === -1 && row.name !== 'documentIds'; else translationKey">
-    <span *ngIf="value" [title]="value">{{ value }}</span>
-  </ng-container>
+  @if (row.name.indexOf('SpeciesCount') === -1 && row.name.indexOf('IndividualCount') === -1 && row.name !== 'documentIds') {
+    @if (value) {
+      <span [title]="value">{{ value }}</span>
+    }
+  } @else {
+    @if (value) {
+      <span [title]="'wbc.stats.route.' + value | translate">
+        {{ 'wbc.stats.route.' + value | translate }}
+      </span>
+    }
+  }
   <ng-template #translationKey>
-    <span *ngIf="value" [title]="'wbc.stats.route.' + value | translate">
-      {{ 'wbc.stats.route.' + value | translate }}
-    </span>
+    @if (value) {
+      <span [title]="'wbc.stats.route.' + value | translate">
+        {{ 'wbc.stats.route.' + value | translate }}
+      </span>
+    }
   </ng-template>
 </ng-template>
 
 <ng-template let-value="value" let-row="row" #numberOrDocumentIds>
-  <ng-container *ngIf="row.name !== 'documentIds'; else documentIds">
-    <span *ngIf="value || value === 0" [title]="roundNumber(value)">{{ roundNumber(value) }}</span>
-  </ng-container>
+  @if (row.name !== 'documentIds') {
+    @if (value || value === 0) {
+      <span [title]="roundNumber(value)">{{ roundNumber(value) }}</span>
+    }
+  } @else {
+    @if (value && value.length > 0) {
+      <span ngPreserveWhitespaces style="display: inline-block">
+        @for (doc of value; track doc) {
+          <a (click)="documentClick.emit(doc)" title="{{doc}}" class="link">{{ 'wbc.stats.route.table.link' | translate }}</a>
+        }
+      </span>
+    }
+  }
   <ng-template #documentIds>
-    <span *ngIf="value && value.length > 0" ngPreserveWhitespaces style="display: inline-block">
-      <ng-container *ngFor="let doc of value">
-        <a (click)="documentClick.emit(doc)" title="{{doc}}" class="link">{{ 'wbc.stats.route.table.link' | translate }}</a>
-      </ng-container>
-    </span>
+    @if (value && value.length > 0) {
+      <span ngPreserveWhitespaces style="display: inline-block">
+        @for (doc of value; track doc) {
+          <a (click)="documentClick.emit(doc)" title="{{doc}}" class="link">{{ 'wbc.stats.route.table.link' | translate }}</a>
+        }
+      </span>
+    }
   </ng-template>
 </ng-template>

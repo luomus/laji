@@ -2,7 +2,7 @@ import { Component, ViewContainerRef } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
-import { filter, startWith } from 'rxjs/operators';
+import { filter, startWith } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { RouteDataService } from '../../shared/service/route-data.service';
 import { HeaderService } from '../../shared/service/header.service';
@@ -15,9 +15,10 @@ import { TranslateService } from '@ngx-translate/core';
 declare const ga: (eventName: string, hitType: string, data: string) => void;
 
 @Component({
-  selector: 'laji-app',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'laji-app',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent {
 
@@ -84,7 +85,7 @@ export class AppComponent {
 
   private syncLajiApiClientBLang() {
     this.translate.onLangChange
-      .pipe(startWith({ lang: this.translate.currentLang }))
+      .pipe(startWith({ lang: this.translate.getCurrentLang() }))
       .subscribe(({ lang }) => {
         this.api.setLang(lang);
       });

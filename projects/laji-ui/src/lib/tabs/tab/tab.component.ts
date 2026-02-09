@@ -4,10 +4,11 @@ import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 import { Util } from 'projects/laji/src/app/shared/service/util.service';
 
 @Component({
-  selector: 'lu-tab',
-  templateUrl: './tab.component.html',
-  styleUrls: ['./tab.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'lu-tab',
+    templateUrl: './tab.component.html',
+    styleUrls: ['./tab.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TabComponent {
   private _heading = '';

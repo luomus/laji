@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'iucnHyphens'
+    name: 'iucnHyphens',
+    standalone: false
 })
 export class IucnHyphensPipe implements PipeTransform {
 

@@ -5,9 +5,10 @@ import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 
 @Component({
-  selector: 'laji-informal-group-select',
-  templateUrl: './informal-group-select.component.html',
-  styleUrls: ['./informal-group-select.component.scss']
+    selector: 'laji-informal-group-select',
+    templateUrl: './informal-group-select.component.html',
+    styleUrls: ['./informal-group-select.component.scss'],
+    standalone: false
 })
 export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChanges {
   @Input() id?: string;
@@ -45,20 +46,20 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
     this.selectedInformalGroup = undefined;
 
     if (!this.id) {
-      this.informalTaxonService.informalTaxonGroupFindRoots(this.translate.currentLang)
+      this.informalTaxonService.informalTaxonGroupFindRoots(this.translate.getCurrentLang())
         .subscribe(data => this.informalGroups = data.results);
       return;
     }
 
     combineLatest(
-      this.informalTaxonService.informalTaxonGroupGetChildren(this.id, this.translate.currentLang),
-      this.informalTaxonService.informalTaxonGroupFindById(this.id, this.translate.currentLang)
+      this.informalTaxonService.informalTaxonGroupGetChildren(this.id, this.translate.getCurrentLang()),
+      this.informalTaxonService.informalTaxonGroupFindById(this.id, this.translate.getCurrentLang())
     ).subscribe(data => {
       this.informalGroups = data[0].results;
       this.selectedInformalGroup = data[1];
     });
 
-    this.informalTaxonService.informalTaxonGroupGetParent(this.id, this.translate.currentLang)
+    this.informalTaxonService.informalTaxonGroupGetParent(this.id, this.translate.getCurrentLang())
       .subscribe(data => this.parentGroup = data, () => {});
   }
 }

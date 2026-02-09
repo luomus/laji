@@ -24,10 +24,11 @@ export interface TreeOptionsChangeEvent {
 }
 
 @Component({
-  selector: 'laji-tree-select',
-  templateUrl: './tree-select.component.html',
-  styleUrls: ['./tree-select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-tree-select',
+    templateUrl: './tree-select.component.html',
+    styleUrls: ['./tree-select.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class TreeSelectComponent {

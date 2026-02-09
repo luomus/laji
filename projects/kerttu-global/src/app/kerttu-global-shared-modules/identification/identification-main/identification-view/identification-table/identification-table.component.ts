@@ -14,10 +14,11 @@ import { IdentificationPanelComponent } from './identification-panel/identificat
 import { SpectrogramConfig } from '../../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 @Component({
-  selector: 'bsg-identification-table',
-  templateUrl: './identification-table.component.html',
-  styleUrls: ['./identification-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-identification-table',
+    templateUrl: './identification-table.component.html',
+    styleUrls: ['./identification-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationTableComponent implements OnChanges {
   @ViewChildren(IdentificationPanelComponent) identificationPanels!: QueryList<IdentificationPanelComponent>;

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'laji-quality',
-  templateUrl: './quality.component.html',
-  styleUrls: ['./quality.component.css']
+    selector: 'laji-quality',
+    templateUrl: './quality.component.html',
+    styleUrls: ['./quality.component.css'],
+    standalone: false
 })
 export class QualityComponent {
   group = '';

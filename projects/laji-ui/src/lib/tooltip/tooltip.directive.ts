@@ -1,10 +1,11 @@
-import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, Renderer2, ViewContainerRef, Inject, ChangeDetectorRef } from '@angular/core';
+import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, Renderer2, ViewContainerRef, Inject, ChangeDetectorRef, DOCUMENT } from '@angular/core';
 import { TooltipComponent } from './tooltip.component';
-import { DOCUMENT } from '@angular/common';
+
 import { Placement, PlacementService } from '../placement/placement.service';
 
 @Directive({
-  selector: '[luTooltip]'
+    selector: '[luTooltip]',
+    standalone: false
 })
 export class TooltipDirective implements OnDestroy {
   @Input() luTooltip?: string;

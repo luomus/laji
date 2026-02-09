@@ -18,10 +18,11 @@ import { Form } from '../../../../shared/model/Form';
 import { formOptionToClassName } from '../../../../shared/directive/project-form-option.directive';
 
 @Component({
-  selector: 'laji-np-choose',
-  templateUrl: './np-choose.component.html',
-  styleUrls: ['./np-choose.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-np-choose',
+    templateUrl: './np-choose.component.html',
+    styleUrls: ['./np-choose.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NpChooseComponent implements OnInit, OnChanges {
   activeIndex = 0;

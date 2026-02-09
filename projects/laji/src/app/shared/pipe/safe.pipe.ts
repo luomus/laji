@@ -9,7 +9,8 @@ import { Pipe, PipeTransform } from '@angular/core';
  *  [innerHtml]="value | safe:html"
  */
 @Pipe({
-  name: 'safe'
+    name: 'safe',
+    standalone: false
 })
 export class SafePipe implements PipeTransform {
   constructor(private _sanitizer: DomSanitizer) {

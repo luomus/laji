@@ -1,22 +1,21 @@
 <laji-spinner [spinning]="expertiseMissing == null">
-  <ng-container *ngIf="expertiseMissing != null">
-    <ng-container *ngIf="!expertiseMissing else expertiseMissingText">
-      <bsg-site-selection
-        *ngIf="(!selectedSites || selectedSites.length === 0) else identification"
-        (siteSelect)="onSiteSelect($event)"
-      ></bsg-site-selection>
-      <ng-template #identification>
+  @if (expertiseMissing != null) {
+    @if (!expertiseMissing) {
+      @if ((!selectedSites || selectedSites.length === 0)) {
+        <bsg-site-selection
+          (siteSelect)="onSiteSelect($event)"
+        ></bsg-site-selection>
+      } @else {
         <bsg-identification-main
           [selectedSites]="selectedSites!"
           [goBackBtnLabel]="'identification.backToSiteSelection' | translate"
           [allRecordingsAnnotatedLabel]="'identification.allRecordingsAnnotated' | translate"
           (goBackClick)="onSiteSelect([])"
         ></bsg-identification-main>
-      </ng-template>
-    </ng-container>
-  </ng-container>
+      }
+    } @else {
+      <div [innerHTML]="'identification.taxonExpertiseMissing' | translate"></div>
+    }
+  }
 </laji-spinner>
 
-<ng-template #expertiseMissingText>
-  <div [innerHTML]="'identification.taxonExpertiseMissing' | translate"></div>
-</ng-template>
