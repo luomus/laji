@@ -77,7 +77,7 @@
               }
               <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
               <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
-              <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
+              <laji-row [title]="'viewer.loadDate' | translate" [value]="document.firstLoadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
             </ng-template>
             @if (externalViewUrl) {
               <a class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
@@ -138,7 +138,7 @@
                     [secureReasons]="document.secureReasons"
                   ></laji-secure-info>
                   @if (document.secureReasons | includes:'DEFAULT_TAXON_CONSERVATION') {
-                    <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
+                    <br><a [href]="'infoLinks.sensitive' | translate" target="_blank">{{ 'information.more' | translate }}</a>
                   }
                 </div>
               }

@@ -33,19 +33,7 @@
     <p translate>vihko.home.form.collection.desc</p>
     <ul>
       <li>
-        <div>
-          @switch (currentLang) {
-            @case ('sv') {
-              <a [routerLink]="['/about', '3830'] | localize" translate>vihko.home.form.collection.1</a>
-            }
-            @case ('en') {
-              <a [routerLink]="['/about', '3825'] | localize" translate>vihko.home.form.collection.1</a>
-            }
-            @case ('fi') {
-              <a [routerLink]="['/about', '3712'] | localize" translate>vihko.home.form.collection.1</a>
-            }
-          }
-        </div>
+        <a [href]="'infoLinks.notebook.privateCollectionForm' | translate" target="_blank" translate>vihko.home.form.collection.1</a>
       </li>
       <li>
         <a [href]="'infoLinks.notebook.labelDesignerInstructions' | translate" target="_blank" translate>vihko.home.form.collection.2</a>

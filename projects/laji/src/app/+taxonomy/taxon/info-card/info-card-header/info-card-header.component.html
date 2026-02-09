@@ -26,8 +26,8 @@
       <select class="form-control input-sm" [ngModel]="taxon.id" (ngModelChange)="taxonSelect.emit($event)">
         @for (sibling of siblings; track sibling) {
           <option [value]="sibling.id">
-            {{ sibling.vernacularName | multiLang:false | capitalize }}
-            @if ((sibling.vernacularName | multiLang:false ) && sibling.scientificName) {
+            {{ sibling.vernacularName | capitalize }}
+            @if (sibling.vernacularName && sibling.scientificName) {
               &ndash;
             }
             {{ sibling.scientificName }}

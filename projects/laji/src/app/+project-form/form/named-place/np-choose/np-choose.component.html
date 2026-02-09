@@ -1,4 +1,15 @@
 @if (visible) {
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="filterBy">
+        <input class="form-control inline-block"
+          type='text'
+          placeholder="{{'haseka.submissions.filter' | translate}}"
+          [value]="_filterBy ? _filterBy : ''"
+          (keyup)="updateFilter($event)">
+      </div>
+    </div>
+  </div>
   <div>
     @if (!_documentForm.options?.namedPlaceOptions?.hideMapTab) {
       <lu-tabs
@@ -19,6 +30,8 @@
               lajiFormOption="options.namedPlaceOptions.reservationUntil"
               [placeForm]="placeForm"
               [documentForm]="_documentForm"
+              [filterBy]="_filterBy"
+              [filteredIDs]="filteredIDs"
             (activePlaceChange)="onActivePlaceChange($event)"></laji-np-map>
           }
         </lu-tab>
@@ -40,20 +53,20 @@
       }
     }
     <ng-template #listTemplate>
-      @if (loadedTabs.isLoaded('list')) {
-        <div id="list-container">
-          <laji-np-list [height]="height"
-            [namedPlaces]="_namedPlaces"
-            [documentForm]="_documentForm"
-            [placeForm]="placeForm"
-            [listColumnNameMapping]="_documentForm.options?.namedPlaceOptions?.listColumnNameMapping"
-            [activeNP]="findNPIndexById(_activeNP)"
-            [formRights]="formRights"
-            [visible]="loadedTabs.getNameFromIdx(activeIndex) === 'list'"
-            (activePlaceChange)="onActivePlaceChange($event)">
-          ></laji-np-list>
-        </div>
-      }
+      <div id="list-container">
+        <laji-np-list [height]="height"
+          [namedPlaces]="_namedPlaces"
+          [documentForm]="_documentForm"
+          [placeForm]="placeForm"
+          [listColumnNameMapping]="_documentForm.options?.namedPlaceOptions?.listColumnNameMapping"
+          [activeNP]="findNPIndexById(_activeNP)"
+          [formRights]="formRights"
+          [visible]="loadedTabs.getNameFromIdx(activeIndex) === 'list'"
+          [filterBy]="_filterBy"
+          (activePlaceChange)="onActivePlaceChange($event)"
+          (filteredIDs)="onFilteredIDsChange($event)"
+        ></laji-np-list>
+      </div>
     </ng-template>
   </div>
 }

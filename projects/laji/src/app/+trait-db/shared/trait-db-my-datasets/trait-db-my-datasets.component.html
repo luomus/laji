@@ -9,13 +9,36 @@
     } @else {
       @if (datasets$ | async; as datasets) {
         @if (datasets.length > 0) {
-          <div>
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Published</th>
+              <th>Shared to FinBIF</th>
+              <th>Shared to GBIF</th>
+              <th>Edit</th>
+            </tr>
             @for (dataset of datasets; track dataset) {
-              <ul>
-                <li><a [routerLink]="['/trait-db/datasets/', dataset.id]">{{ dataset.name }}</a></li>
-              </ul>
+              <tr>
+                <td><a [routerLink]="['/trait-db/datasets/', dataset.id]">{{ dataset.name }}</a></td>
+                @if (dataset.published) {
+                  <td><i class="glyphicon glyphicon-ok"></i> Published</td>
+                } @else {
+                  <td>Not published</td>
+                }
+                @if (dataset.shareToFinBIF) {
+                  <td><i class="glyphicon glyphicon-ok"></i> On FinBIF</td>
+                } @else {
+                  <td>Not on FinBIF</td>
+                }
+                @if (dataset.shareToGBIF) {
+                  <td><i class="glyphicon glyphicon-ok"></i> On GBIF</td>
+                } @else {
+                  <td>Not on GBIF</td>
+                }
+                <td><a [routerLink]="['/trait-db/datasets/', dataset.id, 'edit']">Edit dataset</a></td>
+              </tr>
             }
-          </div>
+          </table>
         } @else {
           <p>You have not created any datasets yet. Click below to start sharing trait data.</p>
         }
@@ -28,7 +51,3 @@
     <laji-spinner class="d-block m-6"></laji-spinner>
   }
 </div>
-
-
-
-

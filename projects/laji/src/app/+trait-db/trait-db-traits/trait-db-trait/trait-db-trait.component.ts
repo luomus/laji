@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
@@ -9,8 +9,10 @@ import { UserService } from '../../../shared/service/user.service';
 export type Trait = components['schemas']['Trait'];
 
 @Component({
-    templateUrl: './trait-db-trait.component.html',
-    standalone: false
+  standalone: false,
+  templateUrl: './trait-db-trait.component.html',
+  styleUrls: ['./trait-db-trait.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TraitDbTraitComponent implements OnInit {
   trait$!: Observable<Trait>;

@@ -1,38 +1,87 @@
 @if (data$ | async; as data) {
   @if (data.dataset !== null) {
-    <div>{{ data.dataset?.name }}</div>
-    <div>{{ data.dataset?.description }}</div>
-    @if (data.perms !== undefined) {
-      @if (data.perms !== null) {
-        <button [routerLink]="['edit']" class="btn btn-default">edit</button>
+    <div class="d-flex justify-between mb-4">
+      <h2 class="mb-0">{{ data.dataset?.name }}</h2>
+      @if (data.perms !== undefined) {
+        @if (data.perms !== null) {
+          <button [routerLink]="['edit']" class="btn btn-default">
+            <i class="glyphicon glyphicon-wrench"></i>
+            Edit dataset
+          </button>
+        }
+      } @else {
+        <laji-spinner class="d-block m-6"></laji-spinner>
       }
-    } @else {
-      <laji-spinner class="d-block m-6"></laji-spinner>
-    }
-    <div>citation: {{ data.dataset?.citation }}</div>
-    <div>intellectual owner: {{ data.dataset?.intellectualOwner}}</div>
-    <div>person responsible: {{ data.dataset?.personResponsible }}</div>
-    <div>contact email: {{ data.dataset?.contactEmail }}</div>
-    @if (data.dataset?.institutionCode) {
-      <div>institution code: {{ data.dataset?.institutionCode }}</div>
-    }
-    <div>methods: {{ data.dataset?.methods }}</div>
-    <div>taxonomic coverage: {{ data.dataset?.taxonomicCoverage}}</div>
-    <div>temporal coverage: {{ data.dataset?.temporalCoverage }}</div>
-    <div>geographic coverage: {{ data.dataset?.geographicCoverage }}</div>
-    <div>coverage basis: {{ data.dataset?.coverageBasis }}</div>
-    @if (data.dataset?.doi) {
-      <div>FinBIF DOI: {{ data.dataset?.doi }}</div>
-    }
-    @if (data.dataset?.gbifDoi) {
-      <div>GBIF DOI: {{ data.dataset?.gbifDoi }}</div>
-    }
-    <div>additional identifiers: {{ data.dataset?.additionalIdentifier }}</div>
-    <div>published: {{ data.dataset?.published }}</div>
+    </div>
+    <p>{{ data.dataset?.description }}</p>
+
+    <table class="props-table">
+      <tr>
+        <th scope="row">Citation:</th>
+        <td>{{ data.dataset?.citation }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Intellectual owner:</th>
+        <td>{{ data.dataset?.intellectualOwner }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Person responsible:</th>
+        <td>{{ data.dataset?.personResponsible }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Contact email:</th>
+        <td>{{ data.dataset?.contactEmail }}</td>
+      </tr>
+      @if (data.dataset?.institutionCode) {
+        <tr>
+          <th scope="row">Institution code:</th>
+          <td>{{ data.dataset?.institutionCode }}</td>
+        </tr>
+      }
+      <tr>
+        <th scope="row">Methods:</th>
+        <td>{{ data.dataset?.methods }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Taxonomic coverage:</th>
+        <td>{{ data.dataset?.taxonomicCoverage }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Temporal coverage:</th>
+        <td>{{ data.dataset?.temporalCoverage }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Geographic coverage:</th>
+        <td>{{ data.dataset?.geographicCoverage }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Coverage basis:</th>
+        <td>{{ data.dataset?.coverageBasis }}</td>
+      </tr>
+      @if (data.dataset?.doi) {
+        <tr>
+          <th scope="row">FinBIF DOI:</th>
+          <td>{{ data.dataset?.doi }}</td>
+        </tr>
+      }
+      @if (data.dataset?.gbifDoi) {
+        <tr>
+          <th scope="row">GBIF DOI:</th>
+          <td>{{ data.dataset?.gbifDoi }}</td>
+        </tr>
+      }
+      <tr>
+        <th scope="row">Additional identifiers:</th>
+        <td>{{ data.dataset?.additionalIdentifier }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Published:</th>
+        <td>{{ data.dataset?.published }}</td>
+      </tr>
+    </table>
+
     @if (data.perms !== undefined) {
       @if (data.perms !== null) {
-        <a [routerLink]="['data-entry']" class="btn btn-default">upload trait data</a>
-        <a [routerLink]="['data-editor']" class="btn btn-default">modify existing trait data</a>
         <h3>Permissions</h3>
         <ul>
           @for (userId of data.perms.userIds; track userId) {
@@ -44,8 +93,27 @@
     } @else {
       <laji-spinner class="d-block m-6"></laji-spinner>
     }
+
     @if (data.dataset?.published) {
-      <h3>Browse traits</h3>
+      <div class="d-flex justify-between mt-8 mb-4">
+        <h3 class="mb-0">Trait data</h3>
+        @if (data.perms !== undefined) {
+          <div>
+            @if (data.perms !== null) {
+              <a [routerLink]="['data-entry']" class="btn btn-default mr-3">
+                <i class="glyphicon glyphicon-upload"></i>
+                Upload trait data
+              </a>
+              <a [routerLink]="['data-editor']" class="btn btn-default">
+                <i class="glyphicon glyphicon-edit"></i>
+                Modify existing trait data
+              </a>
+              }
+          </div>
+        } @else {
+          <laji-spinner class="d-block m-6"></laji-spinner>
+        }
+      </div>
       <laji-trait-search [datasetId]="data.dataset?.id"></laji-trait-search>
     }
   } @else {
@@ -54,5 +122,3 @@
 } @else {
   <laji-spinner class="d-block m-6"></laji-spinner>
 }
-
-

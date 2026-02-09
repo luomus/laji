@@ -7,6 +7,19 @@ export type WithNonNullableKeys<T, K extends keyof T> = T & {
   [P in K]-?: NonNullable<T[P]>;
 };
 
+type DeepOptionalKeys<T, OptionalKeys extends PropertyKey> =
+  T extends Array<infer U>
+    ? DeepOptionalKeys<U, OptionalKeys>[]
+    : T extends object
+      ? {
+          [K in keyof T]?: K extends OptionalKeys
+            ? T[K]
+            : DeepOptionalKeys<T[K], OptionalKeys>;
+        }
+      : T;
+
+export type Unsaved<T> = DeepOptionalKeys<T, '@context' | '@type' | 'id'>;
+
 export class Util {
   /**
    * Clones the object using JSON stringify

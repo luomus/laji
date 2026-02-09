@@ -51,12 +51,9 @@ export class FormApiClient {
   ): Promise<any> {
     const path = this.basePath + resource;
 
-    const queryParameters = {...Util.removeFromObject(query)};
-
-    (['lang', 'personToken', 'formID'] as const).forEach(key => {
-      if (this[key] !== undefined && !queryParameters.hasOwnProperty(key)) {
-        queryParameters[key] = this[key];
-      }
+    const queryParameters: Record<string, string> = Util.removeFromObject({
+      ...query,
+      formID: this.formID
     });
 
     if (!options) {
@@ -73,11 +70,20 @@ export class FormApiClient {
       timeout = '3600000';
     }
 
+    const headers: Record<string, string> = {
+      ...options['headers'],
+      timeout,
+      'Accept-language': this.lang!
+    };
+    if (this.personToken) {
+      headers['Person-Token'] = this.personToken!;
+    }
+
     return this.http.request(
       options['method'] || 'GET',
       path,
       {
-        headers: {...options['headers'], timeout},
+        headers,
         params: queryParameters,
         body: options['body'] || undefined,
         observe: 'response'

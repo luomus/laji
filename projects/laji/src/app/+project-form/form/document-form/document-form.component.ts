@@ -18,6 +18,7 @@ import { ProjectFormService, RegistrationContact } from '../../../shared/service
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 import { LocalStorage } from 'ngx-webstorage';
 import { FormService } from '../../../shared/service/form.service';
+import { ErrorSchema } from '@rjsf/utils';
 
 @Component({
     selector: 'laji-document-form',
@@ -216,7 +217,8 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
           }
 
           this.setRegistrationContacts(document?.contacts);
-          const contactEmail = document?.contacts?.[0]?.emailAddress ?? '';
+          const contacts = document?.contacts;
+          const contactEmail = contacts?.[0]?.emailAddress ?? '';
           return this.userService.emailHasAccount(contactEmail).pipe(
             switchMap(exists => {
               if (exists) {
@@ -231,7 +233,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
                   switchMap(() => of(false))
                 );
               } else {
-                this.addContactEmailToDocument(document, contactEmail);
+                this.writeRegistrationContactsToDocument(document, contacts);
                 return of(true);
               }
             })
@@ -259,10 +261,15 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
          this.translate.instant('haseka.form.success')
       ));
       this.successNavigation();
-    }, () => {
+    }, (e) => {
       this.lajiForm.unBlock();
       this.saving = false;
-      this.lajiForm.displayErrorModal('saveError');
+      if (e.error?.errorCode === 'VALIDATION_EXCEPTION') {
+        this.lajiForm.setExtraErrors(apiValidationErrorsToRJSFErrorSchema(e.error.details as ApiValidationErrors));
+      } else {
+        this.lajiForm.displayErrorModal('saveError');
+        this.lajiForm.setExtraErrors(undefined);
+      }
     });
   };
 
@@ -301,10 +308,21 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  addContactEmailToDocument(document: Document, email: string) {
+  writeRegistrationContactsToDocument(document: Document, contacts: RegistrationContact[] | undefined) {
+    const preferredName = contacts?.[0]?.preferredName;
+    const inheritedName = contacts?.[0]?.inheritedName;
+    if (preferredName && inheritedName && document.gatheringEvent) {
+      document.gatheringEvent.leg = [preferredName + ' ' + inheritedName];
+    }
+
+    const email = contacts?.[0]?.emailAddress;
+    if (!email) {
+      return;
+    }
+
     const prefixedEmail = 'vihko:' + email;
     if (document.gatheringEvent) {
-      document.gatheringEvent.leg = [prefixedEmail];
+      document.gatheringEvent.legUserID = [prefixedEmail];
     }
     document.creator = prefixedEmail;
     document.editor = prefixedEmail;
@@ -372,3 +390,19 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     ) ?? defaultValue;
   }
 }
+
+interface ApiValidationErrors {
+  [field: string]: Record<string, ApiValidationErrors | string[]>;
+};
+
+const apiValidationErrorsToRJSFErrorSchema = (errors: ApiValidationErrors) => Object.keys(errors).reduce((errorSchema, property) => {
+  const propertyErrors = errors[property];
+  if (Array.isArray(propertyErrors)) {
+    errorSchema[property] = {
+      __errors: [ ...(errorSchema[property]?.__errors || []), ...(propertyErrors as string[]) ]
+    } as ErrorSchema;
+  } else {
+    errorSchema[property] = apiValidationErrorsToRJSFErrorSchema(propertyErrors as ApiValidationErrors);
+  }
+  return errorSchema;
+}, {} as ErrorSchema);

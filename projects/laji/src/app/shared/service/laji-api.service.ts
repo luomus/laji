@@ -9,14 +9,12 @@ import { Checklist } from '../model/Checklist';
 import { PagedResult } from '../model/PagedResult';
 import { Source } from '../model/Source';
 import { Form } from '../model/Form';
-import { Annotation } from '../model/Annotation';
 import { Notification } from '../model/Notification';
 import { Information } from '../model/Information';
 import { Publication } from '../model/Publication';
 import { Feedback } from '../model/Feedback';
 import { News } from '../model/News';
 import { Image } from '../model/Image';
-import { AnnotationTag } from '../model/AnnotationTag';
 import { Collection } from '../model/Collection';
 import { Util } from './util.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
@@ -26,8 +24,6 @@ type Taxon = components['schemas']['Taxon'];
 export namespace LajiApi {
 
   export enum Endpoints {
-    annotationsTags = 'annotations/tags',
-    annotations = 'annotations',
     areas = 'areas',
     documentStats = 'documents/stats',
     checklists = 'checklists',
@@ -72,13 +68,6 @@ export namespace LajiApi {
       langFallback?: boolean;
     }
 
-    export type AnnotationQuery = PersonToken;
-
-    export interface AnnotationListQuery extends Paged, PersonToken {
-      rootID: string;
-    }
-
-    export type AnnotationTagsQuery = LangWithFallback;
 
     export interface AreaQuery extends Lang, Paged {
       type?: LajiApi.AreaType;
@@ -158,10 +147,6 @@ export namespace LajiApi {
       base64pdf: string;
     }
 
-    export type AnnotationTagListResponse = Array<AnnotationTag>;
-
-    export type AnnotationListResponse = PagedResult<Annotation>;
-
     export type AreaListResponse = PagedResult<Area>;
 
     export type ChecklistListResponse = PagedResult<Checklist>;
@@ -188,8 +173,6 @@ export class LajiApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getList(endpoint: LajiApi.Endpoints.annotationsTags, query: LajiApi.Query.AnnotationTagsQuery): Observable<LajiApi.Response.AnnotationTagListResponse>;
-  getList(endpoint: LajiApi.Endpoints.annotations, query: LajiApi.Query.AnnotationListQuery): Observable<LajiApi.Response.AnnotationListResponse>;
   getList(endpoint: LajiApi.Endpoints.areas, query: LajiApi.Query.AreaQuery): Observable<LajiApi.Response.AreaListResponse>;
   getList(endpoint: LajiApi.Endpoints.checklists, query: LajiApi.Query.ChecklistQuery): Observable<LajiApi.Response.ChecklistListResponse>;
   getList(endpoint: LajiApi.Endpoints.collections, query: LajiApi.Query.CollectionQuery): Observable<LajiApi.Response.CollectionResponse>;
@@ -218,7 +201,6 @@ export class LajiApiService {
     return this.httpClient.get<T>(url, options);
   }
 
-  post(endpoint: LajiApi.Endpoints.annotations, data: Annotation, query: LajiApi.Query.AnnotationQuery): Observable<Annotation>;
   post(endpoint: LajiApi.Endpoints.feedback, data: Feedback, query: LajiApi.Query.FeedbackQuery): Observable<void>;
   post(endpoint: LajiApi.Endpoints.htmlToPdf, data: any): Observable<Blob>;
   post(endpoint: LajiApi.Endpoints, data: any, query: any = {}): Observable<any> {
@@ -226,9 +208,6 @@ export class LajiApiService {
     const options: any = { params: {...Util.removeUndefinedFromObject(query)} };
     if (endpoint === LajiApi.Endpoints.htmlToPdf) {
       options['responseType'] = 'blob';
-    }
-    if (endpoint === LajiApi.Endpoints.annotations) {
-      options['headers'] = 'x-beta';
     }
     return this.httpClient.post(
       url,
@@ -249,7 +228,6 @@ export class LajiApiService {
   }
 
 
-  remove(endpoint: LajiApi.Endpoints.annotations, id: string, query: LajiApi.Query.AnnotationQuery): Observable<void>;
   remove(endpoint: LajiApi.Endpoints.notifications, id: string, query: LajiApi.Query.NotificationQuery): Observable<any>;
   remove(endpoint: LajiApi.Endpoints, id: string, query: any = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}/${id}`;

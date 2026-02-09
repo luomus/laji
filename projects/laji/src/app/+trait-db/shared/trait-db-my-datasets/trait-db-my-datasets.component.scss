@@ -2,9 +2,15 @@
 
 .your-datasets {
   padding: $sp-4 $sp-5;
-  background-color: $neutral-4;
+  background-color: $neutral-3;
+  border: 1px solid $primary-3;
+  border-left: 4px solid $primary-5;
+  color: $primary-8;
+  overflow: auto;
+  border-radius: 4px;
 
   h5 {
+    margin-top: $sp-4;
     color: $neutral-8;
   }
 
@@ -12,3 +18,7 @@
   }
 }
 
+.glyphicon-ok {
+  color: $success-5;
+  text-shadow: 1px 1px 3px $neutral-6;
+}

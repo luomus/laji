@@ -1,16 +1,16 @@
 @if (taxon) {
-  @if ((taxon.vernacularName | multiLang:false)) {
+  @if ((taxon.vernacularNameMultiLang | multiLang:false)) {
     <ng-container [ngTemplateOutlet]="vernacularName"></ng-container>
   }
-  @if ((taxon.vernacularName | multiLang:false) && (taxon.colloquialVernacularName | multiLang:false)) {
-    (<ul class="separated-list colloquialVernacularName">
-    @for (obj of (taxon.colloquialVernacularName | multiLang:false); track obj) {
+  @if ((taxon.vernacularNameMultiLang | multiLang:false) && (taxon.colloquialVernacularNameMultiLang | multiLang:false)) {
+    (<ul class="separated-list colloquialVernacularNameMultiLang">
+    @for (obj of (taxon.colloquialVernacularNameMultiLang); track obj) {
       <li>{{obj}}</li>
     }
   </ul>
   <laji-info [placement]="'top'">{{ 'taxonomy.vernacular.colloquial.info' | translate }}</laji-info>)
 }
-@if (((taxon.vernacularName | multiLang:false) || taxon.alternativeVernacularName | multiLang:false | values) && taxon.scientificName) {
+@if (((taxon.vernacularNameMultiLang | multiLang:false) || taxon.alternativeVernacularNameMultiLang | multiLang:false | values) && taxon.scientificName) {
   &ndash;
 }
 <ng-container [ngTemplateOutlet]="scientificName"></ng-container>
@@ -29,7 +29,7 @@
 @if (((taxon.id || taxon.qname || taxonID) | toQName)?.startsWith('gbif:')) {
   <img class="gbif-icon" src="/static/images/icons/gbif.svg" [luTooltip]="'species.tree.gbif.help' | translate" />
 }
-@if (!hideObsoleteVernacularName && taxon?.obsoleteVernacularName | multiLang:false | values; as obsoleteVernacularName) {
+@if (!hideObsoleteVernacularName && taxon?.obsoleteVernacularName | values; as obsoleteVernacularName) {
   <div class="alternative-names mt-2">
     {{ obsoleteVernacularName }}
   </div>
@@ -40,10 +40,9 @@
   {{ taxon.scientificName }}
 }</ng-template>
 <ng-template #vernacularName>
-  {{ capitalizeName ? (taxon.vernacularName | multiLang | capitalize) : (taxon.vernacularName | multiLang) }}
-  @if (taxon?.alternativeVernacularName | multiLang:false | values; as alternativeVernacularName) {
+  {{ capitalizeName ? (taxon.vernacularNameMultiLang | multiLang:false | capitalize) : (taxon.vernacularNameMultiLang | multiLang:false) }}
+  @if (taxon?.alternativeVernacularNameMultiLang | multiLang:false | values; as alternativeVernacularName) {
     ({{ alternativeVernacularName }})
   }
 </ng-template>
 }
-

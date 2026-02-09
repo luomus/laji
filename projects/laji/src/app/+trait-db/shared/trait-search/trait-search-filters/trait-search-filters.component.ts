@@ -79,6 +79,15 @@ export class TraitSearchFiltersComponent implements OnChanges {
   }
 
   onClear() {
-    this.form.setValue(formDefaultValues);
+    this.form.setValue(
+      Object.entries(this.form.getRawValue()).reduce(
+        (prev, curr: [any, any]) => {
+          const [k, v] = curr;
+          prev[k] = this.disabled?.has(k) ? v : formDefaultValues[<keyof typeof formDefaultValues>k];
+          return prev;
+        },
+        {} as any
+      )
+    );
   }
 }

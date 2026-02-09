@@ -7,7 +7,7 @@
 }
 
 <p>
-  <a [routerLink]="'/about/4641' | localize">{{ 'datasets.generic.instructions' | translate }}</a>
+  <a [href]="'infoLinks.dataBank' | translate" target="_blank">{{ 'datasets.generic.instructions' | translate }}</a>
 </p>
 
 @if ((stats$ | async); as stats) {

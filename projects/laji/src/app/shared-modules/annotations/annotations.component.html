@@ -4,7 +4,7 @@
     @if (!loading && listVisible) {
       <laji-annotation-list
         [personID]="personID"
-        [annotations]="annotations"
+        [annotations]="$any(annotations)"
         [lastAnnotationAddedId]="lastAnnotationAddedId"
         [annotationTags]="annotationTags"
         [effectiveTags]="activeTags"
@@ -15,7 +15,7 @@
 }
 
 <div [ngClass]="{'annotation-form': formVisible, '': !formVisible}">
-  @if (personRoleAnnotation === annotationRole.expert) {
+  @if (personRoleAnnotation === 'MMAN.expert') {
     <div>
       <span class="pull-right">
         @switch (currentLang) {
@@ -76,7 +76,7 @@
   <laji-annotation-form-new #formAnnotation
     [identifying]="identifying"
     [annotations]="annotations"
-    [annotation]="annotation"
+    [annotation]="$any(annotation)"
     [personID]="personID"
     [personRoleAnnotation]="personRoleAnnotation"
     [isEditor]="isEditor"

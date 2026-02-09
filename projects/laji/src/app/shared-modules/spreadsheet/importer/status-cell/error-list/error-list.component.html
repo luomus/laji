@@ -1,7 +1,7 @@
 @for (data of _errors; track data) {
   <div>
-    @if (fields[data.field]) {
-      <strong>{{ fields[data.field].fullLabel }}</strong>
+    @if (data.title) {
+      <strong>{{ data.title }}</strong>
     }
     <ul class="errors">
       @for (error of data.errors; track error) {

@@ -92,8 +92,8 @@
       <h5>{{ 'navigation.hyonteisopas' | translate }}</h5>
       <p>{{ 'theme.hyonteisopas.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/about/8298'] | localize" class="navbox">
-      <h5>{{ 'navigation.lehtisammaleet' | translate }}</h5>
+    <a [href]="'infoLinks.lehtisammaleet' | translate" target="_blank" rel="noopener" class="navbox">
+      <h5>{{ 'navigation.lehtisammaleet' | translate }} <i class="glyphicon glyphicon-new-window"></i></h5>
       <p>{{ 'theme.lehtisammaleet.intro' | translate }}</p>
     </a>
   </div>
@@ -128,8 +128,8 @@
 
   <h4><span class="glyphicon glyphicon-search"></span> {{ 'theme.research.main' | translate }}</h4>
   <div class="d-flex flex-wrap">
-    <a [routerLink]="['/about/2272'] | localize" class="navbox">
-      <h5>{{ 'navigation.research' | translate }}</h5>
+    <a [href]="'infoLinks.research' | translate" target="_blank" rel="noopener" class="navbox">
+      <h5>{{ 'navigation.research' | translate }} <i class="glyphicon glyphicon-new-window"></i></h5>
       <p>{{ 'theme.research.intro' | translate }}</p>
     </a>
     <a [routerLink]="['/theme/luomusgrc'] | localize" class="navbox">

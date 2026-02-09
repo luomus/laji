@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
-import { DocumentApi, DocumentJobPayload } from '../../../shared/api/DocumentApi';
-import { Document } from '../../../shared/model/Document';
-import { UserService } from '../../../shared/service/user.service';
+import { EMPTY, Observable } from 'rxjs';
 import {
   IFormField,
   LEVEL_DOCUMENT,
@@ -14,8 +10,16 @@ import {
 } from '../model/excel';
 import { MappingService } from './mapping.service';
 import Hash from 'object-hash';
-import { catchError, delay, switchMap } from 'rxjs';
+import { catchError, delay, switchMap, expand } from 'rxjs';
 import { ArrayType } from '@angular/compiler';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+import type { paths } from 'projects/laji-api-client-b/generated/api';
+
+type Document = components['schemas']['document'];
+type BatchJob = components['schemas']['BatchJobValidationStatusResponse'];
+type DataOrigin = NonNullable<paths['/documents/batch/{jobID}']['post']['parameters']['query']>['dataOrigin'];
+type PublicityRestrictions = NonNullable<paths['/documents/batch/{jobID}']['post']['parameters']['query']>['publicityRestrictions'];
 
 export interface IData {
   rowIdx: number;
@@ -74,9 +78,7 @@ export class ImportService {
 
   constructor(
     private mappingService: MappingService,
-    private documentApi: DocumentApi,
-    private userService: UserService,
-    private translateService: TranslateService
+    private api: LajiApiClientBService
   ) { }
 
   hasInvalidValue(value: unknown, field: IFormField) {
@@ -84,46 +86,28 @@ export class ImportService {
     return Array.isArray(mappedValue) ? mappedValue.indexOf(null) > -1 : mappedValue === null;
   }
 
-  validateData(document: Document|Document[]): Observable<any> {
-    return this.documentApi.validate(document, {
-      personToken: this.userService.getToken(),
-      lang: this.translateService.getCurrentLang(),
-      validationErrorFormat: 'jsonPath'
-    });
+  startBatchJob(documents: Document[]) {
+    return this.api.post('/documents/batch', undefined, documents);
   }
 
-  waitToComplete(type: keyof Pick<DocumentApi, 'validate'|'create'>, jobPayload: DocumentJobPayload, processCB: (status: JobStatus) => void): Observable<any> {
-    const personToken = this.userService.getToken();
-    const source$ = type === 'validate' ?
-      this.documentApi.validate(jobPayload, {personToken}) :
-      this.documentApi.create(jobPayload, personToken);
-    return source$.pipe(
-      switchMap(response => {
+  waitToComplete(job: BatchJob, processCB: (status: BatchJob['status']) => void): Observable<BatchJob> {
+    const req$ = () => this.api.get('/documents/batch/{jobID}', { path: { jobID: job.id }, query: { timestamp: Date.now() } as any }, 0);
+    return req$().pipe(
+      expand(response => {
         processCB(response.status);
-        if (response.status.percentage === 100) {
-          return of(response);
-        }
-        return of(response).pipe(
-          delay(1000),
-          switchMap(() => this.waitToComplete(type, jobPayload, processCB))
-        );
-      }),
-      catchError((e) => {
-        console.log('ERROR', e);
-        return of(e).pipe(
-          delay(1000),
-          switchMap(() => this.waitToComplete(type, jobPayload, processCB))
-        );
+        return !['VALIDATING', 'COMPLETING'].includes(response.phase)
+          ? EMPTY
+          : req$().pipe(delay(1000));
       })
     );
   }
 
   sendData(
-    job: DocumentJobPayload
-  ): Observable<any> {
-    return this.documentApi.create(job, this.userService.getToken(), {
-      lang: this.translateService.getCurrentLang()
-    });
+    jobID: string,
+    dataOrigin: DataOrigin,
+    publicityRestrictions: PublicityRestrictions
+  ) {
+    return this.api.post('/documents/batch/{jobID}', { path: { jobID }, query: { dataOrigin, publicityRestrictions } });
   }
 
   flatFieldsToDocuments(
@@ -287,7 +271,7 @@ export class ImportService {
     const docs: {[hash: string]: IDocumentData} = {};
     Object.keys(documents).forEach(hash => {
       if (!docs[hash]) {
-        docs[hash] = {document: {formID}, ref: {[hash]: {}}, rows: {}, skipped: []};
+        docs[hash] = {document: {formID} as Document, ref: {[hash]: {}}, rows: {}, skipped: []};
         const docData = this.findDocumentData(documents[hash]);
         docs[hash].rows[(docData as any).rowIdx] = true;
         if (ignoreRowsWithNoCount && !this.hasCountValue((docData as any).data) && combineBy === CombineToDocument.none) {
