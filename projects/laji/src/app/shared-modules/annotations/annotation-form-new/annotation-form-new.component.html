@@ -118,7 +118,7 @@
           <div class="list-checkbox">
             <main class="lu">
               <lu-checkbox (input)="addToRemoveTags(item.id)" [disabled]="((annotation.addedTags.indexOf('MMAN.5') !== -1 && item.id !== 'MMAN.52') || annotation.addedTags.indexOf('MMAN.3') !== -1)" [checked]="annotation.removedTags.indexOf(item.id) !== -1">
-                <div class="pill" [ngClass]="{'success': item.type==='positive', 'warning': item.type==='check', 'danger': item.type==='negative' }">{{ item.id | toQName | label }}</div>
+                <div class="pill" [ngClass]="{'success': item.type==='MMAN.typePositiveQuality', 'warning': item.type==='MMAN.typeCheck', 'danger': item.type==='MMAN.typeNegativeQuality' }">{{ item.id | toQName | label }}</div>
               </lu-checkbox>
             </main>
           </div>
@@ -168,7 +168,7 @@
     <textarea #comment
       name="notes"
       class="form-control feedback-text input-sm"
-      [required]="(!expert || (personRoleAnnotation !== 'MMAN.expert' && personRoleAnnotation!==annotationRole.ictAdmin)) || (((annotation.addedTags && annotation.addedTags.length > 0) && (annotation.identification && annotation.identification.taxon == '')) || (annotation.identification && annotation.identification.taxon == ''))"
+      [required]="(!expert || (personRoleAnnotation !== 'MMAN.expert' && personRoleAnnotation !== 'MMAN.ictAdmin')) || (((annotation.addedTags && annotation.addedTags.length > 0) && (annotation.identification && annotation.identification.taxon == '')) || (annotation.identification && annotation.identification.taxon == ''))"
       [(ngModel)]="annotation.notes"
       (focus)="onFocus($event)"
     (blur)="onBlur($event)"></textarea>
