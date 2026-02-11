@@ -3,15 +3,12 @@ import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { tap, map, switchMap, filter } from 'rxjs';
 import { UserService } from '../../shared/service/user.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
 
 interface Counts {
   entries: number;
   traits: number;
   datasets: number;
 }
-
-export type Dataset = components['schemas']['TraitDataset'];
 
 @Component({
     templateUrl: './trait-db-main.component.html',

@@ -10,7 +10,7 @@ import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/sel
 import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 export type RedListRegionalStatusData = {
   [area: string]: number|string;

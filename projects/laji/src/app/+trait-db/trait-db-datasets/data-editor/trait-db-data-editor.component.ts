@@ -12,7 +12,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { LeafType } from 'scripts/codegen/shared';
 import { DatatableColumn } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 
-type InputRow = components['schemas']['TraitInputRow'];
+type InputRow = components['schemas']['LajiBackendInputRow'];
 
 interface TableData {
   rows: FormArray<FormGroup>;

@@ -8,8 +8,8 @@ import { Router } from '@angular/router';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
-type RedListEvaluation = components['schemas']['Evaluation'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
+type RedListEvaluation = components['schemas']['LajiBackendEvaluation'];
 
 @Component({
     selector: 'iucn-info-card',

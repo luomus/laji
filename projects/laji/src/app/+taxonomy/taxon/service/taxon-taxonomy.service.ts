@@ -5,7 +5,7 @@ import { map, share, switchMap, tap } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Injectable()
 export class TaxonTaxonomyService {

@@ -7,7 +7,7 @@ import { InfoCardQueryService } from '../shared/service/info-card-query.service'
 import { map } from 'rxjs';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 type TaxonDescription = Taxon['descriptions'][number];
 type TaxonDescriptionVariable = TaxonDescription['groups'][number]['variables'][number];
 

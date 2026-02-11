@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
     selector: 'laji-print-taxon-header',

@@ -23,8 +23,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { HeaderService } from '../../../shared/service/header.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
-type TaxonDescription = components['schemas']['Content'][number];
+type Taxon = components['schemas']['LajiBackendTaxon'];
+type TaxonDescription = components['schemas']['LajiBackendContent'][number];
 
 const TAB_ORDER = [ 'overview', 'images', 'identification', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];

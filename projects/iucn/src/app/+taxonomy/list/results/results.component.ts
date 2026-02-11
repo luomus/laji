@@ -18,7 +18,7 @@ import {ActiveElement, ChartData, ChartEvent, ChartOptions} from 'chart.js';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components, operations } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 export type TaxonAggregateQuery = operations['TaxaController_getAggregateWithFilters']['parameters']['query'];
 export type TaxonAggregateFilters = NonNullable<operations['TaxaController_getAggregateWithFilters']['requestBody']>['content']['application/json'];
 

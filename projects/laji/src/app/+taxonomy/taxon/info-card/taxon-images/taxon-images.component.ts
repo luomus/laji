@@ -4,7 +4,7 @@ import { InfoCardQueryService } from '../shared/service/info-card-query.service'
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
     selector: 'laji-taxon-images',

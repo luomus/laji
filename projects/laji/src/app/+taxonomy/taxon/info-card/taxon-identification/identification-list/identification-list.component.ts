@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 const SCROLL_SPEED = 500; // pixels per second
 

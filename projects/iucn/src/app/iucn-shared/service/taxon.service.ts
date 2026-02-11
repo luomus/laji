@@ -10,7 +10,7 @@ export type TaxonQuery = operations['TaxaController_getPageWithFilters']['parame
 export type TaxonFilters = NonNullable<operations['TaxaController_getPageWithFilters']['requestBody']>['content']['application/json'];
 export type ChecklistVersion = NonNullable<NonNullable<paths['/taxa/species/aggregate']['post']['parameters']['query']>['checklistVersion']>;
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Injectable({
   providedIn: 'root'

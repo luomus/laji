@@ -9,7 +9,7 @@ import { AnnotationService } from '../../shared-modules/document-viewer/service/
 import { DeleteOwnDocumentService } from '../../shared/service/delete-own-document.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type AnnotationTag = components['schemas']['tag'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
     selector: 'laji-annotations',

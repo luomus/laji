@@ -35,7 +35,7 @@ import { FormService } from '../../../shared/service/form.service';
 import { Form } from '../../../shared/model/Form';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type AnnotationTag = components['schemas']['tag'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
     selector: 'laji-document',

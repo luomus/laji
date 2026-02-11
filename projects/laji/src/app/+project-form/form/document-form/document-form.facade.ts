@@ -26,7 +26,7 @@ import { ProjectFormService } from '../../../shared/service/project-form.service
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Annotation = components['schemas']['annotation'];
+type Annotation = components['schemas']['store-annotation'];
 
 export enum FormError {
   notFoundForm = 'notFoundForm',

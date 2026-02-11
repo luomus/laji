@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type TaxonDescription = components['schemas']['Content'][number];
+type TaxonDescription = components['schemas']['LajiBackendContent'][number];
 type TaxonDescriptionGroup = TaxonDescription['groups'][number];
 
 @Component({

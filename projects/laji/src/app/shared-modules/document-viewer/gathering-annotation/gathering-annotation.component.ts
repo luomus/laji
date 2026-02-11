@@ -6,8 +6,8 @@ import { LoadingElementsService } from '../loading-elements.service';
 import { TaxonTagEffectiveService } from '../taxon-tag-effective.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Annotation = components['schemas']['annotation'];
-type AnnotationTag = components['schemas']['tag'];
+type Annotation = components['schemas']['store-annotation'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
     selector: 'laji-gathering-annotation',

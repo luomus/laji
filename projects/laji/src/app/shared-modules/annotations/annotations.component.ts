@@ -20,8 +20,8 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 import { Unsaved } from '../../shared/service/util.service';
 import { AnnotationDW } from './annotation-list/annotation-list.component';
 
-type Annotation = components['schemas']['annotation'];
-type AnnotationTag = components['schemas']['tag'];
+type Annotation = components['schemas']['store-annotation'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
     selector: 'laji-annotations',

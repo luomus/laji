@@ -8,7 +8,7 @@ import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { map } from 'rxjs';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 enum Tabs {
   species = 'species',

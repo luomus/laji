@@ -6,7 +6,7 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { MetadataService } from 'projects/laji/src/app/shared/service/metadata.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 interface IIdentificationState {
   childDataSource?: IdentificationChildrenDataSource | undefined;

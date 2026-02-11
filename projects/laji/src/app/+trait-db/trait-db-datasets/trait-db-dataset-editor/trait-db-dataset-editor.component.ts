@@ -9,8 +9,8 @@ import { tap, filter, switchMap, map } from 'rxjs';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { UserService } from '../../../shared/service/user.service';
 
-export type Dataset = components['schemas']['TraitDataset'];
-type ValidationResponse = components['schemas']['TraitValidationResponse'];
+export type Dataset = components['schemas']['LajiBackendDataset'];
+type ValidationResponse = components['schemas']['LajiBackendValidationResponse'];
 
 export const filterNullValues = <T extends Record<string, unknown>>(obj: T): T => {
   const clone: any = {};

@@ -5,7 +5,7 @@ import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQuery
 import { ResultService } from '../../common/service/result.service';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
     selector: 'laji-syke-insect-all-results',

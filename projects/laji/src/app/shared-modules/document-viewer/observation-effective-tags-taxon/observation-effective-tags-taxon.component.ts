@@ -8,7 +8,7 @@ import { WarehouseValueMappingService } from '../../../shared/service/warehouse-
 import { switchMap, toArray, concatMap } from 'rxjs';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type AnnotationTag = components['schemas']['tag'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
     selector: 'laji-observation-effective-tags-taxon',

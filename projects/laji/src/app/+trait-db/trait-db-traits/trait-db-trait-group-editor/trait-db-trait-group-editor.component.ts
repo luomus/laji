@@ -7,7 +7,7 @@ import { tap, filter, switchMap } from 'rxjs';
 import { filterNullValues } from '../../trait-db-datasets/trait-db-dataset-editor/trait-db-dataset-editor.component';
 
 type TraitGroup = components['schemas']['LajiBackendTraitGroup'];
-type ValidationResponse = components['schemas']['TraitValidationResponse'];
+type ValidationResponse = components['schemas']['LajiBackendValidationResponse'];
 
 @Component({
     templateUrl: './trait-db-trait-group-editor.component.html',

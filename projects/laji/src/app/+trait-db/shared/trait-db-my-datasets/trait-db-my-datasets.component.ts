@@ -5,7 +5,7 @@ import { tap, map, switchMap, filter } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
 import { components } from 'projects/laji-api-client-b/generated/api';
 
-export type Dataset = components['schemas']['TraitDataset'];
+export type Dataset = components['schemas']['LajiBackendDataset'];
 
 @Component({
     selector: 'laji-trait-db-my-datasets',

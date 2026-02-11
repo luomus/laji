@@ -10,7 +10,7 @@ import { getDescription, HeaderService } from '../../shared/service/header.servi
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
     selector: 'laji-taxonomy',

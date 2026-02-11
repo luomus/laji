@@ -6,7 +6,7 @@ import { InfoCardQueryService } from '../shared/service/info-card-query.service'
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
     selector: 'laji-taxon-specimens',

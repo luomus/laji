@@ -21,8 +21,8 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 import { WithNonNullableKeys } from '../../../shared/service/util.service';
 
-type Annotation = components['schemas']['annotation'];
-type AnnotationTag = components['schemas']['tag'];
+type Annotation = components['schemas']['store-annotation'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 export type AnnotationFormAnnotation = WithNonNullableKeys<Annotation, 'identification' | 'addedTags' | 'removedTags'>;
 

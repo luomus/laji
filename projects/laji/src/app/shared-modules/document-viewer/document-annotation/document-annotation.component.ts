@@ -34,8 +34,8 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
 import { DocumentPermissionService } from '../service/document-permission.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Annotation = components['schemas']['annotation'];
-type AnnotationTag = components['schemas']['tag'];
+type Annotation = components['schemas']['store-annotation'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
     selector: 'laji-document-annotation',

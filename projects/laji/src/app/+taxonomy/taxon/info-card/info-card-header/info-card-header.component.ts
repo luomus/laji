@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
     selector: 'laji-info-card-header',

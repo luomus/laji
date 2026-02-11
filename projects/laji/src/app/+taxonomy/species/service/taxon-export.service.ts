@@ -6,8 +6,8 @@ import { DatatableColumn } from '../../../shared-modules/datatable/model/datatab
 import { BookType } from 'xlsx';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
-type SimpleTaxon = components['schemas']['SimpleTaxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
+type SimpleTaxon = components['schemas']['LajiBackendSimpleTaxon'];
 
 type SimpleTaxonArrayKeys = {
     [K in keyof Taxon]: Taxon[K] extends SimpleTaxon[] ? K : never

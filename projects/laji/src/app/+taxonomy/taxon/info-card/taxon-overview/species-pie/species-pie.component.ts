@@ -7,7 +7,7 @@ import { TreemapController, TreemapElement } from 'chartjs-chart-treemap';
 import { MultiLangService } from 'projects/laji/src/app/shared-modules/lang/service/multi-lang.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
     selector: 'laji-species-pie',

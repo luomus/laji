@@ -6,7 +6,7 @@ import { Annotation } from '../../../shared/model/Annotation';
 import { DocumentViewerFacade } from '../document-viewer.facade';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type AnnotationTag = components['schemas']['tag'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
     selector: 'laji-unit',

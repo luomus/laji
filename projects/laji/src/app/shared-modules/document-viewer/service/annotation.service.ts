@@ -9,8 +9,8 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 import { IdService } from '../../../shared/service/id.service';
 import { AnnotationDW } from '../../annotations/annotation-list/annotation-list.component';
 
-type Annotation = components['schemas']['annotation'];
-type AnnotationTag = components['schemas']['tag'];
+type Annotation = components['schemas']['store-annotation'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Injectable({providedIn: 'root'})
 export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> {

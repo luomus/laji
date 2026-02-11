@@ -11,7 +11,7 @@ import { CollectionViewer } from '@angular/cdk/collections';
 import { PlatformService } from '../../../../root/platform.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 const INFINITE_SCROLL_DISTANCE = 300;
 

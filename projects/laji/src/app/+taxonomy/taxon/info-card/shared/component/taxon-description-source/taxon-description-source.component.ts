@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
 import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type TaxonDescription = components['schemas']['Content'][number];
+type TaxonDescription = components['schemas']['LajiBackendContent'][number];
 
 @Component({
     selector: 'laji-taxon-description-source',

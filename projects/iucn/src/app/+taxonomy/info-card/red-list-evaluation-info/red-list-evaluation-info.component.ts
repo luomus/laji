@@ -3,7 +3,7 @@ import { IRow } from './red-list-evaluation-info-rowset/red-list-evaluation-info
 import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type RedListEvaluation = components['schemas']['Evaluation'];
+type RedListEvaluation = components['schemas']['LajiBackendEvaluation'];
 
 interface KeyMapType {
   secondaryHabitats: string;

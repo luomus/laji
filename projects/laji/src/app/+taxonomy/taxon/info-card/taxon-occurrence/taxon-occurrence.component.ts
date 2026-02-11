@@ -3,8 +3,8 @@ import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQuery
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
-type TaxonDescription = components['schemas']['Content'][number];
+type Taxon = components['schemas']['LajiBackendTaxon'];
+type TaxonDescription = components['schemas']['LajiBackendContent'][number];
 
 @Component({
     selector: 'laji-taxon-occurrence',
