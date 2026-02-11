@@ -20,7 +20,7 @@ import type { Lang, Options } from '@luomus/laji-map';
 import { map } from 'rxjs';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'individualCountMax'|'oldest'|'newest'|'pairCount'|
   'individualCountSumPer10km';

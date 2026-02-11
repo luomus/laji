@@ -3,7 +3,7 @@ import { ControlValueAccessor, FormArray, FormBuilder, FormControl, FormGroup, N
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { Subscription } from 'rxjs';
 
-type TraitEnumerationValue = components['schemas']['TraitEnumerationValue'];
+type TraitEnumerationValue = components['schemas']['LajiBackendTraitEnumerationValue'];
 type TraitEnumerationValueFormGroup = FormGroup<{
   [K in keyof TraitEnumerationValue]: FormControl<TraitEnumerationValue[K]>;
 }>;

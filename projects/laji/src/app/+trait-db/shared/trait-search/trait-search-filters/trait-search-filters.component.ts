@@ -36,8 +36,8 @@ export class TraitSearchFiltersComponent implements OnChanges {
   @Output() searchClicked = new EventEmitter<void>();
 
   form = this.fb.group(formDefaultValues);
-  datasets$: Observable<components['schemas']['Dataset'][]>;
-  traits$: Observable<components['schemas']['Trait'][]>;
+  datasets$: Observable<components['schemas']['TraitDataset'][]>;
+  traits$: Observable<components['schemas']['LajiBackendTrait'][]>;
 
   constructor(
     private fb: FormBuilder,

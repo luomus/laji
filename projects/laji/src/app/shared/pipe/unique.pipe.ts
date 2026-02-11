@@ -3,8 +3,8 @@ import { IdService } from '../service/id.service';
 
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Annotation = components['schemas']['annotation'];
-type AnnotationTag = components['schemas']['tag'];
+type Annotation = components['schemas']['store-annotation'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Pipe({
     name: 'activeTags',

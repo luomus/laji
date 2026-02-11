@@ -16,7 +16,7 @@ import { CollectionService } from './collection.service';
 import { BaseDataService } from '../../graph-ql/service/base-data.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {

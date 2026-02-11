@@ -16,7 +16,7 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import type { components } from 'projects/laji-api-client-b/generated/api';
 import type { paths } from 'projects/laji-api-client-b/generated/api';
 
-type Document = components['schemas']['document'];
+type Document = components['schemas']['store-document'];
 type BatchJob = components['schemas']['BatchJobValidationStatusResponse'];
 type DataOrigin = NonNullable<paths['/documents/batch/{jobID}']['post']['parameters']['query']>['dataOrigin'];
 type PublicityRestrictions = NonNullable<paths['/documents/batch/{jobID}']['post']['parameters']['query']>['publicityRestrictions'];

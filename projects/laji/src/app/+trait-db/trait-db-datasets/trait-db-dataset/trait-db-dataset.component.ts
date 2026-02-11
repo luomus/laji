@@ -6,8 +6,8 @@ import { combineLatest, Observable, of } from 'rxjs';
 import { map, filter, distinctUntilChanged, switchMap, startWith, catchError, tap } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
 
-export type Dataset = components['schemas']['Dataset'];
-export type DatasetPermissions = components['schemas']['DatasetPermissions'];
+export type Dataset = components['schemas']['TraitDataset'];
+export type DatasetPermissions = components['schemas']['TraitDatasetPermissions'];
 
 @Component({
     templateUrl: './trait-db-dataset.component.html',

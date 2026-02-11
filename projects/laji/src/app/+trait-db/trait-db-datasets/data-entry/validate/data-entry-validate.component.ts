@@ -20,7 +20,7 @@ interface ValidationHttpError {
 
 interface ValidationComplete {
   _tag: 'complete';
-  result: components['schemas']['TraitTSVValidationResponse'];
+  result: components['schemas']['LajiBackendTraitTSVValidationResponse'];
 }
 
 type ExternalValidationState = ValidationNotStarted | ValidationInProgress | ValidationComplete | ValidationHttpError;

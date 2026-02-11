@@ -11,7 +11,7 @@ interface Counts {
   datasets: number;
 }
 
-export type Dataset = components['schemas']['Dataset'];
+export type Dataset = components['schemas']['TraitDataset'];
 
 @Component({
     templateUrl: './trait-db-main.component.html',

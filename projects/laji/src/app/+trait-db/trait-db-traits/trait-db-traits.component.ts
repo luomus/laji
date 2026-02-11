@@ -4,8 +4,8 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { UserService } from '../../shared/service/user.service';
 
-type Trait = components['schemas']['Trait'];
-type TraitGroup = components['schemas']['TraitGroup'];
+type Trait = components['schemas']['LajiBackendTrait'];
+type TraitGroup = components['schemas']['LajiBackendTraitGroup'];
 
 @Component({
     templateUrl: 'trait-db-traits.component.html',

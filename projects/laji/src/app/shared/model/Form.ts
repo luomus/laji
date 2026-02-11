@@ -5,7 +5,7 @@ import { Document } from './Document';
 import { MultiLanguage } from './MultiLanguage';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Annotation = components['schemas']['annotation'];
+type Annotation = components['schemas']['store-annotation'];
 
 export namespace Form {
   export enum PrintType {

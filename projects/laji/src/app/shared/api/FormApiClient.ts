@@ -62,7 +62,7 @@ export class FormApiClient {
 
     switch (resource) {
       case AUTOCOMPLETE_TAXON_RESOURCE:
-        queryParameters['excludeNameTypes'] = 'MX.hasMisappliedName';
+        queryParameters['nameTypes'] = '!MX.hasMisappliedName';
     }
 
     let timeout = '120000';

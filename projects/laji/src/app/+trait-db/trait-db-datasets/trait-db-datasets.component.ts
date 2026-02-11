@@ -4,7 +4,7 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { Observable } from 'rxjs';
 import { map } from 'rxjs';
 
-export type Dataset = components['schemas']['Dataset'];
+export type Dataset = components['schemas']['TraitDataset'];
 
 @Component({
     templateUrl: './trait-db-datasets.component.html',

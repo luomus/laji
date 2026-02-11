@@ -4,7 +4,7 @@ import { components } from 'projects/laji-api-client-b/generated/api';
 import { Subscription } from 'rxjs';
 import { map, tap } from 'rxjs';
 
-type TaxonRank = keyof components['schemas']['HigherTaxa'];
+type TaxonRank = keyof components['schemas']['TraitHigherTaxa'];
 type TaxonSource = 'FinBIF' | 'GBIF';
 
 export const TAXON_RANKS: TaxonRank[] = [

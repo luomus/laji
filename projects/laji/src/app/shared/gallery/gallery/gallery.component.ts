@@ -18,7 +18,7 @@ import { QueryParamsHandling } from '@angular/router';
 import { ViewType } from '../image-gallery';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type TaxonImage = components['schemas']['Image'];
+type TaxonImage = components['schemas']['LajiBackendImage'];
 
 @Component({
     selector: 'laji-gallery',

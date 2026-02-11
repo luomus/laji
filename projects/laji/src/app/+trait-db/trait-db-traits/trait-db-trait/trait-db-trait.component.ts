@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { map, filter, distinctUntilChanged, switchMap } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
 
-export type Trait = components['schemas']['Trait'];
+export type Trait = components['schemas']['LajiBackendTrait'];
 
 @Component({
   standalone: false,

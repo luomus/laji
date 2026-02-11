@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Habitat = components['schemas']['HabitatObject'];
+type Habitat = components['schemas']['LajiBackendHabitatObject'];
 
 @Component({
     selector: 'laji-habitat',

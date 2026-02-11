@@ -177,8 +177,8 @@ export class ObservationFacade {
     return this.api.get('/autocomplete/taxa', { query: {
       query,
       limit,
-      informalTaxonGroup: informalTaxonGroupId?.toString(),
-      excludeNameTypes: 'MX.hasMisspelledName,MX.hasMisappliedName',
+      informalTaxonGroups: informalTaxonGroupId?.toString(),
+      nameTypes: '!MX.hasMisspelledName,!MX.hasMisappliedName',
       checklist: 'MR.1,MR.2'
     } }).pipe(
       map(data => data.results.map(item => {

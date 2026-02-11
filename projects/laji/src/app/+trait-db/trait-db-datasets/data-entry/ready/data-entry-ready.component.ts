@@ -4,7 +4,7 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { BehaviorSubject } from 'rxjs';
 
-type Dataset = components['schemas']['Dataset'];
+type Dataset = components['schemas']['TraitDataset'];
 
 interface Loading {
   _tag: 'loading';

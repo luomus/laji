@@ -36,11 +36,11 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() placeholder = '';
   @Input() taxon = '';
   @Input() allowInvalid = false;
-  @Input() informalTaxonGroup = '';
-  @Input() onlyFinnish = false;
-  @Input() excludeNameTypes = '';
-  @Input() onlyInvasive = false;
-  @Input() onlySpecies = false;
+  @Input() informalTaxonGroups = '';
+  @Input() finnish?: boolean;
+  @Input() invasiveSpecies?: boolean;
+  @Input() species?: boolean;
+  @Input() nameTypes = '';
   @Input() showResult = true;
   @Input() clearValueOnSelect = true;
   @Input() allowEmpty = false;
@@ -123,11 +123,11 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
         query,
         limit: this.limit,
         matchType: 'exact,partial',
-        informalTaxonGroup: this.informalTaxonGroup,
-        excludeNameTypes: this.excludeNameTypes,
-        onlyFinnish: this.onlyFinnish,
-        onlyInvasive: this.onlyInvasive,
-        onlySpecies: this.onlySpecies
+        informalTaxonGroups: this.informalTaxonGroups,
+        nameTypes: this.nameTypes,
+        finnish: this.finnish,
+        invasiveSpecies: this.invasiveSpecies,
+        species: this.species
       }})),
       map(({ results }) => {
         if (this.whiteList) {

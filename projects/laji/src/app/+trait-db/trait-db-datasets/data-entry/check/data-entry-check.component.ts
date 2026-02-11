@@ -25,8 +25,8 @@ interface ValidationInProgress {
 
 interface ValidationComplete {
   _tag: 'validation-complete';
-  result: components['schemas']['InputRow'][];
-  validationResult: components['schemas']['TraitMultiValidationResponse'];
+  result: components['schemas']['TraitInputRow'][];
+  validationResult: components['schemas']['LajiBackendTraitMultiValidationResponse'];
 }
 
 interface SubmissionInProgress {
@@ -35,7 +35,7 @@ interface SubmissionInProgress {
 
 type State = NotInitialized | Tsv2RowsInProgress | ValidationInProgress | ValidationComplete | RequestHttpError | SubmissionInProgress;
 
-const apiInputRowsToTable = (res: components['schemas']['InputRow'][]): { cols: string[]; rows: any[][] } => {
+const apiInputRowsToTable = (res: components['schemas']['TraitInputRow'][]): { cols: string[]; rows: any[][] } => {
   // Transform subjects to column-major sparse table
   const subjectAcc: Record<string, Array<any>> = {};
   res.forEach((row, index) => {

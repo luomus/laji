@@ -9,8 +9,8 @@ import { MetadataService } from '../../../shared/service/metadata.service';
 import { UserService } from '../../../shared/service/user.service';
 import { filterNullValues } from '../../trait-db-datasets/trait-db-dataset-editor/trait-db-dataset-editor.component';
 
-type Trait = components['schemas']['Trait'];
-type ValidationResponse = components['schemas']['ValidationResponse'];
+type Trait = components['schemas']['LajiBackendTrait'];
+type ValidationResponse = components['schemas']['LajiBackendValidationResponse'];
 
 @Component({
     templateUrl: './trait-db-trait-editor.component.html',
@@ -34,7 +34,7 @@ export class TraitDbTraitEditorComponent implements OnInit {
   submissionState: 'none' | 'externalValidation' | 'uploading' | 'deleting' = 'none';
   errors: ValidationResponse['errors'] | undefined;
 
-  groups$!: Observable<components['schemas']['TraitGroup'][]>;
+  groups$!: Observable<components['schemas']['LajiBackendTraitGroup'][]>;
   unitOfMeasurements$!: Observable<{id: string; label: string }[]>;
 
   constructor(

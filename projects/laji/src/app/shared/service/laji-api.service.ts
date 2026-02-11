@@ -19,7 +19,7 @@ import { Collection } from '../model/Collection';
 import { Util } from './util.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 export namespace LajiApi {
 

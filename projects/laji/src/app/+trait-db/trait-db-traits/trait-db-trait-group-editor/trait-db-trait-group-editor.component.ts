@@ -6,8 +6,8 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { tap, filter, switchMap } from 'rxjs';
 import { filterNullValues } from '../../trait-db-datasets/trait-db-dataset-editor/trait-db-dataset-editor.component';
 
-type TraitGroup = components['schemas']['TraitGroup'];
-type ValidationResponse = components['schemas']['ValidationResponse'];
+type TraitGroup = components['schemas']['LajiBackendTraitGroup'];
+type ValidationResponse = components['schemas']['TraitValidationResponse'];
 
 @Component({
     templateUrl: './trait-db-trait-group-editor.component.html',

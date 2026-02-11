@@ -8,7 +8,7 @@ import { DocumentService } from '../../own-submissions/service/document.service'
 import { MappingService } from './mapping.service';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
-type Document = components['schemas']['document'];
+type Document = components['schemas']['store-document'];
 
 @Injectable()
 export class AugmentService {
