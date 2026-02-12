@@ -55,7 +55,6 @@
               "chartjs-plugin-datalabels",
               "file-saver",
               "laji-map",
-              "laji-form",
               "@luomus/laji-form"
             ],
             "extractLicenses": false,
