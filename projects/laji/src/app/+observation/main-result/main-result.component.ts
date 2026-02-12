@@ -17,7 +17,7 @@ import { ObservationTableQueryService } from '../../shared-modules/observation-r
 import { BrowserService } from '../../shared/service/browser.service';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 import { Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { startWith, tap } from 'rxjs/operators';
 import { LocalStorageService } from 'ngx-webstorage';
 
 const DEFAULT_PAGE_SIZE = 1000;
@@ -108,7 +108,9 @@ export class MainResultComponent implements OnInit, OnChanges {
       tap(visible => this.documentModalVisible = visible)
     ).subscribe();
 
-    this.localStorageService.observe('resultList').subscribe((data: UserSettingsResultList) => {
+    this.localStorageService.observe('resultList').pipe(
+      startWith(this.localStorageService.retrieve('resultList'))
+    ).subscribe((data: UserSettingsResultList) => {
         if (data) {
           // change aggregatedBy field to another if needed!
           if (data.aggregateBy) {

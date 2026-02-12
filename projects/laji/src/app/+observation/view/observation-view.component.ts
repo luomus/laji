@@ -6,7 +6,7 @@ import { ObservationResultComponent } from '../result/observation-result.compone
 import { Router } from '@angular/router';
 import { IObservationViewModel, ObservationFacade } from '../observation.facade';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { tap } from 'rxjs/operators';
+import { startWith, tap } from 'rxjs/operators';
 import { BrowserService } from '../../shared/service/browser.service';
 import { UserSettingsResultList, UserService } from '../../shared/service/user.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
@@ -110,7 +110,9 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.vm$ = this.observationFacade.vm$;
-    this.settingsList$ = this.localStorageService.observe(this.settingsKeyList);
+    this.settingsList$ = this.localStorageService.observe(this.settingsKeyList).pipe(
+      startWith(this.localStorageService.retrieve(this.settingsKeyList))
+    );
 
     this.mainSubscription.add(
       this.browserService.lgScreen$.subscribe(data => this.showMobile = data)
