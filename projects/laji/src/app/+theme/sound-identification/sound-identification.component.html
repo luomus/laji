@@ -1,6 +1,12 @@
 <div class="container laji-information">
   <h1>{{ 'theme.soundIdentification' | translate }}</h1>
-  <p>{{ 'theme.soundIdentification.intro' | translate }}</p>
+  <p>{{ 'theme.soundIdentification.intro' | translate }} {{ 'theme.soundIdentification.intro.speciesList' | translate }} <a href="{{{
+    'en': 'https://info.laji.fi/en/sound-identification/',
+    'fi': 'https://info.laji.fi/aanitunnistus/',
+    'sv': 'https://info.laji.fi/ljudidentifiering/'} | multiLang}}">{{{
+    'en': 'https://info.laji.fi/en/sound-identification/',
+    'fi': 'https://info.laji.fi/aanitunnistus/',
+    'sv': 'https://info.laji.fi/ljudidentifiering/'} | multiLang}}</a></p>
 
   <div>
     <laji-sound-identification-form (soundIdentificationSubmit)="analyseData($event)" [loading]="loading" [maxAudioDuration]="maxAudioDuration" [acceptedFormats]="acceptedFormats"></laji-sound-identification-form>

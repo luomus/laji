@@ -2129,6 +2129,7 @@
   "theme.soundIdentification.fileInput": "Filväljare",
   "theme.soundIdentification.genericError": "Ett fel inträffade under bearbetningen av filen.",
   "theme.soundIdentification.intro": "Med den här appen kan du identifiera finska fåglar.",
+  "theme.soundIdentification.intro.speciesList": "Listan över arter som modellen känner igen finns här:",
   "theme.soundIdentification.invalidDuration": "Den maximala längden på en ljudfil är 60s.",
   "theme.soundIdentification.invalidFormat": "Ljudfilen kan endast vara i antingen WAV-, FLAC- eller MP3-format.",
   "theme.soundIdentification.invalidLatitude": "Latituden måste vara ett tal mellan -90 och +90.",

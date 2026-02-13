@@ -2130,6 +2130,7 @@
   "theme.soundIdentification.fileInput": "Tiedostovalitsin",
   "theme.soundIdentification.genericError": "Tiedoston käsittelyssä tapahtui virhe.",
   "theme.soundIdentification.intro": "Tällä sovelluksella voit tunnistaa suomalaisia lintuja.",
+  "theme.soundIdentification.intro.speciesList": "Listan lajeista jotka malli tuntee löydät täältä:",
   "theme.soundIdentification.invalidDuration": "Äänitiedosto saa olla enintään 60 sekunnin pituinen.",
   "theme.soundIdentification.invalidFormat": "Äänitiedosto saa olla vain joko WAV-, FLAC- tai MP3-formaatissa.",
   "theme.soundIdentification.invalidLatitude": "Korkeuspiirin on oltava numero välillä -90 - +90.",
