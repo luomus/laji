@@ -2136,6 +2136,7 @@
   "theme.soundIdentification.fileInput": "File selector",
   "theme.soundIdentification.genericError": "There was an error processing the file.",
   "theme.soundIdentification.intro": "With this app you can identify Finnish birds.",
+  "theme.soundIdentification.intro.speciesList": "Listan lajeista jotka malli tuntee löydät täältä:",
   "theme.soundIdentification.invalidDuration": "The maximum length of an audio file is 60s.",
   "theme.soundIdentification.invalidFormat": "The audio file can only be in either WAV, FLAC or MP3 format.",
   "theme.soundIdentification.invalidLatitude": "The altitude range must be a number between -90 and +90.",
