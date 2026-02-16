@@ -10,6 +10,8 @@ import { take } from 'rxjs/operators';
     <ng-container *ngIf="data$ | async as data; else spinner">
       <laji-named-places [documentForm]="data.documentForm"
                          [activeId]="data.activeNP!"
+                         [filterBy]="data.filterBy!"
+                         [tab]="data.tab!"
                          [municipality]="data.municipality!"
                          [birdAssociationArea]="data.birdAssociationArea!"
                          [tags]="data.tags!"
@@ -17,6 +19,8 @@ import { take } from 'rxjs/operators';
                          (birdAssociationAreaChange)="onBirdAssociationAreaChange($event)"
                          (tagsChange)="onTagsChange($event)"
                          (activeIdChange)="onActiveIdChange($event!)"
+                         (filterChange)="onFilterChange($event!)"
+                         (tabChange)="onTabChange($event!)"
                          (use)="use($event!)"
                          (edit)="edit($event!)"
                          (create)="create()"
@@ -61,6 +65,14 @@ export class NamedPlaceWrapperComponent implements OnInit {
 
   onActiveIdChange(id: string) {
     this.updateQuery({activeNP: id});
+  }
+
+  onFilterChange(filterBy: string) {
+    this.updateQuery({filterBy});
+  }
+
+  onTabChange(tab: string) {
+    this.updateQuery({tab});
   }
 
   use(id: string) {

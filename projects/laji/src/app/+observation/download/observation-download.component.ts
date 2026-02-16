@@ -36,7 +36,7 @@ import { DownloadService } from '../../shared/service/download.service';
 import { ApiKeyRequest } from '../../shared-modules/download-modal/apikey-modal/apikey-modal.component';
 import { createActiveFiltersList } from '../../shared-modules/search-filters/active/observation-active.component';
 import { FORMAT } from '../../shared-modules/download-modal/download.component';
-import { FileFormat, GeoConvertService, isGeoConvertError } from '../../shared/service/geo-convert.service';
+import { GeoConvertService, isGeoConvertError } from '../../shared/service/geo-convert.service';
 import { DialogService } from '../../shared/service/dialog.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 import { PlatformService } from '../../root/platform.service';
@@ -382,7 +382,6 @@ export class ObservationDownloadComponent implements OnDestroy {
           formData,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           data.id!,
-          params.fileType as FileFormat,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           params.geometry!,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

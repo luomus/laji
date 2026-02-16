@@ -20,3 +20,7 @@
 .nav a {
   cursor: pointer;
 }
+
+.filterBy {
+  padding: 15px 0;
+}

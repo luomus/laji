@@ -1,7 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { IFormField } from '../../../model/excel';
 import { TranslateService } from '@ngx-translate/core';
 import { Util } from '../../../../../shared/service/util.service';
+
+interface ErrorGroup {
+  title: string;
+  errors: string[];
+}
 
 @Component({
   selector: 'laji-error-list',
@@ -9,89 +14,68 @@ import { Util } from '../../../../../shared/service/util.service';
   styleUrls: ['./error-list.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ErrorListComponent {
+export class ErrorListComponent implements OnChanges {
 
   @Input({ required: true }) fields!: {[key: string]: IFormField};
+  @Input() errors: unknown;
 
-  _errors: {field: string; errors: string[]}[] = [];
+  _errors: ErrorGroup[] = [];
 
   constructor(private translateService: TranslateService) { }
 
-  @Input()
-  set errors(data: unknown) {
-    const errors = [];
+  ngOnChanges() {
+    this._errors = this.processErrors(this.errors, this.fields);
+  }
+
+  processErrors(data: unknown, fields: {[key: string]: IFormField}): ErrorGroup[] {
+    const errors: ErrorGroup[] = [];
+
     if (Util.isObject(data)) {
       if (Util.hasOwnProperty(data, 'status')) {
         switch (data.status) {
           case 403:
             errors.push({
-              field: 'id',
+              title: this.translateService.instant('error'),
               errors: [this.translateService.instant('form.permission.no-access')]
             });
             break;
           case 422:
           default:
             errors.push({
-              field: 'id',
-              errors: [Util.hasOwnProperty(data, 'statusText') ? data.statusText : this.translateService.instant('haseka.form.genericError')]
+              title: this.translateService.instant('error'),
+              errors: [this.translateService.instant('haseka.form.genericError')]
             });
         }
       } else {
         Object.keys(data).forEach(field => {
           errors.push({
-            field: this.pathToKey(field),
-            errors: Array.isArray(data[field]) ? data[field] : this.pickErrors(data[field])
+            title: this.getFieldName(field, fields),
+            errors: data[field] as string[]
           });
         });
       }
-    } else if (Array.isArray(data)) {
-      data.forEach(err => {
-        if (typeof err !== 'object' || !Util.hasOwnProperty(err, 'dataPath')) {
-          return;
-        }
-        errors.push({
-          field: err.dataPath
-            .substring(err.dataPath.substring(0, 1) === '/' ? 1 : 0)
-            .replace(/\/[0-9]+/g, '[*]')
-            .replace(/\//g, '.'),
-          errors: [this.getMessage(err)]
-        });
-      });
     }
-    this._errors = errors;
+
+    return errors;
   }
 
-  private pathToKey(path: string) {
+  private getFieldName(path: string, fields: {[key: string]: IFormField}): string {
     if (path.substring(0, 1) === '.') {
       path = path.substring(1);
     }
-    return path.replace(/\[[0-9]+]/g, '[*]');
-  }
 
-  private pickErrors(value: any): any[] {
-    if (typeof value === 'string') {
-      return [value];
-    } else if (Array.isArray(value)) {
-      return value;
-    } else if (typeof value === 'object') {
-      return Object.keys((value)).reduce((prev, current) => [...prev, ...this.pickErrors(current)] as any, []);
-    }
-    return [value];
-  }
+    const key = path.replace(/\[[0-9]+]/g, '[*]');
 
-  private getMessage(err: unknown): string {
-    if (!Util.isObject(err) || !Util.hasOwnProperty(err, 'message') || typeof err.message !== 'string') {
-      return this.translateService.instant('haseka.form.genericError');
-    }
-    let base = err.message;
-    if (Util.hasOwnProperty(err, 'params') && typeof err.params === 'object' && err.params && !Array.isArray(err.params)) {
-      const info = Object.values(err.params);
-      if (info.length) {
-        base += ` '${info.join('\', \'')}'`;
-      }
+    if (fields[key]) {
+      return fields[key].fullLabel;
     }
 
-    return base;
-  }
+    const arrayKey = key + '[*]';
 
+    if (fields[arrayKey]) {
+      return fields[arrayKey].fullLabel;
+    }
+
+    return '';
+  }
 }

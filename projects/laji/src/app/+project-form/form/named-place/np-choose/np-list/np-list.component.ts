@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { Util } from '../../../../../shared/service/util.service';
-import { map, take } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
 import { BoolToStringPipe } from '../../../../../shared/pipe/bool-to-string.pipe';
 import Timeout = NodeJS.Timeout;
@@ -22,6 +22,7 @@ import { DatatableColumn } from '../../../../../shared-modules/datatable/model/d
 import { DatatableComponent } from '../../../../../shared-modules/datatable/datatable/datatable.component';
 import { SelectionType, SortType } from '@achimha/ngx-datatable';
 import { NpInfoComponent } from '../../np-info/np-info.component';
+import { DatatableUtil } from '../../../../../shared-modules/datatable/service/datatable-util.service';
 
 @Component({
   selector: 'laji-np-list',
@@ -40,7 +41,6 @@ export class NpListComponent implements OnDestroy {
   selectionType = SelectionType;
   showLegendList? = false;
   multisort? = false;
-  filterBy?: string;
   legendList = [
     {label: 'Vapaa', color: '#ffffff'},
     {label: 'Varattu', color: '#d1c400'},
@@ -48,7 +48,7 @@ export class NpListComponent implements OnDestroy {
     {label: 'Ilmoitettu', color: '#00aa00'}
   ];
   columnsMetaData: {[columnName: string]: DatatableColumn};
-  private _visible?: boolean;
+  _visible = true;
   private _visibleTimeout?: Timeout;
   private _formRights?: Rights;
   private _documentForm!: Form.SchemaForm;
@@ -61,13 +61,16 @@ export class NpListComponent implements OnDestroy {
   @ViewChild('dataTable', { static: true }) public datatable!: DatatableComponent;
 
   @Output() activePlaceChange = new EventEmitter<number>();
+  @Output() filteredIDs = new EventEmitter<string[]>();
 
   @Input() activeNP?: number|null;
+  @Input() filterBy?: string;
   @Input({ required: true }) height!: string;
   @Input() listColumnNameMapping?: { [key: string]: string};
 
   constructor(private cd: ChangeDetectorRef,
-              private areaNamePipe: AreaNamePipe
+              private areaNamePipe: AreaNamePipe,
+              private datatableUtil: DatatableUtil
 ) {
   this.columnsMetaData = {
       '$.alternativeIDs[0]': {
@@ -110,6 +113,16 @@ export class NpListComponent implements OnDestroy {
       '$.locality': {
         label: 'np.locality'
       },
+      '$.alternativeIDs': {
+        label: 'np.archipelago.alternativeIDs',
+        cellTemplate: 'labelIDTpl',
+        width: 100
+      },
+      '$.tags': {
+        label: 'np.archipelago.tags',
+        cellTemplate: 'labelIDTpl',
+        width: 100
+      },
       '$.prepopulatedDocument.gatherings[0].invasiveControlOpen': {
         label: 'np.invasiveControlOpen',
         cellTemplate: 'boolToStrTpl'
@@ -132,6 +145,10 @@ export class NpListComponent implements OnDestroy {
 
   changeActivePlace(event: any) {
     this.activePlaceChange.emit(this.data.indexOf(event.row));
+  }
+
+  changeFilteredIDs(event: string[]) {
+    this.filteredIDs.emit(event);
   }
 
   getRowClass(row: any) {
@@ -206,47 +223,43 @@ export class NpListComponent implements OnDestroy {
       this._visibleTimeout = setTimeout(() => {
         this.datatable.showActiveRow();
         this._visibleTimeout = undefined;
-      }, 10);
+      }, 100);
     }
     this._visible = visibility;
-  }
-
-  updateFilter(event: any) {
-    this.filterBy = event.target.value;
   }
 
   private initData() {
     if (!this._fields || !this._namedPlaces) {
       return;
     }
+
     const results: any[] = [];
-    const municipalities$ = [];
+    const observables: Observable<any>[] = [];
+
     for (const namedPlace of this._namedPlaces) {
       const row: any = {};
+
       for (const path of this._fields) {
-        let value = Util.parseJSONPath(namedPlace, path);
-        if (value && value.length && (
-          path === '$.prepopulatedDocument.gatheringEvent.dateBegin'
-          || path === '$.prepopulatedDocument.gatheringEvent.dateEnd'
-        )) {
-          value = value.split('.').reverse().join('-');
-        }
+        const value = Util.parseJSONPath(namedPlace, path);
         row[path] = value;
+        const observable = this.datatableUtil.getVisibleValue(value, namedPlace, 'label');
+        observables.push(
+          observable.pipe(
+            tap(visibleValue => {
+              if (visibleValue && visibleValue.length > 0) {
+                row[path] = visibleValue;
+              }
+            })
+          )
+        );
       }
-      const municipality = row['$.municipality'];
-      if (municipality && municipality.length) {
-        municipalities$.push(forkJoin(
-          ...municipality.map((_muni: string) => this.areaNamePipe.updateValue(_muni)
-            .pipe(take(1)))
-        ).pipe(map(areaLabel => [row, areaLabel])));
-      }
+
+      row['$.id'] = namedPlace.id;
       results.push(row);
     }
-    if (municipalities$.length) {
-      forkJoin(...municipalities$).subscribe((municipalityTuples) => {
-        municipalityTuples.forEach(([row, municipalityLabel]: [any, string[]]) => {
-          row['$.municipality'] = municipalityLabel.join(', ');
-        });
+
+    if (observables.length > 0) {
+      forkJoin(observables).subscribe(() => {
         this.data = results;
         this.cd.markForCheck();
       });

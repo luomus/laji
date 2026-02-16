@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter,
   Input, Output, OnDestroy} from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Annotation } from '../../../shared/model/Annotation';
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { LoadingElementsService } from '../loading-elements.service';
 import { TaxonTagEffectiveService } from '../taxon-tag-effective.service';
-import { AnnotationTag } from '../../../shared/model/AnnotationTag';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
 
+type Annotation = components['schemas']['annotation'];
+type AnnotationTag = components['schemas']['tag'];
 
 @Component({
   selector: 'laji-gathering-annotation',
@@ -26,7 +27,7 @@ export class GatheringAnnotationComponent implements OnDestroy {
 
   @Input() isEditor?: boolean;
   @Input() personID?: string;
-  @Input() personRoleAnnotation?: Annotation.AnnotationRoleEnum;
+  @Input() personRoleAnnotation?: Annotation['byRole'];
   @Input({ required: true }) documentID!: string;
   @Input() createdDate: any;
   @Input() loadDate?: string;

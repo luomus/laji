@@ -229,9 +229,9 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       this._shouldSort = true;
       switch (this.field) {
         case 'MMAN.tag':
-          return this.annotationService.getAllTags('multi').pipe(
+          return this.annotationService.getAllTags().pipe(
             map(tags => tags.filter(t => !t.requiredRolesAdd || !t.requiredRolesAdd.includes(Annotation.AnnotationRoleEnum.formAdmin))),
-            map(tags => tags.map(t => ({id: t.id, value: MultiLangService.getValue(t.name as any, this.lang)})))
+            map(tags => tags.map(t => ({ id: t.id, value: t.name })))
           );
         case 'MY.collectionID':
           return this.collectionService.getAll$(this.lang, true);

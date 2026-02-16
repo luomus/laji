@@ -4,7 +4,9 @@ import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { DocumentViewerFacade } from '../document-viewer.facade';
-import { AnnotationTag } from '../../../shared/model/AnnotationTag';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type AnnotationTag = components['schemas']['tag'];
 
 @Component({
   selector: 'laji-unit',

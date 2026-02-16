@@ -3,7 +3,7 @@
   <laji-annotation-list
     *ngIf="!loading && listVisible"
     [personID]="personID"
-    [annotations]="annotations"
+    [annotations]="$any(annotations)"
     [lastAnnotationAddedId]="lastAnnotationAddedId"
     [annotationTags]="annotationTags"
     [effectiveTags]="activeTags"
@@ -12,7 +12,7 @@
 </div>
 
 <div [ngClass]="{'annotation-form': formVisible, '': !formVisible}">
-  <ng-container *ngIf="personRoleAnnotation === annotationRole.expert; else basicForm">
+  <ng-container *ngIf="personRoleAnnotation === 'MMAN.expert'; else basicForm">
     <div>
       <span [ngSwitch]="currentLang" class="pull-right">
         <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'sv'" [routerLink]="['/about', '3928'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
@@ -65,7 +65,7 @@
     <laji-annotation-form-new #formAnnotation
     [identifying]="identifying"
     [annotations]="annotations"
-    [annotation]="annotation"
+    [annotation]="$any(annotation)"
     [personID]="personID"
     [personRoleAnnotation]="personRoleAnnotation"
     [isEditor]="isEditor"

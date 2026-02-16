@@ -28,6 +28,8 @@ interface DerivedFromInput {
   municipality?: string;
   tags?: string[];
   activeNP?: NamedPlace;
+  filterBy?: string;
+  tab?: string;
   description?: string;
   allowEdit: boolean;
   mapOptionsData: any;
@@ -48,6 +50,14 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   @Input() set activeId(activeID: string | null) {
     this.activeNP$.next(activeID);
+  }
+
+  @Input() set filterBy(filterBy: string) {
+    this.filterBy$.next(filterBy);
+  }
+
+  @Input() set tab(tab: string) {
+    this.tab$.next(tab);
   }
 
   @Input() set municipality(municipality: string) {
@@ -72,6 +82,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   @Output() municipalityChange = new EventEmitter<string>();
   @Output() tagsChange = new EventEmitter<string[]>();
   @Output() activeIdChange = new EventEmitter<string | null>();
+  @Output() filterChange = new EventEmitter<string>();
+  @Output() tabChange = new EventEmitter<string>();
   @Output() use = new EventEmitter<string | undefined | null>();
   @Output() edit = new EventEmitter<string | undefined | null>();
   @Output() create = new EventEmitter<null>();
@@ -89,6 +101,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   private updateFromInput!: Subscription;
   private documentForm$ = new BehaviorSubject<Form.SchemaForm | undefined>(undefined);
   private activeNP$ = new BehaviorSubject<string | undefined | null>(undefined);
+  private filterBy$ = new BehaviorSubject<string | undefined>(undefined);
+  private tab$ = new BehaviorSubject<string | undefined>(undefined);
   private municipality$ = new BehaviorSubject<string | undefined>(undefined);
   private birdAssociationArea$ = new BehaviorSubject<string | undefined>(undefined);
   private tags$ = new BehaviorSubject<string[] | undefined>(undefined);
@@ -164,7 +178,19 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const formRights$ = this.documentForm$.pipe(switchMap(documentForm => this.formPermissionService.getRights(documentForm!)));
 
-    this.vm$ = combineLatest(this.documentForm$, placeForm$, this.municipality$, this.birdAssociationArea$, this.tags$, activeNP$, namedPlaces$, user$, formRights$).pipe(
+    this.vm$ = combineLatest(
+      this.documentForm$,
+      placeForm$,
+      this.municipality$,
+      this.birdAssociationArea$,
+      this.tags$,
+      activeNP$,
+      this.filterBy$,
+      this.tab$,
+      namedPlaces$,
+      user$,
+      formRights$
+    ).pipe(
       map(([
           documentForm,
           placeForm,
@@ -172,6 +198,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           birdAssociationArea,
           tags,
           activeNP,
+          filterBy,
+          tab,
           namedPlaces,
           user,
           formRights
@@ -186,6 +214,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           municipality,
           tags,
           activeNP,
+          filterBy,
+          tab,
           description: documentForm.options?.namedPlaceOptions?.chooseDescription ?? 'np.defaultDescription',
           allowEdit: (documentForm?.options?.namedPlaceOptions?.allowAddingPublic || formRights.admin) && !this.readonly,
           mapOptionsData: NamedPlaceComponent.getMapOptions(documentForm),
@@ -269,6 +299,14 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       }
       this.activeIdChange.emit(activeNP);
     });
+  }
+
+  onFilterChange(filterBy: string) {
+    this.filterChange.emit(filterBy);
+  }
+
+  onTabChange(tab: string) {
+    this.tabChange.emit(tab);
   }
 
   onEdit() {

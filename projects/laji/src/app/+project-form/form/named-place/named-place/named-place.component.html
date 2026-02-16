@@ -72,9 +72,13 @@
                           [documentForm]="data.documentForm"
                           [placeForm]="data.placeForm"
                           [userID]="data.user?.id"
-                          [activeNP]="data.activeNP?.id"
                           [formRights]="data.formRights"
-                          (activePlaceChange)="onActivePlaceChange($event)"></laji-np-choose>
+                          [activeNP]="data.activeNP?.id"
+                          [filterBy]="data.filterBy"
+                          [tab]="data.tab"
+                          (activePlaceChange)="onActivePlaceChange($event)"
+                          (filterChange)="onFilterChange($event)"
+                          (tabChange)="onTabChange($event)"></laji-np-choose>
           <ng-container *lajiLoggedIn="true">
             <lu-button *ngIf="data.allowEdit"
                        lajiFormOption="options.namedPlaceOptions.createNewButtonLabel"
