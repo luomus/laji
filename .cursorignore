@@ -1,0 +1,58 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+
+# dependencies
+/node_modules
+/bower_components
+
+# IDEs and editors
+/.idea
+/.vscode
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.swp
+.vim*
+
+# misc
+/.angular/cache
+/.sass-cache
+/connect.lock
+/coverage/*
+/test-results/*
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/typings
+settings.json
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+!/projects/laji/e2e/protractor.conf.js
+
+# files related to generate spectrograms script
+/projects/kerttu-global/generate-spectrograms/node_modules
+/projects/kerttu-global/generate-spectrograms/input*
+/projects/kerttu-global/generate-spectrograms/output*
+
+projects/laji-api-client-b/node_modules
+
+# Don't include script with this repo!
+**/*.sh
+
+#System Files
+.DS_Store
+Thumbs.db
+
+.angular
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+.env
