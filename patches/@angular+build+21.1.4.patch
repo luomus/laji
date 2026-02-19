@@ -1,0 +1,12 @@
+diff --git a/node_modules/@angular/build/src/utils/server-rendering/prerender.js b/node_modules/@angular/build/src/utils/server-rendering/prerender.js
+index cea3256..563da4e 100644
+--- a/node_modules/@angular/build/src/utils/server-rendering/prerender.js
++++ b/node_modules/@angular/build/src/utils/server-rendering/prerender.js
+@@ -152,6 +152,7 @@ async function renderPages(baseHref, sourcemap, serializableRouteTreeNode, maxTh
+                 }
+             })
+                 .catch((err) => {
++                  console.log(err);
+                 errors.push(`An error occurred while prerendering route '${route}'.\n\n${err.message ?? err.stack ?? err.code ?? err}`);
+                 void renderWorker.destroy();
+             });
