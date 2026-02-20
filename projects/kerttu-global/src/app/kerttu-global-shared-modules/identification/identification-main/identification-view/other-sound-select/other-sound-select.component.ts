@@ -22,7 +22,7 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OtherSoundSelectComponent implements OnChanges {
-  @Input() taxonType = TaxonTypeEnum.bird;
+  @Input() taxonTypes = [TaxonTypeEnum.bird];
 
   selectedId?: number;
   options?: IGlobalSpecies[];
@@ -39,14 +39,14 @@ export class OtherSoundSelectComponent implements OnChanges {
   ) {
     this.getOptions$().subscribe(options => {
       this.allOptions = options;
-      this.options = this.getFilteredOptions(this.allOptions, this.taxonType);
+      this.options = this.getFilteredOptions(this.allOptions, this.taxonTypes);
       this.cdr.markForCheck();
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxonType && this.allOptions) {
-      this.options = this.getFilteredOptions(this.allOptions, this.taxonType);
+      this.options = this.getFilteredOptions(this.allOptions, this.taxonTypes);
     }
   }
 
@@ -65,7 +65,7 @@ export class OtherSoundSelectComponent implements OnChanges {
       this.userService.getToken(),
       this.translate.currentLang,
       {
-        taxonType: TaxonTypeEnum.other,
+        taxonTypes: [TaxonTypeEnum.other],
         pageSize: 1000
       }
     ).pipe(
@@ -73,11 +73,11 @@ export class OtherSoundSelectComponent implements OnChanges {
     );
   }
 
-  private getFilteredOptions(options: IGlobalSpecies[], taxonType: TaxonTypeEnum): IGlobalSpecies[] {
+  private getFilteredOptions(options: IGlobalSpecies[], taxonTypes: TaxonTypeEnum[]): IGlobalSpecies[] {
     return options.filter(option => (
-      (taxonType === TaxonTypeEnum.bird && option.scientificName !== 'Birds') ||
-      (taxonType === TaxonTypeEnum.bat && option.scientificName !== 'Bats') ||
-      (taxonType === TaxonTypeEnum.insect && option.scientificName !== 'Insects')
+      (taxonTypes.includes(TaxonTypeEnum.bird) && option.scientificName !== 'Birds') ||
+      (taxonTypes.includes(TaxonTypeEnum.bat) && option.scientificName !== 'Bats') ||
+      (taxonTypes.includes(TaxonTypeEnum.insect) && option.scientificName !== 'Insects')
     ));
   }
 }

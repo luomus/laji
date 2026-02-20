@@ -16,7 +16,7 @@ import { IGlobalSite, TaxonTypeEnum } from '../../kerttu-global-shared/models';
 })
 export class BirdIdentificationHistoryComponent {
   sites$: Observable<IGlobalSite[]>;
-  taxonTypes = [TaxonTypeEnum.bird, TaxonTypeEnum.insect, TaxonTypeEnum.frog];
+  taxonTypes = [TaxonTypeEnum.bird, TaxonTypeEnum.insect, TaxonTypeEnum.frog, TaxonTypeEnum.mammal];
 
   constructor(
     private kerttuGlobalApi: KerttuGlobalApi,

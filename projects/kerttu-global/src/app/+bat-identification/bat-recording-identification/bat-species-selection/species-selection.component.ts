@@ -31,7 +31,7 @@ export class SpeciesSelectionComponent {
     const speciesData$ = this.kerttuGlobalApi.getSpeciesList(this.userService.getToken(), this.translate.currentLang, {
       page: 1,
       pageSize: 1000,
-      taxonType: TaxonTypeEnum.bat,
+      taxonTypes: [TaxonTypeEnum.bat],
       orderBy: ['scientificName ASC'],
       onlyWithSoundscapeRecordings: true,
       includeAnnotationStatus: true

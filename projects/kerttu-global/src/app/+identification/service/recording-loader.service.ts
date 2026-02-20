@@ -64,7 +64,7 @@ export class RecordingLoaderService implements OnDestroy {
   }
 
   setUnknownSpecies(unknownSpecies: boolean|null = null) {
-    if (!this.unknownSpecies === unknownSpecies) {
+  if (this.unknownSpecies !== unknownSpecies) {
       this.unknownSpecies = unknownSpecies;
       this.clearLoadedRecordings(true);
     }

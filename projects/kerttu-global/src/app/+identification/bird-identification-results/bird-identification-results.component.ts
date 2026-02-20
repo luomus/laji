@@ -10,5 +10,5 @@ import { TaxonTypeEnum } from '../../kerttu-global-shared/models';
   `
 })
 export class BirdIdentificationResultsComponent {
-  taxonTypes = [TaxonTypeEnum.bird];
+  taxonTypes = [TaxonTypeEnum.bird, TaxonTypeEnum.mammal];
 }

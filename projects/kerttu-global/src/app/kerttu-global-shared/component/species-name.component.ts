@@ -16,7 +16,6 @@ import { IGlobalSpecies, TaxonTypeEnum } from '../models';
 })
 export class SpeciesNameComponent {
   @Input() species?: IGlobalSpecies;
-  @Input() mainTaxonType?: TaxonTypeEnum;
 
   taxonTypeEnum = TaxonTypeEnum;
 }

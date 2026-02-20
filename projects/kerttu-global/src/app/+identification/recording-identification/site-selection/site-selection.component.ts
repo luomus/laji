@@ -25,7 +25,7 @@ export class SiteSelectionComponent {
     private kerttuGlobalApi: KerttuGlobalApi
   ) {
     this.sites$ = this.kerttuGlobalApi.getSites(
-      [TaxonTypeEnum.bird, TaxonTypeEnum.insect, TaxonTypeEnum.frog],
+      [TaxonTypeEnum.bird, TaxonTypeEnum.insect, TaxonTypeEnum.frog, TaxonTypeEnum.mammal],
       this.userService.getToken()
     ).pipe(
       map(result => result.results)

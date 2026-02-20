@@ -31,7 +31,7 @@
         [enableShowWholeTimeRangeSetting]="recording.taxonType === taxonTypeEnum.bird || recording.taxonType === taxonTypeEnum.insect"
         [(showWholeFrequencyRange)]="showWholeFrequencyRange"
         [(showWholeTimeRange)]="showWholeTimeRange"
-        (showWholeFrequencyRangeChange)="updateAudioViewerConfigForType(recording.taxonType)"
+        (showWholeFrequencyRangeChange)="updateAudioViewerConfig()"
         [showWholeFrequencyRangeLabel]="'identification.highFrequencies' | translate"
         [showWholeTimeRangeLabel]="'identification.timeBuffer' | translate"
         [showWholeFrequencyRangeInfo]="'identification.highFrequencies.info' | translate"
@@ -123,7 +123,7 @@
         </h4>
         <bsg-taxon-select
           id="species-select"
-          [taxonType]="recording.taxonType"
+          [taxonTypes]="selectableTaxonTypes"
           (taxonSelect)="addToIdentifications($event)"
           [placeholder]="'identification.taxonSelectPlaceholder' | translate"
         ></bsg-taxon-select>
@@ -155,7 +155,7 @@
         </h4>
         <bsg-other-sound-select
           id="other-species-select"
-          [taxonType]="recording.taxonType"
+          [taxonTypes]="selectableTaxonTypes"
           (soundSelect)="addToIdentifications($event)"
         ></bsg-other-sound-select>
       </div>

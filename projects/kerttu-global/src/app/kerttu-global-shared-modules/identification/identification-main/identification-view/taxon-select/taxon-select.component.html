@@ -1,4 +1,4 @@
-<select class="form-control d-inline continent-select" [(ngModel)]="continent" *ngIf="taxonType === taxonTypeEnum.bird">
+<select class="form-control d-inline continent-select" [(ngModel)]="continent" *ngIf="showContinentSelect">
   <option [value]="undefined">{{ 'identification.allContinents' | translate }}</option>
   <option *ngFor="let continent of (filters$ | async)?.continent" [ngValue]="continent.id">{{ ('continents.' + continent.name) | translate }}</option>
 </select>
