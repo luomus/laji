@@ -286,7 +286,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
   private updateSelectableTaxonTypes() {
     const taxonType = this.recording.taxonType;
 
-    const birdGroup = [TaxonTypeEnum.bird, TaxonTypeEnum.mammal];
+    const birdGroup = [TaxonTypeEnum.bird, TaxonTypeEnum.mammal, TaxonTypeEnum.frog];
 
     if (birdGroup.includes(taxonType)) {
       this.selectableTaxonTypes = birdGroup;
