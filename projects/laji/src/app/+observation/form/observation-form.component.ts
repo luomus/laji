@@ -521,8 +521,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       query.sourceId = ['KE.167', 'KE.3'];
       query.superRecordBasis = ['PRESERVED_SPECIMEN'];
     }
-    query.editorPersonToken = formQuery.asEditor ? ObservationFacade.PERSON_TOKEN : undefined;
-    query.observerPersonToken = formQuery.asObserver ? ObservationFacade.PERSON_TOKEN : undefined;
+    query.editorPersonToken = formQuery.asEditor && !formQuery.asObserver ? ObservationFacade.PERSON_TOKEN : undefined;
+    query.observerPersonToken = formQuery.asObserver && !formQuery.asEditor ? ObservationFacade.PERSON_TOKEN : undefined;
+    query.editorOrObserverPersonToken = formQuery.asEditor && formQuery.asObserver ? ObservationFacade.PERSON_TOKEN : undefined;
     query.editorOrObserverIsNotPersonToken = formQuery.asNotEditorOrObserver ? ObservationFacade.PERSON_TOKEN : undefined;
     query.includeSubTaxa = formQuery.taxonIncludeLower ? undefined : false;
     query.useIdentificationAnnotations = formQuery.taxonUseAnnotated ? undefined : false;
