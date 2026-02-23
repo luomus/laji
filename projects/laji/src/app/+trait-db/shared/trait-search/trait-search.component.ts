@@ -174,7 +174,7 @@ export class TraitSearchComponent implements OnInit, OnDestroy, OnChanges {
         filter(_ => {
           // ignore internal query param updates
           const state = this.location.getState() as any;
-          return !(state['trait-search-ignore'] === this.queryParamChangeId);
+          return !(state?.['trait-search-ignore'] === this.queryParamChangeId);
         }),
         tap(queryParams => {
           const formValue = queryParamsToFormValue(queryParams);
