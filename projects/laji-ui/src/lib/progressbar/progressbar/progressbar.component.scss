@@ -1,5 +1,5 @@
-@import 'vars';
-@import 'mixins/loading';
+@use 'vars' as *;
+@use 'mixins/loading' as *;
 
 :host {
   display: flex;

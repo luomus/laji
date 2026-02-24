@@ -1,5 +1,5 @@
-@import 'vars';
-@import 'mixins/buttons';
+@use 'vars' as *;
+@use 'mixins/buttons' as *;
 
 /*
   BUTTON STYLING

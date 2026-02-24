@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 ngx-datatable ::ng-deep datatable-body-row {
   cursor: pointer;

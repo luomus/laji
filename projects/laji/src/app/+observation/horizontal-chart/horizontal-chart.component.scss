@@ -1,5 +1,5 @@
-@import 'vars';
-@import '../../../styles/styles';
+@use 'vars' as *;
+@use '../../../styles/styles' as *;
 
 div {
   &.loading-mask {

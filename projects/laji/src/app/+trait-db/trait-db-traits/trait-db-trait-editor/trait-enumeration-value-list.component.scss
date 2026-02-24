@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 :host {
   display: block;
@@ -11,4 +11,3 @@
   margin-left: $sp-3;
   border-left: 2px solid $neutral-4;
 }
-

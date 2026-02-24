@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 img {
   &:not(.no-image-icon) {

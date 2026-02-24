@@ -1,4 +1,5 @@
-@import 'mixins/loading';
+@use 'vars' as *;
+@use 'mixins/loading' as *;
 
 $btn-primary-hue-shift: -15deg !default;
 $btn-secondary-hue-shift: 0deg !default;

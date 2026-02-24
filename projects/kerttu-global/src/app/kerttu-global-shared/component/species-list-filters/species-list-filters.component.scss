@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 .filters {
   margin-top: -$sp-4;

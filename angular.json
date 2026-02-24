@@ -32,6 +32,7 @@
               "node_modules/@luomus/laji-form/dist/styles.css",
               "node_modules/@luomus/laji-form-builder/lib/client/styles.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
+              "@ali-hm/angular-tree-component/css/angular-tree-component.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/@achimha/ngx-datatable/themes/material.scss",

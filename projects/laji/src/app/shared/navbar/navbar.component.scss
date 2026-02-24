@@ -1,5 +1,5 @@
-@import '../../../styles/variables';
-@import 'vars';
+@use 'vars' as *;
+@use '../../../styles/variables' as *;
 
 $bg: $primary-6;
 $hover: lighten($primary-6, 5%);
@@ -284,4 +284,3 @@ $text-color: $primary-2;
     }
   }
 }
-

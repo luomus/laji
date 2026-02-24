@@ -1,6 +1,6 @@
-@import "../../../styles/variables";
-@import 'vars';
-@import '../../../styles/styles';
+@use 'vars' as *;
+@use "../../../styles/variables" as *;
+@use '../../../styles/styles' as *;
 
 .results, .whole-data-list {
   padding-top: 20px;

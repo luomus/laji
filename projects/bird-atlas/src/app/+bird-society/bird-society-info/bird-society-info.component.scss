@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 .map-panel {
   max-width: 100%;
@@ -66,4 +66,3 @@ ba-bird-society-info-map {
     background-color: lighten($success-5, 5%);
   }
 }
-

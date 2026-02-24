@@ -1,5 +1,5 @@
-@import 'vars';
-@import '../../../../../styles/_variables';
+@use 'vars' as *;
+@use '../../../../../styles/_variables' as *;
 
 :host ::ng-deep .datatable-body-row.last-rows,
 :host ::ng-deep .datatable-body-row.last-rows .datatable-row-left,

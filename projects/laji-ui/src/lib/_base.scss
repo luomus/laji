@@ -1,4 +1,4 @@
-@import 'mixins/base';
+@use 'mixins/base' as *;
 
 body {
   @include base();

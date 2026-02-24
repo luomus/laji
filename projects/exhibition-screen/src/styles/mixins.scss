@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 @mixin panel() {
   background-color: $neutral-2;

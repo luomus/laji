@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 header {
   background-color: $primary-2;

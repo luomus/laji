@@ -1,4 +1,4 @@
-@import 'mixins/details';
+@use 'mixins/details' as *;
 
 details.lu-details {
   @include details();

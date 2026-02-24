@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 .taxon-select-bar {
   background-color: $primary-6;
