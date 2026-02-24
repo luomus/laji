@@ -29,7 +29,7 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
-import { HistoryService } from '../../../shared/service/history.service';
+import { BrowserService } from '../../../shared/service/browser.service';
 import { DocumentPermissionService } from '../service/document-permission.service';
 import { FormService } from '../../../shared/service/form.service';
 import { Form } from '../../../shared/model/Form';
@@ -100,7 +100,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private deleteDocumentService: DeleteOwnDocumentService,
-    private historyService: HistoryService,
+    private browserService: BrowserService,
     private documentPermissionService: DocumentPermissionService,
     private formService: FormService
   ) { }
@@ -342,15 +342,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         return;
       }
 
-      if(this.historyService.isFirstLoad()) {
+      this.browserService.goBack(() => {
         this.router.navigate(
           this.localizeRouterService.translateRoute(['/vihko/home/'])
         );
-      } else {
-        this.router.navigate(
-          this.localizeRouterService.translateRoute([this.historyService.getPrevious()])
-        );
-      }
+      });
     }
   }
 

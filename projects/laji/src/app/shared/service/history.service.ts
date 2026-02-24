@@ -9,7 +9,8 @@ const MAX_HISTORY = 30;
 @Injectable({providedIn: 'root'})
 export class HistoryService implements OnDestroy {
   private history: string[] = [];
-  private hasBack = false;
+  private anyPageLoaded = false;
+  private isInitialLoad = false;
   private routeSub?: Subscription;
 
   constructor(
@@ -23,13 +24,26 @@ export class HistoryService implements OnDestroy {
     this.routeSub = this.router.events.pipe(
       filter(Util.eventIsNavigationEnd)
     ).subscribe(({urlAfterRedirects}: NavigationEnd) => {
-      if (this.router.getCurrentNavigation()?.extras.replaceUrl
-        || urlAfterRedirects.match(/\/user\/(login|logout)/)
+
+      if (!this.anyPageLoaded) {
+        this.anyPageLoaded = true;
+        this.isInitialLoad = true;
+      } else {
+        this.isInitialLoad = false;
+      }
+
+      if (urlAfterRedirects.match(/\/user\/(login|logout)/)
         || this.history[this.history.length - 1] === urlAfterRedirects) {
         return;
       }
+
+      if (this.router.getCurrentNavigation()?.extras.replaceUrl) {
+        this.history.pop();
+        this.history = [...this.history, urlAfterRedirects];
+        return;
+      }
+
       if (this.history[this.history.length - 2] === urlAfterRedirects) {
-        this.hasBack = true;
         this.history.pop();
       } else {
         this.history = [...this.history, urlAfterRedirects];
@@ -54,11 +68,7 @@ export class HistoryService implements OnDestroy {
     return this.history.length > 1;
   }
 
-  public getPrevious(): string {
-    return this.history[this.history.length - 2] || '';
-  }
-
   public isFirstLoad() {
-    return !(this.hasPrevious() || this.hasBack);
+    return this.isInitialLoad;
   }
 }
