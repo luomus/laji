@@ -85,7 +85,6 @@ export class AppComponent {
 
   private syncLajiApiClientBLang() {
     this.translate.onLangChange
-      .pipe(startWith({ lang: this.translate.getCurrentLang() }))
       .subscribe(({ lang }) => {
         this.api.setLang(lang);
       });
