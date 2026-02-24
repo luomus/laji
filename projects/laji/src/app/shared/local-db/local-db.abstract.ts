@@ -1,4 +1,4 @@
-import * as localForage from 'localforage';
+import localForage from 'localforage';
 import { from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
 import { catchError, map } from 'rxjs';
 
