@@ -49,10 +49,10 @@ export const hasekaRoutes: Routes = [
   {
     path: ':formId/:documentId',
     pathMatch: 'full',
-        redirectTo: route => {
-          const { formId, documentId } = route.params;
-          return `/project/${formId}/form/${documentId}`;
-        }
+    redirectTo: route => {
+      const { formId, documentId } = route.params;
+      return `/project/${formId}/form/${documentId}`;
+    }
   }
 ];
 
