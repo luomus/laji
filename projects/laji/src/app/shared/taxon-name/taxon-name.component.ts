@@ -14,13 +14,10 @@ export class TaxonNameComponent {
     cursiveName?: boolean;
     scientificName?: string;
     vernacularName?: string | {[lang: string]: string};
-    vernacularNameMultiLang?: any;
     scientificNameAuthorship?: string;
-    alternativeVernacularName?: any;
-    alternativeVernacularNameMultiLang?: any;
-    obsoleteVernacularName?: any;
-    colloquialVernacularName?: any;
-    colloquialVernacularNameMultiLang?: any;
+    alternativeVernacularName?: string | {[lang: string]: string};
+    obsoleteVernacularName?: string | {[lang: string]: string};
+    colloquialVernacularName?: string | {[lang: string]: string};
   } = {};
   @Input() taxonID?: string;
   @Input() addLink = true;

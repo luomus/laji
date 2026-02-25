@@ -1,12 +1,12 @@
 <ng-container *ngIf="taxon">
-  <ng-container *ngIf="taxon.vernacularNameMultiLang | multiLang:false" [ngTemplateOutlet]="vernacularName"></ng-container>
-  <ng-container *ngIf="(taxon.vernacularNameMultiLang | multiLang:false) && (taxon.colloquialVernacularNameMultiLang | multiLang:false)">
-    (<ul class="separated-list colloquialVernacularNameMultiLang">
-      <li *ngFor="let obj of taxon.colloquialVernacularNameMultiLang">{{obj}}</li>
+  <ng-container *ngIf="taxon.vernacularName | multiLang:false" [ngTemplateOutlet]="vernacularName"></ng-container>
+  <ng-container *ngIf="(taxon.vernacularName | multiLang:false) && (taxon.colloquialVernacularName | multiLang:false)">
+    (<ul class="separated-list colloquialVernacularName">
+      <li *ngFor="let obj of taxon.colloquialVernacularName">{{obj}}</li>
     </ul>
     <laji-info [placement]="'top'">{{ 'taxonomy.vernacular.colloquial.info' | translate }}</laji-info>)
   </ng-container>
-  <ng-container *ngIf="((taxon.vernacularNameMultiLang | multiLang:false) || taxon.alternativeVernacularNameMultiLang | multiLang:false | values) && taxon.scientificName">
+  <ng-container *ngIf="((taxon.vernacularName | multiLang:false) || taxon.alternativeVernacularName | multiLang:false | values) && taxon.scientificName">
     &ndash;
   </ng-container>
   <ng-container [ngTemplateOutlet]="scientificName"></ng-container>
@@ -26,8 +26,8 @@
   </div>
   <ng-template #scientificName><ng-container *ngIf="taxon.cursiveName; else noCursive"><em>{{ taxon.scientificName }}</em></ng-container><ng-template #noCursive>{{ taxon.scientificName }}</ng-template></ng-template>
   <ng-template #vernacularName>
-    {{ capitalizeName ? (taxon.vernacularNameMultiLang | multiLang:false |  capitalize) : taxon.vernacularNameMultiLang | multiLang:false }}
-    <ng-container *ngIf="taxon?.alternativeVernacularNameMultiLang | multiLang:false | values; let alternativeVernacularName">
+    {{ capitalizeName ? (taxon.vernacularName | multiLang:false |  capitalize) : taxon.vernacularName | multiLang:false }}
+    <ng-container *ngIf="taxon?.alternativeVernacularName | multiLang:false | values; let alternativeVernacularName">
       ({{ alternativeVernacularName }})
     </ng-container>
   </ng-template>
