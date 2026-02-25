@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use 'vars' as *;
 
 $sm-width: 300px;
@@ -56,7 +57,7 @@ $close-btn-right: 30px;
   margin: 55px $margin $margin $margin;
 }
 
-@media only screen and (min-width: map-get($breakpoints, sm)) {
+@media only screen and (min-width: map.get($breakpoints, sm)) {
   .lu-modal-sm {
     .lu-modal-content {
       width: $sm-width;
@@ -87,7 +88,7 @@ $close-btn-right: 30px;
   }
 }
 
-@media (min-width: map-get($breakpoints, md)) {
+@media (min-width: map.get($breakpoints, md)) {
 	.lu-modal-lg {
     .lu-modal-content {
 			width: $lg-width;

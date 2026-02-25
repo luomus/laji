@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use 'vars' as *;
 
 @use 'styles' as *;
@@ -1397,7 +1398,7 @@ span.simple-option {
   max-width: 400px;
   padding-left: $sp-6;
   border-left: 1px solid $neutral-4;
-  @media only screen and (max-width: map-get($map: $breakpoints, $key: "xs")) {
+  @media only screen and (max-width: map.get($map: $breakpoints, $key: "xs")) {
     border-left: none;
     padding-left: unset;
   }
