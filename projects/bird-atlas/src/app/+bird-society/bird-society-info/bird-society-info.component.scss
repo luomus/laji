@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'vars' as *;
 
 .map-panel {
@@ -63,6 +64,6 @@ ba-bird-society-info-map {
   }
 
   &:hover {
-    background-color: lighten($success-5, 5%);
+    background-color: color.adjust($success-5, $lightness: 5%);
   }
 }

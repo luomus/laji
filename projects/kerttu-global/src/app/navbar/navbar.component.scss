@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'vars' as *;
 
 @media only screen and (max-width: 900px) {
@@ -6,7 +7,7 @@
     position: relative !important;
 
     & > li > a:hover {
-      background-color: lighten($primary-6, 5%);
+      background-color: color.adjust($primary-6, $lightness: 5%);
     }
   }
 }

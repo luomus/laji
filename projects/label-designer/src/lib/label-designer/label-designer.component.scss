@@ -71,7 +71,7 @@ $small-screen: 900px;
           border-bottom: 1px solid $menu-border-color;
 
           a {
-            color: lighten($menu-text-color, 90%);
+            color: color.adjust($menu-text-color, $lightness: 90%);
             text-decoration: none;
           }
         }
@@ -89,7 +89,7 @@ $small-screen: 900px;
         }
 
         &.active {
-          background-color: lighten($menu-color, 10%);
+          background-color: color.adjust($menu-color, $lightness: 10%);
           border-bottom: 1px solid $menu-border-color;
         }
 

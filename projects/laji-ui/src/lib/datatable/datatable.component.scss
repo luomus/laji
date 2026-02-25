@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'vars' as *;
 
 :host {
@@ -85,7 +86,7 @@ th:hover {
 
 @keyframes ghost-anim {
   from {box-shadow: inset 0 -20px $neutral-4;}
-  to {box-shadow: inset 0 -20px lighten($neutral-4, 3);}
+  to {box-shadow: inset 0 -20px color.adjust($neutral-4, $lightness: 3%);}
 }
 
 .cell-ghost {

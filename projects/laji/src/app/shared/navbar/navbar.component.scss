@@ -3,8 +3,8 @@
 @use '../../../styles/variables' as *;
 
 $bg: $primary-6;
-$hover: lighten($primary-6, 5%);
-$active: lighten($primary-6, 5%);
+$hover: color.adjust($primary-6, $lightness: 5%);
+$active: color.adjust($primary-6, $lightness: 5%);
 $text-color: $primary-2;
 
 .navbar-collapse {
