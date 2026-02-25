@@ -120,7 +120,7 @@
                 }
               ],
               "optimization": true,
-              "outputHashing": "all",
+              "outputHashing": "none",
               "namedChunks": false,
               "extractLicenses": true,
               "fileReplacements": [
@@ -156,7 +156,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": true,
               "namedChunks": false,
               "extractLicenses": true,
@@ -174,7 +174,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": false,
               "namedChunks": false,
               "aot": true,
@@ -193,7 +193,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
@@ -226,7 +226,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": true,
               "namedChunks": false,
               "aot": true,
@@ -447,7 +447,7 @@
                   "with": "projects/iucn/src/environments/environment.ts"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "none"
             }
           },
           "defaultConfiguration": ""
@@ -878,7 +878,7 @@
                   "inlineCritical": false
                 }
               },
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": true,
               "namedChunks": false,
               "aot": true,
@@ -909,7 +909,7 @@
                   "with": "projects/vir/src/environments/environment.ts"
                 }
               ],
-              "outputHashing": "all",
+              "outputHashing": "none",
               "aot": true
             }
           },
@@ -1050,7 +1050,7 @@
               ],
               "fileReplacements": [],
               "optimization": false,
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": true,
               "namedChunks": true,
               "aot": true
@@ -1164,7 +1164,7 @@
                 }
               ],
               "optimization": true,
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": true,
               "namedChunks": false,
               "aot": true,
@@ -1196,7 +1196,7 @@
                 }
               ],
               "optimization": false,
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": true,
               "namedChunks": true,
               "aot": true
@@ -1323,7 +1323,7 @@
                   "with": "projects/kerttu-global/src/environments/environment.dev.ts"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "none"
             },
             "local": {
               "budgets": [
@@ -1338,7 +1338,7 @@
                   "with": "projects/kerttu-global/src/environments/environment.ts"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "none"
             }
           },
           "defaultConfiguration": ""
