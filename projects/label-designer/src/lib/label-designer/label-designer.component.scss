@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $menu-height: 24px;
 $menu-color: #333;
 $menu-border-color: #777;
@@ -65,7 +67,7 @@ $small-screen: 900px;
         cursor: pointer;
 
         &:hover {
-          background-color: darken($menu-color, 10%);
+          background-color: color.adjust($menu-color, $lightness: -10%);
           border-bottom: 1px solid $menu-border-color;
 
           a {
@@ -128,7 +130,7 @@ $small-screen: 900px;
       display: none;
 
       &:hover {
-        background-color: darken($settings-bg-color, 10%);
+        background-color: color.adjust($settings-bg-color, $lightness: -10%);
       }
     }
 
@@ -189,7 +191,7 @@ $small-screen: 900px;
       tr {
         &.link {
           &:hover {
-            background-color: darken($settings-bg-color, 10%);
+            background-color: color.adjust($settings-bg-color, $lightness: -10%);
           }
         }
       }

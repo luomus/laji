@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'vars' as *;
 
 label {
@@ -217,7 +218,7 @@ label {
   }
 
   :host ::ng-deep lu-checkbox label.checked .admin {
-    background-color: darken($admin-2, 5);
+    background-color: color.adjust($admin-2, $lightness: -5%);
   }
 
   .agree {

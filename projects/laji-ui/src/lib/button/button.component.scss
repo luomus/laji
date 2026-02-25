@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '../vars' as *;
 
 :host {
@@ -13,7 +14,7 @@
     background-color: $info-7;
   }
   &.pressed {
-    background-color: darken($info-7, 3%);
+    background-color: color.adjust($info-7, $lightness: -3%);
     box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
   }
 }
@@ -27,7 +28,7 @@
     background-color: $neutral-7;
   }
   &.pressed {
-    background-color: darken($neutral-9, 3%);
+    background-color: color.adjust($neutral-9, $lightness: -3%);
     box-shadow: 0 0 1px rgba($neutral-8, 0.2);
   }
 }
