@@ -17,7 +17,8 @@ import { ObservationTableQueryService } from '../../shared-modules/observation-r
 import { BrowserService } from '../../shared/service/browser.service';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 import { Subscription } from 'rxjs';
-import { tap } from 'rxjs';
+import { startWith, tap } from 'rxjs/operators';
+import { LocalStorageService } from 'ngx-webstorage';
 
 const DEFAULT_PAGE_SIZE = 1000;
 
@@ -73,7 +74,8 @@ export class MainResultComponent implements OnInit, OnChanges {
     private userService: UserService,
     private browserService: BrowserService,
     private documentViewerFacade: DocumentViewerFacade,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private localStorageService: LocalStorageService
   ) { }
 
   @HostListener('document:keydown', ['$event'])
@@ -106,7 +108,10 @@ export class MainResultComponent implements OnInit, OnChanges {
     this.viewerSub = this.documentViewerFacade.showModal$.pipe(
       tap(visible => this.documentModalVisible = visible)
     ).subscribe();
-    this.userService.getUserSetting<UserSettingsResultList>('resultList').subscribe(data => {
+
+    this.localStorageService.observe('resultList').pipe(
+      startWith(this.localStorageService.retrieve('resultList'))
+    ).subscribe((data: UserSettingsResultList) => {
         if (data) {
           // change aggregatedBy field to another if needed!
           if (data.aggregateBy) {
@@ -227,11 +232,10 @@ export class MainResultComponent implements OnInit, OnChanges {
   }
 
   private saveSettings() {
-    this.userService.setUserSetting('resultList', {
+    this.localStorageService.store('resultList', {
       aggregateBy: this.aggregateBy,
       selected: this.selected,
       pageSize: this.pageSize
     });
   }
-
 }

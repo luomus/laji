@@ -6,7 +6,7 @@ import { ObservationResultComponent } from '../result/observation-result.compone
 import { Router } from '@angular/router';
 import { IObservationViewModel, ObservationFacade } from '../observation.facade';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { tap } from 'rxjs';
+import { startWith, tap } from 'rxjs/operators';
 import { BrowserService } from '../../shared/service/browser.service';
 import { UserSettingsResultList, UserService } from '../../shared/service/user.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
@@ -16,6 +16,7 @@ import { ToastsService } from '../../shared/service/toasts.service';
 import { SidebarComponent } from 'projects/laji-ui/src/lib/sidebar/sidebar.component';
 import { ActiveToast } from 'ngx-toastr';
 import { ObservationFormQuery } from '../form/observation-form-query.interface';
+import { LocalStorageService } from 'ngx-webstorage';
 
 export interface VisibleSections {
   finnish?: boolean;
@@ -94,7 +95,8 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private route: Router,
     private userService: UserService,
-    private toastsService: ToastsService
+    private toastsService: ToastsService,
+    private localStorageService: LocalStorageService
   ) {}
 
   @Input({ required: true })
@@ -109,7 +111,9 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.vm$ = this.observationFacade.vm$;
-    this.settingsList$ = this.userService.getUserSetting<UserSettingsResultList>(this.settingsKeyList);
+    this.settingsList$ = this.localStorageService.observe(this.settingsKeyList).pipe(
+      startWith(this.localStorageService.retrieve(this.settingsKeyList))
+    );
 
     this.mainSubscription.add(
       this.browserService.lgScreen$.subscribe(data => this.showMobile = data)
@@ -169,7 +173,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   onListSettingsChange(settings: UserSettingsResultList) {
-    this.userService.setUserSetting(this.settingsKeyList, settings);
+    this.localStorageService.store(this.settingsKeyList, settings);
   }
 
   toggleMobile() {
