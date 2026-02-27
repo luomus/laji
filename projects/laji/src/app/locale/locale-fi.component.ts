@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { LocaleComponent } from './locale.component';
-import moment from 'moment';
-import 'moment/locale/fi';
 import { PlatformService } from '../root/platform.service';
+import { TranslateService } from '@ngx-translate/core';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import 'moment/locale/fi';
 
 @Component({
     selector: 'laji-locale-fi',
@@ -12,10 +13,10 @@ import { PlatformService } from '../root/platform.service';
 export class LocaleFiComponent extends LocaleComponent {
 
   constructor(
-    platformService: PlatformService
+    platformService: PlatformService,
+    translate: TranslateService,
+    api: LajiApiClientBService
   ) {
-    super(platformService);
-    moment.locale('fi');
-    this.setLocale('fi');
+    super(platformService, translate, api, 'fi');
   }
 }

@@ -1,7 +1,7 @@
-import { APP_ID, ErrorHandler, NgModule, inject, provideAppInitializer } from '@angular/core';
+import { APP_ID, ErrorHandler, NgModule } from '@angular/core';
 import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { SharedModule } from './shared/shared.module';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { ConsoleLogger, HttpLogger, Logger } from './shared/logger';
 import { ILogger } from './shared/logger/logger.interface';
@@ -23,6 +23,9 @@ import { BrowserModule, provideClientHydration, Title } from '@angular/platform-
 import { LajiTitle } from './shared/service/laji-title';
 import { LocaleModule } from './locale/locale.module';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import {provideStabilityDebugging} from '@angular/core';
+import 'zone.js/plugins/task-tracking';
+
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
@@ -30,15 +33,6 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   }
   return new ConsoleLogger();
 }
-
-export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defaultLang = 'fi') {
-  const langFromPath = pathname.split('/')[0]?.toLowerCase();
-  if (langs.includes(langFromPath)) {
-    return langFromPath;
-  }
-  return defaultLang;
-}
-
 
 @NgModule({
   exports: [
@@ -65,14 +59,12 @@ export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defau
   providers: [
     { provide: APP_ID, useValue: 'laji-app' },
     { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: TransferHttpCacheInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS,
+      useClass: TransferHttpCacheInterceptor,
+      multi: true
+    },
     { provide: APP_BASE_HREF, useValue: '/' },
     { provide: API_BASE_URL, useValue: environment.apiBase },
-    provideAppInitializer(() => {
-      const translate = inject(TranslateService);
-      const lang = detectLangFromPath(typeof window !== 'undefined' ? window.location.pathname : '/');
-      return translate.use(lang);
-    }),
     DocumentService,
     { provide: ErrorHandler, useClass: LajiErrorHandler },
     LocalizeRouterService,
@@ -84,6 +76,7 @@ export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defau
     },
     { provide: Title, useClass: LajiTitle },
     provideClientHydration(),
+    provideStabilityDebugging(),
     provideHttpClient(
       withInterceptorsFromDi(),
       withFetch()
