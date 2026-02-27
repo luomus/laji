@@ -1,4 +1,4 @@
-import { Component, ViewContainerRef } from '@angular/core';
+import { ApplicationRef, Component, ViewContainerRef } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
@@ -84,7 +84,7 @@ export class AppComponent {
   }
 
   private syncLajiApiClientBLang() {
-    this.translate.onLangChange
+    this.translate.onLangChange.pipe(startWith({ lang: this.translate.getCurrentLang() }))
       .subscribe(({ lang }) => {
         this.api.setLang(lang);
       });

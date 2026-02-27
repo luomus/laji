@@ -1,7 +1,7 @@
-import { APP_ID, ErrorHandler, NgModule } from '@angular/core';
+import { APP_ID, ErrorHandler, NgModule, inject, provideAppInitializer } from '@angular/core';
 import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { SharedModule } from '../../../laji/src/app/shared/shared.module';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LajiErrorHandler } from '../../../laji/src/app/shared/error/laji-error-handler';
 import { ConsoleLogger, HttpLogger, Logger } from '../../../laji/src/app/shared/logger/index';
 import { ILogger } from '../../../laji/src/app/shared/logger/logger.interface';
@@ -21,6 +21,7 @@ import { AppComponent } from '../../../laji/src/app/shared-modules/app-component
 import { GraphQLModule } from '../../../laji/src/app/graph-ql/graph-ql.module';
 import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { detectLangFromPath } from 'projects/laji/src/app/app.module';
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
@@ -31,42 +32,49 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
 
 
 @NgModule({ exports: [
-        TranslateModule
-    ],
-    bootstrap: [AppComponent], imports: [GraphQLModule,
-        AppComponentModule,
-        LocaleModule,
-        BrowserAnimationsModule,
-        BrowserModule,
-        CommonModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useClass: TranslateFileLoader
-            }
-        }),
-        ToastrModule.forRoot(),
-        SharedModule.forRoot(),
-        IucnRoutingModule,
-        TransferHttpCacheModule], providers: [
-        { provide: APP_ID, useValue: 'laji-app' },
-        { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: API_BASE_URL, useValue: environment.apiBase },
-        DocumentService,
-        { provide: ErrorHandler, useClass: LajiErrorHandler },
-        LocalizeRouterService,
-        { provide: LocationStrategy, useClass: PathLocationStrategy },
-        {
-          provide: Logger,
-          deps: [LajiApiClientBService],
-          useFactory: createLoggerLoader
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideNgxWebstorage(
-      		withNgxWebstorageConfig({ prefix: 'laji-', separator: '' }),
-      		withLocalStorage(),
-      		withSessionStorage()
-        ),
-    ] })
+  TranslateModule
+],
+  bootstrap: [AppComponent], imports: [GraphQLModule,
+    AppComponentModule,
+    LocaleModule,
+    BrowserAnimationsModule,
+    BrowserModule,
+    CommonModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useClass: TranslateFileLoader
+      }
+    }),
+    ToastrModule.forRoot(),
+    SharedModule.forRoot(),
+    IucnRoutingModule,
+    TransferHttpCacheModule],
+  providers: [
+    { provide: APP_ID, useValue: 'laji-app' },
+    { provide: APP_BASE_HREF, useValue: '/' },
+    { provide: API_BASE_URL, useValue: environment.apiBase },
+    provideAppInitializer(() => {
+      const translate = inject(TranslateService);
+      const lang = detectLangFromPath(typeof window !== 'undefined' ? window.location.pathname : '/');
+      return translate.use(lang);
+    }),
+    DocumentService,
+    { provide: ErrorHandler, useClass: LajiErrorHandler },
+    LocalizeRouterService,
+    { provide: LocationStrategy, useClass: PathLocationStrategy },
+    {
+      provide: Logger,
+      deps: [LajiApiClientBService],
+      useFactory: createLoggerLoader
+    },
+    provideHttpClient(withInterceptorsFromDi()),
+    provideNgxWebstorage(
+      withNgxWebstorageConfig({ prefix: 'laji-', separator: '' }),
+      withLocalStorage(),
+      withSessionStorage()
+    ),
+  ]
+})
 export class IucnModule {
 }
