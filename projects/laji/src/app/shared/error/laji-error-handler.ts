@@ -33,7 +33,8 @@ export class LajiErrorHandler extends ErrorHandler {
     if (typeof error.message === 'string' && (
       (error.message.indexOf(`Cannot read property 'display' of undefined`) !== -1 && this.response) ||
       error.message.indexOf('QuotaExceededError') !== -1 ||
-      error.message.indexOf('ExpressionChangedAfterItHasBeenCheckedError:') !== -1
+      error.message.indexOf('ExpressionChangedAfterItHasBeenCheckedError:') !== -1 ||
+      error.message.indexOf(`can't access property "_leaflet_pos", el is undefined`) !== -1
     )) {
       return super.handleError(error);
     }
