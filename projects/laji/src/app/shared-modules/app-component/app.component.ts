@@ -1,4 +1,4 @@
-import { ApplicationRef, Component, ViewContainerRef } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
@@ -33,13 +33,7 @@ export class AppComponent {
     viewContainerRef: ViewContainerRef,
     headerService: HeaderService,
     historyService: HistoryService,
-    appRef: ApplicationRef
   ) {
-    const time = Date.now();
-    appRef.isStable.subscribe(stable => {
-      console.log('stable?', stable, Date.now() - time);
-    });
-
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.type === Global.type.embedded;
