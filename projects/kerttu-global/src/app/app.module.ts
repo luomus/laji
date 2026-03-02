@@ -20,6 +20,7 @@ import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-com
 import { LajiUiModule } from '../../../laji-ui/src/lib/laji-ui.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
@@ -34,6 +35,7 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
         NavbarComponent
     ], imports: [GraphQLModule,
         BrowserModule,
+        BrowserAnimationsModule,
         CommonModule,
         TranslateModule.forRoot({
             loader: {
