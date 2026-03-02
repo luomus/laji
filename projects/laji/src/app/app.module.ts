@@ -18,7 +18,6 @@ import { LazyTranslateLoader } from './shared/translate/lazy-translate-loader';
 import { LajiUiModule } from '../../../laji-ui/src/public-api';
 import { GraphQLModule } from './graph-ql/graph-ql.module';
 import { QuicklinkModule } from 'ngx-quicklink';
-import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http-cache.interceptor';
 import { BrowserModule, provideClientHydration, Title } from '@angular/platform-browser';
 import { LajiTitle } from './shared/service/laji-title';
 import { LocaleModule } from './locale/locale.module';
@@ -68,10 +67,6 @@ export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defau
   providers: [
     { provide: APP_ID, useValue: 'laji-app' },
     { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS,
-      useClass: TransferHttpCacheInterceptor,
-      multi: true
-    },
     { provide: APP_BASE_HREF, useValue: '/' },
     { provide: API_BASE_URL, useValue: environment.apiBase },
     DocumentService,
