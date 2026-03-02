@@ -64,7 +64,7 @@
   </div>
   <div class="d-flex flex-row flex-wrap margin-top-10">
     <ng-container *ngIf="personRoleAnnotation === 'MMAN.expert'">
-      <div *ngFor="let item of annotationAddableTags$ | async | filterValue: 'quality': ['MMAN.typeInfo']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
+      <div *ngFor="let item of annotationAddableTags$ | async | filterValue: 'type': ['MMAN.typeInfo']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
         <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
           <div class="pill" [ngClass]="{'success': item.type==='MMAN.typePositiveQuality', 'warning': item.type==='MMAN.typeCheck', 'danger': item.type==='MMAN.typeNegativeQuality', 'info': item.type ==='MMAN.typeInfo' }">{{ item.id | toQName | label }}</div>
         </lu-checkbox>
@@ -73,7 +73,7 @@
   </div>
   <div class="d-flex flex-row flex-wrap margin-top-10">
     <ng-container *ngIf="annotation.addedTags.indexOf('MMAN.5') === -1 && annotation.addedTags.indexOf('MMAN.3') === -1">
-      <div *ngFor="let item of annotationAddableTags$ | async | filterValue: 'quality': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
+      <div *ngFor="let item of annotationAddableTags$ | async | filterValue: 'type': ['MMAN.typeCheck']: 'exclude': 'id': [''] | sort: 'position'; let i = index;" class="tag-value">
         <lu-checkbox (input)="addToAddTags(item)" [checked]="annotation.addedTags.indexOf(item.id | toQName) !== -1">
           <div class="pill" [ngClass]="{'success': item.type==='MMAN.typePositiveQuality', 'warning': item.type==='MMAN.typeCheck', 'danger': item.type==='MMAN.typeNegativeQuality', 'info': item.type ==='self' }">{{ item.id | toQName | label }}</div>
         </lu-checkbox>
