@@ -6,11 +6,13 @@ import { HomeDataService, IHomeData } from './home-data.service';
 import { Image } from '../shared/gallery/image-gallery/image.interface';
 import { Router } from '@angular/router';
 import { Global } from '../../environments/global';
-import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
-import { Information } from '../shared/model/Information';
 import { NewsFacade } from '../+news/news.facade';
 import { environment } from '../../environments/environment';
 import { MultiLanguage } from '../shared/model/MultiLanguage';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api';
+
+type Information = components['schemas']['Information'];
 
 @Component({
     selector: 'laji-home',
@@ -35,7 +37,7 @@ export class HomeComponent implements OnInit {
     private homeDataService: HomeDataService,
     public translate: TranslateService,
     public router: Router,
-    private apiService: LajiApiService,
+    private api: LajiApiClientBService,
     private newsFacade: NewsFacade
   ) {
   }
@@ -54,7 +56,7 @@ export class HomeComponent implements OnInit {
       map(data => data.identify && data.identify.results || []),
       map(data => data.map(item => item.unit.media[0]))
     );
-    this.publications$ = this.apiService.get(LajiApi.Endpoints.information, 'finbif-bib-top', {});
+    this.publications$ = this.api.get('/information/{id}', { path: { id: 'finbif-bib-top' } });
   }
 
   taxonSelect(e: string) {
