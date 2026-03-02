@@ -1,5 +1,5 @@
-@import 'vars';
-@import 'projects/laji-ui/src/lib//mixins/loading';
+@use 'vars' as *;
+@use 'mixins/loading' as *;
 
 :host {
   display: flex;

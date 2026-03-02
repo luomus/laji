@@ -1,12 +1,14 @@
 <div class="mt-3 d-flex flex-row flex-wrap justify-center">
-    <div class="annotation-container" *ngFor="let annotation of result.results">
+  @for (annotation of result.results; track annotation) {
+    <div class="annotation-container">
       <div class="annotation">
         <laji-annotation-item
-        [item]="annotation"
-        [annotationTags]="annotationTags"
-        (click)="showDocument(annotation)" role="button" luKeyboardClickable tabindex="0"aa
+          [item]="annotation"
+          [annotationTags]="annotationTags"
+          (click)="showDocument(annotation)" role="button" luKeyboardClickable tabindex="0"aa
         ></laji-annotation-item>
       </div>
     </div>
+  }
 </div>
 

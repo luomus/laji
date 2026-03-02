@@ -1,11 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AnnotationTag } from '../../../shared/model/AnnotationTag';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
 
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
-  selector: 'laji-annotation-item',
-  templateUrl: './annotation-item.component.html',
-  styleUrls: ['./annotation-item.component.scss']
+    selector: 'laji-annotation-item',
+    templateUrl: './annotation-item.component.html',
+    styleUrls: ['./annotation-item.component.scss'],
+    standalone: false
 })
 export class AnnotationItemComponent implements OnInit {
 

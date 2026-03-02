@@ -2,19 +2,21 @@
   <strong>
     {{ countStartText }}
     <laji-species-count [search]="search" [hasMediaFilter]="true"></laji-species-count>
-    <ng-container *ngIf="showSpeciesTotalCount"> / <laji-species-count [search]="search"></laji-species-count></ng-container>
+    @if (showSpeciesTotalCount) {
+      / <laji-species-count [search]="search"></laji-species-count>
+    }
     {{ countEndText }}
   </strong>
 </div>
 <laji-spinner [spinning]="loading" [overlay]="true">
   <laji-image-gallery [showPopover]="true"
-                      [showViewSwitch]="true"
-                      [modalImages]="images"
-                      [eventOnClick]="false"
-                      [showExtraInfo]="false"
-                      [showLinkToSpeciesCard]="true"
-                      [view]="'full2'"
-                      [views]="['full2', 'compact']"
+    [showViewSwitch]="true"
+    [modalImages]="images"
+    [eventOnClick]="false"
+    [showExtraInfo]="false"
+    [showLinkToSpeciesCard]="true"
+    [view]="'full2'"
+    [views]="['full2', 'compact']"
   ></laji-image-gallery>
   <laji-paginator [page]="search.imageOptions.page" [count]="total" [size]="pageSize" (pageChange)="pageChanged($event)"></laji-paginator>
 </laji-spinner>

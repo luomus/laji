@@ -5,10 +5,11 @@ import { TreeOptionsNode, SelectedOption } from '../tree-select.component';
 import { TreeSelectorComponent } from '../tree-selector/tree-selector.component';
 
 @Component({
-  selector: 'laji-tree-select-modal',
-  templateUrl: './tree-select-modal.component.html',
-  styleUrls: ['./tree-select-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-tree-select-modal',
+    templateUrl: './tree-select-modal.component.html',
+    styleUrls: ['./tree-select-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class TreeSelectModalComponent {

@@ -1,11 +1,12 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { MetadataService } from '../../../../../../shared/service/metadata.service';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 @Component({
-  selector: 'laji-administrative-status',
-  templateUrl: './administrative-status.component.html',
-  styleUrls: ['./administrative-status.component.scss']
+    selector: 'laji-administrative-status',
+    templateUrl: './administrative-status.component.html',
+    styleUrls: ['./administrative-status.component.scss'],
+    standalone: false
 })
 export class AdministrativeStatusComponent implements OnChanges {
   @Input() status!: string;

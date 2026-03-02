@@ -1,10 +1,9 @@
 <div class="panel-heading" [ngClass]="{link: headerLink, 'is-open': open}" aria-expanded="true" role="tab" (click)="activateCurrent()" tabindex="0" luKeyboardClickable>
-  <ng-container *ngIf="headingTemplate else defaultHeading">
+  @if (headingTemplate) {
     <ng-template [ngTemplateOutlet]="headingTemplate"></ng-template>
-  </ng-container>
-  <ng-template #defaultHeading>
+  } @else {
     <strong class="panel-title" [innerHtml]="title"></strong>
-  </ng-template>
+  }
 </div>
 <div class="panel-collapse" [ngStyle]="{display: open ? 'block' : 'none' }" role="tabpanel">
   <div class="panel-body">

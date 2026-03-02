@@ -6,9 +6,10 @@ import { DocumentPermissionService, DocumentRights } from '../../service/documen
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'laji-document-local-viewer-view',
-  templateUrl: './document-local-viewer-view.component.html',
-  styleUrls: ['./document-local-viewer-view.component.css']
+    selector: 'laji-document-local-viewer-view',
+    templateUrl: './document-local-viewer-view.component.html',
+    styleUrls: ['./document-local-viewer-view.component.css'],
+    standalone: false
 })
 export class DocumentLocalViewerViewComponent implements OnChanges {
   @ViewChild(ViewerMapComponent) map?: ViewerMapComponent;

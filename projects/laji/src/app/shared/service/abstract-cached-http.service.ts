@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs';
 
 
 export abstract class AbstractCachedHttpService<T> {

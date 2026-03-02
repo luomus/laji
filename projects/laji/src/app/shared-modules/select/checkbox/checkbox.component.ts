@@ -8,10 +8,11 @@ export enum CheckboxType {
 
 
 @Component({
-  selector: 'laji-checkbox',
-  templateUrl: './checkbox.component.html',
-  styleUrls: ['./checkbox.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-checkbox',
+    templateUrl: './checkbox.component.html',
+    styleUrls: ['./checkbox.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CheckboxComponent implements OnChanges {
 

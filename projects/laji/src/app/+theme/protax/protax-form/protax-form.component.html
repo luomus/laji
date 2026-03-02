@@ -17,40 +17,39 @@
       max="1"
       step="0.001"
       id="threshold"
-    >
-  </div>
+      >
+    </div>
 
-  <div class="form-group">
-    <label for="minOverlap">{{ 'theme.protax.minimumOverlap' | translate }}</label>
-    <input
-      [(ngModel)]="minimumOverlap"
-      class="form-control input-sm"
-      type="number"
-      min="1"
-      max="500"
-      step="1"
-      id="minOverlap"
-    >
-  </div>
-</div>
+    <div class="form-group">
+      <label for="minOverlap">{{ 'theme.protax.minimumOverlap' | translate }}</label>
+      <input
+        [(ngModel)]="minimumOverlap"
+        class="form-control input-sm"
+        type="number"
+        min="1"
+        max="500"
+        step="1"
+        id="minOverlap"
+        >
+      </div>
+    </div>
 
-<div class="form-group">
-  <p>{{ 'theme.protax.sequenceDescription' | translate }}</p>
-  <lu-tabs class="d-block" [selectedIndex]="activeTab" (selectedChange)="activeTab = $event">
-    <lu-tab [heading]="'theme.protax.textArea' | translate">
-      <textarea id="inputData" class="form-control" [(ngModel)]="sequenceData" name="inputData" rows="10"></textarea>
-    </lu-tab>
-    <lu-tab [heading]="'theme.protax.fileInput' | translate">
-      <input #fileInput class="form-control" type="file" style="height: auto" (change)="updateSequenceFile(toHtmlInputElement($event.target).files!)">
-    </lu-tab>
-  </lu-tabs>
-</div>
+    <div class="form-group">
+      <p>{{ 'theme.protax.sequenceDescription' | translate }}</p>
+      <lu-tabs class="d-block" [selectedIndex]="activeTab" (selectedChange)="activeTab = $event">
+        <lu-tab [heading]="'theme.protax.textArea' | translate">
+          <textarea id="inputData" class="form-control" [(ngModel)]="sequenceData" name="inputData" rows="10"></textarea>
+        </lu-tab>
+        <lu-tab [heading]="'theme.protax.fileInput' | translate">
+          <input #fileInput class="form-control" type="file" style="height: auto" (change)="updateSequenceFile(toHtmlInputElement($event.target).files!)">
+        </lu-tab>
+      </lu-tabs>
+    </div>
 
-<lu-button [loading]="loading" [role]="'primary'" (click)="submitForm()">
-  <ng-container *ngIf="!(loading && downloadProgress) else downloading">
-    {{ 'theme.protax.analyse' | translate }}
-  </ng-container>
-  <ng-template #downloading>
-    {{ 'theme.protax.downloading' | translate }} {{ downloadProgress | percent:'1.0' }}
-  </ng-template>
-</lu-button>
+    <lu-button [loading]="loading" [role]="'primary'" (click)="submitForm()">
+      @if (!(loading && downloadProgress)) {
+        {{ 'theme.protax.analyse' | translate }}
+      } @else {
+        {{ 'theme.protax.downloading' | translate }} {{ downloadProgress | percent:'1.0' }}
+      }
+    </lu-button>

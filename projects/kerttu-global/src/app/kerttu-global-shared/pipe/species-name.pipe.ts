@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { IGlobalSpecies } from '../models';
 
 @Pipe({
-  name: 'speciesName'
+    name: 'speciesName',
+    standalone: false
 })
 export class SpeciesNamePipe implements PipeTransform {
 

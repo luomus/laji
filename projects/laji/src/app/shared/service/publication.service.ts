@@ -1,4 +1,4 @@
-import { catchError, share, tap } from 'rxjs/operators';
+import { catchError, share, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { Publication } from '../model/Publication';
@@ -30,4 +30,3 @@ export class PublicationService {
   }
 
 }
-

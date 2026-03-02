@@ -1,4 +1,4 @@
-import { catchError, concatMap, map, take } from 'rxjs/operators';
+import { catchError, concatMap, map, take } from 'rxjs';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { prepareProfile, UserService } from '../../shared/service/user.service';
 import { Profile } from '../../shared/model/Profile';
@@ -12,9 +12,10 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 
 
 @Component({
-  selector: 'laji-user',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css'],
+    selector: 'laji-user',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.css'],
+    standalone: false
 })
 export class ProfileComponent implements OnInit, OnDestroy {
 

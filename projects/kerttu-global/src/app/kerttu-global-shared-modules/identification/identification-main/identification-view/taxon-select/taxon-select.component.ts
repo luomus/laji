@@ -19,10 +19,11 @@ interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
 }
 
 @Component({
-  selector: 'bsg-taxon-select',
-  templateUrl: './taxon-select.component.html',
-  styleUrls: ['./taxon-select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-taxon-select',
+    templateUrl: './taxon-select.component.html',
+    styleUrls: ['./taxon-select.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonSelectComponent implements OnChanges {
 
@@ -86,7 +87,7 @@ export class TaxonSelectComponent implements OnChanges {
 
     return this.kerttuGlobalApi.getSpeciesList(
       this.userService.getToken(),
-      this.translate.currentLang,
+      this.translate.getCurrentLang(),
       {
         taxonTypes: this.taxonTypes,
         searchQuery: token,

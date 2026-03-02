@@ -1,3 +1,5 @@
+@use 'vars' as *;
+
 @mixin details {
   margin-left: $sp-4;
   margin-bottom: $sp-6;

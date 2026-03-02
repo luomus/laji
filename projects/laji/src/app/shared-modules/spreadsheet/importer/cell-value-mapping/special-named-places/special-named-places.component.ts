@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { ExcelToolService } from '../../../service/excel-tool.service';
-import { map, share } from 'rxjs/operators';
+import { map, share } from 'rxjs';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'laji-special-named-places',
-  templateUrl: './special-named-places.component.html',
-  styleUrls: ['./special-named-places.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-special-named-places',
+    templateUrl: './special-named-places.component.html',
+    styleUrls: ['./special-named-places.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpecialNamedPlacesComponent implements OnInit {
 

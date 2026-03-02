@@ -4,7 +4,7 @@ import {
   catchError,
   distinctUntilChanged,
   map, switchMap, take
-} from 'rxjs/operators';
+} from 'rxjs';
 import { News } from '../shared/model/News';
 import { PagedResult } from '../shared/model/PagedResult';
 import { NewsService } from '../shared/service/news.service';
@@ -43,7 +43,7 @@ export class NewsFacade {
   }
 
   loadPage(page: number): void {
-    const lang = this.translate.currentLang;
+    const lang = this.translate.getCurrentLang();
 
     if (this.listSub) {
       this.listSub.unsubscribe();

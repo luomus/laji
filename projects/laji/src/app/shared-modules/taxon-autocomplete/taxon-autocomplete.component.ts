@@ -1,7 +1,7 @@
 /**
  * TODO: Change this to use taxon-select component
  */
-import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -23,10 +23,11 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 type TaxonAutocompleteResponse = components['schemas']['TaxonAutocompleteResponse'];
 
 @Component({
-  selector: 'laji-taxon-autocomplete',
-  templateUrl: './taxon-autocomplete.component.html',
-  styleUrls: ['./taxon-autocomplete.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-autocomplete',
+    templateUrl: './taxon-autocomplete.component.html',
+    styleUrls: ['./taxon-autocomplete.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
 
@@ -35,11 +36,11 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() placeholder = '';
   @Input() taxon = '';
   @Input() allowInvalid = false;
-  @Input() informalTaxonGroup = '';
-  @Input() onlyFinnish = false;
-  @Input() excludeNameTypes = '';
-  @Input() onlyInvasive = false;
-  @Input() onlySpecies = false;
+  @Input() informalTaxonGroups = '';
+  @Input() finnish?: boolean;
+  @Input() invasiveSpecies?: boolean;
+  @Input() species?: boolean;
+  @Input() nameTypes = '';
   @Input() showResult = true;
   @Input() clearValueOnSelect = true;
   @Input() allowEmpty = false;
@@ -47,7 +48,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() useValue = '';
   @Input() whiteList?: string[];
   @Input() blackList?: string[];
-  @Output() finish = new EventEmitter<void>();
+  @Output() searchComplete = new EventEmitter<void>();
   @Output() taxonSelect = new EventEmitter<TaxonAutocompleteResponse>();
 
   @ViewChild('input') inputEl!: ElementRef;
@@ -121,12 +122,12 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
       switchMap(() => this.api.get('/autocomplete/taxa', { query: {
         query,
         limit: this.limit,
-        matchType: 'partial',
-        informalTaxonGroup: this.informalTaxonGroup,
-        excludeNameTypes: this.excludeNameTypes,
-        onlyFinnish: this.onlyFinnish,
-        onlyInvasive: this.onlyInvasive,
-        onlySpecies: this.onlySpecies
+        matchType: 'exact,partial',
+        informalTaxonGroups: this.informalTaxonGroups,
+        nameTypes: this.nameTypes,
+        finnish: this.finnish,
+        invasiveSpecies: this.invasiveSpecies,
+        species: this.species
       }})),
       map(({ results }) => {
         if (this.whiteList) {
@@ -158,7 +159,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
       tap(() => {
         this.loading = false;
         this.cdr.markForCheck();
-        this.finish.emit();
+        this.searchComplete.emit();
       }));
   }
 

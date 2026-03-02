@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ColumnSelector } from '../../../../shared/columnselector/ColumnSelector';
 
 @Component({
-  selector: 'laji-selected-parents',
-  templateUrl: './selected-parents.component.html',
-  styleUrls: ['./selected-parents.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-selected-parents',
+    templateUrl: './selected-parents.component.html',
+    styleUrls: ['./selected-parents.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SelectedParentsComponent {
   @Input() header!: string;

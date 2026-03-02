@@ -6,10 +6,11 @@ import { Image } from '../../shared/model/Image';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
-  selector: 'laji-audio-player',
-  templateUrl: './audio-player.component.html',
-  styleUrls: ['./audio-player.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-audio-player',
+    templateUrl: './audio-player.component.html',
+    styleUrls: ['./audio-player.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class AudioPlayerComponent implements OnInit {

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { from } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 import { ModelViewerService } from './model-viewer.service';
 import { GLB } from './webgl/glb-parser';
 import { M4, V3 } from './webgl/math-3d';
@@ -27,15 +27,16 @@ const resizeCanvasToDisplaySize = (canvas: any): boolean => {
 };
 
 @Component({
-  selector: 'laji-model-viewer',
-  template: `
+    selector: 'laji-model-viewer',
+    template: `
 <canvas #canvas
   (mousedown)="onMouseDown($event)"
   (touchstart)="onTouchstart($event)"
   (wheel)="onWheel($event)"
 ></canvas>
   `,
-  styleUrls: ['./model-viewer.component.scss']
+    styleUrls: ['./model-viewer.component.scss'],
+    standalone: false
 })
 export class ModelViewerComponent implements AfterViewInit, OnDestroy {
   @Input() src!: string;

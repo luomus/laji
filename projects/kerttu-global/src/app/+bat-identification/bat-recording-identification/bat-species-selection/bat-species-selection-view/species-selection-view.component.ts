@@ -2,10 +2,11 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
 import { IGlobalSpecies } from '../../../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'bsg-species-selection-view',
-  templateUrl: './species-selection-view.component.html',
-  styleUrls: ['./species-selection-view.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-species-selection-view',
+    templateUrl: './species-selection-view.component.html',
+    styleUrls: ['./species-selection-view.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesSelectionViewComponent {
   @Input({ required: true }) species: IGlobalSpecies[]|undefined;

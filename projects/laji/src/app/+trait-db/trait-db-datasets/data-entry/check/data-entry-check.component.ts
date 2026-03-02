@@ -4,7 +4,7 @@ import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { BehaviorSubject } from 'rxjs';
-import { tap, map, switchMap } from 'rxjs/operators';
+import { tap, map, switchMap } from 'rxjs';
 
 interface NotInitialized {
   _tag: 'not-initialized';
@@ -25,8 +25,8 @@ interface ValidationInProgress {
 
 interface ValidationComplete {
   _tag: 'validation-complete';
-  result: components['schemas']['InputRow'][];
-  validationResult: components['schemas']['TraitMultiValidationResponse'];
+  result: components['schemas']['LajiBackendInputRow'][];
+  validationResult: components['schemas']['LajiBackendTraitMultiValidationResponse'];
 }
 
 interface SubmissionInProgress {
@@ -35,7 +35,7 @@ interface SubmissionInProgress {
 
 type State = NotInitialized | Tsv2RowsInProgress | ValidationInProgress | ValidationComplete | RequestHttpError | SubmissionInProgress;
 
-const apiInputRowsToTable = (res: components['schemas']['InputRow'][]): { cols: string[]; rows: any[][] } => {
+const apiInputRowsToTable = (res: components['schemas']['LajiBackendInputRow'][]): { cols: string[]; rows: any[][] } => {
   // Transform subjects to column-major sparse table
   const subjectAcc: Record<string, Array<any>> = {};
   res.forEach((row, index) => {
@@ -107,9 +107,10 @@ const apiInputRowsToTable = (res: components['schemas']['InputRow'][]): { cols: 
 };
 
 @Component({
-  selector: 'laji-trait-db-data-entry-check',
-  templateUrl: './data-entry-check.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-db-data-entry-check',
+    templateUrl: './data-entry-check.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDataEntryCheckComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input({ required: true }) datasetId!: string;
@@ -197,4 +198,3 @@ export class TraitDbDataEntryCheckComponent implements OnChanges, AfterViewInit,
     this.tsvChange.complete();
   }
 }
-

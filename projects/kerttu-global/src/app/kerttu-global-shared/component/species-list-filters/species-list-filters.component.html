@@ -6,7 +6,9 @@
         <label>{{ 'speciesList.filters.continent' | translate }}</label>
         <select class="form-control input-sm" [ngModel]="query.continent" (ngModelChange)="selectChange('continent', $event)">
           <option [value]="undefined"></option>
-          <option *ngFor="let continent of filters?.continent" [value]="continent.id">{{ ('continents.' + continent.name) | translate }}</option>
+          @for (continent of filters?.continent; track continent) {
+            <option [value]="continent.id">{{ ('continents.' + continent.name) | translate }}</option>
+          }
         </select>
       </div>
     </div>
@@ -18,38 +20,46 @@
         <label>{{ 'speciesList.filters.order' | translate }}</label>
         <select class="form-control input-sm" [ngModel]="query.order" (ngModelChange)="selectChange('order', $event)">
           <option [value]="undefined"></option>
-          <option *ngFor="let order of filters?.order" [value]="order.id">{{ order.scientificName }}</option>
+          @for (order of filters?.order; track order) {
+            <option [value]="order.id">{{ order.scientificName }}</option>
+          }
         </select>
       </div>
       <div class="col-sm-6">
         <label>{{ 'speciesList.filters.family' | translate }}</label>
         <select class="form-control input-sm" [ngModel]="query.family" (ngModelChange)="selectChange('family', $event)">
           <option [value]="undefined"></option>
-          <ng-container *ngFor="let family of filters?.family">
-            <option *ngIf="!query.order || query.order === family.order" [value]="family.id">
-              {{ family.scientificName }}
-            </option>
-          </ng-container>
+          @for (family of filters?.family; track family) {
+            @if (!query.order || query.order === family.order) {
+              <option [value]="family.id">
+                {{ family.scientificName }}
+              </option>
+            }
+          }
         </select>
       </div>
     </div>
   </div>
-  <div class="col-sm-9" *ngIf="showOnlyUnvalidated">
-    <label>{{ 'speciesList.filters.onlyUnvalidated' | translate }}</label>
-    <div class="bswitch-wrapper">
-      <bSwitch
-      [switch-on-text]="'yes' | translate"
-      [switch-off-text]="'no' | translate"
-      [switch-on-color]="'primary'"
-      [switch-size]="'medium'"
-      [(ngModel)]="query.onlyUnvalidated"
-      (ngModelChange)="onQueryChange()"
-      [switch-base-class]="'bootstrap-switch'">
-    </bSwitch>
+  @if (showOnlyUnvalidated) {
+    <div class="col-sm-9">
+      <label>{{ 'speciesList.filters.onlyUnvalidated' | translate }}</label>
+      <div class="bswitch-wrapper">
+        <bSwitch
+          [switch-on-text]="'yes' | translate"
+          [switch-off-text]="'no' | translate"
+          [switch-on-color]="'primary'"
+          [switch-size]="'medium'"
+          [(ngModel)]="query.onlyUnvalidated"
+          (ngModelChange)="onQueryChange()"
+          [switch-base-class]="'bootstrap-switch'">
+        </bSwitch>
+      </div>
     </div>
-  </div>
-  <div class="col-sm-3" *ngIf="showSearch">
-    <label for="search">{{ 'speciesList.filters.search' | translate }}</label>
-    <bsg-search-input [(searchQuery)]="query.searchQuery" (searchQueryChange)="onQueryChange()" id="search"></bsg-search-input>
-  </div>
+  }
+  @if (showSearch) {
+    <div class="col-sm-3">
+      <label for="search">{{ 'speciesList.filters.search' | translate }}</label>
+      <bsg-search-input [(searchQuery)]="query.searchQuery" (searchQueryChange)="onQueryChange()" id="search"></bsg-search-input>
+    </div>
+  }
 </div>

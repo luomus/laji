@@ -2,17 +2,18 @@ import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChange
 import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { PlatformService } from '../../../root/platform.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
-  selector: 'laji-gbif-map',
-  templateUrl: './gbif-map.component.html',
-  styleUrls: ['./gbif-map.component.scss']
+    selector: 'laji-gbif-map',
+    templateUrl: './gbif-map.component.html',
+    styleUrls: ['./gbif-map.component.scss'],
+    standalone: false
 })
 export class GbifMapComponent implements OnChanges, OnDestroy {
   @ViewChild(LajiMapComponent, { static: true }) mapComponent?: LajiMapComponent;

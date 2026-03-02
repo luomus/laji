@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 ul {
   display: flex;
@@ -50,4 +50,3 @@ li {
 .completed {
   cursor: pointer;
 }
-

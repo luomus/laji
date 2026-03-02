@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Form } from '../../../shared/model/Form';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { Observable, Subscription } from 'rxjs';
 
 enum Tabs {
@@ -11,9 +11,10 @@ enum Tabs {
 }
 
 @Component({
-  selector: 'laji-wbc-result',
-  templateUrl: './wbc-result.component.html',
-  styleUrls: ['./wbc-result.component.css']
+    selector: 'laji-wbc-result',
+    templateUrl: './wbc-result.component.html',
+    styleUrls: ['./wbc-result.component.css'],
+    standalone: false
 })
 export class WbcResultComponent implements OnInit, OnDestroy {
 

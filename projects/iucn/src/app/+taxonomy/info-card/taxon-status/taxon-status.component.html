@@ -1,8 +1,14 @@
 <table>
   <tr>
-    <td *ngFor="let s of statuses" [ngClass]="{'active': s === status}" class="top {{s | label | iucnStatus:true}}"><span *ngIf="s === status" [innerHtml]="s | label | iucnStatus:(s !== status)"></span></td>
+    @for (s of statuses; track s) {
+      <td [ngClass]="{'active': s === status}" class="top {{s | label | iucnStatus:true}}">@if (s === status) {
+        <span [innerHtml]="s | label | iucnStatus:(s !== status)"></span>
+      }</td>
+    }
   </tr>
   <tr>
-    <td *ngFor="let s of statuses" [ngClass]="{'active': s === status}" class="stat {{s | label | iucnStatus:true}}"><span [innerHtml]="s | label | iucnStatus:true"></span></td>
+    @for (s of statuses; track s) {
+      <td [ngClass]="{'active': s === status}" class="stat {{s | label | iucnStatus:true}}"><span [innerHtml]="s | label | iucnStatus:true"></span></td>
+    }
   </tr>
 </table>

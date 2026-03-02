@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { Person } from '../model/Person';
 import { from, of } from 'rxjs';
-import { concatMap, toArray } from 'rxjs/operators';
+import { concatMap, toArray } from 'rxjs';
 
 /**
  * Return users data from strings
@@ -13,8 +13,9 @@ import { concatMap, toArray } from 'rxjs/operators';
  *   'MA.97' | users:'name'
  */
 @Pipe({
-  name: 'users',
-  pure: false
+    name: 'users',
+    pure: false,
+    standalone: false
 })
 export class UsersPipe implements PipeTransform {
   value: string|string[] = '';

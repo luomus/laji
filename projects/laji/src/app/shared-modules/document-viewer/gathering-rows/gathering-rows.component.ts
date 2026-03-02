@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-gathering-rows',
-  templateUrl: './gathering-rows.component.html',
-  styleUrls: ['./gathering-rows.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-gathering-rows',
+    templateUrl: './gathering-rows.component.html',
+    styleUrls: ['./gathering-rows.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GatheringRowsComponent {
   @Input() gathering: any;

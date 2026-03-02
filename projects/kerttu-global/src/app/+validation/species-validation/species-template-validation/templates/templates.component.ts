@@ -3,10 +3,11 @@ import { SpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-vi
 import { IGlobalAudio, IGlobalTemplate } from '../../../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'bsg-templates',
-  templateUrl: './templates.component.html',
-  styleUrls: ['./templates.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-templates',
+    templateUrl: './templates.component.html',
+    styleUrls: ['./templates.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TemplatesComponent {
   @Input() templates: (IGlobalTemplate|null)[] = [];

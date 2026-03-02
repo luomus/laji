@@ -1,29 +1,35 @@
 <div>
   <span>
     <i>{{identification.taxon}}</i> {{ identification.author }}
-    <span *ngIf="identification.taxonSpecifier || identification.taxonSpecifierAuthor">
-      <i>{{identification.taxonSpecifier}}</i> {{ identification.taxonSpecifierAuthor}}
-    </span>
-    <span *ngIf="identification.det || identification.detDate">
-      det. {{identification.det || ''}} {{ identification.detDate || '' }}
-    </span>
-    <span *ngIf="identification.linkings">
-      <a
-        [luTooltip]="'showSpeciesCard' | translate"
-        [placement]="'right'"
-        container="body"
-        target="_blank" [routerLink]="['/taxon', ((identification.linkings.taxon.id || identification.linkings.taxon.qname) | toQName)] | localize">
-        <i class="glyphicon glyphicon-tag"></i>
-      </a>
-    </span>
+    @if (identification.taxonSpecifier || identification.taxonSpecifierAuthor) {
+      <span>
+        <i>{{identification.taxonSpecifier}}</i> {{ identification.taxonSpecifierAuthor}}
+      </span>
+    }
+    @if (identification.det || identification.detDate) {
+      <span>
+        det. {{identification.det || ''}} {{ identification.detDate || '' }}
+      </span>
+    }
+    @if (identification.linkings) {
+      <span>
+        <a
+          [luTooltip]="'showSpeciesCard' | translate"
+          [placement]="'right'"
+          container="body"
+          target="_blank" [routerLink]="['/taxon', ((identification.linkings.taxon.id || identification.linkings.taxon.qname) | toQName)] | localize">
+          <i class="glyphicon glyphicon-tag"></i>
+        </a>
+      </span>
+    }
   </span>
-  <ng-container *ngIf="showFacts">
+  @if (showFacts) {
     <div class="ml-5">
       <laji-row [title]="'MY.notes' | label" [value]="identification.notes"></laji-row>
-      <ng-container *ngIf="identification.taxonSpecifier || identification.taxonSpecifierAuthor">
+      @if (identification.taxonSpecifier || identification.taxonSpecifierAuthor) {
         <laji-row [title]="'MY.taxonSpecifier' | label">{{identification.taxonSpecifier}} {{identification.taxonSpecifierAuthor}}</laji-row>
-      </ng-container>
+      }
       <laji-facts [show]="showFacts" [facts]="identification.facts"></laji-facts>
     </div>
-  </ng-container>
+  }
 </div>

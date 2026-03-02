@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'laji-pill-list',
-  templateUrl: './pill-list.component.html',
-  styleUrls: ['./pill-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: true
+    selector: 'laji-pill-list',
+    templateUrl: './pill-list.component.html',
+    styleUrls: ['./pill-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    preserveWhitespaces: true,
+    standalone: false
 })
 export class PillListComponent {
 

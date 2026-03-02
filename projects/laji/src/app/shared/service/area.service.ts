@@ -1,4 +1,4 @@
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LajiApi, LajiApiService } from './laji-api.service';

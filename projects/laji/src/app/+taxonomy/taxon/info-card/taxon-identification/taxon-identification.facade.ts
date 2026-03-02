@@ -1,12 +1,12 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
-import { map, distinctUntilChanged, tap, takeUntil, switchMap, take } from 'rxjs/operators';
+import { map, distinctUntilChanged, tap, takeUntil, switchMap, take } from 'rxjs';
 import { IdentificationChildrenDataSource } from './identification-children-data-source';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { MetadataService } from 'projects/laji/src/app/shared/service/metadata.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 interface IIdentificationState {
   childDataSource?: IdentificationChildrenDataSource | undefined;
@@ -92,6 +92,7 @@ export class TaxonIdentificationFacade implements OnDestroy {
       sortOrder: 'observationCountFinland desc',
       selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren,countOfSpecies,observationCountFinland,descriptions,multimedia',
       includeMedia: true,
+      pageSize: 1000,
     } }, {
       taxonRank: rank
     }).pipe(switchMap(res => {

@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, OnDest
 import { ActivatedRoute } from '@angular/router';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { UserService } from '../../../shared/service/user.service';
-import { map, tap, filter, switchMap } from 'rxjs/operators';
+import { map, tap, filter, switchMap } from 'rxjs';
 import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { cols as subjectCols } from './data-editor-search-table-columns';
@@ -12,7 +12,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { LeafType } from 'scripts/codegen/shared';
 import { DatatableColumn } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 
-type InputRow = components['schemas']['InputRow'];
+type InputRow = components['schemas']['LajiBackendInputRow'];
 
 interface TableData {
   rows: FormArray<FormGroup>;
@@ -39,9 +39,10 @@ interface RowDeletionInProgress {
 type RowUploadState = RowUploadInProgress | RowUploadComplete | RowUploadError | RowDeletionInProgress;
 
 @Component({
-  templateUrl: './trait-db-data-editor.component.html',
-  styleUrls: ['./trait-db-data-editor.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './trait-db-data-editor.component.html',
+    styleUrls: ['./trait-db-data-editor.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('stringCell') stringCell!: TemplateRef<any>;
@@ -233,4 +234,3 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
     return formArray;
   }
 }
-

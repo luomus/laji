@@ -1,4 +1,3 @@
-/* tslint:disable:no-use-before-declare */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -17,11 +16,12 @@ export const IUCN_GROUP_SELECT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'laji-iucn-extended-group-select',
-  templateUrl: './extended-group-select.component.html',
-  styleUrls: ['./extended-group-select.component.css'],
-  providers: [IUCN_GROUP_SELECT_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-iucn-extended-group-select',
+    templateUrl: './extended-group-select.component.html',
+    styleUrls: ['./extended-group-select.component.css'],
+    providers: [IUCN_GROUP_SELECT_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IucnExtendedGroupSelectComponent extends ExtendedGroupSelectComponent<RedListTaxonGroup> {
 

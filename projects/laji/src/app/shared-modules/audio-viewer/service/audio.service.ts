@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, NgZone } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
-import { map, share, switchMap, tap } from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs';
 import { PlatformService } from '../../../root/platform.service';
 import { AudioPlayer } from './audio-player';
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, mergeMap, switchMap, take, tap, filter, distinctUntilChanged, mapTo, shareReplay, distinctUntilKeyChanged } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, take, tap, filter, distinctUntilChanged, mapTo, shareReplay, distinctUntilKeyChanged } from 'rxjs';
 import { combineLatest, concat, merge, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
@@ -14,18 +14,19 @@ import { UserService } from '../../../shared/service/user.service';
 import { FormPermissionService, Rights } from '../../../shared/service/form-permission.service';
 import { NamedPlacesService } from '../../../shared/service/named-places.service';
 import { DocumentStorage } from '../../../storage/document.storage';
-import * as deepmerge from 'deepmerge';
-import * as moment from 'moment';
+import deepmerge from 'deepmerge';
+import moment from 'moment';
 import { LocalStorage } from 'ngx-webstorage';
 import { Global } from 'projects/laji/src/environments/global';
 import { Person } from '../../../shared/model/Person';
-import { Annotation } from '../../../shared/model/Annotation';
-import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Logger } from '../../../shared/logger';
 import { LajiFormUtil } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-util.service';
 import equals from 'deep-equal';
 import { ProjectFormService } from '../../../shared/service/project-form.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Annotation = components['schemas']['store-annotation'];
 
 export enum FormError {
   notFoundForm = 'notFoundForm',
@@ -100,7 +101,6 @@ export class DocumentFormFacade {
     private formPermissionService: FormPermissionService,
     private namedPlacesService: NamedPlacesService,
     private documentStorage: DocumentStorage,
-    private lajiApi: LajiApiService,
     private logger: Logger,
     private projectFormService: ProjectFormService,
     private api: LajiApiClientBService
@@ -119,13 +119,15 @@ export class DocumentFormFacade {
 
     const form$: Observable<Form.SchemaForm | FormError> = combineLatest([formID$, template$]).pipe(
       switchMap(([formID, template]) => this.projectFormService.getForm$(formID).pipe(
-        switchMap(form => template && !form.options?.allowTemplate
+        switchMap(form => template && !form?.options?.allowTemplate
           ? of(FormError.templateDisallowed)
-          : this.formPermissionService.getRights(form).pipe(map(rights =>
-            (rights.edit === false && !form.options.openForm)
-              ? FormError.noAccess
-              : form
-          ))
+          : !form
+            ? of(FormError.notFoundForm)
+            : this.formPermissionService.getRights(form).pipe(map(rights =>
+              (rights.edit === false && !form?.options.openForm)
+                ? FormError.noAccess
+                : form
+            ))
         ),
         catchError((error) => {
           this.logger.error('Failed to load form', {error});
@@ -358,7 +360,7 @@ export class DocumentFormFacade {
     return undefined;
   }
 
-  private getNamedPlaceHeader(form: Form.SchemaForm, namedPlace: NamedPlace): string[] {
+  private getNamedPlaceHeader(form: Form.SchemaForm, namedPlace: NamedPlace | undefined): string[] {
     if (!form || !namedPlace) {
       return [];
     }
@@ -508,7 +510,7 @@ export class DocumentFormFacade {
     return this.getAnnotations(documentID).pipe(
       shareReplay(),
       map((annotations) => (annotations || []).reduce<Form.IAnnotationMap>((cumulative, current) => {
-        if ((current.byRole || [] as any[]).includes('MMAN.formAdmin')) {
+        if (current.byRole?.includes('MMAN.formAdmin')) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           cumulative[current.targetID!] = [current];
         }
@@ -526,10 +528,7 @@ export class DocumentFormFacade {
 
     this.annotationCache[cacheKey] = (!documentID || FormService.isTmpId(documentID))
     ?  of([])
-    : this.lajiApi.getList(
-      LajiApi.Endpoints.annotations,
-      {personToken: this.userService.getToken(), rootID: documentID, pageSize: 100, page}
-    ).pipe(
+    : this.api.get('/annotations', { query: { rootID: documentID, pageSize: 100, page } }).pipe(
       mergeMap(result => (result.currentPage < result.lastPage) ?
         this.getAnnotations(documentID, result.currentPage + 1, [...results, ...result.results]) :
         of([...results, ...result.results])),

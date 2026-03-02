@@ -1,20 +1,21 @@
-<ng-container *ngIf="vm$ | async; let vm">
+@if (vm$ | async; as vm) {
   <lu-modal #documentModal [size]="vm.openAnnotation ? 'xl' : 'lg'">
-    <ng-container *ngIf="vm.document">
-        <laji-document-annotation *ngIf="!vm.forceLocal && vm.openAnnotation; else normal"
-                                  [highlight]="vm.highlight"
-                                  [uri]="vm.document.id!"
-                                  [own]="vm.own"
-                                  [result]="vm.result"
-                                  [openAnnotation]="vm.openAnnotation"
-                                  [identifying]="vm.identifying"
-                                  [useWorldMap]="vm.useWorldMap"
-                                  (annotationClose)="closeModal()"
-        >
+    @if (vm.document) {
+      @if (!vm.forceLocal && vm.openAnnotation) {
+        <laji-document-annotation
+          [highlight]="vm.highlight"
+          [uri]="vm.document.id!"
+          [own]="vm.own"
+          [result]="vm.result"
+          [openAnnotation]="vm.openAnnotation"
+          [identifying]="vm.identifying"
+          [useWorldMap]="vm.useWorldMap"
+          (annotationClose)="closeModal()"
+          >
         </laji-document-annotation>
-        <ng-template #normal>
+      } @else {
+        @if (!vm.forceLocal && vm.document?.publicityRestrictions === publicityRestrictionsPublic) {
           <laji-document
-            *ngIf="!vm.forceLocal && vm.document?.publicityRestrictions === publicityRestrictionsPublic; else local"
             [highlight]="vm.highlight"
             [uri]="vm.document.id!"
             [own]="vm.own"
@@ -22,13 +23,13 @@
             [identifying]="vm.identifying"
             [useWorldMap]="vm.useWorldMap"
             (documentClose)="closeModal()"
-          >
+            >
           </laji-document>
-        </ng-template>
-        <ng-template #local>
+        } @else {
           <laji-document-local [document]="vm.document" (documentClose)="closeModal()">
           </laji-document-local>
-        </ng-template>
-    </ng-container>
+        }
+      }
+    }
   </lu-modal>
-</ng-container>
+}

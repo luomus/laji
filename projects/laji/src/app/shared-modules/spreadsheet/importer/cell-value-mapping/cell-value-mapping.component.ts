@@ -14,10 +14,11 @@ import { ImportService } from '../../service/import.service';
 import { MappingService, SpecialTypes } from '../../service/mapping.service';
 
 @Component({
-  selector: 'laji-cell-value-mapping',
-  templateUrl: './cell-value-mapping.component.html',
-  styleUrls: ['./cell-value-mapping.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-cell-value-mapping',
+    templateUrl: './cell-value-mapping.component.html',
+    styleUrls: ['./cell-value-mapping.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CellValueMappingComponent implements OnInit, OnChanges {
 

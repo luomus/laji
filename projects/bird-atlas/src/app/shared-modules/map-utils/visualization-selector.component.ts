@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { VisualizationMode } from './visualization-mode';
 
 @Component({
-  selector: 'ba-visualization-selector',
-  template: `
+    selector: 'ba-visualization-selector',
+    template: `
     <h6>Visualisointi</h6>
     <div class="radio">
         <label>
@@ -17,7 +17,8 @@ import { VisualizationMode } from './visualization-mode';
           {{ 'ba.grid-index.map.speciesCount' | translate }}
         </label>
       </div>
-  `
+  `,
+    standalone: false
 })
 export class VisualizationSelectorComponent {
   private _visualization: VisualizationMode = 'activityCategory';

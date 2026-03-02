@@ -14,10 +14,11 @@ import { TreeNode, TreeSkipParameter } from './model/tree.interface';
 import { Tree } from './service/tree';
 
 @Component({
-  selector: 'laji-tree',
-  templateUrl: './tree.component.html',
-  styleUrls: ['./tree.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-tree',
+    templateUrl: './tree.component.html',
+    styleUrls: ['./tree.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TreeComponent implements OnChanges, OnDestroy {
   @Input() getData!: (id: string) => Observable<any>;

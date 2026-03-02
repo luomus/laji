@@ -9,10 +9,11 @@ enum Tab {
 }
 
 @Component({
-  selector: 'laji-protax-form',
-  templateUrl: './protax-form.component.html',
-  styleUrls: ['./protax-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-protax-form',
+    templateUrl: './protax-form.component.html',
+    styleUrls: ['./protax-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ProtaxFormComponent implements OnChanges {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;

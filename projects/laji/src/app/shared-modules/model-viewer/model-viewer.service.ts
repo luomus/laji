@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { cacheReturnObservable } from 'projects/bird-atlas/src/app/core/api.service';
 import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 
 @Injectable()
 export class ModelViewerService {

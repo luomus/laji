@@ -5,9 +5,10 @@ import { ObservationFormQuery } from '../form/observation-form-query.interface';
 import { IdService } from '../../shared/service/id.service';
 
 @Component({
-  selector: 'laji-form-sample',
-  templateUrl: './form-sample.component.html',
-  styleUrls: ['../form/observation-form.component.scss']
+    selector: 'laji-form-sample',
+    templateUrl: './form-sample.component.html',
+    styleUrls: ['../form/observation-form.component.scss'],
+    standalone: false
 })
 export class FormSampleComponent extends ObservationFormComponent {
 

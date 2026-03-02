@@ -5,10 +5,11 @@ import { LabelService } from '../label.service';
  * @internal
  */
 @Component({
-  selector: 'll-ruler',
-  templateUrl: './ruler.component.html',
-  styleUrls: ['./ruler.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-ruler',
+    templateUrl: './ruler.component.html',
+    styleUrls: ['./ruler.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RulerComponent implements AfterViewInit {
 

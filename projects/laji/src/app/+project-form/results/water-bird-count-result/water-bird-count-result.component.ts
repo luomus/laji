@@ -3,7 +3,7 @@ import { Form } from '../../../shared/model/Form';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
@@ -13,10 +13,11 @@ interface State {
 }
 
 @Component({
-  selector: 'laji-water-bird-count-result',
-  templateUrl: './water-bird-count-result.component.html',
-  styleUrls: ['./water-bird-count-result.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-water-bird-count-result',
+    templateUrl: './water-bird-count-result.component.html',
+    styleUrls: ['./water-bird-count-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class WaterBirdCountResultComponent implements OnInit {
   @Input() form!: Form.SchemaForm;

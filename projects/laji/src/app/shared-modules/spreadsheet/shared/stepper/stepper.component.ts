@@ -44,9 +44,10 @@ const defaultPhases: StepperPhase[] = [
 ];
 
 @Component({
-  selector: 'laji-stepper',
-  templateUrl: './stepper.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-stepper',
+    templateUrl: './stepper.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class StepperComponent implements OnInit, OnChanges {
   @Input({ required: true }) step!: Step;

@@ -6,7 +6,7 @@ import { TaxonExportService } from '../../../../../laji/src/app/+taxonomy/specie
 import { Observable } from 'rxjs';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Injectable({
   providedIn: 'root'

@@ -1,32 +1,32 @@
-<ng-container *ngIf="value">
-  <ng-container [ngSwitch]="value.status">
-    <ng-container *ngSwitchCase="'ok'">
+@if (value) {
+  @switch (value.status) {
+    @case ('ok') {
       <span class="label label-success">
         Ok
       </span>
-    </ng-container>
-    <ng-container *ngSwitchCase="'valid'">
+    }
+    @case ('valid') {
       <span class="label label-default" [luPopover]="'No errors' | translate" rootElement="body" placement="right">
         {{ 'No errors' | translate }}
       </span>
-    </ng-container>
-    <ng-container *ngSwitchCase="'invalid'">
+    }
+    @case ('invalid') {
       <span class="label label-danger link" [luPopover]="error" rootElement="body" placement="right">
         {{ 'error' | translate }}
       </span>
-    </ng-container>
-    <ng-container *ngSwitchCase="'error'">
+    }
+    @case ('fail') {
       <span class="label label-danger link" [luPopover]="error" rootElement="body" placement="right">
         {{ 'error' | translate }}
       </span>
-    </ng-container>
-    <ng-container *ngSwitchCase="'ignore'">
+    }
+    @case ('ignore') {
       <span class="label label-warning link" [luPopover]="'excel.skip-row' | translate" rootElement="body" placement="right">
         {{ 'excel.skip-status' | translate }}
       </span>
-    </ng-container>
-  </ng-container>
-</ng-container>
+    }
+  }
+}
 <ng-template #error>
   <laji-error-list [errors]="value!.error" [fields]="fields"></laji-error-list>
 </ng-template>

@@ -1,57 +1,75 @@
-<div class="page" *ngIf="document && fields">
-  <div>
-    <div class="page-header">
-      <h3>
-        {{ 'viewer.document' | translate }}
-        <small>
-          {{ document.id }}
-        </small>
-      </h3>
-    </div>
-    <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionID | collectionName"></laji-row>
-    <laji-document-object *ngIf="fields['document']"
-                          [object]="document"
-                          [fields]="fields['document']"
-                          [hideTooltips]="true"
-    ></laji-document-object>
-    <laji-print-images *ngIf="document.id && imageData[document.id]" [images]="imageData[document.id]"></laji-print-images>
-  </div>
-
-  <div class="gathering" *ngFor="let gathering of document.gatherings; let i=index">
-    <h4 class="page-header">{{ 'viewer.print.place' | translate }} {{ i + 1 }}</h4>
+@if (document && fields) {
+  <div class="page">
     <div>
-      <div [ngClass]="{'half-page-block padding-right': mapData[i]}">
-        <laji-document-object *ngIf="fields['gatherings']"
-                              [object]="gathering"
-                              [fields]="fields['gatherings']"
-                              [hideTooltips]="true"
-        ></laji-document-object>
+      <div class="page-header">
+        <h3>
+          {{ 'viewer.document' | translate }}
+          <small>
+            {{ document.id }}
+          </small>
+        </h3>
       </div>
-      <div *ngIf="mapData[i]" class="half-page-block padding-left">
-        <laji-print-map [data]="mapData[i]"></laji-print-map>
-      </div>
-      <laji-print-images *ngIf="gathering.id && imageData[gathering.id]" [images]="imageData[gathering.id]"></laji-print-images>
-    </div>
-
-    <div>
-      <ng-container *ngFor="let unit of gathering.units">
-        <hr>
-        <ng-container *ngFor="let identification of unit.identifications">
-          <laji-document-object *ngIf="fields['identifications']"
-                                [object]="identification"
-                                [fields]="fields['identifications']"
-                                [hideTooltips]="true"
-                                [showUnitId]="true"
-                                [showLinks]="false"
-          ></laji-document-object>
-        </ng-container>
-        <laji-document-object *ngIf="fields['units']"
-                              [object]="unit"
-                              [fields]="fields['units']"
-                              [hideTooltips]="true"
+      <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionID | collectionName"></laji-row>
+      @if (fields['document']) {
+        <laji-document-object
+          [object]="document"
+          [fields]="fields['document']"
+          [hideTooltips]="true"
         ></laji-document-object>
-        <laji-print-images *ngIf="unit.id && imageData[unit.id]" [images]="imageData[unit.id]"></laji-print-images>
-      </ng-container>
+      }
+      @if (document.id && imageData[document.id]) {
+        <laji-print-images [images]="imageData[document.id]"></laji-print-images>
+      }
     </div>
-  </div>
-</div>
+    @for (gathering of document.gatherings; track gathering; let i = $index) {
+      <div class="gathering">
+        <h4 class="page-header">{{ 'viewer.print.place' | translate }} {{ i + 1 }}</h4>
+        <div>
+          <div [ngClass]="{'half-page-block padding-right': mapData[i]}">
+            @if (fields['gatherings']) {
+              <laji-document-object
+                [object]="gathering"
+                [fields]="fields['gatherings']"
+                [hideTooltips]="true"
+              ></laji-document-object>
+            }
+          </div>
+          @if (mapData[i]) {
+            <div class="half-page-block padding-left">
+              <laji-print-map [data]="mapData[i]"></laji-print-map>
+            </div>
+          }
+          @if (gathering.id && imageData[gathering.id]) {
+            <laji-print-images [images]="imageData[gathering.id]"></laji-print-images>
+          }
+        </div>
+        <div>
+          @for (unit of gathering.units; track unit) {
+            <hr>
+              @for (identification of unit.identifications; track identification) {
+                @if (fields['identifications']) {
+                  <laji-document-object
+                    [object]="identification"
+                    [fields]="fields['identifications']"
+                    [hideTooltips]="true"
+                    [showUnitId]="true"
+                    [showLinks]="false"
+                  ></laji-document-object>
+                }
+              }
+              @if (fields['units']) {
+                <laji-document-object
+                  [object]="unit"
+                  [fields]="fields['units']"
+                  [hideTooltips]="true"
+                ></laji-document-object>
+              }
+              @if (unit.id && imageData[unit.id]) {
+                <laji-print-images [images]="imageData[unit.id]"></laji-print-images>
+              }
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }

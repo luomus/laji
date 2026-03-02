@@ -4,8 +4,8 @@ import { Information } from '../../shared/model/Information';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'laji-bibliography',
-  template: `
+    selector: 'laji-bibliography',
+    template: `
     <div class="container-fluid">
       <h1>{{ 'finbif-bib.title' | translate }}</h1>
       <p>{{ 'finbif-bib.intro' | translate }}</p>
@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
       <div class="finBif-publications" innerHTML="{{ (publications$ | async )?.content }}"></div>
     </div>
   `,
+    standalone: false
 })
 
 export class BibliographyComponent implements OnInit {

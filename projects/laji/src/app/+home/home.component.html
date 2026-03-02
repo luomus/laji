@@ -40,7 +40,7 @@
         <div class="identification-images">
           <laji-image-gallery [showPopover]="false" [showViewSwitch]="false" [showOverlay]="false"
             [showExtraInfo]="false" [showLinkToSpeciesCard]="false" [view]="'compact'" [modalImages]="(images$ | async) ?? []"
-            [shortcut]="false"></laji-image-gallery>
+          [shortcut]="false"></laji-image-gallery>
         </div>
       </a>
       <p translate>home.identify-help-intro</p>
@@ -54,15 +54,15 @@
         <laji-observation-map [settingsKey]="'frontMap'" [height]="438" [showControls]="false"
           [initWithWorldMap]="false" [clickBeforeZoomAndPan]="false" [viewLocked]="true" [noClick]="true" [draw]="false"
           [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}" [hideLegend]="true"
-          [pointModeBreakpoint]="0"></laji-observation-map>
+        [pointModeBreakpoint]="0"></laji-observation-map>
       </a>
       <div>
         <div>
           <strong><laji-observation-count [lightLoader]="true"
-              [value]="(homeData$ | async)?.today?.total"></laji-observation-count></strong>
+          [value]="(homeData$ | async)?.today?.total"></laji-observation-count></strong>
           {{ 'viewer.unit' | translate }}
           <strong><laji-observation-count [lightLoader]="true"
-              [value]="(homeData$ | async)?.speciesToday?.total"></laji-observation-count></strong>
+          [value]="(homeData$ | async)?.speciesToday?.total"></laji-observation-count></strong>
           {{ 'observation.results.species' | translate }}
         </div>
         <a [routerLink]="['/observation/map'] | localize" [queryParams]="mapQueryParams">
@@ -145,10 +145,12 @@
     <div class="d-flex flex-wrap">
       <a [href]="(dashboardLink | multiLang)" target="_blank" class="home-card d-flex flex-col items-center mr-3 mb-3">
         <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/dashboard.svg)'"></div>
-        <div *ngIf="((homeData$ | async)?.unitsLastWeek?.total ?? 0) > 0">
-          <span>{{(homeData$ | async)?.unitsLastWeek?.total}} </span>
-          <span translate>home.dashboard-sub-intro-1</span>
-        </div>
+        @if (((homeData$ | async)?.unitsLastWeek?.total ?? 0) > 0) {
+          <div>
+            <span>{{(homeData$ | async)?.unitsLastWeek?.total}} </span>
+            <span translate>home.dashboard-sub-intro-1</span>
+          </div>
+        }
         <div>
           <span translate>home.dashboard-sub-intro-2</span>
         </div>

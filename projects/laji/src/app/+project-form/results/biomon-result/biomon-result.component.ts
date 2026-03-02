@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Form } from '../../../shared/model/Form';
 import { FormService } from '../../../shared/service/form.service';
-import { map, switchMap } from 'rxjs/operators'; // "map" reserved for tab logic
+import { map, switchMap } from 'rxjs'; // "map" reserved for tab logic
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
@@ -31,10 +31,11 @@ interface MapState {
 type State = StatisticsState | MapState;
 
 @Component({
-  selector: 'laji-biomon-result',
-  templateUrl: './biomon-result.component.html',
-  styleUrls: ['./biomon-result.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-biomon-result',
+    templateUrl: './biomon-result.component.html',
+    styleUrls: ['./biomon-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BiomonResultComponent implements OnInit, OnDestroy {
 

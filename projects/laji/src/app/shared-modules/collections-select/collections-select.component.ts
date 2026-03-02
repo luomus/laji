@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, OnChanges, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs';
 import { CollectionService, CollectionTreeOptionsNode, ICollectionAggregate, ICollectionsTreeNode } from '../../shared/service/collection.service';
 import { BehaviorSubject, Observable, zip, of } from 'rxjs';
 import { SelectedOption, TreeOptionsChangeEvent } from '../tree-select/tree-select.component';
@@ -8,9 +8,10 @@ import { Util } from '../../shared/service/util.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 @Component({
-  selector: 'laji-collections-select',
-  templateUrl: './collections-select.component.html',
-  styleUrls: ['./collections-select.component.scss']
+    selector: 'laji-collections-select',
+    templateUrl: './collections-select.component.html',
+    styleUrls: ['./collections-select.component.scss'],
+    standalone: false
 })
 export class CollectionsSelectComponent implements OnInit, OnChanges {
   @Input({required: true}) title!: string;
@@ -51,7 +52,7 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.collections$ = this.initCollections(this.translate.currentLang, this.includedOptions, this.excludedOptions);
+    this.collections$ = this.initCollections(this.translate.getCurrentLang(), this.includedOptions, this.excludedOptions);
     this.collectionsTree$ = this.initCollectionsTree();
   }
 
@@ -65,7 +66,7 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
     if (!Util.equalsArray(this.includedOptions, includedOptions) || !Util.equalsArray(this.excludedOptions, excludedOptions)) {
       this.includedOptions = includedOptions;
       this.excludedOptions = excludedOptions;
-      this.collections$ = this.initCollections(this.translate.currentLang, this.includedOptions, this.excludedOptions);
+      this.collections$ = this.initCollections(this.translate.getCurrentLang(), this.includedOptions, this.excludedOptions);
     }
 
     const { collectionId, collectionIdNot, ...query } = this.query;

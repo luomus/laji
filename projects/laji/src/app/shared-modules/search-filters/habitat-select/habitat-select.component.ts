@@ -4,9 +4,10 @@ import { Subscription } from 'rxjs';
 interface Signature { primaryHabitat?: string[]; anyHabitat?: string[] };
 
 @Component({
-  selector: 'laji-habitat-select',
-  templateUrl: './habitat-select.component.html',
-  styleUrls: ['./habitat-select.component.scss']
+    selector: 'laji-habitat-select',
+    templateUrl: './habitat-select.component.html',
+    styleUrls: ['./habitat-select.component.scss'],
+    standalone: false
 })
 export class HabitatSelectComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) query!: Signature;

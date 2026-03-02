@@ -4,53 +4,63 @@
     [loading]="loading"
     [maxBounds]="maxBounds"
     [options]="mapOptions"
-  >
-    <div *ngIf="taxon || title" class="title">
-      <h5>
-        <span *ngIf="taxon" [ngClass]="{cursive: taxon.cursiveName}"
-              class="scientificName">{{ taxon.scientificName }}</span>
-        <ng-container *ngIf="taxon && taxon.vernacularName">
-          <br>{{ taxon.vernacularName }}
-        </ng-container>
-        <ng-container *ngIf="title">{{ title }}</ng-container>
-        <laji-info *ngIf="titleInfo">{{ titleInfo | translate }}</laji-info>
-      </h5>
-    </div>
-    <div class="map-color-legend">
-      <span class="map-color-legend-cnt capitalize">
-        {{ 'theme.square' | translate }}
-      </span>
-      <div style="position: relative">
-        <ng-container *ngIf="types.length > 1">
-          <a class="link" luDropdownToggle style="padding: 0">
-            <span>
+    >
+    @if (taxon || title) {
+      <div class="title">
+        <h5>
+          @if (taxon) {
+            <span [ngClass]="{cursive: taxon.cursiveName}"
+            class="scientificName">{{ taxon.scientificName }}</span>
+          }
+          @if (taxon && taxon.vernacularName) {
+            <br>{{ taxon.vernacularName }}
+            }
+            @if (title) {
+              {{ title }}
+            }
+            @if (titleInfo) {
+              <laji-info>{{ titleInfo | translate }}</laji-info>
+            }
+          </h5>
+        </div>
+      }
+      <div class="map-color-legend">
+        <span class="map-color-legend-cnt capitalize">
+          {{ 'theme.square' | translate }}
+        </span>
+        <div style="position: relative">
+          @if (types.length > 1) {
+            <a class="link" luDropdownToggle style="padding: 0">
+              <span>
+                {{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}
+              </span>
+            </a>
+            <ul luDropdownMenu class="dropdown-menu">
+              @for (type of types; track type) {
+                <li><a (click)="changeType(type)"
+                class="link">{{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}</a></li>
+              }
+            </ul>
+          }
+          @if (types.length <= 1) {
+            <span class="capitalize">
               {{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}
             </span>
-          </a>
-          <ul luDropdownMenu class="dropdown-menu">
-            <ng-container *ngFor="let type of types">
-              <li><a (click)="changeType(type)"
-                     class="link">{{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}</a></li>
-            </ng-container>
-          </ul>
-        </ng-container>
-        <ng-container *ngIf="types.length <= 1">
-          <span class="capitalize">
-            {{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}
-          </span>
-        </ng-container>
+          }
+        </div>
+        <ul>
+          @for (leg of legendList; track leg) {
+            <li>
+              <span [ngStyle]="{'background-color': leg.color}" class="map-color-legend-color"></span>
+              {{ leg.label }}
+              <span class="map-color-legend-cnt">{{ count[leg.color] || 0 }}</span>
+            </li>
+          }
+          <li>
+            {{ 'theme.total' | translate }}
+            <span class="map-color-legend-cnt">{{ count['total'] }} {{ 'theme.square' | translate }}</span>
+          </li>
+        </ul>
       </div>
-      <ul>
-        <li *ngFor="let leg of legendList">
-          <span [ngStyle]="{'background-color': leg.color}" class="map-color-legend-color"></span>
-          {{ leg.label }}
-          <span class="map-color-legend-cnt">{{ count[leg.color] || 0 }}</span>
-        </li>
-        <li>
-          {{ 'theme.total' | translate }}
-          <span class="map-color-legend-cnt">{{ count['total'] }} {{ 'theme.square' | translate }}</span>
-        </li>
-      </ul>
-    </div>
-  </laji-map>
-</div>
+    </laji-map>
+  </div>

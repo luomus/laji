@@ -6,7 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
  *   value | values:'separator'
  */
 @Pipe({
-  name: 'values'
+    name: 'values',
+    standalone: false
 })
 export class ValuesPipe implements PipeTransform {
   transform(value: string | string[] | any, sep = ', ', objKey = ''): string {

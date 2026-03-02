@@ -1,10 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-identification',
-  templateUrl: './identification.component.html',
-  styleUrls: ['./identification.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-identification',
+    templateUrl: './identification.component.html',
+    styleUrls: ['./identification.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationComponent {
   @Input() identification: any;

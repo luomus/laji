@@ -1,3 +1,5 @@
+@use 'vars' as *;
+
 @mixin loading($color-from, $color-to) {
   background: linear-gradient(90deg, $color-from, $color-to, $color-from);
   background-size: 200% 200%;

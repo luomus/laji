@@ -1,13 +1,15 @@
 <ul>
-  <li *ngFor="let step of steps; let i=index"
+  @for (step of steps; track step; let i = $index) {
+    <li
       (click)="onStepBackTo(i)"
       [ngClass]="{
         'completed': i < currentStep,
         'active': i === currentStep,
         'incomplete': i > currentStep
       }">
-    <span class="bubble">{{ i < currentStep ? '✓' : (i + 1) }}</span>
-    <strong>{{ step }}</strong>
-  </li>
+      <span class="bubble">{{ i < currentStep ? '✓' : (i + 1) }}</span>
+      <strong>{{ step }}</strong>
+    </li>
+  }
 </ul>
 

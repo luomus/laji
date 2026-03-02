@@ -3,10 +3,11 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 const EMPTY_VALUE = ' ';
 
 @Component({
-  selector: 'laji-row',
-  templateUrl: './row.component.html',
-  styleUrls: ['./row.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-row',
+    templateUrl: './row.component.html',
+    styleUrls: ['./row.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RowComponent implements OnChanges {
 

@@ -5,13 +5,14 @@ import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQuery
 import { ResultService } from '../../common/service/result.service';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
-  selector: 'laji-syke-insect-all-results',
-  templateUrl: './syke-insect-all-results.component.html',
-  styleUrls: ['./syke-insect-all-results.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-syke-insect-all-results',
+    templateUrl: './syke-insect-all-results.component.html',
+    styleUrls: ['./syke-insect-all-results.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SykeInsectAllResultsComponent implements OnInit, OnDestroy {
 

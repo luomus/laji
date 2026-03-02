@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { Form } from '../../../shared/model/Form';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
@@ -12,10 +12,11 @@ interface DatasetStats {
 }
 
 @Component({
-  selector: 'laji-dataset-about[form]',
-  templateUrl: './dataset-about.component.html',
-  styleUrls: ['./dataset-about.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-dataset-about[form]',
+    templateUrl: './dataset-about.component.html',
+    styleUrls: ['./dataset-about.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatasetAboutComponent implements OnChanges {
   @Input() form!: Form.SchemaForm;

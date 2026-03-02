@@ -15,17 +15,24 @@
       (fileNameFilterChange)="onFileNameFilterChange($event)"
     ></bsg-identification-nav>
 
-    <div *ngIf="hasError || allRecordingsAnnotated" class="identification-alert-container">
-      <lu-alert type="danger" [dismissible]="false" *ngIf="hasError">{{ 'identification.genericError' | translate }}</lu-alert>
-      <lu-alert type="success" [dismissible]="false" *ngIf="allRecordingsAnnotated">{{ allRecordingsAnnotatedLabel }}</lu-alert>
-    </div>
+    @if (hasError || allRecordingsAnnotated) {
+      <div class="identification-alert-container">
+        @if (hasError) {
+          <lu-alert type="danger" [dismissible]="false">{{ 'identification.genericError' | translate }}</lu-alert>
+        }
+        @if (allRecordingsAnnotated) {
+          <lu-alert type="success" [dismissible]="false">{{ allRecordingsAnnotatedLabel }}</lu-alert>
+        }
+      </div>
+    }
 
-    <bsg-identification-view
-      *ngIf="recording && annotation && !hasError && !allRecordingsAnnotated"
-      [recording]="recording"
-      [(annotation)]="annotation"
-      [buttonsDisabled]="loading"
-      (annotationChange)="onAnnotationChange()"
-    ></bsg-identification-view>
+    @if (recording && annotation && !hasError && !allRecordingsAnnotated) {
+      <bsg-identification-view
+        [recording]="recording"
+        [(annotation)]="annotation"
+        [buttonsDisabled]="loading"
+        (annotationChange)="onAnnotationChange()"
+      ></bsg-identification-view>
+    }
   </div>
 </laji-spinner>

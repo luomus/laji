@@ -12,10 +12,11 @@ import { isPlatformServer } from '@angular/common';
 export type ButtonRole = 'primary' | 'secondary' | 'neutral' | 'success' | 'warning' | 'danger' | 'other' | 'edit' ;
 
 @Component({
-  selector: 'lu-button',
-  templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'lu-button',
+    templateUrl: './button.component.html',
+    styleUrls: ['./button.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ButtonComponent implements OnChanges, OnInit {
   @Input() role: ButtonRole = 'secondary';

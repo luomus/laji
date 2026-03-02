@@ -11,10 +11,11 @@ interface LajiMapData extends DataOptions {
 }
 
 @Component({
-  selector: 'bsg-site-selection-map',
-  templateUrl: './site-selection-map.component.html',
-  styleUrls: ['./site-selection-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-site-selection-map',
+    templateUrl: './site-selection-map.component.html',
+    styleUrls: ['./site-selection-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SiteSelectionMapComponent implements OnChanges {
   @ViewChild(LajiMapComponent, { static: true}) lajiMap!: LajiMapComponent;

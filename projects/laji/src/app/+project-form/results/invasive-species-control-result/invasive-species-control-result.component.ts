@@ -25,10 +25,11 @@ interface MapState {
 type State = StatisticsState | MapState;
 
 @Component({
-  selector: 'laji-invasive-species-control-result',
-  templateUrl: './invasive-species-control-result.component.html',
-  styleUrls: ['./invasive-species-control-result.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-invasive-species-control-result',
+    templateUrl: './invasive-species-control-result.component.html',
+    styleUrls: ['./invasive-species-control-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InvasiveSpeciesControlResultComponent implements OnInit, OnDestroy {
 

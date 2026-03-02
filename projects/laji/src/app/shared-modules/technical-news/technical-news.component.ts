@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs';
 import { Observable, of } from 'rxjs';
 import { HomeDataService } from '../../+home/home-data.service';
 import { News } from '../../shared/model/News';
@@ -7,9 +7,10 @@ import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 
 
 @Component({
-  selector: 'laji-technical-news',
-  template: `<laji-technical-news-dumb [news]="news$ | async"></laji-technical-news-dumb>`,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-technical-news',
+    template: `<laji-technical-news-dumb [news]="news$ | async"></laji-technical-news-dumb>`,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TechnicalNewsComponent {
   news$: Observable<News[] | null> = this.homeDataService.getHomeData().pipe(

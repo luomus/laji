@@ -1,8 +1,8 @@
-<ng-container *ngIf="missing">
+@if (missing) {
   <h1>{{ 'iucn.taxon.missing' | translate }} {{ year }}</h1>
   <p>{{ 'iucn.taxon.disclaimer' | translate }}</p>
-</ng-container>
-<ng-container *ngIf="!missing && taxon && !latestStatus">
+}
+@if (!missing && taxon && !latestStatus) {
   <div class="row">
     <div class="col-sm-push-8 col-sm-4" style="text-align: right">
       <h1 class="hidden-xs" style="display: inline-block">&nbsp;</h1>
@@ -17,16 +17,18 @@
       </h2>
       <h3>{{ 'iucn.taxon.lowerTaxons' | translate }}</h3>
       <ul>
-        <li *ngFor="let species of species$ | async">
-          <a [routerLink]="['..', species.id]" [queryParams]="{checklist: checklistId}">
-            <laji-taxon-name [taxon]="species" [capitalizeName]="true" [addLink]="false"></laji-taxon-name>
-          </a>
-        </li>
+        @for (species of species$ | async; track species) {
+          <li>
+            <a [routerLink]="['..', species.id]" [queryParams]="{checklist: checklistId}">
+              <laji-taxon-name [taxon]="species" [capitalizeName]="true" [addLink]="false"></laji-taxon-name>
+            </a>
+          </li>
+        }
       </ul>
     </div>
   </div>
-</ng-container>
-<ng-container *ngIf="!missing && taxon && latestStatus">
+}
+@if (!missing && taxon && latestStatus) {
   <div class="row">
     <div class="col-sm-push-8 col-sm-4" style="text-align: right">
       <h1 class="hidden-xs" style="display: inline-block">&nbsp;</h1>
@@ -40,14 +42,13 @@
         </div>
       </h2>
       <h3>
-        <ng-container *ngIf="isEndangered; else notEndangeredTitle">
+        @if (isEndangered) {
           {{ 'iucn.endangeredSingle' | translate }}: {{ ('iucn.taxon.' + latestStatus.redListStatus) | translate | lowercase }}
-        </ng-container>
-        <ng-template #notEndangeredTitle>
-          <ng-container *ngIf="!!latestStatus.redListStatus">
+        } @else {
+          @if (!!latestStatus.redListStatus) {
             {{ ('iucn.taxon.' + latestStatus.redListStatus) | translate }}
-          </ng-container>
-        </ng-template>
+          }
+        }
       </h3>
     </div>
   </div>
@@ -58,19 +59,23 @@
         <div style="clear: both;"></div>
         <laji-status-mark [showLabels]="true" [evaluation]="{possiblyRE: latestStatus.possiblyRE}"></laji-status-mark>
       </div>
-      <ng-container *ngIf="latestStatus.criteriaForStatus">
+      @if (latestStatus.criteriaForStatus) {
         <h3>{{ 'MKV.criteriaForStatus' | label }}</h3>
         <p [innerHTML]="latestStatus.criteriaForStatus | explainCriteria"></p>
-        <p *ngIf="latestStatus.externalPopulationImpactOnRedListStatus">{{ latestStatus.externalPopulationImpactOnRedListStatus | translate }}</p>
-      </ng-container>
-      <ng-container *ngIf="taxon.administrativeStatuses && taxon.administrativeStatuses.length > 0">
+        @if (latestStatus.externalPopulationImpactOnRedListStatus) {
+          <p>{{ latestStatus.externalPopulationImpactOnRedListStatus | translate }}</p>
+        }
+      }
+      @if (taxon.administrativeStatuses && taxon.administrativeStatuses.length > 0) {
         <h3>{{ 'iucn.taxon.administrativeStatuses' | translate }}</h3>
         <ul>
-          <li *ngFor="let status of taxon.administrativeStatuses">
-            {{ status | label }}
-          </li>
+          @for (status of taxon.administrativeStatuses; track status) {
+            <li>
+              {{ status | label }}
+            </li>
+          }
         </ul>
-      </ng-container>
+      }
     </div>
     <div class="col-sm-3">
       <iucn-taxon-image [images]="taxon.multimedia!"></iucn-taxon-image>
@@ -91,4 +96,4 @@
       <iucn-red-list-evaluation-info [evaluation]="latestStatus"></iucn-red-list-evaluation-info>
     </div>
   </div>
-</ng-container>
+}

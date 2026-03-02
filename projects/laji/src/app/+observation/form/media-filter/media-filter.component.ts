@@ -12,10 +12,11 @@ const deactivateAllMediaGroupProps = (query: WarehouseQueryInterface) =>
   mediaGroupProps.forEach(p => query[p] = undefined);
 
 @Component({
-  selector: 'laji-observation-form-media-filter',
-  templateUrl: './media-filter.component.html',
-  styleUrls: ['./media-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-form-media-filter',
+    templateUrl: './media-filter.component.html',
+    styleUrls: ['./media-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationFormMediaFilterComponent {
   @Input({ required: true })  query!: WarehouseQueryInterface;

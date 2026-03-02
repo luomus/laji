@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
-import { finalize, map, take } from 'rxjs/operators';
-import * as moment from 'moment';
+import { finalize, map, take } from 'rxjs';
+import moment from 'moment';
 import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
-  selector: 'vir-usage-my-downloads',
-  template: `
+    selector: 'vir-usage-my-downloads',
+    template: `
     <div class="container mt-6 laji-page">
       <laji-spinner [spinning]="requestsTableLoading" [overlay]="true">
         <h3 translate>usage.downloads</h3>
@@ -44,7 +44,8 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
       ></vir-download-request-modal>
     </ng-template>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UsageMyDownloadsComponent {
   @ViewChild('downloadModal', { static: true }) downloadModal!: TemplateRef<any>;

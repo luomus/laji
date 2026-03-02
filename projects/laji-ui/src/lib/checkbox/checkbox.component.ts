@@ -1,10 +1,11 @@
 import { Component, Output, Input, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
-  selector: 'lu-checkbox',
-  templateUrl: './checkbox.component.html',
-  styleUrls: ['./checkbox.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'lu-checkbox',
+    templateUrl: './checkbox.component.html',
+    styleUrls: ['./checkbox.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CheckboxComponent {
   @ViewChild('checkbox', {static: true}) checkbox!: ElementRef;

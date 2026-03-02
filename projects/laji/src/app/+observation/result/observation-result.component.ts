@@ -13,7 +13,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute } from '@angular/router';
 import type { LajiMapEvent } from '@luomus/laji-map';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import G from 'geojson';
@@ -21,10 +21,11 @@ import { Util } from '../../shared/service/util.service';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
-  selector: 'laji-observation-result',
-  templateUrl: './observation-result.component.html',
-  styleUrls: ['./observation-result.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-result',
+    templateUrl: './observation-result.component.html',
+    styleUrls: ['./observation-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationResultComponent implements OnChanges {
   private _visible: VisibleSections = {
@@ -217,7 +218,7 @@ export class ObservationResultComponent implements OnChanges {
         const { error } = e;
         const {message, localizedMessage} = error;
         if (error.status >= 400 && message || localizedMessage) {
-          const localizedError = localizedMessage?.[this.translate.currentLang];
+          const localizedError = localizedMessage?.[this.translate.getCurrentLang()];
           this.toastsService.showError(localizedError ?? message);
           return EMPTY;
         } else {

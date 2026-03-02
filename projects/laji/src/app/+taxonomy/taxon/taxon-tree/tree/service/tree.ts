@@ -1,6 +1,6 @@
 import { TreeNode, TreeSkipParameter } from '../model/tree.interface';
 import { combineLatest, forkJoin, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { TreeStateService } from './tree-state.service';
 
 export class Tree {

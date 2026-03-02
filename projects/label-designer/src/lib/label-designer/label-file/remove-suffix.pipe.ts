@@ -4,7 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
  * @internal
  */
 @Pipe({
-  name: 'removeSuffix'
+    name: 'removeSuffix',
+    standalone: false
 })
 export class RemoveSuffixPipe implements PipeTransform {
 

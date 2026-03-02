@@ -1,4 +1,4 @@
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -30,14 +30,15 @@ import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
-  selector: 'laji-species-list',
-  templateUrl: './species-list.component.html',
-  styleUrls: ['./species-list.component.css'],
-  providers: [ToFullUriPipe, ToQNamePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-species-list',
+    templateUrl: './species-list.component.html',
+    styleUrls: ['./species-list.component.css'],
+    providers: [ToFullUriPipe, ToQNamePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(DatatableHeaderComponent) speciesDownload!: DatatableHeaderComponent;

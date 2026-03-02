@@ -5,18 +5,20 @@ import { Title } from '@angular/platform-browser';
 import { InformationItem } from 'projects/laji/src/app/shared/model/InformationItem';
 
 @Component({
-  selector: 'iucn-about',
-  template: `
+    selector: 'iucn-about',
+    template: `
     <iucn-simple-omni></iucn-simple-omni>
     <div class="container">
       <div id="wrapper" class="row">
         <div class="col-sm-6 col-md-7 col-lg-8">
           <ol class="breadcrumb">
-            <li *ngFor="let parent of parents; let f=first">
-              <a [routerLink]="[(f ? '/about' : '/about/' + parent.id)] | localize">
-                {{ parent.title }}
-              </a>
-            </li>
+            @for (parent of parents; track parent; let f = $first) {
+              <li>
+                <a [routerLink]="[(f ? '/about' : '/about/' + parent.id)] | localize">
+                  {{ parent.title }}
+                </a>
+              </li>
+            }
             <li class="active">{{ title }}</li>
           </ol>
           <laji-info-page
@@ -28,26 +30,30 @@ import { InformationItem } from 'projects/laji/src/app/shared/model/InformationI
             (subPages)="children = $event"
           ></laji-info-page>
         </div>
-        <div class="col-sm-6 col-md-5 col-lg-4 more-info" *ngIf="children.length > 0">
-          <div class="media">
-            <div class="media-body" style="background-color: #f5f5f5; max-width: 300px; padding: 10px;">
-              <h4 class="media-heading">
-                {{ 'information.more' | translate }}
-              </h4>
-              <ul>
-                <li *ngFor="let child of children">
-                  <a [routerLink]="['/about/' + child.id] | localize">
-                    {{ child.title }}
-                  </a>
-                </li>
-              </ul>
+        @if (children.length > 0) {
+          <div class="col-sm-6 col-md-5 col-lg-4 more-info">
+            <div class="media">
+              <div class="media-body" style="background-color: #f5f5f5; max-width: 300px; padding: 10px;">
+                <h4 class="media-heading">
+                  {{ 'information.more' | translate }}
+                </h4>
+                <ul>
+                  @for (child of children; track child) {
+                    <li>
+                      <a [routerLink]="['/about/' + child.id] | localize">
+                        {{ child.title }}
+                      </a>
+                    </li>
+                  }
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
+        }
       </div>
     </div>
-  `,
-  styles: [`
+    `,
+    styles: [`
     :host {
       flex: 1 0 auto;
       display: flex;
@@ -72,7 +78,8 @@ import { InformationItem } from 'projects/laji/src/app/shared/model/InformationI
         display: flex;
       }
     }
-  `]
+  `],
+    standalone: false
 })
 export class AboutComponent implements OnInit, OnDestroy {
   activePage = '';

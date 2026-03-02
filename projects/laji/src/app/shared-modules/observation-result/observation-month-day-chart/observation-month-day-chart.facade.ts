@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { defaultIfEmpty, map, switchMap, tap } from 'rxjs/operators';
+import { defaultIfEmpty, map, switchMap, tap } from 'rxjs';
 import { BehaviorSubject, Observable, forkJoin } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { TranslateService } from '@ngx-translate/core';
@@ -86,7 +86,7 @@ export class ObservationMonthDayChartFacade {
 
   private getLifeStageLabel(lifeStage: string): Observable<string> {
     return this.valueMappingService.getSchemaKey(lifeStage).pipe(
-      switchMap(key => this.triplestoreLabelService.get(key, this.translate.currentLang)),
+      switchMap(key => this.triplestoreLabelService.get(key, this.translate.getCurrentLang())),
       map(label => label ? label.charAt(0).toUpperCase() + label.slice(1) : '')
     );
   }

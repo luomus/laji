@@ -6,7 +6,7 @@ import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { SourceService } from './source.service';
 import { UserService } from './user.service';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { catchError, map, share, take, tap } from 'rxjs/operators';
+import { catchError, map, share, take, tap } from 'rxjs';
 import { AreaService } from './area.service';
 import { RedListTaxonGroupApi } from '../api/RedListTaxonGroupApi';
 import { Publication } from '../model/Publication';
@@ -16,7 +16,7 @@ import { CollectionService } from './collection.service';
 import { BaseDataService } from '../../graph-ql/service/base-data.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
@@ -120,10 +120,9 @@ export class TriplestoreLabelService {
           return this.sourceService.getName(key, lang);
         case 'MMAN':
           if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.annotationService.getTag(key, 'multi').pipe(
+            TriplestoreLabelService.requestCache[key] = this.annotationService.getTag(key).pipe(
               map(tag => tag.name),
               tap(name => TriplestoreLabelService.cache[key] = name),
-              map(name => MultiLangService.getValue((name as any), lang)),
               share()
             );
           }

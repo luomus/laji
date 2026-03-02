@@ -3,10 +3,11 @@ import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { MappingService } from '../../../service/mapping.service';
 
 @Component({
-  selector: 'laji-special-taxon-name',
-  templateUrl: './special-taxon-name.component.html',
-  styleUrls: ['./special-taxon-name.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-special-taxon-name',
+    templateUrl: './special-taxon-name.component.html',
+    styleUrls: ['./special-taxon-name.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpecialTaxonNameComponent {
 

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
-type SimpleTaxon = components['schemas']['SimpleTaxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
+type SimpleTaxon = components['schemas']['LajiBackendSimpleTaxon'];
 
 type SimpleTaxonArrayKeys = {
   [K in keyof Taxon]: Taxon[K] extends SimpleTaxon[] ? K : never
@@ -17,10 +17,11 @@ interface AvailableLangs {
 };
 
 @Component({
-  selector: 'laji-taxon-names',
-  templateUrl: './taxon-names.component.html',
-  styleUrls: ['./taxon-names.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-names',
+    templateUrl: './taxon-names.component.html',
+    styleUrls: ['./taxon-names.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonNamesComponent {
   _taxon!: Taxon;

@@ -14,14 +14,15 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
  */
 
 @Component({
-  selector: 'lu-ghost-paragraph',
-  template: `
+    selector: 'lu-ghost-paragraph',
+    template: `
 <p class="ghost">
   <span>{{ str }}</span>
 </p>
   `,
-  styleUrls: ['./ghost-paragraph.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./ghost-paragraph.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GhostParagraphComponent {
   _length = 0;

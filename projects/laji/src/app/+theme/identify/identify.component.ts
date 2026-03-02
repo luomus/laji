@@ -7,13 +7,14 @@ import { Global } from '../../../environments/global';
 import { IImageSelectEvent } from '../../shared/gallery/image-gallery/image.interface';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type TaxonImage = components['schemas']['Image'];
+type TaxonImage = components['schemas']['LajiBackendImage'];
 
 @Component({
-  selector: 'laji-identify',
-  templateUrl: './identify.component.html',
-  styleUrls: ['./identify.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-identify',
+    templateUrl: './identify.component.html',
+    styleUrls: ['./identify.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentifyComponent implements OnInit {
 

@@ -5,13 +5,14 @@ import { Params } from '@angular/router';
 import { DownloadComponent } from '../../../../../../laji/src/app/shared-modules/download-modal/download.component';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
-  selector: 'iucn-species-table',
-  templateUrl: './species-table.component.html',
-  styleUrls: ['./species-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-species-table',
+    templateUrl: './species-table.component.html',
+    styleUrls: ['./species-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesTableComponent implements OnChanges {
   @ViewChild(DownloadComponent) speciesDownload!: DownloadComponent;

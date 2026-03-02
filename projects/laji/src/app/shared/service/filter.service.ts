@@ -70,7 +70,7 @@ export class FilterService {
     HaystackKey extends string,
     HaystackValue extends FilterBaseType
   >(
-    needle: HaystackValue, haystack: HaystackValue | HaystackObj, properties: HaystackKey[]
+    needle: HaystackValue, haystack: HaystackValue | HaystackObj, properties?: HaystackKey[]
   ) {
     switch (typeof haystack) {
       case 'string':
@@ -93,7 +93,7 @@ export class FilterService {
       if (typeof obj[i] === 'undefined') {
         continue;
       }
-      if (this.contains(needle, obj[i], properties)) {
+      if (this.contains(needle, obj[i])) {
         return true;
       }
     }

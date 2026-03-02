@@ -12,22 +12,24 @@ import { Observable, Subscription, from, of } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { Lang } from '@luomus/laji-form-builder/lib/model';
 import { UserService } from '../../shared/service/user.service';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs';
 import { environment } from 'projects/laji/src/environments/environment';
+import { PlatformService } from '../../root/platform.service';
 
 @Component({
-  selector: 'laji-form-builder',
-  template: `<div #lajiFormBuilder></div>`,
-  styleUrls: ['./laji-form-builder.component.scss'],
-  providers: [FormApiClient],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-form-builder',
+    template: `<div #lajiFormBuilder></div>`,
+    styleUrls: ['./laji-form-builder.component.scss'],
+    providers: [FormApiClient],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   @Input() id?: string;
 
   @ViewChild('lajiFormBuilder', { static: true }) lajiFormBuilderRoot!: ElementRef;
 
-  private lajiFormBuilder!: LajiFormBuilder;
+  private lajiFormBuilder: LajiFormBuilder | undefined;
 
   constructor(
     private ngZone: NgZone,
@@ -37,24 +39,27 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
     private projectFormService: ProjectFormService,
     private router: Router,
     private route: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private platformService: PlatformService
   ) {
   }
 
   ngAfterViewInit() {
-    this.mount();
+    if (this.platformService.isBrowser) {
+      this.mount();
+    }
   }
 
   ngOnDestroy() {
-    this.unmount();
-    this.lajiFormBuilderUpdateSub?.unsubscribe();
+    if (this.platformService.isBrowser) {
+      this.unmount();
+      this.lajiFormBuilderUpdateSub?.unsubscribe();
+    }
   }
-
-  lajiFormBuilderImport = from(import('@luomus/laji-form-builder')).pipe( map(p => (p as any).default), shareReplay()) as Observable<any>;
 
   private mount() {
     this.ngZone.runOutsideAngular(() => {
-      this.apiClient.lang = this.translate.currentLang;
+      this.apiClient.lang = this.translate.getCurrentLang();
       this.apiClient.personToken = this.userService.getToken();
       this.updateLajiFormBuilder();
     });
@@ -63,15 +68,17 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   lajiFormBuilderUpdateSub!: Subscription;
 
   updateLajiFormBuilder() {
+    const lajiFormBuilderImport = from(import('@luomus/laji-form-builder')).pipe( map(p => (p as any).default), shareReplay()) as Observable<any>;
+
     this.lajiFormBuilderUpdateSub?.unsubscribe();
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    this.lajiFormBuilderUpdateSub = this.lajiFormBuilderImport.subscribe((LajiFormBuilder) =>  {
+    this.lajiFormBuilderUpdateSub = lajiFormBuilderImport.subscribe((LajiFormBuilder) =>  {
       this.lajiFormBuilder = new LajiFormBuilder({
         id: this.id,
         rootElem: this.lajiFormBuilderRoot.nativeElement,
         theme: lajiFormBuilderBs3Theme,
         apiClient: this.apiClient,
-        lang: this.translate.currentLang as Lang,
+        lang: this.translate.getCurrentLang() as Lang,
         onLangChange: this.onLangChange.bind(this),
         primaryDataBankFormID: Global.forms.databankPrimary,
         secondaryDataBankFormID: Global.forms.databankSecondary,
@@ -91,7 +98,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
 
   private unmount() {
     this.ngZone.runOutsideAngular(() => {
-      this.lajiFormBuilder.destroy();
+      this.lajiFormBuilder?.destroy();
     });
   }
 

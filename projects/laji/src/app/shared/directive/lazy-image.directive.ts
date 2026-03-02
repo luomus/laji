@@ -11,7 +11,8 @@ import {
 import { PlatformService } from '../../root/platform.service';
 
 @Directive({
-  selector: 'img[lajiLazyImage]'
+    selector: 'img[lajiLazyImage]',
+    standalone: false
 })
 export class LazyImageDirective implements AfterViewInit, OnDestroy {
   @HostBinding('attr.src') srcAttr?: string = '/static/images/empty.gif';

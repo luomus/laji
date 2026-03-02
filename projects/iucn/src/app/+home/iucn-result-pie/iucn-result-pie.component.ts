@@ -21,9 +21,10 @@ interface ColorType {
 }
 
 @Component({
-  selector: 'iucn-iucn-result-pie',
-  templateUrl: './iucn-result-pie.component.html',
-  styleUrls: ['./iucn-result-pie.component.css']
+    selector: 'iucn-iucn-result-pie',
+    templateUrl: './iucn-result-pie.component.html',
+    styleUrls: ['./iucn-result-pie.component.css'],
+    standalone: false
 })
 export class IucnResultPieComponent {
 

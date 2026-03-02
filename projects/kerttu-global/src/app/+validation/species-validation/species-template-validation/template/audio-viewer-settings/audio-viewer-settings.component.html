@@ -6,8 +6,10 @@
       class="form-control input-sm"
       [ngModel]="xRangePadding"
       (ngModelChange)="onXRangePaddingSelect($event)"
-    >
-      <option *ngFor="let value of [0.5, 1, 5, 10, 30]" value="{{ value }}">{{ value }}</option>
+      >
+      @for (value of [0.5, 1, 5, 10, 30]; track value) {
+        <option value="{{ value }}">{{ value }}</option>
+      }
     </select>
     <span class="input-group-addon">s</span>
   </div>

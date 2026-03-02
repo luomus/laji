@@ -3,10 +3,11 @@ import { ISelectFields } from '../select-fields/select-fields.component';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 @Component({
-  selector: 'laji-select-fields-modal-gear',
-  templateUrl: './select-fields-modal-gear.component.html',
-  styleUrls: ['./select-fields-modal-gear.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-select-fields-modal-gear',
+    templateUrl: './select-fields-modal-gear.component.html',
+    styleUrls: ['./select-fields-modal-gear.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SelectFieldsModalGearComponent {
 

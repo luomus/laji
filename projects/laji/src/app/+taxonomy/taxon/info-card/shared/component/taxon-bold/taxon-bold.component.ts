@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
 import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 interface BoldEntry {
   scientificName: string;
@@ -11,9 +11,10 @@ interface BoldEntry {
 }
 
 @Component({
-  selector: 'laji-taxon-bold',
-  templateUrl: './taxon-bold.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-bold',
+    templateUrl: './taxon-bold.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonBoldComponent implements OnChanges {
 

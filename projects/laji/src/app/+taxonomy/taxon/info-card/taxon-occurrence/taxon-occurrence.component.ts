@@ -3,14 +3,15 @@ import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQuery
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
-type TaxonDescription = components['schemas']['Content'][number];
+type Taxon = components['schemas']['LajiBackendTaxon'];
+type TaxonDescription = components['schemas']['LajiBackendContent'][number];
 
 @Component({
-  selector: 'laji-taxon-occurrence',
-  templateUrl: './taxon-occurrence.component.html',
-  styleUrls: ['./taxon-occurrence.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-occurrence',
+    templateUrl: './taxon-occurrence.component.html',
+    styleUrls: ['./taxon-occurrence.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonOccurrenceComponent implements OnChanges {
   @Input({ required: true }) taxon!: Taxon;

@@ -1,5 +1,5 @@
-@import 'projects/laji-ui/src/lib/vars';
-@import 'projects/laji-ui/src/lib/mixins/buttons';
+@use 'vars' as *;
+@use 'mixins/buttons' as *;
 
 /*
   BUTTON STYLING

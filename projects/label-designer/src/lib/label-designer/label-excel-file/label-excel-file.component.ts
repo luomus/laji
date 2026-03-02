@@ -12,9 +12,10 @@ export interface ILoadData {
  * @internal
  */
 @Component({
-  selector: 'll-label-excel-file',
-  templateUrl: './label-excel-file.component.html',
-  styleUrls: ['./label-excel-file.component.scss']
+    selector: 'll-label-excel-file',
+    templateUrl: './label-excel-file.component.html',
+    styleUrls: ['./label-excel-file.component.scss'],
+    standalone: false
 })
 export class LabelExcelFileComponent {
 

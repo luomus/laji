@@ -15,10 +15,11 @@ export interface IUCNSimpleChartData {
 }
 
 @Component({
-  selector: 'iucn-red-list-chart',
-  templateUrl: './red-list-chart.component.html',
-  styleUrls: ['./red-list-chart.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-red-list-chart',
+    templateUrl: './red-list-chart.component.html',
+    styleUrls: ['./red-list-chart.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RedListChartComponent {
 

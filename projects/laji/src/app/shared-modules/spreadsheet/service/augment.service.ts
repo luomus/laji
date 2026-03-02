@@ -1,12 +1,14 @@
-import { map, mergeMap, share, toArray } from 'rxjs/operators';
+import { map, mergeMap, share, toArray } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlaceApi } from '../../../shared/api/NamedPlaceApi';
 import { UserService } from '../../../shared/service/user.service';
-import { Document } from '../../../shared/model/Document';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { MappingService } from './mapping.service';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+type Document = components['schemas']['store-document'];
 
 @Injectable()
 export class AugmentService {

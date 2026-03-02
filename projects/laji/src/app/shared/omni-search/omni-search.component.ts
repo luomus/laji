@@ -1,4 +1,4 @@
-import { combineLatest, debounceTime, tap, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { combineLatest, debounceTime, tap, switchMap, distinctUntilChanged, of, map } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -23,10 +23,11 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 type InternalTaxon = TaxaWithAutocomplete & {count?: number; informalTaxonGroups?: any; informalTaxonGroupsClass?: any};
 
 @Component({
-  selector: 'laji-omni-search',
-  templateUrl: './omni-search.component.html',
-  styleUrls: ['./omni-search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-omni-search',
+    templateUrl: './omni-search.component.html',
+    styleUrls: ['./omni-search.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -97,19 +98,24 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         .reduce((p: any, c: any) => p + ' ' + c.id, '');
       this.taxon.informalTaxonGroups = this.taxon.informalGroups
         .map((group: any) => group.name);
-      this.subCnt =
-        ObservableOf(this.taxon.key).pipe(combineLatest(
-          this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key, cache: true}),
-          (id, cnt) => ({id, cnt: cnt.total})
-        )).subscribe(data => {
-          this.taxa.map(auto => {
-            if (auto.key === data.id ) {
-              auto['count'] = data.cnt;
-            }
-          });
-          this.visibleTaxon.emit(this.taxa[index]);
-          this.changeDetector.markForCheck();
+
+      this.subCnt = combineLatest([
+        of(this.taxon.key),
+        this.warehouseApi.warehouseQueryCountGet({
+          taxonId: this.taxon.key,
+          cache: true
+        })
+      ]).pipe(
+        map(([id, cnt]) => ({ id, cnt: cnt.total }))
+      ).subscribe(data => {
+        this.taxa.map(auto => {
+          if (auto.key === data.id ) {
+            auto['count'] = data.cnt;
+          }
         });
+        this.visibleTaxon.emit(this.taxa[index]);
+        this.changeDetector.markForCheck();
+      });
     } else {
       this.taxon = undefined;
     }
@@ -178,7 +184,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         err => {
           this.logger.warn('OmniSearch failed to find data', {
             taxon: this.search,
-            lang: this.translate.currentLang,
+            lang: this.translate.getCurrentLang(),
             limit: this.limit,
             err
           });

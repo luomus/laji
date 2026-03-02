@@ -1,4 +1,8 @@
-<div *ngIf="show" class="print-row">
-  {{ _title }}<ng-container *ngIf="_title">: </ng-container>
+@if (show) {
+  <div class="print-row">
+    {{ _title }}@if (_title) {
+    :
+  }
   <ng-container>{{ value| values }}</ng-container>
 </div>
+}

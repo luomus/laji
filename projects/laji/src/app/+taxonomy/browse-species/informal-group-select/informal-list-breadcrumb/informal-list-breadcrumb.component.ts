@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { InformalTaxonGroup } from '../../../../shared/model/InformalTaxonGroup';
 
 @Component({
-  selector: 'laji-informal-list-breadcrumb',
-  templateUrl: './informal-list-breadcrumb.component.html',
-  styleUrls: ['./informal-list-breadcrumb.component.scss']
+    selector: 'laji-informal-list-breadcrumb',
+    templateUrl: './informal-list-breadcrumb.component.html',
+    styleUrls: ['./informal-list-breadcrumb.component.scss'],
+    standalone: false
 })
 
 export class InformalListBreadcrumbComponent {

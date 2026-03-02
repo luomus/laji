@@ -1,13 +1,16 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { RESPONSE } from '../../../express.tokens';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'laji-not-found',
-  template: `<div class="container-fluid" *ngIf="!_redirecting">
-      <h1>{{ 'error.404.title'|translate }}</h1>
-      <p>{{ 'error.404.intro'|translate }}</p>
-  </div>`
+    selector: 'laji-not-found',
+    template: `@if (!_redirecting) {
+  <div class="container-fluid">
+    <h1>{{ 'error.404.title'|translate }}</h1>
+    <p>{{ 'error.404.intro'|translate }}</p>
+  </div>
+}`,
+    standalone: false
 })
 export class NotFoundComponent implements OnInit {
 

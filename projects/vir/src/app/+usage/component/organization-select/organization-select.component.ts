@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IVirUser, VirOrganisationService } from '../../../service/vir-organisation.service';
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 
 @Component({
-  selector: 'vir-organization-select',
-  templateUrl: './organization-select.component.html',
-  styleUrls: ['./organization-select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-organization-select',
+    templateUrl: './organization-select.component.html',
+    styleUrls: ['./organization-select.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class OrganizationSelectComponent implements OnInit {
 

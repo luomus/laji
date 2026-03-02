@@ -4,10 +4,11 @@ import { AudioViewerView } from '../../service/audio-viewer-view';
 import { AudioViewerControls } from '../../models';
 
 @Component({
-  selector: 'laji-audio-viewer-controls',
-  templateUrl: './audio-viewer-controls.component.html',
-  styleUrls: ['./audio-viewer-controls.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-audio-viewer-controls',
+    templateUrl: './audio-viewer-controls.component.html',
+    styleUrls: ['./audio-viewer-controls.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AudioViewerControlsComponent {
   @Input({ required: true }) audioPlayer!: AudioPlayer;

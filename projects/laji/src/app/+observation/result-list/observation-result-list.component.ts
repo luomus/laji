@@ -10,11 +10,12 @@ import { Subscription } from 'rxjs';
 const DEFAULT_PAGE_SIZE = 100;
 
 @Component({
-  selector: 'laji-observation-result-list',
-  templateUrl: './observation-result-list.component.html',
-  styleUrls: ['./observation-result-list.component.scss'],
-  providers: [ToQNamePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-result-list',
+    templateUrl: './observation-result-list.component.html',
+    styleUrls: ['./observation-result-list.component.scss'],
+    providers: [ToQNamePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationResultListComponent implements OnInit, OnDestroy {
   @Input({ required: true }) query!: WarehouseQueryInterface;

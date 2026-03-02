@@ -1,18 +1,19 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges,
 Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
-  selector: 'laji-taxon-taxonomy',
-  templateUrl: './taxon-taxonomy.component.html',
-  styleUrls: ['./taxon-taxonomy.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-taxonomy',
+    templateUrl: './taxon-taxonomy.component.html',
+    styleUrls: ['./taxon-taxonomy.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) taxon!: Taxon;
@@ -53,7 +54,7 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
       }
       this.synonymType = undefined;
 
-      if (!this.taxon.nameAccordingTo && this.taxon.synonymOf) {
+      if (this.taxon.synonymOf) {
         this.synonymSub = this.api.get('/taxa/{id}', {
           path: { id: this.taxon.synonymOf.id },
           query: {

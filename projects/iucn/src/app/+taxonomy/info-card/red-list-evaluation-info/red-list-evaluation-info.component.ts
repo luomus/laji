@@ -3,7 +3,7 @@ import { IRow } from './red-list-evaluation-info-rowset/red-list-evaluation-info
 import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type RedListEvaluation = components['schemas']['Evaluation'];
+type RedListEvaluation = components['schemas']['LajiBackendEvaluation'];
 
 interface KeyMapType {
   secondaryHabitats: string;
@@ -31,10 +31,11 @@ interface MinMaxType {
 }
 
 @Component({
-  selector: 'iucn-red-list-evaluation-info',
-  templateUrl: './red-list-evaluation-info.component.html',
-  styleUrls: ['./red-list-evaluation-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-red-list-evaluation-info',
+    templateUrl: './red-list-evaluation-info.component.html',
+    styleUrls: ['./red-list-evaluation-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RedListEvaluationInfoComponent {
 

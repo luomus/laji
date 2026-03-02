@@ -3,9 +3,10 @@ import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/
 import type { Options } from '@luomus/laji-map';
 
 @Component({
-  selector: 'laji-print-map',
-  templateUrl: './print-map.component.html',
-  styleUrls: ['./print-map.component.css']
+    selector: 'laji-print-map',
+    templateUrl: './print-map.component.html',
+    styleUrls: ['./print-map.component.css'],
+    standalone: false
 })
 export class PrintMapComponent implements OnChanges {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap!: LajiMapComponent;

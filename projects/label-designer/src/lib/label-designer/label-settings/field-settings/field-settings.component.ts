@@ -5,10 +5,11 @@ import { FieldType, ILabelField } from '../../../label-designer.interface';
  * @internal
  */
 @Component({
-  selector: 'll-field-settings',
-  templateUrl: './field-settings.component.html',
-  styleUrls: ['./field-settings.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-field-settings',
+    templateUrl: './field-settings.component.html',
+    styleUrls: ['./field-settings.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FieldSettingsComponent {
 

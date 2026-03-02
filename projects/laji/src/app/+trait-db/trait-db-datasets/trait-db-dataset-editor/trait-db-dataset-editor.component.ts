@@ -5,12 +5,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Subscription } from 'rxjs';
-import { tap, filter, switchMap, map } from 'rxjs/operators';
+import { tap, filter, switchMap, map } from 'rxjs';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { UserService } from '../../../shared/service/user.service';
 
-export type Dataset = components['schemas']['Dataset'];
-type ValidationResponse = components['schemas']['ValidationResponse'];
+export type Dataset = components['schemas']['LajiBackendDataset'];
+type ValidationResponse = components['schemas']['LajiBackendValidationResponse'];
 
 export const filterNullValues = <T extends Record<string, unknown>>(obj: T): T => {
   const clone: any = {};
@@ -23,9 +23,10 @@ export const filterNullValues = <T extends Record<string, unknown>>(obj: T): T =
 };
 
 @Component({
-  templateUrl: './trait-db-dataset-editor.component.html',
-  styleUrls: ['./trait-db-dataset-editor.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './trait-db-dataset-editor.component.html',
+    styleUrls: ['./trait-db-dataset-editor.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
   datasetForm = this.fb.group({
@@ -33,8 +34,8 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     published: [undefined as (boolean | undefined)], // only when editing existing dataset
     shareToFinBIF: [undefined as (boolean | undefined)], // hidden
     shareToGBIF: [undefined as (boolean | undefined)], // hidden
-    finbifDOI: [undefined as (string | undefined)], // uneditable
-    gbifDOI: [undefined as (string | undefined)], // uneditable
+    doi: [undefined as (string | undefined)], // uneditable
+    gbifDoi: [undefined as (string | undefined)], // uneditable
     name: [''],
     description: [''],
     citation: [''],
@@ -47,7 +48,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     temporalCoverage: [''],
     geographicCoverage: [''],
     coverageBasis: [''],
-    additionalIdentifiers: [[]],
+    additionalIdentifier: [[]],
   });
 
   externalValidationInProgress = false;

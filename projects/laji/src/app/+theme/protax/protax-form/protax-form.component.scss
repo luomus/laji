@@ -1,17 +1,18 @@
-@import 'projects/laji-ui/src/lib/vars';
+@use 'sass:map';
+@use 'vars' as *;
 
 #protaxParams > div {
   display: inline-block;
   margin-right: 8px;
   vertical-align: top;
 
-  @media only screen and (max-width: map-get($map: $breakpoints, $key: "sm")) {
+  @media only screen and (max-width: map.get($map: $breakpoints, $key: "sm")) {
     select.input-sm {
       height: 36px;
     }
   }
 
-  @media only screen and (max-width: map-get($map: $breakpoints, $key: "xs")) {
+  @media only screen and (max-width: map.get($map: $breakpoints, $key: "xs")) {
     display: block;
     margin-right: auto;
   }

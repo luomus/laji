@@ -4,10 +4,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { Form } from '../../shared/model/Form';
 
 @Component({
-  selector: 'laji-project-form-header',
-  templateUrl: './project-form-header.component.html',
-  styleUrls: ['./project-form-header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-project-form-header',
+    templateUrl: './project-form-header.component.html',
+    styleUrls: ['./project-form-header.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ProjectFormHeaderComponent {
 

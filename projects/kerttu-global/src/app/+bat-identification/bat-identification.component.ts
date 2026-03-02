@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'bsg-bat-identification',
-  template: `
+    selector: 'bsg-bat-identification',
+    template: `
     <lu-sidebar>
       <nav>
         <lu-sidebar-link [link]="['instructions'] | localize" routerLinkActive>
@@ -25,14 +25,15 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       </main>
     </lu-sidebar>
   `,
-  styles: [`
+    styles: [`
     :host {
         display: flex;
         flex: 1 0 auto;
         width: 100%;
     }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BatIdentificationComponent {
 

@@ -4,10 +4,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 
 @Component({
-  selector: 'laji-viewer-map',
-  templateUrl: './viewer-map.component.html',
-  styleUrls: ['./viewer-map.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-viewer-map',
+    templateUrl: './viewer-map.component.html',
+    styleUrls: ['./viewer-map.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ViewerMapComponent implements OnInit, OnChanges {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap!: LajiMapComponent;

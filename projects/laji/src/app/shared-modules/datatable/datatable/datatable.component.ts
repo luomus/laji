@@ -1,4 +1,4 @@
-import { debounceTime, tap, map } from 'rxjs/operators';
+import { debounceTime, tap, map } from 'rxjs';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input,
   NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { DatatableColumn, DatatableSort } from '../model/datatable-column';
@@ -22,10 +22,11 @@ interface DatatableRow {
 type DatatableTemplate = keyof DatatableTemplatesComponent;
 
 @Component({
-  selector: 'laji-datatable',
-  templateUrl: './datatable.component.html',
-  styleUrls: ['./datatable.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-datatable',
+    templateUrl: './datatable.component.html',
+    styleUrls: ['./datatable.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
   @ViewChild('dataTable') public datatable?: NgxDatatableComponent;
@@ -55,12 +56,15 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   _filterBy?: FilterByType;
   _height = '100%';
   _isFixedHeight = false;
+  _visible = true;
+  _pendingScroll = false;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
   @Output() reorder = new EventEmitter<any>();
   @Output() datatableSelect = new EventEmitter<any>();
   @Output() rowSelect = new EventEmitter<any>();
+  @Output() filteredIDs = new EventEmitter<string[]>();
 
   filterByChange?: Subscription;
 
@@ -74,7 +78,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
 
   initialized = false;
   sortLoading = false;
-  private filterChange$ = new Subject();
+  private filterChange$ = new Subject<void>();
 
   private sortTemplates: Record<string, DatatableTemplate> = {};
   private sortValues: Record<number, Record<string, any>> = {};
@@ -197,17 +201,34 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     this._preselectedRowIndex = index;
     const postSortIndex = (this._rows || []).findIndex((element) => element.preSortIndex === this._preselectedRowIndex);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.selected = [this._rows![postSortIndex]] || []; // TODO should be fixed
+    const selectedRow = postSortIndex > -1 ? this._rows?.[postSortIndex] : undefined;
+    this.selected = selectedRow ? [selectedRow] : []; // TODO should be fixed
     if (!this.selected.length) {
       return;
     }
-    if (this.initialized) {
+    setTimeout(() => {
       this.showActiveRow();
+    }, 100);
+  }
+
+  @Input() set visible(visible: boolean) {
+    this._visible = visible;
+    // If the table becomes visible and there is a pending scroll to active row, do the scroll
+    if (this._visible && this._pendingScroll) {
+      this._pendingScroll = false;
+      setTimeout(() => {
+        this.showActiveRow();
+      }, 100);
     }
   }
 
   showActiveRow() {
     if (!this.initialized || this._preselectedRowIndex === -1 || !this.datatable || !this.datatable._internalRows) {
+      return;
+    }
+    // If the table is not visible, postpone scrolling by setting a pending scroll
+    if (!this._visible) {
+      this._pendingScroll = true;
       return;
     }
     const postSortIndex = (this._rows || []).findIndex((element) => element.preSortIndex === this._preselectedRowIndex);
@@ -239,6 +260,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
       this.changeDetectorRef.markForCheck();
     });
 
+    if (this._filterBy && this._originalRows) {
+      this.updateFilteredRows();
+      this.changeDetectorRef.markForCheck();
+    }
   }
 
   ngAfterViewInit() {
@@ -250,7 +275,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
         this.initialized = true;
         // Make sure that preselected row index setter is called after initialization
         this.showActiveRow();
-      }, 10);
+      }, 100);
     }
   }
 
@@ -345,6 +370,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     this._page = 1;
     this.scrollTo();
     this.sortRows(this.sorts);
+    this.filteredIDs.emit(this._rows?.map(r => r['$.id']));
   }
 
   private scrollTo(offsetY: number = 0) {

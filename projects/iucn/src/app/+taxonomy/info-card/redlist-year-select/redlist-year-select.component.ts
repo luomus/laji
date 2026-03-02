@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'iucn-redlist-year-select',
-  templateUrl: './redlist-year-select.component.html',
-  styleUrls: ['./redlist-year-select.component.css']
+    selector: 'iucn-redlist-year-select',
+    templateUrl: './redlist-year-select.component.html',
+    styleUrls: ['./redlist-year-select.component.css'],
+    standalone: false
 })
 export class RedlistYearSelectComponent {
 

@@ -1,4 +1,4 @@
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { Observable, of, Subscription } from 'rxjs';
 import {
   ChangeDetectionStrategy,
@@ -23,8 +23,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { HeaderService } from '../../../shared/service/header.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
-type TaxonDescription = components['schemas']['Content'][number];
+type Taxon = components['schemas']['LajiBackendTaxon'];
+type TaxonDescription = components['schemas']['LajiBackendContent'][number];
 
 const TAB_ORDER = [ 'overview', 'images', 'identification', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];
@@ -33,10 +33,11 @@ const BASE_PATH = '/taxon';
 export type InfoCardTabType = 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'specimens'|'endangerment'|'invasive';
 
 @Component({
-  selector: 'laji-info-card',
-  templateUrl: './info-card.component.html',
-  styleUrls: ['./info-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-info-card',
+    templateUrl: './info-card.component.html',
+    styleUrls: ['./info-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   private tabOrder = TAB_ORDER;
@@ -270,14 +271,14 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setTitle(tabName: string) {
-    let metaTitle = this.taxon.vernacularName && this.taxon.vernacularName[<any>this.translate.currentLang] || '';
+    let metaTitle = this.taxon.vernacularName && this.taxon.vernacularName[<any>this.translate.getCurrentLang()] || '';
     if (metaTitle) {
       const alternativeNames: string[] = [];
-      if (this.taxon?.alternativeVernacularName?.[<any>this.translate.currentLang]) {
-        alternativeNames.push(...this.taxon.alternativeVernacularName[<any>this.translate.currentLang]);
+      if (this.taxon?.alternativeVernacularName?.[<any>this.translate.getCurrentLang()]) {
+        alternativeNames.push(...this.taxon.alternativeVernacularName[<any>this.translate.getCurrentLang()]);
       }
-      if (this.taxon?.colloquialVernacularName?.[<any>this.translate.currentLang]) {
-        alternativeNames.push(...this.taxon.colloquialVernacularName[<any>this.translate.currentLang]);
+      if (this.taxon?.colloquialVernacularName?.[<any>this.translate.getCurrentLang()]) {
+        alternativeNames.push(...this.taxon.colloquialVernacularName[<any>this.translate.getCurrentLang()]);
       }
       metaTitle += alternativeNames.length ? ' (' + alternativeNames.join(', ') + ')' : '';
     }

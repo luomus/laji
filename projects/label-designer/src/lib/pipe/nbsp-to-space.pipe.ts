@@ -4,7 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
  * @internal
  */
 @Pipe({
-  name: 'nbspToSpace'
+    name: 'nbspToSpace',
+    standalone: false
 })
 export class NbspToSpacePipe implements PipeTransform {
 

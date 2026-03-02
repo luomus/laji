@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, take, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, take, tap } from 'rxjs';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
 import { BrowserService } from '../shared/service/browser.service';
 import { UserService } from '../shared/service/user.service';
@@ -177,8 +177,8 @@ export class ObservationFacade {
     return this.api.get('/autocomplete/taxa', { query: {
       query,
       limit,
-      informalTaxonGroup: informalTaxonGroupId?.toString(),
-      excludeNameTypes: 'MX.hasMisspelledName,MX.hasMisappliedName',
+      informalTaxonGroups: informalTaxonGroupId?.toString(),
+      nameTypes: '!MX.hasMisspelledName,!MX.hasMisappliedName',
       checklist: 'MR.1,MR.2'
     } }).pipe(
       map(data => data.results.map(item => {

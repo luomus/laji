@@ -16,23 +16,23 @@
 
 <lu-modal size="sm" #addUser>
   <h4 class="modal-title">{{ 'usage.admin.addUser' | translate }}</h4>
-  <ng-container *ngIf="addUser$ | async as user">
+  @if (addUser$ | async; as user) {
     <h5>{{ user.fullName }} ({{ user.id }})</h5>
     <span>{{ user.emailAddress }}</span>
     <form [formGroup]="addUserForm" (ngSubmit)="onUserFormSubmit(addUserForm)" class="mt-5">
-      <fieldset *ngIf="administratableOrganisations$ | async as orgs" class="form-group">
-        <legend>{{ "usage.admin.modal.addOrganisation" | translate }}</legend>
-        <laji-select [options]="orgs" [useFilter]="false" formControlName="organisation" [open]="true"></laji-select>
-      </fieldset>
-
+      @if (administratableOrganisations$ | async; as orgs) {
+        <fieldset class="form-group">
+          <legend>{{ "usage.admin.modal.addOrganisation" | translate }}</legend>
+          <laji-select [options]="orgs" [useFilter]="false" formControlName="organisation" [open]="true"></laji-select>
+        </fieldset>
+      }
       <fieldset class="form-group">
         <legend>{{ 'usage.admin.modal.expiration.title' | translate }} <laji-info [html]="'usage.admin.modal.expiration.info' | translate"></laji-info></legend>
         <laji-datepicker formControlName="expirationUntil"> {{ "usage.admin.modal.expiration.until" | translate }}</laji-datepicker>
       </fieldset>
-
       <div class="lu-modal-footer">
-      <button type="submit" [disabled]="!addUserForm.valid || userAddReqPending.includes(user.id)" class="btn btn-primary">{{ "save" | translate }}</button>
+        <button type="submit" [disabled]="!addUserForm.valid || userAddReqPending.includes(user.id)" class="btn btn-primary">{{ "save" | translate }}</button>
       </div>
     </form>
-  </ng-container>
+  }
 </lu-modal>

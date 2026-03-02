@@ -4,10 +4,11 @@ import BirdSongRecognitionSkillLevel = Profile.BirdSongRecognitionSkillLevel;
 import BirdSongRecognitionSkillLevelEnum = Profile.BirdSongRecognitionSkillLevelEnum;
 
 @Component({
-  selector: 'bsg-expertise-by-continent',
-  templateUrl: './expertise-by-continent.component.html',
-  styleUrls: ['./expertise-by-continent.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-expertise-by-continent',
+    templateUrl: './expertise-by-continent.component.html',
+    styleUrls: ['./expertise-by-continent.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ExpertiseByContinentComponent implements OnChanges {
   @Input() continents: {id: string; value: string}[] = [];

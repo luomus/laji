@@ -1,16 +1,18 @@
-<div *ngIf="lineChartData?.datasets[0].tree.length" style="margin-top: 20px">
-  <div class="info-card-chart">
-    <laji-chart #lineChart
-    [data]="lineChartData"
-    [labels]="lineChartLabels"
-    [options]="lineChartOptions"
-    [legend]="false"
-    [chartType]="chartType"
-    (chartClick)="onChartClick($event)"
-  ></laji-chart>
+@if (lineChartData?.datasets[0].tree.length) {
+  <div style="margin-top: 20px">
+    <div class="info-card-chart">
+      <laji-chart #lineChart
+        [data]="lineChartData"
+        [labels]="lineChartLabels"
+        [options]="lineChartOptions"
+        [legend]="false"
+        [chartType]="chartType"
+        (chartClick)="onChartClick($event)"
+      ></laji-chart>
+    </div>
+    <span>
+      {{ 'taxonomy.total' | translate }} {{ total }}
+      {{ (total === 1 ? 'taxonomy.species.singular' : 'taxonomy.species') | translate }}
+    </span>
   </div>
-  <span>
-    {{ 'taxonomy.total' | translate }} {{ total }}
-    {{ (total === 1 ? 'taxonomy.species.singular' : 'taxonomy.species') | translate }}
-  </span>
-</div>
+}

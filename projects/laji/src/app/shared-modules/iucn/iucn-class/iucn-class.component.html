@@ -35,14 +35,16 @@
       <p class="redclass-name" [innerHTML]="'MX.iucnLC' | label | iucnStatus | iucnHyphens"></p>
     </div>
   </div>
-  <div class="group g4" *ngIf="includeOther">
-    <div class="redclass na">
-      <h4>NA</h4>
-      <p class="redclass-name" [innerHTML]="'MX.iucnNA' | label | iucnStatus | iucnHyphens"></p>
+  @if (includeOther) {
+    <div class="group g4">
+      <div class="redclass na">
+        <h4>NA</h4>
+        <p class="redclass-name" [innerHTML]="'MX.iucnNA' | label | iucnStatus | iucnHyphens"></p>
+      </div>
+      <div class="redclass ne">
+        <h4>NE</h4>
+        <p class="redclass-name">{{ 'MX.iucnNE' | label | iucnStatus }}</p>
+      </div>
     </div>
-    <div class="redclass ne">
-      <h4>NE</h4>
-      <p class="redclass-name">{{ 'MX.iucnNE' | label | iucnStatus }}</p>
-    </div>
-  </div>
+  }
 </div>

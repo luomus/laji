@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppComponent } from '../../../laji/src/app/shared-modules/app-component/app.component';
 
 @Component({
-  selector: 'vir-app',
-  template: `
+    selector: 'vir-app',
+    template: `
     <ng-container *lajiLoggedIn="true">
       <vir-nav-bar></vir-nav-bar>
       <vir-global-message></vir-global-message>
@@ -17,10 +17,11 @@ import { AppComponent } from '../../../laji/src/app/shared-modules/app-component
       <laji-viewer-modal></laji-viewer-modal>
     </ng-container>
   `,
-  styleUrls: [
-    '../../../laji/src/app/shared-modules/app-component/app.component.scss',
-    './vir-app.component.scss'
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: [
+        '../../../laji/src/app/shared-modules/app-component/app.component.scss',
+        './vir-app.component.scss'
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class VirAppComponent extends AppComponent {}

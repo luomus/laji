@@ -11,7 +11,8 @@ import { Directive, HostBinding } from '@angular/core';
  * use the attribute `luDropdownNoClose` on it.
  */
 @Directive({
-  selector: '[luDropdownMenu]'
+    selector: '[luDropdownMenu]',
+    standalone: false
 })
 export class DropdownMenuDirective {
 
