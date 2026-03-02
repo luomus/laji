@@ -9,9 +9,8 @@ import { Global } from '../../environments/global';
 import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
 import { Information } from '../shared/model/Information';
 import { NewsFacade } from '../+news/news.facade';
-import { MultiLanguage } from '../../../../laji-api-client/src/lib/models';
 import { environment } from '../../environments/environment';
-
+import { MultiLanguage } from '../shared/model/MultiLanguage';
 
 @Component({
     selector: 'laji-home',

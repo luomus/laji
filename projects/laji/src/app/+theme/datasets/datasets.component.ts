@@ -4,12 +4,12 @@ import { forkJoin, Observable } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 import { map, switchMap } from 'rxjs';
-import { MultiLanguage } from '../../../../../laji-api-client/src/lib/models';
 import { Form } from '../../shared/model/Form';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
 import { UserService } from '../../shared/service/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
+import { MultiLanguage } from '../../shared/model/MultiLanguage';
 
 @Component({
     selector: 'laji-generic-collections',
