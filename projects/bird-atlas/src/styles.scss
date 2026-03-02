@@ -1,9 +1,9 @@
 @use 'vars' as *;
-@import 'projects/laji-ui/src/lib/utils';
-@import 'projects/laji-ui/src/lib/mixins/base';
-@import 'projects/laji/src/styles/bs_overwrites';
+@use '../../laji-ui/src/lib/utils' as *;
+@use '../../laji-ui/src/lib/mixins/base' as *;
+@use '../../laji/src/styles/bs_overwrites' as *;
 
-@import 'styles/laji-map-overwrites';
+@use 'styles/laji-map-overwrites' as *;
 
 html {
   overflow-y: scroll;
