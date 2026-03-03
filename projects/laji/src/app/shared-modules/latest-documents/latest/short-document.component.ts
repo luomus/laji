@@ -6,7 +6,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { Form } from '../../../shared/model/Form';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 @Component({
     selector: 'laji-short-document',
@@ -16,7 +18,7 @@ import { Form } from '../../../shared/model/Form';
 })
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document!: Document & { id: string };
-  @Input() form!: Form.List;
+  @Input() form!: FormListing;
   @Input() showFormName = true;
   @Input() staticWidth?: number = undefined;
   @Input() complainLocality? = true;

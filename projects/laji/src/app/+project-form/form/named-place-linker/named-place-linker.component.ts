@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormService } from '../../../shared/service/form.service';
-import { Form } from '../../../shared/model/Form';
 import { catchError, map, switchMap, take } from 'rxjs';
 import { combineLatest, EMPTY, Observable, of, Subscription } from 'rxjs';
 import { Document } from '../../../shared/model/Document';
@@ -11,10 +10,13 @@ import { UserService } from '../../../shared/service/user.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { FormPermissionService } from '../../../shared/service/form-permission.service';
 import { DocumentService, Readonly } from '../../../shared-modules/own-submissions/service/document.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 interface ViewModel {
   document: Document;
-  form: Form.SchemaForm;
+  form: Form;
   isLinkable: boolean;
   isLinked: boolean;
 }
@@ -111,7 +113,7 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
         this.loading = false;
         return of(null);
       })
-    ).subscribe((res: null | {document: Document; form: Form.SchemaForm | undefined}) => {
+    ).subscribe((res: null | {document: Document; form: Form | undefined}) => {
       if (!res) {
         this.loading = false;
         return;

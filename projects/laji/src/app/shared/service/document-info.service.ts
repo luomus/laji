@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Document } from '../model/Document';
 import { Units } from '../model/Units';
 import { Global } from '../../../environments/global';
-import { Form } from '../model/Form';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 interface Info {
   dateBegin: string | null;
@@ -21,7 +23,7 @@ interface Info {
  */
 @Injectable({providedIn: 'root'})
 export class DocumentInfoService {
-  static getGatheringInfo(document: Document, form: Form.List) {
+  static getGatheringInfo(document: Document, form: FormListing) {
     const info: Info = {
       dateBegin: null,
       dateEnd: null,
@@ -92,7 +94,7 @@ export class DocumentInfoService {
     }
   }
 
-  public static isEmptyUnit(unit: Units, form: Form.List) {
+  public static isEmptyUnit(unit: Units, form: FormListing) {
     if (form?.options?.prepopulateWithInformalTaxonGroups || form?.options?.emptyOnNoCount) {
       let result = true;
       (Global.documentCountUnitProperties as (keyof Units)[]).forEach(key => {

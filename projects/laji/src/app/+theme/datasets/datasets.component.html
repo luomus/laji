@@ -23,7 +23,6 @@
         }
         @for (form of forms; track form) {
           <li>
-            @if (form !== false) {
               <a [routerLink]="['/project/', form?.id!] | localize">
                 {{ form?.collectionID! | label }},
                 @if (form?.options?.secondaryCopy) {
@@ -32,7 +31,6 @@
                   {{ 'datasets.primary' | translate }}
                 }
               </a>
-            }
           </li>
         }
       </ul>

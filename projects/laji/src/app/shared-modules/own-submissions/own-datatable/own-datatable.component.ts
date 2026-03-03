@@ -21,10 +21,12 @@ import { FormService } from '../../../shared/service/form.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PlatformService } from '../../../root/platform.service';
-import { Form } from '../../../shared/model/Form';
 import { SelectionType } from '@achimha/ngx-datatable';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 export interface RowDocument {
   creator: string;
@@ -165,7 +167,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   @ViewChild('deleteModal', { static: true }) public deleteModal!: ModalComponent;
 
   labelFilter$: Observable<LabelFilter>;
-  forms$: Observable<{[id: string]: Form.List}>;
+  forms$: Observable<{[id: string]: FormListing}>;
 
   private readonly labelSettingsKey = 'label-filters';
 

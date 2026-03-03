@@ -14,8 +14,10 @@ import { ExtendedNamedPlace } from '../model/extended-named-place';
 import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/tab-utils';
 import { Rights } from '../../../../shared/service/form-permission.service';
 import { PlatformService } from '../../../../root/platform.service';
-import { Form } from '../../../../shared/model/Form';
 import { formOptionToClassName } from '../../../../shared/directive/project-form-option.directive';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 @Component({
     selector: 'laji-np-choose',
@@ -31,10 +33,10 @@ export class NpChooseComponent implements OnInit, OnChanges {
 
   height = '600px';
   _namedPlaces: ExtendedNamedPlace[] = [];
-  _documentForm!: Form.SchemaForm;
+  _documentForm!: Form;
   _userID?: string;
 
-  @Input() placeForm?: Form.SchemaForm;
+  @Input() placeForm?: Form;
   @Input() visible = true;
   @Input() formRights?: Rights;
 
@@ -191,7 +193,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
   }
 
   private initEarliestAndLatest() {
-    const season = (this._documentForm.options?.season || {}) as Exclude<Form.SchemaForm['options']['season'], undefined>;
+    const season = (this._documentForm.options?.season || {}) as Exclude<Form['options']['season'], undefined>;
     if (season.start && season.end) {
       this.seasonStart = new Date(this.analyseData(season.start));
       this.seasonEnd = new Date(this.analyseData(season.end));

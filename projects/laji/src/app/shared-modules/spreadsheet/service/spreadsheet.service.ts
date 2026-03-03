@@ -6,11 +6,13 @@ import { TriplestoreLabelService } from '../../../shared/service/triplestore-lab
 
 import { IFormField, LEVEL_DOCUMENT } from '../model/excel';
 import { MappingService } from './mapping.service';
-import { distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs';
+import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 import { GeneratorService } from './generator.service';
 import { Util } from '../../../shared/service/util.service';
-import { Form } from '../../../shared/model/Form';
 import { FormService } from '../../../shared/service/form.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 enum GroupTypeEnum {
   date = 'date',
@@ -110,14 +112,14 @@ export class SpreadsheetService {
     this.hiddenFields[formID] = fields;
   }
 
-  formToFlatFieldsLookUp(form: Form.SchemaForm, base: IFormField[] = []): {[key: string]: IFormField} {
+  formToFlatFieldsLookUp(form: Form, base: IFormField[] = []): {[key: string]: IFormField} {
     return this.formToFlatFields(form, base).reduce((result, field) => {
       (result as any)[field.key] = field;
       return result;
     }, {});
   }
 
-  formToFlatFields(form: Form.SchemaForm, base: IFormField[] = []): IFormField[] {
+  formToFlatFields(form: Form, base: IFormField[] = []): IFormField[] {
     const result: IFormField[] = [...base];
     if (form && form.schema && form.schema.properties) {
       this.parserFields(form.schema, {properties: form.validators}, result, '', LEVEL_DOCUMENT, this.findUnitSubGroups(form.uiSchema));

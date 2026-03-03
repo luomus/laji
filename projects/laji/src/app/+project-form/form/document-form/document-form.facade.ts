@@ -7,7 +7,6 @@ import { FooterService } from '../../../shared/service/footer.service';
 import { Document } from '../../../shared/model/Document';
 import { LatestDocumentsFacade } from '../../../shared-modules/latest-documents/latest-documents.facade';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
-import { Form } from '../../../shared/model/Form';
 import { FormService } from '../../../shared/service/form.service';
 import { Util } from '../../../shared/service/util.service';
 import { UserService } from '../../../shared/service/user.service';
@@ -26,6 +25,7 @@ import { ProjectFormService } from '../../../shared/service/project-form.service
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
+type Form = components['schemas']['Form'];
 type Annotation = components['schemas']['store-annotation'];
 
 export enum FormError {
@@ -49,7 +49,7 @@ export enum Readonly {
 }
 
 export interface SaneInputModel {
-  form: Form.SchemaForm;
+  form: Form;
   formData: any;
   hasChanges: boolean;
   template: boolean;
@@ -91,7 +91,7 @@ export class DocumentFormFacade {
   private vmSub!: Subscription;
   private saveTmpSub!: Subscription;
   private annotationCache: Record<string, Observable<Annotation[]>> = {};
-  private memoizedForm: {form?: Form.SchemaForm; uiSchema?: any; uiSchemaContext?: any; result?: any} = {};
+  private memoizedForm: {form?: Form; uiSchema?: any; uiSchemaContext?: any; result?: any} = {};
 
   constructor(
     private footerService: FooterService,
@@ -117,7 +117,7 @@ export class DocumentFormFacade {
 
     const isSane = filter(<T>(f: T | FormError): f is T => !isFormError(f));
 
-    const form$: Observable<Form.SchemaForm | FormError> = combineLatest([formID$, template$]).pipe(
+    const form$: Observable<Form | FormError> = combineLatest([formID$, template$]).pipe(
       switchMap(([formID, template]) => this.projectFormService.getForm$(formID).pipe(
         switchMap(form => template && !form?.options?.allowTemplate
           ? of(FormError.templateDisallowed)
@@ -139,7 +139,7 @@ export class DocumentFormFacade {
     const existingDocument$: Observable<DocumentAndHasChanges | FormError | null> = form$.pipe(
       isSane,
       switchMap(form => documentID$.pipe(switchMap(documentID => documentID
-        ? this.fetchExistingDocument((form as Form.SchemaForm), documentID)
+        ? this.fetchExistingDocument((form as Form), documentID)
         : of(null)
       ))),
       shareReplay()
@@ -281,7 +281,7 @@ export class DocumentFormFacade {
   }
 
   // Memoize the form so that it doesn't trigger change detection if nothing changed.
-  getMemoizedForm(form: Form.SchemaForm, uiSchema: any, uiSchemaContext: any) {
+  getMemoizedForm(form: Form, uiSchema: any, uiSchemaContext: any) {
     const result =  {...form, uiSchema, uiSchemaContext};
     const memoizedForm = {form, uiSchema, uiSchemaContext, result};
     if (Object.keys(memoizedForm).every(k => k === 'result' || (memoizedForm as any)[k] === (this.memoizedForm as any)[k])) {
@@ -348,10 +348,10 @@ export class DocumentFormFacade {
     return this.documentService.saveTemplate(template);
   }
 
-  private getEditingOldWarning(form: Form.SchemaForm, formData: any, documentID?: string): string | undefined {
+  private getEditingOldWarning(form: Form, formData: any, documentID?: string): string | undefined {
     if (documentID && form.options?.warnEditingOldDocument) {
       // ISO 8601 duration
-      const {warnEditingOldDocumentDuration = 'P1W'} = form.options || {};
+      const warnEditingOldDocumentDuration = 'P1W';
       const docCreateDuration = moment.duration(moment().diff(moment(formData.dateCreated)));
       if (moment.duration(warnEditingOldDocumentDuration).subtract(docCreateDuration).asMilliseconds() < 0) {
         return moment(formData.dateCreated).format('DD.MM.YYYY');
@@ -360,14 +360,14 @@ export class DocumentFormFacade {
     return undefined;
   }
 
-  private getNamedPlaceHeader(form: Form.SchemaForm, namedPlace: NamedPlace | undefined): string[] {
+  private getNamedPlaceHeader(form: Form, namedPlace: NamedPlace | undefined): string[] {
     if (!form || !namedPlace) {
       return [];
     }
     return form.options?.namedPlaceOptions?.headerFields || ['alternativeIDs', 'name', 'municipality'];
   }
 
-  private fetchExistingDocument(form: Form.SchemaForm, documentID: string): Observable<DocumentAndHasChanges | FormError> {
+  private fetchExistingDocument(form: Form, documentID: string): Observable<DocumentAndHasChanges | FormError> {
     if (FormService.isTmpId(documentID)) {
       return this.userService.user$.pipe(
         take(1),
@@ -406,7 +406,7 @@ export class DocumentFormFacade {
     );
   }
 
-  private fetchEmptyData(form: Form.SchemaForm, person: Person | undefined, namedPlace: NamedPlace): Observable<DocumentAndHasChanges> {
+  private fetchEmptyData(form: Form, person: Person | undefined, namedPlace: NamedPlace): Observable<DocumentAndHasChanges> {
     let document: Document = {
       id: this.getNewTmpId(),
       formID: form.id,
@@ -431,7 +431,7 @@ export class DocumentFormFacade {
     return FormService.tmpNs + ':' +  this.tmpDocId;
   }
 
-  private addNamedPlaceData(form: Form.SchemaForm, data: Document, np: NamedPlace): Document {
+  private addNamedPlaceData(form: Form, data: Document, np: NamedPlace): Document {
     const populate: any = np.acceptedDocument ?
       Util.clone(np.acceptedDocument) :
       (np.prepopulatedDocument ? Util.clone(np.prepopulatedDocument) : {});
@@ -464,7 +464,7 @@ export class DocumentFormFacade {
     return deepmerge(this.documentService.removeMeta(populate, removeList), data, { arrayMerge: Util.arrayCombineMerge });
   }
 
-  private addCollectionID(form: Form.SchemaForm, data: Document): Observable<Document> {
+  private addCollectionID(form: Form, data: Document): Observable<Document> {
     return form.id === Global.forms.privateCollection
       ? this.api.get('/person/profile').pipe(map(profile =>
         typeof profile?.personalCollectionIdentifier === 'string'
@@ -477,7 +477,7 @@ export class DocumentFormFacade {
       : of(data);
   }
 
-  private getUiSchema(form: Form.SchemaForm, locked: boolean, readonly: Readonly, rights: Rights, template: boolean) {
+  private getUiSchema(form: Form, locked: boolean, readonly: Readonly, rights: Rights, template: boolean) {
     let {uiSchema = {}} = form;
     if (locked) {
         uiSchema = {...uiSchema, 'ui:disabled': !rights.admin};
@@ -488,8 +488,8 @@ export class DocumentFormFacade {
     if (template) {
       try {
         uiSchema = Util.clone(uiSchema);
-        uiSchema.gatherings.items.units['ui:field'] = 'HiddenField';
-        uiSchema.gatherings['ui:options']['belowUiSchemaRoot']['ui:field'] = 'HiddenField';
+        (uiSchema as any).gatherings.items.units['ui:field'] = 'HiddenField';
+        (uiSchema as any).gatherings['ui:options']['belowUiSchemaRoot']['ui:field'] = 'HiddenField';
       } catch (e) {
         console.error(e);
       }
@@ -497,7 +497,7 @@ export class DocumentFormFacade {
     return uiSchema;
   }
 
-  private getUiSchemaContext(form: Form.SchemaForm, namedPlace: NamedPlace, user: Person | undefined, rights: Rights, documentID: string): Observable<any> {
+  private getUiSchemaContext(form: Form, namedPlace: NamedPlace, user: Person | undefined, rights: Rights, documentID: string): Observable<any> {
     const uiSchemaContext = {
       ...form.uiSchemaContext,
       formID: form.id,
@@ -509,13 +509,13 @@ export class DocumentFormFacade {
 
     return this.getAnnotations(documentID).pipe(
       shareReplay(),
-      map((annotations) => (annotations || []).reduce<Form.IAnnotationMap>((cumulative, current) => {
+      map((annotations) => (annotations || []).reduce((cumulative, current) => {
         if (current.byRole?.includes('MMAN.formAdmin')) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           cumulative[current.targetID!] = [current];
         }
         return cumulative;
-      }, {})),
+      }, {} as Record<string, Annotation[]>)),
       map((annotations) => ({...uiSchemaContext, annotations})),
     );
   }

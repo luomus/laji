@@ -1,21 +1,17 @@
 import { Injectable } from '@angular/core';
-import { concatWith, Observable, of as ObservableOf, throwError as observableThrowError, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { LajiApi, LajiApiService } from './laji-api.service';
 import { Global } from '../../../environments/global';
-import { catchError, concat, delay, map, retryWhen, shareReplay, take } from 'rxjs';
-import { Form } from '../model/Form';
-import { UserService } from './user.service';
-import { HttpClient } from '@angular/common/http';
+import { map, shareReplay } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-export interface Participant {
-  id?: string;
-  fullName?: string;
-  emailAddress?: string;
-  address?: string;
-  lintuvaaraLoginName?: string[];
-  lastDoc?: number;
+type FormListing = components['schemas']['FormListing'];
+type Form = components['schemas']['Form'];
+
+export interface JsonForm extends Omit<Form, 'schema'> {
+  fields: any[];
 }
 
 function getCacheKey(formId: string, lang: string) {
@@ -28,16 +24,14 @@ export class FormService {
   static readonly tmpNs = 'T';
 
   private currentLang?: string;
-  private formCache: {[key: string]: Observable<Form.SchemaForm | undefined>} = {};
-  private jsonFormCache: {[key: string]: Observable<Form.JsonForm>} = {};
-  private allForms?: Observable<Form.List[]>;
+  private formCache: {[key: string]: Observable<Form>} = {};
+  private jsonFormCache: {[key: string]: Observable<JsonForm>} = {};
+  private allForms?: Observable<FormListing[]>;
 
   protected basePath = environment.apiBase;
 
   constructor(
-    private lajiApi: LajiApiService,
-    private http: HttpClient,
-    private userService: UserService,
+    private api: LajiApiClientBService,
     private translate: TranslateService
   ) {
     this.translate.onLangChange.subscribe(e => this.setLang(e.lang));
@@ -58,42 +52,32 @@ export class FormService {
     }
   }
 
-  getForm(formId: string): Observable<Form.SchemaForm | undefined> {
-    if (!formId) {
-      return ObservableOf(undefined);
-    }
-    const cacheKey = getCacheKey(formId, this.translate.getCurrentLang());
+  getForm(id: string): Observable<Form> {
+    const cacheKey = getCacheKey(id, this.translate.getCurrentLang());
     if (!this.formCache[cacheKey]) {
-      this.formCache[cacheKey] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang: this.translate.getCurrentLang()}).pipe(
-        catchError(error => error.status === 404 ? ObservableOf(undefined) : throwError(() => error)),
-        retryWhen(errors => errors.pipe(delay(1000), take(2), concatWith(throwError(() => errors)))),
-        shareReplay(1)
-      );
+      this.formCache[cacheKey] = this.api.get('/forms/{id}', { path: { id } });
     }
-    return this.formCache[cacheKey];
+    return this.formCache[cacheKey]!;
   }
 
-  getFormInJSONFormat(formId?: string): Observable<Form.JsonForm> {
-    if (!formId) {
-      return ObservableOf({} as Form.JsonForm);
-    }
+  getFormInJSONFormat(id: string): Observable<JsonForm> {
     const lang = this.translate.getCurrentLang();
-    const cacheKey = getCacheKey(formId, lang);
+    const cacheKey = getCacheKey(id, lang);
     if (!this.jsonFormCache[cacheKey]) {
-      this.jsonFormCache[cacheKey] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang, format: 'json'}).pipe(
+      this.jsonFormCache[cacheKey] = (this.api.get('/forms/{id}', { path: { id }, query: {format: 'json'} }) as unknown as Observable<JsonForm>).pipe(
         shareReplay(1)
       );
     }
     return this.jsonFormCache[cacheKey];
   }
 
-  getFormInListFormat(formId: string): Observable<Form.List> {
-    return this.getAllForms().pipe(map(forms => forms.find(f => f.id === formId) as Form.List));
+  getFormInListFormat(id: string) {
+    return this.getAllForms().pipe(map(forms => forms.find(f => f.id === id))) as Observable<FormListing>;
   }
 
-  getAllForms(): Observable<Form.List[]> {
+  getAllForms(): Observable<FormListing[]> {
     if (!this.allForms) {
-      this.allForms = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.translate.getCurrentLang()}).pipe(
+      this.allForms = this.api.get('/forms').pipe(
         map(data => data.results),
         shareReplay(1)
       );
@@ -101,7 +85,7 @@ export class FormService {
     return this.allForms;
   }
 
-  getSpreadsheetForms(): Observable<Form.List[]> {
+  getSpreadsheetForms(): Observable<FormListing[]> {
     return this.getAllForms().pipe(map(forms => forms.filter(form => form.options?.allowExcel)));
   }
 
@@ -122,14 +106,14 @@ export class FormService {
     return `${this.getAddUrlPath(formId)}/${documentId}`;
   }
 
-  getParticipants(form: Form.List) {
-    return this.http.get(
-      `${this.basePath}/${LajiApi.Endpoints.forms}/${form.id}/participants`,
-    {params: {personToken: this.userService.getToken()}, headers: {timeout: '240000'}}
-    ) as Observable<Participant[]>;
+  // TODO!! timeout ?
+  getParticipants(form: FormListing) {
+    return this.api.get('/forms/{id}/participants', { path: { id: form.id } });
+    // {params: {personToken: this.userService.getToken()}, headers: {timeout: '240000'}}
+    // ) as Observable<Participant[]>;
   }
 
-  getPlaceForm(documentForm: Form.SchemaForm) {
+  getPlaceForm(documentForm: Form) {
     const id = documentForm.options?.namedPlaceOptions?.namedPlaceFormID || Global.forms.namedPlace;
     return this.getForm(id);
   }

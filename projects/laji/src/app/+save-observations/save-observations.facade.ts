@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs';
-import { Form } from '../shared/model/Form';
 import { Global } from '../../environments/global';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 interface State {
-  citizenScienceForms: Form.List[];
-  birdMonitoringForms: Form.List[];
-  completeListForms: Form.List[];
-  researchProjectForms: Form.List[];
+  citizenScienceForms: FormListing[];
+  birdMonitoringForms: FormListing[];
+  completeListForms: FormListing[];
+  researchProjectForms: FormListing[];
 }
 
 @Injectable()

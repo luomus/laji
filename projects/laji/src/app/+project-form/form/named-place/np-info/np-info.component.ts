@@ -18,7 +18,6 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
-import { Form } from '../../../../shared/model/Form';
 import { Document } from '../../../../shared/model/Document';
 import { Rights } from '../../../../shared/service/form-permission.service';
 import { Util } from '../../../../shared/service/util.service';
@@ -27,6 +26,9 @@ import { RowDocument } from '../../../../shared-modules/own-submissions/own-data
 import { Observable } from 'rxjs';
 import { LajiFormUtil } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-util.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 @Component({
     selector: 'laji-np-info',
@@ -37,8 +39,8 @@ import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.compo
 })
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace!: NamedPlace;
-  @Input() placeForm!: Form.SchemaForm;
-  @Input() documentForm!: Form.SchemaForm;
+  @Input() placeForm!: Form;
+  @Input() documentForm!: Form;
   @Input() collectionId!: string;
   @Input() editMode!: boolean;
   @Input() allowEdit!: boolean;
@@ -72,7 +74,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   useLocalDocumentViewer = false;
   canDelete: boolean | undefined;
 
-  public static getSchemaFromNPJsonPathPointer(placeForm: Form.SchemaForm, docForm: Form.SchemaForm, path: string) {
+  public static getSchemaFromNPJsonPathPointer(placeForm: Form, docForm: Form, path: string) {
     let {schema} = placeForm;
     let schemaPointer = path;
     if (path.startsWith('$.prepopulatedDocument')) {
@@ -86,7 +88,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     );
   }
 
-  public static getListItems(placeForm: any, np: NamedPlace, form: Form.SchemaForm): any[] {
+  public static getListItems(placeForm: any, np: NamedPlace, form: Form): any[] {
     // TODO remove coupling between uiSchema and infoFields.
     let displayed = form.options?.namedPlaceOptions?.infoFields || [];
     if (!form.options?.namedPlaceOptions?.infoFields) {

@@ -5,7 +5,6 @@ import { NpChooseComponent } from '../np-choose/np-choose.component';
 import moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Form } from '../../../../shared/model/Form';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { Area } from '../../../../shared/model/Area';
 import { FormPermissionService, Rights } from '../../../../shared/service/form-permission.service';
@@ -16,11 +15,14 @@ import { FooterService } from '../../../../shared/service/footer.service';
 import { NamedPlaceQuery } from '../../../../shared/api/NamedPlaceApi';
 import { NpInfoComponent } from '../np-info/np-info.component';
 import { FormService } from '../../../../shared/service/form.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 interface DerivedFromInput {
   collectionId?: string;
-  documentForm?: Form.SchemaForm;
-  placeForm?: Form.SchemaForm;
+  documentForm?: Form;
+  placeForm?: Form;
   namedPlaces?: any[];
   user?: any;
   formRights?: Rights;
@@ -45,7 +47,7 @@ interface DerivedFromInput {
 })
 export class NamedPlaceComponent implements OnInit, OnDestroy {
 
-  @Input() set documentForm(documentForm: Form.SchemaForm) {
+  @Input() set documentForm(documentForm: Form) {
     this.documentForm$.next(documentForm);
   }
 
@@ -100,7 +102,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   errorMsg = '';
 
   private updateFromInput!: Subscription;
-  private documentForm$ = new BehaviorSubject<Form.SchemaForm | undefined>(undefined);
+  private documentForm$ = new BehaviorSubject<Form | undefined>(undefined);
   private activeNP$ = new BehaviorSubject<string | undefined | null>(undefined);
   private filterBy$ = new BehaviorSubject<string | undefined>(undefined);
   private tab$ = new BehaviorSubject<string | undefined>(undefined);
@@ -121,7 +123,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     private formService: FormService
   ) {}
 
-  static getMapOptions(documentForm: Form.SchemaForm | undefined) {
+  static getMapOptions(documentForm: Form | undefined) {
     const uiSchema = documentForm?.uiSchema;
 
     if (!uiSchema) {
@@ -347,8 +349,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.errorMsg = msg;
   }
 
-  getNamedPlaces$(documentForm: Form.SchemaForm, municipality: string, birdAssociationArea: string, tags: string[]): Observable<any> {
-    const selected = (documentForm.options?.namedPlaceOptions?.listColumns || ['$.name'])
+  getNamedPlaces$(documentForm: Form, municipality: string, birdAssociationArea: string, tags: string[]): Observable<any> {
+    const selected = (documentForm.options.namedPlaceOptions?.listColumns || ['$.name'])
       .map(field => field.replace('$.', '').replace(/\.length$/, ''));
     if (!documentForm.options?.namedPlaceOptions?.hideMapTab) {
       selected.push('geometry');
@@ -382,8 +384,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       );
   }
 
-  npRequirementsNotMet(documentForm: Form.SchemaForm, municipality?: string, birdAssociationArea?: string) {
-    return (documentForm.options?.namedPlaceOptions?.filterByMunicipality && !municipality)
-      || (documentForm.options?.namedPlaceOptions?.filterByBirdAssociationArea && !birdAssociationArea);
+  npRequirementsNotMet(documentForm: Form, municipality?: string, birdAssociationArea?: string) {
+    return (documentForm.options.namedPlaceOptions?.filterByMunicipality && !municipality)
+      || (documentForm.options.namedPlaceOptions?.filterByBirdAssociationArea && !birdAssociationArea);
   }
 }
