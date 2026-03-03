@@ -14193,6 +14193,9 @@ export interface components {
             warnings: {
                 [key: string]: unknown;
             };
+            uiSchemaContext: {
+                [key: string]: unknown;
+            };
         };
         JSONSchema: components["schemas"]["JSONSchemaObject"] | components["schemas"]["JSONSchemaArray"] | components["schemas"]["JSONSchemaPrimitive"];
         JSONSchemaObject: {
