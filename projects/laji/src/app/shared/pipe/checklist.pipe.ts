@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AbstractLabelPipe } from './abstract-label.pipe';
 import { ChecklistService } from '../service/checklist.service';
 import { Observable, of } from 'rxjs';
-import { Checklist } from 'projects/laji-api-client/src/lib/models/checklist';
+import { Checklist } from '../model/Checklist';
 
 @Pipe({
     name: 'checklist',

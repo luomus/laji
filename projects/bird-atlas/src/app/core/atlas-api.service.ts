@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../env/environment';
 import { cacheReturnObservable, Lang } from './api.service';
-import { Taxon } from 'projects/laji-api-client/src/public-api';
 
 export type AtlasMap = string;
 export type AtlasActivityCategory =
