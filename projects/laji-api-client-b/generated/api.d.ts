@@ -14186,6 +14186,7 @@ export interface components {
                 [key: string]: unknown;
             };
             schema: components["schemas"]["JSONSchema"];
+            excludeFromCopy: string[];
         };
         JSONSchema: components["schemas"]["JSONSchemaObject"] | components["schemas"]["JSONSchemaArray"] | components["schemas"]["JSONSchemaPrimitive"];
         JSONSchemaObject: {
@@ -15465,72 +15466,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        /** Context for the MHL.form */
-                        "@context": string;
-                        /** Id for the MHL.form */
-                        id: string;
-                        /** Type for the MHL.form */
-                        "@type": string;
-                        /** Base form */
-                        baseFormID: string;
-                        /**
-                         * Category
-                         * @enum {string}
-                         */
-                        category: "" | "MHL.categoryGeneric" | "MHL.categorySurvey" | "MHL.categoryTaxonomicGroup" | "MHL.categoryBirdMonitoringSchemes" | "MHL.categoryCitizenScience" | "MHL.categoryBiomonCompleteLists";
-                        /**
-                         * Collection ID
-                         * @description Id for the collection to where observation useing this form are connected
-                         */
-                        collectionID: string;
-                        /**
-                         * Context
-                         * @description The schema context of the form (e.g. MY.document, MNP.namedPlace...)
-                         */
-                        context: string;
-                        /** Description */
-                        description: string;
-                        /**
-                         * Fields form ID
-                         * @description Use fields, uiSchema and translations from the form
-                         */
-                        fieldsFormID: string;
-                        /**
-                         * Form language
-                         * @enum {string}
-                         */
-                        language: "" | "en" | "fi" | "sv";
-                        /** Logo address */
-                        logo: string;
-                        /** Name */
-                        name: string;
-                        options: components["schemas"]["store-formOptions"];
-                        /** Patch form data */
-                        patch: {
-                            [key: string]: unknown;
-                        }[];
-                        /** Short description */
-                        shortDescription: string;
-                        /**
-                         * Short title
-                         * @description Shown at sidebar and & as browser title
-                         */
-                        shortTitle: string;
-                        /** Supported language */
-                        supportedLanguage: ("" | "en" | "fi" | "sv")[];
-                        /** Title */
-                        title: string;
-                        /** Translations */
-                        translations: {
-                            [key: string]: unknown;
-                        };
-                        /** Specification for ui schema */
-                        uiSchema: {
-                            [key: string]: unknown;
-                        };
-                        schema: components["schemas"]["JSONSchema"];
-                    };
+                    "application/json": components["schemas"]["Form"];
                 };
             };
             400: {
