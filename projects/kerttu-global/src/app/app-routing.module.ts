@@ -4,7 +4,6 @@ import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router
 import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from '../../../laji/src/app/locale/locale-en.component';
 import { catchError, flatMap } from 'rxjs';
-import { LocalizeGuard } from '../../../laji/src/app/locale/localize.guard';
 import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-found.component';
 import { CheckLoginGuard } from '../../../laji/src/app/shared/guards/check-login.guard';
 import { LocaleEsComponent } from './locale/locale-es.component';
@@ -49,17 +48,17 @@ const routes: Routes = [
 ];
 
 const routesWithLang: Routes = [
-  {path: 'es', data: {lang: 'es'}, children: [
+  {path: 'es', children: [
       ...routes,
       {path: '**', component: NotFoundComponent}
-    ], component: LocaleEsComponent, canActivate: [LocalizeGuard]},
-  {path: 'fr', data: {lang: 'fr'}, children: [
+    ], component: LocaleEsComponent},
+  {path: 'fr', children: [
       ...routes,
       {path: '**', component: NotFoundComponent}
-    ], component: LocaleFrComponent, canActivate: [LocalizeGuard]},
-  {path: '', data: {lang: 'en'}, children: [
+    ], component: LocaleFrComponent},
+  {path: '', children: [
       ...routes,
-    ], component: LocaleEnComponent, canActivate: [LocalizeGuard]}
+    ], component: LocaleEnComponent}
 ];
 
 const allRoutes: Routes = [

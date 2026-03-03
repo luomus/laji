@@ -1,7 +1,7 @@
-import { APP_ID, ErrorHandler, NgModule } from '@angular/core';
+import { APP_ID, ErrorHandler, NgModule, inject, provideAppInitializer } from '@angular/core';
 import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { SharedModule } from './shared/shared.module';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { ConsoleLogger, HttpLogger, Logger } from './shared/logger';
 import { ILogger } from './shared/logger/logger.interface';
@@ -23,11 +23,20 @@ import { LajiTitle } from './shared/service/laji-title';
 import { LocaleModule } from './locale/locale.module';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
+
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
     return new HttpLogger(api);
   }
   return new ConsoleLogger();
+}
+
+export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defaultLang = 'fi') {
+  const langFromPath = pathname.split('/')[0]?.toLowerCase();
+  if (langs.includes(langFromPath)) {
+    return langFromPath;
+  }
+  return defaultLang;
 }
 
 @NgModule({
@@ -57,6 +66,11 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
     { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
     { provide: APP_BASE_HREF, useValue: '/' },
     { provide: API_BASE_URL, useValue: environment.apiBase },
+    provideAppInitializer(() => {
+      const translate = inject(TranslateService);
+      const lang = detectLangFromPath(typeof window !== 'undefined' ? window.location.pathname : '/');
+      return translate.use(lang);
+    }),
     DocumentService,
     { provide: ErrorHandler, useClass: LajiErrorHandler },
     LocalizeRouterService,
