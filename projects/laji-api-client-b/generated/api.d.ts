@@ -14187,6 +14187,12 @@ export interface components {
             };
             schema: components["schemas"]["JSONSchema"];
             excludeFromCopy: string[];
+            validators: {
+                [key: string]: unknown;
+            };
+            warnings: {
+                [key: string]: unknown;
+            };
         };
         JSONSchema: components["schemas"]["JSONSchemaObject"] | components["schemas"]["JSONSchemaArray"] | components["schemas"]["JSONSchemaPrimitive"];
         JSONSchemaObject: {
