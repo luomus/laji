@@ -33,15 +33,6 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   return new ConsoleLogger();
 }
 
-export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defaultLang = 'fi') {
-  const langFromPath = pathname.split('/')[0]?.toLowerCase();
-  if (langs.includes(langFromPath)) {
-    return langFromPath;
-  }
-  return defaultLang;
-}
-
-
 @NgModule({
   exports: [
     TranslateModule,
