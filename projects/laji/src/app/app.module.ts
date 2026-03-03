@@ -22,8 +22,6 @@ import { BrowserModule, provideClientHydration, Title } from '@angular/platform-
 import { LajiTitle } from './shared/service/laji-title';
 import { LocaleModule } from './locale/locale.module';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import {provideStabilityDebugging} from '@angular/core';
-import 'zone.js/plugins/task-tracking';
 
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
@@ -71,7 +69,6 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
     },
     { provide: Title, useClass: LajiTitle },
     provideClientHydration(),
-    provideStabilityDebugging(),
     provideHttpClient(
       withInterceptorsFromDi(),
       withFetch()
