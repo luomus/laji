@@ -72,7 +72,8 @@ import {
   exports: [
     IdentificationMainComponent,
     IdentificationHistoryComponent,
-    IdentificationResultsComponent
+    IdentificationResultsComponent,
+    IdentificationViewComponent
   ]
 })
 export class IdentificationModule { }

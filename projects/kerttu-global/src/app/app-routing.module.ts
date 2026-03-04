@@ -43,22 +43,26 @@ const routes: Routes = [
     data: {title: 'Bird & Bat Sounds Global'}
   },
   {
+    path: 'xeno-canto',
+    loadChildren: () => import('./+xeno-canto-identification/xeno-canto-identification.module').then(m => m.XenoCantoIdentificationModule),
+    data: {title: 'Bird & Bat Sounds Global'}
+  },
+  {
     path: 'user',
     loadChildren: () => import('../../../laji/src/app/+user/user.module').then(m => m.UserModule)
-  }
+  },
+  {path: '**', component: NotFoundComponent}
 ];
 
 const routesWithLang: Routes = [
   {path: 'es', data: {lang: 'es'}, children: [
-      ...routes,
-      {path: '**', component: NotFoundComponent}
+      ...routes
     ], component: LocaleEsComponent, canActivate: [LocalizeGuard]},
   {path: 'fr', data: {lang: 'fr'}, children: [
-      ...routes,
-      {path: '**', component: NotFoundComponent}
+      ...routes
     ], component: LocaleFrComponent, canActivate: [LocalizeGuard]},
   {path: '', data: {lang: 'en'}, children: [
-      ...routes,
+      ...routes
     ], component: LocaleEnComponent, canActivate: [LocalizeGuard]}
 ];
 
@@ -70,7 +74,7 @@ const allRoutes: Routes = [
   imports: [RouterModule.forRoot(allRoutes, {
     enableTracing: false,
     preloadingStrategy: PreloadSelectedModulesList,
-})],
+  })],
   exports: [RouterModule],
   providers: [PreloadSelectedModulesList]
 })

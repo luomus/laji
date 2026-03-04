@@ -1,0 +1,25 @@
+<laji-spinner [spinning]="loading" [overlay]="true" [hideContentWhileLoading]="true">
+  <div class="identification-view-container">
+    <div class="identification-nav">
+      <button class="btn btn-success" [disabled]="saving || loading" (click)="saveAnnotation()">{{ 'save' | translate }}</button>
+    </div>
+
+    @if (hasError) {
+      <div class="identification-alert-container">
+        @if (hasError) {
+          <lu-alert type="danger" [dismissible]="false">{{ 'identification.genericError' | translate }}</lu-alert>
+        }
+      </div>
+    }
+
+    @if (recording && annotation) {
+      <bsg-identification-view
+        class="flex-container"
+        [recording]="recording"
+        [(annotation)]="annotation"
+        [buttonsDisabled]="saving || loading"
+        (annotationChange)="onAnnotationChange()"
+      ></bsg-identification-view>
+    }
+  </div>
+</laji-spinner>

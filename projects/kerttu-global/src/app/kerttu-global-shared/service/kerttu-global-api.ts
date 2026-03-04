@@ -164,6 +164,13 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IGlobalRecordingWithAnnotation>(path, { params });
   }
 
+  public getIdentificationXenoCantoRecording(personToken: string, lang: string, xcId: number): Observable<IGlobalRecordingWithAnnotation> {
+    const path = this.basePath + '/identification/recordings/xeno-canto/' + xcId;
+    const params = new HttpParams().set('personToken', personToken).set('lang', lang);
+
+    return this.httpClient.get<IGlobalRecordingWithAnnotation>(path, { params });
+  }
+
   public saveRecordingAnnotation(personToken: string, recordingId: number, annotation: IGlobalRecordingAnnotation, isDraft = false, skipRecording = false) {
     const path = this.basePath + '/identification/recordings/' + recordingId + '/annotation';
     const params = new HttpParams().set('personToken', personToken).set('isDraft', isDraft).set('skipRecording', skipRecording);
