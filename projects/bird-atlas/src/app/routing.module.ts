@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-found.component';
-import { LocaleEnComponent } from '../../../laji/src/app/locale/locale-en.component';
-import { LocaleSvComponent } from '../../../laji/src/app/locale/locale-sv.component';
 import { LocaleFiComponent } from '../../../laji/src/app/locale/locale-fi.component';
 
 
@@ -15,16 +13,6 @@ const routes: Routes = [
 ];
 
 const routesWithLang: Routes = [
-  {
-    path: 'en',
-    children: [...routes, {path: '**', component: NotFoundComponent}],
-    component: LocaleEnComponent
-  },
-  {
-    path: 'sv',
-    children: [...routes, {path: '**', component: NotFoundComponent}],
-    component: LocaleSvComponent
-  },
   {
     path: '',
     data: {lang: 'fi'},
