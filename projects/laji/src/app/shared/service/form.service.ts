@@ -106,11 +106,8 @@ export class FormService {
     return `${this.getAddUrlPath(formId)}/${documentId}`;
   }
 
-  // TODO!! timeout ?
   getParticipants(form: FormListing) {
     return this.api.get('/forms/{id}/participants', { path: { id: form.id } });
-    // {params: {personToken: this.userService.getToken()}, headers: {timeout: '240000'}}
-    // ) as Observable<Participant[]>;
   }
 
   getPlaceForm(documentForm: Form) {
