@@ -17,7 +17,6 @@ import { DocumentFormFacade, FormError, isFormError, SaneViewModel, isSaneViewMo
 import { ProjectFormService, RegistrationContact } from '../../../shared/service/project-form.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 import { LocalStorage } from 'ngx-webstorage';
-import { FormService } from '../../../shared/service/form.service';
 import { ErrorSchema } from '@rjsf/utils';
 
 @Component({
@@ -79,8 +78,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private userService: UserService,
     private documentStorage: DocumentStorage,
-    private documentFormFacade: DocumentFormFacade,
-    private formService: FormService
+    private documentFormFacade: DocumentFormFacade
   ) { }
 
   ngOnInit() {
@@ -382,10 +380,9 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   }
 
   private getMessage(type: any, defaultValue: any) {
-    const {options = {}} = this.vm.form || {};
+    const options = this.vm.form?.options || {};
     return (
       type === 'success' ? options.saveSuccessMessage :
-      type === 'success-temp' ? options.saveDraftSuccessMessage :
       type === 'error' ? options.saveErrorMessage : undefined
     ) ?? defaultValue;
   }

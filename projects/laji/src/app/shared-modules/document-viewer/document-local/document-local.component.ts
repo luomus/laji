@@ -9,7 +9,6 @@ import { Units } from '../../../shared/model/Units';
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { Image } from '../../../shared/model/Image';
-import { Form } from '../../../shared/model/Form';
 import { JSONPath } from 'jsonpath-plus';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 
@@ -129,9 +128,9 @@ export class DocumentLocalComponent implements OnChanges {
       );
   }
 
-  private getForm(formId?: string): Observable<any> {
+  private getForm(formId: string): Observable<any> {
     return this.formService.getFormInJSONFormat(formId)
-      .pipe(tap((form: Form.JsonForm) => {
+      .pipe(tap(form => {
         this.setAllFields(
           form.fields,
           form.uiSchema,

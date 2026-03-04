@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
-import { FormService } from '../../shared/service/form.service';
 import { map, mergeMap, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Form } from '../../shared/model/Form';
 import { ProjectFormService } from '../../shared/service/project-form.service';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
 import { Document } from '../../shared/model/Document';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 export enum Rights {
   Allowed,
@@ -18,7 +19,7 @@ export enum Rights {
 interface AboutData {
   loggedIn: boolean;
   rights: Rights;
-  form: Form.SchemaForm;
+  form: Form;
 }
 
 @Component({
@@ -34,7 +35,6 @@ export class AboutComponent implements OnInit {
   aboutData$!: Observable<AboutData | undefined>;
 
   constructor(private userService: UserService,
-              private formService: FormService,
               private formPermissionService: FormPermissionService,
               private projectFormService: ProjectFormService,
               private route: ActivatedRoute,
