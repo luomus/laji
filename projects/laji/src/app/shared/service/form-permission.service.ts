@@ -3,13 +3,14 @@ import { FormPermissionApi } from '../api/FormPermissionApi';
 import { Observable, of, of as ObservableOf, throwError } from 'rxjs';
 import { FormPermission } from '../model/FormPermission';
 import { Person } from '../model/Person';
-import { Form } from '../model/Form';
 import { isIctAdmin, UserService } from './user.service';
 import { catchError, map, switchMap, take, tap } from 'rxjs';
 import { FormService } from './form.service';
 import { PlatformService } from '../../root/platform.service';
-import RestrictAccess = Form.RestrictAccess;
 import { HttpErrorResponse } from '@angular/common/http';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 export interface Rights {
   edit: boolean;
@@ -51,7 +52,7 @@ export class FormPermissionService {
     );
   }
 
-  isEditAllowed(formPermission: FormPermission, person: Person, form: Form.List): boolean {
+  isEditAllowed(formPermission: FormPermission, person: Person, form: FormListing): boolean {
     return !!person.id && (
       !form.options?.restrictAccess
         || (!!formPermission.editors && formPermission.editors.indexOf(person.id) > -1)
@@ -101,7 +102,7 @@ export class FormPermissionService {
       tap(fp => this.changes$.emit(fp)));
   }
 
-  getRights(form: Form.List): Observable<Rights> {
+  getRights(form: FormListing): Observable<Rights> {
     const {collectionID} = form;
 
     if (!collectionID) {
@@ -118,7 +119,7 @@ export class FormPermissionService {
         edit: false,
         admin: false,
         ictAdmin: false,
-        view: permissions.restrictAccess !== RestrictAccess.restrictAccessStrict
+        view: permissions.restrictAccess !== 'MHL.restrictAccessStrict'
       }))
     );
 
@@ -139,7 +140,7 @@ export class FormPermissionService {
             map((formPermission: FormPermission) => ({person, formPermission}))
           )),
           switchMap(({person, formPermission}) => person ? of({
-            view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === RestrictAccess.restrictAccessLoose,
+            view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === 'MHL.restrictAccessLoose',
             edit: this.isEditAllowed(formPermission, person, form),
             admin: this.isAdmin(formPermission, person),
             ictAdmin: isIctAdmin(person)

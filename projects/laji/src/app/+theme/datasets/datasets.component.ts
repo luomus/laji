@@ -1,15 +1,15 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormService } from '../../shared/service/form.service';
 import { forkJoin, Observable } from 'rxjs';
 import { Global } from '../../../environments/global';
-import { TranslateService } from '@ngx-translate/core';
 import { map, switchMap } from 'rxjs';
-import { Form } from '../../shared/model/Form';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
-import { UserService } from '../../shared/service/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
 import { MultiLanguage } from '../../shared/model/MultiLanguage';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 @Component({
     selector: 'laji-generic-collections',
@@ -21,7 +21,7 @@ import { MultiLanguage } from '../../shared/model/MultiLanguage';
 export class DatasetsComponent {
 
   readonly breadcrumb$: Observable<Breadcrumb[]>;
-  readonly forms$: Observable<(Form.List | false)[]>;
+  readonly forms$: Observable<FormListing[]>;
   instructions: MultiLanguage = {
     fi: '3513',
     en: '3517',
@@ -30,10 +30,7 @@ export class DatasetsComponent {
 
   constructor(
     private formService: FormService,
-    private translateService: TranslateService,
-    private cdr: ChangeDetectorRef,
     private formPermissionService: FormPermissionService,
-    private userService: UserService,
     private route: ActivatedRoute,
   ) {
     this.breadcrumb$ = this.route.data.pipe(
@@ -48,7 +45,7 @@ export class DatasetsComponent {
           map(rights => (rights.view || rights.ictAdmin) && f),
         ))
       ).pipe(
-        map(_fs => _fs.filter(f => f)),
+        map(_fs => _fs.filter(f => f) as FormListing[]),
       )),
     );
   }

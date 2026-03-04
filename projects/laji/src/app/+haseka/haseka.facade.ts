@@ -4,12 +4,12 @@ import { distinctUntilChanged, map } from 'rxjs';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
 import { LocalStorage } from 'ngx-webstorage';
 import { BrowserService } from '../shared/service/browser.service';
-import { LajiApiService } from '../shared/service/laji-api.service';
-import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../shared/service/user.service';
 import { FooterService } from '../shared/service/footer.service';
-import { Form } from '../shared/model/Form';
 import { Document } from '../shared/model/Document';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 interface IPersistentState {
   activeYear: string;
@@ -17,7 +17,7 @@ interface IPersistentState {
 }
 
 interface IVihkoState extends IPersistentState {
-  forms: Form.List[];
+  forms: FormListing[];
   latestDocs: Document[];
 }
 
@@ -63,8 +63,6 @@ export class HasekaFacade implements OnDestroy {
 
   constructor(
     private browserService: BrowserService,
-    private lajiApi: LajiApiService,
-    private translateService: TranslateService,
     private userService: UserService,
     private footerService: FooterService
   ) {

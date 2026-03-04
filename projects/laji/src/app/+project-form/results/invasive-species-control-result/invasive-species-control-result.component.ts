@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { Form } from '../../../shared/model/Form';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 export type InvasiveControlEffectiveness = 'FULL' | 'PARTIAL' | 'NO_EFFECT' | 'NOT_FOUND';
 
@@ -33,7 +35,7 @@ type State = StatisticsState | MapState;
 })
 export class InvasiveSpeciesControlResultComponent implements OnInit, OnDestroy {
 
-  @Input() form!: Form.SchemaForm;
+  @Input() form!: Form;
 
   Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
   state$!: Observable<State>;

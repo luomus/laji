@@ -7,7 +7,6 @@ import { ToastsService } from '../../../../shared/service/toasts.service';
 import { Util } from '../../../../shared/service/util.service';
 import merge from 'deepmerge';
 import { DialogService } from '../../../../shared/service/dialog.service';
-import { Form } from '../../../../shared/model/Form';
 import { NamedPlacesService } from '../../../../shared/service/named-places.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { map, mergeMap, switchMap, take } from 'rxjs';
@@ -16,9 +15,12 @@ import { NamedPlacesQuery, NamedPlacesRouteData, ProjectFormService } from '../.
 import { AreaService } from '../../../../shared/service/area.service';
 import { LajiFormFooterStatus } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-footer/laji-form-footer.component';
 import { LajiFormComponent } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form/laji-form.component';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 interface ViewModel extends NamedPlacesRouteData {
-  placeForm: Form.SchemaForm;
+  placeForm: Form;
   description: string;
   formData: any;
 }
@@ -230,19 +232,19 @@ export class NpEditFormComponent implements OnInit {
     return detail;
   }
 
-  getPlaceForm(data: NamedPlacesRouteData): Observable<Form.SchemaForm> {
+  getPlaceForm(data: NamedPlacesRouteData): Observable<Form> {
     const getAreaEnum = (
       type: keyof Pick<AreaService, 'getMunicipalities' | 'getBiogeographicalProvinces' | 'getBirdAssociationAreas'>
-    ): Observable<Form.IEnum> => (this.areaService[type](this.translate.getCurrentLang())).pipe(
-      map(areas => areas.reduce((schema: Form.IEnum, area: {id: string; value: string}) => {
+    ) => (this.areaService[type](this.translate.getCurrentLang())).pipe(
+      map(areas => areas.reduce((schema, area: {id: string; value: string}) => {
         schema.oneOf.push({const: area.id, title: area.value});
         return schema;
-      }, {oneOf: []}))
+      }, {oneOf: []} as { oneOf: {const: string; title: string}[] }))
     );
     return this.projectFormService.getPlaceForm$(data.documentForm).pipe(switchMap(placeForm => forkJoin([
-      placeForm!.schema.properties.municipality ? getAreaEnum('getMunicipalities') : of(null),
-      placeForm!.schema.properties.biogeographicalProvince ? getAreaEnum('getBiogeographicalProvinces') : of(null),
-      placeForm!.schema.properties.birdAssociationArea ? getAreaEnum('getBirdAssociationAreas') : of(null)
+      (placeForm.schema as any).properties.municipality ? getAreaEnum('getMunicipalities') : of(null),
+      (placeForm.schema as any).properties.biogeographicalProvince ? getAreaEnum('getBiogeographicalProvinces') : of(null),
+      (placeForm.schema as any).properties.birdAssociationArea ? getAreaEnum('getBirdAssociationAreas') : of(null)
     ]).pipe(
       map(([municipalityEnum, biogeographicalProvinceEnum, birdAssociationAreaEnum]) => ({
         ...placeForm,
@@ -253,12 +255,12 @@ export class NpEditFormComponent implements OnInit {
           birdAssociationAreaEnum,
           isEdit: !!data.namedPlace
         }
-      } as Form.SchemaForm))
+      }))
     )
     ));
   }
 
-  getFormData(data: NamedPlacesRouteData, placeForm: Form.SchemaForm) {
+  getFormData(data: NamedPlacesRouteData, placeForm: Form) {
     const {namedPlace, documentForm, municipality, birdAssociationArea} = data;
     if (namedPlace) {
       const npData = Util.clone(namedPlace);
@@ -278,7 +280,7 @@ export class NpEditFormComponent implements OnInit {
       const prepopulatedNamedPlace = {} as any;
       const areas: Record<string, string|undefined> = {municipality, birdAssociationArea};
       ['birdAssociationArea', 'municipality'].forEach(area => {
-        if (!placeForm.schema.properties[area]) {
+        if (!(placeForm.schema as any).properties[area]) {
           return;
         }
         if (areas[area]?.match(/^ML\.[0-9]+$/)) {

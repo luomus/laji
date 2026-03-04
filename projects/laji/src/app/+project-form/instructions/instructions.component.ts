@@ -3,7 +3,6 @@ import { map } from 'rxjs';
 import { Observable } from 'rxjs';
 import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute } from '@angular/router';
-import { MultiLanguage } from '../../shared/model/MultiLanguage';
 
 @Component({
     template: `
@@ -13,7 +12,7 @@ import { MultiLanguage } from '../../shared/model/MultiLanguage';
 })
 export class InstructionsComponent implements OnInit {
 
-  instructions$!: Observable<MultiLanguage | undefined>;
+  instructions$!: Observable<string | undefined>;
 
   constructor(private projectFormService: ProjectFormService,
               private route: ActivatedRoute

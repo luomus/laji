@@ -1,17 +1,20 @@
-import { map, mergeMap, switchMap } from 'rxjs';
+import { map, switchMap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from './form.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { Form } from '../model/Form';
 import { BehaviorSubject, combineLatest, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { NamedPlacesService } from './named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
 import { Global } from '../../../environments/global';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+type Form = components['schemas']['Form'];
+type FormListing = components['schemas']['FormListing'];
 
 export interface ProjectForm {
-  form: Form.SchemaForm;
-  subForms: Form.List[];
+  form: Form;
+  subForms: FormListing[];
 }
 
 export interface NamedPlacesQuery {
@@ -30,7 +33,7 @@ export interface NamedPlacesQueryModel {
 }
 
 export interface NamedPlacesRouteData extends NamedPlacesQueryModel {
-  documentForm: Form.SchemaForm;
+  documentForm: Form;
   namedPlace?: NamedPlace;
   filterBy?: string;
   tab?: string;
@@ -61,18 +64,18 @@ export class ProjectFormService {
   }
 
   private currentFormID?: string;
-  private form$?: ReplaySubject<Form.SchemaForm | undefined>;
+  private form$?: ReplaySubject<Form | undefined>;
   private registrationContacts?: RegistrationContact[];
 
   /** LajiFormBuilder can change the language of the form, without changing the lang of the whole page. */
   public localLang$ = new BehaviorSubject<string>(this.translate.getCurrentLang());
   public remountLajiForm$ = new Subject<void>();
 
-  getFormFromRoute$(route: ActivatedRoute): Observable<Form.SchemaForm | undefined> {
+  getFormFromRoute$(route: ActivatedRoute): Observable<Form | undefined> {
     return this.getFormID(route).pipe(switchMap(formID => this.getForm$(formID)));
   }
 
-  getForm$(id: string): Observable<Form.SchemaForm | undefined> {
+  getForm$(id: string): Observable<Form | undefined> {
     if (Global.formAliasMap[id]) {
       id = Global.formAliasMap[id];
     }
@@ -91,7 +94,7 @@ export class ProjectFormService {
     return this.form$;
   }
 
-  updateLocalForm(form: Form.SchemaForm) {
+  updateLocalForm(form: Form) {
     const {id} = form;
     if (this.currentFormID !== id) {
       this.currentFormID = id;
@@ -115,7 +118,7 @@ export class ProjectFormService {
           const allFormsDict = allForms.reduce((dict, obj) => {
             dict[obj.id] = obj;
             return dict;
-          }, {} as Record<string, Form.List>);
+          }, {} as Record<string, FormListing>);
 
           return {form, subForms: forms.map(id => allFormsDict[id]) } as ProjectForm;
         }));
@@ -139,7 +142,7 @@ export class ProjectFormService {
   }
 
   getExcelFormOptions(projectForm: ProjectForm, isAdmin: boolean): ExcelFormOptions[] {
-    const getExcelOptions = (form: Form.SchemaForm | Form.List) => form.options?.allowExcel
+    const getExcelOptions = (form: Form | FormListing) => form.options?.allowExcel
       ? { formID: form.id, allowGenerate: isAdmin || form.options.allowExcelGeneration !== false }
       : undefined;
     return [getExcelOptions(projectForm.form), ...projectForm.subForms.map(getExcelOptions)].filter(f => f) as ExcelFormOptions[];
@@ -149,7 +152,7 @@ export class ProjectFormService {
     return this.getExcelFormOptions(projectForm, !!isAdmin).map(f => f.formID);
   }
 
-  getSubmissionsPageTitle(form: Form.SchemaForm, isAdmin: boolean) {
+  getSubmissionsPageTitle(form: Form, isAdmin: boolean) {
     return isAdmin
       ? form.options?.ownSubmissionsAdminTitle || 'haseka.ownSubmissions.allTitle'
       : form.options?.ownSubmissionsTitle || 'haseka.ownSubmissions.title';
@@ -197,7 +200,7 @@ export class ProjectFormService {
 
   }
 
-  getPlaceForm$(documentForm: Form.SchemaForm) {
+  getPlaceForm$(documentForm: Form) {
     return this.formService.getPlaceForm(documentForm);
   }
 

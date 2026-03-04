@@ -2,8 +2,10 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { Form } from '../../../shared/model/Form';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 interface DatasetStats {
   count?: number;
@@ -19,7 +21,7 @@ interface DatasetStats {
     standalone: false
 })
 export class DatasetAboutComponent implements OnChanges {
-  @Input() form!: Form.SchemaForm;
+  @Input() form!: Form;
 
   stats$: Observable<DatasetStats>;
 
