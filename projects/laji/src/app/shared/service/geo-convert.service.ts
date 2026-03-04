@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, interval, throwError } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { switchMap, concatMap, map, catchError, takeWhile } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 export type GeoConversionStatus = 'pending'|'complete';
 
@@ -46,7 +46,7 @@ export class GeoConvertService {
   private pollInterval = 5000;
 
   constructor(
-    private httpClient: HttpClient,
+    private api: LajiApiClientBService,
     private translate: TranslateService
   ) {}
 
@@ -75,9 +75,8 @@ export class GeoConvertService {
     if (personToken) {
       queryParams['personToken'] = personToken;
     }
-    const params = new HttpParams({fromObject: queryParams});
 
-    return this.httpClient.get<string>('/api/geo-convert/' + fileId, {params});
+    return this.api.get('/geo-convert/{dataset_id}', { query: queryParams, path: { dataset_id: fileId }}) as Observable<string>;
   }
 
   private startGeoConversionFromData(
@@ -87,9 +86,9 @@ export class GeoConvertService {
       geometryType: geometry,
       crs
     };
-    const params = new HttpParams({fromObject: <any>queryParams});
 
-    return this.httpClient.post<string>('/api/geo-convert/' + fileId, data, {params});
+    //@ts-ignore
+    return this.api.post('/geo-convert/', { query: queryParams }, data) as Observable<string>;
   }
 
   private getResponse(conversionId: string, personToken?: string | null): Observable<GeoConversionResponse> {
@@ -119,8 +118,11 @@ export class GeoConvertService {
     if (personToken) {
       queryParams['personToken'] = personToken;
     }
-    const params = new HttpParams({fromObject: queryParams});
-    return this.httpClient.get<GeoConversionStatusApiResponse>('/api/geo-convert/status/' + conversionId, {params});
+
+    return this.api.get(
+      '/geo-convert/status/{conversion_id}',
+      { query: queryParams, path: { conversion_id: conversionId }}
+    ) as Observable<GeoConversionStatusApiResponse>;
   }
 
   private transformError(err: any): Observable<never> {
