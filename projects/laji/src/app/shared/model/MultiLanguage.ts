@@ -12,17 +12,17 @@
  */
 
 
-export interface MultiLanguage {
+export interface MultiLanguage<T = string> {
   /**
    * Value in finnish
    */
-  fi?: string;
+  fi?: T;
   /**
    * Value in english
    */
-  en?: string;
+  en?: T;
   /**
    * Value in swedish
    */
-  sv?: string;
+  sv?: T;
 }

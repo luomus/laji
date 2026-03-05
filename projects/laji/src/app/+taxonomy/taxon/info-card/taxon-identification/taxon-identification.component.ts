@@ -49,7 +49,6 @@ const requestedDescriptionVariables = {
 };
 
 interface Data {
-  // children: TaxonomyWithDescriptions[];
   children: (Taxon & { children: Taxon[]; taxonDescriptions: Record<string, any> })[];
   descriptionSources: Array<string>;
   speciesCardAuthors: Array<string>;

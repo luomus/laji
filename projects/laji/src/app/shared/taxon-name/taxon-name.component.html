@@ -3,8 +3,8 @@
     <ng-container [ngTemplateOutlet]="vernacularName"></ng-container>
   }
   @if ((taxon.vernacularName | multiLang:false) && (taxon.colloquialVernacularName | multiLang:false)) {
-    (<ul class="separated-list colloquialVernacularName">
-    @for (obj of (taxon.colloquialVernacularName); track obj) {
+    (<ul class="separated-list colloquial-vernacular-name">
+    @for (obj of (taxon.colloquialVernacularName | multiLang:false); track obj) {
       <li>{{obj}}</li>
     }
   </ul>
@@ -29,20 +29,24 @@
 @if (((taxon.id || taxon.qname || taxonID) | toQName)?.startsWith('gbif:')) {
   <img class="gbif-icon" src="/static/images/icons/gbif.svg" [luTooltip]="'species.tree.gbif.help' | translate" />
 }
-@if (!hideObsoleteVernacularName && taxon?.obsoleteVernacularName | values; as obsoleteVernacularName) {
+@if (!hideObsoleteVernacularName && taxon?.obsoleteVernacularName | multiLang:false | values; as obsoleteVernacularName) {
   <div class="alternative-names mt-2">
     {{ obsoleteVernacularName }}
   </div>
 }
 <ng-template #scientificName>@if (taxon.cursiveName) {
-  <em>{{ taxon.scientificName }}</em>
+  <em class="scientific-name">{{ taxon.scientificName }}</em>
 } @else {
   {{ taxon.scientificName }}
 }</ng-template>
 <ng-template #vernacularName>
-  {{ capitalizeName ? (taxon.vernacularName | multiLang:false | capitalize) : (taxon.vernacularName | multiLang:false) }}
+  <span class="vernacular-name">
+    {{ capitalizeName ? (taxon.vernacularName | multiLang:false | capitalize) : (taxon.vernacularName | multiLang:false) }}
+  </span>
   @if (taxon?.alternativeVernacularName | multiLang:false | values; as alternativeVernacularName) {
+    <span class="alternative-vernacular-name">
     ({{ alternativeVernacularName }})
+    </span>
   }
 </ng-template>
 }

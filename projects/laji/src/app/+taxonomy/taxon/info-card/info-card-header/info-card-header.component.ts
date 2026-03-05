@@ -11,6 +11,7 @@ import {
 import { Subscription } from 'rxjs';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { MultiLanguage } from 'projects/laji/src/app/shared/model/MultiLanguage';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -27,6 +28,14 @@ export class InfoCardHeaderComponent implements OnChanges {
 
   parent: Taxon[] | undefined;
   siblings: Taxon[] | undefined;
+  taxonNames!: Omit<Taxon, 'vernacularName' | 'colloquialVernacularName' | 'alternativeVernacularName' | 'obsoleteVernacularName' | 'tradeName'>
+    & {
+      vernacularName: MultiLanguage;
+      colloquialVernacularName: MultiLanguage<string[]>;
+      alternativeVernacularName: MultiLanguage<string[]>;
+      obsoleteVernacularName: MultiLanguage<string[]>;
+      tradeName: MultiLanguage<string[]>;
+    };
 
   loadingParent = false;
   subParam: any;
@@ -43,8 +52,9 @@ export class InfoCardHeaderComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {
-      this.setParent();
-      this.setSiblings();
+      this.setParent(changes.taxon.currentValue as unknown as Taxon);
+      this.setSiblings(changes.taxon.currentValue as unknown as Taxon);
+      this.setTaxonNames(changes.taxon.currentValue as unknown as Taxon);
     }
   }
 
@@ -75,15 +85,26 @@ export class InfoCardHeaderComponent implements OnChanges {
     this.taxonSelect.emit(this.siblings![idx].id);
   }
 
+  setTaxonNames(taxon: Taxon) {
+    this.taxonNames = {
+      ...taxon,
+      vernacularName: taxon.vernacularNameMultiLang,
+      colloquialVernacularName: taxon.colloquialVernacularNameMultiLang,
+      alternativeVernacularName: taxon.alternativeVernacularNameMultiLang,
+      obsoleteVernacularName: taxon.obsoleteVernacularNameMultiLang,
+      tradeName: taxon.tradeNameMultiLang,
+    };
+  }
 
-  private setParent() {
+
+  private setParent(taxon: Taxon) {
     if (this.parentSub) {
       this.parentSub.unsubscribe();
     }
 
-    if (this.taxon.hasParent) {
+    if (taxon.hasParent) {
       this.loadingParent = true;
-      this.parentSub = this.taxonomyService.getParents(this.taxon.id)
+      this.parentSub = this.taxonomyService.getParents(taxon.id)
         .subscribe(parent => {
           this.parent = parent;
           this.loadingParent = false;
@@ -94,13 +115,13 @@ export class InfoCardHeaderComponent implements OnChanges {
     }
   }
 
-  private setSiblings() {
+  private setSiblings(taxon: Taxon) {
     if (this.siblingSub) {
       this.siblingSub.unsubscribe();
     }
 
-    if (this.taxon.hasParent || this.taxon.hasChildren) {
-      this.siblingSub = this.taxonomyService.getSiblings(this.taxon.id)
+    if (taxon.hasParent || taxon.hasChildren) {
+      this.siblingSub = this.taxonomyService.getSiblings(taxon.id)
         .subscribe(siblings => {
           this.siblings = siblings;
           this.cd.markForCheck();
