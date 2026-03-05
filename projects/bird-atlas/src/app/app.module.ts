@@ -19,7 +19,35 @@ import { TechnicalNewsDumbModule } from 'projects/laji/src/app/shared-modules/te
 import { CoreModule } from './core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxDatatableModule } from '@achimha/ngx-datatable';
-import { API_BASE_URL } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { PlatformLocation } from '@angular/common';
+import moment from 'moment';
+
+export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defaultLang = 'fi') {
+  const langFromPath = pathname.split('/').filter(Boolean)[0]?.toLowerCase();
+  if (langs.includes(langFromPath)) {
+    return langFromPath;
+  }
+  return defaultLang;
+}
+
+const appInitializer = async () => {
+  const platformLocation = inject(PlatformLocation);
+  const translate = inject(TranslateService);
+  const api = inject(LajiApiClientBService);
+
+  const path = platformLocation.pathname;
+  const lang = detectLangFromPath(path);
+
+  api.setLang(lang);
+  translate.setFallbackLang('en');
+  moment.locale(lang);
+  if (window?.document?.documentElement?.lang) {
+    window.document.documentElement.lang = lang;
+  }
+
+  return translate.use(lang);
+};
 
 @NgModule({ exports: [],
   bootstrap: [AppComponent],
@@ -42,11 +70,7 @@ import { API_BASE_URL } from 'projects/laji-api-client-b/src/laji-api-client-b.s
   ],
   providers: [
     { provide: API_BASE_URL, useValue: environment.apiBase },
-    provideAppInitializer(() => {
-      const translate = inject(TranslateService);
-      translate.setFallbackLang('fi');
-      return translate.use('fi');
-    }),
+    provideAppInitializer(appInitializer),
     LocalizeRouterService,
     provideHttpClient(withInterceptorsFromDi()),
     provideNgxWebstorage(
