@@ -286,5 +286,7 @@
   "otherSounds.Other or unknown": "Other or unknown",
   "identification.taxonSelectPlaceholder": "Search...",
   "speciesSelection.name": "Name",
-  "speciesSelection.recordingCount": "Recording count"
+  "speciesSelection.recordingCount": "Recording count",
+  "error.404.intro": "Please check that url is written correctly.",
+  "error.404.title": "Page not found"
 }
