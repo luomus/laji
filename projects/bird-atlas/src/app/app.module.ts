@@ -40,7 +40,7 @@ const appInitializer = async () => {
   const lang = detectLangFromPath(path);
 
   api.setLang(lang);
-  translate.setFallbackLang('en');
+  translate.setFallbackLang('fi');
   moment.locale(lang);
   if (window?.document?.documentElement?.lang) {
     window.document.documentElement.lang = lang;

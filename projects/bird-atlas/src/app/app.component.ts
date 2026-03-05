@@ -45,14 +45,14 @@ import { tap } from 'rxjs';
 })
 export class AppComponent implements OnInit {
   breadcrumbs$: Observable<IBreadcrumb[]> = this.breadcrumbs.breadcrumbs$;
-  news$: Observable<News[]> = this.oldApi.getNews({ tag: 'technical', pageSize: 5, lang: <Lang>this.translate.getCurrentLang() });
+  news$: Observable<News[]> = this.api.getNews({ tag: 'technical', pageSize: 5, lang: <Lang>this.translate.getCurrentLang() });
   showFooter$ = this.footerService.show$.pipe(tap(() => { setTimeout(() => { this.cdr.markForCheck(); }); }));
 
   constructor(
     private translate: TranslateService,
     private breadcrumbs: BreadcrumbService,
     private headerService: HeaderService,
-    private oldApi: LajiApiService,
+    private api: LajiApiService,
     private footerService: FooterService,
     private cdr: ChangeDetectorRef,
     popstateService: PopstateService // has to be injected for the service to initialize
