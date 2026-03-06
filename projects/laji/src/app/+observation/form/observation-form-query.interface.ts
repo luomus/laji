@@ -23,4 +23,5 @@ export interface ObservationFormQuery {
   coordinatesInSource?: boolean;
   taxonAdminFiltersOperator?: 'AND' | 'OR';
   zeroObservations?: boolean;
+  hasSequenceText?: boolean;
 }
