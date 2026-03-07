@@ -1,10 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_ID, ErrorHandler, NgModule, inject, provideAppInitializer } from '@angular/core';
-import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy, PlatformLocation } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSessionStorage } from 'ngx-webstorage';
-import { TransferHttpCacheModule } from '@angular/ssr';
 import { ToastrModule } from 'ngx-toastr';
 import { VirRoutingModule } from './vir-routing.module';
 import { GraphQLModule } from '../../../laji/src/app/graph-ql/graph-ql.module';
@@ -28,6 +27,7 @@ import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.modul
 import { VirAuthenticatedHttpInterceptor } from './service/vir-authenticated-http.interceptor';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { detectLangFromPath } from 'projects/laji/src/app/app.module';
+import { setLocale } from 'projects/laji/src/app/locale/locale.component';
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
@@ -57,16 +57,20 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
     SharedModule.forRoot(),
     DropdownModule,
     VirRoutingModule,
-    TransferHttpCacheModule,
     DocumentViewerModule],
   providers: [
     { provide: APP_ID, useValue: 'vir-app' },
     { provide: APP_BASE_HREF, useValue: '/' },
     { provide: API_BASE_URL, useValue: environment.apiBase },
-    provideAppInitializer(() => {
+    provideAppInitializer(async () => {
+      const platformLocation = inject(PlatformLocation);
       const translate = inject(TranslateService);
-      const lang = detectLangFromPath(typeof window !== 'undefined' ? window.location.pathname : '/');
-      return translate.use(lang);
+
+      const path = platformLocation.pathname;
+      const lang = detectLangFromPath(path);
+
+      translate.setFallbackLang((environment as any).defaultLang ?? 'fi');
+      setLocale(lang);
     }),
     DocumentService,
     { provide: ErrorHandler, useClass: LajiErrorHandler },

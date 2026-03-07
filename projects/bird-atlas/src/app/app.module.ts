@@ -20,6 +20,9 @@ import { CoreModule } from './core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxDatatableModule } from '@achimha/ngx-datatable';
 import { API_BASE_URL } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { PlatformLocation } from '@angular/common';
+import { setLocale } from 'projects/laji/src/app/locale/locale.component';
+import { detectLangFromPath } from 'projects/laji/src/app/app.module';
 
 @NgModule({ exports: [],
   bootstrap: [AppComponent],
@@ -42,10 +45,15 @@ import { API_BASE_URL } from 'projects/laji-api-client-b/src/laji-api-client-b.s
   ],
   providers: [
     { provide: API_BASE_URL, useValue: environment.apiBase },
-    provideAppInitializer(() => {
+    provideAppInitializer(async () => {
+      const platformLocation = inject(PlatformLocation);
       const translate = inject(TranslateService);
+
+      const path = platformLocation.pathname;
+      const lang = detectLangFromPath(path);
+
       translate.setFallbackLang('fi');
-      return translate.use('fi');
+      setLocale(lang);
     }),
     LocalizeRouterService,
     provideHttpClient(withInterceptorsFromDi()),

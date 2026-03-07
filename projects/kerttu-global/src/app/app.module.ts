@@ -1,5 +1,5 @@
 import { APP_ID, ErrorHandler, NgModule, inject, provideAppInitializer } from '@angular/core';
-import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy, PlatformLocation } from '@angular/common';
 import { SharedModule } from '../../../laji/src/app/shared/shared.module';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LajiErrorHandler } from '../../../laji/src/app/shared/error/laji-error-handler';
@@ -10,7 +10,6 @@ import { environment } from '../environments/environment';
 import { DocumentService } from '../../../laji/src/app/shared-modules/own-submissions/service/document.service';
 import { ToastrModule } from 'ngx-toastr';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { TransferHttpCacheModule } from '@angular/ssr';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,6 +22,7 @@ import { LajiUiModule } from '../../../laji-ui/src/lib/laji-ui.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { detectLangFromPath } from 'projects/laji/src/app/app.module';
+import { setLocale } from 'projects/laji/src/app/locale/locale.component';
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
@@ -50,7 +50,6 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
     SharedModule.forRoot(),
     DropdownModule,
     AppRoutingModule,
-    TransferHttpCacheModule,
     AppComponentModule,
     LajiUiModule],
   providers: [
@@ -64,6 +63,16 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
         'en'
       );
       return translate.use(lang);
+    }),
+    provideAppInitializer(async () => {
+      const platformLocation = inject(PlatformLocation);
+      const translate = inject(TranslateService);
+
+      const path = platformLocation.pathname;
+      const lang = detectLangFromPath(path, ['es', 'fr'], 'en');
+
+      translate.setFallbackLang((environment as any).defaultLang ?? 'en');
+      setLocale(lang);
     }),
     DocumentService,
     { provide: ErrorHandler, useClass: LajiErrorHandler },
