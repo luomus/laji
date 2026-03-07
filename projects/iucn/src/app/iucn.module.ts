@@ -1,5 +1,5 @@
 import { APP_ID, ErrorHandler, NgModule, inject, provideAppInitializer } from '@angular/core';
-import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy, PlatformLocation } from '@angular/common';
 import { SharedModule } from '../../../laji/src/app/shared/shared.module';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LajiErrorHandler } from '../../../laji/src/app/shared/error/laji-error-handler';
@@ -12,7 +12,6 @@ import { environment } from '../environments/environment';
 import { DocumentService } from '../../../laji/src/app/shared-modules/own-submissions/service/document.service';
 import { ToastrModule } from 'ngx-toastr';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { TransferHttpCacheModule } from '@angular/ssr';
 import { BrowserModule } from '@angular/platform-browser';
 import { IucnRoutingModule } from './iucn-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,6 +21,7 @@ import { GraphQLModule } from '../../../laji/src/app/graph-ql/graph-ql.module';
 import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { detectLangFromPath } from 'projects/laji/src/app/app.module';
+import { setLocale } from 'projects/laji/src/app/locale/locale.component';
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
@@ -31,10 +31,13 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
 }
 
 
-@NgModule({ exports: [
-  TranslateModule
-],
-  bootstrap: [AppComponent], imports: [GraphQLModule,
+@NgModule({
+  exports: [
+    TranslateModule
+  ],
+  bootstrap: [AppComponent],
+  imports: [
+    GraphQLModule,
     AppComponentModule,
     LocaleModule,
     BrowserAnimationsModule,
@@ -48,16 +51,21 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
     }),
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
-    IucnRoutingModule,
-    TransferHttpCacheModule],
+    IucnRoutingModule
+  ],
   providers: [
     { provide: APP_ID, useValue: 'laji-app' },
     { provide: APP_BASE_HREF, useValue: '/' },
     { provide: API_BASE_URL, useValue: environment.apiBase },
-    provideAppInitializer(() => {
+    provideAppInitializer(async () => {
+      const platformLocation = inject(PlatformLocation);
       const translate = inject(TranslateService);
-      const lang = detectLangFromPath(typeof window !== 'undefined' ? window.location.pathname : '/');
-      return translate.use(lang);
+
+      const path = platformLocation.pathname;
+      const lang = detectLangFromPath(path);
+
+      translate.setFallbackLang((environment as any).defaultLang ?? 'fi');
+      setLocale(lang);
     }),
     DocumentService,
     { provide: ErrorHandler, useClass: LajiErrorHandler },

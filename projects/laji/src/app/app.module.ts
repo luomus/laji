@@ -22,7 +22,7 @@ import { BrowserModule, provideClientHydration, Title } from '@angular/platform-
 import { LajiTitle } from './shared/service/laji-title';
 import { LocaleModule } from './locale/locale.module';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-
+import { setLocale } from './locale/locale.component';
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
@@ -68,10 +68,13 @@ export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defau
     { provide: API_BASE_URL, useValue: environment.apiBase },
     provideAppInitializer(async () => {
       const platformLocation = inject(PlatformLocation);
-      const path = platformLocation.pathname;
       const translate = inject(TranslateService);
+
+      const path = platformLocation.pathname;
       const lang = detectLangFromPath(path);
-      return translate.use(lang);
+
+      translate.setFallbackLang((environment as any).defaultLang ?? 'fi');
+      setLocale(lang);
     }),
     DocumentService,
     { provide: ErrorHandler, useClass: LajiErrorHandler },
