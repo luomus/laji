@@ -57,7 +57,7 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
     { provide: APP_ID, useValue: 'laji-app' },
     { provide: APP_BASE_HREF, useValue: '/' },
     { provide: API_BASE_URL, useValue: environment.apiBase },
-    provideAppInitializer(async () => {
+    provideAppInitializer(() => {
       const platformLocation = inject(PlatformLocation);
       const translate = inject(TranslateService);
 
@@ -65,7 +65,7 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
       const lang = detectLangFromPath(path);
 
       translate.setFallbackLang((environment as any).defaultLang ?? 'fi');
-      setLocale(lang);
+      return setLocale(lang);
     }),
     DocumentService,
     { provide: ErrorHandler, useClass: LajiErrorHandler },

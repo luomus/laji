@@ -16,10 +16,10 @@ export function setLocale(lang: string) {
 
   moment.locale(lang);
   api.setLang(lang);
-  translate.use(lang);
   if (platform.isBrowser) {
     window.document.documentElement.lang = lang;
   }
+  return translate.use(lang);
 }
 
 export abstract class LocaleComponent {

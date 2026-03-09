@@ -45,7 +45,7 @@ import { detectLangFromPath } from 'projects/laji/src/app/app.module';
   ],
   providers: [
     { provide: API_BASE_URL, useValue: environment.apiBase },
-    provideAppInitializer(async () => {
+    provideAppInitializer(() => {
       const platformLocation = inject(PlatformLocation);
       const translate = inject(TranslateService);
 
@@ -53,7 +53,7 @@ import { detectLangFromPath } from 'projects/laji/src/app/app.module';
       const lang = detectLangFromPath(path);
 
       translate.setFallbackLang('fi');
-      setLocale(lang);
+      return setLocale(lang);
     }),
     LocalizeRouterService,
     provideHttpClient(withInterceptorsFromDi()),

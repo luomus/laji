@@ -66,7 +66,7 @@ export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defau
     { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
     { provide: APP_BASE_HREF, useValue: '/' },
     { provide: API_BASE_URL, useValue: environment.apiBase },
-    provideAppInitializer(async () => {
+    provideAppInitializer(() => {
       const platformLocation = inject(PlatformLocation);
       const translate = inject(TranslateService);
 
@@ -74,7 +74,7 @@ export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defau
       const lang = detectLangFromPath(path);
 
       translate.setFallbackLang((environment as any).defaultLang ?? 'fi');
-      setLocale(lang);
+      return setLocale(lang);
     }),
     DocumentService,
     { provide: ErrorHandler, useClass: LajiErrorHandler },
