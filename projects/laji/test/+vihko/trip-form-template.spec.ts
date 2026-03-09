@@ -59,8 +59,7 @@ test.describe('Trip form template page', () => {
   });
 
   test('template can be deleted', async () => {
-    const rowCount = await templatesView.datatable.$rows.count();
     await templatesView.datatable.getDeleteModal().$confirm.click();
-    await expect(templatesView.datatable.$rows).toHaveCount(rowCount - 1);
+    await expect(templatesView.datatable.getRowByCellContent(name).$container).not.toBeVisible();
   });
 });
