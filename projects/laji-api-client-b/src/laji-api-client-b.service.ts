@@ -102,7 +102,13 @@ export class LajiApiClientBService {
     params?: Parameters<paths[P]['get']>,
     cacheInvalidationMs = ONE_DAY
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
-    return this.fetch(path, 'get' as any, params as any, undefined, cacheInvalidationMs);
+    return this.fetch(
+      path,
+      'get' as any,
+      params as any,
+      undefined,
+      cacheInvalidationMs
+    );
   }
 
   put<P extends PathWithMethod<'put'>, R extends Responses<P, 'put' extends Method<P> ? 'put' : never>>(
@@ -111,7 +117,13 @@ export class LajiApiClientBService {
     requestBody?: RequestBodyFor<paths[P]['put']>,
     cacheInvalidationMs = ONE_DAY
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
-    return this.fetch(path, 'put' as any, params as any, requestBody, cacheInvalidationMs);
+    return this.fetch(
+      path,
+      'put' as any,
+      params as any,
+      requestBody as any,
+      cacheInvalidationMs
+    );
   }
 
   post<P extends PathWithMethod<'post'>, R extends Responses<P, 'post' extends Method<P> ? 'post' : never>>(
@@ -120,7 +132,13 @@ export class LajiApiClientBService {
     requestBody?: RequestBodyFor<paths[P]['post']>,
     cacheInvalidationMs = ONE_DAY
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
-    return this.fetch(path, 'post' as any, params as any, requestBody, cacheInvalidationMs);
+    return this.fetch(
+      path,
+      'post' as any,
+      params as any,
+      requestBody as any,
+      cacheInvalidationMs
+    );
   }
 
   delete<P extends PathWithMethod<'delete'>, R extends Responses<P, 'delete' extends Method<P> ? 'delete' : never>>(
@@ -128,7 +146,13 @@ export class LajiApiClientBService {
     params?: Parameters<paths[P]['delete']>,
     cacheInvalidationMs = ONE_DAY
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
-    return this.fetch(path, 'delete' as any, params as any, undefined, cacheInvalidationMs);
+    return this.fetch(
+      path,
+      'delete' as any,
+      params as any,
+      undefined,
+      cacheInvalidationMs
+    );
   }
 
   private getRequestOptions(queryParams: any, requestBody: any, lang: string, personToken?: string) {
