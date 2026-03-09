@@ -11,8 +11,6 @@ import { BaRoutingModule } from './routing.module';
 import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSessionStorage } from 'ngx-webstorage';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
-import { LajiApiClientModule } from '../../../laji-api-client/src/public-api';
-import { Configuration } from 'projects/laji-api-client/src/lib/configuration';
 import { environment } from '../env/environment';
 import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
 import { TechnicalNewsDumbModule } from 'projects/laji/src/app/shared-modules/technical-news/technical-news-dumb/technical-news-dumb.module';
@@ -38,7 +36,6 @@ import { detectLangFromPath } from 'projects/laji/src/app/app.module';
     }),
     LocaleModule,
     BaRoutingModule,
-    LajiApiClientModule.forRoot(() => new Configuration({ accessToken: undefined, apiKeys: {}, basePath: environment.lajiApiBasePath })),
     TechnicalNewsDumbModule,
     CoreModule,
     NgxDatatableModule

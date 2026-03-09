@@ -4,7 +4,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { PopstateService } from './popstate.service';
 import { BreadcrumbService } from './breadcrumb.service';
-import { LajiApiService } from './api.service';
 import { AtlasApiService } from './atlas-api.service';
 import { FooterService } from './footer.service';
 
@@ -13,7 +12,6 @@ import { FooterService } from './footer.service';
   providers: [
     PopstateService,
     BreadcrumbService,
-    LajiApiService,
     AtlasApiService,
     FooterService
   ],
