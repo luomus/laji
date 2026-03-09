@@ -20,9 +20,8 @@ export class SoundIdentificationApi {
   public analyse(data: CombinedData): Observable<IdentificationData[]> {
     return this.api.post(
       '/sound-identification',
-      //@ts-ignore
-      { query: data.params, header: {'Content-Type': 'multipart/form-data', 'Accept': 'application/json'}},
-      data.formData
+      { query: data.params, header: {'Content-Type': 'multipart/form-data', Accept: 'application/json'}} as any,
+      data.formData as any
     ) as unknown as Observable<IdentificationData[]>;
   }
 }
