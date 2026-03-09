@@ -1699,6 +1699,7 @@
   "result.unit.sensitive.true": "Denna art finns på FinBIFs lista över känsliga arter.",
   "result.unit.taxonVerbatim": "Art",
   "result.unit.unitId": "Observations-id",
+  "result.unit.sequenceText": "DNA-sekvens",
   "route.nro": "Ruttnummer",
   "Sat": "lör",
   "save": "Spara",

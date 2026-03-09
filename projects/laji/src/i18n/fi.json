@@ -1699,6 +1699,7 @@
   "result.unit.sensitive.true": "Tämän havainnon laji on Lajitietokeskuksen sensitiivisten lajien luettelossa.",
   "result.unit.taxonVerbatim": "Laji",
   "result.unit.unitId": "Havainnon tunniste",
+  "result.unit.sequenceText": "DNA-sekvenssi",
   "route.nro": "Reitin numero",
   "Sat": "la",
   "save": "Tallenna",
