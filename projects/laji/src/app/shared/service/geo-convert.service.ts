@@ -87,7 +87,6 @@ export class GeoConvertService {
       crs
     };
 
-    //@ts-ignore
     return this.api.post('/geo-convert/', { query: queryParams }, data) as Observable<string>;
   }
 

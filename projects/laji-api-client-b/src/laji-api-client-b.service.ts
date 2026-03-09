@@ -7,10 +7,17 @@ import { share, tap } from 'rxjs';
 type WithResponses<T> = T & { responses: unknown };
 type Parameters<T> = 'parameters' extends keyof T ? T['parameters'] : never;
 type ExtractContentIfExists<R> = R extends { content: infer C } ? C[keyof C] : null;
+type ExtractRequestContentIfExists<R> =
+  R extends { requestBody: { content: infer C } } | { requestBody?: { content: infer C } }
+    ? C
+    : never;
 type ExtractRequestBodyIfExists<R> =
   R extends { requestBody: { content: infer C } } | { requestBody?: { content: infer C } }
     ? C[keyof C]
     : never;
+type RequestBodyFor<R> =
+  ExtractRequestBodyIfExists<R> |
+  ('multipart/form-data' extends keyof ExtractRequestContentIfExists<R> ? FormData : never);
 type HttpSuccessCodes = 200 | 201 | 202 | 203 | 204 | 205 | 206 | 207 | 208 | 226;
 type IntersectUnionTypes<A, B> = A extends B ? A : never;
 
@@ -101,7 +108,7 @@ export class LajiApiClientBService {
   put<P extends PathWithMethod<'put'>, R extends Responses<P, 'put' extends Method<P> ? 'put' : never>>(
     path: P,
     params?: Parameters<paths[P]['put']>,
-    requestBody?: ExtractRequestBodyIfExists<paths[P]['put']>,
+    requestBody?: RequestBodyFor<paths[P]['put']>,
     cacheInvalidationMs = ONE_DAY
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     return this.fetch(path, 'put' as any, params as any, requestBody, cacheInvalidationMs);
@@ -110,7 +117,7 @@ export class LajiApiClientBService {
   post<P extends PathWithMethod<'post'>, R extends Responses<P, 'post' extends Method<P> ? 'post' : never>>(
     path: P,
     params?: Parameters<paths[P]['post']>,
-    requestBody?: ExtractRequestBodyIfExists<paths[P]['post']>,
+    requestBody?: RequestBodyFor<paths[P]['post']>,
     cacheInvalidationMs = ONE_DAY
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     return this.fetch(path, 'post' as any, params as any, requestBody, cacheInvalidationMs);
@@ -148,7 +155,7 @@ export class LajiApiClientBService {
     path: P,
     method: M,
     params?: Parameters<paths[P][M]>,
-    requestBody?: ExtractRequestBodyIfExists<paths[P][M]>,
+    requestBody?: RequestBodyFor<paths[P][M]>,
     cacheInvalidationMs = ONE_DAY
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     const pathSegments = splitAndResolvePath(path, params);
