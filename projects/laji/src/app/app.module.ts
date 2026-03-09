@@ -1,5 +1,5 @@
 import { APP_ID, ErrorHandler, NgModule, inject, provideAppInitializer } from '@angular/core';
-import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy, PlatformLocation } from '@angular/common';
 import { SharedModule } from './shared/shared.module';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
@@ -22,7 +22,7 @@ import { BrowserModule, provideClientHydration, Title } from '@angular/platform-
 import { LajiTitle } from './shared/service/laji-title';
 import { LocaleModule } from './locale/locale.module';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-
+import { setLocale } from './locale/locale.component';
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
@@ -32,7 +32,7 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
 }
 
 export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defaultLang = 'fi') {
-  const langFromPath = pathname.split('/')[0]?.toLowerCase();
+  const langFromPath = pathname.split('/').filter(Boolean)[0]?.toLowerCase();
   if (langs.includes(langFromPath)) {
     return langFromPath;
   }
@@ -67,9 +67,14 @@ export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defau
     { provide: APP_BASE_HREF, useValue: '/' },
     { provide: API_BASE_URL, useValue: environment.apiBase },
     provideAppInitializer(() => {
+      const platformLocation = inject(PlatformLocation);
       const translate = inject(TranslateService);
-      const lang = detectLangFromPath(typeof window !== 'undefined' ? window.location.pathname : '/');
-      return translate.use(lang);
+
+      const path = platformLocation.pathname;
+      const lang = detectLangFromPath(path);
+
+      translate.setFallbackLang((environment as any).defaultLang ?? 'fi');
+      return setLocale(lang);
     }),
     DocumentService,
     { provide: ErrorHandler, useClass: LajiErrorHandler },
