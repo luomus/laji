@@ -3,11 +3,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { BreadcrumbService, IBreadcrumb } from './core/breadcrumb.service';
 import { HeaderService } from '../../../laji/src/app/shared/service/header.service';
-import { News } from 'projects/laji-api-client/src/public-api';
 import { LajiApiService, Lang } from './core/api.service';
 import { PopstateService } from './core/popstate.service';
 import { FooterService } from './core/footer.service';
 import { tap } from 'rxjs';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api';
+
+type News = components['schemas']['NewsPagedDto'];
 
 @Component({
     selector: 'ba-app',
@@ -45,14 +48,14 @@ import { tap } from 'rxjs';
 })
 export class AppComponent {
   breadcrumbs$: Observable<IBreadcrumb[]> = this.breadcrumbs.breadcrumbs$;
-  news$: Observable<News[]> = this.api.getNews({ tag: 'technical', pageSize: 5, lang: <Lang>this.translate.getCurrentLang() });
+  news$: Observable<News> = this.api.get('/news', { query: { tag: 'technical', pageSize: 5 } });
   showFooter$ = this.footerService.show$.pipe(tap(() => { setTimeout(() => { this.cdr.markForCheck(); }); }));
 
   constructor(
     private translate: TranslateService,
     private breadcrumbs: BreadcrumbService,
     private headerService: HeaderService,
-    private api: LajiApiService,
+    private api: LajiApiClientBService,
     private footerService: FooterService,
     private cdr: ChangeDetectorRef,
     popstateService: PopstateService // has to be injected for the service to initialize
