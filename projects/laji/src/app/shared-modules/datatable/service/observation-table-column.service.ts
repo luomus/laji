@@ -740,7 +740,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'document.documentId',
           'unit.unitId',
           'unit.linkings.taxon.occurrenceCountFinland',
-          "unit.sequenceText"
+          'unit.sequenceText'
         ].filter(field => environment.type === Global.type.vir ? true : field !== 'document.dataSource')
       }
     ].filter(set => environment.type === Global.type.vir ? true : set.header !== lajiGISSectionHeader)
