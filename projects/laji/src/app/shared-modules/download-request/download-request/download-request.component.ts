@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DownloadRequest, DownloadRequestType } from '../models';
 import { toHtmlInputElement } from '../../../shared/service/html-element.service';
-import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
-import { Collection } from '../../../shared/model/Collection';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { switchMap, map, tap } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Collection = components['schemas']['SensitiveCollection'];
 
 export const getDownloadRequestType = (downloadRequest: DownloadRequest): DownloadRequestType => (
   [ 'AUTHORITIES_API_KEY', 'APPROVED_API_KEY_REQUEST'].includes(downloadRequest.downloadType) ? 'apiKey' :
@@ -30,18 +31,16 @@ export class DownloadRequestComponent implements OnChanges {
   private collectionIds$ = new BehaviorSubject<string[]>([]);
 
   constructor(
-    private lajiApi: LajiApiService,
-    private translate: TranslateService
+    private api: LajiApiClientBService
   ) {
     this.collections$ = this.collectionIds$.pipe(
       switchMap(collectionIds => {
         if (collectionIds?.length > 0) {
-          return this.lajiApi.getList(LajiApi.Endpoints.collections, {
+          return this.api.get('/collections', { query: {
             idIn: collectionIds.join(','),
-            lang: this.translate.getCurrentLang(),
             page: 1,
             pageSize: collectionIds.length
-          }).pipe(
+          } }).pipe(
             map(results => results.results),
             tap(collections => this.sortCollections(collections, collectionIds))
           );
