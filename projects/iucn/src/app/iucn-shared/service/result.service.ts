@@ -151,7 +151,7 @@ export class ResultService {
       }).pipe(
         map(data => this.mapAgg(data)),
         switchMap(data => forkJoin(data.map((res: any) => this.triplestoreLabelService.get(res.name, this.translationService.currentLang))).pipe(
-          map(translations => data.map((res: any, idx: number) => ({...res, name: translations[idx]})))
+          map((translations: any) => data.map((res: any, idx: number) => ({...res, name: translations[idx]})))
         )),
         tap(data => this.resultCache[year][this.translationService.currentLang] = data),
         share()
