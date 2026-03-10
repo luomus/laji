@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 .your-datasets {
   padding: $sp-4 $sp-5;

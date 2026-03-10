@@ -1,7 +1,7 @@
-import { APP_ID, ErrorHandler, NgModule } from '@angular/core';
-import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { APP_ID, ErrorHandler, NgModule, inject, provideAppInitializer } from '@angular/core';
+import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy, PlatformLocation } from '@angular/common';
 import { SharedModule } from './shared/shared.module';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { ConsoleLogger, HttpLogger, Logger } from './shared/logger';
 import { ILogger } from './shared/logger/logger.interface';
@@ -18,17 +18,25 @@ import { LazyTranslateLoader } from './shared/translate/lazy-translate-loader';
 import { LajiUiModule } from '../../../laji-ui/src/public-api';
 import { GraphQLModule } from './graph-ql/graph-ql.module';
 import { QuicklinkModule } from 'ngx-quicklink';
-import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http-cache.interceptor';
 import { BrowserModule, provideClientHydration, Title } from '@angular/platform-browser';
 import { LajiTitle } from './shared/service/laji-title';
 import { LocaleModule } from './locale/locale.module';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { setLocale } from './locale/locale.component';
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
     return new HttpLogger(api);
   }
   return new ConsoleLogger();
+}
+
+export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defaultLang = 'fi') {
+  const langFromPath = pathname.split('/').filter(Boolean)[0]?.toLowerCase();
+  if (langs.includes(langFromPath)) {
+    return langFromPath;
+  }
+  return defaultLang;
 }
 
 @NgModule({
@@ -56,9 +64,18 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   providers: [
     { provide: APP_ID, useValue: 'laji-app' },
     { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: TransferHttpCacheInterceptor, multi: true },
     { provide: APP_BASE_HREF, useValue: '/' },
     { provide: API_BASE_URL, useValue: environment.apiBase },
+    provideAppInitializer(() => {
+      const platformLocation = inject(PlatformLocation);
+      const translate = inject(TranslateService);
+
+      const path = platformLocation.pathname;
+      const lang = detectLangFromPath(path);
+
+      translate.setFallbackLang((environment as any).defaultLang ?? 'fi');
+      return setLocale(lang);
+    }),
     DocumentService,
     { provide: ErrorHandler, useClass: LajiErrorHandler },
     LocalizeRouterService,

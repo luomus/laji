@@ -8,7 +8,6 @@ import { Area } from '../model/Area';
 import { Checklist } from '../model/Checklist';
 import { PagedResult } from '../model/PagedResult';
 import { Source } from '../model/Source';
-import { Form } from '../model/Form';
 import { Notification } from '../model/Notification';
 import { Information } from '../model/Information';
 import { Publication } from '../model/Publication';
@@ -155,7 +154,6 @@ export namespace LajiApi {
 
     export type NewsListResponse = PagedResult<News>;
 
-    export type FormsListResponse = PagedResult<Form.List>;
 
     export type NotificationListResponse = PagedResult<Notification>;
 
@@ -177,7 +175,6 @@ export class LajiApiService {
   getList(endpoint: LajiApi.Endpoints.checklists, query: LajiApi.Query.ChecklistQuery): Observable<LajiApi.Response.ChecklistListResponse>;
   getList(endpoint: LajiApi.Endpoints.collections, query: LajiApi.Query.CollectionQuery): Observable<LajiApi.Response.CollectionResponse>;
   getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
-  getList(endpoint: LajiApi.Endpoints.forms, query: LajiApi.Query.FormsListQuery): Observable<LajiApi.Response.FormsListResponse>;
   getList(endpoint: LajiApi.Endpoints.information, query: LajiApi.Query.InformationQuery): Observable<Information>;
   getList(endpoint: LajiApi.Endpoints.news, query: LajiApi.Query.NewsQuery): Observable<LajiApi.Response.NewsListResponse>;
   getList(endpoint: LajiApi.Endpoints.notifications, query: LajiApi.Query.NotificationListQuery): Observable<LajiApi.Response.NotificationListResponse>;
@@ -189,8 +186,6 @@ export class LajiApiService {
     return this.httpClient.get<T>(url, options);
   }
 
-  get(endpoint: LajiApi.Endpoints.forms, id: string, query: LajiApi.Query.FormsSchemaQuery): Observable<Form.SchemaForm>;
-  get(endpoint: LajiApi.Endpoints.forms, id: string, query: LajiApi.Query.FormsQuery): Observable<any>;
   get(endpoint: LajiApi.Endpoints.information, id: string, query?: LajiApi.Query.InformationQuery): Observable<Information>;
   get(endpoint: LajiApi.Endpoints.news, id: string): Observable<News>;
   get(endpoint: LajiApi.Endpoints.publications, id: string, query: LajiApi.Query.PublicationQuery): Observable<Publication>;

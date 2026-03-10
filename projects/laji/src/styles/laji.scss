@@ -1,17 +1,18 @@
-@import 'styles';
-@import 'bs_overwrites';
-@import 'mixins/base';
-@import 'vars';
+@use 'sass:map';
+@use 'vars' as *;
 
-@import 'vars';
-@import 'utils';
-@import 'pills';
-@import 'buttons';
-@import 'dropdown';
-@import 'details';
-@import 'fieldset';
+@use 'styles' as *;
+@use 'bs_overwrites' as *;
+@use 'mixins/base' as *;
 
-@import 'publications';
+@use 'utils' as *;
+@use 'pills' as *;
+@use 'buttons' as *;
+@use 'dropdown' as *;
+@use 'details' as *;
+@use 'fieldset' as *;
+
+@use 'publications' as *;
 
 html {
   position: relative;
@@ -1397,7 +1398,7 @@ span.simple-option {
   max-width: 400px;
   padding-left: $sp-6;
   border-left: 1px solid $neutral-4;
-  @media only screen and (max-width: map-get($map: $breakpoints, $key: "xs")) {
+  @media only screen and (max-width: map.get($map: $breakpoints, $key: "xs")) {
     border-left: none;
     padding-left: unset;
   }

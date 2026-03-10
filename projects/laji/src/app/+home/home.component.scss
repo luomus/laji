@@ -1,5 +1,7 @@
-@import 'vars';
-@import '../../styles/styles';
+@use 'sass:map';
+@use 'sass:color';
+@use 'vars' as *;
+@use '../../styles/styles' as *;
 
 :host {
   flex: 1 0 auto;
@@ -100,7 +102,7 @@
   max-width: 350px;
   box-shadow: inset 8px 0 8px -8px rgba(#000,.2);
 
-  @media only screen and (max-width: map-get($map: $breakpoints, $key: "xs")) {
+  @media only screen and (max-width: map.get($map: $breakpoints, $key: "xs")) {
     max-width: 100%;
     width: 100%;
     box-shadow: unset;
@@ -115,7 +117,7 @@
 }
 
 .home-card {
-  background: linear-gradient(to bottom, $neutral-1, saturate($neutral-2, 20%));
+  background: linear-gradient(to bottom, $neutral-1, color.adjust($neutral-2, $saturation: 20%));
   padding: 10px 20px;
   border-radius: 5px;
   box-shadow: 0 2px 6px 0 rgba($primary-6, 0.4);

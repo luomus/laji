@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 :host ::ng-deep .ngx-datatable.material.single-selection .datatable-body-row {
   cursor: pointer;

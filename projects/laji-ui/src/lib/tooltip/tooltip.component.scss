@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 :host {
   position: absolute;
@@ -6,7 +6,7 @@
   top: 0;
   left: 0;
   max-width: 200px;
-  
+
   background: rgba($neutral-9, 0.8);
   padding: $sp-3;
   box-shadow: 0 1px 3px rgba(0,0,0,.2);

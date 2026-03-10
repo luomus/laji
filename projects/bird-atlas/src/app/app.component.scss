@@ -1,4 +1,5 @@
-@import 'vars';
+@use 'vars' as *;
+@use '../styles/variables.scss' as *;
 
 :host {
   display: flex;

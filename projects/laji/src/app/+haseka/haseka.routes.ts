@@ -34,19 +34,28 @@ export const hasekaRoutes: Routes = [
       {
         path: ':formId',
         pathMatch: 'full',
-        redirectTo: '/project/:formId/form/template'
+        redirectTo: route => {
+          const { formId } = route.params;
+          return `/project/${formId}/form/template`;
+        }
       }
     ]
   },
   {
     path: ':formId',
     pathMatch: 'full',
-    redirectTo: '/project/:formId'
+    redirectTo: route => {
+      const { formId} = route.params;
+      return `/project/${formId}`;
+    }
   },
   {
     path: ':formId/:documentId',
     pathMatch: 'full',
-    redirectTo: '/project/:formId/form/:documentId'
+    redirectTo: route => {
+      const { formId, documentId } = route.params;
+      return `/project/${formId}/form/${documentId}`;
+    }
   }
 ];
 

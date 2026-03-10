@@ -1,3 +1,4 @@
+@use 'sass:map';
 @import '../../../../../../../laji-ui/src/lib/vars';
 
 .top-bar {
@@ -15,7 +16,7 @@
   }
 }
 
-@media only screen and (min-width: map-get($map: $breakpoints, $key: "sm")) {
+@media only screen and (min-width: map.get($map: $breakpoints, $key: "sm")) {
   .top-bar {
     padding: $sp-3 40px;
     background-color: #dde1e3;

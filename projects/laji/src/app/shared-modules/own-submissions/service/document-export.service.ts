@@ -3,7 +3,7 @@ import { Util } from '../../../shared/service/util.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { UserService } from '../../../shared/service/user.service';
 import { CollectionService } from '../../../shared/service/collection.service';
-import { FormService } from '../../../shared/service/form.service';
+import { FormService, JsonForm } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { geoJSONToISO6709 } from '@luomus/laji-map/lib/utils';
 import { BookType } from 'xlsx';
@@ -13,7 +13,6 @@ import { DocumentInfoService } from '../../../shared/service/document-info.servi
 import { ExportService } from '../../../shared/service/export.service';
 import { DocumentField } from '../models/document-field';
 import { FeatureCollection } from 'geojson';
-import { Form } from '../../../shared/model/Form';
 import { Injectable } from '@angular/core';
 
 
@@ -80,7 +79,7 @@ export class DocumentExportService {
       );
   }
 
-  private getJsonForms(docs: Document[], jsonForms: Record<string, Form.JsonForm>= {}, idx = 0): Observable<{[formID: string]: Form.JsonForm}> {
+  private getJsonForms(docs: Document[], jsonForms: Record<string, JsonForm>= {}, idx = 0): Observable<{[formID: string]: JsonForm}> {
     if (idx >= docs.length) {
       return ObservableOf(jsonForms);
     }
@@ -122,7 +121,7 @@ export class DocumentExportService {
     return aoa;
   }
 
-  private getData(obj: any, form: Form.JsonForm, fieldData: DocumentField, path = ''): Observable<any> {
+  private getData(obj: any, form: JsonForm, fieldData: DocumentField, path = ''): Observable<any> {
     const observables: Observable<never>[] = [];
     let unwindKey: string;
 
@@ -166,7 +165,7 @@ export class DocumentExportService {
       );
   }
 
-  private processData(obj: any, form: Form.JsonForm, fieldData: DocumentField, path: string, observables: Observable<any>[]) {
+  private processData(obj: any, form: JsonForm, fieldData: DocumentField, path: string, observables: Observable<any>[]) {
     let unwindKey: string;
 
     for (const key in obj) {
@@ -254,7 +253,7 @@ export class DocumentExportService {
     return result;
   }
 
-  private getAllFields(jsonForms: {[formID: string]: Form.JsonForm}): Observable<{fields: DocumentField[]; fieldStructure: DocumentField}> {
+  private getAllFields(jsonForms: {[formID: string]: JsonForm}): Observable<{fields: DocumentField[]; fieldStructure: DocumentField}> {
     const fieldStructure: DocumentField = {};
     const fields: DocumentField[] = [];
 
@@ -409,7 +408,7 @@ export class DocumentExportService {
     return ObservableOf(fieldName.charAt(0).toUpperCase() + fieldName.slice(1));
   }
 
-  private isEmpty(path: string, obj: any, form: Form.JsonForm): boolean {
+  private isEmpty(path: string, obj: any, form: JsonForm): boolean {
     if (path === '') {
       if (!obj.gatherings || obj.gatherings.length < 1) { return true; }
 

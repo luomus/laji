@@ -1,4 +1,5 @@
-@import 'vars';
+@use 'sass:color';
+@use 'vars' as *;
 
 .label {
   display: inline-block;
@@ -21,6 +22,6 @@
   }
 
   &:hover {
-    background-color: lighten($success-5, 5%);
+    background-color: color.adjust($success-5, $lightness: 5%);
   }
 }

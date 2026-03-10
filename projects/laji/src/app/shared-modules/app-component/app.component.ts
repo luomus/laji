@@ -2,15 +2,13 @@ import { Component, ViewContainerRef } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
-import { filter, startWith } from 'rxjs';
+import { filter } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { RouteDataService } from '../../shared/service/route-data.service';
 import { HeaderService } from '../../shared/service/header.service';
 import { PlatformService } from '../../root/platform.service';
 import { HistoryService } from '../../shared/service/history.service';
 import { Util } from '../../shared/service/util.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { TranslateService } from '@ngx-translate/core';
 
 declare const ga: (eventName: string, hitType: string, data: string) => void;
 
@@ -35,15 +33,12 @@ export class AppComponent {
     viewContainerRef: ViewContainerRef,
     headerService: HeaderService,
     historyService: HistoryService,
-    private translate: TranslateService,
-    private api: LajiApiClientBService,
   ) {
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.type === Global.type.embedded;
     headerService.initialize();
     historyService.startRouteListener();
-    this.syncLajiApiClientBLang();
 
     router.events.pipe(
       filter(Util.eventIsNavigationEnd)
@@ -81,12 +76,5 @@ export class AppComponent {
         } catch (e) { }
       }
     });
-  }
-
-  private syncLajiApiClientBLang() {
-    this.translate.onLangChange
-      .subscribe(({ lang }) => {
-        this.api.setLang(lang);
-      });
   }
 }

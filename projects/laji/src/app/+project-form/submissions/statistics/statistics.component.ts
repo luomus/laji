@@ -7,8 +7,10 @@ import { FormService } from '../../../shared/service/form.service';
 import { Document } from '../../../shared/model/Document';
 import { forkJoin as ObservableForkJoin, of as ObservableOf } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
-import { Form } from '../../../shared/model/Form';
 import { NamedPlacesService } from '../../../shared/service/named-places.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 @Component({
     selector: 'laji-statistics',
@@ -21,7 +23,7 @@ export class StatisticsComponent implements OnInit {
 
   document!: Document;
   ns: any;
-  form!: Form.List;
+  form!: FormListing;
   loaded = false;
 
   constructor(

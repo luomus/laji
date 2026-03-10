@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 /* Media queries */
 @mixin media-query-small-phone {
     @media (max-width: 400px) { @content; }
@@ -45,7 +47,7 @@
     -webkit-border-radius: $top-left $top-right $bottom-right $bottom-left;
     -moz-border-radius: $top-left $top-right $bottom-right $bottom-left;
     -ms-border-radius: $top-left $top-right $bottom-right $bottom-left;
-    border-radius: $top-left $top-right $bottom-right $bottom-left;  
+    border-radius: $top-left $top-right $bottom-right $bottom-left;
 }
 
 
@@ -57,14 +59,11 @@
 @mixin button-link($color) {
     color: $color;
     &:hover {
-      color:darken($color,8%);
+      color: color.adjust($color, $lightness: -8%);
       text-decoration: underline;
       transition: all 0.3s ease;
     }
     &:active {
-      color:darken($color,25%);
-    } 
+      color: color.adjust($color, $lightness: -25%);
+    }
 }
-
-  
-

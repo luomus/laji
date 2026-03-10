@@ -1,5 +1,5 @@
-@import 'vars';
-@import '../../../../shared-modules/spinner/spinner/spinner.component.css';
+@use 'vars' as *;
+@use '../../../../shared-modules/spinner/spinner/spinner.component.css' as *;
 
 :host {
   display: block;

@@ -6,13 +6,15 @@ import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
 import { UserService } from '../../shared/service/user.service';
 import { DocumentStorage } from '../../storage/document.storage';
 import { DocumentApi } from '../../shared/api/DocumentApi';
-import { Form } from '../../shared/model/Form';
 import { FormService } from '../../shared/service/form.service';
 import { Util } from '../../shared/service/util.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 export interface ILatestDocument {
   document: Document & { id: string };
-  form: Form.List;
+  form: FormListing;
 }
 
 interface ILatestDocumentsState {
@@ -139,13 +141,13 @@ export class LatestDocumentsFacade implements OnDestroy {
     return this.collectionID;
   }
 
-  private getAllForms(): Observable<{[id: string]: Form.List}> {
+  private getAllForms(): Observable<{[id: string]: FormListing}> {
     return this.formService.getAllForms().pipe(
       take(1),
       map(forms => forms.reduce((cumulative, form) => {
         cumulative[form.id] = form;
         return cumulative;
-      }, {} as {[id: string]: Form.List}))
+      }, {} as {[id: string]: FormListing}))
     );
   }
 

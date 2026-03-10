@@ -1,5 +1,5 @@
-@import '../../../../../styles/variables';
-@import 'vars';
+@use 'vars' as *;
+@use '../../../../../styles/variables' as *;
 
 .form-footer {
   overflow: auto;

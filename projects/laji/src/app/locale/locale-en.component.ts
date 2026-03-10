@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { LocaleComponent } from './locale.component';
-import moment from 'moment';
 import { PlatformService } from '../root/platform.service';
 
 @Component({
@@ -11,10 +10,8 @@ import { PlatformService } from '../root/platform.service';
 export class LocaleEnComponent extends LocaleComponent {
 
   constructor(
-    platformService: PlatformService
+    platformService: PlatformService,
   ) {
-    super(platformService);
-    moment.locale('en');
-    this.setLocale('en');
+    super(platformService, 'en');
   }
 }

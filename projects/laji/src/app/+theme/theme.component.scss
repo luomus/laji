@@ -1,4 +1,5 @@
-@import 'vars';
+@use 'sass:color';
+@use 'vars' as *;
 
 .navbox, .laji-page .navbox {
   text-decoration: none;
@@ -9,7 +10,7 @@
   margin-right: $sp-3;
   margin-bottom: $sp-3;
   max-width: 400px;
-  background: linear-gradient(to bottom, $neutral-1, saturate($neutral-2, 20%));
+  background: linear-gradient(to bottom, $neutral-1, color.adjust($neutral-2, $saturation: 20%));
   padding: 10px 20px;
   border-radius: 5px;
   box-shadow: 0 2px 6px 0 rgba($primary-6, 0.4);

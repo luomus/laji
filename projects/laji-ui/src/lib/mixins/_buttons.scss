@@ -1,4 +1,6 @@
-@import 'mixins/loading';
+@use 'sass:color';
+@use 'vars' as *;
+@use 'mixins/loading' as *;
 
 $btn-primary-hue-shift: -15deg !default;
 $btn-secondary-hue-shift: 0deg !default;
@@ -30,11 +32,11 @@ $btn-border-radius: 5px !default;
 }
 
 @mixin btnPrimaryTheme($bgColor, $bgHueShift, $textColor, $shadowColor) {
-  background: linear-gradient(to bottom right, adjust-hue($bgColor, $bgHueShift), darken($bgColor, 5%));
+  background: linear-gradient(to bottom right, color.adjust($bgColor, $hue: $bgHueShift), color.adjust($bgColor, $lightness: -5%));
   color: $textColor;
   box-shadow: 0 1px 2px 0px rgba($shadowColor, .4), inset 0 0 0 rgba($shadowColor, 0);
   &:hover {
-    background: linear-gradient(to bottom right, darken(adjust-hue($bgColor, $bgHueShift), 5%), darken(darken($bgColor, 5%), 5%));
+    background: linear-gradient(to bottom right, color.adjust(color.adjust($bgColor, $hue: $bgHueShift), $lightness: -5%), color.adjust(color.adjust($bgColor, $lightness: -5%), $lightness: -5%));
     color: $textColor;
   }
   &:active, &.active {

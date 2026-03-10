@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs';
-import { FormService } from '../shared/service/form.service';
-import { Form } from '../shared/model/Form';
 import { Global } from '../../environments/global';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 interface State {
-  citizenScienceForms: Form.List[];
-  birdMonitoringForms: Form.List[];
-  completeListForms: Form.List[];
-  researchProjectForms: Form.List[];
+  citizenScienceForms: FormListing[];
+  birdMonitoringForms: FormListing[];
+  completeListForms: FormListing[];
+  researchProjectForms: FormListing[];
 }
 
 @Injectable()
@@ -26,7 +28,7 @@ export class SaveObservationsFacade {
   completeListForms$ = this.store$.asObservable().pipe(map(state => state.completeListForms), distinctUntilChanged());
   researchProjectForms$ = this.store$.asObservable().pipe(map(state => state.researchProjectForms), distinctUntilChanged());
 
-  constructor(private formService: FormService) {}
+  constructor(private api: LajiApiClientBService) {}
 
   reducer(forms: any) {
     this.store$.next({
@@ -38,8 +40,9 @@ export class SaveObservationsFacade {
   }
 
   loadAll() {
-    this.formService.getAllForms().pipe(
-      map((forms) => {
+    this.api.get('/forms').pipe(
+      map(forms => forms.results),
+      map(forms => {
         const citizen: any[] = [];
         const birdMon: any[] = [];
         const complete: any[] = [];

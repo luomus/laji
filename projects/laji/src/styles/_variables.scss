@@ -1,4 +1,5 @@
-@import 'vars';
+@use 'sass:color';
+@use 'vars' as *;
 
 /* Colors */
 
@@ -6,7 +7,7 @@ $color-main: $primary-5;
 $color-main-dark: $primary-6;
 
 $main-gray: #F5F5F5;
-$main-gray-darker: darken($main-gray,20%);
+$main-gray-darker: color.adjust($main-gray, $lightness: -20%);
 $gray-text: #333;
 $green: #5cb85c;
 $red: #FF0000;

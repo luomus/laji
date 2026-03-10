@@ -1,4 +1,5 @@
-@import 'mixins/pills';
+@use 'vars' as *;
+@use 'mixins/pills' as *;
 
 .pill.primary {
   @include pill($primary-7, $primary-1, $primary-3);

@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 .lappi-modal-container {
   padding: $sp-5;

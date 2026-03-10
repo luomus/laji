@@ -1,16 +1,16 @@
 @if (taxon) {
-  @if ((taxon.vernacularNameMultiLang | multiLang:false)) {
+  @if ((taxon.vernacularName | multiLang:false)) {
     <ng-container [ngTemplateOutlet]="vernacularName"></ng-container>
   }
-  @if ((taxon.vernacularNameMultiLang | multiLang:false) && (taxon.colloquialVernacularNameMultiLang | multiLang:false)) {
-    (<ul class="separated-list colloquialVernacularNameMultiLang">
-    @for (obj of (taxon.colloquialVernacularNameMultiLang); track obj) {
+  @if ((taxon.vernacularName | multiLang:false) && (taxon.colloquialVernacularName | multiLang:false)) {
+    (<ul class="separated-list colloquialVernacularName">
+    @for (obj of (taxon.colloquialVernacularName); track obj) {
       <li>{{obj}}</li>
     }
   </ul>
   <laji-info [placement]="'top'">{{ 'taxonomy.vernacular.colloquial.info' | translate }}</laji-info>)
 }
-@if (((taxon.vernacularNameMultiLang | multiLang:false) || taxon.alternativeVernacularNameMultiLang | multiLang:false | values) && taxon.scientificName) {
+@if (((taxon.vernacularName | multiLang:false) || taxon.alternativeVernacularName | multiLang:false | values) && taxon.scientificName) {
   &ndash;
 }
 <ng-container [ngTemplateOutlet]="scientificName"></ng-container>
@@ -40,8 +40,8 @@
   {{ taxon.scientificName }}
 }</ng-template>
 <ng-template #vernacularName>
-  {{ capitalizeName ? (taxon.vernacularNameMultiLang | multiLang:false | capitalize) : (taxon.vernacularNameMultiLang | multiLang:false) }}
-  @if (taxon?.alternativeVernacularNameMultiLang | multiLang:false | values; as alternativeVernacularName) {
+  {{ capitalizeName ? (taxon.vernacularName | multiLang:false | capitalize) : (taxon.vernacularName | multiLang:false) }}
+  @if (taxon?.alternativeVernacularName | multiLang:false | values; as alternativeVernacularName) {
     ({{ alternativeVernacularName }})
   }
 </ng-template>

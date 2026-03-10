@@ -1,6 +1,7 @@
+@use 'sass:map';
 @import '../../../../../../laji-ui/src/lib/vars';
 
-@media only screen and (min-width: map-get($map: $breakpoints, $key: "sm")) {
+@media only screen and (min-width: map.get($map: $breakpoints, $key: "sm")) {
   .identification-view-container {
     margin: -20px -40px;
     height: calc(100vh - 50px);

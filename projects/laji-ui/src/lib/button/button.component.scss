@@ -1,4 +1,5 @@
-@import '../vars';
+@use 'sass:color';
+@use '../vars' as *;
 
 :host {
   display: inline-block;
@@ -7,13 +8,13 @@
 .edit {
   padding: 0.1em 0.6em;
   background-color: $info-5;
-  color: adjust-hue($color: $neutral-1, $degrees: -20deg);
+  color: color.adjust($color: $neutral-1, $hue: -20deg);
   box-shadow: 0 1px 3px rgba($info-7, 0.3);
   &:hover, &:focus {
     background-color: $info-7;
   }
   &.pressed {
-    background-color: darken($info-7, 3%);
+    background-color: color.adjust($info-7, $lightness: -3%);
     box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
   }
 }
@@ -21,13 +22,13 @@
 .other {
   padding: 0.1em 0.6em;
   background-color: $neutral-8;
-  color: adjust-hue($color: $neutral-1, $degrees: -20deg);
+  color: color.adjust($color: $neutral-1, $hue: -20deg);
   box-shadow: 0 1px 3px rgba($neutral-9, 0.3);
   &:hover, &:focus {
     background-color: $neutral-7;
   }
   &.pressed {
-    background-color: darken($neutral-9, 3%);
+    background-color: color.adjust($neutral-9, $lightness: -3%);
     box-shadow: 0 0 1px rgba($neutral-8, 0.2);
   }
 }
