@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { components } from 'projects/laji-api-client-b/generated/api';
@@ -35,7 +35,7 @@ export class TraitDbTraitGroupEditorComponent {
     this.submissionState = 'externalValidation';
     const form = filterNullValues(this.form.value) as TraitGroup;
     this.form.disable();
-    this.api.fetch('/trait/trait-groups/validate', 'post', {}, form, 0).pipe(
+    this.api.fetch('/trait/trait-groups/validate', 'post', {}, form, { cacheInvalidationMs: 0 }).pipe(
       tap(res => {
         this.submissionState = 'none';
         this.errors = res.pass ? undefined : res.errors;
@@ -47,7 +47,7 @@ export class TraitDbTraitGroupEditorComponent {
         this.submissionState = 'uploading';
         this.form.disable();
       }),
-      switchMap(_ => this.api.fetch('/trait/trait-groups', 'post', {}, form, 0))
+      switchMap(_ => this.api.fetch('/trait/trait-groups', 'post', {}, form, { cacheInvalidationMs: 0 }))
     ).subscribe(res => {
       this.submissionState = 'none';
       this.cdr.markForCheck();

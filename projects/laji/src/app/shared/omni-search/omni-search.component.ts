@@ -170,7 +170,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
       limit: this.limit,
       matchType: this.matchType,
       checklist: 'MR.1,MR.2'
-    }}).pipe(
+    }}, { langFallback: false }).pipe(
         switchMap(taxa => this.taxonAutocompleteService.getInfo(taxa.results, this.search))
       )
       .subscribe(

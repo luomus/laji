@@ -40,6 +40,12 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+interface Options {
+  cacheInvalidationMs?: number;
+  /** Defaults to true */
+  langFallback?: boolean;
+};
+
 const ONE_DAY = 86400000;
 
 const sortRecordRecursively = (record: Record<string, unknown> = {}): Record<string, unknown> => (
@@ -100,14 +106,14 @@ export class LajiApiClientBService {
   get<P extends PathWithMethod<'get'>, R extends Responses<P, 'get' extends Method<P> ? 'get' : never>>(
     path: P,
     params?: Parameters<paths[P]['get']>,
-    cacheInvalidationMs = ONE_DAY
+    options?: Options
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     return this.fetch(
       path,
       'get' as any,
       params as any,
       undefined,
-      cacheInvalidationMs
+      options
     );
   }
 
@@ -115,14 +121,14 @@ export class LajiApiClientBService {
     path: P,
     params?: Parameters<paths[P]['put']>,
     requestBody?: RequestBodyFor<paths[P]['put']>,
-    cacheInvalidationMs = ONE_DAY
+    options?: Options
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     return this.fetch(
       path,
       'put' as any,
       params as any,
       requestBody as any,
-      cacheInvalidationMs
+      options
     );
   }
 
@@ -130,32 +136,46 @@ export class LajiApiClientBService {
     path: P,
     params?: Parameters<paths[P]['post']>,
     requestBody?: RequestBodyFor<paths[P]['post']>,
-    cacheInvalidationMs = ONE_DAY
+    options?: Options
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     return this.fetch(
       path,
       'post' as any,
       params as any,
       requestBody as any,
-      cacheInvalidationMs
+      options
     );
   }
 
   delete<P extends PathWithMethod<'delete'>, R extends Responses<P, 'delete' extends Method<P> ? 'delete' : never>>(
     path: P,
     params?: Parameters<paths[P]['delete']>,
-    cacheInvalidationMs = ONE_DAY
+    options?: Options
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     return this.fetch(
       path,
       'delete' as any,
       params as any,
       undefined,
-      cacheInvalidationMs
+      options
     );
   }
 
-  private getRequestOptions(queryParams: any, requestBody: any, lang: string, personToken?: string) {
+  protected getHeaders(lang: string, langFallback = true, personToken?: string) {
+    const headers: Record<string, string> = {
+			'API-Version': '1',
+			'Accept-Language': lang,
+		};
+    if (!langFallback) {
+      headers['Accept-Language'] = `${headers['Accept-Language']},*;q=0`;
+    }
+    if (personToken) {
+      headers['Person-Token'] = personToken;
+    }
+    return headers;
+  }
+
+  private getRequestOptions(queryParams: any, requestBody: any, lang: string, langFallback = true, personToken?: string) {
     const params = Object.keys((queryParams || {})).reduce((filteredQueryParams, key) => {
       const param = (queryParams || {})[key];
       if (param === undefined) {
@@ -165,13 +185,7 @@ export class LajiApiClientBService {
       return filteredQueryParams;
     }, {} as any);
 
-    const headers: Record<string, string> = {
-			'API-Version': '1',
-			'Accept-Language': lang,
-		};
-    if (personToken) {
-      headers['Person-Token'] = personToken;
-    }
+    const headers = this.getHeaders(lang, langFallback, personToken);
     return { params, body: requestBody, headers };
   }
 
@@ -180,7 +194,7 @@ export class LajiApiClientBService {
     method: M,
     params?: Parameters<paths[P][M]>,
     requestBody?: RequestBodyFor<paths[P][M]>,
-    cacheInvalidationMs = ONE_DAY
+    { cacheInvalidationMs = ONE_DAY, langFallback = true }: Options = {}
   ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
     const pathSegments = splitAndResolvePath(path, params);
     const requestUrl = this.baseUrl + pathSegments.join('');
@@ -190,13 +204,13 @@ export class LajiApiClientBService {
       return this.http.request(
         method as string,
         requestUrl,
-        this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken)
+        this.getRequestOptions((params as any)?.query, requestBody, this.lang, langFallback, this.personToken)
       ) as any;
     }
 
     const cachedPath = this.getOrInitializeLastPathCacheLevel(pathSegments);
 
-    const paramsHash = hashRecord(params);
+    const paramsHash = hashRecord({ ...params || {}, langFallback });
     if (!cachedPath?.has(paramsHash)) {
       cachedPath?.set(paramsHash, { _tag: 'not-started' });
     }
@@ -212,7 +226,7 @@ export class LajiApiClientBService {
       }
     }
 
-    const obs = this.http.request(method, requestUrl, this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken)).pipe(
+    const obs = this.http.request(method, requestUrl, this.getRequestOptions((params as any)?.query, requestBody, this.lang, langFallback, this.personToken)).pipe(
       tap(val => {
         cachedPath?.set(paramsHash, {
           _tag :'completed',

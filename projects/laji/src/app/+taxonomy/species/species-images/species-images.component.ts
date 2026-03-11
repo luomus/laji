@@ -117,6 +117,6 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
       ..._filters,
       hasMultimedia: true
     };
-    return this.api.post('/taxa/{id}/species', { path: { id: taxonId || 'MX.37600' }, query }, filters);
+    return this.api.post('/taxa/{id}/species', { path: { id: taxonId || 'MX.37600' }, query }, filters, { langFallback: false });
   }
 }

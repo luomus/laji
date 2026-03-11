@@ -45,7 +45,7 @@ export class ResultService {
     return this.api.get('/taxa/{id}', {
       path: { id: taxonId },
       query: { selectedFields: 'scientificName,vernacularName,cursiveName' }
-    });
+    }, { langFallback: false });
   }
 
   getResults(query: WarehouseQueryInterface, lang: string): Observable<any> {

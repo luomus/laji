@@ -168,6 +168,6 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
       limit: this.typeaheadLimit,
       checklist: 'MR.1,MR.2',
       ...this.searchParams
-    } }).pipe(map(({results}) => results));
+    } }, { langFallback: false }).pipe(map(({results}) => results));
   }
 }

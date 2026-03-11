@@ -95,6 +95,8 @@ export class TaxonIdentificationFacade implements OnDestroy {
       pageSize: 1000,
     } }, {
       taxonRank: rank
+    }, {
+      langFallback: false
     }).pipe(switchMap(res => {
         if (res.total > 0 || rank === 'MX.species') {
           return of({...res, rank});

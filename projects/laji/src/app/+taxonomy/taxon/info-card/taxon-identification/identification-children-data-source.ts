@@ -63,6 +63,8 @@ export class IdentificationChildrenDataSource extends DataSource<Taxon & { child
       includeMedia: true
     }}, {
       taxonRank: this.grandchildRank,
+    }, {
+      langFallback: false
     }).pipe(
       map(taxa => ({...child, children: taxa.results}))
     );

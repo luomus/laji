@@ -86,7 +86,7 @@ export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defau
       useFactory: createLoggerLoader
     },
     { provide: Title, useClass: LajiTitle },
-    provideClientHydration(),
+    // provideClientHydration(),
     provideHttpClient(
       withInterceptorsFromDi(),
       withFetch()

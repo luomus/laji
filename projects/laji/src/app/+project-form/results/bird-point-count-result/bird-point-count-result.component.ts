@@ -82,7 +82,7 @@ export class BirdPointCountResultComponent implements OnInit, OnDestroy {
       finnish: true,
       informalTaxonGroups: 'MVL.1',
       taxonRank: 'MX.species'
-    }).pipe(
+    }, { langFallback: false }).pipe(
       map(res => res.results),
       map(taxa => taxa.map(t => ({
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),

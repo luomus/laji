@@ -140,7 +140,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
       includeMedia: true,
       includeDescriptions: true,
       includeRedListEvaluations: true
-    }});
+    }}, { langFallback: false });
   }
 
   private getIsFromMasterChecklist() {

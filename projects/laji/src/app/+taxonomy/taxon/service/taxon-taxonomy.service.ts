@@ -30,7 +30,7 @@ export class TaxonTaxonomyService {
     if (!this.pending[id]) {
       this.pending[id] = this.api.get('/taxa/{id}', { path: { id }, query: {
         selectedFields: this.getSelectedFields()
-      } })
+      } }, { langFallback: false })
         .pipe(
           tap((data) => {
             this.cacheById[id].taxon = data;
@@ -62,7 +62,7 @@ export class TaxonTaxonomyService {
           selectedFields: this.getSelectedFields(),
           includeHidden: true,
           checklist: 'MR.1,MR.2'
-        } }).pipe(
+        } }, { langFallback: false }).pipe(
           map(({ results }) => results),
           tap(children => {
             this.cacheById[id].childrenIds = children.map(child => {
@@ -104,7 +104,7 @@ export class TaxonTaxonomyService {
       this.pendingParents[id] = this.api.get('/taxa/{id}/parents', { path: { id }, query: {
         selectedFields: this.getSelectedFields(),
         checklist: 'MR.1,MR.2'
-      } })
+      } }, { langFallback: false })
         .pipe(
           map(({ results }) => results),
           tap(parents => {

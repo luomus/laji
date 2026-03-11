@@ -180,7 +180,7 @@ export class ObservationFacade {
       informalTaxonGroups: informalTaxonGroupId?.toString(),
       nameTypes: '!MX.hasMisspelledName,!MX.hasMisappliedName',
       checklist: 'MR.1,MR.2'
-    } }).pipe(
+    } }, { langFallback: false }).pipe(
       map(data => data.results.map(item => {
         let groups = '';
         if (item.informalGroups) {

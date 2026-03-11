@@ -95,7 +95,7 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
   getOptionsByTaxonSet$(taxonSets: string): Observable<{ label: string; value: string }[]> {
     return this.api.post('/taxa', {
       query: { selectedFields: 'id,vernacularName,scientificName' }
-    }, { taxonSets }
+    }, { taxonSets }, { langFallback: false }
     ).pipe(
       map(res => res.results),
       map(taxa => taxa.map(t => ({

@@ -30,7 +30,7 @@ export class TaxonService {
       includeMedia: true,
       includeRedListEvaluations: true,
       checklistVersion
-    }});
+    }}, { langFallback: false });
   }
 
   getTaxonSpeciesWithLatestEvaluation(id: string, checklistVersion?: ChecklistVersion): Observable<Taxon[]> {
@@ -40,7 +40,7 @@ export class TaxonService {
       selectedFields: ['id', 'vernacularName', 'scientificName', 'cursiveName'].join(',')
     } }, {
       hasLatestRedListEvaluation: true,
-    }).pipe(
+    }, { langFallback: false }).pipe(
         map(res => res.results)
     );
   }
@@ -107,8 +107,8 @@ export class TaxonService {
         };
         return (
           taxon
-          ? this.api.post('/taxa/{id}/species/aggregate', { path: { id: taxon }, query: _query }, _filters)
-          : this.api.post('/taxa/species/aggregate', { query: _query }, _filters)
+          ? this.api.post('/taxa/{id}/species/aggregate', { path: { id: taxon }, query: _query }, _filters, { langFallback: false })
+          : this.api.post('/taxa/species/aggregate', { query: _query }, _filters, { langFallback: false })
         ).pipe(
           map((data: any) => data['a'].reduce((cumulative: {[key: string]: any} = {}, current: any) => {
             const val = current.values;
@@ -150,8 +150,8 @@ export class TaxonService {
       pageSize
     };
     return taxon
-      ? this.api.post('/taxa/{id}/species', { path: { id: taxon }, query }, filters)
-      : this.api.post('/taxa/species', { query }, filters);
+      ? this.api.post('/taxa/{id}/species', { path: { id: taxon }, query }, filters, { langFallback: false })
+      : this.api.post('/taxa/species', { query }, filters, { langFallback: false });
   }
 
   getAllSpecies(query: TaxonQuery, filters: TaxonFilters, data: Taxon[] = [], page = 1, pageSize = 10000): Observable<Taxon[]> {

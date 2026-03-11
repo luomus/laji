@@ -131,7 +131,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
     return this.api.get('/autocomplete/taxa', { query: {
       query,
       limit: 10
-    }}).pipe(
+    }}, { langFallback: false }).pipe(
       map(data => data.results.map(item => {
         let groups = '';
         if (item.informalGroups) {
@@ -143,7 +143,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
   }
 
   public getMatchTaxon(taxonomy: string) {
-    this.annotationSub = this.api.get('/taxa/search', { query: { query: taxonomy, matchType: 'exact', limit: 5 } }).subscribe(({results}) => {
+    this.annotationSub = this.api.get('/taxa/search', { query: { query: taxonomy, matchType: 'exact', limit: 5 } }, { langFallback: false }).subscribe(({results}) => {
       results.forEach((taxon: any) => {
         if (taxon.matchingName.toLowerCase() === taxonomy.toLowerCase()) {
           this.annotation.identification.taxonID = taxon.id;

@@ -55,7 +55,7 @@ export class HerpetologyComponent implements OnInit {
       } }, {
         informalTaxonGroups: 'MVL.26',
         typeOfOccurrenceInFinland: 'MX.typeOfOccurrenceStablePopulation'
-      }
+      }, { langFallback: false }
         ).pipe(
         map(species => species.results)).pipe(
         switchMap(data => ObservableForkJoin(data.map(taxon => this.api.get('/taxa/{id}/media',
@@ -67,7 +67,7 @@ export class HerpetologyComponent implements OnInit {
       this.api.post('/taxa/{id}/species', { path: { id: 'MX.37610' } }, {
         informalTaxonGroups: 'MVL.162',
         typeOfOccurrenceInFinland: 'MX.typeOfOccurrenceStablePopulation'
-      }).pipe(
+      }, { langFallback: false }).pipe(
         map(species => species.results)).pipe(
         switchMap(data => ObservableForkJoin(data.map(taxon => this.api.get('/taxa/{id}/media', {
           path: { id: taxon.id }
@@ -77,11 +77,11 @@ export class HerpetologyComponent implements OnInit {
       this.api.post('/taxa/{id}/species', { path: { id: 'MX.37608' } }, {
         informalTaxonGroups: 'MVL.26',
         typeOfOccurrenceInFinland: ['MX.typeOfOccurrenceAnthropogenic', 'MX.typeOfOccurrenceRareVagrant', 'MX.typeOfOccurrenceVagrant']
-      }).pipe(
+      }, { langFallback: false }).pipe(
         map(species => species.results)).pipe(
         switchMap(data => ObservableForkJoin(data.map(taxon => this.api.get('/taxa/{id}/media', {
           path: { id: taxon.id }
-        }).pipe(
+        }, { langFallback: false }).pipe(
             map(({ results: images }) => ({taxon, images: images[0] || {}})))
           ))))
     );
