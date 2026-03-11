@@ -2,9 +2,7 @@ import { map, mergeMap, switchMap, tap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { FormPermissionService } from '../../../../shared/service/form-permission.service';
-import { FormPermission } from '../../../../shared/model/FormPermission';
-import { UserService } from '../../../../shared/service/user.service';
+import { FormPermissionService, TypeEnum } from '../../../../shared/service/form-permission.service';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 import { AbstractPermission } from '../abstract-permission';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';
@@ -27,7 +25,6 @@ export class ManageComponent extends AbstractPermission implements OnInit, OnDes
     protected router: Router,
     protected formPermissionService: FormPermissionService,
     protected localizeRouterService: LocalizeRouterService,
-    protected userService: UserService,
     private route: ActivatedRoute,
     private projectFormService: ProjectFormService,
     private translate: TranslateService,
@@ -64,7 +61,7 @@ export class ManageComponent extends AbstractPermission implements OnInit, OnDes
     };
 
     const method = (action === 'acceptAdmin' || action === 'acceptEditor') ? 'acceptRequest' : 'revokeAccess';
-    this.formPermissionService[method](this.collectionId, this.userService.getToken(), personId, action === 'acceptAdmin' ? FormPermission.Type.Admin : undefined).pipe(
+    this.formPermissionService[method](this.collectionId, personId, action === 'acceptAdmin' ? TypeEnum.Admin : undefined).pipe(
       switchMap(() => this.updateFormPermission$())
     ).subscribe(cb, cb);
   }
