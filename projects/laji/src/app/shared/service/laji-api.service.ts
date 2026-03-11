@@ -14,7 +14,6 @@ import { Publication } from '../model/Publication';
 import { Feedback } from '../model/Feedback';
 import { News } from '../model/News';
 import { Image } from '../model/Image';
-import { Collection } from '../model/Collection';
 import { Util } from './util.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
@@ -150,10 +149,7 @@ export namespace LajiApi {
 
     export type ChecklistListResponse = PagedResult<Checklist>;
 
-    export type CollectionResponse = PagedResult<Collection>;
-
     export type NewsListResponse = PagedResult<News>;
-
 
     export type NotificationListResponse = PagedResult<Notification>;
 
@@ -173,7 +169,6 @@ export class LajiApiService {
 
   getList(endpoint: LajiApi.Endpoints.areas, query: LajiApi.Query.AreaQuery): Observable<LajiApi.Response.AreaListResponse>;
   getList(endpoint: LajiApi.Endpoints.checklists, query: LajiApi.Query.ChecklistQuery): Observable<LajiApi.Response.ChecklistListResponse>;
-  getList(endpoint: LajiApi.Endpoints.collections, query: LajiApi.Query.CollectionQuery): Observable<LajiApi.Response.CollectionResponse>;
   getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
   getList(endpoint: LajiApi.Endpoints.information, query: LajiApi.Query.InformationQuery): Observable<Information>;
   getList(endpoint: LajiApi.Endpoints.news, query: LajiApi.Query.NewsQuery): Observable<LajiApi.Response.NewsListResponse>;

@@ -11698,7 +11698,7 @@ export interface components {
              * Duration of editing old document warning
              * @description Duration in ISO 8601 duration format. Defaults to P1W (one week)
              */
-            warnEditingOldDocumentDuration: boolean;
+            warnEditingOldDocumentDuration: string;
         };
         "store-multiLang": string;
         "store-formFooter": {
@@ -14516,7 +14516,7 @@ export interface components {
             /** Context for the Collection */
             "@context"?: string;
             /** Id for the Collection */
-            id?: string;
+            id: string;
             /** Type for the Collection */
             "@type"?: string;
             /**
@@ -14851,7 +14851,7 @@ export interface components {
             /** Context for the Area */
             "@context"?: string;
             /** Id for the Area */
-            id?: string;
+            id: string;
             /** Type for the Area */
             "@type"?: string;
             /**
@@ -14912,7 +14912,7 @@ export interface components {
             /** Context for the Checklist */
             "@context"?: string;
             /** Id for the Checklist */
-            id?: string;
+            id: string;
             /** Type for the Checklist */
             "@type"?: string;
             /** isPublic */
@@ -14927,157 +14927,20 @@ export interface components {
         };
         "store-checklistVersion": {
             /** Context for the Checklist version */
-            "@context": string;
+            "@context"?: string;
             /** Id for the Checklist version */
             id: string;
             /** Type for the Checklist version */
-            "@type": string;
+            "@type"?: string;
             /** Checklist id */
-            versionChecklist: string;
+            versionChecklist?: string;
             /**
              * Frozen at
              * Format: date
              */
-            versionDate: string;
-            versionDescription: string;
-            versionName: string;
-        };
-        "store-organization": {
-            /** Context for the Organization */
-            "@context"?: string;
-            /** Id for the Organization */
-            id?: string;
-            /** Type for the Organization */
-            "@type"?: string;
-            /**
-             * EORI number
-             * @description Economic Operators Registration and Identification number for customs clearance, if needed.
-             */
-            EORINumber?: string;
-            /**
-             * Web address
-             * @description Organisation website. Include http://
-             */
-            URL?: string;
-            /**
-             * Institution code
-             * @description Official code for this organization, if one exists
-             */
-            abbreviation?: string;
-            /**
-             * Code source
-             * @description If organisation code is given, the source for it must be chosen.
-             * @enum {string}
-             */
-            abbreviationExplanation?: "" | "MOS.abbreviation-explanationIndexHerbariorum" | "MOS.abbreviation-explanationInsectAndSpiderCollectionsOfTheWorld";
-            /**
-             * Additional IDs
-             * @description Other identifiers this organization has
-             */
-            additionalIDs?: string[];
-            /**
-             * Content contact person
-             * @description Name of content/collection contact person for the organization.
-             */
-            contentContact?: string;
-            /**
-             * Country
-             * @description Name of the country as on a postal address.
-             */
-            country?: string;
-            /**
-             * Address for courier services
-             * @description Address and other contact details to be given for courier services, if different from normal postal address. Appears on transaction PDFs like formulated here.
-             */
-            courierAddress?: string;
-            /**
-             * Tags
-             * @description Tags this organisation has
-             */
-            datasetID?: string[];
-            /**
-             * Due date for orders
-             * Format: date
-             * @description Last date for sending seed orders to this organization.
-             */
-            dateOrdersDue?: string;
-            /** editNotes */
-            editNotes?: string;
-            /**
-             * Email
-             * @description Contact email address for the organization, or address of a contact person.
-             */
-            email?: string;
-            /**
-             * Fax
-             * @description Fax number, with country code
-             */
-            fax?: string;
-            fullName?: string;
-            /**
-             * Hide organization
-             * @description Used for organisations that are not to be used (duplicates etc.)
-             */
-            hidden?: boolean;
-            /**
-             * Locality/City
-             * @description Usually city name
-             */
-            locality?: string;
-            /**
-             * Logo URL
-             * @description Web address where the logo of the organization is located. Used on Kotka transaction PDFs for now.
-             */
-            logo?: string;
-            /**
-             * Notes
-             * @description Free-text notes
-             */
-            notes?: string;
-            organizationLevel1: string;
-            organizationLevel2?: string;
-            organizationLevel3?: string;
-            organizationLevel4?: string;
-            /**
-             * Telephone
-             * @description Phone number for organization or contact person, with country code.
-             */
-            phone?: string;
-            /**
-             * Post office box
-             * @description Insert only numbers, leave 'P.O. Box', 'PL' or such out.
-             */
-            postOfficeBox?: string;
-            /** Postal code */
-            postalCode?: string;
-            /**
-             * Region
-             * @description E.g. state or province; use only if needed in the postal address
-             */
-            region?: string;
-            /** Street address */
-            streetAddress?: string;
-            /** Content contact ID */
-            contentContactID?: string[];
-            /** Creator */
-            creator?: string;
-            /**
-             * Created
-             * Format: date-time
-             */
-            dateCreated?: string;
-            /**
-             * Edited
-             * Format: date-time
-             */
-            dateEdited?: string;
-            /** Editor */
-            editor?: string;
-            /**
-             * Owner of record
-             * @description Team or organisation that owns the record and can edit it.
-             */
-            owner?: string;
+            versionDate?: string;
+            versionDescription?: string;
+            versionName?: string;
         };
         SensitiveOrganization: {
             "@context": string;
@@ -15091,7 +14954,7 @@ export interface components {
             /** Context for the Informal Taxon Group */
             "@context"?: string;
             /** Id for the Informal Taxon Group */
-            id?: string;
+            id: string;
             /** Type for the Informal Taxon Group */
             "@type"?: string;
             /**
@@ -15152,7 +15015,7 @@ export interface components {
             /** Context for the IUCN Red List Evaluation Informal Taxon Group */
             "@context"?: string;
             /** Id for the IUCN Red List Evaluation Informal Taxon Group */
-            id?: string;
+            id: string;
             /** Type for the IUCN Red List Evaluation Informal Taxon Group */
             "@type"?: string;
             /** Has sub group */
@@ -15162,6 +15025,18 @@ export interface components {
             /** Includes taxon */
             includesTaxon?: string[];
             name: string;
+        };
+        "store-publication": {
+            /** Context for the Publication */
+            "@context"?: string;
+            /** Id for the Publication */
+            id: string;
+            /** Type for the Publication */
+            "@type"?: string;
+            /** URI */
+            URI?: string;
+            /** Name */
+            name?: string;
         };
     };
     responses: never;
@@ -35142,7 +35017,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": components["schemas"]["store-publication"];
                 };
             };
             400: {
