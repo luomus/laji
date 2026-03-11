@@ -1,6 +1,7 @@
 /* eslint-disable no-bitwise */
 import ts from 'typescript';
 import fs from 'fs';
+import { getClassPropertiesFetcher, MetadataProperty } from './fetch-metadata';
 
 interface EnumNode {
   _tag: 'enum';
@@ -96,6 +97,7 @@ export const traverseType = (type: ts.Type, checker: ts.TypeChecker): TreeNode =
 };
 
 export interface GeneratedDatatableColumn {
+  path: string[];
   label: string[];
   node: LeafNode;
 }
@@ -106,6 +108,7 @@ export const accDatatableColumnsRecursive = (subtree: ObjectNode): GeneratedData
     if (v._tag === 'object') {
       const leaves = accDatatableColumnsRecursive(v);
       const mappedLeaves = leaves.map(col => ({
+          path: [k, ...col.path],
           label: [k, ...col.label],
           node: col.node
         } as GeneratedDatatableColumn
@@ -114,6 +117,7 @@ export const accDatatableColumnsRecursive = (subtree: ObjectNode): GeneratedData
     } else {
       out.push(
         {
+          path: [k],
           label: [k],
           node: v as LeafNode
         }
@@ -160,3 +164,57 @@ export const generateExportObjectLiteral = (obj: any, name: string, path: string
 
 export const generateDatatableColumns = (cols: GeneratedDatatableColumn[], path: string) =>
   generateExportObjectLiteral(cols, 'cols', path);
+
+const mapPathLabelsWithMetadata = async (
+  path: string[],
+  rootClass: string,
+  getClassProperties: (className: string) => Promise<MetadataProperty[] | null>,
+) => {
+  const mappedLabel = [] as string[];
+  let currentClass = rootClass;
+
+  for (let i = 0; i < path.length; i++) {
+    const segment = path[i];
+    const classProperties = await getClassProperties(currentClass);
+
+    if (!classProperties) {
+      mappedLabel.push(...path.slice(i));
+      break;
+    }
+
+    const matchingProperty = classProperties.find(prop => prop.shortName === segment);
+    if (!matchingProperty) {
+      mappedLabel.push(...path.slice(i));
+      break;
+    }
+
+    mappedLabel.push(matchingProperty.label || segment);
+
+    if (i < path.length - 1) {
+      if (!matchingProperty.range) {
+        mappedLabel.push(...path.slice(i + 1));
+        break;
+      }
+      currentClass = matchingProperty.range;
+    }
+  }
+
+  return mappedLabel;
+};
+
+export const replaceDatatableColumnLabelsFromMetadata = async (
+  cols: GeneratedDatatableColumn[],
+  rootClass: string,
+) => {
+  const getClassProperties = getClassPropertiesFetcher();
+
+  const mappedColumns = [] as GeneratedDatatableColumn[];
+  for (const col of cols) {
+    const mappedLabel = await mapPathLabelsWithMetadata(col.path, rootClass, getClassProperties);
+    mappedColumns.push({
+      ...col,
+      label: mappedLabel
+    });
+  }
+  return mappedColumns;
+};

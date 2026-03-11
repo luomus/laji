@@ -9,7 +9,7 @@ import { cols as subjectCols } from './data-editor-search-table-columns';
 import { cols as traitCols } from './data-editor-search-table-columns-traits';
 import { FooterService } from '../../../shared/service/footer.service';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { LeafNode } from 'scripts/codegen/shared';
+import { LeafNode } from 'scripts/codegen/shared/shared';
 import { DatatableColumn } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 
 type InputRow = components['schemas']['LajiBackendInputRow'];

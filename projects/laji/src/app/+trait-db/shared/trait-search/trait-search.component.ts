@@ -12,6 +12,7 @@ import { environment } from 'projects/laji/src/environments/environment';
 import { cols } from './trait-search-table-columns';
 import { RankFilterValue } from './trait-search-filters/rank-filter/rank-filter.component';
 import { Location } from '@angular/common';
+import { GeneratedDatatableColumn } from 'scripts/codegen/shared/shared';
 
 type ApiQueryParams = paths['/trait/search']['get']['parameters']['query'];
 type SearchResponse = paths['/trait/search']['get']['responses']['200']['content']['application/json'];
@@ -106,7 +107,7 @@ const queryParamsToFormValue = (queryParams: QueryParams): FormValue => {
 export class TraitSearchComponent implements OnInit, OnDestroy, OnChanges {
   @Input() datasetId?: string;
 
-  columns = cols.map(([prop, _]) => ({ title: prop as string, prop: prop as string, sortable: false }));
+  columns = (cols as GeneratedDatatableColumn[]).map(col => ({ title: col.label.join(' - '), prop: col.path.join('.'), sortable: false }));
   initialFilters: FormValue | undefined;
   searchResult: SearchResult | undefined;
   pageSize = PAGE_SIZE;

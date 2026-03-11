@@ -11,8 +11,6 @@
     "strict": false
   },
   "include": [
-    "./shared.ts",
-    "./laji-trait-search.ts",
-    "./laji-trait-data-editor.ts"
+    "./**/*.ts",
   ]
 }
