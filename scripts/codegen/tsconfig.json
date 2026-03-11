@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/scripts",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "types": ["node"],
+    "lib": ["ES2022"],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": false
+  },
+  "include": [
+    "./shared.ts",
+    "./laji-trait-search.ts",
+    "./laji-trait-data-editor.ts"
+  ]
+}

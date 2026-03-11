@@ -1,12 +1,13 @@
 /* eslint-disable no-bitwise */
-import * as ts from 'typescript';
-import * as fs from 'fs';
-import { getNestedPropertyType, LeafType, traverseType, generateDatatableColumns,
-  accDatatableColumnsRecursive, generateExportObjectLiteral } from './shared';
+import ts from 'typescript';
+import { getNestedPropertyType, traverseType, generateDatatableColumns,
+  GeneratedDatatableColumn,
+  accDatatableColumnsRecursive, generateExportObjectLiteral, ObjectNode } from './shared';
 
-const generateFilters = (cols: [string, LeafType][]) => {
+const generateFilters = (cols: GeneratedDatatableColumn[]) => {
   const filters = {} as any;
-  cols.forEach(([prop, leaf]) => {
+  cols.forEach(({ label, node: leaf }) => {
+    const prop = label.join('.');
     const formKey = prop.replace(/\./g, '');
     if (leaf._tag === 'string') {
       filters[formKey] = {
@@ -56,7 +57,8 @@ const generateTraitSearch = () => {
       const resultsType = getNestedPropertyType(traitSearchType, ['get', 'responses', '200', 'content', 'application/json', 'results'], checker);
       const resultType = checker.getTypeArguments(resultsType as ts.TypeReference)[0];
       const tree = traverseType(resultType, checker);
-      const cols = accDatatableColumnsRecursive(tree);
+      console.assert(tree._tag === 'object');
+      const cols = accDatatableColumnsRecursive(<ObjectNode>tree);
       generateDatatableColumns(cols, './projects/laji/src/app/+trait-db/shared/trait-search/trait-search-table-columns.ts');
       generateFilters(cols);
     }

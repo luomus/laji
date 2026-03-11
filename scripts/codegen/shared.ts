@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
-import * as ts from 'typescript';
-import * as fs from 'fs';
+import ts from 'typescript';
+import fs from 'fs';
 
 interface EnumNode {
   _tag: 'enum';
@@ -28,7 +28,14 @@ interface UnknownNode {
   _tag: 'unknown';
 }
 
-export type LeafType = EnumNode | StringNode | BooleanNode | NumberNode | ArrayNode;
+export type LeafNode = EnumNode | StringNode | BooleanNode | NumberNode | ArrayNode;
+
+export interface ObjectNode {
+  _tag: 'object';
+  props: { [key: string]: TreeNode };
+}
+
+export type TreeNode = LeafNode | ObjectNode | UnknownNode;
 
 export const getNestedPropertyType = (type: ts.Type, propertyPath: string[], checker: ts.TypeChecker) => {
   let currentType = type;
@@ -49,7 +56,7 @@ export const getNestedPropertyType = (type: ts.Type, propertyPath: string[], che
   return currentType;
 };
 
-export const traverseType = (type: ts.Type, checker: ts.TypeChecker): any => {
+export const traverseType = (type: ts.Type, checker: ts.TypeChecker): TreeNode => {
   if (type.getFlags() & ts.TypeFlags.String) {
     return { _tag: 'string' } as StringNode;
   } else if (type.getFlags() & ts.TypeFlags.Number) {
@@ -73,9 +80,12 @@ export const traverseType = (type: ts.Type, checker: ts.TypeChecker): any => {
         elementType: traverseType(elementType, checker)
       } as ArrayNode;
     } else {
-      const o = {} as any;
+      const o = {
+        _tag: 'object',
+        props: {},
+      } as ObjectNode;
       type.getProperties().forEach(prop => {
-        o[prop.name] = traverseType(checker.getTypeOfSymbolAtLocation(prop, prop.valueDeclaration!), checker);
+        o.props[prop.name] = traverseType(checker.getTypeOfSymbolAtLocation(prop, prop.valueDeclaration!), checker);
       });
       return o;
     }
@@ -85,15 +95,29 @@ export const traverseType = (type: ts.Type, checker: ts.TypeChecker): any => {
   return { _tag: 'unknown' } as UnknownNode;
 };
 
-export const accDatatableColumnsRecursive = (subtree: any): [string, LeafType][] => {
-  const out = [] as [string, LeafType][];
-  Object.entries(subtree).forEach(([k, v]) => {
-    if ('_tag' in (v as any)) {
-      out.push([k, (v as LeafType)]);
-    } else {
+export interface GeneratedDatatableColumn {
+  label: string[];
+  node: LeafNode;
+}
+
+export const accDatatableColumnsRecursive = (subtree: ObjectNode): GeneratedDatatableColumn[] => {
+  const out = [] as GeneratedDatatableColumn[];
+  Object.entries(subtree.props).forEach(([k, v]) => {
+    if (v._tag === 'object') {
       const leaves = accDatatableColumnsRecursive(v);
-      const mappedLeaves = leaves.map(([path, leaf]) => ([k + '.' + path, leaf] as [string, LeafType]));
+      const mappedLeaves = leaves.map(col => ({
+          label: [k, ...col.label],
+          node: col.node
+        } as GeneratedDatatableColumn
+      ));
       out.push(...mappedLeaves);
+    } else {
+      out.push(
+        {
+          label: [k],
+          node: v as LeafNode
+        }
+      );
     }
   });
   return out;
@@ -134,6 +158,5 @@ export const generateExportObjectLiteral = (obj: any, name: string, path: string
   fs.writeFileSync(path, `/* eslint-disable @typescript-eslint/quotes */\n/* eslint-disable max-len */\n/*\nGenerated file. Do not edit manually!\n*/\n\n${result}\n`);
 };
 
-export const generateDatatableColumns = (cols: [string, LeafType][], path: string) =>
+export const generateDatatableColumns = (cols: GeneratedDatatableColumn[], path: string) =>
   generateExportObjectLiteral(cols, 'cols', path);
-

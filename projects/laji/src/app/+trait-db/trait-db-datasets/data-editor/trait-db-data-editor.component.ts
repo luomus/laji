@@ -9,7 +9,7 @@ import { cols as subjectCols } from './data-editor-search-table-columns';
 import { cols as traitCols } from './data-editor-search-table-columns-traits';
 import { FooterService } from '../../../shared/service/footer.service';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { LeafType } from 'scripts/codegen/shared';
+import { LeafNode } from 'scripts/codegen/shared';
 import { DatatableColumn } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 
 type InputRow = components['schemas']['LajiBackendInputRow'];
@@ -81,9 +81,9 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
           query: { datasetId, pageSize: 1000 } })
         ),
         map(rows => {
-          const traitColsAcc: [string, LeafType][] = [];
+          const traitColsAcc: [string, LeafNode][] = [];
           rows[0].traits?.forEach((trait, idx) => {
-            traitColsAcc.push(...traitCols.map(([name, node]) => ([`traits.${idx}.${name}`, node] as [string, LeafType])));
+            traitColsAcc.push(...traitCols.map(([name, node]) => ([`traits.${idx}.${name}`, node] as [string, LeafNode])));
           });
           const columns: DatatableColumn<any>[] = [{
             title: '',
@@ -91,7 +91,7 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
             unselectable: false,
             cellTemplate: this.editCell
           } as DatatableColumn<any>];
-          columns.push(...([...subjectCols, ...traitColsAcc] as [string, LeafType][])
+          columns.push(...([...subjectCols, ...traitColsAcc] as [string, LeafNode][])
             .map(
               ([prop, colType]) => {
                 switch (colType._tag) {

@@ -1,6 +1,5 @@
-import * as ts from 'typescript';
-import * as fs from 'fs';
-import { getNestedPropertyType, LeafType, traverseType, accDatatableColumnsRecursive, generateDatatableColumns } from './shared';
+import ts from 'typescript';
+import { getNestedPropertyType, traverseType, accDatatableColumnsRecursive, generateDatatableColumns, ObjectNode } from './shared';
 
 const generateDatasetTraitEditor = () => {
   const program = ts.createProgram(['./projects/laji-api-client-b/generated/api.d.ts'], {});
@@ -14,14 +13,16 @@ const generateDatasetTraitEditor = () => {
       const resultType = checker.getTypeArguments(resultsType as ts.TypeReference)[0];
       (() => {
         const tree = traverseType(resultType, checker);
-        const cols = accDatatableColumnsRecursive(tree).filter(n => n[0] !== 'traits');
+        console.assert(tree._tag === 'object');
+        const cols = accDatatableColumnsRecursive(<ObjectNode>tree).filter(n => n.label[0] !== 'traits');
         generateDatatableColumns(cols, './projects/laji/src/app/+trait-db/trait-db-datasets/data-editor/data-editor-search-table-columns.ts');
       })();
       (() => {
         const traitsType = getNestedPropertyType(resultType, ['traits'], checker);
         const traitType = checker.getTypeArguments(traitsType as ts.TypeReference)[0];
         const tree = traverseType(traitType, checker);
-        const cols = accDatatableColumnsRecursive(tree).filter(n => n[0] !== 'id');
+        console.assert(tree._tag === 'object');
+        const cols = accDatatableColumnsRecursive(<ObjectNode>tree).filter(n => n.label[0] !== 'id');
         generateDatatableColumns(cols, './projects/laji/src/app/+trait-db/trait-db-datasets/data-editor/data-editor-search-table-columns-traits.ts');
       })();
     }
