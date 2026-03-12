@@ -3,7 +3,7 @@
     <ng-container [ngTemplateOutlet]="vernacularName"></ng-container>
   }
   @if ((taxon.vernacularName | multiLang:false) && (taxon.colloquialVernacularName | multiLang:false)) {
-    (<ul class="separated-list colloquialVernacularName">
+    (<ul class="separated-list colloquial-vernacular-name">
     @for (obj of (taxon.colloquialVernacularName); track obj) {
       <li>{{obj}}</li>
     }
@@ -35,12 +35,14 @@
   </div>
 }
 <ng-template #scientificName>@if (taxon.cursiveName) {
-  <em>{{ taxon.scientificName }}</em>
+  <em class="scientific-name">{{ taxon.scientificName }}</em>
 } @else {
-  {{ taxon.scientificName }}
+  <span class="scientific-name">{{ taxon.scientificName }}</span>
 }</ng-template>
 <ng-template #vernacularName>
-  {{ capitalizeName ? (taxon.vernacularName | multiLang:false | capitalize) : (taxon.vernacularName | multiLang:false) }}
+  <span class="vernacular-name">
+    {{ capitalizeName ? (taxon.vernacularName | multiLang:false | capitalize) : (taxon.vernacularName | multiLang:false) }}
+  </span>
   @if (taxon?.alternativeVernacularName | multiLang:false | values; as alternativeVernacularName) {
     ({{ alternativeVernacularName }})
   }
