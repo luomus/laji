@@ -8,7 +8,6 @@ import { Document } from '../shared/model/Document';
 import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
 import { ProjectForm, ProjectFormService } from '../shared/service/project-form.service';
 import { FormPermissionService, Rights } from '../shared/service/form-permission.service';
-import { FormPermission } from '../shared/model/FormPermission';
 import { BrowserService } from '../shared/service/browser.service';
 import { Title } from '@angular/platform-browser';
 import { TriplestoreLabelService } from '../shared/service/triplestore-label.service';
@@ -19,6 +18,7 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type Form = components['schemas']['Form'];
 type FormListing = components['schemas']['FormListing'];
+type FormPermission = components['schemas']['FormPermissionDto'];
 
 type ResultServiceType = Form['options']['resultServiceType'];
 
@@ -187,7 +187,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     const form$ = this.projectFormService.getFormFromRoute$(this.route);
     const initialFp$ = form$.pipe(
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      switchMap(form => this.formPermissionService.getFormPermission(form?.collectionID!, this.userService.getToken())),
+      switchMap(form => this.formPermissionService.getFormPermission(form?.collectionID!)),
       take(1)
     );
 

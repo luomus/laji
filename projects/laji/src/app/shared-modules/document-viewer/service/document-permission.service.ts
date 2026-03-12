@@ -91,7 +91,7 @@ export class DocumentPermissionService {
       return of(false);
     }
 
-    return this.formPermissionService.getFormPermission(collectionId, personToken).pipe(
+    return this.formPermissionService.getFormPermission(collectionId).pipe(
       map(formPermission => this.formPermissionService.isAdmin(formPermission, user))
     );
   }

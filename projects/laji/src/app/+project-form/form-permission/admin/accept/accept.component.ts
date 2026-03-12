@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormPermissionService } from '../../../../shared/service/form-permission.service';
-import { UserService } from '../../../../shared/service/user.service';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 import { AbstractPermission } from '../abstract-permission';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';
@@ -25,7 +24,6 @@ export class AcceptComponent extends AbstractPermission implements OnInit, OnDes
     protected router: Router,
     protected formPermissionService: FormPermissionService,
     protected localizeRouterService: LocalizeRouterService,
-    protected userService: UserService,
     private route: ActivatedRoute,
     private projectFormService: ProjectFormService,
     private translate: TranslateService,
@@ -51,7 +49,7 @@ export class AcceptComponent extends AbstractPermission implements OnInit, OnDes
     };
 
     const method = action === 'accept' ? 'acceptRequest' : 'revokeAccess';
-    this.formPermissionService[method](this.collectionId, this.userService.getToken(), personId).pipe(
+    this.formPermissionService[method](this.collectionId, personId).pipe(
       switchMap(() => this.updateFormPermission$())
     ).subscribe(cb, cb);
   }
