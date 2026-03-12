@@ -9,7 +9,7 @@ import { cols as subjectCols } from './data-editor-search-table-columns';
 import { cols as traitCols } from './data-editor-search-table-columns-traits';
 import { FooterService } from '../../../shared/service/footer.service';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { LeafNode } from 'scripts/codegen/shared/shared';
+import { GeneratedDatatableColumn, LeafNode } from 'scripts/codegen/shared/shared';
 import { DatatableColumn } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 
 type InputRow = components['schemas']['LajiBackendInputRow'];
@@ -81,9 +81,9 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
           query: { datasetId, pageSize: 1000 } })
         ),
         map(rows => {
-          const traitColsAcc: [string, LeafNode][] = [];
+          const traitColsAcc: GeneratedDatatableColumn[] = [];
           rows[0].traits?.forEach((trait, idx) => {
-            traitColsAcc.push(...traitCols.map(([name, node]) => ([`traits.${idx}.${name}`, node] as [string, LeafNode])));
+            traitColsAcc.push(...traitCols.map(col => ({ ...col, path: ['trait', idx, ...col.path] } as GeneratedDatatableColumn)));
           });
           const columns: DatatableColumn<any>[] = [{
             title: '',
@@ -91,36 +91,36 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
             unselectable: false,
             cellTemplate: this.editCell
           } as DatatableColumn<any>];
-          columns.push(...([...subjectCols, ...traitColsAcc] as [string, LeafNode][])
+          columns.push(...([...subjectCols, ...traitColsAcc] as GeneratedDatatableColumn[])
             .map(
-              ([prop, colType]) => {
-                switch (colType._tag) {
+              col => {
+                switch (col.node._tag) {
                   case 'enum':
                     return ({
-                      title: prop as string,
-                      prop: prop as string,
+                      title: col.label.join(' - '),
+                      prop: col.path.join('.'),
                       sortable: false,
                       cellTemplate: this.enumCell,
-                      variants: colType.variants
+                      variants: col.node.variants
                     } as DatatableColumn<any>);
                   case 'number':
                     return ({
-                      title: prop as string,
-                      prop: prop as string,
+                      title: col.label.join(' - '),
+                      prop: col.path.join('.'),
                       sortable: false,
                       cellTemplate: this.numberCell,
                     } as DatatableColumn<any>);
                   case 'boolean':
                     return ({
-                      title: prop as string,
-                      prop: prop as string,
+                      title: col.label.join(' - '),
+                      prop: col.path.join('.'),
                       sortable: false,
                       cellTemplate: this.booleanCell,
                     } as DatatableColumn<any>);
                   default:
                     return ({
-                      title: prop as string,
-                      prop: prop as string,
+                      title: col.label.join(' - '),
+                      prop: col.path.join('.'),
                       sortable: false,
                       cellTemplate: this.stringCell
                     } as DatatableColumn<any>);
