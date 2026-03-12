@@ -7,40 +7,45 @@ import { getNestedPropertyType, traverseType, generateDatatableColumns,
 
 const generateFilters = (cols: GeneratedDatatableColumn[]) => {
   const filters = {} as any;
-  cols.forEach(({ path, node: leaf }) => {
+  cols.forEach(({ path, node, label }) => {
     const prop = path.join('.');
     const formKey = prop.replace(/\./g, '');
-    if (leaf._tag === 'string') {
+    if (node._tag === 'string') {
       filters[formKey] = {
         prop,
+        label,
         filterType: 'string',
         defaultValue: null
       };
-    } else if (leaf._tag === 'number') {
+    } else if (node._tag === 'number') {
       filters[formKey] = {
         prop,
+        label,
         filterType: 'number',
         defaultValue: null
       };
-    } else if (leaf._tag === 'boolean') {
+    } else if (node._tag === 'boolean') {
       filters[formKey] = {
         prop,
+        label,
         filterType: 'boolean',
         defaultValue: null
       };
-    } else if (leaf._tag === 'array') {
+    } else if (node._tag === 'array') {
       filters[formKey] = {
         prop,
+        label,
         filterType: 'array',
         defaultValue: null,
-        elementType: leaf.elementType
+        elementType: node.elementType
       };
-    } else if (leaf._tag === 'enum') {
+    } else if (node._tag === 'enum') {
       filters[formKey] = {
         prop,
+        label,
         filterType: 'enum',
         defaultValue: null,
-        range: leaf.variants
+        range: node.variants
       };
     }
   });

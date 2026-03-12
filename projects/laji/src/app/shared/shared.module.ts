@@ -84,6 +84,7 @@ import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.modul
 import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 import { ExternalRedirectComponent } from './external-redirect/external-redirect.component';
 import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSessionStorage } from 'ngx-webstorage';
+import { JoinByPipe } from './pipe/join-by.pipe';
 
 @NgModule({
     declarations: [
@@ -127,7 +128,8 @@ import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSe
         IfWidthAboveBreakpointDirective,
         ImageModalVideoComponent,
         ImageModalModelComponent,
-        DisableWheelDirective
+        DisableWheelDirective,
+        JoinByPipe
     ],
     imports: [
         FormsModule,
@@ -181,6 +183,7 @@ import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSe
         PdfButtonComponent,
         IfWidthAboveBreakpointDirective,
         DisableWheelDirective,
+        JoinByPipe,
     ]
 })
 export class SharedModule {

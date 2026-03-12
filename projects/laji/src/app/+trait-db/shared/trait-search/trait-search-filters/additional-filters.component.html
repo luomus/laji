@@ -5,7 +5,7 @@
     <select class="form-control" id="trait-search-filters-additional-filter" (change)="onSelectAdditionalFilter($event)">
       <option [ngValue]="null"></option>
       @for (filterIdx of unselectedAdditionalFilters; track filterIdx) {
-        <option [value]="filterIdx">{{ additionalFilters[filterIdx].prop }}</option>
+        <option [value]="filterIdx">{{ additionalFilters[filterIdx].label ?? [""] | joinBy : " - " }}</option>
       }
     </select>
   </div>
@@ -27,23 +27,23 @@
     </ul>
   }
 </details>
-<ng-template #stringFilter let-prop let-formKey='formKey'>
+<ng-template #stringFilter let-prop let-formKey='formKey' let-filter='filter'>
   <div class="mb-2">
-    <label [for]="'trait-search-filters-' + formKey">{{ prop }}
+    <label [for]="'trait-search-filters-' + formKey">{{ filter.label ?? [""] | joinBy : " - " }}
       <input [formControl]="$any(form.get(formKey))" class="form-control" type="text" [id]="'trait-search-filters-' + formKey">
     </label>
   </div>
 </ng-template>
-<ng-template #numberFilter let-prop let-formKey='formKey'>
+<ng-template #numberFilter let-prop let-formKey='formKey' let-filter='filter'>
   <div class="mb-2">
-    <label [for]="'trait-search-filters-' + formKey">{{ prop }}
+    <label [for]="'trait-search-filters-' + formKey">{{ filter.label ?? [""] | joinBy : " - "  }}
       <input [formControl]="$any(form.get(formKey))" class="form-control" type="number" [id]="'trait-search-filters-' + formKey">
     </label>
   </div>
 </ng-template>
 <ng-template #arrayFilter let-prop let-formKey='formKey' let-filter='filter'>
   <div class="mb-2">
-    <label [for]="'trait-search-filters-' + formKey">{{ prop }}</label>
+    <label [for]="'trait-search-filters-' + formKey">{{ filter.label ?? [""] | joinBy : " - "  }}</label>
     @if (filter.elementType._tag === 'string') {
       <lu-form-primitive-list
         kind="string"
@@ -64,9 +64,9 @@
     }
   </div>
 </ng-template>
-<ng-template #enumFilter let-prop let-formKey='formKey'>
+<ng-template #enumFilter let-prop let-formKey='formKey' let-filter='filter'>
   <div class="mb-2">
-    <label [for]="'trait-search-filters-' + formKey">{{ prop }}
+    <label [for]="'trait-search-filters-' + formKey">{{ filter.label ?? [""] | joinBy : " - "  }}
       <select [formControl]="$any(form.get(formKey))" class="form-control" [id]="'trait-search-filters-' + formKey">
         <option [ngValue]="null"></option>
         @for (val of $any(additionalFiltersLookup)[formKey].range; track val) {
@@ -76,11 +76,11 @@
     </label>
   </div>
 </ng-template>
-<ng-template #booleanFilter let-prop let-formKey='formKey'>
+<ng-template #booleanFilter let-prop let-formKey='formKey' let-filter='filter'>
   <div class="mb-2">
     <label class="checkbox-inline" [for]="'trait-search-filters-' + formKey">
       <input type="checkbox" [id]="'trait-search-filters-' + formKey" [formControl]="$any(form.get(formKey))">
-      {{ prop }}
+      {{ filter.label ?? [""] | joinBy : " - "  }}
     </label>
   </div>
 </ng-template>

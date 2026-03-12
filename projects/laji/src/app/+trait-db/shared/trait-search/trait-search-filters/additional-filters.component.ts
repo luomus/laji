@@ -8,6 +8,7 @@ interface BaseFilter {
   // what this filter gets mapped to in the final search api query
   // eg. subject.basisOfRecord=<enum-value>
   prop: string;
+  label?: string[];
 }
 
 interface StringFilter extends BaseFilter {
