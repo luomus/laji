@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit,
+  SimpleChanges, ViewChild, TemplateRef,
+  AfterViewInit} from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
 import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs';
-import { Sort } from 'projects/laji-ui/src/lib/datatable/datatable.component';
+import { DatatableColumn, Sort } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 import { FormValue } from './trait-search-filters/trait-search-filters.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isObject } from '@luomus/laji-map/lib/utils';
@@ -104,10 +106,12 @@ const queryParamsToFormValue = (queryParams: QueryParams): FormValue => {
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class TraitSearchComponent implements OnInit, OnDestroy, OnChanges {
+export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   @Input() datasetId?: string;
 
-  columns = (cols as GeneratedDatatableColumn[]).map(col => ({ title: col.label.join(' - '), prop: col.path.join('.'), sortable: false }));
+  @ViewChild('enumCellTemplate') enumCellTemplate!: TemplateRef<any>;
+
+  columns?: DatatableColumn<any>[];
   initialFilters: FormValue | undefined;
   searchResult: SearchResult | undefined;
   pageSize = PAGE_SIZE;
@@ -193,6 +197,10 @@ export class TraitSearchComponent implements OnInit, OnDestroy, OnChanges {
     );
   }
 
+  ngAfterViewInit(): void {
+    this.columns = (cols as GeneratedDatatableColumn[]).map(col => this.generatedColToDatatableCol(col));
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
@@ -235,5 +243,23 @@ export class TraitSearchComponent implements OnInit, OnDestroy, OnChanges {
 
     this.queryParamChangeId = Math.random() * Number.MAX_SAFE_INTEGER;
     this.router.navigate([], { queryParams: q, state: { 'trait-search-ignore': this.queryParamChangeId } });
+  }
+
+  private generatedColToDatatableCol(col: GeneratedDatatableColumn): DatatableColumn<any> {
+    if (col.node._tag === 'enum') {
+      return {
+        title: col.label.join(' - '),
+        prop: col.path.join('.'),
+        sortable: false,
+        cellTemplate: this.enumCellTemplate,
+        variants: col.node.variants
+      } as DatatableColumn<any>;
+    } else {
+      return {
+        title: col.label.join(' - '),
+        prop: col.path.join('.'),
+        sortable: false
+      };
+    }
   }
 }

@@ -3,9 +3,14 @@ import ts from 'typescript';
 import fs from 'fs';
 import { getClassPropertiesFetcher, MetadataProperty } from './fetch-metadata';
 
+interface EnumVariant {
+  label: string;
+  value: string;
+}
+
 interface EnumNode {
   _tag: 'enum';
-  variants: string[];
+  variants: EnumVariant[];
 }
 
 interface ArrayNode {
@@ -57,6 +62,11 @@ export const getNestedPropertyType = (type: ts.Type, propertyPath: string[], che
   return currentType;
 };
 
+const initEnumVar = (val: string) => ({
+  label: val,
+  value: val
+} as EnumVariant);
+
 export const traverseType = (type: ts.Type, checker: ts.TypeChecker): TreeNode => {
   if (type.getFlags() & ts.TypeFlags.String) {
     return { _tag: 'string' } as StringNode;
@@ -67,7 +77,7 @@ export const traverseType = (type: ts.Type, checker: ts.TypeChecker): TreeNode =
   } else if (type.isUnion()) {
     return {
       _tag: 'enum',
-      variants: type.types.map(t => t.isStringLiteral() ? t.value : t.getFlags())
+      variants: type.types.map(t => initEnumVar(t.isStringLiteral() ? t.value : t.getFlags().toString()))
     } as EnumNode;
   } else if (type.isIntersection()) {
     console.warn('unimplemented intersection type');

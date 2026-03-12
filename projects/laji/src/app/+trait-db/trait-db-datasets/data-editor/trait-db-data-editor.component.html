@@ -30,8 +30,8 @@
   @if (row.get($any(col).prop); as control) {
     <select class="form-control" [formControl]="control">
       @for (option of col.variants; track option) {
-        <option [value]="option">
-          {{ option }}
+        <option [value]="option.value">
+          {{ (option.value | label) ?? option.label ?? option.value }}
         </option>
       }
     </select>

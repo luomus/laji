@@ -15,18 +15,20 @@
   </a>
 </div>
 
-<lu-datatable
-  [rows]="$any(searchResult?.res?.results) ?? []"
-  [columns]="columns"
-  [defaultColumns]="[0, 1, 2, 3, 4, 5, 6]"
-  [totalPages]="searchResult?.res?.total ?? 1"
-  [currentPageIdx]="currentPageIdx"
-  [loading]="loading"
-  [ghostCount]="pageSize"
-  [sorts]="searchResult?.sorts ?? []"
-  (pageChange)="onChangePageIdx($event)"
-  (sortChange)="onSort($event)"
-></lu-datatable>
+@if (columns) {
+  <lu-datatable
+    [rows]="$any(searchResult?.res?.results) ?? []"
+    [columns]="columns"
+    [defaultColumns]="[0, 1, 2, 3, 4, 5, 6]"
+    [totalPages]="searchResult?.res?.total ?? 1"
+    [currentPageIdx]="currentPageIdx"
+    [loading]="loading"
+    [ghostCount]="pageSize"
+    [sorts]="searchResult?.sorts ?? []"
+    (pageChange)="onChangePageIdx($event)"
+    (sortChange)="onSort($event)"
+  ></lu-datatable>
+}
 
 <ng-template #searchFilters>
   <laji-trait-search-filters
@@ -37,3 +39,8 @@
     (searchClicked)="onFilterSearchClicked()"
   ></laji-trait-search-filters>
 </ng-template>
+
+<ng-template #enumCellTemplate let-col="col" let-prop="prop">
+  {{ (prop | label) ?? col?.variants[prop]?.label ?? prop }}
+</ng-template>
+
