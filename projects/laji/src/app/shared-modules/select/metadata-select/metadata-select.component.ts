@@ -135,7 +135,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       switchMap(options => this.mapToWarehouse ? this.optionsToWarehouseID(options) : of(options)),
       map(options => this.labelAsValue ? options.map(o => ({...o, id: o.value})) : options),
       map(options => this.firstOptions?.length > 0 ? this.sortOptionsByAnotherList(options) : (
-        this._shouldSort ? options.sort((a, b) => a.value && b.value ? a.value.localeCompare(b.value) : 0) : options
+        this._shouldSort ? options.sort((a, b) => a.value && b.value ? a.value.localeCompare(b.value, 'fi') : 0) : options
       ))
     ).subscribe(options => {
         this.setOptions(options);
@@ -275,12 +275,12 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       const hasB = this.firstOptions.includes(b.id);
       if (hasA || hasB) {
         if (hasA && hasB) {
-          return a.value.localeCompare(b.value);
+          return a.value.localeCompare(b.value, 'fi');
         } else {
           return hasA ? -1 : 1;
         }
       }
-      return a.value.localeCompare(b.value);
+      return a.value.localeCompare(b.value, 'fi');
     });
   }
 
