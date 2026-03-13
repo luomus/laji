@@ -154,7 +154,7 @@ export class DatatableUtil {
     const labelObservables = [];
     for (const item of values) {
       labelObservables.push(
-        this.publicationService.getPublication(item, this.translate.getCurrentLang()).pipe(
+        this.publicationService.getPublication(item).pipe(
           map((res: Publication) => res && res.name ? res.name : item))
       );
     }

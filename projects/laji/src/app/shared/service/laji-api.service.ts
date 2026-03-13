@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Area } from '../model/Area';
-import { Checklist } from '../model/Checklist';
 import { PagedResult } from '../model/PagedResult';
 import { Source } from '../model/Source';
 import { Notification } from '../model/Notification';
@@ -24,7 +23,6 @@ export namespace LajiApi {
   export enum Endpoints {
     areas = 'areas',
     documentStats = 'documents/stats',
-    checklists = 'checklists',
     collections = 'collections',
     feedback = 'feedback',
     forms = 'forms',
@@ -72,29 +70,11 @@ export namespace LajiApi {
       idIn?: string;
     }
 
-    export interface ChecklistQuery extends Lang, Paged {
-      idIn?: string;
-    }
-
-    export interface CollectionQuery extends Lang, Paged {
-      idIn?: string;
-    }
-
     export interface DocumentStatsQuery extends PersonToken {
       namedPlace: string;
     }
 
     export type FeedbackQuery = PersonToken;
-
-    export interface FormsQuery extends Lang {
-      format: 'json';
-    }
-
-    export interface FormsSchemaQuery extends Lang {
-      format?: 'schema';
-    }
-
-    export interface FormsListQuery extends Lang, Paged { }
 
     export interface NotificationListQuery extends Paged, PersonToken {
       onlyUnSeen?: boolean;
@@ -147,15 +127,11 @@ export namespace LajiApi {
 
     export type AreaListResponse = PagedResult<Area>;
 
-    export type ChecklistListResponse = PagedResult<Checklist>;
-
     export type NewsListResponse = PagedResult<News>;
 
     export type NotificationListResponse = PagedResult<Notification>;
 
     export type SourceListResponse = PagedResult<Source>;
-
-    export type TaxonResponse = Taxon;
 
     export type ImageListResponse = PagedResult<Image>;
   }
@@ -168,7 +144,6 @@ export class LajiApiService {
   constructor(private httpClient: HttpClient) { }
 
   getList(endpoint: LajiApi.Endpoints.areas, query: LajiApi.Query.AreaQuery): Observable<LajiApi.Response.AreaListResponse>;
-  getList(endpoint: LajiApi.Endpoints.checklists, query: LajiApi.Query.ChecklistQuery): Observable<LajiApi.Response.ChecklistListResponse>;
   getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
   getList(endpoint: LajiApi.Endpoints.information, query: LajiApi.Query.InformationQuery): Observable<Information>;
   getList(endpoint: LajiApi.Endpoints.news, query: LajiApi.Query.NewsQuery): Observable<LajiApi.Response.NewsListResponse>;

@@ -32,6 +32,6 @@ export class ChecklistPipe extends AbstractLabelPipe implements PipeTransform {
 
   protected _parseValue(checklists: any): string {
     const item = this.key && checklists[this.key];
-    return item ? item.name : this.key!;
+    return item || this.key || '';
   }
 }
