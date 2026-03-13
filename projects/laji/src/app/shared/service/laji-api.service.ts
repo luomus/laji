@@ -11,7 +11,6 @@ import { Notification } from '../model/Notification';
 import { Information } from '../model/Information';
 import { Publication } from '../model/Publication';
 import { Feedback } from '../model/Feedback';
-import { News } from '../model/News';
 import { Image } from '../model/Image';
 import { Util } from './util.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
@@ -127,8 +126,6 @@ export namespace LajiApi {
 
     export type AreaListResponse = PagedResult<Area>;
 
-    export type NewsListResponse = PagedResult<News>;
-
     export type NotificationListResponse = PagedResult<Notification>;
 
     export type SourceListResponse = PagedResult<Source>;
@@ -146,7 +143,6 @@ export class LajiApiService {
   getList(endpoint: LajiApi.Endpoints.areas, query: LajiApi.Query.AreaQuery): Observable<LajiApi.Response.AreaListResponse>;
   getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
   getList(endpoint: LajiApi.Endpoints.information, query: LajiApi.Query.InformationQuery): Observable<Information>;
-  getList(endpoint: LajiApi.Endpoints.news, query: LajiApi.Query.NewsQuery): Observable<LajiApi.Response.NewsListResponse>;
   getList(endpoint: LajiApi.Endpoints.notifications, query: LajiApi.Query.NotificationListQuery): Observable<LajiApi.Response.NotificationListResponse>;
   getList(endpoint: LajiApi.Endpoints.sources, query: LajiApi.Query.SourceQuery): Observable<LajiApi.Response.SourceListResponse>;
   getList(endpoint: LajiApi.Endpoints.images, query: LajiApi.Query.ImageQuery): Observable<LajiApi.Response.ImageListResponse>;
@@ -157,7 +153,6 @@ export class LajiApiService {
   }
 
   get(endpoint: LajiApi.Endpoints.information, id: string, query?: LajiApi.Query.InformationQuery): Observable<Information>;
-  get(endpoint: LajiApi.Endpoints.news, id: string): Observable<News>;
   get(endpoint: LajiApi.Endpoints.publications, id: string, query: LajiApi.Query.PublicationQuery): Observable<Publication>;
   get(endpoint: LajiApi.Endpoints.taxon, id: string, query: LajiApi.Query.TaxaQuery): Observable<Taxon>;
   get<T>(endpoint: LajiApi.Endpoints, id: string, query: any = {}): Observable<T> {

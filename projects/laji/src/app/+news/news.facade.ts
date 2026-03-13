@@ -49,7 +49,7 @@ export class NewsFacade {
       this.listSub.unsubscribe();
     }
 
-    const newsRemote$ = this.newsService.getPage(lang, page).pipe(take(1));
+    const newsRemote$ = this.newsService.getPage(page).pipe(take(1));
     const newsGraph$ = this.homeDataService.getHomeData().pipe(
       map(data => data.news as PagedResult<News>),
       take(1),
