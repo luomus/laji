@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, In
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, switchMap, takeUntil } from 'rxjs';
 import { of, Subject } from 'rxjs';
-import { LajiApi, LajiApiService } from 'projects/laji/src/app/shared/service/laji-api.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';
@@ -28,7 +28,7 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
   @LocalStorage('globalMessageClosed', {}) globalMessageClosed: any;
 
   constructor(
-    private api: LajiApiService,
+    private api: LajiApiClientBService,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private translate: TranslateService,
@@ -46,7 +46,7 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
         const idsWithLang = Object.values(environment.globalMessageIds)[idx];
         this.currentMessageId = idsWithLang?.[<'fi' | 'sv' | 'en'>this.translate.getCurrentLang()];
         if (this.currentMessageId) {
-          return this.api.get(LajiApi.Endpoints.information, this.currentMessageId, {lang: this.translate.getCurrentLang()});
+          return this.api.get('/information/{id}', { path: { id: this.currentMessageId } });
         } else {
           return of(undefined);
         }

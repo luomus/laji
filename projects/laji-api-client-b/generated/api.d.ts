@@ -9169,6 +9169,7 @@ export interface components {
         FeaturedImage: {
             url: string;
             caption: string;
+            alt: string;
         };
         InformationChild: {
             title: string;
