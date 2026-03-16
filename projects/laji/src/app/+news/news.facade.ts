@@ -10,21 +10,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api';
 
-type Override<T, R> = Omit<T, keyof R> & R;
-type CorruptNews = components['schemas']['NewsDto'];
-export type News = Override<CorruptNews, {
-  featuredImage: any;
-  title: string;
-  content: string;
-  posted: string;
-  modified?: string;
-  tag: string;
-  author: string;
-}>;
-type CorruptPagedNews = components['schemas']['NewsPagedDto'];
-export type PagedNews = Override<CorruptPagedNews, {
-  results: News[];
-}>;
+export type News = components['schemas']['LajiBackendCMSNode'];
+export type PagedNews = components['schemas']['NewsPagedDto'];
 
 export interface INewsState {
   active: null|News;
