@@ -5,20 +5,35 @@ import {
   distinctUntilChanged,
   map, switchMap, take
 } from 'rxjs';
-import { News } from '../shared/model/News';
-import { PagedResult } from '../shared/model/PagedResult';
-import { NewsService } from '../shared/service/news.service';
 import { HomeDataService } from '../+home/home-data.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api';
+
+type Override<T, R> = Omit<T, keyof R> & R;
+type CorruptNews = components['schemas']['NewsDto'];
+export type News = Override<CorruptNews, {
+  featuredImage: any;
+  title: string;
+  content: string;
+  posted: string;
+  modified?: string;
+  tag: string;
+  author: string;
+}>;
+type CorruptPagedNews = components['schemas']['NewsPagedDto'];
+export type PagedNews = Override<CorruptPagedNews, {
+  results: News[];
+}>;
 
 export interface INewsState {
   active: null|News;
-  list: PagedResult<News>;
+  list: PagedNews;
 }
 
 let _state: INewsState = {
   active: null,
-  list: { results: [], currentPage: 0, total: 0, pageSize: 5, lastPage: 0 },
+  list: { results: [], currentPage: 0, total: 0, pageSize: 5, lastPage: 0, '@context': '' },
 };
 
 @Injectable({providedIn: 'root'})
@@ -33,7 +48,7 @@ export class NewsFacade {
   private currentSub?: Subscription;
 
   constructor(
-    private newsService: NewsService,
+    private api: LajiApiClientBService,
     private homeDataService: HomeDataService,
     private translate: TranslateService
   ) {}
@@ -49,16 +64,16 @@ export class NewsFacade {
       this.listSub.unsubscribe();
     }
 
-    const newsRemote$ = this.newsService.getPage(page).pipe(take(1));
+    const newsRemote$ = this.api.get('/news', { query: { page, pageSize: 5 } }).pipe(take(1));
     const newsGraph$ = this.homeDataService.getHomeData().pipe(
-      map(data => data.news as PagedResult<News>),
+      map(data => data.news as any as PagedNews),
       take(1),
       switchMap(news => news ? of(news) : newsRemote$)
     );
 
     this.listSub = (page === 1 ? newsGraph$ : newsRemote$).pipe(
       catchError(() => newsRemote$),
-      map(news => ({...news, results: (news.results || []).map(item => this.fixNews(item))}))
+      map(news => ({...news, results: (news.results || []).map(item => this.fixNews(item as unknown as News))}))
     ).subscribe(news => this.updateState({..._state, list: news}));
   }
 
@@ -71,7 +86,7 @@ export class NewsFacade {
     if (newsItem && newsItem.content) {
       this.updateActive(newsItem);
     } else {
-      this.currentSub = this.newsService.get(id).subscribe(news => this.updateActive(news));
+      this.currentSub = this.api.get('/news/{id}', { path: { id } }).subscribe(news => this.updateActive(news as unknown as News));
     }
   }
 
