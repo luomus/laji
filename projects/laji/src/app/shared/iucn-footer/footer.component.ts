@@ -4,7 +4,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../logger/logger.service';
-import { LajiApi, LajiApiService } from '../service/laji-api.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { filter, map } from 'rxjs';
 
 @Component({
@@ -32,7 +32,7 @@ export class IucnFooterComponent implements OnInit, OnDestroy {
   constructor(
     public footerService: FooterService,
     private router: Router,
-    private lajiApi: LajiApiService,
+    private api: LajiApiClientBService,
     private translate: TranslateService,
     private logger: Logger
   ) {
@@ -69,7 +69,7 @@ export class IucnFooterComponent implements OnInit, OnDestroy {
     if (!force && IucnFooterComponent.treeData) {
       return;
     }
-    this.lajiApi.get(LajiApi.Endpoints.information, 'index', {lang: this.translate.getCurrentLang()}).pipe(
+    this.api.get('/information/index').pipe(
       map(tree => tree.children || [])
     ).subscribe(
         tree => {
