@@ -5904,7 +5904,7 @@ export interface paths {
                      *     If field is given multiple time as parameter, at least one of the given values must match.
                      *     Example: subject.type=TDF.typeTaxon&trait.id=TDF.1&trait.id=TDF.2&subjectFinBIFTaxon.higherTaxa.kingdom=Animalia */
                     searchParams?: {
-                        [key: string]: string;
+                        [key: string]: string | undefined;
                     };
                 };
                 header?: never;
@@ -5969,7 +5969,7 @@ export interface paths {
                      *     If field is given multiple time as parameter, at least one of the given values must match.
                      *     Example: subject.type=TDF.typeTaxon&trait.id=TDF.1&trait.id=TDF.2&subjectFinBIFTaxon.higherTaxa.kingdom=Animalia */
                     searchParams?: {
-                        [key: string]: string;
+                        [key: string]: string | undefined;
                     };
                 };
                 header?: never;
@@ -6830,7 +6830,7 @@ export interface paths {
                      *     If field is given multiple time as parameter, at least one of the given values must match.
                      *     Example: subject.type=TDF.typeTaxon&traits.statisticalMethod=TDF.statisticalMethodSD&traits.statisticalMethod=TDF.statisticalMethodAvg */
                     searchParams?: {
-                        [key: string]: string;
+                        [key: string]: string | undefined;
                     };
                 };
                 header?: {
@@ -8936,13 +8936,13 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         Participant: {
-            id: string;
-            fullName: string;
-            emailAddress: string;
-            address: string;
-            lintuvaaraLoginName: string[];
-            lastDoc: string;
-            docCount: number;
+            id?: string;
+            fullName?: string;
+            emailAddress?: string;
+            address?: string;
+            lintuvaaraLoginName?: string[];
+            lastDoc?: string;
+            docCount?: number;
         };
         Person: {
             id: string;
@@ -9126,7 +9126,7 @@ export interface components {
             created: string;
         };
         ApiUserUpdateDto: {
-            systemID: string;
+            systemID?: string;
         };
         FileUploadResponse: {
             name: string;
@@ -9169,7 +9169,7 @@ export interface components {
         FeaturedImage: {
             url: string;
             caption: string;
-            alt: string;
+            alt?: string;
         };
         InformationChild: {
             title: string;
@@ -9257,19 +9257,18 @@ export interface components {
         CheckTmpTokenDto: {
             tmpToken: string;
         };
-        NewsDto: {
+        LajiBackendCMSNode: {
             id: string;
-            featuredImage: string;
-            external: boolean;
-            externalURL?: string;
-            title: string;
-            content: string;
-            posted: string;
+            content?: string;
+            title?: string;
+            author?: string;
+            posted?: string;
+            tags?: string[];
+            featuredImage?: components["schemas"]["FeaturedImage"];
             modified?: string;
-            tag: string;
         };
         NewsPagedDto: {
-            results: components["schemas"]["NewsDto"][];
+            results: components["schemas"]["LajiBackendCMSNode"][];
             currentPage: number;
             pageSize: number;
             total: number;
@@ -9279,1625 +9278,1625 @@ export interface components {
             "@context": string;
         };
         WarehouseDwQuery_CountResponse: {
-            total: number;
-            cacheTimestamp: number;
+            total?: number;
+            cacheTimestamp?: number;
         };
         WarehouseDwQuery_ListResponse: {
-            currentPage: number;
-            prevPage: number;
-            nextPage: number;
-            lastPage: number;
-            pageSize: number;
-            total: number;
-            results: components["schemas"]["WarehouseDwQuery_JoinedRow"][];
-            cacheTimestamp: number;
+            currentPage?: number;
+            prevPage?: number;
+            nextPage?: number;
+            lastPage?: number;
+            pageSize?: number;
+            total?: number;
+            results?: components["schemas"]["WarehouseDwQuery_JoinedRow"][];
+            cacheTimestamp?: number;
         };
         WarehouseDwQuery_AggregateResponse: {
-            currentPage: number;
-            prevPage: number;
-            nextPage: number;
-            lastPage: number;
-            pageSize: number;
-            total: number;
-            results: components["schemas"]["WarehouseDwQuery_AggregateRow"][];
-            cacheTimestamp: number;
+            currentPage?: number;
+            prevPage?: number;
+            nextPage?: number;
+            lastPage?: number;
+            pageSize?: number;
+            total?: number;
+            results?: components["schemas"]["WarehouseDwQuery_AggregateRow"][];
+            cacheTimestamp?: number;
         };
         WarehouseDwQuery_JoinedRow: {
-            document: components["schemas"]["WarehouseDwQuery_Document"];
-            gathering: components["schemas"]["WarehouseDwQuery_Gathering"];
-            unit: components["schemas"]["WarehouseDwQuery_Unit"];
-            annotation: components["schemas"]["WarehouseDwQuery_Annotation"];
-            media: components["schemas"]["WarehouseDwQuery_MediaObject"];
-            sample: components["schemas"]["WarehouseDwQuery_Sample"];
+            document?: components["schemas"]["WarehouseDwQuery_Document"];
+            gathering?: components["schemas"]["WarehouseDwQuery_Gathering"];
+            unit?: components["schemas"]["WarehouseDwQuery_Unit"];
+            annotation?: components["schemas"]["WarehouseDwQuery_Annotation"];
+            media?: components["schemas"]["WarehouseDwQuery_MediaObject"];
+            sample?: components["schemas"]["WarehouseDwQuery_Sample"];
         };
         WarehouseDwQuery_AggregateRow: {
-            count: number;
-            gatheringCount: number;
-            securedCount: number;
+            count?: number;
+            gatheringCount?: number;
+            securedCount?: number;
             /** Format: yyyy-MM-dd */
-            oldestRecord: string;
+            oldestRecord?: string;
             /** Format: yyyy-MM-dd */
-            newestRecord: string;
+            newestRecord?: string;
             /** Format: yyyy-MM-dd */
-            firstLoadDateMin: string;
+            firstLoadDateMin?: string;
             /** Format: yyyy-MM-dd */
-            firstLoadDateMax: string;
-            individualCountSum: number;
-            individualCountMax: number;
+            firstLoadDateMax?: string;
+            individualCountSum?: number;
+            individualCountMax?: number;
             /** Format: URI */
-            recordQualityMax: string;
+            recordQualityMax?: string;
             /** Format: URI */
-            redListStatusMax: string;
-            speciesCount: number;
-            taxonCount: number;
-            lineLengthSum: number;
-            pairCountSum: number;
-            pairCountMax: number;
+            redListStatusMax?: string;
+            speciesCount?: number;
+            taxonCount?: number;
+            lineLengthSum?: number;
+            pairCountSum?: number;
+            pairCountMax?: number;
             /** Format: URI */
-            atlasCodeMax: string;
+            atlasCodeMax?: string;
             /** Format: URI */
-            atlasClassMax: string;
-            aggregateBy: Record<string, never>;
+            atlasClassMax?: string;
+            aggregateBy?: Record<string, never>;
         };
         WarehouseDwQuery_Document: {
             /** Format: URI */
-            documentId: string;
+            documentId?: string;
             /** @enum {string} */
-            secureLevel: "NOSHOW" | "HIGHEST" | "KM100" | "KM50" | "KM25" | "KM10" | "KM5" | "KM1" | "NONE";
-            secureReasons: ("DEFAULT_TAXON_CONSERVATION" | "BREEDING_SITE_CONSERVATION" | "NATURA_AREA_CONSERVATION" | "WINTER_SEASON_TAXON_CONSERVATION" | "BREEDING_SEASON_TAXON_CONSERVATION" | "CUSTOM" | "USER_HIDDEN" | "ADMIN_HIDDEN" | "DATA_QUARANTINE_PERIOD" | "ONLY_PRIVATE" | "USER_PERSON_NAMES_HIDDEN" | "USER_HIDDEN_LOCATION" | "USER_HIDDEN_TIME")[];
-            partial: boolean;
+            secureLevel?: "NOSHOW" | "HIGHEST" | "KM100" | "KM50" | "KM25" | "KM10" | "KM5" | "KM1" | "NONE";
+            secureReasons?: ("DEFAULT_TAXON_CONSERVATION" | "BREEDING_SITE_CONSERVATION" | "NATURA_AREA_CONSERVATION" | "WINTER_SEASON_TAXON_CONSERVATION" | "BREEDING_SEASON_TAXON_CONSERVATION" | "CUSTOM" | "USER_HIDDEN" | "ADMIN_HIDDEN" | "DATA_QUARANTINE_PERIOD" | "ONLY_PRIVATE" | "USER_PERSON_NAMES_HIDDEN" | "USER_HIDDEN_LOCATION" | "USER_HIDDEN_TIME")[];
+            partial?: boolean;
             /** Format: URI */
-            collectionId: string;
-            licenseId: string;
-            dataSource: string;
-            linkings: components["schemas"]["WarehouseDwQuery_DocumentDWLinkings"];
-            quality: components["schemas"]["WarehouseDwQuery_DocumentQuality"];
+            collectionId?: string;
+            licenseId?: string;
+            dataSource?: string;
+            linkings?: components["schemas"]["WarehouseDwQuery_DocumentDWLinkings"];
+            quality?: components["schemas"]["WarehouseDwQuery_DocumentQuality"];
             /** Format: URI */
-            sourceId: string;
-            namedPlace: components["schemas"]["WarehouseDwQuery_NamedPlaceEntity"];
-            siteType: string;
-            siteStatus: string;
-            keywords: string[];
+            sourceId?: string;
+            namedPlace?: components["schemas"]["WarehouseDwQuery_NamedPlaceEntity"];
+            siteType?: string;
+            siteStatus?: string;
+            keywords?: string[];
             /** Format: yyyy-MM-dd */
-            firstLoadDate: string;
+            firstLoadDate?: string;
             /** Format: yyyy-MM-dd */
-            loadDate: string;
+            loadDate?: string;
             /** Format: yyyy-MM-dd */
-            createdDate: string;
+            createdDate?: string;
             /** Format: yyyy-MM-dd */
-            modifiedDate: string;
-            notes: string;
-            annotations: components["schemas"]["WarehouseDwQuery_Annotation"][];
-            completeListTaxonId: string;
-            completeListType: string;
-            editorUserIds: string[];
-            facts: components["schemas"]["WarehouseDwQuery_Fact"][];
-            formId: string;
-            media: components["schemas"]["WarehouseDwQuery_MediaObject"][];
-            mediaCount: number;
-            namedPlaceId: string;
-            prefix: string;
-            referenceURL: string;
-            secured: boolean;
-            siteDead: boolean;
-            sourceTags: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
+            modifiedDate?: string;
+            notes?: string;
+            annotations?: components["schemas"]["WarehouseDwQuery_Annotation"][];
+            completeListTaxonId?: string;
+            completeListType?: string;
+            editorUserIds?: string[];
+            facts?: components["schemas"]["WarehouseDwQuery_Fact"][];
+            formId?: string;
+            media?: components["schemas"]["WarehouseDwQuery_MediaObject"][];
+            mediaCount?: number;
+            namedPlaceId?: string;
+            prefix?: string;
+            referenceURL?: string;
+            secured?: boolean;
+            siteDead?: boolean;
+            sourceTags?: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
         };
         WarehouseDwQuery_Gathering: {
             /** Format: URI */
-            gatheringId: string;
-            gatheringOrder: number;
-            gatheringSection: number;
+            gatheringId?: string;
+            gatheringOrder?: number;
+            gatheringSection?: number;
             /** @description GeoJSON object with custom "crs" required property that takes in values WGS84,EUREF,YKJ (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
-            geo: Record<string, never>;
-            eventDate: components["schemas"]["WarehouseDwQuery_DateRange"];
-            hourBegin: number;
-            hourEnd: number;
-            displayDateTime: string;
-            team: string[];
-            conversions: components["schemas"]["WarehouseDwQuery_GatheringConversions"];
-            interpretations: components["schemas"]["WarehouseDwQuery_GatheringInterpretations"];
-            stateLand: boolean;
-            accurateArea: boolean;
-            higherGeography: string;
-            country: string;
-            municipality: string;
-            biogeographicalProvince: string;
-            province: string;
-            locality: string;
-            quality: components["schemas"]["WarehouseDwQuery_GatheringQuality"];
-            notes: string;
-            coordinatesVerbatim: string;
-            facts: components["schemas"]["WarehouseDwQuery_Fact"][];
-            linkings: components["schemas"]["WarehouseDwQuery_GatheringDWLinkings"];
-            media: components["schemas"]["WarehouseDwQuery_MediaObject"][];
-            mediaCount: number;
-            minutesBegin: number;
-            minutesEnd: number;
-            observerUserIds: string[];
-            taxonCensus: components["schemas"]["WarehouseDwQuery_TaxonCensus"][];
+            geo?: Record<string, never>;
+            eventDate?: components["schemas"]["WarehouseDwQuery_DateRange"];
+            hourBegin?: number;
+            hourEnd?: number;
+            displayDateTime?: string;
+            team?: string[];
+            conversions?: components["schemas"]["WarehouseDwQuery_GatheringConversions"];
+            interpretations?: components["schemas"]["WarehouseDwQuery_GatheringInterpretations"];
+            stateLand?: boolean;
+            accurateArea?: boolean;
+            higherGeography?: string;
+            country?: string;
+            municipality?: string;
+            biogeographicalProvince?: string;
+            province?: string;
+            locality?: string;
+            quality?: components["schemas"]["WarehouseDwQuery_GatheringQuality"];
+            notes?: string;
+            coordinatesVerbatim?: string;
+            facts?: components["schemas"]["WarehouseDwQuery_Fact"][];
+            linkings?: components["schemas"]["WarehouseDwQuery_GatheringDWLinkings"];
+            media?: components["schemas"]["WarehouseDwQuery_MediaObject"][];
+            mediaCount?: number;
+            minutesBegin?: number;
+            minutesEnd?: number;
+            observerUserIds?: string[];
+            taxonCensus?: components["schemas"]["WarehouseDwQuery_TaxonCensus"][];
         };
         WarehouseDwQuery_Unit: {
             /** Format: URI */
-            unitId: string;
-            unitOrder: number;
-            taxonVerbatim: string;
-            quality: components["schemas"]["WarehouseDwQuery_UnitQuality"];
+            unitId?: string;
+            unitOrder?: number;
+            taxonVerbatim?: string;
+            quality?: components["schemas"]["WarehouseDwQuery_UnitQuality"];
             /** @enum {string} */
-            reportedTaxonConfidence: "SURE" | "UNSURE" | "SUBSPECIES_UNSURE";
-            linkings: components["schemas"]["WarehouseDwQuery_UnitDWLinkings"];
-            abundanceString: string;
+            reportedTaxonConfidence?: "SURE" | "UNSURE" | "SUBSPECIES_UNSURE";
+            linkings?: components["schemas"]["WarehouseDwQuery_UnitDWLinkings"];
+            abundanceString?: string;
             /** @enum {string} */
-            abundanceUnit: "OCCURS_DOES_NOT_OCCUR" | "INDIVIDUAL_COUNT" | "PAIRCOUNT" | "NESTS" | "BREEDING_SITES" | "FEEDING_SITES" | "COLONIES" | "QUEENS" | "FRUITBODIES" | "SPROUTS" | "HUMMOCKS" | "THALLI" | "FLOWERS" | "SPOTS" | "TRUNKS" | "SHELLS" | "DROPPINGS" | "FEEDING_MARKS" | "INDIRECT_MARKS" | "SQUARE_DM" | "SQUARE_M" | "RELATIVE_DENSITY";
-            interpretations: components["schemas"]["WarehouseDwQuery_UnitInterpretations"];
+            abundanceUnit?: "OCCURS_DOES_NOT_OCCUR" | "INDIVIDUAL_COUNT" | "PAIRCOUNT" | "NESTS" | "BREEDING_SITES" | "FEEDING_SITES" | "COLONIES" | "QUEENS" | "FRUITBODIES" | "SPROUTS" | "HUMMOCKS" | "THALLI" | "FLOWERS" | "SPOTS" | "TRUNKS" | "SHELLS" | "DROPPINGS" | "FEEDING_MARKS" | "INDIRECT_MARKS" | "SQUARE_DM" | "SQUARE_M" | "RELATIVE_DENSITY";
+            interpretations?: components["schemas"]["WarehouseDwQuery_UnitInterpretations"];
             /** @enum {string} */
-            superRecordBasis: "PRESERVED_SPECIMEN" | "LIVING_SPECIMEN" | "FOSSIL_SPECIMEN" | "SUBFOSSIL_SPECIMEN" | "SUBFOSSIL_AMBER_INCLUSION_SPECIMEN" | "MICROBIAL_SPECIMEN" | "HUMAN_OBSERVATION_UNSPECIFIED" | "HUMAN_OBSERVATION_SEEN" | "HUMAN_OBSERVATION_HEARD" | "HUMAN_OBSERVATION_PHOTO" | "HUMAN_OBSERVATION_INDIRECT" | "HUMAN_OBSERVATION_HANDLED" | "HUMAN_OBSERVATION_VIDEO" | "HUMAN_OBSERVATION_RECORDED_AUDIO" | "MACHINE_OBSERVATION_UNSPECIFIED" | "MACHINE_OBSERVATION_PHOTO" | "MACHINE_OBSERVATION_VIDEO" | "MACHINE_OBSERVATION_AUDIO" | "MACHINE_OBSERVATION_GEOLOGGER" | "MACHINE_OBSERVATION_SATELLITE_TRANSMITTER" | "LITERATURE" | "MATERIAL_SAMPLE" | "MATERIAL_SAMPLE_AIR" | "MATERIAL_SAMPLE_SOIL" | "MATERIAL_SAMPLE_WATER";
+            superRecordBasis?: "PRESERVED_SPECIMEN" | "LIVING_SPECIMEN" | "FOSSIL_SPECIMEN" | "SUBFOSSIL_SPECIMEN" | "SUBFOSSIL_AMBER_INCLUSION_SPECIMEN" | "MICROBIAL_SPECIMEN" | "HUMAN_OBSERVATION_UNSPECIFIED" | "HUMAN_OBSERVATION_SEEN" | "HUMAN_OBSERVATION_HEARD" | "HUMAN_OBSERVATION_PHOTO" | "HUMAN_OBSERVATION_INDIRECT" | "HUMAN_OBSERVATION_HANDLED" | "HUMAN_OBSERVATION_VIDEO" | "HUMAN_OBSERVATION_RECORDED_AUDIO" | "MACHINE_OBSERVATION_UNSPECIFIED" | "MACHINE_OBSERVATION_PHOTO" | "MACHINE_OBSERVATION_VIDEO" | "MACHINE_OBSERVATION_AUDIO" | "MACHINE_OBSERVATION_GEOLOGGER" | "MACHINE_OBSERVATION_SATELLITE_TRANSMITTER" | "LITERATURE" | "MATERIAL_SAMPLE" | "MATERIAL_SAMPLE_AIR" | "MATERIAL_SAMPLE_SOIL" | "MATERIAL_SAMPLE_WATER";
             /** @enum {string} */
-            recordBasis: "PRESERVED_SPECIMEN" | "LIVING_SPECIMEN" | "FOSSIL_SPECIMEN" | "SUBFOSSIL_SPECIMEN" | "SUBFOSSIL_AMBER_INCLUSION_SPECIMEN" | "MICROBIAL_SPECIMEN" | "HUMAN_OBSERVATION_UNSPECIFIED" | "HUMAN_OBSERVATION_SEEN" | "HUMAN_OBSERVATION_HEARD" | "HUMAN_OBSERVATION_PHOTO" | "HUMAN_OBSERVATION_INDIRECT" | "HUMAN_OBSERVATION_HANDLED" | "HUMAN_OBSERVATION_VIDEO" | "HUMAN_OBSERVATION_RECORDED_AUDIO" | "MACHINE_OBSERVATION_UNSPECIFIED" | "MACHINE_OBSERVATION_PHOTO" | "MACHINE_OBSERVATION_VIDEO" | "MACHINE_OBSERVATION_AUDIO" | "MACHINE_OBSERVATION_GEOLOGGER" | "MACHINE_OBSERVATION_SATELLITE_TRANSMITTER" | "LITERATURE" | "MATERIAL_SAMPLE" | "MATERIAL_SAMPLE_AIR" | "MATERIAL_SAMPLE_SOIL" | "MATERIAL_SAMPLE_WATER";
-            typeSpecimen: boolean;
-            det: string;
+            recordBasis?: "PRESERVED_SPECIMEN" | "LIVING_SPECIMEN" | "FOSSIL_SPECIMEN" | "SUBFOSSIL_SPECIMEN" | "SUBFOSSIL_AMBER_INCLUSION_SPECIMEN" | "MICROBIAL_SPECIMEN" | "HUMAN_OBSERVATION_UNSPECIFIED" | "HUMAN_OBSERVATION_SEEN" | "HUMAN_OBSERVATION_HEARD" | "HUMAN_OBSERVATION_PHOTO" | "HUMAN_OBSERVATION_INDIRECT" | "HUMAN_OBSERVATION_HANDLED" | "HUMAN_OBSERVATION_VIDEO" | "HUMAN_OBSERVATION_RECORDED_AUDIO" | "MACHINE_OBSERVATION_UNSPECIFIED" | "MACHINE_OBSERVATION_PHOTO" | "MACHINE_OBSERVATION_VIDEO" | "MACHINE_OBSERVATION_AUDIO" | "MACHINE_OBSERVATION_GEOLOGGER" | "MACHINE_OBSERVATION_SATELLITE_TRANSMITTER" | "LITERATURE" | "MATERIAL_SAMPLE" | "MATERIAL_SAMPLE_AIR" | "MATERIAL_SAMPLE_SOIL" | "MATERIAL_SAMPLE_WATER";
+            typeSpecimen?: boolean;
+            det?: string;
             /** @enum {string} */
-            sex: "MALE" | "FEMALE" | "WORKER" | "UNKNOWN" | "NOT_APPLICABLE" | "GYNANDROMORPH" | "MULTIPLE" | "CONFLICTING";
+            sex?: "MALE" | "FEMALE" | "WORKER" | "UNKNOWN" | "NOT_APPLICABLE" | "GYNANDROMORPH" | "MULTIPLE" | "CONFLICTING";
             /** @enum {string} */
-            lifeStage: "ADULT" | "JUVENILE" | "IMMATURE" | "EGG" | "TADPOLE" | "PUPA" | "NYMPH" | "SUBIMAGO" | "LARVA" | "SNAG" | "EMBRYO" | "SUBADULT" | "MATURE" | "STERILE" | "FERTILE" | "SPROUT" | "DEAD_SPROUT" | "BUD" | "FLOWER" | "WITHERED_FLOWER" | "SEED" | "RIPENING_FRUIT" | "RIPE_FRUIT" | "SUBTERRANEAN" | "GALL" | "MARKS" | "TRIUNGULIN";
-            wild: boolean;
-            alive: boolean;
-            local: boolean;
-            keywords: string[];
-            breedingSite: boolean;
-            plantStatusCode: string;
-            atlasCode: string;
-            atlasClass: string;
-            individualId: string;
-            sequenceText: string;
-            notes: string;
-            annotationCount: number;
-            annotations: components["schemas"]["WarehouseDwQuery_Annotation"][];
-            audioCount: number;
-            author: string;
-            externalMediaCount: number;
-            facts: components["schemas"]["WarehouseDwQuery_Fact"][];
-            identificationBasis: string[];
-            identifications: components["schemas"]["WarehouseDwQuery_IdentificationEvent"][];
-            imageCount: number;
-            individualCountFemale: number;
-            individualCountMale: number;
-            media: components["schemas"]["WarehouseDwQuery_MediaObject"][];
-            mediaCount: number;
-            modelCount: number;
-            primarySpecimen: boolean;
+            lifeStage?: "ADULT" | "JUVENILE" | "IMMATURE" | "EGG" | "TADPOLE" | "PUPA" | "NYMPH" | "SUBIMAGO" | "LARVA" | "SNAG" | "EMBRYO" | "SUBADULT" | "MATURE" | "STERILE" | "FERTILE" | "SPROUT" | "DEAD_SPROUT" | "BUD" | "FLOWER" | "WITHERED_FLOWER" | "SEED" | "RIPENING_FRUIT" | "RIPE_FRUIT" | "SUBTERRANEAN" | "GALL" | "MARKS" | "TRIUNGULIN";
+            wild?: boolean;
+            alive?: boolean;
+            local?: boolean;
+            keywords?: string[];
+            breedingSite?: boolean;
+            plantStatusCode?: string;
+            atlasCode?: string;
+            atlasClass?: string;
+            individualId?: string;
+            sequenceText?: string;
+            notes?: string;
+            annotationCount?: number;
+            annotations?: components["schemas"]["WarehouseDwQuery_Annotation"][];
+            audioCount?: number;
+            author?: string;
+            externalMediaCount?: number;
+            facts?: components["schemas"]["WarehouseDwQuery_Fact"][];
+            identificationBasis?: string[];
+            identifications?: components["schemas"]["WarehouseDwQuery_IdentificationEvent"][];
+            imageCount?: number;
+            individualCountFemale?: number;
+            individualCountMale?: number;
+            media?: components["schemas"]["WarehouseDwQuery_MediaObject"][];
+            mediaCount?: number;
+            modelCount?: number;
+            primarySpecimen?: boolean;
             /** Format: URI */
-            reportedInformalTaxonGroup: string;
+            reportedInformalTaxonGroup?: string;
             /** Format: URI */
-            reportedTaxonId: string;
-            sampleCount: number;
-            samples: components["schemas"]["WarehouseDwQuery_Sample"][];
-            samplingMethod: string;
-            sourceTags: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
-            types: components["schemas"]["WarehouseDwQuery_TypeSpecimen"][];
-            videoCount: number;
+            reportedTaxonId?: string;
+            sampleCount?: number;
+            samples?: components["schemas"]["WarehouseDwQuery_Sample"][];
+            samplingMethod?: string;
+            sourceTags?: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
+            types?: components["schemas"]["WarehouseDwQuery_TypeSpecimen"][];
+            videoCount?: number;
         };
         WarehouseDwQuery_Sample: {
-            notes: string;
+            notes?: string;
             /** Format: URI */
-            collectionId: string;
-            facts: components["schemas"]["WarehouseDwQuery_Fact"][];
-            keywords: string[];
-            material: string;
-            multiple: boolean;
-            quality: string;
+            collectionId?: string;
+            facts?: components["schemas"]["WarehouseDwQuery_Fact"][];
+            keywords?: string[];
+            material?: string;
+            multiple?: boolean;
+            quality?: string;
             /** Format: URI */
-            sampleId: string;
-            sampleOrder: number;
-            status: string;
-            type: string;
+            sampleId?: string;
+            sampleOrder?: number;
+            status?: string;
+            type?: string;
         };
         WarehouseDwQuery_MediaObject: {
-            author: string;
-            caption: string;
-            copyrightOwner: string;
-            fullResolutionMediaAvailable: boolean;
-            fullURL: string;
-            highDetailModelURL: string;
-            licenseId: string;
-            lowDetailModelURL: string;
+            author?: string;
+            caption?: string;
+            copyrightOwner?: string;
+            fullResolutionMediaAvailable?: boolean;
+            fullURL?: string;
+            highDetailModelURL?: string;
+            licenseId?: string;
+            lowDetailModelURL?: string;
             /** @enum {string} */
-            mediaType: "IMAGE" | "AUDIO" | "VIDEO" | "MODEL";
-            mp3URL: string;
-            squareThumbnailURL: string;
-            thumbnailURL: string;
+            mediaType?: "IMAGE" | "AUDIO" | "VIDEO" | "MODEL";
+            mp3URL?: string;
+            squareThumbnailURL?: string;
+            thumbnailURL?: string;
             /** Format: URI */
-            type: string;
-            videoURL: string;
-            wavURL: string;
+            type?: string;
+            videoURL?: string;
+            wavURL?: string;
         };
         WarehouseDwQuery_Coordinates: {
-            latMax: number;
-            latMin: number;
-            lonMax: number;
-            lonMin: number;
+            latMax?: number;
+            latMin?: number;
+            lonMax?: number;
+            lonMin?: number;
         };
         WarehouseDwQuery_DateRange: {
             /** Format: yyyy-MM-dd */
-            begin: string;
+            begin?: string;
             /** Format: yyyy-MM-dd */
-            end: string;
+            end?: string;
         };
         WarehouseDwQuery_Fact: {
-            fact: string;
-            value: string;
-            integerValue: number;
-            decimalValue: number;
+            fact?: string;
+            value?: string;
+            integerValue?: number;
+            decimalValue?: number;
         };
         WarehouseDwQuery_TaxonCensus: {
             /** Format: URI */
-            taxonId: string;
+            taxonId?: string;
             /** Format: URI */
-            type: string;
+            type?: string;
         };
         WarehouseDwQuery_DocumentQuality: {
-            issue: components["schemas"]["WarehouseDwQuery_Quality"];
+            issue?: components["schemas"]["WarehouseDwQuery_Quality"];
         };
         WarehouseDwQuery_GatheringQuality: {
-            issue: components["schemas"]["WarehouseDwQuery_Quality"];
-            locationIssue: components["schemas"]["WarehouseDwQuery_Quality"];
-            timeIssue: components["schemas"]["WarehouseDwQuery_Quality"];
+            issue?: components["schemas"]["WarehouseDwQuery_Quality"];
+            locationIssue?: components["schemas"]["WarehouseDwQuery_Quality"];
+            timeIssue?: components["schemas"]["WarehouseDwQuery_Quality"];
         };
         WarehouseDwQuery_UnitQuality: {
-            documentGatheringUnitQualityIssues: boolean;
-            issue: components["schemas"]["WarehouseDwQuery_Quality"];
+            documentGatheringUnitQualityIssues?: boolean;
+            issue?: components["schemas"]["WarehouseDwQuery_Quality"];
         };
         WarehouseDwQuery_Quality: {
             /** @enum {string} */
-            issue: "REPORTED_UNRELIABLE" | "MEDIA_ISSUE" | "INVALID_CREATED_DATE" | "INVALID_MODIFIED_DATE" | "COORDINATES_COUNTRY_MISMATCH" | "COORDINATES_MUNICIPALITY_MISMATCH" | "TOO_LARGE_AREA" | "INVALID_GEO" | "INVALID_YKJ_COORDINATES" | "INVALID_EUREF_COORDINATES" | "INVALID_WGS84_COORDINATES" | "DATE_END_BEFORE_BEGIN" | "DATE_END_GIVEN_WITHOUT_BEGIN" | "DATE_IN_FUTURE" | "DATE_TOO_FAR_IN_THE_PAST" | "INVALID_DATE" | "RECORD_BASIS_MISSING" | "INVALID_HOUR" | "INVALID_MINUTE" | "TIME_END_BEFORE_BEGIN" | "INVALID_COORDINATES" | "ETL_ISSUE";
-            message: string;
+            issue?: "REPORTED_UNRELIABLE" | "MEDIA_ISSUE" | "INVALID_CREATED_DATE" | "INVALID_MODIFIED_DATE" | "COORDINATES_COUNTRY_MISMATCH" | "COORDINATES_MUNICIPALITY_MISMATCH" | "TOO_LARGE_AREA" | "INVALID_GEO" | "INVALID_YKJ_COORDINATES" | "INVALID_EUREF_COORDINATES" | "INVALID_WGS84_COORDINATES" | "DATE_END_BEFORE_BEGIN" | "DATE_END_GIVEN_WITHOUT_BEGIN" | "DATE_IN_FUTURE" | "DATE_TOO_FAR_IN_THE_PAST" | "INVALID_DATE" | "RECORD_BASIS_MISSING" | "INVALID_HOUR" | "INVALID_MINUTE" | "TIME_END_BEFORE_BEGIN" | "INVALID_COORDINATES" | "ETL_ISSUE";
+            message?: string;
             /** @enum {string} */
-            source: "AUTOMATED_FINBIF_VALIDATION" | "ORIGINAL_DOCUMENT" | "QUALITY_CONTROL";
+            source?: "AUTOMATED_FINBIF_VALIDATION" | "ORIGINAL_DOCUMENT" | "QUALITY_CONTROL";
         };
         WarehouseDwQuery_IdentificationEvent: {
-            notes: string;
-            author: string;
-            det: string;
-            detDate: string;
-            facts: components["schemas"]["WarehouseDwQuery_Fact"][];
+            notes?: string;
+            author?: string;
+            det?: string;
+            detDate?: string;
+            facts?: components["schemas"]["WarehouseDwQuery_Fact"][];
             /** Format: URI */
-            id: string;
-            linkings: components["schemas"]["WarehouseDwQuery_IdentificationDwLinkings"];
-            preferred: boolean;
-            taxon: string;
+            id?: string;
+            linkings?: components["schemas"]["WarehouseDwQuery_IdentificationDwLinkings"];
+            preferred?: boolean;
+            taxon?: string;
             /** Format: URI */
-            taxonID: string;
-            taxonSpecifier: string;
-            taxonSpecifierAuthor: string;
+            taxonID?: string;
+            taxonSpecifier?: string;
+            taxonSpecifierAuthor?: string;
         };
         WarehouseDwQuery_TypeSpecimen: {
-            notes: string;
-            author: string;
-            basionymePublication: string;
-            facts: components["schemas"]["WarehouseDwQuery_Fact"][];
+            notes?: string;
+            author?: string;
+            basionymePublication?: string;
+            facts?: components["schemas"]["WarehouseDwQuery_Fact"][];
             /** Format: URI */
-            id: string;
-            linkings: components["schemas"]["WarehouseDwQuery_IdentificationDwLinkings"];
-            publication: string;
+            id?: string;
+            linkings?: components["schemas"]["WarehouseDwQuery_IdentificationDwLinkings"];
+            publication?: string;
             /** Format: URI */
-            status: string;
-            taxon: string;
+            status?: string;
+            taxon?: string;
             /** Format: URI */
-            taxonID: string;
-            taxonSpecifier: string;
-            taxonSpecifierAuthor: string;
-            typif: string;
-            typifDate: string;
+            taxonID?: string;
+            taxonSpecifier?: string;
+            taxonSpecifierAuthor?: string;
+            typif?: string;
+            typifDate?: string;
             /** Format: URI */
-            verification: string;
+            verification?: string;
         };
         WarehouseDwQuery_DocumentDWLinkings: {
             /** @enum {string} */
-            collectionQuality: "PROFESSIONAL" | "HOBBYIST" | "AMATEUR";
-            editors: components["schemas"]["WarehouseDwQuery_Person"][];
+            collectionQuality?: "PROFESSIONAL" | "HOBBYIST" | "AMATEUR";
+            editors?: components["schemas"]["WarehouseDwQuery_Person"][];
         };
         WarehouseDwQuery_GatheringInterpretations: {
             /** Format: URI */
-            biogeographicalProvince: string;
-            biogeographicalProvinceDisplayname: string;
-            biogeographicalProvinces: string[];
-            coordinateAccuracy: number;
+            biogeographicalProvince?: string;
+            biogeographicalProvinceDisplayname?: string;
+            biogeographicalProvinces?: string[];
+            coordinateAccuracy?: number;
             /** Format: URI */
-            country: string;
-            countryDisplayname: string;
-            finnishMunicipalities: string[];
+            country?: string;
+            countryDisplayname?: string;
+            finnishMunicipalities?: string[];
             /** Format: URI */
-            finnishMunicipality: string;
-            municipalityDisplayname: string;
+            finnishMunicipality?: string;
+            municipalityDisplayname?: string;
             /** @enum {string} */
-            sourceOfBiogeographicalProvince: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
+            sourceOfBiogeographicalProvince?: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
             /** @enum {string} */
-            sourceOfCoordinates: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
+            sourceOfCoordinates?: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
             /** @enum {string} */
-            sourceOfCountry: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
+            sourceOfCountry?: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
             /** @enum {string} */
-            sourceOfFinnishMunicipality: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
+            sourceOfFinnishMunicipality?: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
         };
         WarehouseDwQuery_GatheringConversions: {
             /** Format: URI */
-            birdAssociationArea: string;
-            boundingBoxAreaInSquareMeters: number;
-            century: number;
-            day: number;
-            dayOfYearBegin: number;
-            dayOfYearEnd: number;
-            decade: number;
-            euref: components["schemas"]["WarehouseDwQuery_Coordinates"];
-            eurefCenterPoint: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            birdAssociationArea?: string;
+            boundingBoxAreaInSquareMeters?: number;
+            century?: number;
+            day?: number;
+            dayOfYearBegin?: number;
+            dayOfYearEnd?: number;
+            decade?: number;
+            euref?: components["schemas"]["WarehouseDwQuery_Coordinates"];
+            eurefCenterPoint?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
             /** @description GeoJSON object with custom "crs" required property that takes in values WGS84,EUREF,YKJ (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
-            eurefGeo: Record<string, never>;
-            eurefWKT: string;
-            linelengthInMeters: number;
-            month: number;
-            seasonBegin: number;
-            seasonEnd: number;
-            wgs84: components["schemas"]["WarehouseDwQuery_Coordinates"];
-            wgs84CenterPoint: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            eurefGeo?: Record<string, never>;
+            eurefWKT?: string;
+            linelengthInMeters?: number;
+            month?: number;
+            seasonBegin?: number;
+            seasonEnd?: number;
+            wgs84?: components["schemas"]["WarehouseDwQuery_Coordinates"];
+            wgs84CenterPoint?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
             /** @description GeoJSON object with custom "crs" required property that takes in values WGS84,EUREF,YKJ (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
-            wgs84Geo: Record<string, never>;
-            wgs84Grid005: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
-            wgs84Grid01: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
-            wgs84Grid05: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
-            wgs84Grid1: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
-            wgs84WKT: string;
-            year: number;
-            ykj: components["schemas"]["WarehouseDwQuery_Coordinates"];
-            ykj100km: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
-            ykj100kmCenter: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
-            ykj10km: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
-            ykj10kmCenter: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
-            ykj1km: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
-            ykj1kmCenter: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
-            ykj50km: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
-            ykj50kmCenter: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            wgs84Geo?: Record<string, never>;
+            wgs84Grid005?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            wgs84Grid01?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            wgs84Grid05?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            wgs84Grid1?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            wgs84WKT?: string;
+            year?: number;
+            ykj?: components["schemas"]["WarehouseDwQuery_Coordinates"];
+            ykj100km?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            ykj100kmCenter?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            ykj10km?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            ykj10kmCenter?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            ykj1km?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            ykj1kmCenter?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            ykj50km?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            ykj50kmCenter?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
             /** @description GeoJSON object with custom "crs" required property that takes in values WGS84,EUREF,YKJ (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
-            ykjGeo: Record<string, never>;
-            ykjWKT: string;
+            ykjGeo?: Record<string, never>;
+            ykjWKT?: string;
         };
         WarehouseDwQuery_GatheringDWLinkings: {
-            observers: components["schemas"]["WarehouseDwQuery_Person"][];
+            observers?: components["schemas"]["WarehouseDwQuery_Person"][];
         };
         WarehouseDwQuery_UnitDWLinkings: {
-            taxon: components["schemas"]["WarehouseDwQuery_Taxon"];
-            originalTaxon: components["schemas"]["WarehouseDwQuery_Taxon"];
+            taxon?: components["schemas"]["WarehouseDwQuery_Taxon"];
+            originalTaxon?: components["schemas"]["WarehouseDwQuery_Taxon"];
         };
         WarehouseDwQuery_UnitInterpretations: {
             /** Format: URI */
-            annotatedTaxonId: string;
-            collectionAndRecordQuality: string;
-            det: string;
-            effectiveTags: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
-            individualCount: number;
+            annotatedTaxonId?: string;
+            collectionAndRecordQuality?: string;
+            det?: string;
+            effectiveTags?: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
+            individualCount?: number;
             /** @enum {string} */
-            invasiveControlEffectiveness: "FULL" | "PARTIAL" | "NO_EFFECT" | "NOT_FOUND";
-            invasiveControlled: boolean;
-            needsCheck: boolean;
-            needsIdentification: boolean;
-            pairCount: number;
+            invasiveControlEffectiveness?: "FULL" | "PARTIAL" | "NO_EFFECT" | "NOT_FOUND";
+            invasiveControlled?: boolean;
+            needsCheck?: boolean;
+            needsIdentification?: boolean;
+            pairCount?: number;
             /** @enum {string} */
-            recordQuality: "EXPERT_VERIFIED" | "COMMUNITY_VERIFIED" | "NEUTRAL" | "UNCERTAIN" | "ERRONEOUS";
-            recordQualityNumeric: number;
+            recordQuality?: "EXPERT_VERIFIED" | "COMMUNITY_VERIFIED" | "NEUTRAL" | "UNCERTAIN" | "ERRONEOUS";
+            recordQualityNumeric?: number;
             /** @enum {string} */
-            reliability: "RELIABLE" | "UNDEFINED" | "UNRELIABLE";
+            reliability?: "RELIABLE" | "UNDEFINED" | "UNRELIABLE";
         };
         WarehouseDwQuery_SingleCoordinates: {
-            lat: number;
-            lon: number;
+            lat?: number;
+            lon?: number;
         };
         WarehouseDwQuery_Person: {
-            fullName: string;
+            fullName?: string;
             /** Format: URI */
-            id: string;
-            userId: string;
+            id?: string;
+            userId?: string;
         };
         WarehouseDwQuery_Annotation: {
-            addedTags: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
+            addedTags?: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
             /** Format: URI */
-            annotationByPerson: string;
-            annotationByPersonName: string;
+            annotationByPerson?: string;
+            annotationByPersonName?: string;
             /** Format: URI */
-            annotationBySystem: string;
-            annotationBySystemName: string;
+            annotationBySystem?: string;
+            annotationBySystemName?: string;
             /** Format: URI */
-            atlasCode: string;
+            atlasCode?: string;
             /** Format: URI */
-            byRole: string;
-            created: string;
-            deleted: boolean;
+            byRole?: string;
+            created?: string;
+            deleted?: boolean;
             /** Format: URI */
-            deletedByPerson: string;
-            deletedByPersonName: string;
-            deletedDateTime: string;
+            deletedByPerson?: string;
+            deletedByPersonName?: string;
+            deletedDateTime?: string;
             /** Format: URI */
-            id: string;
-            identification: components["schemas"]["WarehouseDwQuery_Identification"];
-            notes: string;
-            occurrenceAtTimeOfAnnotation: components["schemas"]["WarehouseDwQuery_OccurrenceAtTimeOfAnnotation"];
-            removedTags: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
-            valid: boolean;
+            id?: string;
+            identification?: components["schemas"]["WarehouseDwQuery_Identification"];
+            notes?: string;
+            occurrenceAtTimeOfAnnotation?: components["schemas"]["WarehouseDwQuery_OccurrenceAtTimeOfAnnotation"];
+            removedTags?: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
+            valid?: boolean;
         };
         WarehouseDwQuery_Identification: {
-            notes: string;
-            author: string;
-            facts: components["schemas"]["WarehouseDwQuery_Fact"][];
+            notes?: string;
+            author?: string;
+            facts?: components["schemas"]["WarehouseDwQuery_Fact"][];
             /** Format: URI */
-            id: string;
-            linkings: components["schemas"]["WarehouseDwQuery_IdentificationDwLinkings"];
-            taxon: string;
+            id?: string;
+            linkings?: components["schemas"]["WarehouseDwQuery_IdentificationDwLinkings"];
+            taxon?: string;
             /** Format: URI */
-            taxonID: string;
-            taxonSpecifier: string;
-            taxonSpecifierAuthor: string;
+            taxonID?: string;
+            taxonSpecifier?: string;
+            taxonSpecifierAuthor?: string;
         };
         WarehouseDwQuery_OccurrenceAtTimeOfAnnotation: {
-            countryVerbatim: string;
+            countryVerbatim?: string;
             /** Format: yyyy-MM-dd */
-            dateBegin: string;
+            dateBegin?: string;
             /** Format: yyyy-MM-dd */
-            dateEnd: string;
-            linkings: components["schemas"]["WarehouseDwQuery_IdentificationDwLinkings"];
-            locality: string;
-            municipalityVerbatim: string;
+            dateEnd?: string;
+            linkings?: components["schemas"]["WarehouseDwQuery_IdentificationDwLinkings"];
+            locality?: string;
+            municipalityVerbatim?: string;
             /** Format: URI */
-            taxonId: string;
-            taxonVerbatim: string;
-            wgs84centerPointLat: number;
-            wgs84centerPointLon: number;
+            taxonId?: string;
+            taxonVerbatim?: string;
+            wgs84centerPointLat?: number;
+            wgs84centerPointLon?: number;
         };
         WarehouseDwQuery_IdentificationDwLinkings: {
-            taxon: components["schemas"]["WarehouseDwQuery_Taxon"];
+            taxon?: components["schemas"]["WarehouseDwQuery_Taxon"];
         };
         WarehouseDwQuery_RedListStatus: {
             /** Format: URI */
-            status: string;
-            year: number;
+            status?: string;
+            year?: number;
         };
         WarehouseDwQuery_HabitatObject: {
             /** Format: URI */
-            habitat: string;
-            habitatSpecificTypes: string[];
+            habitat?: string;
+            habitatSpecificTypes?: string[];
             /** Format: URI */
-            id: string;
-            order: number;
+            id?: string;
+            order?: number;
         };
         WarehouseDwQuery_NamedPlaceEntity: {
-            alternativeId: string;
-            alternativeIds: string;
-            birdAssociationAreaDisplayName: string;
-            birdAssociationAreaId: string;
-            collectionId: string;
-            id: string;
-            municipalityDisplayName: string;
-            municipalityId: string;
-            name: string;
-            tags: string[];
-            wgs84CenterPoint: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
-            ykj10km: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            alternativeId?: string;
+            alternativeIds?: string;
+            birdAssociationAreaDisplayName?: string;
+            birdAssociationAreaId?: string;
+            collectionId?: string;
+            id?: string;
+            municipalityDisplayName?: string;
+            municipalityId?: string;
+            name?: string;
+            tags?: string[];
+            wgs84CenterPoint?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
+            ykj10km?: components["schemas"]["WarehouseDwQuery_SingleCoordinates"];
         };
         WarehouseDwETL_DwRoot: {
             /** Format: URI */
-            documentId: string;
+            documentId?: string;
             /** Format: URI */
-            sourceId: string;
+            sourceId?: string;
             /** Format: URI */
-            collectionId: string;
-            publicDocument: components["schemas"]["WarehouseDwETL_Document"];
-            privateDocument: components["schemas"]["WarehouseDwETL_Document"];
-            deleteRequest: boolean;
+            collectionId?: string;
+            publicDocument?: components["schemas"]["WarehouseDwETL_Document"];
+            privateDocument?: components["schemas"]["WarehouseDwETL_Document"];
+            deleteRequest?: boolean;
         };
         WarehouseDwETL_Document: {
             /** Format: URI */
-            documentId: string;
+            documentId?: string;
             /** @enum {string} */
-            secureLevel: "NOSHOW" | "HIGHEST" | "KM100" | "KM50" | "KM25" | "KM10" | "KM5" | "KM1" | "NONE";
-            secureReasons: ("DEFAULT_TAXON_CONSERVATION" | "BREEDING_SITE_CONSERVATION" | "NATURA_AREA_CONSERVATION" | "WINTER_SEASON_TAXON_CONSERVATION" | "BREEDING_SEASON_TAXON_CONSERVATION" | "CUSTOM" | "USER_HIDDEN" | "ADMIN_HIDDEN" | "DATA_QUARANTINE_PERIOD" | "ONLY_PRIVATE" | "USER_PERSON_NAMES_HIDDEN" | "USER_HIDDEN_LOCATION" | "USER_HIDDEN_TIME")[];
+            secureLevel?: "NOSHOW" | "HIGHEST" | "KM100" | "KM50" | "KM25" | "KM10" | "KM5" | "KM1" | "NONE";
+            secureReasons?: ("DEFAULT_TAXON_CONSERVATION" | "BREEDING_SITE_CONSERVATION" | "NATURA_AREA_CONSERVATION" | "WINTER_SEASON_TAXON_CONSERVATION" | "BREEDING_SEASON_TAXON_CONSERVATION" | "CUSTOM" | "USER_HIDDEN" | "ADMIN_HIDDEN" | "DATA_QUARANTINE_PERIOD" | "ONLY_PRIVATE" | "USER_PERSON_NAMES_HIDDEN" | "USER_HIDDEN_LOCATION" | "USER_HIDDEN_TIME")[];
             /** Format: URI */
-            collectionId: string;
-            licenseId: string;
-            dataSource: string;
-            quality: components["schemas"]["WarehouseDwETL_DocumentQuality"];
+            collectionId?: string;
+            licenseId?: string;
+            dataSource?: string;
+            quality?: components["schemas"]["WarehouseDwETL_DocumentQuality"];
             /** Format: URI */
-            sourceId: string;
-            siteType: string;
-            siteStatus: string;
-            keywords: string[];
+            sourceId?: string;
+            siteType?: string;
+            siteStatus?: string;
+            keywords?: string[];
             /** Format: yyyy-MM-dd */
-            createdDate: string;
+            createdDate?: string;
             /** Format: yyyy-MM-dd */
-            modifiedDate: string;
-            notes: string;
-            completeListTaxonId: string;
-            completeListType: string;
+            modifiedDate?: string;
+            notes?: string;
+            completeListTaxonId?: string;
+            completeListType?: string;
             /** @enum {string} */
-            concealment: "PUBLIC" | "PRIVATE";
-            deleted: boolean;
-            editorUserIds: string[];
-            facts: components["schemas"]["WarehouseDwETL_Fact"][];
-            formId: string;
-            gatherings: components["schemas"]["WarehouseDwETL_Gathering"][];
-            media: components["schemas"]["WarehouseDwETL_MediaObject"][];
-            namedPlaceId: string;
-            referenceURL: string;
-            siteDead: boolean;
-            sourceTags: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
+            concealment?: "PUBLIC" | "PRIVATE";
+            deleted?: boolean;
+            editorUserIds?: string[];
+            facts?: components["schemas"]["WarehouseDwETL_Fact"][];
+            formId?: string;
+            gatherings?: components["schemas"]["WarehouseDwETL_Gathering"][];
+            media?: components["schemas"]["WarehouseDwETL_MediaObject"][];
+            namedPlaceId?: string;
+            referenceURL?: string;
+            siteDead?: boolean;
+            sourceTags?: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
         };
         WarehouseDwETL_Gathering: {
             /** Format: URI */
-            gatheringId: string;
-            gatheringSection: number;
-            coordinates: components["schemas"]["WarehouseDwETL_Coordinates"];
+            gatheringId?: string;
+            gatheringSection?: number;
+            coordinates?: components["schemas"]["WarehouseDwETL_Coordinates"];
             /** @description GeoJSON object with custom "crs" required property that takes in values WGS84,EUREF,YKJ (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
-            geo: Record<string, never>;
-            eventDate: components["schemas"]["WarehouseDwETL_DateRange"];
-            hourBegin: number;
-            hourEnd: number;
-            team: string[];
-            stateLand: boolean;
-            accurateArea: boolean;
-            higherGeography: string;
-            country: string;
-            municipality: string;
-            biogeographicalProvince: string;
-            province: string;
-            locality: string;
-            quality: components["schemas"]["WarehouseDwETL_GatheringQuality"];
-            notes: string;
-            coordinatesVerbatim: string;
-            facts: components["schemas"]["WarehouseDwETL_Fact"][];
-            media: components["schemas"]["WarehouseDwETL_MediaObject"][];
-            minutesBegin: number;
-            minutesEnd: number;
-            observerUserIds: string[];
-            taxonCensus: components["schemas"]["WarehouseDwETL_TaxonCensus"][];
-            units: components["schemas"]["WarehouseDwETL_Unit"][];
+            geo?: Record<string, never>;
+            eventDate?: components["schemas"]["WarehouseDwETL_DateRange"];
+            hourBegin?: number;
+            hourEnd?: number;
+            team?: string[];
+            stateLand?: boolean;
+            accurateArea?: boolean;
+            higherGeography?: string;
+            country?: string;
+            municipality?: string;
+            biogeographicalProvince?: string;
+            province?: string;
+            locality?: string;
+            quality?: components["schemas"]["WarehouseDwETL_GatheringQuality"];
+            notes?: string;
+            coordinatesVerbatim?: string;
+            facts?: components["schemas"]["WarehouseDwETL_Fact"][];
+            media?: components["schemas"]["WarehouseDwETL_MediaObject"][];
+            minutesBegin?: number;
+            minutesEnd?: number;
+            observerUserIds?: string[];
+            taxonCensus?: components["schemas"]["WarehouseDwETL_TaxonCensus"][];
+            units?: components["schemas"]["WarehouseDwETL_Unit"][];
         };
         WarehouseDwETL_Unit: {
             /** Format: URI */
-            unitId: string;
-            taxonVerbatim: string;
-            quality: components["schemas"]["WarehouseDwETL_UnitQuality"];
+            unitId?: string;
+            taxonVerbatim?: string;
+            quality?: components["schemas"]["WarehouseDwETL_UnitQuality"];
             /** @enum {string} */
-            reportedTaxonConfidence: "SURE" | "UNSURE" | "SUBSPECIES_UNSURE";
-            abundanceString: string;
+            reportedTaxonConfidence?: "SURE" | "UNSURE" | "SUBSPECIES_UNSURE";
+            abundanceString?: string;
             /** @enum {string} */
-            abundanceUnit: "OCCURS_DOES_NOT_OCCUR" | "INDIVIDUAL_COUNT" | "PAIRCOUNT" | "NESTS" | "BREEDING_SITES" | "FEEDING_SITES" | "COLONIES" | "QUEENS" | "FRUITBODIES" | "SPROUTS" | "HUMMOCKS" | "THALLI" | "FLOWERS" | "SPOTS" | "TRUNKS" | "SHELLS" | "DROPPINGS" | "FEEDING_MARKS" | "INDIRECT_MARKS" | "SQUARE_DM" | "SQUARE_M" | "RELATIVE_DENSITY";
+            abundanceUnit?: "OCCURS_DOES_NOT_OCCUR" | "INDIVIDUAL_COUNT" | "PAIRCOUNT" | "NESTS" | "BREEDING_SITES" | "FEEDING_SITES" | "COLONIES" | "QUEENS" | "FRUITBODIES" | "SPROUTS" | "HUMMOCKS" | "THALLI" | "FLOWERS" | "SPOTS" | "TRUNKS" | "SHELLS" | "DROPPINGS" | "FEEDING_MARKS" | "INDIRECT_MARKS" | "SQUARE_DM" | "SQUARE_M" | "RELATIVE_DENSITY";
             /** @enum {string} */
-            recordBasis: "PRESERVED_SPECIMEN" | "LIVING_SPECIMEN" | "FOSSIL_SPECIMEN" | "SUBFOSSIL_SPECIMEN" | "SUBFOSSIL_AMBER_INCLUSION_SPECIMEN" | "MICROBIAL_SPECIMEN" | "HUMAN_OBSERVATION_UNSPECIFIED" | "HUMAN_OBSERVATION_SEEN" | "HUMAN_OBSERVATION_HEARD" | "HUMAN_OBSERVATION_PHOTO" | "HUMAN_OBSERVATION_INDIRECT" | "HUMAN_OBSERVATION_HANDLED" | "HUMAN_OBSERVATION_VIDEO" | "HUMAN_OBSERVATION_RECORDED_AUDIO" | "MACHINE_OBSERVATION_UNSPECIFIED" | "MACHINE_OBSERVATION_PHOTO" | "MACHINE_OBSERVATION_VIDEO" | "MACHINE_OBSERVATION_AUDIO" | "MACHINE_OBSERVATION_GEOLOGGER" | "MACHINE_OBSERVATION_SATELLITE_TRANSMITTER" | "LITERATURE" | "MATERIAL_SAMPLE" | "MATERIAL_SAMPLE_AIR" | "MATERIAL_SAMPLE_SOIL" | "MATERIAL_SAMPLE_WATER";
-            typeSpecimen: boolean;
-            det: string;
+            recordBasis?: "PRESERVED_SPECIMEN" | "LIVING_SPECIMEN" | "FOSSIL_SPECIMEN" | "SUBFOSSIL_SPECIMEN" | "SUBFOSSIL_AMBER_INCLUSION_SPECIMEN" | "MICROBIAL_SPECIMEN" | "HUMAN_OBSERVATION_UNSPECIFIED" | "HUMAN_OBSERVATION_SEEN" | "HUMAN_OBSERVATION_HEARD" | "HUMAN_OBSERVATION_PHOTO" | "HUMAN_OBSERVATION_INDIRECT" | "HUMAN_OBSERVATION_HANDLED" | "HUMAN_OBSERVATION_VIDEO" | "HUMAN_OBSERVATION_RECORDED_AUDIO" | "MACHINE_OBSERVATION_UNSPECIFIED" | "MACHINE_OBSERVATION_PHOTO" | "MACHINE_OBSERVATION_VIDEO" | "MACHINE_OBSERVATION_AUDIO" | "MACHINE_OBSERVATION_GEOLOGGER" | "MACHINE_OBSERVATION_SATELLITE_TRANSMITTER" | "LITERATURE" | "MATERIAL_SAMPLE" | "MATERIAL_SAMPLE_AIR" | "MATERIAL_SAMPLE_SOIL" | "MATERIAL_SAMPLE_WATER";
+            typeSpecimen?: boolean;
+            det?: string;
             /** @enum {string} */
-            sex: "MALE" | "FEMALE" | "WORKER" | "UNKNOWN" | "NOT_APPLICABLE" | "GYNANDROMORPH" | "MULTIPLE" | "CONFLICTING";
+            sex?: "MALE" | "FEMALE" | "WORKER" | "UNKNOWN" | "NOT_APPLICABLE" | "GYNANDROMORPH" | "MULTIPLE" | "CONFLICTING";
             /** @enum {string} */
-            lifeStage: "ADULT" | "JUVENILE" | "IMMATURE" | "EGG" | "TADPOLE" | "PUPA" | "NYMPH" | "SUBIMAGO" | "LARVA" | "SNAG" | "EMBRYO" | "SUBADULT" | "MATURE" | "STERILE" | "FERTILE" | "SPROUT" | "DEAD_SPROUT" | "BUD" | "FLOWER" | "WITHERED_FLOWER" | "SEED" | "RIPENING_FRUIT" | "RIPE_FRUIT" | "SUBTERRANEAN" | "GALL" | "MARKS" | "TRIUNGULIN";
-            wild: boolean;
-            alive: boolean;
-            local: boolean;
-            keywords: string[];
-            breedingSite: boolean;
-            plantStatusCode: string;
-            atlasCode: string;
-            atlasClass: string;
-            individualId: string;
-            notes: string;
-            author: string;
+            lifeStage?: "ADULT" | "JUVENILE" | "IMMATURE" | "EGG" | "TADPOLE" | "PUPA" | "NYMPH" | "SUBIMAGO" | "LARVA" | "SNAG" | "EMBRYO" | "SUBADULT" | "MATURE" | "STERILE" | "FERTILE" | "SPROUT" | "DEAD_SPROUT" | "BUD" | "FLOWER" | "WITHERED_FLOWER" | "SEED" | "RIPENING_FRUIT" | "RIPE_FRUIT" | "SUBTERRANEAN" | "GALL" | "MARKS" | "TRIUNGULIN";
+            wild?: boolean;
+            alive?: boolean;
+            local?: boolean;
+            keywords?: string[];
+            breedingSite?: boolean;
+            plantStatusCode?: string;
+            atlasCode?: string;
+            atlasClass?: string;
+            individualId?: string;
+            notes?: string;
+            author?: string;
             /** Format: URI */
-            autocompleteSelectedTaxonId: string;
-            externalMediaCount: number;
-            facts: components["schemas"]["WarehouseDwETL_Fact"][];
-            identificationBasis: string[];
-            identifications: components["schemas"]["WarehouseDwETL_IdentificationEvent"][];
-            individualCountFemale: number;
-            individualCountMale: number;
-            media: components["schemas"]["WarehouseDwETL_MediaObject"][];
-            primarySpecimen: boolean;
+            autocompleteSelectedTaxonId?: string;
+            externalMediaCount?: number;
+            facts?: components["schemas"]["WarehouseDwETL_Fact"][];
+            identificationBasis?: string[];
+            identifications?: components["schemas"]["WarehouseDwETL_IdentificationEvent"][];
+            individualCountFemale?: number;
+            individualCountMale?: number;
+            media?: components["schemas"]["WarehouseDwETL_MediaObject"][];
+            primarySpecimen?: boolean;
             /** Format: URI */
-            reportedInformalTaxonGroup: string;
+            reportedInformalTaxonGroup?: string;
             /** Format: URI */
-            reportedTaxonId: string;
-            samples: components["schemas"]["WarehouseDwETL_Sample"][];
-            samplingMethod: string;
-            sourceTags: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
-            types: components["schemas"]["WarehouseDwETL_TypeSpecimen"][];
+            reportedTaxonId?: string;
+            samples?: components["schemas"]["WarehouseDwETL_Sample"][];
+            samplingMethod?: string;
+            sourceTags?: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
+            types?: components["schemas"]["WarehouseDwETL_TypeSpecimen"][];
         };
         WarehouseDwETL_Sample: {
-            notes: string;
+            notes?: string;
             /** Format: URI */
-            collectionId: string;
-            facts: components["schemas"]["WarehouseDwETL_Fact"][];
-            keywords: string[];
-            material: string;
-            multiple: boolean;
-            quality: string;
+            collectionId?: string;
+            facts?: components["schemas"]["WarehouseDwETL_Fact"][];
+            keywords?: string[];
+            material?: string;
+            multiple?: boolean;
+            quality?: string;
             /** Format: URI */
-            sampleId: string;
-            status: string;
-            type: string;
+            sampleId?: string;
+            status?: string;
+            type?: string;
         };
         WarehouseDwETL_MediaObject: {
-            author: string;
-            caption: string;
-            copyrightOwner: string;
-            fullResolutionMediaAvailable: boolean;
-            fullURL: string;
-            highDetailModelURL: string;
+            author?: string;
+            caption?: string;
+            copyrightOwner?: string;
+            fullResolutionMediaAvailable?: boolean;
+            fullURL?: string;
+            highDetailModelURL?: string;
             /** Format: URI */
-            id: string;
-            licenseId: string;
-            lowDetailModelURL: string;
+            id?: string;
+            licenseId?: string;
+            lowDetailModelURL?: string;
             /** @enum {string} */
-            mediaType: "IMAGE" | "AUDIO" | "VIDEO" | "MODEL";
-            mp3URL: string;
-            squareThumbnailURL: string;
-            thumbnailURL: string;
+            mediaType?: "IMAGE" | "AUDIO" | "VIDEO" | "MODEL";
+            mp3URL?: string;
+            squareThumbnailURL?: string;
+            thumbnailURL?: string;
             /** Format: URI */
-            type: string;
-            videoURL: string;
-            wavURL: string;
+            type?: string;
+            videoURL?: string;
+            wavURL?: string;
         };
         WarehouseDwETL_Coordinates: {
-            accuracyInMeters: number;
-            latMax: number;
-            latMin: number;
-            lonMax: number;
-            lonMin: number;
+            accuracyInMeters?: number;
+            latMax?: number;
+            latMin?: number;
+            lonMax?: number;
+            lonMin?: number;
             /** @enum {string} */
-            type: "WGS84" | "EUREF" | "YKJ";
+            type?: "WGS84" | "EUREF" | "YKJ";
         };
         WarehouseDwETL_DateRange: {
             /** Format: yyyy-MM-dd */
-            begin: string;
+            begin?: string;
             /** Format: yyyy-MM-dd */
-            end: string;
+            end?: string;
         };
         WarehouseDwETL_Fact: {
-            fact: string;
-            value: string;
+            fact?: string;
+            value?: string;
         };
         WarehouseDwETL_TaxonCensus: {
             /** Format: URI */
-            taxonId: string;
+            taxonId?: string;
             /** Format: URI */
-            type: string;
+            type?: string;
         };
         WarehouseDwETL_DocumentQuality: {
-            issue: components["schemas"]["WarehouseDwETL_Quality"];
+            issue?: components["schemas"]["WarehouseDwETL_Quality"];
         };
         WarehouseDwETL_GatheringQuality: {
-            issue: components["schemas"]["WarehouseDwETL_Quality"];
-            locationIssue: components["schemas"]["WarehouseDwETL_Quality"];
-            timeIssue: components["schemas"]["WarehouseDwETL_Quality"];
+            issue?: components["schemas"]["WarehouseDwETL_Quality"];
+            locationIssue?: components["schemas"]["WarehouseDwETL_Quality"];
+            timeIssue?: components["schemas"]["WarehouseDwETL_Quality"];
         };
         WarehouseDwETL_UnitQuality: {
-            issue: components["schemas"]["WarehouseDwETL_Quality"];
+            issue?: components["schemas"]["WarehouseDwETL_Quality"];
         };
         WarehouseDwETL_Quality: {
             /** @enum {string} */
-            issue: "REPORTED_UNRELIABLE" | "MEDIA_ISSUE" | "INVALID_CREATED_DATE" | "INVALID_MODIFIED_DATE" | "COORDINATES_COUNTRY_MISMATCH" | "COORDINATES_MUNICIPALITY_MISMATCH" | "TOO_LARGE_AREA" | "INVALID_GEO" | "INVALID_YKJ_COORDINATES" | "INVALID_EUREF_COORDINATES" | "INVALID_WGS84_COORDINATES" | "DATE_END_BEFORE_BEGIN" | "DATE_END_GIVEN_WITHOUT_BEGIN" | "DATE_IN_FUTURE" | "DATE_TOO_FAR_IN_THE_PAST" | "INVALID_DATE" | "RECORD_BASIS_MISSING" | "INVALID_HOUR" | "INVALID_MINUTE" | "TIME_END_BEFORE_BEGIN" | "INVALID_COORDINATES" | "ETL_ISSUE";
-            message: string;
+            issue?: "REPORTED_UNRELIABLE" | "MEDIA_ISSUE" | "INVALID_CREATED_DATE" | "INVALID_MODIFIED_DATE" | "COORDINATES_COUNTRY_MISMATCH" | "COORDINATES_MUNICIPALITY_MISMATCH" | "TOO_LARGE_AREA" | "INVALID_GEO" | "INVALID_YKJ_COORDINATES" | "INVALID_EUREF_COORDINATES" | "INVALID_WGS84_COORDINATES" | "DATE_END_BEFORE_BEGIN" | "DATE_END_GIVEN_WITHOUT_BEGIN" | "DATE_IN_FUTURE" | "DATE_TOO_FAR_IN_THE_PAST" | "INVALID_DATE" | "RECORD_BASIS_MISSING" | "INVALID_HOUR" | "INVALID_MINUTE" | "TIME_END_BEFORE_BEGIN" | "INVALID_COORDINATES" | "ETL_ISSUE";
+            message?: string;
             /** @enum {string} */
-            source: "AUTOMATED_FINBIF_VALIDATION" | "ORIGINAL_DOCUMENT" | "QUALITY_CONTROL";
+            source?: "AUTOMATED_FINBIF_VALIDATION" | "ORIGINAL_DOCUMENT" | "QUALITY_CONTROL";
         };
         WarehouseDwETL_IdentificationEvent: {
-            notes: string;
-            author: string;
-            det: string;
-            detDate: string;
-            facts: components["schemas"]["WarehouseDwETL_Fact"][];
+            notes?: string;
+            author?: string;
+            det?: string;
+            detDate?: string;
+            facts?: components["schemas"]["WarehouseDwETL_Fact"][];
             /** Format: URI */
-            id: string;
-            preferred: boolean;
-            taxon: string;
+            id?: string;
+            preferred?: boolean;
+            taxon?: string;
             /** Format: URI */
-            taxonID: string;
-            taxonSpecifier: string;
-            taxonSpecifierAuthor: string;
+            taxonID?: string;
+            taxonSpecifier?: string;
+            taxonSpecifierAuthor?: string;
         };
         WarehouseDwETL_TypeSpecimen: {
-            notes: string;
-            author: string;
-            basionymePublication: string;
-            facts: components["schemas"]["WarehouseDwETL_Fact"][];
+            notes?: string;
+            author?: string;
+            basionymePublication?: string;
+            facts?: components["schemas"]["WarehouseDwETL_Fact"][];
             /** Format: URI */
-            id: string;
-            publication: string;
+            id?: string;
+            publication?: string;
             /** Format: URI */
-            status: string;
-            taxon: string;
+            status?: string;
+            taxon?: string;
             /** Format: URI */
-            taxonID: string;
-            taxonSpecifier: string;
-            taxonSpecifierAuthor: string;
-            typif: string;
-            typifDate: string;
+            taxonID?: string;
+            taxonSpecifier?: string;
+            taxonSpecifierAuthor?: string;
+            typif?: string;
+            typifDate?: string;
             /** Format: URI */
-            verification: string;
+            verification?: string;
         };
         WarehouseDwSingle_Document: {
             /** Format: URI */
-            documentId: string;
+            documentId?: string;
             /** @enum {string} */
-            secureLevel: "NOSHOW" | "HIGHEST" | "KM100" | "KM50" | "KM25" | "KM10" | "KM5" | "KM1" | "NONE";
-            secureReasons: ("DEFAULT_TAXON_CONSERVATION" | "BREEDING_SITE_CONSERVATION" | "NATURA_AREA_CONSERVATION" | "WINTER_SEASON_TAXON_CONSERVATION" | "BREEDING_SEASON_TAXON_CONSERVATION" | "CUSTOM" | "USER_HIDDEN" | "ADMIN_HIDDEN" | "DATA_QUARANTINE_PERIOD" | "ONLY_PRIVATE" | "USER_PERSON_NAMES_HIDDEN" | "USER_HIDDEN_LOCATION" | "USER_HIDDEN_TIME")[];
-            partial: boolean;
+            secureLevel?: "NOSHOW" | "HIGHEST" | "KM100" | "KM50" | "KM25" | "KM10" | "KM5" | "KM1" | "NONE";
+            secureReasons?: ("DEFAULT_TAXON_CONSERVATION" | "BREEDING_SITE_CONSERVATION" | "NATURA_AREA_CONSERVATION" | "WINTER_SEASON_TAXON_CONSERVATION" | "BREEDING_SEASON_TAXON_CONSERVATION" | "CUSTOM" | "USER_HIDDEN" | "ADMIN_HIDDEN" | "DATA_QUARANTINE_PERIOD" | "ONLY_PRIVATE" | "USER_PERSON_NAMES_HIDDEN" | "USER_HIDDEN_LOCATION" | "USER_HIDDEN_TIME")[];
+            partial?: boolean;
             /** Format: URI */
-            collectionId: string;
-            licenseId: string;
-            dataSource: string;
-            linkings: components["schemas"]["WarehouseDwSingle_DocumentDWLinkings"];
-            quality: components["schemas"]["WarehouseDwSingle_DocumentQuality"];
+            collectionId?: string;
+            licenseId?: string;
+            dataSource?: string;
+            linkings?: components["schemas"]["WarehouseDwSingle_DocumentDWLinkings"];
+            quality?: components["schemas"]["WarehouseDwSingle_DocumentQuality"];
             /** Format: URI */
-            sourceId: string;
-            namedPlace: components["schemas"]["WarehouseDwSingle_NamedPlaceEntity"];
-            siteType: string;
-            siteStatus: string;
-            keywords: string[];
+            sourceId?: string;
+            namedPlace?: components["schemas"]["WarehouseDwSingle_NamedPlaceEntity"];
+            siteType?: string;
+            siteStatus?: string;
+            keywords?: string[];
             /** Format: yyyy-MM-dd */
-            firstLoadDate: string;
+            firstLoadDate?: string;
             /** Format: yyyy-MM-dd */
-            loadDate: string;
+            loadDate?: string;
             /** Format: yyyy-MM-dd */
-            createdDate: string;
+            createdDate?: string;
             /** Format: yyyy-MM-dd */
-            modifiedDate: string;
-            notes: string;
-            annotations: components["schemas"]["WarehouseDwSingle_Annotation"][];
-            completeListTaxonId: string;
-            completeListType: string;
-            editorUserIds: string[];
-            facts: components["schemas"]["WarehouseDwSingle_Fact"][];
-            formId: string;
-            gatherings: components["schemas"]["WarehouseDwSingle_Gathering"][];
-            media: components["schemas"]["WarehouseDwSingle_MediaObject"][];
-            mediaCount: number;
-            namedPlaceId: string;
-            prefix: string;
-            referenceURL: string;
-            secured: boolean;
-            siteDead: boolean;
-            sourceTags: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
+            modifiedDate?: string;
+            notes?: string;
+            annotations?: components["schemas"]["WarehouseDwSingle_Annotation"][];
+            completeListTaxonId?: string;
+            completeListType?: string;
+            editorUserIds?: string[];
+            facts?: components["schemas"]["WarehouseDwSingle_Fact"][];
+            formId?: string;
+            gatherings?: components["schemas"]["WarehouseDwSingle_Gathering"][];
+            media?: components["schemas"]["WarehouseDwSingle_MediaObject"][];
+            mediaCount?: number;
+            namedPlaceId?: string;
+            prefix?: string;
+            referenceURL?: string;
+            secured?: boolean;
+            siteDead?: boolean;
+            sourceTags?: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
         };
         WarehouseDwSingle_Gathering: {
             /** Format: URI */
-            gatheringId: string;
-            gatheringOrder: number;
-            gatheringSection: number;
+            gatheringId?: string;
+            gatheringOrder?: number;
+            gatheringSection?: number;
             /** @description GeoJSON object with custom "crs" required property that takes in values WGS84,EUREF,YKJ (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
-            geo: Record<string, never>;
-            eventDate: components["schemas"]["WarehouseDwSingle_DateRange"];
-            hourBegin: number;
-            hourEnd: number;
-            displayDateTime: string;
-            team: string[];
-            conversions: components["schemas"]["WarehouseDwSingle_GatheringConversions"];
-            interpretations: components["schemas"]["WarehouseDwSingle_GatheringInterpretations"];
-            stateLand: boolean;
-            accurateArea: boolean;
-            higherGeography: string;
-            country: string;
-            municipality: string;
-            biogeographicalProvince: string;
-            province: string;
-            locality: string;
-            quality: components["schemas"]["WarehouseDwSingle_GatheringQuality"];
-            notes: string;
-            coordinatesVerbatim: string;
-            facts: components["schemas"]["WarehouseDwSingle_Fact"][];
-            linkings: components["schemas"]["WarehouseDwSingle_GatheringDWLinkings"];
-            media: components["schemas"]["WarehouseDwSingle_MediaObject"][];
-            mediaCount: number;
-            minutesBegin: number;
-            minutesEnd: number;
-            observerUserIds: string[];
-            taxonCensus: components["schemas"]["WarehouseDwSingle_TaxonCensus"][];
-            units: components["schemas"]["WarehouseDwSingle_Unit"][];
+            geo?: Record<string, never>;
+            eventDate?: components["schemas"]["WarehouseDwSingle_DateRange"];
+            hourBegin?: number;
+            hourEnd?: number;
+            displayDateTime?: string;
+            team?: string[];
+            conversions?: components["schemas"]["WarehouseDwSingle_GatheringConversions"];
+            interpretations?: components["schemas"]["WarehouseDwSingle_GatheringInterpretations"];
+            stateLand?: boolean;
+            accurateArea?: boolean;
+            higherGeography?: string;
+            country?: string;
+            municipality?: string;
+            biogeographicalProvince?: string;
+            province?: string;
+            locality?: string;
+            quality?: components["schemas"]["WarehouseDwSingle_GatheringQuality"];
+            notes?: string;
+            coordinatesVerbatim?: string;
+            facts?: components["schemas"]["WarehouseDwSingle_Fact"][];
+            linkings?: components["schemas"]["WarehouseDwSingle_GatheringDWLinkings"];
+            media?: components["schemas"]["WarehouseDwSingle_MediaObject"][];
+            mediaCount?: number;
+            minutesBegin?: number;
+            minutesEnd?: number;
+            observerUserIds?: string[];
+            taxonCensus?: components["schemas"]["WarehouseDwSingle_TaxonCensus"][];
+            units?: components["schemas"]["WarehouseDwSingle_Unit"][];
         };
         WarehouseDwSingle_Unit: {
             /** Format: URI */
-            unitId: string;
-            unitOrder: number;
-            taxonVerbatim: string;
-            quality: components["schemas"]["WarehouseDwSingle_UnitQuality"];
+            unitId?: string;
+            unitOrder?: number;
+            taxonVerbatim?: string;
+            quality?: components["schemas"]["WarehouseDwSingle_UnitQuality"];
             /** @enum {string} */
-            reportedTaxonConfidence: "SURE" | "UNSURE" | "SUBSPECIES_UNSURE";
-            linkings: components["schemas"]["WarehouseDwSingle_UnitDWLinkings"];
-            abundanceString: string;
+            reportedTaxonConfidence?: "SURE" | "UNSURE" | "SUBSPECIES_UNSURE";
+            linkings?: components["schemas"]["WarehouseDwSingle_UnitDWLinkings"];
+            abundanceString?: string;
             /** @enum {string} */
-            abundanceUnit: "OCCURS_DOES_NOT_OCCUR" | "INDIVIDUAL_COUNT" | "PAIRCOUNT" | "NESTS" | "BREEDING_SITES" | "FEEDING_SITES" | "COLONIES" | "QUEENS" | "FRUITBODIES" | "SPROUTS" | "HUMMOCKS" | "THALLI" | "FLOWERS" | "SPOTS" | "TRUNKS" | "SHELLS" | "DROPPINGS" | "FEEDING_MARKS" | "INDIRECT_MARKS" | "SQUARE_DM" | "SQUARE_M" | "RELATIVE_DENSITY";
-            interpretations: components["schemas"]["WarehouseDwSingle_UnitInterpretations"];
+            abundanceUnit?: "OCCURS_DOES_NOT_OCCUR" | "INDIVIDUAL_COUNT" | "PAIRCOUNT" | "NESTS" | "BREEDING_SITES" | "FEEDING_SITES" | "COLONIES" | "QUEENS" | "FRUITBODIES" | "SPROUTS" | "HUMMOCKS" | "THALLI" | "FLOWERS" | "SPOTS" | "TRUNKS" | "SHELLS" | "DROPPINGS" | "FEEDING_MARKS" | "INDIRECT_MARKS" | "SQUARE_DM" | "SQUARE_M" | "RELATIVE_DENSITY";
+            interpretations?: components["schemas"]["WarehouseDwSingle_UnitInterpretations"];
             /** @enum {string} */
-            superRecordBasis: "PRESERVED_SPECIMEN" | "LIVING_SPECIMEN" | "FOSSIL_SPECIMEN" | "SUBFOSSIL_SPECIMEN" | "SUBFOSSIL_AMBER_INCLUSION_SPECIMEN" | "MICROBIAL_SPECIMEN" | "HUMAN_OBSERVATION_UNSPECIFIED" | "HUMAN_OBSERVATION_SEEN" | "HUMAN_OBSERVATION_HEARD" | "HUMAN_OBSERVATION_PHOTO" | "HUMAN_OBSERVATION_INDIRECT" | "HUMAN_OBSERVATION_HANDLED" | "HUMAN_OBSERVATION_VIDEO" | "HUMAN_OBSERVATION_RECORDED_AUDIO" | "MACHINE_OBSERVATION_UNSPECIFIED" | "MACHINE_OBSERVATION_PHOTO" | "MACHINE_OBSERVATION_VIDEO" | "MACHINE_OBSERVATION_AUDIO" | "MACHINE_OBSERVATION_GEOLOGGER" | "MACHINE_OBSERVATION_SATELLITE_TRANSMITTER" | "LITERATURE" | "MATERIAL_SAMPLE" | "MATERIAL_SAMPLE_AIR" | "MATERIAL_SAMPLE_SOIL" | "MATERIAL_SAMPLE_WATER";
+            superRecordBasis?: "PRESERVED_SPECIMEN" | "LIVING_SPECIMEN" | "FOSSIL_SPECIMEN" | "SUBFOSSIL_SPECIMEN" | "SUBFOSSIL_AMBER_INCLUSION_SPECIMEN" | "MICROBIAL_SPECIMEN" | "HUMAN_OBSERVATION_UNSPECIFIED" | "HUMAN_OBSERVATION_SEEN" | "HUMAN_OBSERVATION_HEARD" | "HUMAN_OBSERVATION_PHOTO" | "HUMAN_OBSERVATION_INDIRECT" | "HUMAN_OBSERVATION_HANDLED" | "HUMAN_OBSERVATION_VIDEO" | "HUMAN_OBSERVATION_RECORDED_AUDIO" | "MACHINE_OBSERVATION_UNSPECIFIED" | "MACHINE_OBSERVATION_PHOTO" | "MACHINE_OBSERVATION_VIDEO" | "MACHINE_OBSERVATION_AUDIO" | "MACHINE_OBSERVATION_GEOLOGGER" | "MACHINE_OBSERVATION_SATELLITE_TRANSMITTER" | "LITERATURE" | "MATERIAL_SAMPLE" | "MATERIAL_SAMPLE_AIR" | "MATERIAL_SAMPLE_SOIL" | "MATERIAL_SAMPLE_WATER";
             /** @enum {string} */
-            recordBasis: "PRESERVED_SPECIMEN" | "LIVING_SPECIMEN" | "FOSSIL_SPECIMEN" | "SUBFOSSIL_SPECIMEN" | "SUBFOSSIL_AMBER_INCLUSION_SPECIMEN" | "MICROBIAL_SPECIMEN" | "HUMAN_OBSERVATION_UNSPECIFIED" | "HUMAN_OBSERVATION_SEEN" | "HUMAN_OBSERVATION_HEARD" | "HUMAN_OBSERVATION_PHOTO" | "HUMAN_OBSERVATION_INDIRECT" | "HUMAN_OBSERVATION_HANDLED" | "HUMAN_OBSERVATION_VIDEO" | "HUMAN_OBSERVATION_RECORDED_AUDIO" | "MACHINE_OBSERVATION_UNSPECIFIED" | "MACHINE_OBSERVATION_PHOTO" | "MACHINE_OBSERVATION_VIDEO" | "MACHINE_OBSERVATION_AUDIO" | "MACHINE_OBSERVATION_GEOLOGGER" | "MACHINE_OBSERVATION_SATELLITE_TRANSMITTER" | "LITERATURE" | "MATERIAL_SAMPLE" | "MATERIAL_SAMPLE_AIR" | "MATERIAL_SAMPLE_SOIL" | "MATERIAL_SAMPLE_WATER";
-            typeSpecimen: boolean;
-            det: string;
+            recordBasis?: "PRESERVED_SPECIMEN" | "LIVING_SPECIMEN" | "FOSSIL_SPECIMEN" | "SUBFOSSIL_SPECIMEN" | "SUBFOSSIL_AMBER_INCLUSION_SPECIMEN" | "MICROBIAL_SPECIMEN" | "HUMAN_OBSERVATION_UNSPECIFIED" | "HUMAN_OBSERVATION_SEEN" | "HUMAN_OBSERVATION_HEARD" | "HUMAN_OBSERVATION_PHOTO" | "HUMAN_OBSERVATION_INDIRECT" | "HUMAN_OBSERVATION_HANDLED" | "HUMAN_OBSERVATION_VIDEO" | "HUMAN_OBSERVATION_RECORDED_AUDIO" | "MACHINE_OBSERVATION_UNSPECIFIED" | "MACHINE_OBSERVATION_PHOTO" | "MACHINE_OBSERVATION_VIDEO" | "MACHINE_OBSERVATION_AUDIO" | "MACHINE_OBSERVATION_GEOLOGGER" | "MACHINE_OBSERVATION_SATELLITE_TRANSMITTER" | "LITERATURE" | "MATERIAL_SAMPLE" | "MATERIAL_SAMPLE_AIR" | "MATERIAL_SAMPLE_SOIL" | "MATERIAL_SAMPLE_WATER";
+            typeSpecimen?: boolean;
+            det?: string;
             /** @enum {string} */
-            sex: "MALE" | "FEMALE" | "WORKER" | "UNKNOWN" | "NOT_APPLICABLE" | "GYNANDROMORPH" | "MULTIPLE" | "CONFLICTING";
+            sex?: "MALE" | "FEMALE" | "WORKER" | "UNKNOWN" | "NOT_APPLICABLE" | "GYNANDROMORPH" | "MULTIPLE" | "CONFLICTING";
             /** @enum {string} */
-            lifeStage: "ADULT" | "JUVENILE" | "IMMATURE" | "EGG" | "TADPOLE" | "PUPA" | "NYMPH" | "SUBIMAGO" | "LARVA" | "SNAG" | "EMBRYO" | "SUBADULT" | "MATURE" | "STERILE" | "FERTILE" | "SPROUT" | "DEAD_SPROUT" | "BUD" | "FLOWER" | "WITHERED_FLOWER" | "SEED" | "RIPENING_FRUIT" | "RIPE_FRUIT" | "SUBTERRANEAN" | "GALL" | "MARKS" | "TRIUNGULIN";
-            wild: boolean;
-            alive: boolean;
-            local: boolean;
-            keywords: string[];
-            breedingSite: boolean;
-            plantStatusCode: string;
-            atlasCode: string;
-            atlasClass: string;
-            individualId: string;
-            sequenceText: string;
-            notes: string;
-            annotationCount: number;
-            annotations: components["schemas"]["WarehouseDwSingle_Annotation"][];
-            audioCount: number;
-            author: string;
-            externalMediaCount: number;
-            facts: components["schemas"]["WarehouseDwSingle_Fact"][];
-            identificationBasis: string[];
-            identifications: components["schemas"]["WarehouseDwSingle_IdentificationEvent"][];
-            imageCount: number;
-            individualCountFemale: number;
-            individualCountMale: number;
-            media: components["schemas"]["WarehouseDwSingle_MediaObject"][];
-            mediaCount: number;
-            modelCount: number;
-            primarySpecimen: boolean;
+            lifeStage?: "ADULT" | "JUVENILE" | "IMMATURE" | "EGG" | "TADPOLE" | "PUPA" | "NYMPH" | "SUBIMAGO" | "LARVA" | "SNAG" | "EMBRYO" | "SUBADULT" | "MATURE" | "STERILE" | "FERTILE" | "SPROUT" | "DEAD_SPROUT" | "BUD" | "FLOWER" | "WITHERED_FLOWER" | "SEED" | "RIPENING_FRUIT" | "RIPE_FRUIT" | "SUBTERRANEAN" | "GALL" | "MARKS" | "TRIUNGULIN";
+            wild?: boolean;
+            alive?: boolean;
+            local?: boolean;
+            keywords?: string[];
+            breedingSite?: boolean;
+            plantStatusCode?: string;
+            atlasCode?: string;
+            atlasClass?: string;
+            individualId?: string;
+            sequenceText?: string;
+            notes?: string;
+            annotationCount?: number;
+            annotations?: components["schemas"]["WarehouseDwSingle_Annotation"][];
+            audioCount?: number;
+            author?: string;
+            externalMediaCount?: number;
+            facts?: components["schemas"]["WarehouseDwSingle_Fact"][];
+            identificationBasis?: string[];
+            identifications?: components["schemas"]["WarehouseDwSingle_IdentificationEvent"][];
+            imageCount?: number;
+            individualCountFemale?: number;
+            individualCountMale?: number;
+            media?: components["schemas"]["WarehouseDwSingle_MediaObject"][];
+            mediaCount?: number;
+            modelCount?: number;
+            primarySpecimen?: boolean;
             /** Format: URI */
-            reportedInformalTaxonGroup: string;
+            reportedInformalTaxonGroup?: string;
             /** Format: URI */
-            reportedTaxonId: string;
-            sampleCount: number;
-            samples: components["schemas"]["WarehouseDwSingle_Sample"][];
-            samplingMethod: string;
-            sourceTags: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
-            types: components["schemas"]["WarehouseDwSingle_TypeSpecimen"][];
-            videoCount: number;
+            reportedTaxonId?: string;
+            sampleCount?: number;
+            samples?: components["schemas"]["WarehouseDwSingle_Sample"][];
+            samplingMethod?: string;
+            sourceTags?: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
+            types?: components["schemas"]["WarehouseDwSingle_TypeSpecimen"][];
+            videoCount?: number;
         };
         WarehouseDwSingle_Sample: {
-            notes: string;
+            notes?: string;
             /** Format: URI */
-            collectionId: string;
-            facts: components["schemas"]["WarehouseDwSingle_Fact"][];
-            keywords: string[];
-            material: string;
-            multiple: boolean;
-            quality: string;
+            collectionId?: string;
+            facts?: components["schemas"]["WarehouseDwSingle_Fact"][];
+            keywords?: string[];
+            material?: string;
+            multiple?: boolean;
+            quality?: string;
             /** Format: URI */
-            sampleId: string;
-            sampleOrder: number;
-            status: string;
-            type: string;
+            sampleId?: string;
+            sampleOrder?: number;
+            status?: string;
+            type?: string;
         };
         WarehouseDwSingle_MediaObject: {
-            author: string;
-            caption: string;
-            copyrightOwner: string;
-            fullResolutionMediaAvailable: boolean;
-            fullURL: string;
-            highDetailModelURL: string;
-            licenseId: string;
-            lowDetailModelURL: string;
+            author?: string;
+            caption?: string;
+            copyrightOwner?: string;
+            fullResolutionMediaAvailable?: boolean;
+            fullURL?: string;
+            highDetailModelURL?: string;
+            licenseId?: string;
+            lowDetailModelURL?: string;
             /** @enum {string} */
-            mediaType: "IMAGE" | "AUDIO" | "VIDEO" | "MODEL";
-            mp3URL: string;
-            squareThumbnailURL: string;
-            thumbnailURL: string;
+            mediaType?: "IMAGE" | "AUDIO" | "VIDEO" | "MODEL";
+            mp3URL?: string;
+            squareThumbnailURL?: string;
+            thumbnailURL?: string;
             /** Format: URI */
-            type: string;
-            videoURL: string;
-            wavURL: string;
+            type?: string;
+            videoURL?: string;
+            wavURL?: string;
         };
         WarehouseDwSingle_Coordinates: {
-            latMax: number;
-            latMin: number;
-            lonMax: number;
-            lonMin: number;
+            latMax?: number;
+            latMin?: number;
+            lonMax?: number;
+            lonMin?: number;
         };
         WarehouseDwSingle_DateRange: {
             /** Format: yyyy-MM-dd */
-            begin: string;
+            begin?: string;
             /** Format: yyyy-MM-dd */
-            end: string;
+            end?: string;
         };
         WarehouseDwSingle_Fact: {
-            fact: string;
-            value: string;
-            integerValue: number;
-            decimalValue: number;
+            fact?: string;
+            value?: string;
+            integerValue?: number;
+            decimalValue?: number;
         };
         WarehouseDwSingle_TaxonCensus: {
             /** Format: URI */
-            taxonId: string;
+            taxonId?: string;
             /** Format: URI */
-            type: string;
+            type?: string;
         };
         WarehouseDwSingle_DocumentQuality: {
-            issue: components["schemas"]["WarehouseDwSingle_Quality"];
+            issue?: components["schemas"]["WarehouseDwSingle_Quality"];
         };
         WarehouseDwSingle_GatheringQuality: {
-            issue: components["schemas"]["WarehouseDwSingle_Quality"];
-            locationIssue: components["schemas"]["WarehouseDwSingle_Quality"];
-            timeIssue: components["schemas"]["WarehouseDwSingle_Quality"];
+            issue?: components["schemas"]["WarehouseDwSingle_Quality"];
+            locationIssue?: components["schemas"]["WarehouseDwSingle_Quality"];
+            timeIssue?: components["schemas"]["WarehouseDwSingle_Quality"];
         };
         WarehouseDwSingle_UnitQuality: {
-            documentGatheringUnitQualityIssues: boolean;
-            issue: components["schemas"]["WarehouseDwSingle_Quality"];
+            documentGatheringUnitQualityIssues?: boolean;
+            issue?: components["schemas"]["WarehouseDwSingle_Quality"];
         };
         WarehouseDwSingle_Quality: {
             /** @enum {string} */
-            issue: "REPORTED_UNRELIABLE" | "MEDIA_ISSUE" | "INVALID_CREATED_DATE" | "INVALID_MODIFIED_DATE" | "COORDINATES_COUNTRY_MISMATCH" | "COORDINATES_MUNICIPALITY_MISMATCH" | "TOO_LARGE_AREA" | "INVALID_GEO" | "INVALID_YKJ_COORDINATES" | "INVALID_EUREF_COORDINATES" | "INVALID_WGS84_COORDINATES" | "DATE_END_BEFORE_BEGIN" | "DATE_END_GIVEN_WITHOUT_BEGIN" | "DATE_IN_FUTURE" | "DATE_TOO_FAR_IN_THE_PAST" | "INVALID_DATE" | "RECORD_BASIS_MISSING" | "INVALID_HOUR" | "INVALID_MINUTE" | "TIME_END_BEFORE_BEGIN" | "INVALID_COORDINATES" | "ETL_ISSUE";
-            message: string;
+            issue?: "REPORTED_UNRELIABLE" | "MEDIA_ISSUE" | "INVALID_CREATED_DATE" | "INVALID_MODIFIED_DATE" | "COORDINATES_COUNTRY_MISMATCH" | "COORDINATES_MUNICIPALITY_MISMATCH" | "TOO_LARGE_AREA" | "INVALID_GEO" | "INVALID_YKJ_COORDINATES" | "INVALID_EUREF_COORDINATES" | "INVALID_WGS84_COORDINATES" | "DATE_END_BEFORE_BEGIN" | "DATE_END_GIVEN_WITHOUT_BEGIN" | "DATE_IN_FUTURE" | "DATE_TOO_FAR_IN_THE_PAST" | "INVALID_DATE" | "RECORD_BASIS_MISSING" | "INVALID_HOUR" | "INVALID_MINUTE" | "TIME_END_BEFORE_BEGIN" | "INVALID_COORDINATES" | "ETL_ISSUE";
+            message?: string;
             /** @enum {string} */
-            source: "AUTOMATED_FINBIF_VALIDATION" | "ORIGINAL_DOCUMENT" | "QUALITY_CONTROL";
+            source?: "AUTOMATED_FINBIF_VALIDATION" | "ORIGINAL_DOCUMENT" | "QUALITY_CONTROL";
         };
         WarehouseDwSingle_IdentificationEvent: {
-            notes: string;
-            author: string;
-            det: string;
-            detDate: string;
-            facts: components["schemas"]["WarehouseDwSingle_Fact"][];
+            notes?: string;
+            author?: string;
+            det?: string;
+            detDate?: string;
+            facts?: components["schemas"]["WarehouseDwSingle_Fact"][];
             /** Format: URI */
-            id: string;
-            linkings: components["schemas"]["WarehouseDwSingle_IdentificationDwLinkings"];
-            preferred: boolean;
-            taxon: string;
+            id?: string;
+            linkings?: components["schemas"]["WarehouseDwSingle_IdentificationDwLinkings"];
+            preferred?: boolean;
+            taxon?: string;
             /** Format: URI */
-            taxonID: string;
-            taxonSpecifier: string;
-            taxonSpecifierAuthor: string;
+            taxonID?: string;
+            taxonSpecifier?: string;
+            taxonSpecifierAuthor?: string;
         };
         WarehouseDwSingle_TypeSpecimen: {
-            notes: string;
-            author: string;
-            basionymePublication: string;
-            facts: components["schemas"]["WarehouseDwSingle_Fact"][];
+            notes?: string;
+            author?: string;
+            basionymePublication?: string;
+            facts?: components["schemas"]["WarehouseDwSingle_Fact"][];
             /** Format: URI */
-            id: string;
-            linkings: components["schemas"]["WarehouseDwSingle_IdentificationDwLinkings"];
-            publication: string;
+            id?: string;
+            linkings?: components["schemas"]["WarehouseDwSingle_IdentificationDwLinkings"];
+            publication?: string;
             /** Format: URI */
-            status: string;
-            taxon: string;
+            status?: string;
+            taxon?: string;
             /** Format: URI */
-            taxonID: string;
-            taxonSpecifier: string;
-            taxonSpecifierAuthor: string;
-            typif: string;
-            typifDate: string;
+            taxonID?: string;
+            taxonSpecifier?: string;
+            taxonSpecifierAuthor?: string;
+            typif?: string;
+            typifDate?: string;
             /** Format: URI */
-            verification: string;
+            verification?: string;
         };
         WarehouseDwSingle_DocumentDWLinkings: {
             /** @enum {string} */
-            collectionQuality: "PROFESSIONAL" | "HOBBYIST" | "AMATEUR";
-            editors: components["schemas"]["WarehouseDwSingle_Person"][];
+            collectionQuality?: "PROFESSIONAL" | "HOBBYIST" | "AMATEUR";
+            editors?: components["schemas"]["WarehouseDwSingle_Person"][];
         };
         WarehouseDwSingle_GatheringInterpretations: {
             /** Format: URI */
-            biogeographicalProvince: string;
-            biogeographicalProvinceDisplayname: string;
-            biogeographicalProvinces: string[];
-            coordinateAccuracy: number;
+            biogeographicalProvince?: string;
+            biogeographicalProvinceDisplayname?: string;
+            biogeographicalProvinces?: string[];
+            coordinateAccuracy?: number;
             /** Format: URI */
-            country: string;
-            countryDisplayname: string;
-            finnishMunicipalities: string[];
+            country?: string;
+            countryDisplayname?: string;
+            finnishMunicipalities?: string[];
             /** Format: URI */
-            finnishMunicipality: string;
-            municipalityDisplayname: string;
+            finnishMunicipality?: string;
+            municipalityDisplayname?: string;
             /** @enum {string} */
-            sourceOfBiogeographicalProvince: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
+            sourceOfBiogeographicalProvince?: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
             /** @enum {string} */
-            sourceOfCoordinates: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
+            sourceOfCoordinates?: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
             /** @enum {string} */
-            sourceOfCountry: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
+            sourceOfCountry?: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
             /** @enum {string} */
-            sourceOfFinnishMunicipality: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
+            sourceOfFinnishMunicipality?: "COORDINATES" | "COORDINATE_CENTERPOINT" | "REPORTED_VALUE" | "FINNISH_MUNICIPALITY" | "OLD_FINNISH_MUNICIPALITY";
         };
         WarehouseDwSingle_GatheringConversions: {
             /** Format: URI */
-            birdAssociationArea: string;
-            boundingBoxAreaInSquareMeters: number;
-            century: number;
-            day: number;
-            dayOfYearBegin: number;
-            dayOfYearEnd: number;
-            decade: number;
-            euref: components["schemas"]["WarehouseDwSingle_Coordinates"];
-            eurefCenterPoint: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            birdAssociationArea?: string;
+            boundingBoxAreaInSquareMeters?: number;
+            century?: number;
+            day?: number;
+            dayOfYearBegin?: number;
+            dayOfYearEnd?: number;
+            decade?: number;
+            euref?: components["schemas"]["WarehouseDwSingle_Coordinates"];
+            eurefCenterPoint?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
             /** @description GeoJSON object with custom "crs" required property that takes in values WGS84,EUREF,YKJ (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
-            eurefGeo: Record<string, never>;
-            eurefWKT: string;
-            linelengthInMeters: number;
-            month: number;
-            seasonBegin: number;
-            seasonEnd: number;
-            wgs84: components["schemas"]["WarehouseDwSingle_Coordinates"];
-            wgs84CenterPoint: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            eurefGeo?: Record<string, never>;
+            eurefWKT?: string;
+            linelengthInMeters?: number;
+            month?: number;
+            seasonBegin?: number;
+            seasonEnd?: number;
+            wgs84?: components["schemas"]["WarehouseDwSingle_Coordinates"];
+            wgs84CenterPoint?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
             /** @description GeoJSON object with custom "crs" required property that takes in values WGS84,EUREF,YKJ (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
-            wgs84Geo: Record<string, never>;
-            wgs84Grid005: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
-            wgs84Grid01: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
-            wgs84Grid05: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
-            wgs84Grid1: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
-            wgs84WKT: string;
-            year: number;
-            ykj: components["schemas"]["WarehouseDwSingle_Coordinates"];
-            ykj100km: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
-            ykj100kmCenter: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
-            ykj10km: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
-            ykj10kmCenter: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
-            ykj1km: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
-            ykj1kmCenter: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
-            ykj50km: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
-            ykj50kmCenter: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            wgs84Geo?: Record<string, never>;
+            wgs84Grid005?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            wgs84Grid01?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            wgs84Grid05?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            wgs84Grid1?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            wgs84WKT?: string;
+            year?: number;
+            ykj?: components["schemas"]["WarehouseDwSingle_Coordinates"];
+            ykj100km?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            ykj100kmCenter?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            ykj10km?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            ykj10kmCenter?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            ykj1km?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            ykj1kmCenter?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            ykj50km?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            ykj50kmCenter?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
             /** @description GeoJSON object with custom "crs" required property that takes in values WGS84,EUREF,YKJ (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
-            ykjGeo: Record<string, never>;
-            ykjWKT: string;
+            ykjGeo?: Record<string, never>;
+            ykjWKT?: string;
         };
         WarehouseDwSingle_GatheringDWLinkings: {
-            observers: components["schemas"]["WarehouseDwSingle_Person"][];
+            observers?: components["schemas"]["WarehouseDwSingle_Person"][];
         };
         WarehouseDwSingle_UnitDWLinkings: {
-            taxon: components["schemas"]["WarehouseDwSingle_Taxon"];
-            originalTaxon: components["schemas"]["WarehouseDwSingle_Taxon"];
+            taxon?: components["schemas"]["WarehouseDwSingle_Taxon"];
+            originalTaxon?: components["schemas"]["WarehouseDwSingle_Taxon"];
         };
         WarehouseDwSingle_UnitInterpretations: {
             /** Format: URI */
-            annotatedTaxonId: string;
-            collectionAndRecordQuality: string;
-            det: string;
-            effectiveTags: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
-            individualCount: number;
+            annotatedTaxonId?: string;
+            collectionAndRecordQuality?: string;
+            det?: string;
+            effectiveTags?: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
+            individualCount?: number;
             /** @enum {string} */
-            invasiveControlEffectiveness: "FULL" | "PARTIAL" | "NO_EFFECT" | "NOT_FOUND";
-            invasiveControlled: boolean;
-            needsCheck: boolean;
-            needsIdentification: boolean;
-            pairCount: number;
+            invasiveControlEffectiveness?: "FULL" | "PARTIAL" | "NO_EFFECT" | "NOT_FOUND";
+            invasiveControlled?: boolean;
+            needsCheck?: boolean;
+            needsIdentification?: boolean;
+            pairCount?: number;
             /** @enum {string} */
-            recordQuality: "EXPERT_VERIFIED" | "COMMUNITY_VERIFIED" | "NEUTRAL" | "UNCERTAIN" | "ERRONEOUS";
-            recordQualityNumeric: number;
+            recordQuality?: "EXPERT_VERIFIED" | "COMMUNITY_VERIFIED" | "NEUTRAL" | "UNCERTAIN" | "ERRONEOUS";
+            recordQualityNumeric?: number;
             /** @enum {string} */
-            reliability: "RELIABLE" | "UNDEFINED" | "UNRELIABLE";
+            reliability?: "RELIABLE" | "UNDEFINED" | "UNRELIABLE";
         };
         WarehouseDwSingle_SingleCoordinates: {
-            lat: number;
-            lon: number;
+            lat?: number;
+            lon?: number;
         };
         WarehouseDwSingle_Person: {
-            fullName: string;
+            fullName?: string;
             /** Format: URI */
-            id: string;
-            userId: string;
+            id?: string;
+            userId?: string;
         };
         WarehouseDwSingle_Annotation: {
-            addedTags: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
+            addedTags?: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
             /** Format: URI */
-            annotationByPerson: string;
-            annotationByPersonName: string;
+            annotationByPerson?: string;
+            annotationByPersonName?: string;
             /** Format: URI */
-            annotationBySystem: string;
-            annotationBySystemName: string;
+            annotationBySystem?: string;
+            annotationBySystemName?: string;
             /** Format: URI */
-            atlasCode: string;
+            atlasCode?: string;
             /** Format: URI */
-            byRole: string;
-            created: string;
-            deleted: boolean;
+            byRole?: string;
+            created?: string;
+            deleted?: boolean;
             /** Format: URI */
-            deletedByPerson: string;
-            deletedByPersonName: string;
-            deletedDateTime: string;
+            deletedByPerson?: string;
+            deletedByPersonName?: string;
+            deletedDateTime?: string;
             /** Format: URI */
-            id: string;
-            identification: components["schemas"]["WarehouseDwSingle_Identification"];
-            notes: string;
-            occurrenceAtTimeOfAnnotation: components["schemas"]["WarehouseDwSingle_OccurrenceAtTimeOfAnnotation"];
-            removedTags: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
-            valid: boolean;
+            id?: string;
+            identification?: components["schemas"]["WarehouseDwSingle_Identification"];
+            notes?: string;
+            occurrenceAtTimeOfAnnotation?: components["schemas"]["WarehouseDwSingle_OccurrenceAtTimeOfAnnotation"];
+            removedTags?: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
+            valid?: boolean;
         };
         WarehouseDwSingle_Identification: {
-            notes: string;
-            author: string;
-            facts: components["schemas"]["WarehouseDwSingle_Fact"][];
+            notes?: string;
+            author?: string;
+            facts?: components["schemas"]["WarehouseDwSingle_Fact"][];
             /** Format: URI */
-            id: string;
-            linkings: components["schemas"]["WarehouseDwSingle_IdentificationDwLinkings"];
-            taxon: string;
+            id?: string;
+            linkings?: components["schemas"]["WarehouseDwSingle_IdentificationDwLinkings"];
+            taxon?: string;
             /** Format: URI */
-            taxonID: string;
-            taxonSpecifier: string;
-            taxonSpecifierAuthor: string;
+            taxonID?: string;
+            taxonSpecifier?: string;
+            taxonSpecifierAuthor?: string;
         };
         WarehouseDwSingle_OccurrenceAtTimeOfAnnotation: {
-            countryVerbatim: string;
+            countryVerbatim?: string;
             /** Format: yyyy-MM-dd */
-            dateBegin: string;
+            dateBegin?: string;
             /** Format: yyyy-MM-dd */
-            dateEnd: string;
-            linkings: components["schemas"]["WarehouseDwSingle_IdentificationDwLinkings"];
-            locality: string;
-            municipalityVerbatim: string;
+            dateEnd?: string;
+            linkings?: components["schemas"]["WarehouseDwSingle_IdentificationDwLinkings"];
+            locality?: string;
+            municipalityVerbatim?: string;
             /** Format: URI */
-            taxonId: string;
-            taxonVerbatim: string;
-            wgs84centerPointLat: number;
-            wgs84centerPointLon: number;
+            taxonId?: string;
+            taxonVerbatim?: string;
+            wgs84centerPointLat?: number;
+            wgs84centerPointLon?: number;
         };
         WarehouseDwSingle_IdentificationDwLinkings: {
-            taxon: components["schemas"]["WarehouseDwSingle_Taxon"];
+            taxon?: components["schemas"]["WarehouseDwSingle_Taxon"];
         };
         WarehouseDwSingle_RedListStatus: {
             /** Format: URI */
-            status: string;
-            year: number;
+            status?: string;
+            year?: number;
         };
         WarehouseDwSingle_HabitatObject: {
             /** Format: URI */
-            habitat: string;
-            habitatSpecificTypes: string[];
+            habitat?: string;
+            habitatSpecificTypes?: string[];
             /** Format: URI */
-            id: string;
-            order: number;
+            id?: string;
+            order?: number;
         };
         WarehouseDwSingle_NamedPlaceEntity: {
-            alternativeId: string;
-            alternativeIds: string;
-            birdAssociationAreaDisplayName: string;
-            birdAssociationAreaId: string;
-            collectionId: string;
-            id: string;
-            municipalityDisplayName: string;
-            municipalityId: string;
-            name: string;
-            tags: string[];
-            wgs84CenterPoint: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
-            ykj10km: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            alternativeId?: string;
+            alternativeIds?: string;
+            birdAssociationAreaDisplayName?: string;
+            birdAssociationAreaId?: string;
+            collectionId?: string;
+            id?: string;
+            municipalityDisplayName?: string;
+            municipalityId?: string;
+            name?: string;
+            tags?: string[];
+            wgs84CenterPoint?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
+            ykj10km?: components["schemas"]["WarehouseDwSingle_SingleCoordinates"];
         };
         WarehouseDwQuery_Taxon: {
             /** Format: URI */
-            id: string;
-            qname: string;
+            id?: string;
+            qname?: string;
             /** Format: URI */
-            checklist: string;
-            scientificName: string;
-            scientificNameAuthorship: string;
-            scientificNameDisplayName: string;
-            cursiveName: boolean;
-            finnish: boolean;
+            checklist?: string;
+            scientificName?: string;
+            scientificNameAuthorship?: string;
+            scientificNameDisplayName?: string;
+            cursiveName?: boolean;
+            finnish?: boolean;
             /** Format: URI */
-            taxonRank: string;
-            vernacularName: Record<string, never>;
-            nameFinnish: string;
-            nameSwedish: string;
-            nameEnglish: string;
-            informalTaxonGroups: string[];
-            taxonomicOrder: number;
-            latestRedListStatusFinland: components["schemas"]["WarehouseDwQuery_RedListStatus"];
-            sensitive: boolean;
-            kingdomScientificName: string;
-            occurrenceCountFinland: number;
-            primaryHabitat: components["schemas"]["WarehouseDwQuery_HabitatObject"];
-            administrativeStatuses: string[];
+            taxonRank?: string;
+            vernacularName?: Record<string, never>;
+            nameFinnish?: string;
+            nameSwedish?: string;
+            nameEnglish?: string;
+            informalTaxonGroups?: string[];
+            taxonomicOrder?: number;
+            latestRedListStatusFinland?: components["schemas"]["WarehouseDwQuery_RedListStatus"];
+            sensitive?: boolean;
+            kingdomScientificName?: string;
+            occurrenceCountFinland?: number;
+            primaryHabitat?: components["schemas"]["WarehouseDwQuery_HabitatObject"];
+            administrativeStatuses?: string[];
             /** Format: URI */
-            threatenedStatus: string;
-            taxonConceptIds: string[];
+            threatenedStatus?: string;
+            taxonConceptIds?: string[];
         };
         WarehouseDwSingle_Taxon: {
             /** Format: URI */
-            id: string;
-            qname: string;
+            id?: string;
+            qname?: string;
             /** Format: URI */
-            checklist: string;
-            scientificName: string;
-            scientificNameAuthorship: string;
-            scientificNameDisplayName: string;
-            cursiveName: boolean;
-            finnish: boolean;
+            checklist?: string;
+            scientificName?: string;
+            scientificNameAuthorship?: string;
+            scientificNameDisplayName?: string;
+            cursiveName?: boolean;
+            finnish?: boolean;
             /** Format: URI */
-            taxonRank: string;
-            vernacularName: Record<string, never>;
-            nameFinnish: string;
-            nameSwedish: string;
-            nameEnglish: string;
-            informalTaxonGroups: string[];
-            taxonomicOrder: number;
-            latestRedListStatusFinland: components["schemas"]["WarehouseDwSingle_RedListStatus"];
-            sensitive: boolean;
-            kingdomScientificName: string;
-            occurrenceCountFinland: number;
-            primaryHabitat: components["schemas"]["WarehouseDwSingle_HabitatObject"];
-            administrativeStatuses: string[];
+            taxonRank?: string;
+            vernacularName?: Record<string, never>;
+            nameFinnish?: string;
+            nameSwedish?: string;
+            nameEnglish?: string;
+            informalTaxonGroups?: string[];
+            taxonomicOrder?: number;
+            latestRedListStatusFinland?: components["schemas"]["WarehouseDwSingle_RedListStatus"];
+            sensitive?: boolean;
+            kingdomScientificName?: string;
+            occurrenceCountFinland?: number;
+            primaryHabitat?: components["schemas"]["WarehouseDwSingle_HabitatObject"];
+            administrativeStatuses?: string[];
             /** Format: URI */
-            threatenedStatus: string;
-            taxonConceptIds: string[];
+            threatenedStatus?: string;
+            taxonConceptIds?: string[];
         };
         WarehouseDwError: {
-            status: number;
-            message: string;
+            status?: number;
+            message?: string;
         };
         LajiBackendTaxonSearchResponse: {
             /** @description Name that matched the search word */
-            matchingName: string;
+            matchingName?: string;
             /**
              * @description Type of the name.
              * @enum {string}
              */
-            nameType: "MX.scientificName" | "MX.vernacularName" | "MX.hasSynonym" | "MX.hasBasionym" | "MX.alternativeVernacularName" | "MX.hasMisappliedName" | "MX.birdlifeCode" | "MX.obsoleteVernacularName" | "MX.euringCode" | "MX.hasSubjectiveSynonym" | "MX.hasAlternativeName" | "MX.hasOrthographicVariant" | "MX.hasObjectiveSynonym" | "MX.hasMisspelledName" | "MX.colloquialVernacularName" | "MX.hasUncertainSynonym" | "MX.hasHomotypicSynonym" | "MX.tradeName" | "MX.hasHeterotypicSynonym";
+            nameType?: "MX.scientificName" | "MX.vernacularName" | "MX.hasSynonym" | "MX.hasBasionym" | "MX.alternativeVernacularName" | "MX.hasMisappliedName" | "MX.birdlifeCode" | "MX.obsoleteVernacularName" | "MX.euringCode" | "MX.hasSubjectiveSynonym" | "MX.hasAlternativeName" | "MX.hasOrthographicVariant" | "MX.hasObjectiveSynonym" | "MX.hasMisspelledName" | "MX.colloquialVernacularName" | "MX.hasUncertainSynonym" | "MX.hasHomotypicSynonym" | "MX.tradeName" | "MX.hasHeterotypicSynonym";
             /** @description Taxon identifier of the taxon that has the matching name; in the short Qname format, for example 'MX.123' */
-            id: string;
+            id?: string;
             /** @description Checklist identifier of the matching taxon; in the short Qname format, for example 'MR.1'. For taxa not part of any checklist the value is 'undefined'. */
-            checklist: string;
+            checklist?: string;
             /** @description Accepted scientific name of the taxon that has the matching name */
-            scientificName: string;
+            scientificName?: string;
             /** @description Author of the above mentioned scientific name */
-            scientificNameAuthorship: string;
+            scientificNameAuthorship?: string;
             /** @description Taxonomic rank of the taxon that has the matching name; in the short Qname format, for example 'MX.genus' */
-            taxonRank: string;
+            taxonRank?: string;
             /** @description Should the matching name be cursived */
-            cursiveName: boolean;
+            cursiveName?: boolean;
             /** @description Is the taxon that has the mathing name marked as a Finnish taxon */
-            finnish: boolean;
+            finnish?: boolean;
             /** @description Is the taxon that has the mathing name species level or lower, or a higher taxon */
-            species: boolean;
-            vernacularName: components["schemas"]["LajiBackendLocalizedText"];
-            informalGroups: {
+            species?: boolean;
+            vernacularName?: components["schemas"]["LajiBackendLocalizedText"];
+            informalGroups?: {
                 /** @description Identifier of the informal taxon group that the matching taxon belongs to); in the short Qname format, for example 'MVL.1' */
-                id: string;
-                name: components["schemas"]["LajiBackendLocalizedText"];
+                id?: string;
+                name?: components["schemas"]["LajiBackendLocalizedText"];
             }[];
             /** @description Scientific name of the kingdom that the matching taxon belongs to */
-            kingdomScientificName: string;
+            kingdomScientificName?: string;
             /**
              * @description Type of the matching name
              * @enum {string}
              */
-            type: "exactMatches" | "partialMatches" | "likelyMatches";
+            type?: "exactMatches" | "partialMatches" | "likelyMatches";
         }[];
         LajiBackendTaxonSearchError: {
-            error: {
+            error?: {
                 /** @description HTTP Status Code */
-                statusCode: number;
-                name: string;
-                message: string;
+                statusCode?: number;
+                name?: string;
+                message?: string;
             };
         };
         LajiBackendTaxon: {
             /** @description Qname identifier */
-            qname: string;
+            qname?: string;
             /** @description Qname identifier */
-            id: string;
-            uri: string;
+            id?: string;
+            uri?: string;
             /** @description Qname identifier */
-            isPartOf: string;
+            isPartOf?: string;
             /** @description Qname identifier */
-            isPartOfNonHidden: string;
-            parents: string[];
-            nonHiddenParents: string[];
-            depth: number;
-            nonHiddenDepth: number;
-            parentsIncludeSelf: string[];
-            nonHiddenParentsIncludeSelf: string[];
-            hiddenTaxon: boolean;
+            isPartOfNonHidden?: string;
+            parents?: string[];
+            nonHiddenParents?: string[];
+            depth?: number;
+            nonHiddenDepth?: number;
+            parentsIncludeSelf?: string[];
+            nonHiddenParentsIncludeSelf?: string[];
+            hiddenTaxon?: boolean;
             /** @description Qname identifier */
-            nameAccordingTo: string;
+            nameAccordingTo?: string;
             /** @description Qname identifier */
-            taxonRank: string;
-            scientificName: string;
-            scientificNameAuthorship: string;
-            scientificNameDisplayName: string;
-            cursiveName: boolean;
-            typeSpecimenURI: string;
-            synonymNames: string;
-            basionyms: components["schemas"]["LajiBackendSimpleTaxon"][];
-            objectiveSynonyms: components["schemas"]["LajiBackendSimpleTaxon"][];
-            subjectiveSynonyms: components["schemas"]["LajiBackendSimpleTaxon"][];
-            homotypicSynonyms: components["schemas"]["LajiBackendSimpleTaxon"][];
-            heterotypicSynonyms: components["schemas"]["LajiBackendSimpleTaxon"][];
-            synonyms: components["schemas"]["LajiBackendSimpleTaxon"][];
-            misspelledNames: components["schemas"]["LajiBackendSimpleTaxon"][];
-            orthographicVariants: components["schemas"]["LajiBackendSimpleTaxon"][];
-            uncertainSynonyms: components["schemas"]["LajiBackendSimpleTaxon"][];
-            misappliedNames: components["schemas"]["LajiBackendSimpleTaxon"][];
-            alternativeNames: components["schemas"]["LajiBackendSimpleTaxon"][];
-            vernacularName: components["schemas"]["LajiBackendLocalizedText"];
-            alternativeVernacularName: components["schemas"]["LajiBackendLocalizedText"][];
-            obsoleteVernacularName: components["schemas"]["LajiBackendLocalizedText"][];
-            colloquialVernacularName: components["schemas"]["LajiBackendLocalizedText"][];
-            tradeName: components["schemas"]["LajiBackendLocalizedText"][];
-            informalTaxonGroups: string[];
+            taxonRank?: string;
+            scientificName?: string;
+            scientificNameAuthorship?: string;
+            scientificNameDisplayName?: string;
+            cursiveName?: boolean;
+            typeSpecimenURI?: string;
+            synonymNames?: string;
+            basionyms?: components["schemas"]["LajiBackendSimpleTaxon"][];
+            objectiveSynonyms?: components["schemas"]["LajiBackendSimpleTaxon"][];
+            subjectiveSynonyms?: components["schemas"]["LajiBackendSimpleTaxon"][];
+            homotypicSynonyms?: components["schemas"]["LajiBackendSimpleTaxon"][];
+            heterotypicSynonyms?: components["schemas"]["LajiBackendSimpleTaxon"][];
+            synonyms?: components["schemas"]["LajiBackendSimpleTaxon"][];
+            misspelledNames?: components["schemas"]["LajiBackendSimpleTaxon"][];
+            orthographicVariants?: components["schemas"]["LajiBackendSimpleTaxon"][];
+            uncertainSynonyms?: components["schemas"]["LajiBackendSimpleTaxon"][];
+            misappliedNames?: components["schemas"]["LajiBackendSimpleTaxon"][];
+            alternativeNames?: components["schemas"]["LajiBackendSimpleTaxon"][];
+            vernacularName?: components["schemas"]["LajiBackendLocalizedText"];
+            alternativeVernacularName?: components["schemas"]["LajiBackendLocalizedText"][];
+            obsoleteVernacularName?: components["schemas"]["LajiBackendLocalizedText"][];
+            colloquialVernacularName?: components["schemas"]["LajiBackendLocalizedText"][];
+            tradeName?: components["schemas"]["LajiBackendLocalizedText"][];
+            informalTaxonGroups?: string[];
             /** @description Qname identifier */
-            threatenedStatus: string;
-            redListEvaluationGroups: string[];
+            threatenedStatus?: string;
+            redListEvaluationGroups?: string[];
             /** @description Qname identifier */
-            occurrenceInFinland: string;
-            occurrenceInFinlandSpecimenURI: string;
-            typeOfOccurrenceInFinland: string[];
-            occurrenceInFinlandPublications: string[];
-            typeOfOccurrenceInFinlandNotes: string;
-            originalPublications: string[];
+            occurrenceInFinland?: string;
+            occurrenceInFinlandSpecimenURI?: string;
+            typeOfOccurrenceInFinland?: string[];
+            occurrenceInFinlandPublications?: string[];
+            typeOfOccurrenceInFinlandNotes?: string;
+            originalPublications?: string[];
             /** @description Qname identifier */
-            originalDescription: string;
+            originalDescription?: string;
             /** @description Qname identifier */
-            nameDecidedBy: string;
-            nameDecidedDate: string;
-            administrativeStatuses: string[];
-            primaryHabitat: components["schemas"]["LajiBackendHabitatObject"];
-            secondaryHabitats: components["schemas"]["LajiBackendHabitatObject"][];
-            latestRedListStatusFinland: components["schemas"]["LajiBackendRedListStatus"];
-            redListStatusesInFinland: components["schemas"]["LajiBackendRedListStatus"][];
-            taxonExpert: string[];
-            taxonEditor: string[];
+            nameDecidedBy?: string;
+            nameDecidedDate?: string;
+            administrativeStatuses?: string[];
+            primaryHabitat?: components["schemas"]["LajiBackendHabitatObject"];
+            secondaryHabitats?: components["schemas"]["LajiBackendHabitatObject"][];
+            latestRedListStatusFinland?: components["schemas"]["LajiBackendRedListStatus"];
+            redListStatusesInFinland?: components["schemas"]["LajiBackendRedListStatus"][];
+            taxonExpert?: string[];
+            taxonEditor?: string[];
             /** @description Qname identifier */
-            invasiveSpeciesEstablishment: string;
-            multimedia: components["schemas"]["LajiBackendImage"][];
-            descriptions: components["schemas"]["LajiBackendContent"];
+            invasiveSpeciesEstablishment?: string;
+            multimedia?: components["schemas"]["LajiBackendImage"][];
+            descriptions?: components["schemas"]["LajiBackendContent"];
             /** @description Qname identifier */
-            secureLevel: string;
+            secureLevel?: string;
             /** @description Qname identifier */
-            breedingSecureLevel: string;
+            breedingSecureLevel?: string;
             /** @description Qname identifier */
-            winteringSecureLevel: string;
+            winteringSecureLevel?: string;
             /** @description Qname identifier */
-            nestSiteSecureLevel: string;
+            nestSiteSecureLevel?: string;
             /** @description Qname identifier */
-            naturaAreaSecureLevel: string;
-            sensitive: boolean;
-            autoNonWild: boolean;
-            occurrences: components["schemas"]["LajiBackendOccurrence"][];
-            habitatOccurrenceCounts: components["schemas"]["LajiBackendHabitatOccurrenceCount"][];
-            birdlifeCode: string;
-            euringCode: string;
-            euringNumber: number;
-            customReportFormLink: string;
-            taxonConceptIds: string[];
-            additionalIds: string[];
-            externalLinks: components["schemas"]["LajiBackendLocalizedURL"][];
-            finnish: boolean;
-            species: boolean;
-            finnishSpecies: boolean;
-            invasiveSpecies: boolean;
-            stableInFinland: boolean;
-            countOfSpecies: number;
-            countOfFinnishSpecies: number;
-            observationCount: number;
-            occurrenceCount: number;
-            observationCountFinland: number;
-            occurrenceCountFinland: number;
-            observationCountInvasiveFinland: number;
-            occurrenceCountInvasiveFinland: number;
-            bold: components["schemas"]["LajiBackendBoldRecords"];
-            hasBold: boolean;
+            naturaAreaSecureLevel?: string;
+            sensitive?: boolean;
+            autoNonWild?: boolean;
+            occurrences?: components["schemas"]["LajiBackendOccurrence"][];
+            habitatOccurrenceCounts?: components["schemas"]["LajiBackendHabitatOccurrenceCount"][];
+            birdlifeCode?: string;
+            euringCode?: string;
+            euringNumber?: number;
+            customReportFormLink?: string;
+            taxonConceptIds?: string[];
+            additionalIds?: string[];
+            externalLinks?: components["schemas"]["LajiBackendLocalizedURL"][];
+            finnish?: boolean;
+            species?: boolean;
+            finnishSpecies?: boolean;
+            invasiveSpecies?: boolean;
+            stableInFinland?: boolean;
+            countOfSpecies?: number;
+            countOfFinnishSpecies?: number;
+            observationCount?: number;
+            occurrenceCount?: number;
+            observationCountFinland?: number;
+            occurrenceCountFinland?: number;
+            observationCountInvasiveFinland?: number;
+            occurrenceCountInvasiveFinland?: number;
+            bold?: components["schemas"]["LajiBackendBoldRecords"];
+            hasBold?: boolean;
             /** @description Qname identifier */
-            isPartOfSynonym: string;
-            hasParent: boolean;
-            hasChildren: boolean;
-            hasMultimedia: boolean;
-            hasDescriptions: boolean;
-            invasiveSpeciesMainGroups: string[];
-            taxonSets: string[];
-            notes: string;
-            taxonomicOrder: number;
-            parent: {
-                domain: components["schemas"]["LajiBackendSimpleTaxon"];
-                kingdom: components["schemas"]["LajiBackendSimpleTaxon"];
-                phylum: components["schemas"]["LajiBackendSimpleTaxon"];
-                subphylum: components["schemas"]["LajiBackendSimpleTaxon"];
-                division: components["schemas"]["LajiBackendSimpleTaxon"];
-                class: components["schemas"]["LajiBackendSimpleTaxon"];
-                subclass: components["schemas"]["LajiBackendSimpleTaxon"];
-                order: components["schemas"]["LajiBackendSimpleTaxon"];
-                suborder: components["schemas"]["LajiBackendSimpleTaxon"];
-                superfamily: components["schemas"]["LajiBackendSimpleTaxon"];
-                family: components["schemas"]["LajiBackendSimpleTaxon"];
-                subfamily: components["schemas"]["LajiBackendSimpleTaxon"];
-                tribe: components["schemas"]["LajiBackendSimpleTaxon"];
-                subtribe: components["schemas"]["LajiBackendSimpleTaxon"];
-                genus: components["schemas"]["LajiBackendSimpleTaxon"];
-                subgenus: components["schemas"]["LajiBackendSimpleTaxon"];
-                aggregate: components["schemas"]["LajiBackendSimpleTaxon"];
-                species: components["schemas"]["LajiBackendSimpleTaxon"];
+            isPartOfSynonym?: string;
+            hasParent?: boolean;
+            hasChildren?: boolean;
+            hasMultimedia?: boolean;
+            hasDescriptions?: boolean;
+            invasiveSpeciesMainGroups?: string[];
+            taxonSets?: string[];
+            notes?: string;
+            taxonomicOrder?: number;
+            parent?: {
+                domain?: components["schemas"]["LajiBackendSimpleTaxon"];
+                kingdom?: components["schemas"]["LajiBackendSimpleTaxon"];
+                phylum?: components["schemas"]["LajiBackendSimpleTaxon"];
+                subphylum?: components["schemas"]["LajiBackendSimpleTaxon"];
+                division?: components["schemas"]["LajiBackendSimpleTaxon"];
+                class?: components["schemas"]["LajiBackendSimpleTaxon"];
+                subclass?: components["schemas"]["LajiBackendSimpleTaxon"];
+                order?: components["schemas"]["LajiBackendSimpleTaxon"];
+                suborder?: components["schemas"]["LajiBackendSimpleTaxon"];
+                superfamily?: components["schemas"]["LajiBackendSimpleTaxon"];
+                family?: components["schemas"]["LajiBackendSimpleTaxon"];
+                subfamily?: components["schemas"]["LajiBackendSimpleTaxon"];
+                tribe?: components["schemas"]["LajiBackendSimpleTaxon"];
+                subtribe?: components["schemas"]["LajiBackendSimpleTaxon"];
+                genus?: components["schemas"]["LajiBackendSimpleTaxon"];
+                subgenus?: components["schemas"]["LajiBackendSimpleTaxon"];
+                aggregate?: components["schemas"]["LajiBackendSimpleTaxon"];
+                species?: components["schemas"]["LajiBackendSimpleTaxon"];
             };
-            synonymOf: components["schemas"]["LajiBackendSimpleTaxon"];
-            latestRedListEvaluation: components["schemas"]["LajiBackendEvaluation"];
-            hasLatestRedListEvaluation: boolean;
-            primaryHabitatSearchStrings: string[];
-            anyHabitatSearchStrings: string[];
-            vernacularNameMultiLang: {
-                fi: components["schemas"]["LajiBackendLocalizedText"];
-                sv: components["schemas"]["LajiBackendLocalizedText"];
-                en: components["schemas"]["LajiBackendLocalizedText"];
+            synonymOf?: components["schemas"]["LajiBackendSimpleTaxon"];
+            latestRedListEvaluation?: components["schemas"]["LajiBackendEvaluation"];
+            hasLatestRedListEvaluation?: boolean;
+            primaryHabitatSearchStrings?: string[];
+            anyHabitatSearchStrings?: string[];
+            vernacularNameMultiLang?: {
+                fi?: components["schemas"]["LajiBackendLocalizedText"];
+                sv?: components["schemas"]["LajiBackendLocalizedText"];
+                en?: components["schemas"]["LajiBackendLocalizedText"];
             };
-            alternativeVernacularNameMultiLang: {
-                fi: components["schemas"]["LajiBackendLocalizedText"][];
-                sv: components["schemas"]["LajiBackendLocalizedText"][];
-                en: components["schemas"]["LajiBackendLocalizedText"][];
+            alternativeVernacularNameMultiLang?: {
+                fi?: components["schemas"]["LajiBackendLocalizedText"][];
+                sv?: components["schemas"]["LajiBackendLocalizedText"][];
+                en?: components["schemas"]["LajiBackendLocalizedText"][];
             };
-            colloquialVernacularNameMultiLang: {
-                fi: components["schemas"]["LajiBackendLocalizedText"][];
-                sv: components["schemas"]["LajiBackendLocalizedText"][];
-                en: components["schemas"]["LajiBackendLocalizedText"][];
+            colloquialVernacularNameMultiLang?: {
+                fi?: components["schemas"]["LajiBackendLocalizedText"][];
+                sv?: components["schemas"]["LajiBackendLocalizedText"][];
+                en?: components["schemas"]["LajiBackendLocalizedText"][];
             };
-            obsoleteVernacularNameMultiLang: {
-                fi: components["schemas"]["LajiBackendLocalizedText"][];
-                sv: components["schemas"]["LajiBackendLocalizedText"][];
-                en: components["schemas"]["LajiBackendLocalizedText"][];
+            obsoleteVernacularNameMultiLang?: {
+                fi?: components["schemas"]["LajiBackendLocalizedText"][];
+                sv?: components["schemas"]["LajiBackendLocalizedText"][];
+                en?: components["schemas"]["LajiBackendLocalizedText"][];
             };
-            tradeNameMultiLang: {
-                fi: components["schemas"]["LajiBackendLocalizedText"][];
-                sv: components["schemas"]["LajiBackendLocalizedText"][];
-                en: components["schemas"]["LajiBackendLocalizedText"][];
+            tradeNameMultiLang?: {
+                fi?: components["schemas"]["LajiBackendLocalizedText"][];
+                sv?: components["schemas"]["LajiBackendLocalizedText"][];
+                en?: components["schemas"]["LajiBackendLocalizedText"][];
             };
         };
         LajiBackendSimpleTaxon: {
-            id: string;
-            scientificName: string;
-            scientificNameAuthorship: string;
-            vernacularName: components["schemas"]["LajiBackendLocalizedText"];
-            taxonRank: string;
-            cursiveName: boolean;
-            notes: string;
-            bold: components["schemas"]["LajiBackendBoldRecords"];
-            hasBold: boolean;
+            id?: string;
+            scientificName?: string;
+            scientificNameAuthorship?: string;
+            vernacularName?: components["schemas"]["LajiBackendLocalizedText"];
+            taxonRank?: string;
+            cursiveName?: boolean;
+            notes?: string;
+            bold?: components["schemas"]["LajiBackendBoldRecords"];
+            hasBold?: boolean;
         };
         LajiBackendLocalizedText: string;
         LajiBackendLocalizedURL: {
-            locale: string;
-            uri: string;
+            locale?: string;
+            uri?: string;
         };
         LajiBackendRedListStatus: {
             /** @description Qname identifier */
-            status: string;
-            year: number;
+            status?: string;
+            year?: number;
         };
         LajiBackendHabitatObject: {
             /** @description Qname identifier */
-            habitat: string;
-            habitatSpecificTypes: string[];
+            habitat?: string;
+            habitatSpecificTypes?: string[];
             /** @description Qname identifier */
-            id: string;
-            order: number;
+            id?: string;
+            order?: number;
         };
         LajiBackendOccurrence: {
             /** @description Qname identifier */
-            area: string;
+            area?: string;
             /** @description Qname identifier */
-            id: string;
-            notes: string;
-            occurrenceCount: number;
-            specimenURI: string;
+            id?: string;
+            notes?: string;
+            occurrenceCount?: number;
+            specimenURI?: string;
             /** @description Qname identifier */
-            status: string;
-            threatened: boolean;
-            year: number;
+            status?: string;
+            threatened?: boolean;
+            year?: number;
         };
         LajiBackendHabitatOccurrenceCount: {
-            habitat: components["schemas"]["LajiBackendLocalizedText"];
-            id: string;
-            occurrenceCount: number;
+            habitat?: components["schemas"]["LajiBackendLocalizedText"];
+            id?: string;
+            occurrenceCount?: number;
         };
         LajiBackendImage: {
-            author: string;
-            caption: string;
-            captureDateTime: string;
-            copyrightOwner: string;
-            fullURL: string;
+            author?: string;
+            caption?: string;
+            captureDateTime?: string;
+            copyrightOwner?: string;
+            fullURL?: string;
             /** @description Qname identifier */
-            id: string;
-            keywords: string[];
-            largeURL: string;
-            licenseAbbreviation: string;
-            licenseFullname: components["schemas"]["LajiBackendLocalizedText"];
+            id?: string;
+            keywords?: string[];
+            largeURL?: string;
+            licenseAbbreviation?: string;
+            licenseFullname?: components["schemas"]["LajiBackendLocalizedText"];
             /** @description Qname identifier */
-            licenseId: string;
-            lifeStage: string[];
-            plantLifeStage: string[];
-            sex: string[];
+            licenseId?: string;
+            lifeStage?: string[];
+            plantLifeStage?: string[];
+            sex?: string[];
             /** @description Qname identifier */
-            side: string;
-            sortOrder: number;
+            side?: string;
+            sortOrder?: number;
             /** @description Qname identifier */
-            source: string;
-            squareThumbnailURL: string;
-            taxon: components["schemas"]["LajiBackendSimpleTaxon"];
-            taxonDescriptionCaption: components["schemas"]["LajiBackendLocalizedText"];
-            thumbnailURL: string;
+            source?: string;
+            squareThumbnailURL?: string;
+            taxon?: components["schemas"]["LajiBackendSimpleTaxon"];
+            taxonDescriptionCaption?: components["schemas"]["LajiBackendLocalizedText"];
+            thumbnailURL?: string;
             /** @description Qname identifier */
-            type: string;
-            uploadDateTime: string;
-            primaryForTaxon: boolean;
+            type?: string;
+            uploadDateTime?: string;
+            primaryForTaxon?: boolean;
         };
         LajiBackendBoldRecords: {
-            barcodes: number;
-            binCount: number;
-            bins: string[];
-            publicRecords: number;
-            specimens: number;
+            barcodes?: number;
+            binCount?: number;
+            bins?: string[];
+            publicRecords?: number;
+            specimens?: number;
         };
         LajiBackendEvaluation: {
-            evaluationYear: number;
+            evaluationYear?: number;
             /** @enum {string} */
-            redListStatus: "MX.iucnEX" | "MX.iucnEW" | "MX.iucnRE" | "MX.iucnCR" | "MX.iucnEN" | "MX.iucnVU" | "MX.iucnNT" | "MX.iucnLC" | "MX.iucnDD" | "MX.iucnNA" | "MX.iucnNE";
+            redListStatus?: "MX.iucnEX" | "MX.iucnEW" | "MX.iucnRE" | "MX.iucnCR" | "MX.iucnEN" | "MX.iucnVU" | "MX.iucnNT" | "MX.iucnLC" | "MX.iucnDD" | "MX.iucnNA" | "MX.iucnNE";
             /** @enum {string} */
-            externalPopulationImpactOnRedListStatus: "MKV.externalPopulationImpactOnRedListStatusEnumMinus1" | "MKV.externalPopulationImpactOnRedListStatusEnumMinus2" | "MKV.externalPopulationImpactOnRedListStatusEnumPlus1" | "MKV.externalPopulationImpactOnRedListStatusEnumPlus2";
-            criteriaForStatus: string;
+            externalPopulationImpactOnRedListStatus?: "MKV.externalPopulationImpactOnRedListStatusEnumMinus1" | "MKV.externalPopulationImpactOnRedListStatusEnumMinus2" | "MKV.externalPopulationImpactOnRedListStatusEnumPlus1" | "MKV.externalPopulationImpactOnRedListStatusEnumPlus2";
+            criteriaForStatus?: string;
             /** @enum {string} */
-            possiblyRE: "MX.iucnRE" | "MX.iucnEW" | "MX.iucnEX";
-            reasonForStatusChange: ("MKV.reasonForStatusChangeGenuine" | "MKV.reasonForStatusChangeGenuineBeforePreviousEvaluation" | "MKV.reasonForStatusChangeChangesInCriteria" | "MKV.reasonForStatusChangeMoreInformation" | "MKV.reasonForStatusChangeChangesInTaxonomy" | "MKV.reasonForStatusChangeError" | "MKV.reasonForStatusChangeErroneousInformation" | "MKV.reasonForStatusChangeOther")[];
-            lastSightingNotes: string;
-            primaryHabitat: components["schemas"]["LajiBackendHabitatObject"];
-            secondaryHabitats: components["schemas"]["LajiBackendHabitatObject"][];
-            primaryHabitatSearchStrings: string[];
-            anyHabitatSearchStrings: string[];
-            endangermentReasons: string[];
-            primaryEndangermentReason: string;
-            threats: string[];
-            primaryThreat: string;
-            occurrences: components["schemas"]["LajiBackendOccurrence"][];
-            threatenedAtArea: string[];
-            calculatedRedListIndex: number;
-            calculatedCorrectedRedListIndex: number;
-            correctedStatusForRedListIndex: string;
+            possiblyRE?: "MX.iucnRE" | "MX.iucnEW" | "MX.iucnEX";
+            reasonForStatusChange?: ("MKV.reasonForStatusChangeGenuine" | "MKV.reasonForStatusChangeGenuineBeforePreviousEvaluation" | "MKV.reasonForStatusChangeChangesInCriteria" | "MKV.reasonForStatusChangeMoreInformation" | "MKV.reasonForStatusChangeChangesInTaxonomy" | "MKV.reasonForStatusChangeError" | "MKV.reasonForStatusChangeErroneousInformation" | "MKV.reasonForStatusChangeOther")[];
+            lastSightingNotes?: string;
+            primaryHabitat?: components["schemas"]["LajiBackendHabitatObject"];
+            secondaryHabitats?: components["schemas"]["LajiBackendHabitatObject"][];
+            primaryHabitatSearchStrings?: string[];
+            anyHabitatSearchStrings?: string[];
+            endangermentReasons?: string[];
+            primaryEndangermentReason?: string;
+            threats?: string[];
+            primaryThreat?: string;
+            occurrences?: components["schemas"]["LajiBackendOccurrence"][];
+            threatenedAtArea?: string[];
+            calculatedRedListIndex?: number;
+            calculatedCorrectedRedListIndex?: number;
+            correctedStatusForRedListIndex?: string;
         };
         LajiBackendContent: components["schemas"]["LajiBackendContext"][];
         LajiBackendContext: {
-            id: string;
-            title: components["schemas"]["LajiBackendLocalizedText"];
-            groups: {
-                group: string;
-                title: components["schemas"]["LajiBackendLocalizedText"];
-                variables: {
-                    variable: string;
-                    title: components["schemas"]["LajiBackendLocalizedText"];
-                    content: components["schemas"]["LajiBackendLocalizedText"];
+            id?: string;
+            title?: components["schemas"]["LajiBackendLocalizedText"];
+            groups?: {
+                group?: string;
+                title?: components["schemas"]["LajiBackendLocalizedText"];
+                variables?: {
+                    variable?: string;
+                    title?: components["schemas"]["LajiBackendLocalizedText"];
+                    content?: components["schemas"]["LajiBackendLocalizedText"];
                 }[];
             }[];
-            speciesCardAuthors: {
-                variable: string;
-                title: components["schemas"]["LajiBackendLocalizedText"];
-                content: components["schemas"]["LajiBackendLocalizedText"];
+            speciesCardAuthors?: {
+                variable?: string;
+                title?: components["schemas"]["LajiBackendLocalizedText"];
+                content?: components["schemas"]["LajiBackendLocalizedText"];
             };
         };
         LajiBackendTraitAPIError: {
             /** @description HTTP Status Code */
-            status: number;
+            status?: number;
             /** @description Error message */
-            message: string;
+            message?: string;
             /** @description Stacktrace */
-            stacktrace: string;
+            stacktrace?: string;
         };
         LajiBackendTraitAPIOKResponse: {
             /** @description ok */
-            ok: string;
+            ok?: string;
         };
         LajiBackendTraitAPISearchResponse: {
-            currentPage: number;
-            nextPage: number;
-            lastPage: number;
-            pageSize: number;
-            total: number;
-            results: components["schemas"]["LajiBackendTraitSearchRow"][];
-            errors: {
-                [key: string]: string;
+            currentPage?: number;
+            nextPage?: number;
+            lastPage?: number;
+            pageSize?: number;
+            total?: number;
+            results?: components["schemas"]["LajiBackendTraitSearchRow"][];
+            errors?: {
+                [key: string]: string | undefined;
             };
         };
         LajiBackendValidationResponse: {
-            pass: boolean;
-            errors: {
-                [key: string]: string;
+            pass?: boolean;
+            errors?: {
+                [key: string]: string | undefined;
             };
         };
         LajiBackendTraitTSVValidationResponse: {
-            pass: boolean;
-            header: components["schemas"]["LajiBackendValidationResponse"];
-            rows: components["schemas"]["LajiBackendValidationResponse"][];
+            pass?: boolean;
+            header?: components["schemas"]["LajiBackendValidationResponse"];
+            rows?: components["schemas"]["LajiBackendValidationResponse"][];
         };
         LajiBackendTraitMultiValidationResponse: {
-            pass: boolean;
-            rows: components["schemas"]["LajiBackendValidationResponse"][];
+            pass?: boolean;
+            rows?: components["schemas"]["LajiBackendValidationResponse"][];
         };
         LajiBackendTraitGroup: {
             /** @description Qname identifier */
@@ -11082,199 +11081,199 @@ export interface components {
         };
         LajiBackendTraitSearchRow: {
             /** @description Qname identifier */
-            id: string;
-            subject: components["schemas"]["LajiBackendTraitSearchSubject"];
-            year: number;
-            month: number;
-            day: number;
-            eventDate: string;
-            geodeticDatum: string;
-            trait: components["schemas"]["LajiBackendTraitSearchTrait"];
-            traitGroup: components["schemas"]["LajiBackendTraitSearchTraitGroup"];
+            id?: string;
+            subject?: components["schemas"]["LajiBackendTraitSearchSubject"];
+            year?: number;
+            month?: number;
+            day?: number;
+            eventDate?: string;
+            geodeticDatum?: string;
+            trait?: components["schemas"]["LajiBackendTraitSearchTrait"];
+            traitGroup?: components["schemas"]["LajiBackendTraitSearchTraitGroup"];
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            statisticalMethod: "TDF.statisticalMethodMin" | "TDF.statisticalMethodMax" | "TDF.statisticalMethodAvg" | "TDF.statisticalMethodMedian" | "TDF.statisticalMethodSD" | "TDF.statisticalMethodMode";
-            value: string;
-            valueNumeric: number;
+            statisticalMethod?: "TDF.statisticalMethodMin" | "TDF.statisticalMethodMax" | "TDF.statisticalMethodAvg" | "TDF.statisticalMethodMedian" | "TDF.statisticalMethodSD" | "TDF.statisticalMethodMode";
+            value?: string;
+            valueNumeric?: number;
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            unit: "TDF.umNM" | "TDF.umUM" | "TDF.umMM" | "TDF.umCM" | "TDF.umM" | "TDF.umKM" | "TDF.umG" | "TDF.umKG" | "TDF.umA" | "TDF.umS" | "TDF.umML" | "TDF.umL" | "TDF.umMOL" | "TDF.umMMOL" | "TDF.umUMOL" | "TDF.umHZ" | "TDF.umP" | "TDF.umPPT" | "TDF.umPPM" | "TDF.umC" | "TDF.umMM2" | "TDF.umCM2" | "TDF.umM2" | "TDF.umARE" | "TDF.umHA" | "TDF.umKM2" | "TDF.umMM3" | "TDF.umCM3" | "TDF.umM3" | "TDF.umGMOL" | "TDF.umMOLL" | "TDF.umCM2H";
-            measurementAccuracy: number;
-            originalValue: string;
-            originalValueNumeric: number;
+            unit?: "TDF.umNM" | "TDF.umUM" | "TDF.umMM" | "TDF.umCM" | "TDF.umM" | "TDF.umKM" | "TDF.umG" | "TDF.umKG" | "TDF.umA" | "TDF.umS" | "TDF.umML" | "TDF.umL" | "TDF.umMOL" | "TDF.umMMOL" | "TDF.umUMOL" | "TDF.umHZ" | "TDF.umP" | "TDF.umPPT" | "TDF.umPPM" | "TDF.umC" | "TDF.umMM2" | "TDF.umCM2" | "TDF.umM2" | "TDF.umARE" | "TDF.umHA" | "TDF.umKM2" | "TDF.umMM3" | "TDF.umCM3" | "TDF.umM3" | "TDF.umGMOL" | "TDF.umMOLL" | "TDF.umCM2H";
+            measurementAccuracy?: number;
+            originalValue?: string;
+            originalValueNumeric?: number;
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            originalUnit: "TDF.umNM" | "TDF.umUM" | "TDF.umMM" | "TDF.umCM" | "TDF.umM" | "TDF.umKM" | "TDF.umG" | "TDF.umKG" | "TDF.umA" | "TDF.umS" | "TDF.umML" | "TDF.umL" | "TDF.umMOL" | "TDF.umMMOL" | "TDF.umUMOL" | "TDF.umHZ" | "TDF.umP" | "TDF.umPPT" | "TDF.umPPM" | "TDF.umC" | "TDF.umMM2" | "TDF.umCM2" | "TDF.umM2" | "TDF.umARE" | "TDF.umHA" | "TDF.umKM2" | "TDF.umMM3" | "TDF.umCM3" | "TDF.umM3" | "TDF.umGMOL" | "TDF.umMOLL" | "TDF.umCM2H";
-            originalMeasurementAccuracy: number;
-            subjectFinBIFTaxon: components["schemas"]["LajiBackendTraitTaxon"];
-            subjectGBIFTaxon: components["schemas"]["LajiBackendTraitTaxon"];
+            originalUnit?: "TDF.umNM" | "TDF.umUM" | "TDF.umMM" | "TDF.umCM" | "TDF.umM" | "TDF.umKM" | "TDF.umG" | "TDF.umKG" | "TDF.umA" | "TDF.umS" | "TDF.umML" | "TDF.umL" | "TDF.umMOL" | "TDF.umMMOL" | "TDF.umUMOL" | "TDF.umHZ" | "TDF.umP" | "TDF.umPPT" | "TDF.umPPM" | "TDF.umC" | "TDF.umMM2" | "TDF.umCM2" | "TDF.umM2" | "TDF.umARE" | "TDF.umHA" | "TDF.umKM2" | "TDF.umMM3" | "TDF.umCM3" | "TDF.umM3" | "TDF.umGMOL" | "TDF.umMOLL" | "TDF.umCM2H";
+            originalMeasurementAccuracy?: number;
+            subjectFinBIFTaxon?: components["schemas"]["LajiBackendTraitTaxon"];
+            subjectGBIFTaxon?: components["schemas"]["LajiBackendTraitTaxon"];
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            objectTaxonLifeStage: "MY.lifeStageAdult" | "MY.lifeStageNymph" | "MY.lifeStageLarva" | "MY.lifeStageEgg" | "MY.lifeStagePupa" | "MY.lifeStageJuvenile" | "MY.lifeStageSubimago" | "MY.lifeStageImmature" | "MY.lifeStageFertile" | "MY.lifeStageSterile" | "MY.lifeStageTadpole" | "MY.lifeStageEmbryo" | "MY.lifeStageSubadult" | "MY.lifeStageMature" | "MY.lifeStagePullus" | "MY.lifeStageHatchedEgg" | "MY.lifeStageHatchedPupa" | "MY.lifeStageGall" | "MY.lifeStageMarks" | "MY.lifeStageTriungulin" | "MY.lifeStageExuvia";
-            objectTaxonVerbatim: string;
-            objectFinBIFTaxon: components["schemas"]["LajiBackendTraitTaxon"];
-            objectGBIFTaxon: components["schemas"]["LajiBackendTraitTaxon"];
-            warnings: boolean;
-            measurementRemarks: string;
-            reference: string;
-            dataset: components["schemas"]["LajiBackendTraitSearchDataset"];
+            objectTaxonLifeStage?: "MY.lifeStageAdult" | "MY.lifeStageNymph" | "MY.lifeStageLarva" | "MY.lifeStageEgg" | "MY.lifeStagePupa" | "MY.lifeStageJuvenile" | "MY.lifeStageSubimago" | "MY.lifeStageImmature" | "MY.lifeStageFertile" | "MY.lifeStageSterile" | "MY.lifeStageTadpole" | "MY.lifeStageEmbryo" | "MY.lifeStageSubadult" | "MY.lifeStageMature" | "MY.lifeStagePullus" | "MY.lifeStageHatchedEgg" | "MY.lifeStageHatchedPupa" | "MY.lifeStageGall" | "MY.lifeStageMarks" | "MY.lifeStageTriungulin" | "MY.lifeStageExuvia";
+            objectTaxonVerbatim?: string;
+            objectFinBIFTaxon?: components["schemas"]["LajiBackendTraitTaxon"];
+            objectGBIFTaxon?: components["schemas"]["LajiBackendTraitTaxon"];
+            warnings?: boolean;
+            measurementRemarks?: string;
+            reference?: string;
+            dataset?: components["schemas"]["LajiBackendTraitSearchDataset"];
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            license: "MZ.intellectualRightsCC-BY-SA-4.0" | "MZ.intellectualRightsCC-BY-NC-4.0" | "MZ.intellectualRightsCC-BY-NC-SA-4.0" | "MZ.intellectualRightsCC-BY-4.0" | "MZ.intellectualRightsCC0-4.0" | "MZ.intellectualRightsODBL-1.0" | "MZ.intellectualRightsPD" | "MZ.intellectualRightsARR" | "MZ.intellectualRightsCC-BY-2.0" | "MZ.intellectualRightsCC-BY-SA-2.0" | "MZ.intellectualRightsCC-BY-SA-2.0-DE" | "MZ.intellectualRightsCC-BY-NC-2.0" | "MZ.intellectualRightsCC-BY-NC-SA-2.0" | "MZ.intellectualRightsCC-BY-NC-ND-2.0" | "MZ.intellectualRightsCC-BY-SA-2.5" | "MZ.intellectualRightsCC-BY-SA-2.5-SE" | "MZ.intellectualRightsCC-BY-3.0" | "MZ.intellectualRightsCC-BY-SA-3.0" | "MZ.intellectualRightsCC-BY-NC-SA-3.0" | "MZ.intellectualRightsCC-BY-ND-4.0" | "MZ.intellectualRightsCC-BY-NC-ND-4.0" | "MY.intellectualRightsCC-BY" | "MY.intellectualRightsCC0";
+            license?: "MZ.intellectualRightsCC-BY-SA-4.0" | "MZ.intellectualRightsCC-BY-NC-4.0" | "MZ.intellectualRightsCC-BY-NC-SA-4.0" | "MZ.intellectualRightsCC-BY-4.0" | "MZ.intellectualRightsCC0-4.0" | "MZ.intellectualRightsODBL-1.0" | "MZ.intellectualRightsPD" | "MZ.intellectualRightsARR" | "MZ.intellectualRightsCC-BY-2.0" | "MZ.intellectualRightsCC-BY-SA-2.0" | "MZ.intellectualRightsCC-BY-SA-2.0-DE" | "MZ.intellectualRightsCC-BY-NC-2.0" | "MZ.intellectualRightsCC-BY-NC-SA-2.0" | "MZ.intellectualRightsCC-BY-NC-ND-2.0" | "MZ.intellectualRightsCC-BY-SA-2.5" | "MZ.intellectualRightsCC-BY-SA-2.5-SE" | "MZ.intellectualRightsCC-BY-3.0" | "MZ.intellectualRightsCC-BY-SA-3.0" | "MZ.intellectualRightsCC-BY-NC-SA-3.0" | "MZ.intellectualRightsCC-BY-ND-4.0" | "MZ.intellectualRightsCC-BY-NC-ND-4.0" | "MY.intellectualRightsCC-BY" | "MY.intellectualRightsCC0";
         };
         LajiBackendTraitTaxon: {
-            id: string;
-            taxonomicOrder: number;
-            taxonRank: string;
-            scientificName: string;
-            cursiveName: boolean;
-            author: string;
-            higherTaxa: components["schemas"]["LajiBackendHigherTaxa"];
+            id?: string;
+            taxonomicOrder?: number;
+            taxonRank?: string;
+            scientificName?: string;
+            cursiveName?: boolean;
+            author?: string;
+            higherTaxa?: components["schemas"]["LajiBackendHigherTaxa"];
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            iucnStatus: "MX.iucnEX" | "MX.iucnEW" | "MX.iucnRE" | "MX.iucnCR" | "MX.iucnEN" | "MX.iucnVU" | "MX.iucnNT" | "MX.iucnLC" | "MX.iucnDD" | "MX.iucnNA" | "MX.iucnNE";
+            iucnStatus?: "MX.iucnEX" | "MX.iucnEW" | "MX.iucnRE" | "MX.iucnCR" | "MX.iucnEN" | "MX.iucnVU" | "MX.iucnNT" | "MX.iucnLC" | "MX.iucnDD" | "MX.iucnNA" | "MX.iucnNE";
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            primaryHabitat: "MKV.habitatM" | "MKV.habitatMk" | "MKV.habitatMkk" | "MKV.habitatMkt" | "MKV.habitatMl" | "MKV.habitatMlt" | "MKV.habitatMlk" | "MKV.habitatMt" | "MKV.habitatMtl" | "MKV.habitatS" | "MKV.habitatSl" | "MKV.habitatSla" | "MKV.habitatSlr" | "MKV.habitatSlk" | "MKV.habitatSn" | "MKV.habitatSnk" | "MKV.habitatSnr" | "MKV.habitatSr" | "MKV.habitatSrk" | "MKV.habitatSrr" | "MKV.habitatSk" | "MKV.habitatSkk" | "MKV.habitatSkr" | "MKV.habitatV" | "MKV.habitatVi" | "MKV.habitatVik" | "MKV.habitatVim" | "MKV.habitatVis" | "MKV.habitatVih" | "MKV.habitatVie" | "MKV.habitatVip" | "MKV.habitatVs" | "MKV.habitatVsk" | "MKV.habitatVsr" | "MKV.habitatVa" | "MKV.habitatVj" | "MKV.habitatVp" | "MKV.habitatVk" | "MKV.habitatVl" | "MKV.habitatR" | "MKV.habitatRi" | "MKV.habitatRim" | "MKV.habitatRimt" | "MKV.habitatRiml" | "MKV.habitatRip" | "MKV.habitatRin" | "MKV.habitatRil" | "MKV.habitatRir" | "MKV.habitatRis" | "MKV.habitatRih" | "MKV.habitatRit" | "MKV.habitatRj" | "MKV.habitatRjm" | "MKV.habitatRjmt" | "MKV.habitatRjml" | "MKV.habitatRjp" | "MKV.habitatRjn" | "MKV.habitatRjl" | "MKV.habitatRjr" | "MKV.habitatRjs" | "MKV.habitatRjh" | "MKV.habitatRjt" | "MKV.habitatK" | "MKV.habitatKk" | "MKV.habitatKs" | "MKV.habitatKr" | "MKV.habitatKl" | "MKV.habitatKm" | "MKV.habitatT" | "MKV.habitatTk" | "MKV.habitatTn" | "MKV.habitatTu" | "MKV.habitatTp" | "MKV.habitatTl" | "MKV.habitatTll" | "MKV.habitatTlk" | "MKV.habitatTls" | "MKV.habitatTlr" | "MKV.habitatTlä" | "MKV.habitatTs" | "MKV.habitatTj" | "MKV.habitatTv" | "MKV.habitatTa" | "MKV.habitatI" | "MKV.habitatIn" | "MKV.habitatIt" | "MKV.habitatIh" | "MKV.habitatIk" | "MKV.habitatIo" | "MKV.habitatIv" | "MKV.habitatIp" | "MKV.habitatIu" | "MKV.habitatIr" | "MKV.habitatU";
-            habitatSpecifiers: ("MKV.habitatSpecificTypeV" | "MKV.habitatSpecificTypeH" | "MKV.habitatSpecificTypeP" | "MKV.habitatSpecificTypeJ" | "MKV.habitatSpecificTypePAK" | "MKV.habitatSpecificTypeVAK" | "MKV.habitatSpecificTypeRA" | "MKV.habitatSpecificTypeKA" | "MKV.habitatSpecificTypeKE" | "MKV.habitatSpecificTypeCA")[];
-            sensitive: boolean;
+            primaryHabitat?: "MKV.habitatM" | "MKV.habitatMk" | "MKV.habitatMkk" | "MKV.habitatMkt" | "MKV.habitatMl" | "MKV.habitatMlt" | "MKV.habitatMlk" | "MKV.habitatMt" | "MKV.habitatMtl" | "MKV.habitatS" | "MKV.habitatSl" | "MKV.habitatSla" | "MKV.habitatSlr" | "MKV.habitatSlk" | "MKV.habitatSn" | "MKV.habitatSnk" | "MKV.habitatSnr" | "MKV.habitatSr" | "MKV.habitatSrk" | "MKV.habitatSrr" | "MKV.habitatSk" | "MKV.habitatSkk" | "MKV.habitatSkr" | "MKV.habitatV" | "MKV.habitatVi" | "MKV.habitatVik" | "MKV.habitatVim" | "MKV.habitatVis" | "MKV.habitatVih" | "MKV.habitatVie" | "MKV.habitatVip" | "MKV.habitatVs" | "MKV.habitatVsk" | "MKV.habitatVsr" | "MKV.habitatVa" | "MKV.habitatVj" | "MKV.habitatVp" | "MKV.habitatVk" | "MKV.habitatVl" | "MKV.habitatR" | "MKV.habitatRi" | "MKV.habitatRim" | "MKV.habitatRimt" | "MKV.habitatRiml" | "MKV.habitatRip" | "MKV.habitatRin" | "MKV.habitatRil" | "MKV.habitatRir" | "MKV.habitatRis" | "MKV.habitatRih" | "MKV.habitatRit" | "MKV.habitatRj" | "MKV.habitatRjm" | "MKV.habitatRjmt" | "MKV.habitatRjml" | "MKV.habitatRjp" | "MKV.habitatRjn" | "MKV.habitatRjl" | "MKV.habitatRjr" | "MKV.habitatRjs" | "MKV.habitatRjh" | "MKV.habitatRjt" | "MKV.habitatK" | "MKV.habitatKk" | "MKV.habitatKs" | "MKV.habitatKr" | "MKV.habitatKl" | "MKV.habitatKm" | "MKV.habitatT" | "MKV.habitatTk" | "MKV.habitatTn" | "MKV.habitatTu" | "MKV.habitatTp" | "MKV.habitatTl" | "MKV.habitatTll" | "MKV.habitatTlk" | "MKV.habitatTls" | "MKV.habitatTlr" | "MKV.habitatTlä" | "MKV.habitatTs" | "MKV.habitatTj" | "MKV.habitatTv" | "MKV.habitatTa" | "MKV.habitatI" | "MKV.habitatIn" | "MKV.habitatIt" | "MKV.habitatIh" | "MKV.habitatIk" | "MKV.habitatIo" | "MKV.habitatIv" | "MKV.habitatIp" | "MKV.habitatIu" | "MKV.habitatIr" | "MKV.habitatU";
+            habitatSpecifiers?: ("MKV.habitatSpecificTypeV" | "MKV.habitatSpecificTypeH" | "MKV.habitatSpecificTypeP" | "MKV.habitatSpecificTypeJ" | "MKV.habitatSpecificTypePAK" | "MKV.habitatSpecificTypeVAK" | "MKV.habitatSpecificTypeRA" | "MKV.habitatSpecificTypeKA" | "MKV.habitatSpecificTypeKE" | "MKV.habitatSpecificTypeCA")[];
+            sensitive?: boolean;
         };
         LajiBackendTraitSearchSubject: {
             /** @description Qname identifier */
-            id: string;
+            id?: string;
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            type: "TDF.typeIndividual" | "TDF.typePopulationGroup" | "TDF.typeTaxon";
+            type?: "TDF.typeIndividual" | "TDF.typePopulationGroup" | "TDF.typeTaxon";
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            basisOfRecord: "MY.recordBasisPreservedSpecimen" | "MY.recordBasisHumanObservation" | "MY.recordBasisHumanObservationSeen" | "MY.recordBasisHumanObservationHeard" | "MY.recordBasisHumanObservationHandled" | "MY.recordBasisHumanObservationPhoto" | "MY.recordBasisHumanObservationAudio" | "MY.recordBasisHumanObservationVideo" | "MY.recordBasisHumanObservationIndirect" | "MY.recordBasisMachineObservation" | "MY.recordBasisMachineObservationPhoto" | "MY.recordBasisMachineObservationVideo" | "MY.recordBasisMachineObservationAudio" | "MY.recordBasisMachineObservationGeologger" | "MY.recordBasisMachineObservationSatelliteTransmitter" | "MY.recordBasisFossilSpecimen" | "MY.recordBasisSubfossilSpecimen" | "MY.recordBasisSubfossilSpecimenAmberInclusion" | "MY.recordBasisMaterialSample" | "MY.recordBasisMaterialSampleAir" | "MY.recordBasisMaterialSampleSoil" | "MY.recordBasisMaterialSampleWater" | "MY.recordBasisMicrobialSpecimen" | "MY.recordBasisLivingSpecimen" | "MY.recordBasisLiterature";
+            basisOfRecord?: "MY.recordBasisPreservedSpecimen" | "MY.recordBasisHumanObservation" | "MY.recordBasisHumanObservationSeen" | "MY.recordBasisHumanObservationHeard" | "MY.recordBasisHumanObservationHandled" | "MY.recordBasisHumanObservationPhoto" | "MY.recordBasisHumanObservationAudio" | "MY.recordBasisHumanObservationVideo" | "MY.recordBasisHumanObservationIndirect" | "MY.recordBasisMachineObservation" | "MY.recordBasisMachineObservationPhoto" | "MY.recordBasisMachineObservationVideo" | "MY.recordBasisMachineObservationAudio" | "MY.recordBasisMachineObservationGeologger" | "MY.recordBasisMachineObservationSatelliteTransmitter" | "MY.recordBasisFossilSpecimen" | "MY.recordBasisSubfossilSpecimen" | "MY.recordBasisSubfossilSpecimenAmberInclusion" | "MY.recordBasisMaterialSample" | "MY.recordBasisMaterialSampleAir" | "MY.recordBasisMaterialSampleSoil" | "MY.recordBasisMaterialSampleWater" | "MY.recordBasisMicrobialSpecimen" | "MY.recordBasisLivingSpecimen" | "MY.recordBasisLiterature";
             /** @description Qname identifier */
-            finbifOccurrenceId: string;
-            gbifOccurrenceId: string;
-            otherOccurrenceId: string;
-            kingdom: string;
-            scientificName: string;
-            author: string;
-            functionalGroupName: string;
-            otherTaxonId: string;
+            finbifOccurrenceId?: string;
+            gbifOccurrenceId?: string;
+            otherOccurrenceId?: string;
+            kingdom?: string;
+            scientificName?: string;
+            author?: string;
+            functionalGroupName?: string;
+            otherTaxonId?: string;
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            sex: "MY.sexM" | "MY.sexF" | "MY.sexW" | "MY.sexU" | "MY.sexN" | "MY.sexX" | "MY.sexE" | "MY.sexC";
+            sex?: "MY.sexM" | "MY.sexF" | "MY.sexW" | "MY.sexU" | "MY.sexN" | "MY.sexX" | "MY.sexE" | "MY.sexC";
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            lifeStage: "MY.lifeStageAdult" | "MY.lifeStageNymph" | "MY.lifeStageLarva" | "MY.lifeStageEgg" | "MY.lifeStagePupa" | "MY.lifeStageJuvenile" | "MY.lifeStageSubimago" | "MY.lifeStageImmature" | "MY.lifeStageFertile" | "MY.lifeStageSterile" | "MY.lifeStageTadpole" | "MY.lifeStageEmbryo" | "MY.lifeStageSubadult" | "MY.lifeStageMature" | "MY.lifeStagePullus" | "MY.lifeStageHatchedEgg" | "MY.lifeStageHatchedPupa" | "MY.lifeStageGall" | "MY.lifeStageMarks" | "MY.lifeStageTriungulin" | "MY.lifeStageExuvia";
-            ageYears: number;
-            individualCount: number;
+            lifeStage?: "MY.lifeStageAdult" | "MY.lifeStageNymph" | "MY.lifeStageLarva" | "MY.lifeStageEgg" | "MY.lifeStagePupa" | "MY.lifeStageJuvenile" | "MY.lifeStageSubimago" | "MY.lifeStageImmature" | "MY.lifeStageFertile" | "MY.lifeStageSterile" | "MY.lifeStageTadpole" | "MY.lifeStageEmbryo" | "MY.lifeStageSubadult" | "MY.lifeStageMature" | "MY.lifeStagePullus" | "MY.lifeStageHatchedEgg" | "MY.lifeStageHatchedPupa" | "MY.lifeStageGall" | "MY.lifeStageMarks" | "MY.lifeStageTriungulin" | "MY.lifeStageExuvia";
+            ageYears?: number;
+            individualCount?: number;
             /** Format: date */
-            dateBegin: string;
+            dateBegin?: string;
             /** Format: date */
-            dateEnd: string;
-            yearBegin: number;
-            yearEnd: number;
-            seasonBegin: number;
-            seasonEnd: number;
-            lat: number;
-            lon: number;
-            latMin: number;
-            latMax: number;
-            lonMin: number;
-            lonMax: number;
-            coordinateAccuracy: number;
-            elevation: number;
-            higherGeography: string;
-            country: string;
-            municipality: string;
-            locality: string;
-            locationIdentifiers: string;
+            dateEnd?: string;
+            yearBegin?: number;
+            yearEnd?: number;
+            seasonBegin?: number;
+            seasonEnd?: number;
+            lat?: number;
+            lon?: number;
+            latMin?: number;
+            latMax?: number;
+            lonMin?: number;
+            lonMax?: number;
+            coordinateAccuracy?: number;
+            elevation?: number;
+            higherGeography?: string;
+            country?: string;
+            municipality?: string;
+            locality?: string;
+            locationIdentifiers?: string;
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            habitat: "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170";
-            occurrenceRemarks: string;
-            measurementDeterminedBy: string;
+            habitat?: "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170";
+            occurrenceRemarks?: string;
+            measurementDeterminedBy?: string;
             /** Format: date */
-            measurementDeterminedDate: string;
+            measurementDeterminedDate?: string;
             /** Format: date */
-            created: string;
+            created?: string;
             /** Format: date */
-            modified: string;
+            modified?: string;
         };
         LajiBackendTraitSearchTrait: {
             /** @description Qname identifier */
-            id: string;
-            dataEntryName: string;
-            name: string;
-            description: string;
+            id?: string;
+            dataEntryName?: string;
+            name?: string;
+            description?: string;
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            baseUnit: "TDF.umNM" | "TDF.umUM" | "TDF.umMM" | "TDF.umCM" | "TDF.umM" | "TDF.umKM" | "TDF.umG" | "TDF.umKG" | "TDF.umA" | "TDF.umS" | "TDF.umML" | "TDF.umL" | "TDF.umMOL" | "TDF.umMMOL" | "TDF.umUMOL" | "TDF.umHZ" | "TDF.umP" | "TDF.umPPT" | "TDF.umPPM" | "TDF.umC" | "TDF.umMM2" | "TDF.umCM2" | "TDF.umM2" | "TDF.umARE" | "TDF.umHA" | "TDF.umKM2" | "TDF.umMM3" | "TDF.umCM3" | "TDF.umM3" | "TDF.umGMOL" | "TDF.umMOLL" | "TDF.umCM2H";
+            baseUnit?: "TDF.umNM" | "TDF.umUM" | "TDF.umMM" | "TDF.umCM" | "TDF.umM" | "TDF.umKM" | "TDF.umG" | "TDF.umKG" | "TDF.umA" | "TDF.umS" | "TDF.umML" | "TDF.umL" | "TDF.umMOL" | "TDF.umMMOL" | "TDF.umUMOL" | "TDF.umHZ" | "TDF.umP" | "TDF.umPPT" | "TDF.umPPM" | "TDF.umC" | "TDF.umMM2" | "TDF.umCM2" | "TDF.umM2" | "TDF.umARE" | "TDF.umHA" | "TDF.umKM2" | "TDF.umMM3" | "TDF.umCM3" | "TDF.umM3" | "TDF.umGMOL" | "TDF.umMOLL" | "TDF.umCM2H";
             /**
              * @description Qname identifier
              * @enum {string}
              */
-            range: "xsd:string" | "xsd:decimal" | "xsd:integer" | "xsd:positiveInteger" | "xsd:nonNegativeInteger" | "xsd:boolean" | "MX.taxon";
-            reference: string;
-            identifiers: string[];
+            range?: "xsd:string" | "xsd:decimal" | "xsd:integer" | "xsd:positiveInteger" | "xsd:nonNegativeInteger" | "xsd:boolean" | "MX.taxon";
+            reference?: string;
+            identifiers?: string[];
         };
         LajiBackendTraitSearchTraitGroup: {
-            name: string;
+            name?: string;
         };
         LajiBackendTraitSearchDataset: {
             /** @description Qname identifier */
-            id: string;
-            name: string;
-            description: string;
-            citation: string;
-            intellectualOwner: string;
-            personResponsible: string;
-            contactEmail: string;
-            methods: string;
-            coverageBasis: string;
-            doi: string;
-            gbifDoi: string;
-            additionalIdentifier: string[];
+            id?: string;
+            name?: string;
+            description?: string;
+            citation?: string;
+            intellectualOwner?: string;
+            personResponsible?: string;
+            contactEmail?: string;
+            methods?: string;
+            coverageBasis?: string;
+            doi?: string;
+            gbifDoi?: string;
+            additionalIdentifier?: string[];
         };
         LajiBackendHigherTaxa: {
-            domain: string;
-            kingdom: string;
-            phylum: string;
-            subphylum: string;
-            division: string;
-            class: string;
-            subclass: string;
-            order: string;
-            suborder: string;
-            superfamily: string;
-            family: string;
-            subfamily: string;
-            tribe: string;
-            subtribe: string;
-            genus: string;
+            domain?: string;
+            kingdom?: string;
+            phylum?: string;
+            subphylum?: string;
+            division?: string;
+            class?: string;
+            subclass?: string;
+            order?: string;
+            suborder?: string;
+            superfamily?: string;
+            family?: string;
+            subfamily?: string;
+            tribe?: string;
+            subtribe?: string;
+            genus?: string;
         };
         /** Body_convert_gis_to_table_convert_to_table_post */
         GeoConvertBody_convert_gis_to_table_convert_to_table_post: {
@@ -11305,7 +11304,7 @@ export interface components {
         /** HTTPValidationError */
         GeoConvertHTTPValidationError: {
             /** Detail */
-            detail: components["schemas"]["GeoConvertValidationError"][];
+            detail?: components["schemas"]["GeoConvertValidationError"][];
         };
         /** HealthResponse */
         GeoConvertHealthResponse: {
@@ -11371,573 +11370,573 @@ export interface components {
         };
         FormListing: {
             /** Id for the MHL.form */
-            id: string;
+            id?: string;
             /**
              * Category
              * @enum {string}
              */
-            category: "" | "MHL.categoryGeneric" | "MHL.categorySurvey" | "MHL.categoryTaxonomicGroup" | "MHL.categoryBirdMonitoringSchemes" | "MHL.categoryCitizenScience" | "MHL.categoryBiomonCompleteLists";
+            category?: "" | "MHL.categoryGeneric" | "MHL.categorySurvey" | "MHL.categoryTaxonomicGroup" | "MHL.categoryBirdMonitoringSchemes" | "MHL.categoryCitizenScience" | "MHL.categoryBiomonCompleteLists";
             /**
              * Collection ID
              * @description Id for the collection to where observation useing this form are connected
              */
-            collectionID: string;
+            collectionID?: string;
             /** Description */
-            description: string;
+            description?: string;
             /** Logo address */
-            logo: string;
+            logo?: string;
             /** Name */
-            name: string;
-            options: components["schemas"]["store-formOptions"];
+            name?: string;
+            options?: components["schemas"]["store-formOptions"];
             /** Short description */
-            shortDescription: string;
+            shortDescription?: string;
             /** Supported language */
-            supportedLanguage: ("" | "en" | "fi" | "sv")[];
+            supportedLanguage?: ("" | "en" | "fi" | "sv")[];
             /** Title */
-            title: string;
+            title?: string;
         };
         "store-field": {
             /** Context for the MHLA.field */
-            "@context": string;
+            "@context"?: string;
             /** Id for the MHLA.field */
-            id: string;
+            id?: string;
             /** Type for the MHLA.field */
-            "@type": string;
+            "@type"?: string;
             /** Name */
-            name: string;
-            fields: components["schemas"]["store-field"][];
+            name?: string;
+            fields?: components["schemas"]["store-field"][];
             /** filters */
-            filters: {
+            filters?: {
                 [key: string]: unknown;
             };
             /** label */
-            label: string;
+            label?: string;
             /** Notice validators */
-            notices: {
+            notices?: {
                 [key: string]: unknown;
             };
             /** Options */
-            options: {
+            options?: {
                 [key: string]: unknown;
             };
             /** Required field */
-            required: boolean;
+            required?: boolean;
             /** field type */
-            type: string;
+            type?: string;
             /** UI instructions to field */
-            ui: {
+            ui?: {
                 [key: string]: unknown;
             };
             /** validators */
-            validators: {
+            validators?: {
                 [key: string]: unknown;
             };
             /** value */
-            value: string;
+            value?: string;
             /** warning validators */
-            warnings: {
+            warnings?: {
                 [key: string]: unknown;
             };
         };
         "store-formOptions": {
             /** Context for the MHL.formOptionsClass */
-            "@context": string;
+            "@context"?: string;
             /** Id for the MHL.formOptionsClass */
-            id: string;
+            id?: string;
             /** Type for the MHL.formOptionsClass */
-            "@type": string;
-            about: string;
+            "@type"?: string;
+            about?: string;
             /**
              * Document are lockable by admin
              * @description Form admin can lock documents. Locked documents can't be edited
              */
-            adminLockable: boolean;
+            adminLockable?: boolean;
             /**
              * Allow excel
              * @description Allows usage in spreadsheet upload component
              */
-            allowExcel: boolean;
+            allowExcel?: boolean;
             /**
              * Allow excel generation
              * @description If false, Vihko will not show the spreadsheet generation tool for the form. Defaults to true"
              */
-            allowExcelGeneration: boolean;
+            allowExcelGeneration?: boolean;
             /**
              * Allow templates
              * @description Allows creating templates from documents
              */
-            allowTemplate: boolean;
+            allowTemplate?: boolean;
             /**
              * Footer cancel button label
              * @description Label for the cancel button at the form footer
              */
-            cancelLabel: string;
+            cancelLabel?: string;
             /**
              * Dataset form
              * @description Has dataset about page
              */
-            dataset: boolean;
+            dataset?: boolean;
             /**
              * Disable form permissionrequest description
              * @description Theme form introduction page doesn't show description for the form permission request button
              */
-            disableRequestDescription: boolean;
+            disableRequestDescription?: boolean;
             /**
              * Disabled
              * @description Prevent sending documents & named places
              */
-            disabled: boolean;
+            disabled?: boolean;
             /**
              * Display own submissions
              * @description Only if has named places. All documents for admin
              */
-            displayOwnSubmissions: boolean;
+            displayOwnSubmissions?: boolean;
             /**
              * Documents are viewable for all users
              * @description Documents of the form's collectionID are viewable for all users with form permissions to the form's collectionID
              */
-            documentsViewableForAll: boolean;
+            documentsViewableForAll?: boolean;
             /**
              * Footer draft button label
              * @description Label for the draft button at the form footer
              */
-            draftLabel: string;
+            draftLabel?: string;
             /** Edit button label */
-            editLabel: string;
+            editLabel?: string;
             /**
              * Consider unit without count empty
              * @description Units without count aren't considered in laji.fi viewer (including document viewers and datatables)
              */
-            emptyOnNoCount: boolean;
+            emptyOnNoCount?: boolean;
             /**
              * Exclude from global excel tools
              * @description Excludes from the Vihko excel tools
              */
-            excludeFromGlobalExcel: boolean;
-            footer: components["schemas"]["store-formFooter"];
+            excludeFromGlobalExcel?: boolean;
+            footer?: components["schemas"]["store-formFooter"];
             /**
              * Own submissions page title
              * @description Label for the own submissions list at the header of document form
              */
-            formOwnSubmissionsLabel: string;
+            formOwnSubmissionsLabel?: string;
             /**
              * Form permissions page description
              * @description Shown at form permission intro page. Allows HTML
              */
-            formPermissionDescription: string;
+            formPermissionDescription?: string;
             /** Sub forms */
-            forms: string[];
+            forms?: string[];
             /**
              * Has admins
              * @description The form has administrators. Administrators can handle user access permissions and admin roles for all forms with the collectionID of the form.
              */
-            hasAdmins: boolean;
+            hasAdmins?: boolean;
             /**
              * Hide cancel button
              * @description Hides the cancel button at form footer
              */
-            hideCancelButton: boolean;
+            hideCancelButton?: boolean;
             /** hideDraftButton */
-            hideDraftButton: boolean;
+            hideDraftButton?: boolean;
             /**
              * Hide from sidebar
              * @description Defaults to false
              */
-            hideFromSidebar: boolean;
+            hideFromSidebar?: boolean;
             /**
              * Hide save button
              * @description Hides the save/edit button at form footer
              */
-            hideSaveButton: boolean;
+            hideSaveButton?: boolean;
             /**
              * Hide TES
              * @description Terms of Service is hidden at the header of observation form
              */
-            hideTES: boolean;
+            hideTES?: boolean;
             /**
              * Hide draft button
              * @description Hides the draft button at form footer
              */
-            hideTempButton: boolean;
-            instructions: string;
+            hideTempButton?: boolean;
+            instructions?: string;
             /**
              * Use mobile UI
              * @description Form UI has a greeting page for convenient mobile usage
              */
-            mobile: boolean;
-            namedPlaceOptions: components["schemas"]["store-formNamedPlaceOptions"];
+            mobile?: boolean;
+            namedPlaceOptions?: components["schemas"]["store-formNamedPlaceOptions"];
             /**
              * Navigation title
              * @description The title label for theme form sidebar
              */
-            navigationTitle: string;
+            navigationTitle?: string;
             /**
              * Open form
              * @description Allows creating documents without a person token. Utilizes open form login system, hides navbar.
              */
-            openForm: boolean;
+            openForm?: boolean;
             /**
              * Own submissions row actions
              * @description Available actions for own submissions (only on the own submissions page). Defaults to ['edit', 'view', 'download', 'stats', 'delete']
              */
-            ownSubmissionsActions: string[];
+            ownSubmissionsActions?: string[];
             /**
              * Own submissions title
              * @description Shown at sidebar link and title of all submissions page
              */
-            ownSubmissionsAdminTitle: string;
+            ownSubmissionsAdminTitle?: string;
             /**
              * Own submissions table column
              * @description Columns for own submissions (only on the own submissions page). Defaults to ['dateEdited', 'dateObserved', 'taxon', 'namedPlaceName', 'observer', 'id']
              */
-            ownSubmissionsColumns: string[];
+            ownSubmissionsColumns?: string[];
             /**
              * Own submissions title
              * @description Shown at sidebar link and title of all submissions page
              */
-            ownSubmissionsTitle: string;
+            ownSubmissionsTitle?: string;
             /**
              * Periods
              * @description Periods that the "NoExistingGatheringsInNamedPlace" validation uses
              */
-            periods: string[];
+            periods?: string[];
             /** Prepopulate form data with data from informal taxon group */
-            prepopulateWithInformalTaxonGroups: string[];
+            prepopulateWithInformalTaxonGroups?: string[];
             /** Prepopulate form data with data from taxon sets */
-            prepopulateWithTaxonSets: string;
-            prepopulatedDocument: components["schemas"]["store-document"];
+            prepopulateWithTaxonSets?: string;
+            prepopulatedDocument?: components["schemas"]["store-document"];
             /**
              * Print type
              * @enum {string}
              */
-            printType: "" | "MHL.printTypeLineTransect";
+            printType?: "" | "MHL.printTypeLineTransect";
             /**
              * Privacy policy
              * @description Display privacy policy link on form header.
              */
-            privacyPolicy: boolean;
+            privacyPolicy?: boolean;
             /**
              * Restrict access
              * @description Users need to have permission to access the form
              * @enum {string}
              */
-            restrictAccess: "" | "MHL.restrictAccessStrict" | "MHL.restrictAccessLoose";
+            restrictAccess?: "" | "MHL.restrictAccessStrict" | "MHL.restrictAccessLoose";
             /**
              * Type of result service
              * @enum {string}
              */
-            resultServiceType: "" | "MHL.resultServiceTypeLineTransect" | "MHL.resultServiceTypeNafi" | "MHL.resultServiceTypeBirdPointCount" | "MHL.resultServiceTypeWinterBirdCount" | "MHL.resultServiceTypeSykeInsectProjects" | "MHL.resultServiceTypeInvasiveControl" | "MHL.resultServiceTypeCompleteLists" | "MHL.resultServiceTypeWaterBirdCount";
+            resultServiceType?: "" | "MHL.resultServiceTypeLineTransect" | "MHL.resultServiceTypeNafi" | "MHL.resultServiceTypeBirdPointCount" | "MHL.resultServiceTypeWinterBirdCount" | "MHL.resultServiceTypeSykeInsectProjects" | "MHL.resultServiceTypeInvasiveControl" | "MHL.resultServiceTypeCompleteLists" | "MHL.resultServiceTypeWaterBirdCount";
             /**
              * Save error message
              * @description Message shown when document save failed
              */
-            saveErrorMessage: string;
+            saveErrorMessage?: string;
             /**
              * Footer save button label
              * @description Label for the save button at the form footer
              */
-            saveLabel: string;
+            saveLabel?: string;
             /**
              * Save success message
              * @description Message shown when document was successfully saved
              */
-            saveSuccessMessage: string;
+            saveSuccessMessage?: string;
             /**
              * Save draft success message
              * @description Message shown when document draft was successfully saved
              */
-            saveTempSuccessMessage: string;
-            season: components["schemas"]["store-formSeason"];
+            saveTempSuccessMessage?: string;
+            season?: components["schemas"]["store-formSeason"];
             /**
              * Secondary copy
              * @description Makes the documents reported with the form secondary
              */
-            secondaryCopy: boolean;
+            secondaryCopy?: boolean;
             /**
              * Short title from collection name
              * @description Overrides MHL.shortTitle usage
              */
-            shortTitleFromCollectionName: boolean;
+            shortTitleFromCollectionName?: boolean;
             /**
              * Sidebar label for form
              * @description Sub forms are shown only if they have this property
              */
-            sidebarFormLabel: string;
+            sidebarFormLabel?: string;
             /**
              * Simple form
              * @description Has only a form page, no sidebar
              */
-            simple: boolean;
+            simple?: boolean;
             /**
              * Strict
              * @description Documents can't have data not defined in form fields. Defaults to true.
              */
-            strict: boolean;
+            strict?: boolean;
             /**
              * Footer draft button label
              * @description Label for the draft button at the form footer
              */
-            tempLabel: string;
+            tempLabel?: string;
             /**
              * Use named places
              * @description Makes the form use named places
              */
-            useNamedPlaces: boolean;
+            useNamedPlaces?: boolean;
             /**
              * Use schema comments as help texts
              * @description Uses schema comments as form help texts
              */
-            useSchemaCommentsAsHelpTexts: boolean;
+            useSchemaCommentsAsHelpTexts?: boolean;
             /**
              * Document viewer type
              * @enum {string}
              */
-            viewerType: "" | "MHL.viewerTypeLineTransect" | "MHL.viewerTypeBirdPointCount";
+            viewerType?: "" | "MHL.viewerTypeLineTransect" | "MHL.viewerTypeBirdPointCount";
             /** warnEditingOldDocument */
-            warnEditingOldDocument: boolean;
+            warnEditingOldDocument?: boolean;
             /**
              * Duration of editing old document warning
              * @description Duration in ISO 8601 duration format. Defaults to P1W (one week)
              */
-            warnEditingOldDocumentDuration: string;
+            warnEditingOldDocumentDuration?: string;
         };
         "store-multiLang": string;
         "store-formFooter": {
             /** Context for the MHL.formFooterClass */
-            "@context": string;
+            "@context"?: string;
             /** Id for the MHL.formFooterClass */
-            id: string;
+            id?: string;
             /** Type for the MHL.formFooterClass */
-            "@type": string;
+            "@type"?: string;
             /**
              * Description
              * @description Text to show for footer
              */
-            footerDescription: string;
+            footerDescription?: string;
             /**
              * Logos
              * @description Key is an image URI, value is the URI of the page clicking the image opens
              */
-            footerLogos: {
+            footerLogos?: {
                 [key: string]: unknown;
             };
         };
         "store-formNamedPlaceOptions": {
             /** Context for the MHL.formNamedPlaceOptionsClass */
-            "@context": string;
+            "@context"?: string;
             /** Id for the MHL.formNamedPlaceOptionsClass */
-            id: string;
+            id?: string;
             /** Type for the MHL.formNamedPlaceOptionsClass */
-            "@type": string;
+            "@type"?: string;
             /**
              * Show copy link for admin
              * @description Named place viewer shows button to copy the URL for the named place viewer
              */
-            adminShowCopyLink: boolean;
+            adminShowCopyLink?: boolean;
             /**
              * Allow adding public named places
              * @description Form users can create new named places for the form
              */
-            allowAddingPublic: boolean;
+            allowAddingPublic?: boolean;
             /**
              * Bird association area help
              * @description Help text for bird association filter
              */
-            birdAssociationAreaHelp: string;
+            birdAssociationAreaHelp?: string;
             /**
              * Choose page description
              * @description Description shown at named place choose page. Allows HTML.
              */
-            chooseDescription: string;
+            chooseDescription?: string;
             /**
              * Copy latest document to named place
              * @description The latest document is copied to named place's prepopulatedDocument. if documents date is same or after the current prepopulated document's date, or if prepopulated document doesn't have date. Date is checked from gatheringEvent or from gatherings
              */
-            copyLatestDocumentToNamedPlace: boolean;
+            copyLatestDocumentToNamedPlace?: boolean;
             /**
              * Create new description
              * @description Description shown above named place form when creating new named place. Allows HTML.
              */
-            createDescription: string;
+            createDescription?: string;
             /**
              * Create new button label
              * @description Label for new named place creation button at named place choose page
              */
-            createNewButtonLabel: string;
+            createNewButtonLabel?: string;
             /**
              * Text prepending create new button
              * @description Label for text before new named place creation button at named place choose page
              */
-            createNewButtonPrependingTextLabel: string;
+            createNewButtonPrependingTextLabel?: string;
             /**
              * Use local document viewer for own submissions
              * @description Theme own submissions page uses local document viewer (that shows more accurate data)
              */
-            documentListUseLocalDocumentViewer: boolean;
+            documentListUseLocalDocumentViewer?: boolean;
             /**
              * Document viewer forced fields
              * @description Forces local document viewer to show these fields
              */
-            documentViewerForcedFields: string[];
+            documentViewerForcedFields?: string[];
             /**
              * Document viewer gathering geometry JSON path
              * @description The path of geometry that document viewer should show
              */
-            documentViewerGatheringGeometryJSONPath: string[];
+            documentViewerGatheringGeometryJSONPath?: string[];
             /**
              * Document viewer zoom to data
              * @description Document viewer zooms to data instead of locked zoom level
              */
-            documentViewerZoomToData: boolean;
+            documentViewerZoomToData?: boolean;
             /**
              * Earlier document label (ADMIN)
              * @description Admin label for named place viewer's document list
              */
-            earlierLabel: string;
+            earlierLabel?: string;
             /**
              * Edit page description
              * @description Description shown at top of page when editing named place
              */
-            editDescription: string;
+            editDescription?: string;
             /**
              * Filter named places by bird association area
              * @description The named place UI allows filtering by bird association area
              */
-            filterByBirdAssociationArea: boolean;
+            filterByBirdAssociationArea?: boolean;
             /**
              * Filter named places by municipality
              * @description The named place UI allows filtering by municipality
              */
-            filterByMunicipality: boolean;
+            filterByMunicipality?: boolean;
             /**
              * Filter named places by tags
              * @description The named place UI allows filtering by tags
              */
-            filterByTags: boolean;
+            filterByTags?: boolean;
             /**
              * Document header fields of place
              * @description When recording a document for a named place, the named place's data of these fields will be shown at the top of the page (defaults to ["alternativeIDs", "name", "municipality"]
              */
-            headerFields: string[];
+            headerFields?: string[];
             /**
              * Hide map tab
              * @description On named place chooser view, map tab is hidden
              */
-            hideMapTab: boolean;
+            hideMapTab?: boolean;
             /**
              * Include descendant collections
              * @description True by default. The named places of this form includes the places of descendant collections also.
              */
-            includeDescendantCollections: boolean;
+            includeDescendantCollections?: boolean;
             /**
              * Include units in named place query
              * @description Named places will be fetched with units included (hard coded to work only for HR.2049)
              */
-            includeUnits: boolean;
+            includeUnits?: boolean;
             /**
              * Info fields for viewer
              * @description Fields that named place viewer shows (if not defined will be digged from uiSchema["ui:options"].fieldsScopes[form collectionID])
              */
-            infoFields: string[];
+            infoFields?: string[];
             /**
              * Last census label
              * @description Label for named place viewer last census
              */
-            lastCensusLabel: string;
+            lastCensusLabel?: string;
             /**
              * List column names
              * @description Overrides labels for named place list column headers
              */
-            listColumnNameMapping: {
-                [key: string]: string;
+            listColumnNameMapping?: {
+                [key: string]: string | undefined;
             };
             /**
              * Columns in list
              * @description List of columns visible in the list view
              */
-            listColumns: string[];
+            listColumns?: string[];
             /** Columns multisort */
-            listColumnsMultisort: boolean;
+            listColumnsMultisort?: boolean;
             /**
              * List label
              * @description Label for named place chooser list tab
              */
-            listLabel: string;
+            listLabel?: string;
             /** Cluster the map points */
-            mapCluster: boolean;
+            mapCluster?: boolean;
             /**
              * Map overlays
              * @description Overlays that named place chooser map should show
              */
-            mapOverlayNames: string[];
+            mapOverlayNames?: string[];
             /**
              * Map tilelayer
              * @description Tilelayer name that named place chooser map should show
              */
-            mapTileLayerName: string;
+            mapTileLayerName?: string;
             /**
              * Earlier document label (USER)
              * @description User label for named place viewer's document list
              */
-            myEarlierLabel: string;
+            myEarlierLabel?: string;
             /**
              * Form ID
              * @description Form ID of named place form (defaults to MHL.36)
              */
-            namedPlaceFormID: string;
+            namedPlaceFormID?: string;
             /**
              * Named place list fields
              * @description Fields that named places list shows.
              */
-            namedPlaceList: string[];
+            namedPlaceList?: string[];
             /**
              * Prepopulated document initialization
              * @description When a new named place is created, the prepopulatedDocument will be populated according to this.
              */
-            prepopulatedDocumentFields: {
+            prepopulatedDocumentFields?: {
                 [key: string]: unknown;
             };
             /**
              * Print button label
              * @description Label for print button of named place viewer
              */
-            printLabel: string;
+            printLabel?: string;
             /** Release reservation label */
-            releaseLabel: string;
+            releaseLabel?: string;
             /** Reservable label */
-            reservableLabel: string;
+            reservableLabel?: string;
             /**
              * Reservation expiration
              * @description Places are reservable if defined. Value defines when the reservation should expire in ISO-8601. Example: ${year}-10-12
              */
-            reservationUntil: string;
+            reservationUntil?: string;
             /** Reserved label */
-            reservedLabel: string;
+            reservedLabel?: string;
             /**
              * Show list colors legend
              * @description Named place list shows legend for the row colors
              */
-            showLegendList: boolean;
+            showLegendList?: boolean;
             /**
              * Start with map tab
              * @description Named place chooser view starts with map tab instead of list
              */
-            startWithMap: boolean;
+            startWithMap?: boolean;
             /**
              * use accepted document
              * @description Instead of populating observation form with prepopulatedDocument, it is populated with acceptedDocument. Admin can change the acceptedDocument from observation list
              */
-            useAcceptedDocument: boolean;
+            useAcceptedDocument?: boolean;
             /**
              * Use place label
              * @description Named place viewer label for button for recording new observation
              */
-            useLabel: string;
+            useLabel?: string;
             /**
              * Zoom to data
              * @description Named place chooser map is initialized with data fitted in view.
              */
-            zoomToData: boolean;
+            zoomToData?: boolean;
         };
         "store-document": {
             /** Context for the Submissions */
@@ -12247,439 +12246,439 @@ export interface components {
         };
         "store-contact": {
             /** Context for the Contact */
-            "@context": string;
+            "@context"?: string;
             /** Id for the Contact */
-            id: string;
+            id?: string;
             /** Type for the Contact */
-            "@type": string;
+            "@type"?: string;
             /** Email address */
-            emailAddress: string;
+            emailAddress?: string;
             /** Last name */
-            inheritedName: string;
+            inheritedName?: string;
             /** Kutsumanimi */
-            preferredName: string;
+            preferredName?: string;
             /** City */
-            city: string;
+            city?: string;
             /** Country */
-            country: string;
+            country?: string;
             /** Phone number */
-            phoneNumber: string;
+            phoneNumber?: string;
             /** Postal code */
-            postalCode: string;
+            postalCode?: string;
             /** Street address */
-            streetAddress: string;
+            streetAddress?: string;
         };
         "store-documentIdentification": {
             /** Context for the Document identification */
-            "@context": string;
+            "@context"?: string;
             /** Id for the Document identification */
-            id: string;
+            id?: string;
             /** Type for the Document identification */
-            "@type": string;
+            "@type"?: string;
             /**
              * Det.
              * @description Name of the identifier (person) preferably in format "lastname, firstname"
              */
-            det: string;
+            det?: string;
             /**
              * Det. date
              * @description Date or year when the identification was done, preferably in format "d.m.Y" or "Y"
              */
-            detDate: string;
+            detDate?: string;
         };
         "store-gatheringEvent": {
             /** Context for the Global gathering event */
-            "@context": string;
+            "@context"?: string;
             /** Id for the Global gathering event */
-            id: string;
+            id?: string;
             /** Type for the Global gathering event */
-            "@type": string;
+            "@type"?: string;
             /** No units in census */
-            acknowledgeNoUnitsInCensus: boolean;
+            acknowledgeNoUnitsInCensus?: boolean;
             /**
              * Artificial light
              * @enum {string}
              */
-            artificialLight: "" | "MY.artificialLightEnum1" | "MY.artificialLightEnum2" | "MY.artificialLightEnum3" | "MY.artificialLightEnum4" | "MY.artificialLightEnum5";
+            artificialLight?: "" | "MY.artificialLightEnum1" | "MY.artificialLightEnum2" | "MY.artificialLightEnum3" | "MY.artificialLightEnum4" | "MY.artificialLightEnum5";
             /** Breaks kept in minutes */
-            breaksDuringCensusInMinutes: number;
+            breaksDuringCensusInMinutes?: number;
             /** Number of censuses */
-            censusCount: number;
+            censusCount?: number;
             /** Weather (etc) hindered the census */
-            censusHinderedByEnviromentalFactors: boolean;
+            censusHinderedByEnviromentalFactors?: boolean;
             /** Fog hindered the census */
-            censusHinderedByFog: boolean;
+            censusHinderedByFog?: boolean;
             /** Rain hindered the census */
-            censusHinderedByRain: boolean;
+            censusHinderedByRain?: boolean;
             /** Wind hindered the census */
-            censusHinderedByWind: boolean;
+            censusHinderedByWind?: boolean;
             /** Was the census prematurely aborted? */
-            censusPrematurelyAborted: boolean;
+            censusPrematurelyAborted?: boolean;
             /**
              * Cloudiness
              * @enum {string}
              */
-            cloudCover: "" | "MY.cloudCoverOktaEnumUnknown" | "MY.cloudCoverOktaEnum0" | "MY.cloudCoverOktaEnum1" | "MY.cloudCoverOktaEnum2" | "MY.cloudCoverOktaEnum3" | "MY.cloudCoverOktaEnum4" | "MY.cloudCoverOktaEnum5" | "MY.cloudCoverOktaEnum6" | "MY.cloudCoverOktaEnum7" | "MY.cloudCoverOktaEnum8";
+            cloudCover?: "" | "MY.cloudCoverOktaEnumUnknown" | "MY.cloudCoverOktaEnum0" | "MY.cloudCoverOktaEnum1" | "MY.cloudCoverOktaEnum2" | "MY.cloudCoverOktaEnum3" | "MY.cloudCoverOktaEnum4" | "MY.cloudCoverOktaEnum5" | "MY.cloudCoverOktaEnum6" | "MY.cloudCoverOktaEnum7" | "MY.cloudCoverOktaEnum8";
             /**
              * End cloud cover
              * @enum {string}
              */
-            cloudCoverEnd: "" | "MY.cloudCoverOktaEnumUnknown" | "MY.cloudCoverOktaEnum0" | "MY.cloudCoverOktaEnum1" | "MY.cloudCoverOktaEnum2" | "MY.cloudCoverOktaEnum3" | "MY.cloudCoverOktaEnum4" | "MY.cloudCoverOktaEnum5" | "MY.cloudCoverOktaEnum6" | "MY.cloudCoverOktaEnum7" | "MY.cloudCoverOktaEnum8";
+            cloudCoverEnd?: "" | "MY.cloudCoverOktaEnumUnknown" | "MY.cloudCoverOktaEnum0" | "MY.cloudCoverOktaEnum1" | "MY.cloudCoverOktaEnum2" | "MY.cloudCoverOktaEnum3" | "MY.cloudCoverOktaEnum4" | "MY.cloudCoverOktaEnum5" | "MY.cloudCoverOktaEnum6" | "MY.cloudCoverOktaEnum7" | "MY.cloudCoverOktaEnum8";
             /**
              * Start cloud cover
              * @enum {string}
              */
-            cloudCoverStart: "" | "MY.cloudCoverOktaEnumUnknown" | "MY.cloudCoverOktaEnum0" | "MY.cloudCoverOktaEnum1" | "MY.cloudCoverOktaEnum2" | "MY.cloudCoverOktaEnum3" | "MY.cloudCoverOktaEnum4" | "MY.cloudCoverOktaEnum5" | "MY.cloudCoverOktaEnum6" | "MY.cloudCoverOktaEnum7" | "MY.cloudCoverOktaEnum8";
-            completeList: components["schemas"]["store-completeList"];
+            cloudCoverStart?: "" | "MY.cloudCoverOktaEnumUnknown" | "MY.cloudCoverOktaEnum0" | "MY.cloudCoverOktaEnum1" | "MY.cloudCoverOktaEnum2" | "MY.cloudCoverOktaEnum3" | "MY.cloudCoverOktaEnum4" | "MY.cloudCoverOktaEnum5" | "MY.cloudCoverOktaEnum6" | "MY.cloudCoverOktaEnum7" | "MY.cloudCoverOktaEnum8";
+            completeList?: components["schemas"]["store-completeList"];
             /** Start date */
-            dateBegin: string;
+            dateBegin?: string;
             /** End date */
-            dateEnd: string;
-            gatheringFact: components["schemas"]["store-gatheringFact"];
-            geometry: components["schemas"]["store-geometry"];
+            dateEnd?: string;
+            gatheringFact?: components["schemas"]["store-gatheringFact"];
+            geometry?: components["schemas"]["store-geometry"];
             /** GPS used */
-            gpsUsed: boolean;
+            gpsUsed?: boolean;
             /**
              * Leg
              * @description Name of the collector(s), in format 'Lastname, Firstname; Lastname Firstname'
              */
-            leg: string[];
+            leg?: string[];
             /** Display names publically? */
-            legPublic: boolean;
+            legPublic?: boolean;
             /**
              * Käyttäjätunnus
              * @description Alkuperäislähteen käyttäjätunnus
              */
-            legUserID: string[];
+            legUserID?: string[];
             /**
              * AI used
              * @enum {string}
              */
-            machineAssistance: "" | "MY.machineAssistanceUnknown" | "MY.machineAssistanceNotUsed" | "MY.machineAssistanceUsed" | "MY.machineAssistanceMachineOnly";
+            machineAssistance?: "" | "MY.machineAssistanceUnknown" | "MY.machineAssistanceNotUsed" | "MY.machineAssistanceUsed" | "MY.machineAssistanceMachineOnly";
             /** Info about this route */
-            namedPlaceNotes: string;
+            namedPlaceNotes?: string;
             /** Next monitoring year */
-            nextMonitoringYear: number;
+            nextMonitoringYear?: number;
             /**
              * Notes
              * @description Additional information to the data in each section.
              */
-            notes: string;
+            notes?: string;
             /**
              * Rain intensity
              * @enum {string}
              */
-            rainIntensity: "" | "MY.rainIntensityEnumNoRain" | "MY.rainIntensityEnumLightRain" | "MY.rainIntensityEnumModerateRain" | "MY.rainIntensityEnumHeavyRain" | "MY.rainIntensityEnumTorrentialRain";
+            rainIntensity?: "" | "MY.rainIntensityEnumNoRain" | "MY.rainIntensityEnumLightRain" | "MY.rainIntensityEnumModerateRain" | "MY.rainIntensityEnumHeavyRain" | "MY.rainIntensityEnumTorrentialRain";
             /** Adhered route direction */
-            routeDirectionAdhered: boolean;
+            routeDirectionAdhered?: boolean;
             /** Spotting scope */
-            spottingScopeUsed: boolean;
+            spottingScopeUsed?: boolean;
             /** Start distance from NE corner (m) */
-            startDistanceFromNECorner: string;
+            startDistanceFromNECorner?: string;
             /** Start point deviation (m) */
-            startPointDeviation: number;
-            taxonCensus: components["schemas"]["store-taxonCensus"][];
+            startPointDeviation?: number;
+            taxonCensus?: components["schemas"]["store-taxonCensus"][];
             /** Temperature in celsius */
-            temperature: number;
+            temperature?: number;
             /** End temperature / °C */
-            temperatureEnd: number;
+            temperatureEnd?: number;
             /** Start temperature / °C */
-            temperatureStart: number;
+            temperatureStart?: number;
             /** End time */
-            timeEnd: string;
+            timeEnd?: string;
             /** Start time */
-            timeStart: string;
+            timeStart?: string;
         };
         "store-completeList": {
             /** Context for the MY.completeListClass */
-            "@context": string;
+            "@context"?: string;
             /** Id for the MY.completeListClass */
-            id: string;
+            id?: string;
             /** Type for the MY.completeListClass */
-            "@type": string;
+            "@type"?: string;
             /** Species */
-            completeListTaxonID: string;
+            completeListTaxonID?: string;
             /**
              * Species list completeness
              * @enum {string}
              */
-            completeListType: "" | "MY.completeListTypeCompleteWithBreedingStatus" | "MY.completeListTypeComplete" | "MY.completeListTypeIncomplete";
+            completeListType?: "" | "MY.completeListTypeCompleteWithBreedingStatus" | "MY.completeListTypeComplete" | "MY.completeListTypeIncomplete";
         };
         "store-gatheringFact": {
             /** Context for the Keruutapahtuman faktat */
-            "@context": string;
+            "@context"?: string;
             /** Id for the Keruutapahtuman faktat */
-            id: string;
+            id?: string;
             /** Type for the Keruutapahtuman faktat */
-            "@type": string;
+            "@type"?: string;
             /**
              * I placed the sound recorder to the terrain
              * @enum {string}
              */
-            batCollector: "" | "MY.batCollectorAlone" | "MY.batCollectorWithProjectGroupMember" | "MY.batCollectorSomeoneElse";
+            batCollector?: "" | "MY.batCollectorAlone" | "MY.batCollectorWithProjectGroupMember" | "MY.batCollectorSomeoneElse";
             /** Binoculars */
-            binocularsUsed: boolean;
+            binocularsUsed?: boolean;
             /** Census area/ha */
-            censusAreaHectares: number;
+            censusAreaHectares?: number;
             /** Observation documentation */
-            documentation: string;
+            documentation?: string;
             /** Estimated of other expenses in euros */
-            invasiveControlOtherExpensesInEuros: number;
+            invasiveControlOtherExpensesInEuros?: number;
             /** Work hours spent during the control */
-            invasiveControlWorkHours: number;
+            invasiveControlWorkHours?: number;
             /** Biotope counted */
-            lineTransectSegmentCounted: boolean;
+            lineTransectSegmentCounted?: boolean;
             /** Biotope's end meter amount from the start of the line */
-            lineTransectSegmentMetersEnd: number;
+            lineTransectSegmentMetersEnd?: number;
             /** Biotope's start meter amount from the start of the line */
-            lineTransectSegmentMetersStart: number;
+            lineTransectSegmentMetersStart?: number;
             /**
              * Site classification
              * @enum {string}
              */
-            lolifeSiteClassification: "" | "MY.lolifeSiteClassificationExcellent" | "MY.lolifeSiteClassificationSuboptimal" | "MY.lolifeSiteClassificationPossible" | "MY.lolifeSiteClassificationCurrentlyUnsuitable" | "MY.lolifeSiteClassificationPermanentlyUnsuitable";
+            lolifeSiteClassification?: "" | "MY.lolifeSiteClassificationExcellent" | "MY.lolifeSiteClassificationSuboptimal" | "MY.lolifeSiteClassificationPossible" | "MY.lolifeSiteClassificationCurrentlyUnsuitable" | "MY.lolifeSiteClassificationPermanentlyUnsuitable";
             /** Classification comments */
-            lolifeSiteClassificationComments: string;
+            lolifeSiteClassificationComments?: string;
             /** Marine area */
-            marineArea: string;
+            marineArea?: string;
             /** Observer's marine mammal expertise */
-            marineMammalExpertise: string;
+            marineMammalExpertise?: string;
             /** Observation tools */
-            observationTools: string;
+            observationTools?: string;
             /** Observed area/ha */
-            observedAreaHectares: number;
+            observedAreaHectares?: number;
             /**
              * Biotooppi
              * @enum {string}
              */
-            pointCountHabitat: "" | "MY.pointCountHabitat0" | "MY.pointCountHabitat1" | "MY.pointCountHabitat2" | "MY.pointCountHabitat3" | "MY.pointCountHabitat4" | "MY.pointCountHabitat5" | "MY.pointCountHabitat6" | "MY.pointCountHabitat7" | "MY.pointCountHabitat8" | "MY.pointCountHabitat9" | "MY.pointCountHabitat10" | "MY.pointCountHabitat11" | "MY.pointCountHabitat12" | "MY.pointCountHabitat13" | "MY.pointCountHabitat14" | "MY.pointCountHabitat15" | "MY.pointCountHabitat16" | "MY.pointCountHabitat17";
+            pointCountHabitat?: "" | "MY.pointCountHabitat0" | "MY.pointCountHabitat1" | "MY.pointCountHabitat2" | "MY.pointCountHabitat3" | "MY.pointCountHabitat4" | "MY.pointCountHabitat5" | "MY.pointCountHabitat6" | "MY.pointCountHabitat7" | "MY.pointCountHabitat8" | "MY.pointCountHabitat9" | "MY.pointCountHabitat10" | "MY.pointCountHabitat11" | "MY.pointCountHabitat12" | "MY.pointCountHabitat13" | "MY.pointCountHabitat14" | "MY.pointCountHabitat15" | "MY.pointCountHabitat16" | "MY.pointCountHabitat17";
             /** Shoreline length/m */
-            shorelineLengthMeters: number;
+            shorelineLengthMeters?: number;
             /** Spotting scope */
-            spottingScopeUsed: boolean;
+            spottingScopeUsed?: boolean;
             /** Sunniness % */
-            sunniness: number;
+            sunniness?: number;
             /**
              * Windiness
              * @enum {string}
              */
-            sykeButterFlyCensusWind: "" | "MY.sykeButterFlyCensusWindEnumUnknown" | "MY.sykeButterFlyCensusWindEnum0" | "MY.sykeButterFlyCensusWindEnum1" | "MY.sykeButterFlyCensusWindEnum2" | "MY.sykeButterFlyCensusWindEnum3" | "MY.sykeButterFlyCensusWindEnum4" | "MY.sykeButterFlyCensusWindEnum5" | "MY.sykeButterFlyCensusWindEnum6";
+            sykeButterFlyCensusWind?: "" | "MY.sykeButterFlyCensusWindEnumUnknown" | "MY.sykeButterFlyCensusWindEnum0" | "MY.sykeButterFlyCensusWindEnum1" | "MY.sykeButterFlyCensusWindEnum2" | "MY.sykeButterFlyCensusWindEnum3" | "MY.sykeButterFlyCensusWindEnum4" | "MY.sykeButterFlyCensusWindEnum5" | "MY.sykeButterFlyCensusWindEnum6";
             /**
              * End windiness
              * @enum {string}
              */
-            sykeButterFlyCensusWindEnd: "" | "MY.sykeButterFlyCensusWindEnumUnknown" | "MY.sykeButterFlyCensusWindEnum0" | "MY.sykeButterFlyCensusWindEnum1" | "MY.sykeButterFlyCensusWindEnum2" | "MY.sykeButterFlyCensusWindEnum3" | "MY.sykeButterFlyCensusWindEnum4" | "MY.sykeButterFlyCensusWindEnum5" | "MY.sykeButterFlyCensusWindEnum6";
+            sykeButterFlyCensusWindEnd?: "" | "MY.sykeButterFlyCensusWindEnumUnknown" | "MY.sykeButterFlyCensusWindEnum0" | "MY.sykeButterFlyCensusWindEnum1" | "MY.sykeButterFlyCensusWindEnum2" | "MY.sykeButterFlyCensusWindEnum3" | "MY.sykeButterFlyCensusWindEnum4" | "MY.sykeButterFlyCensusWindEnum5" | "MY.sykeButterFlyCensusWindEnum6";
             /**
              * Start windiness
              * @enum {string}
              */
-            sykeButterFlyCensusWindStart: "" | "MY.sykeButterFlyCensusWindEnumUnknown" | "MY.sykeButterFlyCensusWindEnum0" | "MY.sykeButterFlyCensusWindEnum1" | "MY.sykeButterFlyCensusWindEnum2" | "MY.sykeButterFlyCensusWindEnum3" | "MY.sykeButterFlyCensusWindEnum4" | "MY.sykeButterFlyCensusWindEnum5" | "MY.sykeButterFlyCensusWindEnum6";
+            sykeButterFlyCensusWindStart?: "" | "MY.sykeButterFlyCensusWindEnumUnknown" | "MY.sykeButterFlyCensusWindEnum0" | "MY.sykeButterFlyCensusWindEnum1" | "MY.sykeButterFlyCensusWindEnum2" | "MY.sykeButterFlyCensusWindEnum3" | "MY.sykeButterFlyCensusWindEnum4" | "MY.sykeButterFlyCensusWindEnum5" | "MY.sykeButterFlyCensusWindEnum6";
             /**
              * Census period
              * @enum {string}
              */
-            waterbirdCensusPeriod: "" | "MY.waterbirdCensusPeriodEnum1" | "MY.waterbirdCensusPeriodEnum2" | "MY.waterbirdCensusPeriodEnumJuvenile" | "MY.waterbirdCensusPeriodEnumAdditional" | "MY.waterbirdCensusPeriodEnumCombined";
+            waterbirdCensusPeriod?: "" | "MY.waterbirdCensusPeriodEnum1" | "MY.waterbirdCensusPeriodEnum2" | "MY.waterbirdCensusPeriodEnumJuvenile" | "MY.waterbirdCensusPeriodEnumAdditional" | "MY.waterbirdCensusPeriodEnumCombined";
             /**
              * Habitat
              * @enum {string}
              */
-            waterbirdHabitat: "" | "MY.waterbirdHabitatEnum1" | "MY.waterbirdHabitatEnum2" | "MY.waterbirdHabitatEnum3" | "MY.waterbirdHabitatEnum4" | "MY.waterbirdHabitatEnum5" | "MY.waterbirdHabitatEnum6" | "MY.waterbirdHabitatEnum7" | "MY.waterbirdHabitatEnum8" | "MY.waterbirdHabitatEnum9" | "MY.waterbirdHabitatEnum10";
+            waterbirdHabitat?: "" | "MY.waterbirdHabitatEnum1" | "MY.waterbirdHabitatEnum2" | "MY.waterbirdHabitatEnum3" | "MY.waterbirdHabitatEnum4" | "MY.waterbirdHabitatEnum5" | "MY.waterbirdHabitatEnum6" | "MY.waterbirdHabitatEnum7" | "MY.waterbirdHabitatEnum8" | "MY.waterbirdHabitatEnum9" | "MY.waterbirdHabitatEnum10";
             /** Atlas grid */
-            ykjSquareNumber: string;
+            ykjSquareNumber?: string;
             /** Urpiaisten ruokailut lepällä */
-            ACAFLAonAlder: number;
+            ACAFLAonAlder?: number;
             /** Urpiaisten ruokailut koivulla */
-            ACAFLAonBirch: number;
+            ACAFLAonBirch?: number;
             /** Urpiaisten ruokailut maassa */
-            ACAFLAonGround: number;
+            ACAFLAonGround?: number;
             /** Urpiaisten ruokailut männyllä */
-            ACAFLAonPine: number;
+            ACAFLAonPine?: number;
             /** Urpiaisten ruokailut kuusella */
-            ACAFLAonSpruce: number;
+            ACAFLAonSpruce?: number;
             /** Vihervarpusten ruokailut lepällä */
-            CARSPIonAlder: number;
+            CARSPIonAlder?: number;
             /** Vihervarpusten ruokailut koivulla */
-            CARSPIonBirch: number;
+            CARSPIonBirch?: number;
             /** Vihervarpusten ruokailut maassa */
-            CARSPIonGround: number;
+            CARSPIonGround?: number;
             /** CARSPIonPine */
-            CARSPIonPine: number;
+            CARSPIonPine?: number;
             /** Vihervarpusten ruokailut kuusella */
-            CARSPIonSpruce: number;
+            CARSPIonSpruce?: number;
             /** Käpylintujen ruokailut lepällä */
-            LOXIAonAlder: number;
+            LOXIAonAlder?: number;
             /** Käpylintujen ruokailut koivulla */
-            LOXIAonBirch: number;
+            LOXIAonBirch?: number;
             /** Käpylintujen ruokailut maassa */
-            LOXIAonGround: number;
+            LOXIAonGround?: number;
             /** Käpylintujen ruokailut männyllä */
-            LOXIAonPine: number;
+            LOXIAonPine?: number;
             /** Käpylintujen ruokailut kuusella */
-            LOXIAonSpruce: number;
+            LOXIAonSpruce?: number;
             /**
              * Tilhi
              * @enum {string}
              */
-            abundanceBOMGAR: "" | "WBC.speciesAbundanceEnum0" | "WBC.speciesAbundanceEnum1" | "WBC.speciesAbundanceEnum2" | "WBC.speciesAbundanceEnum3";
+            abundanceBOMGAR?: "" | "WBC.speciesAbundanceEnum0" | "WBC.speciesAbundanceEnum1" | "WBC.speciesAbundanceEnum2" | "WBC.speciesAbundanceEnum3";
             /**
              * Taviokuurna
              * @enum {string}
              */
-            abundancePINENU: "" | "WBC.speciesAbundanceEnum0" | "WBC.speciesAbundanceEnum1" | "WBC.speciesAbundanceEnum2" | "WBC.speciesAbundanceEnum3";
+            abundancePINENU?: "" | "WBC.speciesAbundanceEnum0" | "WBC.speciesAbundanceEnum1" | "WBC.speciesAbundanceEnum2" | "WBC.speciesAbundanceEnum3";
             /**
              * Räkättirastas
              * @enum {string}
              */
-            abundanceTURPIL: "" | "WBC.speciesAbundanceEnum0" | "WBC.speciesAbundanceEnum1" | "WBC.speciesAbundanceEnum2" | "WBC.speciesAbundanceEnum3";
+            abundanceTURPIL?: "" | "WBC.speciesAbundanceEnum0" | "WBC.speciesAbundanceEnum1" | "WBC.speciesAbundanceEnum2" | "WBC.speciesAbundanceEnum3";
             /** Lintulautoja (kpl) */
-            birdFeederCount: number;
+            birdFeederCount?: number;
             /** Kaatopaikan lintulaudat */
-            birdFeederCountBiotopeA: number;
+            birdFeederCountBiotopeA?: number;
             /** Kaupunkiasutuksen lintulaudat */
-            birdFeederCountBiotopeB: number;
+            birdFeederCountBiotopeB?: number;
             /** Maaseutuasutuksen lintulaudat */
-            birdFeederCountBiotopeC: number;
+            birdFeederCountBiotopeC?: number;
             /** Pellon lintulaudat */
-            birdFeederCountBiotopeD: number;
+            birdFeederCountBiotopeD?: number;
             /** Metsän lintulaudat */
-            birdFeederCountBiotopeE: number;
+            birdFeederCountBiotopeE?: number;
             /** Lintulaudat muu biotooppi */
-            birdFeederCountBiotopeF: number;
+            birdFeederCountBiotopeF?: number;
             /** Hakkuuaukean lintulaudat */
-            birdFeederCountBiotopeG: number;
+            birdFeederCountBiotopeG?: number;
             /** Ruovikon lintulaudat */
-            birdFeederCountBiotopeH: number;
+            birdFeederCountBiotopeH?: number;
             /**
              * Pilvisyys ja sade
              * @enum {string}
              */
-            cloudAndRain: "" | "WBC.cloudAndRainEnum0" | "WBC.cloudAndRainEnum1" | "WBC.cloudAndRainEnum2" | "WBC.cloudAndRainEnum3" | "WBC.cloudAndRainEnum4";
+            cloudAndRain?: "" | "WBC.cloudAndRainEnum0" | "WBC.cloudAndRainEnum1" | "WBC.cloudAndRainEnum2" | "WBC.cloudAndRainEnum3" | "WBC.cloudAndRainEnum4";
             /** Mitä biotooppiin Muu (F) kuuluu */
-            descriptionBiotopeF: string;
+            descriptionBiotopeF?: string;
             /** Ruokintapaikkoja (kpl) */
-            feedingStationCount: number;
+            feedingStationCount?: number;
             /** feedingStationCountBiotopeA */
-            feedingStationCountBiotopeA: number;
+            feedingStationCountBiotopeA?: number;
             /** Kaupunkiasutuksen ruokintapaikat */
-            feedingStationCountBiotopeB: number;
+            feedingStationCountBiotopeB?: number;
             /** Maaseutuasutuksen ruokintapaikat */
-            feedingStationCountBiotopeC: number;
+            feedingStationCountBiotopeC?: number;
             /** Pellon ruokintapaikat */
-            feedingStationCountBiotopeD: number;
+            feedingStationCountBiotopeD?: number;
             /** Metsän ruokintapaikat */
-            feedingStationCountBiotopeE: number;
+            feedingStationCountBiotopeE?: number;
             /** Ruokintapaikat muu biotooppi */
-            feedingStationCountBiotopeF: number;
+            feedingStationCountBiotopeF?: number;
             /** Ruovikon ruokintapaikat */
-            feedingStationCountBiotopeG: number;
+            feedingStationCountBiotopeG?: number;
             /** Ruovikon ruokintapaikat */
-            feedingStationCountBiotopeH: number;
+            feedingStationCountBiotopeH?: number;
             /**
              * Jääpeite
              * @enum {string}
              */
-            iceCover: "" | "WBC.iceCoverEnum0" | "WBC.iceCoverEnum1" | "WBC.iceCoverEnum2" | "WBC.iceCoverEnum3" | "WBC.iceCoverEnum4";
+            iceCover?: "" | "WBC.iceCoverEnum0" | "WBC.iceCoverEnum1" | "WBC.iceCoverEnum2" | "WBC.iceCoverEnum3" | "WBC.iceCoverEnum4";
             /** Keskilämpötila (asteen tarkkuus) */
-            meanTemperature: number;
+            meanTemperature?: number;
             /** Laskijoiden lukumäärä */
-            observerCount: number;
+            observerCount?: number;
             /** Havainnoijanumero */
-            observerID: number;
+            observerID?: number;
             /**
              * Männynkäpyjä laskenta-aikaan
              * @enum {string}
              */
-            pineConesAtCensus: "" | "WBC.berriesAndConesEnum0" | "WBC.berriesAndConesEnum1" | "WBC.berriesAndConesEnum2" | "WBC.berriesAndConesEnum3" | "WBC.berriesAndConesEnum4" | "WBC.berriesAndConesEnum5" | "WBC.berriesAndConesEnum6";
+            pineConesAtCensus?: "" | "WBC.berriesAndConesEnum0" | "WBC.berriesAndConesEnum1" | "WBC.berriesAndConesEnum2" | "WBC.berriesAndConesEnum3" | "WBC.berriesAndConesEnum4" | "WBC.berriesAndConesEnum5" | "WBC.berriesAndConesEnum6";
             /** Reitin numero */
-            routeID: number;
+            routeID?: number;
             /** Reitin pituus (m) */
-            routeLength: number;
+            routeLength?: number;
             /** Route length dump */
-            routeLengthBiotopeA: number;
+            routeLengthBiotopeA?: number;
             /** Route length urban */
-            routeLengthBiotopeB: number;
+            routeLengthBiotopeB?: number;
             /** Route length countryside */
-            routeLengthBiotopeC: number;
+            routeLengthBiotopeC?: number;
             /** Route length field */
-            routeLengthBiotopeD: number;
+            routeLengthBiotopeD?: number;
             /** Route length forest */
-            routeLengthBiotopeE: number;
+            routeLengthBiotopeE?: number;
             /** Route length other biotope */
-            routeLengthBiotopeF: number;
+            routeLengthBiotopeF?: number;
             /** Route length cutting open */
-            routeLengthBiotopeG: number;
+            routeLengthBiotopeG?: number;
             /** Route length reed */
-            routeLengthBiotopeH: number;
+            routeLengthBiotopeH?: number;
             /** Reitin muutokset (m) */
-            routeLengthChange: number;
+            routeLengthChange?: number;
             /** Reitin muutokset kaatopaikka */
-            routeLengthChangeBiotopeA: number;
+            routeLengthChangeBiotopeA?: number;
             /** Reitin muutokset kaupunkiasutus */
-            routeLengthChangeBiotopeB: number;
+            routeLengthChangeBiotopeB?: number;
             /** Reitin muutokset maaseutuasutus */
-            routeLengthChangeBiotopeC: number;
+            routeLengthChangeBiotopeC?: number;
             /** Reitin muutokset pelto */
-            routeLengthChangeBiotopeD: number;
+            routeLengthChangeBiotopeD?: number;
             /** Reitin muutokset metsä */
-            routeLengthChangeBiotopeE: number;
+            routeLengthChangeBiotopeE?: number;
             /** Reitin muutokset muu biotooppi */
-            routeLengthChangeBiotopeF: number;
+            routeLengthChangeBiotopeF?: number;
             /** Reitin muutokset hakkuuaukea */
-            routeLengthChangeBiotopeG: number;
+            routeLengthChangeBiotopeG?: number;
             /** Reitin muutokset ruovikko */
-            routeLengthChangeBiotopeH: number;
+            routeLengthChangeBiotopeH?: number;
             /**
              * Puissa oleva lumi ja jääkarsta
              * @enum {string}
              */
-            snowAndIceOnTrees: "" | "WBC.snowAndIceOnTreesEnum0" | "WBC.snowAndIceOnTreesEnum1" | "WBC.snowAndIceOnTreesEnum2" | "WBC.snowAndIceOnTreesEnum3";
+            snowAndIceOnTrees?: "" | "WBC.snowAndIceOnTreesEnum0" | "WBC.snowAndIceOnTreesEnum1" | "WBC.snowAndIceOnTreesEnum2" | "WBC.snowAndIceOnTreesEnum3";
             /**
              * Lumipeite
              * @enum {string}
              */
-            snowCover: "" | "WBC.snowCoverEnum0" | "WBC.snowCoverEnum1" | "WBC.snowCoverEnum2" | "WBC.snowCoverEnum3" | "WBC.snowCoverEnum4" | "WBC.snowCoverEnum5" | "WBC.snowCoverEnum6" | "WBC.snowCoverEnum7" | "WBC.snowCoverEnum8";
+            snowCover?: "" | "WBC.snowCoverEnum0" | "WBC.snowCoverEnum1" | "WBC.snowCoverEnum2" | "WBC.snowCoverEnum3" | "WBC.snowCoverEnum4" | "WBC.snowCoverEnum5" | "WBC.snowCoverEnum6" | "WBC.snowCoverEnum7" | "WBC.snowCoverEnum8";
             /**
              * Pihlajanmarjoja laskenta-aikaan
              * @enum {string}
              */
-            sorbusBerriesAtCensus: "" | "WBC.berriesAndConesEnum0" | "WBC.berriesAndConesEnum1" | "WBC.berriesAndConesEnum2" | "WBC.berriesAndConesEnum3" | "WBC.berriesAndConesEnum4" | "WBC.berriesAndConesEnum5" | "WBC.berriesAndConesEnum6";
+            sorbusBerriesAtCensus?: "" | "WBC.berriesAndConesEnum0" | "WBC.berriesAndConesEnum1" | "WBC.berriesAndConesEnum2" | "WBC.berriesAndConesEnum3" | "WBC.berriesAndConesEnum4" | "WBC.berriesAndConesEnum5" | "WBC.berriesAndConesEnum6";
             /**
              * Pihlajanmarjoja alkusyksyllä
              * @enum {string}
              */
-            sorbusBerriesEarlyFall: "" | "WBC.berriesAndConesEnum0" | "WBC.berriesAndConesEnum1" | "WBC.berriesAndConesEnum2" | "WBC.berriesAndConesEnum3" | "WBC.berriesAndConesEnum4" | "WBC.berriesAndConesEnum5" | "WBC.berriesAndConesEnum6";
+            sorbusBerriesEarlyFall?: "" | "WBC.berriesAndConesEnum0" | "WBC.berriesAndConesEnum1" | "WBC.berriesAndConesEnum2" | "WBC.berriesAndConesEnum3" | "WBC.berriesAndConesEnum4" | "WBC.berriesAndConesEnum5" | "WBC.berriesAndConesEnum6";
             /**
              * Kuusenkäpyjä laskenta-aikaan
              * @enum {string}
              */
-            spruceConesAtCensus: "" | "WBC.berriesAndConesEnum0" | "WBC.berriesAndConesEnum1" | "WBC.berriesAndConesEnum2" | "WBC.berriesAndConesEnum3" | "WBC.berriesAndConesEnum4" | "WBC.berriesAndConesEnum5" | "WBC.berriesAndConesEnum6";
+            spruceConesAtCensus?: "" | "WBC.berriesAndConesEnum0" | "WBC.berriesAndConesEnum1" | "WBC.berriesAndConesEnum2" | "WBC.berriesAndConesEnum3" | "WBC.berriesAndConesEnum4" | "WBC.berriesAndConesEnum5" | "WBC.berriesAndConesEnum6";
             /**
              * Maassa olevan lumen laatu
              * @enum {string}
              */
-            typeOfSnowCover: "" | "WBC.typeOfSnowCoverEnum0" | "WBC.typeOfSnowCoverEnum1" | "WBC.typeOfSnowCoverEnum2";
+            typeOfSnowCover?: "" | "WBC.typeOfSnowCoverEnum0" | "WBC.typeOfSnowCoverEnum1" | "WBC.typeOfSnowCoverEnum2";
             /**
              * Näkyvyys
              * @enum {string}
              */
-            visibility: "" | "WBC.visibilityEnum0" | "WBC.visibilityEnum1" | "WBC.visibilityEnum2" | "WBC.visibilityEnum3" | "WBC.visibilityEnum4";
+            visibility?: "" | "WBC.visibilityEnum0" | "WBC.visibilityEnum1" | "WBC.visibilityEnum2" | "WBC.visibilityEnum3" | "WBC.visibilityEnum4";
             /**
              * Vesistöt
              * @enum {string}
              */
-            waterbodies: "" | "WBC.waterbodiesEnum0" | "WBC.waterbodiesEnum1" | "WBC.waterbodiesEnum2" | "WBC.waterbodiesEnum3" | "WBC.waterbodiesEnum4" | "WBC.waterbodiesEnum5";
+            waterbodies?: "" | "WBC.waterbodiesEnum0" | "WBC.waterbodiesEnum1" | "WBC.waterbodiesEnum2" | "WBC.waterbodiesEnum3" | "WBC.waterbodiesEnum4" | "WBC.waterbodiesEnum5";
             /**
              * Kulkutapa
              * @enum {string}
              */
-            wayOfTravel: "" | "WBC.wayOfTravelEnum0" | "WBC.wayOfTravelEnum1" | "WBC.wayOfTravelEnum2" | "WBC.wayOfTravelEnum3" | "WBC.wayOfTravelEnum9";
+            wayOfTravel?: "" | "WBC.wayOfTravelEnum0" | "WBC.wayOfTravelEnum1" | "WBC.wayOfTravelEnum2" | "WBC.wayOfTravelEnum3" | "WBC.wayOfTravelEnum9";
             /** Kulkutavan kuvaus */
-            wayOfTravelNotes: string;
+            wayOfTravelNotes?: string;
             /**
              * Tuuli
              * @enum {string}
              */
-            wind: "" | "WBC.windEnum0" | "WBC.windEnum1" | "WBC.windEnum2" | "WBC.windEnum3" | "WBC.windEnum4";
+            wind?: "" | "WBC.windEnum0" | "WBC.windEnum1" | "WBC.windEnum2" | "WBC.windEnum3" | "WBC.windEnum4";
         };
         "store-geometry": ({
             /** @enum {string} */
@@ -12769,1178 +12768,1178 @@ export interface components {
         };
         "store-gathering": {
             /** Context for the Gathering event */
-            "@context": string;
+            "@context"?: string;
             /** Id for the Gathering event */
-            id: string;
+            id?: string;
             /** Type for the Gathering event */
-            "@type": string;
+            "@type"?: string;
             /**
              * AFE grid
              * @description AFE grid name
              */
-            AFEQuadrat: string;
+            AFEQuadrat?: string;
             /**
              * UTM grid
              * @description UTM grid name
              */
-            UTMQuadrat: string;
+            UTMQuadrat?: string;
             /** No units in census */
-            acknowledgeNoUnitsInCensus: boolean;
+            acknowledgeNoUnitsInCensus?: boolean;
             /**
              * Administrative province
              * @description Regions, rayons, provinces and other administrative areas. Separate multiple names with commas, from generic to specific. (E.g. Etelä-Suomen lääni, Uusimaa)
              */
-            administrativeProvince: string;
+            administrativeProvince?: string;
             /**
              * Alt in meters
              * @description Altitude form sea level in meters, single value or range (E.g. 90, or 80-100). No GPS altitude here.
              */
-            alt: string;
+            alt?: string;
             /** Area details */
-            areaDetail: string;
+            areaDetail?: string;
             /**
              * Associated observation taxa
              * @description Write associated observation taxa names here, separated by a semicolon (;). E.g.: "Betula pendula; Betula pubescens; Poaceae". These will form their own units of the type observation.
              */
-            associatedObservationTaxa: string;
+            associatedObservationTaxa?: string;
             /**
              * Associated specimen taxa
              * @description Write associated specimen taxa names here, separated by a semicolon (;). E.g.: "Betula pendula; Betula pubescens; Poaceae". These will form their own units of the type Preserved specimen.
              */
-            associatedSpecimenTaxa: string;
+            associatedSpecimenTaxa?: string;
             /**
              * Habitat
              * @description Bat habitat
              */
-            batHabitat: ("" | "MY.batHabitatYardCityCentre" | "MY.batHabitatYardSuburbs" | "MY.batHabitatYardRural" | "MY.batHabitatRoadSide" | "MY.batHabitatStandOfTreesCloseToBuildings" | "MY.batHabitatParkWIthFewTrees" | "MY.batHabitatParkAbundantInTrees" | "MY.batHabitatSparseForest" | "MY.batHabitatDenseForest" | "MY.batHabitatEdgeOfShoreCoppice" | "MY.batHabitatLakeShore" | "MY.batHabitatSeaShore" | "MY.batHabitatArchipelago" | "MY.batHabitatStreamOrRiverBank" | "MY.batHabitatOldBuildingOrRuins" | "MY.batHabitatCountryside")[];
+            batHabitat?: ("" | "MY.batHabitatYardCityCentre" | "MY.batHabitatYardSuburbs" | "MY.batHabitatYardRural" | "MY.batHabitatRoadSide" | "MY.batHabitatStandOfTreesCloseToBuildings" | "MY.batHabitatParkWIthFewTrees" | "MY.batHabitatParkAbundantInTrees" | "MY.batHabitatSparseForest" | "MY.batHabitatDenseForest" | "MY.batHabitatEdgeOfShoreCoppice" | "MY.batHabitatLakeShore" | "MY.batHabitatSeaShore" | "MY.batHabitatArchipelago" | "MY.batHabitatStreamOrRiverBank" | "MY.batHabitatOldBuildingOrRuins" | "MY.batHabitatCountryside")[];
             /** Binoculars */
-            binocularsUsed: boolean;
+            binocularsUsed?: boolean;
             /**
              * Biogeographical province
              * @description Formal abbreviation. For Finnish eliömaakunnat, use Finnish abbreviation.
              */
-            biologicalProvince: string;
+            biologicalProvince?: string;
             /** Weather (etc) hindered the census */
-            censusHinderedByEnviromentalFactors: boolean;
+            censusHinderedByEnviromentalFactors?: boolean;
             /** Fog hindered the census */
-            censusHinderedByFog: boolean;
+            censusHinderedByFog?: boolean;
             /** Rain hindered the census */
-            censusHinderedByRain: boolean;
+            censusHinderedByRain?: boolean;
             /** Wind hindered the census */
-            censusHinderedByWind: boolean;
+            censusHinderedByWind?: boolean;
             /**
              * Collecting event name
              * @description Name of an expedition or such.
              */
-            collectingEventName: string;
+            collectingEventName?: string;
             /** Prevention measures */
-            controlActivitiesNotes: string;
+            controlActivitiesNotes?: string;
             /**
              * Coordinate notes
              * @description Free-text notes about the coordinates.
              */
-            coordinateNotes: string;
+            coordinateNotes?: string;
             /**
              * Error radius in meters
              * @description Maximum error of coordinates in meters
              */
-            coordinateRadius: string;
+            coordinateRadius?: string;
             /**
              * Coord source
              * @description Use for NEW SPECIMENS: Where the coordinates have been acquired
              * @enum {string}
              */
-            coordinateSource: "" | "MY.coordinateSourceGps" | "MY.coordinateSourcePeruskartta" | "MY.coordinateSourcePapermap" | "MY.coordinateSourceKotkamap" | "MY.coordinateSourceKarttapaikka" | "MY.coordinateSourceRetkikartta" | "MY.coordinateSourceGoogle" | "MY.coordinateSourceLajifi" | "MY.coordinateSourceOther" | "MY.coordinateSourceUnknown";
+            coordinateSource?: "" | "MY.coordinateSourceGps" | "MY.coordinateSourcePeruskartta" | "MY.coordinateSourcePapermap" | "MY.coordinateSourceKotkamap" | "MY.coordinateSourceKarttapaikka" | "MY.coordinateSourceRetkikartta" | "MY.coordinateSourceGoogle" | "MY.coordinateSourceLajifi" | "MY.coordinateSourceOther" | "MY.coordinateSourceUnknown";
             /**
              * Coordinate system
              * @description More information about the coordinate systems: https://wiki.helsinki.fi/display/digit/Entering+specimen+data
              * @enum {string}
              */
-            coordinateSystem: "" | "MY.coordinateSystemYkj" | "MY.coordinateSystemWgs84" | "MY.coordinateSystemWgs84dms" | "MY.coordinateSystemKkj" | "MY.coordinateSystemEtrs-tm35fin" | "MY.coordinateSystemDd" | "MY.coordinateSystemDms";
+            coordinateSystem?: "" | "MY.coordinateSystemYkj" | "MY.coordinateSystemWgs84" | "MY.coordinateSystemWgs84dms" | "MY.coordinateSystemKkj" | "MY.coordinateSystemEtrs-tm35fin" | "MY.coordinateSystemDd" | "MY.coordinateSystemDms";
             /** Finnish uniform grid coordinates */
-            coordinatesGridYKJ: string;
+            coordinatesGridYKJ?: string;
             /**
              * Verbatim coordinates from label or other original source
              * @description Coordinates, possible coordinate system and error radius word-to-word as they appear on the label or other original source, errors and all.
              */
-            coordinatesVerbatim: string;
+            coordinatesVerbatim?: string;
             /**
              * Country
              * @description Country name in English, or 2-letter country code, or name from label
              */
-            country: string;
+            country?: string;
             /**
              * County
              * @description County (piirikunta, kreivikunta etc.)
              */
-            county: string;
+            county?: string;
             /** Start date */
-            dateBegin: string;
+            dateBegin?: string;
             /** End date */
-            dateEnd: string;
+            dateEnd?: string;
             /**
              * Verbatim date from original source
              * @description Date just as it appears on the label or other original source, no interpretation, errors and all
              */
-            dateVerbatim: string;
+            dateVerbatim?: string;
             /**
              * Depth in meters
              * @description Depth in meters, single value or range (E.g. 0.9, or 0.8-1.0)
              */
-            depth: string;
+            depth?: string;
             /** dynamicProperties */
-            dynamicProperties: string;
+            dynamicProperties?: string;
             /** Event Date */
-            eventDate: string;
+            eventDate?: string;
             /**
              * Forest vegetation zone
              * @description Finnish forest vegetation zone
              * @enum {string}
              */
-            forestVegetationZone: "" | "MY.forestVegetationZone1a" | "MY.forestVegetationZone1b" | "MY.forestVegetationZone2a" | "MY.forestVegetationZone2b" | "MY.forestVegetationZone3a" | "MY.forestVegetationZone3b" | "MY.forestVegetationZone3c" | "MY.forestVegetationZone4a" | "MY.forestVegetationZone4b" | "MY.forestVegetationZone4c" | "MY.forestVegetationZone4d";
-            gatheringFact: components["schemas"]["store-gatheringFact"];
+            forestVegetationZone?: "" | "MY.forestVegetationZone1a" | "MY.forestVegetationZone1b" | "MY.forestVegetationZone2a" | "MY.forestVegetationZone2b" | "MY.forestVegetationZone3a" | "MY.forestVegetationZone3b" | "MY.forestVegetationZone3c" | "MY.forestVegetationZone4a" | "MY.forestVegetationZone4b" | "MY.forestVegetationZone4c" | "MY.forestVegetationZone4d";
+            gatheringFact?: components["schemas"]["store-gatheringFact"];
             /**
              * Gathering event type
              * @enum {string}
              */
-            gatheringType: "" | "MY.gatheringTypeForagingArea" | "MY.gatheringTypeBreedingAndRestingArea" | "MY.gatheringTypeCavityTree" | "MY.gatheringTypeDroppingsTree" | "MY.gatheringTypeNestTree" | "MY.gatheringTypeLolifeAccess" | "MY.gatheringTypeLolifeCoreZone" | "MY.gatheringTypeLolifeHabitatZone" | "MY.gatheringTypeLolifeApplicableZone" | "MY.gatheringTypeWaterbirdPoint" | "MY.gatheringTypeWaterbirdRound" | "MY.gatheringTypeBoatCount" | "MY.gatheringTypeNestCount";
-            geometry: components["schemas"]["store-geometry"];
+            gatheringType?: "" | "MY.gatheringTypeForagingArea" | "MY.gatheringTypeBreedingAndRestingArea" | "MY.gatheringTypeCavityTree" | "MY.gatheringTypeDroppingsTree" | "MY.gatheringTypeNestTree" | "MY.gatheringTypeLolifeAccess" | "MY.gatheringTypeLolifeCoreZone" | "MY.gatheringTypeLolifeHabitatZone" | "MY.gatheringTypeLolifeApplicableZone" | "MY.gatheringTypeWaterbirdPoint" | "MY.gatheringTypeWaterbirdRound" | "MY.gatheringTypeBoatCount" | "MY.gatheringTypeNestCount";
+            geometry?: components["schemas"]["store-geometry"];
             /**
              * Georeferencing source
              * @description Use for OLD SPECIMENS: What source was used to get coordinates based on locality names
              * @enum {string}
              */
-            georeferenceSource: "" | "MY.georeferenceSourceKotka" | "MY.georeferenceSourceKarttapaikka" | "MY.georeferenceSourcePaikkatietoikkuna" | "MY.georeferenceSourceKarjalankartat" | "MY.georeferenceSourceRetkikartta" | "MY.georeferenceSourceGoogle" | "MY.georeferenceSourcePeruskartta" | "MY.georeferenceSourcePapermap" | "MY.georeferenceSourceOtherpaper" | "MY.georeferenceSourceOtherweb" | "MY.georeferenceSourceCatalogue" | "MY.georeferenceSourceBiogeomancer" | "MY.georeferenceSourceGeolocate" | "MY.georeferenceSourceOther" | "MY.georeferenceSourceUnknown";
+            georeferenceSource?: "" | "MY.georeferenceSourceKotka" | "MY.georeferenceSourceKarttapaikka" | "MY.georeferenceSourcePaikkatietoikkuna" | "MY.georeferenceSourceKarjalankartat" | "MY.georeferenceSourceRetkikartta" | "MY.georeferenceSourceGoogle" | "MY.georeferenceSourcePeruskartta" | "MY.georeferenceSourcePapermap" | "MY.georeferenceSourceOtherpaper" | "MY.georeferenceSourceOtherweb" | "MY.georeferenceSourceCatalogue" | "MY.georeferenceSourceBiogeomancer" | "MY.georeferenceSourceGeolocate" | "MY.georeferenceSourceOther" | "MY.georeferenceSourceUnknown";
             /** Habitat */
-            habitat: ("" | "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170")[];
+            habitat?: ("" | "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170")[];
             /** Additional information of habitat */
-            habitatAttributes: ("" | "MY.habitatAttributesEnumValue1" | "MY.habitatAttributesEnumValue2" | "MY.habitatAttributesEnumValue3" | "MY.habitatAttributesEnumValue4" | "MY.habitatAttributesEnumValue5" | "MY.habitatAttributesEnumValue6" | "MY.habitatAttributesEnumValue7" | "MY.habitatAttributesEnumValue8" | "MY.habitatAttributesEnumValue9" | "MY.habitatAttributesEnumValue10" | "MY.habitatAttributesEnumValue11" | "MY.habitatAttributesEnumValue12" | "MY.habitatAttributesEnumValue13" | "MY.habitatAttributesEnumValue14" | "MY.habitatAttributesEnumValue15" | "MY.habitatAttributesEnumValue16" | "MY.habitatAttributesEnumValue17" | "MY.habitatAttributesEnumValue18" | "MY.habitatAttributesEnumValue19" | "MY.habitatAttributesEnumValue20" | "MY.habitatAttributesEnumValue21" | "MY.habitatAttributesEnumValue22")[];
+            habitatAttributes?: ("" | "MY.habitatAttributesEnumValue1" | "MY.habitatAttributesEnumValue2" | "MY.habitatAttributesEnumValue3" | "MY.habitatAttributesEnumValue4" | "MY.habitatAttributesEnumValue5" | "MY.habitatAttributesEnumValue6" | "MY.habitatAttributesEnumValue7" | "MY.habitatAttributesEnumValue8" | "MY.habitatAttributesEnumValue9" | "MY.habitatAttributesEnumValue10" | "MY.habitatAttributesEnumValue11" | "MY.habitatAttributesEnumValue12" | "MY.habitatAttributesEnumValue13" | "MY.habitatAttributesEnumValue14" | "MY.habitatAttributesEnumValue15" | "MY.habitatAttributesEnumValue16" | "MY.habitatAttributesEnumValue17" | "MY.habitatAttributesEnumValue18" | "MY.habitatAttributesEnumValue19" | "MY.habitatAttributesEnumValue20" | "MY.habitatAttributesEnumValue21" | "MY.habitatAttributesEnumValue22")[];
             /**
              * Habitat classification
              * @description Formal habitat name or abbreviation. If several, separate with semicolons (E.g. 'OMT; OMaT').
              */
-            habitatClassification: string;
+            habitatClassification?: string;
             /**
              * Habitat description
              * @description Informal description of the habitat.
              */
-            habitatDescription: string;
+            habitatDescription?: string;
             /** hasUnit */
-            hasUnit: string[];
+            hasUnit?: string[];
             /**
              * Higher geography
              * @description If country is not known or not applicable, for example continent, ocean or large island
              */
-            higherGeography: string;
+            higherGeography?: string;
             /** Esiintymän koko / laajuus tiedossa */
-            invasiveControlAreaKnown: boolean;
+            invasiveControlAreaKnown?: boolean;
             /** Is the occurrence a direct threat to e.g. endangered species, biotopes or humans? */
-            invasiveControlDangerous: boolean;
+            invasiveControlDangerous?: boolean;
             /** Description of threats */
-            invasiveControlDangerousDescription: string;
+            invasiveControlDangerousDescription?: string;
             /**
              * Control level
              * @enum {string}
              */
-            invasiveControlEffectiveness: "" | "MY.invasiveControlEffectivenessFull" | "MY.invasiveControlEffectivenessPartial" | "MY.invasiveControlEffectivenessNone" | "MY.invasiveControlEffectivenessNotFound";
+            invasiveControlEffectiveness?: "" | "MY.invasiveControlEffectivenessFull" | "MY.invasiveControlEffectivenessPartial" | "MY.invasiveControlEffectivenessNone" | "MY.invasiveControlEffectivenessNotFound";
             /** Notes of control level */
-            invasiveControlEffectivenessNotes: string;
+            invasiveControlEffectivenessNotes?: string;
             /** Control methods */
-            invasiveControlMethods: ("" | "MY.invasiveControlMethodsMechanical" | "MY.invasiveControlMethodsChemical" | "MY.invasiveControlMethodsBiological" | "MY.invasiveControlMethodsOther")[];
+            invasiveControlMethods?: ("" | "MY.invasiveControlMethodsMechanical" | "MY.invasiveControlMethodsChemical" | "MY.invasiveControlMethodsBiological" | "MY.invasiveControlMethodsOther")[];
             /** Description of control methods */
-            invasiveControlMethodsDescription: string;
+            invasiveControlMethodsDescription?: string;
             /** Are follow-up controls needed? */
-            invasiveControlOpen: boolean;
+            invasiveControlOpen?: boolean;
             /** Description of follow-up controls? */
-            invasiveControlOpenDescription: string;
+            invasiveControlOpenDescription?: string;
             /** Estimated of other expenses in euros */
-            invasiveControlOtherExpensesInEuros: number;
+            invasiveControlOtherExpensesInEuros?: number;
             /** Control target taxon */
-            invasiveControlTaxon: string[];
+            invasiveControlTaxon?: string[];
             /**
              * Is part of
              * @description Which parent or larger collection this is part of.
              */
-            isPartOf: string;
+            isPartOf?: string;
             /** Keywords */
-            keywords: string[];
+            keywords?: string[];
             /**
              * Lat (N)
              * @description Latitude. For southern latitudes, use negative value.
              */
-            latitude: string;
+            latitude?: string;
             /**
              * Leg
              * @description Name of the collector(s), in format 'Lastname, Firstname; Lastname Firstname'
              */
-            leg: string[];
+            leg?: string[];
             /**
              * Käyttäjätunnus
              * @description Alkuperäislähteen käyttäjätunnus
              */
-            legUserID: string[];
+            legUserID?: string[];
             /**
              * Verbatim leg from orginal source
              * @description Leg just as it appears in the label or other original source, no interpretation, errors and all.
              */
-            legVerbatim: string;
+            legVerbatim?: string;
             /**
              * Locality names
              * @description Official name of the locality in basic form. Separate multiple names with commas, from generic to specific. No informal description here.
              */
-            locality: string;
+            locality?: string;
             /**
              * Locality description
              * @description Informal description of the exact locality, e.g. '5 km NE of city X, under stone bridge'
              */
-            localityDescription: string;
+            localityDescription?: string;
             /**
              * Locality ID
              * @description An unique identifier or code for the locality, if the locality has one (e.g. from SAPO-ontology).
              */
-            localityID: string;
+            localityID?: string;
             /**
              * Verbatim locality from label or other original source
              * @description Locality word-to-word as it appears on the label or other original source, errors and all
              */
-            localityVerbatim: string;
+            localityVerbatim?: string;
             /**
              * Lon (E)
              * @description Longitude. For western longitudes, use negative value.
              */
-            longitude: string;
+            longitude?: string;
             /**
              * Moth sampling method
              * @enum {string}
              */
-            mothSamplingMethod: "" | "MY.mothSamplingMethodJA500" | "MY.mothSamplingMethodLHG" | "MY.mothSamplingMethodLS" | "MY.mothSamplingMethodMAARY" | "MY.mothSamplingMethodPR125" | "MY.mothSamplingMethodPR250";
+            mothSamplingMethod?: "" | "MY.mothSamplingMethodJA500" | "MY.mothSamplingMethodLHG" | "MY.mothSamplingMethodLS" | "MY.mothSamplingMethodMAARY" | "MY.mothSamplingMethodPR125" | "MY.mothSamplingMethodPR250";
             /**
              * Municipality
              * @description Municipality, commune, town, city or civil parish
              */
-            municipality: string;
+            municipality?: string;
             /** Named place */
-            namedPlaceID: string;
+            namedPlaceID?: string;
             /**
              * Notes
              * @description Additional information to the data in each section.
              */
-            notes: string;
+            notes?: string;
             /**
              * Number of sampled individuals
              * @description For garden accessions/seed bank, number of individuals from which seeds were collected
              */
-            numberOfSampledIndividuals: string;
+            numberOfSampledIndividuals?: string;
             /** Observation days */
-            observationDays: number;
+            observationDays?: number;
             /** Observation minutes */
-            observationMinutes: number;
+            observationMinutes?: number;
             /**
              * % of plant population giving seeds
              * @description For garden accessions/seed bank, what proportion of the population sampled was giving seeds
              */
-            percentageGivingSeeds: number;
+            percentageGivingSeeds?: number;
             /**
              * Predominant tree
              * @enum {string}
              */
-            predominantTree: "" | "MX.37819" | "MX.37812" | "MX.37992" | "MX.38004" | "MX.38590" | "MX.38686" | "MX.38563" | "MX.38527" | "MX.41344" | "MX.38016" | "MX.39331" | "MX.37990" | "MX.38008" | "MX.38010" | "MX.37975" | "MX.37976" | "MX.39122" | "MX.37815";
+            predominantTree?: "" | "MX.37819" | "MX.37812" | "MX.37992" | "MX.38004" | "MX.38590" | "MX.38686" | "MX.38563" | "MX.38527" | "MX.41344" | "MX.38016" | "MX.39331" | "MX.37990" | "MX.38008" | "MX.38010" | "MX.37975" | "MX.37976" | "MX.39122" | "MX.37815";
             /** projectTitle */
-            projectTitle: string;
+            projectTitle?: string;
             /** province */
-            province: string;
+            province?: string;
             /**
              * Relative humidity
              * @description Relative humidity %
              */
-            relativeHumidity: number;
+            relativeHumidity?: number;
             /**
              * Size of sampling area (m2)
              * @description For garden accessions/seed bank, estimated size of the area sampled, in square meters
              */
-            samplingAreaSizeInSquareMeters: number;
+            samplingAreaSizeInSquareMeters?: number;
             /**
              * Sampling method
              * @description Main method for (usually intentional) sampling
              * @enum {string}
              */
-            samplingMethod: "" | "MY.samplingMethodCarnet" | "MY.samplingMethodFeromonetrap" | "MY.samplingMethodNet" | "MY.samplingMethodDrag" | "MY.samplingMethodBrushing" | "MY.samplingMethodAspirator" | "MY.samplingMethodWindowtrap" | "MY.samplingMethodVacuum" | "MY.samplingMethodDigging" | "MY.samplingMethodFishNet" | "MY.samplingMethodShaking" | "MY.samplingMethodReared" | "MY.samplingMethodEpupa" | "MY.samplingMethodExovo" | "MY.samplingMethodElarva" | "MY.samplingMethodFishTrap" | "MY.samplingMethodYellowWindowTrap" | "MY.samplingMethodYellowpan" | "MY.samplingMethodTriangleDrag" | "MY.samplingMethodPitfall" | "MY.samplingMethodEclectortrap" | "MY.samplingMethodHand" | "MY.samplingMethodDungTrap" | "MY.samplingMethodBoard" | "MY.samplingMethodYellowtrap" | "MY.samplingMethodMistnet" | "MY.samplingMethodSweeping" | "MY.samplingMethodSoilsample" | "MY.samplingMethodWashing" | "MY.samplingMethodMalaise" | "MY.samplingMethodPantrap" | "MY.samplingMethodSeine" | "MY.samplingMethodAngleFishing" | "MY.samplingMethodTrampling" | "MY.samplingMethodBeamTrawl" | "MY.samplingMethodTrap" | "MY.samplingMethodDropping" | "MY.samplingMethodTrunkWindowTrap" | "MY.samplingMethodElectrofishing" | "MY.samplingMethodSifting" | "MY.samplingMethodDiverInsectTrap" | "MY.samplingMethodDiving" | "MY.samplingMethodBait" | "MY.samplingMethodBaittrap" | "MY.samplingMethodFlooding" | "MY.samplingMethodTrawling" | "MY.samplingMethodLight" | "MY.samplingMethodLightTrap" | "MY.samplingMethodWaterBucket" | "MY.samplingMethodAquaticNet" | "MY.samplingMethodAquaticEmergenceTrap" | "MY.samplingMethodWaterSieve" | "MY.samplingMethodOther";
+            samplingMethod?: "" | "MY.samplingMethodCarnet" | "MY.samplingMethodFeromonetrap" | "MY.samplingMethodNet" | "MY.samplingMethodDrag" | "MY.samplingMethodBrushing" | "MY.samplingMethodAspirator" | "MY.samplingMethodWindowtrap" | "MY.samplingMethodVacuum" | "MY.samplingMethodDigging" | "MY.samplingMethodFishNet" | "MY.samplingMethodShaking" | "MY.samplingMethodReared" | "MY.samplingMethodEpupa" | "MY.samplingMethodExovo" | "MY.samplingMethodElarva" | "MY.samplingMethodFishTrap" | "MY.samplingMethodYellowWindowTrap" | "MY.samplingMethodYellowpan" | "MY.samplingMethodTriangleDrag" | "MY.samplingMethodPitfall" | "MY.samplingMethodEclectortrap" | "MY.samplingMethodHand" | "MY.samplingMethodDungTrap" | "MY.samplingMethodBoard" | "MY.samplingMethodYellowtrap" | "MY.samplingMethodMistnet" | "MY.samplingMethodSweeping" | "MY.samplingMethodSoilsample" | "MY.samplingMethodWashing" | "MY.samplingMethodMalaise" | "MY.samplingMethodPantrap" | "MY.samplingMethodSeine" | "MY.samplingMethodAngleFishing" | "MY.samplingMethodTrampling" | "MY.samplingMethodBeamTrawl" | "MY.samplingMethodTrap" | "MY.samplingMethodDropping" | "MY.samplingMethodTrunkWindowTrap" | "MY.samplingMethodElectrofishing" | "MY.samplingMethodSifting" | "MY.samplingMethodDiverInsectTrap" | "MY.samplingMethodDiving" | "MY.samplingMethodBait" | "MY.samplingMethodBaittrap" | "MY.samplingMethodFlooding" | "MY.samplingMethodTrawling" | "MY.samplingMethodLight" | "MY.samplingMethodLightTrap" | "MY.samplingMethodWaterBucket" | "MY.samplingMethodAquaticNet" | "MY.samplingMethodAquaticEmergenceTrap" | "MY.samplingMethodWaterSieve" | "MY.samplingMethodOther";
             /** Sampling method notes */
-            samplingMethodNotes: string;
+            samplingMethodNotes?: string;
             /** Section */
-            section: number;
+            section?: number;
             /** Skipped */
-            skipped: boolean;
+            skipped?: boolean;
             /** Spotting scope */
-            spottingScopeUsed: boolean;
+            spottingScopeUsed?: boolean;
             /**
              * Substrate
              * @description Type of substrate or name of substrate species.
              */
-            substrate: string;
-            taxonCensus: components["schemas"]["store-taxonCensus"][];
+            substrate?: string;
+            taxonCensus?: components["schemas"]["store-taxonCensus"][];
             /** Temperature in celsius */
-            temperature: number;
+            temperature?: number;
             /** End time */
-            timeEnd: string;
+            timeEnd?: string;
             /** Start time */
-            timeStart: string;
+            timeStart?: string;
             /** Trap count */
-            trapCount: number;
+            trapCount?: number;
             /** Weather */
-            weather: string;
+            weather?: string;
             /** WGS84 Latitude */
-            wgs84Latitude: string;
+            wgs84Latitude?: string;
             /** WGS84 Longitude */
-            wgs84Longitude: string;
+            wgs84Longitude?: string;
             /** Images */
-            images: string[];
+            images?: string[];
             /**
              * Publicity restrictions
              * @description PUBLIC: all data can be published; PROTECTED: exact locality is hidden (100*100km square); PRIVATE: most of the data is hidden. Empty value means same as public.
              * @enum {string}
              */
-            publicityRestrictions: "" | "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
-            units: components["schemas"]["store-unit"][];
+            publicityRestrictions?: "" | "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
+            units?: components["schemas"]["store-unit"][];
         };
         "store-unit": {
             /** Context for the Specimen */
-            "@context": string;
+            "@context"?: string;
             /** Id for the Specimen */
-            id: string;
+            id?: string;
             /** Type for the Specimen */
-            "@type": string;
+            "@type"?: string;
             /**
              * DBH in centimeters
              * @description Diameter at breast height, in centimeters
              */
-            DBH: string;
+            DBH?: string;
             /**
              * DNA sample location
              * @description Leave empty if no sample taken, or if the sample is recorded separately
              */
-            DNASampleLocation: string;
+            DNASampleLocation?: string;
             /** Amount */
-            abundanceString: string;
+            abundanceString?: string;
             /**
              * Abundance unit
              * @enum {string}
              */
-            abundanceUnit: "" | "MY.abundanceUnitIndividualCount" | "MY.abundanceUnitPairCount" | "MY.abundanceUnitNest" | "MY.abundanceUnitBreedingSite" | "MY.abundanceUnitFeedingSite" | "MY.abundanceUnitColony" | "MY.abundanceUnitFruitbody" | "MY.abundanceUnitSprout" | "MY.abundanceUnitHummock" | "MY.abundanceUnitThallus" | "MY.abundanceUnitFlower" | "MY.abundanceUnitSpot" | "MY.abundanceUnitTrunk" | "MY.abundanceUnitQueen" | "MY.abundanceUnitShell" | "MY.abundanceUnitDroppings" | "MY.abundanceUnitMarks" | "MY.abundanceUnitIndirect" | "MY.abundanceUnitSquareDM" | "MY.abundanceUnitSquareM" | "MY.abundanceUnitRelativeDensity" | "MY.abundanceUnitOccursDoesNotOccur";
+            abundanceUnit?: "" | "MY.abundanceUnitIndividualCount" | "MY.abundanceUnitPairCount" | "MY.abundanceUnitNest" | "MY.abundanceUnitBreedingSite" | "MY.abundanceUnitFeedingSite" | "MY.abundanceUnitColony" | "MY.abundanceUnitFruitbody" | "MY.abundanceUnitSprout" | "MY.abundanceUnitHummock" | "MY.abundanceUnitThallus" | "MY.abundanceUnitFlower" | "MY.abundanceUnitSpot" | "MY.abundanceUnitTrunk" | "MY.abundanceUnitQueen" | "MY.abundanceUnitShell" | "MY.abundanceUnitDroppings" | "MY.abundanceUnitMarks" | "MY.abundanceUnitIndirect" | "MY.abundanceUnitSquareDM" | "MY.abundanceUnitSquareM" | "MY.abundanceUnitRelativeDensity" | "MY.abundanceUnitOccursDoesNotOccur";
             /**
              * Additional ID's
              * @description Other identifiers this specimen has, in format 'type:identifier'. For example: 'mzhtypes:123' (old MAZ-type number)
              */
-            additionalIDs: string[];
+            additionalIDs?: string[];
             /** Adult individual count */
-            adultIndividualCount: number;
+            adultIndividualCount?: number;
             /**
              * Age
              * @description Estimated or known age in calendar years, years, days or other relevant unit.
              */
-            age: string;
+            age?: string;
             /**
              * Age notes
              * @description E.g. how age was determined, by whom and when.
              */
-            ageNotes: string;
+            ageNotes?: string;
             /** Alive */
-            alive: boolean;
+            alive?: boolean;
             /** Ankle */
-            ankleInMillimeters: string[];
+            ankleInMillimeters?: string[];
             /** Occurrence area (m²) */
-            areaInSquareMeters: number;
+            areaInSquareMeters?: number;
             /**
              * Breeding index
              * @enum {string}
              */
-            atlasCode: "" | "MY.atlasCodeEnum1" | "MY.atlasCodeEnum2" | "MY.atlasCodeEnum3" | "MY.atlasCodeEnum4" | "MY.atlasCodeEnum5" | "MY.atlasCodeEnum6" | "MY.atlasCodeEnum61" | "MY.atlasCodeEnum62" | "MY.atlasCodeEnum63" | "MY.atlasCodeEnum64" | "MY.atlasCodeEnum65" | "MY.atlasCodeEnum66" | "MY.atlasCodeEnum7" | "MY.atlasCodeEnum71" | "MY.atlasCodeEnum72" | "MY.atlasCodeEnum73" | "MY.atlasCodeEnum74" | "MY.atlasCodeEnum75" | "MY.atlasCodeEnum8" | "MY.atlasCodeEnum81" | "MY.atlasCodeEnum82";
+            atlasCode?: "" | "MY.atlasCodeEnum1" | "MY.atlasCodeEnum2" | "MY.atlasCodeEnum3" | "MY.atlasCodeEnum4" | "MY.atlasCodeEnum5" | "MY.atlasCodeEnum6" | "MY.atlasCodeEnum61" | "MY.atlasCodeEnum62" | "MY.atlasCodeEnum63" | "MY.atlasCodeEnum64" | "MY.atlasCodeEnum65" | "MY.atlasCodeEnum66" | "MY.atlasCodeEnum7" | "MY.atlasCodeEnum71" | "MY.atlasCodeEnum72" | "MY.atlasCodeEnum73" | "MY.atlasCodeEnum74" | "MY.atlasCodeEnum75" | "MY.atlasCodeEnum8" | "MY.atlasCodeEnum81" | "MY.atlasCodeEnum82";
             /**
              * Bat behavior
              * @enum {string}
              */
-            batBehavior: "" | "MY.batBehaviorHibernating" | "MY.batBehaviorRoosting" | "MY.batBehaviorHunting";
+            batBehavior?: "" | "MY.batBehaviorHibernating" | "MY.batBehaviorRoosting" | "MY.batBehaviorHunting";
             /** Beak */
-            beakInMillimeters: string[];
+            beakInMillimeters?: string[];
             /**
              * Bird age
              * @enum {string}
              */
-            birdAge: "" | "MY.birdAgePp" | "MY.birdAgePm" | "MY.birdAgeFl" | "MY.birdAgePlus1kv" | "MY.birdAge1Kv" | "MY.birdAgePlus2Kv" | "MY.birdAge2kv" | "MY.birdAgePlus3Kv" | "MY.birdAge3Kv" | "MY.birdAgePlus4Kv" | "MY.birdAge4Kv" | "MY.birdAgePlus5Kv" | "MY.birdAge5Kv" | "MY.birdAgePlus6Kv" | "MY.birdAge6Kv" | "MY.birdAgePlus7Kv" | "MY.birdAge7Kv" | "MY.birdAgePlus8Kv" | "MY.birdAge8Kv";
+            birdAge?: "" | "MY.birdAgePp" | "MY.birdAgePm" | "MY.birdAgeFl" | "MY.birdAgePlus1kv" | "MY.birdAge1Kv" | "MY.birdAgePlus2Kv" | "MY.birdAge2kv" | "MY.birdAgePlus3Kv" | "MY.birdAge3Kv" | "MY.birdAgePlus4Kv" | "MY.birdAge4Kv" | "MY.birdAgePlus5Kv" | "MY.birdAge5Kv" | "MY.birdAgePlus6Kv" | "MY.birdAge6Kv" | "MY.birdAgePlus7Kv" | "MY.birdAge7Kv" | "MY.birdAgePlus8Kv" | "MY.birdAge8Kv";
             /** Bird behavior */
-            birdBehavior: string[];
+            birdBehavior?: string[];
             /**
              * Bird plumage
              * @enum {string}
              */
-            birdPlumage: "" | "MY.birdPlumageAd" | "MY.birdPlumageEijp" | "MY.birdPlumageImm" | "MY.birdPlumageJp" | "MY.birdPlumageJuv" | "MY.birdPlumageNpuk" | "MY.birdPlumagePull" | "MY.birdPlumageSubad" | "MY.birdPlumageTp" | "MY.birdPlumageVp" | "MY.birdPlumagePep" | "MY.birdPlumageSs";
+            birdPlumage?: "" | "MY.birdPlumageAd" | "MY.birdPlumageEijp" | "MY.birdPlumageImm" | "MY.birdPlumageJp" | "MY.birdPlumageJuv" | "MY.birdPlumageNpuk" | "MY.birdPlumagePull" | "MY.birdPlumageSubad" | "MY.birdPlumageTp" | "MY.birdPlumageVp" | "MY.birdPlumagePep" | "MY.birdPlumageSs";
             /** Breeding */
-            breeding: boolean;
+            breeding?: boolean;
             /** Brood size */
-            broodSize: number;
+            broodSize?: number;
             /**
              * Cause of Death
              * @description Cause of death, if not intentionally trapped on sampled
              */
-            causeOfDeath: string;
+            causeOfDeath?: string;
             /** Checklist */
-            checklistID: string;
+            checklistID?: string;
             /**
              * Chemical properties
              * @description Results of chemical reaction tests etc.
              */
-            chemistry: string;
+            chemistry?: string;
             /**
              * Count
              * @description Numeric or other description on the amount of individuals (or sprouts, fruiting bodies or such) in the specimen. Sexes and juveniles can be specified like so: 1m2f3j (=1 male, 2 females, 3 juveniles)
              */
-            count: string;
+            count?: string;
             /**
              * Decay stage
              * @description Estimation of decay stage (lahoaste in Finnish) on the scale of 1 to 5 and/or description
              */
-            decayStage: string;
+            decayStage?: string;
             /**
              * Distance
              * @enum {string}
              */
-            distance: "" | "MY.distanceOverFlight" | "MY.distanceNear" | "MY.distanceQuiteFar" | "MY.distanceFar" | "MY.distanceVeryFar";
+            distance?: "" | "MY.distanceOverFlight" | "MY.distanceNear" | "MY.distanceQuiteFar" | "MY.distanceFar" | "MY.distanceVeryFar";
             /**
              * Earliest epoch or lowest series
              * @description For palaeontological specimens, earliest possible geochronologic epoch or lowest chronostratigraphic series attributable to the stratigraphic horizon from which the specimen was collected
              * @enum {string}
              */
-            earliestEpochOrLowestSeries: "" | "MY.epochOrSeriesCambrian" | "MY.epochOrSeriesCarboniferous" | "MY.epochOrSeriesCretaceous" | "MY.epochOrSeriesDevonian" | "MY.epochOrSeriesEdiacaran" | "MY.epochOrSeriesJurassic" | "MY.epochOrSeriesOrdovician" | "MY.epochOrSeriesPermian" | "MY.epochOrSeriesQuaternary" | "MY.epochOrSeriesRecent" | "MY.epochOrSeriesSilurian" | "MY.epochOrSeriesTertiary" | "MY.epochOrSeriesTriassic";
+            earliestEpochOrLowestSeries?: "" | "MY.epochOrSeriesCambrian" | "MY.epochOrSeriesCarboniferous" | "MY.epochOrSeriesCretaceous" | "MY.epochOrSeriesDevonian" | "MY.epochOrSeriesEdiacaran" | "MY.epochOrSeriesJurassic" | "MY.epochOrSeriesOrdovician" | "MY.epochOrSeriesPermian" | "MY.epochOrSeriesQuaternary" | "MY.epochOrSeriesRecent" | "MY.epochOrSeriesSilurian" | "MY.epochOrSeriesTertiary" | "MY.epochOrSeriesTriassic";
             /** Female individual count */
-            femaleIndividualCount: number;
+            femaleIndividualCount?: number;
             /**
              * Fruit type
              * @description Fruit type of the collected fruits, used for botanical garden accessions/seed bank.
              * @enum {string}
              */
-            fruitType: "" | "MY.fruitTypeAchene" | "MY.fruitTypeBerry" | "MY.fruitTypeCapsule" | "MY.fruitTypeCaryopsis" | "MY.fruitTypeCone" | "MY.fruitTypeDrupe" | "MY.fruitTypeFollicle" | "MY.fruitTypeLegume" | "MY.fruitTypeNut" | "MY.fruitTypeOther" | "MY.fruitTypePome" | "MY.fruitTypeSchizocarp" | "MY.fruitTypeSiliqua";
+            fruitType?: "" | "MY.fruitTypeAchene" | "MY.fruitTypeBerry" | "MY.fruitTypeCapsule" | "MY.fruitTypeCaryopsis" | "MY.fruitTypeCone" | "MY.fruitTypeDrupe" | "MY.fruitTypeFollicle" | "MY.fruitTypeLegume" | "MY.fruitTypeNut" | "MY.fruitTypeOther" | "MY.fruitTypePome" | "MY.fruitTypeSchizocarp" | "MY.fruitTypeSiliqua";
             /**
              * Genotype
              * @description Genotype of the microbial strain
              */
-            genotype: string;
+            genotype?: string;
             /** Gonad */
-            gonadInMillimeters: string[];
+            gonadInMillimeters?: string[];
             /**
              * Growth medium name
              * @description Microbial culture growth medium name, usually from a standard
              */
-            growthMediumName: string;
+            growthMediumName?: string;
             /**
              * Other conditions for growth
              * @description Other growth conditions for the microbial culture, light etc.
              */
-            growthOtherConditions: string;
+            growthOtherConditions?: string;
             /**
              * Growth temperature
              * @description Microbial culture growth temperature
              */
-            growthTemperature: string;
+            growthTemperature?: string;
             /** Habitat */
-            habitat: ("" | "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170")[];
+            habitat?: ("" | "MY.habitatEnumValue1" | "MY.habitatEnumValue2" | "MY.habitatEnumValue3" | "MY.habitatEnumValue4" | "MY.habitatEnumValue5" | "MY.habitatEnumValue6" | "MY.habitatEnumValue7" | "MY.habitatEnumValue8" | "MY.habitatEnumValue9" | "MY.habitatEnumValue10" | "MY.habitatEnumValue11" | "MY.habitatEnumValue12" | "MY.habitatEnumValue13" | "MY.habitatEnumValue14" | "MY.habitatEnumValue15" | "MY.habitatEnumValue16" | "MY.habitatEnumValue17" | "MY.habitatEnumValue18" | "MY.habitatEnumValue19" | "MY.habitatEnumValue20" | "MY.habitatEnumValue21" | "MY.habitatEnumValue22" | "MY.habitatEnumValue23" | "MY.habitatEnumValue24" | "MY.habitatEnumValue25" | "MY.habitatEnumValue26" | "MY.habitatEnumValue27" | "MY.habitatEnumValue28" | "MY.habitatEnumValue29" | "MY.habitatEnumValue30" | "MY.habitatEnumValue31" | "MY.habitatEnumValue32" | "MY.habitatEnumValue33" | "MY.habitatEnumValue34" | "MY.habitatEnumValue35" | "MY.habitatEnumValue36" | "MY.habitatEnumValue87" | "MY.habitatEnumValue40" | "MY.habitatEnumValue41" | "MY.habitatEnumValue42" | "MY.habitatEnumValue43" | "MY.habitatEnumValue44" | "MY.habitatEnumValue45" | "MY.habitatEnumValue46" | "MY.habitatEnumValue47" | "MY.habitatEnumValue48" | "MY.habitatEnumValue49" | "MY.habitatEnumValue50" | "MY.habitatEnumValue51" | "MY.habitatEnumValue52" | "MY.habitatEnumValue53" | "MY.habitatEnumValue54" | "MY.habitatEnumValue56" | "MY.habitatEnumValue57" | "MY.habitatEnumValue58" | "MY.habitatEnumValue59" | "MY.habitatEnumValue60" | "MY.habitatEnumValue61" | "MY.habitatEnumValue62" | "MY.habitatEnumValue64" | "MY.habitatEnumValue66" | "MY.habitatEnumValue67" | "MY.habitatEnumValue68" | "MY.habitatEnumValue69" | "MY.habitatEnumValue70" | "MY.habitatEnumValue71" | "MY.habitatEnumValue72" | "MY.habitatEnumValue73" | "MY.habitatEnumValue74" | "MY.habitatEnumValue76" | "MY.habitatEnumValue77" | "MY.habitatEnumValue78" | "MY.habitatEnumValue79" | "MY.habitatEnumValue80" | "MY.habitatEnumValue81" | "MY.habitatEnumValue82" | "MY.habitatEnumValue83" | "MY.habitatEnumValue84" | "MY.habitatEnumValue85" | "MY.habitatEnumValue86" | "MY.habitatEnumValue88" | "MY.habitatEnumValue89" | "MY.habitatEnumValue90" | "MY.habitatEnumValue91" | "MY.habitatEnumValue92" | "MY.habitatEnumValue93" | "MY.habitatEnumValue94" | "MY.habitatEnumValue95" | "MY.habitatEnumValue96" | "MY.habitatEnumValue97" | "MY.habitatEnumValue98" | "MY.habitatEnumValue99" | "MY.habitatEnumValue100" | "MY.habitatEnumValue101" | "MY.habitatEnumValue102" | "MY.habitatEnumValue103" | "MY.habitatEnumValue104" | "MY.habitatEnumValue105" | "MY.habitatEnumValue106" | "MY.habitatEnumValue107" | "MY.habitatEnumValue108" | "MY.habitatEnumValue109" | "MY.habitatEnumValue110" | "MY.habitatEnumValue111" | "MY.habitatEnumValue112" | "MY.habitatEnumValue113" | "MY.habitatEnumValue114" | "MY.habitatEnumValue115" | "MY.habitatEnumValue116" | "MY.habitatEnumValue117" | "MY.habitatEnumValue118" | "MY.habitatEnumValue119" | "MY.habitatEnumValue120" | "MY.habitatEnumValue121" | "MY.habitatEnumValue122" | "MY.habitatEnumValue123" | "MY.habitatEnumValue124" | "MY.habitatEnumValue125" | "MY.habitatEnumValue126" | "MY.habitatEnumValue127" | "MY.habitatEnumValue128" | "MY.habitatEnumValue129" | "MY.habitatEnumValue130" | "MY.habitatEnumValue131" | "MY.habitatEnumValue132" | "MY.habitatEnumValue133" | "MY.habitatEnumValue134" | "MY.habitatEnumValue135" | "MY.habitatEnumValue136" | "MY.habitatEnumValue137" | "MY.habitatEnumValue138" | "MY.habitatEnumValue139" | "MY.habitatEnumValue140" | "MY.habitatEnumValue141" | "MY.habitatEnumValue142" | "MY.habitatEnumValue143" | "MY.habitatEnumValue144" | "MY.habitatEnumValue145" | "MY.habitatEnumValue147" | "MY.habitatEnumValue148" | "MY.habitatEnumValue149" | "MY.habitatEnumValue150" | "MY.habitatEnumValue151" | "MY.habitatEnumValue152" | "MY.habitatEnumValue153" | "MY.habitatEnumValue154" | "MY.habitatEnumValue155" | "MY.habitatEnumValue156" | "MY.habitatEnumValue157" | "MY.habitatEnumValue158" | "MY.habitatEnumValue159" | "MY.habitatEnumValue160" | "MY.habitatEnumValue161" | "MY.habitatEnumValue162" | "MY.habitatEnumValue163" | "MY.habitatEnumValue164" | "MY.habitatEnumValue165" | "MY.habitatEnumValue166" | "MY.habitatEnumValue167" | "MY.habitatEnumValue168" | "MY.habitatEnumValue169" | "MY.habitatEnumValue170")[];
             /** hasIdentification */
-            hasIdentification: string[];
+            hasIdentification?: string[];
             /** hasSubUnit */
-            hasSubUnit: string[];
+            hasSubUnit?: string[];
             /** Host species */
-            hostID: string;
+            hostID?: string;
             /** Host species */
-            hostInformalNameString: string;
+            hostInformalNameString?: string;
             /**
              * Tracks
              * @enum {string}
              */
-            indirectObservationType: "" | "MY.indirectObservationTypeFeces" | "MY.indirectObservationTypeSnowTracks" | "MY.indirectObservationTypeUrine" | "MY.indirectObservationTypeFeasting" | "MY.indirectObservationTypeFoodStock" | "MY.indirectObservationTypeNone";
+            indirectObservationType?: "" | "MY.indirectObservationTypeFeces" | "MY.indirectObservationTypeSnowTracks" | "MY.indirectObservationTypeUrine" | "MY.indirectObservationTypeFeasting" | "MY.indirectObservationTypeFoodStock" | "MY.indirectObservationTypeNone";
             /** Individual count */
-            individualCount: number;
+            individualCount?: number;
             /**
              * Infestation
              * @description Description of the infestation status of the collected seeds, used for botanical garden accessions/seed bank.
              */
-            infestation: string;
+            infestation?: string;
             /** Species */
-            informalNameString: string;
+            informalNameString?: string;
             /** Informal taxon group */
-            informalTaxonGroup: string;
+            informalTaxonGroup?: string;
             /**
              * Informal taxon groups
              * @description Valitut eliöryhmät
              */
-            informalTaxonGroups: string[];
+            informalTaxonGroups?: string[];
             /**
              * Infrasubspecific subdivision
              * @description Pathovars, serovars and other infrasubspecific subdivisions of microbes.
              */
-            infrasubspecificSubdivision: string;
+            infrasubspecificSubdivision?: string;
             /**
              * Is part of
              * @description Which parent or larger collection this is part of.
              */
-            isPartOf: string;
+            isPartOf?: string;
             /** Juvenile individual count */
-            juvenileIndividualCount: number;
+            juvenileIndividualCount?: number;
             /** Keywords */
-            keywords: string[];
+            keywords?: string[];
             /** Larva count */
-            larvaIndividualCount: number;
+            larvaIndividualCount?: number;
             /**
              * Latest epoch or highest series
              * @description For palaeontological specimens, latest possible geochronologic epoch or highest chronostratigraphic series attributable to the stratigraphic horizon from which the specimen was collected.
              * @enum {string}
              */
-            latestEpochOrHighestSeries: "" | "MY.epochOrSeriesCambrian" | "MY.epochOrSeriesCarboniferous" | "MY.epochOrSeriesCretaceous" | "MY.epochOrSeriesDevonian" | "MY.epochOrSeriesEdiacaran" | "MY.epochOrSeriesJurassic" | "MY.epochOrSeriesOrdovician" | "MY.epochOrSeriesPermian" | "MY.epochOrSeriesQuaternary" | "MY.epochOrSeriesRecent" | "MY.epochOrSeriesSilurian" | "MY.epochOrSeriesTertiary" | "MY.epochOrSeriesTriassic";
+            latestEpochOrHighestSeries?: "" | "MY.epochOrSeriesCambrian" | "MY.epochOrSeriesCarboniferous" | "MY.epochOrSeriesCretaceous" | "MY.epochOrSeriesDevonian" | "MY.epochOrSeriesEdiacaran" | "MY.epochOrSeriesJurassic" | "MY.epochOrSeriesOrdovician" | "MY.epochOrSeriesPermian" | "MY.epochOrSeriesQuaternary" | "MY.epochOrSeriesRecent" | "MY.epochOrSeriesSilurian" | "MY.epochOrSeriesTertiary" | "MY.epochOrSeriesTriassic";
             /** Length */
-            lengthInMillimeters: string[];
+            lengthInMillimeters?: string[];
             /**
              * Life stage
              * @description Life stage of the specimen. If multiple present, select the one which was present at the time of collecting. Use Life stage description field for extra information.
              * @enum {string}
              */
-            lifeStage: "" | "MY.lifeStageAdult" | "MY.lifeStageNymph" | "MY.lifeStageLarva" | "MY.lifeStageEgg" | "MY.lifeStagePupa" | "MY.lifeStageJuvenile" | "MY.lifeStageSubimago" | "MY.lifeStageImmature" | "MY.lifeStageFertile" | "MY.lifeStageSterile" | "MY.lifeStageTadpole" | "MY.lifeStageEmbryo" | "MY.lifeStageSubadult" | "MY.lifeStageMature" | "MY.lifeStagePullus" | "MY.lifeStageHatchedEgg" | "MY.lifeStageHatchedPupa" | "MY.lifeStageGall" | "MY.lifeStageMarks" | "MY.lifeStageTriungulin" | "MY.lifeStageExuvia";
+            lifeStage?: "" | "MY.lifeStageAdult" | "MY.lifeStageNymph" | "MY.lifeStageLarva" | "MY.lifeStageEgg" | "MY.lifeStagePupa" | "MY.lifeStageJuvenile" | "MY.lifeStageSubimago" | "MY.lifeStageImmature" | "MY.lifeStageFertile" | "MY.lifeStageSterile" | "MY.lifeStageTadpole" | "MY.lifeStageEmbryo" | "MY.lifeStageSubadult" | "MY.lifeStageMature" | "MY.lifeStagePullus" | "MY.lifeStageHatchedEgg" | "MY.lifeStageHatchedPupa" | "MY.lifeStageGall" | "MY.lifeStageMarks" | "MY.lifeStageTriungulin" | "MY.lifeStageExuvia";
             /**
              * Life stage description
              * @description Free-text notes or addtional information about the life stage. If multiple values present, describe them here.
              */
-            lifeStageDescription: string;
+            lifeStageDescription?: string;
             /** Likely migrant (doesn't breed) */
-            likelyMigrant: boolean;
+            likelyMigrant?: boolean;
             /**
              * Macroscopic characters
              * @description Macroscopic features and measurements, if not recorded separately into measurement fields.
              */
-            macroscopy: string;
+            macroscopy?: string;
             /** Male individual count */
-            maleIndividualCount: number;
-            measurement: components["schemas"]["store-measurement"];
+            maleIndividualCount?: number;
+            measurement?: components["schemas"]["store-measurement"];
             /**
              * Risk group
              * @description According to German TRBA August 2015, which is more comprehensive than the EU or Finnish list for bacterial risk groups
              * @enum {string}
              */
-            microbiologicalRiskGroup: "" | "MY.microbiologicalRiskGroup1" | "MY.microbiologicalRiskGroup2" | "MY.microbiologicalRiskGroup3" | "MY.microbiologicalRiskGroup4";
+            microbiologicalRiskGroup?: "" | "MY.microbiologicalRiskGroup1" | "MY.microbiologicalRiskGroup2" | "MY.microbiologicalRiskGroup3" | "MY.microbiologicalRiskGroup4";
             /**
              * Microscopic characters
              * @description Microscopic features and measurements, if not recorded separately into measurement fields.
              */
-            microscopy: string;
+            microscopy?: string;
             /**
              * Moving direction
              * @enum {string}
              */
-            movingDirection: "" | "MY.movingDirectionN" | "MY.movingDirectionNNE" | "MY.movingDirectionNE" | "MY.movingDirectionENE" | "MY.movingDirectionE" | "MY.movingDirectionESE" | "MY.movingDirectionSE" | "MY.movingDirectionSSE" | "MY.movingDirectionS" | "MY.movingDirectionSSW" | "MY.movingDirectionSW" | "MY.movingDirectionWSW" | "MY.movingDirectionW" | "MY.movingDirectionWNW" | "MY.movingDirectionNW" | "MY.movingDirectionNNW";
+            movingDirection?: "" | "MY.movingDirectionN" | "MY.movingDirectionNNE" | "MY.movingDirectionNE" | "MY.movingDirectionENE" | "MY.movingDirectionE" | "MY.movingDirectionESE" | "MY.movingDirectionSE" | "MY.movingDirectionSSE" | "MY.movingDirectionS" | "MY.movingDirectionSSW" | "MY.movingDirectionSW" | "MY.movingDirectionWSW" | "MY.movingDirectionW" | "MY.movingDirectionWNW" | "MY.movingDirectionNW" | "MY.movingDirectionNNW";
             /** Moving status */
-            movingStatus: string[];
+            movingStatus?: string[];
             /**
              * Mutant
              * @description Information on mutant microbial strain.
              */
-            mutant: string;
+            mutant?: string;
             /**
              * Native status
              * @enum {string}
              */
-            nativeStatus: "" | "MY.native" | "MY.nonNative";
+            nativeStatus?: "" | "MY.native" | "MY.nonNative";
             /** Nest/cavity count */
-            nestCount: number;
+            nestCount?: number;
             /** Nest notes */
-            nestNotes: string;
+            nestNotes?: string;
             /** Diameter of the tree (cm) */
-            nestTreeDiameterInCentimeters: number;
+            nestTreeDiameterInCentimeters?: number;
             /**
              * Nest type
              * @enum {string}
              */
-            nestType: "" | "MY.nestTypeTreeCavity" | "MY.nestTypeTwig" | "MY.nestTypeNestBox" | "MY.nestTypeBuilding" | "MY.nestTypeGroundCavity" | "MY.nestTypeOther";
+            nestType?: "" | "MY.nestTypeTreeCavity" | "MY.nestTypeTwig" | "MY.nestTypeNestBox" | "MY.nestTypeBuilding" | "MY.nestTypeGroundCavity" | "MY.nestTypeOther";
             /**
              * Notes
              * @description Additional information to the data in each section.
              */
-            notes: string;
+            notes?: string;
             /** Pair count */
-            pairCount: number;
+            pairCount?: number;
             /** Own interpretation/pairs */
-            pairCountOpinion: number;
+            pairCountOpinion?: number;
             /**
              * Plant life stage
              * @enum {string}
              */
-            plantLifeStage: "" | "MY.plantLifeStageSterile" | "MY.plantLifeStageFertile" | "MY.plantLifeStageSeed" | "MY.plantLifeStageSprout" | "MY.plantLifeStageBud" | "MY.plantLifeStageFlower" | "MY.plantLifeStageWitheredFlower" | "MY.plantLifeStageRipeningFruit" | "MY.plantLifeStageRipeFruit" | "MY.plantLifeStageDeadSprout" | "MY.plantLifeStageSubterranean";
+            plantLifeStage?: "" | "MY.plantLifeStageSterile" | "MY.plantLifeStageFertile" | "MY.plantLifeStageSeed" | "MY.plantLifeStageSprout" | "MY.plantLifeStageBud" | "MY.plantLifeStageFlower" | "MY.plantLifeStageWitheredFlower" | "MY.plantLifeStageRipeningFruit" | "MY.plantLifeStageRipeFruit" | "MY.plantLifeStageDeadSprout" | "MY.plantLifeStageSubterranean";
             /**
              * Plant status code
              * @description Status code for the plant (wild, alien etc.)
              * @enum {string}
              */
-            plantStatusCode: "" | "MY.plantStatusCodeL" | "MY.plantStatusCodeA" | "MY.plantStatusCodeAV" | "MY.plantStatusCodeAOV" | "MY.plantStatusCodeAN" | "MY.plantStatusCodeANV" | "MY.plantStatusCodeANS" | "MY.plantStatusCodeT" | "MY.plantStatusCodeTV" | "MY.plantStatusCodeTOV" | "MY.plantStatusCodeTNV" | "MY.plantStatusCodeTNS" | "MY.plantStatusCodeV" | "MY.plantStatusCodeOV" | "MY.plantStatusCodeN" | "MY.plantStatusCodeNV" | "MY.plantStatusCodeNS" | "MY.plantStatusCodeE" | "MY.plantStatusCodeTE" | "MY.plantStatusCodeTVE" | "MY.plantStatusCodeTOVE" | "MY.plantStatusCodeTNVE" | "MY.plantStatusCodeTNSE" | "MY.plantStatusCodeTN" | "MY.plantStatusCodeTNE" | "MY.plantStatusCodeR" | "MY.plantStatusCodeC" | "MY.plantStatusCodeH" | "MY.plantStatusCodeG" | "MY.plantStatusCodeF";
+            plantStatusCode?: "" | "MY.plantStatusCodeL" | "MY.plantStatusCodeA" | "MY.plantStatusCodeAV" | "MY.plantStatusCodeAOV" | "MY.plantStatusCodeAN" | "MY.plantStatusCodeANV" | "MY.plantStatusCodeANS" | "MY.plantStatusCodeT" | "MY.plantStatusCodeTV" | "MY.plantStatusCodeTOV" | "MY.plantStatusCodeTNV" | "MY.plantStatusCodeTNS" | "MY.plantStatusCodeV" | "MY.plantStatusCodeOV" | "MY.plantStatusCodeN" | "MY.plantStatusCodeNV" | "MY.plantStatusCodeNS" | "MY.plantStatusCodeE" | "MY.plantStatusCodeTE" | "MY.plantStatusCodeTVE" | "MY.plantStatusCodeTOVE" | "MY.plantStatusCodeTNVE" | "MY.plantStatusCodeTNSE" | "MY.plantStatusCodeTN" | "MY.plantStatusCodeTNE" | "MY.plantStatusCodeR" | "MY.plantStatusCodeC" | "MY.plantStatusCodeH" | "MY.plantStatusCodeG" | "MY.plantStatusCodeF";
             /**
              * Abundance in the field
              * @description Abundance of the taxon in the field
              */
-            populationAbundance: string;
+            populationAbundance?: string;
             /**
              * Preparations
              * @description Preparations/preparates made from the specimen, if not recorded as separate Preparations/samples in the designated section
              */
-            preparations: string;
+            preparations?: string;
             /**
              * Preservation
              * @description Main method of preservation. If parts of the specimen are preserved in different ways, you can choose several methods.
              */
-            preservation: ("" | "MY.preservationPressed" | "MY.preservationDry" | "MY.preservationCriticalPointDrying" | "MY.preservationPinned" | "MY.preservationGlued" | "MY.preservationLiquid" | "MY.preservationEthanol" | "MY.preservationEthanolPure" | "MY.preservationEthanol70" | "MY.preservationEthanol80" | "MY.preservationEthanol80Pure" | "MY.preservationEthanol96" | "MY.preservationEthanolMinus20C" | "MY.preservationEthanolDenatured" | "MY.preservationEthanolFormalin" | "MY.preservationEthanolExFormalin" | "MY.preservationFormalin" | "MY.preservationBouinSolution" | "MY.preservationPampelsFluid" | "MY.preservationGlycerol" | "MY.preservationParaffin" | "MY.preservationMercuricChloride" | "MY.preservationCryopreserved" | "MY.preservationFrozen" | "MY.preservationFrozenMinus80C" | "MY.preservationFreezeDried" | "MY.preservationGoldPlated" | "MY.preservationActiveCulture" | "MY.preservationLiving" | "MY.preservationSlide" | "MY.preservationSlideCanadaBalsam" | "MY.preservationSlideEuparal" | "MY.preservationSlidePolyviol" | "MY.preservationStuffed" | "MY.preservationCast" | "MY.preservationPlastinated" | "MY.preservationFrozenMinus80CAndEthanolMinus20C")[];
+            preservation?: ("" | "MY.preservationPressed" | "MY.preservationDry" | "MY.preservationCriticalPointDrying" | "MY.preservationPinned" | "MY.preservationGlued" | "MY.preservationLiquid" | "MY.preservationEthanol" | "MY.preservationEthanolPure" | "MY.preservationEthanol70" | "MY.preservationEthanol80" | "MY.preservationEthanol80Pure" | "MY.preservationEthanol96" | "MY.preservationEthanolMinus20C" | "MY.preservationEthanolDenatured" | "MY.preservationEthanolFormalin" | "MY.preservationEthanolExFormalin" | "MY.preservationFormalin" | "MY.preservationBouinSolution" | "MY.preservationPampelsFluid" | "MY.preservationGlycerol" | "MY.preservationParaffin" | "MY.preservationMercuricChloride" | "MY.preservationCryopreserved" | "MY.preservationFrozen" | "MY.preservationFrozenMinus80C" | "MY.preservationFreezeDried" | "MY.preservationGoldPlated" | "MY.preservationActiveCulture" | "MY.preservationLiving" | "MY.preservationSlide" | "MY.preservationSlideCanadaBalsam" | "MY.preservationSlideEuparal" | "MY.preservationSlidePolyviol" | "MY.preservationStuffed" | "MY.preservationCast" | "MY.preservationPlastinated" | "MY.preservationFrozenMinus80CAndEthanolMinus20C")[];
             /**
              * Primary specimen
              * @description Can be used to highlight one unit as primary specimen/observation if there are many in one document. Only one unit per document can be marked as primary.
              */
-            primarySpecimen: boolean;
+            primarySpecimen?: boolean;
             /**
              * Provenance
              * @description Origin or source of the garden accession
              * @enum {string}
              */
-            provenance: "" | "MY.provenanceUnknown" | "MY.provenanceCultivated" | "MY.provenanceCultivatedUnsure" | "MY.provenanceCultivatedPropagatedFromWildSource" | "MY.provenanceWildSource" | "MY.provenanceWildSourceUnsure" | "MY.provenanceEscapedCultivated" | "MY.provenancePropagule";
+            provenance?: "" | "MY.provenanceUnknown" | "MY.provenanceCultivated" | "MY.provenanceCultivatedUnsure" | "MY.provenanceCultivatedPropagatedFromWildSource" | "MY.provenanceWildSource" | "MY.provenanceWildSourceUnsure" | "MY.provenanceEscapedCultivated" | "MY.provenancePropagule";
             /**
              * Record type
              * @description Type of record, most commonly preserved specimen for museum specimens and observation for associated observations ("seuralaislajihavainto").
              * @enum {string}
              */
-            recordBasis: "" | "MY.recordBasisPreservedSpecimen" | "MY.recordBasisHumanObservation" | "MY.recordBasisHumanObservationSeen" | "MY.recordBasisHumanObservationHeard" | "MY.recordBasisHumanObservationHandled" | "MY.recordBasisHumanObservationPhoto" | "MY.recordBasisHumanObservationAudio" | "MY.recordBasisHumanObservationVideo" | "MY.recordBasisHumanObservationIndirect" | "MY.recordBasisMachineObservation" | "MY.recordBasisMachineObservationPhoto" | "MY.recordBasisMachineObservationVideo" | "MY.recordBasisMachineObservationAudio" | "MY.recordBasisMachineObservationGeologger" | "MY.recordBasisMachineObservationSatelliteTransmitter" | "MY.recordBasisFossilSpecimen" | "MY.recordBasisSubfossilSpecimen" | "MY.recordBasisSubfossilSpecimenAmberInclusion" | "MY.recordBasisMaterialSample" | "MY.recordBasisMaterialSampleAir" | "MY.recordBasisMaterialSampleSoil" | "MY.recordBasisMaterialSampleWater" | "MY.recordBasisMicrobialSpecimen" | "MY.recordBasisLivingSpecimen" | "MY.recordBasisLiterature";
+            recordBasis?: "" | "MY.recordBasisPreservedSpecimen" | "MY.recordBasisHumanObservation" | "MY.recordBasisHumanObservationSeen" | "MY.recordBasisHumanObservationHeard" | "MY.recordBasisHumanObservationHandled" | "MY.recordBasisHumanObservationPhoto" | "MY.recordBasisHumanObservationAudio" | "MY.recordBasisHumanObservationVideo" | "MY.recordBasisHumanObservationIndirect" | "MY.recordBasisMachineObservation" | "MY.recordBasisMachineObservationPhoto" | "MY.recordBasisMachineObservationVideo" | "MY.recordBasisMachineObservationAudio" | "MY.recordBasisMachineObservationGeologger" | "MY.recordBasisMachineObservationSatelliteTransmitter" | "MY.recordBasisFossilSpecimen" | "MY.recordBasisSubfossilSpecimen" | "MY.recordBasisSubfossilSpecimenAmberInclusion" | "MY.recordBasisMaterialSample" | "MY.recordBasisMaterialSampleAir" | "MY.recordBasisMaterialSampleSoil" | "MY.recordBasisMaterialSampleWater" | "MY.recordBasisMicrobialSpecimen" | "MY.recordBasisLivingSpecimen" | "MY.recordBasisLiterature";
             /**
              * Record parts
              * @description What parts of the record are / have been in storage.
              */
-            recordParts: ("" | "MY.recordPartsBones" | "MY.recordPartsAntler" | "MY.recordPartsHead" | "MY.recordPartsSkull" | "MY.recordPartsSkin" | "MY.recordPartsWing" | "MY.recordPartsTail" | "MY.recordPartsTissue" | "MY.recordPartsFeather" | "MY.recordPartsEgg" | "MY.recordPartsIntestine" | "MY.recordPartsGonad" | "MY.recordPartsSeed" | "MY.recordPartsNest" | "MY.recordPartsFaeces" | "MY.recordPartsFeedingMarks" | "MY.recordPartsTracks" | "MY.recordPartsScale" | "MY.recordPartsFin" | "MY.recordPartsFull" | "MY.recordPartsPart" | "MY.recordPartsActiveCulture" | "MY.recordPartsCutting" | "MY.recordPartsVegetativePart" | "MY.recordPartsFreezeDried" | "MY.recordPartsDryIce" | "MY.recordPartsDNA" | "MY.recordPartsShell" | "MY.recordPartsWholePlant" | "MY.recordPartsTissueCulture" | "MY.recordPartsMount" | "My.recordPartsSkullAndBones")[];
+            recordParts?: ("" | "MY.recordPartsBones" | "MY.recordPartsAntler" | "MY.recordPartsHead" | "MY.recordPartsSkull" | "MY.recordPartsSkin" | "MY.recordPartsWing" | "MY.recordPartsTail" | "MY.recordPartsTissue" | "MY.recordPartsFeather" | "MY.recordPartsEgg" | "MY.recordPartsIntestine" | "MY.recordPartsGonad" | "MY.recordPartsSeed" | "MY.recordPartsNest" | "MY.recordPartsFaeces" | "MY.recordPartsFeedingMarks" | "MY.recordPartsTracks" | "MY.recordPartsScale" | "MY.recordPartsFin" | "MY.recordPartsFull" | "MY.recordPartsPart" | "MY.recordPartsActiveCulture" | "MY.recordPartsCutting" | "MY.recordPartsVegetativePart" | "MY.recordPartsFreezeDried" | "MY.recordPartsDryIce" | "MY.recordPartsDNA" | "MY.recordPartsShell" | "MY.recordPartsWholePlant" | "MY.recordPartsTissueCulture" | "MY.recordPartsMount" | "My.recordPartsSkullAndBones")[];
             /**
              * Ring
              * @description Bird or bat ring number, code, colour code or such
              */
-            ring: string;
+            ring?: string;
             /**
              * Sampling method
              * @description Main method for (usually intentional) sampling
              * @enum {string}
              */
-            samplingMethod: "" | "MY.samplingMethodCarnet" | "MY.samplingMethodFeromonetrap" | "MY.samplingMethodNet" | "MY.samplingMethodDrag" | "MY.samplingMethodBrushing" | "MY.samplingMethodAspirator" | "MY.samplingMethodWindowtrap" | "MY.samplingMethodVacuum" | "MY.samplingMethodDigging" | "MY.samplingMethodFishNet" | "MY.samplingMethodShaking" | "MY.samplingMethodReared" | "MY.samplingMethodEpupa" | "MY.samplingMethodExovo" | "MY.samplingMethodElarva" | "MY.samplingMethodFishTrap" | "MY.samplingMethodYellowWindowTrap" | "MY.samplingMethodYellowpan" | "MY.samplingMethodTriangleDrag" | "MY.samplingMethodPitfall" | "MY.samplingMethodEclectortrap" | "MY.samplingMethodHand" | "MY.samplingMethodDungTrap" | "MY.samplingMethodBoard" | "MY.samplingMethodYellowtrap" | "MY.samplingMethodMistnet" | "MY.samplingMethodSweeping" | "MY.samplingMethodSoilsample" | "MY.samplingMethodWashing" | "MY.samplingMethodMalaise" | "MY.samplingMethodPantrap" | "MY.samplingMethodSeine" | "MY.samplingMethodAngleFishing" | "MY.samplingMethodTrampling" | "MY.samplingMethodBeamTrawl" | "MY.samplingMethodTrap" | "MY.samplingMethodDropping" | "MY.samplingMethodTrunkWindowTrap" | "MY.samplingMethodElectrofishing" | "MY.samplingMethodSifting" | "MY.samplingMethodDiverInsectTrap" | "MY.samplingMethodDiving" | "MY.samplingMethodBait" | "MY.samplingMethodBaittrap" | "MY.samplingMethodFlooding" | "MY.samplingMethodTrawling" | "MY.samplingMethodLight" | "MY.samplingMethodLightTrap" | "MY.samplingMethodWaterBucket" | "MY.samplingMethodAquaticNet" | "MY.samplingMethodAquaticEmergenceTrap" | "MY.samplingMethodWaterSieve" | "MY.samplingMethodOther";
+            samplingMethod?: "" | "MY.samplingMethodCarnet" | "MY.samplingMethodFeromonetrap" | "MY.samplingMethodNet" | "MY.samplingMethodDrag" | "MY.samplingMethodBrushing" | "MY.samplingMethodAspirator" | "MY.samplingMethodWindowtrap" | "MY.samplingMethodVacuum" | "MY.samplingMethodDigging" | "MY.samplingMethodFishNet" | "MY.samplingMethodShaking" | "MY.samplingMethodReared" | "MY.samplingMethodEpupa" | "MY.samplingMethodExovo" | "MY.samplingMethodElarva" | "MY.samplingMethodFishTrap" | "MY.samplingMethodYellowWindowTrap" | "MY.samplingMethodYellowpan" | "MY.samplingMethodTriangleDrag" | "MY.samplingMethodPitfall" | "MY.samplingMethodEclectortrap" | "MY.samplingMethodHand" | "MY.samplingMethodDungTrap" | "MY.samplingMethodBoard" | "MY.samplingMethodYellowtrap" | "MY.samplingMethodMistnet" | "MY.samplingMethodSweeping" | "MY.samplingMethodSoilsample" | "MY.samplingMethodWashing" | "MY.samplingMethodMalaise" | "MY.samplingMethodPantrap" | "MY.samplingMethodSeine" | "MY.samplingMethodAngleFishing" | "MY.samplingMethodTrampling" | "MY.samplingMethodBeamTrawl" | "MY.samplingMethodTrap" | "MY.samplingMethodDropping" | "MY.samplingMethodTrunkWindowTrap" | "MY.samplingMethodElectrofishing" | "MY.samplingMethodSifting" | "MY.samplingMethodDiverInsectTrap" | "MY.samplingMethodDiving" | "MY.samplingMethodBait" | "MY.samplingMethodBaittrap" | "MY.samplingMethodFlooding" | "MY.samplingMethodTrawling" | "MY.samplingMethodLight" | "MY.samplingMethodLightTrap" | "MY.samplingMethodWaterBucket" | "MY.samplingMethodAquaticNet" | "MY.samplingMethodAquaticEmergenceTrap" | "MY.samplingMethodWaterSieve" | "MY.samplingMethodOther";
             /** Sampling method notes */
-            samplingMethodNotes: string;
+            samplingMethodNotes?: string;
             /**
              * Seed maturity
              * @description Maturity of the collected seeds, used for botanical garden accessions/seed bank.
              * @enum {string}
              */
-            seedMaturity: "" | "MY.seedMaturityImmature" | "MY.seedMaturityMature" | "MY.seedMaturityMixed";
+            seedMaturity?: "" | "MY.seedMaturityImmature" | "MY.seedMaturityMature" | "MY.seedMaturityMixed";
             /**
              * Seed morphology
              * @description Seed morphology of the collected seeds, used for botanical garden accessions/seed bank.
              * @enum {string}
              */
-            seedMorphology: "" | "MY.seedMorphologyBent" | "MY.seedMorphologyBroad" | "MY.seedMorphologyCapitate" | "MY.seedMorphologyFolded" | "MY.seedMorphologyLateral" | "MY.seedMorphologyLinearFullyDeveloped" | "MY.seedMorphologyLinearUnderdeveloped" | "MY.seedMorphologyPeripheral" | "MY.seedMorphologyRudimentary" | "MY.seedMorphologySpatulateFullyDeveloped" | "MY.seedMorphologySpatulateUnderdeveloped" | "MY.seedMorphologyUndifferentiated" | "MY.seedMorphologyInvesting";
+            seedMorphology?: "" | "MY.seedMorphologyBent" | "MY.seedMorphologyBroad" | "MY.seedMorphologyCapitate" | "MY.seedMorphologyFolded" | "MY.seedMorphologyLateral" | "MY.seedMorphologyLinearFullyDeveloped" | "MY.seedMorphologyLinearUnderdeveloped" | "MY.seedMorphologyPeripheral" | "MY.seedMorphologyRudimentary" | "MY.seedMorphologySpatulateFullyDeveloped" | "MY.seedMorphologySpatulateUnderdeveloped" | "MY.seedMorphologyUndifferentiated" | "MY.seedMorphologyInvesting";
             /**
              * DNA sequence (FASTA)
              * @description DNA sequence associated with the occurrence, stored in FASTA format.
              */
-            sequenceText: string[];
+            sequenceText?: string[];
             /**
              * Sex
              * @description Sex of the individual(s)
              * @enum {string}
              */
-            sex: "" | "MY.sexM" | "MY.sexF" | "MY.sexW" | "MY.sexU" | "MY.sexN" | "MY.sexX" | "MY.sexE" | "MY.sexC";
+            sex?: "" | "MY.sexM" | "MY.sexF" | "MY.sexW" | "MY.sexU" | "MY.sexN" | "MY.sexX" | "MY.sexE" | "MY.sexC";
             /**
              * Sex notes
              * @description E.g. how sex was determined, by whom and when.
              */
-            sexNotes: string;
+            sexNotes?: string;
             /** Shorthand */
-            shortHandText: string;
+            shortHandText?: string;
             /**
              * Smell
              * @enum {string}
              */
-            smell: "" | "MY.smellNotSmelled" | "MY.smellNoSmelled" | "MY.smellWeak" | "MY.smellModerate" | "MY.smellStrong";
+            smell?: "" | "MY.smellNotSmelled" | "MY.smellNoSmelled" | "MY.smellWeak" | "MY.smellModerate" | "MY.smellStrong";
             /** Smell notes */
-            smellNotes: string;
+            smellNotes?: string;
             /** Verbatim stratigraphy from original source */
-            stratigraphyVerbatim: string;
+            stratigraphyVerbatim?: string;
             /**
              * Type of substrate
              * @enum {string}
              */
-            substrateClassification: "" | "MY.substrateGround" | "MY.substrateGroundLowShrubs" | "MY.substrateGroundLichens" | "MY.substrateGroundHerbs" | "MY.substrateGroundMosses" | "MY.substrateGroundSphagnum" | "MY.substrateGroundGrassy" | "MY.substrateGroundNeedleLitter" | "MY.substrateGroundLeafLitter" | "MY.substrateGroundMixedLitter" | "MY.substrateGroundSandySoil" | "MY.substrateGroundGravelSoil" | "MY.substrateGroundClayeySoil" | "MY.substrateGroundHeathHumus" | "MY.substrateGroundMull" | "MY.substrateGroundPeat" | "MY.substrateGroundBurnedSoil" | "MY.substrateLivingTree" | "MY.substrateLivingTreeTrunk" | "MY.substrateLivingTreeBase" | "MY.substrateLivingTreeRoots" | "MY.substrateLivingTreeBranch" | "MY.substrateLivingTreeDeadBranch" | "MY.substrateLivingTreeDeadLimb" | "MY.substrateLivingTreeLeaf" | "MY.substrateLivingTreeNeedle" | "MY.substrateDeadWood" | "MY.substrateDeadWoodStandingTreeTrunk" | "MY.substrateDeadWoodStandingTreeBranch" | "MY.substrateDeadWoodStandingTreeBase" | "MY.substrateDeadWoodFallenTreeTrunk" | "MY.substrateDeadWoodFallenTreeBranch" | "MY.substrateDeadWoodUpturnedRoots" | "MY.substrateDeadWoodDeadRoots" | "MY.substrateDeadWoodStump" | "MY.substrateDeadWoodFallenBranch" | "MY.substrateDeadWoodCone" | "MY.substrateDeadWoodTwigs" | "MY.substrateDeadWoodBark" | "MY.substrateDeadWoodSawdust" | "MY.substrateDeadWoodPieceOfWood" | "MY.substrateDeadWoodLoggingResidue" | "MY.substrateDeadWoodLog" | "MY.substrateDeadWoodDriftwood" | "MY.substrateDeadWoodConstructionWood" | "MY.substrateDung" | "MY.substrateCompost" | "MY.substrateLivingShoot" | "MY.substrateDeadShoot" | "MY.substrateLivingFungus" | "MY.substrateDeadFungus" | "MY.substrateLivingAnimal" | "MY.substrateDeadAnimal" | "MY.substrateRockSurface" | "MY.substrateDeadNeedle" | "MY.substrateDeadLeaf";
+            substrateClassification?: "" | "MY.substrateGround" | "MY.substrateGroundLowShrubs" | "MY.substrateGroundLichens" | "MY.substrateGroundHerbs" | "MY.substrateGroundMosses" | "MY.substrateGroundSphagnum" | "MY.substrateGroundGrassy" | "MY.substrateGroundNeedleLitter" | "MY.substrateGroundLeafLitter" | "MY.substrateGroundMixedLitter" | "MY.substrateGroundSandySoil" | "MY.substrateGroundGravelSoil" | "MY.substrateGroundClayeySoil" | "MY.substrateGroundHeathHumus" | "MY.substrateGroundMull" | "MY.substrateGroundPeat" | "MY.substrateGroundBurnedSoil" | "MY.substrateLivingTree" | "MY.substrateLivingTreeTrunk" | "MY.substrateLivingTreeBase" | "MY.substrateLivingTreeRoots" | "MY.substrateLivingTreeBranch" | "MY.substrateLivingTreeDeadBranch" | "MY.substrateLivingTreeDeadLimb" | "MY.substrateLivingTreeLeaf" | "MY.substrateLivingTreeNeedle" | "MY.substrateDeadWood" | "MY.substrateDeadWoodStandingTreeTrunk" | "MY.substrateDeadWoodStandingTreeBranch" | "MY.substrateDeadWoodStandingTreeBase" | "MY.substrateDeadWoodFallenTreeTrunk" | "MY.substrateDeadWoodFallenTreeBranch" | "MY.substrateDeadWoodUpturnedRoots" | "MY.substrateDeadWoodDeadRoots" | "MY.substrateDeadWoodStump" | "MY.substrateDeadWoodFallenBranch" | "MY.substrateDeadWoodCone" | "MY.substrateDeadWoodTwigs" | "MY.substrateDeadWoodBark" | "MY.substrateDeadWoodSawdust" | "MY.substrateDeadWoodPieceOfWood" | "MY.substrateDeadWoodLoggingResidue" | "MY.substrateDeadWoodLog" | "MY.substrateDeadWoodDriftwood" | "MY.substrateDeadWoodConstructionWood" | "MY.substrateDung" | "MY.substrateCompost" | "MY.substrateLivingShoot" | "MY.substrateDeadShoot" | "MY.substrateLivingFungus" | "MY.substrateDeadFungus" | "MY.substrateLivingAnimal" | "MY.substrateDeadAnimal" | "MY.substrateRockSurface" | "MY.substrateDeadNeedle" | "MY.substrateDeadLeaf";
             /**
              * Woody substrate, decay stage
              * @enum {string}
              */
-            substrateDecayStage: "" | "MY.substrateDecayStageEnum1" | "MY.substrateDecayStageEnum2" | "MY.substrateDecayStageEnum3" | "MY.substrateDecayStageEnum4" | "MY.substrateDecayStageEnum5";
+            substrateDecayStage?: "" | "MY.substrateDecayStageEnum1" | "MY.substrateDecayStageEnum2" | "MY.substrateDecayStageEnum3" | "MY.substrateDecayStageEnum4" | "MY.substrateDecayStageEnum5";
             /** Substrate notes */
-            substrateNotes: string;
+            substrateNotes?: string;
             /** Substrate species */
-            substrateSpecies: string;
+            substrateSpecies?: string;
             /** Substrate species */
-            substrateSpeciesID: string;
+            substrateSpeciesID?: string;
             /** Substrate species */
-            substrateSpeciesInformalNameString: string;
+            substrateSpeciesInformalNameString?: string;
             /** Woody substrate, additional information */
-            substrateTreeClassification: ("" | "MY.substrateTreeClassificationEnum1" | "MY.substrateTreeClassificationEnum2" | "MY.substrateTreeClassificationEnum3" | "MY.substrateTreeClassificationEnum4" | "MY.substrateTreeClassificationEnum5" | "MY.substrateTreeClassificationEnum6")[];
+            substrateTreeClassification?: ("" | "MY.substrateTreeClassificationEnum1" | "MY.substrateTreeClassificationEnum2" | "MY.substrateTreeClassificationEnum3" | "MY.substrateTreeClassificationEnum4" | "MY.substrateTreeClassificationEnum5" | "MY.substrateTreeClassificationEnum6")[];
             /** Tail */
-            tailInMillimeters: string[];
+            tailInMillimeters?: string[];
             /**
              * Taste
              * @enum {string}
              */
-            taste: "" | "MY.tasteNotTasted" | "MY.tasteNoTaste" | "MY.tasteWeak" | "MY.tasteModerate" | "MY.tasteStrong";
+            taste?: "" | "MY.tasteNotTasted" | "MY.tasteNoTaste" | "MY.tasteWeak" | "MY.tasteModerate" | "MY.tasteStrong";
             /** Taste notes */
-            tasteNotes: string;
+            tasteNotes?: string;
             /**
              * Confidence of determination
              * @enum {string}
              */
-            taxonConfidence: "" | "MY.taxonConfidenceSure" | "MY.taxonConfidenceUnsure" | "MY.taxonConfidenceSubspeciesUnsure";
+            taxonConfidence?: "" | "MY.taxonConfidenceSure" | "MY.taxonConfidenceUnsure" | "MY.taxonConfidenceSubspeciesUnsure";
             /** Twitched */
-            twitched: boolean;
-            unitFact: components["schemas"]["store-unitFact"];
-            unitGathering: components["schemas"]["store-unitGathering"];
+            twitched?: boolean;
+            unitFact?: components["schemas"]["store-unitFact"];
+            unitGathering?: components["schemas"]["store-unitGathering"];
             /** Specimen type */
-            unitType: string[];
+            unitType?: string[];
             /** Weight */
-            weightInGrams: string[];
+            weightInGrams?: string[];
             /**
              * Native status
              * @enum {string}
              */
-            wild: "" | "MY.wildWild" | "MY.wildUnknown" | "MY.wildNonWild";
+            wild?: "" | "MY.wildWild" | "MY.wildUnknown" | "MY.wildNonWild";
             /** Wing length (mm) */
-            wingInMillimeters: string[];
+            wingInMillimeters?: string[];
             /** Recordings */
-            audio: string[];
+            audio?: string[];
             /** Images */
-            images: string[];
+            images?: string[];
             /**
              * Publicity restrictions
              * @description PUBLIC: all data can be published; PROTECTED: exact locality is hidden (100*100km square); PRIVATE: most of the data is hidden. Empty value means same as public.
              * @enum {string}
              */
-            publicityRestrictions: "" | "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
-            identifications: components["schemas"]["store-identification"][];
-            typeSpecimens: components["schemas"]["store-typeSpecimen"][];
-            samples: components["schemas"]["store-sample"][];
+            publicityRestrictions?: "" | "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
+            identifications?: components["schemas"]["store-identification"][];
+            typeSpecimens?: components["schemas"]["store-typeSpecimen"][];
+            samples?: components["schemas"]["store-sample"][];
         };
         "store-measurement": {
             /** Context for the MY.measurementClass */
-            "@context": string;
+            "@context"?: string;
             /** Id for the MY.measurementClass */
-            id: string;
+            id?: string;
             /** Type for the MY.measurementClass */
-            "@type": string;
+            "@type"?: string;
             /** DNA concentration (ng/microliter) */
-            DNAConcentrationNgPerMicroliter: number[];
+            DNAConcentrationNgPerMicroliter?: number[];
             /** DNA purity (ratio of absorbance 260/280 nm) */
-            DNARatioOfAbsorbance260And280: number[];
+            DNARatioOfAbsorbance260And280?: number[];
             /** DNA volume (microliters) */
-            DNAVolumeMicroliters: number[];
+            DNAVolumeMicroliters?: number[];
             /** Beak (mm) */
-            beakMillimeters: number[];
+            beakMillimeters?: number[];
             /** Body (cm) */
-            bodyCentimeters: number[];
+            bodyCentimeters?: number[];
             /** Body (mm) */
-            bodyMillimeters: number[];
+            bodyMillimeters?: number[];
             /** Ear length (mm) */
-            earLengthMillimeters: number[];
+            earLengthMillimeters?: number[];
             /** Embryo count */
-            embryoCount: number[];
+            embryoCount?: number[];
             /** Follicle diameter (mm) */
-            follicleDiameterMillimeters: number[];
+            follicleDiameterMillimeters?: number[];
             /** Foot length (mm) */
-            footLengthMillimeters: number[];
+            footLengthMillimeters?: number[];
             /** Forearm (mm) */
-            forearmMillimeters: number[];
+            forearmMillimeters?: number[];
             /** Gonad (mm) */
-            gonadMillimeters: number[];
+            gonadMillimeters?: number[];
             /**
              * Is part of
              * @description Which parent or larger collection this is part of.
              */
-            isPartOf: string;
+            isPartOf?: string;
             /** Tail (cm) */
-            tailCentimeters: number[];
+            tailCentimeters?: number[];
             /** Tail (mm) */
-            tailMillimeters: number[];
+            tailMillimeters?: number[];
             /** Tarsus length (mm) */
-            tarsusLengthMillimeters: number[];
+            tarsusLengthMillimeters?: number[];
             /** Length (cm) */
-            totalLengthCentimeters: number[];
+            totalLengthCentimeters?: number[];
             /** Length (mm) */
-            totalLengthMillimeters: number[];
+            totalLengthMillimeters?: number[];
             /** Uterine scar count */
-            uterineScarCount: number[];
+            uterineScarCount?: number[];
             /** Weight (g) */
-            weightGrams: number[];
+            weightGrams?: number[];
             /** Weight (kg) */
-            weightKilograms: number[];
+            weightKilograms?: number[];
             /** Wing max (mm) */
-            wingMaxMillimeters: number[];
+            wingMaxMillimeters?: number[];
             /** Wing (mm) */
-            wingMillimeters: number[];
+            wingMillimeters?: number[];
             /** Wing min (mm) */
-            wingMinMillimeters: number[];
+            wingMinMillimeters?: number[];
         };
         "store-unitFact": {
             /** Context for the Näytteen / havainnon faktat */
-            "@context": string;
+            "@context"?: string;
             /** Id for the Näytteen / havainnon faktat */
-            id: string;
+            id?: string;
             /** Type for the Näytteen / havainnon faktat */
-            "@type": string;
+            "@type"?: string;
             /** Adult individual count */
-            adultIndividualCount: number;
+            adultIndividualCount?: number;
             /** Taxon ID selected from autocomplete */
-            autocompleteSelectedTaxonID: string;
+            autocompleteSelectedTaxonID?: string;
             /** K-multiplier */
-            birdMultiplier: boolean;
+            birdMultiplier?: boolean;
             /** Brood count */
-            broodCount: number;
+            broodCount?: number;
             /** Destroyed nests count */
-            destroyedNestCount: number;
+            destroyedNestCount?: number;
             /**
              * Determination on site
              * @description Tehtiinkö lajin määritys havaintotilanteessa vai myöhemmin esimerkiksi internetin tai muiden kanssa keskustelun perusteella?
              * @enum {string}
              */
-            detOnSite: "" | "MY.duringObservation" | "MY.afterObservation";
+            detOnSite?: "" | "MY.duringObservation" | "MY.afterObservation";
             /** Observation distance (m) */
-            distanceMeters: number;
+            distanceMeters?: number;
             /** Females with broods count */
-            femalesWithBroodsCount: number;
+            femalesWithBroodsCount?: number;
             /**
              * Micro habitat
              * @enum {string}
              */
-            glowWormMicrohabitat: "" | "MY.glowWormMicrohabitatEnum1" | "MY.glowWormMicrohabitatEnum2" | "MY.glowWormMicrohabitatEnum3" | "MY.glowWormMicrohabitatEnum4" | "MY.glowWormMicrohabitatEnum5" | "MY.glowWormMicrohabitatEnum6" | "MY.glowWormMicrohabitatEnumOther";
+            glowWormMicrohabitat?: "" | "MY.glowWormMicrohabitatEnum1" | "MY.glowWormMicrohabitatEnum2" | "MY.glowWormMicrohabitatEnum3" | "MY.glowWormMicrohabitatEnum4" | "MY.glowWormMicrohabitatEnum5" | "MY.glowWormMicrohabitatEnum6" | "MY.glowWormMicrohabitatEnumOther";
             /** Parven koko */
-            individualCountFlock: number;
+            individualCountFlock?: number;
             /** Yksilömäärä sisällä */
-            individualCountInner: number;
+            individualCountInner?: number;
             /** Yksilömäärä alueen ulkopuolella */
-            individualCountOuter: number;
+            individualCountOuter?: number;
             /** Juvenile individual count */
-            juvenileIndividualCount: number;
+            juvenileIndividualCount?: number;
             /**
              * Observations quality
              * @enum {string}
              */
-            lineTransectObsType: "" | "MY.lineTransectObsTypeSong" | "MY.lineTransectObsTypeOtherSound" | "MY.lineTransectObsTypeSeen" | "MY.lineTransectObsTypeSeenMale" | "MY.lineTransectObsTypeSeenFemale" | "MY.lineTransectObsTypeFlyingOverhead" | "MY.lineTransectObsTypeFlock" | "MY.lineTransectObsTypeFlockFlyingOverhead" | "MY.lineTransectObsTypeSeenPair" | "MY.lineTransectObsTypeSeenBrood" | "MY.lineTransectObsTypeSeenNest" | "MY.lineTransectObsTypeUnknown";
+            lineTransectObsType?: "" | "MY.lineTransectObsTypeSong" | "MY.lineTransectObsTypeOtherSound" | "MY.lineTransectObsTypeSeen" | "MY.lineTransectObsTypeSeenMale" | "MY.lineTransectObsTypeSeenFemale" | "MY.lineTransectObsTypeFlyingOverhead" | "MY.lineTransectObsTypeFlock" | "MY.lineTransectObsTypeFlockFlyingOverhead" | "MY.lineTransectObsTypeSeenPair" | "MY.lineTransectObsTypeSeenBrood" | "MY.lineTransectObsTypeSeenNest" | "MY.lineTransectObsTypeUnknown";
             /**
              * Field Area
              * @enum {string}
              */
-            lineTransectRouteFieldType: "" | "MY.lineTransectRouteFieldTypeInner" | "MY.lineTransectRouteFieldTypeOuter";
+            lineTransectRouteFieldType?: "" | "MY.lineTransectRouteFieldTypeInner" | "MY.lineTransectRouteFieldTypeOuter";
             /**
              * Droppings count
              * @enum {string}
              */
-            lolifeDroppingsCount: "" | "MY.lolifeDroppingsCount0" | "MY.lolifeDroppingsCount1" | "MY.lolifeDroppingsCount2" | "MY.lolifeDroppingsCount25" | "MY.lolifeDroppingsCount3" | "MY.lolifeDroppingsCount4";
+            lolifeDroppingsCount?: "" | "MY.lolifeDroppingsCount0" | "MY.lolifeDroppingsCount1" | "MY.lolifeDroppingsCount2" | "MY.lolifeDroppingsCount25" | "MY.lolifeDroppingsCount3" | "MY.lolifeDroppingsCount4";
             /**
              * Papanoiden laatu
              * @enum {string}
              */
-            lolifeDroppingsQuality: "" | "MY.lolifeDroppingsQuality1" | "MY.lolifeDroppingsQuality2";
+            lolifeDroppingsQuality?: "" | "MY.lolifeDroppingsQuality1" | "MY.lolifeDroppingsQuality2";
             /**
              * Droppings type
              * @enum {string}
              */
-            lolifeDroppingsType: "" | "MY.lolifeDroppingsTypeRock" | "MY.lolifeDroppingsTypeTree" | "MY.lolifeDroppingsTypeTreeGroup" | "MY.lolifeDroppingsTypeOther";
+            lolifeDroppingsType?: "" | "MY.lolifeDroppingsTypeRock" | "MY.lolifeDroppingsTypeTree" | "MY.lolifeDroppingsTypeTreeGroup" | "MY.lolifeDroppingsTypeOther";
             /**
              * Tree species
              * @enum {string}
              */
-            lolifeNestTree: "" | "MX.38590" | "MX.37812" | "MX.37999" | "MX.37993" | "MX.38010" | "MX.38008" | "MY.lolifeNestTreeOther";
+            lolifeNestTree?: "" | "MX.38590" | "MX.37812" | "MX.37999" | "MX.37993" | "MX.38010" | "MX.38008" | "MY.lolifeNestTreeOther";
             /** Observation duration */
-            observationDuration: string;
+            observationDuration?: string;
             /** Observation duration (h) */
-            observationHours: number;
+            observationHours?: number;
             /** Parimäärä sisällä */
-            pairCountInner: number;
+            pairCountInner?: number;
             /** Parimäärä alueen ulkopuolella */
-            pairCountOuter: number;
+            pairCountOuter?: number;
             /** Parvien koot */
-            pointCountFlock: string;
+            pointCountFlock?: string;
             /** Is the plant growing next to running water? */
-            runningWaterInVicinity: boolean;
+            runningWaterInVicinity?: boolean;
             /**
              * Estimate on determination confidence
              * @description Oma arvio lajimäärityksen luotettavuudesta
              */
-            taxonConfidenceDescription: string;
+            taxonConfidenceDescription?: string;
             /** Observed traits */
-            traits: string;
+            traits?: string;
             /**
              * Female observed
              * @enum {string}
              */
-            waterbirdFemale: "" | "MY.waterbirdFemaleEnumYes" | "MY.waterbirdFemaleEnumNo" | "MY.waterbirdFemaleEnumLonelyPanicking";
+            waterbirdFemale?: "" | "MY.waterbirdFemaleEnumYes" | "MY.waterbirdFemaleEnumNo" | "MY.waterbirdFemaleEnumLonelyPanicking";
             /**
              * Juvenile age class
              * @enum {string}
              */
-            waterbirdJuvenileAgeClass: "" | "MY.waterbirdJuvenileAgeClassIa" | "MY.waterbirdJuvenileAgeClassIb" | "MY.waterbirdJuvenileAgeClassIc" | "MY.waterbirdJuvenileAgeClassIIa" | "MY.waterbirdJuvenileAgeClassIIb" | "MY.waterbirdJuvenileAgeClassIIc" | "MY.waterbirdJuvenileAgeClassIIIa" | "MY.waterbirdJuvenileAgeClassUnknown";
+            waterbirdJuvenileAgeClass?: "" | "MY.waterbirdJuvenileAgeClassIa" | "MY.waterbirdJuvenileAgeClassIb" | "MY.waterbirdJuvenileAgeClassIc" | "MY.waterbirdJuvenileAgeClassIIa" | "MY.waterbirdJuvenileAgeClassIIb" | "MY.waterbirdJuvenileAgeClassIIc" | "MY.waterbirdJuvenileAgeClassIIIa" | "MY.waterbirdJuvenileAgeClassUnknown";
             /** Count accurate? */
-            waterbirdJuvenileCountAccurate: boolean;
+            waterbirdJuvenileCountAccurate?: boolean;
             /** Make an interpretation based on this census */
-            waterbirdObserverOpinionSelectedCensus: boolean;
+            waterbirdObserverOpinionSelectedCensus?: boolean;
             /**
              * Reasoning for own interpretation
              * @enum {string}
              */
-            waterbirdPairCountOpinionReasoning: "" | "MY.waterbirdPairCountOpinionReasoningEnum1" | "MY.waterbirdPairCountOpinionReasoningEnum2" | "MY.waterbirdPairCountOpinionReasoningEnum3" | "MY.waterbirdPairCountOpinionReasoningEnumOther";
+            waterbirdPairCountOpinionReasoning?: "" | "MY.waterbirdPairCountOpinionReasoningEnum1" | "MY.waterbirdPairCountOpinionReasoningEnum2" | "MY.waterbirdPairCountOpinionReasoningEnum3" | "MY.waterbirdPairCountOpinionReasoningEnumOther";
             /** Individual count dump */
-            individualCountBiotopeA: number;
+            individualCountBiotopeA?: number;
             /** Individual count urban */
-            individualCountBiotopeB: number;
+            individualCountBiotopeB?: number;
             /** Individual count countryside */
-            individualCountBiotopeC: number;
+            individualCountBiotopeC?: number;
             /** Individual count field */
-            individualCountBiotopeD: number;
+            individualCountBiotopeD?: number;
             /** Individual count forest */
-            individualCountBiotopeE: number;
+            individualCountBiotopeE?: number;
             /** Individual count other biotope */
-            individualCountBiotopeF: number;
+            individualCountBiotopeF?: number;
             /** Individual count cutting open */
-            individualCountBiotopeG: number;
+            individualCountBiotopeG?: number;
             /** Individual count reed */
-            individualCountBiotopeH: number;
+            individualCountBiotopeH?: number;
         };
         "store-unitGathering": {
             /** Context for the Havainnon keruutiedot */
-            "@context": string;
+            "@context"?: string;
             /** Id for the Havainnon keruutiedot */
-            id: string;
+            id?: string;
             /** Type for the Havainnon keruutiedot */
-            "@type": string;
+            "@type"?: string;
             /** Start date */
-            dateBegin: string;
+            dateBegin?: string;
             /** End date */
-            dateEnd: string;
-            geometry: components["schemas"]["store-geometry"];
+            dateEnd?: string;
+            geometry?: components["schemas"]["store-geometry"];
             /**
              * Habitat description
              * @description Informal description of the habitat.
              */
-            habitatDescription: string;
+            habitatDescription?: string;
             /**
              * Substrate
              * @description Type of substrate or name of substrate species.
              */
-            substrate: string;
+            substrate?: string;
         };
         "store-identification": {
             /** Context for the Identification */
-            "@context": string;
+            "@context"?: string;
             /** Id for the Identification */
-            id: string;
+            id?: string;
             /** Type for the Identification */
-            "@type": string;
+            "@type"?: string;
             /**
              * Associated observation taxa
              * @description Write associated observation taxa names here, separated by a semicolon (;). E.g.: "Betula pendula; Betula pubescens; Poaceae". These will form their own units of the type observation.
              */
-            associatedObservationTaxa: string;
+            associatedObservationTaxa?: string;
             /**
              * Taxon author
              * @description Author for the taxon
              */
-            author: string;
+            author?: string;
             /**
              * Det.
              * @description Name of the identifier (person) preferably in format "lastname, firstname"
              */
-            det: string;
+            det?: string;
             /**
              * Det. date
              * @description Date or year when the identification was done, preferably in format "d.m.Y" or "Y"
              */
-            detDate: string;
+            detDate?: string;
             /**
              * Det method
              * @enum {string}
              */
-            detMethod: "" | "MY.detMethodFreshSample" | "MY.detMethodMicroscopy" | "MY.detMethodPhoto";
+            detMethod?: "" | "MY.detMethodFreshSample" | "MY.detMethodMicroscopy" | "MY.detMethodPhoto";
             /**
              * Det verbatim from the label or other original source
              * @description Name of the identifier and date of identification in original format (e.g. from the label), errors and all
              */
-            detVerbatim: string;
+            detVerbatim?: string;
             /**
              * Genus qualifier
              * @description Additional qualifier or specifier at genus level (e.g. aff., cf.)
              */
-            genusQualifier: string;
+            genusQualifier?: string;
             /** Identification basis */
-            identificationBasis: ("" | "MY.identificationBasisDNA" | "MY.identificationBasisGenitals" | "MY.identificationBasisGenitalPreparate" | "MY.identificationBasisSpores" | "MY.identificationBasisHandled" | "MY.identificationBasisChemical" | "MY.identificationBasisHeard" | "MY.identificationBasisMicroscope" | "MY.identificationBasisSeen" | "MY.identificationBasisPreservedSpecimen" | "MY.identificationBasisFreshSpecimen" | "MY.identificationBasisMedia")[];
+            identificationBasis?: ("" | "MY.identificationBasisDNA" | "MY.identificationBasisGenitals" | "MY.identificationBasisGenitalPreparate" | "MY.identificationBasisSpores" | "MY.identificationBasisHandled" | "MY.identificationBasisChemical" | "MY.identificationBasisHeard" | "MY.identificationBasisMicroscope" | "MY.identificationBasisSeen" | "MY.identificationBasisPreservedSpecimen" | "MY.identificationBasisFreshSpecimen" | "MY.identificationBasisMedia")[];
             /**
              * Identification notes
              * @description Additional information on the identification, basis or such
              */
-            identificationNotes: string;
+            identificationNotes?: string;
             /**
              * Infra author
              * @description Author for the taxon below species level/infra epithet
              */
-            infraAuthor: string;
+            infraAuthor?: string;
             /**
              * Infra name
              * @description Taxon name for the epithet below species level
              */
-            infraEpithet: string;
+            infraEpithet?: string;
             /**
              * Infra rank
              * @description Taxonomic level of the epithet below species level
              * @enum {string}
              */
-            infraRank: "" | "MY.infraRankSsp" | "MY.infraRankVar" | "MY.infraRankBeta" | "MY.infraRankB" | "MY.infraRankForma" | "MY.infraRankHybrid" | "MY.infraRankAnamorph" | "MY.infraRankAggregate" | "MY.infraRankAberration" | "MY.infraRankCultivar" | "MY.infraRankMorpha" | "MY.infraRankUnknown" | "MY.infraRankNothosubspecies" | "MY.infraRankCultivarGroup" | "MY.infraRankFsp" | "MY.infraRankNothovar";
+            infraRank?: "" | "MY.infraRankSsp" | "MY.infraRankVar" | "MY.infraRankBeta" | "MY.infraRankB" | "MY.infraRankForma" | "MY.infraRankHybrid" | "MY.infraRankAnamorph" | "MY.infraRankAggregate" | "MY.infraRankAberration" | "MY.infraRankCultivar" | "MY.infraRankMorpha" | "MY.infraRankUnknown" | "MY.infraRankNothosubspecies" | "MY.infraRankCultivarGroup" | "MY.infraRankFsp" | "MY.infraRankNothovar";
             /**
              * Infrasubspecific subdivision
              * @description Pathovars, serovars and other infrasubspecific subdivisions of microbes.
              */
-            infrasubspecificSubdivision: string;
+            infrasubspecificSubdivision?: string;
             /**
              * Is part of
              * @description Which parent or larger collection this is part of.
              */
-            isPartOf: string;
+            isPartOf?: string;
             /** Is taxon group */
-            isTaxonGroup: boolean;
+            isTaxonGroup?: boolean;
             /**
              * Preferred identification
              * @description This can be used to select one of the identifications as 'recommended', which is the used as default when displaying information about the specimen.
              */
-            preferredIdentification: string;
+            preferredIdentification?: string;
             /**
              * Taxon concept (sec)
              * @description Publication reference for the taxon concept, that was used in identification
              */
-            sec: string;
+            sec?: string;
             /**
              * Species qualifier
              * @description Additional qualifier at species level (e.g. aff., cf., sp. n., coll.)
              */
-            speciesQualifier: string;
+            speciesQualifier?: string;
             /**
              * Species
              * @description Taxon name
              */
-            taxon: string;
+            taxon?: string;
             /**
              * Taxon alternative ID
              * @description ID for the taxon if has some other than an MX code
              */
-            taxonID: string;
+            taxonID?: string;
             /**
              * Taxon rank
              * @description Taxonomic level for the identification
              * @enum {string}
              */
-            taxonRank: "" | "MX.superdomain" | "MX.domain" | "MX.kingdom" | "MX.subkingdom" | "MX.infrakingdom" | "MX.superphylum" | "MX.phylum" | "MX.subphylum" | "MX.infraphylum" | "MX.superdivision" | "MX.division" | "MX.subdivision" | "MX.infradivision" | "MX.superclass" | "MX.class" | "MX.subclass" | "MX.infraclass" | "MX.parvclass" | "MX.superorder" | "MX.order" | "MX.suborder" | "MX.infraorder" | "MX.parvorder" | "MX.superfamily" | "MX.family" | "MX.subfamily" | "MX.tribe" | "MX.subtribe" | "MX.supergenus" | "MX.genus" | "MX.nothogenus" | "MX.subgenus" | "MX.section" | "MX.subsection" | "MX.series" | "MX.subseries" | "MX.infragenericTaxon" | "MX.aggregate" | "MX.speciesAggregate" | "MX.species" | "MX.nothospecies" | "MX.infraspecificTaxon" | "MX.subspecificAggregate" | "MX.subspecies" | "MX.nothosubspecies" | "MX.variety" | "MX.subvariety" | "MX.form" | "MX.subform" | "MX.hybrid" | "MX.anamorph" | "MX.ecotype" | "MX.populationGroup" | "MX.intergenericHybrid" | "MX.infragenericHybrid" | "MX.cultivar" | "MX.group" | "MX.grex";
+            taxonRank?: "" | "MX.superdomain" | "MX.domain" | "MX.kingdom" | "MX.subkingdom" | "MX.infrakingdom" | "MX.superphylum" | "MX.phylum" | "MX.subphylum" | "MX.infraphylum" | "MX.superdivision" | "MX.division" | "MX.subdivision" | "MX.infradivision" | "MX.superclass" | "MX.class" | "MX.subclass" | "MX.infraclass" | "MX.parvclass" | "MX.superorder" | "MX.order" | "MX.suborder" | "MX.infraorder" | "MX.parvorder" | "MX.superfamily" | "MX.family" | "MX.subfamily" | "MX.tribe" | "MX.subtribe" | "MX.supergenus" | "MX.genus" | "MX.nothogenus" | "MX.subgenus" | "MX.section" | "MX.subsection" | "MX.series" | "MX.subseries" | "MX.infragenericTaxon" | "MX.aggregate" | "MX.speciesAggregate" | "MX.species" | "MX.nothospecies" | "MX.infraspecificTaxon" | "MX.subspecificAggregate" | "MX.subspecies" | "MX.nothosubspecies" | "MX.variety" | "MX.subvariety" | "MX.form" | "MX.subform" | "MX.hybrid" | "MX.anamorph" | "MX.ecotype" | "MX.populationGroup" | "MX.intergenericHybrid" | "MX.infragenericHybrid" | "MX.cultivar" | "MX.group" | "MX.grex";
             /** Taxon specifier */
-            taxonSpecifier: string;
+            taxonSpecifier?: string;
             /** Taxon URI */
-            taxonURI: string;
+            taxonURI?: string;
             /**
              * Taxon verbatim
              * @description Taxon name in original format (e.g. from the label), errors and all
              */
-            taxonVerbatim: string;
+            taxonVerbatim?: string;
             /**
              * Publicity restrictions
              * @description PUBLIC: all data can be published; PROTECTED: exact locality is hidden (100*100km square); PRIVATE: most of the data is hidden. Empty value means same as public.
              * @enum {string}
              */
-            publicityRestrictions: "" | "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
+            publicityRestrictions?: "" | "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
             /** sortOrder */
-            sortOrder: number;
+            sortOrder?: number;
         };
         "store-typeSpecimen": {
             /** Context for the Identification */
-            "@context": string;
+            "@context"?: string;
             /** Id for the Identification */
-            id: string;
+            id?: string;
             /** Type for the Identification */
-            "@type": string;
+            "@type"?: string;
             /**
              * Is part of
              * @description Which parent or larger collection this is part of.
              */
-            isPartOf: string;
+            isPartOf?: string;
             /**
              * Type author
              * @description Author of the type species
              */
-            typeAuthor: string;
+            typeAuthor?: string;
             /**
              * Original description publication
              * @description Publication reference for original description or basionyme
              */
-            typeBasionymePubl: string;
+            typeBasionymePubl?: string;
             /**
              * Type notes
              * @description Additional information on the type
              */
-            typeNotes: string;
+            typeNotes?: string;
             /**
              * Type publication
              * @description Publication reference for type publication
              */
-            typePubl: string;
+            typePubl?: string;
             /**
              * Type series ID
              * @description ID for the type series, if part of one
              */
-            typeSeriesID: string;
+            typeSeriesID?: string;
             /**
              * Type name
              * @description Name of the type species
              */
-            typeSpecies: string;
+            typeSpecies?: string;
             /**
              * Type of type
              * @description Is this holotype, paratype, syntype etc...
              * @enum {string}
              */
-            typeStatus: "" | "MY.typeStatusType" | "MY.typeStatusHolotype" | "MY.typeStatusSyntype" | "MY.typeStatusParatype" | "MY.typeStatusLectotype" | "MY.typeStatusParalectotype" | "MY.typeStatusNeotype" | "MY.typeStatusAllotype" | "MY.typeStatusNeoallotype" | "MY.typeStatusIsotype" | "MY.typeStatusEpitype" | "MY.typeStatusIsolectotype" | "MY.typeStatusIsoepitype" | "MY.typeStatusIsoneotype" | "MY.typeStatusIsoparatype" | "MY.typeStatusIsosyntype" | "MY.typeStatusOriginalMaterial" | "MY.typeStatusCotype" | "MY.typeStatusTopotype" | "MY.typeStatusHomotype" | "MY.typeStatusNo" | "MY.typeStatusPossible" | "MY.typeStatusObscure" | "MY.typeStatusTypeStrain" | "MY.typeStatusPathovarReferenceStrain";
+            typeStatus?: "" | "MY.typeStatusType" | "MY.typeStatusHolotype" | "MY.typeStatusSyntype" | "MY.typeStatusParatype" | "MY.typeStatusLectotype" | "MY.typeStatusParalectotype" | "MY.typeStatusNeotype" | "MY.typeStatusAllotype" | "MY.typeStatusNeoallotype" | "MY.typeStatusIsotype" | "MY.typeStatusEpitype" | "MY.typeStatusIsolectotype" | "MY.typeStatusIsoepitype" | "MY.typeStatusIsoneotype" | "MY.typeStatusIsoparatype" | "MY.typeStatusIsosyntype" | "MY.typeStatusOriginalMaterial" | "MY.typeStatusCotype" | "MY.typeStatusTopotype" | "MY.typeStatusHomotype" | "MY.typeStatusNo" | "MY.typeStatusPossible" | "MY.typeStatusObscure" | "MY.typeStatusTypeStrain" | "MY.typeStatusPathovarReferenceStrain";
             /**
              * Type ssp name
              * @description Name of the type subspecies
              */
-            typeSubspecies: string;
+            typeSubspecies?: string;
             /**
              * Type ssp author
              * @description Author of the type subspecies
              */
-            typeSubspeciesAuthor: string;
+            typeSubspeciesAuthor?: string;
             /**
              * Type verification
              * @description Verification whether this really is a type?
              * @enum {string}
              */
-            typeVerification: "" | "MY.typeVerificationVerified" | "MY.typeVerificationUnverified" | "MY.typeVerificationProbable" | "MY.typeVerificationDoubtful";
+            typeVerification?: "" | "MY.typeVerificationVerified" | "MY.typeVerificationUnverified" | "MY.typeVerificationProbable" | "MY.typeVerificationDoubtful";
             /**
              * Typefier
              * @description Name of the person who chose the type, preferably in the format "Lastname, firstname"
              */
-            typif: string;
+            typif?: string;
             /**
              * Typifier date
              * @description Date when the specimen was chosen as a type
              */
-            typifDate: string;
+            typifDate?: string;
             /**
              * Publicity restrictions
              * @description PUBLIC: all data can be published; PROTECTED: exact locality is hidden (100*100km square); PRIVATE: most of the data is hidden. Empty value means same as public.
              * @enum {string}
              */
-            publicityRestrictions: "" | "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
+            publicityRestrictions?: "" | "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
         };
         "store-sample": {
             /** Context for the Specimen sample */
@@ -14091,144 +14090,144 @@ export interface components {
         };
         "store-preparation": {
             /** Context for the MF.preparationClass */
-            "@context": string;
+            "@context"?: string;
             /** Id for the MF.preparationClass */
-            id: string;
+            id?: string;
             /** Type for the MF.preparationClass */
-            "@type": string;
+            "@type"?: string;
             /**
              * Preparation date
              * @description Date when the preparation/sample was prepared.
              */
-            preparationDate: string;
+            preparationDate?: string;
             /**
              * Preparation process materials
              * @description Materials (chemicals, kits etc.) used in the preparation process. It is possible to choose several.
              */
-            preparationMaterials: ("" | "MF.preparationMaterialsAcetone" | "MF.preparationMaterialsAmmonia" | "MF.preparationMaterialsBasyntan" | "MF.preparationMaterialsBorax" | "MF.preparationMaterialsEulan" | "MF.preparationMaterialsHydrogenPeroxide" | "MF.preparationMaterialsMethyleneChloride" | "MF.preparationMaterialsNovaltan" | "MF.preparationMaterialsPapaine" | "MF.preparationMaterialsPlaster" | "MF.preparationMaterialsPolyurethane" | "MF.preparationMaterialsPretanix" | "MF.preparationMaterialsPurifiedGasoline" | "MF.preparationMaterialsWoodWool" | "MF.preparationMaterialsCTAB" | "MF.preparationMaterialsEZNAForensicKit" | "MF.preparationMaterialsDNEasyBloodAndTissueKit" | "MF.preparationMaterialsDNEasyPlantKit" | "MF.preparationMaterialsNucleospinTissueKit" | "MF.preparationMaterialsNucleospinPlantTwo" | "MF.preparationMaterialsSaltExtraction" | "MF.preparationMaterialsDNeasyPlantMiniKit" | "MF.preparationMaterialsMagAttractHMWDNAKit")[];
+            preparationMaterials?: ("" | "MF.preparationMaterialsAcetone" | "MF.preparationMaterialsAmmonia" | "MF.preparationMaterialsBasyntan" | "MF.preparationMaterialsBorax" | "MF.preparationMaterialsEulan" | "MF.preparationMaterialsHydrogenPeroxide" | "MF.preparationMaterialsMethyleneChloride" | "MF.preparationMaterialsNovaltan" | "MF.preparationMaterialsPapaine" | "MF.preparationMaterialsPlaster" | "MF.preparationMaterialsPolyurethane" | "MF.preparationMaterialsPretanix" | "MF.preparationMaterialsPurifiedGasoline" | "MF.preparationMaterialsWoodWool" | "MF.preparationMaterialsCTAB" | "MF.preparationMaterialsEZNAForensicKit" | "MF.preparationMaterialsDNEasyBloodAndTissueKit" | "MF.preparationMaterialsDNEasyPlantKit" | "MF.preparationMaterialsNucleospinTissueKit" | "MF.preparationMaterialsNucleospinPlantTwo" | "MF.preparationMaterialsSaltExtraction" | "MF.preparationMaterialsDNeasyPlantMiniKit" | "MF.preparationMaterialsMagAttractHMWDNAKit")[];
             /**
              * Preparation process
              * @description Processes used in the preparation. It is possible to choose several.
              */
-            preparationProcess: ("" | "MF.preparationProcessTanning" | "MF.preparationProcessEnzymaticMaceration" | "MF.preparationProcessDegreasing" | "MF.preparationProcessBeetleCleaning" | "MF.preparationProcessPEG" | "MF.preparationProcessFreezeDrying")[];
+            preparationProcess?: ("" | "MF.preparationProcessTanning" | "MF.preparationProcessEnzymaticMaceration" | "MF.preparationProcessDegreasing" | "MF.preparationProcessBeetleCleaning" | "MF.preparationProcessPEG" | "MF.preparationProcessFreezeDrying")[];
             /**
              * Preparation process notes
              * @description Additional information about the preparation process.
              */
-            preparationProcessNotes: string;
+            preparationProcessNotes?: string;
             /**
              * Prepared by
              * @description Name of the person who prepared the preparation/sample, preferably in the format 'lastname, firstname'
              */
-            preparedBy: string;
+            preparedBy?: string;
             /**
              * Is part of
              * @description Which parent or larger collection this is part of.
              */
-            isPartOf: string;
+            isPartOf?: string;
         };
         "store-formSeason": {
             /** Context for the MHL.formSeasonClass */
-            "@context": string;
+            "@context"?: string;
             /** Id for the MHL.formSeasonClass */
-            id: string;
+            id?: string;
             /** Type for the MHL.formSeasonClass */
-            "@type": string;
+            "@type"?: string;
             /**
              * end
              * @description End of season
              */
-            end: string;
+            end?: string;
             /**
              * Start
              * @description Start of season
              */
-            start: string;
+            start?: string;
         };
         Form: {
             /** Context for the MHL.form */
-            "@context": string;
+            "@context"?: string;
             /** Id for the MHL.form */
-            id: string;
+            id?: string;
             /** Type for the MHL.form */
-            "@type": string;
+            "@type"?: string;
             /** Base form */
-            baseFormID: string;
+            baseFormID?: string;
             /**
              * Category
              * @enum {string}
              */
-            category: "" | "MHL.categoryGeneric" | "MHL.categorySurvey" | "MHL.categoryTaxonomicGroup" | "MHL.categoryBirdMonitoringSchemes" | "MHL.categoryCitizenScience" | "MHL.categoryBiomonCompleteLists";
+            category?: "" | "MHL.categoryGeneric" | "MHL.categorySurvey" | "MHL.categoryTaxonomicGroup" | "MHL.categoryBirdMonitoringSchemes" | "MHL.categoryCitizenScience" | "MHL.categoryBiomonCompleteLists";
             /**
              * Collection ID
              * @description Id for the collection to where observation useing this form are connected
              */
-            collectionID: string;
+            collectionID?: string;
             /**
              * Context
              * @description The schema context of the form (e.g. MY.document, MNP.namedPlace...)
              */
-            context: string;
+            context?: string;
             /** Description */
-            description: string;
+            description?: string;
             /**
              * Fields form ID
              * @description Use fields, uiSchema and translations from the form
              */
-            fieldsFormID: string;
+            fieldsFormID?: string;
             /**
              * Form language
              * @enum {string}
              */
-            language: "" | "en" | "fi" | "sv";
+            language?: "" | "en" | "fi" | "sv";
             /** Logo address */
-            logo: string;
+            logo?: string;
             /** Name */
-            name: string;
-            options: components["schemas"]["store-formOptions"];
+            name?: string;
+            options?: components["schemas"]["store-formOptions"];
             /** Patch form data */
-            patch: {
+            patch?: {
                 [key: string]: unknown;
             }[];
             /** Short description */
-            shortDescription: string;
+            shortDescription?: string;
             /**
              * Short title
              * @description Shown at sidebar and & as browser title
              */
-            shortTitle: string;
+            shortTitle?: string;
             /** Supported language */
-            supportedLanguage: ("" | "en" | "fi" | "sv")[];
+            supportedLanguage?: ("" | "en" | "fi" | "sv")[];
             /** Title */
-            title: string;
+            title?: string;
             /** Translations */
-            translations: {
+            translations?: {
                 [key: string]: unknown;
             };
             /** Specification for ui schema */
-            uiSchema: {
+            uiSchema?: {
                 [key: string]: unknown;
             };
-            schema: components["schemas"]["JSONSchema"];
-            excludeFromCopy: string[];
-            validators: {
+            schema?: components["schemas"]["JSONSchema"];
+            excludeFromCopy?: string[];
+            validators?: {
                 [key: string]: unknown;
             };
-            warnings: {
+            warnings?: {
                 [key: string]: unknown;
             };
-            uiSchemaContext: {
+            uiSchemaContext?: {
                 [key: string]: unknown;
             };
         };
         JSONSchema: components["schemas"]["JSONSchemaObject"] | components["schemas"]["JSONSchemaArray"] | components["schemas"]["JSONSchemaPrimitive"];
         JSONSchemaObject: {
             /** @enum {unknown} */
-            type: "object";
-            properties: {
-                [key: string]: components["schemas"]["JSONSchema"];
+            type?: "object";
+            properties?: {
+                [key: string]: components["schemas"]["JSONSchema"] | undefined;
             };
-            default: Record<string, never>;
+            default?: Record<string, never>;
         };
         JSONSchemaArray: {
             /** @enum {unknown} */
@@ -14238,79 +14237,77 @@ export interface components {
             maxItems?: boolean;
             minItems?: boolean;
             default?: unknown[];
-        } & {
             [key: string]: unknown;
         };
         JSONSchemaPrimitive: {
             /** @enum {unknown} */
-            type: "string" | "number" | "integer" | "boolean" | "null";
-            default: unknown;
-        } & {
+            type?: "string" | "number" | "integer" | "boolean" | "null";
+            default?: unknown;
             [key: string]: unknown;
         };
         "store-form": {
             /** Context for the MHL.form */
-            "@context": string;
+            "@context"?: string;
             /** Id for the MHL.form */
-            id: string;
+            id?: string;
             /** Type for the MHL.form */
-            "@type": string;
+            "@type"?: string;
             /** Base form */
-            baseFormID: string;
+            baseFormID?: string;
             /**
              * Category
              * @enum {string}
              */
-            category: "" | "MHL.categoryGeneric" | "MHL.categorySurvey" | "MHL.categoryTaxonomicGroup" | "MHL.categoryBirdMonitoringSchemes" | "MHL.categoryCitizenScience" | "MHL.categoryBiomonCompleteLists";
+            category?: "" | "MHL.categoryGeneric" | "MHL.categorySurvey" | "MHL.categoryTaxonomicGroup" | "MHL.categoryBirdMonitoringSchemes" | "MHL.categoryCitizenScience" | "MHL.categoryBiomonCompleteLists";
             /**
              * Collection ID
              * @description Id for the collection to where observation useing this form are connected
              */
-            collectionID: string;
+            collectionID?: string;
             /**
              * Context
              * @description The schema context of the form (e.g. MY.document, MNP.namedPlace...)
              */
-            context: string;
+            context?: string;
             /** Description */
-            description: string;
-            fields: components["schemas"]["store-field"][];
+            description?: string;
+            fields?: components["schemas"]["store-field"][];
             /**
              * Fields form ID
              * @description Use fields, uiSchema and translations from the form
              */
-            fieldsFormID: string;
+            fieldsFormID?: string;
             /**
              * Form language
              * @enum {string}
              */
-            language: "" | "en" | "fi" | "sv";
+            language?: "" | "en" | "fi" | "sv";
             /** Logo address */
-            logo: string;
+            logo?: string;
             /** Name */
-            name: string;
-            options: components["schemas"]["store-formOptions"];
+            name?: string;
+            options?: components["schemas"]["store-formOptions"];
             /** Patch form data */
-            patch: {
+            patch?: {
                 [key: string]: unknown;
             }[];
             /** Short description */
-            shortDescription: string;
+            shortDescription?: string;
             /**
              * Short title
              * @description Shown at sidebar and & as browser title
              */
-            shortTitle: string;
+            shortTitle?: string;
             /** Supported language */
-            supportedLanguage: ("" | "en" | "fi" | "sv")[];
+            supportedLanguage?: ("" | "en" | "fi" | "sv")[];
             /** Title */
-            title: string;
+            title?: string;
             /** Translations */
-            translations: {
+            translations?: {
                 [key: string]: unknown;
             };
             /** Specification for ui schema */
-            uiSchema: {
+            uiSchema?: {
                 [key: string]: unknown;
             };
         };
@@ -14418,29 +14415,29 @@ export interface components {
         };
         "store-annotationOccurrence": {
             /** Context for the MAN.annotationOccurrenceClass */
-            "@context": string;
+            "@context"?: string;
             /** Id for the MAN.annotationOccurrenceClass */
-            id: string;
+            id?: string;
             /** Type for the MAN.annotationOccurrenceClass */
-            "@type": string;
+            "@type"?: string;
             /** Country verbatim */
-            countryVerbatim: string;
+            countryVerbatim?: string;
             /** Date begin */
-            dateBegin: string;
+            dateBegin?: string;
             /** Date end */
-            dateEnd: string;
+            dateEnd?: string;
             /** Locality */
-            locality: string;
+            locality?: string;
             /** Municipality verbatim */
-            municipalityVerbatim: string;
+            municipalityVerbatim?: string;
             /** Taxon ID */
-            taxonId: string;
+            taxonId?: string;
             /** Taxon verbatim */
-            taxonVerbatim: string;
+            taxonVerbatim?: string;
             /** Latitude (center point) */
-            wgs84centerPointLat: number;
+            wgs84centerPointLat?: number;
             /** Longitude (center point) */
-            wgs84centerPointLon: number;
+            wgs84centerPointLon?: number;
         };
         "store-profile": {
             /** Context for the MA.profile */
@@ -14728,19 +14725,19 @@ export interface components {
             publicityRestrictions?: "" | "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
             hasChildren: boolean;
             longNameMultiLang?: {
-                fi: components["schemas"]["store-multiLang"];
-                sv: components["schemas"]["store-multiLang"];
-                en: components["schemas"]["store-multiLang"];
+                fi?: components["schemas"]["store-multiLang"];
+                sv?: components["schemas"]["store-multiLang"];
+                en?: components["schemas"]["store-multiLang"];
             };
             descriptionMultiLang?: {
-                fi: components["schemas"]["store-multiLang"];
-                sv: components["schemas"]["store-multiLang"];
-                en: components["schemas"]["store-multiLang"];
+                fi?: components["schemas"]["store-multiLang"];
+                sv?: components["schemas"]["store-multiLang"];
+                en?: components["schemas"]["store-multiLang"];
             };
             onlineUrlMultiLang?: {
-                fi: components["schemas"]["store-multiLang"];
-                sv: components["schemas"]["store-multiLang"];
-                en: components["schemas"]["store-multiLang"];
+                fi?: components["schemas"]["store-multiLang"];
+                sv?: components["schemas"]["store-multiLang"];
+                en?: components["schemas"]["store-multiLang"];
             };
         };
         "store-namedPlace": {
@@ -14817,21 +14814,21 @@ export interface components {
         };
         "store-dateRange": {
             /** Context for the MNP.dateRange */
-            "@context": string;
+            "@context"?: string;
             /** Id for the MNP.dateRange */
-            id: string;
+            id?: string;
             /** Type for the MNP.dateRange */
-            "@type": string;
+            "@type"?: string;
             /**
              * End
              * Format: date
              */
-            end: string;
+            end?: string;
             /**
              * Start
              * Format: date
              */
-            start: string;
+            start?: string;
         };
         "store-reserve": {
             /** Context for the MNP.reserveClass */
@@ -14892,22 +14889,22 @@ export interface components {
         };
         "store-tag": {
             /** Context for the MMAN.tagClass */
-            "@context": string;
+            "@context"?: string;
             /** Id for the MMAN.tagClass */
-            id: string;
+            id?: string;
             /** Type for the MMAN.tagClass */
-            "@type": string;
-            description: string;
-            name: string;
+            "@type"?: string;
+            description?: string;
+            name?: string;
             /** Required role to add */
-            requiredRolesAdd: ("" | "MMAN.expert" | "MMAN.basic" | "MMAN.owner" | "MMAN.formAdmin" | "MMAN.ictAdmin")[];
+            requiredRolesAdd?: ("" | "MMAN.expert" | "MMAN.basic" | "MMAN.owner" | "MMAN.formAdmin" | "MMAN.ictAdmin")[];
             /** Required role to remove */
-            requiredRolesRemove: ("" | "MMAN.expert" | "MMAN.basic" | "MMAN.owner" | "MMAN.formAdmin" | "MMAN.ictAdmin")[];
+            requiredRolesRemove?: ("" | "MMAN.expert" | "MMAN.basic" | "MMAN.owner" | "MMAN.formAdmin" | "MMAN.ictAdmin")[];
             /**
              * Type
              * @enum {string}
              */
-            type: "" | "MMAN.typeCheck" | "MMAN.typeAdmin" | "MMAN.typeInfo" | "MMAN.typeInvasive" | "MMAN.typeCensus" | "MMAN.typeNegativeQuality" | "MMAN.typePositiveQuality";
+            type?: "" | "MMAN.typeCheck" | "MMAN.typeAdmin" | "MMAN.typeInfo" | "MMAN.typeInvasive" | "MMAN.typeCensus" | "MMAN.typeNegativeQuality" | "MMAN.typePositiveQuality";
         };
         "store-checklist": {
             /** Context for the Checklist */
@@ -14969,43 +14966,43 @@ export interface components {
         };
         TaxonAutocompleteResponse: {
             /** @description Name that matched the search word */
-            matchingName: string;
+            matchingName?: string;
             /**
              * @description Type of the name.
              * @enum {string}
              */
-            nameType: "MX.scientificName" | "MX.vernacularName" | "MX.hasSynonym" | "MX.hasBasionym" | "MX.alternativeVernacularName" | "MX.hasMisappliedName" | "MX.birdlifeCode" | "MX.obsoleteVernacularName" | "MX.euringCode" | "MX.hasSubjectiveSynonym" | "MX.hasAlternativeName" | "MX.hasOrthographicVariant" | "MX.hasObjectiveSynonym" | "MX.hasMisspelledName" | "MX.colloquialVernacularName" | "MX.hasUncertainSynonym" | "MX.hasHomotypicSynonym" | "MX.tradeName" | "MX.hasHeterotypicSynonym";
+            nameType?: "MX.scientificName" | "MX.vernacularName" | "MX.hasSynonym" | "MX.hasBasionym" | "MX.alternativeVernacularName" | "MX.hasMisappliedName" | "MX.birdlifeCode" | "MX.obsoleteVernacularName" | "MX.euringCode" | "MX.hasSubjectiveSynonym" | "MX.hasAlternativeName" | "MX.hasOrthographicVariant" | "MX.hasObjectiveSynonym" | "MX.hasMisspelledName" | "MX.colloquialVernacularName" | "MX.hasUncertainSynonym" | "MX.hasHomotypicSynonym" | "MX.tradeName" | "MX.hasHeterotypicSynonym";
             /** @description Taxon identifier of the taxon that has the matching name; in the short Qname format, for example 'MX.123' */
-            id: string;
+            id?: string;
             /** @description Checklist identifier of the matching taxon; in the short Qname format, for example 'MR.1'. For taxa not part of any checklist the value is 'undefined'. */
-            checklist: string;
+            checklist?: string;
             /** @description Accepted scientific name of the taxon that has the matching name */
-            scientificName: string;
+            scientificName?: string;
             /** @description Author of the above mentioned scientific name */
-            scientificNameAuthorship: string;
+            scientificNameAuthorship?: string;
             /** @description Taxonomic rank of the taxon that has the matching name; in the short Qname format, for example 'MX.genus' */
-            taxonRank: string;
+            taxonRank?: string;
             /** @description Should the matching name be cursived */
-            cursiveName: boolean;
+            cursiveName?: boolean;
             /** @description Is the taxon that has the mathing name marked as a Finnish taxon */
-            finnish: boolean;
+            finnish?: boolean;
             /** @description Is the taxon that has the mathing name species level or lower, or a higher taxon */
-            species: boolean;
-            vernacularName: components["schemas"]["LajiBackendLocalizedText"];
-            informalGroups: {
+            species?: boolean;
+            vernacularName?: components["schemas"]["LajiBackendLocalizedText"];
+            informalGroups?: {
                 /** @description Identifier of the informal taxon group that the matching taxon belongs to); in the short Qname format, for example 'MVL.1' */
-                id: string;
-                name: components["schemas"]["LajiBackendLocalizedText"];
+                id?: string;
+                name?: components["schemas"]["LajiBackendLocalizedText"];
             }[];
             /** @description Scientific name of the kingdom that the matching taxon belongs to */
-            kingdomScientificName: string;
+            kingdomScientificName?: string;
             /**
              * @description Type of the matching name
              * @enum {string}
              */
-            type: "exactMatches" | "partialMatches" | "likelyMatches";
-            key: string;
-            value: string;
+            type?: "exactMatches" | "partialMatches" | "likelyMatches";
+            key?: string;
+            value?: string;
         };
         SensitiveSource: {
             id?: string;
@@ -15076,9 +15073,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15088,9 +15085,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15100,9 +15097,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15112,9 +15109,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15124,9 +15121,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15136,9 +15133,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15148,9 +15145,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15171,8 +15168,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["FormListing"][];
-                        "@context": string;
+                        results?: components["schemas"]["FormListing"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -15182,9 +15179,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15194,9 +15191,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15206,9 +15203,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15218,9 +15215,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15230,9 +15227,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15242,9 +15239,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15254,9 +15251,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15289,9 +15286,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15301,9 +15298,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15313,9 +15310,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15325,9 +15322,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15337,9 +15334,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15349,9 +15346,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15361,9 +15358,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15398,9 +15395,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15410,9 +15407,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15422,9 +15419,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15434,9 +15431,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15446,9 +15443,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15458,9 +15455,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15470,9 +15467,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15507,9 +15504,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15519,9 +15516,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15531,9 +15528,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15543,9 +15540,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15555,9 +15552,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15567,9 +15564,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15579,9 +15576,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15612,9 +15609,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15624,9 +15621,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15636,9 +15633,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15648,9 +15645,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15660,9 +15657,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15672,9 +15669,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15684,9 +15681,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15719,9 +15716,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15731,9 +15728,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15743,9 +15740,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15755,9 +15752,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15767,9 +15764,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15779,9 +15776,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15791,9 +15788,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15825,9 +15822,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15837,9 +15834,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15849,9 +15846,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15861,9 +15858,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15873,9 +15870,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15885,9 +15882,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15897,9 +15894,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15935,9 +15932,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15947,9 +15944,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15959,9 +15956,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15971,9 +15968,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15983,9 +15980,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -15995,9 +15992,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16007,9 +16004,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16045,9 +16042,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16057,9 +16054,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16069,9 +16066,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16081,9 +16078,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16093,9 +16090,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16105,9 +16102,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16117,9 +16114,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16150,9 +16147,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16162,9 +16159,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16174,9 +16171,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16186,9 +16183,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16198,9 +16195,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16210,9 +16207,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16222,9 +16219,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16256,9 +16253,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16268,9 +16265,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16280,9 +16277,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16292,9 +16289,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16304,9 +16301,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16316,9 +16313,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16328,9 +16325,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16361,9 +16358,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16373,9 +16370,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16385,9 +16382,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16397,9 +16394,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16409,9 +16406,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16421,9 +16418,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16433,9 +16430,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16469,9 +16466,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16481,9 +16478,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16493,9 +16490,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16505,9 +16502,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16517,9 +16514,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16529,9 +16526,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16541,9 +16538,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16577,9 +16574,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16589,9 +16586,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16601,9 +16598,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16613,9 +16610,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16625,9 +16622,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16637,9 +16634,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16649,9 +16646,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16687,9 +16684,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16699,9 +16696,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16711,9 +16708,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16723,9 +16720,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16735,9 +16732,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16747,9 +16744,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16759,9 +16756,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16790,9 +16787,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16802,9 +16799,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16814,9 +16811,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16826,9 +16823,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16838,9 +16835,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16850,9 +16847,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16862,9 +16859,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16895,9 +16892,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16907,9 +16904,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16919,9 +16916,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16931,9 +16928,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16943,9 +16940,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16955,9 +16952,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16967,9 +16964,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -16998,9 +16995,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17010,9 +17007,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17022,9 +17019,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17034,9 +17031,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17046,9 +17043,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17058,9 +17055,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17070,9 +17067,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17119,9 +17116,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17131,9 +17128,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17143,9 +17140,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17155,9 +17152,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17167,9 +17164,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17179,9 +17176,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17191,9 +17188,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17231,9 +17228,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17243,9 +17240,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17255,9 +17252,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17267,9 +17264,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17279,9 +17276,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17291,9 +17288,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17303,9 +17300,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17339,9 +17336,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17351,9 +17348,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17363,9 +17360,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17375,9 +17372,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17387,9 +17384,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17399,9 +17396,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17411,9 +17408,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17434,8 +17431,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["MetadataClass"][];
-                        "@context": string;
+                        results?: components["schemas"]["MetadataClass"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -17445,9 +17442,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17457,9 +17454,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17469,9 +17466,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17481,9 +17478,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17493,9 +17490,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17505,9 +17502,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17517,9 +17514,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17550,9 +17547,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17562,9 +17559,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17574,9 +17571,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17586,9 +17583,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17598,9 +17595,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17610,9 +17607,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17622,9 +17619,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17655,9 +17652,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17667,9 +17664,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17679,9 +17676,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17691,9 +17688,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17703,9 +17700,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17715,9 +17712,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17727,9 +17724,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17750,8 +17747,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["Property"][];
-                        "@context": string;
+                        results?: components["schemas"]["Property"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -17761,9 +17758,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17773,9 +17770,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17785,9 +17782,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17797,9 +17794,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17809,9 +17806,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17821,9 +17818,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17833,9 +17830,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17866,9 +17863,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17878,9 +17875,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17890,9 +17887,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17902,9 +17899,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17914,9 +17911,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17926,9 +17923,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17938,9 +17935,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17963,8 +17960,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["Alt"][];
-                        "@context": string;
+                        results?: components["schemas"]["Alt"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -17974,9 +17971,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17986,9 +17983,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -17998,9 +17995,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18010,9 +18007,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18022,9 +18019,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18034,9 +18031,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18046,9 +18043,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18069,7 +18066,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        [key: string]: components["schemas"]["Alt"];
+                        [key: string]: components["schemas"]["Alt"] | undefined;
                     };
                 };
             };
@@ -18079,9 +18076,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18091,9 +18088,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18103,9 +18100,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18115,9 +18112,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18127,9 +18124,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18139,9 +18136,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18151,9 +18148,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18176,8 +18173,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["Alt"][];
-                        "@context": string;
+                        results?: components["schemas"]["Alt"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -18187,9 +18184,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18199,9 +18196,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18211,9 +18208,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18223,9 +18220,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18235,9 +18232,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18247,9 +18244,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18259,9 +18256,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18303,9 +18300,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18315,9 +18312,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18327,9 +18324,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18339,9 +18336,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18351,9 +18348,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18363,9 +18360,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18375,9 +18372,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18417,9 +18414,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18429,9 +18426,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18441,9 +18438,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18453,9 +18450,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18465,9 +18462,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18477,9 +18474,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18489,9 +18486,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18522,9 +18519,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18534,9 +18531,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18546,9 +18543,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18558,9 +18555,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18570,9 +18567,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18582,9 +18579,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18594,9 +18591,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18638,9 +18635,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18650,9 +18647,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18662,9 +18659,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18674,9 +18671,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18686,9 +18683,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18698,9 +18695,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18710,9 +18707,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18741,9 +18738,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18753,9 +18750,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18765,9 +18762,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18777,9 +18774,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18789,9 +18786,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18801,9 +18798,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18813,9 +18810,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18847,9 +18844,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18859,9 +18856,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18871,9 +18868,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18883,9 +18880,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18895,9 +18892,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18907,9 +18904,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18919,9 +18916,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18955,9 +18952,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18967,9 +18964,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18979,9 +18976,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -18991,9 +18988,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19003,9 +19000,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19015,9 +19012,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19027,9 +19024,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19063,9 +19060,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19075,9 +19072,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19087,9 +19084,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19099,9 +19096,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19111,9 +19108,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19123,9 +19120,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19135,9 +19132,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19175,9 +19172,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19187,9 +19184,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19199,9 +19196,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19211,9 +19208,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19223,9 +19220,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19235,9 +19232,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19247,9 +19244,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19284,9 +19281,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19296,9 +19293,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19308,9 +19305,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19320,9 +19317,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19332,9 +19329,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19344,9 +19341,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19356,9 +19353,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19394,9 +19391,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19406,9 +19403,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19418,9 +19415,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19430,9 +19427,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19442,9 +19439,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19454,9 +19451,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19466,9 +19463,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19511,9 +19508,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19523,9 +19520,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19535,9 +19532,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19547,9 +19544,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19559,9 +19556,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19571,9 +19568,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19583,9 +19580,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19622,9 +19619,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19634,9 +19631,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19646,9 +19643,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19658,9 +19655,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19670,9 +19667,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19682,9 +19679,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19694,9 +19691,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19740,9 +19737,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19752,9 +19749,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19764,9 +19761,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19776,9 +19773,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19788,9 +19785,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19802,13 +19799,13 @@ export interface operations {
                 content: {
                     "application/json": {
                         /** @enum {unknown} */
-                        errorCode: "VALIDATION_EXCEPTION";
-                        details: {
-                            [key: string]: string[];
+                        errorCode?: "VALIDATION_EXCEPTION";
+                        details?: {
+                            [key: string]: string[] | undefined;
                         };
                     } | {
-                        errorCode: string;
-                        message: string;
+                        errorCode?: string;
+                        message?: string;
                     };
                 };
             };
@@ -19818,9 +19815,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19859,9 +19856,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19871,9 +19868,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19883,9 +19880,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19895,9 +19892,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19907,9 +19904,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19919,9 +19916,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19931,9 +19928,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19965,9 +19962,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19977,9 +19974,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -19989,9 +19986,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20001,9 +19998,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20013,9 +20010,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20025,9 +20022,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20037,9 +20034,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20095,9 +20092,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20107,9 +20104,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20119,9 +20116,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20131,9 +20128,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20143,9 +20140,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20155,9 +20152,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20167,9 +20164,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20205,9 +20202,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20217,9 +20214,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20229,9 +20226,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20241,9 +20238,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20253,9 +20250,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20265,9 +20262,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20277,9 +20274,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20313,9 +20310,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20325,9 +20322,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20337,9 +20334,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20349,9 +20346,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20361,9 +20358,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20373,9 +20370,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20385,9 +20382,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20428,9 +20425,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20440,9 +20437,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20452,9 +20449,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20464,9 +20461,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20476,9 +20473,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20488,9 +20485,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20500,9 +20497,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20536,9 +20533,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20548,9 +20545,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20560,9 +20557,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20572,9 +20569,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20584,9 +20581,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20596,9 +20593,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20608,9 +20605,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20649,9 +20646,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20661,9 +20658,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20673,9 +20670,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20685,9 +20682,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20697,9 +20694,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20709,9 +20706,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20721,9 +20718,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20757,9 +20754,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20769,9 +20766,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20781,9 +20778,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20793,9 +20790,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20805,9 +20802,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20817,9 +20814,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20829,9 +20826,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20893,9 +20890,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20905,9 +20902,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20917,9 +20914,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20929,9 +20926,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20941,9 +20938,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20953,9 +20950,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -20965,9 +20962,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21003,9 +21000,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21015,9 +21012,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21027,9 +21024,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21039,9 +21036,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21051,9 +21048,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21063,9 +21060,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21075,9 +21072,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21111,9 +21108,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21123,9 +21120,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21135,9 +21132,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21147,9 +21144,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21159,9 +21156,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21171,9 +21168,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21183,9 +21180,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21223,9 +21220,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21235,9 +21232,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21247,9 +21244,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21259,9 +21256,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21271,9 +21268,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21283,9 +21280,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21295,9 +21292,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21331,9 +21328,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21343,9 +21340,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21355,9 +21352,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21367,9 +21364,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21379,9 +21376,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21391,9 +21388,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21403,9 +21400,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21454,8 +21451,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["LajiBackendTaxonSearchResponse"][];
-                        "@context": string;
+                        results?: components["schemas"]["LajiBackendTaxonSearchResponse"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -21465,9 +21462,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21477,9 +21474,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21489,9 +21486,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21501,9 +21498,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21513,9 +21510,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21525,9 +21522,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21537,9 +21534,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21611,9 +21608,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21623,9 +21620,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21635,9 +21632,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21647,9 +21644,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21659,9 +21656,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21671,9 +21668,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -21683,9 +21680,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22291,9 +22288,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22303,9 +22300,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22315,9 +22312,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22327,9 +22324,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22339,9 +22336,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22351,9 +22348,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22363,9 +22360,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22422,9 +22419,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22434,9 +22431,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22446,9 +22443,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22458,9 +22455,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22470,9 +22467,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22482,9 +22479,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -22494,9 +22491,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23087,9 +23084,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23099,9 +23096,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23111,9 +23108,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23123,9 +23120,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23135,9 +23132,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23147,9 +23144,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23159,9 +23156,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23233,9 +23230,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23245,9 +23242,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23257,9 +23254,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23269,9 +23266,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23281,9 +23278,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23293,9 +23290,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23305,9 +23302,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23913,9 +23910,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23925,9 +23922,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23937,9 +23934,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23949,9 +23946,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23961,9 +23958,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23973,9 +23970,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -23985,9 +23982,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24044,9 +24041,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24056,9 +24053,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24068,9 +24065,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24080,9 +24077,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24092,9 +24089,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24104,9 +24101,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24116,9 +24113,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24694,9 +24691,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24706,9 +24703,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24718,9 +24715,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24730,9 +24727,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24742,9 +24739,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24754,9 +24751,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24766,9 +24763,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24810,9 +24807,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24822,9 +24819,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24834,9 +24831,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24846,9 +24843,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24858,9 +24855,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24870,9 +24867,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24882,9 +24879,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24893,12 +24890,12 @@ export interface operations {
     TaxaController_getTaxonChildren: {
         parameters: {
             query?: {
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
-                /** @description Filter by comma separated ids */
-                id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
@@ -24927,9 +24924,7 @@ export interface operations {
                 parentTaxonId?: string;
             };
             header?: never;
-            path: {
-                id: string;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -24940,8 +24935,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["LajiBackendTaxon"][];
-                        "@context": string;
+                        results?: components["schemas"]["LajiBackendTaxon"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -24951,9 +24946,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24963,9 +24958,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24975,9 +24970,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24987,9 +24982,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -24999,9 +24994,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25011,9 +25006,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25023,9 +25018,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25034,12 +25029,12 @@ export interface operations {
     TaxaController_getTaxonChildrenWithFilters: {
         parameters: {
             query?: {
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
-                /** @description Filter by comma separated ids */
-                id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
@@ -25068,9 +25063,7 @@ export interface operations {
                 parentTaxonId?: string;
             };
             header?: never;
-            path: {
-                id: string;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody: {
@@ -25085,8 +25078,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["LajiBackendTaxon"][];
-                        "@context": string;
+                        results?: components["schemas"]["LajiBackendTaxon"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -25096,9 +25089,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25108,9 +25101,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25120,9 +25113,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25132,9 +25125,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25144,9 +25137,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25156,9 +25149,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25168,9 +25161,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25179,12 +25172,12 @@ export interface operations {
     TaxaController_getTaxonParents: {
         parameters: {
             query?: {
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
-                /** @description Filter by comma separated ids */
-                id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
@@ -25213,9 +25206,7 @@ export interface operations {
                 parentTaxonId?: string;
             };
             header?: never;
-            path: {
-                id: string;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -25226,8 +25217,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["LajiBackendTaxon"][];
-                        "@context": string;
+                        results?: components["schemas"]["LajiBackendTaxon"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -25237,9 +25228,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25249,9 +25240,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25261,9 +25252,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25273,9 +25264,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25285,9 +25276,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25297,9 +25288,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25309,9 +25300,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25320,12 +25311,12 @@ export interface operations {
     TaxaController_getTaxonParentsWithFilters: {
         parameters: {
             query?: {
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
-                /** @description Filter by comma separated ids */
-                id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
@@ -25354,9 +25345,7 @@ export interface operations {
                 parentTaxonId?: string;
             };
             header?: never;
-            path: {
-                id: string;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody: {
@@ -25886,8 +25875,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["LajiBackendTaxon"][];
-                        "@context": string;
+                        results?: components["schemas"]["LajiBackendTaxon"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -25897,9 +25886,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25909,9 +25898,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25921,9 +25910,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25933,9 +25922,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25945,9 +25934,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25957,9 +25946,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25969,9 +25958,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -25980,12 +25969,12 @@ export interface operations {
     TaxaController_getTaxonSpeciesPage: {
         parameters: {
             query?: {
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
-                /** @description Filter by comma separated ids */
-                id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
@@ -26016,9 +26005,7 @@ export interface operations {
                 parentTaxonId?: string;
             };
             header?: never;
-            path: {
-                id: string;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -26045,9 +26032,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26057,9 +26044,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26069,9 +26056,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26081,9 +26068,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26093,9 +26080,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26105,9 +26092,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26117,9 +26104,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26128,12 +26115,12 @@ export interface operations {
     TaxaController_getTaxonSpeciesPageWithFilters: {
         parameters: {
             query?: {
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
-                /** @description Filter by comma separated ids */
-                id?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
@@ -26164,9 +26151,7 @@ export interface operations {
                 parentTaxonId?: string;
             };
             header?: never;
-            path: {
-                id: string;
-            };
+            path?: never;
             cookie?: never;
         };
         /** @description
@@ -26737,9 +26722,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26749,9 +26734,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26761,9 +26746,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26773,9 +26758,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26785,9 +26770,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26797,9 +26782,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26809,9 +26794,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26820,12 +26805,12 @@ export interface operations {
     TaxaController_getTaxonSpeciesAggregate: {
         parameters: {
             query?: {
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
-                /** @description Filter by comma separated ids */
-                id?: string;
                 /** @description Aggregate by these fields. Multiple values are separated by a comma (,). Different aggregations can be made at the
                  *     same time using semicolon as separator (;) and aggregates can be named giving "=name" at the end of each
                  *     aggregation.
@@ -26849,9 +26834,7 @@ export interface operations {
                 includeHidden?: boolean;
             };
             header?: never;
-            path: {
-                id: string;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -26870,9 +26853,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26882,9 +26865,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26894,9 +26877,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26906,9 +26889,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26918,9 +26901,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26930,9 +26913,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26942,9 +26925,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -26953,12 +26936,12 @@ export interface operations {
     TaxaController_getTaxonSpeciesAggregateWithFilters: {
         parameters: {
             query?: {
+                /** @description Filter by comma separated ids */
+                id?: string;
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
-                /** @description Filter by comma separated ids */
-                id?: string;
                 /** @description Aggregate by these fields. Multiple values are separated by a comma (,). Different aggregations can be made at the
                  *     same time using semicolon as separator (;) and aggregates can be named giving "=name" at the end of each
                  *     aggregation.
@@ -26982,9 +26965,7 @@ export interface operations {
                 includeHidden?: boolean;
             };
             header?: never;
-            path: {
-                id: string;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody: {
@@ -27522,9 +27503,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27534,9 +27515,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27546,9 +27527,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27558,9 +27539,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27570,9 +27551,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27582,9 +27563,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27594,9 +27575,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27624,8 +27605,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["LajiBackendContent"][];
-                        "@context": string;
+                        results?: components["schemas"]["LajiBackendContent"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -27635,9 +27616,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27647,9 +27628,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27659,9 +27640,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27671,9 +27652,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27683,9 +27664,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27695,9 +27676,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27707,9 +27688,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27737,8 +27718,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["LajiBackendImage"][];
-                        "@context": string;
+                        results?: components["schemas"]["LajiBackendImage"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -27748,9 +27729,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27760,9 +27741,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27772,9 +27753,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27784,9 +27765,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27796,9 +27777,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27808,9 +27789,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27820,9 +27801,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27853,9 +27834,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27865,9 +27846,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27877,9 +27858,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27889,9 +27870,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27901,9 +27882,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27913,9 +27894,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27925,9 +27906,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27971,9 +27952,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27983,9 +27964,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -27995,9 +27976,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28007,9 +27988,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28019,9 +28000,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28031,9 +28012,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28043,9 +28024,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28077,9 +28058,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28089,9 +28070,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28101,9 +28082,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28113,9 +28094,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28125,9 +28106,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28137,9 +28118,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28149,9 +28130,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28182,9 +28163,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28194,9 +28175,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28206,9 +28187,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28218,9 +28199,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28230,9 +28211,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28242,9 +28223,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28254,9 +28235,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28292,9 +28273,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28304,9 +28285,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28316,9 +28297,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28328,9 +28309,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28340,9 +28321,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28352,9 +28333,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28364,9 +28345,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28408,9 +28389,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28420,9 +28401,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28432,9 +28413,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28444,9 +28425,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28456,9 +28437,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28468,9 +28449,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28480,9 +28461,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28516,9 +28497,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28528,9 +28509,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28540,9 +28521,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28552,9 +28533,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28564,9 +28545,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28576,9 +28557,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28588,9 +28569,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28628,9 +28609,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28640,9 +28621,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28652,9 +28633,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28664,9 +28645,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28676,9 +28657,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28688,9 +28669,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28700,9 +28681,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28734,9 +28715,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28746,9 +28727,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28758,9 +28739,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28770,9 +28751,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28782,9 +28763,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28794,9 +28775,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28806,9 +28787,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28840,9 +28821,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28852,9 +28833,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28864,9 +28845,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28876,9 +28857,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28888,9 +28869,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28900,9 +28881,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28912,9 +28893,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28946,9 +28927,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28958,9 +28939,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28970,9 +28951,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28982,9 +28963,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -28994,9 +28975,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29006,9 +28987,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29018,9 +28999,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29052,9 +29033,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29064,9 +29045,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29076,9 +29057,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29088,9 +29069,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29100,9 +29081,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29112,9 +29093,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29124,9 +29105,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29164,9 +29145,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29176,9 +29157,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29188,9 +29169,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29200,9 +29181,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29212,9 +29193,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29224,9 +29205,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29236,9 +29217,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29280,9 +29261,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29292,9 +29273,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29304,9 +29285,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29316,9 +29297,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29328,9 +29309,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29340,9 +29321,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29352,9 +29333,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29388,9 +29369,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29400,9 +29381,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29412,9 +29393,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29424,9 +29405,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29436,9 +29417,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29448,9 +29429,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29460,9 +29441,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29500,9 +29481,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29512,9 +29493,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29524,9 +29505,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29536,9 +29517,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29548,9 +29529,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29560,9 +29541,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29572,9 +29553,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29606,9 +29587,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29618,9 +29599,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29630,9 +29611,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29642,9 +29623,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29654,9 +29635,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29666,9 +29647,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29678,9 +29659,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29712,9 +29693,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29724,9 +29705,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29736,9 +29717,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29748,9 +29729,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29760,9 +29741,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29772,9 +29753,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29784,9 +29765,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29818,9 +29799,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29830,9 +29811,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29842,9 +29823,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29854,9 +29835,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29866,9 +29847,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29878,9 +29859,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29890,9 +29871,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29924,9 +29905,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29936,9 +29917,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29948,9 +29929,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29960,9 +29941,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29972,9 +29953,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29984,9 +29965,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -29996,9 +29977,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30030,9 +30011,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30042,9 +30023,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30054,9 +30035,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30066,9 +30047,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30078,9 +30059,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30090,9 +30071,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30102,9 +30083,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30142,9 +30123,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30154,9 +30135,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30166,9 +30147,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30178,9 +30159,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30190,9 +30171,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30202,9 +30183,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30214,9 +30195,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30237,8 +30218,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["store-tag"][];
-                        "@context": string;
+                        results?: components["schemas"]["store-tag"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -30248,9 +30229,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30260,9 +30241,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30272,9 +30253,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30284,9 +30265,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30296,9 +30277,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30308,9 +30289,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30320,9 +30301,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30367,9 +30348,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30379,9 +30360,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30391,9 +30372,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30403,9 +30384,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30415,9 +30396,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30427,9 +30408,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30439,9 +30420,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30477,9 +30458,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30489,9 +30470,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30501,9 +30482,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30513,9 +30494,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30525,9 +30506,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30537,9 +30518,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30549,9 +30530,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30585,9 +30566,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30597,9 +30578,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30609,9 +30590,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30621,9 +30602,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30633,9 +30614,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30645,9 +30626,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30657,9 +30638,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30688,9 +30669,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30700,9 +30681,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30712,9 +30693,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30724,9 +30705,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30736,9 +30717,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30748,9 +30729,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30760,9 +30741,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30793,9 +30774,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30805,9 +30786,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30817,9 +30798,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30829,9 +30810,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30841,9 +30822,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30853,9 +30834,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30865,9 +30846,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30896,9 +30877,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30908,9 +30889,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30920,9 +30901,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30932,9 +30913,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30944,9 +30925,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30956,9 +30937,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -30968,9 +30949,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31001,9 +30982,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31013,9 +30994,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31025,9 +31006,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31037,9 +31018,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31049,9 +31030,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31061,9 +31042,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31073,9 +31054,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31117,9 +31098,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31129,9 +31110,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31141,9 +31122,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31153,9 +31134,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31165,9 +31146,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31177,9 +31158,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31189,9 +31170,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31222,9 +31203,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31234,9 +31215,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31246,9 +31227,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31258,9 +31239,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31270,9 +31251,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31282,9 +31263,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31294,9 +31275,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31338,9 +31319,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31350,9 +31331,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31362,9 +31343,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31374,9 +31355,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31386,9 +31367,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31398,9 +31379,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31410,9 +31391,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31454,9 +31435,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31466,9 +31447,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31478,9 +31459,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31490,9 +31471,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31502,9 +31483,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31514,9 +31495,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31526,9 +31507,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31559,9 +31540,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31571,9 +31552,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31583,9 +31564,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31595,9 +31576,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31607,9 +31588,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31619,9 +31600,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31631,9 +31612,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31675,9 +31656,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31687,9 +31668,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31699,9 +31680,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31711,9 +31692,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31723,9 +31704,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31735,9 +31716,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31747,9 +31728,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31770,8 +31751,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["store-informalTaxonGroup"][];
-                        "@context": string;
+                        results?: components["schemas"]["store-informalTaxonGroup"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -31781,9 +31762,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31793,9 +31774,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31805,9 +31786,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31817,9 +31798,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31829,9 +31810,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31841,9 +31822,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31853,9 +31834,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31876,8 +31857,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["store-informalTaxonGroup"][];
-                        "@context": string;
+                        results?: components["schemas"]["store-informalTaxonGroup"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -31887,9 +31868,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31899,9 +31880,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31911,9 +31892,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31923,9 +31904,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31935,9 +31916,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31947,9 +31928,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31959,9 +31940,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -31992,9 +31973,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32004,9 +31985,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32016,9 +31997,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32028,9 +32009,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32040,9 +32021,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32052,9 +32033,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32064,9 +32045,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32089,8 +32070,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["store-informalTaxonGroup"][];
-                        "@context": string;
+                        results?: components["schemas"]["store-informalTaxonGroup"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -32100,9 +32081,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32112,9 +32093,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32124,9 +32105,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32136,9 +32117,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32148,9 +32129,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32160,9 +32141,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32172,9 +32153,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32205,9 +32186,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32217,9 +32198,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32229,9 +32210,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32241,9 +32222,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32253,9 +32234,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32265,9 +32246,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32277,9 +32258,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32302,8 +32283,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["store-informalTaxonGroup"][];
-                        "@context": string;
+                        results?: components["schemas"]["store-informalTaxonGroup"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -32313,9 +32294,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32325,9 +32306,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32337,9 +32318,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32349,9 +32330,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32361,9 +32342,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32373,9 +32354,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32385,9 +32366,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32414,9 +32395,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32426,9 +32407,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32438,9 +32419,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32450,9 +32431,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32462,9 +32443,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32474,9 +32455,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32486,9 +32467,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32514,8 +32495,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["GetPersonsResponseDto"][];
-                        "@context": string;
+                        results?: components["schemas"]["GetPersonsResponseDto"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -32525,9 +32506,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32537,9 +32518,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32549,9 +32530,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32561,9 +32542,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32573,9 +32554,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32585,9 +32566,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32597,9 +32578,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32628,8 +32609,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["GetPersonsResponseDto"][];
-                        "@context": string;
+                        results?: components["schemas"]["GetPersonsResponseDto"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -32639,9 +32620,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32651,9 +32632,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32663,9 +32644,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32675,9 +32656,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32687,9 +32668,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32699,9 +32680,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32711,9 +32692,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32762,8 +32743,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["TaxonAutocompleteResponse"][];
-                        "@context": string;
+                        results?: components["schemas"]["TaxonAutocompleteResponse"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -32773,9 +32754,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32785,9 +32766,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32797,9 +32778,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32809,9 +32790,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32821,9 +32802,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32833,9 +32814,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32845,9 +32826,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32881,9 +32862,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32893,9 +32874,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32905,9 +32886,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32917,9 +32898,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32929,9 +32910,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32941,9 +32922,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32953,9 +32934,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32987,9 +32968,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -32999,9 +32980,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33011,9 +32992,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33023,9 +33004,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33035,9 +33016,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33047,9 +33028,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33059,9 +33040,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33093,9 +33074,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33105,9 +33086,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33117,9 +33098,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33129,9 +33110,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33141,9 +33122,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33153,9 +33134,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33165,9 +33146,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33200,9 +33181,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33212,9 +33193,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33224,9 +33205,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33236,9 +33217,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33248,9 +33229,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33260,9 +33241,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33272,9 +33253,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33299,8 +33280,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["Location"][];
-                        "@context": string;
+                        results?: components["schemas"]["Location"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -33310,9 +33291,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33322,9 +33303,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33334,9 +33315,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33346,9 +33327,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33358,9 +33339,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33370,9 +33351,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33382,9 +33363,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33419,9 +33400,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33431,9 +33412,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33443,9 +33424,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33455,9 +33436,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33467,9 +33448,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33479,9 +33460,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33491,9 +33472,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33512,11 +33493,14 @@ export interface operations {
             };
         };
         responses: {
+            /** @description PDF file */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/pdf": string;
+                };
             };
             400: {
                 headers: {
@@ -33524,9 +33508,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33536,9 +33520,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33548,9 +33532,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33560,9 +33544,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33572,9 +33556,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33584,9 +33568,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33596,9 +33580,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33634,9 +33618,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33646,9 +33630,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33658,9 +33642,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33670,9 +33654,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33682,9 +33666,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33694,9 +33678,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33706,9 +33690,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33737,9 +33721,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33749,9 +33733,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33761,9 +33745,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33773,9 +33757,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33785,9 +33769,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33797,9 +33781,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33809,9 +33793,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33842,9 +33826,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33854,9 +33838,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33866,9 +33850,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33878,9 +33862,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33890,9 +33874,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33902,9 +33886,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33914,9 +33898,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33958,9 +33942,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33970,9 +33954,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33982,9 +33966,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -33994,9 +33978,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34006,9 +33990,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34018,9 +34002,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34030,9 +34014,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34074,9 +34058,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34086,9 +34070,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34098,9 +34082,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34110,9 +34094,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34122,9 +34106,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34134,9 +34118,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34146,9 +34130,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34169,8 +34153,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["store-iucnRedListTaxonGroup"][];
-                        "@context": string;
+                        results?: components["schemas"]["store-iucnRedListTaxonGroup"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -34180,9 +34164,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34192,9 +34176,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34204,9 +34188,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34216,9 +34200,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34228,9 +34212,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34240,9 +34224,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34252,9 +34236,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34275,8 +34259,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["store-iucnRedListTaxonGroup"][];
-                        "@context": string;
+                        results?: components["schemas"]["store-iucnRedListTaxonGroup"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -34286,9 +34270,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34298,9 +34282,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34310,9 +34294,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34322,9 +34306,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34334,9 +34318,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34346,9 +34330,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34358,9 +34342,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34391,9 +34375,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34403,9 +34387,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34415,9 +34399,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34427,9 +34411,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34439,9 +34423,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34451,9 +34435,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34463,9 +34447,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34488,8 +34472,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["store-iucnRedListTaxonGroup"][];
-                        "@context": string;
+                        results?: components["schemas"]["store-iucnRedListTaxonGroup"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -34499,9 +34483,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34511,9 +34495,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34523,9 +34507,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34535,9 +34519,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34547,9 +34531,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34559,9 +34543,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34571,9 +34555,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34604,9 +34588,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34616,9 +34600,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34628,9 +34612,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34640,9 +34624,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34652,9 +34636,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34664,9 +34648,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34676,9 +34660,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34701,8 +34685,8 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["store-iucnRedListTaxonGroup"][];
-                        "@context": string;
+                        results?: components["schemas"]["store-iucnRedListTaxonGroup"][];
+                        "@context"?: string;
                     };
                 };
             };
@@ -34712,9 +34696,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34724,9 +34708,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34736,9 +34720,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34748,9 +34732,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34760,9 +34744,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34772,9 +34756,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34784,9 +34768,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34817,9 +34801,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34829,9 +34813,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34841,9 +34825,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34853,9 +34837,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34865,9 +34849,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34877,9 +34861,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34889,9 +34873,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34922,9 +34906,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34934,9 +34918,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34946,9 +34930,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34958,9 +34942,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34970,9 +34954,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34982,9 +34966,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -34994,9 +34978,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35027,9 +35011,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35039,9 +35023,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35051,9 +35035,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35063,9 +35047,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35075,9 +35059,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35087,9 +35071,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35099,9 +35083,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35135,9 +35119,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35147,9 +35131,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35159,9 +35143,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35171,9 +35155,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35183,9 +35167,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35195,9 +35179,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35207,9 +35191,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35231,7 +35215,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["NewsDto"];
+                    "application/json": components["schemas"]["LajiBackendCMSNode"];
                 };
             };
             400: {
@@ -35240,9 +35224,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35252,9 +35236,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35264,9 +35248,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35276,9 +35260,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35288,9 +35272,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35300,9 +35284,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };
@@ -35312,9 +35296,9 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
+                        errorCode?: string;
+                        message?: string;
+                        localized?: boolean;
                     };
                 };
             };

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { from, Observable } from 'rxjs';
+import { from, Observable, throwError } from 'rxjs';
 import { map, concatMap, toArray } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from './triplestore-label.service';
@@ -24,13 +24,18 @@ export class TaxonAutocompleteService {
 
   getInfo(taxa: TaxonAutocompleteResponse[], text: string): Observable<TaxaWithAutocomplete[]> {
     return from(taxa).pipe(
-      concatMap(taxon => this.tripleStoreService.get(taxon['taxonRank'], this.translate.getCurrentLang()).pipe(
-        map(rank => ({
-          ...taxon,
-          autocompleteDisplayName: this.getAutocompleteDisplayName(taxon, rank, text),
-          autocompleteSelectedName: this.getAutocompleteSelectedName(taxon)
-        }))
-      )),
+      concatMap(taxon => {
+        if (!taxon['taxonRank']) {
+          return throwError(() => new Error('Expected taxon.taxonRank to be defined.'));
+        }
+        return this.tripleStoreService.get(taxon['taxonRank'], this.translate.getCurrentLang()).pipe(
+          map(rank => ({
+            ...taxon,
+            autocompleteDisplayName: this.getAutocompleteDisplayName(taxon, rank, text),
+            autocompleteSelectedName: this.getAutocompleteSelectedName(taxon)
+          }))
+        );
+      }),
       toArray()
     );
   }
