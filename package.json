@@ -116,7 +116,7 @@
     "@angular/ssr": "^21.0.6",
     "@apollo/client": "^4",
     "@luomus/label-designer": "^19",
-    "@luomus/laji-form": "^15.1.99",
+    "@luomus/laji-form": "^15.1.100",
     "@luomus/laji-form-builder": "^1.1.9",
     "@luomus/laji-map": "^5.1.20",
     "@ng-select/ng-select": "^21",
