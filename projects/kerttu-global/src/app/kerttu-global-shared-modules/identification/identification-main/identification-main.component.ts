@@ -7,7 +7,7 @@ import {
 } from '../../../kerttu-global-shared/models';
 import { switchMap } from 'rxjs';
 import { Observable, of } from 'rxjs';
-import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
+import * as Util from '../../../../../../laji/src/app/shared/utils';
 import equals from 'deep-equal';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { NoRecordingsResult, RecordingLoaderService } from '../../../+identification/service/recording-loader.service';

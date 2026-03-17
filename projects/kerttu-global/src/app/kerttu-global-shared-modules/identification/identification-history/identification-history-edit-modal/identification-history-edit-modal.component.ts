@@ -12,7 +12,7 @@ import { SpectrogramService } from '../../../../../../../laji/src/app/shared-mod
 import { DialogService } from '../../../../../../../laji/src/app/shared/service/dialog.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs';
-import { Util } from '../../../../../../../laji/src/app/shared/service/util.service';
+import * as Util from '../../../../../../../laji/src/app/shared/utils';
 import equals from 'deep-equal';
 import { getTranslateKeyWithTaxonType } from '../../../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
 

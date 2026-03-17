@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../../../shared/service/user.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ToastsService } from '../../../../shared/service/toasts.service';
-import { Util } from '../../../../shared/service/util.service';
+import * as Util from '../../../../shared/utils';
 import merge from 'deepmerge';
 import { DialogService } from '../../../../shared/service/dialog.service';
 import { NamedPlacesService } from '../../../../shared/service/named-places.service';

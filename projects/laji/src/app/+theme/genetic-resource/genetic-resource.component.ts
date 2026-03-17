@@ -4,7 +4,7 @@ import { AbstractObservation } from '../../+observation/abstract-observation';
 import { ObservationFacade } from '../../+observation/observation.facade';
 import { WarehouseApi, WarehouseSubPath } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Util } from '../../shared/service/util.service';
+import * as Util from '../../shared/utils';
 import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { SampleTableColumnService } from './sample-table-column.service';

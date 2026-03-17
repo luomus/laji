@@ -17,7 +17,7 @@ import { catchError, map } from 'rxjs';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import G from 'geojson';
-import { Util } from '../../shared/service/util.service';
+import * as Util from '../../shared/utils';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({

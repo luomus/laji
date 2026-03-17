@@ -9,7 +9,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
-import { Util } from '../../../../../shared/service/util.service';
+import * as Util from '../../../../../shared/utils';
 import { forkJoin, Observable, tap } from 'rxjs';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
 import { BoolToStringPipe } from '../../../../../shared/pipe/bool-to-string.pipe';

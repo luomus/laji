@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import type { components } from 'projects/laji-api-client-b/generated/api';
-import { dictionarifyByKey } from './util.service';
+import { dictionarifyByKey } from '../utils';
 
 type Area = components['schemas']['store-area'];
 

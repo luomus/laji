@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnI
 import { ObservationFormQuery } from './observation-form-query.interface';
 import { WarehouseQueryInterface, WarehouseTimeQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable, of as ObservableOf, Subject, Subscription } from 'rxjs';
-import { Util } from '../../shared/service/util.service';
+import * as Util from '../../shared/utils';
 import moment from 'moment';
 import { ObservationFacade } from '../observation.facade';
 import { isRelativeDate } from './date-form/date-form.component';

@@ -10,7 +10,7 @@ import { Notification } from '../model/Notification';
 import { Publication } from '../model/Publication';
 import { Feedback } from '../model/Feedback';
 import { Image } from '../model/Image';
-import { Util } from './util.service';
+import * as Util from '../utils';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
