@@ -138,7 +138,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'local',
     'alive',
     'higherTaxon',
-    'sensitive'
+    'sensitive',
+    'hasSequenceText'
   ];
 
   // noinspection JSUnusedLocalSymbols
