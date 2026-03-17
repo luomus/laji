@@ -230,3 +230,16 @@ export class Util {
   }
 
 }
+
+export const dictionarify = <T extends string>(arr: readonly T[]): Record<T, true> =>
+  arr.reduce((dict, item) => {
+    dict[item] = true;
+    return dict;
+  }, {} as Record<T, true>);
+
+export const dictionarifyByKey = <T>(objects: T[], key: keyof T) =>
+  objects.reduce<Record<string, T>>((map, obj) => {
+    map[obj[key] as string] = obj;
+    return map;
+  }, {});
+

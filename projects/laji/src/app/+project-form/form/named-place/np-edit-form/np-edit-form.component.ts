@@ -234,17 +234,17 @@ export class NpEditFormComponent implements OnInit {
 
   getPlaceForm(data: NamedPlacesRouteData): Observable<Form> {
     const getAreaEnum = (
-      type: keyof Pick<AreaService, 'getMunicipalities' | 'getBiogeographicalProvinces' | 'getBirdAssociationAreas'>
-    ) => (this.areaService[type](this.translate.getCurrentLang())).pipe(
+      type: 'ML.municipality' | 'ML.biogeographicalProvince' | 'ML.birdAssociationArea'
+    ) => this.areaService.getAreaByType(type).pipe(
       map(areas => areas.reduce((schema, area: {id: string; value: string}) => {
         schema.oneOf.push({const: area.id, title: area.value});
         return schema;
       }, {oneOf: []} as { oneOf: {const: string; title: string}[] }))
     );
     return this.projectFormService.getPlaceForm$(data.documentForm).pipe(switchMap(placeForm => forkJoin([
-      (placeForm.schema as any).properties.municipality ? getAreaEnum('getMunicipalities') : of(null),
-      (placeForm.schema as any).properties.biogeographicalProvince ? getAreaEnum('getBiogeographicalProvinces') : of(null),
-      (placeForm.schema as any).properties.birdAssociationArea ? getAreaEnum('getBirdAssociationAreas') : of(null)
+      (placeForm.schema as any).properties.municipality ? getAreaEnum('ML.municipality') : of(null),
+      (placeForm.schema as any).properties.biogeographicalProvince ? getAreaEnum('ML.biogeographicalProvince') : of(null),
+      (placeForm.schema as any).properties.birdAssociationArea ? getAreaEnum('ML.birdAssociationArea') : of(null)
     ]).pipe(
       map(([municipalityEnum, biogeographicalProvinceEnum, birdAssociationAreaEnum]) => ({
         ...placeForm,

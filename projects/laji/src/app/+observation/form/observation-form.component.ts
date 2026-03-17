@@ -6,7 +6,6 @@ import { Observable, of as ObservableOf, Subject, Subscription } from 'rxjs';
 import { Util } from '../../shared/service/util.service';
 import moment from 'moment';
 import { ObservationFacade } from '../observation.facade';
-import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
@@ -65,7 +64,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   showPlace = false;
 
-  areaType = Area.AreaType;
   dataSource: Observable<any>;
   typeaheadLoading = false;
   autocompleteLimit = 10;
