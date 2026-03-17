@@ -257,6 +257,6 @@
   },
   "homepage": "https://bitbucket.org/luomus/laji.fi-front",
   "volta": {
-    "node": "v20.19.6"
+    "node": "20.19.6"
   }
 }
