@@ -6,7 +6,7 @@
         <div class="flex-grow home-main">
           <h1>{{ 'home.main-page.title' | translate }}</h1>
           <laji-technical-news></laji-technical-news>
-          <p>{{ 'home.main-page.text' | translate }}</p>
+          <div [innerHTML]="'home.main-page.text' | translate" lajiRouteTransformer></div>
           <ng-container *ngTemplateOutlet="navigationThumbnails"></ng-container>
         </div>
         <laji-news-list class="d-block mb-3 home-news-list"></laji-news-list>
