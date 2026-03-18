@@ -1,11 +1,10 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of as ObservableOf, of, Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { Logger } from '../../../../shared/logger';
 import { combineLatest, map, tap } from 'rxjs';
 import { PagedResult } from '../../../../shared/model/PagedResult';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
-import { Area } from '../../../../shared/model/Area';
 import { Chart, ChartDataset, ChartOptions, ChartType, Tooltip } from 'chart.js';
 import { LineWithLine } from 'projects/laji/src/app/shared-modules/chart/line-with-line';
 
@@ -25,7 +24,6 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   @Input() showDefaultPeriodFilter = true;
 
   loading = false;
-  areaTypes = Area.AreaType;
   birdAssociationAreas: string[] = [];
   currentArea?: string;
   taxon?: string;

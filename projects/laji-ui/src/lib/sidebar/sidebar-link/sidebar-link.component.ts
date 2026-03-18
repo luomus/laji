@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angu
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, map, startWith, takeUntil } from 'rxjs';
 import { Subject } from 'rxjs';
-import { Util } from 'projects/laji/src/app/shared/service/util.service';
+import * as Util from 'projects/laji/src/app/shared/utils';
 
 @Component({
     selector: 'lu-sidebar-link',

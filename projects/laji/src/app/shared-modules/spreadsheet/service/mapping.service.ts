@@ -5,7 +5,7 @@ import { convertAnyToWGS84GeoJSON } from '@luomus/laji-map/lib/utils';
 import { convertYkjToGeoJsonFeature } from '../../../root/coordinate-utils';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { SpreadsheetFacade } from '../spreadsheet.facade';
-import { Util } from '../../../shared/service/util.service';
+import * as Util from '../../../shared/utils';
 
 export enum SpecialTypes {
   geometry = 'geometry',

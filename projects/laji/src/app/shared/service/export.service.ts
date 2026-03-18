@@ -5,7 +5,7 @@ import { BookType, utils as XLSXUtils } from 'xlsx';
 import { DatatableColumn } from '../../shared-modules/datatable/model/datatable-column';
 import { forkJoin as ObservableForkJoin, Observable, of, of as ObservableOf } from 'rxjs';
 import { map, switchMap } from 'rxjs';
-import { Util } from './util.service';
+import * as Util from '../utils';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableUtil } from '../../shared-modules/datatable/service/datatable-util.service';
 

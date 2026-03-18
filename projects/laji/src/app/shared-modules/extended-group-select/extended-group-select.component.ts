@@ -6,7 +6,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree-select/tree-select.component';
-import { Util } from '../../shared/service/util.service';
+import * as Util from '../../shared/utils';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { RedListTaxonGroup } from '../../shared/model/RedListTaxonGroup';
 import { ArrayResult } from '../../shared/model/ArrayResult';

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AreaService } from '../../../../../laji/src/app/shared/service/area.service';
-import { Area } from '../../../../../laji/src/app/shared/model/Area';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs';
 import { ChecklistVersion } from './taxon.service';
@@ -45,8 +44,8 @@ export class RegionalService {
     private areaService: AreaService
   ) {}
 
-  getAreas(lang: string): Observable<IucnArea[]> {
-    return this.areaService.getAreaType(lang, Area.AreaType.IucnEvaluationArea).pipe(
+  getAreas(): Observable<IucnArea[]> {
+    return this.areaService.getAreaByType('ML.iucnEvaluationArea').pipe(
       map(areas => areas.map(area => ({id: area.id, label: area.value, shortLabel: area.value.split(' ')[0]})))
     );
   }

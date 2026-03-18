@@ -27,7 +27,7 @@ import { Observable } from 'rxjs';
 import { PagedResult } from '../model/PagedResult';
 import { NamedPlace } from '../model/NamedPlace';
 import { HttpClient } from '@angular/common/http';
-import { Util } from '../service/util.service';
+import * as Util from '../utils';
 import { environment } from '../../../environments/environment';
 
 export interface NamedPlaceQuery {

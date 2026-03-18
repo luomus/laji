@@ -19,7 +19,7 @@ import { DialogService } from '../../../shared/service/dialog.service';
 import { SelectStyle } from '../../select/metadata-select/metadata-select.component';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { WithNonNullableKeys } from '../../../shared/service/util.service';
+import { WithNonNullableKeys } from '../../../shared/utils';
 
 type Annotation = components['schemas']['store-annotation'];
 type AnnotationTag = components['schemas']['store-tag'];

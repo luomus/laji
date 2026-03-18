@@ -4,15 +4,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Area } from '../model/Area';
 import { PagedResult } from '../model/PagedResult';
 import { Source } from '../model/Source';
 import { Notification } from '../model/Notification';
-import { Information } from '../model/Information';
 import { Publication } from '../model/Publication';
 import { Feedback } from '../model/Feedback';
 import { Image } from '../model/Image';
-import { Util } from './util.service';
+import * as Util from '../utils';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
@@ -35,15 +33,6 @@ export namespace LajiApi {
     images = 'images'
   }
 
-  export enum AreaType {
-    country = 'country',
-    biogeographicalProvince = 'biogeographicalProvince',
-    municipality = 'municipality',
-    oldMunicipality = 'oldMunicipality',
-    birdAssociationArea = 'birdAssociationArea',
-    iucnEvaluationArea = 'iucnEvaluationArea'
-  }
-
   export namespace Query {
 
     interface Paged {
@@ -63,11 +52,6 @@ export namespace LajiApi {
       langFallback?: boolean;
     }
 
-
-    export interface AreaQuery extends Lang, Paged {
-      type?: LajiApi.AreaType;
-      idIn?: string;
-    }
 
     export interface DocumentStatsQuery extends PersonToken {
       namedPlace: string;
@@ -122,8 +106,6 @@ export namespace LajiApi {
       base64pdf: string;
     }
 
-    export type AreaListResponse = PagedResult<Area>;
-
     export type NotificationListResponse = PagedResult<Notification>;
 
     export type SourceListResponse = PagedResult<Source>;
@@ -138,7 +120,6 @@ export class LajiApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getList(endpoint: LajiApi.Endpoints.areas, query: LajiApi.Query.AreaQuery): Observable<LajiApi.Response.AreaListResponse>;
   getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
   getList(endpoint: LajiApi.Endpoints.notifications, query: LajiApi.Query.NotificationListQuery): Observable<LajiApi.Response.NotificationListResponse>;
   getList(endpoint: LajiApi.Endpoints.sources, query: LajiApi.Query.SourceQuery): Observable<LajiApi.Response.SourceListResponse>;

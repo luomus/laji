@@ -3,7 +3,7 @@ import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface
 import { Subject } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
 import { SearchQueryInterface } from '../shared-modules/search-filters/search-query.interface';
-import { Util } from '../shared/service/util.service';
+import * as Util from '../shared/utils';
 
 interface WarehouseSearchQuery extends WarehouseQueryInterface {
   [extraKey: string]: any;

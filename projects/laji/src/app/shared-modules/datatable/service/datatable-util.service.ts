@@ -130,7 +130,7 @@ export class DatatableUtil {
     }
 
     return this.getArray(occurrences, (occurrence) => ObservableForkJoin([
-      this.areaService.getProvinceCode(IdService.getId(occurrence.area), this.translate.getCurrentLang()),
+      this.areaService.getProvinceCode(IdService.getId(occurrence.area)),
       this.labelService.get(IdService.getId(occurrence.status), this.translate.getCurrentLang())
     ]).pipe(
       map(data => data[0]+ ': ' + data[1])
