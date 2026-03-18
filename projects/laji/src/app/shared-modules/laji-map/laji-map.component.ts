@@ -151,7 +151,10 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     if (!this.platformService.isBrowser) {
       return;
     }
-    import('@luomus/laji-map').then(({ LajiMap }) => { // eslint-disable-line @typescript-eslint/naming-convention
+    import('@luomus/laji-map').then((_import) => { // eslint-disable-line @typescript-eslint/naming-convention
+      console.log(_import);
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const LajiMap = _import.LajiMap;
       this.zone.runOutsideAngular(() => {
         if (this.map) {
           this.map.destroy();
