@@ -152,14 +152,11 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     if (!this.platformService.isBrowser) {
       return;
     }
-    console.log(await import('@luomus/laji-map'));
 
     // The import structure is different in local dev env / feature branches / ssr builds so need to juggle a bit.
     const lajiMapImport = (await import('@luomus/laji-map')).default as any;
-    console.log(lajiMapImport);
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const LajiMapConstuctor: typeof LajiMap = lajiMapImport.default || lajiMapImport;
-    console.log(LajiMapConstuctor);
+    const LajiMapClass: typeof LajiMap = lajiMapImport.default || lajiMapImport;
     this.zone.runOutsideAngular(() => {
       if (this.map) {
         this.map.destroy();
@@ -176,7 +173,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
         options.controls = false;
       }
       try {
-        this.map = new LajiMapConstuctor(options);
+        this.map = new LajiMapClass(options);
         this.map.map.on('moveend', () => {
           this.moveEvent('moveend');
         });

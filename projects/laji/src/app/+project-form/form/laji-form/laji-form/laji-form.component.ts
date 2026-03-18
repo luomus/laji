@@ -269,8 +269,17 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
     if (!this.form || !this.formData || !this.platformService.isBrowser) {
       return;
     }
-    const lajiFormImport = (await import('@luomus/laji-form')).default;
-    const lajiFormThemeImport = (await import('@luomus/laji-form/lib/themes/bs3')).default;
+
+    // The import structure is different in local dev env / feature branches / ssr builds so need to juggle a bit.
+    const lajiFormImport = (await import('@luomus/laji-form')).default as any;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const LajiFormClass: typeof LajiForm = lajiFormImport.default || lajiFormImport;
+
+    // The import structure is different in local dev env / feature branches / ssr builds so need to juggle a bit.
+    const lajiFormThemeImport = (await import('@luomus/laji-form/lib/themes/bs3')).default as any;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const LajiFormTheme: LajiFormTheme = lajiFormThemeImport.default || lajiFormThemeImport;
+
     combineLatest(
       this.userService.getUserSetting<any>(this.settingsKey).pipe(
         concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
@@ -280,8 +289,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
       ),
       this.userService.getProfile().pipe(map(profile => profile.settings?.defaultMediaMetadata))
     ).subscribe(([settings, defaultMediaMetadata]) => {
-      this.lajiFormWrapperProto = lajiFormImport;
-      this.lajiFormBs3Theme = lajiFormThemeImport;
+      this.lajiFormWrapperProto = LajiFormClass;
+      this.lajiFormBs3Theme = LajiFormTheme;
       this.defaultMediaMetadata = defaultMediaMetadata;
       this.settings = settings;
       this.mountLajiForm();
