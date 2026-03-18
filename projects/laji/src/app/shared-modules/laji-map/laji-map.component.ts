@@ -25,6 +25,7 @@ import { DEFAULT_LANG } from '../../locale/localize-router.service';
 import type { PathOptions, DivIcon } from 'leaflet';
 import { Feature, Point } from 'geojson';
 import { PlatformService } from '../../root/platform.service';
+import type { LajiMap } from "@luomus/laji-map";
 
 const classNamesAsArr = (c?: string) => c?.split(' ') || [];
 
@@ -152,8 +153,13 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
       return;
     }
     console.log(await import('@luomus/laji-map'));
+
+    // The import structure is different in local dev env / feature branches / ssr builds so need to juggle a bit.
+    const lajiMapImport = (await import('@luomus/laji-map')).default as any;
+    console.log(lajiMapImport);
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const LajiMap = (await import('@luomus/laji-map')).default;
+    const LajiMapConstuctor: typeof LajiMap = lajiMapImport.default || lajiMapImport;
+    console.log(LajiMapConstuctor);
     this.zone.runOutsideAngular(() => {
       if (this.map) {
         this.map.destroy();
@@ -170,7 +176,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
         options.controls = false;
       }
       try {
-        this.map = new LajiMap(options);
+        this.map = new LajiMapConstuctor(options);
         this.map.map.on('moveend', () => {
           this.moveEvent('moveend');
         });
