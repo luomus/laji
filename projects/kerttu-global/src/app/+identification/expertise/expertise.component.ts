@@ -41,7 +41,7 @@ export class ExpertiseComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private api: LajiApiClientBService
   ) {
-    this.continents$ = this.areaService.getContinents('en');
+    this.continents$ = this.areaService.getAreaByType('ML.continent');
   }
 
   ngOnInit() {

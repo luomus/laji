@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';
 import { isPlatformBrowser } from '@angular/common';
-import { Util } from 'projects/laji/src/app/shared/service/util.service';
+import * as Util from 'projects/laji/src/app/shared/utils';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 @Component({

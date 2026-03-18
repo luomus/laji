@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { SEASON, WbcResultService } from '../wbc-result.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Area } from '../../../../shared/model/Area';
 import { toHtmlSelectElement } from '../../../../shared/service/html-element.service';
 
 @Component({
@@ -17,7 +16,6 @@ export class WbcResultFiltersComponent implements OnInit, OnChanges {
 
   years: number[] = [];
   seasons: SEASON[] = ['fall', 'winter', 'spring'];
-  areaTypes = Area.AreaType;
 
   activeYear?: number;
   activeSeason?: SEASON;

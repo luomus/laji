@@ -8,7 +8,7 @@ import { Document } from '../../../shared/model/Document';
 import { LatestDocumentsFacade } from '../../../shared-modules/latest-documents/latest-documents.facade';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
 import { FormService } from '../../../shared/service/form.service';
-import { Util } from '../../../shared/service/util.service';
+import * as Util from '../../../shared/utils';
 import { UserService } from '../../../shared/service/user.service';
 import { FormPermissionService, Rights } from '../../../shared/service/form-permission.service';
 import { NamedPlacesService } from '../../../shared/service/named-places.service';

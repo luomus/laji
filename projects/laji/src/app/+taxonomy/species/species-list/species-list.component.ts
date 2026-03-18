@@ -20,7 +20,7 @@ import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/
 import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { TaxonExportService } from '../service/taxon-export.service';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
-import { Util } from '../../../shared/service/util.service';
+import * as Util from '../../../shared/utils';
 import { UserService } from '../../../shared/service/user.service';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';

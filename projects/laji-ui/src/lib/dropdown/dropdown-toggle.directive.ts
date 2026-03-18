@@ -1,7 +1,7 @@
 
 import { Directive, ElementRef, HostBinding, HostListener, Inject, DOCUMENT } from '@angular/core';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
-import { Util } from 'projects/laji/src/app/shared/service/util.service';
+import * as Util from 'projects/laji/src/app/shared/utils';
 
 /**
  * Makes the target element to be show a dropdown menu on click.

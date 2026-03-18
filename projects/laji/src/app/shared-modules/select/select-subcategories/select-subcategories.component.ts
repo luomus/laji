@@ -11,7 +11,7 @@ import {
 import { Subject } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { SelectOption as SelectComponentOptions } from '../select/select.component';
-import { Util } from '../../../shared/service/util.service';
+import * as Util from '../../../shared/utils';
 import { CheckboxType } from '../checkbox/checkbox.component';
 
 export interface SelectOptions extends SelectComponentOptions {

@@ -4,7 +4,7 @@ import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs';
 import { CollectionService, CollectionTreeOptionsNode, ICollectionAggregate, ICollectionsTreeNode } from '../../shared/service/collection.service';
 import { BehaviorSubject, Observable, zip, of } from 'rxjs';
 import { SelectedOption, TreeOptionsChangeEvent } from '../tree-select/tree-select.component';
-import { Util } from '../../shared/service/util.service';
+import * as Util from '../../shared/utils';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 @Component({

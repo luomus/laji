@@ -20,7 +20,7 @@ import { take } from 'rxjs';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { Document } from '../../../../shared/model/Document';
 import { Rights } from '../../../../shared/service/form-permission.service';
-import { Util } from '../../../../shared/service/util.service';
+import * as Util from '../../../../shared/utils';
 import { UserService } from '../../../../shared/service/user.service';
 import { RowDocument } from '../../../../shared-modules/own-submissions/own-datatable/own-datatable.component';
 import { Observable } from 'rxjs';

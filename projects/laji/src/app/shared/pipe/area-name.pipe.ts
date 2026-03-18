@@ -25,8 +25,8 @@ export class AreaNamePipe extends AbstractLabelPipe implements PipeTransform {
 
   protected _updateValue(key: string): Observable<any> {
     return this.type === 'provinceCode' ?
-      this.areaService.getProvinceCode(key, this.translate.getCurrentLang()) :
-      this.areaService.getName(key, this.translate.getCurrentLang());
+      this.areaService.getProvinceCode(key) :
+      this.areaService.getName(key);
   }
 
   protected _parseValue(res: string): string {

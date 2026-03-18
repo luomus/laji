@@ -26,7 +26,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PagedResult } from '../model/PagedResult';
 import { HttpClient } from '@angular/common/http';
-import { Util } from '../service/util.service';
+import * as Util from '../utils';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { environment } from '../../../environments/environment';
 import { ArrayResult } from '../model/ArrayResult';

@@ -51,7 +51,7 @@ export class FiltersComponent {
     this.habitatsSpecific$ = this.metadataService.getRange('MKV.habitatSpecificTypeEnum').pipe(
       map(meta => this.mapMetadataToOptions(meta))
     );
-    this.evaluationArea$ = this.areaService.getAreaType(this.translate.getCurrentLang(), Area.AreaType.IucnEvaluationArea).pipe(
+    this.evaluationArea$ = this.areaService.getAreaByType('ML.iucnEvaluationArea').pipe(
       map(meta => this.mapAreaDataToOptions(meta))
     );
    }

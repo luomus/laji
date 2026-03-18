@@ -155,7 +155,7 @@
           [firstOptions]="['ML.206']"
           [placeholder]="'result.gathering.country'"
           name="countryId"
-        [field]="areaType.Country"></laji-metadata-select>
+        [field]="'ML.country'"></laji-metadata-select>
         <laji-metadata-select
           [info]="'observation.info.province' | translate"
           [(ngModel)]="query.provinceId"
@@ -163,7 +163,7 @@
           [multiple]="true"
           [placeholder]="'result.gathering.province'"
           name="provinceId"
-        [field]="areaType.Province"></laji-metadata-select>
+        [field]="'ML.province'"></laji-metadata-select>
         <laji-metadata-select
           [info]="'observation.info.biogeographicalProvince' | translate"
           [(ngModel)]="query.biogeographicalProvinceId"
@@ -171,7 +171,7 @@
           [multiple]="true"
           [placeholder]="'result.gathering.biogeographicalProvince'"
           name="biogeographicalProvinceId"
-        [field]="areaType.Biogeographical"></laji-metadata-select>
+        [field]="'ML.biogeographicalProvince'"></laji-metadata-select>
         <laji-metadata-select
           [info]="'observation.info.elyCentre' | translate"
           [(ngModel)]="query.elyCentreId"
@@ -179,14 +179,14 @@
           [multiple]="true"
           [placeholder]="'result.gathering.elyCentre'"
           name="elyCentreId"
-        [field]="areaType.ElyCentre"></laji-metadata-select>
+        [field]="'ML.elyCentre'"></laji-metadata-select>
         <laji-metadata-select
           [(ngModel)]="query.birdAssociationAreaId"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
           [placeholder]="'result.gathering.birdSociety'"
           name="birdAssociationAreaId"
-        [field]="areaType.BirdAssociationArea"></laji-metadata-select>
+        [field]="'ML.birdAssociationArea'"></laji-metadata-select>
         <laji-metadata-select
           [info]="'observation.info.municipality' | translate"
           [(ngModel)]="query.finnishMunicipalityId"
@@ -194,7 +194,7 @@
           [multiple]="true"
           [placeholder]="'observation.form.municipality'"
           name="finnishMunicipalityId"
-        [field]="areaType.Municipality"></laji-metadata-select>
+        [field]="'MLmunicipality'"></laji-metadata-select>
 
         <laji-select
           [selected]="query.onlyNonStateLands"

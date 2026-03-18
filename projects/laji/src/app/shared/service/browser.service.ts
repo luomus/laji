@@ -4,7 +4,7 @@ import { PlatformService } from '../../root/platform.service';
 import { Location } from '@angular/common';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { HistoryService } from './history.service';
-import { Util } from './util.service';
+import * as Util from '../utils';
 
 export interface IBrowserState {
   visibility: boolean;
