@@ -25,7 +25,7 @@ import { DEFAULT_LANG } from '../../locale/localize-router.service';
 import type { PathOptions, DivIcon } from 'leaflet';
 import { Feature, Point } from 'geojson';
 import { PlatformService } from '../../root/platform.service';
-import type { LajiMap } from "@luomus/laji-map";
+import type { LajiMap } from '@luomus/laji-map';
 
 const classNamesAsArr = (c?: string) => c?.split(' ') || [];
 
