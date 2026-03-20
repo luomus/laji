@@ -12,9 +12,8 @@ import * as MapUtil from '@luomus/laji-map/lib/utils';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { Units } from '../../../../shared/model/Units';
-import { LajiApi, LajiApiService } from '../../../../shared/service/laji-api.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable, of as ObservableOf } from 'rxjs';
-import { UserService } from '../../../../shared/service/user.service';
 import { FormService } from '../../../../shared/service/form.service';
 import { LineTransectGeometry } from '@luomus/laji-map/lib/defs';
 
@@ -80,8 +79,7 @@ export class LineTransectComponent implements OnChanges {
   path = '';
 
   constructor(
-    private lajiApiService: LajiApiService,
-    private userSerivce: UserService,
+    private api: LajiApiClientBService,
     private formService: FormService,
   ) {}
 
@@ -111,8 +109,7 @@ export class LineTransectComponent implements OnChanges {
       minPerKm: 0
     };
     const species: any = {};
-    this.stats$ = this.lajiApiService.getList(LajiApi.Endpoints.documentStats,
-      {personToken: this.userSerivce.getToken(), namedPlace: this.namedPlace.id}).pipe(
+    this.stats$ = this.api.get('/documents/stats', { query: { namedPlace: this.namedPlace.id } }).pipe(
       map(stats => this.dateDiffFromDoc(stats.dateMedian))).pipe(
       catchError(() => ObservableOf('')));
     if (this.document.gatherings) {

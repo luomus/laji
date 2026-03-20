@@ -1,13 +1,11 @@
-import { switchMap, take } from 'rxjs';
 import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { SessionStorage } from 'ngx-webstorage';
 import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
-import { LajiApi, LajiApiService } from '../service/laji-api.service';
-import { of } from 'rxjs';
-import { Person } from '../model/Person';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+
 import { PlatformService } from '../../root/platform.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
@@ -38,7 +36,7 @@ export class FeedbackComponent {
 		private platformService: PlatformService,
     public userService: UserService,
     public translate: TranslateService,
-    private lajiApi: LajiApiService,
+    private api: LajiApiClientBService,
     private toastsService: ToastsService,
     private location: Location,
     private modalService: ModalService
@@ -66,20 +64,14 @@ export class FeedbackComponent {
     }
     const meta = this.getMeta();
 
-    (!this.userService.getToken() ?
-      of(undefined) :
-      this.userService.user$).pipe(
-        take(1)
-    ).pipe(
-      switchMap((user: Person | undefined | null) => this.lajiApi.post(
-        LajiApi.Endpoints.feedback,
-        {
-          subject,
-          message: this.feedback.message + '\n\n---\n' + this.feedback.email,
-          meta
-        },
-        {personToken: user && user.emailAddress ? this.userService.getToken() : undefined as any}
-      ))
+    this.api.post(
+      '/feedback',
+      undefined,
+      {
+        subject,
+        message: this.feedback.message + '\n\n---\n' + this.feedback.email,
+        meta
+      }
     ).subscribe({
       next: () => {
         this.feedback = {
