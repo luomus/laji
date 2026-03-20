@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { PagedResult } from '../model/PagedResult';
 import { Publication } from '../model/Publication';
-import { Feedback } from '../model/Feedback';
 import { Image } from '../model/Image';
 import * as Util from '../utils';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
@@ -17,7 +16,6 @@ export namespace LajiApi {
 
   export enum Endpoints {
     collections = 'collections',
-    feedback = 'feedback',
     forms = 'forms',
     htmlToPdf = 'html-to-pdf',
     publications = 'publications',
@@ -43,8 +41,6 @@ export namespace LajiApi {
     interface LangWithFallback extends Lang {
       langFallback?: boolean;
     }
-
-    export type FeedbackQuery = PersonToken;
 
     export type PublicationQuery = LangWithFallback;
 
@@ -104,7 +100,6 @@ export class LajiApiService {
     return this.httpClient.get<T>(url, options);
   }
 
-  post(endpoint: LajiApi.Endpoints.feedback, data: Feedback, query: LajiApi.Query.FeedbackQuery): Observable<void>;
   post(endpoint: LajiApi.Endpoints.htmlToPdf, data: any): Observable<Blob>;
   post(endpoint: LajiApi.Endpoints, data: any, query: any = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}`;
