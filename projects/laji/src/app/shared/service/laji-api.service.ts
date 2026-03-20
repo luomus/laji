@@ -59,16 +59,6 @@ export namespace LajiApi {
 
     export type FeedbackQuery = PersonToken;
 
-    export interface NotificationListQuery extends Paged, PersonToken {
-      onlyUnSeen?: boolean;
-    }
-
-    export interface NewsQuery extends Lang, Paged {
-      tag?: string;
-    }
-
-    export type NotificationQuery = PersonToken;
-
     export type PublicationQuery = LangWithFallback;
 
     export interface SourceQuery extends LangWithFallback, Paged {
@@ -106,8 +96,6 @@ export namespace LajiApi {
       base64pdf: string;
     }
 
-    export type NotificationListResponse = PagedResult<Notification>;
-
     export type SourceListResponse = PagedResult<Source>;
 
     export type ImageListResponse = PagedResult<Image>;
@@ -121,7 +109,6 @@ export class LajiApiService {
   constructor(private httpClient: HttpClient) { }
 
   getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
-  getList(endpoint: LajiApi.Endpoints.notifications, query: LajiApi.Query.NotificationListQuery): Observable<LajiApi.Response.NotificationListResponse>;
   getList(endpoint: LajiApi.Endpoints.sources, query: LajiApi.Query.SourceQuery): Observable<LajiApi.Response.SourceListResponse>;
   getList(endpoint: LajiApi.Endpoints.images, query: LajiApi.Query.ImageQuery): Observable<LajiApi.Response.ImageListResponse>;
   getList<T>(endpoint: LajiApi.Endpoints, query: any = {}): Observable<T> {
@@ -153,7 +140,6 @@ export class LajiApiService {
     );
   }
 
-  update(endpoint: LajiApi.Endpoints.notifications, data: Notification, query: LajiApi.Query.NotificationQuery): Observable<Notification>;
   update(endpoint: LajiApi.Endpoints, data: any, query: any = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}/${data.id}`;
     const options = { params: {...Util.removeUndefinedFromObject(query)} };
@@ -164,8 +150,6 @@ export class LajiApiService {
     );
   }
 
-
-  remove(endpoint: LajiApi.Endpoints.notifications, id: string, query: LajiApi.Query.NotificationQuery): Observable<any>;
   remove(endpoint: LajiApi.Endpoints, id: string, query: any = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}/${id}`;
     const options = { params: {...Util.removeUndefinedFromObject(query)} };
