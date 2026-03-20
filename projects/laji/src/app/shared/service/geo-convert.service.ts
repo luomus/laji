@@ -59,9 +59,9 @@ export class GeoConvertService {
   }
 
   public geoConvertData(
-    data: FormData, fileId: string, geometry: FileGeometry, crs: FileCrs
+    data: FormData, geometry: FileGeometry, crs: FileCrs
   ): Observable<GeoConversionResponse> {
-    return this.startGeoConversionFromData(data, fileId, geometry, crs).pipe(
+    return this.startGeoConversionFromData(data, geometry, crs).pipe(
       switchMap(conversionId => this.getResponse(conversionId)),
       catchError(err => this.transformError(err))
     );
@@ -77,11 +77,11 @@ export class GeoConvertService {
     }
     const params = new HttpParams({fromObject: queryParams});
 
-    return this.httpClient.get<string>('/api/geo-convert/' + fileId, {params});
+    return this.httpClient.get<string>(`${environment.apiBase}/geo-convert/${fileId}`, {params});
   }
 
   private startGeoConversionFromData(
-    data: FormData, fileId: string, geometry: FileGeometry, crs: FileCrs
+    data: FormData, geometry: FileGeometry, crs: FileCrs
   ): Observable<string> {
     const queryParams = {
       geometryType: geometry,
@@ -89,7 +89,7 @@ export class GeoConvertService {
     };
     const params = new HttpParams({fromObject: <any>queryParams});
 
-    return this.httpClient.post<string>('/api/geo-convert/' + fileId, data, {params});
+    return this.httpClient.post<string>(`${environment.apiBase}/geo-convert/`, data, {params});
   }
 
   private getResponse(conversionId: string, personToken?: string | null): Observable<GeoConversionResponse> {
@@ -120,7 +120,7 @@ export class GeoConvertService {
       queryParams['personToken'] = personToken;
     }
     const params = new HttpParams({fromObject: queryParams});
-    return this.httpClient.get<GeoConversionStatusApiResponse>('/api/geo-convert/status/' + conversionId, {params});
+    return this.httpClient.get<GeoConversionStatusApiResponse>(`${environment.apiBase}/geo-convert/status/${conversionId}`, {params});
   }
 
   private transformError(err: any): Observable<never> {
