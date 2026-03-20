@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LajiApi, LajiApiService } from './laji-api.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { map } from 'rxjs';
 import { AbstractCachedHttpService } from './abstract-cached-http.service';
 
@@ -8,7 +8,7 @@ import { AbstractCachedHttpService } from './abstract-cached-http.service';
 @Injectable({providedIn: 'root'})
 export class SourceService extends AbstractCachedHttpService<string> {
 
-  constructor(private lajiApi: LajiApiService) {
+  constructor(private api: LajiApiClientBService) {
     super('name');
   }
 
@@ -16,7 +16,7 @@ export class SourceService extends AbstractCachedHttpService<string> {
     if (!lang) {
       lang = this.currentLang || 'fi';
     }
-    return this.fetchLookup(this.lajiApi.getList(LajiApi.Endpoints.sources, {lang, page: 1, pageSize: 1000}).pipe(
+    return this.fetchLookup(this.api.get('/sources', { query: { page: 1, pageSize: 1000 } }).pipe(
       map(paged => paged.results)
     ), lang);
   }

@@ -5,8 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { PagedResult } from '../model/PagedResult';
-import { Source } from '../model/Source';
-import { Notification } from '../model/Notification';
 import { Publication } from '../model/Publication';
 import { Feedback } from '../model/Feedback';
 import { Image } from '../model/Image';
@@ -18,17 +16,11 @@ type Taxon = components['schemas']['LajiBackendTaxon'];
 export namespace LajiApi {
 
   export enum Endpoints {
-    areas = 'areas',
-    documentStats = 'documents/stats',
     collections = 'collections',
     feedback = 'feedback',
     forms = 'forms',
     htmlToPdf = 'html-to-pdf',
-    information = 'information',
-    news = 'news',
-    notifications = 'notifications',
     publications = 'publications',
-    sources = 'sources',
     taxon = 'taxa',
     images = 'images'
   }
@@ -52,18 +44,9 @@ export namespace LajiApi {
       langFallback?: boolean;
     }
 
-
-    export interface DocumentStatsQuery extends PersonToken {
-      namedPlace: string;
-    }
-
     export type FeedbackQuery = PersonToken;
 
     export type PublicationQuery = LangWithFallback;
-
-    export interface SourceQuery extends LangWithFallback, Paged {
-      idIn?: string;
-    }
 
     export interface TaxaQuery extends LangWithFallback {
       maxLevel?: number;
@@ -96,8 +79,6 @@ export namespace LajiApi {
       base64pdf: string;
     }
 
-    export type SourceListResponse = PagedResult<Source>;
-
     export type ImageListResponse = PagedResult<Image>;
   }
 
@@ -108,8 +89,6 @@ export class LajiApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
-  getList(endpoint: LajiApi.Endpoints.sources, query: LajiApi.Query.SourceQuery): Observable<LajiApi.Response.SourceListResponse>;
   getList(endpoint: LajiApi.Endpoints.images, query: LajiApi.Query.ImageQuery): Observable<LajiApi.Response.ImageListResponse>;
   getList<T>(endpoint: LajiApi.Endpoints, query: any = {}): Observable<T> {
     const url = `${environment.apiBase}/${endpoint}`;
