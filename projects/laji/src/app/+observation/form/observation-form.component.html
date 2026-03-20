@@ -829,11 +829,11 @@
   </div>
   <div>
     <a class="btn btn-default btn-sm"
-      [routerLink]="['/observation/map'] | localize"
-      [queryParams]="otsoFilterShortcutQueryParams">
+      href="https://info.laji.fi/etusivu/paikkatieto/paikkatietotuotteet/otso-metsatalousrajaukset/"
+      target="_blank">
       {{ 'observation.form.otsoShortcut' | translate }}
+      <span class="glyphicon glyphicon-link"></span>
     </a>
-    <laji-info>{{ 'observation.form.otso-info' | translate }}</laji-info>
   </div>
   <div>
     <a class="btn btn-default btn-sm"
