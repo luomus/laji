@@ -2,10 +2,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs';
 import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
-import { Document } from '../../shared/model/Document';
 import { IdService } from '../../shared/service/id.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { UserService } from '../../shared/service/user.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api';
+
+export type StoreDocument = components['schemas']['store-document'];
 
 interface IParametersBase {
   highlight?: string;
@@ -22,11 +25,11 @@ export interface IDocumentIdParameters extends IParametersBase {
 }
 
 export interface IDocumentParameters extends IParametersBase {
-  document: Document;
+  document: StoreDocument;
 }
 
 export interface IViewerState {
-  document?: Document|null;
+  document?: StoreDocument|null;
   highlight?: string;
   result?: Array<any>;
   own: boolean;
@@ -85,16 +88,19 @@ export class DocumentViewerFacade {
 
   constructor(
     private documentApi: DocumentApi,
+    private api: LajiApiClientBService,
     private userService: UserService
   ) {}
 
   showRemoteDocument(param: IDocumentIdParameters): void {
     this.updateState({..._state, showModal: true});
-    this.documentApi.findById(param.document, this.userService.getToken()).subscribe((document) => {
+    this.api.get('/documents/{id}', { path: { id: param.document } }).subscribe(document => {
       this.showDocument({
         ...param,
         document
       });
+    });
+    this.documentApi.findById(param.document, this.userService.getToken()).subscribe((document) => {
     });
   }
 
@@ -103,7 +109,8 @@ export class DocumentViewerFacade {
       ...param,
       document: {
         id: IdService.getId(param.document),
-        publicityRestrictions: Document.PublicityRestrictionsEnum.publicityRestrictionsPublic} as Document
+        publicityRestrictions: 'MZ.publicityRestrictionsPublic'
+      } as StoreDocument
     });
   }
 
