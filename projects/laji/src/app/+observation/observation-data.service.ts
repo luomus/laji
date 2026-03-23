@@ -4,7 +4,7 @@ import { map, shareReplay, startWith } from 'rxjs';
 
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { SearchQueryService } from './search-query.service';
-import { WarehouseApi } from '../shared/api/WarehouseApi';
+import { WarehouseApi, WarehouseSubPath } from '../shared/api/WarehouseApi';
 import { PlatformService } from '../root/platform.service';
 import deepEqual from 'deep-equal';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
@@ -29,6 +29,7 @@ export class ObservationDataService {
     private searchQueryService: SearchQueryService,
     private platformService: PlatformService,
     private api: LajiApiClientBService,
+    private oldApi: WarehouseApi
   ) { }
 
   getData(query: WarehouseQueryInterface): Observable<ObservationCounts> {
@@ -50,7 +51,10 @@ export class ObservationDataService {
     }, query);
 
     this.lastQuery = newQuery;
-    this.cacheCount$ = this.api.get('/warehouse/query/unit/aggregate', { query: query as WarehouseQueryUnitAggregateQParams }).pipe(
+    const obs$ = this.oldApi.subPath === WarehouseSubPath.default
+      ? this.api.get('/warehouse/query/unit/aggregate', { query: query as WarehouseQueryUnitAggregateQParams })
+      : this.oldApi.warehouseQueryAggregateGet(query);
+    this.cacheCount$ = obs$.pipe(
       filter(data => typeof data !== 'string'),
       map(data => data.results?.[0]),
       map(res => ({
