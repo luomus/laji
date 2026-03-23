@@ -5,10 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { PagedResult } from '../model/PagedResult';
-import { Source } from '../model/Source';
-import { Notification } from '../model/Notification';
 import { Publication } from '../model/Publication';
-import { Feedback } from '../model/Feedback';
 import { Image } from '../model/Image';
 import * as Util from '../utils';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
@@ -18,17 +15,10 @@ type Taxon = components['schemas']['LajiBackendTaxon'];
 export namespace LajiApi {
 
   export enum Endpoints {
-    areas = 'areas',
-    documentStats = 'documents/stats',
     collections = 'collections',
-    feedback = 'feedback',
     forms = 'forms',
     htmlToPdf = 'html-to-pdf',
-    information = 'information',
-    news = 'news',
-    notifications = 'notifications',
     publications = 'publications',
-    sources = 'sources',
     taxon = 'taxa',
     images = 'images'
   }
@@ -52,28 +42,7 @@ export namespace LajiApi {
       langFallback?: boolean;
     }
 
-
-    export interface DocumentStatsQuery extends PersonToken {
-      namedPlace: string;
-    }
-
-    export type FeedbackQuery = PersonToken;
-
-    export interface NotificationListQuery extends Paged, PersonToken {
-      onlyUnSeen?: boolean;
-    }
-
-    export interface NewsQuery extends Lang, Paged {
-      tag?: string;
-    }
-
-    export type NotificationQuery = PersonToken;
-
     export type PublicationQuery = LangWithFallback;
-
-    export interface SourceQuery extends LangWithFallback, Paged {
-      idIn?: string;
-    }
 
     export interface TaxaQuery extends LangWithFallback {
       maxLevel?: number;
@@ -106,10 +75,6 @@ export namespace LajiApi {
       base64pdf: string;
     }
 
-    export type NotificationListResponse = PagedResult<Notification>;
-
-    export type SourceListResponse = PagedResult<Source>;
-
     export type ImageListResponse = PagedResult<Image>;
   }
 
@@ -120,9 +85,6 @@ export class LajiApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
-  getList(endpoint: LajiApi.Endpoints.notifications, query: LajiApi.Query.NotificationListQuery): Observable<LajiApi.Response.NotificationListResponse>;
-  getList(endpoint: LajiApi.Endpoints.sources, query: LajiApi.Query.SourceQuery): Observable<LajiApi.Response.SourceListResponse>;
   getList(endpoint: LajiApi.Endpoints.images, query: LajiApi.Query.ImageQuery): Observable<LajiApi.Response.ImageListResponse>;
   getList<T>(endpoint: LajiApi.Endpoints, query: any = {}): Observable<T> {
     const url = `${environment.apiBase}/${endpoint}`;
@@ -138,7 +100,6 @@ export class LajiApiService {
     return this.httpClient.get<T>(url, options);
   }
 
-  post(endpoint: LajiApi.Endpoints.feedback, data: Feedback, query: LajiApi.Query.FeedbackQuery): Observable<void>;
   post(endpoint: LajiApi.Endpoints.htmlToPdf, data: any): Observable<Blob>;
   post(endpoint: LajiApi.Endpoints, data: any, query: any = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}`;
@@ -153,7 +114,6 @@ export class LajiApiService {
     );
   }
 
-  update(endpoint: LajiApi.Endpoints.notifications, data: Notification, query: LajiApi.Query.NotificationQuery): Observable<Notification>;
   update(endpoint: LajiApi.Endpoints, data: any, query: any = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}/${data.id}`;
     const options = { params: {...Util.removeUndefinedFromObject(query)} };
@@ -164,8 +124,6 @@ export class LajiApiService {
     );
   }
 
-
-  remove(endpoint: LajiApi.Endpoints.notifications, id: string, query: LajiApi.Query.NotificationQuery): Observable<any>;
   remove(endpoint: LajiApi.Endpoints, id: string, query: any = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}/${id}`;
     const options = { params: {...Util.removeUndefinedFromObject(query)} };
