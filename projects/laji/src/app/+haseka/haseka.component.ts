@@ -4,7 +4,7 @@ import { UserService } from '../shared/service/user.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Document } from '../shared/model/Document';
-import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
+import { DocumentViewerFacade, StoreDocument } from '../shared-modules/document-viewer/document-viewer.facade';
 import { getDescription, HeaderService } from '../shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -57,7 +57,7 @@ export class HasekaComponent implements OnInit, OnDestroy {
   }
 
   showDocumentViewer(document: Document) {
-    this.documentViewerFacade.showDocument({document, own: true});
+    this.documentViewerFacade.showDocument({document: document as unknown as StoreDocument, own: true});
   }
 
 }

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { ProjectFormService } from '../../shared/service/project-form.service';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
 import { Document } from '../../shared/model/Document';
-import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
+import { DocumentViewerFacade, StoreDocument } from '../../shared-modules/document-viewer/document-viewer.facade';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type Form = components['schemas']['Form'];
@@ -57,7 +57,7 @@ export class AboutComponent implements OnInit {
   }
 
   showDocumentViewer(document: Document) {
-    this.documentViewerFacade.showDocument({document, own: true});
+    this.documentViewerFacade.showDocument({document: document as unknown as StoreDocument, own: true});
   }
 
   enterForm() {
