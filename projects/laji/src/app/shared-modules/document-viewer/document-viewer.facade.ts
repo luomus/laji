@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs';
 import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
 import { IdService } from '../../shared/service/id.service';
-import { DocumentApi } from '../../shared/api/DocumentApi';
 import { UserService } from '../../shared/service/user.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api';
@@ -87,7 +86,6 @@ export class DocumentViewerFacade {
   });
 
   constructor(
-    private documentApi: DocumentApi,
     private api: LajiApiClientBService,
     private userService: UserService
   ) {}
@@ -99,8 +97,6 @@ export class DocumentViewerFacade {
         ...param,
         document
       });
-    });
-    this.documentApi.findById(param.document, this.userService.getToken()).subscribe((document) => {
     });
   }
 
