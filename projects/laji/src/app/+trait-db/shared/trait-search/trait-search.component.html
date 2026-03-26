@@ -4,6 +4,7 @@
     [luPopover]="searchFilters"
     [rootElement]="'body'"
     [mode]="'click'"
+    [styleVariant]="'neutral-2'"
     placement="bottom"
   >
     <i class="glyphicon glyphicon-wrench"></i>
@@ -43,4 +44,3 @@
 <ng-template #enumCellTemplate let-col="col" let-prop="prop">
   {{ (prop | label) ?? col?.variants[prop]?.label ?? prop }}
 </ng-template>
-
