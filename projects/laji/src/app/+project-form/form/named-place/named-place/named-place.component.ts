@@ -6,7 +6,6 @@ import moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
-import { Area } from '../../../../shared/model/Area';
 import { FormPermissionService, Rights } from '../../../../shared/service/form-permission.service';
 import { NamedPlacesService } from '../../../../shared/service/named-places.service';
 import { DialogService } from '../../../../shared/service/dialog.service';
@@ -95,8 +94,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   @ViewChild(NpInfoComponent) infoView!: NpInfoComponent;
 
   vm$!: Observable<DerivedFromInput>;
-
-  areaTypes = Area.AreaType;
   loading = false;
 
   errorMsg = '';

@@ -1,17 +1,18 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges,
 Output, EventEmitter, HostListener } from '@angular/core';
-import { forkJoin, Observable, of, Subscription } from 'rxjs';
+import { forkJoin, Observable, of, Subscription, throwError } from 'rxjs';
 import {delay, map, switchMap, tap} from 'rxjs';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { FormService } from '../../../shared/service/form.service';
-import { Document } from '../../../shared/model/Document';
-import { Units } from '../../../shared/model/Units';
+import { StoreDocument } from '../document-viewer.facade';
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { Image } from '../../../shared/model/Image';
 import { JSONPath } from 'jsonpath-plus';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
+import { components } from 'projects/laji-api-client-b/generated/api';
 
+type Unit = components['schemas']['store-unit'];
 
 @Component({
     selector: 'laji-document-local',
@@ -20,7 +21,7 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
     standalone: false
 })
 export class DocumentLocalComponent implements OnChanges {
-  @Input({ required: true }) document!: Document;
+  @Input({ required: true }) document!: StoreDocument;
   @Input() view: 'viewer'|'print' = 'viewer';
   @Input() showSpinner = false;
 
@@ -68,7 +69,10 @@ export class DocumentLocalComponent implements OnChanges {
     }
   }
 
-  private parseDocument(doc: Document): Observable<any> {
+  private parseDocument(doc: StoreDocument): Observable<any> {
+    if (!doc.formID) {
+      return throwError(() => new Error(`Expected document to have a formID: ${doc}`));
+    }
     return this.getForm(doc.formID)
       .pipe(
         switchMap(form => {
@@ -95,8 +99,8 @@ export class DocumentLocalComponent implements OnChanges {
               observables.push(this.getImages(gathering));
             }
 
-            const units: Units[] = [];
-            (gathering.units || []).reduce((arr: Units[], unit: Units) => {
+            const units: Unit[] = [];
+            (gathering.units || []).reduce((arr: Unit[], unit: Unit) => {
               if (DocumentInfoService.isEmptyUnit(unit, form)) {
                 return arr;
               }

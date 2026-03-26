@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { UserService } from '../../../shared/service/user.service';
 import { Document } from '../../../shared/model/Document';
-import { Util } from '../../../shared/service/util.service';
+import * as Util from '../../../shared/utils';
 import { Observable, of } from 'rxjs';
 import { TemplateForm } from '../models/template-form';
 import { DocumentStorage } from '../../../storage/document.storage';

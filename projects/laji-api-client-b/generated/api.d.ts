@@ -9169,6 +9169,7 @@ export interface components {
         FeaturedImage: {
             url: string;
             caption: string;
+            alt: string;
         };
         InformationChild: {
             title: string;
@@ -9260,12 +9261,12 @@ export interface components {
             id: string;
             featuredImage: string;
             external: boolean;
-            externalURL?: boolean;
-            title: boolean;
-            content: boolean;
-            posted: boolean;
-            modified?: boolean;
-            tag: boolean;
+            externalURL?: string;
+            title: string;
+            content: string;
+            posted: string;
+            modified?: string;
+            tag: string;
         };
         NewsPagedDto: {
             results: components["schemas"]["NewsDto"][];

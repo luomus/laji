@@ -115,7 +115,7 @@ export class TriplestoreLabelService {
           }
           return TriplestoreLabelService.requestCache[key];
         case 'ML':
-          return this.areaService.getName(key, lang);
+          return this.areaService.getName(key);
         case 'KE':
           return this.sourceService.getName(key, lang);
         case 'MMAN':

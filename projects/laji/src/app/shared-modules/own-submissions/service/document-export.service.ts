@@ -1,5 +1,5 @@
 import { Document } from '../../../shared/model/Document';
-import { Util } from '../../../shared/service/util.service';
+import * as Util from '../../../shared/utils';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { UserService } from '../../../shared/service/user.service';
 import { CollectionService } from '../../../shared/service/collection.service';

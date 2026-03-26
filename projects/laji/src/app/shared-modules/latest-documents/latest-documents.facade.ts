@@ -7,7 +7,7 @@ import { UserService } from '../../shared/service/user.service';
 import { DocumentStorage } from '../../storage/document.storage';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { FormService } from '../../shared/service/form.service';
-import { Util } from '../../shared/service/util.service';
+import * as Util from '../../shared/utils';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type FormListing = components['schemas']['FormListing'];

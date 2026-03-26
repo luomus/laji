@@ -1,37 +1,38 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { filter, Observable, of } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs';
 
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { SearchQueryService } from './search-query.service';
-import { WarehouseApi } from '../shared/api/WarehouseApi';
+import { WarehouseApi, WarehouseSubPath } from '../shared/api/WarehouseApi';
 import { PlatformService } from '../root/platform.service';
 import deepEqual from 'deep-equal';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { paths } from 'projects/laji-api-client-b/generated/api';
 
-export interface IObservationData {
-  unitsCount: number|null;
-  speciesCount: number|null;
-  securedCount: number|null;
+type WarehouseQueryUnitAggregateQParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
+
+export interface ObservationCounts {
+  unitsCount: number | null;
+  speciesCount: number | null;
+  securedCount: number | null;
 }
-
-const overrideType = {
-  qualityIssues: 'array'
-};
 
 @Injectable({
   providedIn: 'root'
 })
 export class ObservationDataService {
-  cacheCount$?: Observable<IObservationData>;
+  cacheCount$?: Observable<ObservationCounts>;
   lastQuery?: WarehouseQueryInterface;
 
   constructor(
     private searchQueryService: SearchQueryService,
     private platformService: PlatformService,
-    private warehouseService: WarehouseApi
+    private api: LajiApiClientBService,
+    private oldApi: WarehouseApi
   ) { }
 
-  getData(query: WarehouseQueryInterface): Observable<IObservationData> {
+  getData(query: WarehouseQueryInterface): Observable<ObservationCounts> {
     if (this.platformService.isServer) {
       return of(this.empty());
     }
@@ -50,20 +51,16 @@ export class ObservationDataService {
     }, query);
 
     this.lastQuery = newQuery;
-    this.cacheCount$ = this.warehouseService.warehouseQueryAggregateGet(query).pipe(
-      map((data) => data.results?.[0]),
-      map(res => {
-        ['count', 'speciesCount', 'securedCount'].forEach(key => {
-          if (res[key] === undefined) {
-            res[key] = null;
-          }
-        });
-        return res;
-      }),
+    const obs$ = this.oldApi.subPath === WarehouseSubPath.default
+      ? this.api.get('/warehouse/query/unit/aggregate', { query: query as WarehouseQueryUnitAggregateQParams })
+      : this.oldApi.warehouseQueryAggregateGet(query);
+    this.cacheCount$ = obs$.pipe(
+      filter(data => typeof data !== 'string'),
+      map(data => data.results?.[0]),
       map(res => ({
-        unitsCount: res.count,
-        speciesCount: res.speciesCount,
-        securedCount: res.securedCount
+        unitsCount: res['count'] ?? null,
+        speciesCount: res['speciesCount'] ?? null,
+        securedCount: res['securedCount'] ?? null
       })),
       startWith(this.empty()),
       shareReplay(1)

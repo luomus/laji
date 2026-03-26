@@ -49,7 +49,7 @@ export class RequestComponent implements OnInit {
       switchMap(([loggedIn]) =>
         !loggedIn
           ? of({loggedIn: false})
-          : this.formPermissionService.getFormPermission(this.collectionId, this.userService.getToken())
+          : this.formPermissionService.getFormPermission(this.collectionId)
             .pipe(
               switchMap(formPermission => this.userService.user$.pipe(
                 map(person => {
@@ -73,7 +73,7 @@ export class RequestComponent implements OnInit {
       return;
     }
     this.clicked = true;
-    this.formPermissionService.makeAccessRequest(this.collectionId, this.userService.getToken())
+    this.formPermissionService.makeAccessRequest(this.collectionId)
       .subscribe(
         () => {
           this.resetVM$.next();

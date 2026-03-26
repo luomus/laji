@@ -119,7 +119,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   ngAfterViewInit() {
-    this.mount();
+    void this.mount();
   }
 
   ngOnDestroy() {
@@ -265,13 +265,22 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
     }
   }
 
-  private mount() {
+  private async mount() {
     if (!this.form || !this.formData || !this.platformService.isBrowser) {
       return;
     }
+
+    // The import structure is different in local dev env / feature branches / ssr builds so need to juggle a bit.
+    const lajiFormImport = (await import('@luomus/laji-form')).default as any;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const LajiFormClass: typeof LajiForm = lajiFormImport.default || lajiFormImport;
+
+    // The import structure is different in local dev env / feature branches / ssr builds so need to juggle a bit.
+    const lajiFormThemeImport = (await import('@luomus/laji-form/lib/themes/bs3')).default as any;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const LajiFormTheme: LajiFormTheme = lajiFormThemeImport.default || lajiFormThemeImport;
+
     combineLatest(
-      import('@luomus/laji-form'),
-      import('@luomus/laji-form/lib/themes/bs3'),
       this.userService.getUserSetting<any>(this.settingsKey).pipe(
         concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
           map(globalSettings => ({...globalSettings, ...settings}))
@@ -279,9 +288,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
         take(1)
       ),
       this.userService.getProfile().pipe(map(profile => profile.settings?.defaultMediaMetadata))
-    ).subscribe(([formPackage, formBs3ThemePackage, settings, defaultMediaMetadata]) => {
-      this.lajiFormWrapperProto = formPackage.default;
-      this.lajiFormBs3Theme = formBs3ThemePackage.default;
+    ).subscribe(([settings, defaultMediaMetadata]) => {
+      this.lajiFormWrapperProto = LajiFormClass;
+      this.lajiFormBs3Theme = LajiFormTheme;
       this.defaultMediaMetadata = defaultMediaMetadata;
       this.settings = settings;
       this.mountLajiForm();

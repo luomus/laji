@@ -1,68 +1,44 @@
 import { map } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { LajiApi, LajiApiService } from './laji-api.service';
-import { AbstractCachedHttpService } from './abstract-cached-http.service';
-import { Area } from '../model/Area';
+import { Observable, shareReplay } from 'rxjs';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+import { dictionarifyByKey } from '../utils';
+
+type Area = components['schemas']['store-area'];
 
 @Injectable({providedIn: 'root'})
-export class AreaService extends AbstractCachedHttpService<Area> {
+export class AreaService {
 
-  public types = Area.AreaType;
+  constructor(private api: LajiApiClientBService) {}
 
-  constructor(private lajiApi: LajiApiService) {
-    super();
+  areasLookup?: Observable<{[id: string]: Area}>;
+
+  getAllAsLookUp(): Observable<{[id: string]: Area}> {
+    if (this.areasLookup) {
+      return this.areasLookup;
+    }
+    this.areasLookup = this.api.get('/areas', { query: { page: 1, pageSize: 10000 } }).pipe(
+      map(paged => dictionarifyByKey(paged.results, 'id')),
+      shareReplay(1)
+    );
+    return this.areasLookup;
   }
 
-  getAllAsLookUp(lang: string): Observable<{[id: string]: Area}> {
-    return this.fetchLookup(this.lajiApi
-      .getList(LajiApi.Endpoints.areas, {lang, page: 1, pageSize: 10000}).pipe(
-        map(paged => paged.results)
-      ), lang);
-  }
-
-  getBiogeographicalProvinces(lang: string): Observable<{id: string; value: string}[]> {
-    return this.getAreaType(lang, this.types.Biogeographical);
-  }
-
-  getProvinceCode(id: string, lang: string) {
-    return this.getAllAsLookUp(lang).pipe(
-      map(data => data[id] && data[id].provinceCodeAlpha || '')
+  getProvinceCode(id: string) {
+    return this.getAllAsLookUp().pipe(
+      map(data => data[id] && data[id].provinceCodeAlpha)
     );
   }
 
-  getMunicipalities(lang: string): Observable<{id: string; value: string}[]> {
-    return this.getAreaType(lang, this.types.Municipality);
-  }
-
-  getBirdAssociationAreas(lang: string): Observable<{id: string; value: string}[]> {
-    return this.getAreaType(lang, this.types.BirdAssociationArea);
-  }
-
-  getCountries(lang: string): Observable<{id: string; value: string}[]> {
-    return this.getAreaType(lang, this.types.Country);
-  }
-
-  getProvinces(lang: string): Observable<{id: string; value: string}[]> {
-    return this.getAreaType(lang, this.types.Province);
-  }
-
-  getElyCentres(lang: string): Observable<{id: string; value: string}[]> {
-    return this.getAreaType(lang, this.types.ElyCentre);
-  }
-
-  getContinents(lang: string): Observable<{id: string; value: string}[]> {
-    return this.getAreaType(lang, this.types.Continent);
-  }
-
-  getName(id: string, lang: string) {
-    return this.getAllAsLookUp(lang).pipe(
-      map(data => data[id] && data[id].name || id )
+  getName(id: string) {
+    return this.getAllAsLookUp().pipe(
+      map(data => data[id] && data[id].name || id)
     );
   }
 
-  public getAreaType(lang: string, type: Area.AreaType): Observable<{id: string; value: string}[]> {
-    return this.getAllAsLookUp(lang).pipe(
+  public getAreaByType(type: Area['areaType']): Observable<{id: string; value: string}[]> {
+    return this.getAllAsLookUp().pipe(
       map(area => {
         if (!area) {
           return [];

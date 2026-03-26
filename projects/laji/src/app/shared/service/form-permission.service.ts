@@ -1,7 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { FormPermissionApi } from '../api/FormPermissionApi';
 import { Observable, of, of as ObservableOf, throwError } from 'rxjs';
-import { FormPermission } from '../model/FormPermission';
 import { Person } from '../model/Person';
 import { isIctAdmin, UserService } from './user.service';
 import { catchError, map, switchMap, take, tap } from 'rxjs';
@@ -9,9 +7,16 @@ import { FormService } from './form.service';
 import { PlatformService } from '../../root/platform.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 type FormListing = components['schemas']['FormListing'];
+type FormPermission = components['schemas']['FormPermissionDto'];
 
+export type Type = 'admin' | 'editor' | undefined;
+export enum TypeEnum {
+  Admin = <any> 'admin',
+  Editor = <any> 'editor'
+}
 export interface Rights {
   edit: boolean;
   admin: boolean;
@@ -27,19 +32,18 @@ export class FormPermissionService {
   public changes$ = new EventEmitter<FormPermission>();
 
   constructor(
-    private formPermissionApi: FormPermissionApi,
+    private api: LajiApiClientBService,
     private formService: FormService,
     private userService: UserService,
     private platformService: PlatformService
   ) {}
 
-  hasAccessToForm(formID: string, personToken?: string): Observable<boolean> {
-    const token = personToken || this.userService.getToken();
-    if (!formID || !token) {
+  hasAccessToForm(formID: string): Observable<boolean> {
+    if (!formID) {
       return of(false);
     }
 
-    const permission$ = (collectionID: string) => this.formPermissionApi.findPermissions(token).pipe(
+    const permission$ = (collectionID: string) => this.api.get('/form-permissions').pipe(
       switchMap(permission => of(permission.admins.includes(collectionID) || permission.editors.includes(collectionID)))
     );
 
@@ -64,12 +68,15 @@ export class FormPermissionService {
     return !!person.id && !!permission.admins && permission.admins.indexOf(person.id) > -1;
   }
 
-  getFormPermission(collectionID: string, personToken?: string): Observable<FormPermission> {
+  getFormPermission(collectionID: string): Observable<FormPermission> {
     const cached = FormPermissionService.formPermissions[collectionID];
     if (cached) {
       return ObservableOf(cached);
     }
-    return this.formPermissionApi.findByCollectionID(collectionID, personToken).pipe(
+    return this.api.get(
+      '/form-permissions/{collectionID}',
+      { path: { collectionID }}
+    ).pipe(
       catchError((err: HttpErrorResponse) => {
         if (err.status === 404) {
           return of({ collectionID, admins: [], editors: [], permissionRequests: [] });
@@ -83,22 +90,32 @@ export class FormPermissionService {
       }));
   }
 
-  makeAccessRequest(collectionID: string, personToken: string) {
+  makeAccessRequest(collectionID: string) {
     FormPermissionService.formPermissions[collectionID] = undefined;
-    return this.formPermissionApi
-      .requestAccess(collectionID, personToken).pipe(
+    return this.api.post(
+      '/form-permissions/{collectionID}',
+      { path: { collectionID }}
+    ).pipe(
       tap(fp => this.changes$.emit(fp)));
   }
 
-  acceptRequest(collectionID: string, personToken: string, personID: string, type?: FormPermission.Type) {
+  acceptRequest(collectionID: string, personID: string, type?: TypeEnum) {
     FormPermissionService.formPermissions[collectionID] = undefined;
-    return this.formPermissionApi.acceptRequest(collectionID, personID, personToken, type).pipe(
+
+    return this.api.put(
+      '/form-permissions/{collectionID}/{personID}',
+      { query: { type: type as unknown as Type }, path: { collectionID, personID }}
+    ).pipe(
       tap(fp => this.changes$.emit(fp)));
   }
 
-  revokeAccess(collectionID: string, personToken: string, personID: string) {
+  revokeAccess(collectionID: string, personID: string) {
     FormPermissionService.formPermissions[collectionID] = undefined;
-    return this.formPermissionApi.revokeAccess(collectionID, personID, personToken).pipe(
+
+    return this.api.delete(
+      '/form-permissions/{collectionID}/{personID}',
+      { path: { collectionID, personID }}
+    ).pipe(
       tap(fp => this.changes$.emit(fp)));
   }
 
@@ -131,7 +148,7 @@ export class FormPermissionService {
         }
         return this.userService.user$.pipe(
           take(1),
-          switchMap(person => this.getFormPermission(collectionID, this.userService.getToken()).pipe(
+          switchMap(person => this.getFormPermission(collectionID).pipe(
             catchError(() => of({
               collectionID,
               admins: [],

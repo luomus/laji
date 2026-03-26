@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
-import { Area } from 'projects/laji/src/app/shared/model/Area';
 import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { map, switchMap, share, tap } from 'rxjs';
 import { InvasiveControlEffectiveness } from '../invasive-species-control-result.component';
@@ -39,8 +38,6 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
 
   @Output() municipalityChange = new EventEmitter<string>();
   @Output() taxonChange = new EventEmitter<string>();
-
-  areaTypes = Area.AreaType;
 
   rows$!: Observable<Row[]>;
   loading$ = new BehaviorSubject(true);

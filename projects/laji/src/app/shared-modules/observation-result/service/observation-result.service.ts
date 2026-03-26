@@ -22,7 +22,7 @@ import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { IdService } from '../../../shared/service/id.service';
-import { Util } from '../../../shared/service/util.service';
+import * as Util from '../../../shared/utils';
 import { CoordinatePipe } from '../../../shared/pipe/coordinate.pipe';
 import { TableColumnService } from '../../datatable/service/table-column.service';
 import { ObservationTableColumn } from '../model/observation-table-column';

@@ -24,8 +24,10 @@ import { FormService } from '../../../../../shared/service/form.service';
 import { GeometryCollection } from 'geojson';
 import { NamedPlacesService } from '../../../../../shared/service/named-places.service';
 import { DocumentService } from '../../../../../shared-modules/own-submissions/service/document.service';
-import { FormPermission } from 'projects/laji/src/app/shared/model/FormPermission';
 import { Person } from 'projects/laji/src/app/shared/model/Person';
+import { components } from 'projects/laji-api-client-b/generated/api';
+
+type FormPermission = components['schemas']['FormPermissionDto'];
 
 @Component({
     selector: 'laji-accepted-document-approval',
@@ -81,7 +83,6 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
     return combineLatest([
       this.formPermissionService.getFormPermission(
         this.namedPlace.collectionID,
-        this.userService.getToken()
       ),
       this.userService.user$.pipe(take(1))
     ]).pipe(
