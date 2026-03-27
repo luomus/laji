@@ -247,12 +247,13 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
 
   private generatedColToDatatableCol(col: GeneratedDatatableColumn): DatatableColumn<any> {
     if (col.node._tag === 'enum') {
+      const variants = Object.fromEntries(col.node.variants.map(v => [v.value, v]));
       return {
         title: col.label.join(' - '),
         prop: col.path.join('.'),
         sortable: false,
         cellTemplate: this.enumCellTemplate,
-        variants: col.node.variants
+        variants
       } as DatatableColumn<any>;
     } else {
       return {

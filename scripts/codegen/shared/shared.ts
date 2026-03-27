@@ -1,16 +1,24 @@
 /* eslint-disable no-bitwise */
 import ts from 'typescript';
 import fs from 'fs';
-import { getClassPropertiesFetcher, MetadataProperty } from './fetch-metadata';
+import {
+  getAltValuesFetcher,
+  getClassPropertiesFetcher,
+  getRangeValuesFetcher,
+  getPropertyAltFetcher,
+  MetadataAlt,
+  MetadataProperty,
+  MetadataRangeValue
+} from './laji-api';
 
-interface EnumVariant {
+export interface EnumVariant<T extends string> {
   label: string;
-  value: string;
+  value: T;
 }
 
-interface EnumNode {
+interface EnumNode<T extends string> {
   _tag: 'enum';
-  variants: EnumVariant[];
+  variants: EnumVariant<T>[];
 }
 
 interface ArrayNode {
@@ -34,7 +42,7 @@ interface UnknownNode {
   _tag: 'unknown';
 }
 
-export type LeafNode = EnumNode | StringNode | BooleanNode | NumberNode | ArrayNode;
+export type LeafNode = EnumNode<string> | StringNode | BooleanNode | NumberNode | ArrayNode;
 
 export interface ObjectNode {
   _tag: 'object';
@@ -62,10 +70,10 @@ export const getNestedPropertyType = (type: ts.Type, propertyPath: string[], che
   return currentType;
 };
 
-const initEnumVar = (val: string) => ({
+const initEnumVar = <T extends string>(val: T) => ({
   label: val,
   value: val
-} as EnumVariant);
+} as EnumVariant<T>);
 
 export const traverseType = (type: ts.Type, checker: ts.TypeChecker): TreeNode => {
   if (type.getFlags() & ts.TypeFlags.String) {
@@ -78,7 +86,7 @@ export const traverseType = (type: ts.Type, checker: ts.TypeChecker): TreeNode =
     return {
       _tag: 'enum',
       variants: type.types.map(t => initEnumVar(t.isStringLiteral() ? t.value : t.getFlags().toString()))
-    } as EnumNode;
+    } as EnumNode<string>;
   } else if (type.isIntersection()) {
     console.warn('unimplemented intersection type');
   } else if (type.isClassOrInterface()) {
@@ -175,6 +183,16 @@ export const generateExportObjectLiteral = (obj: any, name: string, path: string
 export const generateDatatableColumns = (cols: GeneratedDatatableColumn[], path: string) =>
   generateExportObjectLiteral(cols, 'cols', path);
 
+const getRangeId = (range: unknown): string | undefined => {
+  if (typeof range === 'string') {
+    return range;
+  }
+  if (Array.isArray(range) && typeof range[0] === 'string') {
+    return range[0];
+  }
+  return undefined;
+};
+
 const mapPathLabelsWithMetadata = async (
   path: string[],
   rootClass: string,
@@ -201,15 +219,55 @@ const mapPathLabelsWithMetadata = async (
     mappedLabel.push(matchingProperty.label || segment);
 
     if (i < path.length - 1) {
-      if (!matchingProperty.range) {
+      const nextClass = getRangeId(matchingProperty.range);
+      if (!nextClass) {
         mappedLabel.push(...path.slice(i + 1));
         break;
       }
-      currentClass = matchingProperty.range;
+      currentClass = nextClass;
     }
   }
 
   return mappedLabel;
+};
+
+const resolveLeafPropertyFromPath = async (
+  path: string[],
+  rootClass: string,
+  getClassProperties: (className: string) => Promise<MetadataProperty[] | null>,
+) => {
+  let currentClass = rootClass;
+  for (let i = 0; i < path.length; i++) {
+    const segment = path[i];
+    const classProperties = await getClassProperties(currentClass);
+    if (!classProperties) {
+      return null;
+    }
+    const matchingProperty = classProperties.find(prop => prop.shortName === segment);
+    if (!matchingProperty) {
+      return null;
+    }
+    if (i === path.length - 1) {
+      return matchingProperty;
+    }
+    const nextClass = getRangeId(matchingProperty.range);
+    if (!nextClass) {
+      return null;
+    }
+    currentClass = nextClass;
+  }
+  return null;
+};
+
+const mapEnumVariantsFromMetadata = (
+  variants: EnumVariant<string>[],
+  altValues: (MetadataAlt | MetadataRangeValue)[],
+): EnumVariant<string>[] => {
+  const altLabelByValue = new Map(altValues.map(({ id, value }) => [id, value]));
+  return variants.map(v => ({
+    ...v,
+    label: altLabelByValue.get(v.value) ?? v.label,
+  }));
 };
 
 export const replaceDatatableColumnLabelsFromMetadata = async (
@@ -217,13 +275,43 @@ export const replaceDatatableColumnLabelsFromMetadata = async (
   rootClass: string,
 ) => {
   const getClassProperties = getClassPropertiesFetcher();
+  const getPropertyAlt = getPropertyAltFetcher();
+  const getAltValues = getAltValuesFetcher();
+  const getRangeValues = getRangeValuesFetcher();
 
   const mappedColumns = [] as GeneratedDatatableColumn[];
   for (const col of cols) {
     const mappedLabel = await mapPathLabelsWithMetadata(col.path, rootClass, getClassProperties);
+    let mappedNode = col.node;
+    if (col.node._tag === 'enum' || (col.node._tag === 'array' && col.node.elementType?._tag === 'enum')) {
+      const matchingProperty = await resolveLeafPropertyFromPath(col.path, rootClass, getClassProperties);
+      if (matchingProperty) {
+        const rangeId = getRangeId(matchingProperty.range);
+        const altValues = await getPropertyAlt(matchingProperty.property)
+          ?? (rangeId ? await getAltValues(rangeId) : null)
+          ?? (rangeId ? await getRangeValues(rangeId) : null);
+        if (altValues) {
+          if (col.node._tag === 'enum') {
+            mappedNode = {
+              ...col.node,
+              variants: mapEnumVariantsFromMetadata(col.node.variants, altValues),
+            };
+          } else if (col.node._tag === 'array' && col.node.elementType?._tag === 'enum') {
+            mappedNode = {
+              ...col.node,
+              elementType: {
+                ...col.node.elementType,
+                variants: mapEnumVariantsFromMetadata(col.node.elementType.variants, altValues),
+              }
+            } as ArrayNode;
+          }
+        }
+      }
+    }
     mappedColumns.push({
       ...col,
-      label: mappedLabel
+      label: mappedLabel,
+      node: mappedNode,
     });
   }
   return mappedColumns;

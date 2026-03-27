@@ -42,5 +42,5 @@
 </ng-template>
 
 <ng-template #enumCellTemplate let-col="col" let-prop="prop">
-  {{ (prop | label) ?? col?.variants[prop]?.label ?? prop }}
+  {{ col?.variants[prop]?.label }}
 </ng-template>
