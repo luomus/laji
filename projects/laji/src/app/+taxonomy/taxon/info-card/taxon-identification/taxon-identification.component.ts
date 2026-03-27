@@ -10,6 +10,7 @@ import { map, switchMap, distinctUntilChanged, filter, startWith, take, tap } fr
 import { CollectionViewer } from '@angular/cdk/collections';
 import { PlatformService } from '../../../../root/platform.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { TranslateService } from '@ngx-translate/core';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -111,6 +112,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     private facade: TaxonIdentificationFacade,
     private cdr: ChangeDetectorRef,
     private platformService: PlatformService,
+    private translate: TranslateService,
     @Inject(DOCUMENT) private document: Document
   ) { }
 
@@ -190,14 +192,20 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
           const content = variable.content;
           taxonDescriptions[variable.variable] = { title, content };
 
-          if (description.title && !this.data.descriptionSources.includes(description.title)) {
-            this.data.descriptionSources.push(description.title);
+          if (description.title && !this.data.descriptionSources.includes(description.title[this.translate.getCurrentLang() as keyof typeof description.title])) {
+            this.data.descriptionSources.push(description.title[this.translate.getCurrentLang() as keyof typeof description.title]);
           }
 
-          if (description.speciesCardAuthors && !this.data.speciesCardAuthors.includes(description.speciesCardAuthors.content)) {
-            this.data.speciesCardAuthors.push(description.speciesCardAuthors.content);
+          if (description.speciesCardAuthors && !this.data.speciesCardAuthors.includes(
+            description.speciesCardAuthors.content[this.translate.getCurrentLang() as keyof typeof description.speciesCardAuthors.content]
+          )) {
+            this.data.speciesCardAuthors.push(description.speciesCardAuthors.content[
+              this.translate.getCurrentLang() as keyof typeof description.speciesCardAuthors.content
+            ]);
             if (!this.data.speciesCardAuthorsTitle) {
-              this.data.speciesCardAuthorsTitle = description.speciesCardAuthors.title;
+              this.data.speciesCardAuthorsTitle = description.speciesCardAuthors.title[
+                this.translate.getCurrentLang() as keyof typeof description.speciesCardAuthors.title
+              ];
             }
           }
         });

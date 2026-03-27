@@ -3,6 +3,7 @@ import { map } from 'rxjs';
 import { Observable } from 'rxjs';
 import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     template: `
@@ -15,12 +16,13 @@ export class InstructionsComponent implements OnInit {
   instructions$!: Observable<string | undefined>;
 
   constructor(private projectFormService: ProjectFormService,
-              private route: ActivatedRoute
+              private route: ActivatedRoute,
+              private translate: TranslateService
   ) {}
 
   ngOnInit() {
     this.instructions$ = this.projectFormService.getFormFromRoute$(this.route)
-      .pipe(map(form => form?.options.instructions));
+      .pipe(map(form => form?.options.instructions[this.translate.getCurrentLang() as keyof typeof form.options.instructions]));
   }
 
 }

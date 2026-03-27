@@ -11,7 +11,7 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { components } from 'projects/laji-api-client-b/generated/api';
 
 type Override<T, R> = Omit<T, keyof R> & R;
-type CorruptNews = components['schemas']['NewsDto'];
+type CorruptNews = components['schemas']['LajiBackendCMSNode'];
 export type News = Override<CorruptNews, {
   featuredImage: any;
   title: string;

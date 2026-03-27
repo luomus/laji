@@ -231,7 +231,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
         case 'MMAN.tag':
           return this.annotationService.getAllTags().pipe(
             map(tags => tags.filter(t => !t.requiredRolesAdd || !t.requiredRolesAdd.includes(Annotation.AnnotationRoleEnum.formAdmin))),
-            map(tags => tags.map(t => ({ id: t.id, value: t.name })))
+            map(tags => tags.map(t => ({ id: t.id, value: t.name[this.lang as keyof typeof t.name] })))
           );
         case 'MY.collectionID':
           return this.collectionService.getAll$(this.lang, true);

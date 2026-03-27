@@ -1,7 +1,7 @@
 @if (descriptionGroup) {
   <div class="panel panel-default description-panel"
     laji-panel
-    [title]="title ? title : descriptionGroup.title"
+    [title]="title ? title : (descriptionGroup.title | multiLang)"
     [open]="true"
     [autoToggle]="true"
     >
