@@ -974,7 +974,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** Get a page of images. Private/protected images aren't included. */
+        get: operations["ImagesController_getPage"];
         put?: never;
         /** Upload image and get temporary id */
         post: operations["ImagesController_upload"];
@@ -1078,7 +1079,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** Get a page of audio. Private/protected audio aren't included. */
+        get: operations["AudioController_getPage"];
         put?: never;
         /** Upload audio and get temporary id */
         post: operations["AudioController_upload"];
@@ -8991,10 +8993,14 @@ export interface components {
         StoreDeleteResponse: {
             affected: number;
         };
-        MultiLangDto: string;
+        MultiLangDto: {
+            fi: string;
+            en: string;
+            sv: string;
+        };
         MetadataClass: {
             class: string;
-            label: string;
+            label: components["schemas"]["MultiLangDto"];
             shortName: string;
         };
         Property: {
@@ -9006,14 +9012,14 @@ export interface components {
             multiLanguage: boolean;
             shortName: string;
             range: string;
-            label: string;
+            label: components["schemas"]["MultiLangDto"];
             hasMany: boolean;
             sortOrder: number;
             isEmbeddable: boolean;
         };
         Alt: {
             id: string;
-            value: string;
+            value: components["schemas"]["MultiLangDto"];
         };
         Collection: {
             collectionName: Record<string, never>;
@@ -9150,6 +9156,16 @@ export interface components {
             thumbnailURL: string;
             uploadedBy?: string;
         };
+        ImagesPagedDto: {
+            results: components["schemas"]["Image"][];
+            currentPage: number;
+            pageSize: number;
+            total: number;
+            lastPage: number;
+            prevPage?: number;
+            nextPage?: number;
+            "@context": string;
+        };
         Audio: {
             /** @enum {string} */
             intellectualRights: "MZ.intellectualRightsCC-BY-SA-4.0" | "MZ.intellectualRightsCC-BY-NC-4.0" | "MZ.intellectualRightsCC-BY-NC-SA-4.0" | "MZ.intellectualRightsCC-BY-4.0" | "MZ.intellectualRightsCC0-4.0" | "MZ.intellectualRightsODBL-1.0" | "MZ.intellectualRightsPD" | "MZ.intellectualRightsARR" | "MZ.intellectualRightsCC-BY-2.0" | "MZ.intellectualRightsCC-BY-SA-2.0" | "MZ.intellectualRightsCC-BY-SA-2.0-DE" | "MZ.intellectualRightsCC-BY-NC-2.0" | "MZ.intellectualRightsCC-BY-NC-SA-2.0" | "MZ.intellectualRightsCC-BY-NC-ND-2.0" | "MZ.intellectualRightsCC-BY-SA-2.5" | "MZ.intellectualRightsCC-BY-SA-2.5-SE" | "MZ.intellectualRightsCC-BY-3.0" | "MZ.intellectualRightsCC-BY-SA-3.0" | "MZ.intellectualRightsCC-BY-NC-SA-3.0" | "MZ.intellectualRightsCC-BY-ND-4.0" | "MZ.intellectualRightsCC-BY-NC-ND-4.0";
@@ -9166,10 +9182,20 @@ export interface components {
             uploadedBy?: string;
             wavURL?: string;
         };
+        AudioPagedDto: {
+            results: components["schemas"]["Audio"][];
+            currentPage: number;
+            pageSize: number;
+            total: number;
+            lastPage: number;
+            prevPage?: number;
+            nextPage?: number;
+            "@context": string;
+        };
         FeaturedImage: {
             url: string;
             caption: string;
-            alt: string;
+            alt?: string;
         };
         InformationChild: {
             title: string;
@@ -9230,8 +9256,8 @@ export interface components {
             };
         };
         AddressComponent: {
-            long_name: string;
-            short_name: string;
+            long_name: components["schemas"]["MultiLangDto"];
+            short_name: components["schemas"]["MultiLangDto"];
             types: string[];
         };
         Location: {
@@ -9247,8 +9273,8 @@ export interface components {
         };
         Source: {
             id?: string;
-            name: string;
-            description: string;
+            name: components["schemas"]["MultiLangDto"];
+            description: components["schemas"]["MultiLangDto"];
         };
         GetTmpTokenDto: {
             loginURL?: string;
@@ -9257,19 +9283,18 @@ export interface components {
         CheckTmpTokenDto: {
             tmpToken: string;
         };
-        NewsDto: {
+        LajiBackendCMSNode: {
             id: string;
-            featuredImage: string;
-            external: boolean;
-            externalURL?: string;
-            title: string;
-            content: string;
-            posted: string;
+            content?: string;
+            title?: string;
+            author?: string;
+            posted?: string;
+            tags?: string[];
+            featuredImage?: components["schemas"]["FeaturedImage"];
             modified?: string;
-            tag: string;
         };
         NewsPagedDto: {
-            results: components["schemas"]["NewsDto"][];
+            results: components["schemas"]["LajiBackendCMSNode"][];
             currentPage: number;
             pageSize: number;
             total: number;
@@ -10743,7 +10768,11 @@ export interface components {
             bold: components["schemas"]["LajiBackendBoldRecords"];
             hasBold: boolean;
         };
-        LajiBackendLocalizedText: string;
+        LajiBackendLocalizedText: {
+            fi: string;
+            sv: string;
+            en: string;
+        };
         LajiBackendLocalizedURL: {
             locale: string;
             uri: string;
@@ -11446,7 +11475,7 @@ export interface components {
             id: string;
             /** Type for the MHL.formOptionsClass */
             "@type": string;
-            about: string;
+            about: components["schemas"]["store-multiLang"];
             /**
              * Document are lockable by admin
              * @description Form admin can lock documents. Locked documents can't be edited
@@ -11559,7 +11588,7 @@ export interface components {
              * @description Hides the draft button at form footer
              */
             hideTempButton: boolean;
-            instructions: string;
+            instructions: components["schemas"]["store-multiLang"];
             /**
              * Use mobile UI
              * @description Form UI has a greeting page for convenient mobile usage
@@ -11701,7 +11730,11 @@ export interface components {
              */
             warnEditingOldDocumentDuration: string;
         };
-        "store-multiLang": string;
+        "store-multiLang": {
+            en: string;
+            fi: string;
+            sv: string;
+        };
         "store-formFooter": {
             /** Context for the MHL.formFooterClass */
             "@context": string;
@@ -14556,7 +14589,7 @@ export interface components {
              * @description Collection code for natural history specimen collection, such as H-BR
              */
             collectionCode?: string;
-            collectionName: string;
+            collectionName: components["schemas"]["store-multiLang"];
             /**
              * Collection quality
              * @description Quality classification for the collection.
@@ -14574,13 +14607,13 @@ export interface components {
              * @enum {string}
              */
             collectionType: "MY.collectionTypeSpecimens" | "MY.collectionTypeLiving" | "MY.collectionTypeMonitoring" | "MY.collectionTypeObservations" | "MY.collectionTypePublicationdata" | "MY.collectionTypePublication" | "MY.collectionTypeMixed" | "MY.collectionTypeOther" | "MY.collectionTypeGardenArea" | "MY.collectionTypeIndoorGardenArea" | "MY.collectionTypeOutdoorGardenArea" | "MY.collectionTypeGardenSublocation" | "MY.collectionTypeTrait";
-            concealmentBasis?: string;
+            concealmentBasis?: components["schemas"]["store-multiLang"];
             /**
              * Contact email
              * @description Personal or general (e.g. group of people in the organisation) email address to reach the person(s) responsible.
              */
             contactEmail: string;
-            coverageBasis?: string;
+            coverageBasis?: components["schemas"]["store-multiLang"];
             /** Data download URL */
             dataDownloadURL?: string[];
             /**
@@ -14594,14 +14627,14 @@ export interface components {
              * @enum {string}
              */
             dataQuality?: "" | "MY.dataQuality1" | "MY.dataQuality2" | "MY.dataQuality3" | "MY.dataQuality4" | "MY.dataQuality5" | "MY.dataQualityNA";
-            dataQualityDescription?: string;
+            dataQualityDescription?: components["schemas"]["store-multiLang"];
             /**
              * Embargo in years
              * @description Embargo period in years after which data is opened
              */
             dataQuarantinePeriod?: number;
-            dataUseTerms?: string;
-            description: string;
+            dataUseTerms?: components["schemas"]["store-multiLang"];
+            description: components["schemas"]["store-multiLang"];
             /**
              * % digitized (approx.)
              * @description How many percent of the collection is in digital form, e.g. in a database or Excel file? Fill in approximate number, describe more in notes if necessary.
@@ -14624,13 +14657,13 @@ export interface components {
              * @description Admin field. DOI received from GBIF after the collection has been published.
              */
             gbifDoi?: string;
-            geographicCoverage?: string;
+            geographicCoverage?: components["schemas"]["store-multiLang"];
             /**
              * Institution code
              * @description Institution code for natural history specimen collection holding institution, such as H, MHZ or TUR
              */
             institutionCode?: string;
-            intellectualDescription?: string;
+            intellectualDescription?: components["schemas"]["store-multiLang"];
             /**
              * Publisher name (en)
              * @description Name of the institution or organisation publishing the data.
@@ -14657,7 +14690,7 @@ export interface components {
              * @description Language the data is (mainly) written in, if applicable.
              */
             language?: string;
-            longName?: string;
+            longName?: components["schemas"]["store-multiLang"];
             /** Person responsible for this metadata */
             metadataCreator?: string;
             /**
@@ -14666,13 +14699,13 @@ export interface components {
              * @enum {string}
              */
             metadataStatus?: "" | "MY.metadataStatusPreliminary" | "MY.metadataStatusSatisfactory" | "MY.metadataStatusComprehensive" | "MY.metadataStatusHidden";
-            methods?: string;
+            methods?: components["schemas"]["store-multiLang"];
             /**
              * Notes
              * @description Additional information to the data in each section.
              */
             notes?: string;
-            onlineUrl?: string;
+            onlineUrl?: components["schemas"]["store-multiLang"];
             /**
              * Person responsible
              * @description Person(s) responsible for the collection (Lastname, Firstname; Lastname, Firstname).
@@ -14683,14 +14716,14 @@ export interface components {
              * @description Used for botanic garden collections. Is the collection/garden area accessible to public or not.
              */
             publicAccess?: boolean;
-            publicationDescription?: string;
+            publicationDescription?: components["schemas"]["store-multiLang"];
             /**
              * Publication terms
              * @description How can Luomus publish the data, if it is owned by third party?
              * @enum {string}
              */
             publicationTerms?: "" | "MY.publicationTermsFree" | "MY.publicationTermsOfficial" | "MY.publicationTermsInternal" | "MY.publicationTermsNone";
-            publisherShortname?: string;
+            publisherShortname?: components["schemas"]["store-multiLang"];
             /** Share to FEO */
             shareToFEO?: string;
             /**
@@ -14698,8 +14731,8 @@ export interface components {
              * @description Admin field. Can the data be shared to GBIF or not: Given collection ID means data is shared under that collection.
              */
             shareToGbif?: string;
-            taxonomicCoverage?: string;
-            temporalCoverage?: string;
+            taxonomicCoverage?: components["schemas"]["store-multiLang"];
+            temporalCoverage?: components["schemas"]["store-multiLang"];
             /**
              * Amount of type specimens (approx.)
              * @description How many TYPE specimens does the collection contain?  Fill in approximate number, describe more in notes if necessary.
@@ -14879,10 +14912,10 @@ export interface components {
             isPartOfEnvironmentalELY?: string;
             /** Is part of province */
             isPartOfProvince?: string;
-            name: string;
+            name: components["schemas"]["store-multiLang"];
             /** Previously used name */
             previouslyOfficialName?: string[];
-            provinceCodeAlpha?: string;
+            provinceCodeAlpha?: components["schemas"]["store-multiLang"];
             /** Province code numeric */
             provinceCodeNumeric?: string;
             /** ringingDepartmentBirdAssociationAreaCode */
@@ -14897,8 +14930,8 @@ export interface components {
             id: string;
             /** Type for the MMAN.tagClass */
             "@type": string;
-            description: string;
-            name: string;
+            description: components["schemas"]["store-multiLang"];
+            name: components["schemas"]["store-multiLang"];
             /** Required role to add */
             requiredRolesAdd: ("" | "MMAN.expert" | "MMAN.basic" | "MMAN.owner" | "MMAN.formAdmin" | "MMAN.ictAdmin")[];
             /** Required role to remove */
@@ -14918,7 +14951,7 @@ export interface components {
             "@type"?: string;
             /** isPublic */
             isPublic: boolean;
-            name?: string;
+            name?: components["schemas"]["store-multiLang"];
             /** owner */
             owner: string;
             /** rootTaxon */
@@ -14940,15 +14973,15 @@ export interface components {
              * Format: date
              */
             versionDate?: string;
-            versionDescription?: string;
-            versionName?: string;
+            versionDescription?: components["schemas"]["store-multiLang"];
+            versionName?: components["schemas"]["store-multiLang"];
         };
         SensitiveOrganization: {
             "@context": string;
-            organizationLevel1: string;
-            organizationLevel2?: string;
-            organizationLevel3?: string;
-            organizationLevel4?: string;
+            organizationLevel1: components["schemas"]["MultiLangDto"];
+            organizationLevel2?: components["schemas"]["MultiLangDto"];
+            organizationLevel3?: components["schemas"]["MultiLangDto"];
+            organizationLevel4?: components["schemas"]["MultiLangDto"];
             abbreviation?: string;
         };
         "store-informalTaxonGroup": {
@@ -14965,7 +14998,7 @@ export interface components {
             explicitlyDefinedRoot?: boolean;
             /** Has subgroup */
             hasSubGroup?: string[];
-            name: string;
+            name: components["schemas"]["store-multiLang"];
         };
         TaxonAutocompleteResponse: {
             /** @description Name that matched the search word */
@@ -15009,8 +15042,8 @@ export interface components {
         };
         SensitiveSource: {
             id?: string;
-            name: string;
-            description: string;
+            name: components["schemas"]["MultiLangDto"];
+            description: components["schemas"]["MultiLangDto"];
         };
         "store-iucnRedListTaxonGroup": {
             /** Context for the IUCN Red List Evaluation Informal Taxon Group */
@@ -15025,7 +15058,7 @@ export interface components {
             includesInformalTaxonGroup?: string[];
             /** Includes taxon */
             includesTaxon?: string[];
-            name: string;
+            name: components["schemas"]["store-multiLang"];
         };
         "store-publication": {
             /** Context for the Publication */
@@ -28372,6 +28405,114 @@ export interface operations {
             };
         };
     };
+    ImagesController_getPage: {
+        parameters: {
+            query?: {
+                /** @description Comma separated ids */
+                idIn?: string;
+                page?: number;
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImagesPagedDto"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+        };
+    };
     ImagesController_upload: {
         parameters: {
             query?: never;
@@ -29156,6 +29297,114 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Image"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+        };
+    };
+    AudioController_getPage: {
+        parameters: {
+            query?: {
+                /** @description Comma separated ids */
+                idIn?: string;
+                page?: number;
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AudioPagedDto"];
                 };
             };
             400: {
@@ -33512,11 +33761,14 @@ export interface operations {
             };
         };
         responses: {
+            /** @description PDF file */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/pdf": string;
+                };
             };
             400: {
                 headers: {
@@ -35231,7 +35483,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["NewsDto"];
+                    "application/json": components["schemas"]["LajiBackendCMSNode"];
                 };
             };
             400: {
