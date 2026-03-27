@@ -8,6 +8,7 @@
   }
   <section>
     <h3>{{ 'result.load.titleSimple' | translate }}</h3>
+    <p [innerHTML]="'result.load.introSimple' | translate"></p>
     @if (maxSimpleDownload < unitCount || unitCount === 0) {
       <lu-alert>
         <span [innerHTML]="(unitCount === 0 ? 'observation.export.tooLittle' : 'result.load.error.tooManySimple') | translate:{max: (maxSimpleDownload | formattedNumber:'&nbsp;')}"></span>
@@ -15,7 +16,6 @@
     } @else {
       @if (unitCount > 0) {
         <div>
-          <p [innerHTML]="'result.load.introSimple' | translate"></p>
           <div class="action-group">
             <laji-download
               *lajiForTypes="['prod', 'dev', 'beta', 'embedded']"
@@ -53,7 +53,6 @@
     <ng-template #simpleDownloadTpl>
       @if (unitCount > 0) {
         <div>
-          <p [innerHTML]="'result.load.introSimple' | translate"></p>
           <div class="action-group">
             <laji-download
               *lajiForTypes="['prod', 'dev', 'beta', 'embedded']"
@@ -91,6 +90,9 @@
   </section>
   <section>
     <h3>{{ 'observation.download.publicTitle' | translate }}</h3>
+    <p
+      [innerHtml]="'result.load.introPublic' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')} ">
+    </p>
     <lu-alert *lajiLoggedIn="false">
       {{ 'result.load.error.notLoggedIn' | translate }}
     </lu-alert>
@@ -107,9 +109,6 @@
     <ng-container *lajiLoggedIn="true">
       @if (loadLimit >= unitCount && unitCount > 0) {
         <div style="margin-bottom: 15px;">
-          <p
-            [innerHtml]="'result.load.introPublic' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')} ">
-          </p>
           @if (hasPersonalData) {
             <lu-alert>
               <strong>{{ 'result.load.personalData' | translate }}</strong>
@@ -140,6 +139,7 @@
   </section>
   <section *lajiForTypes="['vir']; exclude: true">
     <h3>{{ 'observation.download.privateTitle' | translate }}</h3>
+    <p [innerHtml]="'result.load.introPrivate' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')}"></p>
     <lu-alert *lajiLoggedIn="false">
       {{ 'result.load.error.notLoggedIn' | translate }}
     </lu-alert>
@@ -151,7 +151,6 @@
     <ng-container *lajiLoggedIn="true">
       @if (loadLimit >= unitCount) {
         <div>
-          <p [innerHtml]="'result.load.introPrivate' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')}"></p>
           @if (hasPersonalData) {
             <lu-alert>
               <strong>{{ 'result.load.personalData' | translate }}</strong>
@@ -170,6 +169,7 @@
   <ng-container>
     <section *lajiForTypes="['vir']">
       <h3>{{ 'observation.download.apiTitle' | translate }}</h3>
+      <p [innerHtml]="'result.load.api' | translate"></p>
       <lu-alert *lajiLoggedIn="false">
         {{ 'result.load.error.notLoggedIn' | translate }}
       </lu-alert>
@@ -181,7 +181,6 @@
       <ng-container *lajiLoggedIn="true">
         @if (queryHasFilters) {
           <div>
-            <p [innerHtml]="'result.load.api' | translate"></p>
             <laji-apikey-modal [apiKey]="apiKey" [loading]="apiKeyLoading" (request)="onApiKeyRequest($event)"></laji-apikey-modal>
           </div>
         }
@@ -190,6 +189,7 @@
   </ng-container>
   <section>
     <h3>{{ 'observation.download.specimenTitle' | translate }}</h3>
+    <p [innerHtml]="'result.load.introSpecies' | translate"></p>
     @if (taxaLimit < speciesCount) {
       <lu-alert>
         <span [innerHTML]="'observation.export.tooManySpecies' | translate:{max: (taxaLimit | formattedNumber:'&nbsp;')}"></span>
@@ -202,7 +202,6 @@
     }
     @if (taxaLimit >= speciesCount && speciesCount > 0) {
       <div>
-        <p [innerHtml]="'result.load.introSpecies' | translate"></p>
         <lu-button
           [loading]="speciesCsvLoading"
           (click)="downloadSpecies($event)"
