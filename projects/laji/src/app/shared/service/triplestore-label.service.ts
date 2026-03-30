@@ -1,22 +1,18 @@
-import { forkJoin as ObservableForkJoin, Observable, of } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of, catchError, map, share, take, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
-import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
-import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { SourceService } from './source.service';
 import { UserService } from './user.service';
-import { LajiApi, LajiApiService } from './laji-api.service';
-import { catchError, map, share, take, tap } from 'rxjs';
 import { AreaService } from './area.service';
-import { RedListTaxonGroupApi } from '../api/RedListTaxonGroupApi';
-import { Publication } from '../model/Publication';
-import { NamedPlaceApi } from '../api/NamedPlaceApi';
 import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
 import { CollectionService } from './collection.service';
 import { BaseDataService } from '../../graph-ql/service/base-data.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
+type TaxonGroup = components['schemas']['store-informalTaxonGroup'] | components['schemas']['store-iucnRedListTaxonGroup'];
+type Publication = components['schemas']['store-publication'];
 
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
@@ -26,14 +22,11 @@ export class TriplestoreLabelService {
 
   private guidRegEx: RegExp;
 
-  constructor(private informalTaxonService: InformalTaxonGroupApi,
-              private namedPlaceApi: NamedPlaceApi,
+  constructor(private api: LajiApiClientBService,
               private sourceService: SourceService,
-              private lajiApi: LajiApiService,
               private userService: UserService,
               private areaService: AreaService,
               private annotationService: AnnotationService,
-              private redListTaxonGroupApi: RedListTaxonGroupApi,
               private collectionService: CollectionService,
               private baseDataService: BaseDataService
   ) {
@@ -74,16 +67,15 @@ export class TriplestoreLabelService {
       switch (parts[0]) {
         case 'MNP':
           if (typeof TriplestoreLabelService.requestCache[key] === 'undefined') {
-            TriplestoreLabelService.requestCache[key] = this.namedPlaceApi.findAll(
-              {
+            TriplestoreLabelService.requestCache[key] = this.api.get('/named-places', {
+              query: {
                 idIn: key,
-                userToken: this.userService.getToken(),
                 selectedFields: 'name',
-                includePublic: true
-              },
-              '1',
-              '1'
-              ).pipe(
+                includePublic: true,
+                page: 1,
+                pageSize: 1
+              }
+            } as any).pipe(
                 map((np) => np.results[0] && np.results[0].name || ''),
                 catchError(() => of('')),
                 tap(name => TriplestoreLabelService.cache[key] = name),
@@ -93,9 +85,9 @@ export class TriplestoreLabelService {
           return TriplestoreLabelService.requestCache[key];
         case 'MVL':
           if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.informalTaxonService.informalTaxonGroupFindById(key, 'multi').pipe(
-              catchError(() => this.redListTaxonGroupApi.redListTaxonGroupsFindById(key, 'multi')),
-              map((group: InformalTaxonGroup) => group.name),
+            TriplestoreLabelService.requestCache[key] = this.api.get('/informal-taxon-groups/{id}', { path: { id: key } }).pipe(
+              catchError(() => this.api.get('/red-list-evaluation-groups/{id}', { path: { id: key } })),
+              map((group: TaxonGroup) => group.name),
               tap(name => TriplestoreLabelService.cache[key] = name),
               map(name => MultiLangService.getValue((name as any), lang)),
               share()
@@ -106,8 +98,8 @@ export class TriplestoreLabelService {
           return this.userService.getPersonInfo(key);
         case 'MP':
           if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.publications, key, {lang: 'multi'}).pipe(
-              map((publication: Publication) => publication['name']),
+            TriplestoreLabelService.requestCache[key] = this.api.get('/publications/{id}', { path: { id: key } }).pipe(
+              map((publication: Publication) => publication.name || ''),
               tap(name => TriplestoreLabelService.cache[key] = name),
               map(name => MultiLangService.getValue((name as any), lang)),
               share()
@@ -132,7 +124,7 @@ export class TriplestoreLabelService {
           return this.collectionService.getName$(key, lang).pipe(share());
         case 'MX':
           if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.taxon, key, {lang: 'multi'}).pipe(
+            TriplestoreLabelService.requestCache[key] = this.api.get('/taxa/{id}', { path: { id: key } }).pipe(
               map((taxon: Taxon) => taxon.vernacularName || taxon.scientificName),
               tap(name => TriplestoreLabelService.cache[key] = name),
               map(name => MultiLangService.getValue((name as any), lang)),
