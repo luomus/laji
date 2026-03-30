@@ -2,14 +2,14 @@
   @if (data.dataset !== null) {
     <div class="d-flex justify-between mb-4">
       <h2 class="mb-0">{{ data.dataset?.name }}</h2>
-      @if (data.perms !== undefined) {
-        @if (data.perms !== null) {
+      @if (data.perms !== undefined && data.perms !== null) {
+        @if (data.hasPerms) {
           <button [routerLink]="['edit']" class="btn btn-default">
             <i class="glyphicon glyphicon-wrench"></i>
             Edit dataset
           </button>
         }
-      } @else {
+      } @else if (data.perms === undefined) {
         <laji-spinner class="d-block m-6"></laji-spinner>
       }
     </div>
@@ -80,16 +80,14 @@
       </tr>
     </table>
 
-    @if (data.perms !== undefined) {
-      @if (data.perms !== null) {
-        <h3>Permissions</h3>
-        <ul>
-          @for (userId of data.perms.userIds; track userId) {
-            <li>{{ userId }}</li>
-          }
-        </ul>
-        <button class="btn btn-default">Edit permissions</button>
-      }
+    @if (data.perms !== undefined && data.perms !== null) {
+      <h3>Permissions</h3>
+      <ul>
+        @for (userId of data.perms.userIds; track userId) {
+          <li>{{ userId }}</li>
+        }
+      </ul>
+      <button class="btn btn-default">Edit permissions</button>
     } @else {
       <laji-spinner class="d-block m-6"></laji-spinner>
     }
