@@ -974,7 +974,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** Get a page of images. Private/protected images aren't included. */
+        get: operations["ImagesController_getPage"];
         put?: never;
         /** Upload image and get temporary id */
         post: operations["ImagesController_upload"];
@@ -1078,7 +1079,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** Get a page of audio. Private/protected audio aren't included. */
+        get: operations["AudioController_getPage"];
         put?: never;
         /** Upload audio and get temporary id */
         post: operations["AudioController_upload"];
@@ -8902,8 +8904,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Convert TSV file from the data warehouse to a zipped GeoPackage
-         * @description Convert a TSV file that is stored in the data warehouse to a zipped GeoPackage format
+         * Convert ZIP or TSV file from the data warehouse to a zipped GeoPackage
+         * @description Convert ZIP or TSV file that is stored in the data warehouse to a zipped GeoPackage format
          */
         get: operations["convert_with_id__dataset_id__get"];
         put?: never;
@@ -9150,6 +9152,16 @@ export interface components {
             thumbnailURL: string;
             uploadedBy?: string;
         };
+        ImagesPagedDto: {
+            results: components["schemas"]["Image"][];
+            currentPage: number;
+            pageSize: number;
+            total: number;
+            lastPage: number;
+            prevPage?: number;
+            nextPage?: number;
+            "@context": string;
+        };
         Audio: {
             /** @enum {string} */
             intellectualRights: "MZ.intellectualRightsCC-BY-SA-4.0" | "MZ.intellectualRightsCC-BY-NC-4.0" | "MZ.intellectualRightsCC-BY-NC-SA-4.0" | "MZ.intellectualRightsCC-BY-4.0" | "MZ.intellectualRightsCC0-4.0" | "MZ.intellectualRightsODBL-1.0" | "MZ.intellectualRightsPD" | "MZ.intellectualRightsARR" | "MZ.intellectualRightsCC-BY-2.0" | "MZ.intellectualRightsCC-BY-SA-2.0" | "MZ.intellectualRightsCC-BY-SA-2.0-DE" | "MZ.intellectualRightsCC-BY-NC-2.0" | "MZ.intellectualRightsCC-BY-NC-SA-2.0" | "MZ.intellectualRightsCC-BY-NC-ND-2.0" | "MZ.intellectualRightsCC-BY-SA-2.5" | "MZ.intellectualRightsCC-BY-SA-2.5-SE" | "MZ.intellectualRightsCC-BY-3.0" | "MZ.intellectualRightsCC-BY-SA-3.0" | "MZ.intellectualRightsCC-BY-NC-SA-3.0" | "MZ.intellectualRightsCC-BY-ND-4.0" | "MZ.intellectualRightsCC-BY-NC-ND-4.0";
@@ -9166,10 +9178,20 @@ export interface components {
             uploadedBy?: string;
             wavURL?: string;
         };
+        AudioPagedDto: {
+            results: components["schemas"]["Audio"][];
+            currentPage: number;
+            pageSize: number;
+            total: number;
+            lastPage: number;
+            prevPage?: number;
+            nextPage?: number;
+            "@context": string;
+        };
         FeaturedImage: {
             url: string;
             caption: string;
-            alt: string;
+            alt?: string;
         };
         InformationChild: {
             title: string;
@@ -9257,19 +9279,20 @@ export interface components {
         CheckTmpTokenDto: {
             tmpToken: string;
         };
-        NewsDto: {
-            id: string;
-            featuredImage: string;
+        LajiBackendNewsNode: {
             external: boolean;
             externalURL?: string;
-            title: string;
-            content: string;
-            posted: string;
+            id: string;
+            content?: string;
+            title?: string;
+            author?: string;
+            posted?: string;
+            tags?: string[];
+            featuredImage?: components["schemas"]["FeaturedImage"];
             modified?: string;
-            tag: string;
         };
         NewsPagedDto: {
-            results: components["schemas"]["NewsDto"][];
+            results: components["schemas"]["LajiBackendNewsNode"][];
             currentPage: number;
             pageSize: number;
             total: number;
@@ -9277,6 +9300,16 @@ export interface components {
             prevPage?: number;
             nextPage?: number;
             "@context": string;
+        };
+        LajiBackendCMSNode: {
+            id: string;
+            content?: string;
+            title?: string;
+            author?: string;
+            posted?: string;
+            tags?: string[];
+            featuredImage?: components["schemas"]["FeaturedImage"];
+            modified?: string;
         };
         WarehouseDwQuery_CountResponse: {
             total: number;
@@ -28372,6 +28405,114 @@ export interface operations {
             };
         };
     };
+    ImagesController_getPage: {
+        parameters: {
+            query?: {
+                /** @description Comma separated ids */
+                idIn?: string;
+                page?: number;
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImagesPagedDto"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+        };
+    };
     ImagesController_upload: {
         parameters: {
             query?: never;
@@ -29156,6 +29297,114 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Image"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+        };
+    };
+    AudioController_getPage: {
+        parameters: {
+            query?: {
+                /** @description Comma separated ids */
+                idIn?: string;
+                page?: number;
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AudioPagedDto"];
                 };
             };
             400: {
@@ -33512,11 +33761,14 @@ export interface operations {
             };
         };
         responses: {
+            /** @description PDF file */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/pdf": string;
+                };
             };
             400: {
                 headers: {
@@ -35231,7 +35483,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["NewsDto"];
+                    "application/json": components["schemas"]["LajiBackendCMSNode"];
                 };
             };
             400: {
