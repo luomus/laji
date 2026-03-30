@@ -2,8 +2,13 @@ import { map, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { PagedResult } from '../../shared/model/PagedResult';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { paths } from 'projects/laji-api-client-b/generated/api';
+
+type WarehouseUnitAggregateQueryParams = NonNullable<paths['/warehouse/query/unit/aggregate']['get']['parameters']['query']>;
+type WarehouseUnitListQueryParams = NonNullable<paths['/warehouse/query/unit/list']['get']['parameters']['query']>;
+type WarehouseUnitAggregateBy = NonNullable<WarehouseUnitAggregateQueryParams['aggregateBy']>[number];
 
 interface ResultState {
   key: string;
@@ -37,7 +42,7 @@ export class MainResultService {
   };
 
   constructor(
-    private warehouseApi: WarehouseApi
+    private api: LajiApiClientBService
   ) { }
 
   getResults(query: WarehouseQueryInterface, lang: string): Observable<any> {
@@ -49,15 +54,21 @@ export class MainResultService {
       case 'sv':
         vernacular = 'unit.linkings.taxon.nameSwedish';
     }
-    return this._fetch('result', JSON.stringify(query) + ':' + lang, this.warehouseApi.warehouseQueryAggregateGet(
-      query,
-      ['unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.taxonomicOrder', vernacular],
-      ['unit.linkings.taxon.taxonomicOrder'],
-      1000,
-      1,
-      false,
-      false
-    )).pipe(
+    return this._fetch('result', JSON.stringify(query) + ':' + lang, this.api.get('/warehouse/query/unit/aggregate', {
+      query: {
+        ...query,
+        aggregateBy: [
+          'unit.linkings.taxon.speciesId',
+          'unit.linkings.taxon.speciesScientificName',
+          'unit.linkings.taxon.taxonomicOrder',
+          vernacular as WarehouseUnitAggregateBy
+        ],
+        orderBy: ['unit.linkings.taxon.taxonomicOrder'],
+        pageSize: 1000,
+        page: 1,
+        onlyCount: false
+      }
+    } as { query: WarehouseUnitAggregateQueryParams })).pipe(
       map(data => data.results),
       map(data => data.map((row: any) => {
           row.aggregateBy['vernacularName'] =
@@ -69,23 +80,24 @@ export class MainResultService {
   }
 
   getList(query: WarehouseQueryInterface, page: number, pageSize: number): Observable<PagedResult<any>> {
-    return this._fetch('list', JSON.stringify(query) + ':' + page, this.warehouseApi.warehouseQueryListGet(
-      query,
-      [
-        'document.documentId,' +
-        'gathering.eventDate.begin,' +
-        'gathering.eventDate.end,' +
-        'gathering.municipality,' +
-        'gathering.biogeographicalProvince,' +
-        'gathering.team,' +
-        'gathering.province,' +
-        'unit.unitId,' +
-        'unit.linkings.taxon.scientificName'
-      ],
-      undefined,
-      pageSize,
-      page
-    ));
+    return this._fetch('list', JSON.stringify(query) + ':' + page, this.api.get('/warehouse/query/unit/list', {
+      query: {
+        ...query,
+        selected: [
+          'document.documentId',
+          'gathering.eventDate.begin',
+          'gathering.eventDate.end',
+          'gathering.municipality',
+          'gathering.biogeographicalProvince',
+          'gathering.team',
+          'gathering.province',
+          'unit.unitId',
+          'unit.linkings.taxon.scientificName'
+        ],
+        pageSize,
+        page
+      }
+    } as { query: WarehouseUnitListQueryParams })) as Observable<PagedResult<any>>;
   }
 
   private _fetch(type: 'map'|'list'|'result'|'taxon', cacheKey: string, request: Observable<any>): Observable<any> {
