@@ -27,7 +27,7 @@ export class TraitDbTraitEditorComponent implements OnInit {
     name: undefined,
     description: undefined,
     exampleValues: undefined,
-    baseUnit: '' as any,
+    baseUnit: '' as any, // undefined doesn't work reliably with the html selector
     range: undefined,
     enumerations: [],
     reference: undefined,
