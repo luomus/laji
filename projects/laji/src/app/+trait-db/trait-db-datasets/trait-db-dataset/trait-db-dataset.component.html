@@ -97,7 +97,7 @@
         <h3 class="mb-0">Trait data</h3>
         @if (data.perms !== undefined) {
           <div>
-            @if (data.perms !== null) {
+            @if (data.perms !== null && data.hasPerms) {
               <a [routerLink]="['data-entry']" class="btn btn-default mr-3">
                 <i class="glyphicon glyphicon-upload"></i>
                 Upload trait data

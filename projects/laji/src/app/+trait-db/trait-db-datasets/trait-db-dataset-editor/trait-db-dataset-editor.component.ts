@@ -127,6 +127,12 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  onDeleteClick() {
+    if (confirm(this.translate.instant('np.delete.confirm'))) {
+      this.onDelete();
+    }
+  }
+
   onSubmit() {
     if (!this.datasetForm.get('id')!.value) {
       this.submitNewDataset();
