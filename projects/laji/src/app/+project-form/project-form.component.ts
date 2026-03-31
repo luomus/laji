@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs';
 import { combineLatest, merge, Observable, of, Subscription, Subject, BehaviorSubject, forkJoin } from 'rxjs';
 import { UserService } from '../shared/service/user.service';
-import { Document } from '../shared/model/Document';
 import { DocumentViewerFacade, StoreDocument } from '../shared-modules/document-viewer/document-viewer.facade';
 import { ProjectForm, ProjectFormService } from '../shared/service/project-form.service';
 import { FormPermissionService, Rights } from '../shared/service/form-permission.service';
@@ -352,8 +351,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     ];
   }
 
-  showDocumentViewer(document: Document) {
-    this.documentViewerFacade.showDocument({document: document as unknown as StoreDocument, own: true});
+  showDocumentViewer(document: StoreDocument) {
+    this.documentViewerFacade.showDocument({document, own: true});
   }
 
   trackByLabel(index: any, link: any) {

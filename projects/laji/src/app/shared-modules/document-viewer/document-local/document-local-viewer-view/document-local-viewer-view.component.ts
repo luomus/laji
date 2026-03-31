@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { Document as OldDocument } from '../../../../shared/model/Document';
 import { ViewerMapComponent } from '../../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { DocumentPermissionService, DocumentRights } from '../../service/document-permission.service';

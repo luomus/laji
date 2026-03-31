@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Document } from '../../../shared/model/Document';
 import { Observable, Subscription } from 'rxjs';
 import { LatestDocumentsFacade } from '../latest-documents.facade';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { tap } from 'rxjs';
 import { Rights } from '../../../shared/service/form-permission.service';
+import type { components } from 'projects/laji-api-client-b/generated/api.d';
 
+type Document = components['schemas']['store-document'];
 
 @Component({
     selector: 'laji-haseka-latest',
@@ -56,8 +57,8 @@ export class UsersLatestComponent implements OnInit, OnDestroy {
       this.subscriptionDeleteOwnDocument?.unsubscribe();
   }
 
-  discardTempDocument(document: Document & { id: string }) {
-    this.latestFacade.discardTmpData(document.id);
+  discardTempDocument(document: Document) {
+    this.latestFacade.discardTmpData(document.id!);
   }
 
   showDocumentViewer(doc: Document) {

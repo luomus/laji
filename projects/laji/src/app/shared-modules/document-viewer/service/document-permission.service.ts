@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { IdService } from '../../../shared/service/id.service';
-import { Document } from '../../../shared/model/Document';
 import { Person } from '../../../shared/model/Person';
 import { Observable, of } from 'rxjs';
 import { FormPermissionService } from '../../../shared/service/form-permission.service';
@@ -67,7 +66,7 @@ export class DocumentPermissionService {
     );
   }
 
-  getRightsToLocalDocument(doc?: Document | StoreDocument): Observable<DocumentRights> {
+  getRightsToLocalDocument(doc?: StoreDocument): Observable<DocumentRights> {
     return this.userService.user$.pipe(
       switchMap(user => {
         if (!user?.id || !doc) {

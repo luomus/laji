@@ -14,7 +14,6 @@ import {
 } from '@angular/core';
 import moment from 'moment';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { Document } from '../../../shared/model/Document';
 import { ObservationResultService } from '../service/observation-result.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
@@ -37,6 +36,9 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
 import { RowDocument } from '../../own-submissions/own-datatable/own-datatable.component';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
+import { components } from 'projects/laji-api-client-b/generated/api';
+
+type Document = components['schemas']['store-document'];
 
 
 @Component({
@@ -397,14 +399,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
         this.logger.error('Failed to load form ' + formId, err);
         return ObservableOf({id: formId});
       }));
-  }
-
-  private getSelectFields(selected: string[], query: WarehouseQueryInterface) {
-    const selects = selected.map(field => this.columnLookup[field].selectField || field);
-    if (query.editorPersonToken || query.observerPersonToken || query.editorOrObserverPersonToken) {
-      selects.push('document.quality,gathering.quality,unit.quality');
-    }
-    return selects;
   }
 
   private setLangParams(value: string) {
