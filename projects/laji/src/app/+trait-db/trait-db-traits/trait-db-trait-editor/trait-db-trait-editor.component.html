@@ -42,9 +42,13 @@
   </div>
   <div>
     <label for="base-unit">Base unit:</label>
-    <select id="base-unit" class="form-control" formControlName="baseUnit">
-      <option [ngValue]="undefined">None</option>
-      <option *ngFor="let u of (unitOfMeasurements$ | async)" [ngValue]="u.id">{{ u.label }}</option>
+    <select
+      id="base-unit"
+      class="form-control"
+      formControlName="baseUnit"
+    >
+      <option value="">None</option>
+      <option *ngFor="let u of (unitOfMeasurements$ | async)" [value]="u.id">{{ u.label }}</option>
     </select>
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'baseUnit' }"></ng-container>
   </div>

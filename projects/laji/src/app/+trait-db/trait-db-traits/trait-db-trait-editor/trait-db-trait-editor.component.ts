@@ -27,7 +27,7 @@ export class TraitDbTraitEditorComponent implements OnInit {
     name: undefined,
     description: undefined,
     exampleValues: undefined,
-    baseUnit: undefined,
+    baseUnit: '' as any,
     range: undefined,
     enumerations: [],
     reference: undefined,
@@ -58,6 +58,7 @@ export class TraitDbTraitEditorComponent implements OnInit {
       Object.entries(trait).forEach(([key, val]) => {
         this.form.get(key)?.setValue(val);
       });
+      this.form.get('baseUnit')?.setValue((trait.baseUnit ?? '') as any);
     });
 
     this.unitOfMeasurements$ = this.metadataService.getRange('TDF.unitOfMeasurementEnum');
@@ -75,7 +76,10 @@ export class TraitDbTraitEditorComponent implements OnInit {
 
   private submitNewTrait() {
     this.submissionState = 'externalValidation';
-    const form = filterNullValues(this.form.value) as Trait;
+    const form = filterNullValues({
+      ...this.form.value,
+      baseUnit: this.form.value.baseUnit ? this.form.value.baseUnit : null
+    }) as Trait;
     this.form.disable();
     this.api.fetch('/trait/traits/validate', 'post', {}, form, 0).pipe(
       tap(res => {
@@ -99,7 +103,10 @@ export class TraitDbTraitEditorComponent implements OnInit {
 
   private updateExistingTrait() {
     this.submissionState = 'externalValidation';
-    const form = filterNullValues(this.form.value) as Trait;
+    const form = filterNullValues({
+      ...this.form.value,
+      baseUnit: this.form.value.baseUnit ? this.form.value.baseUnit : null
+    }) as Trait;
     this.form.disable();
     this.api.fetch('/trait/traits/validate-update/{id}', 'post', { path: { id: form.id } }, form).pipe(
       tap(res => {
