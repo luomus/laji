@@ -82,7 +82,7 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
         ),
         map(rows => {
           const traitColsAcc: GeneratedDatatableColumn[] = [];
-          rows[0].traits?.forEach((trait, idx) => {
+          rows[0]?.traits?.forEach((trait, idx) => {
             traitColsAcc.push(...traitCols.map(col => ({ ...col, path: ['trait', idx, ...col.path] } as GeneratedDatatableColumn)));
           });
           const columns: DatatableColumn<any>[] = [{
