@@ -5,8 +5,8 @@
   <div>
     @if (loggedIn.val) {
       <div>
-        <a class="btn btn-default" [routerLink]="['new']">+ create new trait</a>
-        <a class="btn btn-default" routerLink="/trait-db/trait-groups/new">+ create new trait group</a>
+        <a class="btn btn-default mr-4" [routerLink]="['new']"><i class="glyphicon glyphicon-plus"></i> Create a new trait</a>
+        <a class="btn btn-default" routerLink="/trait-db/trait-groups/new"><i class="glyphicon glyphicon-plus"></i> Create a new trait group</a>
       </div>
     } @else {
       Please sign in...
@@ -20,7 +20,7 @@
 
 <div>
   <label for="trait-group-select">Filter by trait group:</label>
-  <select id="trait-group-select" (change)="onSelectedGroupChange($event)">
+  <select class="form-control" id="trait-group-select" (change)="onSelectedGroupChange($event)">
     <option [value]="''">All</option>
     @for (group of (traitGroups | keyvalue); track group) {
       <option [value]="group.value.id">{{ group.value.name }}</option>
@@ -46,4 +46,3 @@
     </tr>
   }
 </table>
-
