@@ -46,6 +46,7 @@
       <td>{{ trait.identifiers | values }}</td>
     </tr>
   </table>
+  <laji-trait-search [traitId]="trait.id"></laji-trait-search>
 } @else {
   <laji-spinner class="d-block m-6"></laji-spinner>
 }

@@ -3,16 +3,14 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
   AfterViewInit} from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
-import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs';
+import { paths } from 'projects/laji-api-client-b/generated/api.d';
+import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs';
 import { DatatableColumn, Sort } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 import { FormValue } from './trait-search-filters/trait-search-filters.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isObject } from '@luomus/laji-map/lib/utils';
-import { AdditionalFilterValues, propIsArray } from './trait-search-filters/additional-filters.component';
+import { propIsArray } from './trait-search-filters/additional-filters.component';
 import { environment } from 'projects/laji/src/environments/environment';
 import { cols } from './trait-search-table-columns';
-import { RankFilterValue } from './trait-search-filters/rank-filter/rank-filter.component';
 import { Location } from '@angular/common';
 import { GeneratedDatatableColumn } from 'scripts/codegen/shared/shared';
 
@@ -108,6 +106,7 @@ const queryParamsToFormValue = (queryParams: QueryParams): FormValue => {
 })
 export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   @Input() datasetId?: string;
+  @Input() traitId?: string;
 
   @ViewChild('enumCellTemplate') enumCellTemplate!: TemplateRef<any>;
 
@@ -137,11 +136,15 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
       tap(([[pageIdx, sorts], filters]) => {
         this.loading = true;
 
-        if (this.datasetId) {
+        if (this.datasetId || this.traitId) {
           // if set, @Input properties should override query params
+          const dataset = filters.dataset;
+          const trait = filters.trait;
           filters.dataset = null;
+          filters.trait = null;
           this.setQueryParams(pageIdx, sorts, filters);
-          filters.dataset = this.datasetId;
+          filters.dataset = this.datasetId ?? dataset;
+          filters.trait = this.traitId ?? trait;
         } else {
           this.setQueryParams(pageIdx, sorts, filters);
         }
@@ -167,6 +170,9 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
     if (changes.datasetId?.currentValue) {
       this.initialFilters = { ...this.initialFilters, dataset: this.datasetId } as any;
     }
+    if (changes.traitId?.currentValue) {
+      this.initialFilters = { ...this.initialFilters, trait: this.traitId } as any;
+    }
   }
 
   ngOnInit(): void {
@@ -186,6 +192,10 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
           if (this.datasetId) {
             // if set, @Input properties should override query params
             formValue.dataset = this.datasetId;
+          }
+          if (this.traitId) {
+            // if set, @Input properties should override query params
+            formValue.trait = this.traitId;
           }
           this.initialFilters = formValue;
           this.filterChangeSubject.next(this.initialFilters!);
@@ -223,10 +233,14 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
   }
 
   getDisabledFilters(): Set<keyof FormValue> {
+    const disabled = new Set<keyof FormValue>();
     if (this.datasetId) {
-      return new Set(['dataset']);
+      disabled.add('dataset');
     }
-    return new Set();
+    if (this.traitId) {
+      disabled.add('trait');
+    }
+    return disabled;
   }
 
   getDownloadUrl(): string {
