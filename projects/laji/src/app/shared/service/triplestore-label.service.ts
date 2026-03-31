@@ -75,7 +75,7 @@ export class TriplestoreLabelService {
                 page: 1,
                 pageSize: 1
               }
-            } as any).pipe(
+            }).pipe(
                 map((np) => np.results[0] && np.results[0].name || ''),
                 catchError(() => of('')),
                 tap(name => TriplestoreLabelService.cache[key] = name),
