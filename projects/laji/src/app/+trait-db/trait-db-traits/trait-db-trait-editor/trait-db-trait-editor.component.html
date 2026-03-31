@@ -19,7 +19,7 @@
   </div>
   <div>
     <label for="description">Description*:</label>
-    <input id="description" class="form-control" formControlName="description" type="text">
+    <textarea id="description" class="form-control" formControlName="description"></textarea>
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'description' }"></ng-container>
   </div>
   <div>
@@ -43,12 +43,12 @@
   <div>
     <label for="base-unit">Base unit:</label>
     <select id="base-unit" class="form-control" formControlName="baseUnit">
-      <option [value]="undefined" [attr.selected]="!form.get('baseUnit')?.value ? '' : null">None</option>
-      <option *ngFor="let u of (unitOfMeasurements$ | async)" [value]="u.id">{{ u.label }}</option>
+      <option [ngValue]="undefined">None</option>
+      <option *ngFor="let u of (unitOfMeasurements$ | async)" [ngValue]="u.id">{{ u.label }}</option>
     </select>
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'baseUnit' }"></ng-container>
   </div>
-  <laji-trait-enumeration-value-list formControlName="enumerations"></laji-trait-enumeration-value-list>
+  <laji-trait-enumeration-value-list class="my-6" formControlName="enumerations"></laji-trait-enumeration-value-list>
   <div>
     <label for="example-values">Example values:</label>
     <input id="example-values" class="form-control" formControlName="exampleValues" type="text">
@@ -65,11 +65,12 @@
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'identifiers' }"></ng-container>
   </div>
 
+  <button type="submit" class="btn btn-primary mr-4" [disabled]="submissionState !== 'none'">Submit</button>
+
   @if (form.get('id')?.value) {
-    <button class="btn btn-default" (click)="onDelete()">DELETE TRAIT</button>
+    <button type="button" class="btn btn-danger" (click)="onDeleteClick()">Delete</button>
   }
 
-  <button type="submit" class="btn btn-default" [disabled]="submissionState !== 'none'">Submit</button>
   @if (submissionState === 'externalValidation') {
     <div>Server is validating...</div>
   }

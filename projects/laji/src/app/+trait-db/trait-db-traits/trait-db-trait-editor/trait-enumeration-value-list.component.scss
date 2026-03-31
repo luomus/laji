@@ -10,4 +10,8 @@
   padding-left: $sp-4;
   margin-left: $sp-3;
   border-left: 2px solid $neutral-4;
+
+  .form-control {
+    font-weight: 400;
+  }
 }

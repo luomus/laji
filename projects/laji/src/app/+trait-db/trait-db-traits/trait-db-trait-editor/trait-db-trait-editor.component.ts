@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable } from 'rxjs';
@@ -14,6 +15,7 @@ type ValidationResponse = components['schemas']['LajiBackendValidationResponse']
 
 @Component({
     templateUrl: './trait-db-trait-editor.component.html',
+    styleUrls: ['./trait-db-trait-editor.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
@@ -43,7 +45,8 @@ export class TraitDbTraitEditorComponent implements OnInit {
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private metadataService: MetadataService
+    private metadataService: MetadataService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -138,5 +141,11 @@ export class TraitDbTraitEditorComponent implements OnInit {
       this.form.enable();
       this.cdr.markForCheck();
     });
+  }
+
+  onDeleteClick() {
+    if (confirm(this.translate.instant('np.delete.confirm'))) {
+      this.onDelete();
+    }
   }
 }
