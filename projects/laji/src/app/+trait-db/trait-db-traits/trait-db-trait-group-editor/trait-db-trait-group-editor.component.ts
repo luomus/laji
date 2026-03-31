@@ -11,6 +11,7 @@ type ValidationResponse = components['schemas']['LajiBackendValidationResponse']
 
 @Component({
     templateUrl: './trait-db-trait-group-editor.component.html',
+    styleUrls: ['./trait-db-trait-group-editor.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
