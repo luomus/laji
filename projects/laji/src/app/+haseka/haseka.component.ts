@@ -58,7 +58,7 @@ export class HasekaComponent implements OnInit, OnDestroy {
   }
 
   showDocumentViewer(document: Document) {
-    this.documentViewerFacade.showDocument({document: document, own: true});
+    this.documentViewerFacade.showDocument({document, own: true});
   }
 
 }
