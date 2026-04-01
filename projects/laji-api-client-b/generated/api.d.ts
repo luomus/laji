@@ -9073,14 +9073,12 @@ export interface components {
             total: number;
         };
         BatchJobValidationStatusResponse: {
-            /** @enum {string} */
-            phase: "VALIDATING" | "READY_TO_COMPLETE" | "COMPLETING" | "COMPLETED" | "FAILED_UPON_VALIDATION" | "FAILED_UPON_COMPLETION";
             /** @default [] */
             errors: (components["schemas"]["ErrorsObj"] | null)[];
+            /** @enum {string} */
+            phase: "VALIDATING" | "READY_TO_COMPLETE" | "COMPLETING" | "COMPLETED" | "FAILED_UPON_VALIDATION" | "FAILED_UPON_COMPLETION";
             id: string;
-            documents?: components["schemas"]["store-document"][];
             status: components["schemas"]["BatchJobValidationStatus"];
-            personID: string;
         };
         DocumentCountItemResponse: {
             year: string;
@@ -19526,16 +19524,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        phase: "VALIDATING" | "READY_TO_COMPLETE" | "COMPLETING" | "COMPLETED" | "FAILED_UPON_VALIDATION" | "FAILED_UPON_COMPLETION";
-                        /** @default [] */
-                        errors: (components["schemas"]["ErrorsObj"] | null)[];
-                        id: string;
-                        documents?: components["schemas"]["store-document"][];
-                        status: components["schemas"]["BatchJobValidationStatus"];
-                        personID: string;
-                    };
+                    "application/json": components["schemas"]["BatchJobValidationStatusResponse"];
                 };
             };
             400: {
@@ -20872,7 +20861,7 @@ export interface operations {
     };
     NamedPlacesController_getPage: {
         parameters: {
-            query: {
+            query?: {
                 /** @description Include only items with these ids. Multiple values are separated by a comma (,). */
                 idIn?: string;
                 /** @description alternative ID. Multiple values are separated by a comma (,). */
@@ -20887,7 +20876,7 @@ export interface operations {
                 /** @description Filter by tags. Multiple values are separated by a comma (,). */
                 tags?: string;
                 /** @description Collection id. Child collections are also fetched. */
-                collectionID: string;
+                collectionID?: string;
                 /** @description Include public named places (used only when Person-Token is given). Defaults to true. */
                 includePublic?: boolean;
                 /** @description Include units in prepopulated and accepted documents (only form forms with 'MHL.includeUnits' true). Defaults to false. */
