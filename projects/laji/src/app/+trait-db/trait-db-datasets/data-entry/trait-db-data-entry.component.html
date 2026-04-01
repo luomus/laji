@@ -12,7 +12,7 @@
     @if (stack.length > 1) {
       <laji-trait-db-data-entry-validate
         [ngClass]="{'d-none': stack.length !== 2}"
-        [datasetId]="stack[1].datasetId"
+        [datasetId]="stack[0].datasetId"
         [tsv]="$any(stack[1]).tsv"
         (validationSuccess)="onValidationSuccess()"
       ></laji-trait-db-data-entry-validate>
@@ -20,19 +20,18 @@
     @if (stack.length > 2) {
       <laji-trait-db-data-entry-check
         [ngClass]="{'d-none': stack.length !== 3}"
-        [datasetId]="stack[2].datasetId"
-        [tsv]="$any(stack[2]).tsv"
+        [datasetId]="stack[0].datasetId"
+        [tsv]="$any(stack[1]).tsv"
         (submissionSuccess)="onSubmissionSuccess()"
       ></laji-trait-db-data-entry-check>
     }
     @if (stack.length > 3) {
       <laji-trait-db-data-entry-ready
         [ngClass]="{'d-none': stack.length !== 4}"
-        [datasetId]="stack[3].datasetId"
+        [datasetId]="stack[0].datasetId"
       ></laji-trait-db-data-entry-ready>
     }
   } @else {
     Loading...
   }
 }
-
