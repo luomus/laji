@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnChan
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import { tap, map, switchMap } from 'rxjs';
 
 interface NotInitialized {
@@ -122,6 +122,26 @@ export class TraitDbDataEntryCheckComponent implements OnChanges, AfterViewInit,
 
   state$ = new BehaviorSubject<State>({ _tag: 'not-initialized' });
   table$ = new BehaviorSubject<{ rows: any; cols: any } | undefined>(undefined);
+  missingColumnErrors$ = combineLatest([this.state$, this.table$]).pipe(
+    map(([state, table]) => {
+      if (state._tag !== 'validation-complete' || !table) {
+        return [] as Array<{ key: string; error: string }>;
+      }
+
+      const existingCols = new Set((table.cols as Array<{ title: string }>).map(col => col.title));
+      const missing = new Map<string, string>();
+
+      (state.validationResult.rows ?? []).forEach(row => {
+        Object.entries(row.errors ?? {}).forEach(([key, error]) => {
+          if (!existingCols.has(key)) {
+            missing.set(key, error);
+          }
+        });
+      });
+
+      return Array.from(missing.entries()).map(([key, error]) => ({ key, error }));
+    })
+  );
   objectEntries = Object.entries;
 
   private tsvChange = new BehaviorSubject<null>(null);
