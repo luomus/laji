@@ -17,6 +17,7 @@ type InputRow = components['schemas']['LajiBackendInputRow'];
 interface TableData {
   rows: FormArray<FormGroup>;
   cols: DatatableColumn<any>[];
+  defaultColumns: number[];
 }
 
 interface RowUploadInProgress {
@@ -85,13 +86,14 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
           rows[0]?.traits?.forEach((trait, idx) => {
             traitColsAcc.push(...traitCols.map(col => ({ ...col, path: ['traits', idx, ...col.path] } as GeneratedDatatableColumn)));
           });
+          const generatedCols = [...subjectCols, ...traitColsAcc] as GeneratedDatatableColumn[];
           const columns: DatatableColumn<any>[] = [{
             title: '',
             sortable: false,
             unselectable: false,
             cellTemplate: this.editCell
           } as DatatableColumn<any>];
-          columns.push(...([...subjectCols, ...traitColsAcc] as GeneratedDatatableColumn[])
+          columns.push(...generatedCols
             .map(
               col => {
                 switch (col.node._tag) {
@@ -130,9 +132,16 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
           );
 
           const formArray = this.constructFormArray(rows);
+          const defaultColumns = [
+            0, // row actions
+            ...generatedCols
+              .map((col, idx) => this.columnHasData(rows, col.path as Array<string | number>) ? idx + 1 : -1)
+              .filter(idx => idx >= 0)
+          ];
           return {
             rows: formArray,
-            cols: columns
+            cols: columns,
+            defaultColumns
           };
         })
       ).subscribe(data => {
@@ -232,5 +241,23 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
       formArray.push(this.fb.group({ subject, traits }));
     });
     return formArray;
+  }
+
+  private columnHasData(rows: InputRow[], path: Array<string | number>): boolean {
+    return rows.some(row => this.hasCellData(this.getNestedValue(row, path)));
+  }
+
+  private getNestedValue(obj: any, path: Array<string | number>): any {
+    return path.reduce((acc, key) => acc?.[key], obj);
+  }
+
+  private hasCellData(value: any): boolean {
+    if (value === undefined || value === null) {
+      return false;
+    }
+    if (typeof value === 'string') {
+      return value.trim() !== '';
+    }
+    return true;
   }
 }
