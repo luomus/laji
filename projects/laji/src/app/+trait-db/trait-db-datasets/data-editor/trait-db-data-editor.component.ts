@@ -183,7 +183,6 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
     this.rowUploadState$.next({ ...this.rowUploadState$.value, [rowIdx]: { _tag: 'in-progress' } });
     this.api.fetch('/trait/rows/{id}', 'put', params, row.value).subscribe(
       (res) => {
-        console.log('result: ', res);
         this.rowUploadState$.next({ ...this.rowUploadState$.value, [rowIdx]: { _tag: 'complete' } });
       },
       err => {
