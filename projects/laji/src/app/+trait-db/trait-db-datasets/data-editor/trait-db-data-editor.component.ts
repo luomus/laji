@@ -82,10 +82,12 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
           query: { datasetId, pageSize: 1000 } })
         ),
         map(rows => {
+          const maxTraits = rows.reduce((max, row) => Math.max(max, row.traits?.length ?? 0), 0);
           const traitColsAcc: GeneratedDatatableColumn[] = [];
-          rows[0]?.traits?.forEach((trait, idx) => {
+          for (let idx = 0; idx < maxTraits; idx++) {
             traitColsAcc.push(...traitCols.map(col => ({ ...col, path: ['traits', idx, ...col.path] } as GeneratedDatatableColumn)));
-          });
+          }
+
           const generatedCols = [...subjectCols, ...traitColsAcc] as GeneratedDatatableColumn[];
           const columns: DatatableColumn<any>[] = [{
             title: '',
