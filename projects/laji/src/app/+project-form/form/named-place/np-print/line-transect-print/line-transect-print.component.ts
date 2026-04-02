@@ -44,7 +44,7 @@ export class LineTransectPrintComponent implements OnChanges {
   ) { }
 
   ngOnChanges() {
-    const baseDoc: any = this.namedPlace.acceptedDocument || this.namedPlace.prepopulatedDocument || {};
+    const baseDoc: any = this.namedPlace.prepopulatedDocument || {};
     if (
       baseDoc.gatheringEvent?.startDistanceFromNECorner
     ) {
@@ -88,7 +88,7 @@ export class LineTransectPrintComponent implements OnChanges {
     if (!Array.isArray(geometries.coordinates)) {
       return;
     }
-    const baseDoc: any = this.namedPlace.acceptedDocument || this.namedPlace.prepopulatedDocument || {};
+    const baseDoc: any = this.namedPlace.prepopulatedDocument || {};
     const biotopes: {[distRow: number]: string[]} = {};
     const pages: number[][] = [];
     let total = 0;
@@ -216,9 +216,6 @@ export class LineTransectPrintComponent implements OnChanges {
   }
 
   private getGeometry(): any {
-    if (this.namedPlace.acceptedDocument && this.namedPlace.acceptedDocument.gatherings) {
-      return {type: 'MultiLineString', coordinates: this.namedPlace.acceptedDocument.gatherings.map(item => item.geometry!.coordinates)};
-    }
     if (this.namedPlace.prepopulatedDocument && this.namedPlace.prepopulatedDocument.gatherings) {
       return {type: 'MultiLineString', coordinates: this.namedPlace.prepopulatedDocument.gatherings.map(item => item.geometry!.coordinates)};
     }

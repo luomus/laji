@@ -430,10 +430,7 @@ export class DocumentFormFacade {
   }
 
   private addNamedPlaceData(form: Form.SchemaForm, data: Document, np: NamedPlace): Document {
-    const populate: any = np.acceptedDocument ?
-      Util.clone(np.acceptedDocument) :
-      (np.prepopulatedDocument ? Util.clone(np.prepopulatedDocument) : {});
-
+    const populate = np.prepopulatedDocument ? Util.clone(np.prepopulatedDocument) : {};
     populate.namedPlaceID = np.id;
 
     if (!populate.gatherings) {
