@@ -1,19 +1,19 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { BehaviorSubject, from, Observable, of, Subscription } from 'rxjs';
 import { catchError, distinctUntilChanged, map, mergeMap, take, tap, toArray } from 'rxjs';
-import { Document } from '../../shared/model/Document';
 import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
 import { UserService } from '../../shared/service/user.service';
 import { DocumentStorage } from '../../storage/document.storage';
-import { DocumentApi } from '../../shared/api/DocumentApi';
 import { FormService } from '../../shared/service/form.service';
 import * as Util from '../../shared/utils';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import type { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type FormListing = components['schemas']['FormListing'];
+type Document = components['schemas']['store-document'];
 
 export interface ILatestDocument {
-  document: Document & { id: string };
+  document: Document;
   form: FormListing;
 }
 
@@ -53,11 +53,11 @@ export class LatestDocumentsFacade implements OnDestroy {
   private collectionID: string | undefined;
 
   constructor(
-    private documentApi: DocumentApi,
     private userService: UserService,
     private documentStorage: DocumentStorage,
     private formService: FormService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private api: LajiApiClientBService
   ) {
     this.localUpdateSub = this.documentStorage.deletes$.subscribe(() => {
       this.updateLocal();
@@ -107,7 +107,7 @@ export class LatestDocumentsFacade implements OnDestroy {
           map(forms => tmps.map(tmp => ({
             document: tmp,
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            form: forms[tmp!.formID]
+            form: forms[tmp!.formID!]
           })))
         ))
       )),
@@ -124,7 +124,7 @@ export class LatestDocumentsFacade implements OnDestroy {
 
     this.updateSubKey = this.getSubKey();
     this.updateState({..._state, loading: true});
-    this.updateSub = this.documentApi.findAll(this.userService.getToken(), '1', '10', { collectionID: this.collectionID }).pipe(
+    this.updateSub = this.api.get('/documents', { query: { page: 1, pageSize: 10, collectionID: this.collectionID } }).pipe(
       map(docRes => docRes.results),
       mergeMap(documents => this.checkForLocalData(documents)),
       catchError((e) => {
@@ -151,23 +151,23 @@ export class LatestDocumentsFacade implements OnDestroy {
     );
   }
 
-  private checkForLocalData(documents: (Document & { id: string })[]): Observable<ILatestDocument[]> {
+  private checkForLocalData(documents: Document[]): Observable<ILatestDocument[]> {
     return this.getAllForms().pipe(
       mergeMap((forms) => from(documents).pipe(
         mergeMap(document => this.userService.user$.pipe(
           take(1),
-          mergeMap(person => this.documentStorage.getItem(document.id, person).pipe(
+          mergeMap(person => this.documentStorage.getItem(document.id!, person).pipe(
             map(local => {
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               if (Util.isLocalNewestDocument(local!, document)) {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                return {document: local!, form: forms[document.formID]};
+                return {document: local!, form: forms[document.formID!]};
               }
               if (local) {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                this.documentStorage.removeItem(local!.id, person);
+                this.documentStorage.removeItem(local!.id!, person);
               }
-              return {document, form: forms[document.formID]};
+              return {document, form: forms[document.formID!]};
             })
           ))
         )),

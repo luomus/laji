@@ -13,7 +13,6 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableComponent } from '@achimha/ngx-datatable';
 import { UserService } from '../../../shared/service/user.service';
@@ -122,7 +121,6 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   printState: 'none'|'select' = 'none';
 
   totalMessage = '';
-  publicity = Document.PublicityRestrictionsEnum;
   useColumns: OwnDatatableColumn[] = [];
   allColumns: OwnDatatableColumn[] = [
     {prop: 'templateName', mode: 'small'},

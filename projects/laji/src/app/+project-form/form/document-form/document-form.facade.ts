@@ -4,7 +4,6 @@ import { combineLatest, concat, merge, Observable, of, ReplaySubject, Subscripti
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
 import { FooterService } from '../../../shared/service/footer.service';
-import { Document } from '../../../shared/model/Document';
 import { LatestDocumentsFacade } from '../../../shared-modules/latest-documents/latest-documents.facade';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
 import { FormService } from '../../../shared/service/form.service';
@@ -24,9 +23,11 @@ import equals from 'deep-equal';
 import { ProjectFormService } from '../../../shared/service/project-form.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { Unsaved } from '../../../shared/utils';
 
 type Form = components['schemas']['Form'];
 type Annotation = components['schemas']['store-annotation'];
+type Document = components['schemas']['store-document'];
 
 export enum FormError {
   notFoundForm = 'notFoundForm',
@@ -73,7 +74,7 @@ export function isSaneViewModel(any: ViewModel): any is SaneViewModel {
 export type ViewModel = SaneViewModel | FormError;
 
 interface DocumentAndHasChanges {
-  document: Document;
+  document: Unsaved<Document>;
   hasChanges: boolean;
 }
 
@@ -304,9 +305,9 @@ export class DocumentFormFacade {
     this.onChange({...this.vm.formData, locked: lock});
   }
 
-  save(data: Document): Observable<Document>;
+  save(data: Unsaved<Document>): Observable<Document>;
   save(data: TemplateForm): Observable<TemplateForm>;
-  save(data: Document | TemplateForm): Observable<Document | TemplateForm> {
+  save(data: Unsaved<Document> | TemplateForm): Observable<Document | TemplateForm> {
     return this.vm.template
       ? this.saveTemplate(data as TemplateForm)
       : this.saveDocument(data as Document);
@@ -407,12 +408,11 @@ export class DocumentFormFacade {
   }
 
   private fetchEmptyData(form: Form, person: Person | undefined, namedPlace: NamedPlace): Observable<DocumentAndHasChanges> {
-    let document: Document = {
+    let document: Unsaved<Document> = {
       id: this.getNewTmpId(),
       formID: form.id,
       creator: person?.id ? person.id : undefined,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      gatheringEvent: { leg: person?.id ? [person.id] : undefined }
+      gatheringEvent: { leg: person?.id ? [person.id] : [] }
     };
     if (form.options?.prepopulatedDocument) {
       document = deepmerge(form.options?.prepopulatedDocument, document, { arrayMerge: Util.arrayCombineMerge });
@@ -431,7 +431,7 @@ export class DocumentFormFacade {
     return FormService.tmpNs + ':' +  this.tmpDocId;
   }
 
-  private addNamedPlaceData(form: Form, data: Document, np: NamedPlace): Document {
+  private addNamedPlaceData(form: Form, data: Unsaved<Document>, np: NamedPlace): Unsaved<Document> {
     const populate: any = np.acceptedDocument ?
       Util.clone(np.acceptedDocument) :
       (np.prepopulatedDocument ? Util.clone(np.prepopulatedDocument) : {});
@@ -464,7 +464,7 @@ export class DocumentFormFacade {
     return deepmerge(this.documentService.removeMeta(populate, removeList), data, { arrayMerge: Util.arrayCombineMerge });
   }
 
-  private addCollectionID(form: Form, data: Document): Observable<Document> {
+  private addCollectionID(form: Form, data: Unsaved<Document>): Observable<Unsaved<Document>> {
     return form.id === Global.forms.privateCollection
       ? this.api.get('/person/profile').pipe(map(profile =>
         typeof profile?.personalCollectionIdentifier === 'string'

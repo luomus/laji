@@ -7,15 +7,17 @@ import {
   OnChanges,
   Output
 } from '@angular/core';
-import { Document } from '../../../../shared/model/Document';
 import * as MapUtil from '@luomus/laji-map/lib/utils';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
-import { Units } from '../../../../shared/model/Units';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { FormService } from '../../../../shared/service/form.service';
 import { LineTransectGeometry } from '@luomus/laji-map/lib/defs';
+import { LineString } from 'geojson';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+export type Document = components['schemas']['store-document'];
 
 interface LineTransectCount {
   psCouples: number;
@@ -94,7 +96,7 @@ export class LineTransectComponent implements OnChanges {
 
   private initEditLink() {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.path = this.formService.getEditUrlPath(this.document.formID, this.document.id!);
+    this.path = this.formService.getEditUrlPath(this.document.formID!, this.document.id!);
   }
 
   private initCounts() {
@@ -127,7 +129,7 @@ export class LineTransectComponent implements OnChanges {
               }
               const cntKey =
                 unit.unitFact &&
-                unit.unitFact.lineTransectRouteFieldType === Units.LineTransectRouteFieldTypeEnum.LineTransectRouteFieldTypeOuter ?
+                unit.unitFact.lineTransectRouteFieldType ===  'MY.lineTransectRouteFieldTypeOuter' ?
                   'tsCouples' : 'psCouples';
               count[cntKey] += unit.pairCount || 0;
               species[taxon][cntKey] += unit.pairCount || 0;
@@ -184,9 +186,10 @@ export class LineTransectComponent implements OnChanges {
     this.warnings = warnings;
   }
 
-  private getErrors(warnings: {location: string; messages: string[]}[], messages: any = {}) {
+  private getErrors(warnings: Record<string, unknown>[]) {
+    const messages: Record<string, number> = {};
     warnings.forEach(error => {
-      error.messages.forEach(msg => {
+      (error as any).messages.forEach((msg: string) => {
         messages[msg] = messages[msg] ? messages[msg] + 1 : 1;
       });
     });
@@ -211,7 +214,7 @@ export class LineTransectComponent implements OnChanges {
    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
    if (document!.gatherings) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return {type: 'MultiLineString', coordinates: document!.gatherings.map(item => item!.geometry!.coordinates)};
+      return {type: 'MultiLineString', coordinates: document!.gatherings.map(item => (item!.geometry as LineString)!.coordinates)};
     }
     return {type: 'MultiLineString', coordinates: []};
   }

@@ -18,7 +18,6 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
-import { Document } from '../../../../shared/model/Document';
 import { Rights } from '../../../../shared/service/form-permission.service';
 import * as Util from '../../../../shared/utils';
 import { UserService } from '../../../../shared/service/user.service';
@@ -61,8 +60,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   @ViewChild('infoModal', { static: true }) public modal!: ModalComponent;
   @ViewChild('infoBox', { static: true }) infoBox!: any;
-
-  publicity = Document.PublicityRestrictionsEnum;
 
   listItems: NpInfoRow[] = [];
 
