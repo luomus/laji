@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Document } from '../model/Document';
-import { Units } from '../model/Units';
 import { Global } from '../../../environments/global';
-import { Form } from '../model/Form';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
+type Unit = components['schemas']['store-unit'];
+type Document = components['schemas']['store-document'];
 
 interface Info {
   dateBegin: string | null;
@@ -21,7 +23,7 @@ interface Info {
  */
 @Injectable({providedIn: 'root'})
 export class DocumentInfoService {
-  static getGatheringInfo(document: Document, form: Form.List) {
+  static getGatheringInfo(document: Document, form: FormListing) {
     const info: Info = {
       dateBegin: null,
       dateEnd: null,
@@ -47,7 +49,7 @@ export class DocumentInfoService {
         DocumentInfoService.updateMinMaxDates(info, gathering.dateEnd);
 
         if (gathering.units) {
-          gathering.units.reduce((result: string[], unit: Units) => {
+          gathering.units.reduce((result: string[], unit: Unit) => {
             if (this.isEmptyUnit(unit, form)) { return result; }
 
             let taxon = unit.informalNameString || '';
@@ -92,10 +94,10 @@ export class DocumentInfoService {
     }
   }
 
-  public static isEmptyUnit(unit: Units, form: Form.List) {
+  public static isEmptyUnit(unit: Unit, form: FormListing) {
     if (form?.options?.prepopulateWithInformalTaxonGroups || form?.options?.emptyOnNoCount) {
       let result = true;
-      (Global.documentCountUnitProperties as (keyof Units)[]).forEach(key => {
+      (Global.documentCountUnitProperties as (keyof Unit)[]).forEach(key => {
         if (typeof unit[key] !== 'undefined' && unit[key] !== '' && unit[key] !== null) {
           result = false;
         }

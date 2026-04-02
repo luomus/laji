@@ -6,7 +6,7 @@ import {
 } from '../../kerttu-global-shared-modules/identification/identification-main/identification-main.component';
 import { map } from 'rxjs';
 import { ComponentCanDeactivate } from '../../../../../laji/src/app/shared/guards/document-de-activate.guard';
-import { Util } from '../../../../../laji/src/app/shared/service/util.service';
+import { clone } from '../../../../../laji/src/app/shared/utils';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -70,7 +70,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
       next: (result) => {
         this.recording = result?.recording;
         this.annotation = result ? (result.annotation || {}) : undefined;
-        this.originalAnnotation = Util.clone(this.annotation);
+        this.originalAnnotation = clone(this.annotation);
         this.loading = false;
         this.cdr.markForCheck();
       },
@@ -97,7 +97,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
     this.saving = true;
     this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording!.id, this.annotation!).subscribe({
       next: () => {
-        this.originalAnnotation = Util.clone(this.annotation);
+        this.originalAnnotation = clone(this.annotation);
         this.hasUnsavedChanges = false;
         this.saving = false;
         this.cdr.markForCheck();

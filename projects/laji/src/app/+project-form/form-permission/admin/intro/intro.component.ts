@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Form } from '../../../../shared/model/Form';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';
 import { Observable } from 'rxjs';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 @Component({
     selector: 'laji-intro',
@@ -12,7 +14,7 @@ import { Observable } from 'rxjs';
 })
 export class IntroComponent implements OnInit {
 
-  form$!: Observable<Form.SchemaForm | undefined>;
+  form$!: Observable<Form | undefined>;
   loaded = false;
 
   constructor(private route: ActivatedRoute,

@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { ResultService } from '../common/service/result.service';
-import { Form } from '../../../shared/model/Form';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { map } from 'rxjs';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
+type Form = components['schemas']['Form'];
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
 enum Tabs {
@@ -24,7 +24,7 @@ enum Tabs {
 })
 export class SykeInsectResultComponent implements OnInit, OnDestroy {
 
-  @Input() form!: Form.SchemaForm;
+  @Input() form!: Form;
 
   informalTaxonGroup = 'MVL.181';
   page!: number;

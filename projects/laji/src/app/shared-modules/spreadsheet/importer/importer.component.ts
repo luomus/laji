@@ -29,7 +29,6 @@ import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.f
 import { ISpreadsheetState, SpreadsheetFacade, Step } from '../spreadsheet.facade';
 import { FileService, instanceOfFileLoad } from '../service/file.service';
 import { IUserMappingFile, MappingFileService } from '../service/mapping-file.service';
-import { Form } from '../../../shared/model/Form';
 import { Logger } from '../../../shared/logger';
 import { toHtmlSelectElement } from '../../../shared/service/html-element.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
@@ -37,6 +36,7 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
 import type { components } from 'projects/laji-api-client-b/generated/api';
 import type { paths } from 'projects/laji-api-client-b/generated/api';
 
+type Form = components['schemas']['Form'];
 type PublicityRestrictions = NonNullable<paths['/documents/batch/{jobID}']['post']['parameters']['query']>['publicityRestrictions'];
 type BatchJob = components['schemas']['BatchJobValidationStatusResponse'];
 
@@ -83,7 +83,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   colMap?: {[key: string]: string};
   valueMap: {[key: string]: {[value: string]: any}} = {};
   formID?: string;
-  form!: Form.SchemaForm;
+  form!: Form;
   bstr?: string;
   mimeType?: string;
   errors: any;
@@ -260,8 +260,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
           this.data = data;
         }
 
-        this.excludedFromCopy = form!.excludeFromCopy || [];
-        this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form!, baseFields);
+        this.excludedFromCopy = form.excludeFromCopy;
+        this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, baseFields);
         this.colMap = this.spreadSheetService.getColMapFromSheet(this.header!, this.fields);
         this.origColMap = JSON.parse(JSON.stringify(this.colMap));
 

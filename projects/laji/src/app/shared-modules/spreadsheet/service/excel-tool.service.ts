@@ -5,8 +5,10 @@ import { NamedPlacesService } from '../../../shared/service/named-places.service
 import { UserService } from '../../../shared/service/user.service';
 import { Observable } from 'rxjs';
 import { CombineToDocument } from './import.service';
-import { Form } from '../../../shared/model/Form';
 import { JSONPath } from 'jsonpath-plus';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+type Form = components['schemas']['Form'];
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +29,7 @@ export class ExcelToolService {
       includePublic: false
     }).pipe(map(namedPlaces => namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)));
 
-    const collection$ = (form: Form.SchemaForm) => {
+    const collection$ = (form: Form) => {
       const selected = form.options?.namedPlaceOptions?.listColumns || [];
       return this.namedPlacesService.getAllNamePlaces({
         collectionID: form.collectionID,
@@ -56,8 +58,8 @@ export class ExcelToolService {
     );
   }
 
-  getCombineOptions(form: Form.SchemaForm): CombineToDocument[] {
-    const {gatherings} = form?.schema?.properties;
+  getCombineOptions(form: Form): CombineToDocument[] {
+    const {gatherings} = (form.schema as any)?.properties;
     if (gatherings?.items?.properties?.units?.maxItems === 1) {
       return [
         CombineToDocument.none

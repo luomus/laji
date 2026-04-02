@@ -16,16 +16,18 @@ import { FormPermissionService } from '../../../../../shared/service/form-permis
 import type { LineTransectGeometry, Options } from '@luomus/laji-map';
 import { TileLayerName } from '@luomus/laji-map/lib/defs';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
-import { Document } from '../../../../../shared/model/Document';
 import { ToastsService } from '../../../../../shared/service/toasts.service';
 import equals from 'deep-equal';
 import { diff, DiffNew } from 'deep-diff';
 import { FormService } from '../../../../../shared/service/form.service';
-import { GeometryCollection } from 'geojson';
+import { GeometryCollection, LineString } from 'geojson';
 import { NamedPlacesService } from '../../../../../shared/service/named-places.service';
 import { DocumentService } from '../../../../../shared-modules/own-submissions/service/document.service';
-import { FormPermission } from 'projects/laji/src/app/shared/model/FormPermission';
 import { Person } from 'projects/laji/src/app/shared/model/Person';
+import { components } from 'projects/laji-api-client-b/generated/api';
+
+type FormPermission = components['schemas']['FormPermissionDto'];
+type Document = components['schemas']['store-document'];
 
 @Component({
     selector: 'laji-accepted-document-approval',
@@ -81,7 +83,6 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
     return combineLatest([
       this.formPermissionService.getFormPermission(
         this.namedPlace.collectionID,
-        this.userService.getToken()
       ),
       this.userService.user$.pipe(take(1))
     ]).pipe(
@@ -132,7 +133,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       : this.namedPlace.acceptedDocument;
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const geometry = {type: 'MultiLineString', coordinates: document!.gatherings?.map(item => item.geometry!.coordinates) || []} as LineTransectGeometry;
+    const geometry = {type: 'MultiLineString', coordinates: document!.gatherings?.map(item => (item.geometry as LineString)!.coordinates!) || []} as LineTransectGeometry;
     return {feature: {type: 'Feature', properties: {}, geometry}, editable: false};
   }
 
@@ -152,7 +153,8 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
   acceptNamedPlaceChanges() {
     this.namedPlacesService.updateNamedPlace(
       this.namedPlace.id,
-      {...this.namedPlace, acceptedDocument: this.document},
+      // TODO should be able to remove any after named places service migration to use new api client>
+      {...this.namedPlace, acceptedDocument: this.document as any},
       this.userService.getToken()
     ).subscribe((np: NamedPlace) => {
       this.namedPlaceChange.emit(np);
@@ -222,7 +224,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
   }
 
   initDocumentDiff() {
-    this.formService.getForm(this.document.formID).subscribe(form => {
+    this.formService.getForm(this.document.formID!).subscribe(form => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const [differs, geometriesDiff, otherDiff] = this.checkDiff(form!.excludeFromCopy!);
       this.placesDiff = differs;

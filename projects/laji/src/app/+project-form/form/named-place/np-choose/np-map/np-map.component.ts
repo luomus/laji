@@ -18,9 +18,11 @@ import { NpInfoComponent } from '../../np-info/np-info.component';
 import { NpInfoRow } from '../../np-info/np-info-row/np-info-row.component';
 import { LabelPipe } from '../../../../../shared/pipe';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
-import { Form } from '../../../../../shared/model/Form';
 import { LajiMapVisualization } from '../../../../../shared-modules/legend/laji-map-visualization';
 import { TileLayerName, OverlayName } from '@luomus/laji-map/lib/defs';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 @Component({
     selector: 'laji-np-map',
@@ -38,8 +40,8 @@ export class NpMapComponent implements OnInit, OnChanges {
   @Input() height?: string;
   @Input() userID?: string;
   @Input() reservable?: boolean;
-  @Input() placeForm: any;
-  @Input({ required: true }) documentForm!: Form.SchemaForm;
+  @Input() placeForm?: Form;
+  @Input({ required: true }) documentForm!: Form;
   @Input() filterBy?: string;
   @Input() filteredIDs: string[] = [];
   @Output() activePlaceChange = new EventEmitter<number>();

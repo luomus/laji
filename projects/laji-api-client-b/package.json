@@ -10,6 +10,6 @@
     "openapi-typescript": "^7.6.1"
   },
   "volta": {
-    "node": "18.20.8"
+    "node": "20.19.6"
   }
 }

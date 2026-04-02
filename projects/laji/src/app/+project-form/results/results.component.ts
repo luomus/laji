@@ -1,51 +1,52 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Form } from '../../shared/model/Form';
-import ResultServiceType = Form.ResultServiceType;
 import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute } from '@angular/router';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 @Component({
     selector: 'laji-result-service',
     template: `
     <div lajiFormOption="options.resultServiceType">
       @switch ((form$ | async)!.options?.resultServiceType) {
-        @case (ResultServiceType.winterBirdCount) {
+        @case ('MHL.resultServiceTypeWinterBirdCount') {
           <div>
             <laji-wbc-result [form]="(form$ | async)!"></laji-wbc-result>
           </div>
         }
-        @case (ResultServiceType.lineTransect) {
+        @case ('MHL.resultServiceTypeLineTransect') {
           <div>
             <laji-line-transect-result></laji-line-transect-result>
           </div>
         }
-        @case (ResultServiceType.nafi) {
+        @case ('MHL.resultServiceTypeNafi') {
           <div>
             <laji-nafi-result [form]="(form$ | async)!"></laji-nafi-result>
           </div>
         }
-        @case (ResultServiceType.sykeInsect) {
+        @case ('MHL.resultServiceTypeSykeInsectProjects') {
           <div>
             <laji-syke-insect-result [form]="(form$ | async)!"></laji-syke-insect-result>
           </div>
         }
-        @case (ResultServiceType.invasiveSpeciesControl) {
+        @case ('MHL.resultServiceTypeInvasiveControl') {
           <div>
             <laji-invasive-species-control-result [form]="(form$ | async)!"></laji-invasive-species-control-result>
           </div>
         }
-        @case (ResultServiceType.completeLists) {
+        @case ('MHL.resultServiceTypeCompleteLists') {
           <div>
             <laji-biomon-result [form]="(form$ | async)!"></laji-biomon-result>
           </div>
         }
-        @case (ResultServiceType.waterBirdCount) {
+        @case ('MHL.resultServiceTypeWaterBirdCount') {
           <div>
             <laji-water-bird-count-result [form]="(form$ | async)!"></laji-water-bird-count-result>
           </div>
         }
-        @case (ResultServiceType.birdPointCount) {
+        @case ('MHL.resultServiceTypeBirdPointCount') {
           <div>
             <laji-bird-point-count-result [form]="(form$ | async)!"></laji-bird-point-count-result>
           </div>
@@ -57,9 +58,7 @@ import { ActivatedRoute } from '@angular/router';
     standalone: false
 })
 export class ResultsComponent implements OnInit {
-  form$!: Observable<Form.SchemaForm | undefined>;
-
-  ResultServiceType = ResultServiceType; // eslint-disable-line @typescript-eslint/naming-convention
+  form$!: Observable<Form | undefined>;
 
   constructor(
     private projectFormService: ProjectFormService,

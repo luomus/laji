@@ -1,7 +1,9 @@
 /* eslint-disable @angular-eslint/component-selector */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Notification } from '../../model/Notification';
 import { IdService } from '../../service/id.service';
+import type { components } from '../../../../../../laji-api-client-b/generated/api';
+
+type Notification = components['schemas']['store-notification'];
 
 @Component({
     selector: '[laji-notification]',
@@ -33,7 +35,7 @@ export class NotificationComponent {
   initTargets() {
     if (this.notification && this.notification.annotation) {
       this.type = this.notification.notificationReason &&
-        this.notification.notificationReason === Notification.NotificationReasonEnum.notificationReasonAnnotatedDocumentAnnotated ?
+        this.notification.notificationReason === 'MHN.notificationReasonAnnotatedDocumentAnnotated' ?
         'annotationCommented' : 'annotation';
       const annotation = this.notification.annotation;
       this.targetPath = '/view';
@@ -42,7 +44,7 @@ export class NotificationComponent {
       this.targetQuery = {
         uri: IdService.getUri(annotation.rootID),
         highlight: IdService.getUri(annotation.targetID),
-        own: this.notification.notificationReason !== Notification.NotificationReasonEnum.notificationReasonAnnotatedDocumentAnnotated,
+        own: this.notification.notificationReason !==  'MHN.notificationReasonAnnotatedDocumentAnnotated',
         openAnnotation: 'true'
       };
     } else if (this.notification && this.notification.friendRequest) {

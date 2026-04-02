@@ -9,17 +9,13 @@ import { IdService } from './id.service';
 import { GraphQLService } from '../../graph-ql/service/graph-ql.service';
 import { gql } from 'apollo-angular';
 import { WarehouseQueryInterface } from '../model/WarehouseQueryInterface';
-import { Collection } from '../model/Collection';
-import { CollectionApi } from '../api/CollectionApi';
 import { UserService } from './user.service';
 import { ObservationFacade } from '../../+observation/observation.facade';
 import { TreeOptionsNode } from '../../shared-modules/tree-select/tree-select.component';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-export interface ICollection extends Collection {
-  id: string;
-  collectionType: string;
-  collectionQuality: string;
-};
+type Collection = components['schemas']['SensitiveCollection'];
 
 export interface CollectionTreeOptionsNode extends TreeOptionsNode {
   count: number;
@@ -107,9 +103,9 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
   constructor(
     private metadataService: MetadataApi,
     private warehouseApi: WarehouseApi,
-    private collectionApi: CollectionApi,
     private graphQlService: GraphQLService,
-    private userService: UserService
+    private userService: UserService,
+    private api: LajiApiClientBService
   ) {
     super();
   }
@@ -126,8 +122,8 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     return all$;
   }
 
-  getById$(id: string, lang?: string): Observable<Collection> {
-    return this.collectionApi.findById(id, lang);
+  getById$(id: string): Observable<Collection> {
+    return this.api.get('/collections/{id}', { path: { id } });
   }
 
   getName$(id: string, lang: string, empty: null|string = null): Observable<string> {

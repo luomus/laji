@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { News } from '../../../shared/model/News';
+import { News } from '../../../+news/news.facade';
 
 @Component({
     selector: 'laji-technical-news-dumb',
@@ -18,7 +18,7 @@ export class TechnicalNewsDumbComponent {
         isNew = Date.now() - parseInt(newsItem.posted, 10) < (days * 86400000); // number of milliseconds in a day
       }
 
-      const isTechnical = newsItem.tag === 'technical';
+      const isTechnical = newsItem.tags?.includes('technical');
       return isTechnical && isNew;
     }));
   }

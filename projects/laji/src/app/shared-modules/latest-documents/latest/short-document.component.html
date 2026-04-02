@@ -10,7 +10,7 @@
     @if (locality) {
       <h1>{{ locality }}</h1>
     }
-    @if (document.publicityRestrictions === publicity.publicityRestrictionsPrivate) {
+    @if (document.publicityRestrictions === 'MZ.publicityRestrictionsPrivate') {
       <div class="label label-warning">
         {{ 'result.latestObservationsLabel' | translate }}
       </div>

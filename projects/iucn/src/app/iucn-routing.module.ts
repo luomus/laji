@@ -6,7 +6,6 @@ import { LocaleEnComponent } from '../../../laji/src/app/locale/locale-en.compon
 import { LocaleSvComponent } from '../../../laji/src/app/locale/locale-sv.component';
 import { LocaleFiComponent } from '../../../laji/src/app/locale/locale-fi.component';
 import { catchError, flatMap } from 'rxjs';
-import { LocalizeGuard } from '../../../laji/src/app/locale/localize.guard';
 import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-found.component';
 
 @Injectable()
@@ -35,15 +34,15 @@ const routesWithLang: Routes = [
   {path: 'en', children: [
       ...routes,
       {path: '**', component: NotFoundComponent}
-    ], component: LocaleEnComponent, canActivate: [LocalizeGuard], data: {lang: 'en'}},
+    ], component: LocaleEnComponent},
   {path: 'sv', children: [
       ...routes,
       {path: '**', component: NotFoundComponent}
-    ], component: LocaleSvComponent, canActivate: [LocalizeGuard], data: {lang: 'sv'}},
+    ], component: LocaleSvComponent},
   {path: '', children: [
       ...routes,
       {path: '**', component: NotFoundComponent}
-    ], component: LocaleFiComponent, canActivate: [LocalizeGuard], data: {lang: 'fi'}}
+    ], component: LocaleFiComponent}
 ];
 
 @NgModule({

@@ -4,9 +4,9 @@ import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { ResultService } from '../common/service/result.service';
-import { Form } from '../../../shared/model/Form';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
+type Form = components['schemas']['Form'];
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
@@ -18,7 +18,7 @@ type Taxon = components['schemas']['LajiBackendTaxon'];
 })
 export class NafiResultComponent implements OnInit, OnDestroy {
 
-  @Input() form!: Form.SchemaForm;
+  @Input() form!: Form;
 
   informalTaxonGroup = 'MVL.181';
   page?: number;

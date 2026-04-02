@@ -32,7 +32,6 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
 import { HistoryService } from '../../../shared/service/history.service';
 import { DocumentPermissionService } from '../service/document-permission.service';
 import { FormService } from '../../../shared/service/form.service';
-import { Form } from '../../../shared/model/Form';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type AnnotationTag = components['schemas']['store-tag'];
@@ -184,7 +183,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       )),
       switchMap(({doc, rights}) => doc.formId
         ? this.formService.getFormInListFormat(IdService.getId(doc.formId)).pipe(
-          map((form: Form.List | undefined) => {
+          map(form => {
             if (!form || !!form.options?.secondaryCopy) {
               rights.hasEditRights = false;
               rights.hasDeleteRights = false;

@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Form } from '../../../../shared/model/Form';
 import { LajiFormComponent } from '../laji-form/laji-form.component';
 import { LajiFormUtil } from '../laji-form-util.service';
 import { Readonly } from '../../../../shared-modules/own-submissions/service/document.service';
 import { PlatformService } from '../../../../root/platform.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 export type LajiFormFooterStatus = 'none' | 'success' | 'error' | 'unsaved';
 
@@ -29,7 +31,7 @@ export class LajiFormFooterComponent {
   @Output() submitTemplate = new EventEmitter();
   @Output() leave = new EventEmitter();
   @Output() lock = new EventEmitter<boolean>();
-  _form!: Form.SchemaForm;
+  _form!: Form;
   show = {
     save: false,
     temp: false,
@@ -44,7 +46,7 @@ export class LajiFormFooterComponent {
   constructor(private platformService: PlatformService) { }
 
   @Input()
-  set form(form: Form.SchemaForm) {
+  set form(form: Form) {
     if (!form) {
       return;
     }
@@ -84,7 +86,7 @@ export class LajiFormFooterComponent {
   }
 
   buttonLabel(prop: 'save'|'temp'|'cancel') {
-    const options = this._form.options || {} as Form.FormOptions;
+    const options = this._form.options;
     switch (prop) {
       case 'save':
         return this.edit && options.editLabel

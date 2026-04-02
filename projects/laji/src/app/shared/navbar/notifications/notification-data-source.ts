@@ -1,10 +1,12 @@
 import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { NotificationsFacade } from './notifications.facade';
-import { Notification } from '../../model/Notification';
 import { takeUntil } from 'rxjs';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
+import type { components } from '../../../../../../laji-api-client-b/generated/api';
+
+type Notification = components['schemas']['store-notification'];
 
 export class NotificationDataSource extends DataSource<Notification | undefined> {
   private unsubscribe$ = new Subject<void>();

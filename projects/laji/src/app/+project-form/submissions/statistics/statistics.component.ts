@@ -1,14 +1,16 @@
 import { catchError, map, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { UserService } from '../../../shared/service/user.service';
 import { FormService } from '../../../shared/service/form.service';
-import { Document } from '../../../shared/model/Document';
 import { forkJoin as ObservableForkJoin, of as ObservableOf } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
-import { Form } from '../../../shared/model/Form';
 import { NamedPlacesService } from '../../../shared/service/named-places.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+
+type FormListing = components['schemas']['FormListing'];
+type Document = components['schemas']['store-document'];
 
 @Component({
     selector: 'laji-statistics',
@@ -21,24 +23,24 @@ export class StatisticsComponent implements OnInit {
 
   document!: Document;
   ns: any;
-  form!: Form.List;
+  form!: FormListing;
   loaded = false;
 
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
     private formService: FormService,
-    private documentApi: DocumentApi,
     private namedPlacesService: NamedPlacesService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private api: LajiApiClientBService
   ) {
   }
 
   ngOnInit() {
     if (this.route.snapshot.params.documentID) {
-      this.documentApi.findById(this.route.snapshot.params.documentID, this.userService.getToken()).pipe(
+      this.api.get('/documents/{id}', { path: { id: this.route.snapshot.params.documentID } }).pipe(
         switchMap((document: Document) => ObservableForkJoin(
-          this.formService.getFormInListFormat(document.formID),
+          this.formService.getFormInListFormat(document.formID!),
           document.namedPlaceID ?
             this.namedPlacesService
               .getNamedPlace(document.namedPlaceID, this.userService.getToken()).pipe(

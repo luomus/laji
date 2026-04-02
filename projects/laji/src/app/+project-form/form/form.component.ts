@@ -3,10 +3,12 @@ import { map, switchMap, take } from 'rxjs';
 import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
-import { Form } from '../../shared/model/Form';
 import { FormService } from '../../shared/service/form.service';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { UserService } from '../../shared/service/user.service';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+type Form = components['schemas']['Form'];
 
 interface ViewModel {
   formID: string;
@@ -104,7 +106,7 @@ export class FormComponent implements OnInit {
     );
   }
 
-  tryRedirectToSubForm(form: Form.SchemaForm, routeParams: Params): Observable<boolean> {
+  tryRedirectToSubForm(form: Form, routeParams: Params): Observable<boolean> {
     const navigateToForm = (parentID: string, formID: string) => {
       const route = [parentID, 'form', formID, routeParams['formOrDocument']];
       if (this.router.url.match(/\/link$/)) {

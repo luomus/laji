@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Logger } from '../shared/logger/logger.service';
 import { Title } from '@angular/platform-browser';
-import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
 import { catchError, delay, filter, map, switchMap, tap } from 'rxjs';
 import { getDescription, HeaderService } from '../shared/service/header.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';

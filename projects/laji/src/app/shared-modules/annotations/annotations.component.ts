@@ -17,7 +17,7 @@ import { LoadingElementsService } from '../document-viewer/loading-elements.serv
 import { PlatformService } from '../../root/platform.service';
 import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { Unsaved } from '../../shared/service/util.service';
+import { Unsaved } from '../../shared/utils';
 import { AnnotationDW } from './annotation-list/annotation-list.component';
 
 type Annotation = components['schemas']['store-annotation'];

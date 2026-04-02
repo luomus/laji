@@ -1,4 +1,5 @@
 @use 'vars' as *;
+@use 'projects/bird-atlas/src/styles/variables.scss' as *;
 
 :host .navbar {
   min-height: $navbar-content-min-height;

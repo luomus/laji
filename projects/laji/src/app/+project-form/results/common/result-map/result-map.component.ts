@@ -9,7 +9,7 @@ import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-e
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { cacheReturnObservable } from 'projects/bird-atlas/src/app/core/api.service';
+import { cacheReturnObservable } from 'projects/bird-atlas/src/app/core/atlas-api.service';
 import G, { Feature, GeoJsonProperties, Polygon } from 'geojson';
 
 type GatheringCountType = 'ZERO' | 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';

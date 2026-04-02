@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AbstractLabelPipe } from './abstract-label.pipe';
 import { ChecklistService } from '../service/checklist.service';
 import { Observable, of } from 'rxjs';
-import { Checklist } from 'projects/laji-api-client/src/lib/models/checklist';
+import { Checklist } from '../model/Checklist';
 
 @Pipe({
     name: 'checklist',
@@ -32,6 +32,6 @@ export class ChecklistPipe extends AbstractLabelPipe implements PipeTransform {
 
   protected _parseValue(checklists: any): string {
     const item = this.key && checklists[this.key];
-    return item ? item.name : this.key!;
+    return item || this.key || '';
   }
 }

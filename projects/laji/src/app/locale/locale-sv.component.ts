@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { LocaleComponent } from './locale.component';
-import moment from 'moment';
-import 'moment/locale/sv';
 import { PlatformService } from '../root/platform.service';
 
 @Component({
@@ -12,11 +10,9 @@ import { PlatformService } from '../root/platform.service';
 export class LocaleSvComponent extends LocaleComponent {
 
   constructor(
-    protected platformService: PlatformService
+    platformService: PlatformService,
   ) {
-    super(platformService);
-    moment.locale('sv');
-    this.setLocale('sv');
+    super(platformService, 'sv');
   }
 
 }

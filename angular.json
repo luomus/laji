@@ -1115,6 +1115,7 @@
             "stylePreprocessorOptions": {
               "includePaths": [
                 "projects/bird-atlas/src/styles",
+                "projects/laji-ui/src/lib",
                 "node_modules"
               ]
             },

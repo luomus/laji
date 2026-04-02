@@ -29,7 +29,7 @@ import { WarehouseQueryInterface } from '../model/WarehouseQueryInterface';
 import { SearchQueryService } from '../../+observation/search-query.service';
 import { WarehouseCountResultInterface } from '../model/WarehouseCountResultInterface';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Util } from '../service/util.service';
+import * as Util from '../utils';
 import { environment } from '../../../environments/environment';
 import { PlatformService } from '../../root/platform.service';
 import { EMPTY } from 'rxjs';

@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, Subject, Subscription } from 'rxjs';
 import { switchMap, tap, share, take } from 'rxjs';
 import { LocalStorage } from 'ngx-webstorage';
-import { Util } from '../../../../../laji/src/app/shared/service/util.service';
+import * as Util from '../../../../../laji/src/app/shared/utils';
 import { AudioCacheLoaderService } from './audio-cache-loader.service';
 
 export interface NoRecordingsResult { recording: null; annotation: null }

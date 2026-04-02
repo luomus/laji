@@ -1,9 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { CollectionService, ICollectionCounts, ICollection } from '../../shared/service/collection.service';
+import { CollectionService, ICollectionCounts } from '../../shared/service/collection.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import {PlatformService} from '../../root/platform.service';
+import { PlatformService } from '../../root/platform.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Collection = components['schemas']['SensitiveCollection'];
 
 const mobileBreakpoint = 768;
 
@@ -17,7 +20,7 @@ const mobileBreakpoint = 768;
 export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewInit {
   collectionId?: string;
   _collectionId?: string;
-  collection$?: Observable<ICollection>;
+  collection$?: Observable<Collection>;
   collectionCounts$?: Observable<ICollectionCounts>;
   paramSub$?: Subscription;
   showBrowser = true;
@@ -69,7 +72,7 @@ export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewIni
 
   private setCollection(collectionId: string) {
     if (collectionId && this.collectionId !== collectionId) {
-      this.collection$ = this.collectionService.getById$(collectionId, 'multi') as Observable<ICollection>;
+      this.collection$ = this.collectionService.getById$(collectionId);
       this.collectionCounts$ = this.collectionService.getCollectionSpecimenCounts$(collectionId);
     }
 

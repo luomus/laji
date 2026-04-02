@@ -3,9 +3,7 @@ import { ForumComponent } from './forum/forum.component';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
-import { LocalizeGuard } from './locale/localize.guard';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
-import { LocalizeInGuard } from './locale/localize-in.guard';
 import { CheckLoginGuard } from './shared/guards/check-login.guard';
 import { NgModule } from '@angular/core';
 import { QuicklinkStrategy } from 'ngx-quicklink';
@@ -68,18 +66,18 @@ redirectsFi.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirect
 const routesWithLang: Routes = [
   {path: 'in', children: [
     {path: '**', component: NotFoundComponent}
-  ], component: LocaleEnComponent, canActivate: [LocalizeInGuard]},
-  {path: 'en', data: {lang: 'en'}, children: [
+  ], component: LocaleEnComponent},
+  {path: 'en', children: [
     ...redirectsEn,
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
-  ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
-  {path: 'sv', data: {lang: 'sv'}, children: [
+  ], component: LocaleEnComponent},
+  {path: 'sv', children: [
     ...redirectsFi,
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
-  ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
-  {path: '', data: {lang: 'fi'}, children: [
+  ], component: LocaleSvComponent},
+  {path: '', children: [
       ...redirectsFi,
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
@@ -96,11 +94,15 @@ const routesWithLang: Routes = [
     {path: 'selaa', redirectTo: '/observation/list', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
-  ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}
+  ], component: LocaleFiComponent}
 ];
 
 export const routes: Routes = [
-  {path: '', children: routesWithLang, canActivate: [CheckLoginGuard]}
+  {
+    path: '',
+    children: routesWithLang,
+    canActivate: [CheckLoginGuard]
+  }
 ];
 
 @NgModule({

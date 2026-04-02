@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Chart, ChartDataset, ChartOptions, ChartType, Tooltip } from 'chart.js';
-import { PagedResult } from 'projects/laji-api-client/src/public-api';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs';
 import { LineWithLine } from 'projects/laji/src/app/shared-modules/chart/line-with-line';
 import { TranslateService } from '@ngx-translate/core';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
+import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 
 interface PairCountResults {
   aggregateBy: {

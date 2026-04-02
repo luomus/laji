@@ -1,24 +1,22 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { LajiApi } from 'projects/laji/src/app/shared/service/laji-api.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Information } from 'projects/laji/src/app/shared/model/Information';
 import { Observable, of } from 'rxjs';
-import { environment } from 'projects/exhibition-screen/src/env/environment';
 import { tap } from 'rxjs';
-import { Util } from 'projects/laji/src/app/shared/service/util.service';
 
 @Injectable({providedIn: 'root'})
 export class InformationService {
   private informationCache: { [id: string]: Information } = {};
 
-  constructor(private httpClient: HttpClient) {}
-  getInformation(id: string, query: LajiApi.Query.InformationQuery): Observable<Information> {
+  constructor(
+    private api: LajiApiClientBService
+  ) {}
+
+  getInformation(id: string): Observable<Information> {
     if (this.informationCache[id]) {
       return of(this.informationCache[id]);
     }
-    const url = `${environment.apiBase}/${LajiApi.Endpoints.information}/${id}`;
-    const options = { params: {...Util.removeUndefinedFromObject(<Record<string, string>>query)} };
-    return this.httpClient.get<Information>(url, options).pipe(
+    return this.api.get('/information/{id}', { path: { id } }).pipe(
       tap(result => this.informationCache[id] = result)
     );
   }

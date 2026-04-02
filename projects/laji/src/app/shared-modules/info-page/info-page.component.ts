@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { map, tap } from 'rxjs';
 import { InformationItem } from '../../shared/model/InformationItem';
 import { MultiLanguage } from '../../shared/model/MultiLanguage';
@@ -54,7 +54,7 @@ export class InfoPageComponent implements OnChanges, OnDestroy {
 
   constructor(
     private translateService: TranslateService,
-    private lajiApiService: LajiApiService,
+    private api: LajiApiClientBService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -99,7 +99,7 @@ export class InfoPageComponent implements OnChanges, OnDestroy {
     }
 
     this.loadingContent = true;
-    this.contentSub = this.lajiApiService.get(LajiApi.Endpoints.information, this.lastFromPath(page), {}).pipe(
+    this.contentSub = this.api.get('/information/{id}', { path: { id: this.lastFromPath(page) } }).pipe(
       tap(result => {
         this.title.emit(result.title);
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

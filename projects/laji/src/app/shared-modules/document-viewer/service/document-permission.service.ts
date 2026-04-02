@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { IdService } from '../../../shared/service/id.service';
-import { Document } from '../../../shared/model/Document';
 import { Person } from '../../../shared/model/Person';
 import { Observable, of } from 'rxjs';
 import { FormPermissionService } from '../../../shared/service/form-permission.service';
 import { switchMap, map, catchError } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
 import { DocumentService } from '../../own-submissions/service/document.service';
+import { StoreDocument } from '../document-viewer.facade';
 
 export interface DocumentRights {
   isEditor: boolean;
@@ -66,7 +66,7 @@ export class DocumentPermissionService {
     );
   }
 
-  getRightsToLocalDocument(doc?: Document): Observable<DocumentRights> {
+  getRightsToLocalDocument(doc?: StoreDocument): Observable<DocumentRights> {
     return this.userService.user$.pipe(
       switchMap(user => {
         if (!user?.id || !doc) {
@@ -91,7 +91,7 @@ export class DocumentPermissionService {
       return of(false);
     }
 
-    return this.formPermissionService.getFormPermission(collectionId, personToken).pipe(
+    return this.formPermissionService.getFormPermission(collectionId).pipe(
       map(formPermission => this.formPermissionService.isAdmin(formPermission, user))
     );
   }
