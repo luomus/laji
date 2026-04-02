@@ -203,10 +203,8 @@ export class LineTransectComponent implements OnChanges {
     }
   }
 
-  private getGeometry(documentName = 'document'): LineTransectGeometry {
-    const document = documentName === 'document'
-        ? this.document
-        : this.namedPlace.acceptedDocument;
+  private getGeometry(): LineTransectGeometry {
+    const document = this.document;
 
    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
    if (document!.gatherings) {

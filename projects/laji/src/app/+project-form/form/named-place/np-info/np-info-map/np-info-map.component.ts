@@ -98,7 +98,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     let geom = this.namedPlace!.geometry;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const gatherings = this.namedPlace!.acceptedDocument?.gatherings || this.namedPlace!.prepopulatedDocument?.gatherings || [];
+    const gatherings = this.namedPlace!.prepopulatedDocument?.gatherings || [];
     const geometries = gatherings.reduce((all: any[], curr: any) => {
       if (curr.geometry) {
         all.push(curr.geometry);
