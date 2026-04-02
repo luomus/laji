@@ -9,6 +9,3 @@
 <div class="edit-container">
   <a [routerLink]="path | localize" class="btn btn-primary">Siirry muokkaamaan <i class="glyphicon glyphicon-edit"></i></a>
 </div>
-<div class="row">
-  <laji-accepted-document-approval [namedPlace]="namedPlace" [document]="document" (namedPlaceChange)="namedPlaceChange.emit($event)"></laji-accepted-document-approval>
-</div>
