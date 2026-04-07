@@ -1,18 +1,17 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges,
 Output, EventEmitter, HostListener } from '@angular/core';
 import { forkJoin, Observable, of, Subscription, throwError } from 'rxjs';
-import {delay, map, switchMap, tap} from 'rxjs';
-import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { delay, map, switchMap, tap } from 'rxjs';
 import { FormService } from '../../../shared/service/form.service';
 import { StoreDocument } from '../document-viewer.facade';
-import { TranslateService } from '@ngx-translate/core';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
-import { Image } from '../../../shared/model/Image';
 import { JSONPath } from 'jsonpath-plus';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientBService } from '../../../../../../laji-api-client-b/src/laji-api-client-b.service';
 
 type Unit = components['schemas']['store-unit'];
+type Image = components['schemas']['Image'];
 
 @Component({
     selector: 'laji-document-local',
@@ -41,10 +40,9 @@ export class DocumentLocalComponent implements OnChanges {
 
   constructor(
     private cd: ChangeDetectorRef,
-    private lajiApi: LajiApiService,
     private formService: FormService,
-    private translate: TranslateService,
-    private deleteDocumentService: DeleteOwnDocumentService
+    private deleteDocumentService: DeleteOwnDocumentService,
+    private api: LajiApiClientBService,
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -118,11 +116,12 @@ export class DocumentLocalComponent implements OnChanges {
   }
 
   private getImages(obj: any): Observable<Image[]> {
-    return this.lajiApi.getList(LajiApi.Endpoints.images, {
-      lang: this.translate.getCurrentLang(),
-      page: 1,
-      pageSize: 1000,
-      idIn: obj.images.join(',')
+    return this.api.get('/images', {
+      query: {
+        page: 1,
+        pageSize: 1000,
+        idIn: obj.images.join(',')
+      }
     })
       .pipe(
         map(res => res.results),

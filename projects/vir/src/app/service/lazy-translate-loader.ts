@@ -6,7 +6,7 @@ export class LazyTranslateLoader implements TranslateLoader {
   getTranslation(lang: string): Observable<any> {
     return from(import(`../../../../laji/src/i18n/${lang}.json`)).pipe(
       switchMap(base => from(import(`../../../i18n/${lang}.json`)).pipe(
-        map(local => ({...base, ...local}))
+        map(local => ({...base.default, ...local.default}))
       ))
     );
   }

@@ -117,7 +117,7 @@ export class UsageAdminComponent {
   }
 
   onSelectedAddUser(autocompletePerson: Person) {
-    this.addUserEvent$.next(autocompletePerson.id);
+    this.addUserEvent$.next(autocompletePerson.id!);
   }
 
   userToFormData(user: IVirUser) {
