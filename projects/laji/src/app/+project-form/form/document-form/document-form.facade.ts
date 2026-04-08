@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, mergeMap, switchMap, take, tap, filter, distinctUntilChanged, mapTo, shareReplay, distinctUntilKeyChanged } from 'rxjs';
 import { combineLatest, concat, merge, Observable, of, ReplaySubject, Subscription } from 'rxjs';
-import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
 import { FooterService } from '../../../shared/service/footer.service';
 import { LatestDocumentsFacade } from '../../../shared-modules/latest-documents/latest-documents.facade';
@@ -10,7 +9,6 @@ import { FormService } from '../../../shared/service/form.service';
 import * as Util from '../../../shared/utils';
 import { UserService } from '../../../shared/service/user.service';
 import { FormPermissionService, Rights } from '../../../shared/service/form-permission.service';
-import { NamedPlacesService } from '../../../shared/service/named-places.service';
 import { DocumentStorage } from '../../../storage/document.storage';
 import deepmerge from 'deepmerge';
 import moment from 'moment';
@@ -28,6 +26,7 @@ import { Unsaved } from '../../../shared/utils';
 type Form = components['schemas']['Form'];
 type Annotation = components['schemas']['store-annotation'];
 type Document = components['schemas']['store-document'];
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 export enum FormError {
   notFoundForm = 'notFoundForm',
@@ -100,7 +99,6 @@ export class DocumentFormFacade {
     private documentService: DocumentService,
     private userService: UserService,
     private formPermissionService: FormPermissionService,
-    private namedPlacesService: NamedPlacesService,
     private documentStorage: DocumentStorage,
     private logger: Logger,
     private projectFormService: ProjectFormService,
@@ -146,20 +144,15 @@ export class DocumentFormFacade {
       shareReplay()
     );
 
-    const includeUnits$ = form$.pipe(
-      map(form => isFormError(form) ? form : form.options?.namedPlaceOptions?.includeUnits),
-      distinctUntilChanged()
-    );
-
-    const namedPlace$: Observable<NamedPlace | FormError | null> = combineLatest([includeUnits$, existingDocument$, namedPlaceID$]).pipe(
-      map(([includeUnits, existingDocument, namedPlaceID]): [boolean, string] =>
-        isFormError(includeUnits) || isFormError(existingDocument)
-          ? [false, '']
+    const namedPlace$: Observable<NamedPlace | FormError | null> = combineLatest([existingDocument$, namedPlaceID$]).pipe(
+      map(([existingDocument, namedPlaceID]): string =>
+        isFormError(existingDocument)
+          ? ''
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          : [includeUnits!, existingDocument?.document?.namedPlaceID || namedPlaceID]
+          : existingDocument?.document?.namedPlaceID || namedPlaceID
       ),
-      switchMap(([includeUnits, namedPlaceID]) => namedPlaceID
-        ? this.namedPlacesService.getNamedPlace(namedPlaceID, undefined, includeUnits)
+      switchMap((namedPlaceID) => namedPlaceID
+        ? this.api.get('/named-places/{id}', { path: { id: namedPlaceID } })
         : of(null)
       ),
       take(1),
@@ -333,7 +326,7 @@ export class DocumentFormFacade {
           tap(() => {
             this.onSaved$.next();
             this.latestFacade.update();
-            this.namedPlacesService.invalidateCache();
+            this.api.flush('/named-places');
           }),
           map(() => doc)
         )
