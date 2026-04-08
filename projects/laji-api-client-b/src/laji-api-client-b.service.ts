@@ -241,16 +241,21 @@ export class LajiApiClientBService {
     pathSegments: string[],
     params?: Parameters<paths[P][M]>
   ) {
-    const cachedPath = this.pathSegmentsToCacheLevels(pathSegments);
-    if (cachedPath === null) {
-      return;
-    }
+    while (pathSegments.length) {
+      const cachedPath = this.pathSegmentsToCacheLevels(pathSegments);
+      if (cachedPath === null) {
+        pathSegments.pop();
+        params = undefined;
+        continue;
+      }
 
-    if (params !== undefined) {
-      const paramsHash = hashRecord(params);
-      cachedPath[cachedPath.length - 1].delete(paramsHash);
-    } else {
-      cachedPath[cachedPath.length - 2].delete(pathSegments[pathSegments.length - 1]);
+      if (params !== undefined) {
+        const paramsHash = hashRecord(params);
+        cachedPath[cachedPath.length - 1].delete(paramsHash);
+      } else {
+        cachedPath[cachedPath.length - 2].delete(pathSegments[pathSegments.length - 1]);
+      }
+      break;
     }
   }
 
