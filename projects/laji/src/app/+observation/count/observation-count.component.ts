@@ -63,7 +63,7 @@ export class ObservationCountComponent implements OnChanges {
   }
 
   private normalCount(query: NormalCountQueryParams): Observable<number | undefined> {
-    return this.api.get('/warehouse/query/unit/count', { query: query as any }).pipe(
+    return this.api.get('/warehouse/query/unit/count', { query }).pipe(
       retryWhen(errors => errors.pipe(delay(1000), take(2), concatWith(throwError(() => errors)))),
       map((result: any) => result.total)
     );
