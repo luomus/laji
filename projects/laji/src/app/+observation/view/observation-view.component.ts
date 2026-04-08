@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationResultComponent } from '../result/observation-result.component';
@@ -17,6 +17,7 @@ import { SidebarComponent } from 'projects/laji-ui/src/lib/sidebar/sidebar.compo
 import { ActiveToast } from 'ngx-toastr';
 import { ObservationFormQuery } from '../form/observation-form-query.interface';
 import { LocalStorageService } from 'ngx-webstorage';
+import { DataFetchMode as ObservationFormType } from '../observation-data.service';
 
 export interface VisibleSections {
   finnish?: boolean;
@@ -40,9 +41,8 @@ export interface VisibleSections {
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class ObservationViewComponent implements OnInit, OnDestroy {
-
-  @Input() formType: 'unit'|'sample' = 'unit';
+export class ObservationViewComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() formType: ObservationFormType = 'unit';
   @Input() basePath = '/observation';
   @Input() visible: VisibleSections = {
     finnish: true,
@@ -98,6 +98,12 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     private toastsService: ToastsService,
     private localStorageService: LocalStorageService
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.formType) {
+      this.observationFacade.setDataFetchMode(changes.formType.currentValue);
+    }
+  }
 
   @Input({ required: true })
   set activeTab(tab: string) {
