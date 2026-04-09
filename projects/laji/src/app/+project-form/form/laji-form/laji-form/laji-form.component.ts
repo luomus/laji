@@ -211,9 +211,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   private mountLajiForm() {
-    if (!this.settings) {
-      return;
-    }
     this.createNewLajiForm();
   }
 
