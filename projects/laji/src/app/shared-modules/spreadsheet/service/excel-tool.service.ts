@@ -43,7 +43,7 @@ export class ExcelToolService {
         selectedFields: selected.map(field => field.replace('$.', '')).join(','),
         pageSize: 100000
       } }).pipe(
-        switchMap(nps => from(nps.results).pipe(mergeMap(np => this.openKeyValues(np, selected)), toArray())),
+        switchMap(nps => from(nps.results).pipe(mergeMap(np => this.openNamedPlaceNamedPlaceKeyValues(np, selected)), toArray())),
         map(namedPlaces => namedPlaces.map(np => {
           const values = selected.reduce<string[]>((cumulative, current) => {
             const value = JSONPath({json: np, path: current, wrap: false, flatten: true});
@@ -85,25 +85,25 @@ export class ExcelToolService {
     ];
   }
 
-  private openKeyValues(np: NamedPlace, keyValues: string[]): Observable<NamedPlace> {
+  private openNamedPlaceNamedPlaceKeyValues(np: NamedPlace, keyValues: string[]): Observable<NamedPlace> {
     return from(keyValues).pipe(
-      mergeMap(path => this.openBy[path] ? this.openValue(np, path, this.openBy[path]) : of(np)),
+      mergeMap(path => this.openBy[path] ? this.openNamedPlaceValue(np, path, this.openBy[path]) : of(np)),
       toArray(),
       map(() => np)
     );
   }
 
-  private openValue(np: NamedPlace, path: string, type: string): Observable<NamedPlace> {
+  private openNamedPlaceValue(np: NamedPlace, path: string, type: string): Observable<NamedPlace> {
     const value = JSONPath({json: np, path, wrap: false, flatten: true});
     if (typeof value === 'undefined') {
       return of(np);
     }
     return Array.isArray(value) ?
-      forkJoin(value.map((val, idx) => this.openSingleValue(val, np, path + '[' + idx  + ']', type))).pipe(map(() => np)) :
-      this.openSingleValue(value, np, path, type);
+      forkJoin(value.map((val, idx) => this.openSingleNamedPlaceValue(val, np, path + '[' + idx  + ']', type))).pipe(map(() => np)) :
+      this.openSingleNamedPlaceValue(value, np, path, type);
   }
 
-  private openSingleValue(value: any, np: NamedPlace, path: string, type: string): Observable<NamedPlace> {
+  private openSingleNamedPlaceValue(value: any, np: NamedPlace, path: string, type: string): Observable<NamedPlace> {
     let convert$: Observable<string> | undefined;
     switch (type) {
       case 'boolean':
