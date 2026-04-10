@@ -1,10 +1,13 @@
 import { catchError, concat, concatWith, delay, map, retryWhen, take, tap, throwError } from 'rxjs';
 import { Observable, of, throwError as observableThrowError } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { paths } from 'projects/laji-api-client-b/generated/api';
 
+type NormalCountQueryParams = paths['/warehouse/query/unit/count']['get']['parameters']['query'];
+type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
 @Component({
     selector: 'laji-observation-count',
@@ -27,7 +30,7 @@ export class ObservationCountComponent implements OnChanges {
   private pageSize = 1000;
 
   constructor(
-    private warehouseService: WarehouseApi,
+    private api: LajiApiClientBService,
     private logger: Logger,
     private cdr: ChangeDetectorRef
   ) {
@@ -59,23 +62,23 @@ export class ObservationCountComponent implements OnChanges {
     );
   }
 
-  private normalCount(query: WarehouseQueryInterface): Observable<number | undefined> {
-    return this.warehouseService.warehouseQueryCountGet(query).pipe(
+  private normalCount(query: NormalCountQueryParams): Observable<number | undefined> {
+    return this.api.get('/warehouse/query/unit/count', { query }).pipe(
       retryWhen(errors => errors.pipe(delay(1000), take(2), concatWith(throwError(() => errors)))),
-      map(result => result.total)
+      map((result: any) => result.total)
     );
   }
 
-  private aggregatedCount(query: WarehouseQueryInterface): Observable<number> {
+  private aggregatedCount(query: AggregateQueryParams): Observable<number> {
     let pageSize = 1;
     if (this.pick) {
       pageSize = this.pageSize;
       this.pick = Array.isArray(this.pick) ? this.pick : [this.pick];
     }
 
-    return this.warehouseService.warehouseQueryAggregateGet(query, [this.field], undefined, pageSize).pipe(
+    return this.api.get('/warehouse/query/unit/aggregate', { query: { ...query, aggregateBy: [this.field as any], pageSize } }).pipe(
       retryWhen(errors => errors.pipe(delay(1000), take(2), concatWith(throwError(() => errors)))),
-      map(result => {
+      map((result: any) => {
         if (this.pick && result.results) {
           return result.results
             .filter((value: any) => this.pick.indexOf(value.aggregateBy[this.field]) > -1)
