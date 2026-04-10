@@ -6,7 +6,7 @@ import { hotObjectObserver } from '../shared/observable/hot-object-observer';
 import { BrowserService } from '../shared/service/browser.service';
 import { UserService } from '../shared/service/user.service';
 import { FooterService } from '../shared/service/footer.service';
-import { ObservationDataService } from './observation-data.service';
+import { DataFetchMode, ObservationDataService } from './observation-data.service';
 import { SearchQueryService } from './search-query.service';
 import * as Util from '../shared/utils';
 import { LocalStorage } from 'ngx-webstorage';
@@ -109,6 +109,10 @@ export class ObservationFacade {
     private observationDataService: ObservationDataService
   ) {
     this.updateState({..._state, ...this.persistentState});
+  }
+
+  setDataFetchMode(m: DataFetchMode) {
+    this.observationDataService.dataFetchMode = m;
   }
 
   activeTab(tab?: string) {

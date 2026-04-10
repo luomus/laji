@@ -18,10 +18,13 @@ export interface ObservationCounts {
   securedCount: number | null;
 }
 
+export type DataFetchMode = 'unit' | 'sample';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ObservationDataService {
+  dataFetchMode: DataFetchMode = 'unit';
   cacheCount$?: Observable<ObservationCounts>;
   lastQuery?: WarehouseQueryInterface;
 
@@ -29,7 +32,6 @@ export class ObservationDataService {
     private searchQueryService: SearchQueryService,
     private platformService: PlatformService,
     private api: LajiApiClientBService,
-    private oldApi: WarehouseApi
   ) { }
 
   getData(query: WarehouseQueryInterface): Observable<ObservationCounts> {
@@ -51,9 +53,9 @@ export class ObservationDataService {
     }, query);
 
     this.lastQuery = newQuery;
-    const obs$ = this.oldApi.subPath === WarehouseSubPath.default
+    const obs$: Observable<any> = this.dataFetchMode === 'unit'
       ? this.api.get('/warehouse/query/unit/aggregate', { query: query as WarehouseQueryUnitAggregateQParams })
-      : this.oldApi.warehouseQueryAggregateGet(query);
+      : this.api.get('/warehouse/query/sample/aggregate' as any, { query: query as WarehouseQueryUnitAggregateQParams });
     this.cacheCount$ = obs$.pipe(
       filter(data => typeof data !== 'string'),
       map(data => data.results?.[0]),

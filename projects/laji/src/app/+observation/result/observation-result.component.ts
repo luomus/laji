@@ -18,6 +18,8 @@ import { ToastsService } from '../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import G from 'geojson';
 import * as Util from '../../shared/utils';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { geoJSONToWKT } from '@luomus/laji-map/lib/utils';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
@@ -101,6 +103,7 @@ export class ObservationResultComponent implements OnChanges {
     private storage: LocalStorageService,
     private route: ActivatedRoute,
     private warehouseApi: WarehouseApi,
+    private api: LajiApiClientBService,
     private userService: UserService,
     private toastsService: ToastsService,
     private translate: TranslateService
@@ -212,7 +215,9 @@ export class ObservationResultComponent implements OnChanges {
   }
 
   registerPolygon$(polygon: G.Polygon) {
-    return this.warehouseApi.registerPolygon(polygon, this.userService.getToken(), 'WGS84').pipe(
+    const wkt = geoJSONToWKT(polygon);
+    const crs = 'WGS84';
+    return this.api.post('/warehouse/polygon', { query: { wkt, crs } } as any).pipe(
       map((response: any) => '' + response.id),
       catchError(e => {
         const { error } = e;
