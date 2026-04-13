@@ -1,41 +1,18 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Chart, ChartDataset, ChartOptions, ChartType, Tooltip } from 'chart.js';
-import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs';
 import { LineWithLine } from 'projects/laji/src/app/shared-modules/chart/line-with-line';
 import { TranslateService } from '@ngx-translate/core';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
-import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api';
 
-interface PairCountResults {
-  aggregateBy: {
-    'gathering.conversions.year': string;
-  };
-  count: number;
-  individualCountSum: number;
-  individualCountMax: number;
-  oldestRecord: string;
-  newestRecord: string;
-  pairCountSum: number;
-  pairCountMax: number;
-  firstLoadDateMin: string;
-  firstLoadDateMax: string;
-  recordQualityMax: string;
-  securedCount: number;
-}
+type AggregateRow = components['schemas']['WarehouseDwQuery_AggregateRow'];
 
 interface PairCountObject {
   year: string;
   pairCount: number;
-}
-
-interface DocumentCountResults {
-  aggregateBy: {
-    'document.documentId': string;
-    'gathering.conversions.year': string;
-  };
-  count: number;
 }
 
 interface DocumentCountObject {
@@ -113,7 +90,7 @@ export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
   private chartSub!: Subscription;
 
   constructor(
-    private warehouseApi: WarehouseApi,
+    private api: LajiApiClientBService,
     private cdr: ChangeDetectorRef,
     private translate: TranslateService,
   ) {}
@@ -133,44 +110,46 @@ export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
 
   private getPairCounts$(): Observable<PairCountObject[]> {
     return combineLatest([this.collections$, this.taxon$]).pipe(
-      switchMap(([collections, taxon]) => this.warehouseApi.warehouseQueryUnitStatisticsGet(
+      switchMap(([collections, taxon]) => this.api.get('/warehouse/query/unit/statistics',
         {
-          collectionId: collections, taxonId: taxon, pairCounts: true, includeSubCollections: false, cache: true
+          query: {
+            aggregateBy: ['gathering.conversions.year'],
+            orderBy: ['gathering.conversions.year'],
+            collectionId: collections.join(','),
+            taxonId: taxon,
+            pairCounts: true,
+            includeSubCollections: false,
+            cache: true,
+            pageSize: 10000
+          }
         },
-        [
-          'gathering.conversions.year'
-        ],
-        [
-          'gathering.conversions.year'
-        ],
-        10000
-      ))
-    ).pipe(
-      map((res: PagedResult<PairCountResults>) =>
-        res.results.map(item => <PairCountObject>({ year: item.aggregateBy['gathering.conversions.year'], pairCount: item.pairCountSum }))
-      )
+      )),
+      map((res) => {
+        const data = res as { results: AggregateRow[] };
+        return data.results.map(item => ({ year: item.aggregateBy['gathering.conversions.year'], pairCount: item.pairCountSum }));
+      })
     );
   }
 
   private getDocumentCounts$(): Observable<DocumentCountObject[]> {
     return this.collections$.pipe(
-      switchMap((collections) => this.warehouseApi.warehouseQueryGatheringStatisticsGet(
+      switchMap((collections) => this.api.get('/warehouse/query/gathering/statistics',
         {
-          collectionId: collections, onlyCount: true, includeSubCollections: false, cache: true
-        },
-        [
-          'document.documentId',
-          'gathering.conversions.year'
-        ],
-        [
-          'gathering.conversions.year'
-        ],
-        10000
-      ))
-    ).pipe(
-      map((res: PagedResult<DocumentCountResults>) => {
+          query: {
+            aggregateBy: ['gathering.conversions.year', 'document.documentId'],
+            orderBy: ['gathering.conversions.year'],
+            collectionId: collections.join(','),
+            onlyCount: true,
+            includeSubCollections: false,
+            cache: true,
+            pageSize: 10000
+          }
+        }
+      )),
+      map((res) => {
+        const data = res as { results: AggregateRow[] };
         const documentCountArray: DocumentCountObject[] = [];
-        res.results.forEach(documentResult => {
+        data.results.forEach(documentResult => {
           const year = documentResult.aggregateBy['gathering.conversions.year'];
           const index = documentCountArray.findIndex(item => item.year === year);
           if (index !== -1) {
