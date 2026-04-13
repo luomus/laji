@@ -11846,6 +11846,11 @@ export interface components {
              */
             filterByTags: boolean;
             /**
+             * Tags filter whitelist
+             * @description Affects "MHL.filterByTags" feature
+             */
+            filterByTagsWhitelist: ("" | "MNP.tagAccessibilityEasy" | "MNP.tagAccessibilityModerate" | "MNP.tagAccessibilityDifficult" | "MNP.tagHabitatImportant" | "MNP.tagCensusRare" | "MNP.tagHabitatFarmland" | "MNP.tagHabitatMire" | "MNP.tagHabitatMountain" | "MNP.tagSuitable" | "MNP.tagTypeIsland" | "MNP.tagTypePartialIsland" | "MNP.tagTypeIslandGroup" | "MNP.tagTypeWater" | "MNP.tagTypeShoreline" | "MNP.tagTypeMixed" | "MNP.tagTypeUnknown" | "MNP.tagWishedToBeCounted")[];
+            /**
              * Document header fields of place
              * @description When recording a document for a named place, the named place's data of these fields will be shown at the top of the page (defaults to ["alternativeIDs", "name", "municipality"]
              */
@@ -11954,6 +11959,11 @@ export interface components {
              * @description Named place chooser view starts with map tab instead of list
              */
             startWithMap: boolean;
+            /**
+             * Tags filter whitelist
+             * @description Affects "MHL.filterByTags" feature
+             */
+            tagsWhiteList: ("" | "MNP.tagAccessibilityEasy" | "MNP.tagAccessibilityModerate" | "MNP.tagAccessibilityDifficult" | "MNP.tagHabitatImportant" | "MNP.tagCensusRare" | "MNP.tagHabitatFarmland" | "MNP.tagHabitatMire" | "MNP.tagHabitatMountain" | "MNP.tagSuitable" | "MNP.tagTypeIsland" | "MNP.tagTypePartialIsland" | "MNP.tagTypeIslandGroup" | "MNP.tagTypeWater" | "MNP.tagTypeShoreline" | "MNP.tagTypeMixed" | "MNP.tagTypeUnknown" | "MNP.tagWishedToBeCounted")[];
             /**
              * use accepted document
              * @description Instead of populating observation form with prepopulatedDocument, it is populated with acceptedDocument. Admin can change the acceptedDocument from observation list
