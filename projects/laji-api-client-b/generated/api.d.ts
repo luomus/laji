@@ -12076,6 +12076,8 @@ export interface components {
             datatype?: string;
             /** Device ID */
             deviceID?: string;
+            /** Digitised by */
+            digitisers?: string[];
             documentIdentifications?: components["schemas"]["store-documentIdentification"][];
             /**
              * Specimen location
@@ -12443,6 +12445,8 @@ export interface components {
             id: string;
             /** Type for the Keruutapahtuman faktat */
             "@type": string;
+            /** Kaikki havaitut pesäkolot ja pöntöt kirjattu */
+            allObservedNestsRecorded: boolean;
             /**
              * I placed the sound recorder to the terrain
              * @enum {string}
@@ -12791,7 +12795,7 @@ export interface components {
              * Censused taxon set
              * @enum {string}
              */
-            censusTaxonSetID?: "" | "MX.taxonSetSykeButterflyCensusPapilionoidea" | "MX.taxonSetSykeButterflyCensusOther" | "MX.taxonSetWaterbirdWaterbirds" | "MX.taxonSetWaterbirdWaders" | "MX.taxonSetWaterbirdGulls" | "MX.taxonSetWaterbirdPasserines" | "MX.taxonSetWaterbirdAmphibia" | "MX.taxonSetSykeBumblebee" | "MVL.1201" | "MX.taxonSetSykeBumblebeeOther" | "MX.taxonSetBirdAtlasCommon" | "MX.taxonSetBiomonCompleteListOdonata" | "MX.taxonSetBiomonCompleteListButterflies" | "MX.taxonSetBiomonCompleteListMoths" | "MX.taxonSetBiomonCompleteListBombus" | "MX.taxonSetBiomonCompleteListAmphibiaReptilia" | "MX.taxonSetBiomonCompleteListLargeFlowers" | "MX.taxonSetBiomonCompleteListSubarcticPlants" | "MX.taxonSetBiomonCompleteListMacrolichens" | "MX.taxonSetBiomonCompleteListBracketFungi" | "MX.taxonSetBiomonCompleteListPracticalFungi" | "MX.taxonSetSykeMacrozoobenthos" | "MX.taxonSetArchipelagoWaterbirds" | "MX.taxonSetArchipelagoWaders" | "MX.taxonSetArchipelagoGulls" | "MX.taxonSetArchipelagoPasserines" | "MX.taxonSetArchipelagoAlcids" | "MX.taxonSetArchipelagoRaptors" | "MX.taxonSetArchipelagoCormorants" | "MX.taxonSetArchipelagoEgrets" | "MX.taxonSetArchipelagoMammals";
+            censusTaxonSetID?: "" | "MX.taxonSetSykeButterflyCensusPapilionoidea" | "MX.taxonSetSykeButterflyCensusOther" | "MX.taxonSetWaterbirdWaterbirds" | "MX.taxonSetWaterbirdWaders" | "MX.taxonSetWaterbirdGulls" | "MX.taxonSetWaterbirdPasserines" | "MX.taxonSetWaterbirdAmphibia" | "MX.taxonSetSykeBumblebee" | "MVL.1201" | "MX.taxonSetSykeBumblebeeOther" | "MX.taxonSetBirdAtlasCommon" | "MX.taxonSetBiomonCompleteListOdonata" | "MX.taxonSetBiomonCompleteListButterflies" | "MX.taxonSetBiomonCompleteListMoths" | "MX.taxonSetBiomonCompleteListBombus" | "MX.taxonSetBiomonCompleteListAmphibiaReptilia" | "MX.taxonSetBiomonCompleteListLargeFlowers" | "MX.taxonSetBiomonCompleteListSubarcticPlants" | "MX.taxonSetBiomonCompleteListMacrolichens" | "MX.taxonSetBiomonCompleteListBracketFungi" | "MX.taxonSetBiomonCompleteListPracticalFungi" | "MX.taxonSetSykeMacrozoobenthos" | "MX.taxonSetArchipelagoWaterbirds" | "MX.taxonSetArchipelagoWaders" | "MX.taxonSetArchipelagoGulls" | "MX.taxonSetArchipelagoPasserines" | "MX.taxonSetArchipelagoAlcids" | "MX.taxonSetArchipelagoRaptors" | "MX.taxonSetArchipelagoCormorants" | "MX.taxonSetArchipelagoEgrets" | "MX.taxonSetArchipelagoMammals" | "MX.taxonSetPriodiversityOldForestPolypores" | "MX.taxonSetPriodiversityIndicatorLichens";
             /**
              * Completeness of census
              * @enum {string}
@@ -13378,8 +13382,15 @@ export interface components {
             nativeStatus: "" | "MY.native" | "MY.nonNative";
             /** Nest/cavity count */
             nestCount: number;
+            /** metrimäärä (linjan alusta), jolla pönttö/kolo on */
+            nestDistanceFromLineTransectStartMeters: number;
             /** Nest notes */
             nestNotes: string;
+            /**
+             * Pöntön kokoluokka
+             * @enum {string}
+             */
+            nestSize: "" | "MY.nestSizeEnum1" | "MY.nestSizeEnum2" | "MY.nestSizeEnum3";
             /** Diameter of the tree (cm) */
             nestTreeDiameterInCentimeters: number;
             /**
@@ -13643,6 +13654,8 @@ export interface components {
             detOnSite: "" | "MY.duringObservation" | "MY.afterObservation";
             /** Observation distance (m) */
             distanceMeters: number;
+            /** Egg count */
+            eggCount: number;
             /** Females with broods count */
             femalesWithBroodsCount: number;
             /**
@@ -13698,6 +13711,8 @@ export interface components {
             pairCountOuter: number;
             /** Parvien koot */
             pointCountFlock: string;
+            /** Pullus individual count */
+            pullusIndividualCount: number;
             /** Is the plant growing next to running water? */
             runningWaterInVicinity: boolean;
             /**
@@ -14515,6 +14530,8 @@ export interface components {
             taxonExpertiseNotes?: string;
             /** This users profile */
             userID: string;
+            /** Xeno-Canto API key */
+            xenoCantoApiKey?: string;
             /** profileKey */
             profileKey?: string;
         };
@@ -14656,6 +14673,12 @@ export interface components {
              */
             gbifDoi?: string;
             geographicCoverage?: string;
+            /**
+             * Hierarchical type
+             * @description Type of the collection within the collection hierarchy tree.
+             * @enum {string}
+             */
+            hierarchyType?: "" | "MY.hierarchyTypeDocumentParent" | "MY.hierarchyTypeCollectionParent";
             /**
              * Institution code
              * @description Institution code for natural history specimen collection holding institution, such as H, MHZ or TUR
@@ -14840,7 +14863,7 @@ export interface components {
             public?: boolean;
             reserve?: components["schemas"]["store-reserve"];
             /** Tags */
-            tags?: ("" | "MNP.tagAccessibilityEasy" | "MNP.tagAccessibilityModerate" | "MNP.tagAccessibilityDifficult" | "MNP.tagHabitatImportant" | "MNP.tagCensusRare" | "MNP.tagHabitatFarmland" | "MNP.tagHabitatMire" | "MNP.tagHabitatMountain" | "MNP.tagSuitable" | "MNP.tagTypeIsland" | "MNP.tagTypePartialIsland" | "MNP.tagTypeIslandGroup" | "MNP.tagTypeWater" | "MNP.tagTypeShoreline" | "MNP.tagTypeMixed" | "MNP.tagTypeUnknown")[];
+            tags?: ("" | "MNP.tagAccessibilityEasy" | "MNP.tagAccessibilityModerate" | "MNP.tagAccessibilityDifficult" | "MNP.tagHabitatImportant" | "MNP.tagCensusRare" | "MNP.tagHabitatFarmland" | "MNP.tagHabitatMire" | "MNP.tagHabitatMountain" | "MNP.tagSuitable" | "MNP.tagTypeIsland" | "MNP.tagTypePartialIsland" | "MNP.tagTypeIslandGroup" | "MNP.tagTypeWater" | "MNP.tagTypeShoreline" | "MNP.tagTypeMixed" | "MNP.tagTypeUnknown" | "MNP.tagWishedToBeCounted")[];
             /** Taxa */
             taxonIDs?: string[];
             /** Sampling method notes */
