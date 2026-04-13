@@ -63,6 +63,7 @@
       (ngModelChange)="onTagsChange($event)"
       [multiple]="true"
       [useFilter]="false"
+      [whiteList]="data.documentForm?.options?.namedPlaceOptions?.filterByTagsWhitelist"
       placeholder="np.tag"
       [open]="true"></laji-metadata-select>
     <laji-spinner [spinning]="loading" [overlay]="true">
