@@ -85,7 +85,7 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
   }
 
   @HostListener('click')
-  private toggle() {
+  toggle() {
     this.isCurrentPageClosed() ? this.open() : this.close();
     if (isPlatformBrowser(this.platformId)) {
       setTimeout(() => Util.dispatchResizeEvent(this.platformService));

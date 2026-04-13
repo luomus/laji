@@ -73,7 +73,8 @@ export class FormApiClient {
     const headers: Record<string, string> = {
       ...options['headers'],
       timeout,
-      'Accept-language': this.lang!
+      'Accept-language': this.lang!,
+      'API-Version': '1'
     };
     if (this.personToken) {
       headers['Person-Token'] = this.personToken!;

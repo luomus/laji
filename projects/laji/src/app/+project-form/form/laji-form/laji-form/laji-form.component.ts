@@ -33,8 +33,6 @@ import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type Form = components['schemas']['Form'];
 
-const GLOBAL_SETTINGS = '_global_form_settings_';
-
 interface ErrorModal {
   description: string;
   buttons: {
@@ -213,9 +211,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   private mountLajiForm() {
-    if (!this.settings) {
-      return;
-    }
     this.createNewLajiForm();
   }
 
@@ -282,9 +277,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
 
     combineLatest(
       this.userService.getUserSetting<any>(this.settingsKey).pipe(
-        concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
-          map(globalSettings => ({...globalSettings, ...settings}))
-        )),
         take(1)
       ),
       this.userService.getProfile().pipe(map(profile => profile.settings?.defaultMediaMetadata))
@@ -297,9 +289,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
     });
   }
 
-  private _onSettingsChange(settings: any, global = false) {
+  private _onSettingsChange(settings: any) {
     this.ngZone.run(() => {
-      this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, settings);
+      this.userService.setUserSetting(this.settingsKey, settings);
     });
   }
 
