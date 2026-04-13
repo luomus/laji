@@ -9,13 +9,24 @@ import { Person } from '../../shared/model/Person';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { TranslatePipe } from '@ngx-translate/core';
+import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
+import { SharedModule } from '../../shared/shared.module';
+import { FindPersonModule } from '../../shared-modules/find-person/find-person.module';
+import { FriendsComponent } from '../friends/friends.component';
 
 
 @Component({
-    selector: 'laji-user',
-    templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.css'],
-    standalone: false
+  selector: 'laji-user',
+  templateUrl: './profile.component.html',
+  imports: [
+    TranslatePipe,
+    LajiUiModule,
+    SharedModule,
+    FindPersonModule,
+    FriendsComponent
+  ],
+  styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
 

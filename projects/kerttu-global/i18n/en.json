@@ -169,14 +169,13 @@
   "navigation.user.login": "Log In | Sign Up",
   "navigation.user.logout": "Logout",
   "navigation.user.profile": "Profile",
+  "user.pleaseLogin": "Please log in first to see your own profile page.",
   "next": "Next",
   "no": "no",
   "off": "off",
   "OK": "OK",
   "on": "on",
   "previous": "Previous",
-  "profile.accountSettings": "My account",
-  "profile.missing": "User not found.",
   "results.allSpecies": "All species",
   "results.annotationCountMap": "Annotation count map",
   "results.annotationCounts": "Total annotation counts",
@@ -288,5 +287,10 @@
   "speciesSelection.name": "Name",
   "speciesSelection.recordingCount": "Recording count",
   "error.404.intro": "Please check that url is written correctly.",
-  "error.404.title": "Page not found"
+  "error.404.title": "Page not found",
+  "profile.accountSettings": "Edit my account",
+  "profile.info.intro": "Here you can edit your settings. Xeno-Canto API key is required for exporting your annotations to Xeno-Canto. You can get your API key from <a href=\"https://www.xeno-canto.org/account\" target=\"_blank\" rel=\"noopener noreferrer\">Xeno-Canto website</a>.",
+  "profile.xenoCantoApiKey": "Xeno-Canto API key",
+  "profile.missing": "User not found.",
+  "profile.save": "Save"
 }

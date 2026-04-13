@@ -47,7 +47,7 @@ const routes: Routes = [
   },
   {
     path: 'user',
-    loadChildren: () => import('../../../laji/src/app/+user/user.module').then(m => m.UserModule)
+    loadChildren: () => import('./+user/user.module').then(m => m.UserModule)
   },
   {path: '**', component: NotFoundComponent}
 ];
