@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import * as MapUtil from '@luomus/laji-map/lib/utils';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
-import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { FormService } from '../../../../shared/service/form.service';
@@ -18,6 +17,7 @@ import { LineString } from 'geojson';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
 export type Document = components['schemas']['store-document'];
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 interface LineTransectCount {
   psCouples: number;
@@ -111,7 +111,7 @@ export class LineTransectComponent implements OnChanges {
       minPerKm: 0
     };
     const species: any = {};
-    this.stats$ = this.api.get('/documents/stats', { query: { namedPlace: this.namedPlace.id } }).pipe(
+    this.stats$ = this.api.get('/documents/stats', { query: { namedPlace: this.namedPlace.id! } }).pipe(
       map(stats => this.dateDiffFromDoc(stats.dateMedian))).pipe(
       catchError(() => ObservableOf('')));
     if (this.document.gatherings) {

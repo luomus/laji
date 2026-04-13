@@ -6,7 +6,6 @@ import { MappingService, SpecialTypes } from './mapping.service';
 import { Person } from '../../../shared/model/Person';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { forkJoin as ObservableForkJoin } from 'rxjs';
-import { NamedPlacesService } from '../../../shared/service/named-places.service';
 import { TranslateService } from '@ngx-translate/core';
 import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
 import { ExportService } from '../../../shared/service/export.service';
@@ -50,7 +49,6 @@ export class GeneratorService {
   constructor(
     private mappingService: MappingService,
     private userService: UserService,
-    private namedPlaces: NamedPlacesService,
     private translateService: TranslateService,
     private informalTaxonApi: InformalTaxonGroupApi,
     private exportService: ExportService,

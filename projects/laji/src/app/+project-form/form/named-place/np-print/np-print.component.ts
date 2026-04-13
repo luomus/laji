@@ -2,9 +2,11 @@ import { map } from 'rxjs';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { FooterService } from '../../../../shared/service/footer.service';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 @Component({
     selector: 'laji-np-print',

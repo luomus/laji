@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { map, Observable, of as ObservableOf } from 'rxjs';
 import { combineLatest, take } from 'rxjs';
-import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { UserService } from '../../../../../shared/service/user.service';
 import { FormPermissionService } from '../../../../../shared/service/form-permission.service';
 import type { LineTransectGeometry, Options } from '@luomus/laji-map';
@@ -21,13 +20,14 @@ import equals from 'deep-equal';
 import { diff, DiffNew } from 'deep-diff';
 import { FormService } from '../../../../../shared/service/form.service';
 import { GeometryCollection, LineString } from 'geojson';
-import { NamedPlacesService } from '../../../../../shared/service/named-places.service';
 import { DocumentService } from '../../../../../shared-modules/own-submissions/service/document.service';
 import { Person } from 'projects/laji/src/app/shared/model/Person';
 import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 type FormPermission = components['schemas']['FormPermissionDto'];
 type Document = components['schemas']['store-document'];
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 @Component({
     selector: 'laji-accepted-document-approval',
@@ -57,11 +57,11 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
   constructor(
     private userService: UserService,
     private formPermissionService: FormPermissionService,
-    private namedPlacesService: NamedPlacesService,
     private toastsService: ToastsService,
     private formService: FormService,
     private documentService: DocumentService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private api: LajiApiClientBService
   ) { }
 
   ngOnChanges() {
@@ -151,11 +151,9 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
   }
 
   acceptNamedPlaceChanges() {
-    this.namedPlacesService.updateNamedPlace(
-      this.namedPlace.id,
-      // TODO should be able to remove any after named places service migration to use new api client>
-      {...this.namedPlace, acceptedDocument: this.document as any},
-      this.userService.getToken()
+    this.api.put('/named-places/{id}',
+      { path: { id: this.namedPlace.id! } },
+      {...this.namedPlace, acceptedDocument: this.document}
     ).subscribe((np: NamedPlace) => {
       this.namedPlaceChange.emit(np);
       this.toastsService.showSuccess(
