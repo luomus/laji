@@ -6,13 +6,13 @@ import { TemplateForm } from '../models/template-form';
 import { DocumentStorage } from '../../../storage/document.storage';
 import { switchMap, tap, take } from 'rxjs';
 import { Rights } from '../../../shared/service/form-permission.service';
-import { Person } from '../../../shared/model/Person';
 import { JSONPath } from 'jsonpath-plus';
 import { FormService } from '../../../shared/service/form.service';
 import type { components } from 'projects/laji-api-client-b/generated/api.d';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 type Document = components['schemas']['store-document'];
+type Person = components['schemas']['SensitivePerson'];
 
 export enum Readonly {
   noEdit,

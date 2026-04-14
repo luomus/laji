@@ -15,13 +15,12 @@ import {
   ViewChild
 } from '@angular/core';
 import { FormApiClient } from '../../../../shared/api/FormApiClient';
-import { UserSettings, UserService } from '../../../../shared/service/user.service';
+import { UserSettings, UserService, ExtendedProfile } from '../../../../shared/service/user.service';
 import { Logger } from '../../../../shared/logger/logger.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
-import { concatMap, map, take } from 'rxjs';
+import { map, take } from 'rxjs';
 import { Global } from '../../../../../environments/global';
 import { combineLatest, Subscription } from 'rxjs';
-import { DefaultMediaMetadata } from '../../../../shared/model/Profile';
 import type LajiForm from '@luomus/laji-form/lib/index';
 import type { Theme as LajiFormTheme } from '@luomus/laji-form/lib/themes/theme';
 import { environment } from 'projects/laji/src/environments/environment';
@@ -32,6 +31,7 @@ import { ErrorSchema } from '@rjsf/utils';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type Form = components['schemas']['Form'];
+type DefaultMediaMetadata = ExtendedProfile['settings']['defaultMediaMetadata'];
 
 interface ErrorModal {
   description: string;

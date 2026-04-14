@@ -21,7 +21,6 @@ import { diff, DiffNew } from 'deep-diff';
 import { FormService } from '../../../../../shared/service/form.service';
 import { GeometryCollection, LineString } from 'geojson';
 import { DocumentService } from '../../../../../shared-modules/own-submissions/service/document.service';
-import { Person } from 'projects/laji/src/app/shared/model/Person';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
@@ -76,7 +75,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       });
   }
 
-  initIsAdmin(): Observable<null | { formPermission: FormPermission; user: Person | undefined }> {
+  initIsAdmin(): Observable<null | { formPermission: FormPermission; user: any }> {
     if (!this.namedPlace || !this.namedPlace.collectionID) {
       return ObservableOf(null);
     }
