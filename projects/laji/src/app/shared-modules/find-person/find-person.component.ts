@@ -14,7 +14,7 @@ export class FindPersonComponent implements OnInit {
   @Input() limit = 10;
   @Input() showUserID = false;
   @Input() inputId = '';
-  @Output() selectChange = new EventEmitter<{ id: string; fullName: string; }>();
+  @Output() selectChange = new EventEmitter<{ id: string; fullName: string }>();
 
   dataSource!: Observable<any>;
   typeaheadLoading = false;
