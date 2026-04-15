@@ -44,9 +44,8 @@ export abstract class ExtendedGroupSelectComponent<T extends RedListTaxonGroup|I
   ) {}
 
   ngOnInit() {
-    const lang = this.translate.getCurrentLang();
-    this.groupsTree$ = this.initGroupTree(lang).pipe(shareReplay(1));
-    this.groups$ = this.initSelectionGroups(lang, this.includedOptions, this.excludedOptions);
+    this.groupsTree$ = this.initGroupTree().pipe(shareReplay(1));
+    this.groups$ = this.initSelectionGroups(this.includedOptions, this.excludedOptions);
   }
 
   ngOnChanges() {
@@ -54,18 +53,18 @@ export abstract class ExtendedGroupSelectComponent<T extends RedListTaxonGroup|I
     if (!Util.equalsArray(this.includedOptions, includedOptions) || !Util.equalsArray(this.excludedOptions, excludedOptions)) {
       this.includedOptions = includedOptions;
       this.excludedOptions = excludedOptions;
-      this.groups$ = this.initSelectionGroups(this.translate.getCurrentLang(), this.includedOptions, this.excludedOptions);
+      this.groups$ = this.initSelectionGroups(this.includedOptions, this.excludedOptions);
     }
   }
 
-  abstract findByIds(groupIds: string[], lang: string): Observable<PagedResult<T>>;
+  abstract findByIds(groupIds: string[]): Observable<PagedResult<T>>;
   abstract convertToInformalTaxonGroup(group: T): InformalTaxonGroup;
-  abstract getTree(lang: string): Observable<ArrayResult<T>>;
+  abstract getTree(): Observable<ArrayResult<T>>;
   abstract getOptions(query: Record<string, any>): string[][];
   abstract prepareEmit(includedOptions: string[], excludedOptions?: string[]): InformalGroupEvent;
 
-  initGroupTree(lang: string): Observable<TreeOptionsNode[]> {
-    return this.getTree(lang).pipe(
+  initGroupTree(): Observable<TreeOptionsNode[]> {
+    return this.getTree().pipe(
       map((data) => data.results),
       map((trees) => this.buildGroupTree(trees))
     );
@@ -113,13 +112,13 @@ export abstract class ExtendedGroupSelectComponent<T extends RedListTaxonGroup|I
     }
   }
 
-  initSelectionGroups(lang: string, includedOptions: string[], excludedOptions: string[]): Observable<SelectedOption[]> {
+  initSelectionGroups(includedOptions: string[], excludedOptions: string[]): Observable<SelectedOption[]> {
     const selectedGroups = includedOptions.concat(excludedOptions);
 
     if (selectedGroups.length === 0) {
       return of([]);
     } else {
-      return this.findByIds(selectedGroups, lang).pipe(
+      return this.findByIds(selectedGroups).pipe(
         map(data => data.results),
         map(data => {
           const toReturn: SelectedOption[] = [];

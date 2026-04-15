@@ -70,10 +70,10 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     const newValue = this.value;
     this.currentValue = newValue;
     (newValue ?
-      this.getChildren(newValue, this.lang) :
-      this.getRoot(this.lang)).pipe(
+      this.getChildren(newValue) :
+      this.getRoot()).pipe(
       switchMap(data => (!data.results || data.results.length === 0) ?
-          this.getWithSiblings(newValue, this.lang) :
+          this.getWithSiblings(newValue) :
           ObservableOf(data))).pipe(
       map(data => data.results.map(item => this.convertToInformalTaxonGroup(item))))
       .subscribe(
@@ -149,7 +149,7 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
       if (this.subLabel) {
         this.subLabel.unsubscribe();
       }
-      this.subLabel = this.findById(groupId, this.lang).pipe(
+      this.subLabel = this.findById(groupId).pipe(
         map(group => group.name))
         .subscribe(
           name => {
@@ -164,18 +164,18 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     }
   }
 
-  getRoot(lang: string): Observable<ArrayResult<T>> {
+  getRoot(): Observable<ArrayResult<T>> {
     if (this.rootGroups) {
-      return this.findByIds(this.rootGroups, lang);
+      return this.findByIds(this.rootGroups);
     }
-    return this.findRoots(lang);
+    return this.findRoots();
   }
 
-  abstract findById(groupId: string, lang: string): Observable<T>;
-  abstract findByIds(groupIds: string[], lang: any): Observable<PagedResult<T>>;
-  abstract getWithSiblings(groupId: any, lang: string): Observable<ArrayResult<T>>;
-  abstract getChildren(groupId: any, lang: string): Observable<ArrayResult<T>>;
-  abstract findRoots(lang: any): Observable<ArrayResult<T>>;
+  abstract findById(groupId: string): Observable<T>;
+  abstract findByIds(groupIds: string[]): Observable<PagedResult<T>>;
+  abstract getWithSiblings(groupId: any): Observable<ArrayResult<T>>;
+  abstract getChildren(groupId: any): Observable<ArrayResult<T>>;
+  abstract findRoots(): Observable<ArrayResult<T>>;
   abstract convertToInformalTaxonGroup(group: T): InformalTaxonGroup;
 
   empty() {

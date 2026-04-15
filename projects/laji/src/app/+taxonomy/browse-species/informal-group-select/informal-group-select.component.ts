@@ -46,20 +46,20 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
     this.selectedInformalGroup = undefined;
 
     if (!this.id) {
-      this.informalTaxonService.informalTaxonGroupFindRoots(this.translate.getCurrentLang())
+      this.informalTaxonService.informalTaxonGroupFindRoots()
         .subscribe(data => this.informalGroups = data.results);
       return;
     }
 
     combineLatest(
-      this.informalTaxonService.informalTaxonGroupGetChildren(this.id, this.translate.getCurrentLang()),
-      this.informalTaxonService.informalTaxonGroupFindById(this.id, this.translate.getCurrentLang())
+      this.informalTaxonService.informalTaxonGroupGetChildren(this.id),
+      this.informalTaxonService.informalTaxonGroupFindById(this.id)
     ).subscribe(data => {
       this.informalGroups = data[0].results;
       this.selectedInformalGroup = data[1];
     });
 
-    this.informalTaxonService.informalTaxonGroupGetParent(this.id, this.translate.getCurrentLang())
+    this.informalTaxonService.informalTaxonGroupGetParent(this.id)
       .subscribe(data => this.parentGroup = data, () => {});
   }
 }
