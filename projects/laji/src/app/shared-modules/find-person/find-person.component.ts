@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Person } from '../../shared/model/Person';
 import { map, mergeMap } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
@@ -15,7 +14,7 @@ export class FindPersonComponent implements OnInit {
   @Input() limit = 10;
   @Input() showUserID = false;
   @Input() inputId = '';
-  @Output() selectChange = new EventEmitter<Person>();
+  @Output() selectChange = new EventEmitter<{ id: string; fullName: string }>();
 
   dataSource!: Observable<any>;
   typeaheadLoading = false;

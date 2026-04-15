@@ -9,6 +9,10 @@ export type WithNonNullableKeys<T, K extends keyof T> = T & {
   [P in K]-?: NonNullable<T[P]>;
 };
 
+export type WithNullableKeys<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]?: T[P];
+};
+
 export type DeepOptionalKeys<T, OptionalKeys extends PropertyKey> =
   T extends Array<infer U>
     ? DeepOptionalKeys<U, OptionalKeys>[]

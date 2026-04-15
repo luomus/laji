@@ -1,15 +1,18 @@
-import { catchError, concatMap, map, take } from 'rxjs';
+import { concatMap, map, take } from 'rxjs';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { prepareProfile, UserService } from '../../shared/service/user.service';
-import { Profile } from '../../shared/model/Profile';
+import { ExtendedProfile, prepareProfile, UserService } from '../../shared/service/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, forkJoin as ObservableForkJoin, of as ObservableOf, Subscription } from 'rxjs';
+import { Observable, forkJoin as ObservableForkJoin, Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
-import { Person } from '../../shared/model/Person';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { WithNullableKeys } from '../../shared/utils';
 
+type Profile = components['schemas']['store-profile'];
+type SensitiveProfile = components['schemas']['SensitiveProfile'];
+type MediaIntellectualRights = components['schemas']['Image']['intellectualRights'];
 
 @Component({
     selector: 'laji-user',
@@ -19,27 +22,25 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 })
 export class ProfileComponent implements OnInit, OnDestroy {
 
-  currentProfile!: Profile;
-  userProfile!: Profile;
+  viewedProfile!: WithNullableKeys<SensitiveProfile, 'profileDescription' | 'image'>;
+  loggedInProfile!: ExtendedProfile;
 
-  public isCurrentUser = false;
-  public userId = '';
+  public viewedUserIsLoggedInUser = false;
+  public viewedUserId = '';
   public isCreate = true;
   public editing = false;
   public loading = true;
   public personSelfUrl = '/';
 
   private subProfile!: Subscription;
-  intellectualRightsArray: Profile.IntellectualRights[] = [
-    Profile.IntellectualRights.intellectualRightsCCBYSA4,
-    Profile.IntellectualRights.intellectualRightsCCBYNC4,
-    Profile.IntellectualRights.intellectualRightsCCBYNCSA4,
-    Profile.IntellectualRights.intellectualRightsCCBY4,
-    Profile.IntellectualRights.intellectualRightsCC04,
-    Profile.IntellectualRights.intellectualRightsARR
+  intellectualRightsArray: MediaIntellectualRights[] = [
+    'MZ.intellectualRightsCC-BY-SA-4.0',
+    'MZ.intellectualRightsCC-BY-NC-4.0',
+    'MZ.intellectualRightsCC-BY-NC-SA-4.0',
+    'MZ.intellectualRightsCC-BY-4.0',
+    'MZ.intellectualRightsCC0-4.0',
+    'MZ.intellectualRightsARR'
   ];
-
-  intellectualRights = Profile.IntellectualRights;
 
   constructor(private userService: UserService,
               private localizeRouterService: LocalizeRouterService,
@@ -56,46 +57,42 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.subProfile = this.route.params.pipe(
       map(params => params['userId']),
-      concatMap(id => this.userService.user$.pipe(
+      concatMap(viewedUserId => this.userService.user$.pipe(
         take(1),
-        map(user => ({id, currentUser: user}))
+        map(user => ({viewedUserId, loggedInUser: user}))
       )),
-      concatMap(({currentUser, id}) => {
-        const empty$ = ObservableOf({} as Profile);
-        const undefined$ = ObservableOf(undefined);
-        const userProfile$ = this.api.get('/person/profile').pipe(catchError(() => undefined$));
+      concatMap(({loggedInUser, viewedUserId}) => {
+        const loggedInProfile$ = this.api.get('/person/profile');
         return ObservableForkJoin(
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          currentUser!.id
-            ? userProfile$
-            : empty$,
+          loggedInProfile$,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          currentUser!.id === id
-            ? userProfile$
-            : this.api.get('/person/{id}/profile', { path: { id } }).pipe(catchError(() => empty$))
+          loggedInUser!.id === viewedUserId
+            ? loggedInProfile$
+            : this.api.get('/person/{id}/profile', { path: { id: viewedUserId } })
         ).pipe(
-          map(([userProfile, currentProfile]) => ({
-            id,
-            currentUser,
-            userProfile,
-            currentProfile
+          map(([loggedInProfile, viewedProfile]) => ({
+            viewedUserId,
+            loggedInUser,
+            loggedInProfile,
+            viewedProfile
           }))
         );
       })
     ).subscribe(
-      ({id, currentUser, userProfile, currentProfile}) => {
+      ({viewedUserId, loggedInUser, loggedInProfile, viewedProfile}) => {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          this.isCurrentUser = id === currentUser!.id;
-          this.userId = id;
-          this.isCreate = !userProfile;
-          this.currentProfile = prepareProfile(currentProfile, currentUser);
-          this.userProfile = prepareProfile(userProfile, currentUser);
+          this.viewedUserIsLoggedInUser = viewedUserId === loggedInUser!.id;
+          this.viewedUserId = viewedUserId;
+          this.isCreate = !loggedInProfile;
+          this.viewedProfile = viewedProfile;
+          this.loggedInProfile = prepareProfile(loggedInProfile, loggedInUser);
           this.loading = false;
           this.editing = false;
           this.cdr.detectChanges();
         },
         err => {
-          this.logger.warn('Failed to init currentProfile', err);
+          this.logger.warn('Failed to init viewedProfile', err);
           this.loading = false;
           this.cdr.detectChanges();
         }
@@ -124,8 +121,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     ) as Observable<Profile>).subscribe(
         profile => {
           this.isCreate = false;
-          this.currentProfile = profile;
-          this.userProfile = profile;
+          this.loggedInProfile = profile as ExtendedProfile;
           this.editing = false;
           this.loading = false;
         },
@@ -133,7 +129,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       );
   }
 
-  selectPerson(person: Person) {
+  selectPerson(person: { id: string }) {
     if (!person.id) {
       return;
     }
@@ -144,21 +140,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private getSaveProfile(): Profile {
     return {
-      ...this.userProfile,
-      image: this.currentProfile.image,
-      profileDescription: this.currentProfile.profileDescription,
-      personalCollectionIdentifier: this.currentProfile.personalCollectionIdentifier,
+      ...this.loggedInProfile,
+      image: this.loggedInProfile.image,
+      profileDescription: this.loggedInProfile.profileDescription,
+      personalCollectionIdentifier: this.loggedInProfile.personalCollectionIdentifier,
       settings: {
-        ...this.userProfile.settings,
+        ...this.loggedInProfile.settings,
         defaultMediaMetadata: {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          ...this.userProfile.settings!.defaultMediaMetadata,
+          ...this.loggedInProfile.settings!.defaultMediaMetadata,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          capturerVerbatim: this.currentProfile?.settings?.defaultMediaMetadata?.capturerVerbatim!,
+          capturerVerbatim: this.loggedInProfile?.settings?.defaultMediaMetadata?.capturerVerbatim!,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          intellectualOwner: this.currentProfile?.settings?.defaultMediaMetadata?.intellectualOwner!,
+          intellectualOwner: this.loggedInProfile?.settings?.defaultMediaMetadata?.intellectualOwner!,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          intellectualRights: this.currentProfile?.settings?.defaultMediaMetadata?.intellectualRights!
+          intellectualRights: this.loggedInProfile?.settings?.defaultMediaMetadata?.intellectualRights!
         }
       }
     };
