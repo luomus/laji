@@ -27,234 +27,77 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PagedResult } from '../model/PagedResult';
-import { HttpClient } from '@angular/common/http';
-import * as Util from '../utils';
-import { RedListTaxonGroup } from '../model/RedListTaxonGroup';
-import { environment } from '../../../environments/environment';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { ArrayResult } from '../model/ArrayResult';
+
+type RedListTaxonGroup = components['schemas']['store-iucnRedListTaxonGroup'];
 
 @Injectable({providedIn: 'root'})
 export class RedListTaxonGroupApi {
-  protected basePath = environment.apiBase;
-
-  constructor(protected http: HttpClient) {
-  }
+  constructor(
+    protected api: LajiApiClientBService
+  ) {}
 
   /**
    * Get all InformalTaxonGroups
-   *
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    * @param page Page number
    * @param pageSize Page size
    */
-  public redListTaxonGroupsFind(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<RedListTaxonGroup>> {
-    const path = this.basePath + '/red-list-evaluation-groups';
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
-
-    if (page !== undefined) {
-      queryParameters['page'] = page;
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize;
-    }
-
-    return this.http.get<PagedResult<RedListTaxonGroup>>(path, {params: queryParameters});
+  public redListTaxonGroupsFind(page?: number, pageSize?: number, idIn?: string[]): Observable<PagedResult<RedListTaxonGroup>> {
+    return this.api.get('/red-list-evaluation-groups', { query: { idIn: idIn?.join(','), page, pageSize }})
   }
 
   /**
    * Find InformalTaxonGroup by id
-   *
    * @param id
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
-  public redListTaxonGroupsFindById(id: string, lang?: string, extraHttpRequestParams?: any): Observable<RedListTaxonGroup> {
-    const path = this.basePath + '/red-list-evaluation-groups/{id}'
-        .replace('{' + 'id' + '}', String(id));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'id' is not null or undefined
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling redListTaxonGroupsFindById.');
-    }
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
-
-    return this.http.get<RedListTaxonGroup>(path, {params: queryParameters});
+  public redListTaxonGroupsFindById(id: string): Observable<RedListTaxonGroup> {
+    return this.api.get('/red-list-evaluation-groups/{id}', { path: { id }});
   }
 
   /**
    * Get root informal taxon groups
-   *
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-   * @param page Page number
-   * @param pageSize Page size
    */
-  public redListTaxonGroupsFindRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<RedListTaxonGroup>> {
-    const path = this.basePath + '/red-list-evaluation-groups/roots';
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
-
-    if (page !== undefined) {
-      queryParameters['page'] = page;
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize;
-    }
-
-    return this.http.get<PagedResult<RedListTaxonGroup>>(path, {params: queryParameters});
+  public redListTaxonGroupsFindRoots(): Observable<ArrayResult<RedListTaxonGroup>> {
+    return this.api.get('/red-list-evaluation-groups/roots');
   }
 
   /**
    * Get immediate children of the informal group
-   *
    * @param id
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-   * @param page Page number
-   * @param pageSize Page size
    */
-  public redListTaxonGroupsGetChildren(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<RedListTaxonGroup>> {
-    const path = this.basePath + '/red-list-evaluation-groups/{id}/children'
-        .replace('{' + 'id' + '}', String(id));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'id' is not null or undefined
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling redListTaxonGroupsGetChildren.');
-    }
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
-
-    if (page !== undefined) {
-      queryParameters['page'] = page;
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize;
-    }
-
-    return this.http.get<PagedResult<RedListTaxonGroup>>(path, {params: queryParameters});
+  public redListTaxonGroupsGetChildren(id: string): Observable<ArrayResult<RedListTaxonGroup>> {
+    return this.api.get('/red-list-evaluation-groups/{id}/children', { path: { id }})
   }
 
   /**
    * Get parents for a informal group
-   *
    * @param id
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
    */
-  public redListTaxonGroupsGetParents(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<RedListTaxonGroup>> {
-    const path = this.basePath + '/red-list-evaluation-groups/{id}/parents'
-        .replace('{' + 'id' + '}', String(id));
+  public redListTaxonGroupsGetParents(id: string): Observable<RedListTaxonGroup> {
+    return this.api.get('/red-list-evaluation-groups/{id}/parent', { path: { id }});
 
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'id' is not null or undefined
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling redListTaxonGroupsGetChildren.');
-    }
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
-
-    return this.http.get<RedListTaxonGroup[]>(path, {params: queryParameters});
-  }
-
-  /**
-   * Get current groups parents and parents siblings
-   *
-   * @param id
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-   * @param page Page number
-   * @param pageSize Page size
-   */
-  public redListTaxonGroupsGetParentLevel(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<RedListTaxonGroup>>> {
-    const path = this.basePath + '/red-list-evaluation-groups/{id}/parentLevel'
-        .replace('{' + 'id' + '}', String(id));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    // verify required parameter 'id' is not null or undefined
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling redListTaxonGroupsGetParentLevel.');
-    }
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
-
-    if (page !== undefined) {
-      queryParameters['page'] = page;
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize;
-    }
-
-    return this.http.get<PagedResult<Array<RedListTaxonGroup>>>(path, {params: queryParameters});
   }
 
   /**
    * Get full tree of informal groups with hasSubGroup extended
-   *
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-   * @param page Page number
-   * @param pageSize Page size
    */
-  public redListTaxonGroupsGetTree(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<RedListTaxonGroup>> {
-    const path = this.basePath + '/red-list-evaluation-groups/tree';
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
-
-    if (page !== undefined) {
-      queryParameters['page'] = page;
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize;
-    }
-
-    return this.http.get<PagedResult<RedListTaxonGroup>>(path, {params: queryParameters});
+  public redListTaxonGroupsGetTree(): Observable<ArrayResult<RedListTaxonGroup>> {
+    return this.api.get('/red-list-evaluation-groups/tree');
   }
 
   /**
    * Get current groups with it&#39;s siblings
-   *
    * @param id
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-   * @param page Page number
-   * @param pageSize Page size
    */
-  public redListTaxonGroupsGetWithSiblings(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<RedListTaxonGroup>> {
-    const path = this.basePath + '/red-list-evaluation-groups/{id}/siblings'
-        .replace('{' + 'id' + '}', String(id));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+  public redListTaxonGroupsGetWithSiblings(id: string): Observable<ArrayResult<RedListTaxonGroup>> {
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling redListTaxonGroupsGetWithSiblings.');
     }
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
 
-    if (page !== undefined) {
-      queryParameters['page'] = page;
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize;
-    }
-
-    return this.http.get<PagedResult<RedListTaxonGroup>>(path, {params: queryParameters});
+    return this.api.get('/red-list-evaluation-groups/{id}/siblings', { path: { id }});
   }
 
 }

@@ -4,10 +4,13 @@ import { Observable } from 'rxjs';
 import { Logger } from '../logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { GroupSelectComponent } from './group-select.component';
-import { RedListTaxonGroup } from '../model/RedListTaxonGroup';
-import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
-import { PagedResult } from '../model/PagedResult';
 import { RedListTaxonGroupApi } from '../api/RedListTaxonGroupApi';
+import { ArrayResult } from '../model/ArrayResult';
+import { PagedResult } from '../model/PagedResult';
+import { components } from 'projects/laji-api-client-b/generated/api';
+
+type RedListTaxonGroup = components['schemas']['store-iucnRedListTaxonGroup'];
+type InformalTaxonGroup = components['schemas']['store-informalTaxonGroup'];
 
 export const IUCN_GROUP_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -34,24 +37,24 @@ export class IucnGroupSelectComponent extends GroupSelectComponent<RedListTaxonG
     super(cd, logger, translate);
   }
 
-  findById(groupId: string, lang: string | undefined): Observable<InformalTaxonGroup> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsFindById(groupId ?? '', lang);
+  findById(groupId: string): Observable<InformalTaxonGroup> {
+    return this.redListTaxonGroupApi.redListTaxonGroupsFindById(groupId ?? '');
   }
 
-  findByIds(groupIds: string[], lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsFind(lang, undefined, undefined, {idIn: groupIds});
+  findByIds(groupIds: string[]): Observable<PagedResult<RedListTaxonGroup>> {
+    return this.redListTaxonGroupApi.redListTaxonGroupsFind(undefined, undefined, groupIds);
   }
 
-  getWithSiblings(groupId: string, lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsGetWithSiblings(groupId ?? '', lang);
+  getWithSiblings(groupId: string): Observable<ArrayResult<RedListTaxonGroup>> {
+    return this.redListTaxonGroupApi.redListTaxonGroupsGetWithSiblings(groupId ?? '');
   }
 
-  getChildren(groupId: string, lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsGetChildren(groupId ?? '', lang);
+  getChildren(groupId: string): Observable<ArrayResult<RedListTaxonGroup>> {
+    return this.redListTaxonGroupApi.redListTaxonGroupsGetChildren(groupId ?? '');
   }
 
-  findRoots(lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsFindRoots(lang);
+  findRoots(): Observable<ArrayResult<RedListTaxonGroup>> {
+    return this.redListTaxonGroupApi.redListTaxonGroupsFindRoots();
   }
 
   convertToInformalTaxonGroup(group: RedListTaxonGroup): InformalTaxonGroup {

@@ -36,24 +36,24 @@ export class ObservationGroupSelectComponent extends GroupSelectComponent<Inform
   }
 
 
-  findById(groupId: string, lang: string | undefined): Observable<InformalTaxonGroup> {
-    return this.informalTaxonService.informalTaxonGroupFindById(groupId, lang);
+  findById(groupId: string): Observable<InformalTaxonGroup> {
+    return this.informalTaxonService.informalTaxonGroupFindById(groupId);
   }
 
-  findByIds(groupIds: string[], lang: string | undefined): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.informalTaxonService.informalTaxonGroupFind(lang, undefined, undefined, groupIds);
+  findByIds(groupIds: string[]): Observable<PagedResult<RedListTaxonGroup>> {
+    return this.informalTaxonService.informalTaxonGroupFind(undefined, undefined, groupIds);
   }
 
-  getWithSiblings(groupId: string, lang: string | undefined): Observable<ArrayResult<RedListTaxonGroup>> {
-    return this.informalTaxonService.informalTaxonGroupGetWithSiblings(groupId, lang);
+  getWithSiblings(groupId: string): Observable<ArrayResult<RedListTaxonGroup>> {
+    return this.informalTaxonService.informalTaxonGroupGetWithSiblings(groupId);
   }
 
-  getChildren(groupId: string, lang: string | undefined): Observable<ArrayResult<RedListTaxonGroup>> {
-    return this.informalTaxonService.informalTaxonGroupGetChildren(groupId, lang);
+  getChildren(groupId: string): Observable<ArrayResult<RedListTaxonGroup>> {
+    return this.informalTaxonService.informalTaxonGroupGetChildren(groupId);
   }
 
-  findRoots(lang: string | undefined): Observable<ArrayResult<RedListTaxonGroup>> {
-    return this.informalTaxonService.informalTaxonGroupFindRoots(lang);
+  findRoots(): Observable<ArrayResult<RedListTaxonGroup>> {
+    return this.informalTaxonService.informalTaxonGroupFindRoots();
   }
 
   convertToInformalTaxonGroup(group: RedListTaxonGroup): InformalTaxonGroup {
