@@ -125,9 +125,7 @@ export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
         },
       )),
       filter((response): response is AggregateResponse => typeof response !== 'string'),
-      map(res => {
-        return res.results.map(item => ({ year: item.aggregateBy['gathering.conversions.year'], pairCount: item.pairCountSum }));
-      })
+      map(res => res.results.map(item => ({ year: item.aggregateBy['gathering.conversions.year'], pairCount: item.pairCountSum })))
     );
   }
 
