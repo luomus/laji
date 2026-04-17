@@ -1,21 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
+import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs';
+
+type AggregateResponse = components['schemas']['WarehouseDwQuery_AggregateResponse'];
 
 interface Row {
   observer: string;
   gatherings: number;
-}
-
-interface QueryResult {
-  results: {
-    aggregateBy: {
-      'gathering.team.memberName': string;
-    };
-    count: number;
-  }[];
 }
 
 @Component({
@@ -40,25 +34,29 @@ export class BiomonResultStatisticsComponent implements OnInit {
   ];
 
   constructor(
-    private warehouseApi: WarehouseApi
+    private api: LajiApiClientBService
   ) { }
 
   ngOnInit(): void {
     const query$ = this.collection$.pipe(
       tap(() => { this.loading$.next(true); }),
-      switchMap((collection) => this.warehouseApi.warehouseQueryGatheringAggregateGet(
+      switchMap((collection) => this.api.get('/warehouse/query/gathering/aggregate',
         {
-          collectionId: [collection], completeListType: ['MY.completeListTypeCompleteWithBreedingStatus,MY.completeListTypeComplete'],
-          cache: true, countryId: ['ML.206']
-        },
-        ['gathering.team.memberName'],
-        undefined,
-        10000
+          query: {
+            aggregateBy: ['gathering.team.memberName'],
+            collectionId: collection,
+            completeListType: 'MY.completeListTypeCompleteWithBreedingStatus,MY.completeListTypeComplete',
+            cache: true,
+            countryId: 'ML.206',
+            pageSize: 10000
+        }
+        }
       ))
     );
 
     this.rows$ = query$.pipe(
-      map((response: QueryResult) => response.results
+      filter((response): response is AggregateResponse => typeof response !== 'string'),
+      map((response) => response.results
         .map(r => ({ observer: r.aggregateBy['gathering.team.memberName'], gatherings: r.count }))
         .sort((a, b) => b.gatherings - a.gatherings)
         .slice(0, 20)
