@@ -1,13 +1,19 @@
 import { NavigationEnd, Event } from '@angular/router';
 import merge from 'deepmerge';
-import { Document } from './model/Document';
 import { PlatformService } from '../root/platform.service';
+
+import type { components } from 'projects/laji-api-client-b/generated/api.d';
+type Document = components['schemas']['store-document'];
 
 export type WithNonNullableKeys<T, K extends keyof T> = T & {
   [P in K]-?: NonNullable<T[P]>;
 };
 
-type DeepOptionalKeys<T, OptionalKeys extends PropertyKey> =
+export type WithNullableKeys<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]?: T[P];
+};
+
+export type DeepOptionalKeys<T, OptionalKeys extends PropertyKey> =
   T extends Array<infer U>
     ? DeepOptionalKeys<U, OptionalKeys>[]
     : T extends object

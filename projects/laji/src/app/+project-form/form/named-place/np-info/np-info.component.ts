@@ -17,8 +17,6 @@ import { ClipboardService } from 'ngx-clipboard';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
-import { NamedPlace } from '../../../../shared/model/NamedPlace';
-import { Document } from '../../../../shared/model/Document';
 import { Rights } from '../../../../shared/service/form-permission.service';
 import * as Util from '../../../../shared/utils';
 import { UserService } from '../../../../shared/service/user.service';
@@ -29,6 +27,7 @@ import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.compo
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type Form = components['schemas']['Form'];
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 @Component({
     selector: 'laji-np-info',
@@ -61,8 +60,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   @ViewChild('infoModal', { static: true }) public modal!: ModalComponent;
   @ViewChild('infoBox', { static: true }) infoBox!: any;
-
-  publicity = Document.PublicityRestrictionsEnum;
 
   listItems: NpInfoRow[] = [];
 

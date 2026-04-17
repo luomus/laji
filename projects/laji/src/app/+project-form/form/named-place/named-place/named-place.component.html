@@ -66,12 +66,13 @@
         }
         @if (data.documentForm?.options?.namedPlaceOptions?.filterByTags) {
           <laji-metadata-select
-            lajiFormOption="options.namedPlaceOptions.filterByTags"
+            lajiFormOption="options.namedPlaceOptions.filterByTags options.namedPlaceOptions.filterByTagsWhitelist"
             [alt]="'MNP.tagEnum'"
             [ngModel]="data.tags"
             (ngModelChange)="onTagsChange($event)"
             [multiple]="true"
             [useFilter]="false"
+            [whiteList]="data.documentForm?.options?.namedPlaceOptions?.filterByTagsWhitelist"
             placeholder="np.tag"
           [open]="true"></laji-metadata-select>
         }

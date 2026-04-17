@@ -9,8 +9,6 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { NamedPlace } from '../../../../shared/model/NamedPlace';
-import { ExtendedNamedPlace } from '../model/extended-named-place';
 import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/tab-utils';
 import { Rights } from '../../../../shared/service/form-permission.service';
 import { PlatformService } from '../../../../root/platform.service';
@@ -18,6 +16,10 @@ import { formOptionToClassName } from '../../../../shared/directive/project-form
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type Form = components['schemas']['Form'];
+type NamedPlace = components['schemas']['store-namedPlace'];
+export type ExtendedNamedPlace = NamedPlace & {
+  _status: 'free'|'mine'|'reserved'|'sent';
+};
 
 @Component({
     selector: 'laji-np-choose',

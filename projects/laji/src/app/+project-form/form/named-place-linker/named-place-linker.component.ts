@@ -2,10 +2,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnI
 import { FormService } from '../../../shared/service/form.service';
 import { catchError, map, switchMap, take } from 'rxjs';
 import { combineLatest, EMPTY, Observable, of, Subscription } from 'rxjs';
-import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../shared/service/dialog.service';
-import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { UserService } from '../../../shared/service/user.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { FormPermissionService } from '../../../shared/service/form-permission.service';
@@ -13,6 +11,7 @@ import { DocumentService, Readonly } from '../../../shared-modules/own-submissio
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type Form = components['schemas']['Form'];
+type Document = components['schemas']['store-document'];
 
 interface ViewModel {
   document: Document;
@@ -48,7 +47,6 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
     private formService: FormService,
     private translate: TranslateService,
     private dialogService: DialogService,
-    private documentApi: DocumentApi,
     private userService: UserService,
     private toastsService: ToastsService,
     private formPermissionService: FormPermissionService,
@@ -58,7 +56,7 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.document$ = this.documentService.findById(this.documentID);
 
-    const form$ = this.document$.pipe(switchMap(document => this.formService.getForm(document.formID)));
+    const form$ = this.document$.pipe(switchMap(document => this.formService.getForm(document.formID!)));
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const rights$ = form$.pipe(switchMap(form => this.formPermissionService.getRights(form!)));
     const documentReadOnly$ = combineLatest(this.document$, rights$, this.userService.user$).pipe(
@@ -105,9 +103,9 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
           return EMPTY;
         }
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return this.document$.pipe(switchMap((doc) => this.documentApi.update(doc.id!, {...doc, namedPlaceID: id}, this.userService.getToken())));
+        return this.document$.pipe(switchMap((doc) => this.documentService.update(doc.id!, {...doc, namedPlaceID: id})));
       }),
-      switchMap(document => this.formService.getForm(document.formID).pipe(map(form => ({form, document})))),
+      switchMap(document => this.formService.getForm(document.formID!).pipe(map(form => ({form, document})))),
       catchError(() => {
         this.translate.get('np.linker.fail').pipe(take(1)).subscribe(msg => this.toastsService.showError(msg));
         this.loading = false;

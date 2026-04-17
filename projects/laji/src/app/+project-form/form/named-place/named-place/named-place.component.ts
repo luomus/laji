@@ -5,24 +5,24 @@ import { NpChooseComponent } from '../np-choose/np-choose.component';
 import moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { FormPermissionService, Rights } from '../../../../shared/service/form-permission.service';
-import { NamedPlacesService } from '../../../../shared/service/named-places.service';
 import { DialogService } from '../../../../shared/service/dialog.service';
 import { UserService } from '../../../../shared/service/user.service';
 import { FooterService } from '../../../../shared/service/footer.service';
-import { NamedPlaceQuery } from '../../../../shared/api/NamedPlaceApi';
 import { NpInfoComponent } from '../np-info/np-info.component';
 import { FormService } from '../../../../shared/service/form.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 type Form = components['schemas']['Form'];
+type NamedPlace = components['schemas']['store-namedPlace'];
+type NamedPlaceQuery = paths['/named-places']['get']['parameters']['query'];
 
 interface DerivedFromInput {
   collectionId?: string;
   documentForm?: Form;
   placeForm?: Form;
-  namedPlaces?: any[];
+  namedPlaces?: NamedPlace[] | null;
   user?: any;
   formRights?: Rights;
   birdAssociationArea?: string;
@@ -110,14 +110,14 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   private reloadNamedPlaces$ = new BehaviorSubject<void>(undefined);
 
   constructor(
-    private namedPlaceService: NamedPlacesService,
     private footerService: FooterService,
     private translate: TranslateService,
     private dialogService: DialogService,
     private userService: UserService,
     private toastrService: ToastrService,
     private formPermissionService: FormPermissionService,
-    private formService: FormService
+    private formService: FormService,
+    private api: LajiApiClientBService
   ) {}
 
   static getMapOptions(documentForm: Form | undefined) {
@@ -156,26 +156,22 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const placeForm$ = this.documentForm$.pipe(switchMap(documentForm => this.formService.getPlaceForm(documentForm!)));
 
-    const activeNP$ = combineLatest(this.activeNP$, this.documentForm$, this.reloadNamedPlaces$).pipe(switchMap(([activeNP, documentForm]) =>
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.namedPlaceService.getNamedPlace(activeNP!, undefined, (documentForm!.options?.namedPlaceOptions || {}).includeUnits)
+    const activeNP$ = combineLatest(this.activeNP$, this.reloadNamedPlaces$).pipe(switchMap(([activeNP]) =>
+      activeNP ? this.api.get('/named-places/{id}', { path: { id: activeNP! } }) : of(undefined)
     ));
 
     const namedPlaces$ = combineLatest(this.municipality$, this.birdAssociationArea$, this.tags$, this.documentForm$, this.reloadNamedPlaces$).pipe(
       tap(() => {
         this.loading = true;
       }),
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       switchMap(([municipality, birdAssociationArea, tags, documentForm]) => this.getNamedPlaces$(documentForm!, municipality!, birdAssociationArea!, tags!)),
       tap(() => {
         this.loading = false;
       }),
     );
     const user$ = this.userService.user$;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const formRights$ = this.documentForm$.pipe(switchMap(documentForm => this.formPermissionService.getRights(documentForm!)));
 
     this.vm$ = combineLatest(
@@ -263,8 +259,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   onRelease(namedPlace: NamedPlace) {
     this.loading = true;
-    this.namedPlaceService
-      .releaseReservation(namedPlace.id)
+    this.api.delete('/named-places/{id}/reservation', { path: { id: namedPlace.id! } })
       .subscribe(() => {
         this.reloadNamedPlaces$.next();
         this.loading = false;
@@ -276,15 +271,14 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   onReserve(namedPlace: NamedPlace) {
     this.loading = true;
     this.documentForm$.pipe(switchMap(documentForm => {
-        const until = documentForm?.options?.namedPlaceOptions?.reservationUntil;
-        return this.namedPlaceService.reserve(
-          namedPlace.id,
-          until
-          ? {until: until.replace('${year}', '' + moment().year())}
-          : undefined
-        );
-      }
-    )).subscribe(() => {
+      const until = documentForm?.options?.namedPlaceOptions?.reservationUntil;
+      return this.api.post('/named-places/{id}/reservation', {
+        path: { id: namedPlace.id! },
+        query: until
+        ? { until: until.replace('${year}', '' + moment().year()) }
+        : undefined
+      });
+    })).subscribe(() => {
       this.reloadNamedPlaces$.next();
       this.loading = false;
     }, () => {
@@ -326,27 +320,27 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       switchMap(res => this.dialogService.confirm(res['np.delete.confirm'], res['np.delete'])),
       take(1),
     ).subscribe(result => {
-        if (!result) {
-          return;
+      if (!result) {
+        return;
+      }
+      this.api.delete('/named-places/{id}', { path: { id: namedPlace.id! } }).subscribe(() => {
+        this.activeId = null;
+        this.activeIdChange.emit(null);
+        this.reloadNamedPlaces$.next();
+        this.translate.get('np.delete.success').subscribe(text => this.toastrService.success(text));
+      },
+        () => {
+          this.translate.get('np.delete.fail').subscribe(text => this.toastrService.error(text));
         }
-        this.namedPlaceService.deleteNamedPlace(namedPlace.id, this.userService.getToken()).subscribe(() => {
-            this.activeId = null;
-            this.activeIdChange.emit(null);
-            this.reloadNamedPlaces$.next();
-            this.translate.get('np.delete.success').subscribe(text => this.toastrService.success(text));
-          },
-          () => {
-            this.translate.get('np.delete.fail').subscribe(text => this.toastrService.error(text));
-          }
-        );
-      });
+      );
+    });
   }
 
   setErrorMessage(msg: string) {
     this.errorMsg = msg;
   }
 
-  getNamedPlaces$(documentForm: Form, municipality: string, birdAssociationArea: string, tags: string[]): Observable<any> {
+  getNamedPlaces$(documentForm: Form, municipality: string, birdAssociationArea: string, tags: string[]): Observable<NamedPlace[] | null> {
     const selected = (documentForm.options.namedPlaceOptions?.listColumns || ['$.name'])
       .map(field => field.replace('$.', '').replace(/\.length$/, ''));
     if (!documentForm.options?.namedPlaceOptions?.hideMapTab) {
@@ -361,7 +355,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       birdAssociationArea,
       tags: (tags || []).join(','),
       includeUnits: documentForm.options?.namedPlaceOptions?.includeUnits,
-      selectedFields: selected.filter(field => field.charAt(0) !== '_').join(',')
+      selectedFields: selected.filter(field => field.charAt(0) !== '_').join(','),
+      pageSize: 100000
     };
 
     if (this.npRequirementsNotMet(documentForm, query.municipality, query.birdAssociationArea)) {
@@ -375,8 +370,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       delete query.birdAssociationArea;
     }
 
-    return this.namedPlaceService.getAllNamePlaces(query)
+    return this.api.get('/named-places', { query })
       .pipe(
+        map(({ results }) => results),
         catchError(() => throwError(this.translate.instant('np.loadError')))
       );
   }

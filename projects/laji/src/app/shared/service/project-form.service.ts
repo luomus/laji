@@ -4,13 +4,13 @@ import { FormService } from './form.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { NamedPlacesService } from './named-places.service';
-import { NamedPlace } from '../model/NamedPlace';
 import { Global } from '../../../environments/global';
 import type { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 type Form = components['schemas']['Form'];
 type FormListing = components['schemas']['FormListing'];
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 export interface ProjectForm {
   form: Form;
@@ -55,7 +55,7 @@ export class ProjectFormService {
   constructor(
     private formService: FormService,
     private translate: TranslateService,
-    private namedPlacesService: NamedPlacesService
+    private api: LajiApiClientBService
   ) {
     this.translate.onLangChange.subscribe(({ lang }) => {
       this.currentFormID = undefined;
@@ -163,7 +163,9 @@ export class ProjectFormService {
     return combineLatest(route.params, route.queryParams).pipe(
       switchMap(([params, queryParams]) => {
         const {formOrDocument: formID, namedPlace: namedPlaceID} = params;
-        const namedPlace$ = this.namedPlacesService.getNamedPlace(namedPlaceID);
+        const namedPlace$ = namedPlaceID
+          ? this.api.get('/named-places/{id}', { path: { id: namedPlaceID } })
+          : of(undefined);
         const documentForm$ = formID
           ? this.getProjectFormFromRoute$(route).pipe(
             switchMap(projectForm => {
@@ -176,7 +178,7 @@ export class ProjectFormService {
               }
               return this.formService.getForm(subForm.id).pipe(map(f => {
                 if (!f) {
-                throw new Error('Form had nonexistent sub form');
+                  throw new Error('Form had nonexistent sub form');
                 }
                 return f;
               }));

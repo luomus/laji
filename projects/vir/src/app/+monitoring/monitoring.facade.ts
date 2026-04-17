@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs';
 import { FormService } from '../../../../laji/src/app/shared/service/form.service';
-import { Form } from '../../../../laji/src/app/shared/model/Form';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 interface State {
-  monitoringForms: Form.List[];
+  monitoringForms: FormListing[];
 }
 
 @Injectable()
@@ -18,7 +20,7 @@ export class MonitoringFacade {
 
   constructor(private formService: FormService) {}
 
-  reducer(forms: Form.List[][]) {
+  reducer(forms: FormListing[][]) {
     this.store$.next({
       monitoringForms: forms[0]
     });
@@ -27,7 +29,7 @@ export class MonitoringFacade {
   loadAll(monitoringFormIds: string[]) {
     this.formService.getAllForms().pipe(
       map((forms) => {
-        const m: Form.List[] = [];
+        const m: FormListing[] = [];
         forms.forEach((form) => {
           if (monitoringFormIds.includes(form.id)) {
             m.push(form);

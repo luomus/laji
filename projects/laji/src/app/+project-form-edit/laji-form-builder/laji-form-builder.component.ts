@@ -59,22 +59,21 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   }
 
   private mount() {
-    this.ngZone.runOutsideAngular(() => {
       this.apiClient.lang = this.translate.getCurrentLang();
       this.apiClient.personToken = this.userService.getToken();
-      this.updateLajiFormBuilder();
-    });
+      void this.updateLajiFormBuilder();
   }
 
   lajiFormBuilderUpdateSub!: Subscription;
 
-  updateLajiFormBuilder() {
-    const lajiFormBuilderImport = from(import('@luomus/laji-form-builder')).pipe( map(p => (p as any).default), shareReplay()) as Observable<any>;
-
-    this.lajiFormBuilderUpdateSub?.unsubscribe();
+  async updateLajiFormBuilder() {
+    // The import structure is different in local dev env / feature branches / ssr builds so need to juggle a bit.
+    const lajiFormBuilderImport = (await import('@luomus/laji-form-builder')).default as any;
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    this.lajiFormBuilderUpdateSub = lajiFormBuilderImport.subscribe((LajiFormBuilder) =>  {
-      this.lajiFormBuilder = new LajiFormBuilder({
+    const LajiFormBuilderClass: typeof LajiFormBuilder = lajiFormBuilderImport.default || lajiFormBuilderImport;
+    this.ngZone.runOutsideAngular(() => {
+
+      this.lajiFormBuilder = new LajiFormBuilderClass({
         id: this.id,
         rootElem: this.lajiFormBuilderRoot.nativeElement,
         theme: lajiFormBuilderBs3Theme,
@@ -128,7 +127,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   onSelected(id: string) {
     this.id = id;
     of(this.router.navigate(['./' + id], {replaceUrl: true, relativeTo: this.route})).subscribe(() => {
-      this.updateLajiFormBuilder();
+      void this.updateLajiFormBuilder();
     });
   }
 

@@ -4,7 +4,6 @@ import { isIctAdmin, UserService } from '../../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { Observable, of } from 'rxjs';
-import { Person } from '../../../shared/model/Person';
 import { components } from 'projects/laji-api-client-b/generated/api';
 
 type FormPermission = components['schemas']['FormPermissionDto'];
@@ -33,7 +32,7 @@ export abstract class AbstractPermission {
       map(([permission, person]) => ({ permission, person })),
       tap(data => {
         this.formPermission = data.permission;
-        this.isAllowed = this.formPermissionService.isAdmin(data.permission, data.person as Person) || isIctAdmin(data.person);
+        this.isAllowed = data.person && this.formPermissionService.isAdmin(data.permission, data.person) || isIctAdmin(data.person);
 
         if (!this.isAllowed) {
           this.router.navigate(
