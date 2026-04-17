@@ -4,8 +4,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { share, tap } from 'rxjs';
 
+type ResponseType = 'json' | 'text' | 'arraybuffer' | 'blob';
+
 type WithResponses<T> = T & { responses: unknown };
-type Parameters<T> = 'parameters' extends keyof T ? T['parameters'] : never;
+interface HttpClientOptions { responseType?: ResponseType }
+type Parameters<T> = 'parameters' extends keyof T ? T['parameters'] & HttpClientOptions : HttpClientOptions;
 type ExtractContentIfExists<R> = R extends { content: infer C } ? C[keyof C] : null;
 type ExtractRequestContentIfExists<R> =
   R extends { requestBody: { content: infer C } } | { requestBody?: { content: infer C } }
@@ -155,7 +158,7 @@ export class LajiApiClientBService {
     );
   }
 
-  private getRequestOptions(queryParams: any, requestBody: any, lang: string, personToken?: string) {
+  private getRequestOptions(queryParams: any, requestBody: any, lang: string, personToken?: string, responseType?: ResponseType) {
     const params = Object.keys((queryParams || {})).reduce((filteredQueryParams, key) => {
       const param = (queryParams || {})[key];
       if (param === undefined) {
@@ -172,7 +175,7 @@ export class LajiApiClientBService {
     if (personToken) {
       headers['Person-Token'] = personToken;
     }
-    return { params, body: requestBody, headers };
+    return { params, body: requestBody, headers, responseType };
   }
 
   fetch<P extends Path, M extends Method<P>, R extends Responses<P, M>>(
@@ -190,7 +193,7 @@ export class LajiApiClientBService {
       return this.http.request(
         method as string,
         requestUrl,
-        this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken)
+        this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken, params?.responseType)
       ) as any;
     }
 
@@ -212,7 +215,11 @@ export class LajiApiClientBService {
       }
     }
 
-    const obs = this.http.request(method, requestUrl, this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken)).pipe(
+    const obs = this.http.request(
+      method,
+      requestUrl,
+      this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken, params?.responseType)
+    ).pipe(
       tap(val => {
         cachedPath?.set(paramsHash, {
           _tag :'completed',
