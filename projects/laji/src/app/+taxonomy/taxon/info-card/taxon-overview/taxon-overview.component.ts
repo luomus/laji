@@ -92,28 +92,30 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     this.descriptionText = undefined;
     this.descriptionTextSource = undefined;
 
-    let generalDescriptionFound = false;
+    const GENERAL_GROUP = 'MX.SDVG1';
+    const STRUCTURE_GROUP = 'MX.SDVG8';
 
-    (taxonDescription || []).forEach(item => {
-      (item.groups || []).forEach(group => {
-        if (generalDescriptionFound) {
-          return;
-        }
-
-        // show the general description or if it's not found show the structure description
-        if (group.group === 'MX.SDVG1') {
-          (group.variables || []).forEach(variable => {
-            if (variable.variable === 'MX.descriptionText' && (variable.title || variable.content)) {
+    // GENERAL_GROUP has higher precedende than STRUCTURE_GROUP. The loop relies on the fact that the descriptions are
+    // already in order (GENERAL_GROUP is before STRUCTURE_GROUP).
+    for (const item of (taxonDescription || [])) {
+      for (const group of (item.groups || [])) {
+        if (group.group === GENERAL_GROUP) { // For general group we display only one variable.
+          for (const variable of (group.variables || [])) {
+            if (variable.variable === 'MX.descriptionText' && variable.content) {
               this.descriptionText = [variable];
               this.descriptionTextSource = item;
-              generalDescriptionFound = true;
+              return;
             }
-          });
-        } else if (group.group === 'MX.SDVG8' && !this.descriptionText) {
-          this.descriptionText = group.variables;
-          this.descriptionTextSource = item;
+          }
+        } else if (group.group === STRUCTURE_GROUP) { // For structure group we display all variables that have content.
+          const variablesWithContent = group.variables.filter(v => !!v.content);
+          if (variablesWithContent.length) {
+            this.descriptionText = variablesWithContent;
+            this.descriptionTextSource = item;
+            return;
+          }
         }
-      });
-    });
+      }
+    }
   }
 }
