@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { BreadcrumbService, IBreadcrumb } from './core/breadcrumb.service';
 import { HeaderService } from '../../../laji/src/app/shared/service/header.service';
-import { LajiApiService, Lang } from './core/api.service';
 import { PopstateService } from './core/popstate.service';
 import { FooterService } from './core/footer.service';
 import { tap } from 'rxjs';
@@ -52,7 +50,6 @@ export class AppComponent {
   showFooter$ = this.footerService.show$.pipe(tap(() => { setTimeout(() => { this.cdr.markForCheck(); }); }));
 
   constructor(
-    private translate: TranslateService,
     private breadcrumbs: BreadcrumbService,
     private headerService: HeaderService,
     private api: LajiApiClientBService,
@@ -61,7 +58,6 @@ export class AppComponent {
     popstateService: PopstateService // has to be injected for the service to initialize
   ) {
     this.headerService.initialize();
-    translate.use('fi');
   }
 
   trackBy(idx: number, item: IBreadcrumb) {

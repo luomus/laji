@@ -10,7 +10,6 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { MainResultService } from './main-result.service';
 import { UserSettingsResultList, UserService } from '../../shared/service/user.service';
 import { ObservationTableComponent } from '../../shared-modules/observation-result/observation-table/observation-table.component';
 import { ObservationTableQueryService } from '../../shared-modules/observation-result/service/observation-table-query.service';
@@ -26,7 +25,6 @@ const DEFAULT_PAGE_SIZE = 1000;
     selector: 'laji-main-result',
     templateUrl: './main-result.component.html',
     styleUrls: ['./main-result.component.css'],
-    providers: [MainResultService],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })

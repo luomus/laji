@@ -8,8 +8,7 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { NamedPlace } from '../../../../../shared/model/NamedPlace';
-import { Util } from '../../../../../shared/service/util.service';
+import * as Util from '../../../../../shared/utils';
 import { forkJoin, Observable, tap } from 'rxjs';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
 import { BoolToStringPipe } from '../../../../../shared/pipe/bool-to-string.pipe';
@@ -24,6 +23,7 @@ import { DatatableUtil } from '../../../../../shared-modules/datatable/service/d
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type Form = components['schemas']['Form'];
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 @Component({
     selector: 'laji-np-list',
@@ -71,7 +71,6 @@ export class NpListComponent implements OnDestroy {
   @Input() listColumnNameMapping?: { [key: string]: string};
 
   constructor(private cd: ChangeDetectorRef,
-              private areaNamePipe: AreaNamePipe,
               private datatableUtil: DatatableUtil
 ) {
   this.columnsMetaData = {

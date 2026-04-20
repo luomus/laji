@@ -10,7 +10,7 @@ import { FilterByType, FilterService } from '../../../shared/service/filter.serv
 import { LocalStorage } from 'ngx-webstorage';
 import { PlatformService } from '../../../root/platform.service';
 import { DatatableUtil } from '../service/datatable-util.service';
-import { Util } from '../../../shared/service/util.service';
+import * as Util from '../../../shared/utils';
 
 interface Settings { [key: string]: DatatableColumn }
 

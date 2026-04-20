@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, switchMap } from 'rxjs';
-import { Util } from '../service/util.service';
+import * as Util from '../utils';
 import { environment } from '../../../environments/environment';
 import { of } from 'rxjs';
 import { TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
@@ -73,7 +73,8 @@ export class FormApiClient {
     const headers: Record<string, string> = {
       ...options['headers'],
       timeout,
-      'Accept-language': this.lang!
+      'Accept-language': this.lang!,
+      'API-Version': '1'
     };
     if (this.personToken) {
       headers['Person-Token'] = this.personToken!;

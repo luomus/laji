@@ -57,7 +57,7 @@
             <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
           </button>
           <div style="margin-top: 35px;">
-            @if (document.publicityRestrictions !== publicity.publicityRestrictionsPublic) {
+            @if (document.publicityRestrictions !== 'MZ.publicityRestrictionsPublic') {
               <lu-alert [type]="'warning'">
                 <span>
                   {{ 'viewer.notPublished' | translate }}

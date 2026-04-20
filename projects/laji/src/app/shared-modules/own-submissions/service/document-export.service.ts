@@ -1,5 +1,4 @@
-import { Document } from '../../../shared/model/Document';
-import { Util } from '../../../shared/service/util.service';
+import * as Util from '../../../shared/utils';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { UserService } from '../../../shared/service/user.service';
 import { CollectionService } from '../../../shared/service/collection.service';
@@ -14,7 +13,9 @@ import { ExportService } from '../../../shared/service/export.service';
 import { DocumentField } from '../models/document-field';
 import { FeatureCollection } from 'geojson';
 import { Injectable } from '@angular/core';
+import type { components } from 'projects/laji-api-client-b/generated/api.d';
 
+type Document = components['schemas']['store-document'];
 
 @Injectable()
 export class DocumentExportService {
@@ -38,10 +39,10 @@ export class DocumentExportService {
     ).subscribe(() => {});
   }
 
-  public downloadDocument(doc$: Observable<Document & { id: string }>, type: string) {
+  public downloadDocument(doc$: Observable<Document>, type: string) {
     doc$.pipe(
       switchMap(doc =>
-        this._downloadDocuments([doc], type, this.translate.instant('haseka.submissions.submission') + '_' + doc.id.split('.')[1])
+        this._downloadDocuments([doc], type, this.translate.instant('haseka.submissions.submission') + '_' + doc.id!.split('.')[1])
       )
     ).subscribe(() => {});
   }

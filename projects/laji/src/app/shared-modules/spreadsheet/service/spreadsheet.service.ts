@@ -8,7 +8,7 @@ import { IFormField, LEVEL_DOCUMENT } from '../model/excel';
 import { MappingService } from './mapping.service';
 import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 import { GeneratorService } from './generator.service';
-import { Util } from '../../../shared/service/util.service';
+import * as Util from '../../../shared/utils';
 import { FormService } from '../../../shared/service/form.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 

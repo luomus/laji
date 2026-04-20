@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { IFormField } from '../../../model/excel';
 import { TranslateService } from '@ngx-translate/core';
-import { Util } from '../../../../../shared/service/util.service';
+import * as Util from '../../../../../shared/utils';
 
 interface ErrorGroup {
   title: string;

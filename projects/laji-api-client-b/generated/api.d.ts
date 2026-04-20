@@ -974,7 +974,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** Get a page of images. Private/protected images aren't included. */
+        get: operations["ImagesController_getPage"];
         put?: never;
         /** Upload image and get temporary id */
         post: operations["ImagesController_upload"];
@@ -1078,7 +1079,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** Get a page of audio. Private/protected audio aren't included. */
+        get: operations["AudioController_getPage"];
         put?: never;
         /** Upload audio and get temporary id */
         post: operations["AudioController_upload"];
@@ -8902,8 +8904,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Convert TSV file from the data warehouse to a zipped GeoPackage
-         * @description Convert a TSV file that is stored in the data warehouse to a zipped GeoPackage format
+         * Convert ZIP or TSV file from the data warehouse to a zipped GeoPackage
+         * @description Convert ZIP or TSV file that is stored in the data warehouse to a zipped GeoPackage format
          */
         get: operations["convert_with_id__dataset_id__get"];
         put?: never;
@@ -9071,14 +9073,12 @@ export interface components {
             total: number;
         };
         BatchJobValidationStatusResponse: {
-            /** @enum {string} */
-            phase: "VALIDATING" | "READY_TO_COMPLETE" | "COMPLETING" | "COMPLETED" | "FAILED_UPON_VALIDATION" | "FAILED_UPON_COMPLETION";
             /** @default [] */
             errors: (components["schemas"]["ErrorsObj"] | null)[];
+            /** @enum {string} */
+            phase: "VALIDATING" | "READY_TO_COMPLETE" | "COMPLETING" | "COMPLETED" | "FAILED_UPON_VALIDATION" | "FAILED_UPON_COMPLETION";
             id: string;
-            documents?: components["schemas"]["store-document"][];
             status: components["schemas"]["BatchJobValidationStatus"];
-            personID: string;
         };
         DocumentCountItemResponse: {
             year: string;
@@ -9150,6 +9150,16 @@ export interface components {
             thumbnailURL: string;
             uploadedBy?: string;
         };
+        ImagesPagedDto: {
+            results: components["schemas"]["Image"][];
+            currentPage: number;
+            pageSize: number;
+            total: number;
+            lastPage: number;
+            prevPage?: number;
+            nextPage?: number;
+            "@context": string;
+        };
         Audio: {
             /** @enum {string} */
             intellectualRights: "MZ.intellectualRightsCC-BY-SA-4.0" | "MZ.intellectualRightsCC-BY-NC-4.0" | "MZ.intellectualRightsCC-BY-NC-SA-4.0" | "MZ.intellectualRightsCC-BY-4.0" | "MZ.intellectualRightsCC0-4.0" | "MZ.intellectualRightsODBL-1.0" | "MZ.intellectualRightsPD" | "MZ.intellectualRightsARR" | "MZ.intellectualRightsCC-BY-2.0" | "MZ.intellectualRightsCC-BY-SA-2.0" | "MZ.intellectualRightsCC-BY-SA-2.0-DE" | "MZ.intellectualRightsCC-BY-NC-2.0" | "MZ.intellectualRightsCC-BY-NC-SA-2.0" | "MZ.intellectualRightsCC-BY-NC-ND-2.0" | "MZ.intellectualRightsCC-BY-SA-2.5" | "MZ.intellectualRightsCC-BY-SA-2.5-SE" | "MZ.intellectualRightsCC-BY-3.0" | "MZ.intellectualRightsCC-BY-SA-3.0" | "MZ.intellectualRightsCC-BY-NC-SA-3.0" | "MZ.intellectualRightsCC-BY-ND-4.0" | "MZ.intellectualRightsCC-BY-NC-ND-4.0";
@@ -9166,9 +9176,20 @@ export interface components {
             uploadedBy?: string;
             wavURL?: string;
         };
+        AudioPagedDto: {
+            results: components["schemas"]["Audio"][];
+            currentPage: number;
+            pageSize: number;
+            total: number;
+            lastPage: number;
+            prevPage?: number;
+            nextPage?: number;
+            "@context": string;
+        };
         FeaturedImage: {
             url: string;
             caption: string;
+            alt?: string;
         };
         InformationChild: {
             title: string;
@@ -9256,19 +9277,20 @@ export interface components {
         CheckTmpTokenDto: {
             tmpToken: string;
         };
-        NewsDto: {
-            id: string;
-            featuredImage: string;
+        LajiBackendNewsNode: {
             external: boolean;
-            externalURL?: boolean;
-            title: boolean;
-            content: boolean;
-            posted: boolean;
-            modified?: boolean;
-            tag: boolean;
+            externalURL?: string;
+            id: string;
+            content?: string;
+            title?: string;
+            author?: string;
+            posted?: string;
+            tags?: string[];
+            featuredImage?: components["schemas"]["FeaturedImage"];
+            modified?: string;
         };
         NewsPagedDto: {
-            results: components["schemas"]["NewsDto"][];
+            results: components["schemas"]["LajiBackendNewsNode"][];
             currentPage: number;
             pageSize: number;
             total: number;
@@ -9276,6 +9298,16 @@ export interface components {
             prevPage?: number;
             nextPage?: number;
             "@context": string;
+        };
+        LajiBackendCMSNode: {
+            id: string;
+            content?: string;
+            title?: string;
+            author?: string;
+            posted?: string;
+            tags?: string[];
+            featuredImage?: components["schemas"]["FeaturedImage"];
+            modified?: string;
         };
         WarehouseDwQuery_CountResponse: {
             total: number;
@@ -11814,6 +11846,11 @@ export interface components {
              */
             filterByTags: boolean;
             /**
+             * Tags filter whitelist
+             * @description Affects "MHL.filterByTags" feature
+             */
+            filterByTagsWhitelist: ("" | "MNP.tagAccessibilityEasy" | "MNP.tagAccessibilityModerate" | "MNP.tagAccessibilityDifficult" | "MNP.tagHabitatImportant" | "MNP.tagCensusRare" | "MNP.tagHabitatFarmland" | "MNP.tagHabitatMire" | "MNP.tagHabitatMountain" | "MNP.tagSuitable" | "MNP.tagTypeIsland" | "MNP.tagTypePartialIsland" | "MNP.tagTypeIslandGroup" | "MNP.tagTypeWater" | "MNP.tagTypeShoreline" | "MNP.tagTypeMixed" | "MNP.tagTypeUnknown" | "MNP.tagWishedToBeCounted")[];
+            /**
              * Document header fields of place
              * @description When recording a document for a named place, the named place's data of these fields will be shown at the top of the page (defaults to ["alternativeIDs", "name", "municipality"]
              */
@@ -11922,6 +11959,11 @@ export interface components {
              * @description Named place chooser view starts with map tab instead of list
              */
             startWithMap: boolean;
+            /**
+             * Tags filter whitelist
+             * @description Affects "MHL.filterByTags" feature
+             */
+            tagsWhiteList: ("" | "MNP.tagAccessibilityEasy" | "MNP.tagAccessibilityModerate" | "MNP.tagAccessibilityDifficult" | "MNP.tagHabitatImportant" | "MNP.tagCensusRare" | "MNP.tagHabitatFarmland" | "MNP.tagHabitatMire" | "MNP.tagHabitatMountain" | "MNP.tagSuitable" | "MNP.tagTypeIsland" | "MNP.tagTypePartialIsland" | "MNP.tagTypeIslandGroup" | "MNP.tagTypeWater" | "MNP.tagTypeShoreline" | "MNP.tagTypeMixed" | "MNP.tagTypeUnknown" | "MNP.tagWishedToBeCounted")[];
             /**
              * use accepted document
              * @description Instead of populating observation form with prepopulatedDocument, it is populated with acceptedDocument. Admin can change the acceptedDocument from observation list
@@ -12044,6 +12086,8 @@ export interface components {
             datatype?: string;
             /** Device ID */
             deviceID?: string;
+            /** Digitised by */
+            digitisers?: string[];
             documentIdentifications?: components["schemas"]["store-documentIdentification"][];
             /**
              * Specimen location
@@ -12411,6 +12455,8 @@ export interface components {
             id: string;
             /** Type for the Keruutapahtuman faktat */
             "@type": string;
+            /** Kaikki havaitut pesäkolot ja pöntöt kirjattu */
+            allObservedNestsRecorded: boolean;
             /**
              * I placed the sound recorder to the terrain
              * @enum {string}
@@ -12759,7 +12805,7 @@ export interface components {
              * Censused taxon set
              * @enum {string}
              */
-            censusTaxonSetID?: "" | "MX.taxonSetSykeButterflyCensusPapilionoidea" | "MX.taxonSetSykeButterflyCensusOther" | "MX.taxonSetWaterbirdWaterbirds" | "MX.taxonSetWaterbirdWaders" | "MX.taxonSetWaterbirdGulls" | "MX.taxonSetWaterbirdPasserines" | "MX.taxonSetWaterbirdAmphibia" | "MX.taxonSetSykeBumblebee" | "MVL.1201" | "MX.taxonSetSykeBumblebeeOther" | "MX.taxonSetBirdAtlasCommon" | "MX.taxonSetBiomonCompleteListOdonata" | "MX.taxonSetBiomonCompleteListButterflies" | "MX.taxonSetBiomonCompleteListMoths" | "MX.taxonSetBiomonCompleteListBombus" | "MX.taxonSetBiomonCompleteListAmphibiaReptilia" | "MX.taxonSetBiomonCompleteListLargeFlowers" | "MX.taxonSetBiomonCompleteListSubarcticPlants" | "MX.taxonSetBiomonCompleteListMacrolichens" | "MX.taxonSetBiomonCompleteListBracketFungi" | "MX.taxonSetBiomonCompleteListPracticalFungi" | "MX.taxonSetSykeMacrozoobenthos" | "MX.taxonSetArchipelagoWaterbirds" | "MX.taxonSetArchipelagoWaders" | "MX.taxonSetArchipelagoGulls" | "MX.taxonSetArchipelagoPasserines" | "MX.taxonSetArchipelagoAlcids" | "MX.taxonSetArchipelagoRaptors" | "MX.taxonSetArchipelagoCormorants" | "MX.taxonSetArchipelagoEgrets" | "MX.taxonSetArchipelagoMammals";
+            censusTaxonSetID?: "" | "MX.taxonSetSykeButterflyCensusPapilionoidea" | "MX.taxonSetSykeButterflyCensusOther" | "MX.taxonSetWaterbirdWaterbirds" | "MX.taxonSetWaterbirdWaders" | "MX.taxonSetWaterbirdGulls" | "MX.taxonSetWaterbirdPasserines" | "MX.taxonSetWaterbirdAmphibia" | "MX.taxonSetSykeBumblebee" | "MVL.1201" | "MX.taxonSetSykeBumblebeeOther" | "MX.taxonSetBirdAtlasCommon" | "MX.taxonSetBiomonCompleteListOdonata" | "MX.taxonSetBiomonCompleteListButterflies" | "MX.taxonSetBiomonCompleteListMoths" | "MX.taxonSetBiomonCompleteListBombus" | "MX.taxonSetBiomonCompleteListAmphibiaReptilia" | "MX.taxonSetBiomonCompleteListLargeFlowers" | "MX.taxonSetBiomonCompleteListSubarcticPlants" | "MX.taxonSetBiomonCompleteListMacrolichens" | "MX.taxonSetBiomonCompleteListBracketFungi" | "MX.taxonSetBiomonCompleteListPracticalFungi" | "MX.taxonSetSykeMacrozoobenthos" | "MX.taxonSetArchipelagoWaterbirds" | "MX.taxonSetArchipelagoWaders" | "MX.taxonSetArchipelagoGulls" | "MX.taxonSetArchipelagoPasserines" | "MX.taxonSetArchipelagoAlcids" | "MX.taxonSetArchipelagoRaptors" | "MX.taxonSetArchipelagoCormorants" | "MX.taxonSetArchipelagoEgrets" | "MX.taxonSetArchipelagoMammals" | "MX.taxonSetPriodiversityOldForestPolypores" | "MX.taxonSetPriodiversityIndicatorLichens";
             /**
              * Completeness of census
              * @enum {string}
@@ -13346,8 +13392,15 @@ export interface components {
             nativeStatus: "" | "MY.native" | "MY.nonNative";
             /** Nest/cavity count */
             nestCount: number;
+            /** metrimäärä (linjan alusta), jolla pönttö/kolo on */
+            nestDistanceFromLineTransectStartMeters: number;
             /** Nest notes */
             nestNotes: string;
+            /**
+             * Pöntön kokoluokka
+             * @enum {string}
+             */
+            nestSize: "" | "MY.nestSizeEnum1" | "MY.nestSizeEnum2" | "MY.nestSizeEnum3";
             /** Diameter of the tree (cm) */
             nestTreeDiameterInCentimeters: number;
             /**
@@ -13611,6 +13664,8 @@ export interface components {
             detOnSite: "" | "MY.duringObservation" | "MY.afterObservation";
             /** Observation distance (m) */
             distanceMeters: number;
+            /** Egg count */
+            eggCount: number;
             /** Females with broods count */
             femalesWithBroodsCount: number;
             /**
@@ -13666,6 +13721,8 @@ export interface components {
             pairCountOuter: number;
             /** Parvien koot */
             pointCountFlock: string;
+            /** Pullus individual count */
+            pullusIndividualCount: number;
             /** Is the plant growing next to running water? */
             runningWaterInVicinity: boolean;
             /**
@@ -14483,6 +14540,8 @@ export interface components {
             taxonExpertiseNotes?: string;
             /** This users profile */
             userID: string;
+            /** Xeno-Canto API key */
+            xenoCantoApiKey?: string;
             /** profileKey */
             profileKey?: string;
         };
@@ -14624,6 +14683,12 @@ export interface components {
              */
             gbifDoi?: string;
             geographicCoverage?: string;
+            /**
+             * Hierarchical type
+             * @description Type of the collection within the collection hierarchy tree.
+             * @enum {string}
+             */
+            hierarchyType?: "" | "MY.hierarchyTypeDocumentParent" | "MY.hierarchyTypeCollectionParent";
             /**
              * Institution code
              * @description Institution code for natural history specimen collection holding institution, such as H, MHZ or TUR
@@ -14808,7 +14873,7 @@ export interface components {
             public?: boolean;
             reserve?: components["schemas"]["store-reserve"];
             /** Tags */
-            tags?: ("" | "MNP.tagAccessibilityEasy" | "MNP.tagAccessibilityModerate" | "MNP.tagAccessibilityDifficult" | "MNP.tagHabitatImportant" | "MNP.tagCensusRare" | "MNP.tagHabitatFarmland" | "MNP.tagHabitatMire" | "MNP.tagHabitatMountain" | "MNP.tagSuitable" | "MNP.tagTypeIsland" | "MNP.tagTypePartialIsland" | "MNP.tagTypeIslandGroup" | "MNP.tagTypeWater" | "MNP.tagTypeShoreline" | "MNP.tagTypeMixed" | "MNP.tagTypeUnknown")[];
+            tags?: ("" | "MNP.tagAccessibilityEasy" | "MNP.tagAccessibilityModerate" | "MNP.tagAccessibilityDifficult" | "MNP.tagHabitatImportant" | "MNP.tagCensusRare" | "MNP.tagHabitatFarmland" | "MNP.tagHabitatMire" | "MNP.tagHabitatMountain" | "MNP.tagSuitable" | "MNP.tagTypeIsland" | "MNP.tagTypePartialIsland" | "MNP.tagTypeIslandGroup" | "MNP.tagTypeWater" | "MNP.tagTypeShoreline" | "MNP.tagTypeMixed" | "MNP.tagTypeUnknown" | "MNP.tagWishedToBeCounted")[];
             /** Taxa */
             taxonIDs?: string[];
             /** Sampling method notes */
@@ -19492,16 +19557,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        phase: "VALIDATING" | "READY_TO_COMPLETE" | "COMPLETING" | "COMPLETED" | "FAILED_UPON_VALIDATION" | "FAILED_UPON_COMPLETION";
-                        /** @default [] */
-                        errors: (components["schemas"]["ErrorsObj"] | null)[];
-                        id: string;
-                        documents?: components["schemas"]["store-document"][];
-                        status: components["schemas"]["BatchJobValidationStatus"];
-                        personID: string;
-                    };
+                    "application/json": components["schemas"]["BatchJobValidationStatusResponse"];
                 };
             };
             400: {
@@ -20838,7 +20894,7 @@ export interface operations {
     };
     NamedPlacesController_getPage: {
         parameters: {
-            query: {
+            query?: {
                 /** @description Include only items with these ids. Multiple values are separated by a comma (,). */
                 idIn?: string;
                 /** @description alternative ID. Multiple values are separated by a comma (,). */
@@ -20853,7 +20909,7 @@ export interface operations {
                 /** @description Filter by tags. Multiple values are separated by a comma (,). */
                 tags?: string;
                 /** @description Collection id. Child collections are also fetched. */
-                collectionID: string;
+                collectionID?: string;
                 /** @description Include public named places (used only when Person-Token is given). Defaults to true. */
                 includePublic?: boolean;
                 /** @description Include units in prepopulated and accepted documents (only form forms with 'MHL.includeUnits' true). Defaults to false. */
@@ -28371,6 +28427,114 @@ export interface operations {
             };
         };
     };
+    ImagesController_getPage: {
+        parameters: {
+            query?: {
+                /** @description Comma separated ids */
+                idIn?: string;
+                page?: number;
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImagesPagedDto"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+        };
+    };
     ImagesController_upload: {
         parameters: {
             query?: never;
@@ -29155,6 +29319,114 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Image"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+        };
+    };
+    AudioController_getPage: {
+        parameters: {
+            query?: {
+                /** @description Comma separated ids */
+                idIn?: string;
+                page?: number;
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AudioPagedDto"];
                 };
             };
             400: {
@@ -33511,11 +33783,14 @@ export interface operations {
             };
         };
         responses: {
+            /** @description PDF file */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/pdf": string;
+                };
             };
             400: {
                 headers: {
@@ -35230,7 +35505,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["NewsDto"];
+                    "application/json": components["schemas"]["LajiBackendCMSNode"];
                 };
             };
             400: {

@@ -36,7 +36,6 @@ import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationGroupSelectComponent } from './group-select/observation-group-select.component';
 import { IucnGroupSelectComponent } from './group-select/iucn-group-select.component';
-import { SourcePipe } from './pipe/source.pipe';
 import { ChecklistPipe } from './pipe/checklist.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
 import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
@@ -96,7 +95,7 @@ import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSe
         AuthoritiesDirective, ImageComponent, NlToBrPipe,
         HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,
         ObservationGroupSelectComponent, IucnGroupSelectComponent,
-        SourcePipe, RemoveEmptyPipe, DatePickerComponent,
+        RemoveEmptyPipe, DatePickerComponent,
         TaxonNameComponent, NotFoundComponent, ExternalRedirectComponent,
         ChecklistPipe,
         FactNotInPipe,
@@ -165,7 +164,7 @@ import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSe
         AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,
         IucnGroupSelectComponent,
         ObservationGroupSelectComponent,
-        SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
+        RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
         FactNotInPipe, CapitalizePipe, CoordinatePipe,
         FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe, IncludesPipe,
         UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule,

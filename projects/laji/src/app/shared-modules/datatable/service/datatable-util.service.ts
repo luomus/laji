@@ -130,7 +130,7 @@ export class DatatableUtil {
     }
 
     return this.getArray(occurrences, (occurrence) => ObservableForkJoin([
-      this.areaService.getProvinceCode(IdService.getId(occurrence.area), this.translate.getCurrentLang()),
+      this.areaService.getProvinceCode(IdService.getId(occurrence.area)),
       this.labelService.get(IdService.getId(occurrence.status), this.translate.getCurrentLang())
     ]).pipe(
       map(data => data[0]+ ': ' + data[1])
@@ -154,7 +154,7 @@ export class DatatableUtil {
     const labelObservables = [];
     for (const item of values) {
       labelObservables.push(
-        this.publicationService.getPublication(item, this.translate.getCurrentLang()).pipe(
+        this.publicationService.getPublication(item).pipe(
           map((res: Publication) => res && res.name ? res.name : item))
       );
     }

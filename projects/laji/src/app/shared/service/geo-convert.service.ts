@@ -52,35 +52,32 @@ export class GeoConvertService {
 
   public geoConvertFile(
     fileId: string, geometry: FileGeometry, crs: FileCrs, personToken?: string | null): Observable<GeoConversionResponse> {
-    return this.startGeoConversion(fileId, geometry, crs, personToken).pipe(
+    return this.startGeoConversion(fileId, geometry, crs).pipe(
       switchMap(conversionId => this.getResponse(conversionId, personToken)),
       catchError(err => this.transformError(err))
     );
   }
 
   public geoConvertData(
-    data: FormData, fileId: string, geometry: FileGeometry, crs: FileCrs
+    data: FormData, geometry: FileGeometry, crs: FileCrs
   ): Observable<GeoConversionResponse> {
-    return this.startGeoConversionFromData(data, fileId, geometry, crs).pipe(
+    return this.startGeoConversionFromData(data, geometry, crs).pipe(
       switchMap(conversionId => this.getResponse(conversionId)),
       catchError(err => this.transformError(err))
     );
   }
 
-  private startGeoConversion(fileId: string, geometry: FileGeometry, crs: FileCrs, personToken?: string | null): Observable<string> {
+  private startGeoConversion(fileId: string, geometry: FileGeometry, crs: FileCrs): Observable<string> {
     const queryParams: any = {
       geometryType: geometry,
       crs
     };
-    if (personToken) {
-      queryParams['personToken'] = personToken;
-    }
 
     return this.api.get('/geo-convert/{dataset_id}', { query: queryParams, path: { dataset_id: fileId }}) as Observable<string>;
   }
 
   private startGeoConversionFromData(
-    data: FormData, fileId: string, geometry: FileGeometry, crs: FileCrs
+    data: FormData, geometry: FileGeometry, crs: FileCrs
   ): Observable<string> {
     const queryParams = {
       geometryType: geometry,
@@ -92,7 +89,7 @@ export class GeoConvertService {
 
   private getResponse(conversionId: string, personToken?: string | null): Observable<GeoConversionResponse> {
     return interval(this.pollInterval).pipe(
-      concatMap(() => this.getGeoConversionStatus(conversionId, personToken)),
+      concatMap(() => this.getGeoConversionStatus(conversionId)),
       takeWhile(result => result.status !== 'complete', true),
       map((result) => {
         let outputLink: string | undefined;
@@ -112,12 +109,8 @@ export class GeoConvertService {
     );
   }
 
-  private getGeoConversionStatus(conversionId: string, personToken?: string | null): Observable<GeoConversionStatusApiResponse> {
+  private getGeoConversionStatus(conversionId: string): Observable<GeoConversionStatusApiResponse> {
     const queryParams: any = { timestamp: Date.now() };
-    if (personToken) {
-      queryParams['personToken'] = personToken;
-    }
-
     return this.api.get(
       '/geo-convert/status/{conversion_id}',
       { query: queryParams, path: { conversion_id: conversionId }}

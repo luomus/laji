@@ -10,22 +10,23 @@ import {
 } from '@angular/core';
 import { map, Observable, of as ObservableOf } from 'rxjs';
 import { combineLatest, take } from 'rxjs';
-import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { UserService } from '../../../../../shared/service/user.service';
 import { FormPermissionService } from '../../../../../shared/service/form-permission.service';
 import type { LineTransectGeometry, Options } from '@luomus/laji-map';
 import { TileLayerName } from '@luomus/laji-map/lib/defs';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
-import { Document } from '../../../../../shared/model/Document';
 import { ToastsService } from '../../../../../shared/service/toasts.service';
 import equals from 'deep-equal';
 import { diff, DiffNew } from 'deep-diff';
 import { FormService } from '../../../../../shared/service/form.service';
-import { GeometryCollection } from 'geojson';
-import { NamedPlacesService } from '../../../../../shared/service/named-places.service';
+import { GeometryCollection, LineString } from 'geojson';
 import { DocumentService } from '../../../../../shared-modules/own-submissions/service/document.service';
-import { FormPermission } from 'projects/laji/src/app/shared/model/FormPermission';
-import { Person } from 'projects/laji/src/app/shared/model/Person';
+import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+
+type FormPermission = components['schemas']['FormPermissionDto'];
+type Document = components['schemas']['store-document'];
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 @Component({
     selector: 'laji-accepted-document-approval',
@@ -55,11 +56,11 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
   constructor(
     private userService: UserService,
     private formPermissionService: FormPermissionService,
-    private namedPlacesService: NamedPlacesService,
     private toastsService: ToastsService,
     private formService: FormService,
     private documentService: DocumentService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private api: LajiApiClientBService
   ) { }
 
   ngOnChanges() {
@@ -74,14 +75,13 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       });
   }
 
-  initIsAdmin(): Observable<null | { formPermission: FormPermission; user: Person | undefined }> {
+  initIsAdmin(): Observable<null | { formPermission: FormPermission; user: any }> {
     if (!this.namedPlace || !this.namedPlace.collectionID) {
       return ObservableOf(null);
     }
     return combineLatest([
       this.formPermissionService.getFormPermission(
         this.namedPlace.collectionID,
-        this.userService.getToken()
       ),
       this.userService.user$.pipe(take(1))
     ]).pipe(
@@ -132,7 +132,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       : this.namedPlace.acceptedDocument;
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const geometry = {type: 'MultiLineString', coordinates: document!.gatherings?.map(item => item.geometry!.coordinates) || []} as LineTransectGeometry;
+    const geometry = {type: 'MultiLineString', coordinates: document!.gatherings?.map(item => (item.geometry as LineString)!.coordinates!) || []} as LineTransectGeometry;
     return {feature: {type: 'Feature', properties: {}, geometry}, editable: false};
   }
 
@@ -150,10 +150,9 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
   }
 
   acceptNamedPlaceChanges() {
-    this.namedPlacesService.updateNamedPlace(
-      this.namedPlace.id,
-      {...this.namedPlace, acceptedDocument: this.document},
-      this.userService.getToken()
+    this.api.put('/named-places/{id}',
+      { path: { id: this.namedPlace.id! } },
+      {...this.namedPlace, acceptedDocument: this.document}
     ).subscribe((np: NamedPlace) => {
       this.namedPlaceChange.emit(np);
       this.toastsService.showSuccess(
@@ -222,7 +221,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
   }
 
   initDocumentDiff() {
-    this.formService.getForm(this.document.formID).subscribe(form => {
+    this.formService.getForm(this.document.formID!).subscribe(form => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const [differs, geometriesDiff, otherDiff] = this.checkDiff(form!.excludeFromCopy!);
       this.placesDiff = differs;

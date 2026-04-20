@@ -50,7 +50,7 @@ export class TaxonService {
       return ObservableOf(this.treeCache[lang]);
     }
     if (!this.treeRequest[lang]) {
-      this.treeRequest[lang] = this.redList.redListTaxonGroupsGetTree(lang).pipe(
+      this.treeRequest[lang] = this.redList.redListTaxonGroupsGetTree().pipe(
         map(data => data.results),
         share(),
         tap(data => this.treeCache[lang] = data),

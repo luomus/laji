@@ -23,14 +23,11 @@ export class SpecialInformalTaxonGroupsComponent implements OnInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private userService: UserService,
-    private mappingService: MappingService,
     private informalTaxonApi: InformalTaxonGroupApi,
-    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
-    this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.getCurrentLang()).pipe(
+    this.informalTaxonApi.informalTaxonGroupGetTree().pipe(
       map(results => results.results))
       .subscribe(groups => {
         const list = Array.isArray(groups) ?  MappingService.informalTaxonGroupsToList(groups) : [];

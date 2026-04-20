@@ -382,8 +382,6 @@ export class ObservationDownloadComponent implements OnDestroy {
         switchMap(formData => this.geoConvertService.geoConvertData(
           formData,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          data.id!,
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           params.geometry!,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           params.crs!

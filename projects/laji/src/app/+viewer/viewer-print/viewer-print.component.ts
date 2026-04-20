@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from '../../shared/service/footer.service';
-import { UserService } from '../../shared/service/user.service';
-import { DocumentApi } from '../../shared/api/DocumentApi';
-import { Document } from '../../shared/model/Document';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { PlatformService } from '../../root/platform.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { StoreDocument } from '../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({
     selector: 'laji-viewer-print',
@@ -17,7 +16,7 @@ export class ViewerPrintComponent implements OnInit, OnDestroy {
   uri: string | undefined;
   own: boolean | undefined;
   showFacts = false;
-  document: Document | undefined;
+  document: StoreDocument | undefined;
 
   loading = false;
   private subQuery!: Subscription;
@@ -26,8 +25,7 @@ export class ViewerPrintComponent implements OnInit, OnDestroy {
     private platformService: PlatformService,
     private footerService: FooterService,
     private route: ActivatedRoute,
-    private documentService: DocumentApi,
-    private userService: UserService,
+    private api: LajiApiClientBService,
   ) {}
 
   ngOnInit() {
@@ -35,10 +33,9 @@ export class ViewerPrintComponent implements OnInit, OnDestroy {
     this.subQuery = this.route.queryParams.subscribe(params => {
       const id = params['id'];
       if (id) {
-        this.documentService.findById(id, this.userService.getToken())
-          .subscribe(doc => {
-            this.document = doc;
-          });
+        this.api.get('/documents/{id}', { path: { id } }).subscribe(doc => {
+          this.document = doc;
+        });
       } else {
         this.uri = params['uri'];
         this.own = params['own'] === 'true';

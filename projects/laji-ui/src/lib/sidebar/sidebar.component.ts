@@ -6,7 +6,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 import { SidebarLinkComponent } from './sidebar-link/sidebar-link.component';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
-import { Util } from 'projects/laji/src/app/shared/service/util.service';
+import * as Util from 'projects/laji/src/app/shared/utils';
 
 const mobileBreakpoint = 768;
 

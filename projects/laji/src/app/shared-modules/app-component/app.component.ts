@@ -8,7 +8,7 @@ import { RouteDataService } from '../../shared/service/route-data.service';
 import { HeaderService } from '../../shared/service/header.service';
 import { PlatformService } from '../../root/platform.service';
 import { HistoryService } from '../../shared/service/history.service';
-import { Util } from '../../shared/service/util.service';
+import * as Util from '../../shared/utils';
 
 declare const ga: (eventName: string, hitType: string, data: string) => void;
 

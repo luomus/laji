@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { UserService } from '../../../../shared/service/user.service';
-import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ToastsService } from '../../../../shared/service/toasts.service';
-import { Util } from '../../../../shared/service/util.service';
+import * as Util from '../../../../shared/utils';
 import merge from 'deepmerge';
 import { DialogService } from '../../../../shared/service/dialog.service';
-import { NamedPlacesService } from '../../../../shared/service/named-places.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { map, mergeMap, switchMap, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,8 +13,10 @@ import { AreaService } from '../../../../shared/service/area.service';
 import { LajiFormFooterStatus } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-footer/laji-form-footer.component';
 import { LajiFormComponent } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form/laji-form.component';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 type Form = components['schemas']['Form'];
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 interface ViewModel extends NamedPlacesRouteData {
   placeForm: Form;
@@ -46,14 +45,13 @@ export class NpEditFormComponent implements OnInit {
 
   constructor(
     private dialogService: DialogService,
-    private userService: UserService,
-    private namedPlaceService: NamedPlacesService,
     private translate: TranslateService,
     private toastsService: ToastsService,
     private route: ActivatedRoute,
     private projectFormService: ProjectFormService,
     private areaService: AreaService,
-    private router: Router
+    private router: Router,
+    private api: LajiApiClientBService
   ) { }
 
   ngOnInit() {
@@ -99,9 +97,9 @@ export class NpEditFormComponent implements OnInit {
 
       let result$;
       if (asyncData.namedPlace) {
-        result$ = this.namedPlaceService.updateNamedPlace(data.id, data, this.userService.getToken());
+        result$ = this.api.put('/named-places/{id}', { path: { id: data.id } }, data);
       } else {
-        result$ = this.namedPlaceService.createNamedPlace(data, this.userService.getToken());
+        result$ = this.api.post('/named-places', undefined, data);
       }
 
       result$.subscribe(
@@ -234,17 +232,17 @@ export class NpEditFormComponent implements OnInit {
 
   getPlaceForm(data: NamedPlacesRouteData): Observable<Form> {
     const getAreaEnum = (
-      type: keyof Pick<AreaService, 'getMunicipalities' | 'getBiogeographicalProvinces' | 'getBirdAssociationAreas'>
-    ) => (this.areaService[type](this.translate.getCurrentLang())).pipe(
+      type: 'ML.municipality' | 'ML.biogeographicalProvince' | 'ML.birdAssociationArea'
+    ) => this.areaService.getAreaByType(type).pipe(
       map(areas => areas.reduce((schema, area: {id: string; value: string}) => {
         schema.oneOf.push({const: area.id, title: area.value});
         return schema;
       }, {oneOf: []} as { oneOf: {const: string; title: string}[] }))
     );
     return this.projectFormService.getPlaceForm$(data.documentForm).pipe(switchMap(placeForm => forkJoin([
-      (placeForm.schema as any).properties.municipality ? getAreaEnum('getMunicipalities') : of(null),
-      (placeForm.schema as any).properties.biogeographicalProvince ? getAreaEnum('getBiogeographicalProvinces') : of(null),
-      (placeForm.schema as any).properties.birdAssociationArea ? getAreaEnum('getBirdAssociationAreas') : of(null)
+      (placeForm.schema as any).properties.municipality ? getAreaEnum('ML.municipality') : of(null),
+      (placeForm.schema as any).properties.biogeographicalProvince ? getAreaEnum('ML.biogeographicalProvince') : of(null),
+      (placeForm.schema as any).properties.birdAssociationArea ? getAreaEnum('ML.birdAssociationArea') : of(null)
     ]).pipe(
       map(([municipalityEnum, biogeographicalProvinceEnum, birdAssociationAreaEnum]) => ({
         ...placeForm,
