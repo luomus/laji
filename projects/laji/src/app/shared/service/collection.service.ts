@@ -2,7 +2,6 @@ import { map, shareReplay, switchMap, take, tap, catchError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
-import { MetadataApi } from '../api/MetadataApi';
 import { AbstractCachedHttpService } from './abstract-cached-http.service';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { IdService } from './id.service';
@@ -101,7 +100,6 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
   }`;
 
   constructor(
-    private metadataService: MetadataApi,
     private warehouseApi: WarehouseApi,
     private graphQlService: GraphQLService,
     private userService: UserService,
@@ -110,8 +108,9 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     super();
   }
 
-  getAll$(lang: string, mustHaveWarehouseData = false): Observable<ICollectionRange[]> {
-    const all$ = this.fetchList(this.metadataService.metadataFindPropertiesRanges('MY.collectionID', lang, false, true), lang);
+  getAllAsKeyValue$(mustHaveWarehouseData = false) {
+    const all$ = this.api.get('/collections', { query: { selectedFields: 'id,collectionName', pageSize: 100000 } })
+    .pipe(map(({results}) => results.map(({id, collectionName}) => ({ id, value: collectionName }))));
     if (mustHaveWarehouseData) {
       return this.getAllWarehouseCollections$().pipe(
         switchMap(warehouseCollection => all$.pipe(
@@ -126,8 +125,8 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     return this.api.get('/collections/{id}', { path: { id } });
   }
 
-  getName$(id: string, lang: string, empty: null|string = null): Observable<string> {
-    return this.getAll$(lang).pipe(
+  getName$(id: string, empty: null|string = null): Observable<string> {
+    return this.getAllAsKeyValue$().pipe(
       map(data => data.find(col => col.id === id)),
       map(col => col ? col.value : (empty === null ? id : empty))
     );

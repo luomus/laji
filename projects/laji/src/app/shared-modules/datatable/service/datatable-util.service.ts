@@ -130,7 +130,7 @@ export class DatatableUtil {
 
     return this.getArray(occurrences, (occurrence) => ObservableForkJoin([
       this.areaService.getProvinceCode(IdService.getId(occurrence.area)),
-      this.labelService.get(IdService.getId(occurrence.status), this.translate.getCurrentLang())
+      this.labelService.get(IdService.getId(occurrence.status))
     ]).pipe(
       map(data => data[0]+ ': ' + data[1])
     ), '; ');
@@ -138,12 +138,12 @@ export class DatatableUtil {
 
   private getWarehouseLabels(values: any): Observable<string> {
     return this.getArray(values, (value) => this.warehouseValueMappingService.getSchemaKey(value).pipe(
-        concatMap(key => this.labelService.get(IdService.getId(key), this.translate.getCurrentLang()))
+        concatMap(key => this.labelService.get(IdService.getId(key)))
       ), '; ');
   }
 
   private getLabels(values: any): Observable<string> {
-    return this.getArray(values, (value) => this.labelService.get(IdService.getId(value), this.translate.getCurrentLang()), '; ');
+    return this.getArray(values, (value) => this.labelService.get(IdService.getId(value)), '; ');
   }
 
   private getPublications(values: any): Observable<string> {
