@@ -39,7 +39,6 @@ export class ExcelToolService {
 
       return this.api.get('/named-places', { query: {
         collectionID: form.collectionID,
-        includeUnits: form.options?.namedPlaceOptions?.includeUnits,
         selectedFields: selected.map(field => field.replace('$.', '')).join(','),
         pageSize: 100000
       } }).pipe(
