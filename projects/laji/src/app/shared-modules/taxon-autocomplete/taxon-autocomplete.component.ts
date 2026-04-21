@@ -61,6 +61,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
 
   private tokenMinLength = 3;
   private destroyBlurListener?: () => void;
+  private previewedTaxon?: any;
 
   constructor(
     private api: LajiApiClientBService,
@@ -180,11 +181,13 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
+  onTaxonPreview(taxon: any) {
+    this.previewedTaxon = taxon;
+  }
+
   keyEvent(e: any) {
-    if (e.keyCode === 13) {
-      if (this.allowInvalid) {
-        this.useCurrentValue();
-      }
+    if (e.keyCode === 13 && !this.previewedTaxon && this.allowInvalid) {
+      this.useCurrentValue();
     }
   }
 
