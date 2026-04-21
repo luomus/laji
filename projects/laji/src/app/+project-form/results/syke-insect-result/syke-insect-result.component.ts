@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { ResultService } from '../common/service/result.service';
+import { ResultUtil } from '../common/service/result-util.service';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { map } from 'rxjs';
 import type { components } from 'projects/laji-api-client-b/generated/api';
@@ -49,7 +49,7 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private resultService: ResultService,
+    private resultUtil: ResultUtil,
     private cdr: ChangeDetectorRef,
     private qName: ToQNamePipe
   ) {
@@ -85,7 +85,7 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
       this.resultQuery = this.clone(this.query);
       if (taxonId) {
         this.query.taxonId = [taxonId];
-        this.taxon$ = this.resultService.getTaxon(taxonId);
+        this.taxon$ = this.resultUtil.getTaxon(taxonId);
       } else {
         this.taxon$ = ObservableOf(null);
       }
