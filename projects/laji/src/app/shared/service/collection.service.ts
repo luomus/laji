@@ -2,7 +2,6 @@ import { map, shareReplay, switchMap, take, tap, catchError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
-import { AbstractCachedHttpService } from './abstract-cached-http.service';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { IdService } from './id.service';
 import { GraphQLService } from '../../graph-ql/service/graph-ql.service';
@@ -50,7 +49,7 @@ export interface ICollectionCounts {
 }
 
 @Injectable({providedIn: 'root'})
-export class CollectionService extends AbstractCachedHttpService<ICollectionRange> {
+export class CollectionService {
 
   private allWarehouseCollection$?: Observable<string[]>;
   private TREE_QUERY = gql`
@@ -105,7 +104,6 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     private userService: UserService,
     private api: LajiApiClientBService
   ) {
-    super();
   }
 
   getAllAsKeyValue$(mustHaveWarehouseData = false) {

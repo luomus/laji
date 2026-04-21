@@ -25,7 +25,7 @@ export class ChecklistPipe extends AbstractLabelPipe implements PipeTransform {
     if (this.checklists) {
       return of(this.checklists);
     }
-    const value$ = this.checklistService.getAllAsLookUp(this.translate.getCurrentLang());
+    const value$ = this.checklistService.getAllAsLookUp();
     value$.subscribe(checklists => {
       this.checklists = checklists;
     });

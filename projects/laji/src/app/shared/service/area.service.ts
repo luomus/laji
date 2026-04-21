@@ -12,7 +12,7 @@ export class AreaService {
 
   constructor(private api: LajiApiClientBService) {}
 
-  areasLookup?: Observable<{[id: string]: Area}>;
+  private areasLookup?: Observable<{[id: string]: Area}>;
 
   getAllAsLookUp(): Observable<{[id: string]: Area}> {
     if (this.areasLookup) {
