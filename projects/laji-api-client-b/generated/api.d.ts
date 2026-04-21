@@ -19251,10 +19251,10 @@ export interface operations {
     CollectionsController_getPage: {
         parameters: {
             query?: {
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
-                selectedFields?: string;
                 /** @description Comma separated ids */
                 idIn?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
                 page?: number;
                 pageSize?: number;
             };
@@ -29452,6 +29452,8 @@ export interface operations {
             query?: {
                 /** @description Comma separated ids */
                 idIn?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
                 page?: number;
                 pageSize?: number;
             };
@@ -30432,6 +30434,8 @@ export interface operations {
             query?: {
                 /** @description Comma separated ids */
                 idIn?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
                 page?: number;
                 pageSize?: number;
             };
@@ -32377,6 +32381,8 @@ export interface operations {
             query?: {
                 /** @description Comma separated ids */
                 idIn?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
                 page?: number;
                 pageSize?: number;
             };
@@ -32935,6 +32941,8 @@ export interface operations {
             query?: {
                 /** @description Comma separated ids */
                 idIn?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
                 page?: number;
                 pageSize?: number;
             };
@@ -35221,6 +35229,8 @@ export interface operations {
             query?: {
                 /** @description Comma separated ids */
                 idIn?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
                 page?: number;
                 pageSize?: number;
             };
@@ -35337,6 +35347,8 @@ export interface operations {
             query?: {
                 /** @description Comma separated ids */
                 idIn?: string;
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                selectedFields?: string;
                 page?: number;
                 pageSize?: number;
             };
