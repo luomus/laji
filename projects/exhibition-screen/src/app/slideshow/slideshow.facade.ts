@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Information } from 'projects/laji/src/app/shared/model/Information';
 import { BehaviorSubject, forkJoin } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs';
 import { InformationService } from '../core/information.service';
 import { ISlideData } from './slide/slide.component';
 import { i18nMap, Lang } from '../core/i18n-map';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Information = components['schemas']['Information'];
 
 @Injectable()
 export class SlideshowFacade {

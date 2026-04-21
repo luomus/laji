@@ -2,7 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { InformationItem } from 'projects/laji/src/app/shared/model/InformationItem';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type InformationChild = components['schemas']['InformationChild'];
 
 @Component({
     selector: 'iucn-about',
@@ -84,8 +86,8 @@ import { InformationItem } from 'projects/laji/src/app/shared/model/InformationI
 export class AboutComponent implements OnInit, OnDestroy {
   activePage = '';
   title = '';
-  parents: InformationItem[] = [];
-  children: InformationItem[] = [];
+  parents: InformationChild[] = [];
+  children: InformationChild[] = [];
   private querySub!: Subscription;
 
   constructor(
