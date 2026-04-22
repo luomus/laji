@@ -93,7 +93,7 @@ export class SpreadsheetService {
       )
     )
       .subscribe(translations => {
-        this.translations = translations
+        this.translations = translations;
       });
 
   }
