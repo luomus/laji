@@ -39,7 +39,7 @@ export class MemberIdPillListComponent {
     if (!id) {
       return of('');
     }
-    return this.api.get('/warehouse/teamMember/{id}' as any, { path: { id } }).pipe(
+    return this.api.get('/warehouse/teamMember/{id}', { path: { id } }).pipe(
       map((result: any) => result.name || result.id),
     );
   }

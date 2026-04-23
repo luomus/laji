@@ -42,7 +42,7 @@ export class TeamComponent implements OnInit, OnDestroy {
         if (!token.endsWith('*')) {
           token += '*';
         }
-        return this.api.get('/warehouse/teamMember' as any, { query: { q: token } }).pipe(
+        return this.api.get('/warehouse/teamMember', { query: { query: token } }).pipe(
           map((result: any) => result.results || []),
         );
       }),
