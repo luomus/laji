@@ -13,9 +13,11 @@ import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
 import { BaseDataService } from '../../../graph-ql/service/base-data.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
-import { Annotation } from '../../../shared/model/Annotation';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { IdType, SelectOption } from '../select/select.component';
+import { components } from '../../../../../../laji-api-client-b/generated/api';
+
+type Annotation = components['schemas']['store-annotation'];
 
 export enum SelectStyle {
   basic,
@@ -230,7 +232,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       switch (this.field) {
         case 'MMAN.tag':
           return this.annotationService.getAllTags().pipe(
-            map(tags => tags.filter(t => !t.requiredRolesAdd || !t.requiredRolesAdd.includes(Annotation.AnnotationRoleEnum.formAdmin))),
+            map(tags => tags.filter(t => !t.requiredRolesAdd || !t.requiredRolesAdd.includes('MMAN.formAdmin'))),
             map(tags => tags.map(t => ({ id: t.id, value: t.name })))
           );
         case 'MY.collectionID':
