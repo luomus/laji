@@ -7,11 +7,9 @@ import moment from 'moment';
 import { GraphQLService } from '../graph-ql/service/graph-ql.service';
 import { HistoryService } from '../shared/service/history.service';
 import { Image } from '../shared/gallery/image-gallery/image.interface';
+import { News } from '../shared/model/News';
 import { environment } from '../../environments/environment';
 import { Global } from '../../environments/global';
-import { components } from 'projects/laji-api-client-b/generated/api';
-
-export type News = components['schemas']['LajiBackendNewsNode'];
 
 export interface IHomeData {
   observations: {
@@ -48,7 +46,7 @@ export interface IHomeData {
   news: {
     prevPage: number;
     nextPage: number;
-    results: Pick<News, 'id'|'title'|'external'|'externalURL'|'tags'|'posted'>[];
+    results: Pick<News, 'id'|'title'|'external'|'externalURL'|'tag'|'posted'>[];
   };
 }
 
