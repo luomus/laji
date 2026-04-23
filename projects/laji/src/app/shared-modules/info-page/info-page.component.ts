@@ -2,9 +2,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { map, tap } from 'rxjs';
-import { InformationItem } from '../../shared/model/InformationItem';
 import { MultiLanguage } from '../../shared/model/MultiLanguage';
 import { Subscription } from 'rxjs';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type InformationChild = components['schemas']['InformationChild'];
 
 const filterParentsAboveId = (excludeIds: string[], parents: any[]): any[] => {
   const out = [];
@@ -41,9 +43,9 @@ export class InfoPageComponent implements OnChanges, OnDestroy {
   @Input() page?: string;
 
   @Output()
-  parents = new EventEmitter<InformationItem[]>();
+  parents = new EventEmitter<InformationChild[]>();
   @Output()
-  subPages = new EventEmitter<InformationItem[]>();
+  subPages = new EventEmitter<InformationChild[]>();
   @Output()
   title = new EventEmitter<string>();
   @Output()

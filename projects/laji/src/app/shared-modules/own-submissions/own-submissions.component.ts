@@ -402,15 +402,13 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
 
   private getNamedPlaceName(npId: string | undefined): Observable<string> {
     if (!npId || this.columns.indexOf('namedPlaceName') === -1) { return ObservableOf(''); }
-    return this.labelService.get(npId, 'multi');
+    return this.labelService.get(npId);
   }
 
   private getTaxon(taxonId: string[], gatheringInfo: any): Observable<string> {
     if (!taxonId || !taxonId.length || this.columns.indexOf('taxon') === -1 ||
     (gatheringInfo && gatheringInfo.unitList && gatheringInfo.unitList.length > 1)) { return ObservableOf(''); }
-    return this.labelService.get(taxonId[0], 'multi').pipe(
-      map((langResult: any) => langResult[this.translate.getCurrentLang()])
-    );
+    return this.labelService.get(taxonId[0]);
   }
 
   doLabels(event: LabelEvent) {

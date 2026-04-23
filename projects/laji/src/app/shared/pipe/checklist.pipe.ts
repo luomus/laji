@@ -3,7 +3,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { AbstractLabelPipe } from './abstract-label.pipe';
 import { ChecklistService } from '../service/checklist.service';
 import { Observable, of } from 'rxjs';
-import { Checklist } from '../model/Checklist';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Checklist = components['schemas']['store-checklist'];
 
 @Pipe({
     name: 'checklist',
@@ -23,7 +25,7 @@ export class ChecklistPipe extends AbstractLabelPipe implements PipeTransform {
     if (this.checklists) {
       return of(this.checklists);
     }
-    const value$ = this.checklistService.getAllAsLookUp(this.translate.getCurrentLang());
+    const value$ = this.checklistService.getAllAsLookUp();
     value$.subscribe(checklists => {
       this.checklists = checklists;
     });

@@ -63,7 +63,7 @@ export class AreaSelectComponent implements OnInit {
   private getDataObservable(): Observable<{id: string; value: string}[]> {
     switch (this.field) {
       case 'MY.collectionID':
-        return this.collectionService.getAll$(this.lang, true);
+        return this.collectionService.getAllAsKeyValue$(true);
       case 'ML.biogeographicalProvince':
       case 'ML.municipality':
       case 'ML.country':

@@ -105,7 +105,7 @@ export class ValueDecoratorService {
   }
 
   protected makeSourceName(value: any) {
-    return this.source.getName(this.toQNamePipe.transform(value), this.lang);
+    return this.source.getName(this.toQNamePipe.transform(value));
   }
 
   protected makeLabelFromArray(value: any[]) {

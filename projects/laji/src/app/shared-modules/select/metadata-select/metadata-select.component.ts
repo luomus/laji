@@ -234,7 +234,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
             map(tags => tags.map(t => ({ id: t.id, value: t.name })))
           );
         case 'MY.collectionID':
-          return this.collectionService.getAll$(this.lang, true);
+          return this.collectionService.getAllAsKeyValue$(true);
         case 'ML.biogeographicalProvince':
         case 'ML.municipality':
         case 'ML.country':
@@ -243,9 +243,9 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
         case 'ML.province':
           return this.areaService.getAreaByType(this.field as any);
         case 'KE.informationSystem':
-          return this.sourceService.getAllAsLookUp(this.lang).pipe(
+          return this.sourceService.getAllAsLookUp().pipe(
             map(system => Object.keys(system).reduce<SelectOption[]>((total, current) => {
-              total.push({id: current, value: system[current]});
+              total.push({id: current, value: system[current].name});
               return total;
             }, [])));
         default:

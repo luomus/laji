@@ -238,7 +238,7 @@ export class PdfLabelService {
     const unique = [...new Set(keys)];
     const keyMap: {[key: string]: string} = {};
     return from(unique).pipe(
-      concatMap(id => this.triplestoreLabelService.get(id, this.translateService.getCurrentLang()).pipe(
+      concatMap(id => this.triplestoreLabelService.get(id).pipe(
         tap(value => keyMap[id] = value)
       )),
       toArray(),

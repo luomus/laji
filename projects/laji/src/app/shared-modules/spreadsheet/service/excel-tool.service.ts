@@ -109,7 +109,7 @@ export class ExcelToolService {
         convert$ = this.translateService.get(value === true || value === 'true' ? 'yes' : 'no');
         break;
       case 'label':
-        convert$ = this.triplestoreLabelService.get(String(value), this.translateService.getCurrentLang());
+        convert$ = this.triplestoreLabelService.get(String(value));
         break;
     }
     return convert$ ? (convert$.pipe(

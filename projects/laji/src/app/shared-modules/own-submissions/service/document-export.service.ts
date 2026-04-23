@@ -400,7 +400,7 @@ export class DocumentExportService {
   private getFieldLabel(fieldName: string): Observable<string> {
     if ((this.classPrefixes as any)[fieldName]) {
       return this.labelService
-        .get((this.classPrefixes as any)[fieldName] + '.' + fieldName, this.translate.getCurrentLang())
+        .get((this.classPrefixes as any)[fieldName] + '.' + fieldName)
         .pipe(
           map((label) => label || fieldName)
         );

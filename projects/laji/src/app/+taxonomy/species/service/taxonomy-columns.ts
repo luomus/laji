@@ -256,7 +256,7 @@ export class TaxonomyColumns {
         toArray()
       );
     }
-    return this.triplestoreLabelService.get(label, this.translateService.getCurrentLang()).pipe(
+    return this.triplestoreLabelService.get(label).pipe(
       map(l => capitalize && l ? l.charAt(0).toUpperCase() + l.slice(1) : l)
     );
   }
