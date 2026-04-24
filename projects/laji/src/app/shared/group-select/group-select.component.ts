@@ -1,13 +1,16 @@
 import { map, switchMap, tap } from 'rxjs';
 import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output, Directive, OnInit } from '@angular/core';
-import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { ControlValueAccessor } from '@angular/forms';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { Logger } from '../logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Group } from '../model/Group';
 import { PagedResult } from '../model/PagedResult';
 import { ArrayResult } from '../model/ArrayResult';
+import { components } from 'projects/laji-api-client-b/generated/api';
+
+type RedListTaxonGroup= components['schemas']['store-iucnRedListTaxonGroup'];
+type InformalTaxonGroup = components['schemas']['store-informalTaxonGroup'];
+type Group = RedListTaxonGroup | InformalTaxonGroup;
 
 @Directive()
 export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges, OnInit {
