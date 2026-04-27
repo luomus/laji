@@ -182,6 +182,10 @@ laji-document {
     max-width: 100%;
     overflow: auto;
   }
+  laji-facts .value {
+    white-space: pre-wrap;
+    font-family: monospace;
+  }
 }
 /** /Viewer **/
 
