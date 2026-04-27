@@ -212,7 +212,7 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
   }
 
   private initAreaColumns() {
-    this.areaSub = this.resultService.getAreas(this.translate.getCurrentLang()).subscribe(areas => {
+    this.areaSub = this.resultService.getAreas().subscribe(areas => {
       const areaFields = [];
       const occurrenceFields = [];
 

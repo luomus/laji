@@ -7,9 +7,11 @@ import { components, operations, paths } from 'projects/laji-api-client-b/genera
 export type TaxonQuery = operations['TaxaController_getPageWithFilters']['parameters']['query'];
 export type TaxonFilters = NonNullable<operations['TaxaController_getPageWithFilters']['requestBody']>['content']['application/json'];
 export type ChecklistVersion = NonNullable<NonNullable<paths['/taxa/species/aggregate']['post']['parameters']['query']>['checklistVersion']>;
+export type RedListTaxonGroupExpanded = Omit<components['schemas']['IucnRedListTaxonGroupExpanded'], 'hasIucnSubGroup'> & {
+  hasIucnSubGroup?: Array<string | components['schemas']['IucnRedListTaxonGroupExpanded']>;
+};
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
-type RedListTaxonGroupExpanded = components['schemas']['IucnRedListTaxonGroupExpanded'];
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +51,7 @@ export class TaxonService {
     }
     if (!this.treeRequest[lang]) {
       this.treeRequest[lang] = this.api.get('/red-list-evaluation-groups/tree').pipe(
-        map(data => data.results),
+        map(data => data.results as unknown as RedListTaxonGroupExpanded[]),
         share(),
         tap(data => this.treeCache[lang] = data),
         tap(() => delete this.treeRequest[lang])
@@ -80,10 +82,9 @@ export class TaxonService {
           };
         }
         const node = this.findGroupFromTree(tree, (filters[groupField] as string));
-        const subGroups = node ? this.getSubGroups(node) : [];
-        if (subGroups.length) {
+        if (node?.hasIucnSubGroup) {
           return {
-            groups: subGroups.map(v => v.id),
+            groups: (node.hasIucnSubGroup as RedListTaxonGroupExpanded[]).map(v => v.id),
             aggregateBy: [statusField, groupField],
             hasKeys: true
           };
@@ -166,7 +167,7 @@ export class TaxonService {
     );
   }
 
-  private findGroupFromTree(data: RedListTaxonGroupExpanded[], findID: string) {
+  private findGroupFromTree(data: RedListTaxonGroupExpanded[], findID: string): RedListTaxonGroupExpanded|null {
     let result: RedListTaxonGroupExpanded|null = null;
     data.forEach(red => {
       if (result !== null) {
@@ -177,7 +178,7 @@ export class TaxonService {
         return;
       }
       if (red.hasIucnSubGroup) {
-        result = this.findGroupFromTree(this.getSubGroups(red), findID);
+        result = this.findGroupFromTree(red.hasIucnSubGroup as RedListTaxonGroupExpanded[], findID);
       }
     });
 
@@ -190,15 +191,11 @@ export class TaxonService {
     );
   }
 
-  private getSubGroups(group: RedListTaxonGroupExpanded): RedListTaxonGroupExpanded[] {
-    return (group.hasIucnSubGroup as unknown as RedListTaxonGroupExpanded[]) ?? [];
-  }
-
   private pickLabels(data: RedListTaxonGroupExpanded[], result: {[key: string]: string} = {}) {
     data.forEach(red => {
       result[red.id] = red.name || '';
       if (red.hasIucnSubGroup) {
-        this.pickLabels(this.getSubGroups(red), result);
+        this.pickLabels(red.hasIucnSubGroup as RedListTaxonGroupExpanded[], result);
       }
     });
     return result;
