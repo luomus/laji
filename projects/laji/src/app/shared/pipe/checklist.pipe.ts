@@ -13,7 +13,7 @@ type Checklist = components['schemas']['store-checklist'];
     standalone: false
 })
 export class ChecklistPipe extends AbstractLabelPipe implements PipeTransform {
-  private checklists?: {[id: string]: Checklist};
+  private checklists?: {[id: string]: Pick<Checklist, 'id' | 'name'>};
 
   constructor(protected translate: TranslateService,
               protected _ref: ChangeDetectorRef,
@@ -34,6 +34,6 @@ export class ChecklistPipe extends AbstractLabelPipe implements PipeTransform {
 
   protected _parseValue(checklists: any): string {
     const item = this.key && checklists[this.key];
-    return item || this.key || '';
+    return item?.name || this.key || '';
   }
 }

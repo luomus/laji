@@ -14,21 +14,15 @@ export class ChecklistService {
   ) {
   }
 
-  private lookup?: Observable<{[id: string]: Checklist}>;
+  private lookup?: Observable<{[id: string]: Pick<Checklist, 'id' | 'name'>}>;
 
-  getAllAsLookUp(): Observable<{[id: string]: Checklist}> {
+  getAllAsLookUp(): Observable<{[id: string]: Pick<Checklist, 'id' | 'name'>}> {
     if (this.lookup) {
       return this.lookup;
     }
-    this.lookup = this.api.get('/checklists', { query: { page: 1, pageSize: 100000 } }).pipe(
+    this.lookup = this.api.get('/checklists', { query: { page: 1, pageSize: 100000, selectedFields: 'id,name' } }).pipe(
       map(paged => dictionarifyByKey(paged.results, 'id')),
     );
     return this.lookup;
-  }
-
-  getName(id: string) {
-    return this.getAllAsLookUp().pipe(
-      map(data => data[id] || id )
-    );
   }
 }
