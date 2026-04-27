@@ -1,6 +1,8 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { Collection } from '../../../shared/model/Collection';
 import { DatatableColumn } from '../../datatable/model/datatable-column';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Collection = components['schemas']['SensitiveCollection'];
 
 @Component({
     selector: 'laji-collection-table',

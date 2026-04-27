@@ -20,7 +20,7 @@
               <span>
                 <a class="btn btn-sm btn-default"
                   target="_blank"
-                [routerLink]="['./', namedPlace.id, 'print'] | localize">{{ documentForm.options?.namedPlaceOptions?.printLabel || 'np.print' | translate }}</a>
+                [routerLink]="['./', namedPlace.id!, 'print'] | localize">{{ documentForm.options?.namedPlaceOptions?.printLabel || 'np.print' | translate }}</a>
               </span>
             }
             @if (allowEdit && editButtonVisible) {

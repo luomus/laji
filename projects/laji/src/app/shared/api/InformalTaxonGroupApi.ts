@@ -25,41 +25,38 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PagedResult } from '../model/PagedResult';
-import { HttpClient } from '@angular/common/http';
-import { Util } from '../service/util.service';
-import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
-import { environment } from '../../../environments/environment';
 import { ArrayResult } from '../model/ArrayResult';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+export type InformalTaxonGroup = components['schemas']['store-informalTaxonGroup'];
 
 @Injectable({providedIn: 'root'})
 export class InformalTaxonGroupApi {
-  protected basePath = `${environment.apiBase}/informal-taxon-groups`;
-
-  constructor(protected http: HttpClient) {
-  }
+  constructor(
+    private api: LajiApiClientBService
+  ) { }
 
   /**
    * Get all InformalTaxonGroups
-   *
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    * @param page Page number
    * @param pageSize Page size
+   * @param idIn Array of ids to search by
    */
-  public informalTaxonGroupFind(lang?: string, page?: string, pageSize?: string, idIn?: string[]): Observable<PagedResult<InformalTaxonGroup>> {
-    return this.http.get<PagedResult<InformalTaxonGroup>>(this.basePath, { params: Util.withNonNullableValues({ lang, page, pageSize, idIn }) });
+  public informalTaxonGroupFind(page?: number, pageSize?: number, idIn?: string[]): Observable<PagedResult<InformalTaxonGroup>> {
+    return this.api.get('/informal-taxon-groups', { query: { idIn: idIn?.join(','), page, pageSize }});
   }
 
   /**
    * Find InformalTaxonGroup by id
    *
    * @param id
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
-  public informalTaxonGroupFindById(id: string, lang?: string): Observable<InformalTaxonGroup> {
+  public informalTaxonGroupFindById(id: string): Observable<InformalTaxonGroup> {
     if (!id.length) {
       throw new Error('Required parameter id was empty when calling informalTaxonGroupFindById.');
     }
-    return this.http.get<InformalTaxonGroup>(`${this.basePath}/${id}`, {params:  Util.withNonNullableValues({ lang })});
+    return this.api.get('/informal-taxon-groups/{id}', { path: { id }});
   }
 
   /**
@@ -69,52 +66,44 @@ export class InformalTaxonGroupApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public informalTaxonGroupFindRoots(lang?: string): Observable<ArrayResult<InformalTaxonGroup>> {
-    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/roots`, { params: Util.withNonNullableValues({ lang }) });
+  public informalTaxonGroupFindRoots(): Observable<ArrayResult<InformalTaxonGroup>> {
+    return this.api.get('/informal-taxon-groups/roots');
   }
 
   /**
    * Get immediate children of the informal group
-   *
    * @param id
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-   * @param page Page number
-   * @param pageSize Page size
    */
-  public informalTaxonGroupGetChildren(id: string, lang?: string): Observable<ArrayResult<InformalTaxonGroup>> {
-    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/${id}/children`, { params: Util.withNonNullableValues({ lang }) } );
+  public informalTaxonGroupGetChildren(id: string): Observable<ArrayResult<InformalTaxonGroup>> {
+    return this.api.get('/informal-taxon-groups/{id}/children', { path: { id }});
   }
 
   /**
    * Get parent for a informal group
    *
    * @param id
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
    */
-  public informalTaxonGroupGetParent(id: string, lang?: string): Observable<InformalTaxonGroup> {
-    return this.http.get<InformalTaxonGroup>(`${this.basePath}/${id}/parent`, { params: Util.withNonNullableValues({ lang })});
+  public informalTaxonGroupGetParent(id: string): Observable<InformalTaxonGroup> {
+    return this.api.get('/informal-taxon-groups/{id}/parent', { path: { id }});
   }
 
   /**
    * Get full tree of informal groups with hasSubGroup extended
-   *
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
    * @param page Page number
    * @param pageSize Page size
    */
-  public informalTaxonGroupGetTree(lang?: string): Observable<ArrayResult<InformalTaxonGroup>> {
-    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/tree`, { params: Util.withNonNullableValues({ lang }) });
+  public informalTaxonGroupGetTree(): Observable<ArrayResult<InformalTaxonGroup>> {
+    return this.api.get('/informal-taxon-groups/tree');
   }
 
   /**
    * Get current groups with it&#39;s siblings
    *
    * @param id
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
    * @param page Page number
    * @param pageSize Page size
    */
-  public informalTaxonGroupGetWithSiblings(id: string, lang?: string): Observable<ArrayResult<InformalTaxonGroup>> {
-    return this.http.get<ArrayResult<InformalTaxonGroup>>(`${this.basePath}/${id}/siblings`, { params: Util.withNonNullableValues({ lang }) });
+  public informalTaxonGroupGetWithSiblings(id: string): Observable<ArrayResult<InformalTaxonGroup>> {
+    return this.api.get('/informal-taxon-groups/{id}/siblings', { path: { id }});
   }
 }

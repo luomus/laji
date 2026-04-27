@@ -1,9 +1,7 @@
 import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { PublicationService } from '../service/publication.service';
-import { Publication } from '../model/Publication';
 import { forkJoin, of } from 'rxjs';
 import { map } from 'rxjs';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Pipe({
     name: 'publication',
@@ -12,16 +10,15 @@ import { map } from 'rxjs';
 })
 export class PublicationPipe implements PipeTransform {
   value: any;
-  lastKey?: string;
+  lastKey?: 'name' | 'URI';
   lastField?: string;
 
-  constructor(private translate: TranslateService,
-              private publicationService: PublicationService,
-              private _ref: ChangeDetectorRef) {
+  constructor(
+    private _ref: ChangeDetectorRef,
+    private api: LajiApiClientBService
+  ) { }
 
-  }
-
-  transform(value: any, field: 'name'|'URI' = 'name'): any {
+  transform(value: any, field: 'name' | 'URI' = 'name'): any {
     if (value === this.lastKey && field === this.lastField) {
       return this.value;
     }
@@ -32,7 +29,7 @@ export class PublicationPipe implements PipeTransform {
     return this.updateValue(value, field);
   }
 
-  private updateValue(value: any, field: string): void {
+  private updateValue(value: any, field: 'name' | 'URI'): void {
     (Array.isArray(value) ? forkJoin(value.map(v => this.getValueObservable(v, field))) : this.getValueObservable(value, field))
       .subscribe(res => {
         this.value = res;
@@ -40,14 +37,11 @@ export class PublicationPipe implements PipeTransform {
       });
   }
 
-  private getValueObservable(value: any, field: string) {
+  private getValueObservable(value: any, field: 'name' | 'URI') {
     if (!value || typeof value !== 'string' || value.length === 0) {
       return of(value);
     }
 
-    return this.publicationService.getPublication(value, this.translate.getCurrentLang())
-      .pipe(map((res: Publication) =>
-        (res as any)?.[field] || ''
-      ));
+    return this.api.get('/publications/{id}', { path: { id: value } }).pipe(map(res => res[field] || ''));
   }
 }

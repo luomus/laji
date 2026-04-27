@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FieldType, ILabelField } from '@luomus/label-designer';
 import { from, Observable, of } from 'rxjs';
-import { Document } from '../model/Document';
 import { concatMap, map, switchMap, tap, toArray } from 'rxjs';
 import { FormService as ToolsFormService } from './form.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,10 +9,12 @@ import { SessionStorage } from 'ngx-webstorage';
 import { SchemaService, ILabelData } from '@luomus/label-designer';
 import { TriplestoreLabelService } from './triplestore-label.service';
 import { LabelFilter } from '../../shared-modules/own-submissions/own-datatable/own-datatable.component';
-import { Units } from '../model/Units';
 import { Global } from '../../../environments/global';
-import { Gatherings } from '../model/Gatherings';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
 
+type Document = components['schemas']['store-document'];
+type Gathering = Document['gatherings'][number];
+type Unit = Gathering['units'][number];
 
 @Injectable({
   providedIn: 'root'
@@ -172,7 +173,7 @@ export class PdfLabelService {
       }
       gathering.units = gathering.units.reduce((unitPrev, unit) => {
         // Filter out preserved specimen
-        if (filter.onlyPreservedSpecimen && unit.recordBasis !== Units.RecordBasisEnum.RecordBasisPreservedSpecimen) {
+        if (filter.onlyPreservedSpecimen && unit.recordBasis !== 'MY.recordBasisPreservedSpecimen') {
           return unitPrev;
         }
 
@@ -191,14 +192,14 @@ export class PdfLabelService {
           unitPrev.push(unit);
         }
         return unitPrev;
-      }, [] as Units[]);
+      }, [] as Unit[]);
 
       // Only add gatherings that have some unit information in them
       if (gathering.units.length > 0) {
         gatheringPrev.push(gathering);
       }
       return gatheringPrev;
-    }, [] as Gatherings[]);
+    }, [] as Gathering[]);
 
     // Only return documents that have some gathering information in them
     if (doc.gatherings.length === 0) {
@@ -207,7 +208,7 @@ export class PdfLabelService {
     return doc;
   }
 
-  private countIndividuals(unit: Units): number {
+  private countIndividuals(unit: Unit): number {
     let cnt = 0;
     Global.documentCountUnitProperties.forEach(prop => {
       const num = Number((unit as any)[prop]);
@@ -237,7 +238,7 @@ export class PdfLabelService {
     const unique = [...new Set(keys)];
     const keyMap: {[key: string]: string} = {};
     return from(unique).pipe(
-      concatMap(id => this.triplestoreLabelService.get(id, this.translateService.getCurrentLang()).pipe(
+      concatMap(id => this.triplestoreLabelService.get(id).pipe(
         tap(value => keyMap[id] = value)
       )),
       toArray(),

@@ -6,8 +6,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { ExtendedGroupSelectComponent, InformalGroupEvent } from './extended-group-select.component';
 import { RedListTaxonGroup } from '../../shared/model/RedListTaxonGroup';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
-import { PagedResult } from '../../shared/model/PagedResult';
 import { RedListTaxonGroupApi } from '../../shared/api/RedListTaxonGroupApi';
+import { ArrayResult } from '../../shared/model/ArrayResult';
+import { PagedResult } from '../../shared/model/PagedResult';
 
 export const IUCN_GROUP_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -40,16 +41,16 @@ export class IucnExtendedGroupSelectComponent extends ExtendedGroupSelectCompone
     return [(this.query as any).redListGroup || [], []];
   }
 
-  findByIds(groupIds: string[], lang: string): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsFind(lang, undefined, undefined, {idIn: groupIds});
+  findByIds(groupIds: string[]): Observable<PagedResult<RedListTaxonGroup>> {
+    return this.redListTaxonGroupApi.redListTaxonGroupsFind(undefined, undefined, groupIds);
   }
 
   convertToInformalTaxonGroup(group: RedListTaxonGroup): InformalTaxonGroup {
     return {id: group.id, name: group.name, hasSubGroup: group.hasIucnSubGroup};
   }
 
-  getTree(lang: any): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsGetTree(lang);
+  getTree(): Observable<ArrayResult<RedListTaxonGroup>> {
+    return this.redListTaxonGroupApi.redListTaxonGroupsGetTree();
   }
 
   prepareEmit(includedOptions: string[], excludedOptions?: string[]): InformalGroupEvent {

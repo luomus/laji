@@ -10,13 +10,14 @@ import { SourceService } from '../../../shared/service/source.service';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
-import { Area } from '../../../shared/model/Area';
 import { BaseDataService } from '../../../graph-ql/service/base-data.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
-import { Annotation } from '../../../shared/model/Annotation';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { IdType, SelectOption } from '../select/select.component';
+import { components } from '../../../../../../laji-api-client-b/generated/api';
+
+type Annotation = components['schemas']['store-annotation'];
 
 export enum SelectStyle {
   basic,
@@ -231,27 +232,22 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       switch (this.field) {
         case 'MMAN.tag':
           return this.annotationService.getAllTags().pipe(
-            map(tags => tags.filter(t => !t.requiredRolesAdd || !t.requiredRolesAdd.includes(Annotation.AnnotationRoleEnum.formAdmin))),
+            map(tags => tags.filter(t => !t.requiredRolesAdd || !t.requiredRolesAdd.includes('MMAN.formAdmin'))),
             map(tags => tags.map(t => ({ id: t.id, value: t.name })))
           );
         case 'MY.collectionID':
-          return this.collectionService.getAll$(this.lang, true);
-        case <any>Area.AreaType.Biogeographical:
-          return this.areaService.getBiogeographicalProvinces(this.lang);
-        case <any>Area.AreaType.Municipality:
-          return this.areaService.getMunicipalities(this.lang);
-        case <any>Area.AreaType.Country:
-          return this.areaService.getCountries(this.lang);
-        case <any>Area.AreaType.ElyCentre:
-          return this.areaService.getElyCentres(this.lang);
-        case <any>Area.AreaType.BirdAssociationArea:
-          return this.areaService.getBirdAssociationAreas(this.lang);
-        case <any>Area.AreaType.Province:
-          return this.areaService.getProvinces(this.lang);
+          return this.collectionService.getAllAsKeyValue$(true);
+        case 'ML.biogeographicalProvince':
+        case 'ML.municipality':
+        case 'ML.country':
+        case 'ML.elyCentre':
+        case 'ML.birdAssociationArea':
+        case 'ML.province':
+          return this.areaService.getAreaByType(this.field as any);
         case 'KE.informationSystem':
-          return this.sourceService.getAllAsLookUp(this.lang).pipe(
+          return this.sourceService.getAllAsLookUp().pipe(
             map(system => Object.keys(system).reduce<SelectOption[]>((total, current) => {
-              total.push({id: current, value: system[current]});
+              total.push({id: current, value: system[current].name});
               return total;
             }, [])));
         default:

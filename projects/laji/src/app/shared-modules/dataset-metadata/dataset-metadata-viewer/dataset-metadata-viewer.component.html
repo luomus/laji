@@ -25,23 +25,23 @@
         >
         @if (collection.longName) {
           <laji-dataset-metadata-viewer-item [title]="'collection.longName' | translate">
-            <laji-dataset-metadata-viewer-multilang-item [values]="collection.longName | multiLangRows">
+            <laji-dataset-metadata-viewer-multilang-item [values]="collection.longNameMultiLang | multiLangRows">
             </laji-dataset-metadata-viewer-multilang-item>
           </laji-dataset-metadata-viewer-item>
         }
-        <laji-dataset-metadata-viewer-item [title]="'collection.abbreviation' | translate" [value]="collection.abbreviation | multiLangAll">
+        <laji-dataset-metadata-viewer-item [title]="'collection.abbreviation' | translate" [value]="collection.abbreviation">
         </laji-dataset-metadata-viewer-item>
         <laji-dataset-metadata-viewer-item [title]="'collection.collectionType' | translate" [value]="collection.collectionType | label:'warehouse'">
         </laji-dataset-metadata-viewer-item>
         @if (collection.description) {
           <laji-dataset-metadata-viewer-item [title]="'collection.description' | translate">
-            <laji-dataset-metadata-viewer-multilang-item [values]="collection.description | multiLangRows">
+            <laji-dataset-metadata-viewer-multilang-item [values]="collection.descriptionMultiLang | multiLangRows">
             </laji-dataset-metadata-viewer-multilang-item>
           </laji-dataset-metadata-viewer-item>
         }
         @if (collection.onlineUrl) {
           <laji-dataset-metadata-viewer-item [title]="'collection.onlineUrl' | translate">
-            <laji-dataset-metadata-viewer-multilang-item  [values]="collection.onlineUrl | multiLangRows">
+            <laji-dataset-metadata-viewer-multilang-item  [values]="collection.onlineUrlMultiLang | multiLangRows">
             </laji-dataset-metadata-viewer-multilang-item>
           </laji-dataset-metadata-viewer-item>
         }
