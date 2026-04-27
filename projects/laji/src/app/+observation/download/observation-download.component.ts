@@ -40,6 +40,8 @@ import { GeoConvertService, isGeoConvertError } from '../../shared/service/geo-c
 import { DialogService } from '../../shared/service/dialog.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 import { PlatformService } from '../../root/platform.service';
+import { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 
 enum RequestStatus {
@@ -106,6 +108,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   private gisDownloadGeometryField = 'gathering.conversions.wgs84WKT';
 
   constructor(
+    private api: LajiApiClientBService,
     private platformService: PlatformService,
     public searchQuery: SearchQueryService,
     public userService: UserService,
@@ -229,45 +232,67 @@ export class ObservationDownloadComponent implements OnDestroy {
   }
 
   makePrivateRequest() {
-    this.makeRequest('downloadApprovalRequest');
+    const type = 'downloadApprovalRequest';
+    if (this.requests[type] === RequestStatus.loading || this.requests[type] === RequestStatus.done) {
+      return;
+    }
+    this.requests[type] = RequestStatus.loading;
+    const queryParams = {
+      downloadFormat: 'TSV_FLAT',
+      downloadIncludes: 'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
+    };
+    this.searchQuery.getURLSearchParams(this.query, queryParams);
+    this.api.post(
+      '/warehouse/private-query/downloadApprovalRequest' as any,
+      { query: queryParams }
+    ).subscribe(
+      () => {
+        this.toastsService.showSuccess(
+          this.translate.instant('result.load.thanksRequest'),
+          undefined,
+          {timeOut: 0, closeButton: true}
+        );
+        this.requests[type] = RequestStatus.done;
+        this.closeModal();
+        this.cd.markForCheck();
+      },
+      (err: any) => {
+        this.requests[type] = RequestStatus.error;
+        this.toastsService.showError(this.translate.instant(err?.status === 429 ?
+          'observation.download.limitExceededException' :
+          'observation.download.error'
+        ));
+        this.logger.warn('Failed to make download request', err);
+        this.cd.markForCheck();
+      }
+    );
   }
 
   makePublicRequest(requireReason = false) {
     if (requireReason && !this.reason) {
       return;
     }
-    this.makeRequest('download');
-  }
 
-  makeRequest(type: string) {
+    const type = 'download';
     if (this.requests[type] === RequestStatus.loading || this.requests[type] === RequestStatus.done) {
       return;
     }
     this.requests[type] = RequestStatus.loading;
-    this.userService.getToken();
-    (this.warehouseService as any)[type](
-      this.userService.getToken(),
-      'TSV_FLAT',
-      'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
-      this.query,
-      this.translate.getCurrentLang(),
-      undefined,
-      {
-        dataUsePurpose: [this.reasonEnum, this.reason].filter(r => !!r).join(': ')
-      }
+
+    const queryParams = {
+      downloadFormat: 'TSV_FLAT',
+      downloadIncludes: 'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
+      dataUsePurpose: [this.reasonEnum, this.reason].filter(r => !!r).join(': ')
+    };
+    this.searchQuery.getURLSearchParams(this.query, queryParams);
+    this.api.post(
+      '/warehouse/query/download' as any,
+      { query: queryParams }
     ).subscribe(
       () => {
-        if (type === 'downloadApprovalRequest') {
-          this.toastsService.showSuccess(
-            this.translate.instant('result.load.thanksRequest'),
-            undefined,
-            {timeOut: 0, closeButton: true}
-          );
-        } else {
-          this.toastsService.showSuccess(
-            this.translate.instant('result.load.thanksPublic')
-          );
-        }
+        this.toastsService.showSuccess(
+          this.translate.instant('result.load.thanksPublic')
+        );
         this.requests[type] = RequestStatus.done;
         this.closeModal();
         this.cd.markForCheck();
@@ -328,27 +353,29 @@ export class ObservationDownloadComponent implements OnDestroy {
   onApiKeyRequest(req: ApiKeyRequest) {
     this.apiKeyLoading = true;
     this.apiKey = '';
-    this.warehouseService.download(
-      this.userService.getToken(),
-      'TSV_FLAT',
-      'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
-      this.query,
-      this.translate.getCurrentLang(),
-      'AUTHORITIES_API_KEY',
-      {
-        dataUsePurpose: [req.reasonEnum, req.reason].filter(r => !!r).join(': '),
-        apiKeyExpires: req.expiration
-      }
-    ).subscribe(res => {
-      this.apiKeyLoading = false;
-      this.apiKey = res.apiKey;
-      this.cd.markForCheck();
-    }, err => {
-      this.logger.error('Apikey request failed', err);
-      this.apiKeyLoading = false;
-      this.apiKey = '';
-      this.cd.markForCheck();
-    });
+
+    const queryParams = {
+      downloadFormat: 'TSV_FLAT',
+      downloadIncludes: 'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
+      downloadType: 'AUTHORITIES_API_KEY',
+      dataUsePurpose: [req.reasonEnum, req.reason].filter(r => !!r).join(': '),
+      apiKeyExpires: req.expiration,
+    };
+    this.searchQuery.getURLSearchParams(this.query, queryParams);
+    this.api.post(
+      '/warehouse/query/download' as any,
+      { query: queryParams }
+    ).subscribe(
+      (res: any) => {
+        this.apiKeyLoading = false;
+        this.apiKey = res.apiKey;
+        this.cd.markForCheck();
+      }, err => {
+        this.logger.error('Apikey request failed', err);
+        this.apiKeyLoading = false;
+        this.apiKey = '';
+        this.cd.markForCheck();
+      });
   }
 
   openColumnSelectModal() {
