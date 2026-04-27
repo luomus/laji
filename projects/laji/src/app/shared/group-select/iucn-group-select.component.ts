@@ -7,7 +7,7 @@ import { GroupSelectComponent } from './group-select.component';
 import { components, operations } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
-type RedListTaxonGroup= components['schemas']['store-iucnRedListTaxonGroup'];
+type RedListTaxonGroup = components['schemas']['store-iucnRedListTaxonGroup'];
 type InformalTaxonGroup = components['schemas']['store-informalTaxonGroup'];
 
 type RedListEvaluationGroupGetResponse = operations['RedListEvaluationGroupsController_get']['responses'][200]['content']['application/json'];
