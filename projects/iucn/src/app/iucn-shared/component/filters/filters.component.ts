@@ -4,12 +4,11 @@ import { Observable } from 'rxjs';
 import { SelectOption } from '../select/select.component';
 import { TaxonService } from '../../service/taxon.service';
 import { map } from 'rxjs';
-import { RedListTaxonGroup } from '../../../../../../laji/src/app/shared/model/RedListTaxonGroup';
 import { MetadataService } from '../../../../../../laji/src/app/shared/service/metadata.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AreaService } from '../../../../../../laji/src/app/shared/service/area.service';
-import { Area } from '../../../../../../laji/src/app/shared/model/Area';
 import { RegionalFilterQuery } from '../../service/regional.service';
+import { RedListTaxonGroupExpanded } from '../../service/taxon.service';
 
 @Component({
     selector: 'iucn-filters',
@@ -69,7 +68,7 @@ export class FiltersComponent {
     return area.map(options => ({value: options.id, label: options.value}));
   }
 
-  private mapStatusesToOptions(groups: RedListTaxonGroup[], result: SelectOption[] = [], level = 0): SelectOption[] {
+  private mapStatusesToOptions(groups: RedListTaxonGroupExpanded[], result: SelectOption[] = [], level = 0): SelectOption[] {
     groups.forEach(group => {
       if (typeof group === 'string') {
         group = {name: group, id: group};
@@ -77,7 +76,7 @@ export class FiltersComponent {
       const label = String.fromCharCode(160).repeat(level * 4) + (group.name || group.id);
       result.push({value: group.id, label});
       if (group.hasIucnSubGroup) {
-        this.mapStatusesToOptions(group.hasIucnSubGroup as RedListTaxonGroup[], result, level + 1);
+        this.mapStatusesToOptions(group.hasIucnSubGroup as RedListTaxonGroupExpanded[], result, level + 1);
       }
     });
     return result;

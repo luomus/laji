@@ -15997,11 +15997,25 @@ export interface components {
             /** Context for the IUCN Red List Evaluation Informal Taxon Group */
             "@context"?: string;
             /** Id for the IUCN Red List Evaluation Informal Taxon Group */
-            id: string;
+            id?: string;
             /** Type for the IUCN Red List Evaluation Informal Taxon Group */
             "@type"?: string;
             /** Has sub group */
             hasIucnSubGroup?: string[];
+            /** Includes informal taxon group */
+            includesInformalTaxonGroup?: string[];
+            /** Includes taxon */
+            includesTaxon?: string[];
+            name: string;
+        };
+        IucnRedListTaxonGroupExpanded: {
+            /** Context for the IUCN Red List Evaluation Informal Taxon Group */
+            "@context"?: string;
+            /** Id for the IUCN Red List Evaluation Informal Taxon Group */
+            id: string;
+            /** Type for the IUCN Red List Evaluation Informal Taxon Group */
+            "@type"?: string;
+            hasIucnSubGroup?: components["schemas"]["IucnRedListTaxonGroupExpanded"];
             /** Includes informal taxon group */
             includesInformalTaxonGroup?: string[];
             /** Includes taxon */
@@ -35475,7 +35489,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        results: components["schemas"]["store-iucnRedListTaxonGroup"][];
+                        results: components["schemas"]["IucnRedListTaxonGroupExpanded"][];
                         "@context": string;
                     };
                 };
