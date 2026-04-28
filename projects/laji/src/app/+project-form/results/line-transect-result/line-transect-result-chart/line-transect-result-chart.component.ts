@@ -276,10 +276,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
         : of(null);
 
     this.fetchSub = combineLatest([stats$, gathering$])
-      .pipe(
-        map(([value]) => value),
-        filter((response): response is AggregateResponse => typeof response !== 'string')
-      )
+      .pipe(map(([value]) => value))
       .subscribe(
         data => {
           this.result = data;
