@@ -19,6 +19,7 @@
       @if (aggrQuery) {
         <laji-observation-table
           #aggregatedDataTable
+          [mode]="dataMode"
           (rowSelect)="onAggregateSelect($event)"
           (selectChange)="setAggregateBy($event)"
           (resetColumns)="resetSelectedFields()"
@@ -37,6 +38,7 @@
       <div>
         @if (listQuery) {
           <laji-observation-table
+            [mode]="dataMode"
             (rowSelect)="showDocument($event)"
             (selectChange)="setSelectedFields($event)"
             (resetColumns)="resetSelectedFields()"

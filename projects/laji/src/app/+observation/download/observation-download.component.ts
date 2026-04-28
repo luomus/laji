@@ -13,7 +13,6 @@ import {
 import { SearchQueryService } from '../search-query.service';
 import { UserSettingsResultList, UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
-import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -30,7 +29,7 @@ import {
 import { ColumnSelector } from '../../shared/columnselector/ColumnSelector';
 import { ObservationTableColumn } from '../../shared-modules/observation-result/model/observation-table-column';
 import { IColumns } from '../../shared-modules/datatable/service/observation-table-column.service';
-import { ObservationDataService } from '../observation-data.service';
+import { DataFetchMode, ObservationDataService } from '../observation-data.service';
 import { environment } from '../../../environments/environment';
 import { DownloadService } from '../../shared/service/download.service';
 import { ApiKeyRequest } from '../../shared-modules/download-modal/apikey-modal/apikey-modal.component';
@@ -40,7 +39,6 @@ import { GeoConvertService, isGeoConvertError } from '../../shared/service/geo-c
 import { DialogService } from '../../shared/service/dialog.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 import { PlatformService } from '../../root/platform.service';
-import { paths } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 
@@ -63,6 +61,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   @ViewChild(DownloadComponent) downloadTypeSelectModal!: DownloadComponent;
   @ViewChild('downloadModal', { static: true }) downloadModal!: TemplateRef<any>;
 
+  @Input() mode: DataFetchMode = 'unit';
   @Input() unitCount!: number;
   @Input() speciesCount!: number;
   @Input() taxaLimit = 3000;
@@ -115,7 +114,6 @@ export class ObservationDownloadComponent implements OnDestroy {
     public translate: TranslateService,
     private observationResultService: ObservationResultService,
     private toastsService: ToastsService,
-    private warehouseService: WarehouseApi,
     private logger: Logger,
     private cd: ChangeDetectorRef,
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
@@ -324,7 +322,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       this._originalQuery,
       this.tableColumnService.getSelectFields(selected, this.query),
       [],
-      this.translate.getCurrentLang(),
+      this.mode,
       true,
       environment.type === Global.type.vir || isGisDownload,
       [this.reasonEnum, this.reason].filter(r => !!r).join(': ')

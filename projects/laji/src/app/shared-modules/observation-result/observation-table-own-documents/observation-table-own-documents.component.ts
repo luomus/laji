@@ -37,6 +37,7 @@ import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
 import { RowDocument } from '../../own-submissions/own-datatable/own-datatable.component';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { components } from 'projects/laji-api-client-b/generated/api';
+import { DataFetchMode } from '../../../+observation/observation-data.service';
 
 type Document = components['schemas']['store-document'];
 
@@ -52,6 +53,7 @@ type Document = components['schemas']['store-document'];
 export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('dataTableOwn', { static: true }) public datatable?: DatatableOwnSubmissionsComponent;
 
+  @Input() mode: DataFetchMode = 'unit';
   @Input() query!: WarehouseQueryInterface;
   @Input() overrideInQuery!: WarehouseQueryInterface;
   @Input() pageSize?: number;
@@ -414,7 +416,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
       this.tableColumnService.getSelectFields(this.columnSelector.columns, this.query),
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       [...this.orderBy, this.defaultOrder!],
-      this.lang
+      this.mode
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data.results, columns, type as BookType, 'laji-data'))
     ).subscribe(
