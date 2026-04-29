@@ -124,7 +124,6 @@ export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
           }
         },
       )),
-      filter((response): response is AggregateResponse => typeof response !== 'string'),
       map(res => res.results.map(item => ({ year: item.aggregateBy['gathering.conversions.year'], pairCount: item.pairCountSum })))
     );
   }
@@ -144,7 +143,6 @@ export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
           }
         }
       )),
-      filter((response): response is AggregateResponse => typeof response !== 'string'),
       map((res) => {
         const documentCountArray: DocumentCountObject[] = [];
         res.results.forEach(documentResult => {

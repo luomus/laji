@@ -55,7 +55,6 @@ export class BiomonResultStatisticsComponent implements OnInit {
     );
 
     this.rows$ = query$.pipe(
-      filter((response): response is AggregateResponse => typeof response !== 'string'),
       map((response) => response.results
         .map(r => ({ observer: r.aggregateBy['gathering.team.memberName'], gatherings: r.count }))
         .sort((a, b) => b.gatherings - a.gatherings)
