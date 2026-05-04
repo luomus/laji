@@ -19,7 +19,8 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'bsg-other-sound-select',
   templateUrl: './other-sound-select.component.html',
   styleUrls: ['./other-sound-select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class OtherSoundSelectComponent implements OnChanges {
   @Input() taxonTypes = [TaxonTypeEnum.bird];
@@ -63,7 +64,7 @@ export class OtherSoundSelectComponent implements OnChanges {
   private getOptions$(): Observable<IGlobalSpecies[]> {
     return this.kerttuGlobalApi.getSpeciesList(
       this.userService.getToken(),
-      this.translate.currentLang,
+      this.translate.getCurrentLang(),
       {
         taxonTypes: [TaxonTypeEnum.other],
         pageSize: 1000

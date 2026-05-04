@@ -1,17 +1,20 @@
-import { map, mergeMap, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from './form.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { Form } from '../model/Form';
 import { BehaviorSubject, combineLatest, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { NamedPlacesService } from './named-places.service';
-import { NamedPlace } from '../model/NamedPlace';
 import { Global } from '../../../environments/global';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+
+type Form = components['schemas']['Form'];
+type FormListing = components['schemas']['FormListing'];
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 export interface ProjectForm {
-  form: Form.SchemaForm;
-  subForms: Form.List[];
+  form: Form;
+  subForms: FormListing[];
 }
 
 export interface NamedPlacesQuery {
@@ -19,6 +22,8 @@ export interface NamedPlacesQuery {
   birdAssociationArea?: string;
   municipality?: string;
   activeNP?: string;
+  filterBy?: string;
+  tab?: string;
 }
 export interface NamedPlacesQueryModel {
   tags?: string[];
@@ -28,8 +33,10 @@ export interface NamedPlacesQueryModel {
 }
 
 export interface NamedPlacesRouteData extends NamedPlacesQueryModel {
-  documentForm: Form.SchemaForm;
+  documentForm: Form;
   namedPlace?: NamedPlace;
+  filterBy?: string;
+  tab?: string;
 }
 
 export interface ExcelFormOptions {
@@ -48,7 +55,7 @@ export class ProjectFormService {
   constructor(
     private formService: FormService,
     private translate: TranslateService,
-    private namedPlacesService: NamedPlacesService
+    private api: LajiApiClientBService
   ) {
     this.translate.onLangChange.subscribe(({ lang }) => {
       this.currentFormID = undefined;
@@ -57,18 +64,18 @@ export class ProjectFormService {
   }
 
   private currentFormID?: string;
-  private form$?: ReplaySubject<Form.SchemaForm>;
+  private form$?: ReplaySubject<Form | undefined>;
   private registrationContacts?: RegistrationContact[];
 
   /** LajiFormBuilder can change the language of the form, without changing the lang of the whole page. */
-  public localLang$ = new BehaviorSubject<string>(this.translate.currentLang);
+  public localLang$ = new BehaviorSubject<string>(this.translate.getCurrentLang());
   public remountLajiForm$ = new Subject<void>();
 
-  getFormFromRoute$(route: ActivatedRoute): Observable<Form.SchemaForm> {
+  getFormFromRoute$(route: ActivatedRoute): Observable<Form | undefined> {
     return this.getFormID(route).pipe(switchMap(formID => this.getForm$(formID)));
   }
 
-  getForm$(id: string): Observable<Form.SchemaForm> {
+  getForm$(id: string): Observable<Form | undefined> {
     if (Global.formAliasMap[id]) {
       id = Global.formAliasMap[id];
     }
@@ -87,7 +94,7 @@ export class ProjectFormService {
     return this.form$;
   }
 
-  updateLocalForm(form: Form.SchemaForm) {
+  updateLocalForm(form: Form) {
     const {id} = form;
     if (this.currentFormID !== id) {
       this.currentFormID = id;
@@ -102,7 +109,7 @@ export class ProjectFormService {
     const form$ = this.getFormFromRoute$(route);
     return form$.pipe(
       switchMap(form => {
-        const { forms } = form.options;
+        const forms = form?.options.forms;
         if (!forms?.length) {
           return of({ form, subForms: [] });
         }
@@ -111,12 +118,12 @@ export class ProjectFormService {
           const allFormsDict = allForms.reduce((dict, obj) => {
             dict[obj.id] = obj;
             return dict;
-          }, {} as Record<string, Form.List>);
+          }, {} as Record<string, FormListing>);
 
-          return {form, subForms: forms.map(id => allFormsDict[id]) };
+          return {form, subForms: forms.map(id => allFormsDict[id]) } as ProjectForm;
         }));
       })
-    );
+    ) as Observable<ProjectForm>;
   }
 
   getProjectRootRoute$(route: ActivatedRoute): Observable<ActivatedRoute> {
@@ -135,7 +142,7 @@ export class ProjectFormService {
   }
 
   getExcelFormOptions(projectForm: ProjectForm, isAdmin: boolean): ExcelFormOptions[] {
-    const getExcelOptions = (form: Form.SchemaForm | Form.List) => form.options?.allowExcel
+    const getExcelOptions = (form: Form | FormListing) => form.options?.allowExcel
       ? { formID: form.id, allowGenerate: isAdmin || form.options.allowExcelGeneration !== false }
       : undefined;
     return [getExcelOptions(projectForm.form), ...projectForm.subForms.map(getExcelOptions)].filter(f => f) as ExcelFormOptions[];
@@ -145,7 +152,7 @@ export class ProjectFormService {
     return this.getExcelFormOptions(projectForm, !!isAdmin).map(f => f.formID);
   }
 
-  getSubmissionsPageTitle(form: Form.SchemaForm, isAdmin: boolean) {
+  getSubmissionsPageTitle(form: Form, isAdmin: boolean) {
     return isAdmin
       ? form.options?.ownSubmissionsAdminTitle || 'haseka.ownSubmissions.allTitle'
       : form.options?.ownSubmissionsTitle || 'haseka.ownSubmissions.title';
@@ -156,7 +163,9 @@ export class ProjectFormService {
     return combineLatest(route.params, route.queryParams).pipe(
       switchMap(([params, queryParams]) => {
         const {formOrDocument: formID, namedPlace: namedPlaceID} = params;
-        const namedPlace$ = this.namedPlacesService.getNamedPlace(namedPlaceID);
+        const namedPlace$ = namedPlaceID
+          ? this.api.get('/named-places/{id}', { path: { id: namedPlaceID } })
+          : of(undefined);
         const documentForm$ = formID
           ? this.getProjectFormFromRoute$(route).pipe(
             switchMap(projectForm => {
@@ -169,7 +178,7 @@ export class ProjectFormService {
               }
               return this.formService.getForm(subForm.id).pipe(map(f => {
                 if (!f) {
-                throw new Error('Form had nonexistent sub form');
+                  throw new Error('Form had nonexistent sub form');
                 }
                 return f;
               }));
@@ -179,7 +188,7 @@ export class ProjectFormService {
         return combineLatest(documentForm$, namedPlace$).pipe(
           map(([
             documentForm,
-            namedPlace ]) => ({documentForm, namedPlace, ...this.queryToModelFormat(queryParams)}))
+            namedPlace ]) => ({documentForm, namedPlace, ...this.queryToModelFormat(queryParams)} as NamedPlacesRouteData))
         );
       })
     );
@@ -193,7 +202,7 @@ export class ProjectFormService {
 
   }
 
-  getPlaceForm$(documentForm: Form.SchemaForm) {
+  getPlaceForm$(documentForm: Form) {
     return this.formService.getPlaceForm(documentForm);
   }
 

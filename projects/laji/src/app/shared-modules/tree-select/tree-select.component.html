@@ -2,16 +2,15 @@
   <lu-button role='secondary' (click)='openModal()' [disabled]="(includedOptions.length !== 0 || excludedOptions.length !== 0) && !options.length">
     {{modalButtonLabel}}
   </lu-button>
-  <ng-container *ngIf='includedOptions?.length !== 0 || excludedOptions?.length !== 0'>
-    <ng-container *ngIf='options.length > 0; else loading'>
+  @if (includedOptions?.length !== 0 || excludedOptions?.length !== 0) {
+    @if (options.length > 0) {
       <laji-selected-tree-nodes
         [selectedOptions]='options'
         [includedTitle]="includedTitle"
         [excludedTitle]="excludedTitle"
-        (selectedOptionsChange)='deselect($event)'></laji-selected-tree-nodes>
-    </ng-container>
-    <ng-template #loading>
+      (selectedOptionsChange)='deselect($event)'></laji-selected-tree-nodes>
+    } @else {
       <laji-spinner></laji-spinner>
-    </ng-template>
-  </ng-container>
+    }
+  }
 </div>

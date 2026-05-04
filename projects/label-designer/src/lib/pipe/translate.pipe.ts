@@ -5,7 +5,8 @@ import { TranslateService } from '../translate/translate.service';
  * @internal
  */
 @Pipe({
-  name: 'translate'
+    name: 'translate',
+    standalone: false
 })
 export class TranslatePipe implements PipeTransform {
 

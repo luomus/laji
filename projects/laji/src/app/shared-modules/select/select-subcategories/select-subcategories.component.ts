@@ -11,7 +11,7 @@ import {
 import { Subject } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { SelectOption as SelectComponentOptions } from '../select/select.component';
-import { Util } from '../../../shared/service/util.service';
+import * as Util from '../../../shared/utils';
 import { CheckboxType } from '../checkbox/checkbox.component';
 
 export interface SelectOptions extends SelectComponentOptions {
@@ -19,10 +19,11 @@ export interface SelectOptions extends SelectComponentOptions {
 }
 
 @Component({
-  selector: 'laji-select-subcategories',
-  templateUrl: './select-subcategories.component.html',
-  styleUrls: ['./select-subcategories.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-select-subcategories',
+    templateUrl: './select-subcategories.component.html',
+    styleUrls: ['./select-subcategories.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SelectSubcategoriesComponent implements OnChanges {
 

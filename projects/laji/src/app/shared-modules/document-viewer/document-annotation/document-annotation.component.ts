@@ -1,5 +1,5 @@
 
-import { tap, map, filter, switchMap, take, catchError } from 'rxjs/operators';
+import { tap, map, filter, switchMap, take, catchError } from 'rxjs';
 import {
   AfterViewInit,
   ApplicationRef,
@@ -22,8 +22,6 @@ import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../../shared/service/id.service';
 import { isIctAdmin, UserService } from '../../../shared/service/user.service';
 import { Global } from '../../../../environments/global';
-import { Annotation } from '../../../shared/model/Annotation';
-import { Person } from '../../../shared/model/Person';
 import { DocumentViewerChildComunicationService } from '../document-viewer-child-comunication.service';
 import { TaxonTagEffectiveService } from '../taxon-tag-effective.service';
 import { LoadingElementsService } from '../loading-elements.service';
@@ -31,28 +29,30 @@ import { CheckFocusService } from '../check-focus.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AnnotationService } from '../service/annotation.service';
 import { DocumentToolsService } from '../document-tools.service';
-import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { TemplateForm } from '../../own-submissions/models/template-form';
-import { Router } from '@angular/router';
-import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { DocumentPermissionService } from '../service/document-permission.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Annotation = components['schemas']['store-annotation'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
-  selector: 'laji-document-annotation',
-  templateUrl: './document-annotation.component.html',
-  styleUrls: ['./document-annotation.component.scss'],
-  animations: [
-    trigger('shortcutsInOut', [
-        transition('void => *', [
-           style({opacity: 0, transform: 'translateX(-30px)'}),
-            animate(400, style({transform: 'translateX(0px)', opacity: 1 }))
-        ]),
-        transition('* => void', [
-            animate(400, style({opacity: 0, transform: 'translateX(-30px)'}))
+    selector: 'laji-document-annotation',
+    templateUrl: './document-annotation.component.html',
+    styleUrls: ['./document-annotation.component.scss'],
+    animations: [
+        trigger('shortcutsInOut', [
+            transition('void => *', [
+                style({ opacity: 0, transform: 'translateX(-30px)' }),
+                animate(400, style({ transform: 'translateX(0px)', opacity: 1 }))
+            ]),
+            transition('* => void', [
+                animate(400, style({ opacity: 0, transform: 'translateX(-30px)' }))
+            ])
         ])
-    ])
-  ]
+    ],
+    standalone: false
 })
 export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent) map?: ViewerMapComponent;
@@ -76,7 +76,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   documentID?: string;
   personID?: string;
   isEditor = false;
-  personRoleAnnotation?: Annotation.AnnotationRoleEnum;
+  personRoleAnnotation?: Annotation['byRole'];
   activeGathering: any;
   mapData: any = [];
   hasMapData = false;
@@ -123,18 +123,16 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     private translate: TranslateService,
     private documentToolsService: DocumentToolsService,
     private annotationService: AnnotationService,
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService,
     private deleteDocumentService: DeleteOwnDocumentService,
     private documentPermissionService: DocumentPermissionService
   ) { }
 
   ngOnInit() {
-    this.annotationTags$ = this.annotationService.getAllTags(this.translate.currentLang);
-    this.currentLang = this.translate.currentLang;
+    this.annotationTags$ = this.annotationService.getAllTags();
+    this.currentLang = this.translate.getCurrentLang();
     this.metaFetch = this.userService.user$.subscribe(person => {
       if (!person) {
-        this.personRoleAnnotation = Annotation.AnnotationRoleEnum.basic;
+        this.personRoleAnnotation = 'MMAN.basic';
         this.cd.markForCheck();
         return;
       }
@@ -142,12 +140,12 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.personID = person.id;
 
       if (isIctAdmin(person)) {
-        this.personRoleAnnotation = Annotation.AnnotationRoleEnum.expert;
+        this.personRoleAnnotation = 'MMAN.expert';
       } else {
         if (person.roleAnnotation) {
           this.personRoleAnnotation = person.roleAnnotation;
         } else {
-          this.personRoleAnnotation = Annotation.AnnotationRoleEnum.basic;
+          this.personRoleAnnotation =  'MMAN.basic';
         }
       }
 
@@ -395,10 +393,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.deleteDocumentService.emitChildEvent(e);
       this.closeDocument();
       this.deleteDocumentService.emitChildEvent(null);
-
-      /*this.router.navigate(
-        this.localizeRouterService.translateRoute(['/vihko/ownSubmissions/'])
-      );*/
     }
   }
 
@@ -448,5 +442,3 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   }
 
 }
-
-

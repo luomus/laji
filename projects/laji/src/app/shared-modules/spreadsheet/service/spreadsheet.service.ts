@@ -6,11 +6,13 @@ import { TriplestoreLabelService } from '../../../shared/service/triplestore-lab
 
 import { IFormField, LEVEL_DOCUMENT } from '../model/excel';
 import { MappingService } from './mapping.service';
-import { distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 import { GeneratorService } from './generator.service';
-import { Util } from '../../../shared/service/util.service';
-import { Form } from '../../../shared/model/Form';
+import * as Util from '../../../shared/utils';
 import { FormService } from '../../../shared/service/form.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 enum GroupTypeEnum {
   date = 'date',
@@ -70,27 +72,29 @@ export class SpreadsheetService {
     private formService: FormService
   ) {
     this.translateService.onLangChange.pipe(
-      map(() => this.translateService.currentLang),
-      startWith(this.translateService.currentLang),
+      map(() => this.translateService.getCurrentLang()),
+      startWith(this.translateService.getCurrentLang()),
       distinctUntilChanged(),
-      switchMap(lang =>
+      switchMap(() =>
         ObservableForkJoin([
-          this.labelService.get('MY.document', lang),
-          this.labelService.get('MZ.gatheringEvent', lang),
-          this.labelService.get('MY.taxonCensusClass', lang),
-          this.labelService.get('MY.gathering', lang),
-          this.labelService.get('MY.gatheringFactClass', lang),
-          this.labelService.get('MY.identification', lang),
-          this.labelService.get('MY.unit', lang),
-          this.labelService.get('MY.unitFactClass', lang),
-          this.labelService.get('MZ.unitGathering', lang)
+          this.labelService.get('MY.document'),
+          this.labelService.get('MZ.gatheringEvent'),
+          this.labelService.get('MY.taxonCensusClass'),
+          this.labelService.get('MY.gathering'),
+          this.labelService.get('MY.gatheringFactClass'),
+          this.labelService.get('MY.identification'),
+          this.labelService.get('MY.unit'),
+          this.labelService.get('MY.unitFactClass'),
+          this.labelService.get('MZ.unitGathering')
         ])
       ),
       map(([document, gatheringEvent, taxonCensus, gatherings, gatheringFact, identifications, units, unitFact, unitGathering]) =>
          ({ document, gatheringEvent, taxonCensus, gatherings, gatheringFact, identifications, units, unitFact, unitGathering })
       )
     )
-      .subscribe(translations => this.translations = translations);
+      .subscribe(translations => {
+        this.translations = translations;
+      });
 
   }
 
@@ -110,14 +114,14 @@ export class SpreadsheetService {
     this.hiddenFields[formID] = fields;
   }
 
-  formToFlatFieldsLookUp(form: Form.SchemaForm, base: IFormField[] = []): {[key: string]: IFormField} {
+  formToFlatFieldsLookUp(form: Form, base: IFormField[] = []): {[key: string]: IFormField} {
     return this.formToFlatFields(form, base).reduce((result, field) => {
       (result as any)[field.key] = field;
       return result;
     }, {});
   }
 
-  formToFlatFields(form: Form.SchemaForm, base: IFormField[] = []): IFormField[] {
+  formToFlatFields(form: Form, base: IFormField[] = []): IFormField[] {
     const result: IFormField[] = [...base];
     if (form && form.schema && form.schema.properties) {
       this.parserFields(form.schema, {properties: form.validators}, result, '', LEVEL_DOCUMENT, this.findUnitSubGroups(form.uiSchema));

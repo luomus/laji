@@ -5,7 +5,8 @@ import { LabelService } from '../label.service';
  * @internal
  */
 @Pipe({
-  name: 'hasValue'
+    name: 'hasValue',
+    standalone: false
 })
 export class HasValuePipe implements PipeTransform {
 

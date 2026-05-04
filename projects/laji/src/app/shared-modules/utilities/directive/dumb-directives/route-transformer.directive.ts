@@ -4,7 +4,8 @@ import { environment } from '../../../../../environments/environment';
 import { Global } from '../../../../../environments/global';
 
 @Directive({
-  selector: '[lajiRouteTransformer]'
+    selector: '[lajiRouteTransformer]',
+    standalone: false
 })
 export class RouteTransformerDirective {
 

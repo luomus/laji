@@ -7,10 +7,11 @@ export interface Issue {
 }
 
 @Component({
-  selector: 'laji-issue',
-  templateUrl: './issue.component.html',
-  styleUrls: ['./issue.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-issue',
+    templateUrl: './issue.component.html',
+    styleUrls: ['./issue.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IssueComponent implements OnChanges {
 

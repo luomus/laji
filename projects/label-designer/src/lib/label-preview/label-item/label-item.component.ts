@@ -7,10 +7,11 @@ import { FieldKeyPipe } from '../../pipe/field-key.pipe';
  * @internal
  */
 @Component({
-  selector: 'll-label-item',
-  templateUrl: './label-item.component.html',
-  styleUrls: ['../../../styles/ll-label.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-label-item',
+    templateUrl: './label-item.component.html',
+    styleUrls: ['../../../styles/ll-label.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelItemComponent {
 

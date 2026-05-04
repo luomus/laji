@@ -1,19 +1,27 @@
 <laji-spinner [spinning]="!counts">
-  <ng-container *ngIf="counts">
-    <div class="row" *ngFor="let season of ['fall', 'winter', 'spring']">
-      <div class="col-sm-12" *ngIf="lineChartData[season] && lineChartData[season][0]['data'].length > 0">
-        <h5 style="margin: auto; text-transform: capitalize;">{{ lineChartData[season][0]['data'][0]['translations'][0] }}</h5>
-        <div class="chart-container" *ngIf="lineChartData[season][0]['data'][0]['data'].length > 0">
-          <laji-chart #lineChart
-              [datasets]="lineChartData[season][0]['data']"
-              [labels]="lineChartLabels[season][0]"
-              [options]="lineChartOptions"
-              [legend]="false"
-              [chartType]="chartType"
-            ></laji-chart>
-        </div>
-        <div *ngIf="lineChartData[season][0]['data'][0]['data'].length === 0" style="margin-bottom: 20px">{{ 'wbc.stats.noHits' | translate }}</div>
+  @if (counts) {
+    @for (season of ['fall', 'winter', 'spring']; track season) {
+      <div class="row">
+        @if (lineChartData[season] && lineChartData[season][0]['data'].length > 0) {
+          <div class="col-sm-12">
+            <h5 style="margin: auto; text-transform: capitalize;">{{ lineChartData[season][0]['data'][0]['translations'][0] }}</h5>
+            @if (lineChartData[season][0]['data'][0]['data'].length > 0) {
+              <div class="chart-container">
+                <laji-chart #lineChart
+                  [datasets]="lineChartData[season][0]['data']"
+                  [labels]="lineChartLabels[season][0]"
+                  [options]="lineChartOptions"
+                  [legend]="false"
+                  [chartType]="chartType"
+                ></laji-chart>
+              </div>
+            }
+            @if (lineChartData[season][0]['data'][0]['data'].length === 0) {
+              <div style="margin-bottom: 20px">{{ 'wbc.stats.noHits' | translate }}</div>
+            }
+          </div>
+        }
       </div>
-    </div>
-  </ng-container>
+    }
+  }
 </laji-spinner>

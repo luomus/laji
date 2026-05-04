@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 @Component({
-  selector: 'laji-level',
-  templateUrl: './level.component.html',
-  styleUrls: ['./level.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-level',
+    templateUrl: './level.component.html',
+    styleUrls: ['./level.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LevelComponent implements OnChanges {
 

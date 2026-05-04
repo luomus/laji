@@ -1,25 +1,26 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, switchMap, takeUntil } from 'rxjs';
 import { of, Subject } from 'rxjs';
-import { LajiApi, LajiApiService } from 'projects/laji/src/app/shared/service/laji-api.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';
 import { isPlatformBrowser } from '@angular/common';
-import { Util } from 'projects/laji/src/app/shared/service/util.service';
+import * as Util from 'projects/laji/src/app/shared/utils';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 @Component({
-  selector: 'vir-global-message',
-  templateUrl: './global-message.component.html',
-  styleUrls: [
-    './global-message.component.scss'
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-global-message',
+    templateUrl: './global-message.component.html',
+    styleUrls: [
+        './global-message.component.scss'
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GlobalMessageComponent implements OnDestroy, OnInit {
-  private unsubscribe$ = new Subject();
+  private unsubscribe$ = new Subject<void>();
 
   message: any;
   currentMessageId: string | undefined = undefined;
@@ -27,7 +28,7 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
   @LocalStorage('globalMessageClosed', {}) globalMessageClosed: any;
 
   constructor(
-    private api: LajiApiService,
+    private api: LajiApiClientBService,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private translate: TranslateService,
@@ -43,9 +44,9 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
           key => event.url.match(key)
         );
         const idsWithLang = Object.values(environment.globalMessageIds)[idx];
-        this.currentMessageId = idsWithLang?.[<'fi' | 'sv' | 'en'>this.translate.currentLang];
+        this.currentMessageId = idsWithLang?.[<'fi' | 'sv' | 'en'>this.translate.getCurrentLang()];
         if (this.currentMessageId) {
-          return this.api.get(LajiApi.Endpoints.information, this.currentMessageId, {lang: this.translate.currentLang});
+          return this.api.get('/information/{id}', { path: { id: this.currentMessageId } });
         } else {
           return of(undefined);
         }
@@ -84,7 +85,7 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
   }
 
   @HostListener('click')
-  private toggle() {
+  toggle() {
     this.isCurrentPageClosed() ? this.open() : this.close();
     if (isPlatformBrowser(this.platformId)) {
       setTimeout(() => Util.dispatchResizeEvent(this.platformService));

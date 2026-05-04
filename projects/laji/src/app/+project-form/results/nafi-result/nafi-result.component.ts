@@ -3,21 +3,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { ResultService } from '../common/service/result.service';
-import { Form } from '../../../shared/model/Form';
+import { ResultUtil } from '../common/service/result-util.service';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
-type Taxon = components['schemas']['Taxon'];
+type Form = components['schemas']['Form'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
-  selector: 'laji-nafi-result',
-  templateUrl: './nafi-result.component.html',
-  styleUrls: ['./nafi-result.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-nafi-result',
+    templateUrl: './nafi-result.component.html',
+    styleUrls: ['./nafi-result.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NafiResultComponent implements OnInit, OnDestroy {
 
-  @Input() form!: Form.SchemaForm;
+  @Input() form!: Form;
 
   informalTaxonGroup = 'MVL.181';
   page?: number;
@@ -42,7 +43,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private translate: TranslateService,
-    private resultService: ResultService,
+    private resultUtil: ResultUtil,
     private cdr: ChangeDetectorRef
   ) {
     const now = new Date();
@@ -52,7 +53,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
     this.subTrans = this.translate.onLangChange.subscribe(res => {
       this.lang = res.lang;
     });
@@ -71,7 +72,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
       this.resultQuery = this.clone(this.query);
       if (taxonId) {
         this.query.taxonId = [taxonId];
-        this.taxon$ = this.resultService.getTaxon(taxonId);
+        this.taxon$ = this.resultUtil.getTaxon(taxonId);
       } else {
         this.taxon$ = ObservableOf(null);
       }

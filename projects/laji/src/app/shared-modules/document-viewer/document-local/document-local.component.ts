@@ -1,26 +1,26 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges,
 Output, EventEmitter, HostListener } from '@angular/core';
-import { forkJoin, Observable, of, Subscription } from 'rxjs';
-import {delay, map, switchMap, tap} from 'rxjs/operators';
-import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { forkJoin, Observable, of, Subscription, throwError } from 'rxjs';
+import { delay, map, switchMap, tap } from 'rxjs';
 import { FormService } from '../../../shared/service/form.service';
-import { Document } from '../../../shared/model/Document';
-import { Units } from '../../../shared/model/Units';
-import { TranslateService } from '@ngx-translate/core';
+import { StoreDocument } from '../document-viewer.facade';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
-import { Image } from '../../../shared/model/Image';
-import { Form } from '../../../shared/model/Form';
 import { JSONPath } from 'jsonpath-plus';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
+import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientBService } from '../../../../../../laji-api-client-b/src/laji-api-client-b.service';
 
+type Unit = components['schemas']['store-unit'];
+type Image = components['schemas']['Image'];
 
 @Component({
-  selector: 'laji-document-local',
-  templateUrl: './document-local.component.html',
-  styleUrls: ['./document-local.component.css']
+    selector: 'laji-document-local',
+    templateUrl: './document-local.component.html',
+    styleUrls: ['./document-local.component.css'],
+    standalone: false
 })
 export class DocumentLocalComponent implements OnChanges {
-  @Input({ required: true }) document!: Document;
+  @Input({ required: true }) document!: StoreDocument;
   @Input() view: 'viewer'|'print' = 'viewer';
   @Input() showSpinner = false;
 
@@ -40,10 +40,9 @@ export class DocumentLocalComponent implements OnChanges {
 
   constructor(
     private cd: ChangeDetectorRef,
-    private lajiApi: LajiApiService,
     private formService: FormService,
-    private translate: TranslateService,
-    private deleteDocumentService: DeleteOwnDocumentService
+    private deleteDocumentService: DeleteOwnDocumentService,
+    private api: LajiApiClientBService,
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -68,7 +67,10 @@ export class DocumentLocalComponent implements OnChanges {
     }
   }
 
-  private parseDocument(doc: Document): Observable<any> {
+  private parseDocument(doc: StoreDocument): Observable<any> {
+    if (!doc.formID) {
+      return throwError(() => new Error(`Expected document to have a formID: ${doc}`));
+    }
     return this.getForm(doc.formID)
       .pipe(
         switchMap(form => {
@@ -95,8 +97,8 @@ export class DocumentLocalComponent implements OnChanges {
               observables.push(this.getImages(gathering));
             }
 
-            const units: Units[] = [];
-            (gathering.units || []).reduce((arr: Units[], unit: Units) => {
+            const units: Unit[] = [];
+            (gathering.units || []).reduce((arr: Unit[], unit: Unit) => {
               if (DocumentInfoService.isEmptyUnit(unit, form)) {
                 return arr;
               }
@@ -114,11 +116,12 @@ export class DocumentLocalComponent implements OnChanges {
   }
 
   private getImages(obj: any): Observable<Image[]> {
-    return this.lajiApi.getList(LajiApi.Endpoints.images, {
-      lang: this.translate.currentLang,
-      page: 1,
-      pageSize: 1000,
-      idIn: obj.images.join(',')
+    return this.api.get('/images', {
+      query: {
+        page: 1,
+        pageSize: 1000,
+        idIn: obj.images.join(',')
+      }
     })
       .pipe(
         map(res => res.results),
@@ -128,9 +131,9 @@ export class DocumentLocalComponent implements OnChanges {
       );
   }
 
-  private getForm(formId?: string): Observable<any> {
+  private getForm(formId: string): Observable<any> {
     return this.formService.getFormInJSONFormat(formId)
-      .pipe(tap((form: Form.JsonForm) => {
+      .pipe(tap(form => {
         this.setAllFields(
           form.fields,
           form.uiSchema,

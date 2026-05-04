@@ -1,12 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Occurrence = components['schemas']['Occurrence'];
+type Occurrence = components['schemas']['LajiBackendOccurrence'];
 
 @Component({
-  selector: 'iucn-taxon-occurrences',
-  templateUrl: './taxon-occurrences.component.html',
-  styleUrls: ['./taxon-occurrences.component.scss']
+    selector: 'iucn-taxon-occurrences',
+    templateUrl: './taxon-occurrences.component.html',
+    styleUrls: ['./taxon-occurrences.component.scss'],
+    standalone: false
 })
 export class TaxonOccurrencesComponent {
   @Input() occurrences?: Occurrence[];

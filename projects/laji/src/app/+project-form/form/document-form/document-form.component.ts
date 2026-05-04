@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { mergeMap, take, tap, delay, map, scan, filter, switchMap } from 'rxjs/operators';
+import { mergeMap, take, tap, delay, map, scan, filter, switchMap } from 'rxjs';
 import { combineLatest, Observable, of, Subject, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
@@ -8,7 +8,6 @@ import { TemplateForm } from '../../../shared-modules/own-submissions/models/tem
 import { FooterService } from '../../../shared/service/footer.service';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
-import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../../shared/service/user.service';
 import { DocumentStorage } from '../../../storage/document.storage';
@@ -17,16 +16,20 @@ import { DocumentFormFacade, FormError, isFormError, SaneViewModel, isSaneViewMo
 import { ProjectFormService, RegistrationContact } from '../../../shared/service/project-form.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 import { LocalStorage } from 'ngx-webstorage';
-import { FormService } from '../../../shared/service/form.service';
+import { ErrorSchema } from '@rjsf/utils';
+import type { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Document = components['schemas']['store-document'];
 
 @Component({
-  selector: 'laji-document-form',
-  templateUrl: './document-form.component.html',
-  styleUrls: ['./document-form.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    DocumentFormFacade
-  ]
+    selector: 'laji-document-form',
+    templateUrl: './document-form.component.html',
+    styleUrls: ['./document-form.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        DocumentFormFacade
+    ],
+    standalone: false
 })
 export class DocumentFormComponent implements OnInit, OnDestroy {
   @ViewChild(LajiFormComponent) lajiForm!: LajiFormComponent;
@@ -62,7 +65,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   private isFromCancel = false;
   private confirmLeave = true;
   private saving = false;
-  private publicityRestrictions!: Document.PublicityRestrictionsEnum;
+  private publicityRestrictions!: Document['publicityRestrictions'];
   private documentForTemplate: any = {};
 
   constructor(
@@ -77,8 +80,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private userService: UserService,
     private documentStorage: DocumentStorage,
-    private documentFormFacade: DocumentFormFacade,
-    private formService: FormService
+    private documentFormFacade: DocumentFormFacade
   ) { }
 
   ngOnInit() {
@@ -215,7 +217,8 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
           }
 
           this.setRegistrationContacts(document?.contacts);
-          const contactEmail = document?.contacts?.[0]?.emailAddress ?? '';
+          const contacts = document?.contacts;
+          const contactEmail = contacts?.[0]?.emailAddress ?? '';
           return this.userService.emailHasAccount(contactEmail).pipe(
             switchMap(exists => {
               if (exists) {
@@ -230,7 +233,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
                   switchMap(() => of(false))
                 );
               } else {
-                this.addContactEmailToDocument(document, contactEmail);
+                this.writeRegistrationContactsToDocument(document, contacts);
                 return of(true);
               }
             })
@@ -254,14 +257,19 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       this.lajiForm.unBlock();
       this.saving = false;
       this.toastsService.showSuccess(this.getMessage(
-          this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
+          this.publicityRestrictions === 'MZ.publicityRestrictionsPrivate' ? 'success-temp' : 'success',
          this.translate.instant('haseka.form.success')
       ));
       this.successNavigation();
-    }, () => {
+    }, (e) => {
       this.lajiForm.unBlock();
       this.saving = false;
-      this.lajiForm.displayErrorModal('saveError');
+      if (e.error?.errorCode === 'VALIDATION_EXCEPTION') {
+        this.lajiForm.setExtraErrors(apiValidationErrorsToRJSFErrorSchema(e.error.details as ApiValidationErrors));
+      } else {
+        this.lajiForm.displayErrorModal('saveError');
+        this.lajiForm.setExtraErrors(undefined);
+      }
     });
   };
 
@@ -283,7 +291,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       this.formPersistentState = undefined;
       this.documentFormFacade.clearUnlinkedTmpDocsSub();
       this.toastsService.showSuccess(this.getMessage(
-        this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
+        this.publicityRestrictions === 'MZ.publicityRestrictionsPrivate' ? 'success-temp' : 'success',
        this.translate.instant('haseka.form.success')
       ));
       this.successNavigation();
@@ -300,27 +308,38 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  addContactEmailToDocument(document: Document, email: string) {
+  writeRegistrationContactsToDocument(document: Document, contacts: RegistrationContact[] | undefined) {
+    const preferredName = contacts?.[0]?.preferredName;
+    const inheritedName = contacts?.[0]?.inheritedName;
+    if (preferredName && inheritedName && document.gatheringEvent) {
+      document.gatheringEvent.leg = [preferredName + ' ' + inheritedName];
+    }
+
+    const email = contacts?.[0]?.emailAddress;
+    if (!email) {
+      return;
+    }
+
     const prefixedEmail = 'vihko:' + email;
     if (document.gatheringEvent) {
-      document.gatheringEvent.leg = [prefixedEmail];
+      document.gatheringEvent.legUserID = [prefixedEmail];
     }
     document.creator = prefixedEmail;
     document.editor = prefixedEmail;
   }
 
   submitPublic() {
-    this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
+    this.publicityRestrictions = 'MZ.publicityRestrictionsPublic';
     this.lajiForm.submit();
   }
 
   submitPrivate() {
-    this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
+    this.publicityRestrictions = 'MZ.publicityRestrictionsPrivate';
     this.lajiForm.submitOnlySchemaValidations();
   }
 
   submitTemplate() {
-    this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
+    this.publicityRestrictions = 'MZ.publicityRestrictionsPrivate';
     this.lajiForm.submit();
   }
 
@@ -363,11 +382,26 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   }
 
   private getMessage(type: any, defaultValue: any) {
-    const {options = {}} = this.vm.form || {};
+    const options = this.vm.form?.options || {};
     return (
       type === 'success' ? options.saveSuccessMessage :
-      type === 'success-temp' ? options.saveDraftSuccessMessage :
       type === 'error' ? options.saveErrorMessage : undefined
     ) ?? defaultValue;
   }
 }
+
+interface ApiValidationErrors {
+  [field: string]: Record<string, ApiValidationErrors | string[]>;
+};
+
+const apiValidationErrorsToRJSFErrorSchema = (errors: ApiValidationErrors) => Object.keys(errors).reduce((errorSchema, property) => {
+  const propertyErrors = errors[property];
+  if (Array.isArray(propertyErrors)) {
+    errorSchema[property] = {
+      __errors: [ ...(errorSchema[property]?.__errors || []), ...(propertyErrors as string[]) ]
+    } as ErrorSchema;
+  } else {
+    errorSchema[property] = apiValidationErrorsToRJSFErrorSchema(propertyErrors as ApiValidationErrors);
+  }
+  return errorSchema;
+}, {} as ErrorSchema);

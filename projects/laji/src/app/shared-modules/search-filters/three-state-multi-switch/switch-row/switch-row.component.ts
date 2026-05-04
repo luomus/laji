@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnI
 import { CheckboxType } from '../../../../shared-modules/select/checkbox/checkbox.component';
 
 @Component({
-  selector: 'laji-switch-row',
-  templateUrl: './switch-row.component.html',
-  styleUrls: ['./switch-row.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-switch-row',
+    templateUrl: './switch-row.component.html',
+    styleUrls: ['./switch-row.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SwitchRowComponent implements OnChanges, OnInit {
 

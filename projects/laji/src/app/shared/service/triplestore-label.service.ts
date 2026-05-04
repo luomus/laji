@@ -1,22 +1,17 @@
-import { forkJoin as ObservableForkJoin, Observable, of } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of, catchError, map, share, take, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
-import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
-import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { SourceService } from './source.service';
 import { UserService } from './user.service';
-import { LajiApi, LajiApiService } from './laji-api.service';
-import { catchError, map, share, take, tap } from 'rxjs/operators';
 import { AreaService } from './area.service';
-import { RedListTaxonGroupApi } from '../api/RedListTaxonGroupApi';
-import { Publication } from '../model/Publication';
-import { NamedPlaceApi } from '../api/NamedPlaceApi';
 import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
 import { CollectionService } from './collection.service';
 import { BaseDataService } from '../../graph-ql/service/base-data.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
+type TaxonGroup = components['schemas']['store-informalTaxonGroup'] | components['schemas']['store-iucnRedListTaxonGroup'];
+type Publication = components['schemas']['store-publication'];
 
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
@@ -26,25 +21,22 @@ export class TriplestoreLabelService {
 
   private guidRegEx: RegExp;
 
-  constructor(private informalTaxonService: InformalTaxonGroupApi,
-              private namedPlaceApi: NamedPlaceApi,
+  constructor(private api: LajiApiClientBService,
               private sourceService: SourceService,
-              private lajiApi: LajiApiService,
               private userService: UserService,
               private areaService: AreaService,
               private annotationService: AnnotationService,
-              private redListTaxonGroupApi: RedListTaxonGroupApi,
               private collectionService: CollectionService,
               private baseDataService: BaseDataService
   ) {
     this.guidRegEx = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/gi;
   }
 
-  public getAll(keys: string[], lang: string): Observable<{[key: string]: string}> {
+  public getAll(keys: string[]): Observable<{[key: string]: string}> {
     const set = new Set(keys);
     const subs: Observable<{key: string; value: string}>[] = [];
     set.forEach(val => {
-      subs.push(this.get(val, lang).pipe(map(result => ({key: val, value: result}))));
+      subs.push(this.get(val).pipe(map(result => ({key: val, value: result}))));
     });
     return ObservableForkJoin(subs).pipe(
       map((results: any) => results.reduce((cumulative: {[key: string]: string}, current: any) => {
@@ -56,34 +48,33 @@ export class TriplestoreLabelService {
     );
   }
 
-  public get(key: string, lang: string): Observable<string> {
+  public get(key: string): Observable<string> {
     return typeof key === 'string' ?
-      this._get(key, lang).pipe(catchError(() => of(key))) :
+      this._get(key).pipe(catchError(() => of(key))) :
       of('');
   }
 
-  private _get(key: string, lang: string): Observable<string> {
+  private _get(key: string): Observable<string> {
     if (typeof TriplestoreLabelService.cache[key] !== 'undefined') {
       if (TriplestoreLabelService.requestCache[key]) {
         delete TriplestoreLabelService.requestCache[key];
       }
-      return of(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
+      return of(TriplestoreLabelService.cache[key]);
     }
     const parts = key.replace(':', '.').split('.');
     if (parts && typeof parts[1] === 'string' && (/^\d+$/.test(parts[1]) || this.guidRegEx.test(parts[1]))) {
       switch (parts[0]) {
         case 'MNP':
           if (typeof TriplestoreLabelService.requestCache[key] === 'undefined') {
-            TriplestoreLabelService.requestCache[key] = this.namedPlaceApi.findAll(
-              {
+            TriplestoreLabelService.requestCache[key] = this.api.get('/named-places', {
+              query: {
                 idIn: key,
-                userToken: this.userService.getToken(),
                 selectedFields: 'name',
-                includePublic: true
-              },
-              '1',
-              '1'
-              ).pipe(
+                includePublic: true,
+                page: 1,
+                pageSize: 1
+              }
+            }).pipe(
                 map((np) => np.results[0] && np.results[0].name || ''),
                 catchError(() => of('')),
                 tap(name => TriplestoreLabelService.cache[key] = name),
@@ -93,11 +84,10 @@ export class TriplestoreLabelService {
           return TriplestoreLabelService.requestCache[key];
         case 'MVL':
           if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.informalTaxonService.informalTaxonGroupFindById(key, 'multi').pipe(
-              catchError(() => this.redListTaxonGroupApi.redListTaxonGroupsFindById(key, 'multi')),
-              map((group: InformalTaxonGroup) => group.name),
+            TriplestoreLabelService.requestCache[key] = this.api.get('/informal-taxon-groups/{id}', { path: { id: key } }).pipe(
+              catchError(() => this.api.get('/red-list-evaluation-groups/{id}', { path: { id: key } })),
+              map((group: TaxonGroup) => group.name),
               tap(name => TriplestoreLabelService.cache[key] = name),
-              map(name => MultiLangService.getValue((name as any), lang)),
               share()
             );
           }
@@ -106,37 +96,34 @@ export class TriplestoreLabelService {
           return this.userService.getPersonInfo(key);
         case 'MP':
           if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.publications, key, {lang: 'multi'}).pipe(
-              map((publication: Publication) => publication['name']),
+            TriplestoreLabelService.requestCache[key] = this.api.get('/publications/{id}', { path: { id: key } }).pipe(
+              map((publication: Publication) => publication.name || ''),
               tap(name => TriplestoreLabelService.cache[key] = name),
-              map(name => MultiLangService.getValue((name as any), lang)),
               share()
             );
           }
           return TriplestoreLabelService.requestCache[key];
         case 'ML':
-          return this.areaService.getName(key, lang);
+          return this.areaService.getName(key);
         case 'KE':
-          return this.sourceService.getName(key, lang);
+          return this.sourceService.getName(key);
         case 'MMAN':
           if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.annotationService.getTag(key, 'multi').pipe(
+            TriplestoreLabelService.requestCache[key] = this.annotationService.getTag(key).pipe(
               map(tag => tag.name),
               tap(name => TriplestoreLabelService.cache[key] = name),
-              map(name => MultiLangService.getValue((name as any), lang)),
               share()
             );
           }
           return TriplestoreLabelService.requestCache[key];
         case 'gbif-dataset':
         case 'HR':
-          return this.collectionService.getName$(key, lang).pipe(share());
+          return this.collectionService.getName$(key).pipe(share());
         case 'MX':
           if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.taxon, key, {lang: 'multi'}).pipe(
+            TriplestoreLabelService.requestCache[key] = this.api.get('/taxa/{id}', { path: { id: key } }).pipe(
               map((taxon: Taxon) => taxon.vernacularName || taxon.scientificName),
               tap(name => TriplestoreLabelService.cache[key] = name),
-              map(name => MultiLangService.getValue((name as any), lang)),
               share()
             );
           }

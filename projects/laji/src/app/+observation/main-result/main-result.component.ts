@@ -10,23 +10,23 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { MainResultService } from './main-result.service';
 import { UserSettingsResultList, UserService } from '../../shared/service/user.service';
 import { ObservationTableComponent } from '../../shared-modules/observation-result/observation-table/observation-table.component';
 import { ObservationTableQueryService } from '../../shared-modules/observation-result/service/observation-table-query.service';
 import { BrowserService } from '../../shared/service/browser.service';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 import { Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { startWith, tap } from 'rxjs/operators';
+import { LocalStorageService } from 'ngx-webstorage';
 
 const DEFAULT_PAGE_SIZE = 1000;
 
 @Component({
-  selector: 'laji-main-result',
-  templateUrl: './main-result.component.html',
-  styleUrls: ['./main-result.component.css'],
-  providers: [MainResultService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-main-result',
+    templateUrl: './main-result.component.html',
+    styleUrls: ['./main-result.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MainResultComponent implements OnInit, OnChanges {
   private static readonly defaultFields: string[] = [
@@ -72,7 +72,8 @@ export class MainResultComponent implements OnInit, OnChanges {
     private userService: UserService,
     private browserService: BrowserService,
     private documentViewerFacade: DocumentViewerFacade,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private localStorageService: LocalStorageService
   ) { }
 
   @HostListener('document:keydown', ['$event'])
@@ -105,7 +106,10 @@ export class MainResultComponent implements OnInit, OnChanges {
     this.viewerSub = this.documentViewerFacade.showModal$.pipe(
       tap(visible => this.documentModalVisible = visible)
     ).subscribe();
-    this.userService.getUserSetting<UserSettingsResultList>('resultList').subscribe(data => {
+
+    this.localStorageService.observe('resultList').pipe(
+      startWith(this.localStorageService.retrieve('resultList'))
+    ).subscribe((data: UserSettingsResultList) => {
         if (data) {
           // change aggregatedBy field to another if needed!
           if (data.aggregateBy) {
@@ -226,11 +230,10 @@ export class MainResultComponent implements OnInit, OnChanges {
   }
 
   private saveSettings() {
-    this.userService.setUserSetting('resultList', {
+    this.localStorageService.store('resultList', {
       aggregateBy: this.aggregateBy,
       selected: this.selected,
       pageSize: this.pageSize
     });
   }
-
 }

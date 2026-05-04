@@ -3,11 +3,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../service/form.service';
 import { AbstractLabelPipe } from './abstract-label.pipe';
 import { Observable } from 'rxjs';
-import { Form } from '../model/Form';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+type FormListing = components['schemas']['FormListing'];
 
 @Pipe({
-  name: 'formName',
-  pure: false
+    name: 'formName',
+    pure: false,
+    standalone: false
 })
 export class FormNamePipe extends AbstractLabelPipe implements PipeTransform {
   constructor(protected translate: TranslateService,
@@ -16,7 +19,7 @@ export class FormNamePipe extends AbstractLabelPipe implements PipeTransform {
     super(translate, _ref);
   }
 
-  protected _updateValue(key: string): Observable<Form.List> {
+  protected _updateValue(key: string): Observable<FormListing> {
     return this.formService.getFormInListFormat(key);
   }
   protected _parseValue(res: any): string {

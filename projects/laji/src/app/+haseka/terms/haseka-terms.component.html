@@ -1,10 +1,14 @@
 <ng-container *lajiBrowserOnly>
-  <div class="pull-right toggle-intro" *ngIf="!vihkoSettings.showIntro">
-    <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
-  </div>
-  <ng-container *ngIf="vihkoSettings.showIntro">
-    <lu-alert *ngIf="vihkoSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-      <div [innerHtml]="'haseka.intro2' | translate" lajiRouteTransformer></div>
-    </lu-alert>
-  </ng-container>
+  @if (!vihkoSettings.showIntro) {
+    <div class="pull-right toggle-intro">
+      <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+    </div>
+  }
+  @if (vihkoSettings.showIntro) {
+    @if (vihkoSettings.showIntro) {
+      <lu-alert [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+        <div [innerHtml]="'haseka.intro2' | translate" lajiRouteTransformer></div>
+      </lu-alert>
+    }
+  }
 </ng-container>

@@ -16,28 +16,30 @@ import { NpInfoRow } from './np-info-row/np-info-row.component';
 import { ClipboardService } from 'ngx-clipboard';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { take } from 'rxjs/operators';
-import { NamedPlace } from '../../../../shared/model/NamedPlace';
-import { Form } from '../../../../shared/model/Form';
-import { Document } from '../../../../shared/model/Document';
+import { take } from 'rxjs';
 import { Rights } from '../../../../shared/service/form-permission.service';
-import { Util } from '../../../../shared/service/util.service';
+import * as Util from '../../../../shared/utils';
 import { UserService } from '../../../../shared/service/user.service';
 import { RowDocument } from '../../../../shared-modules/own-submissions/own-datatable/own-datatable.component';
 import { Observable } from 'rxjs';
 import { LajiFormUtil } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-util.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 @Component({
-  selector: 'laji-np-info',
-  templateUrl: './np-info.component.html',
-  styleUrls: ['./np-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-np-info',
+    templateUrl: './np-info.component.html',
+    styleUrls: ['./np-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace!: NamedPlace;
-  @Input() placeForm!: Form.SchemaForm;
-  @Input() documentForm!: Form.SchemaForm;
+  @Input() placeForm!: Form;
+  @Input() documentForm!: Form;
   @Input() collectionId!: string;
   @Input() editMode!: boolean;
   @Input() allowEdit!: boolean;
@@ -59,8 +61,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('infoModal', { static: true }) public modal!: ModalComponent;
   @ViewChild('infoBox', { static: true }) infoBox!: any;
 
-  publicity = Document.PublicityRestrictionsEnum;
-
   listItems: NpInfoRow[] = [];
 
   modalIsVisible = false;
@@ -71,7 +71,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   useLocalDocumentViewer = false;
   canDelete: boolean | undefined;
 
-  public static getSchemaFromNPJsonPathPointer(placeForm: Form.SchemaForm, docForm: Form.SchemaForm, path: string) {
+  public static getSchemaFromNPJsonPathPointer(placeForm: Form, docForm: Form, path: string) {
     let {schema} = placeForm;
     let schemaPointer = path;
     if (path.startsWith('$.prepopulatedDocument')) {
@@ -85,7 +85,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     );
   }
 
-  public static getListItems(placeForm: any, np: NamedPlace, form: Form.SchemaForm): any[] {
+  public static getListItems(placeForm: any, np: NamedPlace, form: Form): any[] {
     // TODO remove coupling between uiSchema and infoFields.
     let displayed = form.options?.namedPlaceOptions?.infoFields || [];
     if (!form.options?.namedPlaceOptions?.infoFields) {
@@ -180,7 +180,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize() {
+  onResize(event: any) {
     if (this.infoBox.nativeElement.offsetParent !== null) {
       if (this.modalIsVisible) {
         this.modal.hide();

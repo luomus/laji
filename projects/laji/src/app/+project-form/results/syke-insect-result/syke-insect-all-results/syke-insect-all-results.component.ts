@@ -2,16 +2,17 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
-import { ResultService } from '../../common/service/result.service';
+import { ResultUtil } from '../../common/service/result-util.service';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
-  selector: 'laji-syke-insect-all-results',
-  templateUrl: './syke-insect-all-results.component.html',
-  styleUrls: ['./syke-insect-all-results.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-syke-insect-all-results',
+    templateUrl: './syke-insect-all-results.component.html',
+    styleUrls: ['./syke-insect-all-results.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SykeInsectAllResultsComponent implements OnInit, OnDestroy {
 
@@ -36,7 +37,7 @@ export class SykeInsectAllResultsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private resultService: ResultService,
+    private resultUtil: ResultUtil,
     private cdr: ChangeDetectorRef
   ) {
     const now = new Date();
@@ -60,7 +61,7 @@ export class SykeInsectAllResultsComponent implements OnInit, OnDestroy {
       this.resultQuery = this.clone(this.query);
       if (taxonId) {
         this.query.taxonId = [taxonId];
-        this.taxon$ = this.resultService.getTaxon(taxonId);
+        this.taxon$ = this.resultUtil.getTaxon(taxonId);
       } else {
         this.taxon$ = ObservableOf(null);
       }

@@ -1,4 +1,4 @@
-<ng-container *ngIf="taxonImages && taxonImages.length > 0">
+@if (taxonImages && taxonImages.length > 0) {
   <laji-image-gallery
     [modalImages]="taxonImages"
     [view]="'full2'"
@@ -8,26 +8,30 @@
     [linkOptions]="{tab: 'images', queryParams: {context: null}, queryParamsHandling: 'merge'}"
   ></laji-image-gallery>
   <hr>
-</ng-container>
+  }
 
-<ng-container *ngIf="isFromMasterChecklist">
-  <ng-container *ngFor="let item of imageSets">
-    <h3 *ngIf="item.hasData">{{ item.title | translate }}</h3>
-    <div class="gallery-container" [hidden]="item.hasData === false">
-      <laji-gallery
-        [shortPager]="true"
-        [query]="item.query"
-        [pageSize]="12"
-        [view]="'full2'"
-        [shortcut]="false"
-        [showExtraInfo]="false"
-        [showOverlay]="!taxon.species"
-        [showPaginatorOnlyWhenNeeded]="true"
-        [showLinkToSpeciesCard]="!taxon.species"
-        [linkOptions]="{tab: 'images', queryParams: {context: null}, queryParamsHandling: 'merge'}"
-        (hasData)="item.hasData = $event"
-      ></laji-gallery>
-    </div>
-    <hr *ngIf="item.hasData">
-  </ng-container>
-</ng-container>
+  @if (isFromMasterChecklist) {
+    @for (item of imageSets; track item) {
+      @if (item.hasData) {
+        <h3>{{ item.title | translate }}</h3>
+      }
+      <div class="gallery-container" [hidden]="item.hasData === false">
+        <laji-gallery
+          [shortPager]="true"
+          [query]="item.query"
+          [pageSize]="12"
+          [view]="'full2'"
+          [shortcut]="false"
+          [showExtraInfo]="false"
+          [showOverlay]="!taxon.species"
+          [showPaginatorOnlyWhenNeeded]="true"
+          [showLinkToSpeciesCard]="!taxon.species"
+          [linkOptions]="{tab: 'images', queryParams: {context: null}, queryParamsHandling: 'merge'}"
+          (hasData)="item.hasData = $event"
+        ></laji-gallery>
+      </div>
+      @if (item.hasData) {
+        <hr>
+        }
+      }
+    }

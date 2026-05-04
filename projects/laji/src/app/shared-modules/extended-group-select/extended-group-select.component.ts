@@ -1,5 +1,4 @@
-/* tslint:disable:no-use-before-declare */
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs';
 import { ChangeDetectorRef, EventEmitter, Input, OnInit, OnChanges, Output, Directive } from '@angular/core';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { Observable, of } from 'rxjs';
@@ -7,7 +6,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree-select/tree-select.component';
-import { Util } from '../../shared/service/util.service';
+import * as Util from '../../shared/utils';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { RedListTaxonGroup } from '../../shared/model/RedListTaxonGroup';
 import { ArrayResult } from '../../shared/model/ArrayResult';
@@ -45,9 +44,8 @@ export abstract class ExtendedGroupSelectComponent<T extends RedListTaxonGroup|I
   ) {}
 
   ngOnInit() {
-    const lang = this.translate.currentLang;
-    this.groupsTree$ = this.initGroupTree(lang).pipe(shareReplay(1));
-    this.groups$ = this.initSelectionGroups(lang, this.includedOptions, this.excludedOptions);
+    this.groupsTree$ = this.initGroupTree().pipe(shareReplay(1));
+    this.groups$ = this.initSelectionGroups(this.includedOptions, this.excludedOptions);
   }
 
   ngOnChanges() {
@@ -55,18 +53,18 @@ export abstract class ExtendedGroupSelectComponent<T extends RedListTaxonGroup|I
     if (!Util.equalsArray(this.includedOptions, includedOptions) || !Util.equalsArray(this.excludedOptions, excludedOptions)) {
       this.includedOptions = includedOptions;
       this.excludedOptions = excludedOptions;
-      this.groups$ = this.initSelectionGroups(this.translate.currentLang, this.includedOptions, this.excludedOptions);
+      this.groups$ = this.initSelectionGroups(this.includedOptions, this.excludedOptions);
     }
   }
 
-  abstract findByIds(groupIds: string[], lang: string): Observable<PagedResult<T>>;
+  abstract findByIds(groupIds: string[]): Observable<PagedResult<T>>;
   abstract convertToInformalTaxonGroup(group: T): InformalTaxonGroup;
-  abstract getTree(lang: string): Observable<ArrayResult<T>>;
+  abstract getTree(): Observable<ArrayResult<T>>;
   abstract getOptions(query: Record<string, any>): string[][];
   abstract prepareEmit(includedOptions: string[], excludedOptions?: string[]): InformalGroupEvent;
 
-  initGroupTree(lang: string): Observable<TreeOptionsNode[]> {
-    return this.getTree(lang).pipe(
+  initGroupTree(): Observable<TreeOptionsNode[]> {
+    return this.getTree().pipe(
       map((data) => data.results),
       map((trees) => this.buildGroupTree(trees))
     );
@@ -114,13 +112,13 @@ export abstract class ExtendedGroupSelectComponent<T extends RedListTaxonGroup|I
     }
   }
 
-  initSelectionGroups(lang: string, includedOptions: string[], excludedOptions: string[]): Observable<SelectedOption[]> {
+  initSelectionGroups(includedOptions: string[], excludedOptions: string[]): Observable<SelectedOption[]> {
     const selectedGroups = includedOptions.concat(excludedOptions);
 
     if (selectedGroups.length === 0) {
       return of([]);
     } else {
-      return this.findByIds(selectedGroups, lang).pipe(
+      return this.findByIds(selectedGroups).pipe(
         map(data => data.results),
         map(data => {
           const toReturn: SelectedOption[] = [];

@@ -1,4 +1,4 @@
-import { catchError, concatMap, filter, map, switchMap, toArray } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, toArray } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { from, Observable, of, Subscription } from 'rxjs';
@@ -10,13 +10,14 @@ import { SourceService } from '../../../shared/service/source.service';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
-import { Area } from '../../../shared/model/Area';
 import { BaseDataService } from '../../../graph-ql/service/base-data.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
-import { Annotation } from '../../../shared/model/Annotation';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { IdType, SelectOption } from '../select/select.component';
+import { components } from '../../../../../../laji-api-client-b/generated/api';
+
+type Annotation = components['schemas']['store-annotation'];
 
 export enum SelectStyle {
   basic,
@@ -34,10 +35,11 @@ export const METADATA_SELECT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'laji-metadata-select',
-  templateUrl: './metadata-select.component.html',
-  providers: [METADATA_SELECT_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-metadata-select',
+    templateUrl: './metadata-select.component.html',
+    providers: [METADATA_SELECT_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlValueAccessor {
   @Input() field?: string;
@@ -103,7 +105,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   onTouched = () => {};
 
   ngOnChanges(changes: SimpleChanges) {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
     this.initOptions();
   }
 
@@ -134,7 +136,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       switchMap(options => this.mapToWarehouse ? this.optionsToWarehouseID(options) : of(options)),
       map(options => this.labelAsValue ? options.map(o => ({...o, id: o.value})) : options),
       map(options => this.firstOptions?.length > 0 ? this.sortOptionsByAnotherList(options) : (
-        this._shouldSort ? options.sort((a, b) => a.value.localeCompare(b.value)) : options
+        this._shouldSort ? options.sort((a, b) => a.value && b.value ? a.value.localeCompare(b.value) : 0) : options
       ))
     ).subscribe(options => {
         this.setOptions(options);
@@ -229,28 +231,23 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       this._shouldSort = true;
       switch (this.field) {
         case 'MMAN.tag':
-          return this.annotationService.getAllTags('multi').pipe(
-            map(tags => tags.filter(t => !t.requiredRolesAdd || !t.requiredRolesAdd.includes(Annotation.AnnotationRoleEnum.formAdmin))),
-            map(tags => tags.map(t => ({id: t.id, value: MultiLangService.getValue(t.name as any, this.lang)})))
+          return this.annotationService.getAllTags().pipe(
+            map(tags => tags.filter(t => !t.requiredRolesAdd || !t.requiredRolesAdd.includes('MMAN.formAdmin'))),
+            map(tags => tags.map(t => ({ id: t.id, value: t.name })))
           );
         case 'MY.collectionID':
-          return this.collectionService.getAll$(this.lang, true);
-        case <any>Area.AreaType.Biogeographical:
-          return this.areaService.getBiogeographicalProvinces(this.lang);
-        case <any>Area.AreaType.Municipality:
-          return this.areaService.getMunicipalities(this.lang);
-        case <any>Area.AreaType.Country:
-          return this.areaService.getCountries(this.lang);
-        case <any>Area.AreaType.ElyCentre:
-          return this.areaService.getElyCentres(this.lang);
-        case <any>Area.AreaType.BirdAssociationArea:
-          return this.areaService.getBirdAssociationAreas(this.lang);
-        case <any>Area.AreaType.Province:
-          return this.areaService.getProvinces(this.lang);
+          return this.collectionService.getAllAsKeyValue$(true);
+        case 'ML.biogeographicalProvince':
+        case 'ML.municipality':
+        case 'ML.country':
+        case 'ML.elyCentre':
+        case 'ML.birdAssociationArea':
+        case 'ML.province':
+          return this.areaService.getAreaByType(this.field as any);
         case 'KE.informationSystem':
-          return this.sourceService.getAllAsLookUp(this.lang).pipe(
+          return this.sourceService.getAllAsLookUp().pipe(
             map(system => Object.keys(system).reduce<SelectOption[]>((total, current) => {
-              total.push({id: current, value: system[current]});
+              total.push({id: current, value: system[current].name});
               return total;
             }, [])));
         default:

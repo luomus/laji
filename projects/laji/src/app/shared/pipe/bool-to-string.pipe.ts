@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
-    name: 'boolToString'
+    name: 'boolToString',
+    standalone: false
 })
 export class BoolToStringPipe implements PipeTransform {
     constructor(private translate: TranslateService) {}

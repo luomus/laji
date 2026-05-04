@@ -5,9 +5,10 @@ import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer
 import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/tab-utils';
 
 @Component({
-  selector: 'laji-wbc-censuses',
-  templateUrl: './wbc-censuses.component.html',
-  styleUrls: ['./wbc-censuses.component.css']
+    selector: 'laji-wbc-censuses',
+    templateUrl: './wbc-censuses.component.html',
+    styleUrls: ['./wbc-censuses.component.css'],
+    standalone: false
 })
 export class WbcCensusesComponent implements OnInit  {
   activeIndex = 0;

@@ -1,10 +1,11 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'bsg-audio-viewer-settings',
-  templateUrl: './audio-viewer-settings.component.html',
-  styleUrls: ['./audio-viewer-settings.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-audio-viewer-settings',
+    templateUrl: './audio-viewer-settings.component.html',
+    styleUrls: ['./audio-viewer-settings.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AudioViewerSettingsComponent {
   @Input() zoomed = true;

@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 .link.user > .glyphicon-triangle-bottom {
   color: $neutral-6;

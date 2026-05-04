@@ -2,19 +2,22 @@ import { Component, Input, OnInit, Output, EventEmitter, OnDestroy,
 ChangeDetectionStrategy} from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
-import { Annotation } from '../../../shared/model/Annotation';
-import { AnnotationTag } from '../../../shared/model/AnnotationTag';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Annotation = components['schemas']['store-annotation'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
-  selector: 'laji-unit-annotation-list',
-  templateUrl: './unit-annotation-list.component.html',
-  styleUrls: ['./unit-annotation-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-unit-annotation-list',
+    templateUrl: './unit-annotation-list.component.html',
+    styleUrls: ['./unit-annotation-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UnitAnnotationListComponent implements OnInit, OnDestroy {
   @Input() isEditor?: boolean;
   @Input() personID?: string;
-  @Input() personRoleAnnotation?: Annotation.AnnotationRoleEnum;
+  @Input() personRoleAnnotation?: Annotation['byRole'];
   @Input({ required: true }) documentID!: string;
   @Input() unit: any;
   @Input() gathering: any;

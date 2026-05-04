@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BrowserService } from '../../../shared/service/browser.service';
 
 @Component({
-  selector: 'laji-search-filters',
-  templateUrl: './search-filters.component.html',
-  styleUrls: ['./search-filters.component.css']
+    selector: 'laji-search-filters',
+    templateUrl: './search-filters.component.html',
+    styleUrls: ['./search-filters.component.css'],
+    standalone: false
 })
 export class SearchFiltersComponent {
   @Input() showFilter = true;

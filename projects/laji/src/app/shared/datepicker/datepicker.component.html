@@ -1,48 +1,56 @@
 <div class="input-group" [ngClass]="{'has-error': !validDate}">
-  <span *ngIf="addonText" class="input-group-addon">{{ addonText }}</span>
+  @if (addonText) {
+    <span class="input-group-addon">{{ addonText }}</span>
+  }
   <input type="text"
-         class="ng-datepicker-input form-control input-sm"
-         [value]="viewValue"
-         (blur)="onInputValueChange(dateInput.value)"
-         (keyup)="keyEvent($event, dateInput.value)"
-         #dateInput>
-  <span *ngIf="viewValue !== ''" class="input-group-addon link clear" (click)="onInputValueChange('')">✕</span>
-  <span class="input-group-addon link calendar-toggle" (click)="toggleEvent($event)"><i class="glyphicon glyphicon-calendar"></i></span>
-</div>
-
-<div *ngIf="opened">
-  <div class="ng-datepicker" [ngClass]="popoverAlign" [lajiFixedBelow]="dateInput" (lajiClickOutSide)="close()">
-    <div class="controls">
-      <div class="left">
-        <i class="glyphicon glyphicon-backward" (click)="prevYear()"></i>
-        &nbsp;
-        <i class="glyphicon glyphicon-chevron-left" (click)="prevMonth()"></i>
-      </div>
-      <span class="date">
-        {{ ('m-' + moment(calendarUIValue).format('MM')) | translate }} {{ moment(calendarUIValue).format('YYYY') }}
-      </span>
-      <div class="right">
-        <i class="glyphicon glyphicon-chevron-right" (click)="nextMonth()"></i>
-        &nbsp;
-        <i class="glyphicon glyphicon-forward" (click)="nextYear()"></i>
-      </div>
-    </div>
-    <div class="day-names">
-      <span>{{ 'Mon' | translate }}</span>
-      <span>{{ 'Tue' | translate }}</span>
-      <span>{{ 'Wed' | translate }}</span>
-      <span>{{ 'Thu' | translate }}</span>
-      <span>{{ 'Fri' | translate }}</span>
-      <span>{{ 'Sat' | translate }}</span>
-      <span>{{ 'Sun' | translate }}</span>
-    </div>
-    <div class="calendar">
-        <span *ngFor="let d of days; let i = index">
-          <span class="day" [ngClass]="{'selected': d.selected, 'today': d.today, 'disabled': d.day === null}"h
-                (click)="selectDate($event, i)">
-            {{ d.day }}
-          </span>
-        </span>
-    </div>
+    class="ng-datepicker-input form-control input-sm"
+    [value]="viewValue"
+    (blur)="onInputValueChange(dateInput.value)"
+    (keyup)="keyEvent($event, dateInput.value)"
+    #dateInput>
+    @if (viewValue !== '') {
+      <span class="input-group-addon link clear" (click)="onInputValueChange('')">✕</span>
+    }
+    <span class="input-group-addon link calendar-toggle" (click)="toggleEvent($event)"><i class="glyphicon glyphicon-calendar"></i></span>
   </div>
-</div>
+
+  @if (opened) {
+    <div>
+      <div class="ng-datepicker" [ngClass]="popoverAlign" [lajiFixedBelow]="dateInput" (lajiClickOutSide)="close()">
+        <div class="controls">
+          <div class="left">
+            <i class="glyphicon glyphicon-backward" (click)="prevYear()"></i>
+            &nbsp;
+            <i class="glyphicon glyphicon-chevron-left" (click)="prevMonth()"></i>
+          </div>
+          <span class="date">
+            {{ ('m-' + moment(calendarUIValue).format('MM')) | translate }} {{ moment(calendarUIValue).format('YYYY') }}
+          </span>
+          <div class="right">
+            <i class="glyphicon glyphicon-chevron-right" (click)="nextMonth()"></i>
+            &nbsp;
+            <i class="glyphicon glyphicon-forward" (click)="nextYear()"></i>
+          </div>
+        </div>
+        <div class="day-names">
+          <span>{{ 'Mon' | translate }}</span>
+          <span>{{ 'Tue' | translate }}</span>
+          <span>{{ 'Wed' | translate }}</span>
+          <span>{{ 'Thu' | translate }}</span>
+          <span>{{ 'Fri' | translate }}</span>
+          <span>{{ 'Sat' | translate }}</span>
+          <span>{{ 'Sun' | translate }}</span>
+        </div>
+        <div class="calendar">
+          @for (d of days; track d; let i = $index) {
+            <span>
+              <span class="day" [ngClass]="{'selected': d.selected, 'today': d.today, 'disabled': d.day === null}"h
+                (click)="selectDate($event, i)">
+                {{ d.day }}
+              </span>
+            </span>
+          }
+        </div>
+      </div>
+    </div>
+  }

@@ -1,12 +1,12 @@
-<details [formGroup]="form" class="lu-details my-6" open>
-  <summary>Filters</summary>
-
+<div [formGroup]="form">
   <div class="mb-5 d-flex flex-gap-4">
     <div class="dataset-filter flex-grow">
       <label for="trait-search-filters-dataset">Dataset</label>
       <select class="form-control" id="trait-search-filters-dataset" formControlName="dataset">
         <option [ngValue]="null">None</option>
-        <option *ngFor="let dataset of (datasets$ | async)" [value]="dataset.id">{{ dataset.name }}</option>
+        @for (dataset of (datasets$ | async); track dataset) {
+          <option [value]="dataset.id">{{ dataset.name }}</option>
+        }
       </select>
     </div>
 
@@ -14,7 +14,9 @@
       <label for="trait-search-filters-trait">Trait</label>
       <select class="form-control" id="trait-search-filters-trait" formControlName="trait">
         <option [ngValue]="null">None</option>
-        <option *ngFor="let trait of (traits$ | async)" [value]="trait.id">{{ trait.name }}</option>
+        @for (trait of (traits$ | async); track trait) {
+          <option [value]="trait.id">{{ trait.name }}</option>
+        }
       </select>
     </div>
   </div>
@@ -27,4 +29,4 @@
     <button (click)="onSearch()" class="btn btn-primary">Search</button>
     <button (click)="onClear()" class="btn btn-default">Clear</button>
   </div>
-</details>
+</div>

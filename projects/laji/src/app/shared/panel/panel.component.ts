@@ -2,9 +2,10 @@
 import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 
 @Component({
-  selector: '[laji-panel]',
-  templateUrl: './panel.component.html',
-  styleUrls: ['./panel.component.scss'],
+    selector: '[laji-panel]',
+    templateUrl: './panel.component.html',
+    styleUrls: ['./panel.component.scss'],
+    standalone: false
 })
 export class PanelComponent {
   @Input() title?: string;

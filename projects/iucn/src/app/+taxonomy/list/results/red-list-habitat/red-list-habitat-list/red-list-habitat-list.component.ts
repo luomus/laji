@@ -4,10 +4,11 @@ import { RedListHabitatData } from '../red-list-habitat.component';
 import { StatusCnt } from '../red-list-habitat.component';
 
 @Component({
-  selector: 'iucn-red-list-habitat-list',
-  templateUrl: './red-list-habitat-list.component.html',
-  styleUrls: ['./red-list-habitat-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-red-list-habitat-list',
+    templateUrl: './red-list-habitat-list.component.html',
+    styleUrls: ['./red-list-habitat-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RedListHabitatListComponent {
 

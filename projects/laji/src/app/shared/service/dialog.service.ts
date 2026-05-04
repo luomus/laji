@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { PlatformService } from '../../root/platform.service';
 import { ConfirmModalComponent } from './confirm-modal.component';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 import { ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 interface DialogConfig {

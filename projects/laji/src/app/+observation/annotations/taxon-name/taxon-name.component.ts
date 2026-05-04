@@ -3,9 +3,10 @@ import {TranslateService} from '@ngx-translate/core';
 
 
 @Component({
-  selector: 'laji-unit-annotation',
-  templateUrl: './taxon-name.component.html',
-  styleUrls: ['./taxon-name.component.scss']
+    selector: 'laji-unit-annotation',
+    templateUrl: './taxon-name.component.html',
+    styleUrls: ['./taxon-name.component.scss'],
+    standalone: false
 })
 export class TaxonNameComponent implements OnInit {
 

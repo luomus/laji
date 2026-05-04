@@ -1,16 +1,17 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ITreeOptions, ITreeState, KEYS, TreeComponent, TreeModel, TreeNode, TREE_ACTIONS } from '@ali-hm/angular-tree-component';
 import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime } from 'rxjs';
 import { toHtmlInputElement } from '../../../shared/service/html-element.service';
 import { CheckboxType } from '../../select/checkbox/checkbox.component';
 import { SelectedOption, TreeOptionsNode } from '../tree-select.component';
 
 @Component({
-  selector: 'laji-tree-selector',
-  templateUrl: './tree-selector.component.html',
-  styleUrls: ['./tree-selector.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-tree-selector',
+    templateUrl: './tree-selector.component.html',
+    styleUrls: ['./tree-selector.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TreeSelectorComponent implements OnInit {
   @Input() selectedOptions: SelectedOption[] = [];

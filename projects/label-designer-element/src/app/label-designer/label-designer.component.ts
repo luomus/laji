@@ -12,12 +12,13 @@ import {
 } from '@luomus/label-designer';
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'label-designer',
-  templateUrl: './label-designer.component.html',
-  styleUrls: ['./label-designer.component.scss'],
-  // This needs to be default otherwise initial changes are not populated on the places where the element is used!
-  changeDetection: ChangeDetectionStrategy.Default
+    // eslint-disable-next-line @angular-eslint/component-selector
+    selector: 'label-designer',
+    templateUrl: './label-designer.component.html',
+    styleUrls: ['./label-designer.component.scss'],
+    // This needs to be default otherwise initial changes are not populated on the places where the element is used!
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class LabelDesignerComponent {
 

@@ -5,10 +5,11 @@ import { IFontStyle } from '../../../label-designer.interface';
  * @internal
  */
 @Component({
-  selector: 'll-font-settings',
-  templateUrl: './font-settings.component.html',
-  styleUrls: ['./font-settings.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-font-settings',
+    templateUrl: './font-settings.component.html',
+    styleUrls: ['./font-settings.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FontSettingsComponent implements OnInit {
 

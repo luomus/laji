@@ -3,8 +3,9 @@ import { LappiStatsResponseGridsElement } from '../../core/atlas-api.service';
 import { TableColumn } from '@achimha/ngx-datatable';
 
 @Component({
-  templateUrl: './lappi-modal.component.html',
-  styleUrls: ['./lappi-modal.component.scss']
+    templateUrl: './lappi-modal.component.html',
+    styleUrls: ['./lappi-modal.component.scss'],
+    standalone: false
 })
 export class LappiModalComponent implements AfterViewInit {
   @ViewChild('YKJ') ykjTemplate!: TemplateRef<any>;
@@ -13,7 +14,7 @@ export class LappiModalComponent implements AfterViewInit {
   rows: LappiStatsResponseGridsElement[] = [];
   cols!: TableColumn[];
   index: number | undefined;
-  hideModal = new EventEmitter<null>();
+  hideModal = new EventEmitter<void>();
 
   ngAfterViewInit() {
     this.cols = [

@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'projects/bird-atlas/src/env/environment';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs';
 import { AtlasApiService, AtlasTaxon, TaxonStatsResponse } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 import { Lang } from '../../core/api.service';
@@ -19,9 +19,10 @@ interface SpeciesInfoData {
 }
 
 @Component({
-  templateUrl: './species-info.component.html',
-  styleUrls: ['./species-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './species-info.component.html',
+    styleUrls: ['./species-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesInfoComponent {
   data$: Observable<SpeciesInfoData>;
@@ -66,13 +67,13 @@ export class SpeciesInfoComponent {
         )
       })),
       tap(data => {
-        const name: string = data.taxon!.vernacularName[<Lang>this.translate.currentLang];
+        const name: string = data.taxon!.vernacularName[<Lang>this.translate.getCurrentLang()];
         this.breadcrumbs.setBreadcrumbName(
           BreadcrumbId.SpeciesInfo,
           name.charAt(0).toUpperCase() + name.substring(1)
         );
         this.headerService.setHeaders({
-          title: `${capitalize(data.taxon!.vernacularName[<Lang>this.translate.currentLang])} | ${this.translate.instant('ba.header.title')}`
+          title: `${capitalize(data.taxon!.vernacularName[<Lang>this.translate.getCurrentLang()])} | ${this.translate.instant('ba.header.title')}`
         });
         this.loading = false;
         this.cdr.detectChanges();
@@ -82,14 +83,14 @@ export class SpeciesInfoComponent {
 
   getForeignVernacularNames(taxon: AtlasTaxon) {
     return ['fi', 'sv', 'en'].filter(
-      lang => lang !== this.translate.currentLang
+      lang => lang !== this.translate.getCurrentLang()
     ).map(
       lang => capitalize((taxon.vernacularName as any)[lang])
     ).join(', ');
   }
 
   getMapDownloadUrl(id: string) {
-    return `${environment.atlasApiBasePath}/map/${id}/atlas?lang=${this.translate.currentLang}&scaling=0`;
+    return `${environment.atlasApiBasePath}/map/${id}/atlas?lang=${this.translate.getCurrentLang()}&scaling=0`;
   };
 
   capitalize(str: string): string { return capitalize(str); }

@@ -1,6 +1,6 @@
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type TaxonImage = components['schemas']['Image'];
+type TaxonImage = components['schemas']['LajiBackendImage'];
 
 export interface IImageSelectEvent {
   taxonId?: string;

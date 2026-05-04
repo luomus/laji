@@ -1,10 +1,10 @@
-@import 'vars';
-@import 'buttons';
+@use 'vars' as *;
+@use 'buttons' as *;
 
 :host {
   position: absolute;
   z-index: 1100;
-  
+
   background: $neutral-1;
   padding: $sp-4;
   box-shadow: 0 1px 4px rgba(0,0,0,.2);

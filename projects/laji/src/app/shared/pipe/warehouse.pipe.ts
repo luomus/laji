@@ -2,8 +2,9 @@ import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
 
 @Pipe({
-  name: 'warehouse',
-  pure: false
+    name: 'warehouse',
+    pure: false,
+    standalone: false
 })
 export class WarehousePipe implements PipeTransform {
 

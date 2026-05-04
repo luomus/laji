@@ -5,9 +5,10 @@ import { SEASON, WbcResultService } from '../wbc-result.service';
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({
-  selector: 'laji-wbc-route',
-  templateUrl: './wbc-route.component.html',
-  styleUrls: ['./wbc-route.component.css']
+    selector: 'laji-wbc-route',
+    templateUrl: './wbc-route.component.html',
+    styleUrls: ['./wbc-route.component.css'],
+    standalone: false
 })
 export class WbcRouteComponent implements OnInit, OnDestroy {
   routeId!: string;

@@ -1,4 +1,4 @@
-<ng-container *ngIf="projectForm$ | async; let projectForm">
+@if (projectForm$ | async; as projectForm) {
   <h3>
     {{ 'excel.import' | translate }}
   </h3>
@@ -9,8 +9,9 @@
       </p>
     </div>
   </div>
-  <laji-importer *ngIf="projectForm.form.options?.secondaryCopy; else allAllowed" [forms]="[projectForm.form.id]" [allowedCombineOptions]="[combineOptions.none]"></laji-importer>
-  <ng-template #allAllowed>
+  @if (projectForm.form.options?.secondaryCopy) {
+    <laji-importer [forms]="[projectForm.form.id]" [allowedCombineOptions]="[combineOptions.none]"></laji-importer>
+  } @else {
     <laji-importer [forms]="projectFormService.getExcelFormIDs(projectForm)"></laji-importer>
-  </ng-template>
-</ng-container>
+  }
+}

@@ -18,10 +18,11 @@ import { latLngGridToGeoJSON } from '@luomus/laji-map/lib/utils';
 import { PlatformService } from '../../root/platform.service';
 
 @Component({
-  selector: 'laji-map-front',
-  templateUrl: './front.component.html',
-  styleUrls: ['./front.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-map-front',
+    templateUrl: './front.component.html',
+    styleUrls: ['./front.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FrontComponent implements OnInit, OnDestroy {
   @ViewChild(LajiMapComponent, {static: true}) lajiMap!: LajiMapComponent;
@@ -76,7 +77,7 @@ export class FrontComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.footerService.footerVisible = false;
-    let options: Options = {lang: <Lang> this.translate.currentLang};
+    let options: Options = {lang: <Lang> this.translate.getCurrentLang()};
     const {layers = '', overlayNames = '', world, coordinates, print} = this.route.snapshot.queryParams;
     const _layers = (`${layers},${overlayNames}`.split(',') as string[])
       .filter(s => s)

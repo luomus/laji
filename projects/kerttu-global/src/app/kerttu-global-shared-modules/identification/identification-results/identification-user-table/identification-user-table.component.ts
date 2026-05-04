@@ -5,10 +5,11 @@ import { IIdentificationUserStatResult } from '../../../../kerttu-global-shared/
 import { UserNameTemplateComponent } from '../../../../kerttu-global-shared/component/user-name-template.component';
 
 @Component({
-  selector: 'bsg-identification-user-table',
-  templateUrl: './identification-user-table.component.html',
-  styleUrls: ['./identification-user-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-identification-user-table',
+    templateUrl: './identification-user-table.component.html',
+    styleUrls: ['./identification-user-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IdentificationUserTableComponent implements OnInit {
   @ViewChild(UserNameTemplateComponent, { static: true }) public userNameTemplate!: UserNameTemplateComponent;

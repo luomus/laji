@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { IFormField } from '../../model/excel';
 
 @Pipe({
-  name: 'levelFilter'
+    name: 'levelFilter',
+    standalone: false
 })
 export class LevelFilterPipe implements PipeTransform {
 

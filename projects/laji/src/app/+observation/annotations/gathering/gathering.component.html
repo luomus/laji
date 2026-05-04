@@ -1,3 +1,5 @@
-<div [hidden]="!visible" class="gathering" *ngIf="gathering">
+@if (gathering) {
+  <div [hidden]="!visible" class="gathering">
     <laji-gathering-rows [gathering]="gathering"></laji-gathering-rows>
-</div>
+  </div>
+}

@@ -1,4 +1,6 @@
 <lu-button (click)="toggleDropdown()" [small]="small">{{ title }}</lu-button>
-<div *ngIf="open" class="dropdown" luClickOutside (clickOutside)="onClickOutside()">
-  <ng-content></ng-content>
-</div>
+@if (open) {
+  <div class="dropdown" luClickOutside (clickOutside)="onClickOutside()">
+    <ng-content></ng-content>
+  </div>
+}

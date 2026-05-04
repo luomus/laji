@@ -1,30 +1,32 @@
 import { ILogger } from './logger.interface';
-import { LoggerApi } from '../api/LoggerApi';
 import { Injectable } from '@angular/core';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import type { operations } from 'projects/laji-api-client-b/generated/api.d';
+type LogLevel = operations['LoggerController_log']['parameters']['path']['level'];
 
 @Injectable()
 export class HttpLogger implements ILogger {
 
-  constructor(private loggerApi: LoggerApi) {
+  constructor(private api: LajiApiClientBService) {
   }
 
   public error(message: string, meta?: any): void {
-    this._log('logError', message, meta);
+    this._log('error', message, meta);
   }
 
   public info(message: string, meta?: any): void {
-    this._log('logInfo', message, meta);
+    this._log('info', message, meta);
   }
 
   public warn(message: string, meta?: any): void {
-    this._log('logWarn', message, meta);
+    this._log('warn', message, meta);
   }
 
   public log(message: string, meta?: any): void {
     // log level items are not send forward
   }
 
-  private _log(type: Exclude<keyof LoggerApi, 'logStatus' | 'http'>, message: string, meta?: any): void {
-    this.loggerApi[type]({message, meta}).subscribe();
+  private _log(level: LogLevel, message: string, meta?: any): void {
+    this.api.post(`/logger/{level}`, { path: { level } }, { message, meta }).subscribe();
   }
 }

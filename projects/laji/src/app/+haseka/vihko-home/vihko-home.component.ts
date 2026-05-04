@@ -3,9 +3,10 @@ import { TranslateService } from '@ngx-translate/core';
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({
-  selector: 'vihko-home',
-  templateUrl: './vihko-home.component.html',
-  styleUrls: ['./vihko-home.component.scss']
+    selector: 'vihko-home',
+    templateUrl: './vihko-home.component.html',
+    styleUrls: ['./vihko-home.component.scss'],
+    standalone: false
 })
 export class VihkoHomeComponent implements OnInit {
 
@@ -16,7 +17,7 @@ export class VihkoHomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.currentLang = this.translate.currentLang;
+    this.currentLang = this.translate.getCurrentLang();
   }
 
 }

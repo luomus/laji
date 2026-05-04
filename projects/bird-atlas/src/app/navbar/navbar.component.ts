@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'ba-navbar',
-  templateUrl: 'navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'ba-navbar',
+    templateUrl: 'navbar.component.html',
+    styleUrls: ['./navbar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();

@@ -1,13 +1,16 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output,
 OnInit, OnDestroy} from '@angular/core';
 import { TaxonTagEffectiveService } from '../taxon-tag-effective.service';
-import { AnnotationTag } from '../../../shared/model/AnnotationTag';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
-  selector: 'laji-gathering',
-  templateUrl: './gathering.component.html',
-  styleUrls: ['./gathering.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-gathering',
+    templateUrl: './gathering.component.html',
+    styleUrls: ['./gathering.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GatheringComponent implements OnInit, OnDestroy {
 

@@ -60,18 +60,18 @@
     <h2>{{ 'saveObservations.citizenScience' | translate }}</h2>
     <p>{{ 'saveObservations.citizenScience.desc' | translate }}</p>
     <div class="d-flex flex-row flex-wrap">
-      <ng-container *ngFor="let form of citizenScienceForms$ | async">
+      @for (form of citizenScienceForms$ | async; track form) {
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
-      </ng-container>
+      }
     </div>
   </section>
 
   <section class="mb-8">
     <h2>{{ 'saveObservations.birdMonitoring' | translate }}</h2>
     <div class="d-flex flex-row flex-wrap">
-      <ng-container *ngFor="let form of birdMonitoringForms$ | async">
+      @for (form of birdMonitoringForms$ | async; track form) {
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
-      </ng-container>
+      }
     </div>
   </section>
 
@@ -79,9 +79,9 @@
     <h2>{{ 'saveObservations.completeLists' | translate }}</h2>
     <p>{{ 'saveObservations.completeLists.desc' | translate }}</p>
     <div class="d-flex flex-row flex-wrap">
-      <ng-container *ngFor="let form of completeListForms$ | async">
+      @for (form of completeListForms$ | async; track form) {
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
-      </ng-container>
+      }
     </div>
   </section>
 
@@ -89,9 +89,9 @@
     <h2>{{ 'saveObservations.researchProjects' | translate }}</h2>
     <p>{{ 'saveObservations.researchProjects.desc' | translate }}</p>
     <div class="d-flex flex-row flex-wrap">
-      <ng-container *ngFor="let form of researchProjectForms$ | async">
+      @for (form of researchProjectForms$ | async; track form) {
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
-      </ng-container>
+      }
     </div>
   </section>
 

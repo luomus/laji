@@ -1,13 +1,16 @@
 import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 @Component({
-  selector: 'laji-np-info-map',
-  templateUrl: './np-info-map.component.html',
-  styleUrls: ['./np-info-map.component.css']
+    selector: 'laji-np-info-map',
+    templateUrl: './np-info-map.component.html',
+    styleUrls: ['./np-info-map.component.css'],
+    standalone: false
 })
 export class NpInfoMapComponent implements OnInit, OnChanges {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap!: LajiMapComponent;
@@ -45,7 +48,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize() {
+  onResize(event: any) {
     clearTimeout(this.resize);
     const that = this;
     this.resize = setTimeout(function() {

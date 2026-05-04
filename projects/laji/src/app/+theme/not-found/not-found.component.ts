@@ -3,13 +3,14 @@ import { Router } from '@angular/router';
 import { Global } from '../../../environments/global';
 import { BrowserService } from '../../shared/service/browser.service';
 import { FormService } from '../../shared/service/form.service';
-import { map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 
 @Component({
-  selector: 'laji-theme-not-found',
-  templateUrl: './not-found.component.html',
-  styleUrls: ['./not-found.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-theme-not-found',
+    templateUrl: './not-found.component.html',
+    styleUrls: ['./not-found.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NotFoundComponent implements OnInit {
 

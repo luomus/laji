@@ -6,7 +6,8 @@ const DEFAULT_SEPARATOR = ', ';
  * @internal
  */
 @Pipe({
-  name: 'separator'
+    name: 'separator',
+    standalone: false
 })
 export class SeparatorPipe implements PipeTransform {
 

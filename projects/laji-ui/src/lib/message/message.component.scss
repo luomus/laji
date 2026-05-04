@@ -1,4 +1,4 @@
-@import '../vars';
+@use '../vars' as *;
 
 @mixin message-type($type, $border-color, $background-color, $text-color) {
   &.#{$type} {

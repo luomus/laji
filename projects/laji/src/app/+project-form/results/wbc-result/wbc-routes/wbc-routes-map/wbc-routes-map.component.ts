@@ -4,9 +4,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { TileLayerName } from '@luomus/laji-map/lib/defs';
 
 @Component({
-  selector: 'laji-wbc-routes-map',
-  templateUrl: './wbc-routes-map.component.html',
-  styleUrls: ['./wbc-routes-map.component.scss']
+    selector: 'laji-wbc-routes-map',
+    templateUrl: './wbc-routes-map.component.html',
+    styleUrls: ['./wbc-routes-map.component.scss'],
+    standalone: false
 })
 export class WbcRoutesMapComponent {
   @Input() loading = true;

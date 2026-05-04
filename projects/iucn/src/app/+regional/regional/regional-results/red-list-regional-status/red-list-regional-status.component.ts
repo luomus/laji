@@ -1,14 +1,14 @@
 import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { IucnArea, RegionalService } from '../../../../iucn-shared/service/regional.service';
 import { RedListRegionalStatusData } from '../regional-results.component';
-import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'iucn-red-list-regional-status',
-  templateUrl: './red-list-regional-status.component.html',
-  styleUrls: ['./red-list-regional-status.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-red-list-regional-status',
+    templateUrl: './red-list-regional-status.component.html',
+    styleUrls: ['./red-list-regional-status.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RedListRegionalStatusComponent implements OnInit, OnDestroy {
 
@@ -27,12 +27,11 @@ export class RedListRegionalStatusComponent implements OnInit, OnDestroy {
 
   constructor(
     private resultService: RegionalService,
-    private translate: TranslateService,
     private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    this.areaSub = this.resultService.getAreas(this.translate.currentLang).subscribe(areas => {
+    this.areaSub = this.resultService.getAreas().subscribe(areas => {
       this.areas = areas;
       this.updateData(this._data);
       this.cdr.markForCheck();

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { TaxaSearchFilters, TaxonomySearch } from './service/taxonomy-search.service';
 import { FooterService } from '../../shared/service/footer.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
@@ -23,10 +23,11 @@ const tabIndexToName = {
 };
 
 @Component({
-  selector: 'laji-taxon-browse',
-  templateUrl: './species.component.html',
-  styleUrls: ['./species.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-browse',
+    templateUrl: './species.component.html',
+    styleUrls: ['./species.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesComponent implements OnInit, OnDestroy {
   public selectedIndex = 0;
@@ -80,8 +81,8 @@ export class SpeciesComponent implements OnInit, OnDestroy {
   }
 }
 
-const convertOldParamModelToNew = (params: Params): Partial<Record<keyof TaxaSearchFilters, string>> => {
-  const oldToNew: Record<string, keyof TaxaSearchFilters> = {
+const convertOldParamModelToNew = (params: Params): Partial<Record<keyof TaxaSearchFilters | 'taxonId', string>> => {
+  const oldToNew: Record<string, keyof TaxaSearchFilters | 'taxonId'> = {
     informalGroupFilters: 'informalTaxonGroups',
     onlyFinnish: 'finnish',
     invasiveSpeciesFilter: 'invasiveSpecies',
@@ -94,7 +95,7 @@ const convertOldParamModelToNew = (params: Params): Partial<Record<keyof TaxaSea
     typesOfOccurrenceFilters: 'typeOfOccurrenceInFinland',
   };
 
-  const convertedParams = Object.keys(oldToNew).reduce<Partial<Record<keyof TaxaSearchFilters, string>>>((_params, oldKey) => {
+  const convertedParams = Object.keys(oldToNew).reduce<Partial<Record<keyof TaxaSearchFilters | 'taxonId', string>>>((_params, oldKey) => {
     if (oldKey in params) {
       delete (_params as any)[oldKey];
       const param = params[oldKey];
@@ -103,7 +104,11 @@ const convertOldParamModelToNew = (params: Params): Partial<Record<keyof TaxaSea
     return _params;
   }, {...params});
 
-  const { typesOfOccurrenceNotFilters } = convertedParams as any;
+  const { typesOfOccurrenceNotFilters, target } = convertedParams as any;
+  if (target) {
+    delete (convertedParams as any).target;
+    convertedParams.taxonId = target;
+  }
   if (typesOfOccurrenceNotFilters) {
     convertedParams.typeOfOccurrenceInFinland = (convertedParams.typeOfOccurrenceInFinland || '') + [
       ,

@@ -1,4 +1,3 @@
-/* tslint:disable:no-use-before-declare */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef } from '@angular/core';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -18,11 +17,12 @@ export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'laji-observation-extended-group-select',
-  templateUrl: './extended-group-select.component.html',
-  styleUrls: ['./extended-group-select.component.css'],
-  providers: [OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-extended-group-select',
+    templateUrl: './extended-group-select.component.html',
+    styleUrls: ['./extended-group-select.component.css'],
+    providers: [OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationExtendedGroupSelectComponent extends ExtendedGroupSelectComponent<InformalTaxonGroup> {
 
@@ -39,16 +39,16 @@ export class ObservationExtendedGroupSelectComponent extends ExtendedGroupSelect
     return [this.query?.informalTaxonGroupId || [], this.query.informalTaxonGroupIdNot || []];
   }
 
-  findByIds(groupIds: string[], lang: string): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.informalTaxonService.informalTaxonGroupFind(lang, undefined, undefined, groupIds);
+  findByIds(groupIds: string[]): Observable<PagedResult<RedListTaxonGroup>> {
+    return this.informalTaxonService.informalTaxonGroupFind(undefined, undefined, groupIds);
   }
 
   convertToInformalTaxonGroup(group: InformalTaxonGroup): InformalTaxonGroup {
     return {...group};
   }
 
-  getTree(lang: string): Observable<ArrayResult<InformalTaxonGroup>> {
-    return this.informalTaxonService.informalTaxonGroupGetTree(lang);
+  getTree(): Observable<ArrayResult<InformalTaxonGroup>> {
+    return this.informalTaxonService.informalTaxonGroupGetTree();
   }
 
   prepareEmit(includedOptions: string[], excludedOptions?: string[]): InformalGroupEvent {

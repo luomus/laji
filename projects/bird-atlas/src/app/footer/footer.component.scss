@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 footer {
   background: $neutral-3;

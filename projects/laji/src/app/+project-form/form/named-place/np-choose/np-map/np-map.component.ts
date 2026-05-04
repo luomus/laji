@@ -11,22 +11,25 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { ExtendedNamedPlace } from '../../model/extended-named-place';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
 import { NpInfoComponent } from '../../np-info/np-info.component';
 import { NpInfoRow } from '../../np-info/np-info-row/np-info-row.component';
 import { LabelPipe } from '../../../../../shared/pipe';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
-import { Form } from '../../../../../shared/model/Form';
 import { LajiMapVisualization } from '../../../../../shared-modules/legend/laji-map-visualization';
 import { TileLayerName, OverlayName } from '@luomus/laji-map/lib/defs';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { ExtendedNamedPlace } from '../np-choose.component';
+
+type Form = components['schemas']['Form'];
 
 @Component({
-  selector: 'laji-np-map',
-  templateUrl: './np-map.component.html',
-  styleUrls: ['./np-map.component.css'],
-  providers: [ LabelPipe, AreaNamePipe ]
+    selector: 'laji-np-map',
+    templateUrl: './np-map.component.html',
+    styleUrls: ['./np-map.component.css'],
+    providers: [LabelPipe, AreaNamePipe],
+    standalone: false
 })
 export class NpMapComponent implements OnInit, OnChanges {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap!: LajiMapComponent;
@@ -37,8 +40,10 @@ export class NpMapComponent implements OnInit, OnChanges {
   @Input() height?: string;
   @Input() userID?: string;
   @Input() reservable?: boolean;
-  @Input() placeForm: any;
-  @Input({ required: true }) documentForm!: Form.SchemaForm;
+  @Input() placeForm?: Form;
+  @Input({ required: true }) documentForm!: Form;
+  @Input() filterBy?: string;
+  @Input() filteredIDs: string[] = [];
   @Output() activePlaceChange = new EventEmitter<number>();
 
   visualization?: LajiMapVisualization<any>;
@@ -49,6 +54,7 @@ export class NpMapComponent implements OnInit, OnChanges {
   private _popupCallback?: (elemOrString: HTMLElement | string) => void;
   private _zoomOnNextTick = false;
   private _lastVisibleActiveNP?: number|null;
+  private _pendingFilteredIdx?: number;
 
   private placeColor = '#5294cc';
   private placeActiveColor = '#375577';
@@ -70,7 +76,7 @@ export class NpMapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['namedPlaces']) {
+    if (changes['namedPlaces'] || changes['filteredIDs']) {
       this.initMapData();
     }
     if (changes['visible'] && changes['visible'].currentValue === true && this._lastVisibleActiveNP !== this.activeNP) {
@@ -80,7 +86,14 @@ export class NpMapComponent implements OnInit, OnChanges {
       if (this.visible) {
         this._lastVisibleActiveNP = this.activeNP;
       }
-      this.setNewActivePlace(changes['activeNP'].currentValue);
+      const fullIdx = changes['activeNP'].currentValue;
+      const filteredIdx = this.getFilteredIdx(fullIdx);
+      // Apply immediately if map is ready, or store as pending if not
+      if (this.lajiMap.map) {
+        this.setNewActivePlace(filteredIdx);
+      } else {
+        this._pendingFilteredIdx = filteredIdx;
+      }
     }
   }
 
@@ -89,6 +102,12 @@ export class NpMapComponent implements OnInit, OnChanges {
     if (popup && this._popupCallback) {
       this._popupCallback(popup);
     }
+
+    if (this._pendingFilteredIdx !== undefined) {
+      this.setNewActivePlace(this._pendingFilteredIdx);
+      this._pendingFilteredIdx = undefined;
+    }
+
     if (this._zoomOnNextTick) {
       this._zoomOnNextTick = false;
       if (this.activeNP !== undefined && this.activeNP !== -1) {
@@ -100,6 +119,18 @@ export class NpMapComponent implements OnInit, OnChanges {
       } else if (this.documentForm.options?.namedPlaceOptions?.zoomToData) {
         this.lajiMap.map.zoomToData();
       }
+    }
+  }
+
+  private getFilteredIdx(fullIdx: any): number {
+    // Transform selected place's index in all places list to index in filtered places list
+    if (fullIdx !== undefined && fullIdx !== null && fullIdx !== -1) {
+      const namedPlace = this.namedPlaces![fullIdx];
+      const filteredPlaces = this.namedPlaces!.filter(np => !this.filterBy || this.filteredIDs.includes(np.id!));
+      const filteredIdx = filteredPlaces.findIndex(np => np.id === namedPlace.id);
+      return filteredIdx;
+    } else {
+      return -1;
     }
   }
 
@@ -184,24 +215,32 @@ export class NpMapComponent implements OnInit, OnChanges {
         onChange: (events: any) => {
           events.forEach((e: any) => {
             if (e.type === 'active') {
-              this.zone.run(() => {
-                this.activePlaceChange.emit(e.idx);
-              });
+              // Transform selected place's index in filtered places list to index in all places list before emitting
+              const filteredPlaces = this.namedPlaces!.filter(np => !this.filterBy || this.filteredIDs.includes(np.id!));
+              const selectedPlace = filteredPlaces[e.idx];
+              if (selectedPlace) {
+                const fullIdx = this.namedPlaces!.findIndex(np => np.id === selectedPlace.id);
+                this.zone.run(() => {
+                  this.activePlaceChange.emit(fullIdx);
+                });
+              }
             }
           });
         },
         featureCollection: {
           type: 'FeatureCollection',
-          features: this.namedPlaces.map(np => ({
-            type: 'Feature',
-            geometry: np.geometry,
-            properties: {
-              reserved: np._status,
-              name: np.name,
-              municipality: np.municipality,
-              taxon: np.taxonIDs
-            }
-          }))
+          features: this.namedPlaces
+            .filter(np => !this.filterBy || this.filteredIDs.includes(np.id!))
+            .map(np => ({
+              type: 'Feature',
+              geometry: np.geometry,
+              properties: {
+                reserved: np._status,
+                name: np.name,
+                municipality: np.municipality,
+                taxon: np.taxonIDs
+              }
+            }))
         },
         getPopup: ({featureIdx, feature}: {featureIdx: number; feature: string}, cb: (elem: string | HTMLElement) => void) => {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -209,7 +248,7 @@ export class NpMapComponent implements OnInit, OnChanges {
           this._popupCallback = cb;
           this.cdr.markForCheck();
         },
-        activeIdx: this.activeNP,
+        activeIdx: this.getFilteredIdx(this.activeNP),
         cluster: mapCluster
       };
     } catch (e) { }
