@@ -1,22 +1,22 @@
 <div class="container container-relative">
   <h1>{{ 'navigation.user.profile' | translate }}</h1>
   <laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
-    @if (currentProfile && userProfile) {
-      @if (!currentProfile.userID) {
+    @if (viewedProfile && loggedInProfile) {
+      @if (!viewedProfile.userID) {
         <div class="row">
           {{ 'profile.missing' | translate }}
         </div>
       }
-      @if (currentProfile.userID || isCurrentUser) {
+      @if (viewedProfile.userID || viewedUserIsLoggedInUser) {
         <div class="row">
           <div class="col-md-8 col-xs-12 margin-bottom-5">
-            <h3>{{ currentProfile.userID | users }} ({{ userId }})</h3>
+            <h3>{{ viewedProfile.userID | users }} ({{ viewedUserId }})</h3>
             <div class="profile-image">
-              @if (currentProfile.image) {
-                <img [src]="currentProfile.image" alt="profile image" class="img-rounded">
+              @if (viewedProfile.image) {
+                <img [src]="viewedProfile.image" alt="profile image" class="img-rounded">
               }
             </div>
-            @if (isCurrentUser) {
+            @if (viewedUserIsLoggedInUser) {
               <lu-button
                 [small]="true"
                 class="edit-text mb-4"
@@ -27,10 +27,10 @@
             }
             @if (!editing) {
               <div>
-                <p>{{ currentProfile.profileDescription }}</p>
-                @if (currentProfile.personalCollectionIdentifier) {
+                <p>{{ viewedProfile.profileDescription }}</p>
+                @if (viewedUserIsLoggedInUser && loggedInProfile.personalCollectionIdentifier) {
                   <p>
-                    {{ 'MA.personalCollectionIdentifier' | label }}:<br>{{ currentProfile.personalCollectionIdentifier }}
+                    {{ 'MA.personalCollectionIdentifier' | label }}:<br>{{ loggedInProfile.personalCollectionIdentifier }}
                   </p>
                 }
               </div>
@@ -40,28 +40,28 @@
                 <p>{{ 'profile.info.intro' | translate }}</p>
                 <div class="profile-edit-row">
                   {{ 'profile.image' | translate }}
-                  <input class="form-control" placeholder="{{'profile.imagePlaceholder' | translate}}" [(ngModel)]="currentProfile.image">
+                  <input class="form-control" placeholder="{{'profile.imagePlaceholder' | translate}}" [(ngModel)]="loggedInProfile.image">
                 </div>
                 <div class="profile-edit-row">
                   {{ 'profile.description' | translate }}
-                  <textarea class="form-control" [(ngModel)]="currentProfile.profileDescription"></textarea>
+                  <textarea class="form-control" [(ngModel)]="loggedInProfile.profileDescription"></textarea>
                 </div>
                 <div class="profile-edit-row">
                   {{ 'MA.personalCollectionIdentifier' | label }}<laji-info [placement]="'right'">{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
-                  <input class="form-control" [(ngModel)]="currentProfile.personalCollectionIdentifier">
+                  <input class="form-control" [(ngModel)]="loggedInProfile.personalCollectionIdentifier">
                 </div>
                 <h4>{{ 'profile.defaultMediaMetadata.title' | translate }}</h4>
                 <div class="profile-edit-row">
                   {{ 'MM.capturerVerbatim' | label }}<laji-info [placement]="'right'">{{ 'profile.info.capturerVerbatim' | translate }}</laji-info>
-                  <input class="form-control" [(ngModel)]="currentProfile.settings!.defaultMediaMetadata!.capturerVerbatim">
+                  <input class="form-control" [(ngModel)]="loggedInProfile.settings!.defaultMediaMetadata!.capturerVerbatim">
                 </div>
                 <div class="profile-edit-row">
                   {{ 'MZ.intellectualOwner' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualOwner' | translate }}</laji-info>
-                  <input class="form-control" [(ngModel)]="currentProfile.settings!.defaultMediaMetadata!.intellectualOwner">
+                  <input class="form-control" [(ngModel)]="loggedInProfile.settings!.defaultMediaMetadata!.intellectualOwner">
                 </div>
                 <div class="profile-edit-row">
                   {{ 'MZ.intellectualRights' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualRights' | translate }}</laji-info>
-                  <select class="form-control" [(ngModel)]="currentProfile.settings!.defaultMediaMetadata!.intellectualRights">
+                  <select class="form-control" [(ngModel)]="loggedInProfile.settings!.defaultMediaMetadata!.intellectualRights">
                     @for (c of intellectualRightsArray; track c) {
                       <option [ngValue]="c">{{ c | label }}</option>
                     }
@@ -73,7 +73,7 @@
               </div>
             }
             <div class="mt-6" *lajiLoggedIn="true">
-              @if ((getCurrentUser() | async)!.id === userId) {
+              @if ((getCurrentUser() | async)!.id === viewedUserId) {
                 <div class="form-group">
                   <div class="col-sm-12 well">
                     <p>{{ 'selfUrl.introStart' | translate }}</p>
@@ -88,7 +88,7 @@
             <div class="form-group">
               <div class="col-sm-12 well">
                 <laji-find-person (selectChange)="selectPerson($event)"></laji-find-person>
-                <laji-friends [profile]="currentProfile" [usersProfile]="userProfile"></laji-friends>
+                <laji-friends [viewedUserId]="viewedUserId" [usersProfile]="loggedInProfile"></laji-friends>
               </div>
             </div>
           </div>
@@ -97,4 +97,3 @@
     }
   </laji-spinner>
 </div>
-

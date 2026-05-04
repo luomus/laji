@@ -3,7 +3,6 @@ import * as XLSX from 'xlsx';
 import { IFormField, SplitType } from '../model/excel';
 import { UserService } from '../../../shared/service/user.service';
 import { MappingService, SpecialTypes } from './mapping.service';
-import { Person } from '../../../shared/model/Person';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { forkJoin as ObservableForkJoin } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,6 +10,9 @@ import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi
 import { ExportService } from '../../../shared/service/export.service';
 import { map, take } from 'rxjs';
 import { ExcelToolService } from './excel-tool.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Person = components['schemas']['SensitivePerson'];
 
 @Injectable()
 export class GeneratorService {
@@ -66,7 +68,7 @@ export class GeneratorService {
     ObservableForkJoin(
       this.userService.user$.pipe(take(1)),
       this.excelToolService.getNamedPlacesList(formID),
-      this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.getCurrentLang()).pipe(map(result => result.results))
+      this.informalTaxonApi.informalTaxonGroupGetTree().pipe(map(result => result.results))
     ).pipe(
       map((data) => ({person: data[0], namedPlaces: data[1], informalTaxonGroups: data[2]}))
     )

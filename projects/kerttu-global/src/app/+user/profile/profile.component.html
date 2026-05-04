@@ -1,22 +1,22 @@
 <div class="container container-relative">
   <h1>{{ 'navigation.user.profile' | translate }}</h1>
   <laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
-    @if (userProfile) {
-      @if (!userProfile.userID) {
+    @if (profile) {
+      @if (!profile.userID) {
         <div class="row">
           {{ 'profile.missing' | translate }}
         </div>
       }
-      @if (userProfile.userID) {
+      @if (profile.userID) {
         <div class="row">
           <div class="col-md-8 col-xs-12 margin-bottom-5">
-            <h3>{{ userProfile.userID | users }} ({{ userProfile.userID }})</h3>
+            <h3>{{ profile.userID | users }} ({{ profile.userID }})</h3>
             <div class="mt-6">
               <div class="profile-edit">
                 <p [innerHTML]="'profile.info.intro' | translate"></p>
                 <div class="profile-edit-row">
                   {{ 'profile.xenoCantoApiKey' | translate }}
-                  <input class="form-control" [(ngModel)]="userProfile.xenoCantoApiKey">
+                  <input class="form-control" [(ngModel)]="profile.xenoCantoApiKey">
                 </div>
                 <div class="profile-edit-row">
                   <lu-button (click)="saveProfile()" role="primary">{{ 'profile.save' | translate }}</lu-button>

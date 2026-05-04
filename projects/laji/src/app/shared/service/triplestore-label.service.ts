@@ -1,6 +1,5 @@
 import { forkJoin as ObservableForkJoin, Observable, of, catchError, map, share, take, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 import { SourceService } from './source.service';
 import { UserService } from './user.service';
 import { AreaService } from './area.service';
@@ -33,11 +32,11 @@ export class TriplestoreLabelService {
     this.guidRegEx = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/gi;
   }
 
-  public getAll(keys: string[], lang: string): Observable<{[key: string]: string}> {
+  public getAll(keys: string[]): Observable<{[key: string]: string}> {
     const set = new Set(keys);
     const subs: Observable<{key: string; value: string}>[] = [];
     set.forEach(val => {
-      subs.push(this.get(val, lang).pipe(map(result => ({key: val, value: result}))));
+      subs.push(this.get(val).pipe(map(result => ({key: val, value: result}))));
     });
     return ObservableForkJoin(subs).pipe(
       map((results: any) => results.reduce((cumulative: {[key: string]: string}, current: any) => {
@@ -49,18 +48,18 @@ export class TriplestoreLabelService {
     );
   }
 
-  public get(key: string, lang: string): Observable<string> {
+  public get(key: string): Observable<string> {
     return typeof key === 'string' ?
-      this._get(key, lang).pipe(catchError(() => of(key))) :
+      this._get(key).pipe(catchError(() => of(key))) :
       of('');
   }
 
-  private _get(key: string, lang: string): Observable<string> {
+  private _get(key: string): Observable<string> {
     if (typeof TriplestoreLabelService.cache[key] !== 'undefined') {
       if (TriplestoreLabelService.requestCache[key]) {
         delete TriplestoreLabelService.requestCache[key];
       }
-      return of(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
+      return of(TriplestoreLabelService.cache[key]);
     }
     const parts = key.replace(':', '.').split('.');
     if (parts && typeof parts[1] === 'string' && (/^\d+$/.test(parts[1]) || this.guidRegEx.test(parts[1]))) {
@@ -89,7 +88,6 @@ export class TriplestoreLabelService {
               catchError(() => this.api.get('/red-list-evaluation-groups/{id}', { path: { id: key } })),
               map((group: TaxonGroup) => group.name),
               tap(name => TriplestoreLabelService.cache[key] = name),
-              map(name => MultiLangService.getValue((name as any), lang)),
               share()
             );
           }
@@ -101,7 +99,6 @@ export class TriplestoreLabelService {
             TriplestoreLabelService.requestCache[key] = this.api.get('/publications/{id}', { path: { id: key } }).pipe(
               map((publication: Publication) => publication.name || ''),
               tap(name => TriplestoreLabelService.cache[key] = name),
-              map(name => MultiLangService.getValue((name as any), lang)),
               share()
             );
           }
@@ -109,7 +106,7 @@ export class TriplestoreLabelService {
         case 'ML':
           return this.areaService.getName(key);
         case 'KE':
-          return this.sourceService.getName(key, lang);
+          return this.sourceService.getName(key);
         case 'MMAN':
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.annotationService.getTag(key).pipe(
@@ -121,13 +118,12 @@ export class TriplestoreLabelService {
           return TriplestoreLabelService.requestCache[key];
         case 'gbif-dataset':
         case 'HR':
-          return this.collectionService.getName$(key, lang).pipe(share());
+          return this.collectionService.getName$(key).pipe(share());
         case 'MX':
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.api.get('/taxa/{id}', { path: { id: key } }).pipe(
               map((taxon: Taxon) => taxon.vernacularName || taxon.scientificName),
               tap(name => TriplestoreLabelService.cache[key] = name),
-              map(name => MultiLangService.getValue((name as any), lang)),
               share()
             );
           }

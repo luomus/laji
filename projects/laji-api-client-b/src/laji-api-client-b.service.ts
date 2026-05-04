@@ -5,8 +5,46 @@ import { Observable, of } from 'rxjs';
 import { share, tap } from 'rxjs';
 
 type WithResponses<T> = T & { responses: unknown };
-type Parameters<T> = 'parameters' extends keyof T ? T['parameters'] : never;
-type ExtractContentIfExists<R> = R extends { content: infer C } ? C[keyof C] : null;
+
+type ResponseType = 'json' | 'text' | 'arraybuffer' | 'blob';
+
+interface HttpClientOptions<RT extends ResponseType | undefined> {
+  responseType?: RT;
+};
+
+type Parameters<T, RT extends ResponseType | undefined> =
+  'parameters' extends keyof T
+    ? T['parameters'] & HttpClientOptions<RT>
+    : HttpClientOptions<RT>;
+
+interface ResponseTypeToContentTypes {
+  json: 'application/json';
+  text: 'text/plain' | 'text/csv' | 'application/xml' | 'text/tab-separated-values';
+  blob: 'application/pdf';
+  arraybuffer: never;
+};
+
+type BinaryContent<T> =
+  T extends string ? Blob : T;
+
+type ExtractContentByResponseType<
+  R,
+  RT extends ResponseType | undefined
+> =
+  R extends { content: infer C extends Record<string, any> }
+    ? RT extends undefined | 'json'
+      ? C extends { 'application/json': infer J }
+        ? J
+        : never
+      : RT extends 'text'
+        ? C[Extract<keyof C, ResponseTypeToContentTypes['text']>]
+        : RT extends 'blob'
+          ? BinaryContent<
+              C[Extract<keyof C, ResponseTypeToContentTypes['blob']>]
+            >
+          : never
+    : null;
+
 type ExtractRequestContentIfExists<R> =
   R extends { requestBody: { content: infer C } } | { requestBody?: { content: infer C } }
     ? C
@@ -56,7 +94,8 @@ const hashRecord = (record: any): string => JSON.stringify(sortRecordRecursively
 const splitAndResolvePath = <
   P extends Path,
   M extends Method<P>,
->(path: P, params?: Parameters<paths[P][M]>): string[] => {
+  RT extends ResponseType | undefined
+>(path: P, params?: Parameters<paths[P][M], RT>): string[] => {
   // parse path into segments based on path parameters
   // eg. "/person/{personToken}/profile" -> ["/person", "/{personToken}", "/profile"]
   const segments = path.split(/(\/\{[^}]+\})/).filter(Boolean);
@@ -97,11 +136,19 @@ export class LajiApiClientBService {
     this.personToken = personToken;
   }
 
-  get<P extends PathWithMethod<'get'>, R extends Responses<P, 'get' extends Method<P> ? 'get' : never>>(
+  get<
+    P extends PathWithMethod<'get'>,
+    R extends Responses<P,
+    'get' extends Method<P> ? 'get' : never>,
+    RT extends ResponseType | undefined = undefined
+>(
     path: P,
-    params?: Parameters<paths[P]['get']>,
+    params?: Parameters<paths[P]['get'], RT>,
     cacheInvalidationMs = ONE_DAY
-  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+  ): Observable<
+    ExtractContentByResponseType<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>],
+    RT>
+> {
     return this.fetch(
       path,
       'get' as any,
@@ -111,12 +158,21 @@ export class LajiApiClientBService {
     );
   }
 
-  put<P extends PathWithMethod<'put'>, R extends Responses<P, 'put' extends Method<P> ? 'put' : never>>(
+  put<
+    P extends PathWithMethod<'put'>,
+    R extends Responses<P, 'put' extends Method<P> ? 'put' : never>,
+    RT extends ResponseType | undefined = undefined
+>(
     path: P,
-    params?: Parameters<paths[P]['put']>,
+    params?: Parameters<paths[P]['put'], RT>,
     requestBody?: RequestBodyFor<paths[P]['put']>,
     cacheInvalidationMs = ONE_DAY
-  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+  ): Observable<
+ExtractContentByResponseType<
+    R[IntersectUnionTypes<keyof R, HttpSuccessCodes>],
+    Parameters<paths[P]['put'], RT>['responseType']
+  >
+> {
     return this.fetch(
       path,
       'put' as any,
@@ -126,12 +182,21 @@ export class LajiApiClientBService {
     );
   }
 
-  post<P extends PathWithMethod<'post'>, R extends Responses<P, 'post' extends Method<P> ? 'post' : never>>(
+  post<
+    P extends PathWithMethod<'post'>,
+    R extends Responses<P, 'post' extends Method<P> ? 'post' : never>,
+    RT extends ResponseType | undefined = undefined
+>(
     path: P,
-    params?: Parameters<paths[P]['post']>,
+    params?: Parameters<paths[P]['post'], RT>,
     requestBody?: RequestBodyFor<paths[P]['post']>,
     cacheInvalidationMs = ONE_DAY
-  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+  ): Observable<
+ExtractContentByResponseType<
+    R[IntersectUnionTypes<keyof R, HttpSuccessCodes>],
+    Parameters<paths[P]['post'], RT>['responseType']
+  >
+> {
     return this.fetch(
       path,
       'post' as any,
@@ -141,11 +206,20 @@ export class LajiApiClientBService {
     );
   }
 
-  delete<P extends PathWithMethod<'delete'>, R extends Responses<P, 'delete' extends Method<P> ? 'delete' : never>>(
+  delete<
+    P extends PathWithMethod<'delete'>,
+    R extends Responses<P, 'delete' extends Method<P> ? 'delete' : never>,
+    RT extends ResponseType | undefined = undefined
+>(
     path: P,
-    params?: Parameters<paths[P]['delete']>,
+    params?: Parameters<paths[P]['delete'], RT>,
     cacheInvalidationMs = ONE_DAY
-  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+  ): Observable<
+ExtractContentByResponseType<
+    R[IntersectUnionTypes<keyof R, HttpSuccessCodes>],
+    Parameters<paths[P]['delete'], RT>['responseType']
+  >
+> {
     return this.fetch(
       path,
       'delete' as any,
@@ -155,7 +229,13 @@ export class LajiApiClientBService {
     );
   }
 
-  private getRequestOptions(queryParams: any, requestBody: any, lang: string, personToken?: string) {
+  private getRequestOptions(
+    queryParams: any,
+    requestBody: any,
+    lang: string,
+    personToken?: string,
+    responseType: ResponseType = 'json'
+  ) {
     const params = Object.keys((queryParams || {})).reduce((filteredQueryParams, key) => {
       const param = (queryParams || {})[key];
       if (param === undefined) {
@@ -172,16 +252,26 @@ export class LajiApiClientBService {
     if (personToken) {
       headers['Person-Token'] = personToken;
     }
-    return { params, body: requestBody, headers };
+    return { params, body: requestBody, headers, responseType };
   }
 
-  fetch<P extends Path, M extends Method<P>, R extends Responses<P, M>>(
+  fetch<
+    P extends Path,
+    M extends Method<P>,
+    R extends Responses<P, M>,
+    RT extends ResponseType | undefined = undefined
+>(
     path: P,
     method: M,
-    params?: Parameters<paths[P][M]>,
+    params?: Parameters<paths[P][M], RT>,
     requestBody?: RequestBodyFor<paths[P][M]>,
     cacheInvalidationMs = ONE_DAY
-  ): Observable<ExtractContentIfExists<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>]>> {
+  ): Observable<
+ExtractContentByResponseType<
+    R[IntersectUnionTypes<keyof R, HttpSuccessCodes>],
+    Parameters<paths[P][M], RT>['responseType']
+  >
+> {
     const pathSegments = splitAndResolvePath(path, params);
     const requestUrl = this.baseUrl + pathSegments.join('');
 
@@ -190,7 +280,7 @@ export class LajiApiClientBService {
       return this.http.request(
         method as string,
         requestUrl,
-        this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken)
+        this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken, params?.responseType)
       ) as any;
     }
 
@@ -212,7 +302,11 @@ export class LajiApiClientBService {
       }
     }
 
-    const obs = this.http.request(method, requestUrl, this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken)).pipe(
+    const obs = this.http.request(
+      method,
+      requestUrl,
+      this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken, params?.responseType)
+    ).pipe(
       tap(val => {
         cachedPath?.set(paramsHash, {
           _tag :'completed',
@@ -232,14 +326,14 @@ export class LajiApiClientBService {
 
   flush<P extends Path, M extends Method<P>>(
     path: P,
-    params?: Parameters<paths[P][M]>
+    params?: Parameters<paths[P][M], never>
   ) {
     this._flush(splitAndResolvePath(path, params), params);
   }
 
   private _flush<P extends Path, M extends Method<P>>(
     pathSegments: string[],
-    params?: Parameters<paths[P][M]>
+    params?: Parameters<paths[P][M], never>
   ) {
     while (pathSegments.length) {
       const cachedPath = this.pathSegmentsToCacheLevels(pathSegments);

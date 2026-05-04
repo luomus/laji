@@ -54,7 +54,7 @@ export class MostActiveUsersTableComponent implements OnInit, OnChanges {
 
     this.tables.map((table) => {
       observables.push(
-        this.qualityService.getMostActiveUsers(this.maxLength, [this.group], table.date)
+        this.qualityService.getMostActiveUsers(this.maxLength, this.group, table.date)
       );
     });
 

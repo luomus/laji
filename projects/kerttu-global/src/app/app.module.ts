@@ -12,6 +12,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { GraphQLModule } from '../../../laji/src/app/graph-ql/graph-ql.module';
 import { LazyTranslateLoader } from './kerttu-global-shared/service/lazy-translate-loader';
@@ -20,7 +21,6 @@ import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-com
 import { LajiUiModule } from '../../../laji-ui/src/lib/laji-ui.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { detectLangFromPath } from 'projects/laji/src/app/app.module';
 import { setLocale } from 'projects/laji/src/app/locale/locale.component';
 import { LocaleModule } from './locale/locale.module';
@@ -33,54 +33,56 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
 }
 
 @NgModule({ bootstrap: [AppComponent],
-    declarations: [
-        AppComponent,
-        NavbarComponent
-    ], imports: [GraphQLModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        CommonModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useClass: LazyTranslateLoader
-            }
-        }),
-        LocaleModule,
-        ToastrModule.forRoot(),
-        SharedModule.forRoot(),
-        DropdownModule,
-        AppRoutingModule,
-        AppComponentModule,
-        LajiUiModule], providers: [
-        { provide: APP_ID, useValue: 'laji-app' },
-        { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: API_BASE_URL, useValue: environment.apiBase },
-        provideAppInitializer(() => {
-          const platformLocation = inject(PlatformLocation);
-          const translate = inject(TranslateService);
+  declarations: [
+    AppComponent,
+    NavbarComponent
+  ], imports: [
+    GraphQLModule,
+    BrowserAnimationsModule,
+    BrowserModule,
+    CommonModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useClass: LazyTranslateLoader
+      }
+    }),
+    LocaleModule,
+    ToastrModule.forRoot(),
+    SharedModule.forRoot(),
+    DropdownModule,
+    AppRoutingModule,
+    AppComponentModule,
+    LajiUiModule],
+  providers: [
+    { provide: APP_ID, useValue: 'laji-app' },
+    { provide: APP_BASE_HREF, useValue: '/' },
+    { provide: API_BASE_URL, useValue: environment.apiBase },
+    provideAppInitializer(() => {
+      const platformLocation = inject(PlatformLocation);
+      const translate = inject(TranslateService);
 
-          const path = platformLocation.pathname;
-          const lang = detectLangFromPath(path, ['es', 'fr'], 'en');
+      const path = platformLocation.pathname;
+      const lang = detectLangFromPath(path, ['es', 'fr'], 'en');
 
-          translate.setFallbackLang((environment as any).defaultLang ?? 'en');
-          return setLocale(lang);
-        }),
-        DocumentService,
-        { provide: ErrorHandler, useClass: LajiErrorHandler },
-        LocalizeRouterService,
-        { provide: LocationStrategy, useClass: PathLocationStrategy },
-        {
-            provide: Logger,
-            deps: [LajiApiClientBService],
-            useFactory: createLoggerLoader
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideNgxWebstorage(
-      		withNgxWebstorageConfig({ prefix: 'kerttu-global-', separator: '' }),
-      		withLocalStorage(),
-      		withSessionStorage()
-        ),
-    ] })
+      translate.setFallbackLang((environment as any).defaultLang ?? 'en');
+      return setLocale(lang);
+    }),
+    DocumentService,
+    { provide: ErrorHandler, useClass: LajiErrorHandler },
+    LocalizeRouterService,
+    { provide: LocationStrategy, useClass: PathLocationStrategy },
+    {
+      provide: Logger,
+      deps: [LajiApiClientBService],
+      useFactory: createLoggerLoader
+    },
+    provideHttpClient(withInterceptorsFromDi()),
+    provideNgxWebstorage(
+      withNgxWebstorageConfig({ prefix: 'kerttu-global-', separator: '' }),
+      withLocalStorage(),
+      withSessionStorage()
+    ),
+  ] })
 
 export class AppModule { }

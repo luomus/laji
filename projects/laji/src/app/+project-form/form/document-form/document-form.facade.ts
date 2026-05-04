@@ -14,7 +14,6 @@ import deepmerge from 'deepmerge';
 import moment from 'moment';
 import { LocalStorage } from 'ngx-webstorage';
 import { Global } from 'projects/laji/src/environments/global';
-import { Person } from '../../../shared/model/Person';
 import { Logger } from '../../../shared/logger';
 import { LajiFormUtil } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-util.service';
 import equals from 'deep-equal';
@@ -27,6 +26,7 @@ type Form = components['schemas']['Form'];
 type Annotation = components['schemas']['store-annotation'];
 type Document = components['schemas']['store-document'];
 type NamedPlace = components['schemas']['store-namedPlace'];
+type Person = components['schemas']['SensitivePerson'];
 
 export enum FormError {
   notFoundForm = 'notFoundForm',
@@ -169,7 +169,7 @@ export class DocumentFormFacade {
               ? of(namedPlace)
               : (existingDocument
                 ? of(existingDocument)
-                : this.fetchEmptyData(form, user as Person, namedPlace as NamedPlace)
+                : this.fetchEmptyData(form, user, namedPlace as NamedPlace)
               ).pipe(map(documentModel => {
                 if (isFormError(documentModel)) {
                   return documentModel;

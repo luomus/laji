@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { Information } from 'projects/laji/src/app/shared/model/Information';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Information = components['schemas']['Information'];
 
 @Injectable({providedIn: 'root'})
 export class InformationService {

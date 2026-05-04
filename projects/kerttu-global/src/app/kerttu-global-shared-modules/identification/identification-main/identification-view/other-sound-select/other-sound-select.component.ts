@@ -16,11 +16,11 @@ import { IGlobalSpecies, TaxonTypeEnum } from '../../../../../kerttu-global-shar
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-    selector: 'bsg-other-sound-select',
-    templateUrl: './other-sound-select.component.html',
-    styleUrls: ['./other-sound-select.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bsg-other-sound-select',
+  templateUrl: './other-sound-select.component.html',
+  styleUrls: ['./other-sound-select.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class OtherSoundSelectComponent implements OnChanges {
   @Input() taxonTypes = [TaxonTypeEnum.bird];

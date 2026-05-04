@@ -530,7 +530,7 @@
   "haseka.statistics.title": "Tilasto",
   "haseka.submissions.chooseFormat": "Aineiston lataus",
   "haseka.submissions.dateCreated": "Luontipäivämäärä",
-  "haseka.submissions.dateEdited": "Tallennusaika",
+  "haseka.submissions.dateEdited": "Muokattu viimeksi",
   "haseka.submissions.dateEnd": "Loppupvm",
   "haseka.submissions.dateObserved": "Havaintopvm",
   "haseka.submissions.dateStart": "Alkupvm",

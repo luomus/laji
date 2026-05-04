@@ -484,7 +484,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   private fetchLabels(keys: string[]): Observable<{[key: string]: string}> {
-    const obs = keys.map(key => this.triplestoreLabelService.get(key, this.lang).pipe(map(val => ({
+    const obs = keys.map(key => this.triplestoreLabelService.get(key).pipe(map(val => ({
         key,
         label: val
       }))));

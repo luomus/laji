@@ -12,7 +12,7 @@ import { UserNameTemplateComponent } from '../../../kerttu-global-shared/compone
     standalone: false
 })
 export class UserTableComponent implements OnInit {
-  @ViewChild(UserNameTemplateComponent, { static: true }) public userNameTemplate!: UserNameTemplateComponent;
+  @ViewChild(UserNameTemplateComponent, { static: true }) private userNameTemplate!: UserNameTemplateComponent;
 
   @Input() data?: IUserStat[] = [];
 

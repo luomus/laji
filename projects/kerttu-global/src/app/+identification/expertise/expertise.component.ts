@@ -1,12 +1,14 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Observable, Subscription, forkJoin } from 'rxjs';
-import { Profile } from '../../../../../laji/src/app/shared/model/Profile';
-import BirdwatchingActivityLevelEnum = Profile.BirdwatchingActivityLevelEnum;
-import BirdSongRecognitionSkillLevel = Profile.BirdSongRecognitionSkillLevel;
-import BirdSongRecognitionSkillLevelEnum = Profile.BirdSongRecognitionSkillLevelEnum;
 import { AreaService } from '../../../../../laji/src/app/shared/service/area.service';
 import { DialogService } from '../../../../../laji/src/app/shared/service/dialog.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Profile = components['schemas']['store-profile'];
+type BirdwatchingActivityLevelEnum = Profile['birdwatchingActivityLevel'];
+type BirdSongRecognitionSkillLevel = components['schemas']['store-birdSongRecognitionSkillLevel'];
+type BirdSongRecognitionSkillLevelEnum = BirdSongRecognitionSkillLevel['birdSongRecognitionSkillLevel'];
 
 @Component({
     selector: 'bsg-expertise',

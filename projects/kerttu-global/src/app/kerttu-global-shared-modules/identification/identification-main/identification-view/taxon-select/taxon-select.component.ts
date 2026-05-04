@@ -19,11 +19,11 @@ interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
 }
 
 @Component({
-    selector: 'bsg-taxon-select',
-    templateUrl: './taxon-select.component.html',
-    styleUrls: ['./taxon-select.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bsg-taxon-select',
+  templateUrl: './taxon-select.component.html',
+  styleUrls: ['./taxon-select.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class TaxonSelectComponent implements OnChanges {
 

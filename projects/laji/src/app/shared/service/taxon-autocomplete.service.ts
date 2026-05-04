@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
 import { map, concatMap, toArray } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from './triplestore-label.service';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
@@ -18,13 +17,12 @@ export interface TaxaWithAutocomplete extends TaxonAutocompleteResponse {
 
 export class TaxonAutocompleteService {
   constructor(
-    private translate: TranslateService,
     private tripleStoreService: TriplestoreLabelService
   ) { }
 
   getInfo(taxa: TaxonAutocompleteResponse[], text: string): Observable<TaxaWithAutocomplete[]> {
     return from(taxa).pipe(
-      concatMap(taxon => this.tripleStoreService.get(taxon['taxonRank'], this.translate.getCurrentLang()).pipe(
+      concatMap(taxon => this.tripleStoreService.get(taxon['taxonRank']).pipe(
         map(rank => ({
           ...taxon,
           autocompleteDisplayName: this.getAutocompleteDisplayName(taxon, rank, text),

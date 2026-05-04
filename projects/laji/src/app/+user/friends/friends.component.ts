@@ -5,9 +5,9 @@ import { DialogService } from '../../shared/service/dialog.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { of as ObservableOf } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { Profile } from '../../shared/model/Profile';
 import { RouterLink } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
+import { ExtendedProfile } from '../../shared/service/user.service';
 
 @Component({
   selector: 'laji-friends',
@@ -19,8 +19,8 @@ import { SharedModule } from '../../shared/shared.module';
   templateUrl: './friends.component.html'
 })
 export class FriendsComponent implements OnInit, OnChanges {
-  @Input() profile!: Profile;
-  @Input() usersProfile!: Profile;
+  @Input() viewedUserId!: string;
+  @Input() usersProfile!: ExtendedProfile;
 
   public requestSend = false;
   public friends = [];
@@ -35,12 +35,12 @@ export class FriendsComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.requestSend = false;
-    this.lastId = this.profile.userID;
+    this.lastId = this.viewedUserId;
   }
 
   ngOnChanges() {
-    if (this.lastId && this.lastId !== this.profile.userID) {
-      this.lastId = this.profile.userID;
+    if (this.lastId && this.lastId !== this.viewedUserId) {
+      this.lastId = this.viewedUserId;
       this.requestSend = false;
     }
   }
@@ -50,12 +50,12 @@ export class FriendsComponent implements OnInit, OnChanges {
   }
 
   isCurrentUser() {
-    return this.profile.userID === this.usersProfile.userID;
+    return this.viewedUserId === this.usersProfile.userID;
   }
 
   alreadyFriends() {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.usersProfile.friends && this.usersProfile.friends.indexOf(this.profile.userID!) > -1;
+    return this.usersProfile.friends && this.usersProfile.friends.indexOf(this.viewedUserId) > -1;
   }
 
   sendFriendRequest(friendPersonID: string) {
@@ -73,7 +73,7 @@ export class FriendsComponent implements OnInit, OnChanges {
         : ObservableOf(this.usersProfile)
       ), )
       .subscribe(
-        profile => this.usersProfile = profile as Profile,
+        profile => this.usersProfile = profile as ExtendedProfile,
         err => this.logger.warn('Failed remove friend', err)
       );
   }
@@ -83,7 +83,7 @@ export class FriendsComponent implements OnInit, OnChanges {
     this.usersProfile.blocked = this.usersProfile.blocked!.filter(id => id !== userId);
     this.api.put('/person/profile', undefined, this.usersProfile as any)
       .subscribe(
-        profile => this.usersProfile = profile as Profile,
+        profile => this.usersProfile = profile as ExtendedProfile,
         err => this.logger.warn('Failed remove block', err)
       );
   }
@@ -91,7 +91,7 @@ export class FriendsComponent implements OnInit, OnChanges {
   acceptFriendRequest(userId: string) {
     this.api.put('/person/friends/{id}', { path: { id: userId } })
       .subscribe(
-        profile => this.usersProfile = profile as Profile,
+        profile => this.usersProfile = profile as ExtendedProfile,
         err => this.logger.warn('Failed accept friend request', err)
       );
   }

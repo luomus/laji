@@ -1,14 +1,14 @@
-import { catchError, map, switchMap, take } from 'rxjs';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { of, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { Profile } from '../../../../../laji/src/app/shared/model/Profile';
-import { prepareProfile, UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { Logger } from '../../../../../laji/src/app/shared/logger';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SharedModule } from '../../../../../laji/src/app/shared/shared.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Profile = components['schemas']['store-profile'];
 
 
 @Component({
@@ -22,16 +22,13 @@ import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
   ]
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-
-  userProfile?: Profile;
-  isCreate = true;
+  profile?: Profile;
   loading = true;
   personSelfUrl = '/';
 
   private subProfile!: Subscription;
 
   constructor(
-    private userService: UserService,
     private logger: Logger,
     private cdr: ChangeDetectorRef,
     private api: LajiApiClientBService
@@ -41,23 +38,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    this.subProfile = this.userService.user$.pipe(
-      take(1),
-      switchMap(user  => {
-        const userProfile$ = this.api.get('/person/profile').pipe(
-          catchError(() => of(undefined))
-        );
-        return userProfile$.pipe(
-          map(userProfile => ({
-            user,
-            userProfile
-          }))
-        );
-      })
-    ).subscribe({
-      next: ({user, userProfile}) => {
-        this.isCreate = !userProfile;
-        this.userProfile = prepareProfile(userProfile, user);
+    this.subProfile = this.api.get('/person/profile').subscribe({
+      next: profile => {
+        this.profile = profile;
         this.loading = false;
         this.cdr.markForCheck();
       },
@@ -77,13 +60,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   saveProfile() {
     this.loading = true;
-    ((this.isCreate
-        ? this.api.post('/person/profile', undefined, this.userProfile)
-        : this.api.put('/person/profile', undefined, this.userProfile)
-    )).subscribe({
+    this.api.put('/person/profile', undefined, this.profile).subscribe({
       next :profile => {
-        this.isCreate = false;
-        this.userProfile = profile;
+        this.profile = profile;
         this.loading = false;
         this.cdr.markForCheck();
       },

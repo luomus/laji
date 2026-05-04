@@ -1347,7 +1347,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "kerttu-global:build"
+            "buildTarget": "kerttu-global:build",
+            "hmr": false
           },
           "configurations": {
             "production": {

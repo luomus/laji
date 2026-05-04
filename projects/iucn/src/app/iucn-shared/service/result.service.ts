@@ -150,7 +150,7 @@ export class ResultService {
         'latestRedListEvaluation.redListStatus': ['MX.iucnEN', 'MX.iucnCR', 'MX.iucnVU', 'MX.iucnDD', 'MX.iucnRE', 'MX.iucnNT', 'MX.iucnLC', 'MX.iucnDD'],
       }).pipe(
         map(data => this.mapAgg(data)),
-        switchMap(data => forkJoin(data.map((res: any) => this.triplestoreLabelService.get(res.name, this.translationService.currentLang))).pipe(
+        switchMap(data => forkJoin(data.map((res: any) => this.triplestoreLabelService.get(res.name))).pipe(
           map((translations: any) => data.map((res: any, idx: number) => ({...res, name: translations[idx]})))
         )),
         tap(data => this.resultCache[year][this.translationService.currentLang] = data),

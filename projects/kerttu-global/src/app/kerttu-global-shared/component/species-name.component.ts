@@ -2,8 +2,8 @@ import { Input, Component } from '@angular/core';
 import { IGlobalSpecies, TaxonTypeEnum } from '../models';
 
 @Component({
-    selector: 'bsg-species-name',
-    template: `
+  selector: 'bsg-species-name',
+  template: `
       @if (species) {
         @if (species.taxonType !== taxonTypeEnum.other) {
           @if (species.commonName) { {{ species.commonName }} - }<i>{{ species.scientificName }}</i>
@@ -12,7 +12,7 @@ import { IGlobalSpecies, TaxonTypeEnum } from '../models';
         }
       }
     `,
-    standalone: false
+  standalone: false
 })
 export class SpeciesNameComponent {
   @Input() species?: IGlobalSpecies;

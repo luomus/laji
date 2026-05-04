@@ -1,6 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, of, of as ObservableOf, throwError } from 'rxjs';
-import { Person } from '../model/Person';
 import { isIctAdmin, UserService } from './user.service';
 import { catchError, map, switchMap, take, tap } from 'rxjs';
 import { FormService } from './form.service';
@@ -56,7 +55,7 @@ export class FormPermissionService {
     );
   }
 
-  isEditAllowed(formPermission: FormPermission, person: Person, form: FormListing): boolean {
+  isEditAllowed(formPermission: FormPermission, person: { id: string }, form: FormListing): boolean {
     return !!person.id && (
       !form.options?.restrictAccess
         || (!!formPermission.editors && formPermission.editors.indexOf(person.id) > -1)
@@ -64,7 +63,7 @@ export class FormPermissionService {
     );
   }
 
-  isAdmin(permission: FormPermission, person: Person): boolean {
+  isAdmin(permission: FormPermission, person: { id: string }): boolean {
     return !!person.id && !!permission.admins && permission.admins.indexOf(person.id) > -1;
   }
 
