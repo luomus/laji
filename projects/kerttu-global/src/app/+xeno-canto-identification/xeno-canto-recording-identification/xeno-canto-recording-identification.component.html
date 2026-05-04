@@ -1,7 +1,10 @@
 <laji-spinner [spinning]="loading" [overlay]="true" [hideContentWhileLoading]="true">
   <div class="identification-view-container">
     <div class="identification-nav">
-      <button class="btn btn-success" [disabled]="saving || loading" (click)="saveAnnotation()">{{ 'save' | translate }}</button>
+      <div class="button-container">
+        <button class="btn btn-success" [disabled]="saving || loading" (click)="saveAnnotation()">{{ 'save' | translate }}</button>
+        <button class="btn btn-default" [disabled]="saving || loading" (click)="openExportModal()">{{ (hasUnsavedChanges ? 'xenoCantoExport.saveAndExport' : 'xenoCantoExport.export') | translate }}</button>
+      </div>
     </div>
 
     @if (hasError) {

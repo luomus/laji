@@ -2,8 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { IGlobalSpecies, TaxonTypeEnum } from '../models';
 
 @Pipe({
-    name: 'filterNonSpecies',
-    standalone: false
+  name: 'filterNonSpecies',
+  pure: true,
+  standalone: false
 })
 export class FilterNonSpeciesPipe implements PipeTransform {
   transform(value: IGlobalSpecies[]): IGlobalSpecies[] {

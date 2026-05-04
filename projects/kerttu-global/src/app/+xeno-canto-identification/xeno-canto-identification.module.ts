@@ -10,7 +10,15 @@ import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatab
 import {
   XenoCantoRecordingIdentificationComponent
 } from './xeno-canto-recording-identification/xeno-canto-recording-identification.component';
+import {
+  XenoCantoExportFormComponent
+} from './xeno-canto-export-form/xeno-canto-export-form.component';
+import {
+  AnnotationBoxTableComponent
+} from './annotation-box-table/annotation-box-table.component';
 import { IdentificationModule } from '../kerttu-global-shared-modules/identification/identification.module';
+import { FilterSpeciesWithBoxesPipe } from './annotation-box-table/filter-species-with-boxes.pipe';
+import { SpeciesBoxCountPipe } from './annotation-box-table/species-box-count.pipe';
 
 @NgModule({
   imports: [
@@ -26,6 +34,10 @@ import { IdentificationModule } from '../kerttu-global-shared-modules/identifica
   declarations: [
     XenoCantoIdentificationComponent,
     XenoCantoRecordingIdentificationComponent,
+    XenoCantoExportFormComponent,
+    AnnotationBoxTableComponent,
+    FilterSpeciesWithBoxesPipe,
+    SpeciesBoxCountPipe
   ]
 })
 export class XenoCantoIdentificationModule { }

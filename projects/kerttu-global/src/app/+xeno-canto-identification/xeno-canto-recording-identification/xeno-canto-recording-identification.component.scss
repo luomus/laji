@@ -13,8 +13,13 @@
       padding: 8px 40px;
       background-color: #dde1e3;
 
-      button {
+      .button-container {
         float: right;
+        margin-right: 0.5em;
+
+        button {
+          margin-left: 0.5em;
+        }
       }
     }
 

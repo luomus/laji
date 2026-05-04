@@ -165,7 +165,7 @@ export class KerttuGlobalApi {
   }
 
   public getIdentificationXenoCantoRecording(personToken: string, lang: string, xcId: number): Observable<IGlobalRecordingWithAnnotation> {
-    const path = this.basePath + '/identification/recordings/xeno-canto/' + xcId;
+    const path = this.basePath + '/identification/xeno-canto/' + xcId;
     const params = new HttpParams().set('personToken', personToken).set('lang', lang);
 
     return this.httpClient.get<IGlobalRecordingWithAnnotation>(path, { params });
@@ -238,6 +238,13 @@ export class KerttuGlobalApi {
     params = this.queryToParams(query, params);
 
     return this.httpClient.get<PagedResult<IIdentificationHistoryResponse>>(path, { params });
+  }
+
+  public exportToXenoCanto(personToken: string, body: Record<string, any>): Observable<ISuccessResult> {
+    const path = this.basePath + '/identification/xeno-canto/export';
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.post<ISuccessResult>(path, body, { params });
   }
 
   private queryToParams(query: Record<string, any>, params: HttpParams) {

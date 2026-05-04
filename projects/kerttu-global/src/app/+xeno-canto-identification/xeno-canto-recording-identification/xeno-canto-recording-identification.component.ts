@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy, ViewChild } from '@angular/core';
-import { Observable, of, Subscription, switchMap, tap } from 'rxjs';
+import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy, OutputRefSubscription, ViewChild } from '@angular/core';
+import { catchError, Observable, of, Subscription, switchMap, tap, throwError } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import {
   IdentificationMainComponent
@@ -10,9 +10,18 @@ import { clone } from '../../../../../laji/src/app/shared/utils';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
-import { IGlobalRecording, IGlobalRecordingAnnotation, KerttuGlobalErrorEnum } from '../../kerttu-global-shared/models';
+import {
+  IGlobalRecording,
+  IGlobalRecordingAnnotation,
+  KerttuGlobalErrorEnum
+} from '../../kerttu-global-shared/models';
 import { getTranslateKeyWithTaxonType } from '../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
 import { DialogService } from '../../../../../laji/src/app/shared/service/dialog.service';
+import { ModalRef, ModalService } from '../../../../../laji-ui/src/lib/modal/modal.service';
+import {
+  XenoCantoExportFormComponent,
+  XenoCantoExportFormResult
+} from '../xeno-canto-export-form/xeno-canto-export-form.component';
 import equals from 'deep-equal';
 
 @Component({
@@ -31,11 +40,13 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
   saving = false;
   loading = false;
   hasError = false;
+  hasUnsavedChanges = false;
 
   private originalAnnotation?: IGlobalRecordingAnnotation;
-  private hasUnsavedChanges = false;
 
   private recordingSub?: Subscription;
+  private exportModalRef?: ModalRef<XenoCantoExportFormComponent>;
+  private exportModalSub?: OutputRefSubscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,6 +54,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
     private userService: UserService,
     private translate: TranslateService,
     private dialogService: DialogService,
+    private modalService: ModalService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -84,6 +96,43 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
 
   ngOnDestroy() {
     this.recordingSub?.unsubscribe();
+    this.exportModalSub?.unsubscribe();
+  }
+
+  openExportModal() {
+    const open = () => {
+      this.exportModalSub?.unsubscribe();
+
+      this.exportModalRef = this.modalService.show(XenoCantoExportFormComponent, {
+        size: 'lg',
+        initialState: { siteId: this.recording?.site?.id },
+      });
+
+      this.exportModalSub = this.exportModalRef.content!.submitForm.subscribe((data: XenoCantoExportFormResult) => {
+        this.exportModalRef!.content!.loading.set(true);
+        this.kerttuGlobalApi.exportToXenoCanto(this.userService.getToken(), data).subscribe({
+          next: () => {
+            this.exportModalRef!.hide();
+            this.dialogService.alert(this.translate.instant('xenoCantoExport.success'));
+            this.exportModalRef!.content!.loading.set(false);
+            this.cdr.markForCheck();
+          },
+          error: () => {
+            this.dialogService.alert(this.translate.instant('xenoCantoExport.error'));
+            this.exportModalRef!.content!.loading.set(false);
+            this.cdr.markForCheck();
+          }
+        });
+      });
+    };
+
+    if (this.hasUnsavedChanges) {
+      this.doSave().subscribe({
+        next: () => open()
+      });
+    } else {
+      open();
+    }
   }
 
   canDeactivate(): Observable<boolean> {
@@ -94,15 +143,19 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
   }
 
   saveAnnotation() {
+    this.doSave().subscribe();
+  }
+
+  private doSave(): Observable<any> {
     this.saving = true;
-    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording!.id, this.annotation!).subscribe({
-      next: () => {
+    return this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording!.id, this.annotation!).pipe(
+      tap(() => {
         this.originalAnnotation = clone(this.annotation);
         this.hasUnsavedChanges = false;
         this.saving = false;
         this.cdr.markForCheck();
-      },
-      error: (err) => {
+      }),
+      catchError((err) => {
         const msg = KerttuGlobalApi.getErrorMessage(err);
         if (msg === KerttuGlobalErrorEnum.invalidRecordingAnnotation) {
           this.dialogService.alert(this.translate.instant(
@@ -113,8 +166,9 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
         }
         this.saving = false;
         this.cdr.markForCheck();
-      }
-    });
+        return throwError(() => err);
+      })
+    );
   }
 
   onAnnotationChange() {

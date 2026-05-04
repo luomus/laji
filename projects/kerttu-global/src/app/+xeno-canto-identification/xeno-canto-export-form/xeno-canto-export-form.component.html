@@ -1,0 +1,41 @@
+<form (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="annotationSetName">{{ 'xenoCantoExport.annotationSetName' | translate }}</label>
+    <input
+      type="text"
+      id="annotationSetName"
+      class="form-control"
+      [(ngModel)]="annotationSet.setName"
+      name="annotationSetName"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="setRemarks">{{ 'xenoCantoExport.setRemarks' | translate }}</label>
+    <textarea
+      id="setRemarks"
+      class="form-control"
+      [(ngModel)]="annotationSet.setRemarks"
+      name="setRemarks"
+      rows="3"
+    ></textarea>
+  </div>
+
+  <hr/>
+
+  <div>
+    <h4>{{ 'xenoCantoExport.annotations' | translate: { total: totalAnnotations, boxCount: totalBoxCount } }}</h4>
+    <bsg-annotation-box-table
+      [query]="query"
+      (totalChange)="onTotalChange($event)"
+      (totalBoxCountChange)="onTotalBoxCountChange($event)"
+    ></bsg-annotation-box-table>
+  </div>
+
+  <div class="form-actions">
+    <lu-button [role]="'primary'" [disabled]="!annotationSet.setName.trim() || totalAnnotations === 0" [loading]="loading()">
+      {{ 'xenoCantoExport.submit' | translate }}
+    </lu-button>
+  </div>
+</form>
+

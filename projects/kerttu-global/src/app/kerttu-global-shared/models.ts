@@ -202,18 +202,29 @@ export interface IIdentificationHistoryQuery {
   includeSkipped?: boolean;
   site?: number;
   taxonTypes?: TaxonTypeEnum[];
+  hasBoxes?: boolean;
 }
 
 export interface IIdentificationHistoryResponse {
   recording: {
     id: number;
+    xenoCantoId?: number;
     site: IGlobalSite;
   };
   annotation: {
     created: string;
-    species: IGlobalSpecies[];
+    species: IdentificationHistorySpecies[];
     status: AnnotationStatusEnum;
   };
+}
+
+export interface IdentificationHistorySpecies extends IGlobalSpecies {
+  boxCount?: number;
+}
+
+export interface XenoCantoAnnotationSet {
+  setName: string;
+  setRemarks?: string;
 }
 
 export enum CommentType {
