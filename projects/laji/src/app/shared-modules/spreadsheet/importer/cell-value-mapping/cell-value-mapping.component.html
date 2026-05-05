@@ -32,14 +32,6 @@
         (mappingChanged)="onMapping($event)"
       ></laji-special-taxon-id>
     }
-    @case (specials.informalTaxonGroupID) {
-      <laji-special-informal-taxon-groups
-        [field]="field"
-        [invalidValues]="invalid"
-        [mapping]="valueMap[field.key]"
-        (mappingChanged)="onMapping($event)"
-      ></laji-special-informal-taxon-groups>
-    }
     @case (specials.unitTaxon) {
       <laji-special-taxon-name
         [field]="field"

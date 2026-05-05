@@ -20,7 +20,6 @@ import { ToolSuccessComponent } from './shared/tool-success/tool-success.compone
 import { StepperComponent } from './shared/stepper/stepper.component';
 import { TaxonAutocompleteModule } from '../taxon-autocomplete/taxon-autocomplete.module';
 // eslint-disable-next-line max-len
-import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mapping/special-informal-taxon-groups/special-informal-taxon-groups.component';
 import { CanSplitToPipe } from './excel-generator/pipes/can-split-to.pipe';
 import { SpreadsheetService } from './service/spreadsheet.service';
 import { MappingService } from './service/mapping.service';
@@ -62,7 +61,6 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
     SpecialTaxonNameComponent,
     ToolSuccessComponent,
     StepperComponent,
-    SpecialInformalTaxonGroupsComponent,
     CanSplitToPipe,
     UserMappingButtonComponent,
     FieldItemComponent,

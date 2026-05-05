@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { Image } from '../../../shared/model/Image';
+import { components } from 'projects/laji-api-client-b/generated/api';
+
+type Image = components['schemas']['Image'];
 
 @Component({
     selector: 'laji-print-images',
