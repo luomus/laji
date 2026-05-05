@@ -29,6 +29,7 @@ import { BookType } from 'xlsx';
 import { Global } from '../../../../environments/global';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
 import { ObservationTableSettingsComponent } from './observation-table-settings.component';
+import { DataFetchMode } from '../../../+observation/observation-data.service';
 
 const replaceColSortLang = (sort: string, lang: string) => (
   (sort || '').replace(/%longLang%/g, {
@@ -62,6 +63,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @ViewChild('dataTable', { static: true }) public datatable?: DatatableComponent;
   @ViewChild(ObservationTableSettingsComponent, { static: true }) public settingsModal!: ObservationTableSettingsComponent;
 
+  @Input() mode: DataFetchMode = 'unit';
   @Input() query!: WarehouseQueryInterface;
   @Input() pageSize?: number;
   @Input() page = 1;
@@ -291,14 +293,17 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       this.lang,
       this.useStatistics
     );
+    const orderBy = [...this.orderBy];
+    if (this.defaultOrder) {
+      orderBy.push(this.defaultOrder);
+    }
     const list$ = this.resultService.getList(
       this.query,
       this.getSelectFields(this.columnSelector.columns, this.query),
       page,
       this.pageSize,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      [...this.orderBy, this.defaultOrder!],
-      this.lang
+      this.mode,
+      orderBy
     );
 
     this.fetchSub = (this.isAggregate ? aggregate$ : list$)
@@ -332,7 +337,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       this.tableColumnService.getSelectFields(this.columnSelector.columns, this.query),
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       [...this.orderBy, this.defaultOrder!],
-      this.lang
+      this.mode
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data.results, columns, type as BookType, 'laji-data'))
     ).subscribe(

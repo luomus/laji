@@ -18,6 +18,7 @@ import { DocumentViewerFacade } from '../../shared-modules/document-viewer/docum
 import { Subscription } from 'rxjs';
 import { startWith, tap } from 'rxjs/operators';
 import { LocalStorageService } from 'ngx-webstorage';
+import { DataFetchMode } from '../observation-data.service';
 
 const DEFAULT_PAGE_SIZE = 1000;
 
@@ -35,6 +36,7 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   @ViewChild('aggregatedDataTable') public aggregatedDataTable?: ObservationTableComponent;
 
+  @Input() dataMode: DataFetchMode = 'unit';
   @Input({ required: true }) query!: WarehouseQueryInterface;
   @Input({ required: true }) visible!: boolean;
 
