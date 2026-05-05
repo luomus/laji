@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, Subscription } from 'rxjs';
-import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
-import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+
+type InformalTaxonGroup = components['schemas']['store-informalTaxonGroup'];
 
 @Component({
     selector: 'laji-informal-group-select',
@@ -23,7 +25,7 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
 
   constructor(
     public translate: TranslateService,
-    private informalTaxonService: InformalTaxonGroupApi
+    private api: LajiApiClientBService
   ) { }
 
   ngOnInit() {
@@ -46,20 +48,20 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
     this.selectedInformalGroup = undefined;
 
     if (!this.id) {
-      this.informalTaxonService.informalTaxonGroupFindRoots()
+      this.api.get('/informal-taxon-groups/roots')
         .subscribe(data => this.informalGroups = data.results);
       return;
     }
 
     combineLatest(
-      this.informalTaxonService.informalTaxonGroupGetChildren(this.id),
-      this.informalTaxonService.informalTaxonGroupFindById(this.id)
+      this.api.get('/informal-taxon-groups/{id}/children', { path: { id: this.id }}),
+      this.api.get('/informal-taxon-groups/{id}', { path: { id: this.id }})
     ).subscribe(data => {
       this.informalGroups = data[0].results;
       this.selectedInformalGroup = data[1];
     });
 
-    this.informalTaxonService.informalTaxonGroupGetParent(this.id)
+    this.api.get('/informal-taxon-groups/{id}/parent', { path: { id: this.id }})
       .subscribe(data => this.parentGroup = data, () => {});
   }
 }

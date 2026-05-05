@@ -2,7 +2,6 @@ import { filter, map, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges,
 OnInit, ChangeDetectorRef} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ChartDataset, ChartOptions, Tooltip } from 'chart.js';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
@@ -15,7 +14,7 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
     selector: 'laji-horizontal-chart',
     templateUrl: './horizontal-chart.component.html',
     styleUrls: ['./horizontal-chart.component.scss'],
-    providers: [InformalTaxonGroupApi, HorizontalChartDataService],
+    providers: [HorizontalChartDataService],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })

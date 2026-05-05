@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { IColMap, IFormField, IUserMappings, IValueMap, TUserValueMap, VALUE_IGNORE } from '../model/excel';
 import { convertAnyToWGS84GeoJSON } from '@luomus/laji-map/lib/utils';
 import { convertYkjToGeoJsonFeature } from '../../../root/coordinate-utils';
-import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { SpreadsheetFacade } from '../spreadsheet.facade';
 import * as Util from '../../../shared/utils';
 
@@ -12,7 +11,6 @@ export enum SpecialTypes {
   person = 'person',
   taxonID = 'taxonID',
   unitTaxon = 'unitTaxon',
-  informalTaxonGroupID = 'informalTaxonGroupID',
   namedPlaceID = 'namedPlaceID',
   dateOptionalTime = 'dateOptionalTime',
   dateTime = 'dateTime',
@@ -61,8 +59,6 @@ export class MappingService {
     'gatherings[*].taxonCensus[*].censusTaxonID': SpecialTypes.taxonID,
     'gatherings[*].units[*].keywords[*]': SpecialTypes.keywords,
     'gatherings[*].units[*].hostID': SpecialTypes.taxonID,
-    'gatherings[*].units[*].informalTaxonGroup': SpecialTypes.informalTaxonGroupID,
-    'gatherings[*].units[*].informalTaxonGroups[*]': SpecialTypes.informalTaxonGroupID,
     'gatherings[*].dateBegin': SpecialTypes.dateOptionalTime,
     'gatherings[*].dateEnd': SpecialTypes.dateOptionalTime,
     'gatherings[*].units[*].identifications[*].detDate': SpecialTypes.dateOptionalTime,
@@ -71,17 +67,6 @@ export class MappingService {
     'gatherings[*].units[*].atlasCode': SpecialTypes.atlasCode,
     'gatherings[*].observationMinutes': SpecialTypes.positiveInteger
   };
-
-  static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result: string[] = [], parent = ''): string[] {
-    groups.forEach(group => {
-      const name = parent ? `${parent} — ${group.name}` : group.name;
-      result.push(`${name} (${group.id})`);
-      if (Array.isArray(group.hasSubGroup)) {
-        MappingService.informalTaxonGroupsToList(group.hasSubGroup as InformalTaxonGroup[], result, name);
-      }
-    });
-    return result;
-  }
 
   constructor(
     private translationService: TranslateService,
@@ -303,10 +288,6 @@ export class MappingService {
     return null;
   }
 
-  mapInformalTaxonGroupId(value: unknown): string|null {
-    return this.pickValue(value, /(MVL\.[0-9]+)/);
-  }
-
   mapTaxonId(value: unknown): string|null {
     return this.pickValue(value, /(MX\.[0-9]+)/);
   }
@@ -395,9 +376,6 @@ export class MappingService {
         break;
       case SpecialTypes.taxonID:
         targetValue = this.mapTaxonId(targetValue || value);
-        break;
-      case SpecialTypes.informalTaxonGroupID:
-        targetValue = this.mapInformalTaxonGroupId(targetValue || value);
         break;
       case SpecialTypes.unitTaxon:
         targetValue = this.mapUnitTaxon(targetValue || value);

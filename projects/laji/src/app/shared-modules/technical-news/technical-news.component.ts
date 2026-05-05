@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { map, catchError, switchMap } from 'rxjs';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { HomeDataService } from '../../+home/home-data.service';
-import { News } from '../../+news/news.facade';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
@@ -12,11 +11,11 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
     standalone: false
 })
 export class TechnicalNewsComponent {
-  news$: Observable<News[] | null> = this.homeDataService.getHomeData().pipe(
+  news$ = this.homeDataService.getHomeData().pipe(
     switchMap(data => data?.news
       ? of(data.news)
       : this.api.get('/news', { query: { tag: 'technical', pageSize: 5 } })),
-    map(res => res.results as News[]),
+    map(res => res.results),
     catchError(() => of(null))
   );
 

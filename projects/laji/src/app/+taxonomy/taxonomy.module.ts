@@ -9,7 +9,6 @@ import { InfoCardComponent } from './taxon/info-card/info-card.component';
 import { IUCNComponent } from './iucn/iucn.component';
 import { TaxonTreeComponent } from './taxon/taxon-tree/taxon-tree.component';
 import { SpeciesListComponent } from './species/species-list/species-list.component';
-import { InformalTaxonGroupApi } from '../shared/api/InformalTaxonGroupApi';
 import { TaxonInfoComponent } from './taxon/info-card/taxon-overview/taxon-info/taxon-info.component';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { DatatableModule } from '../shared-modules/datatable/datatable.module';
@@ -84,7 +83,6 @@ import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
     ModalModule
   ],
   providers: [
-    InformalTaxonGroupApi,
     TaxonomySearch,
     TaxonTaxonomyService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},

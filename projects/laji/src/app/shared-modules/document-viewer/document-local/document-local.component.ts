@@ -29,7 +29,7 @@ export class DocumentLocalComponent implements OnChanges {
   collectionContestFormId = 'MHL.25';
 
   mapData: any[] = [];
-  imageData: {[key: string]: any} = {};
+  imageData: {[key: string]: Image[]} = {};
   fields: Record<string, any[]> = {};
   formLogo?: string;
   gatheringGeometryJSONPath?: string | string[];

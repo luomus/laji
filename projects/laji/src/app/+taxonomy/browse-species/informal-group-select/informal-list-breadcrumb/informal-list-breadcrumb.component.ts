@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { InformalTaxonGroup } from '../../../../shared/model/InformalTaxonGroup';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type InformalTaxonGroup = components['schemas']['store-informalTaxonGroup'];
 
 @Component({
     selector: 'laji-informal-list-breadcrumb',
