@@ -109,17 +109,17 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
       });
 
       this.exportModalSub = this.exportModalRef.content!.submitForm.subscribe((data: XenoCantoExportFormResult) => {
-        this.exportModalRef!.content!.loading.set(true);
+        this.exportModalRef!.content!.exportLoading.set(true);
         this.kerttuGlobalApi.exportToXenoCanto(this.userService.getToken(), data).subscribe({
           next: () => {
             this.exportModalRef!.hide();
             this.dialogService.alert(this.translate.instant('xenoCantoExport.success'));
-            this.exportModalRef!.content!.loading.set(false);
+            this.exportModalRef!.content!.exportLoading.set(false);
             this.cdr.markForCheck();
           },
           error: () => {
             this.dialogService.alert(this.translate.instant('xenoCantoExport.error'));
-            this.exportModalRef!.content!.loading.set(false);
+            this.exportModalRef!.content!.exportLoading.set(false);
             this.cdr.markForCheck();
           }
         });

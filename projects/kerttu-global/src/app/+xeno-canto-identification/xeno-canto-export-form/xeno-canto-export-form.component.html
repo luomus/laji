@@ -1,13 +1,11 @@
-<form (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <label for="annotationSetName">{{ 'xenoCantoExport.annotationSetName' | translate }}</label>
     <input
       type="text"
       id="annotationSetName"
       class="form-control"
-      [(ngModel)]="annotationSet.setName"
-      name="annotationSetName"
-      required
+      formControlName="setName"
     />
   </div>
   <div class="form-group">
@@ -15,8 +13,7 @@
     <textarea
       id="setRemarks"
       class="form-control"
-      [(ngModel)]="annotationSet.setRemarks"
-      name="setRemarks"
+      formControlName="setRemarks"
       rows="3"
     ></textarea>
   </div>
@@ -24,18 +21,32 @@
   <hr/>
 
   <div>
-    <h4>{{ 'xenoCantoExport.annotations' | translate: { total: totalAnnotations, boxCount: totalBoxCount } }}</h4>
-    <bsg-annotation-box-table
-      [query]="query"
-      (totalChange)="onTotalChange($event)"
-      (totalBoxCountChange)="onTotalBoxCountChange($event)"
-    ></bsg-annotation-box-table>
+    <h4>
+      @if (annotationsLoading() || !totalAnnotations()) {
+        {{ 'xenoCantoExport.annotations' | translate }}
+      } @else {
+        {{ 'xenoCantoExport.annotations.withCounts' | translate: { total: totalAnnotations(), boxCount: totalBoxCount() } }}
+      }
+    </h4>
+    @if (annotationsError()) {
+      <lu-alert [type]="'danger'">
+        <div [innerHtml]="'xenoCantoExport.annotations.error' | translate"></div>
+      </lu-alert>
+    } @else if (totalAnnotations() !== 0) {
+      <bsg-annotation-box-table
+        [data]="data()"
+        [loading]="annotationsLoading()"
+        (pageChange)="onPageChange($event)"
+        (sortChange)="onSortChange($event)"
+      ></bsg-annotation-box-table>
+    } @else {
+      <p>{{ 'xenoCantoExport.noAnnotations' | translate }}</p>
+    }
   </div>
 
   <div class="form-actions">
-    <lu-button [role]="'primary'" [disabled]="!annotationSet.setName.trim() || totalAnnotations === 0" [loading]="loading()">
+    <lu-button [role]="'primary'" [disabled]="form.invalid || form.disabled" [loading]="exportLoading()">
       {{ 'xenoCantoExport.submit' | translate }}
     </lu-button>
   </div>
 </form>
-

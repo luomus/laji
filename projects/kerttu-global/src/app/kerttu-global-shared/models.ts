@@ -203,6 +203,7 @@ export interface IIdentificationHistoryQuery {
   site?: number;
   taxonTypes?: TaxonTypeEnum[];
   hasBoxes?: boolean;
+  exportedToXenoCanto?: boolean;
 }
 
 export interface IIdentificationHistoryResponse {
