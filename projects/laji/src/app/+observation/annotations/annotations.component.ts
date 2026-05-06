@@ -3,13 +3,14 @@ ChangeDetectorRef, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } f
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Subscription, Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
 import { DeleteOwnDocumentService } from '../../shared/service/delete-own-document.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 type AnnotationTag = components['schemas']['store-tag'];
+type WarehouseQueryListQuery = paths['/warehouse/query/unit/list']['get']['parameters']['query'];
 
 @Component({
     selector: 'laji-annotations',
@@ -19,7 +20,6 @@ type AnnotationTag = components['schemas']['store-tag'];
     standalone: false
 })
 export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
-
   @Input() query?: WarehouseQueryInterface;
   @Input() showPaginator = true;
   @Input() limit = 1000;
@@ -47,10 +47,8 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
   subscriptionDeleteOwnDocument?: Subscription;
   childEvent: any;
 
-
-
   constructor(
-    private warehouseApi: WarehouseApi,
+    private api: LajiApiClientBService,
     private translations: TranslateService,
     private cd: ChangeDetectorRef,
     private annotationService: AnnotationService,
@@ -82,7 +80,6 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-
   updateAnnotations() {
     if (!this.query) {
       return;
@@ -96,44 +93,46 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
     this.lang = this.translations.currentLang;
     this.loading = true;
     this.cd.markForCheck();
-    this.subAnnotation = this.warehouseApi.warehouseQueryListGet(
-      this.query,
-      [
-        'document.documentId',
-        'unit.media.thumbnailURL',
-        'document.createdDate',
-        'unit.media.fullURL',
-        'gathering.displayDateTime',
-        'gathering.country',
-        'gathering.biogeographicalProvince',
-        'gathering.locality',
-        'gathering.municipality',
-        'gathering.team',
-        'unit.annotationCount',
-        'unit.unitId',
-        'unit.linkings.originalTaxon.scientificName',
-        'unit.linkings.taxon.scientificName',
-        'unit.linkings.originalTaxon.id',
-        'unit.linkings.taxon.id',
-        'unit.linkings.taxon.vernacularName',
-        'unit.reportedInformalTaxonGroup',
-        'unit.linkings.originalTaxon.vernacularName',
-        'unit.wild',
-        'document.linkings.collectionQuality',
-        'unit.interpretations.reliability',
-        'unit.interpretations.effectiveTags',
-        'unit.interpretations.individualCount',
-        'unit.interpretations.invasiveControlEffectiveness',
-        'unit.interpretations.invasiveControlled',
-        'unit.interpretations.needsCheck',
-        'unit.interpretations.needsIdentification',
-        'unit.interpretations.recordQuality',
-        'unit.unitId'
-      ],
-      ['document.createdDate DESC', 'unit.unitId ASC'],
-      18,
-      this.page
-    ).subscribe(data => {
+    const selected = [
+      'document.documentId',
+      'unit.media.thumbnailURL',
+      'document.createdDate',
+      'unit.media.fullURL',
+      'gathering.displayDateTime',
+      'gathering.country',
+      'gathering.biogeographicalProvince',
+      'gathering.locality',
+      'gathering.municipality',
+      'gathering.team',
+      'unit.annotationCount',
+      'unit.unitId',
+      'unit.linkings.originalTaxon.scientificName',
+      'unit.linkings.taxon.scientificName',
+      'unit.linkings.originalTaxon.id',
+      'unit.linkings.taxon.id',
+      'unit.linkings.taxon.vernacularName',
+      'unit.reportedInformalTaxonGroup',
+      'unit.linkings.originalTaxon.vernacularName',
+      'unit.wild',
+      'document.linkings.collectionQuality',
+      'unit.interpretations.reliability',
+      'unit.interpretations.effectiveTags',
+      'unit.interpretations.individualCount',
+      'unit.interpretations.invasiveControlEffectiveness',
+      'unit.interpretations.invasiveControlled',
+      'unit.interpretations.needsCheck',
+      'unit.interpretations.needsIdentification',
+      'unit.interpretations.recordQuality',
+      'unit.unitId'
+    ];
+    const query: WarehouseQueryListQuery = {
+      ...this.query as any,
+      selected,
+      orderBy: ['document.createdDate DESC', 'unit.unitId ASC'],
+      pageSize: 18,
+      page: this.page
+    };
+    this.api.get('/warehouse/query/unit/list', { query }).subscribe(data => {
       this.cd.markForCheck();
       this.result = data;
       this.paginatorDisplay = this.result.total > this.result.pageSize;
@@ -142,9 +141,7 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
       this.size = this.result.pageSize;
       this.loading = false;
     });
-
   }
-
 
   pageChanged(event: any) {
     this.page = event.page;
@@ -156,5 +153,4 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
       this.subscriptionDeleteOwnDocument.unsubscribe();
     }
   }
-
 }

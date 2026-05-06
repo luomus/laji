@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs';
-import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { DownloadRequestResponse, isDownloadRequest, asDownloadRequest } from '../shared-modules/download-request/models';
 import { HeaderService } from '../shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
     template: `
@@ -36,7 +36,7 @@ export class CitableDownloadComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private warehouseApi: WarehouseApi,
+    private api: LajiApiClientBService,
     private headerService: HeaderService,
     private translate: TranslateService
   ) { }
@@ -45,8 +45,8 @@ export class CitableDownloadComponent implements OnInit {
     this.downloadRequest$ = this.route.params.pipe(
       map(params => params['id']),
       tap(id => { this.id = id; }),
-      switchMap(id => this.warehouseApi.downloads(id)),
-      tap(response => this.updateHeaders(response))
+      switchMap(id => this.api.get('/warehouse/downloads/' as any, { path: { id } })),
+      tap((response: any) => this.updateHeaders(response))
     );
   }
 

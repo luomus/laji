@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 type Form = components['schemas']['Form'];
+type WarehouseAggregateQuery = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
 interface DatasetStats {
   count?: number;
@@ -29,18 +29,24 @@ export class DatasetAboutComponent implements OnChanges {
   private collectionId$ = this.collectionIdSubject.asObservable();
 
   constructor(
-    private warehouseService: WarehouseApi
+    private api: LajiApiClientBService
   ) {
     this.stats$ = this.collectionId$.pipe(switchMap(collectionId => {
       if (!collectionId) {
         return of({});
       }
 
-      const query: WarehouseQueryInterface = {
-        collectionId: [collectionId],
-        taxonCounts: true
+      const query: WarehouseAggregateQuery = {
+        collectionId: [collectionId].join(','),
+        aggregateBy: [],
+        orderBy: [],
+        pageSize: 1,
+        page: 1,
+        onlyCount: false,
+        taxonCounts: true,
       };
-      return this.warehouseService.warehouseQueryAggregateGet(query, [], [], 1, 1, false, false).pipe(
+
+      return this.api.get('/warehouse/query/unit/aggregate', { query }).pipe(
         map(res => res.results[0] || {})
       );
     }));

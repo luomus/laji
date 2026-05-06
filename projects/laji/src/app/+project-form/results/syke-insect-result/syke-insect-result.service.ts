@@ -1,41 +1,29 @@
 import { Injectable } from '@angular/core';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs';
 import { map, share, switchMap } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { PagedResult } from '../../../shared/model/PagedResult';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { paths } from 'projects/laji-api-client-b/generated/api';
 
-export type SEASON = 'spring'|'fall'|'winter';
+type UnitStatisticsQuery = paths['/warehouse/query/unit/statistics']['get']['parameters']['query'];
+type GatheringStatisticsQuery = paths['/warehouse/query/gathering/statistics']['get']['parameters']['query'];
 
-interface Censuses {
-  [season: string]: {years: number[]; documentIds: {[year: string]: string[]}};
-}
-interface ObservationStats {
-  [season: string]: {speciesStats: any[]; otherStats: any[]; years: number[]};
-}
-interface CountsPerYearForTaxon {
-  [season: string]: {[year: string]: {count: string; censusCount: string}};
-}
+export type SEASON = 'spring' | 'fall' | 'winter';
 
 export interface YearDays {
   [year: number]: string[];
 }
 
-// comment
-
 @Injectable({
   providedIn: 'root'
 })
 export class SykeInsectResultService {
-
   private seasonRanges = [4 , 10];
-  private yearCache?: YearDays;
   private yearObs?: Observable<YearDays>;
-  private yearDayObs?: Observable<string[]>;
-  private speciesListCache?: any[];
 
   constructor(
-    private warehouseApi: WarehouseApi
+    private api: LajiApiClientBService,
   ) { }
 
   getFilterParams(year?: number|number[], season?: string, taxonId?: string|string[], collectionId?: string): WarehouseQueryInterface {
@@ -49,75 +37,79 @@ export class SykeInsectResultService {
   }
 
   getYears(routeId?: string, collectionId?: string): Observable<YearDays> {
-    this.yearObs = this.warehouseApi.warehouseQueryUnitStatisticsGet(
-      {...this.getFilterParams(undefined, undefined, undefined, collectionId), namedPlaceId: routeId ? [routeId] : []},
-      [
+    const query: UnitStatisticsQuery = {
+      ...this.getFilterParams(undefined, undefined, undefined, collectionId) as any,
+      namedPlaceId: routeId ? [routeId] : [],
+      aggregateBy: [
         'unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day',
         'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'
       ],
-      undefined,
-      10000,
-      1,
-      undefined,
-      false
-    ).pipe(
-        map(res => res.results),
-        map(res => {
-          const yearsDays: any = {};
-          for (const resItem of res) {
-            const year = resItem['aggregateBy']['gathering.conversions.year'];
-            const date = resItem['aggregateBy']['gathering.conversions.year'] + '-'
-                       + this.padMonthDay(resItem['aggregateBy']['gathering.conversions.month']) + '-'
-                       + this.padMonthDay(resItem['aggregateBy']['gathering.conversions.day']);
-            if (!yearsDays.hasOwnProperty(year)) {
-              yearsDays[year] = [date];
-            } else {
-              if (!yearsDays[year].includes(date)) {
-                yearsDays[year].push(date);
-              }
-            }
+      pageSize: 10000,
+      page: 1,
+      onlyCount: false
+    };
 
-            yearsDays[year] = this.sortDate(yearsDays[year]);
+    this.yearObs = this.api.get('/warehouse/query/unit/statistics', { query }).pipe(
+      map(res => res.results),
+      map(res => {
+        const yearsDays: any = {};
+        for (const resItem of res) {
+          const year = resItem['aggregateBy']['gathering.conversions.year'];
+          const date = resItem['aggregateBy']['gathering.conversions.year'] + '-'
+                      + this.padMonthDay(resItem['aggregateBy']['gathering.conversions.month']) + '-'
+                      + this.padMonthDay(resItem['aggregateBy']['gathering.conversions.day']);
+          if (!yearsDays.hasOwnProperty(year)) {
+            yearsDays[year] = [date];
+          } else {
+            if (!yearsDays[year].includes(date)) {
+              yearsDays[year].push(date);
+            }
           }
-          this.yearCache = yearsDays;
-          return yearsDays;
-        }),
-        share()
+
+          yearsDays[year] = this.sortDate(yearsDays[year]);
+        }
+        return yearsDays;
+      }),
+      share()
     );
     return this.yearObs;
   }
 
   getRouteList(collectionId?: string): Observable<any[]> {
+    const query: GatheringStatisticsQuery = {
+      ...this.getFilterParams(undefined, undefined, undefined, collectionId) as any,
+      aggregateBy: [
+        'document.namedPlace.id', 'document.namedPlace.name', 'gathering.conversions.ykj10kmCenter.lat',
+        'gathering.conversions.ykj10kmCenter.lon', 'document.namedPlace.municipalityDisplayName'
+      ],
+      orderBy: ['document.namedPlace.name'],
+      pageSize: 10000,
+      page: 1,
+      onlyCount: false
+    };
     return this.getList(
-      this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-        this.getFilterParams(undefined, undefined, undefined, collectionId),
-        ['document.namedPlace.id', 'document.namedPlace.name', 'gathering.conversions.ykj10kmCenter.lat',
-          'gathering.conversions.ykj10kmCenter.lon', 'document.namedPlace.municipalityDisplayName'],
-        ['document.namedPlace.name'],
-        10000,
-        1,
-        undefined,
-        false
-      )
+      this.api.get('/warehouse/query/gathering/statistics', { query })
     );
   }
 
   getCensusList(year?: number, season?: SEASON, routeId?: string, collectionId?: string): Observable<any[]> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const query: WarehouseQueryInterface = {collectionId: [collectionId!], namedPlaceId: [routeId!]};
     const unitQuery: WarehouseQueryInterface = {...this.getFilterParams(year, season, undefined, collectionId), namedPlaceId: routeId ? [routeId] : []};
 
+    const query: GatheringStatisticsQuery = {
+      collectionId: collectionId!,
+      namedPlaceId: routeId!,
+      aggregateBy: [
+        'document.documentId', 'document.namedPlace.name', 'document.namedPlace.municipalityDisplayName',
+        'document.namedPlace.ykj10km.lat', 'document.namedPlace.ykj10km.lon', 'gathering.eventDate.begin', 'gathering.eventDate.end'],
+      orderBy: ['gathering.eventDate.begin DESC'] as any,
+      pageSize: 10000,
+      page: 1,
+      onlyCount: true
+    };
+
     return this.getList(
-      this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-        query,
-        ['document.documentId', 'document.namedPlace.name', 'document.namedPlace.municipalityDisplayName',
-          'document.namedPlace.ykj10km.lat', 'document.namedPlace.ykj10km.lon', 'gathering.eventDate.begin', 'gathering.eventDate.end'],
-        ['gathering.eventDate.begin DESC'],
-        10000,
-        1,
-        undefined,
-        true
-      )
+      this.api.get('/warehouse/query/gathering/statistics', { query })
     ).pipe(
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       switchMap(result => this.addUnitStatsToResults(result, unitQuery, year, routeId!))
@@ -130,21 +122,21 @@ export class SykeInsectResultService {
         'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName']
       : ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection',
         'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'];
-    query = {...query, namedPlaceId: [routeId]};
-    return this.getList(
-      this.warehouseApi.warehouseQueryUnitStatisticsGet(
-        query,
-        aggregate,
-        undefined,
-        10000,
-        1,
-        undefined,
-        false
-      )
-    ).pipe(
+
+    const newQuery: UnitStatisticsQuery = {
+      ...query as any,
+      namedPlaceId: [routeId],
+      aggregateBy: aggregate,
+      pageSize: 10000,
+      page: 1,
+      onlyCount: false
+    };
+
+    return this.api.get('/warehouse/query/unit/statistics', { query: newQuery }).pipe(
+      map(res => res.results),
       map(list => {
         const statsByDocumentId: any = {};
-        list.map(l => {
+        list.map((l: any) => {
           statsByDocumentId[l['document.documentId']] = l;
         });
         return statsByDocumentId;
@@ -190,17 +182,17 @@ export class SykeInsectResultService {
           : ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection',
         'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName',
         'unit.linkings.taxon.id'];
-    const query = {...this.getFilterParams(year, season, undefined, collectionId), namedPlaceId: [routeId]};
+    const query: UnitStatisticsQuery = {
+      ...this.getFilterParams(year, season, undefined, collectionId) as any,
+      namedPlaceId: [routeId],
+      aggregateBy: aggregate,
+      orderBy: aggregate.filter((el, index) => index === 2),
+      pageSize: 10000,
+      page: 1,
+      onlyCount: false
+    };
     return this.getList(
-      this.warehouseApi.warehouseQueryUnitStatisticsGet(
-        query,
-        aggregate,
-        aggregate.filter((el, index) => index === 2),
-        10000,
-        1,
-        undefined,
-        false
-      )
+      this.api.get('/warehouse/query/unit/statistics', { query })
     ).pipe(
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       map(result => this.mergeElementsByProperties(collectionId!, result, onlySections, year!, season, year === undefined
@@ -370,7 +362,4 @@ export class SykeInsectResultService {
 
     return array;
   }
-
-
-
 }

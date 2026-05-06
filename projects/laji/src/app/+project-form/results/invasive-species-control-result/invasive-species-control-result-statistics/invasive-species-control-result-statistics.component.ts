@@ -1,18 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { map, switchMap, share, tap } from 'rxjs';
-import { InvasiveControlEffectiveness } from '../invasive-species-control-result.component';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { paths } from 'projects/laji-api-client-b/generated/api';
 
-export interface InvasiveControlEffectivenessStatisticsQueryResult {
-  results: {
-    aggregateBy: {
-    'gathering.conversions.year': string;
-      'unit.interpretations.invasiveControlEffectiveness': InvasiveControlEffectiveness;
-    };
-    count: number;
-  }[];
-}
+type WarehouseAggregateQuery = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
 interface Row {
   year: number;
@@ -52,19 +44,25 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
   ];
 
   constructor(
-    private warehouseApi: WarehouseApi
+    private api: LajiApiClientBService
   ) { }
 
   ngOnInit(): void {
     const query$ = combineLatest(this.municipality$, this.taxon$).pipe(
-      tap(() => {this.loading$.next(true);}),
-      switchMap(([municipality, taxon]) => this.warehouseApi.warehouseQueryAggregateGet(
-      {finnishMunicipalityId: municipality, taxonId: taxon},
-      ['unit.interpretations.invasiveControlEffectiveness','gathering.conversions.year'],
-      undefined,
-      10000
-    )));
-    this.rows$ = query$.pipe(map((response: InvasiveControlEffectivenessStatisticsQueryResult) => {
+      tap(() => {
+        this.loading$.next(true);
+      }),
+      switchMap(([municipality, taxon]) => {
+        const query: WarehouseAggregateQuery = {
+          finnishMunicipalityId: municipality,
+          taxonId: taxon,
+          aggregateBy: ['unit.interpretations.invasiveControlEffectiveness', 'gathering.conversions.year'],
+          pageSize: 10000
+        };
+        return this.api.get('/warehouse/query/unit/aggregate', { query });
+      })
+    );
+    this.rows$ = query$.pipe(map(response => {
       const byYear: any = response.results.reduce((_byYear: any, item) => {
         const year = item.aggregateBy['gathering.conversions.year'];
         if (!_byYear[year]) {
@@ -107,5 +105,4 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
   onTaxonChange(taxon: string) {
     this.taxonChange.emit(taxon);
   }
-
 }
