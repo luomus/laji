@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { forkJoin, Observable, of } from 'rxjs';
-import {map, share, switchMap, tap} from 'rxjs';
+import {
+  forkJoin, Observable, of, map, share, switchMap, tap
+} from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { PagedResult } from '../../../shared/model/PagedResult';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { paths } from 'projects/laji-api-client-b/generated/api';
 
-export type SEASON = 'spring'|'fall'|'winter';
+type UnitStatisticsQuery = paths['/warehouse/query/unit/statistics']['get']['parameters']['query'];
+type GatheringStatisticsQuery = paths['/warehouse/query/gathering/statistics']['get']['parameters']['query'];
+
+export type SEASON = 'spring' | 'fall' | 'winter';
 
 interface Censuses {
   [season: string]: {years: number[]; documentIds: {[year: string]: string[]}};
@@ -34,7 +39,7 @@ export class WbcResultService {
   private speciesListCache?: any[];
 
   constructor(
-    private warehouseApi: WarehouseApi
+    private api: LajiApiClientBService,
   ) { }
 
   getFilterParams(year?: number|number[], season?: SEASON, birdAssociationArea?: string, taxonId?: string|string[]): WarehouseQueryInterface {
@@ -61,39 +66,38 @@ export class WbcResultService {
     } else if (this.yearObs) {
       return this.yearObs;
     }
-    this.yearObs = this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-      this.getFilterParams(),
-      undefined,
-      undefined,
-      10000,
-      1,
-      undefined,
-      false
-    ).pipe(
-        map(res => res.results[0]),
-        map(res => {
-          const startYear = this.getCensusStartYearFromDateString(res.oldestRecord);
-          const endYear = this.getCensusStartYearFromDateString(res.newestRecord);
-          const years = [];
-          for (let i = endYear; i >= startYear; i--) {
-            years.push(i);
-          }
-          this.yearCache = years;
-          return years;
-        }),
-        share()
+    const query: GatheringStatisticsQuery = {
+      ...this.getFilterParams() as any,
+      pageSize: 10000,
+      page: 1,
+      onlyCount: false
+    };
+    this.yearObs = this.api.get('/warehouse/query/gathering/statistics', { query }).pipe(
+      map(res => res.results[0]),
+      map(res => {
+        const startYear = this.getCensusStartYearFromDateString(res.oldestRecord);
+        const endYear = this.getCensusStartYearFromDateString(res.newestRecord);
+        const years = [];
+        for (let i = endYear; i >= startYear; i--) {
+          years.push(i);
+        }
+        this.yearCache = years;
+        return years;
+      }),
+      share()
     );
     return this.yearObs;
   }
 
   getRouteCountBySpecies(year: number, season?: SEASON, birdAssociationArea?: string): Observable<any> {
-    const getPage$ = (pageNumber: number) => this.warehouseApi.warehouseQueryStatisticsGet(
-      this.getFilterParams(year, season, birdAssociationArea, [this.birdId, this.mammalId]),
-      ['unit.linkings.taxon.speciesId', 'document.namedPlaceId'],
-      undefined,
-      10000,
-      pageNumber
-    );
+    const getPage$ = (pageNumber: number) => {
+      const query: UnitStatisticsQuery = {
+        ...this.getFilterParams(year, season, birdAssociationArea, [this.birdId, this.mammalId]) as any,
+        pageSize: 10000,
+        page: pageNumber,
+      };
+      return this.api.get('/warehouse/query/unit/statistics', { query });
+    };
     return getPage$(1).pipe(
       switchMap(res => {
         if (res.lastPage > res.currentPage) {
@@ -114,41 +118,40 @@ export class WbcResultService {
   }
 
   getRouteCount(year: number, season?: SEASON, birdAssociationArea?: string): Observable<number> {
-    return this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-      this.getFilterParams(year, season, birdAssociationArea),
-      ['document.namedPlaceId'],
-      undefined,
-      1,
-      1
-    ).pipe(
+    const query: GatheringStatisticsQuery = {
+      ...this.getFilterParams(year, season, birdAssociationArea) as any,
+      aggregateBy: ['document.namedPlaceId'],
+      pageSize: 1,
+      page: 1,
+    };
+
+    return this.api.get('/warehouse/query/gathering/statistics', { query }).pipe(
       map(res => res.total)
     );
   }
 
   getRouteLengthSum(year: number|number[], season?: SEASON, birdAssociationArea?: string): Observable<any> {
-    return this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-      this.getFilterParams(year, season, birdAssociationArea),
-      undefined,
-      undefined,
-      1,
-      1,
-      undefined,
-      false
-    ).pipe(
+    const query: GatheringStatisticsQuery = {
+      ...this.getFilterParams(year, season, birdAssociationArea) as any,
+      pageSize: 1,
+      page: 1,
+      onlyCount: false,
+    };
+
+    return this.api.get('/warehouse/query/gathering/statistics', { query }).pipe(
       map(res => res.results[0].lineLengthSum)
     );
   }
 
   getIndividualCountSumBySpecies(year?: number|number[], season?: SEASON, birdAssociationArea?: string) {
-    return this.warehouseApi.warehouseQueryStatisticsGet(
-      this.getFilterParams(year, season, birdAssociationArea, [this.birdId, this.mammalId]),
-      ['unit.linkings.taxon.speciesId'],
-      undefined,
-      10000,
-      1,
-      undefined,
-      false
-    ).pipe(
+    const query: UnitStatisticsQuery = {
+      ...this.getFilterParams(year, season, birdAssociationArea, [this.birdId, this.mammalId]) as any,
+      aggregateBy: ['unit.linkings.taxon.speciesId'],
+      pageSize: 10000,
+      page: 1,
+      onlyCount: false,
+    };
+    return this.api.get('/warehouse/query/unit/statistics', { query }).pipe(
       map(res => res.results),
       map(res => {
         const result = {};
@@ -165,71 +168,76 @@ export class WbcResultService {
       return of(this.speciesListCache);
     }
 
+    const query: UnitStatisticsQuery = {
+      ...this.getFilterParams(year, season, birdAssociationArea, [this.birdId, this.mammalId]) as any,
+      aggregateBy: [
+        'unit.linkings.taxon.speciesId', 'unit.linkings.taxon.speciesNameFinnish',
+        'unit.linkings.taxon.speciesScientificName', 'unit.linkings.taxon.speciesTaxonomicOrder'
+      ],
+      orderBy: ['unit.linkings.taxon.speciesTaxonomicOrder'],
+      pageSize: 10000,
+      page: 1,
+      onlyCount
+    };
+
     return this.getList(
-      this.warehouseApi.warehouseQueryStatisticsGet(
-        this.getFilterParams(year, season, birdAssociationArea, [this.birdId, this.mammalId]),
-        ['unit.linkings.taxon.speciesId', 'unit.linkings.taxon.speciesNameFinnish', 'unit.linkings.taxon.speciesScientificName',
-          'unit.linkings.taxon.speciesTaxonomicOrder'],
-        ['unit.linkings.taxon.speciesTaxonomicOrder'],
-        10000,
-        1,
-        undefined,
-        onlyCount
-      )
+      this.api.get('/warehouse/query/unit/statistics', { query })
     ).pipe(tap(list => { if (useCache) { this.speciesListCache = list; } }));
   }
 
   getRouteList(): Observable<any[]> {
+    const query: GatheringStatisticsQuery = {
+      ...this.getFilterParams() as any,
+      aggregateBy: [
+        'document.namedPlace.id', 'document.namedPlace.name', 'document.namedPlace.ykj10km.lat',
+        'document.namedPlace.ykj10km.lon', 'document.namedPlace.municipalityDisplayName',
+        'document.namedPlace.birdAssociationAreaDisplayName'
+      ],
+      orderBy: ['document.namedPlace.birdAssociationAreaDisplayName', 'document.namedPlace.name'],
+      pageSize: 10000,
+      page: 1,
+      onlyCount: false
+    };
     return this.getList(
-      this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-        this.getFilterParams(),
-        ['document.namedPlace.id', 'document.namedPlace.name', 'document.namedPlace.ykj10km.lat',
-          'document.namedPlace.ykj10km.lon', 'document.namedPlace.municipalityDisplayName',
-          'document.namedPlace.birdAssociationAreaDisplayName'],
-        ['document.namedPlace.birdAssociationAreaDisplayName', 'document.namedPlace.name'],
-        10000,
-        1,
-        undefined,
-        false
-      )
+      this.api.get('/warehouse/query/gathering/statistics', { query })
     );
   }
 
   getCensusList(year?: number, season?: SEASON): Observable<any[]> {
-    const query = this.getFilterParams(year, season);
-
+    const query: GatheringStatisticsQuery = {
+      ...this.getFilterParams(year, season) as any,
+      aggregateBy: [
+        'document.documentId', 'document.namedPlace.name', 'document.namedPlace.municipalityDisplayName',
+        'document.namedPlace.ykj10km.lat', 'document.namedPlace.ykj10km.lon',
+        'document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin'
+      ],
+      orderBy: ['document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin DESC'],
+      pageSize: 10000,
+      page: 1,
+      onlyCount: true
+    };
     return this.getList(
-      this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-        query,
-        ['document.documentId', 'document.namedPlace.name', 'document.namedPlace.municipalityDisplayName',
-          'document.namedPlace.ykj10km.lat', 'document.namedPlace.ykj10km.lon',
-          'document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin'],
-        ['document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin DESC'],
-        10000,
-        1,
-        undefined,
-        true
-      )
+      this.api.get('/warehouse/query/gathering/statistics', { query })
     ).pipe(
-      switchMap(result => this.addUnitStatsToResults(result, query))
+      switchMap(result => this.addUnitStatsToResults(result, query as any))
     );
   }
 
   getCensusListForRoute(routeId: string): Observable<any[]> {
-    const query = {...this.getFilterParams(), namedPlaceId: [routeId]};
+    const query: GatheringStatisticsQuery = {
+      ...this.getFilterParams() as any,
+      aggregateBy: ['document.documentId', 'gathering.eventDate.begin'],
+      orderBy: ['gathering.eventDate.begin DESC'],
+      namedPlaceId: [routeId],
+      pageSize: 10000,
+      page: 1,
+      onlyCount: true
+    };
 
     return this.getList(
-      this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-        query,
-        ['document.documentId', 'gathering.eventDate.begin'],
-        ['gathering.eventDate.begin DESC'],
-        10000,
-        1,
-        undefined,
-        true
-      )
+      this.api.get('/warehouse/query/gathering/statistics', { query })
     ).pipe(
-      switchMap(result => this.addUnitStatsToResults(result, query))
+      switchMap(result => this.addUnitStatsToResults(result, query as any))
     );
   }
 
@@ -255,23 +263,24 @@ export class WbcResultService {
   }
 
   getCountsByYearForSpecies(taxonId: string, birdAssociationArea?: string, taxonCensus?: string): Observable<CountsPerYearForTaxon> {
+    const gatheringQuery: GatheringStatisticsQuery = {
+      ...this.getFilterParams(undefined, undefined, birdAssociationArea) as any,
+      taxonCensus: taxonCensus ? [taxonCensus] : undefined,
+      aggregateBy: ['gathering.conversions.year', 'gathering.conversions.month'],
+      pageSize: 10000,
+      page: 1,
+    };
+    const unitQuery: UnitStatisticsQuery = {
+      ...this.getFilterParams(undefined, undefined, birdAssociationArea) as any,
+      taxonId,
+      taxonCensus: taxonCensus ? taxonCensus : undefined,
+      pageSize: 10000,
+      page: 1,
+      onlyCount: false
+    };
     return forkJoin([
-      this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-        {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonCensus: taxonCensus ? [taxonCensus] : undefined},
-        ['gathering.conversions.year', 'gathering.conversions.month'],
-        undefined,
-        10000,
-        1
-      ),
-      this.warehouseApi.warehouseQueryStatisticsGet(
-        {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonId: [taxonId], taxonCensus: taxonCensus ? [taxonCensus] : undefined},
-        ['gathering.conversions.year', 'gathering.conversions.month'],
-        undefined,
-        10000,
-        1,
-        undefined,
-        false
-      )
+      this.api.get('/warehouse/query/gathering/statistics', { query: gatheringQuery }),
+      this.api.get('/warehouse/query/unit/statistics', { query: unitQuery })
     ]).pipe(map(data => {
       const result: CountsPerYearForTaxon = {fall: {}, winter: {}, spring: {}};
       this.addCounts(data[1].results, 'count', result, false, 'individualCountSum');
@@ -281,16 +290,15 @@ export class WbcResultService {
   }
 
   private addUnitStatsToResults(result: any[], query: WarehouseQueryInterface) {
+    const unitQuery: UnitStatisticsQuery = {
+      ...query as any,
+      aggregateBy: ['document.documentId'],
+      pageSize: 10000,
+      page: 1,
+      onlyCount: false
+    };
     return this.getList(
-      this.warehouseApi.warehouseQueryStatisticsGet(
-        query,
-        ['document.documentId'],
-        undefined,
-        10000,
-        1,
-        undefined,
-        false
-      )
+      this.api.get('/warehouse/query/unit/statistics', { query: unitQuery })
     ).pipe(
       map(list => {
         const statsByDocumentId: any = {};
@@ -316,15 +324,16 @@ export class WbcResultService {
   }
 
   private getCensusesForRoute(routeId: string): Observable<Censuses> {
-    return this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-      {...this.getFilterParams(), namedPlaceId: [routeId]},
-      ['gathering.conversions.year', 'gathering.conversions.month', 'document.documentId'],
-      ['gathering.conversions.year', 'gathering.conversions.month'],
-      10000,
-      1,
-      undefined,
-      false
-    ).pipe(
+    const query: GatheringStatisticsQuery = {
+      ...this.getFilterParams() as any,
+      namedPlaceId: [routeId],
+      aggregateBy: ['gathering.conversions.year', 'gathering.conversions.month', 'document.documentId'],
+      orderBy: ['gathering.conversions.year', 'gathering.conversions.month'],
+      pageSize: 10000,
+      page: 1,
+      onlyCount: false
+    };
+    return this.api.get('/warehouse/query/gathering/statistics', { query }).pipe(
       map(results => results.results),
       map(data => {
         const result: Censuses = {};
@@ -355,15 +364,17 @@ export class WbcResultService {
   }
 
   private getObservationStatsList(routeId: string, taxonId: string): Observable<PagedResult<any[]>> {
-    return this.warehouseApi.warehouseQueryStatisticsGet(
-      {...this.getFilterParams(undefined, undefined, undefined, taxonId), namedPlaceId: [routeId]},
-      ['unit.linkings.taxon.speciesId', 'unit.linkings.taxon.speciesNameFinnish', 'gathering.conversions.year',
+    const query: UnitStatisticsQuery = {
+      ...this.getFilterParams(undefined, undefined, undefined, taxonId) as any,
+      aggregateBy: ['unit.linkings.taxon.speciesId', 'unit.linkings.taxon.speciesNameFinnish', 'gathering.conversions.year',
         'gathering.conversions.month', 'unit.linkings.taxon.speciesTaxonomicOrder'],
-      ['unit.linkings.taxon.speciesTaxonomicOrder'],
-      10000,
-      1,
-      undefined,
-      false);
+      orderBy: ['unit.linkings.taxon.speciesTaxonomicOrder'],
+      namedPlaceId: [routeId],
+      pageSize: 10000,
+      page: 1,
+      onlyCount: false,
+    };
+    return this.api.get('/warehouse/query/unit/statistics', { query }) as any;
   }
 
   private parseObservationStatsLists(censuses: Censuses, birdResultList: any[], loxiaResultList: any[], mammalResultList: any[]): ObservationStats {
