@@ -49,14 +49,16 @@
         {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
         {{ audio.locality ? (audio.locality | titlecase) : audio.site.name }}@if (audio.site.country) {, {{ audio.site.country }} }
       </span>
-      <span class="ml-2"><i [luPopover]="audioInfoPopover" [placement]="'left'" [mode]="'click'" [rootElement]="'body'" class="glyphicon glyphicon-info-sign info-sign"></i></span>
-      <ng-template #audioInfoPopover>
-        <div (click)="$event.stopPropagation()">
-          <label class="mb-0">{{ 'identification.fileName' | translate }}:</label>
-          <br>
-          <span class="audio-url">{{ audio.url | fileName }}</span>
-        </div>
-      </ng-template>
+      @if (showFileName) {
+        <span class="ml-2"><i [luPopover]="audioInfoPopover" [placement]="'left'" [mode]="'click'" [rootElement]="'body'" class="glyphicon glyphicon-info-sign info-sign"></i></span>
+        <ng-template #audioInfoPopover>
+          <div (click)="$event.stopPropagation()">
+            <label class="mb-0">{{ 'identification.fileName' | translate }}:</label>
+            <br>
+            <span class="audio-url">{{ audio.url | fileName }}</span>
+          </div>
+        </ng-template>
+      }
     </ng-template>
     <div *lajiIfWidthAboveBreakpoint="'sm'" class="dragbar" (mousedown)="onDragStart()"></div>
   </div>

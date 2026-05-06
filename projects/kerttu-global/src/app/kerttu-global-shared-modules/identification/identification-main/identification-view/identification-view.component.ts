@@ -78,6 +78,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) recording!: IGlobalRecording;
   @Input({ required: true }) annotation!: IGlobalRecordingAnnotation;
   @Input() buttonsDisabled = false;
+  @Input() showFileName = true;
 
   selectedSpecies: IGlobalSpeciesWithAnnotation[] = [];
   selectedOtherSounds: IGlobalSpeciesWithAnnotation[] = [];
