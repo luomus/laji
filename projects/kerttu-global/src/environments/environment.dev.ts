@@ -8,7 +8,7 @@ export const environment = {
   disableAnalytics: true,
   sourceKotka: 'KE.3',
   systemID: 'KE.1181',
-  apiBase: 'https://staging-kerttu-backend.laji.fi/laji-api',
+  apiBase: 'https://kerttu-global-dev.laji.fi/api',
   loginCheck: '',
   loginUrl: 'https://fmnh-ws-test-24.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test-24.it.helsinki.fi/laji-auth/self',
