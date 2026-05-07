@@ -18,6 +18,7 @@
 .settings/
 *.swp
 .vim*
+.cursorignore
 
 # misc
 /.angular/cache
