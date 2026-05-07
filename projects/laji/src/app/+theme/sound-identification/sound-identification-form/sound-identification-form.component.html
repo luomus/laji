@@ -35,37 +35,31 @@
 <div class="soundIdentificationParams">
   <div class="form-group d-inline-block">
     <lu-checkbox (input)="toggleIncludeSdm()" [checked]="includeSdm === true"><label for="includeSdm">{{ 'theme.soundIdentification.sdm' | translate }}</label></lu-checkbox>
-    <div *ngIf="includeSdm">
-      <input
-        [(ngModel)]="latitude"
-        class="form-control input-sm"
-        type="number"
-        min="-90"
-        max="90"
-        id="latitude"
-        placeholder="{{'theme.soundIdentification.latitude' | translate}}"
-      >
-    </div>
-
-    <div class="form-group d-inline-block">
-      <label for="overlap">
-        {{ 'theme.soundIdentification.overlap' | translate }}
-        <laji-info [html]="'theme.soundIdentification.overlap.info' | translate" [showOnHover]="true"></laji-info>
-      </label>
-      <input
-        [(ngModel)]="overlap"
-        class="form-control input-sm"
-        type="number"
-        min="-180"
-        max="180"
-        id="longitude"
-        placeholder="{{'theme.soundIdentification.longitude' | translate}}"
-      />
-      <laji-datepicker [(ngModel)]="date" [toLastOfYear]="true" class="time-end"></laji-datepicker>
-    </div>
+    @if (includeSdm) {
+      <div>
+        <input
+          [(ngModel)]="latitude"
+          class="form-control input-sm"
+          type="number"
+          min="-90"
+          max="90"
+          id="latitude"
+          placeholder="{{'theme.soundIdentification.latitude' | translate}}"
+        >
+        <input
+          [(ngModel)]="longitude"
+          class="form-control input-sm"
+          type="number"
+          min="-180"
+          max="180"
+          id="longitude"
+          placeholder="{{'theme.soundIdentification.longitude' | translate}}"
+        />
+        <laji-datepicker [(ngModel)]="date" [toLastOfYear]="true" class="time-end"></laji-datepicker>
+      </div>
+    }
   </div>
 </div>
-
 
 <div class="form-group">
   <p>

@@ -16,7 +16,7 @@
     <laji-sound-identification-table [data]="data" [loading]="loading"></laji-sound-identification-table>
   }
 
-  @if (data === undefined || data.length === 0) {
+  @if (data?.length === 0) {
     <div class="alert alert-warning">
       <span>{{"theme.soundIdentification.noIdentification" | translate}}</span>
     </div>
