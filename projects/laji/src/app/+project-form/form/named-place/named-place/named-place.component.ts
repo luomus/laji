@@ -354,7 +354,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       municipality: municipality || 'all',
       birdAssociationArea,
       tags: (tags || []).join(','),
-      includeUnits: documentForm.options?.namedPlaceOptions?.includeUnits,
       selectedFields: selected.filter(field => field.charAt(0) !== '_').join(','),
       pageSize: 100000
     };

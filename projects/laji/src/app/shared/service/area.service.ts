@@ -12,13 +12,13 @@ export class AreaService {
 
   constructor(private api: LajiApiClientBService) {}
 
-  areasLookup?: Observable<{[id: string]: Area}>;
+  private areasLookup?: Observable<{[id: string]: Area}>;
 
   getAllAsLookUp(): Observable<{[id: string]: Area}> {
     if (this.areasLookup) {
       return this.areasLookup;
     }
-    this.areasLookup = this.api.get('/areas', { query: { page: 1, pageSize: 10000 } }).pipe(
+    this.areasLookup = this.api.get('/areas', { query: { page: 1, pageSize: 100000 } }).pipe(
       map(paged => dictionarifyByKey(paged.results, 'id')),
       shareReplay(1)
     );

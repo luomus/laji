@@ -39,7 +39,6 @@ export class ExcelToolService {
 
       return this.api.get('/named-places', { query: {
         collectionID: form.collectionID,
-        includeUnits: form.options?.namedPlaceOptions?.includeUnits,
         selectedFields: selected.map(field => field.replace('$.', '')).join(','),
         pageSize: 100000
       } }).pipe(
@@ -110,7 +109,7 @@ export class ExcelToolService {
         convert$ = this.translateService.get(value === true || value === 'true' ? 'yes' : 'no');
         break;
       case 'label':
-        convert$ = this.triplestoreLabelService.get(String(value), this.translateService.getCurrentLang());
+        convert$ = this.triplestoreLabelService.get(String(value));
         break;
     }
     return convert$ ? (convert$.pipe(

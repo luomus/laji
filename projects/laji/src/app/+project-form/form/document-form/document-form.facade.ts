@@ -425,9 +425,7 @@ export class DocumentFormFacade {
   }
 
   private addNamedPlaceData(form: Form, data: Unsaved<Document>, np: NamedPlace): Unsaved<Document> {
-    const populate: any = np.acceptedDocument ?
-      Util.clone(np.acceptedDocument) :
-      (np.prepopulatedDocument ? Util.clone(np.prepopulatedDocument) : {});
+    const populate = np.prepopulatedDocument ? Util.clone(np.prepopulatedDocument) : {};
 
     populate.namedPlaceID = np.id;
 

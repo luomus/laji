@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Chart, ChartDataset, ChartOptions, ChartType, Tooltip } from 'chart.js';
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest, filter } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs';
 import { LineWithLine } from 'projects/laji/src/app/shared-modules/chart/line-with-line';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,7 +8,7 @@ import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-e
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api';
 
-type AggregateRow = components['schemas']['WarehouseDwQuery_AggregateRow'];
+type AggregateResponse = components['schemas']['WarehouseDwQuery_AggregateResponse'];
 
 interface PairCountObject {
   year: string;
@@ -124,10 +124,7 @@ export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
           }
         },
       )),
-      map((res) => {
-        const data = res as { results: AggregateRow[] };
-        return data.results.map(item => ({ year: item.aggregateBy['gathering.conversions.year'], pairCount: item.pairCountSum }));
-      })
+      map(res => res.results.map(item => ({ year: item.aggregateBy['gathering.conversions.year'], pairCount: item.pairCountSum })))
     );
   }
 
@@ -147,9 +144,8 @@ export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
         }
       )),
       map((res) => {
-        const data = res as { results: AggregateRow[] };
         const documentCountArray: DocumentCountObject[] = [];
-        data.results.forEach(documentResult => {
+        res.results.forEach(documentResult => {
           const year = documentResult.aggregateBy['gathering.conversions.year'];
           const index = documentCountArray.findIndex(item => item.year === year);
           if (index !== -1) {

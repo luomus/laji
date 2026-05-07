@@ -75,24 +75,26 @@ export class SpreadsheetService {
       map(() => this.translateService.getCurrentLang()),
       startWith(this.translateService.getCurrentLang()),
       distinctUntilChanged(),
-      switchMap(lang =>
+      switchMap(() =>
         ObservableForkJoin([
-          this.labelService.get('MY.document', lang),
-          this.labelService.get('MZ.gatheringEvent', lang),
-          this.labelService.get('MY.taxonCensusClass', lang),
-          this.labelService.get('MY.gathering', lang),
-          this.labelService.get('MY.gatheringFactClass', lang),
-          this.labelService.get('MY.identification', lang),
-          this.labelService.get('MY.unit', lang),
-          this.labelService.get('MY.unitFactClass', lang),
-          this.labelService.get('MZ.unitGathering', lang)
+          this.labelService.get('MY.document'),
+          this.labelService.get('MZ.gatheringEvent'),
+          this.labelService.get('MY.taxonCensusClass'),
+          this.labelService.get('MY.gathering'),
+          this.labelService.get('MY.gatheringFactClass'),
+          this.labelService.get('MY.identification'),
+          this.labelService.get('MY.unit'),
+          this.labelService.get('MY.unitFactClass'),
+          this.labelService.get('MZ.unitGathering')
         ])
       ),
       map(([document, gatheringEvent, taxonCensus, gatherings, gatheringFact, identifications, units, unitFact, unitGathering]) =>
          ({ document, gatheringEvent, taxonCensus, gatherings, gatheringFact, identifications, units, unitFact, unitGathering })
       )
     )
-      .subscribe(translations => this.translations = translations);
+      .subscribe(translations => {
+        this.translations = translations;
+      });
 
   }
 

@@ -133,24 +133,24 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   successNavigation() {
     if (this.vm.form.options?.simple) {
       this.router.navigate(this.localizeRouterService.translateRoute([this.vm.form.category ? '/save-observations' : '/vihko']));
-      return;
-    }
-    if (this.vm.form.options?.openForm) {
+    } else if (this.vm.form.options?.openForm) {
       this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(projectRoute => {
         this.router.navigate(['./thank-you'], {relativeTo: projectRoute});
       });
-      return;
-    }
-    this.browserService.goBack(() => {
+    } else if (this.vm.form.options?.resultServiceType) {
       this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(projectRoute => {
-        const page = this.vm.form.options?.resultServiceType
-          ? 'stats'
-          : this.vm.form.options?.mobile
+        this.router.navigate(['./stats'], {relativeTo: projectRoute});
+      });
+    } else {
+      this.browserService.goBack(() => {
+        this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(projectRoute => {
+          const page = this.vm.form.options?.mobile
             ? 'about'
             : 'submissions';
-        this.router.navigate([`./${page}`], {relativeTo: projectRoute});
+          this.router.navigate([`./${page}`], {relativeTo: projectRoute});
+        });
       });
-    });
+    }
   }
 
   canDeactivate(leaveKey = 'haseka.form.leaveConfirm', cancelKey = 'haseka.form.discardConfirm') {

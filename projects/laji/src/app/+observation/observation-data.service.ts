@@ -53,9 +53,9 @@ export class ObservationDataService {
     }, query);
 
     this.lastQuery = newQuery;
-    const obs$: Observable<any> = this.dataFetchMode === 'unit'
+    const obs$ = this.dataFetchMode === 'unit'
       ? this.api.get('/warehouse/query/unit/aggregate', { query: query as WarehouseQueryUnitAggregateQParams })
-      : this.api.get('/warehouse/query/sample/aggregate' as any, { query: query as WarehouseQueryUnitAggregateQParams });
+      : this.api.get('/warehouse/query/sample/aggregate', { query: query as WarehouseQueryUnitAggregateQParams });
     this.cacheCount$ = obs$.pipe(
       filter(data => typeof data !== 'string'),
       map(data => data.results?.[0]),

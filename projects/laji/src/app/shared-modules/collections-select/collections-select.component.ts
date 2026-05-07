@@ -170,7 +170,7 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
       return of([]);
     }
 
-    const allCollections$ = this.collectionService.getAll$(lang, false).pipe(shareReplay(1));
+    const allCollections$ = this.collectionService.getAllAsKeyValue$(false).pipe(shareReplay(1));
 
     return allCollections$.pipe(
       map(data => {

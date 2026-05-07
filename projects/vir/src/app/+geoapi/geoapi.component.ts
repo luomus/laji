@@ -2,12 +2,9 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import {
   ApiKeyRequest
 } from '../../../../laji/src/app/shared-modules/download-modal/apikey-modal/apikey-modal.component';
-import { UserService } from '../../../../laji/src/app/shared/service/user.service';
-import { WarehouseApi } from '../../../../laji/src/app/shared/api/WarehouseApi';
 import { Logger } from '../../../../laji/src/app/shared/logger';
-import { TranslateService } from '@ngx-translate/core';
 import { VIR_FILTER_SHORTCUT_QUERY_PARAMS } from '../../../../laji/src/app/+observation/form/observation-form.component';
-import { SearchQueryService } from '../../../../laji/src/app/+observation/search-query.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
     selector: 'vir-geoapi',
@@ -17,12 +14,9 @@ import { SearchQueryService } from '../../../../laji/src/app/+observation/search
 })
 export class GeoapiComponent {
   constructor(
-    private warehouseService: WarehouseApi,
-    private searchQueryService: SearchQueryService,
-    private userService: UserService,
     private logger: Logger,
-    private translate: TranslateService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private api: LajiApiClientBService
   ) {}
 
   apiKey = '';
@@ -31,18 +25,15 @@ export class GeoapiComponent {
   onApiKeyRequest(req: ApiKeyRequest) {
     this.apiKeyLoading = true;
     this.apiKey = '';
-    this.warehouseService.download(
-      this.userService.getToken(),
-      'TSV_FLAT',
-      'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
-      this.searchQueryService.getQueryFromUrlQueryParams(VIR_FILTER_SHORTCUT_QUERY_PARAMS),
-      this.translate.getCurrentLang(),
-      'AUTHORITIES_VIRVA_GEOAPI_KEY',
-      {
-        dataUsePurpose: [req.reasonEnum, req.reason].filter(r => !!r).join(': '),
-        apiKeyExpires: req.expiration
-      }
-    ).subscribe(res => {
+    // The endpoint is not documented by laji-api's OpenAPI document.
+    this.api.post('/warehouse/query/download' as any, { query: {
+      downloadFormat: 'TSV_FLAT',
+      downloadIncludes: 'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
+      downloadType: 'AUTHORITIES_VIRVA_GEOAPI_KEY',
+      dataUsePurpose: [req.reasonEnum, req.reason].filter(r => !!r).join(': '),
+      apiKeyExpires: req.expiration,
+      ...VIR_FILTER_SHORTCUT_QUERY_PARAMS,
+    } }).subscribe(res => {
       this.apiKeyLoading = false;
       this.apiKey = res.apiKey;
       this.cd.markForCheck();
