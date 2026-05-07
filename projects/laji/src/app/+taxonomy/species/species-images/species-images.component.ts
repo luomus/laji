@@ -5,10 +5,11 @@ import { Subscription } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
-  selector: 'laji-species-images',
-  templateUrl: './species-images.component.html',
-  styleUrls: ['./species-images.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-species-images',
+    templateUrl: './species-images.component.html',
+    styleUrls: ['./species-images.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesImagesComponent implements OnInit, OnDestroy {
   @Input({ required: true }) search!: TaxonomySearch;

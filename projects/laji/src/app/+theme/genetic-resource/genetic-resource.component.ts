@@ -4,7 +4,7 @@ import { AbstractObservation } from '../../+observation/abstract-observation';
 import { ObservationFacade } from '../../+observation/observation.facade';
 import { WarehouseApi, WarehouseSubPath } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Util } from '../../shared/service/util.service';
+import * as Util from '../../shared/utils';
 import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { SampleTableColumnService } from './sample-table-column.service';
@@ -12,17 +12,18 @@ import { SearchQueryService } from '../../+observation/search-query.service';
 import { ObservationDataService } from '../../+observation/observation-data.service';
 
 @Component({
-  selector: 'laji-genetic-resource',
-  templateUrl: './genetic-resource.component.html',
-  styleUrls: ['./genetic-resource.component.scss'],
-  providers: [
-    ObservationFacade,
-    WarehouseApi,
-    ObservationDataService,
-    {provide: TableColumnService, useClass: SampleTableColumnService},
-    ObservationResultService
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-genetic-resource',
+    templateUrl: './genetic-resource.component.html',
+    styleUrls: ['./genetic-resource.component.scss'],
+    providers: [
+        ObservationFacade,
+        WarehouseApi,
+        ObservationDataService,
+        { provide: TableColumnService, useClass: SampleTableColumnService },
+        ObservationResultService
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GeneticResourceComponent extends AbstractObservation implements OnInit, OnDestroy {
 

@@ -3,7 +3,7 @@ import { FormPermissionService } from '../../../shared/service/form-permission.s
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { UserService } from '../../../shared/service/user.service';
 import { Logger } from '../../../shared/logger/logger.service';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -19,9 +19,10 @@ interface ViewModel {
 }
 
 @Component({
-  selector: 'laji-request',
-  templateUrl: './request.component.html',
-  styleUrls: ['./request.component.css']
+    selector: 'laji-request',
+    templateUrl: './request.component.html',
+    styleUrls: ['./request.component.css'],
+    standalone: false
 })
 export class RequestComponent implements OnInit {
   // Allow use of AccessLevel Enum in templates
@@ -48,7 +49,7 @@ export class RequestComponent implements OnInit {
       switchMap(([loggedIn]) =>
         !loggedIn
           ? of({loggedIn: false})
-          : this.formPermissionService.getFormPermission(this.collectionId, this.userService.getToken())
+          : this.formPermissionService.getFormPermission(this.collectionId)
             .pipe(
               switchMap(formPermission => this.userService.user$.pipe(
                 map(person => {
@@ -72,7 +73,7 @@ export class RequestComponent implements OnInit {
       return;
     }
     this.clicked = true;
-    this.formPermissionService.makeAccessRequest(this.collectionId, this.userService.getToken())
+    this.formPermissionService.makeAccessRequest(this.collectionId)
       .subscribe(
         () => {
           this.resetVM$.next();

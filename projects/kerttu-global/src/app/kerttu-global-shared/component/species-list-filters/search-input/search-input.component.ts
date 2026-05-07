@@ -1,12 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, OnDestroy, Output, ChangeDetectorRef, EventEmitter } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
-  selector: 'bsg-search-input',
-  templateUrl: './search-input.component.html',
-  styleUrls: ['./search-input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-search-input',
+    templateUrl: './search-input.component.html',
+    styleUrls: ['./search-input.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SearchInputComponent implements OnInit, OnDestroy {
   @Input() searchQuery? = '';

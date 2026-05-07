@@ -3,9 +3,9 @@ import { LocalStorage, SessionStorage } from 'ngx-webstorage';
 import { FieldType, ILabelPdf, ILabelField, ISetup, IViewSettings, Presets, IColumnMap } from '@luomus/label-designer';
 import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
-import { LajiApi, LajiApiService } from '../../../laji/src/app/shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
 import { SchemaService } from '../../../label-designer/src/lib/schema.service';
+import { LajiApiClientBService } from '../../../laji-api-client-b/src/laji-api-client-b.service';
 
 const NEW_SETUP: ISetup = {
   page: {
@@ -55,9 +55,10 @@ const NEW_SETUP: ISetup = {
 };
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
+    standalone: false
 })
 export class AppComponent implements OnInit {
   pdfLoading = false;
@@ -73,7 +74,7 @@ export class AppComponent implements OnInit {
     private http: HttpClient,
     private formService: SchemaService,
     @Inject(PLATFORM_ID) private platformId: any,
-    private lajiApiService: LajiApiService,
+    private api: LajiApiClientBService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -92,7 +93,7 @@ export class AppComponent implements OnInit {
 
   htmlToPdf(result: ILabelPdf) {
     if (isPlatformBrowser(this.platformId)) {
-      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, result.html)
+      this.api.post('/html-to-pdf', { responseType: 'blob' }, result.html)
         .subscribe((response) => {
           this.pdfLoading = false;
           this.cdr.detectChanges();

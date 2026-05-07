@@ -1,10 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { Image } from '../../../shared/model/Image';
+import { components } from 'projects/laji-api-client-b/generated/api';
+
+type Image = components['schemas']['Image'];
 
 @Component({
-  selector: 'laji-print-images',
-  templateUrl: './print-images.component.html',
-  styleUrls: ['./print-images.component.css']
+    selector: 'laji-print-images',
+    templateUrl: './print-images.component.html',
+    styleUrls: ['./print-images.component.css'],
+    standalone: false
 })
 export class PrintImagesComponent {
   @Input() images?: Image[];

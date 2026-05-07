@@ -1,4 +1,4 @@
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable, of, of as ObservableOf } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../../kerttu-global-shared/service/kerttu-global-api';
@@ -11,10 +11,11 @@ interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
 }
 
 @Component({
-  selector: 'bsg-taxon-select',
-  templateUrl: './taxon-select.component.html',
-  styleUrls: ['./taxon-select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-taxon-select',
+    templateUrl: './taxon-select.component.html',
+    styleUrls: ['./taxon-select.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonSelectComponent {
 
@@ -75,7 +76,7 @@ export class TaxonSelectComponent {
 
     return this.kerttuGlobalApi.getSpeciesList(
       this.userService.getToken(),
-      this.translate.currentLang,
+      this.translate.getCurrentLang(),
       {
         taxonType: this.taxonType,
         searchQuery: token,

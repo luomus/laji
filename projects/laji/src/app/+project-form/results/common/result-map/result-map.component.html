@@ -1,26 +1,34 @@
 <div class="mb-4">
   <label>{{ 'result.map.taxon.label' | translate }}</label>
-  <ng-container *ngIf="taxonOptions; else taxonLoading">
+  @if (taxonOptions) {
     <select
       class="form-control"
       (change)="onTaxonChange($event)"
       [(ngModel)]="defaultTaxon"
-    >
-      <option *ngFor="let option of taxonOptions" [value]="option.value">{{ option.label }}</option>
+      >
+      @for (option of taxonOptions; track option) {
+        <option [value]="option.value">{{ option.label }}</option>
+      }
     </select>
-  </ng-container>
+  } @else {
+    <laji-spinner class="d-block m-6"></laji-spinner>
+  }
 </div>
 <div class="mb-4">
   <label>{{ 'result.map.year.label' | translate }}</label>
-  <ng-container *ngIf="yearOptions; else taxonLoading">
+  @if (yearOptions) {
     <select
       class="form-control"
       (change)="onYearChange($event)"
       [(ngModel)]="defaultYear"
-    >
-      <option *ngFor="let option of yearOptions" [value]="option.value">{{ option.label }}</option>
+      >
+      @for (option of yearOptions; track option) {
+        <option [value]="option.value">{{ option.label }}</option>
+      }
     </select>
-  </ng-container>
+  } @else {
+    <laji-spinner class="d-block m-6"></laji-spinner>
+  }
 </div>
 <div [style.position]="'relative'">
   <laji-map
@@ -29,16 +37,13 @@
     [options]="{controls: true}"
     [data]="mapData$ | async"
     [options]="mapOptions"
-  >
+    >
   </laji-map>
   <laji-legend
     [visualization]="visualization"
     [mode]="visualizationMode"
     (modeChange)="onVisualizationModeChange($event)"
-  >
+    >
   </laji-legend>
 </div>
 
-<ng-template #taxonLoading>
-  <laji-spinner class="d-block m-6"></laji-spinner>
-</ng-template>

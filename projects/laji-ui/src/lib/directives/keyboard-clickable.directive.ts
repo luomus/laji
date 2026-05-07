@@ -2,7 +2,8 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 
 @Directive({
-  selector: '[luKeyboardClickable]'
+    selector: '[luKeyboardClickable]',
+    standalone: false
 })
 export class KeyboardClickableDirective {
   private keycodes = new Set([ENTER, SPACE]);

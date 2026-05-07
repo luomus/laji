@@ -15,23 +15,23 @@ import {
   ViewChild
 } from '@angular/core';
 import { FormApiClient } from '../../../../shared/api/FormApiClient';
-import { UserSettings, UserService } from '../../../../shared/service/user.service';
+import { UserSettings, UserService, ExtendedProfile } from '../../../../shared/service/user.service';
 import { Logger } from '../../../../shared/logger/logger.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
-import { concatMap, map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 import { Global } from '../../../../../environments/global';
 import { combineLatest, Subscription } from 'rxjs';
-import { DefaultMediaMetadata } from '../../../../shared/model/Profile';
 import type LajiForm from '@luomus/laji-form/lib/index';
 import type { Theme as LajiFormTheme } from '@luomus/laji-form/lib/themes/theme';
-import { Form } from 'projects/laji/src/app/shared/model/Form';
 import { environment } from 'projects/laji/src/environments/environment';
 import { ProjectFormService } from 'projects/laji/src/app/shared/service/project-form.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 import { ErrorSchema } from '@rjsf/utils';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-const GLOBAL_SETTINGS = '_global_form_settings_';
+type Form = components['schemas']['Form'];
+type DefaultMediaMetadata = ExtendedProfile['settings']['defaultMediaMetadata'];
 
 interface ErrorModal {
   description: string;
@@ -42,11 +42,12 @@ interface ErrorModal {
 }
 
 @Component({
-  selector: 'laji-form',
-  templateUrl: './laji-form.component.html',
-  styleUrls: ['./laji-form.component.scss'],
-  providers: [FormApiClient],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-form',
+    templateUrl: './laji-form.component.html',
+    styleUrls: ['./laji-form.component.scss'],
+    providers: [FormApiClient],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
 
@@ -64,7 +65,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
 
   static TOP_OFFSET = 50;
   static BOTTOM_OFFSET = 53.5;
-  @Input() form!: Form.SchemaForm;
+  @Input() form!: Form;
   @Input() formData: any = {};
   @Input() settingsKey: keyof UserSettings = 'formDefault';
   @Input() showShortcutButton = true;
@@ -116,7 +117,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   ngAfterViewInit() {
-    this.mount();
+    void this.mount();
   }
 
   ngOnDestroy() {
@@ -210,9 +211,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   private mountLajiForm() {
-    if (!this.settings) {
-      return;
-    }
     this.createNewLajiForm();
   }
 
@@ -262,32 +260,38 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
     }
   }
 
-  private mount() {
+  private async mount() {
     if (!this.form || !this.formData || !this.platformService.isBrowser) {
       return;
     }
+
+    // The import structure is different in local dev env / feature branches / ssr builds so need to juggle a bit.
+    const lajiFormImport = (await import('@luomus/laji-form')).default as any;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const LajiFormClass: typeof LajiForm = lajiFormImport.default || lajiFormImport;
+
+    // The import structure is different in local dev env / feature branches / ssr builds so need to juggle a bit.
+    const lajiFormThemeImport = (await import('@luomus/laji-form/lib/themes/bs3')).default as any;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const LajiFormTheme: LajiFormTheme = lajiFormThemeImport.default || lajiFormThemeImport;
+
     combineLatest(
-      import('@luomus/laji-form'),
-      import('@luomus/laji-form/lib/themes/bs3'),
       this.userService.getUserSetting<any>(this.settingsKey).pipe(
-        concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
-          map(globalSettings => ({...globalSettings, ...settings}))
-        )),
         take(1)
       ),
       this.userService.getProfile().pipe(map(profile => profile.settings?.defaultMediaMetadata))
-    ).subscribe(([formPackage, formBs3ThemePackage, settings, defaultMediaMetadata]) => {
-      this.lajiFormWrapperProto = formPackage.default;
-      this.lajiFormBs3Theme = formBs3ThemePackage.default;
+    ).subscribe(([settings, defaultMediaMetadata]) => {
+      this.lajiFormWrapperProto = LajiFormClass;
+      this.lajiFormBs3Theme = LajiFormTheme;
       this.defaultMediaMetadata = defaultMediaMetadata;
       this.settings = settings;
       this.mountLajiForm();
     });
   }
 
-  private _onSettingsChange(settings: any, global = false) {
+  private _onSettingsChange(settings: any) {
     this.ngZone.run(() => {
-      this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, settings);
+      this.userService.setUserSetting(this.settingsKey, settings);
     });
   }
 

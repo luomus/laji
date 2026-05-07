@@ -1,12 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type RedListEvaluation = components['schemas']['Evaluation'];
+type RedListEvaluation = components['schemas']['LajiBackendEvaluation'];
 
 @Component({
-  selector: 'laji-status-mark',
-  templateUrl: './status-mark.component.html',
-  styleUrls: ['./status-mark.component.scss']
+    selector: 'laji-status-mark',
+    templateUrl: './status-mark.component.html',
+    styleUrls: ['./status-mark.component.scss'],
+    standalone: false
 })
 export class StatusMarkComponent {
 

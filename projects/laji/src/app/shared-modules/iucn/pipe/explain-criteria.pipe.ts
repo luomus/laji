@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
-  name: 'explainCriteria'
+    name: 'explainCriteria',
+    standalone: false
 })
 export class ExplainCriteriaPipe implements PipeTransform {
 

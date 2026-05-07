@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-gathering',
-  templateUrl: './gathering.component.html',
-  styleUrls: ['./gathering.component.scss']
+    selector: 'laji-gathering',
+    templateUrl: './gathering.component.html',
+    styleUrls: ['./gathering.component.scss'],
+    standalone: false
 })
 export class GatheringComponent {
 

@@ -1,4 +1,4 @@
-@import 'projects/laji-ui/src/lib/vars';
+@use 'vars' as *;
 
 .annotation {
   border: 1px solid $neutral-4;
@@ -195,4 +195,3 @@
   font-size: 14px;
   line-height: 1.2;
 }
-

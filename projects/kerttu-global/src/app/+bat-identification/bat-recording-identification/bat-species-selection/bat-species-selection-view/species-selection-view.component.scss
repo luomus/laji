@@ -1,7 +1,7 @@
+@use 'sass:map';
 @import '../../../../../../../laji-ui/src/lib/vars';
 
-
-@media only screen and (min-width: map-get($map: $breakpoints, $key: "sm")) {
+@media only screen and (min-width: map.get($map: $breakpoints, $key: "sm")) {
   .map-container {
     padding-right: 0;
   }

@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { ResultService } from '../common/service/result.service';
-import { Form } from '../../../shared/model/Form';
+import { ResultUtil } from '../common/service/result-util.service';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import type { components } from 'projects/laji-api-client-b/generated/api';
 
-type Taxon = components['schemas']['Taxon'];
+type Form = components['schemas']['Form'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 enum Tabs {
   species = 'species',
@@ -16,14 +16,15 @@ enum Tabs {
 }
 
 @Component({
-  selector: 'laji-syke-insect-result',
-  templateUrl: './syke-insect-result.component.html',
-  styleUrls: ['./syke-insect-result.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-syke-insect-result',
+    templateUrl: './syke-insect-result.component.html',
+    styleUrls: ['./syke-insect-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SykeInsectResultComponent implements OnInit, OnDestroy {
 
-  @Input() form!: Form.SchemaForm;
+  @Input() form!: Form;
 
   informalTaxonGroup = 'MVL.181';
   page!: number;
@@ -48,7 +49,7 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private resultService: ResultService,
+    private resultUtil: ResultUtil,
     private cdr: ChangeDetectorRef,
     private qName: ToQNamePipe
   ) {
@@ -84,7 +85,7 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
       this.resultQuery = this.clone(this.query);
       if (taxonId) {
         this.query.taxonId = [taxonId];
-        this.taxon$ = this.resultService.getTaxon(taxonId);
+        this.taxon$ = this.resultUtil.getTaxon(taxonId);
       } else {
         this.taxon$ = ObservableOf(null);
       }

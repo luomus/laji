@@ -3,10 +3,11 @@ import { LajiMapVisualization } from './laji-map-visualization';
 import { PlatformService } from '../../root/platform.service';
 
 @Component({
-  selector: 'laji-legend',
-  templateUrl: './legend.component.html',
-  styleUrls: ['./legend.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-legend',
+    templateUrl: './legend.component.html',
+    styleUrls: ['./legend.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LegendComponent<T extends string> implements OnChanges, AfterViewInit {
   @Input() visualization?: LajiMapVisualization<T>;

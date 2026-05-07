@@ -1,15 +1,23 @@
-<ng-container *ngIf="showLabels; else withTooltip"><span *ngIf="re"
-        class="possible-re"
-  >● &ndash; {{ 'MKV.possiblyRE' | translate }}</span>
-  <span *ngIf="mark"
-  >{{ mark }} &ndash; {{ _evaluation.externalPopulationImpactOnRedListStatus ?? '' | translate }}</span>
-</ng-container>
-<ng-template #withTooltip>
-  <span *ngIf="re"
-        [luTooltip]="'MKV.possiblyRE' | translate"
-        class="possible-re"
-  >●</span>
-  <span *ngIf="mark"
-        [luTooltip]="_evaluation.externalPopulationImpactOnRedListStatus ?? '' | translate"
-  >{{ mark }}</span>
-</ng-template>
+@if (showLabels) {
+  @if (re) {
+    <span
+      class="possible-re"
+    >● &ndash; {{ 'MKV.possiblyRE' | translate }}</span>
+  }
+  @if (mark) {
+    <span
+    >{{ mark }} &ndash; {{ _evaluation.externalPopulationImpactOnRedListStatus ?? '' | translate }}</span>
+  }
+} @else {
+  @if (re) {
+    <span
+      [luTooltip]="'MKV.possiblyRE' | translate"
+      class="possible-re"
+    >●</span>
+  }
+  @if (mark) {
+    <span
+      [luTooltip]="_evaluation.externalPopulationImpactOnRedListStatus ?? '' | translate"
+    >{{ mark }}</span>
+  }
+}

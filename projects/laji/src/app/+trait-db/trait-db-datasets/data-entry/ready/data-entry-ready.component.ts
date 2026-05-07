@@ -4,7 +4,7 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { BehaviorSubject } from 'rxjs';
 
-type Dataset = components['schemas']['Dataset'];
+type Dataset = components['schemas']['LajiBackendDataset'];
 
 interface Loading {
   _tag: 'loading';
@@ -27,9 +27,10 @@ interface Error {
 type DatasetState = Loading | Ready | Uploading | Error;
 
 @Component({
-  selector: 'laji-trait-db-data-entry-ready',
-  templateUrl: './data-entry-ready.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-db-data-entry-ready',
+    templateUrl: './data-entry-ready.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDataEntryReadyComponent implements OnChanges {
   @Input({ required: true }) datasetId!: string;

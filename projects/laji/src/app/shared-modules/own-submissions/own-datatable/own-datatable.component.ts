@@ -1,5 +1,5 @@
 import { Observable, Subscription } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 import {
   AfterViewChecked,
   ChangeDetectionStrategy,
@@ -13,7 +13,6 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableComponent } from '@achimha/ngx-datatable';
 import { UserService } from '../../../shared/service/user.service';
@@ -21,10 +20,12 @@ import { FormService } from '../../../shared/service/form.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PlatformService } from '../../../root/platform.service';
-import { Form } from '../../../shared/model/Form';
 import { SelectionType } from '@achimha/ngx-datatable';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 export interface RowDocument {
   creator: string;
@@ -78,24 +79,25 @@ export interface OwnDatatableColumn {
 }
 
 @Component({
-  selector: 'laji-own-datatable',
-  templateUrl: './own-datatable.component.html',
-  styleUrls: ['./own-datatable.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    trigger('labelFilter', [
-      state('close', style({
-        height: '0',
-        padding: '0 15px'
-      })),
-      state('open', style({
-        height: '*',
-        padding: '*'
-      })),
-      transition('close=>open', animate('500ms ease-out')),
-      transition('open=>close', animate('100ms ease-in'))
-    ]),
-  ]
+    selector: 'laji-own-datatable',
+    templateUrl: './own-datatable.component.html',
+    styleUrls: ['./own-datatable.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [
+        trigger('labelFilter', [
+            state('close', style({
+                height: '0',
+                padding: '0 15px'
+            })),
+            state('open', style({
+                height: '*',
+                padding: '*'
+            })),
+            transition('close=>open', animate('500ms ease-out')),
+            transition('open=>close', animate('100ms ease-in'))
+        ]),
+    ],
+    standalone: false
 })
 export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestroy {
   @Input() year?: string;
@@ -119,7 +121,6 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   printState: 'none'|'select' = 'none';
 
   totalMessage = '';
-  publicity = Document.PublicityRestrictionsEnum;
   useColumns: OwnDatatableColumn[] = [];
   allColumns: OwnDatatableColumn[] = [
     {prop: 'templateName', mode: 'small'},
@@ -164,7 +165,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   @ViewChild('deleteModal', { static: true }) public deleteModal!: ModalComponent;
 
   labelFilter$: Observable<LabelFilter>;
-  forms$: Observable<{[id: string]: Form.List}>;
+  forms$: Observable<{[id: string]: FormListing}>;
 
   private readonly labelSettingsKey = 'label-filters';
 

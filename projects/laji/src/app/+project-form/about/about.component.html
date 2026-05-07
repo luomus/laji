@@ -1,66 +1,73 @@
 <laji-technical-news></laji-technical-news>
 
-<div *ngIf="aboutData$ | async as data" lajiFormOption="options.mobile options.dataset options.about collectionID options.disableRequestDescription">
-  <ng-container *ngIf="!data.form.options?.mobile; else mobile">
-    <ng-container *ngIf="!data.form.options?.dataset; else datasetIntro">
-      <laji-project-form-header [form]="data.form"
-                                [displayInstructions]="false"
-                                lajiFormOption="logo title options.hideTES"
-      ></laji-project-form-header>
-      <laji-info-page *ngIf="(data.form.options?.about | multiLang)"
-                      [page]="data.form.options?.about | multiLang: true:undefined:'%value%'"
-                      lajiFormOption="options.about"
-      ></laji-info-page>
-    </ng-container>
-    <ng-template #datasetIntro>
-      <laji-dataset-about [form]="data.form"></laji-dataset-about>
-    </ng-template>
-    <ng-container *ngIf="data.loggedIn; else loginButton">
-      <laji-request *ngIf="data.form.collectionID && data.rights === Rights.NotAllowed"
-                    [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription!"
-                    lajiFormOption="options.disableRequestDescription">
-      </laji-request>
-    </ng-container>
-  </ng-container>
-</div>
+@if (aboutData$ | async; as data) {
+  <div lajiFormOption="options.mobile options.dataset options.about collectionID options.disableRequestDescription">
+    @if (!data.form.options?.mobile) {
+      @if (!data.form.options?.dataset) {
+        <laji-project-form-header [form]="data.form"
+          [displayInstructions]="false"
+          lajiFormOption="logo title options.hideTES"
+        ></laji-project-form-header>
+        @if ((data.form.options?.about | multiLang)) {
+          <laji-info-page
+            [page]="data.form.options?.about | multiLang: true:undefined:'%value%'"
+            lajiFormOption="options.about"
+          ></laji-info-page>
+        }
+      } @else {
+        <laji-dataset-about [form]="data.form"></laji-dataset-about>
+      }
+      @if (data.loggedIn) {
+        @if (data.form.collectionID && data.rights === Rights.NotAllowed) {
+          <laji-request
+            [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription!"
+            lajiFormOption="options.disableRequestDescription">
+          </laji-request>
+        }
+      } @else {
+        <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
+      }
+    } @else {
+      @if (aboutData$ | async; as data) {
+        <laji-project-form-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-project-form-terms>
+        <laji-project-form-header [form]="data.form" [description]="data.form.description" lajiFormOption="description logo title options.hideTES"></laji-project-form-header>
+        @if (data.form.options?.openForm || data.loggedIn) {
+          <button type="button"
+            class="btn btn-md btn-primary btn-block use-button"
+            (click)="enterForm()">
+            {{ 'haseka.mobile.newObservation' | translate }}
+          </button>
+        } @else {
+          <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
+        }
+        @if (data.form.options?.openForm) {
+          <img src="/static/images/partner-logos/eu-funding.png" alt="Partly funded by the European Union." class="my-8">
+        }
+        <laji-haseka-latest [collectionID]="data.form.collectionID!"
+          [showFormNames]="false"
+          [complainLocality]="false"
+          (showViewer)="showDocumentViewer($event)"
+        ></laji-haseka-latest>
+        <br />
+        @if (data.form.options?.footer?.footerDescription || data.form.options?.footer?.footerLogos) {
+          <div lajiFormOption="options.footer.footerDescription options.footer.footerLogos">
+            @if (data.form.options.footer!.footerDescription) {
+              {{ data.form.options.footer!.footerDescription }}
+            }
+            <ul class="form-footer">
+              @for (logo of data.form.options.footer!.footerLogos | keyvalue; track logo) {
+                <li>
+                  <a [href]="logo.value" target="_blank">
+                    <img lajiLazyImage [src]="logo.key">
+                  </a>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      }
+    }
+  </div>
+}
 
-<ng-template #loginButton>
-  <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
-</ng-template>
 
-<ng-template #mobile>
-  <ng-container *ngIf="aboutData$ | async as data">
-    <laji-project-form-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-project-form-terms>
-    <laji-project-form-header [form]="data.form" [description]="data.form.description" lajiFormOption="description logo title options.hideTES"></laji-project-form-header>
-    <ng-container *ngIf="data.form.options?.openForm || data.loggedIn; else loginButton">
-      <button type="button"
-              class="btn btn-md btn-primary btn-block use-button"
-              (click)="enterForm()">
-        {{ 'haseka.mobile.newObservation' | translate }}
-      </button>
-    </ng-container>
-    <ng-container *ngIf="data.form.options?.openForm">
-      <img src="/static/images/partner-logos/eu-funding.png" alt="Partly funded by the European Union." class="my-8">
-    </ng-container>
-    <laji-haseka-latest [collectionID]="data.form.collectionID!"
-                        [showFormNames]="false"
-                        [complainLocality]="false"
-                        (showViewer)="showDocumentViewer($event)"
-    ></laji-haseka-latest>
-    <br />
-    <div *ngIf="data.form.options?.footer?.footerDescription || data.form.options?.footer?.footerLogos" lajiFormOption="options.footer.footerDescription options.footer.footerLogos">
-      <ng-container *ngIf="data.form.options.footer!.footerDescription">
-        {{ data.form.options.footer!.footerDescription }}
-      </ng-container>
-      <ul class="form-footer">
-        <ng-container *ngFor="let logo of data.form.options.footer!.footerLogos | keyvalue">
-          <li>
-            <a [href]="logo.value" target="_blank">
-              <img lajiLazyImage [src]="logo.key">
-            </a>
-          </li>
-        </ng-container>
-      </ul>
-    </div>
-  </ng-container>
-</ng-template>

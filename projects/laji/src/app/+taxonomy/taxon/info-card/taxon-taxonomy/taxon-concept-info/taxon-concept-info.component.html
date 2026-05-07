@@ -1,24 +1,38 @@
 <laji-taxon-info-row [label]="'taxonomy.card.id' | translate">
   {{ taxon.id | toFullUri }}
 </laji-taxon-info-row>
-<laji-taxon-info-row *ngIf="taxon.typeSpecimenURI" [label]="'MX.typeSpecimenURI' | label">
-  {{ taxon.typeSpecimenURI }}
-</laji-taxon-info-row>
-<laji-taxon-info-row *ngIf="taxon.additionalIds" [label]="'MX.additionalID' | label">
-  <ul>
-    <li *ngFor="let id of taxon.additionalIds">{{ id }}</li>
-  </ul>
-</laji-taxon-info-row>
-<laji-taxon-info-row *ngIf="taxonConceptId" [label]="'TaxonID-' + ('taxonomy.taxonConcept.id' | translate)">
-  <a [href]="'https://taxonid.org/' + taxonConceptId" target="_blank">{{ taxonConceptId }}</a>
-</laji-taxon-info-row>
-<laji-taxon-info-row *ngIf="matches.length > 0" [label]="'taxonomy.taxonConcept.otherLists' | translate">
-  <ul>
-    <li *ngFor="let match of matches">
-      <a [href]="match.id" target="_blank">{{ match.scientificName }}</a>
-      <span *ngIf="match.scientificNameAuthorship" class="author">{{ match.scientificNameAuthorship }}</span>
-      <br/>
-      <a [href]="match.inScheme" target="_blank">{{ match.inSchemeLabel | multiLang }}</a>
-    </li>
-  </ul>
-</laji-taxon-info-row>
+@if (taxon.typeSpecimenURI) {
+  <laji-taxon-info-row [label]="'MX.typeSpecimenURI' | label">
+    {{ taxon.typeSpecimenURI }}
+  </laji-taxon-info-row>
+}
+@if (taxon.additionalIds) {
+  <laji-taxon-info-row [label]="'MX.additionalID' | label">
+    <ul>
+      @for (id of taxon.additionalIds; track id) {
+        <li>{{ id }}</li>
+      }
+    </ul>
+  </laji-taxon-info-row>
+}
+@if (taxonConceptId) {
+  <laji-taxon-info-row [label]="'TaxonID-' + ('taxonomy.taxonConcept.id' | translate)">
+    <a [href]="'https://taxonid.org/' + taxonConceptId" target="_blank">{{ taxonConceptId }}</a>
+  </laji-taxon-info-row>
+}
+@if (matches.length > 0) {
+  <laji-taxon-info-row [label]="'taxonomy.taxonConcept.otherLists' | translate">
+    <ul>
+      @for (match of matches; track match) {
+        <li>
+          <a [href]="match.id" target="_blank">{{ match.scientificName }}</a>
+          @if (match.scientificNameAuthorship) {
+            <span class="author">{{ match.scientificNameAuthorship }}</span>
+          }
+          <br/>
+          <a [href]="match.inScheme" target="_blank">{{ match.inSchemeLabel | multiLang }}</a>
+        </li>
+      }
+    </ul>
+  </laji-taxon-info-row>
+}

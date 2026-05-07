@@ -29,7 +29,7 @@
     {{ 'observation.info.asNotEditororObserver' | translate }}
   </laji-info>
 </div>
-<ng-container *ngIf="asEditor || asObserver || includeQualityIssues">
+@if (asEditor || asObserver || includeQualityIssues) {
   <laji-select
     [selected]="includeQualityIssues ? [includeQualityIssues] : []"
     (selectedChange)="onIncludeQualityIssuesChange($event[0])"
@@ -42,4 +42,4 @@
       {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
       {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
     ]"></laji-select>
-</ng-container>
+}

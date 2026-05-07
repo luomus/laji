@@ -1,16 +1,17 @@
 import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, Input, SimpleChanges, OnChanges, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { Subscription, Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs';
 import { AudioViewerArea, SpectrogramConfig } from '../../../models';
 import { AudioService } from '../../../service/audio.service';
 import { SpectrogramService } from '../../../service/spectrogram.service';
 import { getMaxFreq } from '../../../service/audio-viewer-utils';
 
 @Component({
-  selector: 'laji-spectrogram',
-  templateUrl: './spectrogram.component.html',
-  styleUrls: ['./spectrogram.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-spectrogram',
+    templateUrl: './spectrogram.component.html',
+    styleUrls: ['./spectrogram.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpectrogramComponent implements OnChanges {
   @ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;

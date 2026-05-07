@@ -1,28 +1,34 @@
-<div class="menu-row" *ngIf="showSettingsMenu || showDownloadMenu">
-  <div class="flex-grow"></div>
-  <ng-container *ngIf="showDownloadMenu">
-    <laji-download
-      *ngIf="maxDownload >= count else tooMany"
-      [downloadLoading]="downloadLoading"
-      (download)="download.emit($event.fileType)">
-      <i class="glyphicon glyphicon-download-alt"></i>
-      {{ downloadText }}
-    </laji-download>
-    <ng-template #tooMany>
-      <button class="btn btn-default" disabled>
-        {{ downloadText }} max {{ maxDownload }}
+@if (showSettingsMenu || showDownloadMenu) {
+  <div class="menu-row">
+    <div class="flex-grow"></div>
+    @if (showDownloadMenu) {
+      @if (maxDownload >= count) {
+        <laji-download
+          [downloadLoading]="downloadLoading"
+          (download)="download.emit($event.fileType)">
+          <i class="glyphicon glyphicon-download-alt"></i>
+          {{ downloadText }}
+        </laji-download>
+      } @else {
+        <button class="btn btn-default" disabled>
+          {{ downloadText }} max {{ maxDownload }}
+        </button>
+      }
+    }
+    <div>
+      @if (showSettingsMenu) {
+        <button class="btn btn-default ml-3" (click)="openSettingsMenu.emit()">
+          <i class="glyphicon glyphicon-cog"></i>
+          {{ 'species.header.select' | translate }}
+        </button>
+      }
+    </div>
+    <div>
+      @if (showBrowseObservationsButton) {
+        <button class="btn btn-default ml-3" (click)="browseObservations.emit()"> <i class="glyphicon glyphicon-eye-open"></i>
+        {{ browseObservationsText }}
       </button>
-    </ng-template>
-  </ng-container>
-  <div>
-    <button class="btn btn-default ml-3" (click)="openSettingsMenu.emit()" *ngIf="showSettingsMenu">
-      <i class="glyphicon glyphicon-cog"></i>
-      {{ 'species.header.select' | translate }}
-    </button>
-  </div>
-  <div>
-    <button class="btn btn-default ml-3" *ngIf="showBrowseObservationsButton" (click)="browseObservations.emit()"> <i class="glyphicon glyphicon-eye-open"></i>
-      {{ browseObservationsText }}
-    </button>
+    }
   </div>
 </div>
+}

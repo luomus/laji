@@ -1,17 +1,22 @@
-<h5 *ngIf="header">{{ header | translate }}</h5>
+@if (header) {
+  <h5>{{ header | translate }}</h5>
+}
 <ul class="list-group">
-  <li class="list-group-item link"
-      *ngFor="let parent of parents"
+  @for (parent of parents; track parent) {
+    <li class="list-group-item link"
       (click)="onToggle(parent)"
       [ngClass]="{active: (selected | includes:'parent.' + parent + '.scientificName')}">
-    <ng-container>
-      <div *ngIf="selected | includes: 'parent.' + parent + '.scientificName'">
-        <button (click)="onMoveUp(parent, $event)" class="btn btn-xs">&#x25C0;</button>
-        {{ selected.indexOf('parent.' + parent + '.scientificName') + 1 }}.,
-        {{ selected.indexOf('parent.' + parent + '.scientificNameAuthorship') + 1 }}.
-        <button (click)="onMoveDown(parent, $event)" class="btn btn-xs">&#x25B6;</button>
-      </div>
-      {{ 'MX.' + parent | label | capitalize }}
-    </ng-container>
-  </li>
+      <ng-container>
+        @if (selected | includes: 'parent.' + parent + '.scientificName') {
+          <div>
+            <button (click)="onMoveUp(parent, $event)" class="btn btn-xs">&#x25C0;</button>
+            {{ selected.indexOf('parent.' + parent + '.scientificName') + 1 }}.,
+            {{ selected.indexOf('parent.' + parent + '.scientificNameAuthorship') + 1 }}.
+            <button (click)="onMoveDown(parent, $event)" class="btn btn-xs">&#x25B6;</button>
+          </div>
+        }
+        {{ 'MX.' + parent | label | capitalize }}
+      </ng-container>
+    </li>
+  }
 </ul>

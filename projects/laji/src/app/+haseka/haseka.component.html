@@ -1,21 +1,25 @@
 <lu-sidebar [position]="'right'" [staticWidth]="300">
   <main class="haseka-home">
-      <h1>{{ 'haseka.title' | translate }}</h1>
-      <ng-container *lajiBrowserOnly>
-        <div class="row" *lajiLoggedIn="false">
-          <div class="col-sm-8">
-            <lu-alert type="warning">
-              {{ 'haseka.pleaseLogin' | translate }}
-            </lu-alert>
-          </div>
+    <h1>{{ 'haseka.title' | translate }}</h1>
+    <ng-container *lajiBrowserOnly>
+      <div class="row" *lajiLoggedIn="false">
+        <div class="col-sm-8">
+          <lu-alert type="warning">
+            {{ 'haseka.pleaseLogin' | translate }}
+          </lu-alert>
         </div>
-      </ng-container>
-      <div [innerHtml]="'haseka.intro' | translate" *ngIf="isFront"></div>
-      <laji-haseka-terms *ngIf="isFront"></laji-haseka-terms>
-      <a [href]="'infoLinks.changelog' | translate" target="_blank"><b>{{ 'haseka.changelog' | translate }}</b></a> |
-      <a [href]="'infoLinks.notebook' | translate" target="_blank">{{ 'haseka.instructions' | translate }}</a> |
-      <a [href]="'infoLinks.notebook.termsOfUse' | translate" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
-      <router-outlet></router-outlet>
+      </div>
+    </ng-container>
+    @if (isFront) {
+      <div [innerHtml]="'haseka.intro' | translate"></div>
+    }
+    @if (isFront) {
+      <laji-haseka-terms></laji-haseka-terms>
+    }
+    <a [href]="'infoLinks.changelog' | translate" target="_blank"><b>{{ 'haseka.changelog' | translate }}</b></a> |
+    <a [href]="'infoLinks.notebook' | translate" target="_blank">{{ 'haseka.instructions' | translate }}</a> |
+    <a [href]="'infoLinks.notebook.termsOfUse' | translate" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
+    <router-outlet></router-outlet>
   </main>
   <nav>
     <h4>Menu</h4>
@@ -23,8 +27,10 @@
     <lu-sidebar-link [link]="['/vihko', 'ownSubmissions'] | localize">{{ 'haseka.ownSubmissions.title' | translate }}</lu-sidebar-link>
     <lu-sidebar-link *lajiLoggedIn="true" [link]="['/observation', 'statistics'] | localize" [linkParams]="{qualityIssues: 'BOTH', editorOrObserverPersonToken: true}">{{ 'haseka.statistics.title' | translate }}</lu-sidebar-link>
     <lu-sidebar-link [link]="['/vihko', 'tools'] | localize">{{ 'haseka.tools' | translate }}</lu-sidebar-link>
-    <laji-haseka-latest *ngIf="showLatest && (userService.isLoggedIn$ | async)"
-                        [staticWidth]="300"
-                        (showViewer)="showDocumentViewer($event)"></laji-haseka-latest>
+    @if (showLatest && (userService.isLoggedIn$ | async)) {
+      <laji-haseka-latest
+        [staticWidth]="300"
+      (showViewer)="showDocumentViewer($event)"></laji-haseka-latest>
+    }
   </nav>
 </lu-sidebar>

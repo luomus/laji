@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 .legend-circle {
   width: $sp-5;

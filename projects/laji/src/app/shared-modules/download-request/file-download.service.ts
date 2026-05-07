@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { tap, first, map } from 'rxjs/operators';
+import { tap, first, map } from 'rxjs';
 import { UserService } from '../../shared/service/user.service';
 import { DialogService } from '../../shared/service/dialog.service';
 import {

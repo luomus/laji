@@ -12,13 +12,14 @@ import { Subscription } from 'rxjs';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
-  selector: 'laji-info-card-header',
-  templateUrl: './info-card-header.component.html',
-  styleUrls: ['./info-card-header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-info-card-header',
+    templateUrl: './info-card-header.component.html',
+    styleUrls: ['./info-card-header.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InfoCardHeaderComponent implements OnChanges {
   @Input() taxon!: Taxon;

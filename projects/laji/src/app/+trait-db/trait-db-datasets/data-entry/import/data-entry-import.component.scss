@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 textarea {
   width: 100%;
@@ -10,4 +10,3 @@ textarea {
   background: $neutral-3;
   padding: $sp-3 $sp-4;
 }
-

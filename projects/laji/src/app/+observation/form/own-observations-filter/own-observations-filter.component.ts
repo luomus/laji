@@ -10,10 +10,11 @@ import { ObservationFormQuery } from '../observation-form-query.interface';
 export type OwnFilterModel = Pick<ObservationFormQuery, 'asObserver' | 'asEditor' | 'asNotEditorOrObserver'>;
 
 @Component({
-  selector: 'laji-own-observations-filter',
-  templateUrl: `./own-observations-filter.component.html`,
-  styleUrls: ['./own-observations-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-own-observations-filter',
+    templateUrl: `./own-observations-filter.component.html`,
+    styleUrls: ['./own-observations-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class OwnObservationsFilterComponent {
   @Input() asObserver?: ObservationFormQuery['asObserver'];

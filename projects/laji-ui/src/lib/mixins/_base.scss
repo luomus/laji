@@ -1,3 +1,5 @@
+@use 'vars' as *;
+
 @mixin base {
   font-size: $fs-3;
   color: $neutral-8;

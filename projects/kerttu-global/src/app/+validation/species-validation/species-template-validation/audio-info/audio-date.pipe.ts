@@ -3,7 +3,8 @@ import { DatePipe } from '@angular/common';
 import { IGlobalAudio } from '../../../../kerttu-global-shared/models';
 
 @Pipe({
-  name: 'audioDate'
+    name: 'audioDate',
+    standalone: false
 })
 export class AudioDatePipe implements PipeTransform {
   constructor(private datePipe: DatePipe) {}

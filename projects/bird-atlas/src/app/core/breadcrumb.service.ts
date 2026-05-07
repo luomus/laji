@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs';
 
 export enum BreadcrumbId {
   Home, SpeciesIndex, SpeciesInfo, GridIndex, GridInfo, BirdSocietyIndex, BirdSocietyInfo, Lappi

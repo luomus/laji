@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { IdService } from '../../../shared/service/id.service';
-import { Document } from '../../../shared/model/Document';
-import { Person } from '../../../shared/model/Person';
 import { Observable, of } from 'rxjs';
 import { FormPermissionService } from '../../../shared/service/form-permission.service';
-import { switchMap, map, catchError } from 'rxjs/operators';
+import { switchMap, map, catchError } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
 import { DocumentService } from '../../own-submissions/service/document.service';
+import { StoreDocument } from '../document-viewer.facade';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+type Person = components['schemas']['Person'];
 
 export interface DocumentRights {
   isEditor: boolean;
@@ -37,7 +39,7 @@ export class DocumentPermissionService {
 
         const collectionId = IdService.getId(doc.collectionId);
 
-        return this.userIsFormAdmin(user, collectionId, this.userService.getToken()).pipe(
+        return this.userIsFormAdmin(user, collectionId).pipe(
           switchMap(isFormAdmin => {
             if (isFormAdmin) {
               rights.hasEditRights = true;
@@ -66,14 +68,14 @@ export class DocumentPermissionService {
     );
   }
 
-  getRightsToLocalDocument(doc?: Document): Observable<DocumentRights> {
+  getRightsToLocalDocument(doc?: StoreDocument): Observable<DocumentRights> {
     return this.userService.user$.pipe(
       switchMap(user => {
         if (!user?.id || !doc) {
           return of({ isEditor: false, hasEditRights: false, hasDeleteRights: false });
         }
 
-        const isFormAdmin$ = this.userIsFormAdmin(user, doc.collectionID, this.userService.getToken());
+        const isFormAdmin$ = this.userIsFormAdmin(user, doc.collectionID);
 
         return isFormAdmin$.pipe(
           map(isFormAdmin => ({
@@ -86,12 +88,12 @@ export class DocumentPermissionService {
     );
   }
 
-  private userIsFormAdmin(user: Person, collectionId?: string, personToken?: string): Observable<boolean> {
+  private userIsFormAdmin(user: Person, collectionId?: string): Observable<boolean> {
     if (!collectionId) {
       return of(false);
     }
 
-    return this.formPermissionService.getFormPermission(collectionId, personToken).pipe(
+    return this.formPermissionService.getFormPermission(collectionId).pipe(
       map(formPermission => this.formPermissionService.isAdmin(formPermission, user))
     );
   }

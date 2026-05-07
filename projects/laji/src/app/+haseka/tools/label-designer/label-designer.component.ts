@@ -1,21 +1,22 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ILabelField, ILabelPdf, ISetup, IViewSettings, Presets } from '@luomus/label-designer';
-import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
 import { PdfLabelService } from '../../../shared/service/pdf-label.service';
 import { Observable, of } from 'rxjs';
-import { share } from 'rxjs/operators';
+import { share } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../../environments/environment';
 import { Global } from '../../../../environments/global';
 import { PlatformService } from '../../../root/platform.service';
+import { LajiApiClientBService } from '../../../../../../laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
-  selector: 'laji-label-designer',
-  templateUrl: './label-designer.component.html',
-  styleUrls: ['./label-designer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-label-designer',
+    templateUrl: './label-designer.component.html',
+    styleUrls: ['./label-designer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelDesignerComponent implements OnInit {
 
@@ -32,7 +33,7 @@ export class LabelDesignerComponent implements OnInit {
 
   constructor(
     private platformService: PlatformService,
-    private lajiApiService: LajiApiService,
+    private api: LajiApiClientBService,
     private pdfLabelService: PdfLabelService,
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef
@@ -43,7 +44,7 @@ export class LabelDesignerComponent implements OnInit {
       share()
     );
     const translations = this.translateService.instant('labelDesigner');
-    this.labelTranslations = this.translateService.currentLang !== 'en' && typeof translations === 'object' ? translations : {};
+    this.labelTranslations = this.translateService.getCurrentLang() !== 'en' && typeof translations === 'object' ? translations : {};
     this.newLabelFields$ = this.labelFields$;
     this.newSetup = {
       page: {
@@ -84,7 +85,7 @@ export class LabelDesignerComponent implements OnInit {
 
   htmlToPdf(data: ILabelPdf) {
     if (this.platformService.isBrowser) {
-      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, data.html)
+      this.api.post('/html-to-pdf', { responseType: 'blob' }, data.html)
         .subscribe(
           (response) => {
             this.downloading = false;

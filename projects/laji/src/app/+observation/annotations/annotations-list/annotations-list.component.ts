@@ -4,12 +4,13 @@ import {TranslateService} from '@ngx-translate/core';
 import { DocumentViewerFacade } from '../../../shared-modules/document-viewer/document-viewer.facade';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type AnnotationTag = components['schemas']['tag'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
-  selector: 'laji-annotations-list',
-  templateUrl: './annotations-list.component.html',
-  styleUrls: ['./annotations-list.component.scss']
+    selector: 'laji-annotations-list',
+    templateUrl: './annotations-list.component.html',
+    styleUrls: ['./annotations-list.component.scss'],
+    standalone: false
 })
 export class AnnotationListComponent implements OnInit {
 

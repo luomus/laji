@@ -2,16 +2,19 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MonitoringFacade } from './monitoring.facade';
 import { Observable } from 'rxjs';
 import { Global } from '../../environments/global';
-import { Form } from '../../../../laji/src/app/shared/model/Form';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 @Component({
-  selector: 'vir-monitoring',
-  templateUrl: './monitoring.component.html',
-  styleUrls: ['./monitoring.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-monitoring',
+    templateUrl: './monitoring.component.html',
+    styleUrls: ['./monitoring.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MonitoringComponent implements OnInit {
-  monitoringForms$!: Observable<Form.List[]>;
+  monitoringForms$!: Observable<FormListing[]>;
 
   constructor(private facade: MonitoringFacade) { }
 

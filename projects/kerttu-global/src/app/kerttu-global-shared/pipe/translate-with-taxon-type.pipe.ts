@@ -14,7 +14,8 @@ export const getTranslateKeyWithTaxonType = (value: string, taxonType?: TaxonTyp
 };
 
 @Pipe({
-  name: 'translateWithTaxonType'
+    name: 'translateWithTaxonType',
+    standalone: false
 })
 export class TranslateWithTaxonTypePipe implements PipeTransform {
   constructor(

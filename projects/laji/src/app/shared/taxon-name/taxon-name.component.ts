@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-taxon-name',
-  templateUrl: './taxon-name.component.html',
-  styleUrls: ['./taxon-name.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-name',
+    templateUrl: './taxon-name.component.html',
+    styleUrls: ['./taxon-name.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonNameComponent {
 
@@ -14,13 +15,10 @@ export class TaxonNameComponent {
     cursiveName?: boolean;
     scientificName?: string;
     vernacularName?: string | {[lang: string]: string};
-    vernacularNameMultiLang?: any;
     scientificNameAuthorship?: string;
     alternativeVernacularName?: any;
-    alternativeVernacularNameMultiLang?: any;
     obsoleteVernacularName?: any;
     colloquialVernacularName?: any;
-    colloquialVernacularNameMultiLang?: any;
   } = {};
   @Input() taxonID?: string;
   @Input() addLink = true;

@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-annotation-item-status',
-  templateUrl: './annotation-item-status.component.html',
-  styleUrls: ['./annotation-item-status.component.scss']
+    selector: 'laji-annotation-item-status',
+    templateUrl: './annotation-item-status.component.html',
+    styleUrls: ['./annotation-item-status.component.scss'],
+    standalone: false
 })
 export class AnnotationItemStatusComponent {
 

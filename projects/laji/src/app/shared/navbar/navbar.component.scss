@@ -1,9 +1,10 @@
-@import '../../../styles/variables';
-@import 'vars';
+@use 'sass:color';
+@use 'vars' as *;
+@use '../../../styles/variables' as *;
 
 $bg: $primary-6;
-$hover: lighten($primary-6, 5%);
-$active: lighten($primary-6, 5%);
+$hover: color.adjust($primary-6, $lightness: 5%);
+$active: color.adjust($primary-6, $lightness: 5%);
 $text-color: $primary-2;
 
 .navbar-collapse {
@@ -221,7 +222,7 @@ $text-color: $primary-2;
       border: 0;
       box-shadow: none;
       & > li > a:hover {
-        background-color: darken($color-main, 10%);
+        background-color: color.adjust($color-main, $lightness: -10%);
       }
     }
   }
@@ -284,4 +285,3 @@ $text-color: $primary-2;
     }
   }
 }
-

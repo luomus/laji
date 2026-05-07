@@ -2,17 +2,18 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, Output,
 EventEmitter} from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
-import { Annotation } from '../../../shared/model/Annotation';
 import { DocumentViewerFacade } from '../document-viewer.facade';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type AnnotationTag = components['schemas']['tag'];
+type Annotation = components['schemas']['store-annotation'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
-  selector: 'laji-unit',
-  templateUrl: './unit.component.html',
-  styleUrls: ['./unit.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-unit',
+    templateUrl: './unit.component.html',
+    styleUrls: ['./unit.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UnitComponent implements OnInit {
 

@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
+import { map, startWith, switchMap } from 'rxjs';
 
 const headerReferenceCmsIds = { fi: '0', sv: '0', en: '0' };
 
 @Component({
-  selector: 'laji-trait-db-data-entry-import',
-  templateUrl: './data-entry-import.component.html',
-  styleUrls: ['./data-entry-import.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-db-data-entry-import',
+    templateUrl: './data-entry-import.component.html',
+    styleUrls: ['./data-entry-import.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDataEntryImportComponent {
   @Output() traitDataTsv = new EventEmitter<string | null>();
@@ -19,7 +20,7 @@ export class TraitDbDataEntryImportComponent {
 
   data: string | null = null;
   headerReferenceContent$ = this.translate.onLangChange.pipe(
-    startWith({lang: this.translate.currentLang}),
+    startWith({lang: this.translate.getCurrentLang()}),
     map(event => headerReferenceCmsIds[event.lang as 'fi' | 'sv' | 'en']),
     switchMap(cmsId => of({ content: 'todo create cms page ' + cmsId }))
   );
@@ -74,4 +75,3 @@ export class TraitDbDataEntryImportComponent {
     return (this.fileSelector?.nativeElement.files?.length ?? -1) > 0;
   }
 }
-

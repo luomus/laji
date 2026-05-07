@@ -1,13 +1,15 @@
 import { Component, ChangeDetectionStrategy, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
-import { Profile } from '../../../../../../laji/src/app/shared/model/Profile';
-import BirdSongRecognitionSkillLevel = Profile.BirdSongRecognitionSkillLevel;
-import BirdSongRecognitionSkillLevelEnum = Profile.BirdSongRecognitionSkillLevelEnum;
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type BirdSongRecognitionSkillLevel = components['schemas']['store-birdSongRecognitionSkillLevel'];
+type BirdSongRecognitionSkillLevelEnum = BirdSongRecognitionSkillLevel['birdSongRecognitionSkillLevel'];
 
 @Component({
-  selector: 'bsg-expertise-by-continent',
-  templateUrl: './expertise-by-continent.component.html',
-  styleUrls: ['./expertise-by-continent.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-expertise-by-continent',
+    templateUrl: './expertise-by-continent.component.html',
+    styleUrls: ['./expertise-by-continent.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ExpertiseByContinentComponent implements OnChanges {
   @Input() continents: {id: string; value: string}[] = [];

@@ -1,14 +1,13 @@
-import { map, mergeMap, share, toArray } from 'rxjs/operators';
+import { map, mergeMap, toArray } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
-import { NamedPlace } from '../../../shared/model/NamedPlace';
-import { NamedPlaceApi } from '../../../shared/api/NamedPlaceApi';
-import { UserService } from '../../../shared/service/user.service';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { MappingService } from './mapping.service';
 import type { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
-type Document = components['schemas']['document'];
+type Document = components['schemas']['store-document'];
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 @Injectable()
 export class AugmentService {
@@ -17,10 +16,9 @@ export class AugmentService {
   requests: {[key: string]: Observable<any>} = {};
 
   constructor(
-    private namedPlaceApi: NamedPlaceApi,
-    private userService: UserService,
     private documentService: DocumentService,
     private mappingService: MappingService,
+    private api: LajiApiClientBService
   ) { }
 
   augmentDocument(document: Document, excludedFromCopy: string[] = []): Observable<Document> {
@@ -65,7 +63,7 @@ export class AugmentService {
     }
 
     return ObservableFrom(namedPlaces).pipe(
-      mergeMap(id => this.getNamedPlace(id)),
+      mergeMap(id => this.api.get('/named-places/{id}', { path: { id } })),
       map(namedPlace => this.addNamedPlaceData(document, namedPlace, idxLookup, excluded)),
       toArray(),
       map(() => document)
@@ -73,7 +71,7 @@ export class AugmentService {
   }
 
   private addNamedPlaceData(document: Document, namedPlace: NamedPlace, idxs: {[key: string]: number[]}, excluded: string[]) {
-    const id = namedPlace.id;
+    const id = namedPlace.id!;
 
     if (id === document.namedPlaceID && namedPlace.prepopulatedDocument?.gatherings) {
       namedPlace.prepopulatedDocument?.gatherings.forEach((gathering, idx) => {
@@ -103,17 +101,4 @@ export class AugmentService {
   private augment(to: any, from: any) {
     return this.documentService.combine(to, from);
   }
-
-  private getNamedPlace(id: string): Observable<NamedPlace> {
-    if (this.npCache[id]) {
-      return ObservableOf(this.npCache[id]);
-    }
-    if (!this.requests[id]) {
-      return this.requests[id] = this.namedPlaceApi
-        .findById(id, this.userService.getToken()).pipe(
-        share());
-    }
-    return this.requests[id];
-  }
-
 }

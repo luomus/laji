@@ -1,4 +1,4 @@
-<ng-container *ngIf="excelForm$ | async; let forms">
+@if (excelForm$ | async; as forms) {
   <h3>
     {{ 'excel.generate' | translate }}
   </h3>
@@ -10,4 +10,4 @@
     <li>{{ 'excel.generate.intro3'| translate }}</li>
   </ol>
   <laji-excel-generator [forms]="forms"></laji-excel-generator>
-</ng-container>
+}

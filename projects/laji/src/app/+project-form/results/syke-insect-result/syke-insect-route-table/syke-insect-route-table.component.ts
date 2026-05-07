@@ -8,10 +8,11 @@ import { DateFormatPipe } from 'ngx-moment';
 
 
 @Component({
-  selector: 'laji-syke-insect-route-table',
-  templateUrl: './syke-insect-route-table.component.html',
-  styleUrls: ['./syke-insect-route-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-syke-insect-route-table',
+    templateUrl: './syke-insect-route-table.component.html',
+    styleUrls: ['./syke-insect-route-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
   @Input() routeId!: string;

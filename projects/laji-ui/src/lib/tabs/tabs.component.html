@@ -1,11 +1,13 @@
 <ul [ngClass]="'tabs-list' + (tabsListClass ?  ' ' + tabsListClass : '')">
-  <li *ngFor="let tab of tabComponents; let index = index"
+  @for (tab of tabComponents; track tab; let index = $index) {
+    <li
       [ngClass]="{active: index === selectedIndex}"
       [@activeTab]="index === selectedIndex ? 'active' : 'inactive'"
       (click)="onSelect(index)"
       role="tab"
       [class]="tab.headerClass!"
-      [tabindex]="index === selectedIndex ? -1 : 0" luKeyboardClickable>{{tab.heading}}</li>
+    [tabindex]="index === selectedIndex ? -1 : 0" luKeyboardClickable>{{tab.heading}}</li>
+  }
 </ul>
 <div class="tab-content">
   <ng-content></ng-content>

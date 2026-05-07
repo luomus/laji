@@ -1,16 +1,16 @@
-<ng-container *ngIf="value">
+@if (value) {
   <div class="key">
     {{ title }}:
   </div>
   <div class="value">
-    <ng-container *ngIf="pipe === 'area'">
+    @if (pipe === 'area') {
       <span [innerHtml]="value | area | nlToBr | values"></span>
-    </ng-container>
-    <ng-container *ngIf="pipe === 'label'">
+    }
+    @if (pipe === 'label') {
       <span [innerHtml]="value | label | nlToBr | values"></span>
-    </ng-container>
-    <ng-container *ngIf="!pipe">
+    }
+    @if (!pipe) {
       <span [innerHtml]="value | nlToBr | values"></span>
-    </ng-container>
+    }
   </div>
-</ng-container>
+}

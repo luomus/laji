@@ -1,3 +1,4 @@
+@use 'sass:map';
 @import '../../../../../../../laji-ui/src/lib/vars';
 
 .top-content {
@@ -44,7 +45,7 @@
   }
 }
 
-@media only screen and (min-width: map-get($map: $breakpoints, $key: "sm")) {
+@media only screen and (min-width: map.get($map: $breakpoints, $key: "sm")) {
   :host {
     display: flex;
     flex-direction: column;

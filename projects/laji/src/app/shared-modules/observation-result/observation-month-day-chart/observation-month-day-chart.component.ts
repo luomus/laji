@@ -17,7 +17,7 @@ import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { ChartData, ObservationMonthDayChartFacade, getNbrOfDaysInMonth } from './observation-month-day-chart.facade';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 const tooltipPosition = 'cursor' as any; // chart.js typings broken for custom tooltip position so we define it as 'any'.
@@ -55,11 +55,12 @@ const BAR_CHART_OPTIONS: ChartOptions = {
 };
 
 @Component({
-  selector: 'laji-observation-month-day-chart',
-  templateUrl: './observation-month-day-chart.component.html',
-  styleUrls: ['./observation-month-day-chart.component.scss'],
-  providers: [LabelPipe, ObservationMonthDayChartFacade],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-month-day-chart',
+    templateUrl: './observation-month-day-chart.component.html',
+    styleUrls: ['./observation-month-day-chart.component.scss'],
+    providers: [LabelPipe, ObservationMonthDayChartFacade],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, OnInit {
   private unsubscribe$ = new Subject<void>();

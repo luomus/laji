@@ -15,8 +15,8 @@ import {
 import { NgControl } from '@angular/forms';
 import { ComponentLoader, ComponentLoaderFactory } from './component-loader';
 
-import { EMPTY, from, isObservable, Observable, Subscription } from 'rxjs';
-import { debounceTime, filter, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
+import { EMPTY, of, isObservable, Observable, Subscription } from 'rxjs';
+import { debounceTime, filter, mergeMap, switchMap, tap, toArray } from 'rxjs';
 import { TypeaheadOptionItemContext, TypeaheadOptionListContext } from './models';
 
 import { TypeaheadContainerComponent } from './typeahead-container.component';
@@ -34,15 +34,15 @@ type TypeaheadOptionArr = TypeaheadOption[] | Observable<TypeaheadOption[]>;
  * which is ngx-bootstrap's latest version before ng@15 compatibility.
  */
 @Directive({
-  selector: '[luTypeahead]',
-  exportAs: 'luTypeahead',
-  // eslint-disable-next-line @angular-eslint/no-host-metadata-property
-  host: {
-    '[attr.aria-activedescendant]': 'activeDescendant',
-    '[attr.aria-owns]': 'isOpen ? this._container.popupId : null',
-    '[attr.aria-expanded]': 'isOpen',
-    '[attr.aria-autocomplete]': 'list'
-  }
+    selector: '[luTypeahead]',
+    exportAs: 'luTypeahead',
+    host: {
+        '[attr.aria-activedescendant]': 'activeDescendant',
+        '[attr.aria-owns]': 'isOpen ? _container?.popupId : null',
+        '[attr.aria-expanded]': 'isOpen',
+        '[attr.aria-autocomplete]': 'list'
+    },
+    standalone: false
 })
 export class TypeaheadDirective implements OnInit, OnDestroy {
   /** options source, can be Array of strings, objects or
@@ -485,7 +485,7 @@ export class TypeaheadDirective implements OnInit, OnDestroy {
               return EMPTY;
             }
 
-            const typeahead = isObservable(this.typeahead) ? this.typeahead : from(this.typeahead);
+            const typeahead: Observable<TypeaheadOption[]> = isObservable(this.typeahead) ? this.typeahead : of(this.typeahead);
 
             return typeahead
               .pipe(

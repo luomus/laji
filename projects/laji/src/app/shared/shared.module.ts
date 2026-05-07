@@ -16,7 +16,6 @@ import { ToQNamePipe } from './pipe/to-qname.pipe';
 import { ToFullUriPipe } from './pipe/to-full-uri';
 import { GalleryComponent } from './gallery/gallery/gallery.component';
 import { AuthoritiesDirective } from './authorities/authorities.directive';
-import { NgxWebstorageModule } from 'ngx-webstorage';
 import { ImageComponent } from './gallery/image/image.component';
 import { ValuesPipe } from './pipe/values.pipe';
 import { CollectionNamePipe } from './pipe/collection-name.pipe';
@@ -37,7 +36,6 @@ import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationGroupSelectComponent } from './group-select/observation-group-select.component';
 import { IucnGroupSelectComponent } from './group-select/iucn-group-select.component';
-import { SourcePipe } from './pipe/source.pipe';
 import { ChecklistPipe } from './pipe/checklist.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
 import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
@@ -84,6 +82,7 @@ import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 import { ExternalRedirectComponent } from './external-redirect/external-redirect.component';
+import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSessionStorage } from 'ngx-webstorage';
 
 @NgModule({
     declarations: [
@@ -96,7 +95,7 @@ import { ExternalRedirectComponent } from './external-redirect/external-redirect
         AuthoritiesDirective, ImageComponent, NlToBrPipe,
         HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,
         ObservationGroupSelectComponent, IucnGroupSelectComponent,
-        SourcePipe, RemoveEmptyPipe, DatePickerComponent,
+        RemoveEmptyPipe, DatePickerComponent,
         TaxonNameComponent, NotFoundComponent, ExternalRedirectComponent,
         ChecklistPipe,
         FactNotInPipe,
@@ -141,14 +140,20 @@ import { ExternalRedirectComponent } from './external-redirect/external-redirect
         PaginatorModule,
         ScrollingModule,
         LajiUiModule,
-        DropdownModule, AlertModule, NgxWebstorageModule, PopoverModule,
+        DropdownModule, AlertModule, PopoverModule,
         UtilitiesModule,
         InfoModule,
         LayoutModule,
         ModelViewerModule,
         TooltipModule
     ],
-    providers: [],
+    providers: [
+      provideNgxWebstorage(
+    		withNgxWebstorageConfig({ prefix: 'ba-', separator: '' }),
+    		withLocalStorage(),
+    		withSessionStorage()
+      ),
+    ],
     exports: [
         CommonModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent, NotificationsComponent,
         TaxonDropdownComponent, AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
@@ -159,7 +164,7 @@ import { ExternalRedirectComponent } from './external-redirect/external-redirect
         AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,
         IucnGroupSelectComponent,
         ObservationGroupSelectComponent,
-        SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
+        RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent, ChecklistPipe,
         FactNotInPipe, CapitalizePipe, CoordinatePipe,
         FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe, IncludesPipe,
         UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule,
@@ -182,7 +187,6 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
-        NgxWebstorageModule,
         DateFormatPipe,
         FormattedNumber,
         ToQNamePipe,

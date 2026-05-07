@@ -46,10 +46,11 @@ interface LinearNumberScale extends ScaleLinear<number, number> {
 }
 
 @Component({
-  selector: 'laji-spectrogram-chart',
-  templateUrl: './spectrogram-chart.component.html',
-  styleUrls: ['./spectrogram-chart.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-spectrogram-chart',
+    templateUrl: './spectrogram-chart.component.html',
+    styleUrls: ['./spectrogram-chart.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpectrogramChartComponent implements OnChanges {
   @ViewChild('chart', {static: true}) chartRef!: ElementRef<SVGElement>;

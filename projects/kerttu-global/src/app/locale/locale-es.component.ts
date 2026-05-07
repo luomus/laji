@@ -1,21 +1,19 @@
 import { Component } from '@angular/core';
 import { LocaleComponent } from 'projects/laji/src/app/locale/locale.component';
-import * as moment from 'moment';
-import 'moment/locale/es';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
+import 'moment/locale/es';
 
 @Component({
-  selector: 'bsg-locale-es',
-  template: '<router-outlet></router-outlet>'
+    selector: 'bsg-locale-es',
+    template: '<router-outlet></router-outlet>',
+    standalone: false
 })
 export class LocaleEsComponent extends LocaleComponent {
 
   constructor(
-    protected platformService: PlatformService
+    platformService: PlatformService,
   ) {
-    super(platformService);
-    moment.locale('es');
-    this.setLocale('es');
+    super(platformService, 'es');
   }
 
 }

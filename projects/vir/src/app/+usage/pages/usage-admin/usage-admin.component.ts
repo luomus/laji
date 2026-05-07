@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { IVirUser, VirOrganisationService } from '../../../service/vir-organisation.service';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
-import { map, switchMap, tap, take } from 'rxjs/operators';
+import { map, switchMap, tap, take } from 'rxjs';
 import { SelectionType } from '@achimha/ngx-datatable';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
-import { Person } from 'projects/laji/src/app/shared/model/Person';
 
 @Component({
-  selector: 'vir-usage-admin',
-  templateUrl: './usage-admin.component.html',
-  styleUrls: ['./usage-admin.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'vir-usage-admin',
+    templateUrl: './usage-admin.component.html',
+    styleUrls: ['./usage-admin.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UsageAdminComponent {
 
@@ -115,8 +115,8 @@ export class UsageAdminComponent {
     this.virOrganisationService.reloadUsers();
   }
 
-  onSelectedAddUser(autocompletePerson: Person) {
-    this.addUserEvent$.next(autocompletePerson.id);
+  onSelectedAddUser(autocompletePerson: { id: string }) {
+    this.addUserEvent$.next(autocompletePerson.id!);
   }
 
   userToFormData(user: IVirUser) {

@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { atlasClassStyleLookup } from '../bird-society-info-map/bird-society-info-map.component';
 
 @Component({
-  selector: 'ba-bird-society-species-legend',
-  templateUrl: './bird-society-species-legend.html',
-  styleUrls: ['./bird-society-species-legend.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'ba-bird-society-species-legend',
+    templateUrl: './bird-society-species-legend.html',
+    styleUrls: ['./bird-society-species-legend.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BirdSocietySpeciesLegendComponent {
   legend = [

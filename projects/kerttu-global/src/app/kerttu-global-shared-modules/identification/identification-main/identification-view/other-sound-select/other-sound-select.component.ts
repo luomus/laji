@@ -1,4 +1,4 @@
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../../kerttu-global-shared/service/kerttu-global-api';
@@ -7,10 +7,11 @@ import { IGlobalSpecies, TaxonTypeEnum } from '../../../../../kerttu-global-shar
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'bsg-other-sound-select',
-  templateUrl: './other-sound-select.component.html',
-  styleUrls: ['./other-sound-select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-other-sound-select',
+    templateUrl: './other-sound-select.component.html',
+    styleUrls: ['./other-sound-select.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class OtherSoundSelectComponent {
   @Input() taxonType = TaxonTypeEnum.bird;
@@ -46,7 +47,7 @@ export class OtherSoundSelectComponent {
   private getOptions$(): Observable<IGlobalSpecies[]> {
     return this.kerttuGlobalApi.getSpeciesList(
       this.userService.getToken(),
-      this.translate.currentLang,
+      this.translate.getCurrentLang(),
       {
         taxonType: TaxonTypeEnum.other,
         pageSize: 1000

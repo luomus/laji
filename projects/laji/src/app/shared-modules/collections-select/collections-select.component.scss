@@ -1,4 +1,4 @@
-@import '../../../../../laji-ui/src/lib/vars';
+@use '../../../../../laji-ui/src/lib/vars' as *;
 
 .lj-title {
   border-bottom: 1px solid $neutral-4;

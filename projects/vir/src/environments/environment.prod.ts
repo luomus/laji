@@ -37,6 +37,7 @@ export const environment = {
   waterbirdPairForm: 'MHL.65',
   waterbirdJuvenileForm: 'MHL.66',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi',
+  protaxApi: 'https://protax-api.laji.fi',
   globalMessageIds: {
     '\/observation.*': {
       fi: '3999',
@@ -80,6 +81,7 @@ export const environment = {
     },
   },
   geoserver: 'https://geoserver.laji.fi/geoserver',
+  dashboardUrl: 'https://dashboard.laji.fi',
   observationMapOptions: {availableOverlayNameBlacklist: []},
   displayDevRibbon: false
 };

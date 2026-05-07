@@ -1,23 +1,25 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, from, EMPTY } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, tap, take, concatMap, toArray, filter, catchError } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, tap, take, concatMap, toArray, filter, catchError } from 'rxjs';
 import { GraphQLService } from '../../../graph-ql/service/graph-ql.service';
 import gql from 'graphql-tag';
-import { PagedResult } from '../../model/PagedResult';
 import { UserService } from '../../service/user.service';
-import { LajiApi, LajiApiService } from '../../service/laji-api.service';
-import { Notification } from '../../model/Notification';
+import { LajiApiClientBService } from '../../../../../../laji-api-client-b/src/laji-api-client-b.service';
+import type { components, paths } from 'projects/laji-api-client-b/generated/api';
 
-type LoosePagedResult<T> = Omit<PagedResult<T>, 'lastPage' | 'nextPage' | 'prevPage'>;
+type Notification = components['schemas']['store-notification'];
+type NotificationResponse = paths['/notifications']['get']['responses']['200']['content']['application/json'];
+
+type LoosePagedNotifications = Omit<NotificationResponse, 'lastPage' | 'nextPage' | 'prevPage'>;
 
 interface State {
-  notifications: LoosePagedResult<Notification>;
+  notifications: LoosePagedNotifications;
   unseenCount: number;
   loading: boolean;
 }
 
 interface IRefreshDataResult {
-  notifications: LoosePagedResult<Notification>;
+  notifications: LoosePagedNotifications;
   unseenCount: {
     total: number;
   };
@@ -53,7 +55,7 @@ export class NotificationsFacade {
   });
 
   state$: Observable<State> = this.store$.asObservable();
-  notifications$: Observable<LoosePagedResult<Notification>> = this.state$.pipe(
+  notifications$: Observable<LoosePagedNotifications> = this.state$.pipe(
     map(state => state.notifications),
     distinctUntilChanged()
   );
@@ -74,11 +76,11 @@ export class NotificationsFacade {
 
   constructor(
     private userService: UserService,
-    private lajiApi: LajiApiService,
-    private graphQLService: GraphQLService
+    private graphQLService: GraphQLService,
+    private api: LajiApiClientBService
   ) {}
 
-  private notificationsReducer(notifications: PagedResult<Notification>) {
+  private notificationsReducer(notifications: NotificationResponse) {
     this.store$.next({
       ...this.store$.getValue(), notifications
     });
@@ -120,21 +122,27 @@ export class NotificationsFacade {
       map(({data}) => data),
       catchError(() => of({unseenCount: {total: 0}, notifications: {total: 0, results: []}}))
     ).subscribe((data) => {
-      this.unseenCountReducer(data.unseenCount.total);
+      if (!data) {
+        return;
+      }
+
+      const unseenTotal = data.unseenCount?.total ?? 0;
+      this.unseenCountReducer(unseenTotal);
       const curr = this.store$.getValue();
+      const notifications = data.notifications;
+      const notificationsTotal = notifications?.total ?? 0;
 
       // get total count from graphql to avoid api query until the dropdown is opened
-      if (curr.notifications.total === 0 && data.notifications.total !== 0) {
-        this.totalReducer(data.notifications.total);
+      if (curr.notifications.total === 0 && notificationsTotal !== 0) {
+        this.totalReducer(notificationsTotal);
       }
 
       // reload if new notifications are detected
       if (
-        data.notifications &&
-        data.notifications.total > 0 &&
+        notificationsTotal > 0 &&
         // no need to reload notifications if the dropdown has not been opened
         curr.notifications?.pageSize > 0 &&
-        curr.notifications?.results[0]?.id !== data.notifications.results[0].id
+        curr.notifications?.results[0]?.id !== notifications?.results?.[0]?.id
       ) {
         this.loadNotifications(1);
       }
@@ -143,38 +151,25 @@ export class NotificationsFacade {
 
   loadNotifications(page: number) {
     this.loadingReducer(true);
-    this.lajiApi.getList(LajiApi.Endpoints.notifications, {
-      personToken: this.userService.getToken(),
-      page,
-      pageSize: this.pageSize
-    }).pipe(
+    this.api.get('/notifications', { query: { page, pageSize: this.pageSize } }).pipe(
       catchError(() => EMPTY)
     ).subscribe((notifications) => {
       this.notificationsReducer(notifications);
       this.loadingReducer(false);
     });
   }
-
-  loadUnseenCount() {
-    this.lajiApi.getList(LajiApi.Endpoints.notifications, {
-      personToken: this.userService.getToken(),
-      page: 1,
-      pageSize: 1,
-      onlyUnSeen: true
-    }).pipe(
-      map(unseen => unseen.total || 0),
-      catchError(() => of(0))
-    ).subscribe(this.unseenCountReducer.bind(this));
-  }
-
   markAsSeen(notification: Notification) {
     if (notification.seen) {
       return;
     }
+    if (!notification.id) {
+      throw new Error('Notification not provided.');
+    }
     notification.seen = true;
-    this.lajiApi.update(
-      LajiApi.Endpoints.notifications,
-      notification, {personToken: this.userService.getToken()}
+    this.api.put(
+      '/notifications/{id}',
+      { path: { id: notification.id } },
+      notification
     ).subscribe(this.localUnseenCountReducer.bind(this, 1));
   }
 
@@ -187,11 +182,10 @@ export class NotificationsFacade {
         const arr = new Array(count).fill('').map((val, idx) => idx + 1);
         return of(...arr);
       }),
-      concatMap((idx: number) => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
-        personToken: this.userService.getToken(),
-        page: idx,
-        pageSize: NOTIFICATION_MAX_PAGESIZE
-      })),
+      concatMap((idx: number) => this.api.get(
+        '/notifications',
+        { query: { page: idx, pageSize: NOTIFICATION_MAX_PAGESIZE } }
+      )),
       tap((notifications) => this.notificationsReducer(
           {...notifications, results: notifications.results.map((notification) => ({...notification, seen: true}))}
       )),
@@ -211,10 +205,9 @@ export class NotificationsFacade {
     }
 
     this.loadingReducer(true);
-    this.lajiApi.remove(
-      LajiApi.Endpoints.notifications,
-      notification.id,
-      {personToken: this.userService.getToken()}
+    this.api.delete(
+      '/notifications/{id}',
+      { path: { id: notification.id } }
     ).subscribe(this.loadingReducer.bind(this, false));
   }
 
@@ -227,11 +220,10 @@ export class NotificationsFacade {
         const arr = new Array(count).fill('').map((val, idx) => idx + 1);
         return from(arr);
       }),
-      concatMap((idx: number) => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
-        personToken: this.userService.getToken(),
-        page: idx,
-        pageSize: NOTIFICATION_MAX_PAGESIZE
-      }).pipe(
+      concatMap((idx: number) => this.api.get(
+        '/notifications',
+        { query: { page: idx, pageSize: NOTIFICATION_MAX_PAGESIZE } }
+      ).pipe(
         catchError(() => of({results: []}))
       )),
       toArray(),

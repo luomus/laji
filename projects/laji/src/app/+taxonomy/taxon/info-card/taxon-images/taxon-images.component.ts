@@ -4,13 +4,14 @@ import { InfoCardQueryService } from '../shared/service/info-card-query.service'
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
-  selector: 'laji-taxon-images',
-  templateUrl: './taxon-images.component.html',
-  styleUrls: ['./taxon-images.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-images',
+    templateUrl: './taxon-images.component.html',
+    styleUrls: ['./taxon-images.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonImagesComponent implements OnChanges {
   @Input({ required: true }) taxon!: Taxon;

@@ -1,4 +1,4 @@
-import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -21,14 +21,15 @@ import { PlatformService } from '../../root/platform.service';
 import { NavbarService } from '../service/navbar.service';
 
 @Component({
-  selector: 'laji-navbar',
-  styleUrls: ['./navbar.component.scss'],
-  templateUrl: './navbar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NotificationsFacade]
+    selector: 'laji-navbar',
+    styleUrls: ['./navbar.component.scss'],
+    templateUrl: './navbar.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [NotificationsFacade],
+    standalone: false
 })
 export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
-  unsubscribe$ = new Subject<null>();
+  unsubscribe$ = new Subject<void>();
 
   mobile = false;
   openMenu = false;

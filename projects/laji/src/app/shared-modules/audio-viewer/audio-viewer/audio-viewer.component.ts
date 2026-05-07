@@ -24,7 +24,7 @@ import {
 import { defaultSpectrogramConfig } from '../variables';
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerView } from '../service/audio-viewer-view';
-import { delay } from 'rxjs/operators';
+import { delay } from 'rxjs';
 import { getMaxFreq, rangeIsInsideRange } from '../service/audio-viewer-utils';
 import { Subscription } from 'rxjs';
 import { AudioService } from '../service/audio.service';
@@ -34,10 +34,11 @@ import { SpectrogramConfigModalComponent } from './spectrogram-config-modal/spec
 import equals from 'deep-equal';
 
 @Component({
-  selector: 'laji-audio-viewer',
-  templateUrl: './audio-viewer.component.html',
-  styleUrls: ['./audio-viewer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-audio-viewer',
+    templateUrl: './audio-viewer.component.html',
+    styleUrls: ['./audio-viewer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AudioViewerComponent implements OnChanges {
   @Input({ required: true }) audio!: Audio;

@@ -6,10 +6,11 @@ import { DataOptions, Options, TileLayerName, GetPopupOptions } from '@luomus/la
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'bsg-site-result-map',
-  templateUrl: './site-result-map.component.html',
-  styleUrls: ['./site-result-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-site-result-map',
+    templateUrl: './site-result-map.component.html',
+    styleUrls: ['./site-result-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SiteResultMapComponent implements OnChanges {
   @ViewChild(LajiMapComponent) lajiMap!: LajiMapComponent;

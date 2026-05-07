@@ -1,16 +1,23 @@
 <h3>{{ 'haseka.templates.title' | translate }}</h3>
 <ng-container *lajiBrowserOnly>
-  <div class="pull-right toggle-intro" *ngIf="!showTemplateIntro">
-    <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
-  </div>
-  <lu-alert *ngIf="showTemplateIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-    <p>{{ 'haseka.templates.intro' | translate }}</p>
-  </lu-alert>
+  @if (!showTemplateIntro) {
+    <div class="pull-right toggle-intro">
+      <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+    </div>
+  }
+  @if (showTemplateIntro) {
+    <lu-alert [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+      <p>{{ 'haseka.templates.intro' | translate }}</p>
+    </lu-alert>
+  }
 </ng-container>
-<laji-own-submissions  *ngIf="collectionID$ | async as collectionID; else loader"
-                       [templateColumns]="['templateName', 'templateDescription', 'dateEdited', 'id']"
-                       [collectionID]="collectionID"
-                       [showDownloadAll]="false"
-                       [onlyTemplates]="true"></laji-own-submissions>
+@if (collectionID$ | async; as collectionID) {
+  <laji-own-submissions
+    [templateColumns]="['templateName', 'templateDescription', 'dateEdited', 'id']"
+    [collectionID]="collectionID"
+    [showDownloadAll]="false"
+  [onlyTemplates]="true"></laji-own-submissions>
+} @else {
+  <laji-spinner></laji-spinner>
+}
 
-<ng-template #loader><laji-spinner></laji-spinner></ng-template>

@@ -6,7 +6,7 @@ import {
 import { SelectionType, TableColumn } from '@achimha/ngx-datatable';
 import { AtlasTaxon } from '../../../core/atlas-api.service';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { debounceTime, filter, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, takeUntil } from 'rxjs';
 
 type AugmentedAtlasTaxon = AtlasTaxon & {
   classCounts: {
@@ -18,10 +18,11 @@ type AugmentedAtlasTaxon = AtlasTaxon & {
 };
 
 @Component({
-  selector: 'ba-bird-society-info-species-table',
-  templateUrl: 'bird-society-info-species-table.component.html',
-  styleUrls: ['bird-society-info-species-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'ba-bird-society-info-species-table',
+    templateUrl: 'bird-society-info-species-table.component.html',
+    styleUrls: ['bird-society-info-species-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BirdSocietyInfoSpeciesTableComponent implements OnChanges, AfterViewInit, OnDestroy, OnInit {
   @ViewChild('alignRight') alignRightTemplate!: TemplateRef<any>;

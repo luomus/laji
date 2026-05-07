@@ -1,22 +1,22 @@
-import { map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges,
 OnInit, ChangeDetectorRef} from '@angular/core';
-import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable, Subscription } from 'rxjs';
-import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ChartDataset, ChartOptions, Tooltip } from 'chart.js';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import { HorizontalChartDataService, MAX_TAXA_SIZE } from './horizontal-chart-data.service';
 import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
-  selector: 'laji-horizontal-chart',
-  templateUrl: './horizontal-chart.component.html',
-  styleUrls: ['./horizontal-chart.component.scss'],
-  providers: [InformalTaxonGroupApi, HorizontalChartDataService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-horizontal-chart',
+    templateUrl: './horizontal-chart.component.html',
+    styleUrls: ['./horizontal-chart.component.scss'],
+    providers: [HorizontalChartDataService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HorizontalChartComponent implements OnInit, OnChanges {
   @Input({ required: true }) query!: WarehouseQueryInterface;
@@ -66,7 +66,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   subBackgroundColors: string[] = [];
   allBackgroundColors: string[] = [];
 
-  constructor(private warehouseService: WarehouseApi,
+  constructor(private api: LajiApiClientBService,
               private cd: ChangeDetectorRef,
               private toQname: ToQNamePipe,
               private translate: TranslateService,
@@ -112,36 +112,39 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
     this.barChartData = [{ data: [], backgroundColor: [], label: this.translate.instant('all') }];
 
     this.loading = true;
-      this.dataClasses = this.warehouseService.warehouseQueryAggregateGet(
-        this.query,
-        ['unit.linkings.taxon.' + this.classificationValue ],
-        [this.onlyCount === null ? 'count DESC' : this.onlyCount ? 'count DESC' : 'individualCountSum DESC'],
-        MAX_TAXA_SIZE,
-        undefined,
-        undefined,
-        false
-      ).pipe(
-        map(res => res.results),
-        switchMap(res => {
-          const taxaIds = res.map((r: any) => this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
-          return this.horizontalDataService.getChartDataLabels(taxaIds).pipe(
-            map(labels => res.map((r: any) => ({
-            ...r,
-            label: labels[this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ])]
-          }))));
-        }),
-        map(res => res.map((r: any) => {
-          this.resultList.push(r);
-          this.subDataBarChart.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
-          this.subBackgroundColors.push('#3498db');
-          this.subLabelBarChart.push(r.label ? (r.label.vernacularName || r.label.scientificName) : '');
-        }))
-      )
-      .subscribe(() => {
-        this.createSubArrayChart();
-        this.hasData.emit(this.allDataBarChart.length > 0);
-      });
-
+    this.api.get(
+      '/warehouse/query/unit/aggregate',
+      {
+        query: {
+          ...this.query as any,
+          aggregateBy: ['unit.linkings.taxon.' + this.classificationValue],
+          orderBy: [this.onlyCount === null ? 'count DESC' : this.onlyCount ? 'count DESC' : 'individualCountSum DESC'],
+          pageSize: MAX_TAXA_SIZE,
+          onlyCount: false
+        }
+      }
+    ).pipe(
+      filter(res => typeof res !== 'string'),
+      map(res => res.results),
+      switchMap(res => {
+        const taxaIds = res.map((r: any) => this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
+        return this.horizontalDataService.getChartDataLabels(taxaIds).pipe(
+          map(labels => res.map((r: any) => ({
+          ...r,
+          label: labels[this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ])]
+        }))));
+      }),
+      map(res => res.map((r: any) => {
+        this.resultList.push(r);
+        this.subDataBarChart.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
+        this.subBackgroundColors.push('#3498db');
+        this.subLabelBarChart.push(r.label ? (r.label.vernacularName || r.label.scientificName) : '');
+      }))
+    )
+    .subscribe(() => {
+      this.createSubArrayChart();
+      this.hasData.emit(this.allDataBarChart.length > 0);
+    });
   }
 
 

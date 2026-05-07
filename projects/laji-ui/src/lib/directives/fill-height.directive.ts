@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Renderer2, OnDestroy, AfterViewInit, Input, Inject, PLATFORM_ID, OnChanges } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Util } from 'projects/laji/src/app/shared/service/util.service';
+import * as Util from 'projects/laji/src/app/shared/utils';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 export interface IFillHeightOptions {
@@ -10,7 +10,8 @@ export interface IFillHeightOptions {
 }
 
 @Directive({
-  selector: '[luFillHeight]'
+    selector: '[luFillHeight]',
+    standalone: false
 })
 export class FillHeightDirective implements OnDestroy, AfterViewInit, OnChanges {
   @Input('luFillHeight') options!: IFillHeightOptions;

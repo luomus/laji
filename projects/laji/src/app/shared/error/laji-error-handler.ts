@@ -3,7 +3,7 @@ import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../logger/logger.service';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { RESPONSE } from '../../../express.tokens';
 import { environment } from '../../../environments/environment';
 
 const pauseBeforeResendError = 30000;

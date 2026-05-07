@@ -2,18 +2,18 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormPermissionService } from '../../../../shared/service/form-permission.service';
-import { UserService } from '../../../../shared/service/user.service';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 import { AbstractPermission } from '../abstract-permission';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs';
 
 @Component({
-  selector: 'laji-accept',
-  templateUrl: './accept.component.html',
-  styleUrls: ['./accept.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-accept',
+    templateUrl: './accept.component.html',
+    styleUrls: ['./accept.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AcceptComponent extends AbstractPermission implements OnInit, OnDestroy {
   disabled: {[personId: string]: boolean} = {};
@@ -24,7 +24,6 @@ export class AcceptComponent extends AbstractPermission implements OnInit, OnDes
     protected router: Router,
     protected formPermissionService: FormPermissionService,
     protected localizeRouterService: LocalizeRouterService,
-    protected userService: UserService,
     private route: ActivatedRoute,
     private projectFormService: ProjectFormService,
     private translate: TranslateService,
@@ -33,7 +32,7 @@ export class AcceptComponent extends AbstractPermission implements OnInit, OnDes
 
   ngOnInit() {
     this.subParam = this.projectFormService.getFormFromRoute$(this.route).pipe(
-      tap(form => this.collectionId = form.collectionID as string),
+      tap(form => this.collectionId = form?.collectionID as string),
       switchMap(() => this.updateFormPermission$())
     ).subscribe(() => this.cdr.markForCheck());
   }
@@ -50,7 +49,7 @@ export class AcceptComponent extends AbstractPermission implements OnInit, OnDes
     };
 
     const method = action === 'accept' ? 'acceptRequest' : 'revokeAccess';
-    this.formPermissionService[method](this.collectionId, this.userService.getToken(), personId).pipe(
+    this.formPermissionService[method](this.collectionId, personId).pipe(
       switchMap(() => this.updateFormPermission$())
     ).subscribe(cb, cb);
   }

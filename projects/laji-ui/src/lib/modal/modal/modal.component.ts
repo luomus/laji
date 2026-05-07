@@ -1,26 +1,34 @@
 /* eslint-disable @angular-eslint/no-output-on-prefix */
-import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Inject, Input, OnDestroy, Output, Renderer2,
-  ViewChild } from '@angular/core';
-import { filter } from 'rxjs/operators';
+
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Inject, Input, OnDestroy, Output, Renderer2,
+  ViewChild,
+  DOCUMENT
+} from '@angular/core';
+import { filter } from 'rxjs';
 
 export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
 
 @Component({
-  selector: 'lu-modal',
-  template:`
+    selector: 'lu-modal',
+    template: `
     <div class="lu-backdrop"></div>
-    <div class="lu-modal-container" [class]="'lu-modal-' + size" *ngIf="isShown" #container>
-      <lu-button-round *ngIf="!noClose" (click)="hide()" role="neutral" class="lu-modal-close-button">
-        <lu-icon type="close"></lu-icon>
-      </lu-button-round>
-      <div [class]="['lu-modal-content', contentClass === null ? '' : contentClass]" role="dialog">
-        <ng-content></ng-content>
+    @if (isShown) {
+      <div class="lu-modal-container" [class]="'lu-modal-' + size" #container>
+        @if (!noClose) {
+          <lu-button-round (click)="hide()" role="neutral" class="lu-modal-close-button">
+            <lu-icon type="close"></lu-icon>
+          </lu-button-round>
+        }
+        <div [class]="['lu-modal-content', contentClass === null ? '' : contentClass]" role="dialog">
+          <ng-content></ng-content>
+        </div>
       </div>
-    </div>
-  `,
-  styleUrls: ['./modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    }
+    `,
+    styleUrls: ['./modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ModalComponent implements OnDestroy {
 
@@ -49,7 +57,7 @@ export class ModalComponent implements OnDestroy {
   @ViewChild('container', {static: false}) containerRef?: ElementRef;
 
   private originalBodyOverflow?: string;
-  private mousedownTarget?: HTMLElement;
+  private mousedownTarget?: EventTarget | null;
 
   constructor(
     public elementRef: ElementRef,
@@ -65,7 +73,7 @@ export class ModalComponent implements OnDestroy {
   }
 
   @HostListener('document:keydown.escape')
-  private hideOnEsc() {
+  hideOnEsc() {
     if (this.noClose) {
       return;
     }
@@ -73,12 +81,12 @@ export class ModalComponent implements OnDestroy {
   }
 
   @HostListener('mousedown', ['$event.target'])
-  private onMousedown(target: HTMLElement) {
+  onMousedown(target: EventTarget | null) {
     this.mousedownTarget = target;
   }
 
   @HostListener('mouseup', ['$event.target'])
-  private onMouseup(target: HTMLElement) {
+  onMouseup(target: EventTarget | null) {
     if (!this.noClose && target === this.containerRef?.nativeElement && target === this.mousedownTarget) {
       this.hide();
     }

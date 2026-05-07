@@ -12,13 +12,14 @@ import {
   HostListener,
   OnChanges,
   Inject,
-  EnvironmentInjector
+  EnvironmentInjector,
+  DOCUMENT
 } from '@angular/core';
 import { IImageSelectEvent, Image } from './image.interface';
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
 import { QueryParamsHandling } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+
 
 /**
  * Originally from here https://github.com/vimalavinisha/angular2-image-popup
@@ -71,10 +72,11 @@ const getAnnotationTmpFullImgUrl = (img: Partial<Image>): string | undefined => 
 };
 
 @Component({
-  selector: 'laji-image-gallery',
-  styleUrls: ['./image-modal.component.css'],
-  templateUrl: './image-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-image-gallery',
+    styleUrls: ['./image-modal.component.css'],
+    templateUrl: './image-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   public opened = false;

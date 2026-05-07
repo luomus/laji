@@ -1,10 +1,11 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'bsg-audio-viewer-custom-controls',
-  templateUrl: './audio-viewer-custom-controls.component.html',
-  styleUrls: ['./audio-viewer-custom-controls.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-audio-viewer-custom-controls',
+    templateUrl: './audio-viewer-custom-controls.component.html',
+    styleUrls: ['./audio-viewer-custom-controls.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AudioViewerCustomControlsComponent {
   @Input() enableShowWholeFrequencyRangeSetting = true;

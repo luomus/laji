@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Router } from '@angular/router';
 import { IObservationViewModel, ObservationFacade } from '../observation.facade';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { tap } from 'rxjs/operators';
+import { startWith, tap } from 'rxjs/operators';
 import { BrowserService } from '../../shared/service/browser.service';
 import { UserSettingsResultList, UserService } from '../../shared/service/user.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
@@ -16,6 +16,8 @@ import { ToastsService } from '../../shared/service/toasts.service';
 import { SidebarComponent } from 'projects/laji-ui/src/lib/sidebar/sidebar.component';
 import { ActiveToast } from 'ngx-toastr';
 import { ObservationFormQuery } from '../form/observation-form-query.interface';
+import { LocalStorageService } from 'ngx-webstorage';
+import { DataFetchMode as ObservationFormType } from '../observation-data.service';
 
 export interface VisibleSections {
   finnish?: boolean;
@@ -33,14 +35,14 @@ export interface VisibleSections {
 }
 
 @Component({
-  selector: 'laji-observation-view',
-  templateUrl: './observation-view.component.html',
-  styleUrls: ['./observation-view.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-view',
+    templateUrl: './observation-view.component.html',
+    styleUrls: ['./observation-view.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
-export class ObservationViewComponent implements OnInit, OnDestroy {
-
-  @Input() formType: 'unit'|'sample' = 'unit';
+export class ObservationViewComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() formType: ObservationFormType = 'unit';
   @Input() basePath = '/observation';
   @Input() visible: VisibleSections = {
     finnish: true,
@@ -93,8 +95,15 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private route: Router,
     private userService: UserService,
-    private toastsService: ToastsService
+    private toastsService: ToastsService,
+    private localStorageService: LocalStorageService
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.formType) {
+      this.observationFacade.setDataFetchMode(changes.formType.currentValue);
+    }
+  }
 
   @Input({ required: true })
   set activeTab(tab: string) {
@@ -108,7 +117,9 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.vm$ = this.observationFacade.vm$;
-    this.settingsList$ = this.userService.getUserSetting<UserSettingsResultList>(this.settingsKeyList);
+    this.settingsList$ = this.localStorageService.observe(this.settingsKeyList).pipe(
+      startWith(this.localStorageService.retrieve(this.settingsKeyList))
+    );
 
     this.mainSubscription.add(
       this.browserService.lgScreen$.subscribe(data => this.showMobile = data)
@@ -168,7 +179,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   onListSettingsChange(settings: UserSettingsResultList) {
-    this.userService.setUserSetting(this.settingsKeyList, settings);
+    this.localStorageService.store(this.settingsKeyList, settings);
   }
 
   toggleMobile() {

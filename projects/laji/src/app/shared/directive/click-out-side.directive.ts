@@ -3,7 +3,8 @@ import { Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, OnInit, 
 import { PlatformService } from '../../root/platform.service';
 
 @Directive({
-  selector: '[lajiClickOutSide]'
+    selector: '[lajiClickOutSide]',
+    standalone: false
 })
 export class ClickOutSideDirective implements OnInit, OnDestroy {
 

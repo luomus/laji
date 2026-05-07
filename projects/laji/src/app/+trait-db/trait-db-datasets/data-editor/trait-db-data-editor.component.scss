@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars' as *;
 
 .status-icon {
   display: inline-flex;
@@ -19,4 +19,3 @@
 .status-icon.danger {
   color: $danger-5;
 }
-

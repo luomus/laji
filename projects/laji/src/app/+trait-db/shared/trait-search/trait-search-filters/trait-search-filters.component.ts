@@ -6,7 +6,7 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { Observable } from 'rxjs';
 import { AdditionalFilterValues } from './additional-filters.component';
 import { RankFilterValue } from './rank-filter/rank-filter.component';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 
 export interface FormValue {
   dataset: string | null;
@@ -23,10 +23,11 @@ export const formDefaultValues: FormValue = {
 };
 
 @Component({
-  selector: 'laji-trait-search-filters',
-  templateUrl: './trait-search-filters.component.html',
-  styleUrls: ['./trait-search-filters.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-trait-search-filters',
+    templateUrl: './trait-search-filters.component.html',
+    styleUrls: ['./trait-search-filters.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitSearchFiltersComponent implements OnChanges {
   @Input() initialValue?: FormValue;
@@ -35,8 +36,8 @@ export class TraitSearchFiltersComponent implements OnChanges {
   @Output() searchClicked = new EventEmitter<void>();
 
   form = this.fb.group(formDefaultValues);
-  datasets$: Observable<components['schemas']['Dataset'][]>;
-  traits$: Observable<components['schemas']['Trait'][]>;
+  datasets$: Observable<components['schemas']['LajiBackendDataset'][]>;
+  traits$: Observable<components['schemas']['LajiBackendTrait'][]>;
 
   constructor(
     private fb: FormBuilder,
@@ -78,6 +79,15 @@ export class TraitSearchFiltersComponent implements OnChanges {
   }
 
   onClear() {
-    this.form.setValue(formDefaultValues);
+    this.form.setValue(
+      Object.entries(this.form.getRawValue()).reduce(
+        (prev, curr: [any, any]) => {
+          const [k, v] = curr;
+          prev[k] = this.disabled?.has(k) ? v : formDefaultValues[<keyof typeof formDefaultValues>k];
+          return prev;
+        },
+        {} as any
+      )
+    );
   }
 }

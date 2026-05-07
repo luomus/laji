@@ -45,8 +45,15 @@
         id="latitude"
         placeholder="{{'theme.soundIdentification.latitude' | translate}}"
       >
+    </div>
+
+    <div class="form-group d-inline-block">
+      <label for="overlap">
+        {{ 'theme.soundIdentification.overlap' | translate }}
+        <laji-info [html]="'theme.soundIdentification.overlap.info' | translate" [showOnHover]="true"></laji-info>
+      </label>
       <input
-        [(ngModel)]="longitude"
+        [(ngModel)]="overlap"
         class="form-control input-sm"
         type="number"
         min="-180"
@@ -70,11 +77,10 @@
 
 <div class="form-group">
   <button class="btn btn-primary" [disabled]="(loading || isValidating)" (click)="submitForm()">
-    <ng-container *ngIf="!(loading || isValidating) else downloading">
+    @if (!(loading || isValidating)) {
       {{ 'theme.soundIdentification.analyse' | translate }}
-    </ng-container>
-    <ng-template #downloading>
+    } @else {
       {{ 'theme.soundIdentification.loading' | translate }}
-    </ng-template>
+    }
   </button>
 </div>
