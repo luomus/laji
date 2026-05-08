@@ -14,7 +14,6 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { interval as ObservableInterval, Subscription, throwError as observableThrowError, Observable } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
@@ -33,6 +32,7 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { DocumentPermissionService } from '../service/document-permission.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 type Annotation = components['schemas']['store-annotation'];
 type AnnotationTag = components['schemas']['store-tag'];
@@ -112,7 +112,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
 
   constructor(
-    private warehouseApi: WarehouseApi,
+    private api: LajiApiClientBService,
     private userService: UserService,
     private cd: ChangeDetectorRef,
     private appRef: ApplicationRef,
@@ -222,10 +222,17 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     if (!this.uri) {
       return;
     }
-    const findDoc$ = this.warehouseApi
-      .warehouseQuerySingleGet(this.uri, this.own ? {editorOrObserverPersonToken: this.userService.getToken()} : undefined).pipe(
-        catchError((errors) => this.own ? this.warehouseApi.warehouseQuerySingleGet(this.uri) : observableThrowError(errors)),
-        map((doc) => doc.document),
+
+    const query = {
+      documentId: this.uri,
+    } as any;
+    if (this.own) {
+      query['editorOrObserverPersonToken'] = this.userService.getToken();
+    }
+
+    const findDoc$ = this.api.get('/warehouse/query/single' as any, { query }).pipe(
+        catchError((errors) => this.own ? this.api.get('/warehouse/query/single' as any, { query: { documentId: this.uri } }) : observableThrowError(errors)),
+        map((doc: any) => doc.document),
         tap((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight))
       );
 

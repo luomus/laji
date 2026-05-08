@@ -35,7 +35,6 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { TranslateService } from '@ngx-translate/core';
 import { ValueDecoratorService } from '../../../+observation/result-list/value-decorator.sevice';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -59,6 +58,7 @@ import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
 import { Router } from '@angular/router';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
@@ -212,7 +212,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   private activeGeometryHash!: string;
 
   constructor(
-    private warehouseService: WarehouseApi,
+    private api: LajiApiClientBService,
     private platformService: PlatformService,
     public translate: TranslateService,
     private decorator: ValueDecoratorService,
@@ -389,16 +389,17 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getPoints$(query: WarehouseQueryInterface): Observable<FeatureCollection> {
-    return this.warehouseService.warehouseQueryAggregateGet(
-      { ...query, featureType: 'CENTER_POINT' },
-      [ 'gathering.interpretations.coordinateAccuracy' ],
-      undefined,
-      this.pointGeometryPageSize,
-      undefined,
-      true,
-      query.onlyCount
-    ).pipe(
-      map(data => ({
+    return this.api.get('/warehouse/query/unit/aggregate', {
+      query: {
+        ...query as any,
+        featureType: 'CENTER_POINT',
+        aggregateBy: [ 'gathering.interpretations.coordinateAccuracy' ],
+        pageSize: this.pointGeometryPageSize,
+        geoJSON: true,
+        onlyCount: query.onlyCount
+      }
+    }).pipe(
+      map((data: any) => ({
         type: 'FeatureCollection' as const,
         features: data.features
       }))
@@ -432,7 +433,15 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getBoxQuery$(query: WarehouseQueryInterface, aggregateBy: string[], page: number): Observable<AggregateQueryResponse> {
-    return this.warehouseService.warehouseQueryAggregateGet(query, aggregateBy, undefined, this.boxGeometryPageSize, page, true);
+    return this.api.get('/warehouse/query/unit/aggregate', {
+      query: {
+        ...query as any,
+        aggregateBy,
+        pageSize: this.boxGeometryPageSize,
+        page,
+        geoJSON: true
+      }
+    }) as any;
   }
 
   private getAllBoxes$(query: WarehouseQueryInterface, aggregateBy: string[]): Observable<FeatureCollection> {
@@ -510,7 +519,10 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
 
   private getFeaturesFromQueryPolygonId(polygonId: string): Observable<Feature[]>{
     return polygonId
-      ? this.warehouseService.getPolygonFeatureCollection(polygonId.split(':')[0]).pipe(
+      ? this.api.get('/warehouse/polygon/{id}', {
+          path: { id: polygonId.split(':')[0] as any },
+          query: { format: 'geojson', crs: 'WGS84' }
+        }).pipe(
           map(featureCollection => (featureCollection as any).features)
       )
       : of([]);
@@ -623,7 +635,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     this.loading = true;
     this.cdr.markForCheck();
 
-    return this.warehouseService.warehouseQueryCountGet(query).pipe(
+    return this.api.get('/warehouse/query/unit/count', { query: query as any }).pipe(
       switchMap(res => {
         if (!res.total) {
           return of({
@@ -640,7 +652,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       filter(d => d !== null),
       tap(d => this.previousFeatureCollection = <FeatureCollection<Geometry, GeoJsonProperties>>d),
       // retry on timeout
-      timeout(WarehouseApi.longTimeout * 3),
+      timeout(30000),
       delay(100),
       retryWhen(errors => concat(errors.pipe(delay(1000), take(3)), observableThrowError(errors))),
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

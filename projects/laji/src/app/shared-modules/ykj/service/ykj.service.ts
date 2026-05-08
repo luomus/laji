@@ -2,8 +2,9 @@ import { concat, concatWith, delay, map, retryWhen, take, throwError } from 'rxj
 import { Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as MapUtil from '@luomus/laji-map/lib/utils';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { isEmptyWarehouseQuery } from '../../../shared/api/util';
 
 type Grid = '100kmCenter'
   |'50kmCenter'
@@ -23,7 +24,7 @@ export class YkjService {
   private pendingKey?: string;
 
   constructor(
-    private warehouseApi: WarehouseApi
+    private api: LajiApiClientBService
   ) { }
 
   getGeoJson(query: WarehouseQueryInterface, grid: Grid = '10kmCenter', key?: string,
@@ -51,22 +52,24 @@ export class YkjService {
       });
     }
     this.pendingKey = key;
-    const sourceMethod: (query: any, aggregate: any, orderBy: any, pageSize: any, page: any, geoJson: any, onlyCount: any) => Observable<any> = zeroObservations
-      ? this.warehouseApi.warehouseQueryGatheringStatisticsGet.bind(this.warehouseApi) : useStatistics
-      ? this.warehouseApi.warehouseQueryStatisticsGet.bind(this.warehouseApi)
-      : this.warehouseApi.warehouseQueryAggregateGet.bind(this.warehouseApi);
-    this.pending = sourceMethod(
-        {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
-        [`gathering.conversions.ykj${grid}.lat,gathering.conversions.ykj${grid}.lon`, ...selected],
-        selected.length > 0 ? [`gathering.conversions.ykj${grid}.lat,gathering.conversions.ykj${grid}.lon`] : undefined,
-        10000,
-        1,
-        false,
-        enableOnlyCount
-      ).pipe(
-        retryWhen(errors => errors.pipe(delay(1000), take(3), concatWith(throwError(() => errors)))),
-        map(data => data.results)
-      );
+    const queryParams = {
+      ...query,
+      cache: (query.cache || isEmptyWarehouseQuery(query)),
+      aggregateBy: [`gathering.conversions.ykj${grid}.lat,gathering.conversions.ykj${grid}.lon`, ...selected],
+      orderBy: selected.length > 0 ? [`gathering.conversions.ykj${grid}.lat,gathering.conversions.ykj${grid}.lon`] : undefined,
+      pageSize: 10000,
+      page: 1,
+      onlyCount: enableOnlyCount
+    };
+    const source$ = zeroObservations
+      ? this.api.get('/warehouse/query/gathering/statistics', { query: queryParams as any })
+      : useStatistics
+        ? this.api.get('/warehouse/query/unit/statistics', { query: queryParams as any })
+        : this.api.get('/warehouse/query/unit/aggregate', { query: queryParams as any });
+    this.pending = source$.pipe(
+      retryWhen(errors => errors.pipe(delay(1000), take(3), concatWith(throwError(() => errors)))),
+      map(data => data.results)
+    );
     return this.pending;
   }
 
