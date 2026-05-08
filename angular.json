@@ -1358,7 +1358,8 @@
               "buildTarget": "kerttu-global:build:dev"
             },
             "local": {
-              "buildTarget": "kerttu-global:build:local"
+              "buildTarget": "kerttu-global:build:local",
+              "proxyConfig": "proxy.conf.js"
             }
           }
         },
