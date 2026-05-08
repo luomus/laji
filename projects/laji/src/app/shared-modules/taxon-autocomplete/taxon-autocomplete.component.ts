@@ -19,6 +19,7 @@ import { Observable, of, of as ObservableOf, Subscription, timer } from 'rxjs';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { TypeaheadMatch } from 'projects/laji-ui/src/lib/typeahead/typeahead-match.class';
 
 type TaxonAutocompleteResponse = components['schemas']['TaxonAutocompleteResponse'];
 
@@ -61,7 +62,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
 
   private tokenMinLength = 3;
   private destroyBlurListener?: () => void;
-  private previewedTaxon?: any;
+  private previewedTaxon?: TypeaheadMatch;
 
   constructor(
     private api: LajiApiClientBService,
@@ -181,7 +182,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  onTaxonPreview(taxon: any) {
+  onTaxonPreview(taxon: TypeaheadMatch) {
     this.previewedTaxon = taxon;
   }
 
