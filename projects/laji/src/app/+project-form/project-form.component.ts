@@ -1,25 +1,29 @@
-import { Form } from '../shared/model/Form';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs';
 import { combineLatest, merge, Observable, of, Subscription, Subject, BehaviorSubject, forkJoin } from 'rxjs';
-import { UserService } from '../shared/service/user.service'; import { Document } from '../shared/model/Document';
-import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
+import { UserService } from '../shared/service/user.service';
+import { DocumentViewerFacade, StoreDocument } from '../shared-modules/document-viewer/document-viewer.facade';
 import { ProjectForm, ProjectFormService } from '../shared/service/project-form.service';
 import { FormPermissionService, Rights } from '../shared/service/form-permission.service';
-import { FormPermission } from '../shared/model/FormPermission';
 import { BrowserService } from '../shared/service/browser.service';
 import { Title } from '@angular/platform-browser';
 import { TriplestoreLabelService } from '../shared/service/triplestore-label.service';
 import { Breadcrumb } from '../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
-import ResultServiceType = Form.ResultServiceType;
 import { formOptionToClassName } from '../shared/directive/project-form-option.directive';
 import { NavbarService } from '../shared/service/navbar.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
+type FormListing = components['schemas']['FormListing'];
+type FormPermission = components['schemas']['FormPermissionDto'];
+
+type ResultServiceType = Form['options']['resultServiceType'];
 
 interface ViewModel {
   navLinks: NavLink[];
-  form: Form.SchemaForm;
+  form: Form;
   disabled: boolean;
   datasetsBreadcrumb?: Breadcrumb[];
   rights: Rights;
@@ -89,7 +93,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
-      case ResultServiceType.winterBirdCount:
+      case 'MHL.resultServiceTypeWinterBirdCount':
         return [
           {
             link: ['stats'],
@@ -110,7 +114,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
             active: queryParams['tab'] === 'censuses'
           }
         ];
-      case ResultServiceType.sykeInsect:
+      case 'MHL.resultServiceTypeSykeInsectProjects':
         return [
           {
             link: ['stats'],
@@ -130,7 +134,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private static getFormRoutes(form: Form.SchemaForm, subForms: Form.List[], rights: Rights) {
+  private static getFormRoutes(form: Form, subForms: FormListing[], rights: Rights) {
     if (form.options?.secondaryCopy) {
      return [];
     }
@@ -182,7 +186,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     const form$ = this.projectFormService.getFormFromRoute$(this.route);
     const initialFp$ = form$.pipe(
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      switchMap(form => this.formPermissionService.getFormPermission(form?.collectionID!, this.userService.getToken())),
+      switchMap(form => this.formPermissionService.getFormPermission(form?.collectionID!)),
       take(1)
     );
 
@@ -324,7 +328,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     ].filter(n => n);
   }
 
-  private getDatasetsBreadcrumb(form: Form.SchemaForm): Breadcrumb[] {
+  private getDatasetsBreadcrumb(form: Form): Breadcrumb[] {
     if (!form.options?.dataset) {
       return [];
     }
@@ -347,7 +351,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     ];
   }
 
-  showDocumentViewer(document: Document) {
+  showDocumentViewer(document: StoreDocument) {
     this.documentViewerFacade.showDocument({document, own: true});
   }
 
@@ -366,13 +370,13 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  private getFormTitle(form: Form.SchemaForm): Observable<string> {
+  private getFormTitle(form: Form): Observable<string> {
     let title$ = of(form.title);
 
     if (form.options?.dataset) {
       title$ = forkJoin([
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.labelService.get(form.collectionID!, this.translate.getCurrentLang()),
+        this.labelService.get(form.collectionID!),
         this.translate.get('datasets.label')
       ]).pipe(
         map((result: string[]) => result.filter(res => !!res).join(' | '))

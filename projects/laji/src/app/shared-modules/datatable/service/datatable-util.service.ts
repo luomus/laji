@@ -3,13 +3,12 @@ import { forkJoin as ObservableForkJoin, from, Observable, of as ObservableOf } 
 import { concatMap, map, toArray } from 'rxjs';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
-import { PublicationService } from '../../../shared/service/publication.service';
-import { Publication } from '../../../shared/model/Publication';
 import { UserService } from '../../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { IdService } from '../../../shared/service/id.service';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { AreaService } from '../../../shared/service/area.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +17,10 @@ export class DatatableUtil {
   constructor(
     private labelService: TriplestoreLabelService,
     private areaService: AreaService,
-    private publicationService: PublicationService,
     private userService: UserService,
     private translate: TranslateService,
-    private warehouseValueMappingService: WarehouseValueMappingService
+    private warehouseValueMappingService: WarehouseValueMappingService,
+    private api: LajiApiClientBService
   ) { }
 
   getVisibleValue(value: any, row: any, templateName: string): Observable<string> {
@@ -130,8 +129,8 @@ export class DatatableUtil {
     }
 
     return this.getArray(occurrences, (occurrence) => ObservableForkJoin([
-      this.areaService.getProvinceCode(IdService.getId(occurrence.area), this.translate.getCurrentLang()),
-      this.labelService.get(IdService.getId(occurrence.status), this.translate.getCurrentLang())
+      this.areaService.getProvinceCode(IdService.getId(occurrence.area)),
+      this.labelService.get(IdService.getId(occurrence.status))
     ]).pipe(
       map(data => data[0]+ ': ' + data[1])
     ), '; ');
@@ -139,12 +138,12 @@ export class DatatableUtil {
 
   private getWarehouseLabels(values: any): Observable<string> {
     return this.getArray(values, (value) => this.warehouseValueMappingService.getSchemaKey(value).pipe(
-        concatMap(key => this.labelService.get(IdService.getId(key), this.translate.getCurrentLang()))
+        concatMap(key => this.labelService.get(IdService.getId(key)))
       ), '; ');
   }
 
   private getLabels(values: any): Observable<string> {
-    return this.getArray(values, (value) => this.labelService.get(IdService.getId(value), this.translate.getCurrentLang()), '; ');
+    return this.getArray(values, (value) => this.labelService.get(IdService.getId(value)), '; ');
   }
 
   private getPublications(values: any): Observable<string> {
@@ -154,8 +153,8 @@ export class DatatableUtil {
     const labelObservables = [];
     for (const item of values) {
       labelObservables.push(
-        this.publicationService.getPublication(item, this.translate.getCurrentLang()).pipe(
-          map((res: Publication) => res && res.name ? res.name : item))
+        this.api.get('/publications/{id}', { path: { id: item } }).pipe(
+          map(res => res && res.name ? res.name : item))
       );
     }
     return ObservableForkJoin(labelObservables).pipe(

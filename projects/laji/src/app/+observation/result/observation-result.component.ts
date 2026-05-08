@@ -12,12 +12,14 @@ import { EMPTY } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute } from '@angular/router';
 import type { LajiMapEvent } from '@luomus/laji-map';
-import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { catchError, map } from 'rxjs';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import G from 'geojson';
-import { Util } from '../../shared/service/util.service';
+import * as Util from '../../shared/utils';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { geoJSONToWKT } from '@luomus/laji-map/lib/utils';
+import { DataFetchMode } from '../observation-data.service';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
@@ -41,6 +43,7 @@ export class ObservationResultComponent implements OnChanges {
     annotations: true,
     own: true
   };
+  @Input() dataMode: DataFetchMode = 'unit';
   @Input() set visible(v: VisibleSections) {
     this._visible = v;
     const tabs = Object.entries(v).filter(([key, val]) => val && tabOrder.includes(key)).map(([key, val]) => key);
@@ -100,7 +103,7 @@ export class ObservationResultComponent implements OnChanges {
     private searchQueryService: SearchQueryService,
     private storage: LocalStorageService,
     private route: ActivatedRoute,
-    private warehouseApi: WarehouseApi,
+    private api: LajiApiClientBService,
     private userService: UserService,
     private toastsService: ToastsService,
     private translate: TranslateService
@@ -212,7 +215,9 @@ export class ObservationResultComponent implements OnChanges {
   }
 
   registerPolygon$(polygon: G.Polygon) {
-    return this.warehouseApi.registerPolygon(polygon, this.userService.getToken(), 'WGS84').pipe(
+    const wkt = geoJSONToWKT(polygon);
+    const crs = 'WGS84';
+    return this.api.post('/warehouse/polygon', { query: { wkt, crs } } as any).pipe(
       map((response: any) => '' + response.id),
       catchError(e => {
         const { error } = e;

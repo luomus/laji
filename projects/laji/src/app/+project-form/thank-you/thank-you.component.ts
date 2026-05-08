@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Form } from '../../shared/model/Form';
 import { Observable, of } from 'rxjs';
 import { ProjectFormService, RegistrationContact } from '../../shared/service/project-form.service';
 import { UserService } from '../../shared/service/user.service';
@@ -7,11 +6,14 @@ import { FormPermissionService } from '../../shared/service/form-permission.serv
 import { ActivatedRoute } from '@angular/router';
 import { map, mergeMap } from 'rxjs';
 import { Rights } from '../about/about.component';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 interface ThankYouData {
   loggedIn: boolean;
   rights: Rights;
-  form: Form.SchemaForm;
+  form: Form;
 }
 
 @Component({

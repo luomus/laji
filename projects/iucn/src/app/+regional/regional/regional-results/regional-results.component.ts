@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef, ChangeDetectionStrategy, Input, OnChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { of, Observable, Subscription } from 'rxjs';
 import { tap, map, switchMap } from 'rxjs';
-import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
+import * as Util from '../../../../../../laji/src/app/shared/utils';
 import { RegionalFilterQuery, RegionalService } from '../../../iucn-shared/service/regional.service';
 import { RegionalListType } from '../regional.component';
 import { ChecklistVersion, TaxonFilters, TaxonQuery, TaxonService } from '../../../iucn-shared/service/taxon.service';
@@ -212,7 +212,7 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
   }
 
   private initAreaColumns() {
-    this.areaSub = this.resultService.getAreas(this.translate.getCurrentLang()).subscribe(areas => {
+    this.areaSub = this.resultService.getAreas().subscribe(areas => {
       const areaFields = [];
       const occurrenceFields = [];
 

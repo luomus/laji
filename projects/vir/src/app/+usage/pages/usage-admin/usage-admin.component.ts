@@ -7,7 +7,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
-import { Person } from 'projects/laji/src/app/shared/model/Person';
 
 @Component({
     selector: 'vir-usage-admin',
@@ -116,8 +115,8 @@ export class UsageAdminComponent {
     this.virOrganisationService.reloadUsers();
   }
 
-  onSelectedAddUser(autocompletePerson: Person) {
-    this.addUserEvent$.next(autocompletePerson.id);
+  onSelectedAddUser(autocompletePerson: { id: string }) {
+    this.addUserEvent$.next(autocompletePerson.id!);
   }
 
   userToFormData(user: IVirUser) {

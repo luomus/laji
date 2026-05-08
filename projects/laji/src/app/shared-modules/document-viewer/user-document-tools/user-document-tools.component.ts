@@ -4,7 +4,6 @@ import { FormService } from '../../../shared/service/form.service';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentToolsService } from '../document-tools.service';
 import { TranslateService } from '@ngx-translate/core';
-import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { Router } from '@angular/router';
 import { UserService } from '../../../shared/service/user.service';
 import { DocumentService } from '../../own-submissions/service/document.service';
@@ -16,6 +15,7 @@ import { Global } from '../../../../environments/global';
 import { DocumentViewerFacade } from '../document-viewer.facade';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 import {Subject, Subscription} from 'rxjs';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
     selector: 'laji-user-document-tools',
@@ -56,13 +56,13 @@ export class UserDocumentToolsComponent implements OnInit {
     private modalService: ModalService,
     private cd: ChangeDetectorRef,
     private router: Router,
-    private documentApi: DocumentApi,
     private userService: UserService,
     private documentService: DocumentService,
     private toastService: ToastsService,
     private logger: Logger,
     private reloadObservationView: ReloadObservationViewService,
-    private documentViewerFacade: DocumentViewerFacade
+    private documentViewerFacade: DocumentViewerFacade,
+    private api: LajiApiClientBService
   ) { }
 
   @Input()
@@ -120,7 +120,7 @@ export class UserDocumentToolsComponent implements OnInit {
     }
     this.loading = true;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.documentApi.findById(this._documentID!, this.userService.getToken()).pipe(
+    this.api.get('/documents/{id}', { path: { id: this._documentID! } }).pipe(
       switchMap(document => this.documentService.saveTemplate({...this.templateForm, document}))
     ).subscribe(
       () => {

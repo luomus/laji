@@ -42,7 +42,7 @@ import { IdentificationTableComponent } from './identification-table/identificat
 import { defaultSpectrogramConfig } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/variables';
 import { lowAudioSampleRate } from '../../../../kerttu-global-shared/variables';
 
-import { Util } from '../../../../../../../laji/src/app/shared/service/util.service';
+import * as Util from '../../../../../../../laji/src/app/shared/utils';
 import {
   AudioViewerComponent
 } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer/audio-viewer.component';

@@ -4,7 +4,7 @@ import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf} from 'rxjs';
 import { RedListStatusData } from './red-list-status/red-list-status.component';
 import { map, share, switchMap, tap } from 'rxjs';
-import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
+import * as Util from '../../../../../../laji/src/app/shared/utils';
 import { TriplestoreLabelService } from '../../../../../../laji/src/app/shared/service/triplestore-label.service';
 import { ChecklistVersion, TaxonService } from '../../../iucn-shared/service/taxon.service';
 import { RedListHabitatData } from './red-list-habitat/red-list-habitat.component';
@@ -484,7 +484,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   private fetchLabels(keys: string[]): Observable<{[key: string]: string}> {
-    const obs = keys.map(key => this.triplestoreLabelService.get(key, this.lang).pipe(map(val => ({
+    const obs = keys.map(key => this.triplestoreLabelService.get(key).pipe(map(val => ({
         key,
         label: val
       }))));

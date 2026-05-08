@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { Image } from './image.interface';
-import { Image as ImageModel } from '../../../../../../laji-api-client/src/lib/models/image';
+import { components } from 'projects/laji-api-client-b/generated/api';
 
-const licenseLinkMap: Record<ImageModel.IntellectualRightsEnum, string> = {
+type IntellectualRightsEnum = components['schemas']['Image']['intellectualRights'];
+
+const licenseLinkMap: Record<IntellectualRightsEnum, string> = {
   'MZ.intellectualRightsCC-BY-SA-4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
   'MZ.intellectualRightsCC-BY-NC-4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
   'MZ.intellectualRightsCC-BY-NC-SA-4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',

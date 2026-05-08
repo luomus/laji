@@ -1,8 +1,10 @@
 import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { UserService } from '../service/user.service';
-import { Person } from '../model/Person';
 import { from, of } from 'rxjs';
 import { concatMap, toArray } from 'rxjs';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Person = components['schemas']['SensitivePerson'];
 
 /**
  * Return users data from strings

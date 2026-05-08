@@ -1,0 +1,40 @@
+name: 🐛 Bug
+description: For filing bug reports 
+type: "Bug"
+body:
+  - type: markdown
+    attributes:
+      value: |-
+       Write the title in active voice using a clear subject–verb–object structure, starting with the affected component or
+       feature, followed by a precise description of the issue and its impact, while avoiding vague wording or unnecessary detail
+  - type: markdown
+    attributes:
+      value: |-
+        Examples
+        - [Dataset metadata editor] [does not save] [multilingual descriptions]
+        - Species occurrence map does not display records from restricted datasets
+        - Observation import fails when coordinate uncertainty is missing
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Write steps to reproduce the issue, starting from an exact URL (if web service)
+      value: |-
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+  - type: textarea
+    id: expect
+    attributes:
+      label: Expected Behaviour
+      description: Clearly state what should happen
+      placeholder: Describe the expected behaviour here...
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional information
+      description: Include information on Operating System, Browser, Device as appropriate
+      placeholder: |-
+        - Add any other context about the problem here...
+        - Include a screenshot if needed

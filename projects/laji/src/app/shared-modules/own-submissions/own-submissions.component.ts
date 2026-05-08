@@ -9,8 +9,6 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { DocumentApi } from '../../shared/api/DocumentApi';
-import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf, Subscription } from 'rxjs';
@@ -31,6 +29,10 @@ import { Global } from '../../../environments/global';
 import { DocumentViewerFacade } from '../document-viewer/document-viewer.facade';
 import { LatestDocumentsFacade } from '../latest-documents/latest-documents.facade';
 import { DeleteOwnDocumentService } from '../../shared/service/delete-own-document.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import type { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Document = components['schemas']['store-document'];
 
 interface DocumentQuery {
   year?: string;
@@ -69,8 +71,6 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
 
   @Output() documentsLoaded = new EventEmitter<RowDocument[]>();
 
-  publicity = Document.PublicityRestrictionsEnum;
-
   documents$?: Observable<RowDocument[]>;
   private documents!: RowDocument[];
   loading = true;
@@ -100,7 +100,6 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   };
 
   constructor(
-    private documentApi: DocumentApi,
     private userService: UserService,
     private translate: TranslateService,
     private documentExportService: DocumentExportService,
@@ -116,6 +115,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     private documentViewerFacade: DocumentViewerFacade,
     private latestFacade: LatestDocumentsFacade,
     private deleteOwnDocument: DeleteOwnDocumentService,
+    private api: LajiApiClientBService
   ) {
     this.selectedMap.taxon += ',' + Global.documentCountUnitProperties.map(prop => 'gatherings.units.' + prop).join(',');
     if (!this.year) {
@@ -184,11 +184,10 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     }
 
     if (!onlyDocuments) {
-      const yearInfoQuery: any = {
+      this.yearInfo$ = this.api.get('/documents/count/byYear', { query: {
         collectionID: this.collectionID,
         formID: this.formID
-      };
-      this.yearInfo$ = this.documentApi.countByYear(this.userService.getToken(), yearInfoQuery).pipe(
+      }}).pipe(
         map(results => results.reverse()),
         tap((results: any[]) => {
           if (this.year && results.findIndex(item => item.year === this.year) > -1) {
@@ -238,7 +237,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   download(e: DownloadEvent) {
     if (e.documentId) {
       this.documentExportService.downloadDocument(
-        this.documentApi.findById(e.documentId, this.userService.getToken()), e.fileType
+        this.api.get('/documents/{id}', { path: { id: e.documentId } }), e.fileType
       );
     } else {
       this.documentExportService.downloadDocuments(
@@ -294,26 +293,18 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   private getAllDocuments(
     query: DocumentQuery = {},
     page = 1,
-    documents: (Document & { id: string })[] = []
-  ): Observable<(Document & { id: string })[]> {
-    const _query: any = {
-      templates: query.onlyTemplates ? 'true' : undefined,
+    documents: Document[] = []
+  ): Observable<Document[]> {
+    return this.api.get('/documents', { query: {
+      page,
+      pageSize: 10000,
+      templates: query.onlyTemplates ? true : undefined,
       collectionID: query.collectionID,
       formID: query.formID,
-      selectedFields: query.selectedFields
-    };
-    if (this.namedPlace) {
-      _query.namedPlace = this.namedPlace;
-    }
-    if (query.year) {
-      _query.observationYear = String(query.year);
-    }
-    return this.documentApi.findAll(
-      this.userService.getToken(),
-      String(page),
-      String(10000),
-      _query
-    ).pipe(
+      selectedFields: query.selectedFields,
+      namedPlace: this.namedPlace,
+      observationYear: query.year ? +query.year: undefined
+    } }).pipe(
       switchMap(result => {
         documents.push(...result.results);
         if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
@@ -332,13 +323,13 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     );
   }
 
-  private searchDocumentsToRowDocuments(documents: (Document & { id: string })[]): Observable<RowDocument[]> {
+  private searchDocumentsToRowDocuments(documents: Document[]): Observable<RowDocument[]> {
     return Array.isArray(documents) && documents.length > 0 ?
       forkJoin(documents.map((doc, i) => this.setRowData(doc, i))) :
       ObservableOf([]);
   }
 
-  private setRowData(document: Document & { id: string }, idx: number): Observable<RowDocument> {
+  private setRowData(document: Document, idx: number): Observable<RowDocument> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.getForm(document.formID!).pipe(
       switchMap((form) => {
@@ -358,7 +349,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
               creator: document.creator,
               templateName: document.templateName,
               templateDescription: document.templateDescription,
-              publicity: document.publicityRestrictions as any,
+              publicity: document.publicityRestrictions,
               dateEdited: document.dateEdited ? moment(document.dateEdited).format('DD.MM.YYYY HH:mm') : '',
               dateObserved,
               dateCreated: dateObserved,
@@ -372,15 +363,15 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
               form: form.title || document.formID,
               id: document.id,
               publicityRestrictions:
-                document.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPublic
+                document.publicityRestrictions === 'MZ.publicityRestrictionsPublic'
                   ? this.translate.instant('haseka.submissions.publicityRestrictions.public')
-                  : document.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate
+                  : document.publicityRestrictions === 'MZ.publicityRestrictionsPrivate'
                     ? this.translate.instant('haseka.submissions.publicityRestrictions.private')
                     : this.translate.instant('haseka.submissions.publicityRestrictions.protected'),
               locked: !!document.locked,
               index: idx,
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              _editUrl: this.formService.getEditUrlPath(document.formID!, document.id),
+              _editUrl: this.formService.getEditUrlPath(document.formID!, document.id!),
             } as RowDocument;
           })
         );
@@ -411,24 +402,22 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
 
   private getNamedPlaceName(npId: string | undefined): Observable<string> {
     if (!npId || this.columns.indexOf('namedPlaceName') === -1) { return ObservableOf(''); }
-    return this.labelService.get(npId, 'multi');
+    return this.labelService.get(npId);
   }
 
   private getTaxon(taxonId: string[], gatheringInfo: any): Observable<string> {
     if (!taxonId || !taxonId.length || this.columns.indexOf('taxon') === -1 ||
     (gatheringInfo && gatheringInfo.unitList && gatheringInfo.unitList.length > 1)) { return ObservableOf(''); }
-    return this.labelService.get(taxonId[0], 'multi').pipe(
-      map((langResult: any) => langResult[this.translate.getCurrentLang()])
-    );
+    return this.labelService.get(taxonId[0]);
   }
 
   doLabels(event: LabelEvent) {
     this.loading = true;
     const documents$ = ObservableForkJoin(
-      event.documentIDs.map(id => this.documentApi.findById(id, this.userService.getToken()))
+      event.documentIDs.map(id => this.api.get('/documents/{id}', { path: { id } }))
     );
     const year$ = this.getAllDocuments({year: event.year}).pipe(
-      map(documents => documents.filter(doc => event.documentIDs.indexOf(doc.id) > -1))
+      map(documents => documents.filter(doc => event.documentIDs.indexOf(doc.id!) > -1))
     );
     (event.documentIDs.length > 10 ? year$ : documents$).pipe(
       mergeMap(docs => this.pdfLabelService.setData(docs, event.filter)),

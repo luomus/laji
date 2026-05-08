@@ -1,12 +1,14 @@
 import { delay, tap } from 'rxjs';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { Form } from '../../../shared/model/Form';
+import type { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
+type Document = components['schemas']['store-document'];
 
 @Component({
     selector: 'laji-short-document',
@@ -15,8 +17,8 @@ import { Form } from '../../../shared/model/Form';
     standalone: false
 })
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() document!: Document & { id: string };
-  @Input() form!: Form.List;
+  @Input() document!: Document;
+  @Input() form!: FormListing;
   @Input() showFormName = true;
   @Input() staticWidth?: number = undefined;
   @Input() complainLocality? = true;
@@ -28,7 +30,6 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   public unitList: string[] = [];
   public newUnitsLength!: number;
   public gatheringDates!: { start: string | null; end: string | null };
-  public publicity = Document.PublicityRestrictionsEnum;
   public locality!: string;
 
   public showList = false;
@@ -71,7 +72,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     this.unitList = gatheringInfo.unitList;
     this.newUnitsLength = gatheringInfo.unsavedUnitCount;
     this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
-    this.editDocumentRoute = this.getEditDocumentRoute(this.document.formID, this.document.id);
+    this.editDocumentRoute = this.getEditDocumentRoute(this.document.formID!, this.document.id!);
     this.locality = DocumentInfoService.getLocality(gatheringInfo);
 
     this.loading = false;

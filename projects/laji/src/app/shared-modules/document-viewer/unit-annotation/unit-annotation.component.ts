@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
-import { Annotation } from '../../../shared/model/Annotation';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Annotation = components['schemas']['store-annotation'];
 
 @Component({
     selector: 'laji-unit-annotation',

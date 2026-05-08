@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { Document } from '../../../../shared/model/Document';
 import { ViewerMapComponent } from '../../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { DocumentPermissionService, DocumentRights } from '../../service/document-permission.service';
 import { Observable } from 'rxjs';
+import { StoreDocument } from '../../document-viewer.facade';
 
 @Component({
     selector: 'laji-document-local-viewer-view',
@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 export class DocumentLocalViewerViewComponent implements OnChanges {
   @ViewChild(ViewerMapComponent) map?: ViewerMapComponent;
 
-  @Input() document?: Document;
+  @Input() document?: StoreDocument;
   @Input() fields: any;
   @Input() mapData: any[] = [];
   @Input() imageData: {[key: string]: any} = {};
@@ -23,7 +23,6 @@ export class DocumentLocalViewerViewComponent implements OnChanges {
 
   @Output() documentDeleted = new EventEmitter();
 
-  publicity = Document.PublicityRestrictionsEnum;
   active = 0;
 
   rights$!: Observable<DocumentRights>;

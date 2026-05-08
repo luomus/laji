@@ -1,29 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { LajiApi, LajiApiService } from './laji-api.service';
-import { map } from 'rxjs';
-import { AbstractCachedHttpService } from './abstract-cached-http.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { map, Observable } from 'rxjs';
+import { dictionarifyByKey } from '../utils';
+import type { components } from 'projects/laji-api-client-b/generated/api';
 
+type Source = components['schemas']['SensitiveSource'];
 
 @Injectable({providedIn: 'root'})
-export class SourceService extends AbstractCachedHttpService<string> {
+export class SourceService {
 
-  constructor(private lajiApi: LajiApiService) {
-    super('name');
+  constructor(
+    private api: LajiApiClientBService,
+  ) {
   }
 
-  getAllAsLookUp(lang?: string): Observable<{[id: string]: string}> {
-    if (!lang) {
-      lang = this.currentLang || 'fi';
+  private lookup?: Observable<{[id: string]: Source}>;
+
+  getAllAsLookUp() {
+    if (this.lookup) {
+      return this.lookup;
     }
-    return this.fetchLookup(this.lajiApi.getList(LajiApi.Endpoints.sources, {lang, page: 1, pageSize: 1000}).pipe(
-      map(paged => paged.results)
-    ), lang);
+    this.lookup = this.api.get('/sources', { query: { page: 1, pageSize: 100000, selectedFields: 'id,name' } }).pipe(
+      map(paged => dictionarifyByKey(paged.results, 'id'))
+    );
+    return this.lookup;
   }
 
-  getName(id: string, lang: string) {
-    return this.getAllAsLookUp(lang).pipe(
-      map(data => data[id] || id )
+  getName(id: string) {
+    return this.getAllAsLookUp().pipe(
+      map(data => data[id]?.name || id )
     );
   }
 }

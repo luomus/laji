@@ -66,7 +66,7 @@
     }
     @if (!requestSend && !alreadyFriends()) {
       <div>
-        <a class="btn btn-success" (click)="sendFriendRequest(profile.userID!)">{{ 'friend.ask'|translate }}</a>
+        <a class="btn btn-success" (click)="sendFriendRequest(viewedUserId!)">{{ 'friend.ask'|translate }}</a>
       </div>
     }
   </div>

@@ -37,7 +37,7 @@ import { SykeInsectResultService } from './syke-insect-result/syke-insect-result
 import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ObservationTableColumnService } from '../../shared-modules/datatable/service/observation-table-column.service';
 import { NafiResultComponent } from './nafi-result/nafi-result.component';
-import { ResultService } from './common/service/result.service';
+import { ResultUtil } from './common/service/result-util.service';
 import { NamedPlaceModule } from '../form/named-place/named-place.module';
 import { SykeInsectResultComponent } from './syke-insect-result/syke-insect-result.component';
 import { SykeInsectRoutesComponent } from './syke-insect-result/syke-insect-routes/syke-insect-routes.component';
@@ -125,7 +125,7 @@ import { ResultMapComponent } from './common/result-map/result-map.component';
     WbcResultService,
     SykeInsectResultService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
-    ResultService
+    ResultUtil
   ]
 })
 export class ResultsModule {

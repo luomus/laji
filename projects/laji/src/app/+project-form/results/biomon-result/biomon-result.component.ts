@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { Form } from '../../../shared/model/Form';
 import { FormService } from '../../../shared/service/form.service';
 import { map, switchMap } from 'rxjs'; // "map" reserved for tab logic
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 export type CompleteListPrevalence = 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
 
@@ -39,7 +41,7 @@ type State = StatisticsState | MapState;
 })
 export class BiomonResultComponent implements OnInit, OnDestroy {
 
-  @Input() form!: Form.SchemaForm;
+  @Input() form!: Form;
 
   Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
   state$!: Observable<State>;
@@ -85,12 +87,12 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
       switchMap(pairs => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const taxonSet = pairs.find(p => p.collectionID === this.form.collectionID)!.taxonSet;
-        return this.getOptionsByTaxonSet$(taxonSet ? taxonSet : []);
+        return this.getOptionsByTaxonSet$(taxonSet);
       })
     );
   }
 
-  getOptionsByTaxonSet$(taxonSets: string[]): Observable<{ label: string; value: string }[]> {
+  getOptionsByTaxonSet$(taxonSets: string): Observable<{ label: string; value: string }[]> {
     return this.api.post('/taxa', {
       query: { selectedFields: 'id,vernacularName,scientificName' }
     }, { taxonSets }

@@ -11,16 +11,18 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { ExtendedNamedPlace } from '../../model/extended-named-place';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
 import { NpInfoComponent } from '../../np-info/np-info.component';
 import { NpInfoRow } from '../../np-info/np-info-row/np-info-row.component';
 import { LabelPipe } from '../../../../../shared/pipe';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
-import { Form } from '../../../../../shared/model/Form';
 import { LajiMapVisualization } from '../../../../../shared-modules/legend/laji-map-visualization';
 import { TileLayerName, OverlayName } from '@luomus/laji-map/lib/defs';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { ExtendedNamedPlace } from '../np-choose.component';
+
+type Form = components['schemas']['Form'];
 
 @Component({
     selector: 'laji-np-map',
@@ -38,8 +40,8 @@ export class NpMapComponent implements OnInit, OnChanges {
   @Input() height?: string;
   @Input() userID?: string;
   @Input() reservable?: boolean;
-  @Input() placeForm: any;
-  @Input({ required: true }) documentForm!: Form.SchemaForm;
+  @Input() placeForm?: Form;
+  @Input({ required: true }) documentForm!: Form;
   @Input() filterBy?: string;
   @Input() filteredIDs: string[] = [];
   @Output() activePlaceChange = new EventEmitter<number>();
@@ -124,7 +126,7 @@ export class NpMapComponent implements OnInit, OnChanges {
     // Transform selected place's index in all places list to index in filtered places list
     if (fullIdx !== undefined && fullIdx !== null && fullIdx !== -1) {
       const namedPlace = this.namedPlaces![fullIdx];
-      const filteredPlaces = this.namedPlaces!.filter(np => !this.filterBy || this.filteredIDs.includes(np.id));
+      const filteredPlaces = this.namedPlaces!.filter(np => !this.filterBy || this.filteredIDs.includes(np.id!));
       const filteredIdx = filteredPlaces.findIndex(np => np.id === namedPlace.id);
       return filteredIdx;
     } else {
@@ -214,7 +216,7 @@ export class NpMapComponent implements OnInit, OnChanges {
           events.forEach((e: any) => {
             if (e.type === 'active') {
               // Transform selected place's index in filtered places list to index in all places list before emitting
-              const filteredPlaces = this.namedPlaces!.filter(np => !this.filterBy || this.filteredIDs.includes(np.id));
+              const filteredPlaces = this.namedPlaces!.filter(np => !this.filterBy || this.filteredIDs.includes(np.id!));
               const selectedPlace = filteredPlaces[e.idx];
               if (selectedPlace) {
                 const fullIdx = this.namedPlaces!.findIndex(np => np.id === selectedPlace.id);
@@ -228,7 +230,7 @@ export class NpMapComponent implements OnInit, OnChanges {
         featureCollection: {
           type: 'FeatureCollection',
           features: this.namedPlaces
-            .filter(np => !this.filterBy || this.filteredIDs.includes(np.id))
+            .filter(np => !this.filterBy || this.filteredIDs.includes(np.id!))
             .map(np => ({
               type: 'Feature',
               geometry: np.geometry,

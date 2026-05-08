@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, ViewChild } from '@angular/core';
-import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import * as MapUtil from '@luomus/laji-map/lib/utils';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { convertWgs84ToYkj } from '../../../../../root/coordinate-utils';
 import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LineString } from 'geojson';
+
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 @Component({
     selector: 'laji-line-transect-print',
@@ -45,7 +48,7 @@ export class LineTransectPrintComponent implements OnChanges {
   ) { }
 
   ngOnChanges() {
-    const baseDoc: any = this.namedPlace.acceptedDocument || this.namedPlace.prepopulatedDocument || {};
+    const baseDoc: any = this.namedPlace.prepopulatedDocument || {};
     if (
       baseDoc.gatheringEvent?.startDistanceFromNECorner
     ) {
@@ -89,7 +92,7 @@ export class LineTransectPrintComponent implements OnChanges {
     if (!Array.isArray(geometries.coordinates)) {
       return;
     }
-    const baseDoc: any = this.namedPlace.acceptedDocument || this.namedPlace.prepopulatedDocument || {};
+    const baseDoc: any = this.namedPlace.prepopulatedDocument || {};
     const biotopes: {[distRow: number]: string[]} = {};
     const pages: number[][] = [];
     let total = 0;
@@ -217,11 +220,8 @@ export class LineTransectPrintComponent implements OnChanges {
   }
 
   private getGeometry(): any {
-    if (this.namedPlace.acceptedDocument && this.namedPlace.acceptedDocument.gatherings) {
-      return {type: 'MultiLineString', coordinates: this.namedPlace.acceptedDocument.gatherings.map(item => item.geometry!.coordinates)};
-    }
     if (this.namedPlace.prepopulatedDocument && this.namedPlace.prepopulatedDocument.gatherings) {
-      return {type: 'MultiLineString', coordinates: this.namedPlace.prepopulatedDocument.gatherings.map(item => item.geometry!.coordinates)};
+      return {type: 'MultiLineString', coordinates: this.namedPlace.prepopulatedDocument.gatherings.map(item => (item.geometry as LineString).coordinates)};
     }
     return {};
   }

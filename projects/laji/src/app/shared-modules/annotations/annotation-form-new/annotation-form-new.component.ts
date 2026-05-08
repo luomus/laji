@@ -13,16 +13,16 @@ import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { LoadingElementsService } from '../../document-viewer/loading-elements.service';
 import { CheckFocusService } from '../../document-viewer/check-focus.service';
 import { TaxonAutocompleteService } from '../../../shared/service/taxon-autocomplete.service';
-import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { TypeaheadMatch } from '../../../../../../laji-ui/src/lib/typeahead/typeahead-match.class';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { SelectStyle } from '../../select/metadata-select/metadata-select.component';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { WithNonNullableKeys } from '../../../shared/service/util.service';
+import { WithNonNullableKeys } from '../../../shared/utils';
 
 type Annotation = components['schemas']['store-annotation'];
 type AnnotationTag = components['schemas']['store-tag'];
+type InformalTaxonGroup = components['schemas']['store-informalTaxonGroup'];
 
 export type AnnotationFormAnnotation = WithNonNullableKeys<Annotation, 'identification' | 'addedTags' | 'removedTags'>;
 

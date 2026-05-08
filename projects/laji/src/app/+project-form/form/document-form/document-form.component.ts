@@ -8,7 +8,6 @@ import { TemplateForm } from '../../../shared-modules/own-submissions/models/tem
 import { FooterService } from '../../../shared/service/footer.service';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
-import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../../shared/service/user.service';
 import { DocumentStorage } from '../../../storage/document.storage';
@@ -17,8 +16,10 @@ import { DocumentFormFacade, FormError, isFormError, SaneViewModel, isSaneViewMo
 import { ProjectFormService, RegistrationContact } from '../../../shared/service/project-form.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 import { LocalStorage } from 'ngx-webstorage';
-import { FormService } from '../../../shared/service/form.service';
 import { ErrorSchema } from '@rjsf/utils';
+import type { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Document = components['schemas']['store-document'];
 
 @Component({
     selector: 'laji-document-form',
@@ -64,7 +65,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   private isFromCancel = false;
   private confirmLeave = true;
   private saving = false;
-  private publicityRestrictions!: Document.PublicityRestrictionsEnum;
+  private publicityRestrictions!: Document['publicityRestrictions'];
   private documentForTemplate: any = {};
 
   constructor(
@@ -79,8 +80,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private userService: UserService,
     private documentStorage: DocumentStorage,
-    private documentFormFacade: DocumentFormFacade,
-    private formService: FormService
+    private documentFormFacade: DocumentFormFacade
   ) { }
 
   ngOnInit() {
@@ -133,24 +133,24 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   successNavigation() {
     if (this.vm.form.options?.simple) {
       this.router.navigate(this.localizeRouterService.translateRoute([this.vm.form.category ? '/save-observations' : '/vihko']));
-      return;
-    }
-    if (this.vm.form.options?.openForm) {
+    } else if (this.vm.form.options?.openForm) {
       this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(projectRoute => {
         this.router.navigate(['./thank-you'], {relativeTo: projectRoute});
       });
-      return;
-    }
-    this.browserService.goBack(() => {
+    } else if (this.vm.form.options?.resultServiceType) {
       this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(projectRoute => {
-        const page = this.vm.form.options?.resultServiceType
-          ? 'stats'
-          : this.vm.form.options?.mobile
+        this.router.navigate(['./stats'], {relativeTo: projectRoute});
+      });
+    } else {
+      this.browserService.goBack(() => {
+        this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(projectRoute => {
+          const page = this.vm.form.options?.mobile
             ? 'about'
             : 'submissions';
-        this.router.navigate([`./${page}`], {relativeTo: projectRoute});
+          this.router.navigate([`./${page}`], {relativeTo: projectRoute});
+        });
       });
-    });
+    }
   }
 
   canDeactivate(leaveKey = 'haseka.form.leaveConfirm', cancelKey = 'haseka.form.discardConfirm') {
@@ -257,7 +257,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       this.lajiForm.unBlock();
       this.saving = false;
       this.toastsService.showSuccess(this.getMessage(
-          this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
+          this.publicityRestrictions === 'MZ.publicityRestrictionsPrivate' ? 'success-temp' : 'success',
          this.translate.instant('haseka.form.success')
       ));
       this.successNavigation();
@@ -291,7 +291,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       this.formPersistentState = undefined;
       this.documentFormFacade.clearUnlinkedTmpDocsSub();
       this.toastsService.showSuccess(this.getMessage(
-        this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
+        this.publicityRestrictions === 'MZ.publicityRestrictionsPrivate' ? 'success-temp' : 'success',
        this.translate.instant('haseka.form.success')
       ));
       this.successNavigation();
@@ -329,17 +329,17 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   }
 
   submitPublic() {
-    this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
+    this.publicityRestrictions = 'MZ.publicityRestrictionsPublic';
     this.lajiForm.submit();
   }
 
   submitPrivate() {
-    this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
+    this.publicityRestrictions = 'MZ.publicityRestrictionsPrivate';
     this.lajiForm.submitOnlySchemaValidations();
   }
 
   submitTemplate() {
-    this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
+    this.publicityRestrictions = 'MZ.publicityRestrictionsPrivate';
     this.lajiForm.submit();
   }
 
@@ -382,10 +382,9 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   }
 
   private getMessage(type: any, defaultValue: any) {
-    const {options = {}} = this.vm.form || {};
+    const options = this.vm.form?.options || {};
     return (
       type === 'success' ? options.saveSuccessMessage :
-      type === 'success-temp' ? options.saveDraftSuccessMessage :
       type === 'error' ? options.saveErrorMessage : undefined
     ) ?? defaultValue;
   }

@@ -1,29 +1,28 @@
 import { Injectable } from '@angular/core';
-import { LajiApi, LajiApiService } from './laji-api.service';
-import { map } from 'rxjs';
-import { AbstractCachedHttpService } from './abstract-cached-http.service';
-import { Checklist } from 'projects/laji-api-client/src/lib/models/checklist';
-import { TranslateService } from '@ngx-translate/core';
+import { map, Observable } from 'rxjs';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { dictionarifyByKey } from '../utils';
+
+type Checklist = components['schemas']['store-checklist'];
 
 @Injectable({providedIn: 'root'})
-export class ChecklistService extends AbstractCachedHttpService<Checklist> {
+export class ChecklistService {
 
   constructor(
-    private lajiApi: LajiApiService,
-    private translate: TranslateService
+    private api: LajiApiClientBService,
   ) {
-    super('name');
   }
 
-  getAllAsLookUp(lang: string = this.translate.getCurrentLang()) {
-    return this.fetchLookup(this.lajiApi.getList(LajiApi.Endpoints.checklists, {lang, page: 1, pageSize: 1000}).pipe(
-      map(paged => paged.results),
-    ), lang);
-  }
+  private lookup?: Observable<{[id: string]: Pick<Checklist, 'id' | 'name'>}>;
 
-  getName(id: string, lang: string) {
-    return this.getAllAsLookUp(lang).pipe(
-      map(data => data[id] || id )
+  getAllAsLookUp(): Observable<{[id: string]: Pick<Checklist, 'id' | 'name'>}> {
+    if (this.lookup) {
+      return this.lookup;
+    }
+    this.lookup = this.api.get('/checklists', { query: { page: 1, pageSize: 100000, selectedFields: 'id,name' } }).pipe(
+      map(paged => dictionarifyByKey(paged.results, 'id')),
     );
+    return this.lookup;
   }
 }

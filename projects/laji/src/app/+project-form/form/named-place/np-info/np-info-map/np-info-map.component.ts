@@ -3,6 +3,9 @@ import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 @Component({
     selector: 'laji-np-info-map',
@@ -101,7 +104,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     let geom = this.namedPlace!.geometry;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const gatherings = this.namedPlace!.acceptedDocument?.gatherings || this.namedPlace!.prepopulatedDocument?.gatherings || [];
+    const gatherings = this.namedPlace!.prepopulatedDocument?.gatherings || [];
     const geometries = gatherings.reduce((all: any[], curr: any) => {
       if (curr.geometry) {
         all.push(curr.geometry);

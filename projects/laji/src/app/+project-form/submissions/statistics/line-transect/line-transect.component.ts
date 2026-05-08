@@ -7,16 +7,17 @@ import {
   OnChanges,
   Output
 } from '@angular/core';
-import { Document } from '../../../../shared/model/Document';
 import * as MapUtil from '@luomus/laji-map/lib/utils';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
-import { NamedPlace } from '../../../../shared/model/NamedPlace';
-import { Units } from '../../../../shared/model/Units';
-import { LajiApi, LajiApiService } from '../../../../shared/service/laji-api.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable, of as ObservableOf } from 'rxjs';
-import { UserService } from '../../../../shared/service/user.service';
 import { FormService } from '../../../../shared/service/form.service';
 import { LineTransectGeometry } from '@luomus/laji-map/lib/defs';
+import { LineString } from 'geojson';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+export type Document = components['schemas']['store-document'];
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 interface LineTransectCount {
   psCouples: number;
@@ -80,8 +81,7 @@ export class LineTransectComponent implements OnChanges {
   path = '';
 
   constructor(
-    private lajiApiService: LajiApiService,
-    private userSerivce: UserService,
+    private api: LajiApiClientBService,
     private formService: FormService,
   ) {}
 
@@ -96,7 +96,7 @@ export class LineTransectComponent implements OnChanges {
 
   private initEditLink() {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.path = this.formService.getEditUrlPath(this.document.formID, this.document.id!);
+    this.path = this.formService.getEditUrlPath(this.document.formID!, this.document.id!);
   }
 
   private initCounts() {
@@ -111,8 +111,7 @@ export class LineTransectComponent implements OnChanges {
       minPerKm: 0
     };
     const species: any = {};
-    this.stats$ = this.lajiApiService.getList(LajiApi.Endpoints.documentStats,
-      {personToken: this.userSerivce.getToken(), namedPlace: this.namedPlace.id}).pipe(
+    this.stats$ = this.api.get('/documents/stats', { query: { namedPlace: this.namedPlace.id! } }).pipe(
       map(stats => this.dateDiffFromDoc(stats.dateMedian))).pipe(
       catchError(() => ObservableOf('')));
     if (this.document.gatherings) {
@@ -130,7 +129,7 @@ export class LineTransectComponent implements OnChanges {
               }
               const cntKey =
                 unit.unitFact &&
-                unit.unitFact.lineTransectRouteFieldType === Units.LineTransectRouteFieldTypeEnum.LineTransectRouteFieldTypeOuter ?
+                unit.unitFact.lineTransectRouteFieldType ===  'MY.lineTransectRouteFieldTypeOuter' ?
                   'tsCouples' : 'psCouples';
               count[cntKey] += unit.pairCount || 0;
               species[taxon][cntKey] += unit.pairCount || 0;
@@ -187,9 +186,10 @@ export class LineTransectComponent implements OnChanges {
     this.warnings = warnings;
   }
 
-  private getErrors(warnings: {location: string; messages: string[]}[], messages: any = {}) {
+  private getErrors(warnings: Record<string, unknown>[]) {
+    const messages: Record<string, number> = {};
     warnings.forEach(error => {
-      error.messages.forEach(msg => {
+      (error as any).messages.forEach((msg: string) => {
         messages[msg] = messages[msg] ? messages[msg] + 1 : 1;
       });
     });
@@ -206,15 +206,13 @@ export class LineTransectComponent implements OnChanges {
     }
   }
 
-  private getGeometry(documentName = 'document'): LineTransectGeometry {
-    const document = documentName === 'document'
-        ? this.document
-        : this.namedPlace.acceptedDocument;
+  private getGeometry(): LineTransectGeometry {
+    const document = this.document;
 
    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
    if (document!.gatherings) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return {type: 'MultiLineString', coordinates: document!.gatherings.map(item => item!.geometry!.coordinates)};
+      return {type: 'MultiLineString', coordinates: document!.gatherings.map(item => (item!.geometry as LineString)!.coordinates)};
     }
     return {type: 'MultiLineString', coordinates: []};
   }

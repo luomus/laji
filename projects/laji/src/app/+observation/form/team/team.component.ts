@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter,
 Input, OnInit, Output, OnDestroy } from '@angular/core';
-import { Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { map, Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs';
-import { TeamMemberService } from './team-member.service';
 import { BrowserService } from '../../../shared/service/browser.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 @Component({
     selector: 'laji-team',
@@ -28,15 +28,25 @@ export class TeamComponent implements OnInit, OnDestroy {
   @Output() memberIdsChange = new EventEmitter<string[]>();
 
   constructor(
-    private teamMemberService: TeamMemberService,
+    private api: LajiApiClientBService,
     private browserService: BrowserService
   ) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.value);
     }).pipe(
       distinctUntilChanged(),
-      switchMap((token: string) => this.teamMemberService.getMembers(token)),
-      switchMap((data) => {
+      switchMap((token: string) => {
+        if (!token) {
+          return ObservableOf([]);
+        }
+        if (!token.endsWith('*')) {
+          token += '*';
+        }
+        return this.api.get('/warehouse/teamMember', { query: { query: token } }).pipe(
+          map((result: any) => result.results || []),
+        );
+      }),
+      switchMap((data: any) => {
         if (this.value) {
           return ObservableOf(data);
         }
