@@ -5,7 +5,9 @@
   </span>
 </lu-button>
 <lu-modal #modal (onHide)="selectedFieldsChange.emit(selectedCache)" size="lg">
-  <h4 *ngIf="modalTitle" class="modal-title pull-left">{{ modalTitle }}</h4>
+  @if (modalTitle) {
+    <h4 class="modal-title pull-left">{{ modalTitle }}</h4>
+  }
   <laji-select-fields
     [selectedFieldsTitle]="selectedFieldsTitle"
     [allSelectableFieldsTitle]="allSelectableFieldsTitle"
@@ -14,7 +16,9 @@
     (selectedFieldsChange)="updateSelected($event)"
   ></laji-select-fields>
   <div class="lu-modal-footer">
-    <button *ngIf="defaultFields" type="button" class="btn btn-default" (click)="reset()">{{ labelReset }}</button>
+    @if (defaultFields) {
+      <button type="button" class="btn btn-default" (click)="reset()">{{ labelReset }}</button>
+    }
     <button type="button" class="btn btn-default" (click)="fieldsModal.hide()">{{ labelClose }}</button>
   </div>
 </lu-modal>

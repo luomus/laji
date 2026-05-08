@@ -33,17 +33,18 @@
     (rowSelect)="setCollectionId($event)"
   ></laji-observation-table>
 </div>
-<ng-container *ngIf="collectionId">
+@if (collectionId) {
   <h3 id="collectionSpecimens">{{ 'taxonomy.specimens' | translate }}: {{ collectionId | collectionName }}</h3>
-  <laji-observation-table
-    *ngIf="collectionId"
-    [height]="'350px'"
-    [pageSize]="100"
-    [showSettingsMenu]="false"
-    [isAggregate]="false"
-    [selected]="['document.id', 'unit.taxon', 'gathering.interpretations.countryDisplayname', 'gathering.locality', 'gathering.displayDateTime']"
-    [query]="collectionQuery"
-    [showRowAsLink]="true"
-    (rowSelect)="showDocument($event)"
-  ></laji-observation-table>
-</ng-container>
+  @if (collectionId) {
+    <laji-observation-table
+      [height]="'350px'"
+      [pageSize]="100"
+      [showSettingsMenu]="false"
+      [isAggregate]="false"
+      [selected]="['document.id', 'unit.taxon', 'gathering.interpretations.countryDisplayname', 'gathering.locality', 'gathering.displayDateTime']"
+      [query]="collectionQuery"
+      [showRowAsLink]="true"
+      (rowSelect)="showDocument($event)"
+    ></laji-observation-table>
+  }
+}

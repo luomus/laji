@@ -1,44 +1,48 @@
-<button
-  *ngIf="!routerLink; else anchor"
-  class="lu-btn"
-  tabindex="-1"
-  [ngClass]="classes"
-  [class.pressed]="pressed"
-  [class.lu-loading]="loading"
-  [disabled]="disabled || loading || isServer"
-  (click)="onClick($event)"
-  (mousedown)="onMouseDown()"
-  (mouseup)="onMouseUp($event)">
-  <ng-container *ngTemplateOutlet="content"></ng-container>
-</button>
-<ng-template #anchor>
-  <a *ngIf="useHref"
-     class="lu-btn"
-     tabindex="-1"
-     rel="noopener nofollow"
-     [href]="routerLink"
-     [target]="target"
-     [ngClass]="classes"
-     [class.pressed]="pressed"
-     (click)="onClick($event)"
-     (mousedown)="onMouseDown()"
-     (mouseup)="onMouseUp($event)">
+@if (!routerLink) {
+  <button
+    class="lu-btn"
+    tabindex="-1"
+    [ngClass]="classes"
+    [class.pressed]="pressed"
+    [class.lu-loading]="loading"
+    [disabled]="disabled || loading || isServer"
+    (click)="onClick($event)"
+    (mousedown)="onMouseDown()"
+    (mouseup)="onMouseUp($event)">
     <ng-container *ngTemplateOutlet="content"></ng-container>
-  </a>
-  <a *ngIf="!useHref"
-     class="lu-btn"
-     tabindex="-1"
-     [routerLink]="routerLink || []"
-     [queryParams]="queryParams"
-     [target]="target"
-     [ngClass]="classes"
-     [class.pressed]="pressed"
-     (click)="onClick($event)"
-     (mousedown)="onMouseDown()"
-     (mouseup)="onMouseUp($event)">
-    <ng-container *ngTemplateOutlet="content"></ng-container>
-  </a>
-</ng-template>
+  </button>
+} @else {
+  @if (useHref) {
+    <a
+      class="lu-btn"
+      tabindex="-1"
+      rel="noopener nofollow"
+      [href]="routerLink"
+      [target]="target"
+      [ngClass]="classes"
+      [class.pressed]="pressed"
+      (click)="onClick($event)"
+      (mousedown)="onMouseDown()"
+      (mouseup)="onMouseUp($event)">
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </a>
+  }
+  @if (!useHref) {
+    <a
+      class="lu-btn"
+      tabindex="-1"
+      [routerLink]="routerLink || []"
+      [queryParams]="queryParams"
+      [target]="target"
+      [ngClass]="classes"
+      [class.pressed]="pressed"
+      (click)="onClick($event)"
+      (mousedown)="onMouseDown()"
+      (mouseup)="onMouseUp($event)">
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </a>
+  }
+}
 
 <ng-template #content>
   <ng-content></ng-content>

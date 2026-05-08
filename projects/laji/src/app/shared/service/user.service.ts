@@ -7,10 +7,9 @@ import {
   startWith,
   take,
   tap
-} from 'rxjs/operators';
+} from 'rxjs';
 import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
-import { Person } from '../model/Person';
 import { LocalStorage, LocalStorageService, SessionStorage } from 'ngx-webstorage';
 import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
@@ -23,7 +22,12 @@ import { httpOkError } from '../observable/operators/http-ok-error';
 import { Global } from '../../../environments/global';
 import { RegistrationContact } from './project-form.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { Profile } from '../model/Profile';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Person = components['schemas']['Person'];
+type SensitivePerson = Omit<components['schemas']['SensitivePerson'], '@context'>;
+type Profile = components['schemas']['store-profile'];
+type MediaIntellectualRights = components['schemas']['Image']['intellectualRights'];
 
 export interface UserSettingsResultList {
   aggregateBy?: string[];
@@ -86,17 +90,20 @@ type UserState = UserState.Loading | UserState.Ready | UserState.NotLoggedIn;
 
 interface UserServiceState extends PersistentState {
   user: UserState;
-  allUsers: { [id: string]: Person | Observable<Person> };
+  allUsers: { [id: string]: SensitivePerson | Observable<SensitivePerson> };
 }
 
-export const prepareProfile = (profile?: Profile, user?: Person): Profile => {
-  if (!profile) {
-    profile = {} as Profile;
-  }
-  if (!user) {
-    user = {};
-  }
-  return {
+export type ExtendedProfile = Omit<Profile, 'settings'>  & {
+  settings: {
+    defaultMediaMetadata: {
+      capturerVerbatim: string;
+      intellectualOwner: string;
+      intellectualRights: MediaIntellectualRights;
+    };
+  };
+};
+
+export const prepareProfile = (profile: Profile, user?: Person): ExtendedProfile => ({
     ...profile,
     settings: {
       ...(profile.settings || {}),
@@ -106,9 +113,8 @@ export const prepareProfile = (profile?: Profile, user?: Person): Profile => {
         intellectualRights: 'MZ.intellectualRightsARR',
         ...(profile.settings?.defaultMediaMetadata || {}),
       }
-    } as any
-  };
-};
+    }
+  });
 
 export const getLoginUrl = (next = '', lang = DEFAULT_LANG, base = '') => {
   if (!Global.lajiAuthSupportedLanguages.includes(lang)) {
@@ -261,7 +267,7 @@ export class UserService implements OnDestroy {
     const params: string[] = [
       `next=${this.location.path(true)}`,
       'redirectMethod=POST',
-      `locale=${this.translate.currentLang}`,
+      `locale=${this.translate.getCurrentLang()}`,
       'permanent=false'
     ];
 
@@ -306,7 +312,7 @@ export class UserService implements OnDestroy {
         id,
         fullName: id
       })),
-      tap(person => this.store.value.allUsers[id] = person as Person),
+      tap(person => this.store.value.allUsers[id] = person),
       share()
     );
     return pickValue(this.store.value.allUsers[id] as Observable<Person>);
@@ -320,7 +326,7 @@ export class UserService implements OnDestroy {
         take(1),
       ).subscribe(data => {
         this.returnUrl = data.loginLanding || returnUrl || this.location.path(true);
-        window.location.href = getLoginUrl(this.returnUrl, this.translate.currentLang);
+        window.location.href = getLoginUrl(this.returnUrl, this.translate.getCurrentLang());
       });
     }
   }
@@ -353,18 +359,14 @@ export class UserService implements OnDestroy {
     this.storage.store(personsCacheKey(personID), settings);
   }
 
-  getProfile(): Observable<Profile> {
-    if (this.getToken() === '') {
-      return of(prepareProfile());
-    } else {
-      return combineLatest([
-        this.api.get('/person/profile'),
-        this.user$
-      ]).pipe(
-        map(([profile, person]) => prepareProfile(profile, person)),
-        take(1)
-      );
-    }
+  getProfile(): Observable<ExtendedProfile> {
+    return combineLatest([
+      this.api.get('/person/profile'),
+      this.user$
+    ]).pipe(
+      map(([profile, person]) => prepareProfile(profile, person)),
+      take(1)
+    );
   }
 
   emailHasAccount(email: string): Observable<boolean> {
@@ -407,4 +409,3 @@ export class UserService implements OnDestroy {
       this.api.setPersonToken(undefined);
   }
 }
-

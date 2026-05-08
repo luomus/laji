@@ -20,10 +20,11 @@ interface SpeciesTableRow extends Omit<IGlobalSpecies, 'id'> {
 }
 
 @Component({
-  selector: 'bsg-species-table',
-  templateUrl: './species-table.component.html',
-  styleUrls: ['./species-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'bsg-species-table',
+    templateUrl: './species-table.component.html',
+    styleUrls: ['./species-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesTableComponent implements OnInit, OnChanges {
   @ViewChild('selectTpl', { static: true }) selectTpl!: TemplateRef<any>;

@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
-import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { UserService } from '../../../shared/service/user.service';
-import { Document } from '../../../shared/model/Document';
-import { Util } from '../../../shared/service/util.service';
-import { Observable, of } from 'rxjs';
+import * as Util from '../../../shared/utils';
+import { Observable } from 'rxjs';
 import { TemplateForm } from '../models/template-form';
 import { DocumentStorage } from '../../../storage/document.storage';
-import { mergeMap, switchMap, shareReplay, tap, take } from 'rxjs/operators';
+import { switchMap, tap, take } from 'rxjs';
 import { Rights } from '../../../shared/service/form-permission.service';
-import { Person } from '../../../shared/model/Person';
 import { JSONPath } from 'jsonpath-plus';
 import { FormService } from '../../../shared/service/form.service';
+import type { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+
+type Document = components['schemas']['store-document'];
+type Person = components['schemas']['SensitivePerson'];
 
 export enum Readonly {
   noEdit,
@@ -21,56 +23,44 @@ export enum Readonly {
 @Injectable()
 export class DocumentService {
 
-  private cache: Record<string, Observable<Document>> = {};
 
   constructor(
-    private documentApi: DocumentApi,
     private userService: UserService,
     private documentStorage: DocumentStorage,
-    private formService: FormService
+    private formService: FormService,
+    private api: LajiApiClientBService
   ) { }
 
   findById(id: string): Observable<Document> {
-    const cacheKey = this.getCacheKey(id);
-    if (!this.cache[cacheKey]) {
-      this.cache[cacheKey] = this.documentApi.findById(id, this.userService.getToken()).pipe(shareReplay());
-    }
-    return this.cache[cacheKey];
+    return this.api.get('/documents/{id}', { path: { id } });
   }
 
   create(document: Document) {
-    return this.documentApi.create(document, this.userService.getToken()).pipe(tap(d => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.cache[this.getCacheKey(d.id!)] = of(d);
-    }));
+    return this.api.post('/documents', undefined, document);
   }
 
   update(id: string, document: Document) {
-    return this.documentApi.update(id, document, this.userService.getToken()).pipe(tap(d => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.cache[this.getCacheKey(d.id!)] = of(d);
-    }));
+    return this.api.put('/documents/{id}', { path: { id } }, document);
   }
 
-  deleteDocument(id: string) {
+  deleteDocument(id: string): Observable<any> {
     const isTmpDoc = FormService.isTmpId(id);
-    const del$ = isTmpDoc
-      ? this.userService.user$.pipe(take(1), tap(person => {
-        this.documentStorage.removeItem(id, person);
-      }))
-      : this.documentApi.delete(id, this.userService.getToken());
-    return del$.pipe(tap(() => delete this.cache[this.getCacheKey(id)]));
+    if (isTmpDoc) {
+      return this.userService.user$.pipe(
+        take(1),
+        tap(person => this.documentStorage.removeItem(id, person))
+      );
+    }
+    return this.api.delete('/documents/{id}', { path: { id } });
   }
 
   saveTemplate(templateData: TemplateForm): Observable<Document> {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.formService.getForm(templateData.document!.formID!).pipe(switchMap(form => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const template: Document = this.removeMeta(templateData.document, form!.excludeFromCopy);
       template.isTemplate = true;
       template.templateName = templateData.name;
       template.templateDescription = templateData.description;
-      return this.documentApi.create(template, this.userService.getToken());
+      return this.api.post('/documents', undefined, template);
     }));
   }
 
@@ -126,9 +116,4 @@ export class DocumentService {
     }
     return data && typeof data.locked !== 'undefined' ? (data.locked ? Readonly.true : Readonly.false) : Readonly.false;
   }
-
-  private getCacheKey(documentID: string) {
-    return `${documentID}:${this.userService.getToken()}`;
-  }
-
 }

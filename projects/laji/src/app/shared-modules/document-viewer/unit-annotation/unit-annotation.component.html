@@ -1,6 +1,8 @@
-<div class="unit" *ngIf="unit">
-  <div [ngClass]="{'highlight': highlight === unit.unitId}">
-    <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
+@if (unit) {
+  <div class="unit">
+    <div [ngClass]="{'highlight': highlight === unit.unitId}">
+      <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
+    </div>
   </div>
-</div>
+}
 

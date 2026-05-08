@@ -23,13 +23,13 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { PagedResult } from '../model/PagedResult';
 import { WarehouseQueryInterface } from '../model/WarehouseQueryInterface';
 import { SearchQueryService } from '../../+observation/search-query.service';
 import { WarehouseCountResultInterface } from '../model/WarehouseCountResultInterface';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Util } from '../service/util.service';
+import * as Util from '../utils';
 import { environment } from '../../../environments/environment';
 import { PlatformService } from '../../root/platform.service';
 import { EMPTY } from 'rxjs';

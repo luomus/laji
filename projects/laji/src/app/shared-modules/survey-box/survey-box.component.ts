@@ -1,15 +1,18 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Form } from '../../shared/model/Form';
 import { Global } from '../../../environments/global';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 @Component({
-  selector: 'laji-survey-box',
-  templateUrl: './survey-box.component.html',
-  styleUrls: ['./survey-box.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-survey-box',
+    templateUrl: './survey-box.component.html',
+    styleUrls: ['./survey-box.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SurveyBoxComponent {
-  @Input() form!: Form.List;
+  @Input() form!: FormListing;
 
   getFormLink(): string[] {
     if (this.form.options?.openForm) {

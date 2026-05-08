@@ -11,6 +11,7 @@
 
   <h4>{{ 'observation.front.sources' | translate }}</h4>
   <laji-observation-table
+    [mode]="dataMode"
     [height]="'350px'"
     [pageSize]="100"
     [query]="query"

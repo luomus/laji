@@ -1,10 +1,15 @@
 <div class="annotations">
-  <div *ngFor="let annotation of annotations | sort: 'created'; let i = index">
-    <div class="annotation">
-      <div class="deleted" *ngIf="((!annotation.valid || annotation.deleted) && !showItem?.[i])">
-        <span *ngIf="annotation.deleted; else notValid">{{ 'annotation.deleted' | translate }}</span>
-        <ng-template #notValid><span>{{ 'annotation.notValid' | translate }}</span></ng-template>
-        <button
+  @for (annotation of annotations | sort: 'created'; track annotation; let i = $index) {
+    <div>
+      <div class="annotation">
+        @if (((!annotation.valid || annotation.deleted) && !showItem?.[i])) {
+          <div class="deleted">
+            @if (annotation.deleted) {
+              <span>{{ 'annotation.deleted' | translate }}</span>
+            } @else {
+              <span>{{ 'annotation.notValid' | translate }}</span>
+            }
+            <button
               type="button"
               class="btn alert-info btn-xs"
               (click)="toggleAnnotation(i)"
@@ -12,132 +17,170 @@
               placement="right"
               >
               <i class="glyphicon glyphicon-eye-open"></i>
-        </button>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 row-title">
-          <span class="person pull-right">
-            <button
-              type="button"
-              class="btn btn-danger btn-xs"
-              (click)="remove.emit(annotation)"
-              [luTooltip]="'annotation.deleteComment' | translate"
-              placement="right"
-              *ngIf="(annotation.annotationByPerson | toQName) === personID && !annotation.deleted && showItem?.[i]"
-              >
-              <i class="glyphicon glyphicon-trash"></i>
             </button>
-            <button
-              type="button"
-              class="btn alert-info btn-xs"
-              (click)="toggleAnnotation(i)"
-              [luTooltip]="!annotation.valid ? (annotation.deleted ? ('annotation.hideDeletedComment' | translate) : ('annotation.hideInvalidComment' | translate)  ) : (annotation.deleted ? ('annotation.hideDeletedComment' | translate) : '')"
-              placement="right"
-              *ngIf="((annotation.deleted || !annotation.valid ) && showItem?.[i])"
-            >
-            <i class="glyphicon glyphicon-eye-close"></i>
-            </button>
-          </span>
-          <div *ngIf="annotation.annotationByPerson; else annotationByPerson">
-            <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
-            <span class="annotation-date">{{ annotation.created | amDateFormat:'L' }}</span>
           </div>
-          <ng-template #annotationByPerson>
-            <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
-            <span class="annotation-date">{{ annotation.created | amDateFormat:'L' }}</span>
-          </ng-template>
+        }
+        <div class="row">
+          <div class="col-xs-12 row-title">
+            <span class="person pull-right">
+              @if ((annotation.annotationByPerson | toQName) === personID && !annotation.deleted && showItem?.[i]) {
+                <button
+                  type="button"
+                  class="btn btn-danger btn-xs"
+                  (click)="remove.emit(annotation)"
+                  [luTooltip]="'annotation.deleteComment' | translate"
+                  placement="right"
+                  >
+                  <i class="glyphicon glyphicon-trash"></i>
+                </button>
+              }
+              @if (((annotation.deleted || !annotation.valid ) && showItem?.[i])) {
+                <button
+                  type="button"
+                  class="btn alert-info btn-xs"
+                  (click)="toggleAnnotation(i)"
+                  [luTooltip]="!annotation.valid ? (annotation.deleted ? ('annotation.hideDeletedComment' | translate) : ('annotation.hideInvalidComment' | translate)  ) : (annotation.deleted ? ('annotation.hideDeletedComment' | translate) : '')"
+                  placement="right"
+                  >
+                  <i class="glyphicon glyphicon-eye-close"></i>
+                </button>
+              }
+            </span>
+            @if (annotation.annotationByPerson) {
+              <div>
+                <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
+                <span class="annotation-date">{{ annotation.created | amDateFormat:'L' }}</span>
+              </div>
+            } @else {
+              <span class="annotation-person">{{ annotation.annotationByPerson | toQName | users }} </span>
+              <span class="annotation-date">{{ annotation.created | amDateFormat:'L' }}</span>
+            }
+          </div>
         </div>
-      </div>
-      <div class="content-show-hide" *ngIf="showItem?.[i]; else dots">
-        <div class="tags" *ngIf="annotation.addedTags">
-           <div class="row no-padding">
-             <div class="col-xs-4" style="font-weight: bold;">{{ 'MAN.addedTags' | label }}:</div>
-             <div class="col-xs-8">
-               <div *ngIf="annotation.addedTags.length > 0">
-                <div class="tag" *ngFor="let addedTag of annotation.addedTags" [ngClass]="{'margin-bottom-5': effectiveTags !== undefined && effectiveTags.indexOf(addedTag) === -1 , '':  effectiveTags !== undefined && effectiveTags.indexOf(addedTag) !== -1 }">
-                  <div *ngIf="tagsConverted[addedTag | warehouse]; else noCategory">
-                     <div class="annotation-marker" [ngClass]="{'positive': tagsConverted[addedTag | warehouse]?.type==='MMAN.typePositiveQuality', 'check': tagsConverted[addedTag | warehouse]?.type==='MMAN.typeCheck', 'negative': (tagsConverted[addedTag | warehouse]?.type==='MMAN.typeNegativeQuality' || tagsConverted[addedTag | warehouse]?.type==='MMAN.typeAdmin'), 'info': tagsConverted[addedTag | warehouse]?.type ==='MMAN.typeSelf', 'self': tagsConverted[addedTag | warehouse]?.type ==='MMAN.typeInfo' }">
-                       <span>{{ addedTag | label: 'warehouse' }}</span>
-                     </div>
+        @if (showItem?.[i]) {
+          <div class="content-show-hide">
+            @if (annotation.addedTags) {
+              <div class="tags">
+                <div class="row no-padding">
+                  <div class="col-xs-4" style="font-weight: bold;">{{ 'MAN.addedTags' | label }}:</div>
+                  <div class="col-xs-8">
+                    @if (annotation.addedTags.length > 0) {
+                      <div>
+                        @for (addedTag of annotation.addedTags; track addedTag) {
+                          <div class="tag" [ngClass]="{'margin-bottom-5': effectiveTags !== undefined && effectiveTags.indexOf(addedTag) === -1 , '':  effectiveTags !== undefined && effectiveTags.indexOf(addedTag) !== -1 }">
+                            @if (tagsConverted[addedTag | warehouse]) {
+                              <div>
+                                <div class="annotation-marker" [ngClass]="{'positive': tagsConverted[addedTag | warehouse]?.type==='MMAN.typePositiveQuality', 'check': tagsConverted[addedTag | warehouse]?.type==='MMAN.typeCheck', 'negative': (tagsConverted[addedTag | warehouse]?.type==='MMAN.typeNegativeQuality' || tagsConverted[addedTag | warehouse]?.type==='MMAN.typeAdmin'), 'info': tagsConverted[addedTag | warehouse]?.type ==='MMAN.typeSelf', 'self': tagsConverted[addedTag | warehouse]?.type ==='MMAN.typeInfo' }">
+                                  <span>{{ addedTag | label: 'warehouse' }}</span>
+                                </div>
+                              </div>
+                            } @else {
+                              <span>{{ addedTag | label: 'warehouse' }}</span>
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
                   </div>
-                  <ng-template #noCategory>
-                   <span>{{ addedTag | label: 'warehouse' }}</span>
-                  </ng-template>
-                </div>
-               </div>
-             </div>
-           </div>
-         </div>
-         <div class="removed-tags" *ngIf="annotation.removedTags && annotation.removedTags.length > 0">
-          <div class="row">
-            <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.removedTags' | translate }}:</div>
-            <div class="col-xs-8">
-              <div *ngFor="let removeTag of annotation.removedTags" class="tag">
-                <div class="annotation-marker neutral">
-                  <span>{{ removeTag | label: 'warehouse' }}</span>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="content-taxon-comment new-identification" *ngIf="annotation.identification && ((annotation.identification.taxon && annotation.identification.taxon !== '') || (annotation.identification.linkings && annotation.identification.linkings.taxon))">
-          <div class="row">
-            <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.title.taxon' | translate }}:</div>
-            <div class="col-xs-8">
-            <ng-container *ngIf="annotation.identification.linkings && annotation.identification.linkings.taxon; else taxonNameSimple">
-              <laji-taxon-name [capitalizeName]="true" [taxon]="annotation.identification.linkings.taxon"></laji-taxon-name>
-            </ng-container>
-            <ng-template #taxonNameSimple>
-              <span>
-                {{ annotation.identification.taxon }}
-              </span>
-            </ng-template>
-              <ng-container *ngIf="annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== ''"> ,{{ annotation.identification.taxonSpecifier }}</ng-container>
-            </div>
-          </div>
-        </div>
-        <div class="row" *ngIf="annotation.atlasCode">
-          <div class="col-xs-4" style="font-weight: bold;">
-            {{ "MAN.atlasCode" | label }}:
-          </div>
-          <div class="col-xs-8">
-            {{ annotation.atlasCode | label:"fullUri" | truncate : 100 : true : '...'}}
-          </div>
-        </div>
-        <div class="row" *ngIf="annotation.opinion">
-          <div class="col-xs-4">
-            {{ "MAN.opinion" | label }}:
-          </div>
-          <div class="col-xs-8">
-            {{ annotation.opinion }}
-          </div>
-        </div>
-        <div class="content-taxon-comment" *ngIf="annotation.notes">
-          <div class="row">
-            <div class="col-xs-4">
-              <b>Comment:</b>
-            </div>
-            <div class="col-xs-8 long-text">
-              <div [ngClass]="{'': (annotation.notes.length <= 250 || open?.[i]), 'closed': (annotation.notes.length > 250 && !open?.[i]) }">
-                {{ annotation.notes }}
+            }
+            @if (annotation.removedTags && annotation.removedTags.length > 0) {
+              <div class="removed-tags">
+                <div class="row">
+                  <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.removedTags' | translate }}:</div>
+                  <div class="col-xs-8">
+                    @for (removeTag of annotation.removedTags; track removeTag) {
+                      <div class="tag">
+                        <div class="annotation-marker neutral">
+                          <span>{{ removeTag | label: 'warehouse' }}</span>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
               </div>
-              <span class="read-more" *ngIf="(annotation.notes.length > 250 && !open?.[i])" (click)="readMore(i)" role="button" luKeyboardClickable tabindex="0">Read more</span>
-              <span class="read-more" *ngIf="open?.[i]" (click)="readMore(i)" role="button" luKeyboardClickable tabindex="0">Hide</span>
-            </div>
+            }
+            @if (annotation.identification && ((annotation.identification.taxon && annotation.identification.taxon !== '') || (annotation.identification.linkings && annotation.identification.linkings.taxon))) {
+              <div class="content-taxon-comment new-identification">
+                <div class="row">
+                  <div class="col-xs-4" style="font-weight: bold;">{{ 'annotation.title.taxon' | translate }}:</div>
+                  <div class="col-xs-8">
+                    @if (annotation.identification.linkings && annotation.identification.linkings.taxon) {
+                      <laji-taxon-name [capitalizeName]="true" [taxon]="annotation.identification.linkings.taxon"></laji-taxon-name>
+                    } @else {
+                      <span>
+                        {{ annotation.identification.taxon }}
+                      </span>
+                    }
+                    @if (annotation.identification.taxonSpecifier && annotation.identification.taxonSpecifier !== '') {
+                      ,{{ annotation.identification.taxonSpecifier }}
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+            @if (annotation.atlasCode) {
+              <div class="row">
+                <div class="col-xs-4" style="font-weight: bold;">
+                  {{ "MAN.atlasCode" | label }}:
+                </div>
+                <div class="col-xs-8">
+                  {{ annotation.atlasCode | label:"fullUri" | truncate : 100 : true : '...'}}
+                </div>
+              </div>
+            }
+            @if (annotation.opinion) {
+              <div class="row">
+                <div class="col-xs-4">
+                  {{ "MAN.opinion" | label }}:
+                </div>
+                <div class="col-xs-8">
+                  {{ annotation.opinion }}
+                </div>
+              </div>
+            }
+            @if (annotation.notes) {
+              <div class="content-taxon-comment">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <b>Comment:</b>
+                  </div>
+                  <div class="col-xs-8 long-text">
+                    <div [ngClass]="{'': (annotation.notes.length <= 250 || open?.[i]), 'closed': (annotation.notes.length > 250 && !open?.[i]) }">
+                      {{ annotation.notes }}
+                    </div>
+                    @if ((annotation.notes.length > 250 && !open?.[i])) {
+                      <span class="read-more" (click)="readMore(i)" role="button" luKeyboardClickable tabindex="0">Read more</span>
+                    }
+                    @if (open?.[i]) {
+                      <span class="read-more" (click)="readMore(i)" role="button" luKeyboardClickable tabindex="0">Hide</span>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
           </div>
-        </div>
+        } @else {
+          <i class="glyphicon glyphicon-option-horizontal"></i>
+        }
+        @if ((annotation.deleted && showItem?.[i])) {
+          <span class="small-deleted">{{ 'annotation.deleted' | translate }}</span>
+        }
+        @if ((!annotation.deleted && !annotation.valid && showItem?.[i])) {
+          <span class="small-deleted">{{ 'annotation.notValid' | translate }}</span>
+        }
       </div>
-      <ng-template #dots>
-        <i class="glyphicon glyphicon-option-horizontal"></i>
-      </ng-template>
-      <span class="small-deleted" *ngIf="(annotation.deleted && showItem?.[i])">{{ 'annotation.deleted' | translate }}</span>
-      <span class="small-deleted" *ngIf="(!annotation.deleted && !annotation.valid && showItem?.[i])">{{ 'annotation.notValid' | translate }}</span>
+      @if (lastFalse!==-1 && i===lastFalse && hasNextTrue) {
+        <div>
+          <laji-occurrence-at-time-of-annotation [occurrence]="annotations[i+1].occurrenceAtTimeOfAnnotation"></laji-occurrence-at-time-of-annotation>
+        </div>
+      }
     </div>
-    <div *ngIf="lastFalse!==-1 && i===lastFalse && hasNextTrue">
-      <laji-occurrence-at-time-of-annotation [occurrence]="annotations[i+1].occurrenceAtTimeOfAnnotation"></laji-occurrence-at-time-of-annotation>
+  }
+  @if (annotations && annotations.length === 0) {
+    <div class="no-annotations alert alert-warning">
+      {{ 'annotation.none' | translate }}
     </div>
-  </div>
-  <div class="no-annotations alert alert-warning" *ngIf="annotations && annotations.length === 0">
-    {{ 'annotation.none' | translate }}
-  </div>
+  }
 </div>

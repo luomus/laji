@@ -6,10 +6,11 @@ import { LabelService } from '../../label.service';
  * @internal
  */
 @Component({
-  selector: 'll-label-page',
-  templateUrl: './label-page.component.html',
-  styleUrls: ['../../../styles/ll-label.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-label-page',
+    templateUrl: './label-page.component.html',
+    styleUrls: ['../../../styles/ll-label.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelPageComponent implements AfterViewInit {
 

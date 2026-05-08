@@ -10,15 +10,21 @@
         <th rowspan="2">{{ 'iucn.results.endangered' | translate }}</th>
       </tr>
       <tr class="title">
-        <th class="no-border-top" *ngFor="let status of statuses">{{ statusLabel[status] }}</th>
+        @for (status of statuses; track status) {
+          <th class="no-border-top">{{ statusLabel[status] }}</th>
+        }
       </tr>
-      <tr [class.link]="data.group" (click)="rowClick(data.group)" *ngFor="let data of _data; let f=first; let l=last" [class.title]="f || l">
-        <th>{{ data.species }}</th>
-        <td>{{ data.count }}</td>
-        <td *ngFor="let status of statuses">{{ data[status] || 0 }}</td>
-        <td>{{ data.redListCnt }}</td>
-        <td>{{ data.redListPct }}%</td>
-      </tr>
+      @for (data of _data; track data; let f = $first; let l = $last) {
+        <tr [class.link]="data.group" (click)="rowClick(data.group)" [class.title]="f || l">
+          <th>{{ data.species }}</th>
+          <td>{{ data.count }}</td>
+          @for (status of statuses; track status) {
+            <td>{{ data[status] || 0 }}</td>
+          }
+          <td>{{ data.redListCnt }}</td>
+          <td>{{ data.redListPct }}%</td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

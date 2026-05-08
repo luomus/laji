@@ -1,22 +1,36 @@
-<div *ngIf="loaded; else loading">
-  <div *ngIf="form; else wip">
-    <div [ngSwitch]="form.options?.viewerType" lajiFormOption="options.viewerType">
-      <div *ngSwitchCase="'MHL.viewerTypeLineTransect'">
-        <laji-line-transect-stats [document]="document" [namedPlace]="ns" (namedPlaceChange)="updateNamedPlace($event)"></laji-line-transect-stats>
+@if (loaded) {
+  <div>
+    @if (form) {
+      <div>
+        <div lajiFormOption="options.viewerType">
+          @switch (form.options?.viewerType) {
+            @case ('MHL.viewerTypeLineTransect') {
+              <div>
+                <laji-line-transect-stats [document]="document" [namedPlace]="ns" (namedPlaceChange)="updateNamedPlace($event)"></laji-line-transect-stats>
+              </div>
+            }
+            @case ('MHL.viewerTypeBirdPointCount') {
+              <div>
+                <laji-bird-point-count-stats [document]="document" [namedPlace]="ns" (namedPlaceChange)="updateNamedPlace($event)"></laji-bird-point-count-stats>
+              </div>
+            }
+            @default {
+              <div>
+                <div *ngTemplateOutlet="wip"></div>
+              </div>
+            }
+          }
+        </div>
       </div>
-      <div *ngSwitchCase="'MHL.viewerTypeBirdPointCount'">
-       <laji-bird-point-count-stats [document]="document" [namedPlace]="ns" (namedPlaceChange)="updateNamedPlace($event)"></laji-bird-point-count-stats>
-      </div>
-      <div *ngSwitchDefault>
-        <div *ngTemplateOutlet="wip"></div>
-      </div>
-    </div>
+    } @else {
+      <h3>{{ 'haseka.statistics.title' | translate }}</h3>
+      <p>Ei vielä toteutettu.</p>
+    }
   </div>
-</div>
-<ng-template #loading>
+} @else {
   <laji-spinner [spinning]="!loaded">
   </laji-spinner>
-</ng-template>
+}
 <ng-template #wip>
   <h3>{{ 'haseka.statistics.title' | translate }}</h3>
   <p>Ei vielä toteutettu.</p>

@@ -5,11 +5,11 @@
   </header>
   <p translate>Voit osallistua viranomaisille suunnattuihin seurantoihin, joita ylläpidetään Lajitietokeskuksen Vihko-palvelussa.</p>
   <div class="d-flex flex-row flex-wrap">
-    <ng-container *ngFor="let form of monitoringForms$ | async">
+    @for (form of monitoringForms$ | async; track form) {
       <laji-survey-box class="d-block mr-3" [form]="form" externalUrl="https://laji.fi"></laji-survey-box>
-    </ng-container>
+    }
   </div>
   <hr>
-  <p>Tallentamalla lajihavaintosi johonkin Lajitietokeskuksen palveluun, tuot sen tutkijoiden ja muiden tiedontarvitsijoiden käytettäväksi ja valintasi mukaan Laji-fi portaaliin julkisesti nähtäväksi. Voit ilmoittaa yksittäisiä havaintoja, pitää omaa havaintopäiväkirjaa tai osallistua kansalaistiedehankkeisiin.</p>
-  <lu-button anchor="https://laji.fi/save-observations" target="_blank"><i class="glyphicon glyphicon-new-window"></i> Tallenna luontohavaintoja Lajitietokeskukseen</lu-button>
-</main>
+    <p>Tallentamalla lajihavaintosi johonkin Lajitietokeskuksen palveluun, tuot sen tutkijoiden ja muiden tiedontarvitsijoiden käytettäväksi ja valintasi mukaan Laji-fi portaaliin julkisesti nähtäväksi. Voit ilmoittaa yksittäisiä havaintoja, pitää omaa havaintopäiväkirjaa tai osallistua kansalaistiedehankkeisiin.</p>
+    <lu-button anchor="https://laji.fi/save-observations" target="_blank"><i class="glyphicon glyphicon-new-window"></i> Tallenna luontohavaintoja Lajitietokeskukseen</lu-button>
+  </main>

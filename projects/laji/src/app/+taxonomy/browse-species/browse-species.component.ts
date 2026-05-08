@@ -5,9 +5,10 @@ import { Subscription } from 'rxjs';
 import { LoadedElementsStore } from '../../../../../laji-ui/src/lib/tabs/tab-utils';
 
 @Component({
-  selector: 'laji-browse-species',
-  templateUrl: './browse-species.component.html',
-  styleUrls: ['./browse-species.component.scss']
+    selector: 'laji-browse-species',
+    templateUrl: './browse-species.component.html',
+    styleUrls: ['./browse-species.component.scss'],
+    standalone: false
 })
 export class BrowseSpeciesComponent implements OnInit, OnDestroy {
   activeIndex = 0;

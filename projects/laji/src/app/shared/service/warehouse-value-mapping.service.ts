@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { map, shareReplay, take } from 'rxjs/operators';
+import { map, shareReplay, take } from 'rxjs';
 import { BaseDataService } from '../../graph-ql/service/base-data.service';
 
 interface LabelData {

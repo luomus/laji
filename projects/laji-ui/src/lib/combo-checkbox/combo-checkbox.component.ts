@@ -1,10 +1,11 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, Input } from '@angular/core';
 
 @Component({
-  selector: 'lu-combo-checkbox',
-  templateUrl: './combo-checkbox.component.html',
-  styleUrls: ['./combo-checkbox.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'lu-combo-checkbox',
+    templateUrl: './combo-checkbox.component.html',
+    styleUrls: ['./combo-checkbox.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ComboCheckboxComponent {
   @Input() title = 'combo-checkbox';

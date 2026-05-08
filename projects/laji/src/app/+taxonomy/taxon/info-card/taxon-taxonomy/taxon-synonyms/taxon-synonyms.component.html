@@ -1,13 +1,21 @@
-<ng-container *ngFor="let synonymType of synonymTypes">
-  <laji-taxon-info-row *ngIf="taxon[synonymType]" [hasOtherItemBefore]="hasOtherNamesBefore" [label]="'MX.has' + $any(synonymType)[0].toUpperCase() + $any(synonymType).substring(1, $any(synonymType).length - 1) | label">
-    <ul>
-      <li *ngFor="let obj of taxon[synonymType]">
-        <a [routerLink]="['/taxon', obj.id, 'taxonomy'] | localize" [queryParams]="{context: null, showTree: null}" [queryParamsHandling]="'merge'" target="_blank">
-          <laji-taxon-name [capitalizeName]="true" [taxon]="obj" [addLink]="false"></laji-taxon-name>
-        </a>
-        <span class="author" *ngIf="obj.scientificNameAuthorship">{{ obj.scientificNameAuthorship }}</span>
-        <p *ngIf="obj.notes">{{ obj.notes }}</p>
-      </li>
-    </ul>
-  </laji-taxon-info-row>
-</ng-container>
+@for (synonymType of synonymTypes; track synonymType) {
+  @if (taxon[synonymType]) {
+    <laji-taxon-info-row [hasOtherItemBefore]="hasOtherNamesBefore" [label]="'MX.has' + $any(synonymType)[0].toUpperCase() + $any(synonymType).substring(1, $any(synonymType).length - 1) | label">
+      <ul>
+        @for (obj of taxon[synonymType]; track obj) {
+          <li>
+            <a [routerLink]="['/taxon', obj.id, 'taxonomy'] | localize" [queryParams]="{context: null, showTree: null}" [queryParamsHandling]="'merge'" target="_blank">
+              <laji-taxon-name [capitalizeName]="true" [taxon]="obj" [addLink]="false"></laji-taxon-name>
+            </a>
+            @if (obj.scientificNameAuthorship) {
+              <span class="author">{{ obj.scientificNameAuthorship }}</span>
+            }
+            @if (obj.notes) {
+              <p>{{ obj.notes }}</p>
+            }
+          </li>
+        }
+      </ul>
+    </laji-taxon-info-row>
+  }
+}

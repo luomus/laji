@@ -1,12 +1,11 @@
-<ng-container *ngIf="species$ | async; else main">
+@if (species$ | async) {
   <laji-wbc-species-charts></laji-wbc-species-charts>
-</ng-container>
-<ng-template #main>
+} @else {
   <h3>{{ 'wbc.stats.species' | translate }}</h3>
   <laji-wbc-result-filters (yearChange)="activeYear = $event"
-                           (seasonChange)="activeSeason = $event"
-                           (areaChange)="activeBirdAssociationArea = $event"
-                           [yearRequired]="showStatistics"
+    (seasonChange)="activeSeason = $event"
+    (areaChange)="activeBirdAssociationArea = $event"
+    [yearRequired]="showStatistics"
   ></laji-wbc-result-filters>
   <div class="row options-container">
     <div class="col-sm-12">
@@ -36,13 +35,12 @@
       </div>
     </div>
   </div>
-
   <laji-wbc-species-list (rowSelect)="taxonSelect($event)"
-                         [year]="activeYear"
-                         [season]="activeSeason"
-                         [filterBy]="filterBy"
-                         [birdAssociationArea]="activeBirdAssociationArea"
-                         [onlyCommonSpecies]="onlyCommonSpecies"
-                         [showStatistics]="showStatistics"
+    [year]="activeYear"
+    [season]="activeSeason"
+    [filterBy]="filterBy"
+    [birdAssociationArea]="activeBirdAssociationArea"
+    [onlyCommonSpecies]="onlyCommonSpecies"
+    [showStatistics]="showStatistics"
   ></laji-wbc-species-list>
-</ng-template>
+}

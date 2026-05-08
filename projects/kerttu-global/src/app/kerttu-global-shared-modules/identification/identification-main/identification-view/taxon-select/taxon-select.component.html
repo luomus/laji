@@ -1,7 +1,11 @@
-<select class="form-control d-inline continent-select" [(ngModel)]="continent" *ngIf="taxonType === taxonTypeEnum.bird">
-  <option [value]="undefined">{{ 'identification.allContinents' | translate }}</option>
-  <option *ngFor="let continent of (filters$ | async)?.continent" [ngValue]="continent.id">{{ ('continents.' + continent.name) | translate }}</option>
-</select>
+@if (taxonType === taxonTypeEnum.bird) {
+  <select class="form-control d-inline continent-select" [(ngModel)]="continent">
+    <option [value]="undefined">{{ 'identification.allContinents' | translate }}</option>
+    @for (continent of (filters$ | async)?.continent; track continent) {
+      <option [ngValue]="continent.id">{{ ('continents.' + continent.name) | translate }}</option>
+    }
+  </select>
+}
 <input
   type="text"
   class="form-control d-inline species-select"
@@ -20,8 +24,8 @@
   [luTypeaheadIsFirstItemActive]="true"
   autocomplete="off"
   autocorrect="off"
->
+  >
 
-<ng-template #taxonItem let-item="item">
-  <span class="autocomplete-container" [innerHTML]="item['autocompleteDisplayName']"></span>
-</ng-template>
+  <ng-template #taxonItem let-item="item">
+    <span class="autocomplete-container" [innerHTML]="item['autocompleteDisplayName']"></span>
+  </ng-template>

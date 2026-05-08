@@ -1,13 +1,16 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { Annotation } from '../../../shared/model/Annotation';
 import { SYNONYM_KEYS } from '../../../+taxonomy/species/service/taxon-export.service';
 import { Global } from '../../../../environments/global';
 import { toHtmlSpanElement } from '../../../shared/service/html-element.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Annotation = components['schemas']['store-annotation'];
 
 @Component({
-  selector: 'laji-datatable-templates',
-  templateUrl: './datatable-templates.component.html',
-  styleUrls: ['./datatable-templates.component.scss']
+    selector: 'laji-datatable-templates',
+    templateUrl: './datatable-templates.component.html',
+    styleUrls: ['./datatable-templates.component.scss'],
+    standalone: false
 })
 export class DatatableTemplatesComponent {
   @ViewChild('defaultHeaderTpl', { static: true }) dafaultHeader!: TemplateRef<any>;
@@ -55,7 +58,6 @@ export class DatatableTemplatesComponent {
   @ViewChild('fullUriLink', {static: true }) fullUriLink!: TemplateRef<any>;
   @ViewChild('pluckValueSemiColonArray', {static: true }) pluckValueSemiColonArray!: TemplateRef<any>;
 
-  annotationTypes = Annotation.TypeEnum;
   synonymKeys = SYNONYM_KEYS;
   annotationTagsObservation: any = Global.annotationTags;
   toHtmlSpanElement = toHtmlSpanElement;

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 interface ImportStep {
   _tag: 'import';
@@ -28,8 +28,9 @@ interface ReadyStep {
 type Step = ImportStep | ValidateStep | CheckStep | ReadyStep;
 
 @Component({
-  templateUrl: './trait-db-data-entry.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './trait-db-data-entry.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TraitDbDataEntryComponent implements OnInit, OnDestroy {
   stepStack$ = new BehaviorSubject<Step[]>([]);
@@ -84,4 +85,3 @@ export class TraitDbDataEntryComponent implements OnInit, OnDestroy {
     this.stepStack$.next(newSteps);
   }
 }
-

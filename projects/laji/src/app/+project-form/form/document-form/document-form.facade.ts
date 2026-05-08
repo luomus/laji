@@ -1,32 +1,32 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, mergeMap, switchMap, take, tap, filter, distinctUntilChanged, mapTo, shareReplay, distinctUntilKeyChanged } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, take, tap, filter, distinctUntilChanged, mapTo, shareReplay, distinctUntilKeyChanged } from 'rxjs';
 import { combineLatest, concat, merge, Observable, of, ReplaySubject, Subscription } from 'rxjs';
-import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
 import { FooterService } from '../../../shared/service/footer.service';
-import { Document } from '../../../shared/model/Document';
 import { LatestDocumentsFacade } from '../../../shared-modules/latest-documents/latest-documents.facade';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
-import { Form } from '../../../shared/model/Form';
 import { FormService } from '../../../shared/service/form.service';
-import { Util } from '../../../shared/service/util.service';
+import * as Util from '../../../shared/utils';
 import { UserService } from '../../../shared/service/user.service';
 import { FormPermissionService, Rights } from '../../../shared/service/form-permission.service';
-import { NamedPlacesService } from '../../../shared/service/named-places.service';
 import { DocumentStorage } from '../../../storage/document.storage';
-import * as deepmerge from 'deepmerge';
-import * as moment from 'moment';
+import deepmerge from 'deepmerge';
+import moment from 'moment';
 import { LocalStorage } from 'ngx-webstorage';
 import { Global } from 'projects/laji/src/environments/global';
-import { Person } from '../../../shared/model/Person';
 import { Logger } from '../../../shared/logger';
 import { LajiFormUtil } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-util.service';
 import equals from 'deep-equal';
 import { ProjectFormService } from '../../../shared/service/project-form.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { Unsaved } from '../../../shared/utils';
 
-type Annotation = components['schemas']['annotation'];
+type Form = components['schemas']['Form'];
+type Annotation = components['schemas']['store-annotation'];
+type Document = components['schemas']['store-document'];
+type NamedPlace = components['schemas']['store-namedPlace'];
+type Person = components['schemas']['SensitivePerson'];
 
 export enum FormError {
   notFoundForm = 'notFoundForm',
@@ -49,7 +49,7 @@ export enum Readonly {
 }
 
 export interface SaneInputModel {
-  form: Form.SchemaForm;
+  form: Form;
   formData: any;
   hasChanges: boolean;
   template: boolean;
@@ -73,7 +73,7 @@ export function isSaneViewModel(any: ViewModel): any is SaneViewModel {
 export type ViewModel = SaneViewModel | FormError;
 
 interface DocumentAndHasChanges {
-  document: Document;
+  document: Unsaved<Document>;
   hasChanges: boolean;
 }
 
@@ -91,7 +91,7 @@ export class DocumentFormFacade {
   private vmSub!: Subscription;
   private saveTmpSub!: Subscription;
   private annotationCache: Record<string, Observable<Annotation[]>> = {};
-  private memoizedForm: {form?: Form.SchemaForm; uiSchema?: any; uiSchemaContext?: any; result?: any} = {};
+  private memoizedForm: {form?: Form; uiSchema?: any; uiSchemaContext?: any; result?: any} = {};
 
   constructor(
     private footerService: FooterService,
@@ -99,7 +99,6 @@ export class DocumentFormFacade {
     private documentService: DocumentService,
     private userService: UserService,
     private formPermissionService: FormPermissionService,
-    private namedPlacesService: NamedPlacesService,
     private documentStorage: DocumentStorage,
     private logger: Logger,
     private projectFormService: ProjectFormService,
@@ -117,15 +116,17 @@ export class DocumentFormFacade {
 
     const isSane = filter(<T>(f: T | FormError): f is T => !isFormError(f));
 
-    const form$: Observable<Form.SchemaForm | FormError> = combineLatest([formID$, template$]).pipe(
+    const form$: Observable<Form | FormError> = combineLatest([formID$, template$]).pipe(
       switchMap(([formID, template]) => this.projectFormService.getForm$(formID).pipe(
-        switchMap(form => template && !form.options?.allowTemplate
+        switchMap(form => template && !form?.options?.allowTemplate
           ? of(FormError.templateDisallowed)
-          : this.formPermissionService.getRights(form).pipe(map(rights =>
-            (rights.edit === false && !form.options.openForm)
-              ? FormError.noAccess
-              : form
-          ))
+          : !form
+            ? of(FormError.notFoundForm)
+            : this.formPermissionService.getRights(form).pipe(map(rights =>
+              (rights.edit === false && !form?.options.openForm)
+                ? FormError.noAccess
+                : form
+            ))
         ),
         catchError((error) => {
           this.logger.error('Failed to load form', {error});
@@ -137,26 +138,21 @@ export class DocumentFormFacade {
     const existingDocument$: Observable<DocumentAndHasChanges | FormError | null> = form$.pipe(
       isSane,
       switchMap(form => documentID$.pipe(switchMap(documentID => documentID
-        ? this.fetchExistingDocument((form as Form.SchemaForm), documentID)
+        ? this.fetchExistingDocument((form as Form), documentID)
         : of(null)
       ))),
       shareReplay()
     );
 
-    const includeUnits$ = form$.pipe(
-      map(form => isFormError(form) ? form : form.options?.namedPlaceOptions?.includeUnits),
-      distinctUntilChanged()
-    );
-
-    const namedPlace$: Observable<NamedPlace | FormError | null> = combineLatest([includeUnits$, existingDocument$, namedPlaceID$]).pipe(
-      map(([includeUnits, existingDocument, namedPlaceID]): [boolean, string] =>
-        isFormError(includeUnits) || isFormError(existingDocument)
-          ? [false, '']
+    const namedPlace$: Observable<NamedPlace | FormError | null> = combineLatest([existingDocument$, namedPlaceID$]).pipe(
+      map(([existingDocument, namedPlaceID]): string =>
+        isFormError(existingDocument)
+          ? ''
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          : [includeUnits!, existingDocument?.document?.namedPlaceID || namedPlaceID]
+          : existingDocument?.document?.namedPlaceID || namedPlaceID
       ),
-      switchMap(([includeUnits, namedPlaceID]) => namedPlaceID
-        ? this.namedPlacesService.getNamedPlace(namedPlaceID, undefined, includeUnits)
+      switchMap((namedPlaceID) => namedPlaceID
+        ? this.api.get('/named-places/{id}', { path: { id: namedPlaceID } })
         : of(null)
       ),
       take(1),
@@ -173,7 +169,7 @@ export class DocumentFormFacade {
               ? of(namedPlace)
               : (existingDocument
                 ? of(existingDocument)
-                : this.fetchEmptyData(form, user as Person, namedPlace as NamedPlace)
+                : this.fetchEmptyData(form, user, namedPlace as NamedPlace)
               ).pipe(map(documentModel => {
                 if (isFormError(documentModel)) {
                   return documentModel;
@@ -279,7 +275,7 @@ export class DocumentFormFacade {
   }
 
   // Memoize the form so that it doesn't trigger change detection if nothing changed.
-  getMemoizedForm(form: Form.SchemaForm, uiSchema: any, uiSchemaContext: any) {
+  getMemoizedForm(form: Form, uiSchema: any, uiSchemaContext: any) {
     const result =  {...form, uiSchema, uiSchemaContext};
     const memoizedForm = {form, uiSchema, uiSchemaContext, result};
     if (Object.keys(memoizedForm).every(k => k === 'result' || (memoizedForm as any)[k] === (this.memoizedForm as any)[k])) {
@@ -302,9 +298,9 @@ export class DocumentFormFacade {
     this.onChange({...this.vm.formData, locked: lock});
   }
 
-  save(data: Document): Observable<Document>;
+  save(data: Unsaved<Document>): Observable<Document>;
   save(data: TemplateForm): Observable<TemplateForm>;
-  save(data: Document | TemplateForm): Observable<Document | TemplateForm> {
+  save(data: Unsaved<Document> | TemplateForm): Observable<Document | TemplateForm> {
     return this.vm.template
       ? this.saveTemplate(data as TemplateForm)
       : this.saveDocument(data as Document);
@@ -330,7 +326,7 @@ export class DocumentFormFacade {
           tap(() => {
             this.onSaved$.next();
             this.latestFacade.update();
-            this.namedPlacesService.invalidateCache();
+            this.api.flush('/named-places');
           }),
           map(() => doc)
         )
@@ -346,10 +342,10 @@ export class DocumentFormFacade {
     return this.documentService.saveTemplate(template);
   }
 
-  private getEditingOldWarning(form: Form.SchemaForm, formData: any, documentID?: string): string | undefined {
+  private getEditingOldWarning(form: Form, formData: any, documentID?: string): string | undefined {
     if (documentID && form.options?.warnEditingOldDocument) {
       // ISO 8601 duration
-      const {warnEditingOldDocumentDuration = 'P1W'} = form.options || {};
+      const warnEditingOldDocumentDuration = 'P1W';
       const docCreateDuration = moment.duration(moment().diff(moment(formData.dateCreated)));
       if (moment.duration(warnEditingOldDocumentDuration).subtract(docCreateDuration).asMilliseconds() < 0) {
         return moment(formData.dateCreated).format('DD.MM.YYYY');
@@ -358,14 +354,14 @@ export class DocumentFormFacade {
     return undefined;
   }
 
-  private getNamedPlaceHeader(form: Form.SchemaForm, namedPlace: NamedPlace): string[] {
+  private getNamedPlaceHeader(form: Form, namedPlace: NamedPlace | undefined): string[] {
     if (!form || !namedPlace) {
       return [];
     }
     return form.options?.namedPlaceOptions?.headerFields || ['alternativeIDs', 'name', 'municipality'];
   }
 
-  private fetchExistingDocument(form: Form.SchemaForm, documentID: string): Observable<DocumentAndHasChanges | FormError> {
+  private fetchExistingDocument(form: Form, documentID: string): Observable<DocumentAndHasChanges | FormError> {
     if (FormService.isTmpId(documentID)) {
       return this.userService.user$.pipe(
         take(1),
@@ -404,13 +400,12 @@ export class DocumentFormFacade {
     );
   }
 
-  private fetchEmptyData(form: Form.SchemaForm, person: Person | undefined, namedPlace: NamedPlace): Observable<DocumentAndHasChanges> {
-    let document: Document = {
+  private fetchEmptyData(form: Form, person: Person | undefined, namedPlace: NamedPlace): Observable<DocumentAndHasChanges> {
+    let document: Unsaved<Document> = {
       id: this.getNewTmpId(),
       formID: form.id,
       creator: person?.id ? person.id : undefined,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      gatheringEvent: { leg: person?.id ? [person.id] : undefined }
+      gatheringEvent: { leg: person?.id ? [person.id] : [] }
     };
     if (form.options?.prepopulatedDocument) {
       document = deepmerge(form.options?.prepopulatedDocument, document, { arrayMerge: Util.arrayCombineMerge });
@@ -429,10 +424,8 @@ export class DocumentFormFacade {
     return FormService.tmpNs + ':' +  this.tmpDocId;
   }
 
-  private addNamedPlaceData(form: Form.SchemaForm, data: Document, np: NamedPlace): Document {
-    const populate: any = np.acceptedDocument ?
-      Util.clone(np.acceptedDocument) :
-      (np.prepopulatedDocument ? Util.clone(np.prepopulatedDocument) : {});
+  private addNamedPlaceData(form: Form, data: Unsaved<Document>, np: NamedPlace): Unsaved<Document> {
+    const populate = np.prepopulatedDocument ? Util.clone(np.prepopulatedDocument) : {};
 
     populate.namedPlaceID = np.id;
 
@@ -462,7 +455,7 @@ export class DocumentFormFacade {
     return deepmerge(this.documentService.removeMeta(populate, removeList), data, { arrayMerge: Util.arrayCombineMerge });
   }
 
-  private addCollectionID(form: Form.SchemaForm, data: Document): Observable<Document> {
+  private addCollectionID(form: Form, data: Unsaved<Document>): Observable<Unsaved<Document>> {
     return form.id === Global.forms.privateCollection
       ? this.api.get('/person/profile').pipe(map(profile =>
         typeof profile?.personalCollectionIdentifier === 'string'
@@ -475,7 +468,7 @@ export class DocumentFormFacade {
       : of(data);
   }
 
-  private getUiSchema(form: Form.SchemaForm, locked: boolean, readonly: Readonly, rights: Rights, template: boolean) {
+  private getUiSchema(form: Form, locked: boolean, readonly: Readonly, rights: Rights, template: boolean) {
     let {uiSchema = {}} = form;
     if (locked) {
         uiSchema = {...uiSchema, 'ui:disabled': !rights.admin};
@@ -486,8 +479,8 @@ export class DocumentFormFacade {
     if (template) {
       try {
         uiSchema = Util.clone(uiSchema);
-        uiSchema.gatherings.items.units['ui:field'] = 'HiddenField';
-        uiSchema.gatherings['ui:options']['belowUiSchemaRoot']['ui:field'] = 'HiddenField';
+        (uiSchema as any).gatherings.items.units['ui:field'] = 'HiddenField';
+        (uiSchema as any).gatherings['ui:options']['belowUiSchemaRoot']['ui:field'] = 'HiddenField';
       } catch (e) {
         console.error(e);
       }
@@ -495,7 +488,7 @@ export class DocumentFormFacade {
     return uiSchema;
   }
 
-  private getUiSchemaContext(form: Form.SchemaForm, namedPlace: NamedPlace, user: Person | undefined, rights: Rights, documentID: string): Observable<any> {
+  private getUiSchemaContext(form: Form, namedPlace: NamedPlace, user: Person | undefined, rights: Rights, documentID: string): Observable<any> {
     const uiSchemaContext = {
       ...form.uiSchemaContext,
       formID: form.id,
@@ -507,13 +500,13 @@ export class DocumentFormFacade {
 
     return this.getAnnotations(documentID).pipe(
       shareReplay(),
-      map((annotations) => (annotations || []).reduce<Form.IAnnotationMap>((cumulative, current) => {
+      map((annotations) => (annotations || []).reduce((cumulative, current) => {
         if (current.byRole?.includes('MMAN.formAdmin')) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           cumulative[current.targetID!] = [current];
         }
         return cumulative;
-      }, {})),
+      }, {} as Record<string, Annotation[]>)),
       map((annotations) => ({...uiSchemaContext, annotations})),
     );
   }

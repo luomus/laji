@@ -1,4 +1,4 @@
-<ng-container *ngIf="document">
+@if (document) {
   <div class="pdf-wrap">
     <laji-pdf-button [fileName]="document.id"></laji-pdf-button>
   </div>
@@ -6,26 +6,26 @@
     <button type="button" [disabled]="loading" class="btn btn-default" (click)="print()">{{ 'print' | translate }} <i class="glyphicon glyphicon-print"></i></button>
   </div>
   <laji-document-local [document]="document"
-                       [view]="'print'"
-                       [showSpinner]="true"
+    [view]="'print'"
+    [showSpinner]="true"
   ></laji-document-local>
-</ng-container>
+}
 
-<ng-container *ngIf="uri">
+@if (uri) {
   <!--div class="pdf-wrap no-print">
-    <laji-spinner [spinning]="loading" [overlay]="true">
-      <button type="button" [disabled]="loading" class="btn btn-default" (click)="pdf(uri)">PDF <img src="/static/images/icons/pdf_16x16.png"></button>
-    </laji-spinner>
-  </div-->
-  <div class="print-wrap no-print">
-    <button type="button" [disabled]="loading" class="btn btn-default" (click)="print()">{{ 'print' | translate }} <i class="glyphicon glyphicon-print"></i></button>
-  </div>
-  <!--div class="settings-wrap no-print">
-    <button class="btn btn-default btn-xs"
-            (click)="toggleFacts()">
-      {{showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate)}}
-      <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
-    </button>
-  </div-->
-  <laji-document-print [uri]="uri" [own]="own" [showFacts]="showFacts"></laji-document-print>
-</ng-container>
+  <laji-spinner [spinning]="loading" [overlay]="true">
+    <button type="button" [disabled]="loading" class="btn btn-default" (click)="pdf(uri)">PDF <img src="/static/images/icons/pdf_16x16.png"></button>
+  </laji-spinner>
+</div-->
+<div class="print-wrap no-print">
+  <button type="button" [disabled]="loading" class="btn btn-default" (click)="print()">{{ 'print' | translate }} <i class="glyphicon glyphicon-print"></i></button>
+</div>
+<!--div class="settings-wrap no-print">
+<button class="btn btn-default btn-xs"
+  (click)="toggleFacts()">
+  {{showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate)}}
+  <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
+</button>
+</div-->
+<laji-document-print [uri]="uri" [own]="own" [showFacts]="showFacts"></laji-document-print>
+}

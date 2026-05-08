@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Form } from '../../../shared/model/Form';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
 
 interface State {
   taxon: string | undefined;
@@ -13,13 +15,14 @@ interface State {
 }
 
 @Component({
-  selector: 'laji-water-bird-count-result',
-  templateUrl: './water-bird-count-result.component.html',
-  styleUrls: ['./water-bird-count-result.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-water-bird-count-result',
+    templateUrl: './water-bird-count-result.component.html',
+    styleUrls: ['./water-bird-count-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class WaterBirdCountResultComponent implements OnInit {
-  @Input() form!: Form.SchemaForm;
+  @Input() form!: Form;
 
   state$!: Observable<State>;
   collections: string[] = ['HR.62', 'HR.3991', 'HR.3992'];

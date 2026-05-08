@@ -1,13 +1,14 @@
 import { Component, ChangeDetectionStrategy, Input, OnChanges } from '@angular/core';
 import { Options, TileLayerName, DataOptions } from '@luomus/laji-map/lib/defs';
 import { TranslateService } from '@ngx-translate/core';
-import * as Hash from 'object-hash';
+import Hash from 'object-hash';
 
 @Component({
-  selector: 'laji-import-map',
-  templateUrl: './import-map.component.html',
-  styleUrls: ['./import-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-import-map',
+    templateUrl: './import-map.component.html',
+    styleUrls: ['./import-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ImportMapComponent implements OnChanges {
   @Input() data: {[key: string]: any}[] = [];

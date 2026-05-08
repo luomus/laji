@@ -1,4 +1,4 @@
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,9 +12,8 @@ import {
   ViewChild,
   OnDestroy
 } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { Document } from '../../../shared/model/Document';
 import { ObservationResultService } from '../service/observation-result.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
@@ -37,18 +36,24 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
 import { RowDocument } from '../../own-submissions/own-datatable/own-datatable.component';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
+import { components } from 'projects/laji-api-client-b/generated/api';
+import { DataFetchMode } from '../../../+observation/observation-data.service';
+
+type Document = components['schemas']['store-document'];
 
 
 @Component({
-  selector: 'laji-observation-table-own-documents',
-  templateUrl: './observation-table-own-documents.component.html',
-  styleUrls: ['./observation-table-own-documents.component.scss'],
-  providers: [ObservationResultService, ToQNamePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-table-own-documents',
+    templateUrl: './observation-table-own-documents.component.html',
+    styleUrls: ['./observation-table-own-documents.component.scss'],
+    providers: [ObservationResultService, ToQNamePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('dataTableOwn', { static: true }) public datatable?: DatatableOwnSubmissionsComponent;
 
+  @Input() mode: DataFetchMode = 'unit';
   @Input() query!: WarehouseQueryInterface;
   @Input() overrideInQuery!: WarehouseQueryInterface;
   @Input() pageSize?: number;
@@ -181,7 +186,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   }
 
   ngOnInit() {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
     this.initColumns();
     this.fetchPage(this.page);
 
@@ -398,14 +403,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
       }));
   }
 
-  private getSelectFields(selected: string[], query: WarehouseQueryInterface) {
-    const selects = selected.map(field => this.columnLookup[field].selectField || field);
-    if (query.editorPersonToken || query.observerPersonToken || query.editorOrObserverPersonToken) {
-      selects.push('document.quality,gathering.quality,unit.quality');
-    }
-    return selects;
-  }
-
   private setLangParams(value: string) {
     return (value || '')
       .replace(/%longLang%/g, (this.langMap as any)[this.lang as any] || 'Finnish');
@@ -419,7 +416,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
       this.tableColumnService.getSelectFields(this.columnSelector.columns, this.query),
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       [...this.orderBy, this.defaultOrder!],
-      this.lang
+      this.mode
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data.results, columns, type as BookType, 'laji-data'))
     ).subscribe(

@@ -1,12 +1,13 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Occurrence = components['schemas']['Occurrence'];
+type Occurrence = components['schemas']['LajiBackendOccurrence'];
 
 @Component({
-  selector: 'laji-taxon-occurrence-map',
-  templateUrl: './taxon-occurrence-map.component.html',
-  styleUrls: ['./taxon-occurrence-map.component.scss']
+    selector: 'laji-taxon-occurrence-map',
+    templateUrl: './taxon-occurrence-map.component.html',
+    styleUrls: ['./taxon-occurrence-map.component.scss'],
+    standalone: false
 })
 export class TaxonOccurrenceMapComponent implements OnChanges {
   @Input() occurrences!: Occurrence[];

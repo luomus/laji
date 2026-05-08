@@ -2,7 +2,7 @@ import { Observable, Subject, throwError as observableThrowError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { UserService } from '../../../../laji/src/app/shared/service/user.service';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { catchError, throttleTime } from 'rxjs/operators';
+import { catchError, throttleTime } from 'rxjs';
 
 @Injectable()
 export class VirAuthenticatedHttpInterceptor implements HttpInterceptor {

@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'laji-season',
-  templateUrl: './season.component.html',
-  styleUrls: ['./season.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-season',
+    templateUrl: './season.component.html',
+    styleUrls: ['./season.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SeasonComponent {
 

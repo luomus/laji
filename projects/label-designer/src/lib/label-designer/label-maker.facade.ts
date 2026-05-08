@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 /**

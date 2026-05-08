@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
 import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type TaxonDescription = components['schemas']['Content'][number];
+type TaxonDescription = components['schemas']['LajiBackendContent'][number];
 
 @Component({
-  selector: 'laji-taxon-description-source',
-  templateUrl: './taxon-description-source.component.html',
-  styleUrls: ['./taxon-description-source.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-description-source',
+    templateUrl: './taxon-description-source.component.html',
+    styleUrls: ['./taxon-description-source.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonDescriptionSourceComponent implements OnChanges {
   @Input() taxonDescription!: TaxonDescription;

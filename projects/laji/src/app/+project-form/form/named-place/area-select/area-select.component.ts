@@ -3,13 +3,13 @@ import { AreaService } from '../../../../shared/service/area.service';
 import { CollectionService } from '../../../../shared/service/collection.service';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { Area } from '../../../../shared/model/Area';
 
 @Component({
-  selector: 'laji-area-select',
-  templateUrl: './area-select.component.html',
-  styleUrls: ['./area-select.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-area-select',
+    templateUrl: './area-select.component.html',
+    styleUrls: ['./area-select.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AreaSelectComponent implements OnInit {
 
@@ -35,7 +35,7 @@ export class AreaSelectComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
     this.initOptions();
   }
 
@@ -44,10 +44,10 @@ export class AreaSelectComponent implements OnInit {
       return;
     }
     this.getDataObservable()
-      .subscribe((data) => {
-        const options = [];
+      .subscribe(data => {
+        const options: { id: string; value: string; translate?: boolean }[] = [];
         if (!this.multiselect && this.selectOptionEnabled) {
-          options.push({id: undefined, value: 'select', translate: true});
+          options.push({id: undefined as any, value: 'select', translate: true});
         }
         if (!this.allOptionLast && !this.multiselect && this.allOptionEnabled) {
           options.push({id: 'all', value: this.allOptionLabel, translate: true});
@@ -60,18 +60,15 @@ export class AreaSelectComponent implements OnInit {
       });
   }
 
-  private getDataObservable(): Observable<any> {
+  private getDataObservable(): Observable<{id: string; value: string}[]> {
     switch (this.field) {
       case 'MY.collectionID':
-        return this.collectionService.getAll$(this.lang, true);
-      case <any>Area.AreaType.Biogeographical:
-        return this.areaService.getBiogeographicalProvinces(this.lang);
-      case <any>Area.AreaType.Municipality:
-        return this.areaService.getMunicipalities(this.lang);
-      case <any>Area.AreaType.Country:
-        return this.areaService.getCountries(this.lang);
-      case <any>Area.AreaType.BirdAssociationArea:
-        return this.areaService.getBirdAssociationAreas(this.lang);
+        return this.collectionService.getAllAsKeyValue$(true);
+      case 'ML.biogeographicalProvince':
+      case 'ML.municipality':
+      case 'ML.country':
+      case 'ML.birdAssociationArea':
+        return this.areaService.getAreaByType(this.field);
       default:
         throw new Error('Could not find mapping for ' + this.field);
     }

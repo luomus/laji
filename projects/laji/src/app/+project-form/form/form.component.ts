@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { map, switchMap, take } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs';
 import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
-import { Form } from '../../shared/model/Form';
 import { FormService } from '../../shared/service/form.service';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { UserService } from '../../shared/service/user.service';
+import type { components } from 'projects/laji-api-client-b/generated/api';
+
+type Form = components['schemas']['Form'];
 
 interface ViewModel {
   formID: string;
@@ -16,21 +18,21 @@ interface ViewModel {
 }
 
 @Component({
-  template: `
-    <ng-container *ngIf="(vm$ | async) as vm; else loader">
+    template: `
+    @if ((vm$ | async); as vm) {
       <laji-document-form
         [formID]="vm.formID"
         [documentID]="vm.documentID!"
         [namedPlaceID]="vm.namedPlaceID!"
         [template]="vm.template!"
-      >
+        >
       </laji-document-form>
-    </ng-container>
-    <ng-template #loader>
+    } @else {
       <laji-spinner></laji-spinner>
-    </ng-template>
-  `,
-  selector: 'laji-project-form-form'
+    }
+    `,
+    selector: 'laji-project-form-form',
+    standalone: false
 })
 export class FormComponent implements OnInit {
 
@@ -104,7 +106,7 @@ export class FormComponent implements OnInit {
     );
   }
 
-  tryRedirectToSubForm(form: Form.SchemaForm, routeParams: Params): Observable<boolean> {
+  tryRedirectToSubForm(form: Form, routeParams: Params): Observable<boolean> {
     const navigateToForm = (parentID: string, formID: string) => {
       const route = [parentID, 'form', formID, routeParams['formOrDocument']];
       if (this.router.url.match(/\/link$/)) {

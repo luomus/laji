@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { filter, shareReplay, switchMap, map, share } from 'rxjs/operators';
+import { filter, shareReplay, switchMap, map, share } from 'rxjs';
 import { UserService } from '../../../../laji/src/app/shared/service/user.service';
-import { Person } from 'projects/laji/src/app/shared/model/Person';
 
 export interface IVirUser {
   id: string;
@@ -18,7 +17,7 @@ export class VirOrganisationService {
   readonly users$: Observable<IVirUser[]>;
   readonly administrableUsers$: Observable<IVirUser[]>;
   readonly virUser$ = this.userService.user$.pipe(
-    filter(user => user !== undefined), switchMap(user => this.getUser$(<string>(<Person>user).id)), shareReplay()
+    filter(user => user !== undefined), switchMap(user => this.getUser$(user.id)), shareReplay()
   );
   readonly updateUsers$ = new BehaviorSubject<void>(undefined);
 

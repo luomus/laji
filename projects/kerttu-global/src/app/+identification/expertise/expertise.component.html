@@ -20,14 +20,15 @@
       [(ngModel)]="birdwatchingActivityLevel"
       class="form-control"
       [disabled]="birdwatchingActivityLevel === undefined || saving"
-    >
-      <option [value]="undefined">{{ 'select' | translate }}</option>
-      <option
-        *ngFor="let option of birdwatchingActivityLevelOptions"
-        [value]="option.id"
       >
-        {{ option.label | translate }}
-      </option>
+      <option [value]="undefined">{{ 'select' | translate }}</option>
+      @for (option of birdwatchingActivityLevelOptions; track option) {
+        <option
+          [value]="option.id"
+          >
+          {{ option.label | translate }}
+        </option>
+      }
     </select>
   </div>
 </div>
@@ -35,6 +36,6 @@
   class="btn btn-success"
   (click)="save()"
   [disabled]="saving"
->
+  >
   {{ 'save' | translate }}
 </button>

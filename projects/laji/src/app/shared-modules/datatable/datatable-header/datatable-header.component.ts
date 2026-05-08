@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewCh
 import { DownloadComponent } from '../../download-modal/download.component';
 
 @Component({
-  selector: 'laji-datatable-header',
-  templateUrl: './datatable-header.component.html',
-  styleUrls: ['./datatable-header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-datatable-header',
+    templateUrl: './datatable-header.component.html',
+    styleUrls: ['./datatable-header.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatatableHeaderComponent {
 

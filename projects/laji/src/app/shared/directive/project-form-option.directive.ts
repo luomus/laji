@@ -5,7 +5,8 @@ import { Directive, ElementRef, Input } from '@angular/core';
  * The value is a the form option that the element is controlled by.
  */
 @Directive({
-  selector: '[lajiFormOption]'
+    selector: '[lajiFormOption]',
+    standalone: false
 })
 export class ProjectFormOptionDirective {
 

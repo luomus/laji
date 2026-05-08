@@ -6,10 +6,11 @@ import { HttpEventType } from '@angular/common/http';
 import { DialogService } from '../../shared/service/dialog.service';
 
 @Component({
-  selector: 'laji-protax',
-  templateUrl: './protax.component.html',
-  styleUrls: ['./protax.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-protax',
+    templateUrl: './protax.component.html',
+    styleUrls: ['./protax.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ProtaxComponent implements OnDestroy {
   loading = false;

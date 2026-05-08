@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, take, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, take, tap } from 'rxjs';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
 import { BrowserService } from '../shared/service/browser.service';
 import { UserService } from '../shared/service/user.service';
 import { FooterService } from '../shared/service/footer.service';
-import { ObservationDataService } from './observation-data.service';
+import { DataFetchMode, ObservationDataService } from './observation-data.service';
 import { SearchQueryService } from './search-query.service';
-import { Util } from '../shared/service/util.service';
+import * as Util from '../shared/utils';
 import { LocalStorage } from 'ngx-webstorage';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
@@ -111,6 +111,10 @@ export class ObservationFacade {
     this.updateState({..._state, ...this.persistentState});
   }
 
+  setDataFetchMode(m: DataFetchMode) {
+    this.observationDataService.dataFetchMode = m;
+  }
+
   activeTab(tab?: string) {
     if (_state.activeTab !== tab) {
       this.updateState({..._state, activeTab: tab});
@@ -177,8 +181,8 @@ export class ObservationFacade {
     return this.api.get('/autocomplete/taxa', { query: {
       query,
       limit,
-      informalTaxonGroup: informalTaxonGroupId?.toString(),
-      excludeNameTypes: 'MX.hasMisspelledName,MX.hasMisappliedName',
+      informalTaxonGroups: informalTaxonGroupId?.toString(),
+      nameTypes: '!MX.hasMisspelledName,!MX.hasMisappliedName',
       checklist: 'MR.1,MR.2'
     } }).pipe(
       map(data => data.results.map(item => {

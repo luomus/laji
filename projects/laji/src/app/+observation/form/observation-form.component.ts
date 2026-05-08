@@ -1,12 +1,11 @@
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
 import { WarehouseQueryInterface, WarehouseTimeQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable, of as ObservableOf, Subject, Subscription } from 'rxjs';
-import { Util } from '../../shared/service/util.service';
-import * as moment from 'moment';
+import * as Util from '../../shared/utils';
+import moment from 'moment';
 import { ObservationFacade } from '../observation.facade';
-import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
@@ -48,10 +47,11 @@ interface ISections {
 }
 
 @Component({
-  selector: 'laji-observation-form',
-  templateUrl: './observation-form.component.html',
-  styleUrls: ['./observation-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-form',
+    templateUrl: './observation-form.component.html',
+    styleUrls: ['./observation-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationFormComponent implements OnInit, OnDestroy {
 
@@ -64,7 +64,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   showPlace = false;
 
-  areaType = Area.AreaType;
   dataSource: Observable<any>;
   typeaheadLoading = false;
   autocompleteLimit = 10;
@@ -104,7 +103,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     secure: ['secured', 'secureLevel'],
   };
 
-  delayedSearch = new Subject();
+  delayedSearch = new Subject<void>();
   delayedSub: Subscription;
   screenWidthSub?: Subscription;
   containerTypeAhead?: string;

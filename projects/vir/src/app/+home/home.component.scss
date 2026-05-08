@@ -1,4 +1,5 @@
-@import 'vars';
+@use 'sass:color';
+@use 'vars' as *;
 
 :host {
   margin: 8px 16px;
@@ -104,7 +105,7 @@
 .redbook {
   box-shadow: 0 2px 6px 0 rgba(#a71a1d, .3);
   > h1 {
-    background: linear-gradient(to bottom right, adjust-hue(#d62022, 15deg), #d62022);
+    background: linear-gradient(to bottom right, color.adjust(#d62022, $hue: 15deg), #d62022);
     color: #fff;
   }
   > p {
@@ -119,7 +120,7 @@
 .lajifi {
   box-shadow: 0 2px 6px 0 rgba($primary-6, .3);
   > h1 {
-    background: linear-gradient(to bottom right, adjust-hue($primary-5, -10deg), $primary-5);
+    background: linear-gradient(to bottom right, color.adjust($primary-5, $hue: -10deg), $primary-5);
     color: #fff;
   }
   > p {

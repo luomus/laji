@@ -1,23 +1,26 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormService, Participant } from '../../../../shared/service/form.service';
-import { TranslateService } from '@ngx-translate/core';
-import { map, switchMap } from 'rxjs/operators';
+import { FormService } from '../../../../shared/service/form.service';
+import { map, switchMap } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { ExportService } from '../../../../shared/service/export.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { BookType } from 'xlsx';
-import { Form } from '../../../../shared/model/Form';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
+type Participant = components['schemas']['Participant'];
 
 @Component({
-  selector: 'laji-form-participants',
-  templateUrl: './participants.component.html',
-  styleUrls: ['./participants.component.css']
+    selector: 'laji-form-participants',
+    templateUrl: './participants.component.html',
+    styleUrls: ['./participants.component.css'],
+    standalone: false
 })
 export class ParticipantsComponent implements OnInit, OnDestroy {
 
-  form!: Form.SchemaForm;
+  form: Form | undefined;
   loaded = false;
   fetching = false;
 
@@ -53,7 +56,6 @@ export class ParticipantsComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private formService: FormService,
-              private translate: TranslateService,
               private exportService: ExportService,
               private projectFormService: ProjectFormService
   ) { }
@@ -76,9 +78,12 @@ export class ParticipantsComponent implements OnInit, OnDestroy {
 
   getParticipants(type: string) {
     this.fetching = true;
+    if (!this.form) {
+      return;
+    }
     this.participants$ = this.formService.getParticipants(this.form).pipe(
       map(this.formatData),
-      switchMap(data => this.exportService.exportFromData(data, this.columns, type as BookType, `laji-${this.form.id}-participants`))
+      switchMap(data => this.exportService.exportFromData(data, this.columns, type as BookType, `laji-${this.form!.id}-participants`))
     ).subscribe(() => {
       this.fetching = false;
     });

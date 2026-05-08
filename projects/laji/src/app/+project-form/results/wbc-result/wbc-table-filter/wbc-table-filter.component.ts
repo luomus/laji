@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'laji-wbc-table-filter',
-  templateUrl: './wbc-table-filter.component.html',
-  styleUrls: ['./wbc-table-filter.component.scss']
+    selector: 'laji-wbc-table-filter',
+    templateUrl: './wbc-table-filter.component.html',
+    styleUrls: ['./wbc-table-filter.component.scss'],
+    standalone: false
 })
 export class WbcTableFilterComponent {
 

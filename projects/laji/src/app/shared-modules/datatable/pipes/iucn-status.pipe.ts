@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'iucnStatus'
+    name: 'iucnStatus',
+    standalone: false
 })
 export class IucnStatusPipe implements PipeTransform {
 

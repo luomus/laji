@@ -26,10 +26,11 @@ export interface LineTransectChartTerms {
 }
 
 @Component({
-  selector: 'laji-line-transect-chart',
-  template: `<div class='line-chart'></div>`,
-  styleUrls: ['./line-transect-chart.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-line-transect-chart',
+    template: `<div class='line-chart'></div>`,
+    styleUrls: ['./line-transect-chart.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnDestroy {
 

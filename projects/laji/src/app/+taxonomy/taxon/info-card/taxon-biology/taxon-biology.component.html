@@ -1,55 +1,76 @@
 <div class="row">
-  <div class="col-xs-12" *ngIf="taxonDescription.length > 0">
-    <select class="form-control mb-3" *ngIf="taxonDescription.length > 1" (change)="contextChange.emit(toHtmlSelectElement($event.target).value)">
-      <option *ngFor="let description of taxonDescription; let i = index" [value]="description.id" [selected]="activeDescription === i">
-        {{ description.title ? description.title : description.id }}
-      </option>
-    </select>
-    <div class="panel-group" role="tablist" aria-multiselectable="true" *ngIf="taxonDescription[activeDescription]">
-      <div *ngFor="let group of taxonDescription[activeDescription].groups; let i = index">
-        <div
-          class="panel panel-default"
-          [title]="group.title"
-          [open]="true"
-          [autoToggle]="true"
-          [index]="i"
-          laji-panel
-        >
-          <div *ngFor="let variable of group.variables; let y = index">
-            <div style="float:left; width: 100%">
-              <ng-container *ngIf="variable.variable !== 'MX.ingressText' else ingress">
-                <h4>{{ variable.title }}</h4>
-                <span [innerHTML]="variable.content"></span>
-              </ng-container>
-              <ng-template #ingress>
-                <strong *ngIf="variable.variable === 'MX.ingressText'" [innerHTML]="variable.content"></strong>
-              </ng-template>
-              <div *ngIf="group.group === 'MX.SDVG5' && variable.variable === 'MX.habitat'">
-                <div class="col-lg-6 col-md-6 col-xs-10">
-                  <laji-taxon-info-row *ngIf="taxon.primaryHabitat" [label]="'taxonomy.habitat.primary' | translate">
-                    <laji-habitat [habitat]="taxon.primaryHabitat"></laji-habitat>
-                  </laji-taxon-info-row>
-                  <laji-taxon-info-row *ngIf="taxon.secondaryHabitats" [label]="'taxonomy.habitat.secondary' | translate">
-                    <laji-habitat [habitat]="taxon.secondaryHabitats"></laji-habitat>
-                  </laji-taxon-info-row>
-                </div>
-                <div class="col-lg-6 col-md-6 col-xs-2" *ngIf="taxon.primaryHabitat || taxon.secondaryHabitats">
-                  <laji-info><span [innerHtml]="'taxonomy.ymparisto' | translate"></span></laji-info>
-                </div>
+  @if (taxonDescription.length > 0) {
+    <div class="col-xs-12">
+      @if (taxonDescription.length > 1) {
+        <select class="form-control mb-3" (change)="contextChange.emit(toHtmlSelectElement($event.target).value)">
+          @for (description of taxonDescription; track description; let i = $index) {
+            <option [value]="description.id" [selected]="activeDescription === i">
+              {{ description.title ? description.title : description.id }}
+            </option>
+          }
+        </select>
+      }
+      @if (taxonDescription[activeDescription]) {
+        <div class="panel-group" role="tablist" aria-multiselectable="true">
+          @for (group of taxonDescription[activeDescription].groups; track group; let i = $index) {
+            <div>
+              <div
+                class="panel panel-default"
+                [title]="group.title"
+                [open]="true"
+                [autoToggle]="true"
+                [index]="i"
+                laji-panel
+                >
+                @for (variable of group.variables; track variable; let y = $index) {
+                  <div>
+                    <div style="float:left; width: 100%">
+                      @if (variable.variable !== 'MX.ingressText') {
+                        <h4>{{ variable.title }}</h4>
+                        <span [innerHTML]="variable.content"></span>
+                      } @else {
+                        @if (variable.variable === 'MX.ingressText') {
+                          <strong [innerHTML]="variable.content"></strong>
+                        }
+                      }
+                      @if (group.group === 'MX.SDVG5' && variable.variable === 'MX.habitat') {
+                        <div>
+                          <div class="col-lg-6 col-md-6 col-xs-10">
+                            @if (taxon.primaryHabitat) {
+                              <laji-taxon-info-row [label]="'taxonomy.habitat.primary' | translate">
+                                <laji-habitat [habitat]="taxon.primaryHabitat"></laji-habitat>
+                              </laji-taxon-info-row>
+                            }
+                            @if (taxon.secondaryHabitats) {
+                              <laji-taxon-info-row [label]="'taxonomy.habitat.secondary' | translate">
+                                <laji-habitat [habitat]="taxon.secondaryHabitats"></laji-habitat>
+                              </laji-taxon-info-row>
+                            }
+                          </div>
+                          @if (taxon.primaryHabitat || taxon.secondaryHabitats) {
+                            <div class="col-lg-6 col-md-6 col-xs-2">
+                              <laji-info><span [innerHtml]="'taxonomy.ymparisto' | translate"></span></laji-info>
+                            </div>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
               </div>
             </div>
-          </div>
+          }
         </div>
+      }
+      <div
+        class="panel panel-default"
+        laji-panel
+        [title]="'taxonomy.author' | translate"
+        [open]="true"
+        [autoToggle]="true"
+        >
+        <laji-taxon-description-source [taxonDescription]="taxonDescription[activeDescription]"></laji-taxon-description-source>
       </div>
     </div>
-    <div
-      class="panel panel-default"
-      laji-panel
-      [title]="'taxonomy.author' | translate"
-      [open]="true"
-      [autoToggle]="true"
-    >
-      <laji-taxon-description-source [taxonDescription]="taxonDescription[activeDescription]"></laji-taxon-description-source>
-    </div>
-  </div>
+  }
 </div>

@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { SelectStyle } from '../../select/metadata-select/metadata-select.component';
 
 @Component({
-  selector: 'laji-download-modal-reason',
-  templateUrl: './reason.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-download-modal-reason',
+    templateUrl: './reason.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ReasonComponent {
   basicSelectStyle = SelectStyle.basic;

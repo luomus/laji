@@ -1,52 +1,60 @@
 <laji-spinner [spinning]="tree!.loadingParentNodeList" [hideContentWhileLoading]="true">
   <div class="tree">
-    <ng-container *ngFor="let node of tree!.parentNodeList; let last = last">
-      <div *ngIf="!node.state.isSkipped || node.value.id === activeId">
-        <laji-spinner *ngIf="last && node.state.loadingCount > 0"></laji-spinner>
-        <ng-container *ngTemplateOutlet="labelTpl; context: {'value': node.value}"></ng-container>
-      </div>
-      <ng-container *ngIf="last && node.state.loadingCount === 0">
+    @for (node of tree!.parentNodeList; track node; let last = $last) {
+      @if (!node.state.isSkipped || node.value.id === activeId) {
+        <div>
+          @if (last && node.state.loadingCount > 0) {
+            <laji-spinner></laji-spinner>
+          }
+          <ng-container *ngTemplateOutlet="labelTpl; context: {'value': node.value}"></ng-container>
+        </div>
+      }
+      @if (last && node.state.loadingCount === 0) {
         <ng-container *ngTemplateOutlet="treeBranch; context: {nodes: node.children}"></ng-container>
-      </ng-container>
-    </ng-container>
+      }
+    }
   </div>
 </laji-spinner>
 
 <ng-template #treeBranch let-nodes="nodes">
-  <ng-container *ngIf="nodes && nodes.length > 0">
+  @if (nodes && nodes.length > 0) {
     <ul>
       <ng-container *ngTemplateOutlet="treeNodes; context: {nodes: nodes}"></ng-container>
     </ul>
-  </ng-container>
+  }
 </ng-template>
 
 <ng-template #treeNodes let-nodes="nodes">
-  <ng-container *ngIf="nodes && nodes.length > 0">
-    <ng-container *ngFor="let node of nodes">
+  @if (nodes && nodes.length > 0) {
+    @for (node of nodes; track node) {
       <ng-container
         *ngTemplateOutlet="(node.state.isSkipped && node.value.id !== activeId) ? treeNodes : treeNodeContent;
         context: (node.state.isSkipped && node.value.id !== activeId) ? {nodes: node.children} : {node: node}"
       ></ng-container>
-    </ng-container>
-  </ng-container>
+    }
+  }
 </ng-template>
 
 <ng-template #treeNodeContent let-node="node">
   <li>
     <!--<span style="display:block; line-height:0.5">{{ node.value.taxonRank | label }}</span>-->
-    <i class="glyphicon link toggle-triangle"
-       [ngClass]="{'glyphicon-triangle-right': !node.state.isExpanded, 'glyphicon-triangle-bottom': node.state.isExpanded}"
-       [ngStyle]="{visibility: node.value.hasChildren ? 'visible' : 'hidden'}"
-       (click)="toggle(node)"
-       tabindex="0"
-       role="button"
-       luKeyboardClickable
-       *ngIf="node.state.loadingCount === 0"></i>
-    <laji-spinner *ngIf="node.state.loadingCount > 0"></laji-spinner>
+    @if (node.state.loadingCount === 0) {
+      <i class="glyphicon link toggle-triangle"
+        [ngClass]="{'glyphicon-triangle-right': !node.state.isExpanded, 'glyphicon-triangle-bottom': node.state.isExpanded}"
+        [ngStyle]="{visibility: node.value.hasChildren ? 'visible' : 'hidden'}"
+        (click)="toggle(node)"
+        tabindex="0"
+        role="button"
+        luKeyboardClickable
+      ></i>
+    }
+    @if (node.state.loadingCount > 0) {
+      <laji-spinner></laji-spinner>
+    }
     <ng-container *ngTemplateOutlet="labelTpl; context: {'value': node.value}"></ng-container>
 
-    <ng-container *ngIf="node.state.isExpanded && node.state.loadingCount === 0">
+    @if (node.state.isExpanded && node.state.loadingCount === 0) {
       <ng-container *ngTemplateOutlet="treeBranch; context: {nodes: node.children}"></ng-container>
-    </ng-container>
+    }
   </li>
 </ng-template>

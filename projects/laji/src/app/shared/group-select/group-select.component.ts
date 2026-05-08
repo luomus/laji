@@ -1,13 +1,16 @@
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs';
 import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output, Directive, OnInit } from '@angular/core';
-import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { ControlValueAccessor } from '@angular/forms';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { Logger } from '../logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Group } from '../model/Group';
 import { PagedResult } from '../model/PagedResult';
 import { ArrayResult } from '../model/ArrayResult';
+import { components } from 'projects/laji-api-client-b/generated/api';
+
+type RedListTaxonGroup= components['schemas']['store-iucnRedListTaxonGroup'];
+type InformalTaxonGroup = components['schemas']['store-informalTaxonGroup'];
+type Group = RedListTaxonGroup | InformalTaxonGroup;
 
 @Directive()
 export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges, OnInit {
@@ -49,7 +52,7 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     protected logger: Logger,
     protected translate: TranslateService
   ) {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
   }
 
   ngOnInit() {
@@ -70,10 +73,10 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     const newValue = this.value;
     this.currentValue = newValue;
     (newValue ?
-      this.getChildren(newValue, this.lang) :
-      this.getRoot(this.lang)).pipe(
+      this.getChildren(newValue) :
+      this.getRoot()).pipe(
       switchMap(data => (!data.results || data.results.length === 0) ?
-          this.getWithSiblings(newValue, this.lang) :
+          this.getWithSiblings(newValue) :
           ObservableOf(data))).pipe(
       map(data => data.results.map(item => this.convertToInformalTaxonGroup(item))))
       .subscribe(
@@ -149,7 +152,7 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
       if (this.subLabel) {
         this.subLabel.unsubscribe();
       }
-      this.subLabel = this.findById(groupId, this.lang).pipe(
+      this.subLabel = this.findById(groupId).pipe(
         map(group => group.name))
         .subscribe(
           name => {
@@ -164,18 +167,18 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     }
   }
 
-  getRoot(lang: string): Observable<ArrayResult<T>> {
+  getRoot(): Observable<ArrayResult<T>> {
     if (this.rootGroups) {
-      return this.findByIds(this.rootGroups, lang);
+      return this.findByIds(this.rootGroups);
     }
-    return this.findRoots(lang);
+    return this.findRoots();
   }
 
-  abstract findById(groupId: string, lang: string): Observable<T>;
-  abstract findByIds(groupIds: string[], lang: any): Observable<PagedResult<T>>;
-  abstract getWithSiblings(groupId: any, lang: string): Observable<ArrayResult<T>>;
-  abstract getChildren(groupId: any, lang: string): Observable<ArrayResult<T>>;
-  abstract findRoots(lang: any): Observable<ArrayResult<T>>;
+  abstract findById(groupId: string): Observable<T>;
+  abstract findByIds(groupIds: string[]): Observable<PagedResult<T>>;
+  abstract getWithSiblings(groupId: any): Observable<ArrayResult<T>>;
+  abstract getChildren(groupId: any): Observable<ArrayResult<T>>;
+  abstract findRoots(): Observable<ArrayResult<T>>;
   abstract convertToInformalTaxonGroup(group: T): InformalTaxonGroup;
 
   empty() {

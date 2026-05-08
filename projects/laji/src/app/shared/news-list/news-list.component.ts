@@ -1,17 +1,16 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { News } from '../model/News';
-import { PagedResult } from '../model/PagedResult';
 import { Observable } from 'rxjs';
-import { NewsFacade } from '../../+news/news.facade';
+import { NewsFacade, PagedNews } from '../../+news/news.facade';
 
 @Component({
-  selector: 'laji-news-list',
-  templateUrl: './news-list.component.html',
-  styleUrls: ['./news-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-news-list',
+    templateUrl: './news-list.component.html',
+    styleUrls: ['./news-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NewsListComponent {
-  public news$: Observable<PagedResult<News>>;
+  public news$: Observable<PagedNews>;
 
   constructor(
     private newsFacade: NewsFacade

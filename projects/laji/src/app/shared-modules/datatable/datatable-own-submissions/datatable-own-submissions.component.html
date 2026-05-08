@@ -1,8 +1,8 @@
 <laji-spinner [spinning]="loading" [overlay]="true" *lajiBrowserOnly>
-    <ngx-datatable
-      #dataTable
-      class='material striped laji-datatable'
-      [style.height]="_height"
+  <ngx-datatable
+    #dataTable
+    class='material striped laji-datatable'
+    [style.height]="_height"
       [cssClasses]="{
             sortAscending: 'glyphicon glyphicon-chevron-down',
             sortDescending: 'glyphicon glyphicon-chevron-up',
@@ -11,84 +11,97 @@
             pagerPrevious: 'glyphicon glyphicon-step-backward',
             pagerNext: 'glyphicon glyphicon-step-forward'
           }"
-      [messages]="{ emptyMessage: loading ? '' : emptyMessage, totalMessage: '' }"
-      [rows]='_rows'
-      [externalPaging]="true"
-      [sortType]="sortType"
-      [count]="_rows.length"
-      [offset]="_offset"
-      [rowHeight]="'auto'"
-      [columnMode]="'flex'"
-      [sorts]="sorts"
-      [headerHeight]="showHeader ? 38 : 0"
-      [footerHeight]="0"
-      (sort)="onSort($event)"
+    [messages]="{ emptyMessage: loading ? '' : emptyMessage, totalMessage: '' }"
+    [rows]='_rows'
+    [externalPaging]="true"
+    [sortType]="sortType"
+    [count]="_rows.length"
+    [offset]="_offset"
+    [rowHeight]="'auto'"
+    [columnMode]="'flex'"
+    [sorts]="sorts"
+    [headerHeight]="showHeader ? 38 : 0"
+    [footerHeight]="0"
+    (sort)="onSort($event)"
     >
 
     <ngx-datatable-row-detail>
       <ng-template let-row="row" ngx-datatable-row-detail-template>
-        <div *ngFor="let col of _columns | filterColumns:displayMode!:true" style="padding-left: 35px">
-          <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>
-          <span>{{ row[col.prop] }}</span>
-        </div>
+        @for (col of _columns | filterColumns:displayMode!:true; track col) {
+          <div style="padding-left: 35px">
+            <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>
+            <span>{{ row[col.prop] }}</span>
+          </div>
+        }
       </ng-template>
     </ngx-datatable-row-detail>
 
-    <ngx-datatable-column [resizeable]="false"
-                          [draggable]="false" *ngIf="displayMode !== 'large'" [headerClass]="'empty-header'">
-      <ng-template ngx-datatable-header-template><span></span></ng-template>
-      <ng-template let-row="row" ngx-datatable-cell-template>
-        <span class="link">
-          <i class="glyphicon"
-            [ngClass]="{'glyphicon-chevron-right': !row.$$expanded, 'glyphicon-chevron-down': row.$$expanded}"
+    @if (displayMode !== 'large') {
+      <ngx-datatable-column [resizeable]="false"
+        [draggable]="false" [headerClass]="'empty-header'">
+        <ng-template ngx-datatable-header-template><span></span></ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span class="link">
+            <i class="glyphicon"
+              [ngClass]="{'glyphicon-chevron-right': !row.$$expanded, 'glyphicon-chevron-down': row.$$expanded}"
             (click)="toggleExpandRow(row)"></i>
-        </span>
-      </ng-template>
-    </ngx-datatable-column>
-
-    <ngx-datatable-column *ngIf="actions.length > 0" [sortable]="false"  [flexGrow]="1" >
-        <ng-template let-row="row" let-value="value"  ngx-datatable-cell-template>
-            <div class="buttons" *ngIf="(actions | includes:'view')">
-                <button
-                      class="btn btn-success btn-xs mb-2 mr-2"
-                      (click)="showDocument(row['id'])"
-                      >
-                  <i class="glyphicon glyphicon-eye-open"></i>
-                  <span class="text-button" >{{ 'haseka.submissions.view' | translate }}</span>
-               </button>
-            </div>
-            <div class="buttons">
-              <a *ngIf="(actions | includes:'edit')"
-                    class="btn btn-default btn-xs mb-2 mr-2"
-                    [routerLink]="row['_editUrl'] | localize"
-                    >
-                  <i class="glyphicon glyphicon-edit"></i>
-                  <span class="text-button">{{'haseka.submissions.edit' | translate }}</span>
-              </a>
-            </div>
-        </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column *ngFor="let col of _columns | filterColumns:displayMode!; let i = index" [prop]="col.prop" [flexGrow]="1">
-      <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-        <span class="datatable-header-cell-wrapper"
-              (click)="sort()"
-              title="{{ 'haseka.submissions.' + col.prop | translate }}">
-          <span class="datatable-header-cell-label draggable">
-            {{ 'haseka.submissions.' + col.prop | translate }}
           </span>
-        </span>
-      </ng-template>
-     </ngx-datatable-column>
-    </ngx-datatable>
+        </ng-template>
+      </ngx-datatable-column>
+    }
+
+    @if (actions.length > 0) {
+      <ngx-datatable-column [sortable]="false"  [flexGrow]="1" >
+        <ng-template let-row="row" let-value="value"  ngx-datatable-cell-template>
+          @if ((actions | includes:'view')) {
+            <div class="buttons">
+              <button
+                class="btn btn-success btn-xs mb-2 mr-2"
+                (click)="showDocument(row['id'])"
+                >
+                <i class="glyphicon glyphicon-eye-open"></i>
+                <span class="text-button" >{{ 'haseka.submissions.view' | translate }}</span>
+              </button>
+            </div>
+          }
+          <div class="buttons">
+            @if ((actions | includes:'edit')) {
+              <a
+                class="btn btn-default btn-xs mb-2 mr-2"
+                [routerLink]="row['_editUrl'] | localize"
+                >
+                <i class="glyphicon glyphicon-edit"></i>
+                <span class="text-button">{{'haseka.submissions.edit' | translate }}</span>
+              </a>
+            }
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+    }
+    @for (col of _columns | filterColumns:displayMode!; track col; let i = $index) {
+      <ngx-datatable-column [prop]="col.prop" [flexGrow]="1">
+        <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+          <span class="datatable-header-cell-wrapper"
+            (click)="sort()"
+            title="{{ 'haseka.submissions.' + col.prop | translate }}">
+            <span class="datatable-header-cell-label draggable">
+              {{ 'haseka.submissions.' + col.prop | translate }}
+            </span>
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+    }
+  </ngx-datatable>
+  @if (showFooter) {
     <laji-data-table-footer
-      *ngIf="showFooter"
       [totalMessage]="totalMessage"
       [page]="_page"
       [pageSize]="pageSize"
       [count]="_count"
       (pageChange)="onPage($event)"
     ></laji-data-table-footer>
+  }
 </laji-spinner>
 
-  <laji-datatable-templates #dataTableTemplates></laji-datatable-templates>
+<laji-datatable-templates #dataTableTemplates></laji-datatable-templates>
 

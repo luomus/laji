@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { filter } from 'rxjs';
 import { Subscription } from 'rxjs';
-import { Util } from './util.service';
+import * as Util from '../utils';
 
 const MAX_HISTORY = 30;
 

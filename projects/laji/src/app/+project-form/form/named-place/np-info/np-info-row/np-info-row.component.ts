@@ -7,9 +7,10 @@ export interface NpInfoRow {
 }
 
 @Component({
-  selector: 'laji-np-info-row',
-  templateUrl: './np-info-row.component.html',
-  styleUrls: ['./np-info-row.component.scss']
+    selector: 'laji-np-info-row',
+    templateUrl: './np-info-row.component.html',
+    styleUrls: ['./np-info-row.component.scss'],
+    standalone: false
 })
 export class NpInfoRowComponent implements NpInfoRow {
   @Input({ required: true }) title!: string;

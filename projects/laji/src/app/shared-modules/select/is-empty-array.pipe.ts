@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'isEmptyArray'
+    name: 'isEmptyArray',
+    standalone: false
 })
 export class IsEmptyArrayPipe implements PipeTransform {
 

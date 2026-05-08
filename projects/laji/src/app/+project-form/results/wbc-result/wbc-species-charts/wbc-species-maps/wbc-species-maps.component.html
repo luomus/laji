@@ -1,7 +1,8 @@
 <div class="row">
-  <div class="col-sm-4 map-wrapper" *ngFor="let idx of [0, 1, 2]">
-    <laji-ykj-map
-      #maps
+  @for (idx of [0, 1, 2]; track idx) {
+    <div class="col-sm-4 map-wrapper">
+      <laji-ykj-map
+        #maps
       [title]="(idx === 0 ? (showSeasonComparison ? 'wbc.season.fall' : 'wbc.stats.chosenYear')
                : idx === 1 ? (showSeasonComparison ? 'wbc.season.winter' : 'wbc.stats.average')
                : (showSeasonComparison ? 'wbc.season.spring' : 'wbc.stats.difference'))
@@ -11,17 +12,17 @@
                 : idx === 1 ? 'wbc.stats.average.info'
                 : 'wbc.stats.difference.info')
                 | translate"
-      [query]="querys[idx]"
-      [zeroObservationQuery]="zeroQuerys[idx]"
-      [useStatistics]="true"
-      [data]="data[idx]"
-      [loading]="loading"
-      [height]="'calc(80vh - 50px)'"
-      [type]="(showSeasonComparison || idx != 2) ? 'individualCountSumPer10km' : 'individualCountSum'"
-      [types]="(showSeasonComparison || idx != 2) ? ['individualCountSumPer10km'] : ['individualCountSum']"
-      [individualBreak]="(showSeasonComparison || idx != 2) ? breaks : differenceBreaks"
-      [individualLabel]="(showSeasonComparison || idx != 2) ? labels : differenceLabels"
-      [individualColorRange]="(showSeasonComparison || idx != 2) ? colorRange : differenceColorRange"
+        [query]="querys[idx]"
+        [zeroObservationQuery]="zeroQuerys[idx]"
+        [useStatistics]="true"
+        [data]="data[idx]"
+        [loading]="loading"
+        [height]="'calc(80vh - 50px)'"
+        [type]="(showSeasonComparison || idx != 2) ? 'individualCountSumPer10km' : 'individualCountSum'"
+        [types]="(showSeasonComparison || idx != 2) ? ['individualCountSumPer10km'] : ['individualCountSum']"
+        [individualBreak]="(showSeasonComparison || idx != 2) ? breaks : differenceBreaks"
+        [individualLabel]="(showSeasonComparison || idx != 2) ? labels : differenceLabels"
+        [individualColorRange]="(showSeasonComparison || idx != 2) ? colorRange : differenceColorRange"
       [mapOptions]="{
         clickBeforeZoomAndPan: true,
         controls: idx === 0,
@@ -30,9 +31,10 @@
           layers.googleSatellite
         ]
       }"
-      [typeLabels]="(showSeasonComparison || idx != 2) ? {} : {'individualCountSum': 'wbc.stats.difference'}"
-      (boundsChange)="boundsChange($event)"
-      (loaded)="mapLoaded()"
-    ></laji-ykj-map>
-  </div>
+        [typeLabels]="(showSeasonComparison || idx != 2) ? {} : {'individualCountSum': 'wbc.stats.difference'}"
+        (boundsChange)="boundsChange($event)"
+        (loaded)="mapLoaded()"
+      ></laji-ykj-map>
+    </div>
+  }
 </div>

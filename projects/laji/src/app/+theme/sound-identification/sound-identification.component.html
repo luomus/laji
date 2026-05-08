@@ -6,9 +6,9 @@
     <laji-sound-identification-form (soundIdentificationSubmit)="analyseData($event)" [loading]="loading" [maxAudioDuration]="maxAudioDuration" [acceptedFormats]="acceptedFormats"></laji-sound-identification-form>
   </div>
 
-  <ng-container *ngIf="data !== undefined">
+  @if (data !== undefined) {
     <laji-sound-identification-table [data]="data" [loading]="loading"></laji-sound-identification-table>
-  </ng-container>
+  }
 
   <laji-info-page page="8876"></laji-info-page>
 </div>

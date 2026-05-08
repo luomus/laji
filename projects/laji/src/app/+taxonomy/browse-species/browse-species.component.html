@@ -22,23 +22,23 @@
     <div class="col-sm-12">
       <lu-tabs [selectedIndex]="activeIndex" (selectedChange)="setActive($event)" style="margin-top: 24px; display:block;">
         <lu-tab [heading]="'species.images' | translate">
-          <ng-container *ngIf="loadedTabs.isLoaded('images')">
+          @if (loadedTabs.isLoaded('images')) {
             <laji-species-images [hidden]="activeIndex !== 0"
-                                [search]="search"
-                                [showSpeciesTotalCount]="true"
-                                [countStartText]="'species.browse.images.count1' | translate"
-                                [countEndText]="'species.browse.images.count2' | translate"
+              [search]="search"
+              [showSpeciesTotalCount]="true"
+              [countStartText]="'species.browse.images.count1' | translate"
+              [countEndText]="'species.browse.images.count2' | translate"
             ></laji-species-images>
-          </ng-container>
+          }
         </lu-tab>
         <lu-tab [heading]="'species.list' | translate">
-          <ng-container *ngIf="loadedTabs.isLoaded('list')">
+          @if (loadedTabs.isLoaded('list')) {
             <laji-species-list [hidden]="activeIndex !== 1"
-                              [visible]="activeIndex === 1"
-                              [search]="search"
-                              [showDownloadAndBrowse]="false"
+              [visible]="activeIndex === 1"
+              [search]="search"
+              [showDownloadAndBrowse]="false"
             ></laji-species-list>
-          </ng-container>
+          }
         </lu-tab>
       </lu-tabs>
     </div>

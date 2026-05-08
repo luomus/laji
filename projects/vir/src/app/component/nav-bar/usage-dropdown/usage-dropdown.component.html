@@ -37,16 +37,18 @@
     </div>
   </a>
 </div>
-<div class="d-flex flex-nowrap mb-4" *ngIf="(user$ | async)?.organisationAdmin?.length">
-  <div class="img-container">
-    <img src="/static/images/icons/person.svg">
+@if ((user$ | async)?.organisationAdmin?.length) {
+  <div class="d-flex flex-nowrap mb-4">
+    <div class="img-container">
+      <img src="/static/images/icons/person.svg">
+    </div>
+    <a [routerLink]="['/usage/admin'] | localize" class="nav-container">
+      <div class="nav-title">
+        {{ 'usage.admin.title' | translate }}
+      </div>
+      <div class="nav-description">
+        {{ 'usage.admin.intro' | translate }}
+      </div>
+    </a>
   </div>
-  <a [routerLink]="['/usage/admin'] | localize" class="nav-container">
-    <div class="nav-title">
-      {{ 'usage.admin.title' | translate }}
-    </div>
-    <div class="nav-description">
-      {{ 'usage.admin.intro' | translate }}
-    </div>
-  </a>
-</div>
+}

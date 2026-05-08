@@ -1,10 +1,11 @@
 import {
   ApplicationRef, ComponentFactoryResolver, ElementRef, Inject, Injectable, Injector,
-  NgZone, Renderer2, ViewContainerRef
+  NgZone, Renderer2, ViewContainerRef,
+  DOCUMENT
 } from '@angular/core';
 import { ComponentLoader } from './component-loader.class';
 import { PositioningService } from '../positioning';
-import { DOCUMENT } from '@angular/common';
+
 
 @Injectable({providedIn: 'root'})
 export class ComponentLoaderFactory {

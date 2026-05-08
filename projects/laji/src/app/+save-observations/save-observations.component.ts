@@ -1,19 +1,22 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SaveObservationsFacade } from './save-observations.facade';
 import { Observable } from 'rxjs';
-import { Form } from '../shared/model/Form';
 import { getDescription, HeaderService } from '../shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type FormListing = components['schemas']['FormListing'];
 
 @Component({
-  templateUrl: `./save-observations.component.html`,
-  styleUrls: ['./save-observations.component.scss']
+    templateUrl: `./save-observations.component.html`,
+    styleUrls: ['./save-observations.component.scss'],
+    standalone: false
 })
 export class SaveObservationsComponent implements OnInit {
-  citizenScienceForms$!: Observable<Form.List[]>;
-  birdMonitoringForms$!: Observable<Form.List[]>;
-  completeListForms$!: Observable<Form.List[]>;
-  researchProjectForms$!: Observable<Form.List[]>;
+  citizenScienceForms$!: Observable<FormListing[]>;
+  birdMonitoringForms$!: Observable<FormListing[]>;
+  completeListForms$!: Observable<FormListing[]>;
+  researchProjectForms$!: Observable<FormListing[]>;
 
   constructor(
     private facade: SaveObservationsFacade,

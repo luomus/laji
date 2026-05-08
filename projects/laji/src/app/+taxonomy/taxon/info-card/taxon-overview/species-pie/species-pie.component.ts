@@ -7,13 +7,14 @@ import { TreemapController, TreemapElement } from 'chartjs-chart-treemap';
 import { MultiLangService } from 'projects/laji/src/app/shared-modules/lang/service/multi-lang.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
-  selector: 'laji-species-pie',
-  templateUrl: './species-pie.component.html',
-  styleUrls: ['./species-pie.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-species-pie',
+    templateUrl: './species-pie.component.html',
+    styleUrls: ['./species-pie.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SpeciesPieComponent implements OnInit, OnChanges {
   @Input() children!: Taxon[];
@@ -103,7 +104,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
       if (count > 0) {
         const label = child.vernacularName
           ? (typeof child.vernacularName  === 'object'
-            ? MultiLangService.getValue(child.vernacularName, this.translate.currentLang)
+            ? MultiLangService.getValue(child.vernacularName, this.translate.getCurrentLang())
             : child.vernacularName)
           : child.scientificName;
         accData.push({

@@ -3,17 +3,18 @@ import { Observable } from 'rxjs';
 import { IGlobalSite, TaxonTypeEnum } from '../../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 @Component({
-  selector: 'bsg-site-selection',
-  template: `
+    selector: 'bsg-site-selection',
+    template: `
     <bsg-site-selection-view
       [sites]="(sites$ | async) ?? []"
       (siteSelect)="siteSelect.emit($event)"
     ></bsg-site-selection-view>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SiteSelectionComponent {
   sites$: Observable<IGlobalSite[]>;

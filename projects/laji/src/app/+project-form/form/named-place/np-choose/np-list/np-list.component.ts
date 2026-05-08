@@ -8,14 +8,11 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { NamedPlace } from '../../../../../shared/model/NamedPlace';
-import { Util } from '../../../../../shared/service/util.service';
-import { tap } from 'rxjs/operators';
-import { forkJoin, Observable } from 'rxjs';
+import * as Util from '../../../../../shared/utils';
+import { forkJoin, Observable, tap } from 'rxjs';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
 import { BoolToStringPipe } from '../../../../../shared/pipe/bool-to-string.pipe';
 import Timeout = NodeJS.Timeout;
-import { Form } from '../../../../../shared/model/Form';
 import { Rights } from '../../../../../shared/service/form-permission.service';
 import { ObservationTableColumn } from '../../../../../shared-modules/observation-result/model/observation-table-column';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
@@ -23,13 +20,18 @@ import { DatatableComponent } from '../../../../../shared-modules/datatable/data
 import { SelectionType, SortType } from '@achimha/ngx-datatable';
 import { NpInfoComponent } from '../../np-info/np-info.component';
 import { DatatableUtil } from '../../../../../shared-modules/datatable/service/datatable-util.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
+
+type Form = components['schemas']['Form'];
+type NamedPlace = components['schemas']['store-namedPlace'];
 
 @Component({
-  selector: 'laji-np-list',
-  templateUrl: './np-list.component.html',
-  styleUrls: ['./np-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ BoolToStringPipe, AreaNamePipe ]
+    selector: 'laji-np-list',
+    templateUrl: './np-list.component.html',
+    styleUrls: ['./np-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [BoolToStringPipe, AreaNamePipe],
+    standalone: false
 })
 export class NpListComponent implements OnDestroy {
   _namedPlaces?: NamedPlace[];
@@ -51,8 +53,8 @@ export class NpListComponent implements OnDestroy {
   _visible = true;
   private _visibleTimeout?: Timeout;
   private _formRights?: Rights;
-  private _documentForm!: Form.SchemaForm;
-  private _placeForm?: Form.SchemaForm;
+  private _documentForm!: Form;
+  private _placeForm?: Form;
 
   @ViewChild('label', { static: true }) labelIDTpl!: TemplateRef<any>;
   @ViewChild('status', { static: true }) statusTpl!: TemplateRef<any>;
@@ -69,7 +71,6 @@ export class NpListComponent implements OnDestroy {
   @Input() listColumnNameMapping?: { [key: string]: string};
 
   constructor(private cd: ChangeDetectorRef,
-              private areaNamePipe: AreaNamePipe,
               private datatableUtil: DatatableUtil
 ) {
   this.columnsMetaData = {
@@ -166,12 +167,12 @@ export class NpListComponent implements OnDestroy {
     this.initColumns();
   }
 
-  @Input({ required: true }) set documentForm(documentForm: Form.SchemaForm) {
+  @Input({ required: true }) set documentForm(documentForm: Form) {
     this._documentForm = documentForm;
     this.initColumns();
   }
 
-  @Input() set placeForm(placeForm: Form.SchemaForm|undefined) {
+  @Input() set placeForm(placeForm: Form | undefined) {
     this._placeForm = placeForm;
     this.initColumns();
   }
@@ -183,7 +184,7 @@ export class NpListComponent implements OnDestroy {
       return;
     }
 
-    const { namedPlaceOptions } = documentForm.options || {};
+    const { namedPlaceOptions } = documentForm.options;
     this._fields = namedPlaceOptions?.listColumns || ['$.name'];
     if (namedPlaceOptions?.reservationUntil
       && this._formRights.admin
@@ -257,7 +258,6 @@ export class NpListComponent implements OnDestroy {
       row['$.id'] = namedPlace.id;
       results.push(row);
     }
-
     if (observables.length > 0) {
       forkJoin(observables).subscribe(() => {
         this.data = results;

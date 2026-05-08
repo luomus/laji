@@ -1,42 +1,31 @@
 import { Component, OnInit, ViewChild, ElementRef, Input,
 ChangeDetectorRef, ChangeDetectionStrategy, TemplateRef, HostListener } from '@angular/core';
 import { DocumentViewerChildComunicationService } from '../document-viewer/document-viewer-child-comunication.service';
-import { Audio } from '../../shared/model/Audio';
-import { Image } from '../../shared/model/Image';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
+import { components } from 'projects/laji-api-client-b/generated/api';
+
+type Media = components['schemas']['WarehouseDwETL_MediaObject'];
 
 @Component({
-  selector: 'laji-audio-player',
-  templateUrl: './audio-player.component.html',
-  styleUrls: ['./audio-player.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-audio-player',
+    templateUrl: './audio-player.component.html',
+    styleUrls: ['./audio-player.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class AudioPlayerComponent implements OnInit {
-   @Input() audioFiles: any;
+   @Input() audioFiles: Media[] = [];
 
   @ViewChild('modalSpectrum', { static: true }) modalSpectrum!: TemplateRef<any>;
   @ViewChild('audio', {static: true}) audio!: ElementRef;
-  @ViewChild('audioPopUp', {static: true}) audioPopUp!: ElementRef;
+
   public isPlaying!: boolean[];
-  public audioContainer!: HTMLAudioElement;
   public nowplayingAudioId = -1;
+  public listAudio: Media[] = [];
+  public playingAudio?: Media;
 
-
-  public listAudio: Audio[] = [];
-  public playingAudio: Audio = {
-    mp3URL: '',
-    wavURL: '',
-    thumbnailURL: '',
-    copyrightOwner: '',
-    author: '',
-    fullURL: '',
-    licenseId: '',
-    mediaType: '',
-  };
-  public images: Image [] = [];
-  public popupSpectrum = false;
-
+  private audioContainer!: HTMLAudioElement;
   private modalRef?: ModalRef;
 
   constructor(
@@ -47,11 +36,7 @@ export class AudioPlayerComponent implements OnInit {
 
   ngOnInit(): void {
     this.nowplayingAudioId = 0;
-    this.listAudio = this.audioFiles.filter((audio: any) => audio['mediaType'] === 'AUDIO' );
-
-    this.listAudio.forEach((element, index) =>
-       this.images.push({ id: 'a' + index, fullURL: element.fullURL , thumbnailURL: element.thumbnailURL, intellectualRights: element.licenseId })
-    );
+    this.listAudio = this.audioFiles.filter(audio => audio.mediaType === 'AUDIO');
 
     this.isPlaying = [...Array(this.listAudio.length)].fill(false);
     this.playingAudio = this.listAudio[this.nowplayingAudioId];
@@ -78,11 +63,7 @@ export class AudioPlayerComponent implements OnInit {
   setInfoAudio(index: number = 0): void {
     this.nowplayingAudioId = index;
     this.playingAudio = this.listAudio[index];
-    this.images = [];
-    this.images.push({ id: 'a' + index , fullURL: this.listAudio[index].fullURL ,
-    thumbnailURL: this.listAudio[index].thumbnailURL, intellectualRights: this.listAudio[index].licenseId });
   }
-
 
   audioPause(index: number): void {
     this.isPlaying[index] = false;
@@ -125,7 +106,6 @@ export class AudioPlayerComponent implements OnInit {
     }
   }
 
-
   openSpectrumPopup(index: number) {
     this.cd.detectChanges();
     this.openModal();
@@ -135,7 +115,6 @@ export class AudioPlayerComponent implements OnInit {
     } else {
       this.nowplayingAudioId = index;
     }
-    this.popupSpectrum = true;
     this.childComunication.emitChildEvent(true);
     this.startPopupPlayer(index);
   }
@@ -143,14 +122,6 @@ export class AudioPlayerComponent implements OnInit {
   startPopupPlayer(index: number) {
     this.playingAudio = this.listAudio[index];
   }
-
-  onHidePopupSpectrum() {
-    this.popupSpectrum = false;
-    this.childComunication.emitChildEvent(false);
-    this.cd.detectChanges();
-    this.audioPause(this.nowplayingAudioId);
-  }
-
 
   @HostListener('document:keydown', ['$event'])
   annotationKeyDown(e: KeyboardEvent) {
@@ -160,6 +131,4 @@ export class AudioPlayerComponent implements OnInit {
       }
 
   }
-
-
 }

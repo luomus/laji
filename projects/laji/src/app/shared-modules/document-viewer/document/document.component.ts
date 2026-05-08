@@ -1,4 +1,4 @@
-import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, take, tap } from 'rxjs';
 import {
   AfterViewInit,
   ApplicationRef,
@@ -32,16 +32,16 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
 import { HistoryService } from '../../../shared/service/history.service';
 import { DocumentPermissionService } from '../service/document-permission.service';
 import { FormService } from '../../../shared/service/form.service';
-import { Form } from '../../../shared/model/Form';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-type AnnotationTag = components['schemas']['tag'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
-  selector: 'laji-document',
-  templateUrl: './document.component.html',
-  styleUrls: ['./document.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-document',
+    templateUrl: './document.component.html',
+    styleUrls: ['./document.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent) map?: ViewerMapComponent;
@@ -183,7 +183,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       )),
       switchMap(({doc, rights}) => doc.formId
         ? this.formService.getFormInListFormat(IdService.getId(doc.formId)).pipe(
-          map((form: Form.List | undefined) => {
+          map(form => {
             if (!form || !!form.options?.secondaryCopy) {
               rights.hasEditRights = false;
               rights.hasDeleteRights = false;

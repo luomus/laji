@@ -1,24 +1,19 @@
-import { map, shareReplay, switchMap, take, tap, catchError } from 'rxjs/operators';
+import { map, shareReplay, switchMap, take, tap, catchError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { MetadataApi } from '../api/MetadataApi';
-import { AbstractCachedHttpService } from './abstract-cached-http.service';
+import { HttpHeaders } from '@angular/common/http';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { IdService } from './id.service';
 import { GraphQLService } from '../../graph-ql/service/graph-ql.service';
 import { gql } from 'apollo-angular';
 import { WarehouseQueryInterface } from '../model/WarehouseQueryInterface';
-import { Collection } from '../model/Collection';
-import { CollectionApi } from '../api/CollectionApi';
 import { UserService } from './user.service';
 import { ObservationFacade } from '../../+observation/observation.facade';
 import { TreeOptionsNode } from '../../shared-modules/tree-select/tree-select.component';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client-b/generated/api.d';
 
-export interface ICollection extends Collection {
-  id: string;
-  collectionType: string;
-  collectionQuality: string;
-};
+type Collection = components['schemas']['SensitiveCollection'];
 
 export interface CollectionTreeOptionsNode extends TreeOptionsNode {
   count: number;
@@ -54,7 +49,7 @@ export interface ICollectionCounts {
 }
 
 @Injectable({providedIn: 'root'})
-export class CollectionService extends AbstractCachedHttpService<ICollectionRange> {
+export class CollectionService {
 
   private allWarehouseCollection$?: Observable<string[]>;
   private TREE_QUERY = gql`
@@ -104,17 +99,16 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
   }`;
 
   constructor(
-    private metadataService: MetadataApi,
     private warehouseApi: WarehouseApi,
-    private collectionApi: CollectionApi,
     private graphQlService: GraphQLService,
-    private userService: UserService
+    private userService: UserService,
+    private api: LajiApiClientBService
   ) {
-    super();
   }
 
-  getAll$(lang: string, mustHaveWarehouseData = false): Observable<ICollectionRange[]> {
-    const all$ = this.fetchList(this.metadataService.metadataFindPropertiesRanges('MY.collectionID', lang, false, true), lang);
+  getAllAsKeyValue$(mustHaveWarehouseData = false) {
+    const all$ = this.api.get('/collections', { query: { selectedFields: 'id,collectionName', pageSize: 100000 } })
+    .pipe(map(({results}) => results.map(({id, collectionName}) => ({ id, value: collectionName }))));
     if (mustHaveWarehouseData) {
       return this.getAllWarehouseCollections$().pipe(
         switchMap(warehouseCollection => all$.pipe(
@@ -125,12 +119,12 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     return all$;
   }
 
-  getById$(id: string, lang?: string): Observable<Collection> {
-    return this.collectionApi.findById(id, lang);
+  getById$(id: string): Observable<Collection> {
+    return this.api.get('/collections/{id}', { path: { id } });
   }
 
-  getName$(id: string, lang: string, empty: null|string = null): Observable<string> {
-    return this.getAll$(lang).pipe(
+  getName$(id: string, empty: null|string = null): Observable<string> {
+    return this.getAllAsKeyValue$().pipe(
       map(data => data.find(col => col.id === id)),
       map(col => col ? col.value : (empty === null ? id : empty))
     );
@@ -162,9 +156,7 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
       errorPolicy: 'all',
       fetchPolicy: 'cache-first',
       context: {
-        headers: {
-          'x-timeout': '180000'
-        }
+        headers: new HttpHeaders({'x-timeout': '180000'})
       }
 
     }).pipe(
@@ -172,8 +164,7 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
         console.error('GraphQL error when getting collections tree: ', err, caught);
         return of({data: { collection: [] }});
       }),
-      map(({data}) => data),
-      map(({collection}) => collection)
+      map(result => (result?.data?.collection ?? []).filter((node): node is ICollectionsTreeNode => !!node))
     );
   }
 

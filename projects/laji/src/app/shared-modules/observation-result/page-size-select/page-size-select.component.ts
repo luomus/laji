@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { toHtmlSelectElement } from '../../../shared/service/html-element.service';
 
 @Component({
-  selector: 'laji-page-size-select',
-  templateUrl: './page-size-select.component.html',
-  styleUrls: ['./page-size-select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-page-size-select',
+    templateUrl: './page-size-select.component.html',
+    styleUrls: ['./page-size-select.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PageSizeSelectComponent {
 

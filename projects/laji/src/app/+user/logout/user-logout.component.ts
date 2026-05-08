@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 
 @Component({
-  selector: 'laji-logout',
-  templateUrl: './user-logout.component.html'
+    selector: 'laji-logout',
+    templateUrl: './user-logout.component.html',
+    standalone: false
 })
 export class UserLogoutComponent implements OnInit {
   constructor(

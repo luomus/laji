@@ -1,24 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { isIctAdmin, UserService } from '../../../shared/service/user.service';
-import { AbstractCachedHttpService } from '../../../shared/service/abstract-cached-http.service';
-import { map, switchMap, take } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 import { IdService } from '../../../shared/service/id.service';
 import { AnnotationDW } from '../../annotations/annotation-list/annotation-list.component';
 
-type Annotation = components['schemas']['annotation'];
-type AnnotationTag = components['schemas']['tag'];
+type Annotation = components['schemas']['store-annotation'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Injectable({providedIn: 'root'})
-export class AnnotationService extends AbstractCachedHttpService<AnnotationTag> {
+export class AnnotationService{
 
   constructor(
     private userService: UserService,
     private api: LajiApiClientBService
   ) {
-    super();
   }
 
   delete(annotation: AnnotationDW) {

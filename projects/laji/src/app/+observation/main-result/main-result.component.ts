@@ -10,7 +10,6 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { MainResultService } from './main-result.service';
 import { UserSettingsResultList, UserService } from '../../shared/service/user.service';
 import { ObservationTableComponent } from '../../shared-modules/observation-result/observation-table/observation-table.component';
 import { ObservationTableQueryService } from '../../shared-modules/observation-result/service/observation-table-query.service';
@@ -19,15 +18,16 @@ import { DocumentViewerFacade } from '../../shared-modules/document-viewer/docum
 import { Subscription } from 'rxjs';
 import { startWith, tap } from 'rxjs/operators';
 import { LocalStorageService } from 'ngx-webstorage';
+import { DataFetchMode } from '../observation-data.service';
 
 const DEFAULT_PAGE_SIZE = 1000;
 
 @Component({
-  selector: 'laji-main-result',
-  templateUrl: './main-result.component.html',
-  styleUrls: ['./main-result.component.css'],
-  providers: [MainResultService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-main-result',
+    templateUrl: './main-result.component.html',
+    styleUrls: ['./main-result.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MainResultComponent implements OnInit, OnChanges {
   private static readonly defaultFields: string[] = [
@@ -36,6 +36,7 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   @ViewChild('aggregatedDataTable') public aggregatedDataTable?: ObservationTableComponent;
 
+  @Input() dataMode: DataFetchMode = 'unit';
   @Input({ required: true }) query!: WarehouseQueryInterface;
   @Input({ required: true }) visible!: boolean;
 

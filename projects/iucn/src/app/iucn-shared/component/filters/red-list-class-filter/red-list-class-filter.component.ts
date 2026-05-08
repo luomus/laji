@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'iucn-redlist-class-filter',
-  templateUrl: './red-list-class-filter.component.html',
-  styleUrls: ['./red-list-class-filter.component.scss']
+    selector: 'iucn-redlist-class-filter',
+    templateUrl: './red-list-class-filter.component.html',
+    styleUrls: ['./red-list-class-filter.component.scss'],
+    standalone: false
 })
 export class RedListClassFilterComponent {
 

@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { TeamMemberService } from '../team-member.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { map, of } from 'rxjs';
 
 @Component({
-  selector: 'laji-member-id-pill-list',
-  templateUrl: './member-id-pill-list.component.html',
-  styleUrls: ['./member-id-pill-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: true
+    selector: 'laji-member-id-pill-list',
+    templateUrl: './member-id-pill-list.component.html',
+    styleUrls: ['./member-id-pill-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    preserveWhitespaces: true,
+    standalone: false
 })
 export class MemberIdPillListComponent {
 
@@ -14,7 +16,9 @@ export class MemberIdPillListComponent {
 
   _list?: string[];
 
-  constructor(private teamMemberService: TeamMemberService) { }
+  constructor(
+    private api: LajiApiClientBService
+  ) { }
 
   @Input() set list(data: string|string[]) {
     if (typeof data === 'string') {
@@ -32,7 +36,12 @@ export class MemberIdPillListComponent {
   }
 
   getName(id: string) {
-    return this.teamMemberService.getName(id);
+    if (!id) {
+      return of('');
+    }
+    return this.api.get('/warehouse/teamMember/{id}', { path: { id } }).pipe(
+      map((result: any) => result.name || result.id),
+    );
   }
 
 }

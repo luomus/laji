@@ -5,9 +5,10 @@ import { IdService } from '../../../../../shared/service/id.service';
 import { ColumnMode } from '@achimha/ngx-datatable';
 
 @Component({
-  selector: 'laji-wbc-routes-list',
-  templateUrl: './wbc-routes-list.component.html',
-  styleUrls: ['./wbc-routes-list.component.scss']
+    selector: 'laji-wbc-routes-list',
+    templateUrl: './wbc-routes-list.component.html',
+    styleUrls: ['./wbc-routes-list.component.scss'],
+    standalone: false
 })
 export class WbcRoutesListComponent implements OnChanges {
   @Input() rows: any[] | undefined = [];
