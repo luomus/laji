@@ -1,5 +1,4 @@
 import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
