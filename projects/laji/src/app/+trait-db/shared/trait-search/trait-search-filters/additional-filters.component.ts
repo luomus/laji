@@ -2,12 +2,14 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Inpu
 import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs';
+import type { EnumVariant } from 'scripts/codegen/shared/shared';
 import { filters } from './filters';
 
 interface BaseFilter {
   // what this filter gets mapped to in the final search api query
   // eg. subject.basisOfRecord=<enum-value>
   prop: string;
+  label?: string[];
 }
 
 interface StringFilter extends BaseFilter {
@@ -17,7 +19,7 @@ interface StringFilter extends BaseFilter {
 
 interface EnumFilter<T extends string> extends BaseFilter {
   filterType: 'enum';
-  range: readonly T[];
+  range: readonly EnumVariant<T>[];
   defaultValue: T | null;
 }
 
@@ -37,7 +39,7 @@ interface ArrayFilterElementString {
 
 interface ArrayFilterElementEnum {
   _tag: 'enum';
-  variants: string[];
+  variants: EnumVariant<string>[];
 }
 
 interface ArrayFilter extends BaseFilter {
@@ -46,7 +48,7 @@ interface ArrayFilter extends BaseFilter {
   elementType: ArrayFilterElementString | ArrayFilterElementEnum;
 }
 
-export type AdditionalFilter = StringFilter | EnumFilter<any> | BooleanFilter | NumberFilter | ArrayFilter;
+export type AdditionalFilter = StringFilter | EnumFilter<string> | BooleanFilter | NumberFilter | ArrayFilter;
 
 // We need an additional FormKey, which is the key in this object,
 // because prop can't be used to index formgroup formcontrols.

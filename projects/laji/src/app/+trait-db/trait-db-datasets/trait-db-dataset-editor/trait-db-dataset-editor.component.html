@@ -1,4 +1,4 @@
-<form [formGroup]="datasetForm" (submit)="onSubmit()">
+<form class="dataset-form" [formGroup]="datasetForm" (submit)="onSubmit()">
   <div>
     <label for="name">Name*:</label>
     <input id="name" class="form-control" formControlName="name" type="text">
@@ -98,10 +98,14 @@
         </label>
       </div>
     }
-    <button class="d-block" (click)="onDelete()">DELETE DATASET</button>
   }
 
-  <button type="submit" class="btn btn-default" [disabled]="externalValidationInProgress">Submit</button>
+  <button type="submit" class="btn btn-primary mr-5" [disabled]="externalValidationInProgress">Submit</button>
+
+  @if (datasetForm.get('id')?.value) {
+    <button type="button" class="btn btn-danger" (click)="onDeleteClick()">Delete dataset</button>
+  }
+
   @if (externalValidationInProgress) {
     <div>Server is validating...</div>
   }

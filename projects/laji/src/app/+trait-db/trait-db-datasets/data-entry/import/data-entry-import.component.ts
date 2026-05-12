@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { of } from 'rxjs';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { map, startWith, switchMap } from 'rxjs';
 
-const headerReferenceCmsIds = { fi: '0', sv: '0', en: '0' };
+const headerReferenceCmsIds = { fi: '9261', sv: '9261', en: '9261' };
 
 @Component({
     selector: 'laji-trait-db-data-entry-import',
@@ -22,10 +22,10 @@ export class TraitDbDataEntryImportComponent {
   headerReferenceContent$ = this.translate.onLangChange.pipe(
     startWith({lang: this.translate.getCurrentLang()}),
     map(event => headerReferenceCmsIds[event.lang as 'fi' | 'sv' | 'en']),
-    switchMap(cmsId => of({ content: 'todo create cms page ' + cmsId }))
+    switchMap(cmsId => this.api.get('/information/{id}', { path: { id: cmsId } }))
   );
 
-  constructor(private cdr: ChangeDetectorRef, private translate: TranslateService) {}
+  constructor(private cdr: ChangeDetectorRef, private translate: TranslateService, private api: LajiApiClientBService) {}
 
   onFileChange(event: Event) {
     const target = event.target as HTMLInputElement;

@@ -4,6 +4,7 @@
     <lu-datatable
       [rows]="tableData.rows.controls"
       [columns]="tableData.cols"
+      [defaultColumns]="tableData.defaultColumns"
     ></lu-datatable>
   </div>
 }
@@ -29,9 +30,9 @@
 <ng-template #enumCell let-row let-col="col" let-rowIdx="rowIdx" let-colIdx="colIdx">
   @if (row.get($any(col).prop); as control) {
     <select class="form-control" [formControl]="control">
-      @for (option of col.variants; track option) {
-        <option [value]="option">
-          {{ option }}
+      @for (option of col.variants; track option.value) {
+        <option [value]="option.value">
+          {{ option.label }}
         </option>
       }
     </select>
@@ -69,4 +70,3 @@
     </div>
   }
 </ng-template>
-

@@ -17,7 +17,11 @@ export type DatasetPermissions = components['schemas']['LajiBackendDatasetPermis
 })
 export class TraitDbDatasetComponent implements OnInit {
   // null represents a state where we are done querying the api so the loading indicator shouldnt be shown
-  data$!: Observable<{ dataset: Dataset | null | undefined; perms: DatasetPermissions | null | undefined }>;
+  data$!: Observable<{
+    dataset: Dataset | null | undefined;
+    perms: DatasetPermissions | null | undefined;
+    hasPerms: boolean;
+  }>;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,9 +47,14 @@ export class TraitDbDatasetComponent implements OnInit {
             )
             : of(null)
           ),
-        )
+        ),
+        this.userService.user$.pipe(startWith(undefined))
       ])),
-      map(([dataset, perms]) => ({ dataset, perms }))
+      map(([dataset, perms, user]) => ({
+        dataset,
+        perms,
+        hasPerms: !!(perms && user?.id && perms.userIds?.includes(user.id))
+      }))
     );
   }
 }
