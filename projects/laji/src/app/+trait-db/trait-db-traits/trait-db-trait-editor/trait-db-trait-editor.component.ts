@@ -6,7 +6,6 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { Observable } from 'rxjs';
 import { map, filter, switchMap, tap } from 'rxjs';
 import { MetadataService } from '../../../shared/service/metadata.service';
-import { UserService } from '../../../shared/service/user.service';
 import { filterNullValues } from '../../trait-db-datasets/trait-db-dataset-editor/trait-db-dataset-editor.component';
 
 type Trait = components['schemas']['LajiBackendTrait'];
@@ -74,7 +73,7 @@ export class TraitDbTraitEditorComponent implements OnInit {
     this.submissionState = 'externalValidation';
     const form = filterNullValues(this.form.value) as Trait;
     this.form.disable();
-    this.api.fetch('/trait/traits/validate', 'post', {}, form, 0).pipe(
+    this.api.fetch('/trait/traits/validate', 'post', {}, form, { cacheInvalidationMs: 0 }).pipe(
       tap(res => {
         this.submissionState = 'none';
         this.errors = res.pass ? undefined : res.errors;
@@ -86,7 +85,7 @@ export class TraitDbTraitEditorComponent implements OnInit {
         this.submissionState = 'uploading';
         this.form.disable();
       }),
-      switchMap(_ => this.api.fetch('/trait/traits', 'post', {}, form, 0))
+      switchMap(_ => this.api.fetch('/trait/traits', 'post', {}, form, { cacheInvalidationMs: 0 }))
     ).subscribe(res => {
       this.submissionState = 'none';
       this.cdr.markForCheck();

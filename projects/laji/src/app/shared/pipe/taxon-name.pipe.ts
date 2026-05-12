@@ -34,7 +34,7 @@ export class TaxonNamePipe extends AbstractLabelPipe implements PipeTransform {
     return this.api.get('/taxa/{id}', {
       path: { id },
       query: { selectedFields: 'scientificName,vernacularName' }
-    }).pipe(
+    }, { langFallback: false }).pipe(
       catchError(() => of({
         vernacularName: id,
         scientificName: id

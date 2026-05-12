@@ -75,7 +75,7 @@ export class SpeciesCountComponent implements OnInit, OnDestroy {
       ...this.search.filters,
       hasMultimedia: this.hasMediaFilter,
       taxonRank: 'MX.species'
-    }).subscribe(res => {
+    }, { langFallback: false }).subscribe(res => {
         this.count = res.total;
         this.loading = false;
         this.cd.markForCheck();

@@ -50,7 +50,7 @@ export class WaterBirdCountResultComponent implements OnInit {
         pageSize: 10000
       } }, {
         taxonSets: 'MX.taxonSetWaterbirdWaterbirds',
-      }).pipe(
+      }, { langFallback: false }).pipe(
       map(res => res.results),
       map(taxa => taxa.map(t => ({
         label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),
