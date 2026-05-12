@@ -805,6 +805,14 @@
                                                             ></laji-observation-form-media-filter>
                                                           </section>
 
+                                                          <!-- DNA -->
+                                                          <section class="laji-panel" laji-panel [title]="'observation.form.dnaTitle' | translate" [autoToggle]="true"  [open]="visible['dna']!">
+                                                            <div>
+                                                              <label><laji-checkbox [(value)]="formQuery.hasSequenceText" (valueChange)="onFormQueryChange()"></laji-checkbox>{{ 'observation.form.hasSequenceText' | translate }}</label>
+                                                              <laji-info>{{ 'observation.info.hasSequenceText' | translate }}</laji-info>
+                                                            </div>
+                                                          </section>
+                                                    
                                                           <!-- Concealment level -->
                                                           <section class="laji-panel" laji-panel [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secure']!">
                                                             <laji-select
