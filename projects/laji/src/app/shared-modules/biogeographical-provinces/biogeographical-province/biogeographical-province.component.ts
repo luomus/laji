@@ -1,9 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Observable } from 'rxjs';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { map, tap } from 'rxjs';
 import { IdService } from '../../../shared/service/id.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { paths } from 'projects/laji-api-client-b/generated/api';
+
+type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
 export interface BiogeographicalArea {
  'ML.270'?: string;
@@ -61,19 +64,20 @@ export class BiogeographicalProvinceComponent {
   ];
 
   constructor(
-    private warehouseApi: WarehouseApi
+    private api: LajiApiClientBService,
   ) {}
 
   @Input()
   set query(query: WarehouseQueryInterface) {
     const mapQuery: WarehouseQueryInterface = {...query, countryId: ['ML.206']};
-    this.results$ = this.warehouseApi.warehouseQueryAggregateGet(
-      mapQuery,
-      ['gathering.interpretations.biogeographicalProvince'],
-      [],
-      100,
-      1
-    ).pipe(
+    const aggregateQuery: AggregateQueryParams = {
+      ...mapQuery as any,
+      aggregateBy: ['gathering.interpretations.biogeographicalProvince'],
+      orderBy: [],
+      pageSize: 100,
+      page: 1,
+    };
+    this.results$ = this.api.get('/warehouse/query/unit/aggregate', { query: aggregateQuery }).pipe(
       map((result) => result.results.map((aggr: any) => ({
         count: aggr.count,
         key: IdService.getId(aggr.aggregateBy['gathering.interpretations.biogeographicalProvince'])

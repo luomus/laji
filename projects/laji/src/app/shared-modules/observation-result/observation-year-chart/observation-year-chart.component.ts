@@ -9,12 +9,15 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { map } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { ChartDataset, ChartOptions, Tooltip } from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
 import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { paths } from 'projects/laji-api-client-b/generated/api';
+
+type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
 @Component({
     selector: 'laji-observation-year-chart',
@@ -50,7 +53,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   @Output() hasData = new EventEmitter<boolean>();
 
   constructor(
-    private warehouseApi: WarehouseApi,
+    private api: LajiApiClientBService,
     private cd: ChangeDetectorRef,
     private translate: TranslateService,
     private localSt: LocalStorageService
@@ -121,15 +124,15 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       this.getDataSub.unsubscribe();
     }
 
-    this.getDataSub = this.warehouseApi.warehouseQueryAggregateGet(
-      this.query,
-      ['gathering.conversions.year'],
-      ['gathering.conversions.year'],
-      10000,
-      1,
-      undefined,
-      this.enableOnlyCount
-    ).pipe(
+    const query: AggregateQueryParams = {
+      ...this.query as any,
+      aggregateBy: ['gathering.conversions.year'],
+      orderBy: ['gathering.conversions.year'],
+      pageSize: 10000,
+      page: 1,
+      onlyCount: this.enableOnlyCount
+    };
+    this.getDataSub = this.api.get('/warehouse/query/unit/aggregate', { query }).pipe(
       map(res => res.results)
     ).subscribe(res => {
       this.splitIdx = 0;

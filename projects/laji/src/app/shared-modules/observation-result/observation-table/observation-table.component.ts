@@ -288,6 +288,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       [...this.aggregateBy, this.defaultOrder!],
       page,
       this.pageSize,
+      this.mode,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       [...this.orderBy, this.defaultOrder!],
       this.lang,

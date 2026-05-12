@@ -18,7 +18,6 @@ import {
   throwError as observableThrowError
 } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { IdService } from '../../../shared/service/id.service';
@@ -31,6 +30,7 @@ import { IColumns } from '../../datatable/service/observation-table-column.servi
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { SearchQueryService } from '../../../+observation/search-query.service';
 import { DataFetchMode } from '../../../+observation/observation-data.service';
+import { isEmptyWarehouseQuery } from '../../../shared/api/util';
 
 interface IInternalObservationTableColumn extends ObservationTableColumn {
   _paths: string[];
@@ -58,7 +58,6 @@ export class ObservationResultService {
   }
 
   constructor(
-    private warehouseApi: WarehouseApi,
     private api: LajiApiClientBService,
     private searchQuery: SearchQueryService,
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
@@ -70,6 +69,7 @@ export class ObservationResultService {
     aggregateBy: string[],
     page: number,
     pageSize: number,
+    mode: DataFetchMode,
     orderBy: string[] = [],
     lang: string,
     useStatistics: boolean = false,
@@ -83,19 +83,22 @@ export class ObservationResultService {
     }
 
     if (!this.aggregateData) {
-      const method = useStatistics
-        ? this.warehouseApi.warehouseQueryStatisticsGet
-        : this.warehouseApi.warehouseQueryAggregateGet;
-
-      this.aggregateData = method(
-        {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
-        [..._aggregateBy],
+      const queryParams = {
+        ...query,
+        cache: (query.cache || isEmptyWarehouseQuery(query)),
+        aggregateBy: [..._aggregateBy],
         orderBy,
         pageSize,
         page,
-        false,
-        false
-      ).pipe(
+        onlyCount: false
+      };
+      const obs$ = useStatistics
+        ? this.api.get('/warehouse/query/unit/statistics', { query: queryParams as any })
+        : mode === 'unit'
+          ? this.api.get('/warehouse/query/unit/aggregate', { query: queryParams as any })
+          : this.api.get('/warehouse/query/sample/aggregate', { query: queryParams as any });
+
+      this.aggregateData = obs$.pipe(
         retryWhen(errors => errors.pipe(delay(1000), take(3), concatWith(throwError(() => errors)), ))).pipe(
         map(data => Util.clone(data)),
         map(data => this.convertAggregateResult(data))).pipe(
@@ -120,7 +123,7 @@ export class ObservationResultService {
       this.data = undefined;
     }
     if (!this.data) {
-      const cache = (query.cache || WarehouseApi.isEmptyQuery(query));
+      const cache = (query.cache || isEmptyWarehouseQuery(query));
       const preparedFields = [...this.prepareFields(selected), ...this.idFields];
       const queryParams = {
         ...query,

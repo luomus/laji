@@ -12,13 +12,15 @@ import {
 } from '@angular/core';
 import { of as ObservableOf, Subscription } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
-import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TaxaWithAutocomplete, TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { paths } from 'projects/laji-api-client-b/generated/api';
+
+type UnitCountQuery = paths['/warehouse/query/unit/count']['get']['parameters']['query'];
 
 type InternalTaxon = TaxaWithAutocomplete & {count?: number; informalTaxonGroups?: any; informalTaxonGroupsClass?: any};
 
@@ -53,7 +55,6 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   private inputChange?: Subscription;
 
   constructor(private api: LajiApiClientBService,
-              private warehouseApi: WarehouseApi,
               private localizeRouterService: LocalizeRouterService,
               private router: Router,
               private changeDetector: ChangeDetectorRef,
@@ -99,12 +100,14 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.taxon.informalTaxonGroups = this.taxon.informalGroups
         .map((group: any) => group.name);
 
+      const query: UnitCountQuery = {
+        taxonId: this.taxon.key,
+        cache: true
+      };
+
       this.subCnt = combineLatest([
         of(this.taxon.key),
-        this.warehouseApi.warehouseQueryCountGet({
-          taxonId: this.taxon.key,
-          cache: true
-        })
+        this.api.get('/warehouse/query/unit/count', { query })
       ]).pipe(
         map(([id, cnt]) => ({ id, cnt: cnt.total }))
       ).subscribe(data => {

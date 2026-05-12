@@ -1,27 +1,35 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { WarehouseApi } from '../../api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../model/WarehouseQueryInterface';
 import { PagedResult } from '../../model/PagedResult';
 import { Image } from '../image-gallery/image.interface';
 import { IdService } from '../../service/id.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { paths } from 'projects/laji-api-client-b/generated/api';
 
+type MediaListQuery = paths['/warehouse/query/unitMedia/list']['get']['parameters']['query'];
 
 @Injectable({providedIn: 'root'})
 export class GalleryService {
-  constructor(private warehouseApi: WarehouseApi) {
-  }
+  constructor(private api: LajiApiClientBService) {}
 
-  getList(rawQuery: WarehouseQueryInterface, sort: string[]|undefined, pageSize: number, page: number): Observable<PagedResult<any>> {
-    const query = {...rawQuery};
-    if (WarehouseApi.isEmptyQuery(query)) {
-      query.cache = true;
-    }
+  getList(rawQuery: WarehouseQueryInterface, sort: string[] | undefined, pageSize: number, page: number): Observable<PagedResult<any>> {
+    const query: MediaListQuery = {
+      ...rawQuery as any,
+      hasUnitMedia: true,
+      selected: [
+        'unit.taxonVerbatim,unit.linkings.taxon.id,unit.linkings.taxon.vernacularName,'
+          + 'unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',
+        'media',
+        'document.documentId,unit.unitId',
+      ],
+      orderBy: sort,
+      pageSize,
+      page
+    };
 
     // TODO: think about this little more units are still basic search for this so might have to drop this
     // or target gathering and document endpoints
-    const imgField = 'media';
-    query.hasUnitMedia = true;
     /*
     if (query.hasUnitMedia) {
       // pass
@@ -33,15 +41,8 @@ export class GalleryService {
       query.hasUnitMedia = true;
     }
     */
-    return this.warehouseApi.warehouseQueryUnitMediaListGet(query, [
-      'unit.taxonVerbatim,unit.linkings.taxon.id,unit.linkings.taxon.vernacularName,' +
-      'unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',
-      imgField,
-      // 'gathering.media',
-      // 'document.media',
-      'document.documentId,unit.unitId',
-      ''
-    ], sort, pageSize, page);
+
+    return this.api.get('/warehouse/query/unitMedia/list', { query });
   }
 
   getImages(list: PagedResult<any>, limit = 1000): Image[] {

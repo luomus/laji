@@ -5,31 +5,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { GetFeatureStyleOptions } from '@luomus/laji-map';
 import { LajiMapVisualization } from 'projects/laji/src/app/shared-modules/legend/laji-map-visualization';
 import { YearInfoItem } from 'projects/laji/src/app/shared-modules/year-slider/year-slider.component';
-import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { map, tap, switchMap } from 'rxjs';
 import { InvasiveControlEffectiveness } from '../invasive-species-control-result.component';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { paths } from 'projects/laji-api-client-b/generated/api';
 
-interface QueryResult {
-  results: {
-    aggregateBy: {
-    'document.namedPlace.wgs84CenterPoint.lat': string;
-    'document.namedPlace.wgs84CenterPoint.lon': string;
-    'unit.interpretations.invasiveControlEffectiveness': InvasiveControlEffectiveness;
-    };
-    count: number;
-  }[];
-}
-
-interface InvasiveControlYearsQueryResult {
-  results: {
-    aggregateBy: {
-      'gathering.conversions.year': string;
-    };
-    count: number;
-  }[];
-}
-
+type WarehouseAggregateQuery = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
 const effectivenessToVisCategory: Record<Exclude<InvasiveControlEffectiveness, 'NOT_FOUND'>, {color: string; label: string}> = {
   FULL: {
@@ -78,25 +60,33 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
   };
 
   constructor(
-    private warehouseApi: WarehouseApi,
+    private api: LajiApiClientBService,
     private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
-    const query$ = combineLatest([this.year$, this.taxon$]).pipe(switchMap(([year, taxon]) => this.warehouseApi.warehouseQueryAggregateGet(
-      {time: year, taxonId: taxon, hasValue: 'unit.interpretations.invasiveControlEffectiveness'},
-      [
-        'document.namedPlace.wgs84CenterPoint.lat',
-        'document.namedPlace.wgs84CenterPoint.lon',
-        'unit.interpretations.invasiveControlEffectiveness'
-      ],
-      undefined,
-      10000
-    )));
+    const query$ = combineLatest([this.year$, this.taxon$]).pipe(
+      switchMap(([year, taxon]) => {
+        const query: WarehouseAggregateQuery = {
+          time: year,
+          taxonId: taxon,
+          hasValue: 'unit.interpretations.invasiveControlEffectiveness',
+          aggregateBy: [
+            'document.namedPlace.wgs84CenterPoint.lat',
+            'document.namedPlace.wgs84CenterPoint.lon',
+            'unit.interpretations.invasiveControlEffectiveness'
+          ],
+          pageSize: 10000
+        };
+        return this.api.get('/warehouse/query/unit/aggregate', { query });
+      })
+    );
 
     this.mapData$ = query$.pipe(
-      tap(() => { this.loading = true; }),
-      map((response: QueryResult) => ({
+      tap(() => {
+        this.loading = true;
+      }),
+      map(response => ({
         ...this.getDataOptions(),
         featureCollection: {
           type: 'FeatureCollection' as const,
@@ -122,23 +112,27 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
       tap(() => { this.loading = false; })
     );
 
-    this.years$ = this.taxon$.pipe(switchMap(taxon =>
-      this.warehouseApi.warehouseQueryAggregateGet({
-        taxonId: taxon,
-        hasValue: 'unit.interpretations.invasiveControlEffectiveness,document.namedPlace.wgs84CenterPoint.lat'
-      },
-        ['gathering.conversions.year'],
-        ['gathering.conversions.year'],
-        10000
-      ).pipe(map((response: InvasiveControlYearsQueryResult) => {
-        let total = 0;
-        const years = response.results.map(item => {
-          total += item.count;
-          return {year: item.aggregateBy['gathering.conversions.year'], count: item.count};
-        }).sort((a, b) => +b.year - +a.year);
-        return [{year: 'all', count: total}, ...years];
-      }))
-    ));
+    this.years$ = this.taxon$.pipe(
+      switchMap(taxon => {
+        const query: WarehouseAggregateQuery = {
+          taxonId: taxon,
+          hasValue: 'unit.interpretations.invasiveControlEffectiveness,document.namedPlace.wgs84CenterPoint.lat',
+          aggregateBy: ['gathering.conversions.year'],
+          orderBy: ['gathering.conversions.year'],
+          pageSize: 10000
+        };
+        return this.api.get('/warehouse/query/unit/aggregate', { query }).pipe(
+          map(response => {
+            let total = 0;
+            const years = response.results.map(item => {
+              total += item.count;
+              return { year: item.aggregateBy['gathering.conversions.year'], count: item.count };
+            }).sort((a, b) => +b.year - +a.year);
+            return [{ year: 'all', count: total }, ...years];
+          })
+        );
+      })
+    );
   }
 
   getDataOptions(): Omit<DataOptions, 'featureCollection'> {

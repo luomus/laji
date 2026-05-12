@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { ActivatedRoute } from '@angular/router';
 import { AbstractObservation } from '../../+observation/abstract-observation';
 import { ObservationFacade } from '../../+observation/observation.facade';
-import { WarehouseApi, WarehouseSubPath } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import * as Util from '../../shared/utils';
 import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
@@ -17,7 +16,6 @@ import { ObservationDataService } from '../../+observation/observation-data.serv
     styleUrls: ['./genetic-resource.component.scss'],
     providers: [
         ObservationFacade,
-        WarehouseApi,
         ObservationDataService,
         { provide: TableColumnService, useClass: SampleTableColumnService },
         ObservationResultService
@@ -37,13 +35,11 @@ export class GeneticResourceComponent extends AbstractObservation implements OnI
     protected observationFacade: ObservationFacade,
     protected route: ActivatedRoute,
     protected searchQuery: SearchQueryService,
-    protected warehouseApi: WarehouseApi,
     private tableColumnService: TableColumnService,
     private observationListService: ObservationResultService
   ) {
     super();
     this.observationListService.idFields = ['sample.sampleId', 'unit.unitId', 'document.documentId'];
-    this.warehouseApi.subPath = WarehouseSubPath.sample;
     this.observationFacade.emptyQuery = {
       sampleCollectionId: ['HR.77', 'HR.2831'],
       sampleType: ['MF.preparationTypeDNAExtract', 'MF.preparationTypeTissue']
