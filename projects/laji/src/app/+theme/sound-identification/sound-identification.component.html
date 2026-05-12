@@ -1,14 +1,27 @@
 <div class="container laji-information">
   <h1>{{ 'theme.soundIdentification' | translate }}</h1>
-  <p>{{ 'theme.soundIdentification.intro' | translate }}</p>
+  <p>{{ 'theme.soundIdentification.intro' | translate }} {{ 'theme.soundIdentification.intro.speciesList' | translate }} <a href="{{{
+    'en': 'https://info.laji.fi/en/sound-identification/',
+    'fi': 'https://info.laji.fi/aanitunnistus/',
+    'sv': 'https://info.laji.fi/ljudidentifiering/'} | multiLang}}">{{{
+    'en': 'https://info.laji.fi/en/sound-identification/',
+    'fi': 'https://info.laji.fi/aanitunnistus/',
+    'sv': 'https://info.laji.fi/ljudidentifiering/'} | multiLang}}</a></p>
 
   <div>
     <laji-sound-identification-form (soundIdentificationSubmit)="analyseData($event)" [loading]="loading" [maxAudioDuration]="maxAudioDuration" [acceptedFormats]="acceptedFormats"></laji-sound-identification-form>
   </div>
 
-  @if (data !== undefined) {
+  @if (data !== undefined && data.length > 0) {
     <laji-sound-identification-table [data]="data" [loading]="loading"></laji-sound-identification-table>
   }
 
+  @if (data?.length === 0) {
+    <div class="alert alert-warning">
+      <span>{{"theme.soundIdentification.noIdentification" | translate}}</span>
+    </div>
+  }
+
   <laji-info-page page="8876"></laji-info-page>
+  <laji-info-page [page]="{'en': '9131', 'fi': '9135', 'sv': '9149'} | multiLang"></laji-info-page>
 </div>
