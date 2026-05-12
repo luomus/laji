@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
@@ -12,7 +12,7 @@ type NamedPlace = components['schemas']['store-namedPlace'];
     styleUrls: ['./np-info-map.component.css'],
     standalone: false
 })
-export class NpInfoMapComponent implements OnInit, OnChanges {
+export class NpInfoMapComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap!: LajiMapComponent;
   @Input() visible?: boolean;
   @Input() namedPlace?: NamedPlace;
@@ -42,6 +42,10 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
     }
   }
 
+  ngOnDestroy(): void {
+    clearTimeout(this.resize);
+  }
+
   onMapLoad() {
     this.setData();
     this.viewIsInitialized = true;
@@ -50,9 +54,8 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     clearTimeout(this.resize);
-    const that = this;
-    this.resize = setTimeout(function() {
-      that.setZoom();
+    this.resize = setTimeout(() => {
+      this.setZoom();
     }, 500);
   }
 
