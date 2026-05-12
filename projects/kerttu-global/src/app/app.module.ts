@@ -20,9 +20,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-component/app-component.module';
 import { LajiUiModule } from '../../../laji-ui/src/lib/laji-ui.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { detectLangFromPath } from 'projects/laji/src/app/app.module';
 import { setLocale } from 'projects/laji/src/app/locale/locale.component';
+import { LocaleModule } from './locale/locale.module';
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
@@ -46,6 +47,7 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
         useClass: LazyTranslateLoader
       }
     }),
+    LocaleModule,
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
     DropdownModule,
@@ -55,15 +57,7 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   providers: [
     { provide: APP_ID, useValue: 'laji-app' },
     { provide: APP_BASE_HREF, useValue: '/' },
-    provideAppInitializer(() => {
-      const translate = inject(TranslateService);
-      const lang = detectLangFromPath(
-        typeof window !== 'undefined' ? window.location.pathname : '/',
-        ['es', 'fr'],
-        'en'
-      );
-      return translate.use(lang);
-    }),
+    { provide: API_BASE_URL, useValue: environment.apiBase },
     provideAppInitializer(() => {
       const platformLocation = inject(PlatformLocation);
       const translate = inject(TranslateService);
@@ -90,4 +84,5 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
       withSessionStorage()
     ),
   ] })
+
 export class AppModule { }

@@ -8,7 +8,6 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   Output,
   Renderer2,
   SimpleChanges,
@@ -102,6 +101,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
   overlappingSpeciesRectangleColor = '#d9d926';
   otherSoundRectangleColor = '#d98026';
 
+  selectableTaxonTypes: TaxonTypeEnum[] = [];
   taxonTypeEnum = TaxonTypeEnum;
 
   topContentHeight = 265;
@@ -118,9 +118,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
     private translate: TranslateService,
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2
-  ) {
-    this.updateAudioViewerConfigForType(TaxonTypeEnum.bird);
-  }
+  ) {}
 
   destroyDragMoveListener?: () => void;
   destroyDragEndListener?: () => void;
@@ -128,7 +126,8 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     this.clearDrawMode();
     if (changes.recording) {
-      this.updateAudioViewerConfigForType(this.recording.taxonType);
+      this.updateSelectableTaxonTypes();
+      this.updateAudioViewerConfig();
       this.updateSelectedSpeciesAndSpectrogramRectangles();
     }
   }
@@ -262,7 +261,8 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
     }
   }
 
-  updateAudioViewerConfigForType(taxonType: TaxonTypeEnum) {
+  updateAudioViewerConfig() {
+    const taxonType = this.recording.taxonType;
     this.sampleRate = KerttuGlobalUtil.getDefaultSampleRate(taxonType);
     this.minFrequency = 0;
     this.maxFrequency = (taxonType === TaxonTypeEnum.bird && !this.showWholeFrequencyRange ? lowAudioSampleRate : this.sampleRate) / 2;
@@ -283,6 +283,18 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
   private clearDrawMode() {
     this.speciesBoxDrawState.active = false;
     this.audioViewerMode = 'default';
+  }
+
+  private updateSelectableTaxonTypes() {
+    const taxonType = this.recording.taxonType;
+
+    const birdGroup = [TaxonTypeEnum.bird, TaxonTypeEnum.mammal, TaxonTypeEnum.frog];
+
+    if (birdGroup.includes(taxonType)) {
+      this.selectableTaxonTypes = birdGroup;
+    } else {
+      this.selectableTaxonTypes = [taxonType];
+    }
   }
 
   private updateSelectedSpeciesAndSpectrogramRectangles() {

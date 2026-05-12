@@ -133,7 +133,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   }
 
   // Unlock species on page close
-  @HostListener('window:onunload', ['$event'])
+  @HostListener('window:onunload')
   onUnload() {
     this.unlockSpecies();
   }

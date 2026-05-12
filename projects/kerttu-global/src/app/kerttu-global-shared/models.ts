@@ -32,7 +32,7 @@ export interface IGlobalSpeciesQuery {
   page?: number;
   pageSize?: number;
   orderBy?: string[];
-  taxonType?: TaxonTypeEnum;
+  taxonTypes?: TaxonTypeEnum[];
 }
 
 export interface IGlobalSpecies {
@@ -242,7 +242,8 @@ export enum TaxonTypeEnum {
   bat = 1,
   insect = 2,
   frog = 3,
-  other = 4
+  other = 4,
+  mammal = 5
 }
 
 export enum AnnotationStatusEnum {

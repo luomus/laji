@@ -1,5 +1,13 @@
-import { catchError, map, switchMap, tap } from 'rxjs';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output
+} from '@angular/core';
 import { Observable, of, of as ObservableOf } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../../../laji/src/app/shared/service/user.service';
@@ -11,15 +19,15 @@ interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
 }
 
 @Component({
-    selector: 'bsg-taxon-select',
-    templateUrl: './taxon-select.component.html',
-    styleUrls: ['./taxon-select.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bsg-taxon-select',
+  templateUrl: './taxon-select.component.html',
+  styleUrls: ['./taxon-select.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
-export class TaxonSelectComponent {
+export class TaxonSelectComponent implements OnChanges {
 
-  @Input() taxonType = TaxonTypeEnum.bird;
+  @Input() taxonTypes = [TaxonTypeEnum.bird];
   @Input() limit = 10;
   @Input() placeholder = '';
 
@@ -29,10 +37,9 @@ export class TaxonSelectComponent {
   value? = '';
   loading = false;
 
+  showContinentSelect = false;
   continent?: number;
   filters$: Observable<IGlobalSpeciesFilters>;
-
-  taxonTypeEnum = TaxonTypeEnum;
 
   private tokenMinLengthBird = 3;
   private tokenMinLengthOther = 1;
@@ -53,6 +60,10 @@ export class TaxonSelectComponent {
     );
   }
 
+  ngOnChanges() {
+    this.showContinentSelect = this.taxonTypes.includes(TaxonTypeEnum.bird);
+  }
+
   onTaxonSelect(result: any) {
     if (result.item) {
       result = result.item;
@@ -66,7 +77,7 @@ export class TaxonSelectComponent {
   }
 
   private getTaxa(token: string): Observable<IGlobalSpeciesWithAutocompleteInfo[]> {
-    const tokenMinLength = this.taxonType === TaxonTypeEnum.bird ? this.tokenMinLengthBird : this.tokenMinLengthOther;
+    const tokenMinLength = this.taxonTypes.includes(TaxonTypeEnum.bird) ? this.tokenMinLengthBird : this.tokenMinLengthOther;
     if (!token || token.length < tokenMinLength) {
       return of([]);
     }
@@ -78,7 +89,7 @@ export class TaxonSelectComponent {
       this.userService.getToken(),
       this.translate.getCurrentLang(),
       {
-        taxonType: this.taxonType,
+        taxonTypes: this.taxonTypes,
         searchQuery: token,
         pageSize: this.limit,
         orderBy: ['searchQuery ASC'],
