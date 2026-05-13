@@ -276,19 +276,22 @@ export class ImporterComponent implements OnInit, OnDestroy {
         if (Array.isArray(data) || data[0]) {
           this.header = data.shift();
           this.data = data;
-
-          if (this.isGisImport) {
-            Object.keys(this.header!).forEach(key => {
-              if (this.header![key] === this.gisCoordinateField) {
-                this.header![key] = this.coordinateField;
-              }
-            });
-          }
         }
 
         this.excludedFromCopy = form.excludeFromCopy;
         this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, baseFields);
-        this.colMap = this.spreadSheetService.getColMapFromSheet(this.header!, this.fields);
+        if (this.isGisImport) {
+          const tempHeader = {...this.header};
+
+          Object.keys(tempHeader).forEach(key => {
+            if (tempHeader[key] === this.gisCoordinateField) {
+              tempHeader[key] = this.coordinateField;
+            }
+          });
+          this.colMap = this.spreadSheetService.getColMapFromSheet(tempHeader, this.fields);
+        } else {
+          this.colMap = this.spreadSheetService.getColMapFromSheet(this.header!, this.fields);
+        }
         this.origColMap = JSON.parse(JSON.stringify(this.colMap));
 
         this.initDataColumns();
