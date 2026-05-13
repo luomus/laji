@@ -131,6 +131,7 @@ export namespace Form {
       filterByMunicipality?: boolean;
       filterByBirdAssociationArea?: boolean;
       filterByTags?: boolean;
+      filterByTagsWhitelist?: string[];
       allowAddingPublic?: boolean;
       namedPlaceFormID?: string;
       useLabel?: string;
