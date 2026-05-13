@@ -2,10 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input, OnChanges,
+  Input,
   OnInit,
   Output,
-  SimpleChanges,
   TemplateRef,
   ViewChild
 } from '@angular/core';
@@ -21,26 +20,23 @@ import { IIdentificationHistoryResponseWithIndex } from '../identification-histo
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class IdentificationHistoryTableComponent implements OnInit, OnChanges {
+export class IdentificationHistoryTableComponent implements OnInit {
   @ViewChild('speciesListTpl', { static: true }) public speciesListTemplate!: TemplateRef<any>;
   @ViewChild('statusTpl', { static: true }) public statusTemplate!: TemplateRef<any>;
 
   @Input() data?: PagedResult<IIdentificationHistoryResponseWithIndex>;
   @Input() loading = false;
-  @Input() includeSiteColumn = true;
 
   columns: DatatableColumn[] = [];
 
   annotationStatusEnum = AnnotationStatusEnum;
-
-  private allColumns: DatatableColumn[] = [];
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<DatatableSort[]>();
   @Output() rowSelect = new EventEmitter<IIdentificationHistoryResponseWithIndex>();
 
   ngOnInit() {
-    this.allColumns = [
+    this.columns = [
       {
         name: 'annotation.created',
         label: 'history.created',
@@ -72,13 +68,6 @@ export class IdentificationHistoryTableComponent implements OnInit, OnChanges {
         width: 50
       }
     ];
-    this.updateColumns();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.includeSiteColumn && !changes.includeSiteColumn.isFirstChange()) {
-      this.updateColumns();
-    }
   }
 
   getRowClass(row: any): string {
@@ -92,9 +81,5 @@ export class IdentificationHistoryTableComponent implements OnInit, OnChanges {
     }
 
     return rowClasses.join(' ');
-  }
-
-  private updateColumns() {
-    this.columns = this.allColumns.filter(col => this.includeSiteColumn || col.name !== 'recording.site.name');
   }
 }

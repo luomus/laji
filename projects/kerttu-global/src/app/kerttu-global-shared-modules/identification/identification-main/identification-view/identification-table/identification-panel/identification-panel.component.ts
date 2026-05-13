@@ -14,7 +14,7 @@ import {
   SpeciesAnnotationEnum,
   TaxonTypeEnum
 } from '../../../../../../kerttu-global-shared/models';
-import { KerttuGlobalUtil } from '../../../../../../kerttu-global-shared/service/kerttu-global-util.service';
+import { getBoxLabel } from '../../../../../../kerttu-global-shared/service/kerttu-global-utils';
 import { SpectrogramConfig } from '../../../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 interface BoxClickEvent {
@@ -58,7 +58,7 @@ export class IdentificationPanelComponent {
   soundTypeEnum = SoundTypeEnum;
 
   isBoxGroup = isBoxGroup;
-  getBoxLabel = KerttuGlobalUtil.getBoxLabel;
+  getBoxLabel = getBoxLabel;
 
   @Output() identificationChange = new EventEmitter<IGlobalSpeciesWithAnnotation>();
   @Output() deleteClick = new EventEmitter();

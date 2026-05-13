@@ -1,7 +1,6 @@
 import {
   Audio,
-  AudioViewerArea,
-  AudioViewerRectangle, AudioViewerRectangleGroup
+  AudioViewerArea
 } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 import { Point } from 'geojson';
@@ -23,6 +22,7 @@ export interface IGlobalSpeciesQuery {
   onlyUnvalidated?: boolean;
   onlyWithValidationAudio?: boolean;
   onlyWithSoundscapeRecordings?: boolean;
+  soundscapeSites?: number[];
   includeValidationStatus?: boolean;
   includeAnnotationStatus?: boolean;
   continent?: number;

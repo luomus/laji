@@ -36,7 +36,7 @@ import { map } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../kerttu-global-shared/service/kerttu-global-api';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { KerttuGlobalUtil } from '../../../../kerttu-global-shared/service/kerttu-global-util.service';
+import { getBoxLabel, getDefaultSampleRate } from '../../../../kerttu-global-shared/service/kerttu-global-utils';
 import { IdentificationTableComponent } from './identification-table/identification-table.component';
 import { defaultSpectrogramConfig } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/variables';
 import { lowAudioSampleRate } from '../../../../kerttu-global-shared/variables';
@@ -264,7 +264,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
 
   updateAudioViewerConfig() {
     const taxonType = this.recording.taxonType;
-    this.sampleRate = KerttuGlobalUtil.getDefaultSampleRate(taxonType);
+    this.sampleRate = getDefaultSampleRate(taxonType);
     this.minFrequency = 0;
     this.maxFrequency = (taxonType === TaxonTypeEnum.bird && !this.showWholeFrequencyRange ? lowAudioSampleRate : this.sampleRate) / 2;
 
@@ -338,7 +338,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
 
   private getSpectrogramRectanglesForAnnotations(speciesAnnotations: IGlobalSpeciesWithAnnotation[], color: string, overlapColor: string) {
     const boxToRectangle = (box: IGlobalSpeciesAnnotationBox, speciesIdx: number, idx: number, groupIdx?: number) => ({
-      label: KerttuGlobalUtil.getBoxLabel(speciesIdx, idx, groupIdx),
+      label: getBoxLabel(speciesIdx, idx, groupIdx),
       area: box.area,
       color: box.overlapsWithOtherSpecies ? overlapColor : color
     });
