@@ -4,7 +4,7 @@
     <label for="search">{{ 'speciesList.filters.search' | translate }}</label>
     <bsg-search-input [(searchQuery)]="query.speciesSearchQuery" (searchQueryChange)="setNewQuery(query)" id="search"></bsg-search-input>
   </div>
-  @if (sites) {
+  @if (sites$ | async; as sites) {
     <div class="col-sm-3">
       <label>{{ 'siteSelection.site' | translate }}</label>
       <select class="form-control input-sm" [ngModel]="query.site" (ngModelChange)="siteChange($event)">
@@ -34,7 +34,6 @@
 <bsg-identification-history-table
   [data]="(data$ | async) ?? undefined"
   [loading]="loading"
-  [includeSiteColumn]="!!sites"
   (pageChange)="onPageChange($event)"
   (sortChange)="onSortChange($event)"
   (rowSelect)="onRowSelect($event)"

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AudioService } from '../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
-import { KerttuGlobalUtil } from '../../kerttu-global-shared/service/kerttu-global-util.service';
+import { getDefaultSampleRate } from '../../kerttu-global-shared/service/kerttu-global-utils';
 import { IGlobalRecording } from '../../kerttu-global-shared/models';
 import { map } from 'rxjs';
 import { Observable, of } from 'rxjs';
@@ -16,7 +16,7 @@ export class AudioCacheLoaderService {
   }
 
   loadAudioToCache(recording: IGlobalRecording): Observable<boolean> {
-    const sampleRate = KerttuGlobalUtil.getDefaultSampleRate(recording.taxonType);
+    const sampleRate = getDefaultSampleRate(recording.taxonType);
 
     try {
       return this.audioService.getAudioBuffer(recording.url, sampleRate, recording.duration).pipe(map(() => true));

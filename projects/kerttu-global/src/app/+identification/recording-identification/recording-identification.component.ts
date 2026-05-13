@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { IdentificationMainComponent } from '../../kerttu-global-shared-modules/identification/identification-main/identification-main.component';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { queryParameterToIntList } from '../../kerttu-global-shared/service/kerttu-global-utils';
 
 @Component({
     selector: 'bsg-recording-identification',
@@ -35,9 +36,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     });
 
     this.siteIdsSub = this.route.queryParams.pipe(
-      map(data => (
-        (data['siteId'] || '').split(',').map((id: string) => parseInt(id, 10)).filter((id: number) => !isNaN(id)))
-      )
+      map(data => (queryParameterToIntList(data['siteId'])))
     ).subscribe(siteIds => {
       this.selectedSites = siteIds;
       this.cdr.markForCheck();

@@ -6,6 +6,7 @@ import {
 } from '../../kerttu-global-shared-modules/identification/identification-main/identification-main.component';
 import { map } from 'rxjs';
 import { ComponentCanDeactivate } from '../../../../../laji/src/app/shared/guards/document-de-activate.guard';
+import { queryParameterToIntList } from '../../kerttu-global-shared/service/kerttu-global-utils';
 
 @Component({
     selector: 'bsg-bat-recording-identification',
@@ -17,6 +18,7 @@ import { ComponentCanDeactivate } from '../../../../../laji/src/app/shared/guard
 export class BatRecordingIdentificationComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(IdentificationMainComponent) identificationComponent?: IdentificationMainComponent;
 
+  selectedSiteIds?: number[];
   selectedSpeciesIds?: number[];
   unknownSpecies = false;
 
@@ -31,12 +33,14 @@ export class BatRecordingIdentificationComponent implements OnInit, OnDestroy, C
   ngOnInit() {
     this.speciesIdsSub = this.route.queryParams.pipe(
       map(data => ({
-        speciesId: (data['speciesId'] || '').split(',').map((id: string) => parseInt(id, 10)).filter((id: number) => !isNaN(id)),
-        unknownSpecies: data['unknownSpecies'] === 'true'
+        speciesId: queryParameterToIntList(data['speciesId']),
+        unknownSpecies: data['unknownSpecies'] === 'true',
+        siteId: queryParameterToIntList(data['siteId'])
       }))
-    ).subscribe(({ speciesId, unknownSpecies }) => {
+    ).subscribe(({ speciesId, unknownSpecies, siteId }) => {
       this.selectedSpeciesIds = speciesId;
       this.unknownSpecies = unknownSpecies;
+      this.selectedSiteIds = siteId;
       this.cdr.markForCheck();
     });
   }
@@ -58,6 +62,13 @@ export class BatRecordingIdentificationComponent implements OnInit, OnDestroy, C
     if (speciesIds?.length > 0) {
       queryParams['speciesId'] = speciesIds.sort().join(',');
     }
+    if (this.selectedSiteIds && this.selectedSiteIds?.length > 0) {
+      queryParams['siteId'] = this.selectedSiteIds?.sort().join(',');
+    }
     this.router.navigate([], { queryParams });
+  }
+
+  onSiteChange(siteId: number|undefined) {
+    this.selectedSiteIds = siteId ? [siteId] : undefined;
   }
 }

@@ -26,15 +26,16 @@ export interface IIdentificationHistoryResponseWithIndex extends IIdentification
     standalone: false
 })
 export class IdentificationHistoryComponent implements OnChanges {
-  @Input() sites?: IGlobalSite[];
   @Input() taxonTypes?: TaxonTypeEnum[];
 
   query: IIdentificationHistoryQuery = { page: 1, includeSkipped: false };
+  sites$: Observable<IGlobalSite[]>;
   data$: Observable<PagedResult<IIdentificationHistoryResponseWithIndex>>;
   loading = false;
 
   private results?: IIdentificationHistoryResponseWithIndex[];
   private queryChange = new BehaviorSubject<IIdentificationHistoryQuery>(this.query);
+  private taxonTypesChange = new BehaviorSubject<TaxonTypeEnum[] | undefined>(undefined);
   private modalSub?: Subscription;
 
   constructor(
@@ -42,6 +43,16 @@ export class IdentificationHistoryComponent implements OnChanges {
     private userService: UserService,
     private modalService: ModalService
   ) {
+    this.sites$ = this.taxonTypesChange.pipe(
+      switchMap(taxonTypes => this.userService.isLoggedIn$.pipe(
+        switchMap(() => this.kerttuGlobalApi.getSites(
+          taxonTypes || null,
+          this.userService.getToken())
+        ),
+        map(result => result.results)
+      ))
+    );
+
     this.data$ = this.queryChange.pipe(
       tap(() => this.loading = true),
       switchMap(query => this.kerttuGlobalApi.getIdentificationHistory(this.userService.getToken(), query)),
@@ -56,6 +67,7 @@ export class IdentificationHistoryComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxonTypes) {
+      this.taxonTypesChange.next(this.taxonTypes);
       this.setNewQuery({ ...this.query, taxonTypes: this.taxonTypes });
     }
   }
