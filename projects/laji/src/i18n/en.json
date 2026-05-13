@@ -280,7 +280,7 @@
   "excel.import.error.requiredFieldsNull": "<p>The following columns must have a value in each line of the file:</p><ul><li>Observers</li><li>One of the following: coordinates, named place or place names</li></ul>",
   "excel.import.failed": "Failed to save some of the data!",
   "excel.import.hideMappings": "Hide mappings",
-  "excel.import.intro": "On this page, you can bring observations to Notebook. You can bring your own templates also as long as the first row of the file is a tittle row. The recognized file extensions are Microsoft Excel Open XML Spreadsheets (xlsx), OpenDocument Spreadsheet (ods), and comma separated values ​​file (csv).",
+  "excel.import.intro": "On this page, you can bring observations to Notebook. You can bring your own templates also as long as the first row of the file is a tittle row. The recognized file extensions are Microsoft Excel Open XML Spreadsheets (xlsx), OpenDocument Spreadsheet (ods), and comma separated values ​​file (csv). Also supported are GIS formats GPKG, GML, KML, GeoJSON and Zip-compressed shapefiles.",
   "excel.import.namesAsIs": "All names as they are",
   "excel.import.observationMap": "Map of observations",
   "excel.import.observations": "<strong>{{cnt}}</strong> observation(s)",

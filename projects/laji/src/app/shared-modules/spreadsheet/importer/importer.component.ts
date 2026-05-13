@@ -17,6 +17,7 @@ import { IFormField, VALUE_IGNORE } from '../model/excel';
 import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadsheetService } from '../service/spreadsheet.service';
+import { GeoConvertService } from '../../../shared/service/geo-convert.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
@@ -71,6 +72,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
     this._forms = of(forms);
   }
 
+  isGisImport?: boolean;
   data?: {[key: string]: any}[];
   mappedData?: {[key: string]: any}[];
   parsedData?: IDocumentData[];
@@ -110,12 +112,14 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   vm$: Observable<ISpreadsheetState>;
 
+  private gisCoordinateField = 'footprintWKT';
   private coordinateField = 'gatherings[*].geometry';
   private namedPlaceField = 'gatherings[*].namedPlaceID';
   private externalLabel = [
     'editors[*]',
     'gatheringEvent.leg[*]'
   ];
+
   showOnlyErroneous = false;
   sheetLoadErrorMsg = '';
 
@@ -124,6 +128,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   constructor(
     private formService: FormService,
     private spreadSheetService: SpreadsheetService,
+    private geoConvertService: GeoConvertService,
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef,
     private importService: ImportService,
@@ -185,12 +190,25 @@ export class ImporterComponent implements OnInit, OnDestroy {
     this.valid = false;
     this.errors = undefined;
     this.parsedData = undefined;
+    this.isGisImport = undefined;
 
     this.spreadsheetFacade.goToStep(Step.importingFile);
-    this.fileService.load(event, this.spreadSheetService.validTypes()).pipe(
+    this.fileService.load(event, [ ...this.spreadSheetService.validTypes(), ...this.geoConvertService.validTypes() ] ).pipe(
       catchError((e) => {
         this.spreadsheetFacade.goToStep(e === FileService.ERROR_INVALID_TYPE ? Step.invalidFileType : Step.empty);
         return of(null);
+      }),
+      switchMap(content => {
+        if (!content || content && this.spreadSheetService.validTypes().includes(content.type)) {
+          return of(content);
+        }
+
+        const formData = new FormData();
+        formData.append('file', new Blob([content.content], { type: content.type }), content.filename);
+        return this.geoConvertService.geoConvertToCSV(formData).pipe(
+          switchMap((res: Blob) => this.fileService.loadFile(res as File)),
+          tap(() => this.isGisImport = true)
+        );
       }),
       switchMap(content => forkJoin([
         of(content),
@@ -258,6 +276,14 @@ export class ImporterComponent implements OnInit, OnDestroy {
         if (Array.isArray(data) || data[0]) {
           this.header = data.shift();
           this.data = data;
+
+          if (this.isGisImport) {
+            Object.keys(this.header!).forEach(key => {
+              if (this.header![key] === this.gisCoordinateField) {
+                this.header![key] = this.coordinateField;
+              }
+            });
+          }
         }
 
         this.excludedFromCopy = form.excludeFromCopy;

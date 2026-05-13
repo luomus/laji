@@ -280,7 +280,7 @@
   "excel.import.error.requiredFieldsNull": "<p>Följande kolumner måste ha ett värde på varje rad i filen:</p><ul><li>Observatörer</li><li>En av följande: koordinater, namngivna plats- eller platsnamn</li ></ul>",
   "excel.import.failed": "Alla observationer kunde inte registreras!",
   "excel.import.hideMappings": "Dölj länkade",
-  "excel.import.intro": "På den här sidan kan du registrera observationer med hjälp av en kalkylbladsfil. De filformat som stöds är Microsoft Excel Open XML Spreadsheet (xlsx), OpenDocument Spreadsheet (ods) och comma separated values file (csv).",
+  "excel.import.intro": "På den här sidan kan du registrera observationer med hjälp av en kalkylbladsfil. De filformat som stöds är Microsoft Excel Open XML Spreadsheet (xlsx), OpenDocument Spreadsheet (ods) och comma separated values file (csv). Också stöds GIS-formaten GPKG, GML, KML, GeoJSON och Zip-komprimerade shapefiler.",
   "excel.import.namesAsIs": "Alla namn som de är",
   "excel.import.observationMap": "Observationskarta",
   "excel.import.observations": "<strong>{{cnt}}</strong> observationsparti",

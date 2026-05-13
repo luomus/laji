@@ -280,7 +280,7 @@
   "excel.import.error.requiredFieldsNull": "<p>Seuraavissa sarakkeissa tulee olla arvo tiedoston joka rivillä:</p><ul><li>Havainnoijat</li><li>Yksi seuraavista: koordinaatit, nimetty paikka tai paikannimet</li></ul>",
   "excel.import.failed": "Kaikkia havaintoeriä ei onnistuttu tallentamaan!",
   "excel.import.hideMappings": "Piilota linkitetyt",
-  "excel.import.intro": "Tällä sivulla voit tallentaa havaintoja taulukkotiedoston avulla. Tuetut tiedostoformaatit ovat Microsoft Excel Open XML Spreadsheet (xlsx), OpenDocument Spreadsheet (ods) ja comma separated values file (csv).",
+  "excel.import.intro": "Tällä sivulla voit tallentaa havaintoja taulukkotiedoston avulla. Tuetut tiedostoformaatit ovat Microsoft Excel Open XML Spreadsheet (xlsx), OpenDocument Spreadsheet (ods) ja comma separated values file (csv). Myös tuettuja ovat GIS-formaatit GPKG, GML, KML, GeoJSON and Zip-pakatut shapefilet.",
   "excel.import.namesAsIs": "Kaikki nimet sellaisenaan",
   "excel.import.observationMap": "Havaintokartta",
   "excel.import.observations": "<strong>{{cnt}}</strong> havaintoerä(ä)",
