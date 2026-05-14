@@ -1466,7 +1466,7 @@
   "observation.info.habitat": "Rajaa havaintoja elinympäristöjen mukaan. Elinympäristöluokat on merkitty uhanalaisuusarvioinnin 2019 yhteydessä.",
   "observation.info.hasDocumentMedia": " Huomaa, että Media-välilehdellä näytetään ainoastaan havaintojen kuvia. Siirry luettelon kautta tarkastelemaan koko havaintoerää nähdäksesi kuvat etiketeistä.",
   "observation.info.hasGatheringMedia": "Huomaa, että Media-välilehdellä näytetään ainoastaan havaintojen kuvia. Siirry luettelon kautta tarkastelemaan koko havaintoerää nähdäksesi elinympäristön kuvat.",
-  "observation.info.hasSequenceText": "Rajaa havaintoihin/näytteisiin, joista on tallenenttu DNA-sekvenssi (FASTA muodossa)",
+  "observation.info.hasSequenceText": "Rajaa havaintoihin/näytteisiin, joista on tallenenttu DNA-sekvenssi (FASTA-muodossa)",
   "observation.info.identify": "Hae havaintoja sen perusteella tarvitsevatko ne lajinmäärityksen tai muun taksonomisen määrityksen.",
   "observation.info.informalTaxonGroup": "Voit rajata havaintoja eliöryhmällä. Eliöryhmät ovat osittain taksonomisia ryhmiä (esimerkiksi sammakot) mutta osittain epätaksonomisia (esimerkiksi tatit). Mikäli lajiryhmien joukosta ei löydy toivomaasi taksonia, voit käyttää Taksonin nimi -rajausta, johon voi syöttää minkä tahansa Lajitietokeskuksen tunteman ylemmän taksonin nimen.",
   "observation.info.invasive": "Vieraslajit ovat lajeja, jotka ovat levinneet uudelle alueelle ihmisen mukana joko tahattomasti tai tarkoituksella. Voit rajata havainnot koskemaan ainoastaan vieraslajeja (Kyllä) tai ainoastaan lajeja jotka eivät ole vieraslajeja (Ei).",

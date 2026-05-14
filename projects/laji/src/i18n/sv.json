@@ -1466,7 +1466,7 @@
   "observation.info.habitat": "Begränsa observationer efter habitat. Habitatkategorier har markerats främst i samband med hotbedömningen 2019.",
   "observation.info.hasDocumentMedia": " Observera att fliken Media bara visar bilder av observationerna. Bläddra igenom listan för att se hela observationspartiet för att se bilder från etiketterna.",
   "observation.info.hasGatheringMedia": "Observera att fliken Media bara visar bilder av observationerna. Bläddra igenom listan för att se hela observationspartiet för att se bilder av habitat.",
-  "observation.info.hasSequenceText": "Rajaa havaintoihin/näytteisiin, joista on tallenenttu DNA-sekvenssi (FASTA muodossa)",
+  "observation.info.hasSequenceText": "Begränsning till observationer/prover för vilka en DNA-sekvens har registrerats (i FASTA-format)",
   "observation.info.identify": "Sök observationer baserat på om de behöver artbestämning eller annan taxonomisk bestämning.",
   "observation.info.informalTaxonGroup": "Du kan begränsa observationer efter organismgrupp. Organismgrupper är dels taxonomiska grupper (t. ex. grodor) men dels icke-taxonomiska (t. ex. soppar). Om du inte hittar det taxon du vill ha bland artgrupperna kan du använda fältet Artnamn där du kan ange namnet på en högre taxon som är känd av Artdatacentret.",
   "observation.info.invasive": "Främmande arter är arter som har spridit sig till ett nytt område med människor, antingen oavsiktligt eller avsiktligt. Du kan begränsa observationerna till endast främmande arter (Ja) eller endast arter som inte är främmande arter (Nej).",
