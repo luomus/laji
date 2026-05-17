@@ -6,8 +6,6 @@ import { defineConfig, devices } from '@playwright/test';
  */
 require('dotenv').config();
 
-const isCI = !!process.env.CI;
-
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -17,11 +15,11 @@ export default defineConfig({
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: isCI,
+  forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: isCI ? 2 : 0,
+  retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: isCI ? 1 : undefined,
+  workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'line',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -81,13 +79,9 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    // Angular's CI dev server is running through Vite/esbuild. Disabling prebundling
-    // avoids the esbuild service deadlock that can prevent Playwright from starting.
-    command: isCI
-      ? 'npm run ng-high-memory -- serve laji --configuration=local --prebundle=false'
-      : 'npm start',
+    command: 'npm start',
     url: 'http://localhost:3000',
-    timeout: 10 * 60 * 1000,
-    reuseExistingServer: !isCI,
+    timeout: 5 * 60 * 1000,
+    reuseExistingServer: !process.env.CI,
   },
 });
