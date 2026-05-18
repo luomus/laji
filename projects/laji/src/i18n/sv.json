@@ -274,7 +274,7 @@
   "excel.import.error.alreadyUploaded": "<strong>Den här filen har redan laddats upp.</strong> Kontrollera att du har valt rätt fil. Om du är säker på att du vill spara samma fil, gör en mindre ändring i den och försök igen.",
   "excel.import.error.alreadyUploadedPartially": "<strong>Filen är redan delvis laddad.</strong> Ta bort de rader från filen som redan har sparats framgångsrikt och försök igen.",
   "excel.import.error.doneWithErrors": "<strong>Inte alla observationer sparades! </strong> I den första kolumnen i tabellen nedan kan du se de rader som inte lyckades skickas. Du kan försöka skicka på nytt genom att radera de rader som skickades och skicka de misslyckade raderna på nytt. Om problemet inte löses, kontakta underhållsteamet och bifoga om möjligt även den problematiska filen.",
-  "excel.import.error.invalidFileType": "<strong> Ogiltigt filformat.</strong> Endast filformaten Excel, OpenDocument och csv är tillåtna.",
+  "excel.import.error.invalidFileType": "<strong> Ogiltigt filformat.</strong> Endast filformaten Excel, OpenDocument, csv och vissa GIS-format är tillåtna.",
   "excel.import.error.invalidFormId": "Du kan inte spara filer med namnet {{formId}} här, eftersom detta skulle spara data till ett annat dataset. Ta bort koden från filnamnet och försök igen.",
   "excel.import.error.missingSplitColumn": "Fält(en) <strong>{{column}}</strong> saknas i filen. Dessa fält är obligatoriska om fältet <strong>{{field}}</strong> finns.",
   "excel.import.error.requiredFieldsNull": "<p>Följande kolumner måste ha ett värde på varje rad i filen:</p><ul><li>Observatörer</li><li>En av följande: koordinater, namngivna plats- eller platsnamn</li ></ul>",
