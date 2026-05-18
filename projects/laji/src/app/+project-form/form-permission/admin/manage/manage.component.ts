@@ -7,6 +7,7 @@ import { LocalizeRouterService } from '../../../../locale/localize-router.servic
 import { AbstractPermission } from '../abstract-permission';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';
 import { TranslateService } from '@ngx-translate/core';
+import { UserService } from '../../../../shared/service/user.service';
 
 @Component({
     selector: 'laji-manage',
@@ -24,6 +25,7 @@ export class ManageComponent extends AbstractPermission implements OnInit, OnDes
   constructor(
     protected router: Router,
     protected formPermissionService: FormPermissionService,
+    protected userService: UserService,
     protected localizeRouterService: LocalizeRouterService,
     private route: ActivatedRoute,
     private projectFormService: ProjectFormService,
