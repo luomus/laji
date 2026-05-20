@@ -282,6 +282,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     }
     this.loading = true;
     this.changeDetectorRef.markForCheck();
+    const orderBy = [...this.orderBy];
+    if (this.defaultOrder) {
+      orderBy.push(this.defaultOrder);
+    }
     const aggregate$ = this.resultService.getAggregate(
       this.query,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -289,15 +293,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       page,
       this.pageSize,
       this.mode,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      [...this.orderBy, this.defaultOrder!],
+      orderBy,
       this.lang,
       this.useStatistics
     );
-    const orderBy = [...this.orderBy];
-    if (this.defaultOrder) {
-      orderBy.push(this.defaultOrder);
-    }
     const list$ = this.resultService.getList(
       this.query,
       this.getSelectFields(this.columnSelector.columns, this.query),
