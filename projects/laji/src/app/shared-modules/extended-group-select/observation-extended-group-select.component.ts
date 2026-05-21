@@ -1,10 +1,20 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, forwardRef, Input, Output, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  Output,
+  OnInit,
+  OnChanges
+} from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { map, Observable, of, shareReplay } from 'rxjs';
 import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree-select/tree-select.component';
+import { equalsArray } from '../../shared/utils';
 
 type InformalTaxonGroup = components['schemas']['store-informalTaxonGroup'];
 
@@ -26,7 +36,7 @@ export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class ObservationExtendedGroupSelectComponent implements OnInit {
+export class ObservationExtendedGroupSelectComponent implements OnInit, OnChanges {
 
   @Input() query!: WarehouseQueryInterface;
   @Input() modalButtonLabel = '';
@@ -53,6 +63,15 @@ export class ObservationExtendedGroupSelectComponent implements OnInit {
   ngOnInit() {
     this.groupsTree$ = this.initGroupTree().pipe(shareReplay(1));
     this.groups$ = this.initSelectionGroups(this.includedOptions, this.excludedOptions);
+  }
+
+  ngOnChanges() {
+    const [ includedOptions, excludedOptions ] = this.getOptions();
+    if (!equalsArray(this.includedOptions, includedOptions) || !equalsArray(this.excludedOptions, excludedOptions)) {
+      this.includedOptions = includedOptions;
+      this.excludedOptions = excludedOptions;
+      this.groups$ = this.initSelectionGroups(this.includedOptions, this.excludedOptions);
+    }
   }
 
   initGroupTree(): Observable<TreeOptionsNode[]> {
