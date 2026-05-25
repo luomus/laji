@@ -31,7 +31,7 @@
 </div>
 @if (asEditor || asObserver || includeQualityIssues) {
   <laji-select
-    [selected]="includeQualityIssues ? [includeQualityIssues] : []"
+    [selected]="includeQualityIssues"
     (selectedChange)="onIncludeQualityIssuesChange($event)"
     [multiple]="false"
     [useFilter]="false"
