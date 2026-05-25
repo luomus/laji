@@ -32,7 +32,7 @@
 @if (asEditor || asObserver || includeQualityIssues) {
   <laji-select
     [selected]="includeQualityIssues ? [includeQualityIssues] : []"
-    (selectedChange)="onIncludeQualityIssuesChange($event[0])"
+    (selectedChange)="onIncludeQualityIssuesChange($event)"
     [multiple]="false"
     [useFilter]="false"
     [title]="'observation.form.qualityIssues' | translate"

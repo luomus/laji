@@ -60,7 +60,11 @@ export class OwnObservationsFilterComponent {
     }
   }
 
-  onIncludeQualityIssuesChange(value: string) {
+  onIncludeQualityIssuesChange(value: string | string[]) {
+    if (Array.isArray(value)) {
+      value = value[0];
+    }
+
     this.includeQualityIssues = value;
     this.qualityIssuesFilterChange.emit(value);
   }
