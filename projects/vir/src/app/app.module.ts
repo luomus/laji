@@ -27,7 +27,7 @@ import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.modul
 import { VirAuthenticatedHttpInterceptor } from './service/vir-authenticated-http.interceptor';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { detectLangFromPath } from 'projects/laji/src/app/app.module';
-import { setLocale } from 'projects/laji/src/app/locale/locale.component';
+import { setLocale } from 'projects/laji/src/app/app-routing.modules';
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
