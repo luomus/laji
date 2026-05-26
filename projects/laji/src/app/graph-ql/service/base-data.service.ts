@@ -17,7 +17,7 @@ export interface IBaseData {
     results: {
     id: string;
     label: string;
-    }[]
+    }[];
   };
   alts: {
     results: {
@@ -34,7 +34,7 @@ export interface IBaseData {
     results: {
       enumeration: string;
       property: string;
-    }[]
+    }[];
   };
 }
 

@@ -39,7 +39,7 @@ export function createApollo(
         'person-token': loggedIn ? userService.getToken() : undefined,
         'accept-language': translateService.getCurrentLang() ?? 'en',
       }
-    }
+    };
   });
 
   return {
