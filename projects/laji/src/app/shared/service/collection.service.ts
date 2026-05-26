@@ -170,7 +170,7 @@ export class CollectionService {
         console.error('GraphQL error when getting collections tree: ', err, caught);
         return of({data: { collection: { results: [] } }});
       }),
-      map(result => (result?.data?.collection?.results ?? []).filter((node: any): node is ICollectionsTreeNode => !!node))
+      map(result => (result?.data?.collection?.results ?? []).filter((node): node is ICollectionsTreeNode => !!node))
     );
   }
 
