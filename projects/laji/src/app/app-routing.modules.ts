@@ -14,7 +14,7 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { PlatformService } from './root/platform.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { LAST_LANG_KEY } from './locale/localize-router.service';
-import { mapTo, take } from 'rxjs/operators';
+import { map, of, take } from 'rxjs';
 
 import moment from 'moment';
 import 'moment/locale/fi';
@@ -32,13 +32,17 @@ export function setLocale(lang: string) {
     window.document.documentElement.lang = lang;
     localStorage.store(LAST_LANG_KEY, lang);
   }
-  return translate.use(lang);
+  if (lang !== translate.getCurrentLang()) {
+    return translate.use(lang).pipe(
+      map(() => true),
+      take(1)
+    );
+  } else {
+    return of(true);
+  }
 }
 
-const localeResolver = (lang: string): ResolveFn<boolean> => () => setLocale(lang).pipe(
-  take(1),
-  mapTo(true)
-);
+const localeResolver = (lang: string): ResolveFn<boolean> => () => setLocale(lang);
 
 const baseRoutes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule)},
