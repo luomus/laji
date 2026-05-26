@@ -21,7 +21,7 @@ import { GraphQLModule } from '../../../laji/src/app/graph-ql/graph-ql.module';
 import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { detectLangFromPath } from 'projects/laji/src/app/app.module';
-import { setLocale } from 'projects/laji/src/app/locale/locale.component';
+import { setLocale } from 'projects/laji/src/app/app-routing.modules';
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {

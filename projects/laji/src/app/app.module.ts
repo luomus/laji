@@ -22,7 +22,7 @@ import { BrowserModule, provideClientHydration, Title } from '@angular/platform-
 import { LajiTitle } from './shared/service/laji-title';
 import { LocaleModule } from './locale/locale.module';
 import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { setLocale } from './locale/locale.component';
+import { setLocale } from './app-routing.modules';
 
 export function createLoggerLoader(api: LajiApiClientBService): ILogger {
   if (environment.production) {
