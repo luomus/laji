@@ -253,7 +253,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     }
     this._shouldSort = false;
     return this.baseDataService.getBaseData().pipe(
-      map(data => data.alts || []),
+      map(data => data.alts.results || []),
       map(alts => alts.find(alt => alt.id === this.alt)),
       map(alt => (alt && alt.options || []).map(option => ({id: option.id, value: option.label, info: this.addOptionInfo(option)}))),
       map(options => this.whiteList ? options.filter(option => this.whiteList?.includes(option.id)) : options),

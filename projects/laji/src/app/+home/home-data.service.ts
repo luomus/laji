@@ -39,9 +39,7 @@ export interface IHomeData {
   };
   identify: {
     results: {
-      unit: {
-        media: Pick<Image, 'thumbnailURL'>[];
-      };
+      media: Pick<Image, 'thumbnailURL'>;
     }[];
   };
   news: {
@@ -56,58 +54,85 @@ if (environment.type === Global.type.vir) {
   NEWS_TAGS.push('viranomaiset');
 }
 
-/* eslint-disable max-len */
 const HOME_QUERY = gql`
   query($pageSize: Int = 5, $after: String = "", $week: String = "") {
-    observations: units(cache: true) {
+    observations: warehouse_query_unit_count(
+      cache: true
+    ) {
       total
     }
-    today: units(cache: true, countryId: "ML.206", firstLoadedSameOrAfter: $after) {
+    today: warehouse_query_unit_count(
+      cache: true
+      countryId: "ML.206"
+      firstLoadedSameOrAfter: $after
+    ) {
       total
     }
-    unitsLastWeek: units(cache: true, countryId: "ML.206", firstLoadedSameOrAfter: $week) {
+    unitsLastWeek: warehouse_query_unit_count(
+      cache: true
+      countryId: "ML.206"
+      firstLoadedSameOrAfter: $week
+    ) {
       total
     }
-    speciesToday: units(cache: true, aggregateBy: "unit.linkings.taxon.id", countryId: "ML.206", firstLoadedSameOrAfter: $after) {
+    speciesToday: warehouse_query_unit_aggregate(
+      cache: true
+      aggregateBy: unit_linkings_taxon_id
+      countryId: "ML.206"
+      firstLoadedSameOrAfter: $after
+    ) {
       total
     }
-    species: units(cache: true, aggregateBy: "unit.linkings.taxon.id", taxonRankId: "MX.species") {
+    species: warehouse_query_unit_aggregate(
+      cache: true
+      aggregateBy: unit_linkings_taxon_id
+      taxonRankId: "MX.species"
+    ) {
       total
     }
-    sources: units(cache: true, aggregateBy: "document.collectionId") {
+    sources: warehouse_query_unit_aggregate(
+      cache: true
+      aggregateBy: document_collectionId
+    ) {
       total
     }
-    preservedSpecimens: units(cache: true, superRecordBasis: "PRESERVED_SPECIMEN") {
+    preservedSpecimensWithImage: warehouse_query_unit_count(
+      cache: true
+      superRecordBasis: PRESERVED_SPECIMEN
+      hasMedia: true
+    ) {
       total
     }
-    preservedSpecimensWithImage: units(cache: true, superRecordBasis: "PRESERVED_SPECIMEN", hasMedia: true) {
-      total
-    },
-    identify: units(cache: true, hasUnitMedia: true, unidentified: true, sourceId: "KE.389,KE.1221,KE.176", page: 1, pageSize: 12, orderBy: "document.firstLoadDate DESC") {
+    identify: warehouse_query_unitMedia_list(
+      cache: true
+      unidentified: true
+      sourceId: "KE.389,KE.1221,KE.176"
+      orderBy: document_firstLoadDate
+    ) {
       results {
-        unit {
-          media {
-            thumbnailURL
-          }
+        media {
+          thumbnailURL
         }
       }
-    },
-    news(pageSize: $pageSize, tag: "${NEWS_TAGS.join(',')}") {
-      prevPage,
-      nextPage,
+    }
+    news: NewsController_getPage(
+      pageSize: $pageSize
+      tag: "${NEWS_TAGS.join(',')}"
+    ) {
+      prevPage
+      nextPage
       results {
-        id,
-        title,
-        tag,
-        posted,
-        external,
-        externalURL,
+        id
+        title
+        tags
+        posted
+        external
+        externalURL
         posted
       }
     }
   }
 `;
-/* eslint-enable max-len */
 
 @Injectable({
   providedIn: 'root'

@@ -39,8 +39,10 @@ export interface ICollectionsTreeNode {
 }
 
 interface IQueryResult {
-  collection: ICollectionsTreeNode[];
-}
+  collection: {
+    results: ICollectionsTreeNode[];
+  };
+};
 
 export interface ICollectionCounts {
   specimen?: number;
@@ -53,20 +55,9 @@ export class CollectionService {
 
   private allWarehouseCollection$?: Observable<string[]>;
   private TREE_QUERY = gql`
-  query {
-    collection {
-      id
-      longName
-      hasChildren
-      collectionType
-      collectionQuality
-      children {
-        id
-        longName
-        hasChildren
-        collectionType
-        collectionQuality
-        children {
+    query {
+      collection: CollectionsController_getTree {
+        results {
           id
           longName
           hasChildren
@@ -90,13 +81,23 @@ export class CollectionService {
                 hasChildren
                 collectionType
                 collectionQuality
+                children {
+                  id
+                  longName
+                  hasChildren
+                  children {
+                    id
+                    longName
+                    hasChildren
+                  }
+                }
               }
             }
           }
         }
       }
     }
-  }`;
+  `;
 
   constructor(
     private graphQlService: GraphQLService,
@@ -167,9 +168,9 @@ export class CollectionService {
     }).pipe(
       catchError((err, caught) => {
         console.error('GraphQL error when getting collections tree: ', err, caught);
-        return of({data: { collection: [] }});
+        return of({data: { collection: { results: [] } }});
       }),
-      map(result => (result?.data?.collection ?? []).filter((node): node is ICollectionsTreeNode => !!node))
+      map(result => (result?.data?.collection?.results ?? []).filter((node: any): node is ICollectionsTreeNode => !!node))
     );
   }
 
