@@ -9,7 +9,7 @@ import { OnlyLoggedIn } from '../../../laji/src/app/shared/route/only-logged-in'
 
 const mainRoutes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./home/home.module').then(m => m.HomeModule), data: {preload: true}},
-  {path: 'news', loadChildren: () => import('../../../laji/src/app/+news/news.module').then(m => m.NewsModule), data: {title: 'news.title'}},
+  {path: 'news', loadChildren: () => import('../../../laji/src/app/news/news.module').then(m => m.NewsModule), data: {title: 'news.title'}},
   {path: 'about', loadChildren: () => import('../../../laji/src/app/information/information.module').then(m => m.InformationModule)},
   {path: 'view', loadChildren: () => import('../../../laji/src/app/+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document'}},
   {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule)},

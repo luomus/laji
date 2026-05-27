@@ -6,7 +6,7 @@ import { HomeDataService, IHomeData } from './home-data.service';
 import { Image } from '../shared/gallery/image-gallery/image.interface';
 import { Router } from '@angular/router';
 import { Global } from '../../environments/global';
-import { NewsFacade } from '../+news/news.facade';
+import { NewsFacade } from '../news/news.facade';
 import { environment } from '../../environments/environment';
 import { MultiLanguage } from '../shared/model/MultiLanguage';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';

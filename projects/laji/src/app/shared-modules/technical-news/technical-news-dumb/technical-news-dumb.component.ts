@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { News } from '../../../+news/news.facade';
+import { News } from '../../../news/news.facade';
 
 @Component({
     selector: 'laji-technical-news-dumb',
