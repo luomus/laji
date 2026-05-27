@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { map, catchError, switchMap } from 'rxjs';
 import { of } from 'rxjs';
-import { HomeDataService } from '../../+home/home-data.service';
+import { HomeDataService } from '../../home/home-data.service';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({

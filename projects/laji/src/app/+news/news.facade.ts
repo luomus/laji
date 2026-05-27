@@ -5,7 +5,7 @@ import {
   distinctUntilChanged,
   map, switchMap, take
 } from 'rxjs';
-import { HomeDataService } from '../+home/home-data.service';
+import { HomeDataService } from '../home/home-data.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { components } from 'projects/laji-api-client/generated/api';
