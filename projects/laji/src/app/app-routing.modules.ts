@@ -23,9 +23,9 @@ const baseRoutes: Routes = [
   {path: 'taxon', loadChildren: () => import('./+taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {
     title: 'navigation.taxonomy'
   }},
-  {path: 'kartta', loadChildren: () => import('./+map/map.module').then(m => m.MapModule), data: {preload: false, canonical: '/map'}},
+  {path: 'kartta', loadChildren: () => import('./map/map.module').then(m => m.MapModule), data: {preload: false, canonical: '/map'}},
   {
-    path: 'map', loadChildren: () => import('./+map/map.module').then(m => m.MapModule),
+    path: 'map', loadChildren: () => import('./map/map.module').then(m => m.MapModule),
     data: {title: 'navigation.map', preload: false }
   },
   {path: 'error/404', pathMatch: 'full', component: NotFoundComponent},
