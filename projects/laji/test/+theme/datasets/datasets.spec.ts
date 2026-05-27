@@ -1,6 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 import { DatasetsPage } from './datasets.po';
-import { loginWithPermanentToken } from '../../+user/user.po';
+import { loginWithPermanentToken } from '../../user/user.po';
 
 test.describe('Datasets page', () => {
   test.describe.configure({ mode: 'serial' });

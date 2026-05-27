@@ -24,7 +24,7 @@ const routes: Routes = [
       .then(m => m.RegionalModule), data: {title: 'iucn.regional.title'}},
   {path: 'publications', loadChildren: () => import('./+publications/publications.module')
       .then(m => m.PublicationsModule), data: {title: 'iucn.publications.title'}},
-  {path: 'user', loadChildren: () => import('../../../laji/src/app/+user/user.module').then(m => m.UserModule)},
+  {path: 'user', loadChildren: () => import('../../../laji/src/app/user/user.module').then(m => m.UserModule)},
   {path: 'view', loadChildren: () => import('../../../laji/src/app/+viewer/viewer.module')
       .then(m => m.ViewerModule), data: {title: 'viewer.document'}},
   {path: 'results', loadChildren: () => import('./taxonomy/iucn-taxonomy.module').then(m => m.IucnTaxonomyModule), data: {preload: true}},

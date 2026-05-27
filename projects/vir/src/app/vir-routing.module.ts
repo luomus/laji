@@ -31,7 +31,7 @@ const routes: Routes = [
     children: [...mainRoutes],
     canActivate: [OnlyLoggedIn]
   },
-  {path: 'user', loadChildren: () => import('../../../laji/src/app/+user/user.module').then(m => m.UserModule)}
+  {path: 'user', loadChildren: () => import('../../../laji/src/app/user/user.module').then(m => m.UserModule)}
 ];
 
 const notFoundRoute = {path: '**', component: NotFoundComponent, canActivate: [OnlyLoggedIn]};

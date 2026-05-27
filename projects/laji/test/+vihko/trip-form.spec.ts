@@ -1,5 +1,5 @@
 import { expect, Page, test } from '@playwright/test';
-import { loginWithPermanentToken } from '../+user/user.po';
+import { loginWithPermanentToken } from '../user/user.po';
 import { VihkoHomePage } from './home.po';
 import { TripFormPage } from './trip-form.po';
 import { NavPage } from '../shared/nav.po';

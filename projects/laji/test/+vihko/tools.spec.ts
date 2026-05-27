@@ -2,7 +2,7 @@ import * as path from 'path';
 import { SpreadsheetPage } from '../shared/spreadsheet.po';
 import { ToolsPage } from './tools.po';
 import { expect, test } from '@playwright/test';
-import { loginWithPermanentToken } from '../+user/user.po';
+import { loginWithPermanentToken } from '../user/user.po';
 import { DocumentFormView, TripFormPage } from './trip-form.po';
 import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
 

@@ -1,6 +1,6 @@
 import { SubmissionsPage } from './submissions.po'
 import { test, expect } from '@playwright/test';
-import { loginWithPermanentToken } from '../+user/user.po';
+import { loginWithPermanentToken } from '../user/user.po';
 
 test.describe('Trip form page', () => {
   test.describe.configure({mode: 'serial'});

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { loginWithPermanentToken } from '../+user/user.po';
+import { loginWithPermanentToken } from '../user/user.po';
 import { ObservationPage } from './observation.po';
 import { MapPageObject } from '@luomus/laji-map/test-export/test-utils';
 
