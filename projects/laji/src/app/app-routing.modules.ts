@@ -20,7 +20,7 @@ const baseRoutes: Routes = [
   {path: 'observation', loadChildren: () => import('./observation/observation.module').then(m => m.ObservationModule), data: {
     title: 'navigation.observation'
   }},
-  {path: 'taxon', loadChildren: () => import('./+taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {
+  {path: 'taxon', loadChildren: () => import('./taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {
     title: 'navigation.taxonomy'
   }},
   {path: 'kartta', loadChildren: () => import('./map/map.module').then(m => m.MapModule), data: {preload: false, canonical: '/map'}},

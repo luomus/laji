@@ -19,7 +19,7 @@ const mainRoutes: Routes = [
     preload: true,
     title: 'navigation.observation'
   }},
-  {path: 'taxon', loadChildren: () => import('../../../laji/src/app/+taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {
+  {path: 'taxon', loadChildren: () => import('../../../laji/src/app/taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {
     preload: true,
     title: 'navigation.taxonomy'
   }},

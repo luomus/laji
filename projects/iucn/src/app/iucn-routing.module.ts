@@ -27,7 +27,7 @@ const routes: Routes = [
   {path: 'user', loadChildren: () => import('../../../laji/src/app/+user/user.module').then(m => m.UserModule)},
   {path: 'view', loadChildren: () => import('../../../laji/src/app/+viewer/viewer.module')
       .then(m => m.ViewerModule), data: {title: 'viewer.document'}},
-  {path: 'results', loadChildren: () => import('./+taxonomy/iucn-taxonomy.module').then(m => m.IucnTaxonomyModule), data: {preload: true}},
+  {path: 'results', loadChildren: () => import('./taxonomy/iucn-taxonomy.module').then(m => m.IucnTaxonomyModule), data: {preload: true}},
 ];
 
 const routesWithLang: Routes = [
