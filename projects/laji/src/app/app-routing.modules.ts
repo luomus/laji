@@ -32,7 +32,7 @@ const baseRoutes: Routes = [
   {path: 'theme/checklist', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.checklist'}, pathMatch: 'full'},
   {path: 'theme/ykj', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.ykj'}, pathMatch: 'full'},
   {path: 'theme/emk', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.biogeographicalProvinces'}, pathMatch: 'full'},
-  {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule), data: {preload: false}},
+  {path: 'theme', loadChildren: () => import('./theme/theme.module').then(m => m.ThemeModule), data: {preload: false}},
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
   // {path: 'shell', component: ForumComponent},
   {path: 'forum', component: ForumComponent},
