@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from '@angular/core';
-import { SearchQueryService } from '../../../+observation/search-query.service';
+import { SearchQueryService } from '../../../observation/search-query.service';
 
 export const createActiveFiltersList = (query: Record<string, any>, skip: string[] = []) => {
   const keys = Object.keys(query);

@@ -17,7 +17,7 @@ const baseRoutes: Routes = [
   {path: 'user', loadChildren: () => import('./+user/user.module').then(m => m.UserModule), data: {preload: false}},
   {path: 'view', loadChildren: () => import('./+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document', preload: false}},
   {path: 'vihko', loadChildren: () => import('./haseka/haseka.module').then(m => m.HasekaModule), data: {title: 'haseka.title', preload: false}},
-  {path: 'observation', loadChildren: () => import('./+observation/observation.module').then(m => m.ObservationModule), data: {
+  {path: 'observation', loadChildren: () => import('./observation/observation.module').then(m => m.ObservationModule), data: {
     title: 'navigation.observation'
   }},
   {path: 'taxon', loadChildren: () => import('./+taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {

@@ -28,8 +28,8 @@ import { ObservationTableColumn } from '../model/observation-table-column';
 import { DatatableUtil } from '../../datatable/service/datatable-util.service';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
-import { SearchQueryService } from '../../../+observation/search-query.service';
-import { DataFetchMode } from '../../../+observation/observation-data.service';
+import { SearchQueryService } from '../../../observation/search-query.service';
+import { DataFetchMode } from '../../../observation/observation-data.service';
 import { isEmptyWarehouseQuery } from '../../../shared/api/util';
 
 interface IInternalObservationTableColumn extends ObservationTableColumn {

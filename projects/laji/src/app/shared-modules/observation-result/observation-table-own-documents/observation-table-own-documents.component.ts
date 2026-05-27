@@ -36,7 +36,7 @@ import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
 import { RowDocument } from '../../own-submissions/own-datatable/own-datatable.component';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { components, paths } from 'projects/laji-api-client/generated/api';
-import { DataFetchMode } from '../../../+observation/observation-data.service';
+import { DataFetchMode } from '../../../observation/observation-data.service';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type Document = components['schemas']['store-document'];

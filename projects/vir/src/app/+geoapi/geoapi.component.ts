@@ -3,7 +3,7 @@ import {
   ApiKeyRequest
 } from '../../../../laji/src/app/shared-modules/download-modal/apikey-modal/apikey-modal.component';
 import { Logger } from '../../../../laji/src/app/shared/logger';
-import { VIR_FILTER_SHORTCUT_QUERY_PARAMS } from '../../../../laji/src/app/+observation/form/observation-form.component';
+import { VIR_FILTER_SHORTCUT_QUERY_PARAMS } from '../../../../laji/src/app/observation/form/observation-form.component';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({

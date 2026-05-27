@@ -16,7 +16,7 @@ import { AnnotationTableComponent } from './quality/annotation-table/annotation-
 import { QualityFiltersComponent } from './quality/quality-filters/quality-filters.component';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { LajiUiModule } from '../../../../laji-ui/src/public-api';
-import { ObservationComponentModule } from '../+observation/observation-component.module';
+import { ObservationComponentModule } from '../observation/observation-component.module';
 import { GeneticResourceComponent } from './genetic-resource/genetic-resource.component';
 import { TableColumnService } from '../shared-modules/datatable/service/table-column.service';
 import { ObservationTableColumnService } from '../shared-modules/datatable/service/observation-table-column.service';

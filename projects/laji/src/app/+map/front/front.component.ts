@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SearchQueryService } from '../../+observation/search-query.service';
+import { SearchQueryService } from '../../observation/search-query.service';
 import { FooterService } from '../../shared/service/footer.service';
 import { geoJSONToISO6709, ISO6709ToGeoJSON } from '@luomus/laji-map/lib/utils';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';

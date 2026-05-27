@@ -36,7 +36,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ValueDecoratorService } from '../../../+observation/result-list/value-decorator.sevice';
+import { ValueDecoratorService } from '../../../observation/result-list/value-decorator.sevice';
 import { Logger } from '../../../shared/logger/logger.service';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';

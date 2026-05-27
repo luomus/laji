@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AbstractObservation } from '../../+observation/abstract-observation';
-import { ObservationFacade } from '../../+observation/observation.facade';
+import { AbstractObservation } from '../../observation/abstract-observation';
+import { ObservationFacade } from '../../observation/observation.facade';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import * as Util from '../../shared/utils';
 import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { SampleTableColumnService } from './sample-table-column.service';
-import { SearchQueryService } from '../../+observation/search-query.service';
-import { ObservationDataService } from '../../+observation/observation-data.service';
+import { SearchQueryService } from '../../observation/search-query.service';
+import { ObservationDataService } from '../../observation/observation-data.service';
 
 @Component({
     selector: 'laji-genetic-resource',
