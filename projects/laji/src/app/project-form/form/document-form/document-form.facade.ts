@@ -15,7 +15,7 @@ import moment from 'moment';
 import { LocalStorage } from 'ngx-webstorage';
 import { Global } from 'projects/laji/src/environments/global';
 import { Logger } from '../../../shared/logger';
-import { LajiFormUtil } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-util.service';
+import { LajiFormUtil } from 'projects/laji/src/app/project-form/form/laji-form/laji-form-util.service';
 import equals from 'deep-equal';
 import { ProjectFormService } from '../../../shared/service/project-form.service';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';

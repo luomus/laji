@@ -22,7 +22,7 @@ import * as Util from '../../../../shared/utils';
 import { UserService } from '../../../../shared/service/user.service';
 import { RowDocument } from '../../../../shared-modules/own-submissions/own-datatable/own-datatable.component';
 import { Observable } from 'rxjs';
-import { LajiFormUtil } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-util.service';
+import { LajiFormUtil } from 'projects/laji/src/app/project-form/form/laji-form/laji-form-util.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 import { components } from 'projects/laji-api-client/generated/api.d';
 
