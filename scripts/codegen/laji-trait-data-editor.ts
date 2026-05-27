@@ -5,9 +5,9 @@ import {
 } from './shared/shared';
 
 const generateDatasetTraitEditor = async () => {
-  const program = ts.createProgram(['./projects/laji-api-client-b/generated/api.d.ts'], {});
+  const program = ts.createProgram(['./projects/laji-api-client/generated/api.d.ts'], {});
   const checker = program.getTypeChecker();
-  const sourceFile = program.getSourceFile('./projects/laji-api-client-b/generated/api.d.ts');
+  const sourceFile = program.getSourceFile('./projects/laji-api-client/generated/api.d.ts');
   const tasks = [] as Promise<void>[];
   ts.forEachChild(sourceFile!, (node) => {
     if (ts.isInterfaceDeclaration(node) && node.name.text === 'paths') {

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 export const MAX_TAXA_SIZE = 30;
 
 @Injectable()
 export class HorizontalChartDataService {
   constructor(
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
 

@@ -7,7 +7,7 @@ import { FormPermissionService } from '../../shared/service/form-permission.serv
 import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
 import { MultiLanguage } from '../../shared/model/MultiLanguage';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type FormListing = components['schemas']['FormListing'];
 

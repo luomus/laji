@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { ProjectFormService } from '../../shared/service/project-form.service';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Form = components['schemas']['Form'];
 type Document = components['schemas']['store-document'];

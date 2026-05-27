@@ -14,7 +14,7 @@ import { BaseDataService } from '../../../graph-ql/service/base-data.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { IdType, SelectOption } from '../select/select.component';
-import { LajiApiClientBService } from '../../../../../../laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from '../../../../../../laji-api-client/src/laji-api-client.service';
 
 export enum SelectStyle {
   basic,
@@ -85,7 +85,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
   constructor(
     public warehouseMapper: WarehouseValueMappingService,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     protected adminStatusInfoPipe: AdminStatusInfoPipe,
     protected annotationService: AnnotationService,
     protected collectionService: CollectionService,

@@ -3,7 +3,7 @@ import { FooterService } from '../../shared/service/footer.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { PlatformService } from '../../root/platform.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { StoreDocument } from '../../shared-modules/document-viewer/document-viewer.facade';
 
 @Component({
@@ -25,7 +25,7 @@ export class ViewerPrintComponent implements OnInit, OnDestroy {
     private platformService: PlatformService,
     private footerService: FooterService,
     private route: ActivatedRoute,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
   ) {}
 
   ngOnInit() {

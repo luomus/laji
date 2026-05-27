@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { map, switchMap, share, tap } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
 
 type WarehouseAggregateQuery = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
@@ -44,7 +44,7 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
   ];
 
   constructor(
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   ngOnInit(): void {

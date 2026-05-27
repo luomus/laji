@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { map, Observable } from 'rxjs';
 import { dictionarifyByKey } from '../utils';
-import type { components } from 'projects/laji-api-client-b/generated/api';
+import type { components } from 'projects/laji-api-client/generated/api';
 
 type Source = components['schemas']['SensitiveSource'];
 
@@ -10,7 +10,7 @@ type Source = components['schemas']['SensitiveSource'];
 export class SourceService {
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
   ) {
   }
 

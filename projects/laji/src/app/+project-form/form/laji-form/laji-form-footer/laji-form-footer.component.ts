@@ -3,7 +3,7 @@ import { LajiFormComponent } from '../laji-form/laji-form.component';
 import { LajiFormUtil } from '../laji-form-util.service';
 import { Readonly } from '../../../../shared-modules/own-submissions/service/document.service';
 import { PlatformService } from '../../../../root/platform.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Form = components['schemas']['Form'];
 

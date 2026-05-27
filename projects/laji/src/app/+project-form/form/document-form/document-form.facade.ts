@@ -18,8 +18,8 @@ import { Logger } from '../../../shared/logger';
 import { LajiFormUtil } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-util.service';
 import equals from 'deep-equal';
 import { ProjectFormService } from '../../../shared/service/project-form.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 import { Unsaved } from '../../../shared/utils';
 
 type Form = components['schemas']['Form'];
@@ -102,7 +102,7 @@ export class DocumentFormFacade {
     private documentStorage: DocumentStorage,
     private logger: Logger,
     private projectFormService: ProjectFormService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {
     this.footerService.footerVisible = false;
   }

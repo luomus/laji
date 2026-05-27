@@ -8,7 +8,7 @@ import { HistoryService } from '../shared/service/history.service';
 import { Image } from '../shared/gallery/image-gallery/image.interface';
 import { environment } from '../../environments/environment';
 import { Global } from '../../environments/global';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type News = components['schemas']['LajiBackendNewsNode'];
 

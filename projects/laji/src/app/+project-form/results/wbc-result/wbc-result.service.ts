@@ -4,8 +4,8 @@ import {
 } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { PagedResult } from '../../../shared/model/PagedResult';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
 
 type UnitStatisticsQuery = paths['/warehouse/query/unit/statistics']['get']['parameters']['query'];
 type GatheringStatisticsQuery = paths['/warehouse/query/gathering/statistics']['get']['parameters']['query'];
@@ -39,7 +39,7 @@ export class WbcResultService {
   private speciesListCache?: any[];
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
   ) { }
 
   getFilterParams(year?: number|number[], season?: SEASON, birdAssociationArea?: string, taxonId?: string|string[]): WarehouseQueryInterface {

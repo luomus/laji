@@ -3,7 +3,7 @@ import { SaveObservationsFacade } from './save-observations.facade';
 import { Observable } from 'rxjs';
 import { getDescription, HeaderService } from '../shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type FormListing = components['schemas']['FormListing'];
 

@@ -17,7 +17,7 @@ import { ToastsService } from '../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import G from 'geojson';
 import * as Util from '../../shared/utils';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { geoJSONToWKT } from '@luomus/laji-map/lib/utils';
 import { DataFetchMode } from '../observation-data.service';
 
@@ -103,7 +103,7 @@ export class ObservationResultComponent implements OnChanges {
     private searchQueryService: SearchQueryService,
     private storage: LocalStorageService,
     private route: ActivatedRoute,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private userService: UserService,
     private toastsService: ToastsService,
     private translate: TranslateService

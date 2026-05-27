@@ -8,7 +8,7 @@ import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import { HorizontalChartDataService, MAX_TAXA_SIZE } from './horizontal-chart-data.service';
 import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
     selector: 'laji-horizontal-chart',
@@ -66,7 +66,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   subBackgroundColors: string[] = [];
   allBackgroundColors: string[] = [];
 
-  constructor(private api: LajiApiClientBService,
+  constructor(private api: LajiApiClientService,
               private cd: ChangeDetectorRef,
               private toQname: ToQNamePipe,
               private translate: TranslateService,

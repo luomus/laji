@@ -3,7 +3,7 @@ import { TaxonConceptService } from './taxon-concept.service';
 import { TaxonMatch } from './taxon-match.model';
 import { of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 

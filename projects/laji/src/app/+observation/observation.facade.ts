@@ -10,8 +10,8 @@ import { DataFetchMode, ObservationDataService } from './observation-data.servic
 import { SearchQueryService } from './search-query.service';
 import * as Util from '../shared/utils';
 import { LocalStorage } from 'ngx-webstorage';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type TaxonAutocompleteResponse = components['schemas']['TaxonAutocompleteResponse'];
 
@@ -103,7 +103,7 @@ export class ObservationFacade {
 
   constructor(
     private browserService: BrowserService,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private userService: UserService,
     private footerService: FooterService,
     private observationDataService: ObservationDataService

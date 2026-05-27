@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnChanges,
   SimpleChanges, ChangeDetectorRef, OnDestroy, AfterViewInit, ViewChild, TemplateRef } from '@angular/core';
-import { components } from 'projects/laji-api-client-b/generated/api';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { tap, map, switchMap } from 'rxjs';
@@ -147,7 +147,7 @@ export class TraitDbDataEntryCheckComponent implements OnChanges, AfterViewInit,
   private tsvChange = new BehaviorSubject<null>(null);
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private userService: UserService,
     private cdr: ChangeDetectorRef
   ) {}

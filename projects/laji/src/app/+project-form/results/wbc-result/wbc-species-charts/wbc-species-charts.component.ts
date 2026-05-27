@@ -3,7 +3,7 @@ import { SEASON, WbcResultService } from '../wbc-result.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { IdService } from '../../../../shared/service/id.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
     selector: 'laji-wbc-species-charts',
@@ -31,7 +31,7 @@ export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private resultService: WbcResultService,
     private cd: ChangeDetectorRef
   ) { }

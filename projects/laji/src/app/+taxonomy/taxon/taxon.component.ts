@@ -7,8 +7,8 @@ import { Logger } from '../../shared/logger';
 import { FooterService } from '../../shared/service/footer.service';
 import { InfoCardTabType } from './info-card/info-card.component';
 import { getDescription, HeaderService } from '../../shared/service/header.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -36,7 +36,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private logger: Logger,
     private footerService: FooterService,
     private cdr: ChangeDetectorRef,

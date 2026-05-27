@@ -10,7 +10,7 @@ import { SchemaService, ILabelData } from '@luomus/label-designer';
 import { TriplestoreLabelService } from './triplestore-label.service';
 import { LabelFilter } from '../../shared-modules/own-submissions/own-datatable/own-datatable.component';
 import { Global } from '../../../environments/global';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Document = components['schemas']['store-document'];
 type Gathering = Document['gatherings'][number];

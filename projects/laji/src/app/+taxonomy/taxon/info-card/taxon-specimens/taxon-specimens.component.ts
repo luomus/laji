@@ -4,7 +4,7 @@ import { IdService } from '../../../../shared/service/id.service';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 

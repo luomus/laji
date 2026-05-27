@@ -1,8 +1,8 @@
 import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
 import { Observable, of, Subject, forkJoin } from 'rxjs';
 import { takeUntil, tap, map, concatMap } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -25,7 +25,7 @@ export class IdentificationChildrenDataSource extends DataSource<Taxon & { child
   private childCache: Record<string, Taxon & { children: Taxon[] }> = {};
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private children: Taxon[],
     private grandchildRank: string
   ) {

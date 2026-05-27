@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { of } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs';
 
@@ -22,5 +22,5 @@ export class TraitDbAboutComponent {
     switchMap(cmsId => of({ content: 'todo: ' + cmsId }))
   );
 
-  constructor(private api: LajiApiClientBService, private translate: TranslateService) {}
+  constructor(private api: LajiApiClientService, private translate: TranslateService) {}
 }

@@ -28,7 +28,7 @@ import { ProjectFormService } from 'projects/laji/src/app/shared/service/project
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 import { ErrorSchema } from '@rjsf/utils';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Form = components['schemas']['Form'];
 type DefaultMediaMetadata = ExtendedProfile['settings']['defaultMediaMetadata'];

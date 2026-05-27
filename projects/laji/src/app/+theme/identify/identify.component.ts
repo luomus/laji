@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 import { Global } from '../../../environments/global';
 import { IImageSelectEvent } from '../../shared/gallery/image-gallery/image.interface';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type TaxonImage = components['schemas']['LajiBackendImage'];
 

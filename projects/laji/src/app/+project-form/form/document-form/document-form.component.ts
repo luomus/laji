@@ -17,7 +17,7 @@ import { ProjectFormService, RegistrationContact } from '../../../shared/service
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 import { LocalStorage } from 'ngx-webstorage';
 import { ErrorSchema } from '@rjsf/utils';
-import type { components } from 'projects/laji-api-client-b/generated/api.d';
+import type { components } from 'projects/laji-api-client/generated/api.d';
 
 type Document = components['schemas']['store-document'];
 

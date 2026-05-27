@@ -4,7 +4,7 @@ import {
 } from '../../../../laji/src/app/shared-modules/download-modal/apikey-modal/apikey-modal.component';
 import { Logger } from '../../../../laji/src/app/shared/logger';
 import { VIR_FILTER_SHORTCUT_QUERY_PARAMS } from '../../../../laji/src/app/+observation/form/observation-form.component';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
     selector: 'vir-geoapi',
@@ -16,7 +16,7 @@ export class GeoapiComponent {
   constructor(
     private logger: Logger,
     private cd: ChangeDetectorRef,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {}
 
   apiKey = '';

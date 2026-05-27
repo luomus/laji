@@ -4,8 +4,8 @@ import { FormService } from '../../../shared/service/form.service';
 import { Observable } from 'rxjs';
 import { CombineToDocument } from './import.service';
 import { JSONPath } from 'jsonpath-plus';
-import type { components } from 'projects/laji-api-client-b/generated/api';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import type { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 
@@ -25,7 +25,7 @@ export class ExcelToolService {
 
   constructor(
     private formService: FormService,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private translateService: TranslateService,
     private triplestoreLabelService: TriplestoreLabelService,
   ) {}

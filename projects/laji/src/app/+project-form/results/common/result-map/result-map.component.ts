@@ -10,8 +10,8 @@ import { map, switchMap, tap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { cacheReturnObservable } from 'projects/bird-atlas/src/app/core/atlas-api.service';
 import G, { Feature, GeoJsonProperties, Polygon } from 'geojson';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
 
 type WarehouseAggregateQuery = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
@@ -141,7 +141,7 @@ export class ResultMapComponent implements OnInit, OnChanges {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private translate: TranslateService,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
   ) {
     this.mapOptions = {
       clickBeforeZoomAndPan: true

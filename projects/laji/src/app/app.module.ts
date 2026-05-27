@@ -21,10 +21,10 @@ import { QuicklinkModule } from 'ngx-quicklink';
 import { BrowserModule, provideClientHydration, Title } from '@angular/platform-browser';
 import { LajiTitle } from './shared/service/laji-title';
 import { LocaleModule } from './locale/locale.module';
-import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { API_BASE_URL, LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { setLocale } from './locale/locale.component';
 
-export function createLoggerLoader(api: LajiApiClientBService): ILogger {
+export function createLoggerLoader(api: LajiApiClientService): ILogger {
   if (environment.production) {
     return new HttpLogger(api);
   }
@@ -82,7 +82,7 @@ export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defau
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     {
       provide: Logger,
-      deps: [LajiApiClientBService],
+      deps: [LajiApiClientService],
       useFactory: createLoggerLoader
     },
     { provide: Title, useClass: LajiTitle },

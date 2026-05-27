@@ -3,7 +3,7 @@ import { map } from 'rxjs';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { IdentificationMainComponent } from '../../kerttu-global-shared-modules/identification/identification-main/identification-main.component';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
     selector: 'bsg-recording-identification',
@@ -25,7 +25,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {}
 
   ngOnInit() {

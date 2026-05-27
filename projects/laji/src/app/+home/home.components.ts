@@ -9,8 +9,8 @@ import { Global } from '../../environments/global';
 import { NewsFacade } from '../+news/news.facade';
 import { environment } from '../../environments/environment';
 import { MultiLanguage } from '../shared/model/MultiLanguage';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api';
 
 type Information = components['schemas']['Information'];
 
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
     private homeDataService: HomeDataService,
     public translate: TranslateService,
     public router: Router,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private newsFacade: NewsFacade
   ) {
   }

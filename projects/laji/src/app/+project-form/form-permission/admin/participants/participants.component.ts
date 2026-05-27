@@ -7,7 +7,7 @@ import { ExportService } from '../../../../shared/service/export.service';
 import moment from 'moment';
 import { BookType } from 'xlsx';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Form = components['schemas']['Form'];
 type Participant = components['schemas']['Participant'];

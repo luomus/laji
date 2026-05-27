@@ -5,7 +5,7 @@ import { ChartOptions, Chart } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { TreemapController, TreemapElement } from 'chartjs-chart-treemap';
 import { MultiLangService } from 'projects/laji/src/app/shared-modules/lang/service/multi-lang.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 

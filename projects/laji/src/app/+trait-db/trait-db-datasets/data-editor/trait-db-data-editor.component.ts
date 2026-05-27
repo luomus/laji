@@ -1,10 +1,10 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { UserService } from '../../../shared/service/user.service';
 import { map, filter, switchMap } from 'rxjs';
 import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { components } from 'projects/laji-api-client/generated/api';
 import { cols as subjectCols } from './data-editor-search-table-columns';
 import { cols as traitCols } from './data-editor-search-table-columns-traits';
 import { FooterService } from '../../../shared/service/footer.service';
@@ -62,7 +62,7 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
   private sub = new Subscription();
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private userService: UserService,
     private route: ActivatedRoute,
     private footerService: FooterService,

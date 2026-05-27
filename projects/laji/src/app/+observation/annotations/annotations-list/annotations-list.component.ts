@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import {TranslateService} from '@ngx-translate/core';
 import { DocumentViewerFacade } from '../../../shared-modules/document-viewer/document-viewer.facade';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type AnnotationTag = components['schemas']['store-tag'];
 

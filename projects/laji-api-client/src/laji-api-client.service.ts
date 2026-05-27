@@ -1,5 +1,5 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { paths } from 'projects/laji-api-client-b/generated/api.d';
+import { paths } from 'projects/laji-api-client/generated/api.d';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { share, tap } from 'rxjs';
@@ -124,7 +124,7 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 @Injectable({
   providedIn: 'root'
 })
-export class LajiApiClientBService {
+export class LajiApiClientService {
   // variable level cache
   // first levels are for different path segments separated by path variables
   // the last level is for query params

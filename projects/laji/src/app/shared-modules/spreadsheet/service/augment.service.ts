@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { MappingService } from './mapping.service';
-import type { components } from 'projects/laji-api-client-b/generated/api';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import type { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type Document = components['schemas']['store-document'];
 type NamedPlace = components['schemas']['store-namedPlace'];
@@ -18,7 +18,7 @@ export class AugmentService {
   constructor(
     private documentService: DocumentService,
     private mappingService: MappingService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   augmentDocument(document: Document, excludedFromCopy: string[] = []): Observable<Document> {

@@ -1,8 +1,8 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter,
          Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components, paths } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { Observable } from 'rxjs';
 import { AdditionalFilterValues } from './additional-filters.component';
 import { RankFilterValue } from './rank-filter/rank-filter.component';
@@ -41,7 +41,7 @@ export class TraitSearchFiltersComponent implements OnChanges {
 
   constructor(
     private fb: FormBuilder,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {
     this.filterChange = this.form.valueChanges;
     this.datasets$ = this.api.fetch('/trait/datasets', 'get', {});

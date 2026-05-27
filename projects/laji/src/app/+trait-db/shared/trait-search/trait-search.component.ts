@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
   SimpleChanges, ViewChild, TemplateRef,
   AfterViewInit} from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api.d';
 import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs';
 import { DatatableColumn, Sort } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 import { FormValue } from './trait-search-filters/trait-search-filters.component';
@@ -125,7 +125,7 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
   private queryParamChangeId = 0;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,

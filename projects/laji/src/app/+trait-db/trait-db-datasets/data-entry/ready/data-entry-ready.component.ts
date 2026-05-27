@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { components } from 'projects/laji-api-client-b/generated/api';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -37,7 +37,7 @@ export class TraitDbDataEntryReadyComponent implements OnChanges {
 
   state$ = new BehaviorSubject<DatasetState>({ _tag: 'loading' });
 
-  constructor(private api: LajiApiClientBService, private userService: UserService) {}
+  constructor(private api: LajiApiClientService, private userService: UserService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.api.fetch('/trait/datasets/{id}', 'get', { path: { id: this.datasetId } })

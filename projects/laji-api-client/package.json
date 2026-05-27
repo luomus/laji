@@ -1,5 +1,5 @@
 {
-  "name": "laji-api-client-b",
+  "name": "laji-api-client",
   "version": "0.0.1",
   "scripts": {
     "updateOld": "openapi-typescript https://apitest.laji.fi/explorer/swagger.json -o ./generated/api.d.ts --properties-required-by-default",

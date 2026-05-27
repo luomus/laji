@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FooterService } from '../../../../shared/service/footer.service';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type NamedPlace = components['schemas']['store-namedPlace'];
 

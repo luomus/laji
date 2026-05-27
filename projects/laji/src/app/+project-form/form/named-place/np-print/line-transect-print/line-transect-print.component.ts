@@ -4,7 +4,7 @@ import * as MapUtil from '@luomus/laji-map/lib/utils';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { convertWgs84ToYkj } from '../../../../../root/coordinate-utils';
 import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 import { LineString } from 'geojson';
 
 type NamedPlace = components['schemas']['store-namedPlace'];

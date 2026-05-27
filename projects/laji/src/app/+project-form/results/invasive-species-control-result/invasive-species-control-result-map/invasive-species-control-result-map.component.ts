@@ -8,8 +8,8 @@ import { YearInfoItem } from 'projects/laji/src/app/shared-modules/year-slider/y
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { map, tap, switchMap } from 'rxjs';
 import { InvasiveControlEffectiveness } from '../invasive-species-control-result.component';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
 
 type WarehouseAggregateQuery = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
@@ -60,7 +60,7 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
   };
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private translate: TranslateService
   ) { }
 

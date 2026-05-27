@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { LAST_LANG_KEY } from './localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { PlatformService } from '../root/platform.service';
 
 import moment from 'moment';
@@ -12,7 +12,7 @@ import 'moment/locale/sv';
 export function setLocale(lang: string) {
   const platform = inject(PlatformService);
   const translate = inject(TranslateService);
-  const api = inject(LajiApiClientBService);
+  const api = inject(LajiApiClientService);
 
   moment.locale(lang);
   api.setLang(lang);

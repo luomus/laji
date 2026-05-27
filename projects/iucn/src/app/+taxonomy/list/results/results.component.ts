@@ -15,8 +15,8 @@ import { Params } from '@angular/router';
 import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
 import { IUCNChartData } from './red-list-chart/red-list-chart.component';
 import {ActiveElement, ChartData, ChartEvent, ChartOptions} from 'chart.js';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components, operations } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components, operations } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 export type TaxonAggregateQuery = operations['TaxaController_getAggregateWithFilters']['parameters']['query'];
@@ -105,7 +105,7 @@ export class ResultsComponent implements OnChanges {
   init = false;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private resultService: ResultService,
     private triplestoreLabelService: TriplestoreLabelService,
     private metadataService: MetadataService,

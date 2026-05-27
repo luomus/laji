@@ -2,8 +2,8 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@
 import { Observable, Subscription, forkJoin } from 'rxjs';
 import { AreaService } from '../../../../../laji/src/app/shared/service/area.service';
 import { DialogService } from '../../../../../laji/src/app/shared/service/dialog.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Profile = components['schemas']['store-profile'];
 type BirdwatchingActivityLevelEnum = Profile['birdwatchingActivityLevel'];
@@ -41,7 +41,7 @@ export class ExpertiseComponent implements OnInit {
     private areaService: AreaService,
     private dialogService: DialogService,
     private cdr: ChangeDetectorRef,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {
     this.continents$ = this.areaService.getAreaByType('ML.continent');
   }

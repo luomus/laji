@@ -8,7 +8,7 @@ import { Image } from 'projects/laji/src/app/shared/gallery/image-gallery/image.
 import { Subscription } from 'rxjs';
 
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 

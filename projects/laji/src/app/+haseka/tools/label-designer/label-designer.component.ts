@@ -9,7 +9,7 @@ import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../../environments/environment';
 import { Global } from '../../../../environments/global';
 import { PlatformService } from '../../../root/platform.service';
-import { LajiApiClientBService } from '../../../../../../laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from '../../../../../../laji-api-client/src/laji-api-client.service';
 
 @Component({
     selector: 'laji-label-designer',
@@ -33,7 +33,7 @@ export class LabelDesignerComponent implements OnInit {
 
   constructor(
     private platformService: PlatformService,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private pdfLabelService: PdfLabelService,
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef

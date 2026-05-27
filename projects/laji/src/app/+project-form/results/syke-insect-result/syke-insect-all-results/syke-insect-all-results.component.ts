@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { ResultUtil } from '../../common/service/result-util.service';
-import type { components } from 'projects/laji-api-client-b/generated/api';
+import type { components } from 'projects/laji-api-client/generated/api';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 

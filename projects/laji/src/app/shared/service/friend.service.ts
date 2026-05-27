@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { UserService } from './user.service';
 import { map, switchMap, take, tap } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import type { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import type { paths } from 'projects/laji-api-client/generated/api';
 
 type FriendsAutocompleteResponse = paths['/autocomplete/friends']['get']['responses']['200']['content']['application/json']['results'];
 
@@ -13,7 +13,7 @@ export class FriendService {
   private friends?: FriendsAutocompleteResponse;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private userService: UserService
   ) { }
 

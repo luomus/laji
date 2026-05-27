@@ -10,7 +10,7 @@ npm run updateNew
 Usage:
 ```typescript
 export class ExampleComponent {
-  constructor(private lajiApiClientService: LajiApiClientBService) {}
+  constructor(private lajiApiClientService: LajiApiClientService) {}
   function f() {
     const a$ = this.lajiApiClientService.fetch('/collections', 'get', { query: { page: 1 } });
   }

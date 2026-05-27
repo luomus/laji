@@ -5,8 +5,8 @@ import { map, switchMap, tap } from 'rxjs';
 import { LineWithLine } from 'projects/laji/src/app/shared-modules/chart/line-with-line';
 import { TranslateService } from '@ngx-translate/core';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api';
 
 type AggregateResponse = components['schemas']['WarehouseDwQuery_AggregateResponse'];
 
@@ -90,7 +90,7 @@ export class BirdPointCountResultChartComponent implements OnInit, OnDestroy {
   private chartSub!: Subscription;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private cdr: ChangeDetectorRef,
     private translate: TranslateService,
   ) {}

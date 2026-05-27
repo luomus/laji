@@ -2,7 +2,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { SYNONYM_KEYS } from '../../../+taxonomy/species/service/taxon-export.service';
 import { Global } from '../../../../environments/global';
 import { toHtmlSpanElement } from '../../../shared/service/html-element.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Annotation = components['schemas']['store-annotation'];
 

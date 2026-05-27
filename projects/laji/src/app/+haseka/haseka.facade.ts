@@ -6,7 +6,7 @@ import { LocalStorage } from 'ngx-webstorage';
 import { BrowserService } from '../shared/service/browser.service';
 import { UserService } from '../shared/service/user.service';
 import { FooterService } from '../shared/service/footer.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type FormListing = components['schemas']['FormListing'];
 type Document = components['schemas']['store-document'];

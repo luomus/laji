@@ -3,8 +3,8 @@ Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -41,7 +41,7 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
   private childrenSub?: Subscription;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private taxonomyService: TaxonTaxonomyService,
     private cd: ChangeDetectorRef
   ) { }

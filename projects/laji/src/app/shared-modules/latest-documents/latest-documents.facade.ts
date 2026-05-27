@@ -6,8 +6,8 @@ import { UserService } from '../../shared/service/user.service';
 import { DocumentStorage } from '../../storage/document.storage';
 import { FormService } from '../../shared/service/form.service';
 import * as Util from '../../shared/utils';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import type { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import type { components } from 'projects/laji-api-client/generated/api.d';
 
 type FormListing = components['schemas']['FormListing'];
 type Document = components['schemas']['store-document'];
@@ -57,7 +57,7 @@ export class LatestDocumentsFacade implements OnDestroy {
     private documentStorage: DocumentStorage,
     private formService: FormService,
     private ngZone: NgZone,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {
     this.localUpdateSub = this.documentStorage.deletes$.subscribe(() => {
       this.updateLocal();

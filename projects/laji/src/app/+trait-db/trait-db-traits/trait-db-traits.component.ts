@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { components } from 'projects/laji-api-client-b/generated/api';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { UserService } from '../../shared/service/user.service';
 
@@ -24,7 +24,7 @@ export class TraitDbTraitsComponent implements OnInit, OnDestroy {
   traitGroups: Record<string, TraitGroup> = {}; // indexed by id
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private userService: UserService,
     private cdr: ChangeDetectorRef
   ) {

@@ -5,8 +5,8 @@ import { Logger } from '../../../../shared/logger';
 import { combineLatest, filter, map, tap } from 'rxjs';
 import { Chart, ChartDataset, ChartOptions, ChartType, Tooltip } from 'chart.js';
 import { LineWithLine } from 'projects/laji/src/app/shared-modules/chart/line-with-line';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api';
 
 type AggregateResponse = components['schemas']['WarehouseDwQuery_AggregateResponse'];
 
@@ -179,7 +179,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private logger: Logger,
     private cdr: ChangeDetectorRef
   ) {}

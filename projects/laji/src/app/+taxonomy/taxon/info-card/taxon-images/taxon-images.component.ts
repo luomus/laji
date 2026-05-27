@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
 import { Image } from '../../../../shared/gallery/image-gallery/image.interface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 

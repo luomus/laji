@@ -17,8 +17,8 @@ import { DocumentViewerFacade } from '../../../document-viewer/document-viewer.f
 import { ObservationTableColumn } from '../../../observation-result/model/observation-table-column';
 import { getSortsFromCols } from '../../../observation-result/observation-table/observation-table.component';
 import { ObservationVisualizationMode } from '../observation-visualization';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
 
 type QueryListQuery = paths['/warehouse/query/unit/list']['get']['parameters']['query'];
 
@@ -70,7 +70,7 @@ const visualizationModeColNames = {
 
   constructor(
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private cdr: ChangeDetectorRef,
     private documentViewerFacade: DocumentViewerFacade,
     private translate: TranslateService

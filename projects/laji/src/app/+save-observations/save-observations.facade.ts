@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs';
 import { Global } from '../../environments/global';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type FormListing = components['schemas']['FormListing'];
 
@@ -28,7 +28,7 @@ export class SaveObservationsFacade {
   completeListForms$ = this.store$.asObservable().pipe(map(state => state.completeListForms), distinctUntilChanged());
   researchProjectForms$ = this.store$.asObservable().pipe(map(state => state.researchProjectForms), distinctUntilChanged());
 
-  constructor(private api: LajiApiClientBService) {}
+  constructor(private api: LajiApiClientService) {}
 
   reducer(forms: any) {
     this.store$.next({

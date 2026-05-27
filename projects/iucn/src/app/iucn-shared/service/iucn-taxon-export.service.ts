@@ -4,7 +4,7 @@ import { TaxonomyColumns } from '../../../../../laji/src/app/+taxonomy/species/s
 import { DatatableColumn } from '../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { TaxonExportService } from '../../../../../laji/src/app/+taxonomy/species/service/taxon-export.service';
 import { Observable } from 'rxjs';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 

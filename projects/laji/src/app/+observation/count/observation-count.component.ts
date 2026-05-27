@@ -3,8 +3,8 @@ import { Observable, of, throwError as observableThrowError } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
 
 type NormalCountQueryParams = paths['/warehouse/query/unit/count']['get']['parameters']['query'];
 type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
@@ -30,7 +30,7 @@ export class ObservationCountComponent implements OnChanges {
   private pageSize = 1000;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private logger: Logger,
     private cdr: ChangeDetectorRef
   ) {

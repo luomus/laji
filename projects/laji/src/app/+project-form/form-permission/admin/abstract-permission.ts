@@ -4,7 +4,7 @@ import { isIctAdmin, UserService } from '../../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { Observable, of } from 'rxjs';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { components } from 'projects/laji-api-client/generated/api';
 
 type FormPermission = components['schemas']['FormPermissionDto'];
 

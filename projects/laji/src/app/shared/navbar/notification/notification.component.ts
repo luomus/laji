@@ -1,7 +1,7 @@
 /* eslint-disable @angular-eslint/component-selector */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { IdService } from '../../service/id.service';
-import type { components } from '../../../../../../laji-api-client-b/generated/api';
+import type { components } from '../../../../../../laji-api-client/generated/api';
 
 type Notification = components['schemas']['store-notification'];
 

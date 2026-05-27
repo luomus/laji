@@ -6,8 +6,8 @@ import { AreaService } from './area.service';
 import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
 import { CollectionService } from './collection.service';
 import { BaseDataService } from '../../graph-ql/service/base-data.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 type TaxonGroup = components['schemas']['store-informalTaxonGroup'] | components['schemas']['store-iucnRedListTaxonGroup'];
@@ -21,7 +21,7 @@ export class TriplestoreLabelService {
 
   private guidRegEx: RegExp;
 
-  constructor(private api: LajiApiClientBService,
+  constructor(private api: LajiApiClientService,
               private sourceService: SourceService,
               private userService: UserService,
               private areaService: AreaService,

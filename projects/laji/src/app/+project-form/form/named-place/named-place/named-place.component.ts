@@ -11,8 +11,8 @@ import { UserService } from '../../../../shared/service/user.service';
 import { FooterService } from '../../../../shared/service/footer.service';
 import { NpInfoComponent } from '../np-info/np-info.component';
 import { FormService } from '../../../../shared/service/form.service';
-import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components, paths } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type Form = components['schemas']['Form'];
 type NamedPlace = components['schemas']['store-namedPlace'];
@@ -117,7 +117,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     private toastrService: ToastrService,
     private formPermissionService: FormPermissionService,
     private formService: FormService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {}
 
   static getMapOptions(documentForm: Form | undefined) {

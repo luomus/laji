@@ -6,8 +6,8 @@ import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface
 import { SearchQueryService } from './search-query.service';
 import { PlatformService } from '../root/platform.service';
 import deepEqual from 'deep-equal';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
 import { isEmptyWarehouseQuery } from '../shared/api/util';
 
 type WarehouseQueryUnitAggregateQParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
@@ -31,7 +31,7 @@ export class ObservationDataService {
   constructor(
     private searchQueryService: SearchQueryService,
     private platformService: PlatformService,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
   ) { }
 
   getData(query: WarehouseQueryInterface): Observable<ObservationCounts> {

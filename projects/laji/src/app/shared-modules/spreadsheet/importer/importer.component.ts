@@ -33,8 +33,8 @@ import { Logger } from '../../../shared/logger';
 import { toHtmlSelectElement } from '../../../shared/service/html-element.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
-import type { components } from 'projects/laji-api-client-b/generated/api';
-import type { paths } from 'projects/laji-api-client-b/generated/api';
+import type { components } from 'projects/laji-api-client/generated/api';
+import type { paths } from 'projects/laji-api-client/generated/api';
 
 type Form = components['schemas']['Form'];
 type PublicityRestrictions = NonNullable<paths['/documents/batch/{jobID}']['post']['parameters']['query']>['publicityRestrictions'];

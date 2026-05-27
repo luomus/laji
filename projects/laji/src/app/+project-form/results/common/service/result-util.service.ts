@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Injectable()
 export class ResultUtil {
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
   ) { }
 
   getTaxon(taxonId: string) {

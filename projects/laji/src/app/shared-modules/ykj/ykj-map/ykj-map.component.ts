@@ -18,7 +18,7 @@ import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
 import type { Lang, Options } from '@luomus/laji-map';
 import { map } from 'rxjs';
-import type { components } from 'projects/laji-api-client-b/generated/api';
+import type { components } from 'projects/laji-api-client/generated/api';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 

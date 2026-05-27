@@ -6,7 +6,7 @@ import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 type RedListEvaluation = components['schemas']['LajiBackendEvaluation'];

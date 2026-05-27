@@ -7,8 +7,8 @@ import {
 } from 'rxjs';
 import { HomeDataService } from '../+home/home-data.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api';
 
 export type News = components['schemas']['LajiBackendNewsNode'];
 export type PagedNews = components['schemas']['NewsPagedDto'];
@@ -35,7 +35,7 @@ export class NewsFacade {
   private currentSub?: Subscription;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private homeDataService: HomeDataService,
     private translate: TranslateService
   ) {}

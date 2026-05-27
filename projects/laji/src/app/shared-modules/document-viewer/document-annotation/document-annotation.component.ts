@@ -31,8 +31,8 @@ import { DocumentToolsService } from '../document-tools.service';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { DocumentPermissionService } from '../service/document-permission.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type Annotation = components['schemas']['store-annotation'];
 type AnnotationTag = components['schemas']['store-tag'];
@@ -112,7 +112,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private userService: UserService,
     private cd: ChangeDetectorRef,
     private appRef: ApplicationRef,

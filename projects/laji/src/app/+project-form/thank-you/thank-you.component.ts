@@ -6,7 +6,7 @@ import { FormPermissionService } from '../../shared/service/form-permission.serv
 import { ActivatedRoute } from '@angular/router';
 import { map, mergeMap } from 'rxjs';
 import { Rights } from '../about/about.component';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Form = components['schemas']['Form'];
 

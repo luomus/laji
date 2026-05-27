@@ -58,7 +58,7 @@ import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
 import { Router } from '@angular/router';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
@@ -212,7 +212,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   private activeGeometryHash!: string;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private platformService: PlatformService,
     public translate: TranslateService,
     private decorator: ValueDecoratorService,

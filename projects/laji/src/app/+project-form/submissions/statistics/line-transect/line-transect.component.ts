@@ -9,12 +9,12 @@ import {
 } from '@angular/core';
 import * as MapUtil from '@luomus/laji-map/lib/utils';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { FormService } from '../../../../shared/service/form.service';
 import { LineTransectGeometry } from '@luomus/laji-map/lib/defs';
 import { LineString } from 'geojson';
-import type { components } from 'projects/laji-api-client-b/generated/api';
+import type { components } from 'projects/laji-api-client/generated/api';
 
 export type Document = components['schemas']['store-document'];
 type NamedPlace = components['schemas']['store-namedPlace'];
@@ -81,7 +81,7 @@ export class LineTransectComponent implements OnChanges {
   path = '';
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private formService: FormService,
   ) {}
 

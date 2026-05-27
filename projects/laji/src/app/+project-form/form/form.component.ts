@@ -6,7 +6,7 @@ import { EMPTY, Observable, of } from 'rxjs';
 import { FormService } from '../../shared/service/form.service';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { UserService } from '../../shared/service/user.service';
-import type { components } from 'projects/laji-api-client-b/generated/api';
+import type { components } from 'projects/laji-api-client/generated/api';
 
 type Form = components['schemas']['Form'];
 

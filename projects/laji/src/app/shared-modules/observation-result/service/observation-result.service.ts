@@ -27,7 +27,7 @@ import { TableColumnService } from '../../datatable/service/table-column.service
 import { ObservationTableColumn } from '../model/observation-table-column';
 import { DatatableUtil } from '../../datatable/service/datatable-util.service';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { SearchQueryService } from '../../../+observation/search-query.service';
 import { DataFetchMode } from '../../../+observation/observation-data.service';
 import { isEmptyWarehouseQuery } from '../../../shared/api/util';
@@ -58,7 +58,7 @@ export class ObservationResultService {
   }
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private searchQuery: SearchQueryService,
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
     private datatableUtil: DatatableUtil,

@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { components } from 'projects/laji-api-client-b/generated/api';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { Observable } from 'rxjs';
 import { map, filter, switchMap, tap } from 'rxjs';
 import { MetadataService } from '../../../shared/service/metadata.service';
@@ -40,7 +40,7 @@ export class TraitDbTraitEditorComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private router: Router,

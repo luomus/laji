@@ -5,7 +5,7 @@ import { map, switchMap, tap } from 'rxjs';
 import { DownloadRequestResponse, isDownloadRequest, asDownloadRequest } from '../shared-modules/download-request/models';
 import { HeaderService } from '../shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
     template: `
@@ -36,7 +36,7 @@ export class CitableDownloadComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private headerService: HeaderService,
     private translate: TranslateService
   ) { }

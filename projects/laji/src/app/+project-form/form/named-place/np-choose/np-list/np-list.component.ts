@@ -20,7 +20,7 @@ import { DatatableComponent } from '../../../../../shared-modules/datatable/data
 import { SelectionType, SortType } from '@achimha/ngx-datatable';
 import { NpInfoComponent } from '../../np-info/np-info.component';
 import { DatatableUtil } from '../../../../../shared-modules/datatable/service/datatable-util.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Form = components['schemas']['Form'];
 type NamedPlace = components['schemas']['store-namedPlace'];

@@ -4,14 +4,14 @@ import { WarehouseQueryInterface } from '../../model/WarehouseQueryInterface';
 import { PagedResult } from '../../model/PagedResult';
 import { Image } from '../image-gallery/image.interface';
 import { IdService } from '../../service/id.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
 
 type MediaListQuery = paths['/warehouse/query/unitMedia/list']['get']['parameters']['query'];
 
 @Injectable({providedIn: 'root'})
 export class GalleryService {
-  constructor(private api: LajiApiClientBService) {}
+  constructor(private api: LajiApiClientService) {}
 
   getList(rawQuery: WarehouseQueryInterface, sort: string[] | undefined, pageSize: number, page: number): Observable<PagedResult<any>> {
     const query: MediaListQuery = {

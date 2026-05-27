@@ -13,7 +13,7 @@ import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/t
 import { Rights } from '../../../../shared/service/form-permission.service';
 import { PlatformService } from '../../../../root/platform.service';
 import { formOptionToClassName } from '../../../../shared/directive/project-form-option.directive';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Form = components['schemas']['Form'];
 type NamedPlace = components['schemas']['store-namedPlace'];

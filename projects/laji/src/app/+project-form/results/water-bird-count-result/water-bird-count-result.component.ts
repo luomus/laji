@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Form = components['schemas']['Form'];
 
@@ -35,7 +35,7 @@ export class WaterBirdCountResultComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private translate: TranslateService
   ) { }
 

@@ -4,7 +4,7 @@ import { ExportService } from '../../../shared/service/export.service';
 import { concatMap, map, toArray } from 'rxjs';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { BookType } from 'xlsx';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 type SimpleTaxon = components['schemas']['LajiBackendSimpleTaxon'];

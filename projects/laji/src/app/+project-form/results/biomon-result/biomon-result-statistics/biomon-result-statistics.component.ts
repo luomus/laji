@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { components } from 'projects/laji-api-client-b/generated/api';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs';
@@ -34,7 +34,7 @@ export class BiomonResultStatisticsComponent implements OnInit {
   ];
 
   constructor(
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   ngOnInit(): void {

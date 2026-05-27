@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api';
 
 type Information = components['schemas']['Information'];
 
@@ -22,7 +22,7 @@ export class BibliographyComponent implements OnInit {
   publications$!: Observable<Information>;
 
   constructor(
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {}
 
   ngOnInit() {

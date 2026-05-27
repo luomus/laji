@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { tap, map, switchMap, filter } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { components } from 'projects/laji-api-client/generated/api';
 
 export type Dataset = components['schemas']['LajiBackendDataset'];
 
@@ -19,7 +19,7 @@ export class TraitDbMyDatasetsComponent implements OnInit {
   datasets$!: Observable<Dataset[]>;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private userService: UserService
   ) {}
 

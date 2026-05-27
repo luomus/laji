@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { components } from 'projects/laji-api-client-b/generated/api';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { tap, filter, switchMap } from 'rxjs';
 import { filterNullValues } from '../../trait-db-datasets/trait-db-dataset-editor/trait-db-dataset-editor.component';
 
@@ -26,7 +26,7 @@ export class TraitDbTraitGroupEditorComponent {
 
   constructor(
     private fb: FormBuilder,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private router: Router

@@ -6,8 +6,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
 import { DeleteOwnDocumentService } from '../../shared/service/delete-own-document.service';
-import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components, paths } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type AnnotationTag = components['schemas']['store-tag'];
 type WarehouseQueryListQuery = paths['/warehouse/query/unit/list']['get']['parameters']['query'];
@@ -48,7 +48,7 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
   childEvent: any;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private translations: TranslateService,
     private cd: ChangeDetectorRef,
     private annotationService: AnnotationService,

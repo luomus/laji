@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type BirdSongRecognitionSkillLevel = components['schemas']['store-birdSongRecognitionSkillLevel'];
 type BirdSongRecognitionSkillLevelEnum = BirdSongRecognitionSkillLevel['birdSongRecognitionSkillLevel'];

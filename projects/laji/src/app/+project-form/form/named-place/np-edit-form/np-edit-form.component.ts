@@ -12,8 +12,8 @@ import { NamedPlacesQuery, NamedPlacesRouteData, ProjectFormService } from '../.
 import { AreaService } from '../../../../shared/service/area.service';
 import { LajiFormFooterStatus } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-footer/laji-form-footer.component';
 import { LajiFormComponent } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form/laji-form.component';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type Form = components['schemas']['Form'];
 type NamedPlace = components['schemas']['store-namedPlace'];
@@ -51,7 +51,7 @@ export class NpEditFormComponent implements OnInit {
     private projectFormService: ProjectFormService,
     private areaService: AreaService,
     private router: Router,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   ngOnInit() {

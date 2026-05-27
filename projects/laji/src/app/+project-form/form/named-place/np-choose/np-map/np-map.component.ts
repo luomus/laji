@@ -19,7 +19,7 @@ import { LabelPipe } from '../../../../../shared/pipe';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
 import { LajiMapVisualization } from '../../../../../shared-modules/legend/laji-map-visualization';
 import { TileLayerName, OverlayName } from '@luomus/laji-map/lib/defs';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 import { ExtendedNamedPlace } from '../np-choose.component';
 
 type Form = components['schemas']['Form'];

@@ -5,8 +5,8 @@ import { catchError, map, switchMap, take, tap } from 'rxjs';
 import { FormService } from './form.service';
 import { PlatformService } from '../../root/platform.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type FormListing = components['schemas']['FormListing'];
 type FormPermission = components['schemas']['FormPermissionDto'];
@@ -31,7 +31,7 @@ export class FormPermissionService {
   public changes$ = new EventEmitter<FormPermission>();
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private formService: FormService,
     private userService: UserService,
     private platformService: PlatformService

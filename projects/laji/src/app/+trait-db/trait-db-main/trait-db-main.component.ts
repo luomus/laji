@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { tap, map, switchMap, filter } from 'rxjs';
 import { UserService } from '../../shared/service/user.service';
 
@@ -20,7 +20,7 @@ export class TraitDbMainComponent implements OnInit {
   counts$!: Observable<Counts>;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private userService: UserService
   ) {}
 

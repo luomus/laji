@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../service/form.service';
 import { AbstractLabelPipe } from './abstract-label.pipe';
 import { Observable } from 'rxjs';
-import type { components } from 'projects/laji-api-client-b/generated/api';
+import type { components } from 'projects/laji-api-client/generated/api';
 
 type FormListing = components['schemas']['FormListing'];
 

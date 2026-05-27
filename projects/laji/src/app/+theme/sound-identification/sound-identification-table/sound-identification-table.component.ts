@@ -3,7 +3,7 @@ import { IdentificationData } from '../sound-identification-api';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
     selector: 'laji-sound-identification-table',
@@ -24,7 +24,7 @@ export class SoundIdentificationTableComponent implements OnInit {
   lang!: string;
 
   constructor(
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   ngOnInit() {

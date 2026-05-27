@@ -4,7 +4,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { DialogService } from '../../shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { of as ObservableOf } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { ExtendedProfile } from '../../shared/service/user.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class FriendsComponent implements OnInit, OnChanges {
   constructor(private logger: Logger,
               private translateService: TranslateService,
               private dialogService: DialogService,
-              private api: LajiApiClientBService
+              private api: LajiApiClientService
   ) {
   }
 

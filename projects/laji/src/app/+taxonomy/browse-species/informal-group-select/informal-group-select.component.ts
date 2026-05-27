@@ -1,8 +1,8 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, Subscription } from 'rxjs';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type InformalTaxonGroup = components['schemas']['store-informalTaxonGroup'];
 
@@ -25,7 +25,7 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
 
   constructor(
     public translate: TranslateService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   ngOnInit() {

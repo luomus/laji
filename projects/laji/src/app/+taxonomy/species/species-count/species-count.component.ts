@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaxonomySearch } from '../service/taxonomy-search.service';
 import { Subscription } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
     selector: 'laji-species-count',
@@ -23,7 +23,7 @@ export class SpeciesCountComponent implements OnInit, OnDestroy {
 
   constructor(
     private cd: ChangeDetectorRef,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   ngOnInit() {

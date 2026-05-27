@@ -3,8 +3,8 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs';
 import { IdService } from '../../../shared/service/id.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
 
 type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
@@ -64,7 +64,7 @@ export class BiogeographicalProvinceComponent {
   ];
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
   ) {}
 
   @Input()

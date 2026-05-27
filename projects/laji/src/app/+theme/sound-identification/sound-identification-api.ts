@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CombinedData } from './sound-identification-form/sound-identification-form.component';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 export interface IdentificationData {
   start_time: number;
@@ -14,7 +14,7 @@ export interface IdentificationData {
 @Injectable()
 export class SoundIdentificationApi {
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
   ) {}
 
   public analyse(data: CombinedData): Observable<IdentificationData[]> {

@@ -5,8 +5,8 @@ import { Logger } from '../shared/logger/logger.service';
 import { Title } from '@angular/platform-browser';
 import { catchError, delay, filter, map, switchMap, tap } from 'rxjs';
 import { getDescription, HeaderService } from '../shared/service/header.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api';
 import { PlatformService } from '../root/platform.service';
 
 type Information = components['schemas']['Information'];
@@ -23,7 +23,7 @@ export class InformationComponent {
   information$: Observable<Information|null>;
 
   constructor(private route: ActivatedRoute,
-              private api: LajiApiClientBService,
+              private api: LajiApiClientService,
               private logger: Logger,
               private headerService: HeaderService,
               private title: Title,

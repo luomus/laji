@@ -4,7 +4,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../logger/logger.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { filter, map } from 'rxjs';
 
 @Component({
@@ -32,7 +32,7 @@ export class IucnFooterComponent implements OnInit, OnDestroy {
   constructor(
     public footerService: FooterService,
     private router: Router,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private translate: TranslateService,
     private logger: Logger
   ) {

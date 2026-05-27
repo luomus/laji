@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, forwardRef, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR, NonNullableFormBuilder } from '@angular/forms';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { components } from 'projects/laji-api-client/generated/api';
 import { Subscription } from 'rxjs';
 import { map, tap } from 'rxjs';
 

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs';
-import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components, paths } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type Form = components['schemas']['Form'];
 type WarehouseAggregateQuery = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
@@ -29,7 +29,7 @@ export class DatasetAboutComponent implements OnChanges {
   private collectionId$ = this.collectionIdSubject.asObservable();
 
   constructor(
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {
     this.stats$ = this.collectionId$.pipe(switchMap(collectionId => {
       if (!collectionId) {

@@ -7,7 +7,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormService } from '../../../../shared/service/form.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { components } from 'projects/laji-api-client/generated/api';
 
 export type Document = components['schemas']['store-document'];
 export type NamedPlace = components['schemas']['store-namedPlace'];

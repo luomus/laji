@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy
 import { TaxonomySearch } from '../service/taxonomy-search.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { Subscription } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
     selector: 'laji-species-images',
@@ -29,7 +29,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   constructor(
     private cd: ChangeDetectorRef,
     private logger: Logger,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {}
 
   ngOnInit() {

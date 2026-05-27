@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import { operations } from 'projects/laji-api-client-b/generated/api.d';
+import { operations } from 'projects/laji-api-client/generated/api.d';
 
 type Query = NonNullable<operations['TaxaController_getPageWithFilters']['parameters']['query']>;
 type RawFilters = NonNullable<operations['TaxaController_getPageWithFilters']['requestBody']>['content']['application/json'];

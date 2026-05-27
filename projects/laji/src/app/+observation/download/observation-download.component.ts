@@ -39,7 +39,7 @@ import { GeoConvertService, isGeoConvertError } from '../../shared/service/geo-c
 import { DialogService } from '../../shared/service/dialog.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 import { PlatformService } from '../../root/platform.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 
 enum RequestStatus {
@@ -107,7 +107,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   private gisDownloadGeometryField = 'gathering.conversions.wgs84WKT';
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private platformService: PlatformService,
     public searchQuery: SearchQueryService,
     public userService: UserService,

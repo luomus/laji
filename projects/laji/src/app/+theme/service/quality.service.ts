@@ -1,12 +1,12 @@
 import { map } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Injectable()
 export class QualityService {
   constructor(
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   getAnnotationList(page = 1, pageSize = 50, orderBy?: string[], informalTaxonGroupId?: string, timeStart?: string, timeEnd?: string) {

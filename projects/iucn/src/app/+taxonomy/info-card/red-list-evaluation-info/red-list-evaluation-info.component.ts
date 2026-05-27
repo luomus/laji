@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IRow } from './red-list-evaluation-info-rowset/red-list-evaluation-info-rowset.component';
 import { TranslateService } from '@ngx-translate/core';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type RedListEvaluation = components['schemas']['LajiBackendEvaluation'];
 

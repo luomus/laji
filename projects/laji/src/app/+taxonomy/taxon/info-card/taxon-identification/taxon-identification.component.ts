@@ -9,7 +9,7 @@ import { map, switchMap, distinctUntilChanged, filter, startWith, take, tap } fr
 
 import { CollectionViewer } from '@angular/cdk/collections';
 import { PlatformService } from '../../../../root/platform.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 

@@ -5,8 +5,8 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { Global } from '../../../environments/global';
-import type { components } from 'projects/laji-api-client-b/generated/api';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import type { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type Form = components['schemas']['Form'];
 type FormListing = components['schemas']['FormListing'];
@@ -55,7 +55,7 @@ export class ProjectFormService {
   constructor(
     private formService: FormService,
     private translate: TranslateService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {
     this.translate.onLangChange.subscribe(({ lang }) => {
       this.currentFormID = undefined;

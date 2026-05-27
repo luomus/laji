@@ -6,8 +6,8 @@ import { Observable, forkJoin as ObservableForkJoin, Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 import { WithNullableKeys } from '../../shared/utils';
 
 type Profile = components['schemas']['store-profile'];
@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
               private router: Router,
               private logger: Logger,
               private cdr: ChangeDetectorRef,
-              private api: LajiApiClientBService
+              private api: LajiApiClientService
   ) {
     this.personSelfUrl = environment.selfPage;
   }

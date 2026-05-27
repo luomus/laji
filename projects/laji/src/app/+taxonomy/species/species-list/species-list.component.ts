@@ -27,8 +27,8 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { DatatableHeaderComponent } from '../../../shared-modules/datatable/datatable-header/datatable-header.component';
 import { ToFullUriPipe } from 'projects/laji/src/app/shared/pipe/to-full-uri';
 import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -78,7 +78,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     private taxonExportService: TaxonExportService,
     private columnService: TaxonomyColumns,
     private toQname: ToQNamePipe,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   ngOnInit() {

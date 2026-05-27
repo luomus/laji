@@ -3,7 +3,7 @@ Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { map, Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs';
 import { BrowserService } from '../../../shared/service/browser.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
     selector: 'laji-team',
@@ -28,7 +28,7 @@ export class TeamComponent implements OnInit, OnDestroy {
   @Output() memberIdsChange = new EventEmitter<string[]>();
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private browserService: BrowserService
   ) {
     this.dataSource = Observable.create((observer: any) => {

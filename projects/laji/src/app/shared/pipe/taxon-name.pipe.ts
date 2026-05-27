@@ -3,8 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { AbstractLabelPipe } from './abstract-label.pipe';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -21,7 +21,7 @@ export class TaxonNamePipe extends AbstractLabelPipe implements PipeTransform {
 
   constructor(protected translate: TranslateService,
               protected _ref: ChangeDetectorRef,
-              protected api: LajiApiClientBService) {
+              protected api: LajiApiClientService) {
     super(translate, _ref);
   }
 

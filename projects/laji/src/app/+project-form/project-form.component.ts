@@ -13,7 +13,7 @@ import { TriplestoreLabelService } from '../shared/service/triplestore-label.ser
 import { Breadcrumb } from '../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
 import { formOptionToClassName } from '../shared/directive/project-form-option.directive';
 import { NavbarService } from '../shared/service/navbar.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Form = components['schemas']['Form'];
 type FormListing = components['schemas']['FormListing'];

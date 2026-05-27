@@ -2,8 +2,8 @@ import { Component, ChangeDetectorRef, OnInit, OnDestroy, ChangeDetectionStrateg
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { components } from 'projects/laji-api-client-b/generated/api';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { Subscription } from 'rxjs';
 import { tap, filter, switchMap, map } from 'rxjs';
 import { DialogService } from '../../../shared/service/dialog.service';
@@ -58,7 +58,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private cdr: ChangeDetectorRef,
     private router: Router,
     private route: ActivatedRoute,

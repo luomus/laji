@@ -6,7 +6,7 @@ import { switchMap, map, catchError } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { StoreDocument } from '../document-viewer.facade';
-import type { components } from 'projects/laji-api-client-b/generated/api';
+import type { components } from 'projects/laji-api-client/generated/api';
 
 type Person = components['schemas']['Person'];
 

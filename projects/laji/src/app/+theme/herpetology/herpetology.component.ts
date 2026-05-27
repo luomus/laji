@@ -4,8 +4,8 @@ import { forkJoin as ObservableForkJoin, of } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../shared/logger/logger.service';
 import { LocalStorage } from 'ngx-webstorage';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 type TaxonImage = components['schemas']['LajiBackendImage'];
@@ -33,7 +33,7 @@ export class HerpetologyComponent implements OnInit {
 
   constructor(
     public translate: TranslateService,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private cd: ChangeDetectorRef,
     private logger: Logger) {
     const now = new Date();

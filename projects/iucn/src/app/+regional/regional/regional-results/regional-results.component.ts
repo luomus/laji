@@ -8,7 +8,7 @@ import { ChecklistVersion, TaxonFilters, TaxonQuery, TaxonService } from '../../
 import { TranslateService } from '@ngx-translate/core';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
 import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 

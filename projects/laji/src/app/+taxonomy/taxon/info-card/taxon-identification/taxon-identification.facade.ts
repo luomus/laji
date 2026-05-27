@@ -2,9 +2,9 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
 import { map, distinctUntilChanged, tap, takeUntil, switchMap, take } from 'rxjs';
 import { IdentificationChildrenDataSource } from './identification-children-data-source';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { MetadataService } from 'projects/laji/src/app/shared/service/metadata.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -61,7 +61,7 @@ export class TaxonIdentificationFacade implements OnDestroy {
   }
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private metadataService: MetadataService
   ) {}
 

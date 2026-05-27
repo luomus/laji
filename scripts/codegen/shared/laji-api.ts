@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { components, operations } from 'projects/laji-api-client-b/generated/api';
+import { components, operations } from 'projects/laji-api-client/generated/api';
 
 export type MetadataProperty = components['schemas']['Property'];
 export type MetadataAlt = components['schemas']['Alt'];

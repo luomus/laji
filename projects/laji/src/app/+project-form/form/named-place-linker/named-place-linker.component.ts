@@ -8,7 +8,7 @@ import { UserService } from '../../../shared/service/user.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { FormPermissionService } from '../../../shared/service/form-permission.service';
 import { DocumentService, Readonly } from '../../../shared-modules/own-submissions/service/document.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Form = components['schemas']['Form'];
 type Document = components['schemas']['store-document'];
