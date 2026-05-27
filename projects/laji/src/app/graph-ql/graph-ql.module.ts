@@ -11,6 +11,7 @@ import { GraphQLService } from './service/graph-ql.service';
 import { PlatformService } from '../root/platform.service';
 import { SetContextLink } from '@apollo/client/link/context';
 import { UserService } from '../shared/service/user.service';
+import { withNonNullableValues } from '../shared/utils';
 
 export function createApollo(
   httpLink: HttpLink,
@@ -34,11 +35,11 @@ export function createApollo(
     );
 
     return {
-      headers: {
+      headers: withNonNullableValues({
         'api-version': '1',
         'person-token': loggedIn ? userService.getToken() : undefined,
         'accept-language': translateService.getCurrentLang() ?? 'en',
-      }
+      })
     };
   });
 
