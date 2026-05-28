@@ -31,8 +31,8 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
 import { BrowserService } from '../../../shared/service/browser.service';
 import { DocumentPermissionService } from '../service/document-permission.service';
 import { FormService } from '../../../shared/service/form.service';
-import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components, paths } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type AnnotationTag = components['schemas']['store-tag'];
 
@@ -89,7 +89,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
 
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private userService: UserService,
     private cd: ChangeDetectorRef,
     private appRef: ApplicationRef,

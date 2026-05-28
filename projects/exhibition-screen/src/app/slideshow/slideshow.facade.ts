@@ -5,7 +5,7 @@ import { filter, map, switchMap } from 'rxjs';
 import { InformationService } from '../core/information.service';
 import { ISlideData } from './slide/slide.component';
 import { i18nMap, Lang } from '../core/i18n-map';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Information = components['schemas']['Information'];
 

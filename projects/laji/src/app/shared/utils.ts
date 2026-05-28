@@ -2,7 +2,7 @@ import { NavigationEnd, Event } from '@angular/router';
 import merge from 'deepmerge';
 import { PlatformService } from '../root/platform.service';
 
-import type { components } from 'projects/laji-api-client-b/generated/api.d';
+import type { components } from 'projects/laji-api-client/generated/api.d';
 type Document = components['schemas']['store-document'];
 
 export type WithNonNullableKeys<T, K extends keyof T> = T & {

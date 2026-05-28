@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Input,
 ChangeDetectorRef, ChangeDetectionStrategy, TemplateRef, HostListener } from '@angular/core';
 import { DocumentViewerChildComunicationService } from '../document-viewer/document-viewer-child-comunication.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { components } from 'projects/laji-api-client/generated/api';
 
 type Media = components['schemas']['WarehouseDwETL_MediaObject'];
 

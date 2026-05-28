@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, In
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, switchMap, takeUntil } from 'rxjs';
 import { of, Subject } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';
@@ -28,7 +28,7 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
   @LocalStorage('globalMessageClosed', {}) globalMessageClosed: any;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private translate: TranslateService,

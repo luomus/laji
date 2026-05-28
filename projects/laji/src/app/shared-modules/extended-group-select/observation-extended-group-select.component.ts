@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, forwardRef, Input, Output, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { map, Observable, of, shareReplay } from 'rxjs';
 import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree-select/tree-select.component';
@@ -48,7 +48,7 @@ export class ObservationExtendedGroupSelectComponent implements OnInit {
   includedOptions: string[] = [];
   excludedOptions: string[] = [];
 
-  constructor(private api: LajiApiClientBService) {}
+  constructor(private api: LajiApiClientService) {}
 
   ngOnInit() {
     this.groupsTree$ = this.initGroupTree().pipe(shareReplay(1));

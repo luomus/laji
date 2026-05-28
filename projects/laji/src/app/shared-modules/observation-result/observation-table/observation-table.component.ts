@@ -29,7 +29,7 @@ import { BookType } from 'xlsx';
 import { Global } from '../../../../environments/global';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
 import { ObservationTableSettingsComponent } from './observation-table-settings.component';
-import { DataFetchMode } from '../../../+observation/observation-data.service';
+import { DataFetchMode } from '../../../observation/observation-data.service';
 
 const replaceColSortLang = (sort: string, lang: string) => (
   (sort || '').replace(/%longLang%/g, {

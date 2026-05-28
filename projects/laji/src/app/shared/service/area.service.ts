@@ -1,8 +1,8 @@
 import { map } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import type { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import type { components } from 'projects/laji-api-client/generated/api';
 import { dictionarifyByKey } from '../utils';
 
 type Area = components['schemas']['store-area'];
@@ -10,7 +10,7 @@ type Area = components['schemas']['store-area'];
 @Injectable({providedIn: 'root'})
 export class AreaService {
 
-  constructor(private api: LajiApiClientBService) {}
+  constructor(private api: LajiApiClientService) {}
 
   private areasLookup?: Observable<{[id: string]: Area}>;
 

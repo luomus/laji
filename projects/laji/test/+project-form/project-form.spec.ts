@@ -1,5 +1,5 @@
 import test, { Page, expect, Locator } from '@playwright/test';
-import { expectToBeOnLajiAuthLogin, lajiAuthLogin, loginWithPermanentToken } from '../+user/user.po';
+import { expectToBeOnLajiAuthLogin, lajiAuthLogin, loginWithPermanentToken } from '../user/user.po';
 
 const FORM_WITH_SIMPLE_HAS_NO_CATEGORY = 'JX.519';
 const FORM_WITH_SIMPLE_HAS_CATEGORY = 'MHL.25';

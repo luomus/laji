@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output,
 OnInit, OnDestroy} from '@angular/core';
 import { TaxonTagEffectiveService } from '../taxon-tag-effective.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type AnnotationTag = components['schemas']['store-tag'];
 

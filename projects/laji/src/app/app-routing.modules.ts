@@ -11,37 +11,37 @@ import { Global } from '../environments/global';
 import { ExternalRedirectComponent } from './shared/external-redirect/external-redirect.component';
 
 const baseRoutes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule)},
-  {path: 'news', loadChildren: () => import('./+news/news.module').then(m => m.NewsModule), data: {title: 'news.title', preload: false}},
-  {path: 'about', loadChildren: () => import('./+information/information.module').then(m => m.InformationModule), data: {preload: false}},
-  {path: 'user', loadChildren: () => import('./+user/user.module').then(m => m.UserModule), data: {preload: false}},
-  {path: 'view', loadChildren: () => import('./+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document', preload: false}},
-  {path: 'vihko', loadChildren: () => import('./+haseka/haseka.module').then(m => m.HasekaModule), data: {title: 'haseka.title', preload: false}},
-  {path: 'observation', loadChildren: () => import('./+observation/observation.module').then(m => m.ObservationModule), data: {
+  {path: '', pathMatch: 'full', loadChildren: () => import('./home/home.module').then(m => m.HomeModule)},
+  {path: 'news', loadChildren: () => import('./news/news.module').then(m => m.NewsModule), data: {title: 'news.title', preload: false}},
+  {path: 'about', loadChildren: () => import('./information/information.module').then(m => m.InformationModule), data: {preload: false}},
+  {path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule), data: {preload: false}},
+  {path: 'view', loadChildren: () => import('./viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document', preload: false}},
+  {path: 'vihko', loadChildren: () => import('./haseka/haseka.module').then(m => m.HasekaModule), data: {title: 'haseka.title', preload: false}},
+  {path: 'observation', loadChildren: () => import('./observation/observation.module').then(m => m.ObservationModule), data: {
     title: 'navigation.observation'
   }},
-  {path: 'taxon', loadChildren: () => import('./+taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {
+  {path: 'taxon', loadChildren: () => import('./taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {
     title: 'navigation.taxonomy'
   }},
-  {path: 'kartta', loadChildren: () => import('./+map/map.module').then(m => m.MapModule), data: {preload: false, canonical: '/map'}},
+  {path: 'kartta', loadChildren: () => import('./map/map.module').then(m => m.MapModule), data: {preload: false, canonical: '/map'}},
   {
-    path: 'map', loadChildren: () => import('./+map/map.module').then(m => m.MapModule),
+    path: 'map', loadChildren: () => import('./map/map.module').then(m => m.MapModule),
     data: {title: 'navigation.map', preload: false }
   },
   {path: 'error/404', pathMatch: 'full', component: NotFoundComponent},
   {path: 'theme/checklist', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.checklist'}, pathMatch: 'full'},
   {path: 'theme/ykj', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.ykj'}, pathMatch: 'full'},
   {path: 'theme/emk', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.biogeographicalProvinces'}, pathMatch: 'full'},
-  {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule), data: {preload: false}},
+  {path: 'theme', loadChildren: () => import('./theme/theme.module').then(m => m.ThemeModule), data: {preload: false}},
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
   // {path: 'shell', component: ForumComponent},
   {path: 'forum', component: ForumComponent},
-  {path: 'ui-components', loadChildren: () => import('./+ui-components/ui-components.module').then(m => m.UiComponentsModule), data: {preload: false}},
-  {path: 'trait-db', loadChildren: () => import('./+trait-db/trait-db.module').then(m => m.TraitDbModule)},
-  {path: 'save-observations', loadChildren: () => import('./+save-observations/save-observations.module').then(m => m.SaveObservationsModule)},
-  {path: 'project', loadChildren: () => import('./+project-form/project-form.module').then(m => m.ProjectFormModule)},
-  {path: 'project-edit', loadChildren: () => import('./+project-form-edit/project-form-edit.module').then(m => m.ProjectFormEditModule)},
-  {path: 'citation', loadChildren: () => import('./+citable-download/citable-download.module').then(m => m.CitableDownloadModule), data: {preload: false}}
+  {path: 'ui-components', loadChildren: () => import('./ui-components/ui-components.module').then(m => m.UiComponentsModule), data: {preload: false}},
+  {path: 'trait-db', loadChildren: () => import('./trait-db/trait-db.module').then(m => m.TraitDbModule)},
+  {path: 'save-observations', loadChildren: () => import('./save-observations/save-observations.module').then(m => m.SaveObservationsModule)},
+  {path: 'project', loadChildren: () => import('./project-form/project-form.module').then(m => m.ProjectFormModule)},
+  {path: 'project-edit', loadChildren: () => import('./project-form-edit/project-form-edit.module').then(m => m.ProjectFormEditModule)},
+  {path: 'citation', loadChildren: () => import('./citable-download/citable-download.module').then(m => m.CitableDownloadModule), data: {preload: false}}
 ];
 
 const rootRouting = {

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
 import { map } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Pipe({
     name: 'publication',
@@ -15,7 +15,7 @@ export class PublicationPipe implements PipeTransform {
 
   constructor(
     private _ref: ChangeDetectorRef,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   transform(value: any, field: 'name' | 'URI' = 'name'): any {

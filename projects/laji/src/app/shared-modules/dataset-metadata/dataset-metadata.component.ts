@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { CollectionService, ICollectionCounts } from '../../shared/service/collection.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { PlatformService } from '../../root/platform.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Collection = components['schemas']['SensitiveCollection'];
 

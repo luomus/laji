@@ -1,0 +1,137 @@
+import type LajiFormBuilder from '@luomus/laji-form-builder';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, OnDestroy, ViewChild } from '@angular/core';
+import lajiFormBuilderBs3Theme from '@luomus/laji-form-builder/lib/client/themes/bs3';
+import { FormApiClient } from '../../shared/api/FormApiClient';
+import { TranslateService } from '@ngx-translate/core';
+import { ToastsService } from '../../shared/service/toasts.service';
+import { ProjectFormService } from '../../shared/service/project-form.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subscription, from, of } from 'rxjs';
+import { Global } from '../../../environments/global';
+import { Lang } from '@luomus/laji-form-builder/lib/model';
+import { UserService } from '../../shared/service/user.service';
+import { map, shareReplay } from 'rxjs';
+import { environment } from 'projects/laji/src/environments/environment';
+import { PlatformService } from '../../root/platform.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
+
+type Form = components['schemas']['Form'];
+
+@Component({
+    selector: 'laji-form-builder',
+    template: `<div #lajiFormBuilder></div>`,
+    styleUrls: ['./laji-form-builder.component.scss'],
+    providers: [FormApiClient],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
+})
+export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
+  @Input() id?: string;
+
+  @ViewChild('lajiFormBuilder', { static: true }) lajiFormBuilderRoot!: ElementRef;
+
+  private lajiFormBuilder: LajiFormBuilder | undefined;
+
+  constructor(
+    private ngZone: NgZone,
+    private apiClient: FormApiClient,
+    private translate: TranslateService,
+    private toastsService:  ToastsService,
+    private projectFormService: ProjectFormService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private platformService: PlatformService
+  ) {
+  }
+
+  ngAfterViewInit() {
+    if (this.platformService.isBrowser) {
+      this.mount();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.platformService.isBrowser) {
+      this.unmount();
+      this.lajiFormBuilderUpdateSub?.unsubscribe();
+    }
+  }
+
+  private mount() {
+      this.apiClient.lang = this.translate.getCurrentLang();
+      this.apiClient.personToken = this.userService.getToken();
+      void this.updateLajiFormBuilder();
+  }
+
+  lajiFormBuilderUpdateSub!: Subscription;
+
+  async updateLajiFormBuilder() {
+    // The import structure is different in local dev env / feature branches / ssr builds so need to juggle a bit.
+    const lajiFormBuilderImport = (await import('@luomus/laji-form-builder')).default as any;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const LajiFormBuilderClass: typeof LajiFormBuilder = lajiFormBuilderImport.default || lajiFormBuilderImport;
+    this.ngZone.runOutsideAngular(() => {
+
+      this.lajiFormBuilder = new LajiFormBuilderClass({
+        id: this.id,
+        rootElem: this.lajiFormBuilderRoot.nativeElement,
+        theme: lajiFormBuilderBs3Theme,
+        apiClient: this.apiClient,
+        lang: this.translate.getCurrentLang() as Lang,
+        onLangChange: this.onLangChange.bind(this),
+        primaryDataBankFormID: Global.forms.databankPrimary,
+        secondaryDataBankFormID: Global.forms.databankSecondary,
+        onChange: this.onChange.bind(this),
+        onRemountLajiForm: this.onRemountLajiForm.bind(this),
+        onSelected: this.onSelected.bind(this),
+        idToUri: this.idToUri.bind(this),
+        notifier: {
+          success: (msg: any) => this.ngZone.run(() => this.toastsService.showSuccess(msg)),
+          info: (msg: any) => this.ngZone.run(() => this.toastsService.showInfo(msg)),
+          warning: (msg: any) => this.ngZone.run(() => this.toastsService.showWarning(msg)),
+          error: (msg: any) => this.ngZone.run(() => this.toastsService.showError(msg)),
+        }
+      });
+    });
+  }
+
+  private unmount() {
+    this.ngZone.runOutsideAngular(() => {
+      this.lajiFormBuilder?.destroy();
+    });
+  }
+
+  onChange(form: Form) {
+    this.ngZone.run(() => {
+      const id = form.id ? form.id : 'tmp';
+      if (id !== this.id) {
+        this.id = id;
+        of(this.router.navigate(['./' + id], {replaceUrl: true, relativeTo: this.route})).subscribe(() => {
+          this.projectFormService.updateLocalForm({...form, id});
+        });
+      } else {
+        this.projectFormService.updateLocalForm(form);
+      }
+    });
+  }
+
+  onLangChange(lang: Lang) {
+    this.projectFormService.updateLocalLang(lang);
+  }
+
+  onRemountLajiForm() {
+    this.projectFormService.remountLajiForm();
+  }
+
+  onSelected(id: string) {
+    this.id = id;
+    of(this.router.navigate(['./' + id], {replaceUrl: true, relativeTo: this.route})).subscribe(() => {
+      void this.updateLajiFormBuilder();
+    });
+  }
+
+  idToUri(id: string) {
+    return `${environment.base}/project-edit/${id}`;
+  }
+}

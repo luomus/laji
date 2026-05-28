@@ -10,12 +10,12 @@ import { Observable, of } from 'rxjs';
 import * as Util from '../../../../../../laji/src/app/shared/utils';
 import equals from 'deep-equal';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
-import { NoRecordingsResult, RecordingLoaderService } from '../../../+identification/service/recording-loader.service';
+import { NoRecordingsResult, RecordingLoaderService } from '../../../identification/service/recording-loader.service';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { DialogService } from '../../../../../../laji/src/app/shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AudioService } from '../../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
-import { AudioCacheLoaderService } from '../../../+identification/service/audio-cache-loader.service';
+import { AudioCacheLoaderService } from '../../../identification/service/audio-cache-loader.service';
 import { IdentificationNavComponent } from './identification-nav/identification-nav.component';
 import { IdentificationViewComponent } from './identification-view/identification-view.component';
 

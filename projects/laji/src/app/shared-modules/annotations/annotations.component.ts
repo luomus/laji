@@ -15,10 +15,10 @@ import { TaxonTagEffectiveService } from '../document-viewer/taxon-tag-effective
 import { LoadingElementsService } from '../document-viewer/loading-elements.service';
 import { PlatformService } from '../../root/platform.service';
 import { TranslateService } from '@ngx-translate/core';
-import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
+import { components, paths } from 'projects/laji-api-client/generated/api.d';
 import { Unsaved } from '../../shared/utils';
 import { AnnotationDW } from './annotation-list/annotation-list.component';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type DocumentAggregateQueryParams = paths['/warehouse/query/document/aggregate']['get']['parameters']['query'];
 
@@ -85,7 +85,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     private annotationService: AnnotationService,
     private documentViewerFacade: DocumentViewerFacade,
     private cd: ChangeDetectorRef,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private taxonTagEffective: TaxonTagEffectiveService,
     private loadingElements: LoadingElementsService,
     private platformService: PlatformService,

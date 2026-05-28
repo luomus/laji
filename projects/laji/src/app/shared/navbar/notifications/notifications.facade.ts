@@ -4,8 +4,8 @@ import { distinctUntilChanged, map, switchMap, tap, take, concatMap, toArray, fi
 import { GraphQLService } from '../../../graph-ql/service/graph-ql.service';
 import gql from 'graphql-tag';
 import { UserService } from '../../service/user.service';
-import { LajiApiClientBService } from '../../../../../../laji-api-client-b/src/laji-api-client-b.service';
-import type { components, paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from '../../../../../../laji-api-client/src/laji-api-client.service';
+import type { components, paths } from 'projects/laji-api-client/generated/api';
 
 type Notification = components['schemas']['store-notification'];
 type NotificationResponse = paths['/notifications']['get']['responses']['200']['content']['application/json'];
@@ -77,7 +77,7 @@ export class NotificationsFacade {
   constructor(
     private userService: UserService,
     private graphQLService: GraphQLService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {}
 
   private notificationsReducer(notifications: NotificationResponse) {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 import { dictionarifyByKey } from '../utils';
 
 type Checklist = components['schemas']['store-checklist'];
@@ -10,7 +10,7 @@ type Checklist = components['schemas']['store-checklist'];
 export class ChecklistService {
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
   ) {
   }
 

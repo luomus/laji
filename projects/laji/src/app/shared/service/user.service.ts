@@ -21,8 +21,8 @@ import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
 import { Global } from '../../../environments/global';
 import { RegistrationContact } from './project-form.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Person = components['schemas']['Person'];
 type SensitivePerson = Omit<components['schemas']['SensitivePerson'], '@context'>;
@@ -191,7 +191,7 @@ export class UserService implements OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private platformService: PlatformService,
     private storage: LocalStorageService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {}
 
   /**

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Global } from '../../../environments/global';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type FormListing = components['schemas']['FormListing'];
 type Unit = components['schemas']['store-unit'];

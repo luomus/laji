@@ -20,12 +20,12 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-component/app-component.module';
 import { LajiUiModule } from '../../../laji-ui/src/lib/laji-ui.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
-import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { API_BASE_URL, LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { detectLangFromPath } from 'projects/laji/src/app/app.module';
 import { setLocale } from 'projects/laji/src/app/locale/locale.component';
 import { LocaleModule } from './locale/locale.module';
 
-export function createLoggerLoader(api: LajiApiClientBService): ILogger {
+export function createLoggerLoader(api: LajiApiClientService): ILogger {
   if (environment.production) {
     return new HttpLogger(api);
   }
@@ -74,7 +74,7 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     {
       provide: Logger,
-      deps: [LajiApiClientBService],
+      deps: [LajiApiClientService],
       useFactory: createLoggerLoader
     },
     provideHttpClient(withInterceptorsFromDi()),

@@ -7,8 +7,8 @@ import { StoreDocument } from '../document-viewer.facade';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { JSONPath } from 'jsonpath-plus';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
-import { LajiApiClientBService } from '../../../../../../laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from '../../../../../../laji-api-client/src/laji-api-client.service';
 
 type Unit = components['schemas']['store-unit'];
 type Image = components['schemas']['Image'];
@@ -42,7 +42,7 @@ export class DocumentLocalComponent implements OnChanges {
     private cd: ChangeDetectorRef,
     private formService: FormService,
     private deleteDocumentService: DeleteOwnDocumentService,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {

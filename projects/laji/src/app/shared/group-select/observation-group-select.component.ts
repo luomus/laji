@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { Logger } from '../logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { GroupSelectComponent } from './group-select.component';
-import { components, operations } from 'projects/laji-api-client-b/generated/api';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components, operations } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type InformalTaxonGroup = components['schemas']['store-informalTaxonGroup'];
 type RedListTaxonGroup= components['schemas']['store-iucnRedListTaxonGroup'];
@@ -34,7 +34,7 @@ export class ObservationGroupSelectComponent extends GroupSelectComponent<Inform
 
   constructor(
     protected cd: ChangeDetectorRef,
-    protected api: LajiApiClientBService,
+    protected api: LajiApiClientService,
     protected logger: Logger,
     protected translate: TranslateService
   ) {

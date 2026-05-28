@@ -7,10 +7,10 @@ import { GraphQLService } from '../../graph-ql/service/graph-ql.service';
 import { gql } from 'apollo-angular';
 import { WarehouseQueryInterface } from '../model/WarehouseQueryInterface';
 import { UserService } from './user.service';
-import { ObservationFacade } from '../../+observation/observation.facade';
+import { ObservationFacade } from '../../observation/observation.facade';
 import { TreeOptionsNode } from '../../shared-modules/tree-select/tree-select.component';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components, paths } from 'projects/laji-api-client/generated/api.d';
 
 type Collection = components['schemas']['SensitiveCollection'];
 type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
@@ -102,7 +102,7 @@ export class CollectionService {
   constructor(
     private graphQlService: GraphQLService,
     private userService: UserService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {
   }
 
