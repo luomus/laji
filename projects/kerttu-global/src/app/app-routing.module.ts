@@ -28,7 +28,7 @@ const routes: Routes = [
   },
   {
     path: 'validation',
-    loadChildren: () => import('./+validation/validation.module').then(m => m.ValidationModule),
+    loadChildren: () => import('./validation/validation.module').then(m => m.ValidationModule),
     data: {title: 'Bird & Bat Sounds Global'}
   },
   {
