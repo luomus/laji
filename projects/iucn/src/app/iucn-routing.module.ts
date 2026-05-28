@@ -22,7 +22,7 @@ const routes: Routes = [
   {path: 'about', loadChildren: () => import('./about/about.module').then(m => m.AboutModule), data: {title: 'iucn.about.title'}},
   {path: 'regional', loadChildren: () => import('./+regional/regional.module')
       .then(m => m.RegionalModule), data: {title: 'iucn.regional.title'}},
-  {path: 'publications', loadChildren: () => import('./+publications/publications.module')
+  {path: 'publications', loadChildren: () => import('./publications/publications.module')
       .then(m => m.PublicationsModule), data: {title: 'iucn.publications.title'}},
   {path: 'user', loadChildren: () => import('../../../laji/src/app/user/user.module').then(m => m.UserModule)},
   {path: 'view', loadChildren: () => import('../../../laji/src/app/viewer/viewer.module')
