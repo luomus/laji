@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'ogcapi',
-    loadChildren: () => import('../+geoapi/geoapi.module').then(m => m.GeoapiModule)
+    loadChildren: () => import('../geoapi/geoapi.module').then(m => m.GeoapiModule)
   },
 ];
 
