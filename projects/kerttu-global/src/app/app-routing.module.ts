@@ -38,7 +38,7 @@ const routes: Routes = [
   },
   {
     path: 'bats/identification',
-    loadChildren: () => import('./+bat-identification/bat-identification.module').then(m => m.BatIdentificationModule),
+    loadChildren: () => import('./bat-identification/bat-identification.module').then(m => m.BatIdentificationModule),
     data: {title: 'Bird & Bat Sounds Global'}
   },
   {
