@@ -13,7 +13,7 @@ const mainRoutes: Routes = [
   {path: 'about', loadChildren: () => import('../../../laji/src/app/information/information.module').then(m => m.InformationModule)},
   {path: 'view', loadChildren: () => import('../../../laji/src/app/viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document'}},
   {path: 'theme', loadChildren: () => import('./theme/theme.module').then(m => m.ThemeModule)},
-  {path: 'usage', loadChildren: () => import('./+usage/usage.module').then(m => m.UsageModule), data: {title: 'navigation.usage'}},
+  {path: 'usage', loadChildren: () => import('./usage/usage.module').then(m => m.UsageModule), data: {title: 'navigation.usage'}},
   {path: 'monitoring', loadChildren: () => import('./monitoring/monitoring.module').then(m => m.MonitoringModule), data: {title: 'navigation.monitoring'}},
   {path: 'observation', loadChildren: () => import('../../../laji/src/app/observation/observation.module').then(m => m.ObservationModule), data: {
     preload: true,
