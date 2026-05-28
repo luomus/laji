@@ -23,7 +23,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    loadChildren: () => import('./+about/about.module').then(m => m.AboutModule),
+    loadChildren: () => import('./about/about.module').then(m => m.AboutModule),
     data: {preload: true, title: 'Bird & Bat Sounds Global'}
   },
   {
