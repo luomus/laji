@@ -9,7 +9,7 @@ const routes: Routes = [
   {path: 'species', loadChildren: () => import('./+species/species.module').then(m => m.SpeciesModule)},
   {path: 'grid', loadChildren: () => import('./grid/grid.module').then(m => m.GridModule)},
   {path: 'society', loadChildren: () => import('./bird-society/bird-society.module').then(m => m.BirdSocietyModule)},
-  {path: 'observers', loadChildren: () => import('./+observers/observers.module').then(m => m.ObserversModule)}
+  {path: 'observers', loadChildren: () => import('./observers/observers.module').then(m => m.ObserversModule)}
 ];
 
 const routesWithLang: Routes = [
