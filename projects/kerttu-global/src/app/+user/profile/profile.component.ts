@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { SharedModule } from '../../../../../laji/src/app/shared/shared.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { clone } from '../../../../../laji/src/app/shared/utils';
 
 type Profile = components['schemas']['store-profile'];
 
@@ -40,7 +41,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.subProfile = this.api.get('/person/profile').subscribe({
       next: profile => {
-        this.profile = profile;
+        this.profile = clone(profile);
         this.loading = false;
         this.cdr.markForCheck();
       },

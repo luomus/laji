@@ -2,8 +2,8 @@
   <div class="identification-view-container">
     <div class="identification-nav">
       <div class="button-container">
-        <button class="btn btn-success" [disabled]="saving || loading" (click)="saveAnnotation()">{{ 'save' | translate }}</button>
-        <button class="btn btn-default" [disabled]="saving || loading" (click)="openExportModal()">{{ (hasUnsavedChanges ? 'xenoCantoExport.saveAndExport' : 'xenoCantoExport.export') | translate }}</button>
+        <button class="btn btn-success" [disabled]="saving || loading || loadingXenoCantoApiKey" (click)="saveAnnotation()">{{ 'save' | translate }}</button>
+        <button class="btn btn-default" [disabled]="saving || loading || loadingXenoCantoApiKey" (click)="openExportModal()">{{ (hasUnsavedChanges ? 'xenoCantoExport.saveAndExport' : 'xenoCantoExport.export') | translate }}</button>
       </div>
     </div>
 
@@ -20,10 +20,20 @@
         class="flex-container"
         [recording]="recording"
         [(annotation)]="annotation"
-        [buttonsDisabled]="saving || loading"
+        [buttonsDisabled]="saving || loading || loadingXenoCantoApiKey"
         [showFileName]="false"
         (annotationChange)="onAnnotationChange()"
       ></bsg-identification-view>
     }
   </div>
 </laji-spinner>
+
+<ng-template #noApiKeyTpl>
+  Xeno-Canto API key is required for exporting annotations. Please set your API key in the
+  <a [routerLink]="['/user'] | localize">profile settings</a>.
+</ng-template>
+
+<ng-template #invalidApiKeyTpl>
+  Your Xeno-Canto API key is invalid. Please check your API key in the
+  <a [routerLink]="['/user'] | localize">profile settings</a>.
+</ng-template>

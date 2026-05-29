@@ -246,7 +246,8 @@ export enum SoundTypeEnum {
 export enum KerttuGlobalErrorEnum {
   speciesLocked = 'SpeciesLockedError',
   invalidRecordingId = 'InvalidRecordingIdError',
-  invalidRecordingAnnotation = 'InvalidRecordingAnnotationError'
+  invalidRecordingAnnotation = 'InvalidRecordingAnnotationError',
+  invalidXenoCantoApiKey = 'InvalidXenoCantoApiKeyError',
 }
 
 export enum TaxonTypeEnum {
