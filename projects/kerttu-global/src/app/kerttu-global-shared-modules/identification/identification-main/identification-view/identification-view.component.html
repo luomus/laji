@@ -40,12 +40,12 @@
     </ng-template>
     <ng-template #audioInfo let-audio="audio">
       @if (audio.targetSpecies) {
-        <span class="audio-species-name">
+        <span class="audio-species-name fs-2">
           <bsg-species-name [species]="audio.targetSpecies"></bsg-species-name>
         </span>
         <br>
       }
-      <span>
+      <span class="fs-2">
         {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
         {{ audio.locality ? (audio.locality | titlecase) : audio.site.name }}@if (audio.site.country) {, {{ audio.site.country }} }
       </span>
