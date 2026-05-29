@@ -118,7 +118,7 @@
     "@luomus/label-designer": "^19",
     "@luomus/laji-form": "^15.1.115",
     "@luomus/laji-form-builder": "^1.1.11",
-    "@luomus/laji-map": "^5.1.22",
+    "@luomus/laji-map": "^5.1.23",
     "@ng-select/ng-select": "^21",
     "@ngx-translate/core": "^17.0.0",
     "@servoy/jw-bootstrap-switch-ng2": "^20",
