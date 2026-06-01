@@ -10,7 +10,7 @@ type Form = components['schemas']['Form'];
     selector: 'laji-result-service',
     template: `
     <div lajiFormOption="options.resultServiceType">
-      @switch ((form$ | async)!.options?.resultServiceType) {
+      @switch ((form$ | async)?.options?.resultServiceType) {
         @case ('MHL.resultServiceTypeWinterBirdCount') {
           <div>
             <laji-wbc-result [form]="(form$ | async)!"></laji-wbc-result>
