@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit {
     this.homeData$ = this.homeDataService.getHomeData();
     this.images$ = this.homeData$.pipe(
       map(data => data.identify && data.identify.results || []),
-      map(data => data.map(item => item.unit.media[0]))
+      map(data => data.map(item => item.media))
     );
     this.publications$ = this.api.get('/information/{id}', { path: { id: 'finbif-bib-top' } });
   }

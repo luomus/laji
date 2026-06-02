@@ -8,76 +8,66 @@ import { TranslateService } from '@ngx-translate/core';
 
 export interface IBaseData {
   classes: {
+    results: {
     id: string;
     label: string;
-  }[];
-  properties: {
-    id: string;
-    label: string;
-  }[];
-  alts: {
-    id: string;
-    options: {
-      id: string;
-      label: string;
-      description: string;
-      link: string;
     }[];
-  }[];
-  warehouseLabels: {
-    enumeration: string;
-    property: string;
-  }[];
-  information: {
+  };
+  properties: {
+    results: {
     id: string;
-    title: string;
-    children: {
+    label: string;
+    }[];
+  };
+  alts: {
+    results: {
       id: string;
-      title: string;
-      children: {
+      options: {
         id: string;
-        title: string;
+        label: string;
+        description: string;
+        link: string;
       }[];
+    }[];
+  };
+  warehouseLabels: {
+    results: {
+      enumeration: string;
+      property: string;
     }[];
   };
 }
 
 const BASE_QUERY = gql`
-  query {
-    classes {
+{
+  classes: MetadataController_getClasses {
+    results {
       id: class
       label
     }
-    properties {
+  }
+  properties: MetadataController_getProperties {
+    results {
       id: property
       label
     }
-    alts {
-      id: alt
+  }
+  alts: MetadataController_getAltsList {
+    results {
+     id
       options {
         id
-        label: value
-        description
-        link
-      }
-    }
-    warehouseLabels {
-      enumeration
-      property
-    }
-    information {
-      id
-      title
-      children {
-        id
-        title
-        children {
-          id
-          title
-        }
+        value
       }
     }
   }
+  warehouseLabels: warehouse_enumeration_labels {
+    results {
+      enumeration
+      property
+    }
+  }
+}
 `;
 
 @Injectable({
@@ -141,13 +131,13 @@ export class BaseDataService implements OnDestroy {
     }
 
     const labelMap: Record<string, string> = {};
-    (data.classes || []).forEach((meta) => {
+    (data.classes.results || []).forEach((meta) => {
       labelMap[meta.id] = meta.label;
     });
-    (data.properties || []).forEach((meta) => {
+    (data.properties.results || []).forEach((meta) => {
       labelMap[meta.id] = meta.label;
     });
-    (data.alts || []).forEach((meta) => {
+    (data.alts.results || []).forEach((meta) => {
       if (meta.options) {
         meta.options.forEach((option) => {
           labelMap[option.id] = option.label;

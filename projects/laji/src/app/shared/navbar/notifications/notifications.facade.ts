@@ -28,14 +28,14 @@ interface IRefreshDataResult {
 const NOTIFICATION_MAX_PAGESIZE = 100;
 
 const REFRESH_QUERY = gql`
-  query($pageSize: Int, $personToken: String = "") {
-    notifications(personToken: $personToken, pageSize: $pageSize) {
+  query {
+    notifications: NotificationsController_getPage(pageSize: 1) {
       total
       results {
         id
       }
     }
-    unseenCount: notifications(personToken: $personToken, onlyUnSeen: true, pageSize: 0) {
+    unseenCount: NotificationsController_getPage(onlyUnSeen: true, pageSize: 0) {
       total
     }
   }
@@ -116,8 +116,7 @@ export class NotificationsFacade {
   checkForNewNotifications() {
     this.graphQLService.query<IRefreshDataResult>({
       query: REFRESH_QUERY,
-      fetchPolicy: 'network-only',
-      variables: {personToken: this.userService.getToken(), pageSize: 1}
+      fetchPolicy: 'network-only'
     }).pipe(
       map(({data}) => data),
       catchError(() => of({unseenCount: {total: 0}, notifications: {total: 0, results: []}}))

@@ -1,20 +1,23 @@
 import { provideApollo } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
-import { InMemoryCache } from '@apollo/client/core';
+import { ApolloLink, InMemoryCache } from '@apollo/client/core';
 import { NgModule, inject } from '@angular/core';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { AcceptLanguageInterceptor } from './accept-language.interceptor';
 import { TranslateService } from '@ngx-translate/core';
-import { concatMap } from 'rxjs';
+import { concatMap, firstValueFrom } from 'rxjs';
 import { from } from 'rxjs';
 import { GraphQLService } from './service/graph-ql.service';
 import { PlatformService } from '../root/platform.service';
+import { SetContextLink } from '@apollo/client/link/context';
+import { UserService } from '../shared/service/user.service';
+import { withNonNullableValues } from '../shared/utils';
 
 export function createApollo(
   httpLink: HttpLink,
   translateService: TranslateService,
-  platformService: PlatformService
+  platformService: PlatformService,
+  userService: UserService
 ) {
   const cache = new InMemoryCache();
 
@@ -22,22 +25,38 @@ export function createApollo(
     .pipe(concatMap(() => from(cache.reset())))
     .subscribe({ error: (e) => console.error(e) });
 
+  const http = httpLink.create({
+    uri: `${environment.apiBase}/graphql`
+  });
+
+  const headers = new SetContextLink(async () => {
+    const loggedIn = await firstValueFrom(
+      userService.isLoggedIn$
+    );
+
+    return {
+      headers: withNonNullableValues({
+        'api-version': '1',
+        'person-token': loggedIn ? userService.getToken() : undefined,
+        'accept-language': translateService.getCurrentLang() ?? 'en',
+      })
+    };
+  });
+
   return {
-    link: httpLink.create({
-      uri: `${environment.apiBase}/graphql`
-    }),
+    link: ApolloLink.from([headers, http]),
     cache,
     ...(platformService.isBrowser ? {} : { ssrMode: true })
   };
 }
 
 @NgModule({ exports: [], imports: [], providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: AcceptLanguageInterceptor, multi: true },
         provideApollo(() => {
             const httpLink = inject(HttpLink);
             const translateService = inject(TranslateService);
             const platformService = inject(PlatformService);
-            return createApollo(httpLink, translateService, platformService);
+            const userService = inject(UserService);
+            return createApollo(httpLink, translateService, platformService, userService);
         }),
         GraphQLService,
         provideHttpClient(withInterceptorsFromDi()),

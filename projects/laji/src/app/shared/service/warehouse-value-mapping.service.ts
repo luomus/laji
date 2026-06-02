@@ -18,7 +18,7 @@ export class WarehouseValueMappingService {
   ) {
     this.labels$ = this.baseDataService.getBaseData().pipe(
       map(data => data.warehouseLabels),
-      map(data => this.parseResult(data)),
+      map(data => this.parseResult(data.results)),
       shareReplay(1)
     );
   }
