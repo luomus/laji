@@ -22,7 +22,7 @@ import { LajiUiModule } from '../../../laji-ui/src/lib/laji-ui.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 import { API_BASE_URL, LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { detectLangFromPath } from 'projects/laji/src/app/app.module';
-import { setLocale } from 'projects/laji/src/app/locale/locale.component';
+import { setLocale } from 'projects/laji/src/app/app-routing.modules';
 import { LocaleModule } from './locale/locale.module';
 
 export function createLoggerLoader(api: LajiApiClientService): ILogger {

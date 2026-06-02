@@ -1,14 +1,48 @@
-import { Route, RouterModule, Routes } from '@angular/router';
+import { Route, ResolveFn, RouterModule, Routes } from '@angular/router';
 import { ForumComponent } from './forum/forum.component';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { CheckLoginGuard } from './shared/guards/check-login.guard';
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import { Global } from '../environments/global';
 import { ExternalRedirectComponent } from './shared/external-redirect/external-redirect.component';
+import { TranslateService } from '@ngx-translate/core';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { PlatformService } from './root/platform.service';
+import { LocalStorageService } from 'ngx-webstorage';
+import { LAST_LANG_KEY } from './locale/localize-router.service';
+import { map, of, take } from 'rxjs';
+
+import moment from 'moment';
+import 'moment/locale/fi';
+import 'moment/locale/sv';
+
+export function setLocale(lang: string) {
+  const platform = inject(PlatformService);
+  const translate = inject(TranslateService);
+  const api = inject(LajiApiClientBService);
+  const localStorage = inject(LocalStorageService);
+
+  moment.locale(lang);
+  api.setLang(lang);
+  if (platform.isBrowser) {
+    window.document.documentElement.lang = lang;
+    localStorage.store(LAST_LANG_KEY, lang);
+  }
+  if (lang !== translate.getCurrentLang()) {
+    return translate.use(lang).pipe(
+      map(() => true),
+      take(1)
+    );
+  } else {
+    return of(true);
+  }
+}
+
+const localeResolver = (lang: string): ResolveFn<boolean> => () => setLocale(lang);
 
 const baseRoutes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./home/home.module').then(m => m.HomeModule)},
@@ -66,17 +100,17 @@ redirectsFi.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirect
 const routesWithLang: Routes = [
   {path: 'in', children: [
     {path: '**', component: NotFoundComponent}
-  ], component: LocaleEnComponent},
+  ], component: LocaleEnComponent, resolve: { localeReady: localeResolver('en') }},
   {path: 'en', children: [
     ...redirectsEn,
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
-  ], component: LocaleEnComponent},
+  ], component: LocaleEnComponent, resolve: { localeReady: localeResolver('en') }},
   {path: 'sv', children: [
     ...redirectsFi,
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
-  ], component: LocaleSvComponent},
+  ], component: LocaleSvComponent, resolve: { localeReady: localeResolver('sv') }},
   {path: '', children: [
       ...redirectsFi,
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
@@ -94,7 +128,7 @@ const routesWithLang: Routes = [
     {path: 'selaa', redirectTo: '/observation/list', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
-  ], component: LocaleFiComponent}
+  ], component: LocaleFiComponent, resolve: { localeReady: localeResolver('fi') }}
 ];
 
 export const routes: Routes = [

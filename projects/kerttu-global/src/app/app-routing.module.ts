@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { Injectable, NgModule } from '@angular/core';
-import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
+import { PreloadingStrategy, ResolveFn, Route, RouterModule, Routes } from '@angular/router';
 import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from '../../../laji/src/app/locale/locale-en.component';
 import { catchError, flatMap } from 'rxjs';
@@ -9,6 +9,8 @@ import { CheckLoginGuard } from '../../../laji/src/app/shared/guards/check-login
 import { LocaleEsComponent } from './locale/locale-es.component';
 import { LocaleFrComponent } from './locale/locale-fr.component';
 import { LocaleZhComponent } from './locale/locale-zh.component';
+import { setLocale } from 'projects/laji/src/app/app-routing.modules';
+import { mapTo, take } from 'rxjs/operators';
 
 @Injectable()
 export class PreloadSelectedModulesList implements PreloadingStrategy {
@@ -47,18 +49,23 @@ const routes: Routes = [
   }
 ];
 
+const localeResolver = (lang: string): ResolveFn<boolean> => () => setLocale(lang).pipe(
+  take(1),
+  mapTo(true)
+);
+
 const routesWithLang: Routes = [
   {path: 'es', children: [
       ...routes,
       {path: '**', component: NotFoundComponent}
-    ], component: LocaleEsComponent},
+    ], component: LocaleEsComponent, resolve: { localeReady: localeResolver('es') }},
   {path: 'fr', children: [
       ...routes,
       {path: '**', component: NotFoundComponent}
-    ], component: LocaleFrComponent},
+    ], component: LocaleFrComponent, resolve: { localeReady: localeResolver('fr') }},
   {path: '', children: [
       ...routes,
-    ], component: LocaleEnComponent}
+    ], component: LocaleEnComponent, resolve: { localeReady: localeResolver('en') }}
 ];
 
 const allRoutes: Routes = [
