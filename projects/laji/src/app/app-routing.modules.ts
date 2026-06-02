@@ -10,7 +10,7 @@ import { QuicklinkStrategy } from 'ngx-quicklink';
 import { Global } from '../environments/global';
 import { ExternalRedirectComponent } from './shared/external-redirect/external-redirect.component';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { PlatformService } from './root/platform.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { LAST_LANG_KEY } from './locale/localize-router.service';
@@ -23,7 +23,7 @@ import 'moment/locale/sv';
 export function setLocale(lang: string) {
   const platform = inject(PlatformService);
   const translate = inject(TranslateService);
-  const api = inject(LajiApiClientBService);
+  const api = inject(LajiApiClientService);
   const localStorage = inject(LocalStorageService);
 
   moment.locale(lang);
