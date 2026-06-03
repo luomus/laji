@@ -78,6 +78,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
 
   @Input({ required: true }) recording!: IGlobalRecording;
   @Input({ required: true }) annotation!: IGlobalRecordingAnnotation;
+  @Input() selectableTaxonTypes?: TaxonTypeEnum[];
   @Input() taxonomyList?: TaxonomyListEnum;
   @Input() buttonsDisabled = false;
   @Input() showFileName = true;
@@ -104,7 +105,6 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
   overlappingSpeciesRectangleColor = '#d9d926';
   otherSoundRectangleColor = '#d98026';
 
-  selectableTaxonTypes: TaxonTypeEnum[] = [];
   taxonTypeEnum = TaxonTypeEnum;
 
   topContentHeight = 265;
@@ -129,7 +129,6 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     this.clearDrawMode();
     if (changes.recording) {
-      this.updateSelectableTaxonTypes();
       this.updateAudioViewerConfig();
       this.updateSelectedSpeciesAndSpectrogramRectangles();
     }
@@ -288,17 +287,6 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
     this.audioViewerMode = 'default';
   }
 
-  private updateSelectableTaxonTypes() {
-    const taxonType = this.recording.taxonType;
-
-    const birdGroup = [TaxonTypeEnum.bird, TaxonTypeEnum.mammal, TaxonTypeEnum.frog];
-
-    if (birdGroup.includes(taxonType)) {
-      this.selectableTaxonTypes = birdGroup;
-    } else {
-      this.selectableTaxonTypes = [taxonType];
-    }
-  }
 
   private updateSelectedSpeciesAndSpectrogramRectangles() {
     if (this.selectedSpeciesSub) {

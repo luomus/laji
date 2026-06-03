@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, Input, ChangeDetectorRef, EventEmit
 import {
   IGlobalRecording,
   IGlobalRecordingAnnotation,
-  KerttuGlobalErrorEnum
+  KerttuGlobalErrorEnum,
+  TaxonTypeEnum
 } from '../../../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../../laji/src/app/shared/service/user.service';
@@ -15,6 +16,7 @@ import { switchMap, tap } from 'rxjs';
 import * as Util from '../../../../../../../laji/src/app/shared/utils';
 import equals from 'deep-equal';
 import { getTranslateKeyWithTaxonType } from '../../../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
+import { getDefaultSelectableTaxonTypes } from '../../../../kerttu-global-shared/service/kerttu-global-utils';
 
 @Component({
     selector: 'bsg-identification-history-edit-modal',
@@ -31,6 +33,7 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
 
   recording?: IGlobalRecording;
   annotation?: IGlobalRecordingAnnotation;
+  selectableTaxonTypes: TaxonTypeEnum[] = [];
 
   saving = false;
   loading = false;
@@ -64,6 +67,7 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
     ).subscribe((result) => {
       this.recording = result.recording;
       this.annotation = result.annotation;
+      this.selectableTaxonTypes = getDefaultSelectableTaxonTypes(result.recording?.taxonType);
       this.originalAnnotation = Util.clone(this.annotation);
       this.loading = false;
       this.cdr.markForCheck();

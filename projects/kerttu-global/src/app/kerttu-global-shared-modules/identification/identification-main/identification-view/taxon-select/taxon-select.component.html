@@ -8,7 +8,8 @@
 }
 <input
   type="text"
-  class="form-control d-inline species-select"
+  class="form-control d-inline"
+  [class.input-with-select]="showContinentSelect"
   [class.loading]="loading"
   name="target"
   [placeholder]="placeholder"

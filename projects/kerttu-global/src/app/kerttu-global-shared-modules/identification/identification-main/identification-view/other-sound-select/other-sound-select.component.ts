@@ -5,8 +5,8 @@ import {
   Component,
   EventEmitter,
   Input,
-  Output,
   OnChanges,
+  Output,
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -23,7 +23,7 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false
 })
 export class OtherSoundSelectComponent implements OnChanges {
-  @Input() taxonTypes = [TaxonTypeEnum.bird];
+  @Input() taxonTypes?: TaxonTypeEnum[];
 
   selectedId?: number;
   options?: IGlobalSpecies[];
@@ -74,11 +74,21 @@ export class OtherSoundSelectComponent implements OnChanges {
     );
   }
 
-  private getFilteredOptions(options: IGlobalSpecies[], taxonTypes: TaxonTypeEnum[]): IGlobalSpecies[] {
-    return options.filter(option => (
-      (taxonTypes.includes(TaxonTypeEnum.bird) && option.scientificName !== 'Birds') ||
-      (taxonTypes.includes(TaxonTypeEnum.bat) && option.scientificName !== 'Bats') ||
-      (taxonTypes.includes(TaxonTypeEnum.insect) && option.scientificName !== 'Insects')
-    ));
+  private getFilteredOptions(options: IGlobalSpecies[], taxonTypes?: TaxonTypeEnum[]): IGlobalSpecies[] {
+    const filtered: string[] = [];
+    if (!taxonTypes || taxonTypes.includes(TaxonTypeEnum.bird)) {
+      filtered.push('Birds');
+    }
+    if (!taxonTypes || taxonTypes.includes(TaxonTypeEnum.bat)) {
+      filtered.push('Bats');
+    }
+    if (!taxonTypes || taxonTypes.includes(TaxonTypeEnum.insect)) {
+      filtered.push('Insects');
+    }
+    if (!taxonTypes) {
+      filtered.push('Rodents');
+    }
+
+    return options.filter(option => (!filtered.includes(option.scientificName)));
   }
 }

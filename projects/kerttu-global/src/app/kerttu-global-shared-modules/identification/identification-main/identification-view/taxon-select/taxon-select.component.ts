@@ -11,7 +11,12 @@ import {
 import { Observable, of, of as ObservableOf } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../../../laji/src/app/shared/service/user.service';
-import { IGlobalSpecies, IGlobalSpeciesFilters, TaxonomyListEnum, TaxonTypeEnum } from '../../../../../kerttu-global-shared/models';
+import {
+  IGlobalSpecies,
+  IGlobalSpeciesFilters,
+  TaxonomyListEnum,
+  TaxonTypeEnum
+} from '../../../../../kerttu-global-shared/models';
 import { TranslateService } from '@ngx-translate/core';
 
 interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
@@ -27,7 +32,7 @@ interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
 })
 export class TaxonSelectComponent implements OnChanges {
 
-  @Input() taxonTypes = [TaxonTypeEnum.bird];
+  @Input() taxonTypes?: TaxonTypeEnum[];
   @Input() taxonomyList?: TaxonomyListEnum;
   @Input() limit = 10;
   @Input() placeholder = '';
@@ -62,7 +67,8 @@ export class TaxonSelectComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.showContinentSelect = this.taxonTypes.includes(TaxonTypeEnum.bird);
+    this.showContinentSelect = (!this.taxonTypes || this.taxonTypes?.includes(TaxonTypeEnum.bird)) &&
+      (this.taxonomyList === undefined || this.taxonomyList === TaxonomyListEnum.default);
   }
 
   onTaxonSelect(result: any) {
@@ -78,8 +84,10 @@ export class TaxonSelectComponent implements OnChanges {
   }
 
   private getTaxa(token: string): Observable<IGlobalSpeciesWithAutocompleteInfo[]> {
-    const tokenMinLength = this.taxonTypes.includes(TaxonTypeEnum.bird) ? this.tokenMinLengthBird : this.tokenMinLengthOther;
+    const tokenMinLength = !this.taxonTypes || this.taxonTypes.includes(TaxonTypeEnum.bird) ? this.tokenMinLengthBird : this.tokenMinLengthOther;
     if (!token || token.length < tokenMinLength) {
+      this.loading = false;
+      this.cdr.markForCheck();
       return of([]);
     }
 

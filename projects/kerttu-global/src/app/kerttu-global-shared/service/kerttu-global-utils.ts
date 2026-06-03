@@ -26,6 +26,11 @@ export function getDefaultSampleRate(taxonType: TaxonTypeEnum = TaxonTypeEnum.bi
       defaultAudioSampleRate;
 }
 
+export function getDefaultSelectableTaxonTypes(taxonType: TaxonTypeEnum): TaxonTypeEnum[] {
+  const birdGroup = [TaxonTypeEnum.bird, TaxonTypeEnum.mammal, TaxonTypeEnum.frog];
+  return birdGroup.includes(taxonType) ? birdGroup : [taxonType];
+}
+
 export function queryParameterToIntList(value?: string): number[] {
   return (value || '').split(',').map((id: string) => parseInt(id, 10)).filter((id: number) => !isNaN(id));
 }

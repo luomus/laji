@@ -4,7 +4,8 @@ import {
   IGlobalRecordingAnnotation,
   IGlobalRecordingWithAnnotation,
   KerttuGlobalErrorEnum,
-  TaxonomyListEnum
+  TaxonomyListEnum,
+  TaxonTypeEnum
 } from '../../../kerttu-global-shared/models';
 import { switchMap } from 'rxjs';
 import { Observable, of } from 'rxjs';
@@ -18,6 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AudioService } from '../../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
 import { AudioCacheLoaderService } from '../../../+identification/service/audio-cache-loader.service';
 import { getTranslateKeyWithTaxonType } from '../../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
+import { getDefaultSelectableTaxonTypes } from '../../../kerttu-global-shared/service/kerttu-global-utils';
 
 @Component({
     selector: 'bsg-identification-main',
@@ -37,6 +39,7 @@ export class IdentificationMainComponent implements OnChanges {
 
   recording?: IGlobalRecording;
   annotation?: IGlobalRecordingAnnotation;
+  selectableTaxonTypes: TaxonTypeEnum[] = [];
 
   loading = false;
   hasUnsavedChanges = false;
@@ -184,6 +187,7 @@ export class IdentificationMainComponent implements OnChanges {
     if (data.recording) {
       this.recording = data.recording;
       this.annotation = data.annotation || {};
+      this.selectableTaxonTypes = getDefaultSelectableTaxonTypes(data.recording.taxonType);
 
       this.originalAnnotation = Util.clone(this.annotation);
     } else {
