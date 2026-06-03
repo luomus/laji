@@ -28,7 +28,8 @@ export class TaxonComponent implements OnInit, OnDestroy {
   canShowTree = true;
   showHidden = false;
   loading = false;
-  loggedIn$?: Observable<boolean>;
+  loggedIn$!: Observable<boolean>;
+  taxon$!: Observable<Taxon>;
 
   private initTaxonSub: Subscription | undefined;
   private subParam!: Subscription;
@@ -88,6 +89,19 @@ export class TaxonComponent implements OnInit, OnDestroy {
         this.setHeaders(taxon);
       })
     ).subscribe();
+
+
+    this.taxon$ = this.loggedIn$.pipe(
+      filter(loggedIn => loggedIn === false),
+      switchMap(() => this.route.params.pipe(
+        map(params => params.id),
+        switchMap(id => this.api.get(
+          '/taxa/{id}',
+          { path: { id } }
+        )
+        )
+      )),
+    );
   }
 
   ngOnDestroy() {
