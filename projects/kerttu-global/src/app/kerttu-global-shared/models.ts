@@ -41,6 +41,7 @@ export interface IGlobalSpecies {
   scientificName: string;
   commonName?: string;
   taxonType?: TaxonTypeEnum;
+  taxonomyList?: TaxonomyListEnum;
   versionCount?: number;
   validationCount?: number;
   userHasValidated?: boolean;

@@ -1,14 +1,14 @@
 import { Input, Component } from '@angular/core';
-import { IGlobalSpecies, TaxonTypeEnum } from '../models';
+import { IGlobalSpecies, TaxonomyListEnum, TaxonTypeEnum } from '../models';
 
 @Component({
   selector: 'bsg-species-name',
   template: `
       @if (species) {
-        @if (species.taxonType !== taxonTypeEnum.other) {
+        @if (!(species.taxonType === taxonTypeEnum.other && species.taxonomyList === taxonomyListEnum.default)) {
           @if (species.commonName) { {{ species.commonName }} - }<i>{{ species.scientificName }}</i>
         } @else {
-          {{ 'otherSounds.' + species.scientificName | translate }}
+          {{ species.scientificName }}
         }
       }
     `,
@@ -18,4 +18,5 @@ export class SpeciesNameComponent {
   @Input() species?: IGlobalSpecies;
 
   taxonTypeEnum = TaxonTypeEnum;
+  taxonomyListEnum = TaxonomyListEnum;
 }

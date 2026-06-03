@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DOCUMENT,
   ElementRef,
   EventEmitter,
   Inject,
@@ -11,8 +12,7 @@ import {
   Output,
   Renderer2,
   SimpleChanges,
-  ViewChild,
-  DOCUMENT
+  ViewChild
 } from '@angular/core';
 import {
   IGlobalRecording,
@@ -33,9 +33,8 @@ import {
   AudioViewerRectangleGroup,
   SpectrogramConfig
 } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
-import { map } from 'rxjs';
+import { forkJoin, map, Observable, Subscription } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../kerttu-global-shared/service/kerttu-global-api';
-import { forkJoin, Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { getBoxLabel, getDefaultSampleRate } from '../../../../kerttu-global-shared/service/kerttu-global-utils';
 import { IdentificationTableComponent } from './identification-table/identification-table.component';
@@ -62,6 +61,8 @@ const batSpectrogramConfig = {
 ...defaultSpectrogramConfig,
     targetWindowLengthInSeconds: 0.004
 };
+
+const belongsToOtherSounds = (species: IGlobalSpecies) => (species.taxonType === TaxonTypeEnum.other && species.taxonomyList === TaxonomyListEnum.default);
 
 @Component({
     selector: 'bsg-identification-view',
@@ -151,7 +152,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
       }
     };
 
-    if (species.taxonType !== TaxonTypeEnum.other) {
+    if (!belongsToOtherSounds(species)) {
       if (this.selectedSpecies.filter(t => t.annotation.speciesId === species.id).length > 0) {
         return;
       }
@@ -308,8 +309,8 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
 
       this.loadingSpecies = true;
       this.selectedSpeciesSub = forkJoin(observables).subscribe((results: IGlobalSpeciesWithAnnotation[])  => {
-        this.selectedSpecies = results.filter(s => s.taxonType !== TaxonTypeEnum.other);
-        this.selectedOtherSounds = results.filter(s => s.taxonType === TaxonTypeEnum.other);
+        this.selectedSpecies = results.filter(s => !belongsToOtherSounds(s));
+        this.selectedOtherSounds = results.filter(s => belongsToOtherSounds(s));
         this.loadingSpecies = false;
         this.updateSpectrogramRectangles();
         this.cdr.markForCheck();
