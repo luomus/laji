@@ -132,6 +132,10 @@ export class TaxonComponent implements OnInit, OnDestroy {
     );
   }
 
+  login() {
+    this.userService.redirectToLogin();
+  }
+
   private setHeaders(taxon: Taxon) {
     const d = taxon?.descriptions?.[0]?.groups?.[0]?.variables?.[0]?.content;
     this.headerService.setHeaders({
