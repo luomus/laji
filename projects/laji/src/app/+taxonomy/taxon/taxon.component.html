@@ -1,4 +1,7 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
+  <ng-container *ngIf="(loggedIn$ | async) === false">
+    <lu-alert>{{ 'taxonomy.notLoggedIn' | translate }}</lu-alert>
+  </ng-container>
   <ng-container *ngIf="taxon">
     <lu-sidebar *ngIf="canShowTree else infoCard" [open]="showTree" (toggled)="showTree = $event; updateRoute()">
       <nav>
