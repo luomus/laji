@@ -1,6 +1,7 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
   @if ((loggedIn$ | async) === false) {
-    <lu-alert>{{ 'taxonomy.notLoggedIn' | translate }}</lu-alert>
+    <lu-alert [innerHTML]="'taxonomy.notLoggedIn' | translate"></lu-alert>
+    <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
   }
   @if (taxon) {
     @if (canShowTree) {
