@@ -244,7 +244,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
     docAndRights$
       .subscribe(({doc, rights}) => {
-        this.isEditor = rights.isEditor;
+        this.isEditor = rights.hasEditRights;
         this.parseDoc(doc, doc);
       },
         () => this.parseDoc(undefined, false)

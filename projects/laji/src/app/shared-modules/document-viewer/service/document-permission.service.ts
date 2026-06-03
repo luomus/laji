@@ -11,7 +11,6 @@ import type { components } from 'projects/laji-api-client/generated/api';
 type Person = components['schemas']['Person'];
 
 export interface DocumentRights {
-  isEditor: boolean;
   hasEditRights: boolean;
   hasDeleteRights: boolean;
 }
@@ -25,7 +24,7 @@ export class DocumentPermissionService {
   ) {}
 
   getRightsToWarehouseDocument(doc?: any): Observable<DocumentRights> {
-    const rights: DocumentRights = { isEditor: false, hasEditRights: false, hasDeleteRights: false };
+    const rights: DocumentRights = { hasEditRights: false, hasDeleteRights: false };
 
     return this.userService.user$.pipe(
       switchMap(user => {
@@ -34,8 +33,7 @@ export class DocumentPermissionService {
         }
 
         const editors = doc.linkings?.editors?.map((editor: any) => IdService.getId(editor.id)).filter((id: string|undefined) => !!id) || [];
-        rights.isEditor = editors.includes(user.id);
-        rights.hasEditRights = rights.isEditor;
+        rights.hasEditRights = editors.includes(user.id);
 
         const collectionId = IdService.getId(doc.collectionId);
 
@@ -49,13 +47,12 @@ export class DocumentPermissionService {
 
             const documentId = IdService.getId(doc.documentId);
 
-            if (!(rights.isEditor || editors.length === 0) || !documentId) {
+            if (!(rights.hasEditRights || editors.length === 0) || !documentId) {
               return of(rights);
             }
 
             return this.documentService.findById(documentId).pipe(
               map(localDoc => {
-                rights.isEditor = rights.isEditor || localDoc.editor === user.id;
                 rights.hasEditRights = rights.hasEditRights || localDoc.editor === user.id;
                 rights.hasDeleteRights = rights.hasDeleteRights || localDoc.creator === user.id;
                 return rights;
@@ -68,21 +65,29 @@ export class DocumentPermissionService {
     );
   }
 
-  getRightsToLocalDocument(doc?: StoreDocument): Observable<DocumentRights> {
+  getRightsToLocalDocument(doc: StoreDocument): Observable<DocumentRights> {
     return this.userService.user$.pipe(
       switchMap(user => {
-        if (!user?.id || !doc) {
-          return of({ isEditor: false, hasEditRights: false, hasDeleteRights: false });
+        if (!user?.id) {
+          return of({ hasEditRights: false, hasDeleteRights: false });
+        }
+
+        if (doc.creator === user.id) {
+          return of({ hasEditRights: true, hasDeleteRights: true });
         }
 
         const isFormAdmin$ = this.userIsFormAdmin(user, doc.collectionID);
 
         return isFormAdmin$.pipe(
-          map(isFormAdmin => ({
-            isEditor: doc.editor === user.id,
-            hasEditRights: isFormAdmin || doc.editor === user.id,
+          map(isFormAdmin => {
+            console.log('right', {
+            hasEditRights: isFormAdmin || doc.editors?.includes(user.id) || false,
             hasDeleteRights: isFormAdmin || doc.creator === user.id
-          }))
+          });
+            return {
+            hasEditRights: isFormAdmin || doc.editors?.includes(user.id) || false,
+            hasDeleteRights: isFormAdmin || doc.creator === user.id
+          }})
         );
       })
     );

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, mergeMap, switchMap, take, tap, filter, distinctUntilChanged, mapTo, shareReplay, distinctUntilKeyChanged } from 'rxjs';
+import { catchError, map, mergeMap, switchMap, take, tap, distinctUntilChanged, mapTo, shareReplay, distinctUntilKeyChanged } from 'rxjs';
 import { combineLatest, concat, merge, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
 import { FooterService } from '../../../shared/service/footer.service';
@@ -21,6 +21,7 @@ import { ProjectFormService } from '../../../shared/service/project-form.service
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { components } from 'projects/laji-api-client/generated/api.d';
 import { Unsaved } from '../../../shared/utils';
+import { LocalizedError } from '../../../shared/error/localized-error';
 
 type Form = components['schemas']['Form'];
 type Annotation = components['schemas']['store-annotation'];
@@ -28,27 +29,13 @@ type Document = components['schemas']['store-document'];
 type NamedPlace = components['schemas']['store-namedPlace'];
 type Person = components['schemas']['SensitivePerson'];
 
-export enum FormError {
-  notFoundForm = 'notFoundForm',
-  notFoundDocument = 'notFoundDocument',
-  loadFailed = 'loadFailed',
-  noAccess = 'noAccess',
-  noAccessToDocument = 'noAccessToDocument',
-  templateDisallowed = 'templateDisallowed',
-  missingNamedPlace = 'missingNamedPlace'
-}
-
-export function isFormError(any: any): any is FormError {
-  return typeof any === 'string' && !!FormError[any as keyof typeof FormError];
-}
-
 export enum Readonly {
   noEdit,
   false,
   true
 }
 
-export interface SaneInputModel {
+export interface InputModel {
   form: Form;
   formData: any;
   hasChanges: boolean;
@@ -56,21 +43,13 @@ export interface SaneInputModel {
   namedPlace?: NamedPlace;
 }
 
-export type InputModel = SaneInputModel | FormError;
-
-export interface SaneViewModel extends SaneInputModel {
+export interface ViewModel extends InputModel {
   readonly: Readonly;
   isAdmin: boolean;
   namedPlaceHeader: string[];
   locked?: boolean;
   editingOldWarning?: string;
 }
-
-export function isSaneViewModel(any: ViewModel): any is SaneViewModel {
-  return typeof any !== 'string' && any && !!any?.form;
-}
-
-export type ViewModel = SaneViewModel | FormError;
 
 interface DocumentAndHasChanges {
   document: Unsaved<Document>;
@@ -82,7 +61,7 @@ export class DocumentFormFacade {
   @LocalStorage('tmpDocId', 1) private tmpDocId!: number;
 
   vm$!: Observable<ViewModel>;
-  vm!: SaneViewModel;
+  vm!: ViewModel;
   private locked$!: Observable<boolean | undefined>;
   private formData$!: Observable<any>;
   private formDataChange$ = new ReplaySubject<any>();
@@ -107,36 +86,25 @@ export class DocumentFormFacade {
     this.footerService.footerVisible = false;
   }
 
-  getViewModel(_formID: string, _documentID: string, _namedPlaceID: string, _template: boolean) {
+  getViewModel(_formID: string, _documentID: string | undefined, _namedPlaceID: string | undefined, _template: boolean) {
     const formID$ = of(_formID);
     const documentID$ = of(_documentID);
     const namedPlaceID$ = of(_namedPlaceID);
     const template$ = of(_template);
     const user$ = this.userService.user$.pipe(take(1));
 
-    const isSane = filter(<T>(f: T | FormError): f is T => !isFormError(f));
-
-    const form$: Observable<Form | FormError> = combineLatest([formID$, template$]).pipe(
+    const form$: Observable<Form> = combineLatest([formID$, template$, documentID$]).pipe(
       switchMap(([formID, template]) => this.projectFormService.getForm$(formID).pipe(
-        switchMap(form => template && !form?.options?.allowTemplate
-          ? of(FormError.templateDisallowed)
-          : !form
-            ? of(FormError.notFoundForm)
-            : this.formPermissionService.getRights(form).pipe(map(rights =>
-              (rights.edit === false && !form?.options.openForm)
-                ? FormError.noAccess
-                : form
-            ))
-        ),
-        catchError((error) => {
-          this.logger.error('Failed to load form', {error});
-          return of(error.status === 404 ? FormError.notFoundForm :  FormError.loadFailed);
-        }),
+        map(form => {
+          if (template && !form?.options?.allowTemplate) {
+            throw new LocalizedError('haseka.form.templateDisallowed');
+          }
+          return form;
+        })
       ))
     );
 
-    const existingDocument$: Observable<DocumentAndHasChanges | FormError | null> = form$.pipe(
-      isSane,
+    const existingDocumentAndHasChanges$: Observable<DocumentAndHasChanges | null> = form$.pipe(
       switchMap(form => documentID$.pipe(switchMap(documentID => documentID
         ? this.fetchExistingDocument((form as Form), documentID)
         : of(null)
@@ -144,55 +112,41 @@ export class DocumentFormFacade {
       shareReplay()
     );
 
-    const namedPlace$: Observable<NamedPlace | FormError | null> = combineLatest([existingDocument$, namedPlaceID$]).pipe(
-      map(([existingDocument, namedPlaceID]): string =>
-        isFormError(existingDocument)
-          ? ''
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          : existingDocument?.document?.namedPlaceID || namedPlaceID
+    const namedPlace$: Observable<NamedPlace | null> = combineLatest([existingDocumentAndHasChanges$, namedPlaceID$]).pipe(
+      map(([existingDocument, namedPlaceID]) => existingDocument?.document?.namedPlaceID || namedPlaceID
       ),
       switchMap((namedPlaceID) => namedPlaceID
         ? this.api.get('/named-places/{id}', { path: { id: namedPlaceID } })
         : of(null)
       ),
       take(1),
-      catchError(() => of(FormError.missingNamedPlace))
-    ) as Observable<NamedPlace | FormError | null>;
+    ) as Observable<NamedPlace | null>;
 
     const inputModel$: Observable<InputModel> = combineLatest([form$, template$]).pipe(
       switchMap(([form, template]) =>
-        isFormError(form)
-          ? of(form)
-          : combineLatest([existingDocument$, namedPlace$, user$]).pipe(
+        combineLatest([existingDocumentAndHasChanges$, namedPlace$, user$]).pipe(
             switchMap(([existingDocument, namedPlace, user]) =>
-              isFormError(namedPlace)
-              ? of(namedPlace)
-              : (existingDocument
+              (existingDocument
                 ? of(existingDocument)
                 : this.fetchEmptyData(form, user, namedPlace as NamedPlace)
-              ).pipe(map(documentModel => {
-                if (isFormError(documentModel)) {
-                  return documentModel;
-                }
-                return {form, namedPlace, formData: documentModel.document, hasChanges: documentModel.hasChanges, template};
-              }))
+              ).pipe(map(documentModel =>
+                ({form, namedPlace, formData: documentModel.document, hasChanges: documentModel.hasChanges, template})))
             )
           )
-      )
+      ),
+      shareReplay()
     ) as Observable<InputModel>;
 
-    const saneInputModel$ = inputModel$.pipe(isSane, shareReplay());
-
-    this.formData$ = concat(saneInputModel$.pipe(take(1), map(({formData}) => formData)), this.formDataChange$);
+    this.formData$ = concat(inputModel$.pipe(take(1), map(({formData}) => formData)), this.formDataChange$);
     this.hasChanges$ = concat(
-      saneInputModel$.pipe(take(1), map(({hasChanges}) => hasChanges)),
+      inputModel$.pipe(take(1), map(({hasChanges}) => hasChanges)),
       merge(
         this.formDataChange$.pipe(mapTo(true)),
         this.onSaved$.pipe(mapTo(false))
       )
     ).pipe(distinctUntilChanged());
 
-    this.locked$ = saneInputModel$.pipe(switchMap(({form}) => this.formData$.pipe(
+    this.locked$ = inputModel$.pipe(switchMap(({form}) => this.formData$.pipe(
       map(formData => (form.id?.indexOf('T:') !== 0 && form.options?.adminLockable)
         ? (formData && !!formData.locked)
         : undefined
@@ -200,16 +154,14 @@ export class DocumentFormFacade {
       distinctUntilChanged()
     )));
 
-    const saneForm$ = form$.pipe(isSane);
-
-    const rights$ = saneForm$.pipe(switchMap(form => this.formPermissionService.getRights(form)));
+    const rights$ = form$.pipe(switchMap(form => this.formPermissionService.getRights(form)));
     const readonly$ = combineLatest([rights$, user$, this.formData$]).pipe(
       map(([rights, user, formData]) => this.documentService.getReadOnly(formData, rights, user))
     );
 
     const uiSchemaContext$ = combineLatest([
-      saneForm$.pipe(distinctUntilKeyChanged('id')),
-      namedPlace$.pipe(isSane, (distinctUntilKeyChanged as any)('id')),
+      form$.pipe(distinctUntilKeyChanged('id')),
+      namedPlace$.pipe((distinctUntilKeyChanged as any)('id')),
       user$,
       rights$,
       this.formData$.pipe(map(data => data.id), distinctUntilChanged())
@@ -221,7 +173,7 @@ export class DocumentFormFacade {
       this.locked$,
       readonly$,
       rights$,
-      saneForm$,
+      form$,
       template$
     ]).pipe(map(([locked, readonly, rights, form, template]) =>
       this.getUiSchema(form, locked as boolean, readonly, rights, template),
@@ -232,17 +184,10 @@ export class DocumentFormFacade {
     // View model is the combination of data derived from inputs and local state and other asynchronously fetched data,
     // containing everything that the view needs.
     this.vm$ = inputModel$.pipe(switchMap(inputModel => {
-      if (isFormError(inputModel)) {
-        return of(inputModel);
-      }
       const {form, formData} = inputModel;
 
       return combineLatest([inputModel$, this.locked$, readonly$, rights$, uiSchema$, uiSchemaContext$, this.hasChanges$, this.formData$, documentID$]).pipe(
-        map(([_inputModel, locked, readonly, rights, uiSchema, uiSchemaContext, hasChanges, _formData, documentID]) => {
-          if (isFormError(_inputModel)) {
-            return _inputModel;
-          }
-          return {
+        map(([_inputModel, locked, readonly, rights, uiSchema, uiSchemaContext, hasChanges, _formData, documentID]) => ({
             ..._inputModel,
             form: this.getMemoizedForm(_inputModel.form, uiSchema, uiSchemaContext),
             readonly,
@@ -252,13 +197,12 @@ export class DocumentFormFacade {
             formData: _formData,
             editingOldWarning: this.getEditingOldWarning(form, formData, documentID),
             namedPlaceHeader: this.getNamedPlaceHeader(form, _inputModel.namedPlace)
-          };
-        })
+          }))
       );
     }));
 
-    this.vmSub = this.vm$.pipe(isSane).subscribe(vm => {
-        this.vm = (vm as SaneViewModel);
+    this.vmSub = this.vm$.subscribe(vm => {
+        this.vm = vm;
     });
     this.saveTmpSub = combineLatest([
       user$,
@@ -361,7 +305,7 @@ export class DocumentFormFacade {
     return form.options?.namedPlaceOptions?.headerFields || ['alternativeIDs', 'name', 'municipality'];
   }
 
-  private fetchExistingDocument(form: Form, documentID: string): Observable<DocumentAndHasChanges | FormError> {
+  private fetchExistingDocument(form: Form, documentID: string): Observable<DocumentAndHasChanges> {
     if (FormService.isTmpId(documentID)) {
       return this.userService.user$.pipe(
         take(1),
@@ -390,11 +334,7 @@ export class DocumentFormFacade {
               return {hasChanges: true, document: local};
             }
             return {document, hasChanges: false};
-          }),
-          catchError(err => of(
-            err.status === 404 ? FormError.notFoundDocument :
-            (err.status === 403 ? FormError.noAccessToDocument : FormError.loadFailed)
-          ))
+          })
         ))
       ))
     );
