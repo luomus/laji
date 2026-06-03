@@ -11,7 +11,7 @@ import {
 import { Observable, of, of as ObservableOf } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../../../laji/src/app/shared/service/user.service';
-import { IGlobalSpecies, IGlobalSpeciesFilters, TaxonTypeEnum } from '../../../../../kerttu-global-shared/models';
+import { IGlobalSpecies, IGlobalSpeciesFilters, TaxonomyListEnum, TaxonTypeEnum } from '../../../../../kerttu-global-shared/models';
 import { TranslateService } from '@ngx-translate/core';
 
 interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
@@ -28,6 +28,7 @@ interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
 export class TaxonSelectComponent implements OnChanges {
 
   @Input() taxonTypes = [TaxonTypeEnum.bird];
+  @Input() taxonomyList?: TaxonomyListEnum;
   @Input() limit = 10;
   @Input() placeholder = '';
 
@@ -90,6 +91,7 @@ export class TaxonSelectComponent implements OnChanges {
       this.translate.getCurrentLang(),
       {
         taxonTypes: this.taxonTypes,
+        taxonomyList: this.taxonomyList,
         searchQuery: token,
         pageSize: this.limit,
         orderBy: ['searchQuery ASC'],

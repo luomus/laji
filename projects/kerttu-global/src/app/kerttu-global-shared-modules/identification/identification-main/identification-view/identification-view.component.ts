@@ -23,6 +23,7 @@ import {
   IGlobalSpeciesWithAnnotation,
   isBoxGroup,
   SpeciesAnnotationEnum,
+  TaxonomyListEnum,
   TaxonTypeEnum
 } from '../../../../kerttu-global-shared/models';
 import {
@@ -77,6 +78,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
 
   @Input({ required: true }) recording!: IGlobalRecording;
   @Input({ required: true }) annotation!: IGlobalRecordingAnnotation;
+  @Input() taxonomyList?: TaxonomyListEnum;
   @Input() buttonsDisabled = false;
   @Input() showFileName = true;
 

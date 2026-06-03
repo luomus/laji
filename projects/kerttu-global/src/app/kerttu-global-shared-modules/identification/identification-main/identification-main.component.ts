@@ -3,7 +3,8 @@ import {
   IGlobalRecording,
   IGlobalRecordingAnnotation,
   IGlobalRecordingWithAnnotation,
-  KerttuGlobalErrorEnum
+  KerttuGlobalErrorEnum,
+  TaxonomyListEnum
 } from '../../../kerttu-global-shared/models';
 import { switchMap } from 'rxjs';
 import { Observable, of } from 'rxjs';
@@ -16,10 +17,6 @@ import { DialogService } from '../../../../../../laji/src/app/shared/service/dia
 import { TranslateService } from '@ngx-translate/core';
 import { AudioService } from '../../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
 import { AudioCacheLoaderService } from '../../../+identification/service/audio-cache-loader.service';
-import { IdentificationNavComponent } from './identification-nav/identification-nav.component';
-import { IdentificationViewComponent } from './identification-view/identification-view.component';
-
-import { LajiUiModule } from '../../../../../../laji-ui/src/lib/laji-ui.module';
 import { getTranslateKeyWithTaxonType } from '../../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
 
 @Component({
@@ -34,6 +31,7 @@ export class IdentificationMainComponent implements OnChanges {
   @Input() selectedSites?: number[];
   @Input() selectedSpecies?: number[];
   @Input() unknownSpecies?: boolean;
+  @Input() taxonomyList?: TaxonomyListEnum;
   @Input({ required: true }) goBackBtnLabel!: string;
   @Input({ required: true }) allRecordingsAnnotatedLabel!: string;
 

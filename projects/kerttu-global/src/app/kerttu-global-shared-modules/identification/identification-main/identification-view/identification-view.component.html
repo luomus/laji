@@ -126,6 +126,7 @@
         <bsg-taxon-select
           id="species-select"
           [taxonTypes]="selectableTaxonTypes"
+          [taxonomyList]="taxonomyList"
           (taxonSelect)="addToIdentifications($event)"
           [placeholder]="'identification.taxonSelectPlaceholder' | translate"
         ></bsg-taxon-select>

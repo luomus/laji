@@ -33,6 +33,7 @@ export interface IGlobalSpeciesQuery {
   pageSize?: number;
   orderBy?: string[];
   taxonTypes?: TaxonTypeEnum[];
+  taxonomyList?: TaxonomyListEnum;
 }
 
 export interface IGlobalSpecies {
@@ -263,6 +264,11 @@ export enum AnnotationStatusEnum {
   skipped = -1,
   notReady = 0,
   ready = 1
+}
+
+export enum TaxonomyListEnum {
+  default = 0,
+  xenoCanto = 1
 }
 
 export function isBoxGroup(box: IGlobalSpeciesAnnotationBox|IGlobalSpeciesAnnotationBoxGroup): box is IGlobalSpeciesAnnotationBoxGroup {

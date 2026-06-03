@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {
   IGlobalRecording,
   IGlobalRecordingAnnotation, ISuccessResult,
-  KerttuGlobalErrorEnum
+  KerttuGlobalErrorEnum, TaxonomyListEnum
 } from '../../kerttu-global-shared/models';
 import { getTranslateKeyWithTaxonType } from '../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
 import { DialogService } from '../../../../../laji/src/app/shared/service/dialog.service';
@@ -44,6 +44,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
 
   recording?: IGlobalRecording;
   annotation?: IGlobalRecordingAnnotation;
+  taxonomyList = TaxonomyListEnum.xenoCanto;
 
   saving = false;
   loading = false;
