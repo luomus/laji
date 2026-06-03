@@ -1,4 +1,7 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
+  @if ((loggedIn$ | async) === false) {
+    <lu-alert>{{ 'taxonomy.notLoggedIn' | translate }}</lu-alert>
+  }
   @if (taxon) {
     @if (canShowTree) {
       <lu-sidebar [open]="showTree" (toggled)="showTree = $event; updateRoute()">

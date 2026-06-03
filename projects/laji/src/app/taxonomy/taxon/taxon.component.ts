@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, concatWith, Observable, of, Subscription, throwError } from 'rxjs';
+import { combineLatest, concatWith, EMPTY, Observable, of, Subscription, throwError } from 'rxjs';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { map, catchError, concat, delay, filter, retryWhen, take, tap, switchMap } from 'rxjs';
 import { Logger } from '../../shared/logger';
@@ -9,6 +9,7 @@ import { InfoCardTabType } from './info-card/info-card.component';
 import { getDescription, HeaderService } from '../../shared/service/header.service';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { components } from 'projects/laji-api-client/generated/api.d';
+import { UserService } from '../../shared/service/user.service';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -28,6 +29,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
   canShowTree = true;
   showHidden = false;
   loading = false;
+  loggedIn$?: Observable<boolean>;
 
   private initTaxonSub: Subscription | undefined;
   private subParam!: Subscription;
@@ -40,14 +42,18 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private logger: Logger,
     private footerService: FooterService,
     private cdr: ChangeDetectorRef,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
+    this.loggedIn$ = this.userService.isLoggedIn$;
     this.footerService.footerVisible = false;
-    this.subParam = combineLatest(
-      [this.route.params, this.route.queryParams]
-    ).pipe(
+    this.subParam = this.loggedIn$.pipe(
+      switchMap(loggedIn => loggedIn
+        ? combineLatest([this.route.params, this.route.queryParams])
+        : EMPTY
+      ),
       tap(params => {
         this.infoCardTab = params[0]['tab'] || 'overview';
         this.infoCardContext = params[1]['context'] || 'default';
