@@ -51,7 +51,7 @@ export class AudioPlayer {
         this.clear();
         this.currentTimeSignal.set(this.getStartTime());
       });
-    }, { allowSignalWrites: true });
+    });
 
     effect(() => {
       this.playArea();
@@ -59,7 +59,7 @@ export class AudioPlayer {
         this.stop();
         this.currentTimeSignal.set(this.getStartTime());
       });
-    }, { allowSignalWrites: true });
+    });
   }
 
   setLoop(loop: boolean) {

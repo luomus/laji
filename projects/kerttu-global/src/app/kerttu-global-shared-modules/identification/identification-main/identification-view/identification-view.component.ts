@@ -39,7 +39,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { getBoxLabel, getDefaultSampleRate } from '../../../../kerttu-global-shared/service/kerttu-global-utils';
 import { IdentificationTableComponent } from './identification-table/identification-table.component';
 import { defaultSpectrogramConfig } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/variables';
-import { lowAudioSampleRate } from '../../../../kerttu-global-shared/variables';
 
 import * as Util from '../../../../../../../laji/src/app/shared/utils';
 import {
@@ -56,11 +55,6 @@ interface InactiveDrawState {
   active: false;
 }
 type DrawState = ActiveDrawState|InactiveDrawState;
-
-const batSpectrogramConfig = {
-...defaultSpectrogramConfig,
-    targetWindowLengthInSeconds: 0.004
-};
 
 const belongsToOtherSounds = (species: IGlobalSpecies) => (species.taxonType === TaxonTypeEnum.other && species.taxonomyList === TaxonomyListEnum.default);
 
@@ -91,11 +85,11 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
   sampleRate!: number;
   minFrequency!: number;
   maxFrequency!: number;
+  slowDownControl = false;
   spectrogramConfig!: SpectrogramConfig;
   audioViewerMode: AudioViewerMode = 'default';
   audioViewerRectangles: (AudioViewerRectangle|AudioViewerRectangleGroup)[] = [];
 
-  showWholeFrequencyRange = false;
   showWholeTimeRange = true;
 
   speciesBoxDrawState: DrawState = {
@@ -266,15 +260,15 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
 
   updateAudioViewerConfig() {
     const taxonType = this.recording.taxonType;
-    this.sampleRate = getDefaultSampleRate(taxonType);
+    this.sampleRate = Math.min(this.recording.sampleRate || getDefaultSampleRate(taxonType), 384000); // Firefox doesn't handle higher sample rates when playing audio
     this.minFrequency = 0;
-    this.maxFrequency = (taxonType === TaxonTypeEnum.bird && !this.showWholeFrequencyRange ? lowAudioSampleRate : this.sampleRate) / 2;
+    this.maxFrequency = this.sampleRate / 2;
 
-    if (taxonType === TaxonTypeEnum.bat) {
-      this.spectrogramConfig = batSpectrogramConfig;
-    } else {
-      this.spectrogramConfig = defaultSpectrogramConfig;
-    }
+    this.slowDownControl = this.maxFrequency > 20000;
+    this.spectrogramConfig = {
+      ...defaultSpectrogramConfig,
+      targetWindowLengthInSeconds: 512 / this.sampleRate
+    };
   }
 
   onDragStart() {

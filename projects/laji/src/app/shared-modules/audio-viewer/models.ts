@@ -2,6 +2,7 @@ export interface Audio {
   url: string;
   spectrogramUrl?: string;
   duration?: number;
+  sampleRate?: number;
 }
 
 export interface SpectrogramConfig {
