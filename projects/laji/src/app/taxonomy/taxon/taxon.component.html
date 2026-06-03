@@ -1,4 +1,13 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
+  @if ((loggedIn$ | async) === false) {
+    <div class="mr-5 ml-5 mt-5">
+      <h1>
+        <laji-taxon-name [taxon]="$any(taxon$ | async)" [addLink]="false"></laji-taxon-name>
+      </h1>
+      <lu-alert [innerHTML]="'taxonomy.notLoggedIn' | translate"></lu-alert>
+      <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
+    </div>
+  }
   @if (taxon) {
     @if (canShowTree) {
       <lu-sidebar [open]="showTree" (toggled)="showTree = $event; updateRoute()">

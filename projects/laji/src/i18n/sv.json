@@ -2305,5 +2305,7 @@
   "whatsNew.acknowledge": "Stäng",
   "whatsNew.message": "laji.fi är en testportal för Finlands Artdatacenter. Information och egenskaper kommer att förbättras kontinuerligt. Feedback är välkommen - du kan skicka den via feedbackblanketten eller via e-post till adress info@laji.fi. Tack!",
   "wholeYear": "Hela året {{year}}",
-  "yes": "Ja"
+  "yes": "Ja",
+  "taxonomy.notLoggedIn": "<strong>Logga in för att visa artsidor</strong><p>På grund av exceptionellt hög robotttrafik kräver visning av artsidor inloggning. Detta är en tillfällig åtgärd för att säkerställa att laji.fi-tjänsten fungerar för alla användare medan vi utvecklar en mer permanent lösning.</p><p>Vi ber om ursäkt för besväret och tackar för ditt tålamod.</p>"
+
 }
