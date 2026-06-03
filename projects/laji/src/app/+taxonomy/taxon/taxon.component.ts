@@ -98,8 +98,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
         switchMap(id => this.api.get(
           '/taxa/{id}',
           { path: { id } }
-        )
-        )
+        ))
       )),
     );
   }
