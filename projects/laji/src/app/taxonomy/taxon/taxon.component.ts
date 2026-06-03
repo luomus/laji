@@ -100,8 +100,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
           '/taxa/{id}',
           { path: { id } },
           { langFallback: false }
-        )
-        )
+        ))
       )),
     );
   }
