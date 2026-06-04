@@ -1680,7 +1680,7 @@
   "result.taxonomicOrder": "Taxonomic order",
   "result.unit.abundanceString": "Number",
   "result.unit.abundanceUnit": "Havainnon abundanceUnit",
-  "result.unit.atlasClass": "Pesimävarmuusluokka",
+  "result.unit.atlasClass": "Nesting class",
   "result.unit.atlasCode": "Nesting index",
   "result.unit.det": "Det.",
   "result.unit.id": "Observation identifier",
@@ -1886,6 +1886,7 @@
   "taxonomy.nameAccordingTo": "Checklist",
   "taxonomy.notes": "Notes on taxonomy",
   "taxonomy.notFound": "Species not found",
+  "taxonomy.notLoggedIn": "<strong>Log in to view species pages</strong><p>Due to exceptionally high bot traffic, viewing species pages currently requires logging in. This is a temporary measure to ensure the functionality of the laji.fi service for all users while we develop a more permanent solution.</p><p>We apologize for the inconvenience and thank you for your patience.</p>",
   "taxonomy.observation.yearChart.filter": "Click on the legend to filter results",
   "taxonomy.observationCount": "Observation count",
   "taxonomy.observationCountFinland": "Observation count from Finland",
@@ -2305,6 +2306,5 @@
   "whatsNew.acknowledge": "Thank you for the information!",
   "whatsNew.message": "laji.fi is a test portal for Finnish Biodiversity Information Facility. Information and properties will be improved continuously. Feedback is welcome - you can send it by feedback form or by e-mail to address info@laji.fi. Thank you!",
   "wholeYear": "Whole year {{year}}",
-  "yes": "Yes",
-  "taxonomy.notLoggedIn": "<strong>Log in to view species pages</strong><p>Due to exceptionally high bot traffic, viewing species pages currently requires logging in. This is a temporary measure to ensure the functionality of the laji.fi service for all users while we develop a more permanent solution.</p><p>We apologize for the inconvenience and thank you for your patience.</p>"
+  "yes": "Yes"
 }
