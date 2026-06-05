@@ -17,6 +17,15 @@ Install the dependencies:
 npm ci
 ```
 
+### API proxy configuration
+
+You must configure api base and access token with `.env` file:
+
+```
+API_BASE=https://apitest.laji.fi
+ACCESS_TOKEN=<Your access token>
+```
+
 ### Running
 
 ```bash
@@ -24,15 +33,6 @@ npm start
 ```
 
 Go with your browser to http://localhost:3000/
-
-### API proxy configuration
-
-By default the app proxies api requests through https://dev.laji.fi/api. You can configure the api base and the access token with `.env` file:
-
-```
-API_BASE=https://apitest.laji.fi
-ACCESS_TOKEN=<Your access token>
-```
 
 ## Running end-to-end tests
 1. Add the following to `.env` file at the root of the repository:
