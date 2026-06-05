@@ -26,6 +26,8 @@ API_BASE=https://apitest.laji.fi
 ACCESS_TOKEN=<Your access token>
 ```
 
+For login redirection to work, the access token must have systemID `KE.542` assigned. You can ask us to assign the systemID to your token by providing your token's email to helpdesk@laji.fi.
+
 ### Running
 
 ```bash
