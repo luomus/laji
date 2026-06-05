@@ -10,6 +10,7 @@ import { getDescription, HeaderService } from '../../shared/service/header.servi
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { components } from 'projects/laji-api-client/generated/api.d';
 import { UserService } from '../../shared/service/user.service';
+import { PlatformService } from '../../root/platform.service';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -44,7 +45,8 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private footerService: FooterService,
     private cdr: ChangeDetectorRef,
     private headerService: HeaderService,
-    private userService: UserService
+    private userService: UserService,
+    private platformService: PlatformService
   ) { }
 
   ngOnInit() {
@@ -92,16 +94,13 @@ export class TaxonComponent implements OnInit, OnDestroy {
     ).subscribe();
 
 
-    this.taxon$ = this.loggedIn$.pipe(
-      filter(loggedIn => loggedIn === false),
-      switchMap(() => this.route.params.pipe(
-        map(params => params.id),
-        switchMap(id => this.api.get(
-          '/taxa/{id}',
-          { path: { id } },
-          { langFallback: false }
-        ))
-      )),
+    this.taxon$ = this.route.params.pipe(
+      map(params => params.id),
+      switchMap(id => this.api.get(
+        '/taxa/{id}',
+        { path: { id } },
+        { langFallback: false }
+      ))
     );
   }
 
@@ -149,6 +148,10 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   login() {
     this.userService.redirectToLogin();
+  }
+
+  isPlatformServer(): boolean {
+    return this.platformService.isServer;
   }
 
   private setHeaders(taxon: Taxon) {
