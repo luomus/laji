@@ -21,7 +21,7 @@ import {
   IIdentificationSpeciesStat,
   IIdentificationHistoryResponse,
   IIdentificationHistoryQuery,
-  IGlobalRecordingWithAnnotation, TaxonTypeEnum
+  IGlobalRecordingWithAnnotation, TaxonTypeEnum, XenoCantoExportData
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -171,7 +171,9 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IGlobalRecordingWithAnnotation>(path, { params });
   }
 
-  public saveRecordingAnnotation(personToken: string, recordingId: number, annotation: IGlobalRecordingAnnotation, isDraft = false, skipRecording = false): Observable<ISuccessResult> {
+  public saveRecordingAnnotation(
+    personToken: string, recordingId: number, annotation: IGlobalRecordingAnnotation, isDraft = false, skipRecording = false
+  ): Observable<ISuccessResult> {
     const path = this.basePath + '/identification/recordings/' + recordingId + '/annotation';
     const params = new HttpParams().set('personToken', personToken).set('isDraft', isDraft).set('skipRecording', skipRecording);
 
@@ -240,11 +242,11 @@ export class KerttuGlobalApi {
     return this.httpClient.get<PagedResult<IIdentificationHistoryResponse>>(path, { params });
   }
 
-  public exportToXenoCanto(personToken: string, xenoCantoApiKey: string, body: Record<string, any>): Observable<ISuccessResult> {
+  public exportToXenoCanto(personToken: string, xenoCantoApiKey: string, data: XenoCantoExportData): Observable<ISuccessResult> {
     const path = this.basePath + '/identification/xeno-canto/export';
     const params = new HttpParams().set('personToken', personToken).set('xenoCantoApiKey', xenoCantoApiKey);
 
-    return this.httpClient.post<ISuccessResult>(path, body, { params });
+    return this.httpClient.post<ISuccessResult>(path, data, { params });
   }
 
   private queryToParams(query: Record<string, any>, params: HttpParams) {

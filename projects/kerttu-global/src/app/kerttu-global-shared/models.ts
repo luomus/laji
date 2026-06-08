@@ -206,6 +206,7 @@ export interface IIdentificationHistoryQuery {
   taxonTypes?: TaxonTypeEnum[];
   hasBoxes?: boolean;
   exportedToXenoCanto?: boolean;
+  taxonomyList?: TaxonomyListEnum;
 }
 
 export interface IIdentificationHistoryResponse {
@@ -228,6 +229,11 @@ export interface IdentificationHistorySpecies extends IGlobalSpecies {
 export interface XenoCantoAnnotationSet {
   setName: string;
   setRemarks?: string;
+}
+
+export interface XenoCantoExportData {
+  annotationSet: XenoCantoAnnotationSet;
+  includeExported?: boolean;
 }
 
 export enum CommentType {

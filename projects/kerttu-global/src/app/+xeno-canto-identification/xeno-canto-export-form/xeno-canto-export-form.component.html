@@ -17,6 +17,16 @@
       rows="3"
     ></textarea>
   </div>
+  <div class="checkbox">
+    <label>
+      <input
+        type="checkbox"
+        formControlName="includeExported"
+        (change)="onIncludeExportedChange()"
+      />
+      {{ 'xenoCantoExport.includeExported' | translate }}
+    </label>
+  </div>
 
   <hr/>
 
@@ -45,7 +55,7 @@
   </div>
 
   <div class="form-actions">
-    <lu-button [role]="'primary'" [disabled]="form.invalid || form.disabled" [loading]="exportLoading()">
+    <lu-button [role]="'primary'" [disabled]="form.invalid || form.disabled || !totalAnnotations()" [loading]="exportLoading()">
       {{ 'xenoCantoExport.submit' | translate }}
     </lu-button>
   </div>

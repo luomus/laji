@@ -9,7 +9,10 @@ import {
   signal
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IIdentificationHistoryQuery, IIdentificationHistoryResponse, IdentificationHistorySpecies, XenoCantoAnnotationSet } from '../../kerttu-global-shared/models';
+import {
+  IIdentificationHistoryQuery, IIdentificationHistoryResponse, IdentificationHistorySpecies, XenoCantoAnnotationSet,
+  TaxonomyListEnum, XenoCantoExportData
+} from '../../kerttu-global-shared/models';
 import { ColumnChangesService, DimensionsHelper, ScrollbarHelper } from '@achimha/ngx-datatable';
 import { PagedResult } from '../../../../../laji/src/app/shared/model/PagedResult';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
@@ -17,12 +20,11 @@ import { UserService } from '../../../../../laji/src/app/shared/service/user.ser
 import { DatatableSort } from '../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { Subscription } from 'rxjs';
 
-export interface XenoCantoExportFormResult {
-  annotationSet: XenoCantoAnnotationSet;
-}
 
-type AnnotationSetForm = {
+type ExportForm = {
   [K in keyof XenoCantoAnnotationSet]: FormControl<NonNullable<XenoCantoAnnotationSet[K]>>;
+} & {
+  includeExported: FormControl<boolean>;
 };
 
 @Component({
@@ -37,7 +39,7 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
   siteId?: number;
   exportLoading = signal(false);
 
-  form: FormGroup<AnnotationSetForm>;
+  form: FormGroup<ExportForm>;
 
   totalAnnotations: Signal<number | undefined>;
   totalBoxCount: Signal<number | undefined>;
@@ -47,7 +49,7 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
   query = signal<IIdentificationHistoryQuery>({});
   data = signal<PagedResult<IIdentificationHistoryResponse> | undefined>(undefined);
 
-  submitForm = output<XenoCantoExportFormResult>();
+  submitForm = output<XenoCantoExportData>();
 
   private fetchDataSub?: Subscription;
 
@@ -56,16 +58,17 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private cdr: ChangeDetectorRef
   ) {
-    this.form = new FormGroup<AnnotationSetForm>({
+    this.form = new FormGroup<ExportForm>({
       setName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-      setRemarks: new FormControl('', { nonNullable: true })
+      setRemarks: new FormControl('', { nonNullable: true }),
+      includeExported: new FormControl(false, { nonNullable: true })
     });
 
     this.totalAnnotations = computed(() => this.data()?.total);
     this.totalBoxCount = computed(() => this.getTotalBoxCount(this.data()?.results));
 
     effect(() => {
-      if (this.annotationsLoading() || this.annotationsError() || !this.totalAnnotations()) {
+      if (this.annotationsLoading() || this.annotationsError()) {
         this.form.disable();
       } else {
         this.form.enable();
@@ -94,13 +97,20 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
     this.query.set({ ...this.query(), page: 1, orderBy });
   }
 
+  onIncludeExportedChange() {
+    const includeExported = this.form.controls.includeExported.value;
+    this.query.set({ ...this.query(), page: 1, exportedToXenoCanto: includeExported ? undefined : false });
+  }
+
   onSubmit() {
     if (this.form.invalid || !this.totalAnnotations()) {
       return;
     }
 
+    const { includeExported, ...annotationSet } = this.form.getRawValue();
     this.submitForm.emit({
-      annotationSet: this.form.getRawValue()
+      annotationSet,
+      includeExported
     });
   }
 
@@ -141,7 +151,8 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
       includeSkipped: false,
       hasBoxes: true,
       exportedToXenoCanto: false,
-      site: this.siteId
+      site: this.siteId,
+      taxonomyList: TaxonomyListEnum.xenoCanto
     });
   }
 }

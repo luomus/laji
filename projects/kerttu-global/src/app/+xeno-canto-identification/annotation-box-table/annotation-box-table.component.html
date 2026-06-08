@@ -17,13 +17,11 @@
 </ng-template>
 
 <ng-template let-value="value" #speciesListTpl>
-  @if (value | filterSpeciesWithBoxes | filterNonSpecies; as speciesList) {
-    <span [title]="speciesList | speciesName | values">
-      @for (species of speciesList; track species; let isLast = $last) {
-        <bsg-species-name [species]="species"></bsg-species-name>{{ isLast ? '' : ', ' }}
-      }
-    </span>
-  }
+  <span [title]="value | speciesName | values">
+    @for (species of value; track species; let isLast = $last) {
+      <bsg-species-name [species]="species"></bsg-species-name>{{ isLast ? '' : ', ' }}
+    }
+  </span>
 </ng-template>
 
 <ng-template let-value="value" #boxCountTpl>

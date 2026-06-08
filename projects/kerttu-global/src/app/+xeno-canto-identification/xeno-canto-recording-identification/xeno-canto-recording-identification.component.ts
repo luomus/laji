@@ -16,14 +16,13 @@ import { TranslateService } from '@ngx-translate/core';
 import {
   IGlobalRecording,
   IGlobalRecordingAnnotation, ISuccessResult,
-  KerttuGlobalErrorEnum, TaxonomyListEnum
+  KerttuGlobalErrorEnum, TaxonomyListEnum, XenoCantoExportData
 } from '../../kerttu-global-shared/models';
 import { getTranslateKeyWithTaxonType } from '../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
 import { DialogService } from '../../../../../laji/src/app/shared/service/dialog.service';
 import { ModalRef, ModalService } from '../../../../../laji-ui/src/lib/modal/modal.service';
 import {
-  XenoCantoExportFormComponent,
-  XenoCantoExportFormResult
+  XenoCantoExportFormComponent
 } from '../xeno-canto-export-form/xeno-canto-export-form.component';
 import equals from 'deep-equal';
 import { LajiApiClientBService } from '../../../../../laji-api-client-b/src/laji-api-client-b.service';
@@ -124,7 +123,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
           initialState: { siteId: this.recording?.site?.id },
         });
 
-        this.exportModalSub = this.exportModalRef.content!.submitForm.subscribe((data: XenoCantoExportFormResult) => {
+        this.exportModalSub = this.exportModalRef.content!.submitForm.subscribe((data: XenoCantoExportData) => {
           this.exportToXenoCanto(data);
         });
 
@@ -209,7 +208,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
     );
   }
 
-  private exportToXenoCanto(data: XenoCantoExportFormResult) {
+  private exportToXenoCanto(data: XenoCantoExportData) {
     this.exportModalRef!.content!.exportLoading.set(true);
 
     this.performExport(data).subscribe({
@@ -240,7 +239,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
     });
   }
 
-  private performExport(data: XenoCantoExportFormResult): Observable<ISuccessResult> {
+  private performExport(data: XenoCantoExportData): Observable<ISuccessResult> {
     return this.getXenoCantoApiKey().pipe(
       switchMap(
         (apiKey) => this.kerttuGlobalApi.exportToXenoCanto(this.userService.getToken(), apiKey, data)
