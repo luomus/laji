@@ -1,11 +1,16 @@
 # Laji.fi frontend
 
-This is the frontend for [laji.fi](https://beta.laji.fi). Api used and it's documentation can be
-found at [api.laji.fi](https://apitest.laji.fi/explorer/).
+This is the frontend for [laji.fi](https://laji.fi). The API and it's documentation can be
+found at [api.laji.fi](https://api.laji.fi/).
 
-This repo contains 3 main branches. Follow guidelines set in [wiki](http://wiki.helsinki.fi/display/luomusict/Laji.fi+front+kehitysohjeet) for developing.
+Follow guidelines set in [wiki](http://wiki.helsinki.fi/display/luomusict/Laji.fi+front+kehitysohjeet) for developing.
 
 ## Development server
+
+## Stack
+
+* Node.js
+* Angular
 
 ### Installation
 
@@ -19,14 +24,14 @@ npm ci
 
 ### API proxy configuration
 
-You must configure api base and access token with `.env` file:
+You must configure the API base and an access token with `.env` file:
 
 ```
 API_BASE=https://apitest.laji.fi
 ACCESS_TOKEN=<Your access token>
 ```
 
-For login redirection to work, the access token must have systemID `KE.542` assigned. You can ask us to assign the systemID to your token by providing your token's email to helpdesk@laji.fi.
+For login redirection to work, the access token must have systemID `KE.542` assigned. If you are not an inhouse developer, ask us to assign the systemID to your token by providing the email you requested the token with to helpdesk@laji.fi.
 
 ### Running
 
@@ -43,12 +48,10 @@ E2E_PERSON_TOKEN=
 E2E_USER=
 E2E_PASS=
 ```
-2. get the credentials to the e2e user from another developer
+2. get the credentials to the e2e user from another developer (assuming you are an inhouse developer)
 3. run `npm start` to start laji.fi dev server
 4. run `npx playwright test` (for headless mode), `npx playwright test --ui` (for headful mode) or [use the playwright vscode plugin](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
 
 ## Further help
 
-You can contact us by sending feedback from [laji.fi](https://beta.laji.fi) 
-
-To get more help on the `angular-cli` use `ng --help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+You can contact us by sending feedback from [laji.fi](https://laji.fi) 
