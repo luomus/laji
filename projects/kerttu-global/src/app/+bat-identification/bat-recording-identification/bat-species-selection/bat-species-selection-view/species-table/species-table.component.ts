@@ -15,7 +15,7 @@ import { DatatableColumn } from '../../../../../../../../laji/src/app/shared-mod
 import { SelectionType } from '@achimha/ngx-datatable';
 import { TranslateService } from '@ngx-translate/core';
 
-interface SpeciesTableRow extends Omit<IGlobalSpecies, 'id'> {
+interface SpeciesTableRow extends Pick<IGlobalSpecies, 'scientificName'|'recordingCount'> {
   id?: number;
 }
 

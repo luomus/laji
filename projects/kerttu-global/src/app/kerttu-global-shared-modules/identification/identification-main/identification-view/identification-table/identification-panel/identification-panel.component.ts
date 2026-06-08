@@ -2,20 +2,24 @@ import {
   Component,
   ChangeDetectionStrategy,
   Input,
+  OnChanges,
   Output,
   EventEmitter,
+  SimpleChanges,
   ViewChild,
   ElementRef, ViewChildren, QueryList
 } from '@angular/core';
 import {
   IGlobalRecording,
   IGlobalSpeciesWithAnnotation,
-  isBoxGroup, SoundTypeEnum,
+  isBoxGroup,
   SpeciesAnnotationEnum,
   TaxonTypeEnum
 } from '../../../../../../kerttu-global-shared/models';
 import { getBoxLabel } from '../../../../../../kerttu-global-shared/service/kerttu-global-utils';
+import { SoundTypeService } from '../../../../../../kerttu-global-shared/service/sound-type.service';
 import { SpectrogramConfig } from '../../../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
+import { Observable, ReplaySubject, switchMap } from 'rxjs';
 
 interface BoxClickEvent {
   idx: number;
@@ -29,7 +33,7 @@ interface BoxClickEvent {
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class IdentificationPanelComponent {
+export class IdentificationPanelComponent implements OnChanges {
   @ViewChild('toggleDrawBtn', { static: false }) toggleDrawBtn?: ElementRef;
   @ViewChildren('toggleDrawRelatedBtn') toggleDrawRelatedBtn!: QueryList<ElementRef>;
 
@@ -39,7 +43,6 @@ export class IdentificationPanelComponent {
   @Input({ required: true }) recording!: IGlobalRecording;
   @Input({ required: true }) identification!: IGlobalSpeciesWithAnnotation;
 
-  @Input() showSoundTypeSelect = true;
   @Input() showOverlapsWithOtherSpeciesCheck = true;
   @Input() showDrawRelatedBoxBtn = true;
   @Input() buttonsDisabled = false;
@@ -53,12 +56,23 @@ export class IdentificationPanelComponent {
   @Input({ required: true }) sampleRate!: number;
   @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
 
+  soundTypes$: Observable<string[]>;
+
   speciesAnnotationEnum = SpeciesAnnotationEnum;
   taxonTypeEnum = TaxonTypeEnum;
-  soundTypeEnum = SoundTypeEnum;
+
+  private taxonType$ = new ReplaySubject<TaxonTypeEnum>(1);
 
   isBoxGroup = isBoxGroup;
   getBoxLabel = getBoxLabel;
+
+  constructor(
+    private soundTypeService: SoundTypeService
+  ) {
+    this.soundTypes$ = this.taxonType$.pipe(
+      switchMap(taxonType => this.soundTypeService.getSoundTypes(taxonType))
+    );
+  }
 
   @Output() identificationChange = new EventEmitter<IGlobalSpeciesWithAnnotation>();
   @Output() deleteClick = new EventEmitter();
@@ -66,6 +80,12 @@ export class IdentificationPanelComponent {
   @Output() drawRelatedBoxClick = new EventEmitter<BoxClickEvent>();
   @Output() deleteBoxClick = new EventEmitter<BoxClickEvent>();
   @Output() openChange = new EventEmitter<boolean>();
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.identification) {
+      this.taxonType$.next(this.identification.taxonType);
+    }
+  }
 
   annotationTypeChange(value: number) {
     this.identification.annotation.occurrence = value;

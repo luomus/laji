@@ -28,7 +28,6 @@ export class IdentificationTableComponent implements OnChanges {
   @Input({ required: true }) identifications!: IGlobalSpeciesWithAnnotation[];
 
   @Input() loading = false;
-  @Input() showSoundTypeSelect = true;
   @Input() showOverlapsWithOtherSpeciesCheck = true;
   @Input() showDrawRelatedBoxBtn = true;
   @Input() buttonsDisabled = false;

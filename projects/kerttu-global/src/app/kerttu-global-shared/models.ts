@@ -40,8 +40,8 @@ export interface IGlobalSpecies {
   id: number;
   scientificName: string;
   commonName?: string;
-  taxonType?: TaxonTypeEnum;
-  taxonomyList?: TaxonomyListEnum;
+  taxonType: TaxonTypeEnum;
+  taxonomyList: TaxonomyListEnum;
   versionCount?: number;
   validationCount?: number;
   userHasValidated?: boolean;
@@ -148,7 +148,7 @@ export interface IGlobalSpeciesAnnotation {
 export interface IGlobalSpeciesAnnotationBox {
   area: AudioViewerArea;
   overlapsWithOtherSpecies?: boolean;
-  soundType?: SoundTypeEnum;
+  soundType?: string;
 }
 
 export interface IGlobalSpeciesAnnotationBoxGroup {
@@ -244,11 +244,6 @@ export enum CommentType {
 export enum SpeciesAnnotationEnum {
   occurs = 1,
   possiblyOccurs = 2
-}
-
-export enum SoundTypeEnum {
-  songOrDisplay = 1,
-  other = 2
 }
 
 export enum KerttuGlobalErrorEnum {

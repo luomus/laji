@@ -86,6 +86,13 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IGlobalSpeciesFilters>(path);
   }
 
+  public getSoundTypes(taxonType: TaxonTypeEnum): Observable<IListResult<string>> {
+    const path = this.basePath + '/species/soundTypes';
+    const params = new HttpParams().set('taxonType', '' + taxonType);
+
+    return this.httpClient.get<IListResult<string>>(path, { params });
+  }
+
   public getRecordings(lang: string, speciesId: number): Observable<IListResult<IGlobalRecording>> {
     const path = this.basePath + '/recordings/' + speciesId;
     const params = new HttpParams().set('lang', lang);

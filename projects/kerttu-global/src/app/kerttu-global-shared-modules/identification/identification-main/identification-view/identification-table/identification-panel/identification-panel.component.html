@@ -59,21 +59,26 @@
                     [areaFrequencyPadding]="recording.taxonType === this.taxonTypeEnum.bat ? 2000 : 500"
                   ></laji-small-audio-viewer>
                 </td>
-                @if (showSoundTypeSelect) {
-                  <td style="width: 160px" class="select-column">
-                    <label>
-                      <small>{{ 'identification.boxes.soundType' | translate }}</small>
-                      <laji-info [placement]="'right'" [html]="'identification.boxes.soundType.info' | translate" [showOnHover]="true"></laji-info>
-                    </label>
-                    <select class="form-control input-sm" [(ngModel)]="box.soundType" (ngModelChange)="identificationChange.emit(identification)">
-                      <option [ngValue]="undefined"></option>
-                      <option [ngValue]="soundTypeEnum.songOrDisplay">
-                        {{ 'identification.boxes.soundType.songOrDisplay' | translate }}
-                      </option>
-                      <option [ngValue]="soundTypeEnum.other">
-                        {{ 'identification.boxes.soundType.other' | translate }}
-                      </option>
-                    </select>
+                @if (soundTypes$ | async; as soundTypes) {
+                  @if (soundTypes.length > 0) {
+                    <td class="sound-type-column select-column">
+                      <label>
+                        <small>{{ 'identification.boxes.soundType' | translate }}</small>
+                        <laji-info [placement]="'right'" [html]="'identification.boxes.soundType.info' | translate" [showOnHover]="true"></laji-info>
+                      </label>
+                      <select class="form-control input-sm" [(ngModel)]="box.soundType" (ngModelChange)="identificationChange.emit(identification)">
+                        <option [ngValue]="undefined"></option>
+                        @for (type of soundTypes; track type) {
+                          <option [ngValue]="type">
+                            {{ type }}
+                          </option>
+                        }
+                      </select>
+                    </td>
+                  }
+                } @else {
+                  <td class="sound-type-column text-center">
+                    <laji-spinner></laji-spinner>
                   </td>
                 }
                 @if (showOverlapsWithOtherSpeciesCheck) {
