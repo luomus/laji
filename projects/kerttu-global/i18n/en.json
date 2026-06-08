@@ -167,6 +167,7 @@
   "identification.previousRecording": "Return to the previous recording",
   "identification.previousRecording.info": "If you accidentally continue to the next recording or realise that you forgot to include an identification, you can go back and amend your identifications by clicking this.",
   "identification.redraw": "Redraw",
+  "identification.recordingNotFound": "Recording with id {{id}} not found.",
   "identification.remove": "Remove",
   "identification.saveRecording.info": "If you need to stop before you are done click the save button. By doing so, the identifications you have made for the current recording are saved and the next time you return to Bird Sounds Global.",
   "identification.seeTemplates": "View templates",

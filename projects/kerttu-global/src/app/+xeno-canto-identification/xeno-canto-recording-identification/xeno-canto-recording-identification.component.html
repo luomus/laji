@@ -1,21 +1,21 @@
 <laji-spinner [spinning]="loading" [overlay]="true" [hideContentWhileLoading]="true">
-  <div class="identification-view-container">
-    <div class="identification-nav">
-      <div class="button-container">
-        <button class="btn btn-success" [disabled]="saving || loading || loadingXenoCantoApiKey" (click)="saveAnnotation()">{{ 'save' | translate }}</button>
-        <button class="btn btn-default" [disabled]="saving || loading || loadingXenoCantoApiKey" (click)="openExportModal()">{{ (hasUnsavedChanges ? 'xenoCantoExport.saveAndExport' : 'xenoCantoExport.export') | translate }}</button>
-      </div>
+  @if (recordingNotFound) {
+    <div class="identification-alert-container">
+      <lu-alert type="danger" [dismissible]="false">{{ 'identification.recordingNotFound' | translate: {id: recordingId} }}</lu-alert>
     </div>
-
-    @if (hasError) {
-      <div class="identification-alert-container">
-        @if (hasError) {
-          <lu-alert type="danger" [dismissible]="false">{{ 'identification.genericError' | translate }}</lu-alert>
-        }
+  } @else if (hasError) {
+    <div class="identification-alert-container">
+      <lu-alert type="danger" [dismissible]="false">{{ 'identification.genericError' | translate }}</lu-alert>
+    </div>
+  } @else if (recording && annotation) {
+    <div class="identification-view-container">
+      <div class="identification-nav">
+        <div class="button-container">
+          <button class="btn btn-success" [disabled]="saving || loading || loadingXenoCantoApiKey" (click)="saveAnnotation()">{{ 'save' | translate }}</button>
+          <button class="btn btn-default" [disabled]="saving || loading || loadingXenoCantoApiKey" (click)="openExportModal()">{{ (hasUnsavedChanges ? 'xenoCantoExport.saveAndExport' : 'xenoCantoExport.export') | translate }}</button>
+        </div>
       </div>
-    }
 
-    @if (recording && annotation) {
       <bsg-identification-view
         class="flex-container"
         [recording]="recording"
@@ -25,8 +25,8 @@
         [showFileName]="false"
         (annotationChange)="onAnnotationChange()"
       ></bsg-identification-view>
-    }
-  </div>
+    </div>
+  }
 </laji-spinner>
 
 <ng-template #noApiKeyTpl>

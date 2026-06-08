@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-    selector: 'bsg-bat-identification',
+    selector: 'bsg-xeno-canto-identification',
     template: `
       <div class="container-fluid laji-page">
         <router-outlet></router-outlet>

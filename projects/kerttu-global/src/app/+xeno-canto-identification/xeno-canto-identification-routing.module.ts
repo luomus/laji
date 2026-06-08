@@ -6,6 +6,7 @@ import { XenoCantoIdentificationComponent } from './xeno-canto-identification.co
 import {
   XenoCantoRecordingIdentificationComponent
 } from './xeno-canto-recording-identification/xeno-canto-recording-identification.component';
+import { NotFoundComponent } from '../../../../laji/src/app/shared/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -13,9 +14,14 @@ const routes: Routes = [
     component: XenoCantoIdentificationComponent,
     children: [
       {
+        path: '', pathMatch: 'full',
+        component: NotFoundComponent
+      },
+      {
         path: ':id', pathMatch: 'full',
         component: XenoCantoRecordingIdentificationComponent, canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]},
+        canDeactivate: [DocumentDeActivateGuard]
+      },
     ]
   }
 ];

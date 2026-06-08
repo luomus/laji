@@ -26,6 +26,7 @@ import {
 } from '../xeno-canto-export-form/xeno-canto-export-form.component';
 import equals from 'deep-equal';
 import { LajiApiClientBService } from '../../../../../laji-api-client-b/src/laji-api-client-b.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const xenoCantoApiKeyMissingError = 'Xeno-Canto API key missing';
 
@@ -49,6 +50,8 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
   loading = false;
   loadingXenoCantoApiKey = false;
   hasError = false;
+  recordingNotFound = false;
+  recordingId = '';
   hasUnsavedChanges = false;
 
   private originalAnnotation?: IGlobalRecordingAnnotation;
@@ -76,12 +79,14 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
         this.originalAnnotation = undefined;
         this.loading = true;
         this.hasError = false;
+        this.recordingNotFound = false;
         this.hasUnsavedChanges = false;
       }),
       map(data => {
-        const id = parseInt(data['id'] || '', 10);
+        this.recordingId = data['id'] || '';
+        const id = parseInt(this.recordingId, 10);
         if (isNaN(id)) {
-          throw new Error('Invalid recording id');
+          throw new HttpErrorResponse({ status: 404 });
         }
         return id;
       }),
@@ -96,8 +101,12 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
         this.loading = false;
         this.cdr.markForCheck();
       },
-      error: () => {
-        this.hasError = true;
+      error: (err) => {
+        if (err instanceof HttpErrorResponse && err.status === 404) {
+          this.recordingNotFound = true;
+        } else {
+          this.hasError = true;
+        }
         this.loading = false;
         this.cdr.markForCheck();
       },
