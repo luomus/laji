@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {
   IGlobalRecording,
   IGlobalRecordingAnnotation, ISuccessResult,
-  KerttuGlobalErrorEnum, TaxonomyListEnum, XenoCantoExportData
+  KerttuGlobalErrorEnum, TaxonomyListEnum, XenoCantoAnnotationSet, XenoCantoExportData
 } from '../../kerttu-global-shared/models';
 import { getTranslateKeyWithTaxonType } from '../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
 import { DialogService } from '../../../../../laji/src/app/shared/service/dialog.service';
@@ -55,6 +55,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
   hasUnsavedChanges = false;
 
   private originalAnnotation?: IGlobalRecordingAnnotation;
+  private defaultAnnotationSetMetadata?: Partial<XenoCantoAnnotationSet>;
 
   private recordingSub?: Subscription;
   private exportModalRef?: ModalRef<XenoCantoExportFormComponent>;
@@ -132,7 +133,10 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
 
         this.exportModalRef = this.modalService.show(XenoCantoExportFormComponent, {
           size: 'xl',
-          initialState: { siteId: this.recording?.site?.id },
+          initialState: {
+            siteId: this.recording?.site?.id,
+            defaultAnnotationSetMetadata: this.defaultAnnotationSetMetadata
+          },
           noClose: true
         });
 
@@ -205,6 +209,9 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
     this.loadingXenoCantoApiKey = true;
 
     return this.api.get('/person/profile').pipe(
+      tap(profile => {
+        this.defaultAnnotationSetMetadata = profile.settings?.defaultXenoCantoAnnotationSetMetadata as Partial<XenoCantoAnnotationSet> | undefined;
+      }),
       map(profile => profile.xenoCantoApiKey),
       map((xenoCantoApiKey) => {
         if (!xenoCantoApiKey) {

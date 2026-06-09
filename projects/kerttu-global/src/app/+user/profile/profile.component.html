@@ -18,6 +18,28 @@
                   {{ 'profile.xenoCantoApiKey' | translate }}
                   <input class="form-control" [(ngModel)]="profile.xenoCantoApiKey">
                 </div>
+                <h4>{{ 'profile.defaultXenoCantoAnnotationSetMetadata.title' | translate }}</h4>
+                <div class="profile-edit-row">
+                  {{ 'xenoCantoExport.setLicense' | translate }}
+                  <select class="form-control" [(ngModel)]="profile.settings.defaultXenoCantoAnnotationSetMetadata.setLicense">
+                    <option value=""></option>
+                    @for (license of licenseOptions; track license) {
+                      <option [value]="license">{{ license }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="profile-edit-row">
+                  {{ 'xenoCantoExport.setCreator' | translate }}
+                  <input class="form-control" [(ngModel)]="profile.settings.defaultXenoCantoAnnotationSetMetadata.setCreator">
+                </div>
+                <div class="profile-edit-row">
+                  {{ 'xenoCantoExport.setCreatorId' | translate }}
+                  <input class="form-control" [(ngModel)]="profile.settings.defaultXenoCantoAnnotationSetMetadata.setCreatorId">
+                </div>
+                <div class="profile-edit-row">
+                  {{ 'xenoCantoExport.setOwner' | translate }}
+                  <input class="form-control" [(ngModel)]="profile.settings.defaultXenoCantoAnnotationSetMetadata.setOwner">
+                </div>
                 <div class="profile-edit-row">
                   <lu-button (click)="saveProfile()" role="primary">{{ 'profile.save' | translate }}</lu-button>
                 </div>

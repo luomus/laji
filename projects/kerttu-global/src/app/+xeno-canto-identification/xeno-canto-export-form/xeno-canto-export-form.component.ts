@@ -13,6 +13,7 @@ import {
   IIdentificationHistoryQuery, IIdentificationHistoryResponse, IdentificationHistorySpecies, XenoCantoAnnotationSet,
   TaxonomyListEnum, XenoCantoExportData
 } from '../../kerttu-global-shared/models';
+import { xenoCantoLicenses } from '../../kerttu-global-shared/variables';
 import { ColumnChangesService, DimensionsHelper, ScrollbarHelper } from '@achimha/ngx-datatable';
 import { PagedResult } from '../../../../../laji/src/app/shared/model/PagedResult';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
@@ -37,6 +38,7 @@ type ExportForm = {
 })
 export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
   siteId?: number;
+  defaultAnnotationSetMetadata?: Partial<XenoCantoAnnotationSet>;
   exportLoading = signal(false);
 
   form: FormGroup<ExportForm>;
@@ -48,6 +50,8 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
 
   query = signal<IIdentificationHistoryQuery>({});
   data = signal<PagedResult<IIdentificationHistoryResponse> | undefined>(undefined);
+
+  licenseOptions = xenoCantoLicenses;
 
   submitForm = output<XenoCantoExportData>();
   cancelForm = output<void>();
@@ -91,6 +95,9 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (this.defaultAnnotationSetMetadata) {
+      this.form.patchValue(this.defaultAnnotationSetMetadata);
+    }
     this.updateQuery();
   }
 

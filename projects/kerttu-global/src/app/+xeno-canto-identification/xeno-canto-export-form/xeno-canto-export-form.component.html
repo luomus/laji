@@ -11,12 +11,9 @@
       <laji-info [html]="'xenoCantoExport.setLicense.info' | translate" [showOnHover]="true"></laji-info>
       <select id="setLicense" class="form-control" formControlName="setLicense">
         <option value=""></option>
-        <option value="CC-BY-NC-SA">CC-BY-NC-SA</option>
-        <option value="CC-BY-NC-ND">CC-BY-NC-ND</option>
-        <option value="CC-BY-SA">CC-BY-SA</option>
-        <option value="CC-BY-NC">CC-BY-NC</option>
-        <option value="CC-BY">CC-BY</option>
-        <option value="CC0">CC0</option>
+        @for (license of licenseOptions; track license) {
+          <option [value]="license">{{ license }}</option>
+        }
       </select>
     </div>
     <div class="form-group">
