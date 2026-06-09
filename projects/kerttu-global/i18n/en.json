@@ -76,6 +76,7 @@
   "xenoCantoExport.setRemarks": "Set remarks",
   "xenoCantoExport.setRemarks.info": "Any relevant remarks regarding the set",
   "xenoCantoExport.submit": "Submit",
+  "xenoCantoExport.cancel": "Cancel",
   "xenoCantoExport.success": "Export to Xeno-Canto was successful. You can view the annotation set in <a href=\"https://www.xeno-canto.org/account/annotations\" target=\"_blank\" rel=\"noopener noreferrer\">Xeno-Canto website</a>.",
   "xenoCantoExport.error": "Export to Xeno-Canto failed. Please try again later.",
   "xenoCantoExport.noAnnotations": "There are no annotations to export. Either all annotations have already been exported or you haven't made any annotations yet.",

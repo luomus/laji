@@ -59,6 +59,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
   private recordingSub?: Subscription;
   private exportModalRef?: ModalRef<XenoCantoExportFormComponent>;
   private exportModalSub?: OutputRefSubscription;
+  private cancelModalSub?: OutputRefSubscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -116,6 +117,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
   ngOnDestroy() {
     this.recordingSub?.unsubscribe();
     this.exportModalSub?.unsubscribe();
+    this.cancelModalSub?.unsubscribe();
   }
 
   openExportModal() {
@@ -126,14 +128,20 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
     apiKey$.subscribe({
       next: () => {
         this.exportModalSub?.unsubscribe();
+        this.cancelModalSub?.unsubscribe();
 
         this.exportModalRef = this.modalService.show(XenoCantoExportFormComponent, {
           size: 'xl',
           initialState: { siteId: this.recording?.site?.id },
+          noClose: true
         });
 
         this.exportModalSub = this.exportModalRef.content!.submitForm.subscribe((data: XenoCantoExportData) => {
           this.exportToXenoCanto(data);
+        });
+
+        this.cancelModalSub = this.exportModalRef.content!.cancelForm.subscribe(() => {
+          this.exportModalRef!.hide();
         });
 
         this.cdr.markForCheck();

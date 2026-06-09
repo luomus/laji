@@ -99,6 +99,9 @@
   </div>
 
   <div class="form-actions text-right">
+    <lu-button class="mr-3" [role]="'neutral'" [disabled]="exportLoading()" (click)="cancelForm.emit()">
+      {{ 'xenoCantoExport.cancel' | translate }}
+    </lu-button>
     <lu-button [role]="'primary'" [disabled]="form.invalid || form.disabled || !totalAnnotations()" [loading]="exportLoading()">
       {{ 'xenoCantoExport.submit' | translate }}
     </lu-button>

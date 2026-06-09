@@ -50,6 +50,7 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
   data = signal<PagedResult<IIdentificationHistoryResponse> | undefined>(undefined);
 
   submitForm = output<XenoCantoExportData>();
+  cancelForm = output<void>();
 
   private fetchDataSub?: Subscription;
 
