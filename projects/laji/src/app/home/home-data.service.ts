@@ -45,11 +45,11 @@ export interface IHomeData {
   news: {
     prevPage: number;
     nextPage: number;
-    results: Pick<News, 'id'|'title'|'external'|'externalURL'|'tags'|'posted'>[];
+    results: Pick<News, 'id'|'title'|'external'|'externalURL'|'tag'|'posted'>[];
   };
 }
 
-const NEWS_TAGS = ['release', 'taxonomy', 'technical', 'luke.fi', 'luomus.fi', 'syke.fi', 'vieraslajit.fi'];
+const NEWS_TAGS = ['release, taxonomy, technical, luke.fi, luomus.fi, syke.fi, vieraslajit.fi'];
 if (environment.type === Global.type.vir) {
   NEWS_TAGS.push('viranomaiset');
 }
@@ -124,7 +124,7 @@ const HOME_QUERY = gql`
       results {
         id
         title
-        tags
+        tag
         posted
         external
         externalURL

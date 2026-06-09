@@ -20,7 +20,7 @@ export class SoundIdentificationTableComponent implements OnInit {
   @Input() loading = false;
 
   columns!: DatatableColumn[];
-  vernacularCache: Record<string, Observable<string>> = {};
+  vernacularCache: Record<string, Observable<string | undefined>> = {};
   lang!: string;
 
   constructor(

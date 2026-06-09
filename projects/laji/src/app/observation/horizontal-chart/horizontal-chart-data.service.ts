@@ -12,7 +12,7 @@ export class HorizontalChartDataService {
   ) { }
 
 
-  getChartDataLabels(ids: string[]): Observable<Record<string, {vernacularName: string; scientificName: string}>> {
+  getChartDataLabels(ids: string[]): Observable<Record<string, {vernacularName?: string; scientificName: string}>> {
     if (ids.length === 0) { return of({}); }
     return this.api.get('/taxa',
       { query: { id: ids.join(','), pageSize: ids.length, selectedFields: 'id,vernacularName,scientificName' } },
@@ -21,7 +21,7 @@ export class HorizontalChartDataService {
       map(({ results }) => results.reduce((idToNames, {id, vernacularName, scientificName }) => {
         idToNames[id] = { vernacularName, scientificName };
         return idToNames;
-      }, {} as Record<string, {vernacularName: string; scientificName: string}>))
+      }, {} as Record<string, {vernacularName?: string; scientificName: string}>))
     );
   }
 }

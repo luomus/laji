@@ -108,7 +108,7 @@ export class CollectionService {
 
   getAllAsKeyValue$(mustHaveWarehouseData = false) {
     const all$ = this.api.get('/collections', { query: { selectedFields: 'id,collectionName', pageSize: 100000 } })
-    .pipe(map(({results}) => results.map(({id, collectionName}) => ({ id, value: collectionName }))));
+    .pipe(map(({results}) => results.map(({id, collectionName}) => ({ id, value: collectionName || id }))));
     if (mustHaveWarehouseData) {
       return this.getAllWarehouseCollections$().pipe(
         switchMap(warehouseCollection => all$.pipe(
@@ -123,10 +123,10 @@ export class CollectionService {
     return this.api.get('/collections/{id}', { path: { id } });
   }
 
-  getName$(id: string, empty: null|string = null): Observable<string> {
+  getName$(id: string): Observable<string> {
     return this.getAllAsKeyValue$().pipe(
       map(data => data.find(col => col.id === id)),
-      map(col => col ? col.value : (empty === null ? id : empty))
+      map(col => col?.value ? col.value : id)
     );
   }
 

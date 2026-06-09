@@ -206,7 +206,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["NotificationsController_getAllV1"];
+        get: operations["NotificationsController_getPage"];
         put?: never;
         post?: never;
         delete?: never;
@@ -341,7 +341,24 @@ export interface paths {
             cookie?: never;
         };
         /** Get all alts as a lookup object where keys are property names and values are alts */
-        get: operations["MetadataController_getAlts"];
+        get: operations["MetadataController_getAltsLookup"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/metadata/alts-list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all alts as a list */
+        get: operations["MetadataController_getAltsList"];
         put?: never;
         post?: never;
         delete?: never;
@@ -393,6 +410,23 @@ export interface paths {
         };
         /** Get a page of all root collections */
         get: operations["CollectionsController_findRoots"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/collections/tree": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get collection tree */
+        get: operations["CollectionsController_getTree"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1263,23 +1297,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/information/index": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Returns id of the index page. Allowed languages are 'fi', 'sv', 'en'. */
-        get: operations["InformationController_getIndex"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/information/{id}": {
         parameters: {
             query?: never;
@@ -1289,23 +1306,6 @@ export interface paths {
         };
         /** Get information page by id */
         get: operations["InformationController_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/information": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get information page contents. Allowed languages are 'fi', 'sv', 'en'. */
-        get: operations["InformationController_getAll"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1390,7 +1390,7 @@ export interface paths {
             cookie?: never;
         };
         /** Get all organizations */
-        get: operations["OrganizationsController_getAll"];
+        get: operations["OrganizationsController_getPage"];
         put?: never;
         post?: never;
         delete?: never;
@@ -6177,7 +6177,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": string;
+                        "application/json": components["schemas"]["WarehouseDwEnumerationLabels"];
                     };
                 };
                 /** @description Parameters were not accepted. Message has details. */
@@ -6255,7 +6255,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": string;
+                        "application/json": components["schemas"]["WarehouseDwEnumerationLabel"];
                     };
                 };
                 /** @description Parameters were not accepted. Message has details. */
@@ -6330,7 +6330,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": string;
+                        "application/json": components["schemas"]["WarehouseDwFilters"];
                     };
                 };
                 /** @description Parameters were not accepted. Message has details. */
@@ -6408,7 +6408,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": string;
+                        "application/json": components["schemas"]["WarehouseDwFilter"];
                     };
                 };
                 /** @description Parameters were not accepted. Message has details. */
@@ -9710,7 +9710,7 @@ export interface paths {
         put?: never;
         /**
          * Convert GIS file to CSV table
-         * @description Upload a GIS file (Shapefile, GeoJSON, GPKG, etc.) and get back a CSV file with geometry as WKT
+         * @description Upload a GIS file (GeoJSON, GPKG, KML, GML, or a ZIP archive for Shapefiles) and get back a CSV file with geometry as WKT
          */
         post: operations["convert_gis_to_table_convert_to_table_post"];
         delete?: never;
@@ -9899,7 +9899,7 @@ export interface components {
         MultiLangDto: string;
         MetadataClass: {
             class: string;
-            label: string;
+            label?: string;
             shortName: string;
         };
         Property: {
@@ -9911,14 +9911,14 @@ export interface components {
             multiLanguage: boolean;
             shortName: string;
             range: string;
-            label: string;
+            label?: string;
             hasMany: boolean;
             sortOrder: number;
             isEmbeddable: boolean;
         };
         Alt: {
             id: string;
-            value: string;
+            value?: string;
         };
         Collection: {
             collectionName: Record<string, never>;
@@ -9951,7 +9951,7 @@ export interface components {
             downloadRequestHandler?: string[];
             shareToFEO?: boolean;
             shareToGbif?: string;
-            collectionType: Record<string, never>;
+            collectionType?: Record<string, never>;
             intellectualRights: Record<string, never>;
         };
         FormPermissionPersonDto: {
@@ -10003,7 +10003,6 @@ export interface components {
              */
             editors: string[];
             prepopulatedDocument?: Record<string, never>;
-            acceptedDocument?: Record<string, never>;
         };
         RedListEvaluation: {
             primaryHabitatSearchStrings: string;
@@ -10153,8 +10152,8 @@ export interface components {
             };
         };
         AddressComponent: {
-            long_name: string;
-            short_name: string;
+            long_name?: string;
+            short_name: components["schemas"]["MultiLangDto"];
             types: string[];
         };
         Location: {
@@ -10170,8 +10169,8 @@ export interface components {
         };
         Source: {
             id?: string;
-            name: string;
-            description: string;
+            name?: string;
+            description: components["schemas"]["MultiLangDto"];
         };
         GetTmpTokenDto: {
             loginURL?: string;
@@ -10183,12 +10182,12 @@ export interface components {
         LajiBackendNewsNode: {
             external: boolean;
             externalURL?: string;
+            tag?: string;
             id: string;
             content?: string;
             title?: string;
             author?: string;
             posted?: string;
-            tags?: string[];
             featuredImage?: components["schemas"]["FeaturedImage"];
             modified?: string;
         };
@@ -11404,7 +11403,7 @@ export interface components {
             finnish: boolean;
             /** Format: URI */
             taxonRank: string;
-            vernacularName: Record<string, never>;
+            vernacularName: unknown;
             nameFinnish: string;
             nameSwedish: string;
             nameEnglish: string;
@@ -11433,7 +11432,7 @@ export interface components {
             finnish: boolean;
             /** Format: URI */
             taxonRank: string;
-            vernacularName: Record<string, never>;
+            vernacularName: unknown;
             nameFinnish: string;
             nameSwedish: string;
             nameEnglish: string;
@@ -11466,6 +11465,30 @@ export interface components {
                 name: string;
                 count: number;
             }[];
+        };
+        /** @description Map of filter name to filter definition */
+        WarehouseDwFilter: {
+            label?: string;
+            /** @enum {string} */
+            type: "STRING" | "ENUMERATION" | "RESOURCE";
+            resource: string;
+            enumerations: components["schemas"]["WarehouseDwFilterEnum"][];
+        };
+        WarehouseDwFilterEnum: {
+            name: string;
+            label?: string;
+        };
+        WarehouseDwFilters: {
+            [key: string]: components["schemas"]["WarehouseDwFilter"];
+        };
+        WarehouseDwLocalized: string;
+        WarehouseDwEnumerationLabel: {
+            enumeration: string;
+            property: string;
+            label?: string;
+        };
+        WarehouseDwEnumerationLabels: {
+            results: components["schemas"]["WarehouseDwEnumerationLabel"][];
         };
         LajiBackendTaxonSearchResponse: {
             /** @description Name that matched the search word */
@@ -11551,7 +11574,7 @@ export interface components {
             uncertainSynonyms: components["schemas"]["LajiBackendSimpleTaxon"][];
             misappliedNames: components["schemas"]["LajiBackendSimpleTaxon"][];
             alternativeNames: components["schemas"]["LajiBackendSimpleTaxon"][];
-            vernacularName: components["schemas"]["LajiBackendLocalizedText"];
+            vernacularName?: string;
             alternativeVernacularName: components["schemas"]["LajiBackendLocalizedText"][];
             obsoleteVernacularName: components["schemas"]["LajiBackendLocalizedText"][];
             colloquialVernacularName: components["schemas"]["LajiBackendLocalizedText"][];
@@ -11684,7 +11707,7 @@ export interface components {
             id: string;
             scientificName: string;
             scientificNameAuthorship: string;
-            vernacularName: components["schemas"]["LajiBackendLocalizedText"];
+            vernacularName?: string;
             taxonRank: string;
             cursiveName: boolean;
             notes: string;
@@ -11723,7 +11746,7 @@ export interface components {
             year: number;
         };
         LajiBackendHabitatOccurrenceCount: {
-            habitat: components["schemas"]["LajiBackendLocalizedText"];
+            habitat?: string;
             id: string;
             occurrenceCount: number;
         };
@@ -11738,7 +11761,7 @@ export interface components {
             keywords: string[];
             largeURL: string;
             licenseAbbreviation: string;
-            licenseFullname: components["schemas"]["LajiBackendLocalizedText"];
+            licenseFullname?: string;
             /** @description Qname identifier */
             licenseId: string;
             lifeStage: string[];
@@ -11793,7 +11816,7 @@ export interface components {
         LajiBackendContent: components["schemas"]["LajiBackendContext"][];
         LajiBackendContext: {
             id: string;
-            title: components["schemas"]["LajiBackendLocalizedText"];
+            title?: string;
             groups: {
                 group: string;
                 title: components["schemas"]["LajiBackendLocalizedText"];
@@ -12229,7 +12252,7 @@ export interface components {
             /**
              * File
              * Format: binary
-             * @description GIS file to convert (SHP, GeoJSON, GPKG, KML, GML, ZIP)
+             * @description GIS file to convert (GeoJSON, GPKG, KML, GML, or ZIP for Shapefiles)
              */
             file: string;
         };
@@ -12394,7 +12417,7 @@ export interface components {
             id: string;
             /** Type for the MHL.formOptionsClass */
             "@type": string;
-            about: string;
+            about?: string;
             /**
              * Document are lockable by admin
              * @description Form admin can lock documents. Locked documents can't be edited
@@ -12507,7 +12530,7 @@ export interface components {
              * @description Hides the draft button at form footer
              */
             hideTempButton: boolean;
-            instructions: string;
+            instructions: components["schemas"]["store-multiLang"];
             /**
              * Use mobile UI
              * @description Form UI has a greeting page for convenient mobile usage
@@ -13079,7 +13102,10 @@ export interface components {
              * @description Additional information to the data in each section.
              */
             notes?: string;
-            /** Observation ID */
+            /**
+             * Observation ID
+             * @description ID for the observation in another system, e.g. Vihko/Notebook. Format System:identifier.
+             */
             observationID?: string;
             /**
              * Original catalogue number
@@ -13111,7 +13137,10 @@ export interface components {
              * @description Publication references or doi's that refer to this specimen
              */
             publication?: string[];
-            /** Raw OCR data */
+            /**
+             * Raw OCR data
+             * @description Optical character recognition or AI generated data in its raw format, errors and all.
+             */
             rawOCRData?: string;
             /**
              * Relationship
@@ -13291,9 +13320,15 @@ export interface components {
              */
             cloudCoverStart: "" | "MY.cloudCoverOktaEnumUnknown" | "MY.cloudCoverOktaEnum0" | "MY.cloudCoverOktaEnum1" | "MY.cloudCoverOktaEnum2" | "MY.cloudCoverOktaEnum3" | "MY.cloudCoverOktaEnum4" | "MY.cloudCoverOktaEnum5" | "MY.cloudCoverOktaEnum6" | "MY.cloudCoverOktaEnum7" | "MY.cloudCoverOktaEnum8";
             completeList: components["schemas"]["store-completeList"];
-            /** Start date */
+            /**
+             * Start date
+             * @description Collection date as exact date or start date for a time period.
+             */
             dateBegin: string;
-            /** End date */
+            /**
+             * End date
+             * @description End date for a collection time period, if exact date is not know.
+             */
             dateEnd: string;
             gatheringFact: components["schemas"]["store-gatheringFact"];
             geometry: components["schemas"]["store-geometry"];
@@ -13389,6 +13424,7 @@ export interface components {
             invasiveControlOtherExpensesInEuros: number;
             /** Work hours spent during the control */
             invasiveControlWorkHours: number;
+            lineTransectNests: components["schemas"]["store-lineTransectNest"][];
             /** Biotope counted */
             lineTransectSegmentCounted: boolean;
             /** Biotope's end meter amount from the start of the line */
@@ -13643,6 +13679,40 @@ export interface components {
              */
             wind: "" | "WBC.windEnum0" | "WBC.windEnum1" | "WBC.windEnum2" | "WBC.windEnum3" | "WBC.windEnum4";
         };
+        "store-lineTransectNest": {
+            /** Context for the Instances of this class are information about a nest on a line-transect route */
+            "@context": string;
+            /** Id for the Instances of this class are information about a nest on a line-transect route */
+            id: string;
+            /** Type for the Instances of this class are information about a nest on a line-transect route */
+            "@type": string;
+            /** Taxon ID selected from autocomplete */
+            autocompleteSelectedTaxonID: string;
+            /** Nest position on the line: meters from the start of the line */
+            lineTransectNestMeters: number;
+            /**
+             * Field Area
+             * @enum {string}
+             */
+            lineTransectRouteFieldType: "" | "MY.lineTransectRouteFieldTypeInner" | "MY.lineTransectRouteFieldTypeOuter";
+            /** Nest count */
+            nestCount: number;
+            /**
+             * Nest Size
+             * @enum {string}
+             */
+            nestSize: "" | "MY.nestSizeEnum1" | "MY.nestSizeEnum2" | "MY.nestSizeEnum3";
+            /**
+             * Nest type
+             * @enum {string}
+             */
+            nestType: "" | "MY.nestTypeTreeCavity" | "MY.nestTypeTwig" | "MY.nestTypeNestBox" | "MY.nestTypeBuilding" | "MY.nestTypeGroundCavity" | "MY.nestTypeOther";
+            /**
+             * Species
+             * @description Taxon name
+             */
+            taxon: string;
+        };
         "store-geometry": ({
             /** @enum {string} */
             type: "Point";
@@ -13838,9 +13908,15 @@ export interface components {
              * @description County (piirikunta, kreivikunta etc.)
              */
             county: string;
-            /** Start date */
+            /**
+             * Start date
+             * @description Collection date as exact date or start date for a time period.
+             */
             dateBegin: string;
-            /** End date */
+            /**
+             * End date
+             * @description End date for a collection time period, if exact date is not know.
+             */
             dateEnd: string;
             /**
              * Verbatim date from original source
@@ -14309,17 +14385,10 @@ export interface components {
              * @enum {string}
              */
             nativeStatus: "" | "MY.native" | "MY.nonNative";
-            /** Nest/cavity count */
+            /** Nest count */
             nestCount: number;
-            /** metrimäärä (linjan alusta), jolla pönttö/kolo on */
-            nestDistanceFromLineTransectStartMeters: number;
             /** Nest notes */
             nestNotes: string;
-            /**
-             * Pöntön kokoluokka
-             * @enum {string}
-             */
-            nestSize: "" | "MY.nestSizeEnum1" | "MY.nestSizeEnum2" | "MY.nestSizeEnum3";
             /** Diameter of the tree (cm) */
             nestTreeDiameterInCentimeters: number;
             /**
@@ -14703,9 +14772,15 @@ export interface components {
             id: string;
             /** Type for the Havainnon keruutiedot */
             "@type": string;
-            /** Start date */
+            /**
+             * Start date
+             * @description Collection date as exact date or start date for a time period.
+             */
             dateBegin: string;
-            /** End date */
+            /**
+             * End date
+             * @description End date for a collection time period, if exact date is not know.
+             */
             dateEnd: string;
             geometry: components["schemas"]["store-geometry"];
             /**
@@ -15542,13 +15617,13 @@ export interface components {
              * @description Collection code for natural history specimen collection, such as H-BR
              */
             collectionCode?: string;
-            collectionName: string;
+            collectionName?: string;
             /**
              * Collection quality
              * @description Quality classification for the collection.
              * @enum {string}
              */
-            collectionQuality: "MY.collectionQualityEnum3" | "MY.collectionQualityEnum2" | "MY.collectionQualityEnum1";
+            collectionQuality?: "" | "MY.collectionQualityEnum3" | "MY.collectionQualityEnum2" | "MY.collectionQualityEnum1";
             /**
              * Size (approx.)
              * @description How many specimens, records or such does the collection contain? Fill in approximate number, describe more in notes if necessary.
@@ -15559,14 +15634,14 @@ export interface components {
              * @description Type of the collection (specimen, monitoring etc).
              * @enum {string}
              */
-            collectionType: "MY.collectionTypeSpecimens" | "MY.collectionTypeLiving" | "MY.collectionTypeMonitoring" | "MY.collectionTypeObservations" | "MY.collectionTypePublicationdata" | "MY.collectionTypePublication" | "MY.collectionTypeMixed" | "MY.collectionTypeOther" | "MY.collectionTypeGardenArea" | "MY.collectionTypeIndoorGardenArea" | "MY.collectionTypeOutdoorGardenArea" | "MY.collectionTypeGardenSublocation" | "MY.collectionTypeTrait";
-            concealmentBasis?: string;
+            collectionType?: "" | "MY.collectionTypeSpecimens" | "MY.collectionTypeLiving" | "MY.collectionTypeMonitoring" | "MY.collectionTypeObservations" | "MY.collectionTypePublicationdata" | "MY.collectionTypePublication" | "MY.collectionTypeMixed" | "MY.collectionTypeOther" | "MY.collectionTypeGardenArea" | "MY.collectionTypeIndoorGardenArea" | "MY.collectionTypeOutdoorGardenArea" | "MY.collectionTypeGardenSublocation" | "MY.collectionTypeTrait";
+            concealmentBasis?: components["schemas"]["store-multiLang"];
             /**
              * Contact email
              * @description Personal or general (e.g. group of people in the organisation) email address to reach the person(s) responsible.
              */
             contactEmail: string;
-            coverageBasis?: string;
+            coverageBasis?: components["schemas"]["store-multiLang"];
             /** Data download URL */
             dataDownloadURL?: string[];
             /**
@@ -15580,14 +15655,14 @@ export interface components {
              * @enum {string}
              */
             dataQuality?: "" | "MY.dataQuality1" | "MY.dataQuality2" | "MY.dataQuality3" | "MY.dataQuality4" | "MY.dataQuality5" | "MY.dataQualityNA";
-            dataQualityDescription?: string;
+            dataQualityDescription?: components["schemas"]["store-multiLang"];
             /**
              * Embargo in years
              * @description Embargo period in years after which data is opened
              */
             dataQuarantinePeriod?: number;
-            dataUseTerms?: string;
-            description: string;
+            dataUseTerms?: components["schemas"]["store-multiLang"];
+            description: components["schemas"]["store-multiLang"];
             /**
              * % digitized (approx.)
              * @description How many percent of the collection is in digital form, e.g. in a database or Excel file? Fill in approximate number, describe more in notes if necessary.
@@ -15610,7 +15685,7 @@ export interface components {
              * @description Admin field. DOI received from GBIF after the collection has been published.
              */
             gbifDoi?: string;
-            geographicCoverage?: string;
+            geographicCoverage?: components["schemas"]["store-multiLang"];
             /**
              * Hierarchical type
              * @description Type of the collection within the collection hierarchy tree.
@@ -15622,7 +15697,7 @@ export interface components {
              * @description Institution code for natural history specimen collection holding institution, such as H, MHZ or TUR
              */
             institutionCode?: string;
-            intellectualDescription?: string;
+            intellectualDescription?: components["schemas"]["store-multiLang"];
             /**
              * Publisher name (en)
              * @description Name of the institution or organisation publishing the data.
@@ -15649,7 +15724,7 @@ export interface components {
              * @description Language the data is (mainly) written in, if applicable.
              */
             language?: string;
-            longName?: string;
+            longName?: components["schemas"]["store-multiLang"];
             /** Person responsible for this metadata */
             metadataCreator?: string;
             /**
@@ -15658,13 +15733,13 @@ export interface components {
              * @enum {string}
              */
             metadataStatus?: "" | "MY.metadataStatusPreliminary" | "MY.metadataStatusSatisfactory" | "MY.metadataStatusComprehensive" | "MY.metadataStatusHidden";
-            methods?: string;
+            methods?: components["schemas"]["store-multiLang"];
             /**
              * Notes
              * @description Additional information to the data in each section.
              */
             notes?: string;
-            onlineUrl?: string;
+            onlineUrl?: components["schemas"]["store-multiLang"];
             /**
              * Person responsible
              * @description Person(s) responsible for the collection (Lastname, Firstname; Lastname, Firstname).
@@ -15675,14 +15750,14 @@ export interface components {
              * @description Used for botanic garden collections. Is the collection/garden area accessible to public or not.
              */
             publicAccess?: boolean;
-            publicationDescription?: string;
+            publicationDescription?: components["schemas"]["store-multiLang"];
             /**
              * Publication terms
              * @description How can Luomus publish the data, if it is owned by third party?
              * @enum {string}
              */
             publicationTerms?: "" | "MY.publicationTermsFree" | "MY.publicationTermsOfficial" | "MY.publicationTermsInternal" | "MY.publicationTermsNone";
-            publisherShortname?: string;
+            publisherShortname?: components["schemas"]["store-multiLang"];
             /** Share to FEO */
             shareToFEO?: string;
             /**
@@ -15690,8 +15765,8 @@ export interface components {
              * @description Admin field. Can the data be shared to GBIF or not: Given collection ID means data is shared under that collection.
              */
             shareToGbif?: string;
-            taxonomicCoverage?: string;
-            temporalCoverage?: string;
+            taxonomicCoverage?: components["schemas"]["store-multiLang"];
+            temporalCoverage?: components["schemas"]["store-multiLang"];
             /**
              * Amount of type specimens (approx.)
              * @description How many TYPE specimens does the collection contain?  Fill in approximate number, describe more in notes if necessary.
@@ -15718,7 +15793,7 @@ export interface components {
              * @enum {string}
              */
             publicityRestrictions?: "" | "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
-            hasChildren: boolean;
+            hasChildren?: boolean;
             longNameMultiLang?: {
                 fi: components["schemas"]["store-multiLang"];
                 sv: components["schemas"]["store-multiLang"];
@@ -15734,6 +15809,469 @@ export interface components {
                 sv: components["schemas"]["store-multiLang"];
                 en: components["schemas"]["store-multiLang"];
             };
+        };
+        "store-collection": {
+            /** Context for the Collection */
+            "@context"?: string;
+            /** Id for the Collection */
+            id?: string;
+            /** Type for the Collection */
+            "@type"?: string;
+            /**
+             * Secure level
+             * @description Secure level (salaus-/karkeistustaso) for the data
+             * @enum {string}
+             */
+            secureLevel?: "" | "MX.secureLevelNone" | "MX.secureLevelKM1" | "MX.secureLevelKM5" | "MX.secureLevelKM10" | "MX.secureLevelKM25" | "MX.secureLevelKM50" | "MX.secureLevelKM100" | "MX.secureLevelHighest" | "MX.secureLevelNoShow";
+            /**
+             * Unofficial abbreviation
+             * @description Unofficial abbreviation (or acronym) for this collection
+             */
+            abbreviation?: string;
+            /** Identifier of this dataset/collection in other databases */
+            additionalIdentifier?: string[];
+            /**
+             * Allowed for DW statistics
+             * @description Admin field. Is it allowed to use collection with data warehouse /statistic endpoints.
+             */
+            allowedForDwStatistics?: boolean;
+            /** Bounding box latitude max (WGS84) */
+            boundingBoxLatMax?: string;
+            /** Bounding box latitude min (WGS84) */
+            boundingBoxLatMin?: string;
+            /** Bounding box longitude max (WGS84) */
+            boundingBoxLonMax?: string;
+            /** Bounding box longitude min (WGS84) */
+            boundingBoxLonMin?: string;
+            /**
+             * Citation recommendation
+             * @description Example how to cite this collection in a scientific article, if using organization, name and abbreviation is not enough.
+             */
+            citation?: string;
+            /**
+             * Specimen collection code
+             * @description Collection code for natural history specimen collection, such as H-BR
+             */
+            collectionCode?: string;
+            collectionLocation?: string;
+            collectionName: components["schemas"]["store-multiLang"];
+            /**
+             * Collection quality
+             * @description Quality classification for the collection.
+             * @enum {string}
+             */
+            collectionQuality?: "" | "MY.collectionQualityEnum3" | "MY.collectionQualityEnum2" | "MY.collectionQualityEnum1";
+            /**
+             * Size (approx.)
+             * @description How many specimens, records or such does the collection contain? Fill in approximate number, describe more in notes if necessary.
+             */
+            collectionSize?: string;
+            /**
+             * Type
+             * @description Type of the collection (specimen, monitoring etc).
+             * @enum {string}
+             */
+            collectionType?: "" | "MY.collectionTypeSpecimens" | "MY.collectionTypeLiving" | "MY.collectionTypeMonitoring" | "MY.collectionTypeObservations" | "MY.collectionTypePublicationdata" | "MY.collectionTypePublication" | "MY.collectionTypeMixed" | "MY.collectionTypeOther" | "MY.collectionTypeGardenArea" | "MY.collectionTypeIndoorGardenArea" | "MY.collectionTypeOutdoorGardenArea" | "MY.collectionTypeGardenSublocation" | "MY.collectionTypeTrait";
+            concealmentBasis?: components["schemas"]["store-multiLang"];
+            /**
+             * Contact email
+             * @description Personal or general (e.g. group of people in the organisation) email address to reach the person(s) responsible.
+             */
+            contactEmail: string;
+            coverageBasis?: components["schemas"]["store-multiLang"];
+            /** Data download URL */
+            dataDownloadURL?: string[];
+            dataLocation?: components["schemas"]["store-multiLang"];
+            /**
+             * Notes about the data
+             * @description Diary-like notes about the data, with date/time. For example "2020-08-19: Changed country names Fönland to Finland", or "Specimens collected during 2019 are missing coordinates due to malfunctioning GPS"
+             */
+            dataNotes?: string;
+            /**
+             * Data quality
+             * @description Quality estimation for the data in this collection
+             * @enum {string}
+             */
+            dataQuality?: "" | "MY.dataQuality1" | "MY.dataQuality2" | "MY.dataQuality3" | "MY.dataQuality4" | "MY.dataQuality5" | "MY.dataQualityNA";
+            dataQualityDescription?: components["schemas"]["store-multiLang"];
+            /**
+             * Embargo in years
+             * @description Embargo period in years after which data is opened
+             */
+            dataQuarantinePeriod?: number;
+            dataUseTerms?: components["schemas"]["store-multiLang"];
+            description: components["schemas"]["store-multiLang"];
+            /**
+             * % digitized (approx.)
+             * @description How many percent of the collection is in digital form, e.g. in a database or Excel file? Fill in approximate number, describe more in notes if necessary.
+             */
+            digitizedSize?: string;
+            /** DOI provided by FinBIF */
+            doi?: string;
+            /**
+             * Download request handler
+             * @description Admin field. The identifier of the person responsible for handling requests for restricted data for this set (typically same person who's responsible for the collection)
+             */
+            downloadRequestHandler?: string[];
+            /**
+             * Notes about this edit
+             * @description Reason for this edit or notes about it.
+             */
+            editNotes?: string;
+            /**
+             * Collection DOI from GBIF
+             * @description Admin field. DOI received from GBIF after the collection has been published.
+             */
+            gbifDoi?: string;
+            geographicCoverage?: components["schemas"]["store-multiLang"];
+            /**
+             * Hierarchical type
+             * @description Type of the collection within the collection hierarchy tree.
+             * @enum {string}
+             */
+            hierarchyType: "MY.hierarchyTypeDocumentParent" | "MY.hierarchyTypeCollectionParent";
+            /**
+             * Institution code
+             * @description Institution code for natural history specimen collection holding institution, such as H, MHZ or TUR
+             */
+            institutionCode?: string;
+            intellectualDescription?: components["schemas"]["store-multiLang"];
+            /**
+             * Publisher name (en)
+             * @description Name of the institution or organisation publishing the data.
+             */
+            intellectualOwner?: string;
+            /**
+             * License for use
+             * @description License which is used when publishing data that belongs to this collection.
+             * @enum {string}
+             */
+            intellectualRights: "MY.intellectualRightsCC-BY" | "MY.intellectualRightsCC0" | "MY.intellectualRightsPD" | "MY.intellectualRightsARR";
+            /**
+             * Internal use only
+             * @description Is the data to be used only within Kotka?
+             */
+            internalUseOnly?: boolean;
+            /**
+             * Is part of
+             * @description Which parent or larger collection this is part of.
+             */
+            isPartOf?: string;
+            /**
+             * Language
+             * @description Language the data is (mainly) written in, if applicable.
+             */
+            language?: string;
+            longName?: components["schemas"]["store-multiLang"];
+            /** Person responsible for this metadata */
+            metadataCreator?: string;
+            /**
+             * Status of this metadata
+             * @description Indication of how comprehensive the information on this form is.
+             * @enum {string}
+             */
+            metadataStatus?: "" | "MY.metadataStatusPreliminary" | "MY.metadataStatusSatisfactory" | "MY.metadataStatusComprehensive" | "MY.metadataStatusHidden";
+            methods?: components["schemas"]["store-multiLang"];
+            /**
+             * Notes
+             * @description Additional information to the data in each section.
+             */
+            notes?: string;
+            onlineUrl?: components["schemas"]["store-multiLang"];
+            /**
+             * Person responsible
+             * @description Person(s) responsible for the collection (Lastname, Firstname; Lastname, Firstname).
+             */
+            personResponsible: string;
+            /**
+             * Accessibility to public
+             * @description Used for botanic garden collections. Is the collection/garden area accessible to public or not.
+             */
+            publicAccess?: boolean;
+            publicationDescription?: components["schemas"]["store-multiLang"];
+            /**
+             * Publication terms
+             * @description How can Luomus publish the data, if it is owned by third party?
+             * @enum {string}
+             */
+            publicationTerms?: "" | "MY.publicationTermsFree" | "MY.publicationTermsOfficial" | "MY.publicationTermsInternal" | "MY.publicationTermsNone";
+            publisherShortname?: components["schemas"]["store-multiLang"];
+            /** Share to FEO */
+            shareToFEO?: string;
+            /**
+             * Share to GBIF
+             * @description Admin field. Can the data be shared to GBIF or not: Given collection ID means data is shared under that collection.
+             */
+            shareToGbif?: string;
+            taxonomicCoverage?: components["schemas"]["store-multiLang"];
+            temporalCoverage?: components["schemas"]["store-multiLang"];
+            /**
+             * Amount of type specimens (approx.)
+             * @description How many TYPE specimens does the collection contain?  Fill in approximate number, describe more in notes if necessary.
+             */
+            typesSize?: string;
+            /** Creator */
+            creator?: string;
+            /**
+             * Created
+             * Format: date-time
+             */
+            dateCreated?: string;
+            /**
+             * Edited
+             * Format: date-time
+             */
+            dateEdited?: string;
+            /** Editor */
+            editor?: string;
+            /**
+             * Owner of record
+             * @description Team or organisation that owns the record and can edit it.
+             */
+            owner?: string;
+            /**
+             * Publicity restrictions
+             * @description PUBLIC: all data can be published; PROTECTED: exact locality is hidden (100*100km square); PRIVATE: most of the data is hidden. Empty value means same as public.
+             * @enum {string}
+             */
+            publicityRestrictions?: "" | "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
+        };
+        ExpandedSensitiveCollection: {
+            /** Context for the Collection */
+            "@context"?: string;
+            /** Id for the Collection */
+            id: string;
+            /** Type for the Collection */
+            "@type"?: string;
+            /**
+             * Secure level
+             * @description Secure level (salaus-/karkeistustaso) for the data
+             * @enum {string}
+             */
+            secureLevel?: "" | "MX.secureLevelNone" | "MX.secureLevelKM1" | "MX.secureLevelKM5" | "MX.secureLevelKM10" | "MX.secureLevelKM25" | "MX.secureLevelKM50" | "MX.secureLevelKM100" | "MX.secureLevelHighest" | "MX.secureLevelNoShow";
+            /**
+             * Unofficial abbreviation
+             * @description Unofficial abbreviation (or acronym) for this collection
+             */
+            abbreviation?: string;
+            /** Identifier of this dataset/collection in other databases */
+            additionalIdentifier?: string[];
+            /**
+             * Allowed for DW statistics
+             * @description Admin field. Is it allowed to use collection with data warehouse /statistic endpoints.
+             */
+            allowedForDwStatistics?: boolean;
+            /** Bounding box latitude max (WGS84) */
+            boundingBoxLatMax?: string;
+            /** Bounding box latitude min (WGS84) */
+            boundingBoxLatMin?: string;
+            /** Bounding box longitude max (WGS84) */
+            boundingBoxLonMax?: string;
+            /** Bounding box longitude min (WGS84) */
+            boundingBoxLonMin?: string;
+            /**
+             * Citation recommendation
+             * @description Example how to cite this collection in a scientific article, if using organization, name and abbreviation is not enough.
+             */
+            citation?: string;
+            /**
+             * Specimen collection code
+             * @description Collection code for natural history specimen collection, such as H-BR
+             */
+            collectionCode?: string;
+            collectionName?: string;
+            /**
+             * Collection quality
+             * @description Quality classification for the collection.
+             * @enum {string}
+             */
+            collectionQuality?: "" | "MY.collectionQualityEnum3" | "MY.collectionQualityEnum2" | "MY.collectionQualityEnum1";
+            /**
+             * Size (approx.)
+             * @description How many specimens, records or such does the collection contain? Fill in approximate number, describe more in notes if necessary.
+             */
+            collectionSize?: string;
+            /**
+             * Type
+             * @description Type of the collection (specimen, monitoring etc).
+             * @enum {string}
+             */
+            collectionType?: "" | "MY.collectionTypeSpecimens" | "MY.collectionTypeLiving" | "MY.collectionTypeMonitoring" | "MY.collectionTypeObservations" | "MY.collectionTypePublicationdata" | "MY.collectionTypePublication" | "MY.collectionTypeMixed" | "MY.collectionTypeOther" | "MY.collectionTypeGardenArea" | "MY.collectionTypeIndoorGardenArea" | "MY.collectionTypeOutdoorGardenArea" | "MY.collectionTypeGardenSublocation" | "MY.collectionTypeTrait";
+            concealmentBasis?: components["schemas"]["store-multiLang"];
+            /**
+             * Contact email
+             * @description Personal or general (e.g. group of people in the organisation) email address to reach the person(s) responsible.
+             */
+            contactEmail: string;
+            coverageBasis?: components["schemas"]["store-multiLang"];
+            /** Data download URL */
+            dataDownloadURL?: string[];
+            /**
+             * Notes about the data
+             * @description Diary-like notes about the data, with date/time. For example "2020-08-19: Changed country names Fönland to Finland", or "Specimens collected during 2019 are missing coordinates due to malfunctioning GPS"
+             */
+            dataNotes?: string;
+            /**
+             * Data quality
+             * @description Quality estimation for the data in this collection
+             * @enum {string}
+             */
+            dataQuality?: "" | "MY.dataQuality1" | "MY.dataQuality2" | "MY.dataQuality3" | "MY.dataQuality4" | "MY.dataQuality5" | "MY.dataQualityNA";
+            dataQualityDescription?: components["schemas"]["store-multiLang"];
+            /**
+             * Embargo in years
+             * @description Embargo period in years after which data is opened
+             */
+            dataQuarantinePeriod?: number;
+            dataUseTerms?: components["schemas"]["store-multiLang"];
+            description: components["schemas"]["store-multiLang"];
+            /**
+             * % digitized (approx.)
+             * @description How many percent of the collection is in digital form, e.g. in a database or Excel file? Fill in approximate number, describe more in notes if necessary.
+             */
+            digitizedSize?: string;
+            /** DOI provided by FinBIF */
+            doi?: string;
+            /**
+             * Download request handler
+             * @description Admin field. The identifier of the person responsible for handling requests for restricted data for this set (typically same person who's responsible for the collection)
+             */
+            downloadRequestHandler?: string[];
+            /**
+             * Notes about this edit
+             * @description Reason for this edit or notes about it.
+             */
+            editNotes?: string;
+            /**
+             * Collection DOI from GBIF
+             * @description Admin field. DOI received from GBIF after the collection has been published.
+             */
+            gbifDoi?: string;
+            geographicCoverage?: components["schemas"]["store-multiLang"];
+            /**
+             * Hierarchical type
+             * @description Type of the collection within the collection hierarchy tree.
+             * @enum {string}
+             */
+            hierarchyType: "MY.hierarchyTypeDocumentParent" | "MY.hierarchyTypeCollectionParent";
+            /**
+             * Institution code
+             * @description Institution code for natural history specimen collection holding institution, such as H, MHZ or TUR
+             */
+            institutionCode?: string;
+            intellectualDescription?: components["schemas"]["store-multiLang"];
+            /**
+             * Publisher name (en)
+             * @description Name of the institution or organisation publishing the data.
+             */
+            intellectualOwner?: string;
+            /**
+             * License for use
+             * @description License which is used when publishing data that belongs to this collection.
+             * @enum {string}
+             */
+            intellectualRights: "MY.intellectualRightsCC-BY" | "MY.intellectualRightsCC0" | "MY.intellectualRightsPD" | "MY.intellectualRightsARR";
+            /**
+             * Internal use only
+             * @description Is the data to be used only within Kotka?
+             */
+            internalUseOnly?: boolean;
+            /**
+             * Is part of
+             * @description Which parent or larger collection this is part of.
+             */
+            isPartOf?: string;
+            /**
+             * Language
+             * @description Language the data is (mainly) written in, if applicable.
+             */
+            language?: string;
+            longName?: components["schemas"]["store-multiLang"];
+            /** Person responsible for this metadata */
+            metadataCreator?: string;
+            /**
+             * Status of this metadata
+             * @description Indication of how comprehensive the information on this form is.
+             * @enum {string}
+             */
+            metadataStatus?: "" | "MY.metadataStatusPreliminary" | "MY.metadataStatusSatisfactory" | "MY.metadataStatusComprehensive" | "MY.metadataStatusHidden";
+            methods?: components["schemas"]["store-multiLang"];
+            /**
+             * Notes
+             * @description Additional information to the data in each section.
+             */
+            notes?: string;
+            onlineUrl?: components["schemas"]["store-multiLang"];
+            /**
+             * Person responsible
+             * @description Person(s) responsible for the collection (Lastname, Firstname; Lastname, Firstname).
+             */
+            personResponsible: string;
+            /**
+             * Accessibility to public
+             * @description Used for botanic garden collections. Is the collection/garden area accessible to public or not.
+             */
+            publicAccess?: boolean;
+            publicationDescription?: components["schemas"]["store-multiLang"];
+            /**
+             * Publication terms
+             * @description How can Luomus publish the data, if it is owned by third party?
+             * @enum {string}
+             */
+            publicationTerms?: "" | "MY.publicationTermsFree" | "MY.publicationTermsOfficial" | "MY.publicationTermsInternal" | "MY.publicationTermsNone";
+            publisherShortname?: components["schemas"]["store-multiLang"];
+            /** Share to FEO */
+            shareToFEO?: string;
+            /**
+             * Share to GBIF
+             * @description Admin field. Can the data be shared to GBIF or not: Given collection ID means data is shared under that collection.
+             */
+            shareToGbif?: string;
+            taxonomicCoverage?: components["schemas"]["store-multiLang"];
+            temporalCoverage?: components["schemas"]["store-multiLang"];
+            /**
+             * Amount of type specimens (approx.)
+             * @description How many TYPE specimens does the collection contain?  Fill in approximate number, describe more in notes if necessary.
+             */
+            typesSize?: string;
+            /**
+             * Created
+             * Format: date-time
+             */
+            dateCreated?: string;
+            /**
+             * Edited
+             * Format: date-time
+             */
+            dateEdited?: string;
+            /**
+             * Owner of record
+             * @description Team or organisation that owns the record and can edit it.
+             */
+            owner?: string;
+            /**
+             * Publicity restrictions
+             * @description PUBLIC: all data can be published; PROTECTED: exact locality is hidden (100*100km square); PRIVATE: most of the data is hidden. Empty value means same as public.
+             * @enum {string}
+             */
+            publicityRestrictions?: "" | "MZ.publicityRestrictionsPublic" | "MZ.publicityRestrictionsProtected" | "MZ.publicityRestrictionsPrivate";
+            hasChildren?: boolean;
+            longNameMultiLang?: {
+                fi: components["schemas"]["store-multiLang"];
+                sv: components["schemas"]["store-multiLang"];
+                en: components["schemas"]["store-multiLang"];
+            };
+            descriptionMultiLang?: {
+                fi: components["schemas"]["store-multiLang"];
+                sv: components["schemas"]["store-multiLang"];
+                en: components["schemas"]["store-multiLang"];
+            };
+            onlineUrlMultiLang?: {
+                fi: components["schemas"]["store-multiLang"];
+                sv: components["schemas"]["store-multiLang"];
+                en: components["schemas"]["store-multiLang"];
+            };
+            children?: components["schemas"]["ExpandedSensitiveCollection"][];
         };
         "store-namedPlace": {
             /** Context for the MNP.namedPlace */
@@ -15871,10 +16409,10 @@ export interface components {
             isPartOfEnvironmentalELY?: string;
             /** Is part of province */
             isPartOfProvince?: string;
-            name: string;
+            name?: string;
             /** Previously used name */
             previouslyOfficialName?: string[];
-            provinceCodeAlpha?: string;
+            provinceCodeAlpha?: components["schemas"]["store-multiLang"];
             /** Province code numeric */
             provinceCodeNumeric?: string;
             /** ringingDepartmentBirdAssociationAreaCode */
@@ -15889,8 +16427,8 @@ export interface components {
             id: string;
             /** Type for the MMAN.tagClass */
             "@type": string;
-            description: string;
-            name: string;
+            description?: string;
+            name: components["schemas"]["store-multiLang"];
             /** Required role to add */
             requiredRolesAdd: ("" | "MMAN.expert" | "MMAN.basic" | "MMAN.owner" | "MMAN.formAdmin" | "MMAN.ictAdmin")[];
             /** Required role to remove */
@@ -15933,14 +16471,14 @@ export interface components {
              */
             versionDate?: string;
             versionDescription?: string;
-            versionName?: string;
+            versionName?: components["schemas"]["store-multiLang"];
         };
         SensitiveOrganization: {
             "@context": string;
-            organizationLevel1: string;
-            organizationLevel2?: string;
-            organizationLevel3?: string;
-            organizationLevel4?: string;
+            organizationLevel1?: string;
+            organizationLevel2?: components["schemas"]["MultiLangDto"];
+            organizationLevel3?: components["schemas"]["MultiLangDto"];
+            organizationLevel4?: components["schemas"]["MultiLangDto"];
             abbreviation?: string;
         };
         "store-informalTaxonGroup": {
@@ -15957,7 +16495,7 @@ export interface components {
             explicitlyDefinedRoot?: boolean;
             /** Has subgroup */
             hasSubGroup?: string[];
-            name: string;
+            name?: string;
         };
         TaxonAutocompleteResponse: {
             /** @description Name that matched the search word */
@@ -15983,7 +16521,7 @@ export interface components {
             finnish: boolean;
             /** @description Is the taxon that has the mathing name species level or lower, or a higher taxon */
             species: boolean;
-            vernacularName: components["schemas"]["LajiBackendLocalizedText"];
+            vernacularName?: string;
             informalGroups: {
                 /** @description Identifier of the informal taxon group that the matching taxon belongs to); in the short Qname format, for example 'MVL.1' */
                 id: string;
@@ -16001,8 +16539,8 @@ export interface components {
         };
         SensitiveSource: {
             id?: string;
-            name: string;
-            description: string;
+            name?: string;
+            description: components["schemas"]["MultiLangDto"];
         };
         "store-iucnRedListTaxonGroup": {
             /** Context for the IUCN Red List Evaluation Informal Taxon Group */
@@ -16017,7 +16555,7 @@ export interface components {
             includesInformalTaxonGroup?: string[];
             /** Includes taxon */
             includesTaxon?: string[];
-            name: string;
+            name?: string;
         };
         IucnRedListTaxonGroupExpanded: {
             /** Context for the IUCN Red List Evaluation Informal Taxon Group */
@@ -18084,15 +18622,15 @@ export interface operations {
             };
         };
     };
-    NotificationsController_getAllV1: {
+    NotificationsController_getPage: {
         parameters: {
             query?: {
+                page?: number;
+                pageSize?: number;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Return only notifications that have not been marked as seen. */
                 onlyUnSeen?: boolean;
-                page?: number;
-                pageSize?: number;
             };
             header?: {
                 /** @description Person's authentication token. It is required. */
@@ -19060,7 +19598,7 @@ export interface operations {
             };
         };
     };
-    MetadataController_getAlts: {
+    MetadataController_getAltsLookup: {
         parameters: {
             query?: never;
             header?: never;
@@ -19076,6 +19614,115 @@ export interface operations {
                 content: {
                     "application/json": {
                         [key: string]: components["schemas"]["Alt"];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+        };
+    };
+    MetadataController_getAltsList: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: {
+                            id: string;
+                            options: components["schemas"]["Alt"][];
+                        }[];
+                        "@context": string;
                     };
                 };
             };
@@ -19276,12 +19923,12 @@ export interface operations {
     CollectionsController_getPage: {
         parameters: {
             query?: {
+                page?: number;
+                pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                page?: number;
-                pageSize?: number;
             };
             header?: never;
             path?: never;
@@ -19416,6 +20063,112 @@ export interface operations {
                         prevPage?: number;
                         nextPage?: number;
                         results: components["schemas"]["SensitiveCollection"][];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            406: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        errorCode: string;
+                        message: string;
+                        localized: boolean;
+                    };
+                };
+            };
+        };
+    };
+    CollectionsController_getTree: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        results: components["schemas"]["ExpandedSensitiveCollection"][];
+                        "@context": string;
                     };
                 };
             };
@@ -21047,6 +21800,8 @@ export interface operations {
     DocumentsController_getPage: {
         parameters: {
             query?: {
+                page?: number;
+                pageSize?: number;
                 /** @description Limit the list of documents to a certain named place */
                 namedPlace?: string;
                 /** @description Comma separated list of field names to include in the response */
@@ -21060,8 +21815,8 @@ export interface operations {
                 sourceID?: string;
                 /** @description Use this form's features for the request. */
                 formID?: string;
-                page?: number;
-                pageSize?: number;
+                /** @description Some collections return all users documents. This makes the result include only documents that the user is owner or editor of. */
+                selfAsEditorOrCreator?: boolean;
             };
             header?: {
                 /** @description Person's authentication token. It is required. */
@@ -21839,6 +22594,8 @@ export interface operations {
     NamedPlacesController_getPage: {
         parameters: {
             query?: {
+                page?: number;
+                pageSize?: number;
                 /** @description Include only items with these ids. Multiple values are separated by a comma (,). */
                 idIn?: string;
                 /** @description alternative ID. Multiple values are separated by a comma (,). */
@@ -21856,8 +22613,6 @@ export interface operations {
                 collectionID?: string;
                 /** @description Include public named places (used only when Person-Token is given). Defaults to true. */
                 includePublic?: boolean;
-                page?: number;
-                pageSize?: number;
             };
             header?: {
                 /** @description Person's authentication token. Necessary for fetching private places */
@@ -22547,6 +23302,8 @@ export interface operations {
             query?: {
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
+                page?: number;
+                pageSize?: number;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -22555,8 +23312,6 @@ export interface operations {
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
-                page?: number;
-                pageSize?: number;
                 /** @description true: Will include only invasive taxa.
                  *     false: Will exclude invasive taxa. */
                 invasiveSpecies?: boolean;
@@ -22693,12 +23448,12 @@ export interface operations {
             query?: {
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
+                page?: number;
+                pageSize?: number;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
-                page?: number;
-                pageSize?: number;
                 /** @description Include media objects in the response. Defaults to false. */
                 includeMedia?: boolean;
                 /** @description Include description objects in the response. Defaults to false. */
@@ -24169,6 +24924,8 @@ export interface operations {
             query?: {
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
+                page?: number;
+                pageSize?: number;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -24177,8 +24934,6 @@ export interface operations {
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
-                page?: number;
-                pageSize?: number;
                 /** @description true: Will include only invasive taxa.
                  *     false: Will exclude invasive taxa. */
                 invasiveSpecies?: boolean;
@@ -24315,12 +25070,12 @@ export interface operations {
             query?: {
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
+                page?: number;
+                pageSize?: number;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
-                page?: number;
-                pageSize?: number;
                 /** @description Include media objects in the response. Defaults to false. */
                 includeMedia?: boolean;
                 /** @description Include description objects in the response. Defaults to false. */
@@ -26979,6 +27734,8 @@ export interface operations {
             query?: {
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
+                page?: number;
+                pageSize?: number;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -26987,8 +27744,6 @@ export interface operations {
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
-                page?: number;
-                pageSize?: number;
                 /** @description true: Will include only invasive taxa.
                  *     false: Will exclude invasive taxa. */
                 invasiveSpecies?: boolean;
@@ -27127,6 +27882,8 @@ export interface operations {
             query?: {
                 /** @description Include taxa from the specified checklists (defaults to FinBIF master checklist) */
                 checklist?: string;
+                page?: number;
+                pageSize?: number;
                 /** @description Filter based on given informal groups. Multiple values are separated by a comma (,). */
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
@@ -27135,8 +27892,6 @@ export interface operations {
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
-                page?: number;
-                pageSize?: number;
                 /** @description true: Will include only invasive taxa.
                  *     false: Will exclude invasive taxa. */
                 invasiveSpecies?: boolean;
@@ -28933,12 +29688,12 @@ export interface operations {
     AreaController_getPage: {
         parameters: {
             query?: {
+                page?: number;
+                pageSize?: number;
                 /** @description Include only items with the given ids. Multiple values are separated by a comma (,). */
                 idIn?: string;
                 /** @description Area type */
                 areaType?: "ML.country" | "ML.biogeographicalProvince" | "ML.municipality" | "ML.oldMunicipality" | "ML.birdAssociationArea" | "ML.iucnEvaluationArea";
-                page?: number;
-                pageSize?: number;
             };
             header?: never;
             path?: never;
@@ -29475,12 +30230,12 @@ export interface operations {
     ImagesController_getPage: {
         parameters: {
             query?: {
+                page?: number;
+                pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                page?: number;
-                pageSize?: number;
             };
             header?: never;
             path?: never;
@@ -30457,12 +31212,12 @@ export interface operations {
     AudioController_getPage: {
         parameters: {
             query?: {
+                page?: number;
+                pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                page?: number;
-                pageSize?: number;
             };
             header?: never;
             path?: never;
@@ -31651,10 +32406,10 @@ export interface operations {
     AnnotationsController_getPage: {
         parameters: {
             query: {
-                /** @description Filter by root ID */
-                rootID: string;
                 page?: number;
                 pageSize?: number;
+                /** @description Filter by root ID */
+                rootID: string;
             };
             header?: {
                 /** @description Person's authentication token. It is required. */
@@ -31985,109 +32740,6 @@ export interface operations {
             };
         };
     };
-    InformationController_getIndex: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-            406: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-        };
-    };
     InformationController_get: {
         parameters: {
             query?: never;
@@ -32095,109 +32747,6 @@ export interface operations {
             path: {
                 id: string;
             };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Information"];
-                };
-            };
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-            406: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        errorCode: string;
-                        message: string;
-                        localized: boolean;
-                    };
-                };
-            };
-        };
-    };
-    InformationController_getAll: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -32404,12 +32953,12 @@ export interface operations {
     ChecklistController_getPage: {
         parameters: {
             query?: {
+                page?: number;
+                pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                page?: number;
-                pageSize?: number;
             };
             header?: never;
             path?: never;
@@ -32627,10 +33176,10 @@ export interface operations {
     ChecklistVersionsController_getPage: {
         parameters: {
             query?: {
-                /** @description Comma separated ids */
-                idIn?: string;
                 page?: number;
                 pageSize?: number;
+                /** @description Comma separated ids */
+                idIn?: string;
             };
             header?: never;
             path?: never;
@@ -32740,7 +33289,7 @@ export interface operations {
             };
         };
     };
-    OrganizationsController_getAll: {
+    OrganizationsController_getPage: {
         parameters: {
             query?: {
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
@@ -32964,12 +33513,12 @@ export interface operations {
     InformalTaxonGroupsController_getPage: {
         parameters: {
             query?: {
+                page?: number;
+                pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                page?: number;
-                pageSize?: number;
             };
             header?: never;
             path?: never;
@@ -35252,12 +35801,12 @@ export interface operations {
     SourcesController_getPage: {
         parameters: {
             query?: {
+                page?: number;
+                pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                page?: number;
-                pageSize?: number;
             };
             header?: never;
             path?: never;
@@ -35370,12 +35919,12 @@ export interface operations {
     RedListEvaluationGroupsController_getPage: {
         parameters: {
             query?: {
+                page?: number;
+                pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
                 /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
                 selectedFields?: string;
-                page?: number;
-                pageSize?: number;
             };
             header?: never;
             path?: never;
@@ -36441,10 +36990,10 @@ export interface operations {
     NewsController_getPage: {
         parameters: {
             query?: {
-                /** @description Show only news with the given tag(s). Multiple values are separated by a comma (,). */
-                tag?: string;
                 page?: number;
                 pageSize?: number;
+                /** @description Show only news with the given tag(s). Multiple values are separated by a comma (,). */
+                tag?: string;
             };
             header?: never;
             path?: never;
@@ -36674,7 +37223,7 @@ export interface operations {
                     "text/csv": unknown;
                 };
             };
-            /** @description Unsupported file type */
+            /** @description Unsupported file type or bare .shp upload */
             400: {
                 headers: {
                     [name: string]: unknown;

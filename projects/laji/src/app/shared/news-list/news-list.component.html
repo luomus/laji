@@ -35,7 +35,7 @@
             </div>
           }
           <div>
-            @for (tag of item.tags!; track tag) {
+            @for (tag of item.tag!; track tag) {
               <span class="label label-default">{{ tag | translate }}</span>
             }
             <span class="pull-right">{{ item.posted! | amFromUnix | amDateFormat:'DD.MM.YYYY' }}</span>

@@ -244,7 +244,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
         case 'KE.informationSystem':
           return this.sourceService.getAllAsLookUp().pipe(
             map(system => Object.keys(system).reduce<SelectOption[]>((total, current) => {
-              total.push({id: current, value: system[current].name});
+              total.push({id: current, value: system[current].name || current});
               return total;
             }, [])));
         default:
