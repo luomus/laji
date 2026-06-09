@@ -57,7 +57,7 @@ const BASE_QUERY = gql`
      id
       options {
         id
-        value
+        label: value
       }
     }
   }
