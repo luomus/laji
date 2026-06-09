@@ -226,6 +226,11 @@ export interface IdentificationHistorySpecies extends IGlobalSpecies {
   boxCount?: number;
 }
 
+export interface XenoCantoScope {
+  taxonCoverage: string;
+  completeness: string;
+}
+
 export interface XenoCantoAnnotationSet {
   setName: string;
   setLicense: string;
@@ -238,6 +243,7 @@ export interface XenoCantoAnnotationSet {
   projectName?: string;
   funding?: string;
   setRemarks?: string;
+  scope?: XenoCantoScope[];
 }
 
 export interface XenoCantoExportData {

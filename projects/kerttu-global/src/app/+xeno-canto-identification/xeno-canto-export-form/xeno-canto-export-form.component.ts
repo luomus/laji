@@ -8,10 +8,10 @@ import {
   output, Signal,
   signal
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   IIdentificationHistoryQuery, IIdentificationHistoryResponse, IdentificationHistorySpecies, XenoCantoAnnotationSet,
-  TaxonomyListEnum, XenoCantoExportData
+  TaxonomyListEnum, XenoCantoExportData, XenoCantoScope
 } from '../../kerttu-global-shared/models';
 import { xenoCantoLicenses } from '../../kerttu-global-shared/variables';
 import { ColumnChangesService, DimensionsHelper, ScrollbarHelper } from '@achimha/ngx-datatable';
@@ -22,9 +22,15 @@ import { DatatableSort } from '../../../../../laji/src/app/shared-modules/datata
 import { Subscription } from 'rxjs';
 
 
+type ScopeFormGroup = FormGroup<{
+  taxonCoverage: FormControl<string>;
+  completeness: FormControl<string>;
+}>;
+
 type ExportForm = {
-  [K in keyof XenoCantoAnnotationSet]: FormControl<NonNullable<XenoCantoAnnotationSet[K]>>;
+  [K in keyof Omit<XenoCantoAnnotationSet, 'scope'>]: FormControl<NonNullable<XenoCantoAnnotationSet[K]>>;
 } & {
+  scope: FormArray<ScopeFormGroup>;
   includeExported: FormControl<boolean>;
 };
 
@@ -75,6 +81,7 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
       projectName: new FormControl('', { nonNullable: true }),
       funding: new FormControl('', { nonNullable: true }),
       setRemarks: new FormControl('', { nonNullable: true }),
+      scope: new FormArray<ScopeFormGroup>([]),
       includeExported: new FormControl(false, { nonNullable: true })
     });
 
@@ -97,6 +104,11 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.defaultAnnotationSetMetadata) {
       this.form.patchValue(this.defaultAnnotationSetMetadata);
+      if (this.defaultAnnotationSetMetadata.scope) {
+        for (const scopeItem of this.defaultAnnotationSetMetadata.scope) {
+          this.form.controls.scope.push(this.createScopeGroup(scopeItem));
+        }
+      }
     }
     this.updateQuery();
   }
@@ -124,10 +136,29 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const { includeExported, ...annotationSet } = this.form.getRawValue();
+    const { includeExported, scope, ...rest } = this.form.getRawValue();
+    const annotationSet: XenoCantoAnnotationSet = {
+      ...rest,
+      scope: scope.length > 0 ? scope : undefined
+    };
     this.submitForm.emit({
       annotationSet,
       includeExported
+    });
+  }
+
+  addScope() {
+    this.form.controls.scope.push(this.createScopeGroup());
+  }
+
+  removeScope(index: number) {
+    this.form.controls.scope.removeAt(index);
+  }
+
+  private createScopeGroup(value?: XenoCantoScope): ScopeFormGroup {
+    return new FormGroup({
+      taxonCoverage: new FormControl(value?.taxonCoverage ?? '', { nonNullable: true }),
+      completeness: new FormControl(value?.completeness ?? '', { nonNullable: true })
     });
   }
 
