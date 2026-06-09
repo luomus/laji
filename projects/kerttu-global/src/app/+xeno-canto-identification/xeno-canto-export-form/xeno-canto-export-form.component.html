@@ -1,31 +1,75 @@
+<h3 class="mt-0">{{ 'xenoCantoExport.export' | translate }}</h3>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <label for="annotationSetName">{{ 'xenoCantoExport.annotationSetName' | translate }}</label>
-    <input
-      type="text"
-      id="annotationSetName"
-      class="form-control"
-      formControlName="setName"
-    />
-  </div>
-  <div class="form-group">
-    <label for="setRemarks">{{ 'xenoCantoExport.setRemarks' | translate }}</label>
-    <textarea
-      id="setRemarks"
-      class="form-control"
-      formControlName="setRemarks"
-      rows="3"
-    ></textarea>
-  </div>
-  <div class="checkbox">
-    <label>
-      <input
-        type="checkbox"
-        formControlName="includeExported"
-        (change)="onIncludeExportedChange()"
-      />
-      {{ 'xenoCantoExport.includeExported' | translate }}
-    </label>
+  <div class="form-grid">
+    <div class="form-group">
+      <label for="setName">{{ 'xenoCantoExport.setName' | translate }} <span class="text-danger">*</span></label>
+      <laji-info [html]="'xenoCantoExport.setName.info' | translate" [showOnHover]="true"></laji-info>
+      <input type="text" id="setName" class="form-control" formControlName="setName"/>
+    </div>
+    <div class="form-group">
+      <label for="setLicense">{{ 'xenoCantoExport.setLicense' | translate }} <span class="text-danger">*</span></label>
+      <laji-info [html]="'xenoCantoExport.setLicense.info' | translate" [showOnHover]="true"></laji-info>
+      <select id="setLicense" class="form-control" formControlName="setLicense">
+        <option value=""></option>
+        <option value="CC-BY-NC-SA">CC-BY-NC-SA</option>
+        <option value="CC-BY-NC-ND">CC-BY-NC-ND</option>
+        <option value="CC-BY-SA">CC-BY-SA</option>
+        <option value="CC-BY-NC">CC-BY-NC</option>
+        <option value="CC-BY">CC-BY</option>
+        <option value="CC0">CC0</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="setCreator">{{ 'xenoCantoExport.setCreator' | translate }} <span class="text-danger">*</span></label>
+      <laji-info [html]="'xenoCantoExport.setCreator.info' | translate" [showOnHover]="true"></laji-info>
+      <input type="text" id="setCreator" class="form-control" formControlName="setCreator"/>
+    </div>
+    <div class="form-group">
+      <label for="setCreatorId">{{ 'xenoCantoExport.setCreatorId' | translate }}</label>
+      <laji-info [html]="'xenoCantoExport.setCreatorId.info' | translate" [showOnHover]="true"></laji-info>
+      <input type="text" id="setCreatorId" class="form-control" formControlName="setCreatorId"/>
+    </div>
+    <div class="form-group">
+      <label for="setOwner">{{ 'xenoCantoExport.setOwner' | translate }} <span class="text-danger">*</span></label>
+      <laji-info [html]="'xenoCantoExport.setOwner.info' | translate" [showOnHover]="true"></laji-info>
+      <input type="text" id="setOwner" class="form-control" formControlName="setOwner"/>
+    </div>
+    <div class="form-group">
+      <label for="setSource">{{ 'xenoCantoExport.setSource' | translate }}</label>
+      <laji-info [html]="'xenoCantoExport.setSource.info' | translate" [showOnHover]="true"></laji-info>
+      <input type="text" id="setSource" class="form-control" formControlName="setSource"/>
+    </div>
+    <div class="form-group">
+      <label for="setUri">{{ 'xenoCantoExport.setUri' | translate }}</label>
+      <laji-info [html]="'xenoCantoExport.setUri.info' | translate" [showOnHover]="true"></laji-info>
+      <input type="text" id="setUri" class="form-control" formControlName="setUri"/>
+    </div>
+    <div class="form-group">
+      <label for="projectUri">{{ 'xenoCantoExport.projectUri' | translate }}</label>
+      <laji-info [html]="'xenoCantoExport.projectUri.info' | translate" [showOnHover]="true"></laji-info>
+      <input type="text" id="projectUri" class="form-control" formControlName="projectUri"/>
+    </div>
+    <div class="form-group">
+      <label for="projectName">{{ 'xenoCantoExport.projectName' | translate }}</label>
+      <laji-info [html]="'xenoCantoExport.projectName.info' | translate" [showOnHover]="true"></laji-info>
+      <input type="text" id="projectName" class="form-control" formControlName="projectName"/>
+    </div>
+    <div class="form-group">
+      <label for="funding">{{ 'xenoCantoExport.funding' | translate }}</label>
+      <laji-info [html]="'xenoCantoExport.funding.info' | translate" [showOnHover]="true"></laji-info>
+      <input type="text" id="funding" class="form-control" formControlName="funding"/>
+    </div>
+    <div class="form-group form-group-full">
+      <label for="setRemarks">{{ 'xenoCantoExport.setRemarks' | translate }}</label>
+      <laji-info [html]="'xenoCantoExport.setRemarks.info' | translate" [showOnHover]="true"></laji-info>
+      <textarea id="setRemarks" class="form-control" formControlName="setRemarks" rows="2"></textarea>
+    </div>
+    <div class="form-group-full checkbox">
+      <label>
+        <input type="checkbox" formControlName="includeExported" (change)="onIncludeExportedChange()"/>
+        {{ 'xenoCantoExport.includeExported' | translate }}
+      </label>
+    </div>
   </div>
 
   <hr/>
@@ -54,7 +98,7 @@
     }
   </div>
 
-  <div class="form-actions">
+  <div class="form-actions text-right">
     <lu-button [role]="'primary'" [disabled]="form.invalid || form.disabled || !totalAnnotations()" [loading]="exportLoading()">
       {{ 'xenoCantoExport.submit' | translate }}
     </lu-button>

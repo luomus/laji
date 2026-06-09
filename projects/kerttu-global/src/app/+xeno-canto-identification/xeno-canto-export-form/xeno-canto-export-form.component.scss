@@ -1,0 +1,21 @@
+@use 'sass:map';
+@use 'vars' as *;
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: $sp-3 $sp-5;
+
+  @media (max-width: map.get($breakpoints, "sm")) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-grid .form-group {
+  margin-bottom: 0;
+}
+
+.form-group-full {
+  grid-column: 1 / -1;
+}
+

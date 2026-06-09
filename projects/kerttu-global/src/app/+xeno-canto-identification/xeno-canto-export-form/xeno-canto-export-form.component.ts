@@ -59,7 +59,16 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef
   ) {
     this.form = new FormGroup<ExportForm>({
+      setSource: new FormControl('', { nonNullable: true }),
+      setUri: new FormControl('', { nonNullable: true }),
       setName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+      setCreator: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+      setCreatorId: new FormControl('', { nonNullable: true }),
+      setOwner: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+      setLicense: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+      projectUri: new FormControl('', { nonNullable: true }),
+      projectName: new FormControl('', { nonNullable: true }),
+      funding: new FormControl('', { nonNullable: true }),
       setRemarks: new FormControl('', { nonNullable: true }),
       includeExported: new FormControl(false, { nonNullable: true })
     });

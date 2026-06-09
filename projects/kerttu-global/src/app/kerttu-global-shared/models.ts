@@ -228,6 +228,15 @@ export interface IdentificationHistorySpecies extends IGlobalSpecies {
 
 export interface XenoCantoAnnotationSet {
   setName: string;
+  setLicense: string;
+  setCreator: string;
+  setCreatorId?: string;
+  setOwner: string;
+  setSource?: string;
+  setUri?: string;
+  projectUri?: string;
+  projectName?: string;
+  funding?: string;
   setRemarks?: string;
 }
 

@@ -128,7 +128,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
         this.exportModalSub?.unsubscribe();
 
         this.exportModalRef = this.modalService.show(XenoCantoExportFormComponent, {
-          size: 'lg',
+          size: 'xl',
           initialState: { siteId: this.recording?.site?.id },
         });
 
