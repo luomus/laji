@@ -49,7 +49,7 @@ export interface IHomeData {
   };
 }
 
-const NEWS_TAGS = ['release, taxonomy, technical, luke.fi, luomus.fi, syke.fi, vieraslajit.fi'];
+const NEWS_TAGS = ['release', 'taxonomy', 'technical', 'luke.fi', 'luomus.fi', 'syke.fi', 'vieraslajit.fi'];
 if (environment.type === Global.type.vir) {
   NEWS_TAGS.push('viranomaiset');
 }
