@@ -99,7 +99,7 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
         const msg = KerttuGlobalApi.getErrorMessage(err);
         if (msg === KerttuGlobalErrorEnum.invalidRecordingAnnotation) {
           this.dialogService.alert(this.translate.instant(
-            getTranslateKeyWithTaxonType('identification.nextBirdRecording.validation', this.recording?.taxonType)
+            getTranslateKeyWithTaxonType('identification.nextRecording.validation', this.recording?.taxonType)
           ));
         } else {
           this.dialogService.alert(this.translate.instant('expertise.error'));

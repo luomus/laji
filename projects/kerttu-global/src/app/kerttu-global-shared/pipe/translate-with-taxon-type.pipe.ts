@@ -2,15 +2,20 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TaxonTypeEnum } from '../models';
 import { TranslateService } from '@ngx-translate/core';
 
-export const getTranslateKeyWithTaxonType = (value: string, taxonType?: TaxonTypeEnum): string => {
-  let taxonString = 'Bird';
-  if (taxonType === TaxonTypeEnum.bat) {
-    taxonString = 'Bat';
-  } else if (taxonType === TaxonTypeEnum.insect) {
-    taxonString = 'Insect';
-  }
+const taxonTypeSuffix: Record<TaxonTypeEnum, string | undefined> = {
+  [TaxonTypeEnum.bird]: 'bird',
+  [TaxonTypeEnum.bat]: 'bat',
+  [TaxonTypeEnum.insect]: 'insect',
+  [TaxonTypeEnum.frog]: 'frog',
+  [TaxonTypeEnum.mammal]: 'mammal',
+  [TaxonTypeEnum.other]: undefined
+};
 
-  return value.replace('Bird', taxonString);
+export const getTranslateKeyWithTaxonType = (value: string, taxonType?: TaxonTypeEnum): string => {
+  if (taxonType && taxonTypeSuffix[taxonType]) {
+    return `${value}.${taxonTypeSuffix[taxonType]}`;
+  }
+  return value;
 };
 
 @Pipe({
@@ -23,7 +28,7 @@ export class TranslateWithTaxonTypePipe implements PipeTransform {
   ) {}
 
   transform(value: string, taxonType?: TaxonTypeEnum): string {
-    value = getTranslateKeyWithTaxonType(value, taxonType);
-    return this.translate.instant(value);
+    const key = getTranslateKeyWithTaxonType(value, taxonType);
+    return this.translate.instant(key);
   }
 }
