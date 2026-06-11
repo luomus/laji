@@ -10,7 +10,7 @@ type Taxon = components['schemas']['LajiBackendTaxon'];
 type SimpleTaxon = components['schemas']['LajiBackendSimpleTaxon'];
 
 type SimpleTaxonArrayKeys = {
-    [K in keyof Taxon]: Taxon[K] extends SimpleTaxon[] ? K : never
+    [K in keyof Taxon]-?: Taxon[K] extends SimpleTaxon[] ? K : never
 }[keyof Taxon];
 
 export const SYNONYM_KEYS: SimpleTaxonArrayKeys[] = [
