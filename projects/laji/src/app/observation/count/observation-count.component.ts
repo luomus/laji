@@ -5,6 +5,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { paths } from 'projects/laji-api-client/generated/api';
+import { DataFetchMode } from '../observation-data.service';
 
 type NormalCountQueryParams = paths['/warehouse/query/unit/count']['get']['parameters']['query'];
 type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
@@ -16,7 +17,7 @@ type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['par
     standalone: false
 })
 export class ObservationCountComponent implements OnChanges {
-
+  @Input() dataMode: DataFetchMode = 'unit';
   @Input() value?: null | number | string; // If this is set this will be always used (null means that the value is loading)
   @Input() field!: string;
   @Input() pick: any;
@@ -63,7 +64,8 @@ export class ObservationCountComponent implements OnChanges {
   }
 
   private normalCount(query: NormalCountQueryParams): Observable<number | undefined> {
-    return this.api.get('/warehouse/query/unit/count', { query }).pipe(
+    const endpoint = this.dataMode === 'unit' ? '/warehouse/query/unit/count' : '/warehouse/query/sample/count';
+    return this.api.get(endpoint, { query }).pipe(
       retryWhen(errors => errors.pipe(delay(1000), take(2), concatWith(throwError(() => errors)))),
       map((result: any) => result.total)
     );
@@ -76,7 +78,8 @@ export class ObservationCountComponent implements OnChanges {
       this.pick = Array.isArray(this.pick) ? this.pick : [this.pick];
     }
 
-    return this.api.get('/warehouse/query/unit/aggregate', { query: { ...query, aggregateBy: [this.field as any], pageSize } }).pipe(
+    const endpoint = this.dataMode === 'unit' ? '/warehouse/query/unit/aggregate' : '/warehouse/query/sample/aggregate';
+    return this.api.get(endpoint, { query: { ...query, aggregateBy: [this.field as any], pageSize } }).pipe(
       retryWhen(errors => errors.pipe(delay(1000), take(2), concatWith(throwError(() => errors)))),
       map((result: any) => {
         if (this.pick && result.results) {
