@@ -29,15 +29,15 @@ export function createApollo(
     uri: `${environment.apiBase}/graphql`
   });
 
-  const headers = new SetContextLink(async () => {
-    const loggedIn = await firstValueFrom(
+  const headers = new SetContextLink(async (context) => {
+    const shouldIncludePersonToken = !context.omitPersonToken && await firstValueFrom(
       userService.isLoggedIn$
     );
 
     return {
       headers: withNonNullableValues({
         'api-version': '1',
-        'person-token': loggedIn ? userService.getToken() : undefined,
+        'person-token': shouldIncludePersonToken ? userService.getToken() : undefined,
         'accept-language': translateService.getCurrentLang() ?? 'en',
       })
     };
