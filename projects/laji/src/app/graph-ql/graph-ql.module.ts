@@ -30,14 +30,14 @@ export function createApollo(
   });
 
   const headers = new SetContextLink(async (context) => {
-    const shouldIncludePersonToken = !context.omitPersonToken && await firstValueFrom(
+    const includePersonToken = !context.omitPersonToken && await firstValueFrom(
       userService.isLoggedIn$
     );
 
     return {
       headers: withNonNullableValues({
         'api-version': '1',
-        'person-token': shouldIncludePersonToken ? userService.getToken() : undefined,
+        'person-token': includePersonToken ? userService.getToken() : undefined,
         'accept-language': translateService.getCurrentLang() ?? 'en',
       })
     };
