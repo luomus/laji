@@ -1,6 +1,6 @@
 import test, { Page, expect } from '@playwright/test';
 import { login, logout } from './user.po';
-import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
+import { ERROR_DIALOG_SELECTOR } from '../error/error.po';
 
 test.describe('User page', () => {
   test.describe.configure({ mode: 'serial' });

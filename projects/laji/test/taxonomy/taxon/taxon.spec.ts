@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TaxonPage } from './taxon.po';
-import { ERROR_DIALOG_SELECTOR } from '../../+error/error.po';
+import { ERROR_DIALOG_SELECTOR } from '../../error/error.po';
 
 test.describe('Taxon page', () => {
 

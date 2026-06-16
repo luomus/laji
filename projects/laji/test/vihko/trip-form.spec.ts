@@ -4,7 +4,7 @@ import { VihkoHomePage } from './home.po';
 import { TripFormPage } from './trip-form.po';
 import { NavPage } from '../shared/nav.po';
 import { ConfirmPO } from '../shared/dialogs.po';
-import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
+import { ERROR_DIALOG_SELECTOR } from '../error/error.po';
 
 test.describe('Trip form page', () => {
   test.describe.configure({ mode: 'serial' });
