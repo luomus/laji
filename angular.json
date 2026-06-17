@@ -1223,9 +1223,9 @@
         }
       }
     },
-    "kerttu-global": {
-      "root": "projects/kerttu-global/",
-      "sourceRoot": "projects/kerttu-global/src",
+    "bsg": {
+      "root": "projects/bsg/",
+      "sourceRoot": "projects/bsg/src",
       "projectType": "application",
       "prefix": "bsg",
       "schematics": {},
@@ -1234,16 +1234,16 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": {
-              "base": "dist/kerttu-global"
+              "base": "dist/bsg"
             },
-            "index": "projects/kerttu-global/src/index.html",
+            "index": "projects/bsg/src/index.html",
             "polyfills": [
-              "projects/kerttu-global/src/polyfills.ts"
+              "projects/bsg/src/polyfills.ts"
             ],
-            "tsConfig": "projects/kerttu-global/tsconfig.app.json",
+            "tsConfig": "projects/bsg/tsconfig.app.json",
             "assets": [
-              "projects/kerttu-global/src/favicon.ico",
-              "projects/kerttu-global/src/robots.txt",
+              "projects/bsg/src/favicon.ico",
+              "projects/bsg/src/robots.txt",
               {
                 "glob": "**/*",
                 "input": "projects/laji/src/static",
@@ -1257,7 +1257,7 @@
               "node_modules/@achimha/ngx-datatable/themes/material.scss",
               "node_modules/ngx-toastr/toastr.css",
               "projects/laji/src/styles/laji.scss",
-              "projects/kerttu-global/src/styles.scss"
+              "projects/bsg/src/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -1273,12 +1273,12 @@
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true,
-            "browser": "projects/kerttu-global/src/main.ts"
+            "browser": "projects/bsg/src/main.ts"
           },
           "configurations": {
             "production": {
               "index": {
-                "input": "projects/kerttu-global/src/index.prod.html",
+                "input": "projects/bsg/src/index.prod.html",
                 "output": "index.html"
               },
               "budgets": [
@@ -1298,12 +1298,12 @@
               "extractLicenses": true,
               "fileReplacements": [
                 {
-                  "replace": "projects/kerttu-global/src/environments/environment.ts",
-                  "with": "projects/kerttu-global/src/environments/environment.prod.ts"
+                  "replace": "projects/bsg/src/environments/environment.ts",
+                  "with": "projects/bsg/src/environments/environment.prod.ts"
                 },
                 {
                   "replace": "projects/laji/src/environments/environment.ts",
-                  "with": "projects/kerttu-global/src/environments/environment.prod.ts"
+                  "with": "projects/bsg/src/environments/environment.prod.ts"
                 }
               ]
             },
@@ -1316,12 +1316,12 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "projects/kerttu-global/src/environments/environment.ts",
-                  "with": "projects/kerttu-global/src/environments/environment.dev.ts"
+                  "replace": "projects/bsg/src/environments/environment.ts",
+                  "with": "projects/bsg/src/environments/environment.dev.ts"
                 },
                 {
                   "replace": "projects/laji/src/environments/environment.ts",
-                  "with": "projects/kerttu-global/src/environments/environment.dev.ts"
+                  "with": "projects/bsg/src/environments/environment.dev.ts"
                 }
               ],
               "outputHashing": "none"
@@ -1336,7 +1336,7 @@
               "fileReplacements": [
                 {
                   "replace": "projects/laji/src/environments/environment.ts",
-                  "with": "projects/kerttu-global/src/environments/environment.ts"
+                  "with": "projects/bsg/src/environments/environment.ts"
                 }
               ],
               "outputHashing": "none"
@@ -1347,18 +1347,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "kerttu-global:build",
+            "buildTarget": "bsg:build",
             "hmr": false
           },
           "configurations": {
             "production": {
-              "buildTarget": "kerttu-global:build:production"
+              "buildTarget": "bsg:build:production"
             },
             "dev": {
-              "buildTarget": "kerttu-global:build:dev"
+              "buildTarget": "bsg:build:dev"
             },
             "local": {
-              "buildTarget": "kerttu-global:build:local",
+              "buildTarget": "bsg:build:local",
               "proxyConfig": "proxy.conf.js"
             }
           }
@@ -1366,27 +1366,27 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "kerttu-global:build"
+            "buildTarget": "bsg:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/kerttu-global/src/test.ts",
-            "polyfills": "projects/kerttu-global/src/polyfills.ts",
-            "tsConfig": "projects/kerttu-global/tsconfig.spec.json",
-            "karmaConfig": "projects/kerttu-global/karma.conf.js",
+            "main": "projects/bsg/src/test.ts",
+            "polyfills": "projects/bsg/src/polyfills.ts",
+            "tsConfig": "projects/bsg/tsconfig.spec.json",
+            "karmaConfig": "projects/bsg/karma.conf.js",
             "styles": [
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/ngx-toastr/toastr.css",
               "projects/laji/src/styles/laji.scss",
-              "projects/kerttu-global/src/styles.scss"
+              "projects/bsg/src/styles.scss"
             ],
             "scripts": [],
             "assets": [
-              "projects/kerttu-global/src/favicon.ico",
-              "projects/kerttu-global/src/assets"
+              "projects/bsg/src/favicon.ico",
+              "projects/bsg/src/assets"
             ]
           }
         },
@@ -1394,7 +1394,7 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/kerttu-global/src/**/*.ts"
+              "projects/bsg/src/**/*.ts"
             ]
           }
         }

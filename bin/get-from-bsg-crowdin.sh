@@ -6,8 +6,8 @@ EXIT_CODE=0
 echo "Fetching the latest laji-cli tools"
 docker pull luomus/laji-cli >/dev/null 2>&1
 
-echo "Getting kerttu global translations..."
-docker run --rm --env-file ${SCRIPT_PATH}/.env.bsg -v ${SCRIPT_PATH}/../projects/kerttu-global/i18n:/data luomus/laji-cli \
+echo "Getting bsg translations..."
+docker run --rm --env-file ${SCRIPT_PATH}/.env.bsg -v ${SCRIPT_PATH}/../projects/bsg/i18n:/data luomus/laji-cli \
   crowdin:get:json BIRD_SOUNDS_GLOBAL \
   en:/data/en.json \
   zh-TW:/data/zh.json \
