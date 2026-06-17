@@ -9,7 +9,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {
-  IIdentificationHistoryResponse
+  IdentificationHistoryResponse
 } from '../../kerttu-global-shared/models';
 import { DatatableColumn, DatatableSort } from '../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { PagedResult } from '../../../../../laji/src/app/shared/model/PagedResult';
@@ -26,7 +26,7 @@ export class AnnotationBoxTableComponent implements OnInit {
   @ViewChild('speciesListTpl', { static: true }) private speciesListTemplate!: TemplateRef<any>;
   @ViewChild('boxCountTpl', { static: true }) private boxCountTemplate!: TemplateRef<any>;
 
-  @Input() data?: PagedResult<IIdentificationHistoryResponse>;
+  @Input() data?: PagedResult<IdentificationHistoryResponse>;
   @Input() loading = false;
 
   @Output() pageChange = new EventEmitter<number>();

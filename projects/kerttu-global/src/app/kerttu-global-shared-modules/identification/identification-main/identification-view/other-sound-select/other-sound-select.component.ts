@@ -12,7 +12,7 @@ import {
 import { Observable } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../../../laji/src/app/shared/service/user.service';
-import { IGlobalSpecies, TaxonTypeEnum } from '../../../../../kerttu-global-shared/models';
+import { Species, TaxonTypeEnum } from '../../../../../kerttu-global-shared/models';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -26,11 +26,11 @@ export class OtherSoundSelectComponent implements OnChanges {
   @Input() taxonTypes?: TaxonTypeEnum[];
 
   selectedId?: number;
-  options?: IGlobalSpecies[];
+  options?: Species[];
 
-  private allOptions?: IGlobalSpecies[];
+  private allOptions?: Species[];
 
-  @Output() soundSelect = new EventEmitter<IGlobalSpecies>();
+  @Output() soundSelect = new EventEmitter<Species>();
 
   constructor(
     private kerttuGlobalApi: KerttuGlobalApi,
@@ -61,7 +61,7 @@ export class OtherSoundSelectComponent implements OnChanges {
     }
   }
 
-  private getOptions$(): Observable<IGlobalSpecies[]> {
+  private getOptions$(): Observable<Species[]> {
     return this.kerttuGlobalApi.getSpeciesList(
       this.userService.getToken(),
       this.translate.getCurrentLang(),
@@ -74,7 +74,7 @@ export class OtherSoundSelectComponent implements OnChanges {
     );
   }
 
-  private getFilteredOptions(options: IGlobalSpecies[], taxonTypes?: TaxonTypeEnum[]): IGlobalSpecies[] {
+  private getFilteredOptions(options: Species[], taxonTypes?: TaxonTypeEnum[]): Species[] {
     const filtered: string[] = [];
     if (!taxonTypes || taxonTypes.includes(TaxonTypeEnum.bird)) {
       filtered.push('Birds');

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { IGlobalSite, IGlobalSpecies } from '../../../../kerttu-global-shared/models';
+import { Site, Species } from '../../../../kerttu-global-shared/models';
 
 @Component({
     selector: 'bsg-species-selection-view',
@@ -9,8 +9,8 @@ import { IGlobalSite, IGlobalSpecies } from '../../../../kerttu-global-shared/mo
     standalone: false
 })
 export class SpeciesSelectionViewComponent {
-  @Input({ required: true }) sites: IGlobalSite[]|undefined;
-  @Input({ required: true }) species: IGlobalSpecies[]|undefined;
+  @Input({ required: true }) sites: Site[]|undefined;
+  @Input({ required: true }) species: Species[]|undefined;
   @Input({ required: true }) unknownSpeciesRecordingCount: number|undefined;
 
   selectedSite: number|undefined = undefined;

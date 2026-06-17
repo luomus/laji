@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  IIdentificationHistoryQuery, IIdentificationHistoryResponse, IdentificationHistorySpecies, XenoCantoAnnotationSet,
+  IdentificationHistoryQuery, IdentificationHistoryResponse, IdentificationHistorySpecies, XenoCantoAnnotationSet,
   TaxonomyListEnum, XenoCantoExportData, XenoCantoScope
 } from '../../kerttu-global-shared/models';
 import { xenoCantoLicenses } from '../../kerttu-global-shared/variables';
@@ -54,8 +54,8 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
   annotationsLoading = signal(false);
   annotationsError = signal(false);
 
-  query = signal<IIdentificationHistoryQuery>({});
-  data = signal<PagedResult<IIdentificationHistoryResponse> | undefined>(undefined);
+  query = signal<IdentificationHistoryQuery>({});
+  data = signal<PagedResult<IdentificationHistoryResponse> | undefined>(undefined);
 
   licenseOptions = xenoCantoLicenses;
 
@@ -182,7 +182,7 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getTotalBoxCount(results?: IIdentificationHistoryResponse[]): number | undefined {
+  private getTotalBoxCount(results?: IdentificationHistoryResponse[]): number | undefined {
     if (!results) {
       return undefined;
     }

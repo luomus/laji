@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { DatatableColumn, DatatableSort } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
-import { IGlobalSpeciesListResult } from '../../../../kerttu-global-shared/models';
+import { SpeciesListResult } from '../../../../kerttu-global-shared/models';
 
 @Component({
     selector: 'bsg-species-table',
@@ -10,7 +10,7 @@ import { IGlobalSpeciesListResult } from '../../../../kerttu-global-shared/model
     standalone: false
 })
 export class SpeciesTableComponent implements OnInit {
-  @Input() data: IGlobalSpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0, lastPage: 0 };
+  @Input() data: SpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0, lastPage: 0 };
   @Input() loading = false;
   @Input() sorts: DatatableSort[] = [];
 

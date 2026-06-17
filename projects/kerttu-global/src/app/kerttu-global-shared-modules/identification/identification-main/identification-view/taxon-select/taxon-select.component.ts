@@ -12,14 +12,14 @@ import { Observable, of, of as ObservableOf } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../../../laji/src/app/shared/service/user.service';
 import {
-  IGlobalSpecies,
-  IGlobalSpeciesFilters,
+  Species,
+  SpeciesFilters,
   TaxonomyListEnum,
   TaxonTypeEnum
 } from '../../../../../kerttu-global-shared/models';
 import { TranslateService } from '@ngx-translate/core';
 
-interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
+interface IGlobalSpeciesWithAutocompleteInfo extends Species {
   autocompleteDisplayName: string;
 }
 
@@ -37,7 +37,7 @@ export class TaxonSelectComponent implements OnChanges {
   @Input() limit = 10;
   @Input() placeholder = '';
 
-  @Output() taxonSelect = new EventEmitter<IGlobalSpecies>();
+  @Output() taxonSelect = new EventEmitter<Species>();
 
   dataSource: Observable<any>;
   value? = '';
@@ -45,7 +45,7 @@ export class TaxonSelectComponent implements OnChanges {
 
   showContinentSelect = false;
   continent?: number;
-  filters$: Observable<IGlobalSpeciesFilters>;
+  filters$: Observable<SpeciesFilters>;
 
   private tokenMinLengthBird = 3;
   private tokenMinLengthOther = 1;

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { IGlobalSpeciesFilters, IGlobalSpeciesQuery } from '../../models';
+import { SpeciesFilters, SpeciesQuery } from '../../models';
 
 @Component({
     selector: 'bsg-species-list-filters',
@@ -9,12 +9,12 @@ import { IGlobalSpeciesFilters, IGlobalSpeciesQuery } from '../../models';
     standalone: false
 })
 export class SpeciesListFiltersComponent {
-  @Input() filters?: IGlobalSpeciesFilters = { continent: [], order: [], family: [] };
-  @Input() query: IGlobalSpeciesQuery = {};
+  @Input() filters?: SpeciesFilters = { continent: [], order: [], family: [] };
+  @Input() query: SpeciesQuery = {};
   @Input() showOnlyUnvalidated = true;
   @Input() showSearch = true;
 
-  @Output() queryChange = new EventEmitter<IGlobalSpeciesQuery>();
+  @Output() queryChange = new EventEmitter<SpeciesQuery>();
 
   selectChange(field: 'continent'|'order'|'family', value: string) {
     this.query[field] = parseInt(value, 10) || undefined;

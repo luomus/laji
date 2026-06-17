@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { SpectrogramConfig, AudioViewerRectangle, AudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
-import { IGlobalAudio, IGlobalTemplate, IGlobalRecording } from '../../../../kerttu-global-shared/models';
+import { ValidationAudio, Template, ValidationAudioData } from '../../../../kerttu-global-shared/models';
 
 @Component({
     selector: 'bsg-recordings',
@@ -10,13 +10,13 @@ import { IGlobalAudio, IGlobalTemplate, IGlobalRecording } from '../../../../ker
     standalone: false
 })
 export class RecordingsComponent implements OnChanges {
-  @Input() recordings?: IGlobalRecording[] = [];
-  @Input() templates?: (IGlobalTemplate|null)[] = [];
+  @Input() recordings?: ValidationAudioData[] = [];
+  @Input() templates?: (Template|null)[] = [];
   @Input({ required: true }) sampleRate!: number;
   @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
 
   @Output() audioClick = new EventEmitter<{audioId: number; time: number}>();
-  @Output() candidateClick = new EventEmitter<IGlobalTemplate>();
+  @Output() candidateClick = new EventEmitter<Template>();
 
   rectangles: AudioViewerRectangle[][] = [];
 
@@ -32,11 +32,11 @@ export class RecordingsComponent implements OnChanges {
     }
   }
 
-  onAudioClick(audio: IGlobalAudio, time: number) {
+  onAudioClick(audio: ValidationAudio, time: number) {
     this.audioClick.emit({audioId: audio.id, time});
   }
 
-  onCandidateClick(audio: IGlobalAudio, area: AudioViewerArea) {
+  onCandidateClick(audio: ValidationAudio, area: AudioViewerArea) {
     this.candidateClick.emit({audioId: audio.id, area});
   }
 

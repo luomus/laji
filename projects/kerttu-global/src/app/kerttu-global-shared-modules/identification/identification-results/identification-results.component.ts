@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  IGlobalSite,
-  IIdentificationSiteStat,
-  IIdentificationStat,
-  IIdentificationUserStatResult,
-  IIdentificationSpeciesStat, TaxonTypeEnum
+  Site,
+  SiteStatistics,
+  IdentificationCountStatistics,
+  IdentificationUserStatisticsData,
+  IdentificationSpeciesStatistics, TaxonTypeEnum
 } from '../../../kerttu-global-shared/models';
 import { map, share, shareReplay, switchMap } from 'rxjs';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
@@ -24,12 +24,12 @@ export class IdentificationResultsComponent implements OnInit {
   @Input() taxonTypes: TaxonTypeEnum[]|null = null;
   @Input() showMap = true;
 
-  sites$!: Observable<IGlobalSite[]>;
-  siteStats$!: Observable<IIdentificationSiteStat[]>;
-  userStats$!: Observable<IIdentificationUserStatResult>;
-  speciesStats$!: Observable<IIdentificationSpeciesStat[]>;
-  ownSpeciesStats$!: Observable<IIdentificationSpeciesStat[]>;
-  generalStats$!: Observable<IIdentificationStat>;
+  sites$!: Observable<Site[]>;
+  siteStats$!: Observable<SiteStatistics[]>;
+  userStats$!: Observable<IdentificationUserStatisticsData>;
+  speciesStats$!: Observable<IdentificationSpeciesStatistics[]>;
+  ownSpeciesStats$!: Observable<IdentificationSpeciesStatistics[]>;
+  generalStats$!: Observable<IdentificationCountStatistics>;
 
   showOwnSpecies = false;
   filterSpeciesBy = '';
@@ -47,18 +47,18 @@ export class IdentificationResultsComponent implements OnInit {
       switchMap(() => this.kerttuGlobalApi.getSites(this.taxonTypes, this.userService.getToken())),
       map(result => result.results)
     );
-    this.siteStats$ = this.kerttuGlobalApi.getIdentificationSiteStats(this.taxonTypes).pipe(
+    this.siteStats$ = this.kerttuGlobalApi.getIdentificationSiteStatistics(this.taxonTypes).pipe(
       map(result => result.results)
     );
-    this.userStats$ = this.kerttuGlobalApi.getIdentificationUserStats(this.taxonTypes).pipe(
+    this.userStats$ = this.kerttuGlobalApi.getIdentificationUserStatistics(this.taxonTypes).pipe(
       share()
     );
-    this.speciesStats$ = this.kerttuGlobalApi.getIdentificationSpeciesStats(this.taxonTypes, this.translate.getCurrentLang()).pipe(
+    this.speciesStats$ = this.kerttuGlobalApi.getIdentificationSpeciesStatistics(this.taxonTypes, this.translate.getCurrentLang()).pipe(
       map(result => result.results),
       shareReplay(1)
     );
     this.ownSpeciesStats$ = this.userService.isLoggedIn$.pipe(
-      switchMap(() => this.kerttuGlobalApi.getIdentificationOwnSpeciesStats(this.taxonTypes, this.userService.getToken(), this.translate.getCurrentLang())),
+      switchMap(() => this.kerttuGlobalApi.getIdentificationOwnSpeciesStatistics(this.taxonTypes, this.userService.getToken(), this.translate.getCurrentLang())),
       map(result => result.results),
       shareReplay(1)
     );
@@ -69,7 +69,7 @@ export class IdentificationResultsComponent implements OnInit {
     this.filterSpeciesBy = value || '';
   }
 
-  private generalStatsFromUserStats(data: IIdentificationUserStatResult): IIdentificationStat {
+  private generalStatsFromUserStats(data: IdentificationUserStatisticsData): IdentificationCountStatistics {
     let annotationCount = 0;
     let speciesCount = 0;
     let drawnBoxesCount = 0;

@@ -1,5 +1,5 @@
 import { Component, OnChanges, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
-import { IGlobalSite, IIdentificationSiteStat } from '../../../../kerttu-global-shared/models';
+import { Site, SiteStatistics } from '../../../../kerttu-global-shared/models';
 import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import type { DivIcon } from 'leaflet';
 import { DataOptions, Options, TileLayerName, GetPopupOptions } from '@luomus/laji-map/lib/defs';
@@ -14,8 +14,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class SiteResultMapComponent implements OnChanges {
   @ViewChild(LajiMapComponent) lajiMap!: LajiMapComponent;
-  @Input() sites: IGlobalSite[] = [];
-  @Input() siteStats: IIdentificationSiteStat[] = [];
+  @Input() sites: Site[] = [];
+  @Input() siteStats: SiteStatistics[] = [];
 
   mapOptions: Options = {
     tileLayerName: TileLayerName.openStreetMap,
@@ -66,7 +66,7 @@ export class SiteResultMapComponent implements OnChanges {
     this.lajiMap.map.zoomToData({ padding: [40, 40] });
   }
 
-  private getCountByLegend(sites: IGlobalSite[], siteStats: IIdentificationSiteStat[]): Record<string, number> {
+  private getCountByLegend(sites: Site[], siteStats: SiteStatistics[]): Record<string, number> {
     const countByLegend: Record<string, number> = {};
     this.legendLabels.forEach(label => {
       countByLegend[label] = 0;
@@ -90,7 +90,7 @@ export class SiteResultMapComponent implements OnChanges {
     return countByLegend;
   }
 
-  private getData(sites: IGlobalSite[], siteStats: IIdentificationSiteStat[]): DataOptions {
+  private getData(sites: Site[], siteStats: SiteStatistics[]): DataOptions {
     const countBySite: Record<string, number> = {};
     (siteStats || []).forEach(stat => {
       countBySite[stat.siteId] = stat.count;

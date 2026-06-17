@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnChanges, Output } from '@angular/core';
 import {
-  IGlobalRecording,
-  IGlobalRecordingAnnotation,
-  IGlobalRecordingWithAnnotation,
+  Recording,
+  RecordingAnnotation,
+  RecordingWithAnnotation,
   KerttuGlobalErrorEnum,
   TaxonomyListEnum,
   TaxonTypeEnum
@@ -37,8 +37,8 @@ export class IdentificationMainComponent implements OnChanges {
   @Input({ required: true }) goBackBtnLabel!: string;
   @Input({ required: true }) allRecordingsAnnotatedLabel!: string;
 
-  recording?: IGlobalRecording;
-  annotation?: IGlobalRecordingAnnotation;
+  recording?: Recording;
+  annotation?: RecordingAnnotation;
   selectableTaxonTypes: TaxonTypeEnum[] = [];
 
   loading = false;
@@ -50,7 +50,7 @@ export class IdentificationMainComponent implements OnChanges {
 
   @Output() goBackClick = new EventEmitter<void>();
 
-  private originalAnnotation?: IGlobalRecordingAnnotation;
+  private originalAnnotation?: RecordingAnnotation;
 
   constructor(
     public recordingLoaderService: RecordingLoaderService,
@@ -166,7 +166,7 @@ export class IdentificationMainComponent implements OnChanges {
     );
   }
 
-  private isEmptyAnnotation(annotation: IGlobalRecordingAnnotation): boolean {
+  private isEmptyAnnotation(annotation: RecordingAnnotation): boolean {
     return (
       !annotation.birdsNotOnList &&
       !annotation.containsBirdsNotOnList &&
@@ -180,7 +180,7 @@ export class IdentificationMainComponent implements OnChanges {
     );
   }
 
-  private onGetRecordingsSuccess(data: IGlobalRecordingWithAnnotation|NoRecordingsResult) {
+  private onGetRecordingsSuccess(data: RecordingWithAnnotation|NoRecordingsResult) {
     this.loading = false;
     this.clearIdentificationState();
 

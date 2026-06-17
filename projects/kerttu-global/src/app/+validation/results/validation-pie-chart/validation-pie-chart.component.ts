@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
-import { IValidationStat } from '../../../kerttu-global-shared/models';
+import { ValidationCountStatistics } from '../../../kerttu-global-shared/models';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartData, ChartOptions } from 'chart.js';
 
@@ -23,7 +23,7 @@ export class ValidationPieChartComponent {
     }]
   };
 
-  @Input() set data(data: IValidationStat[]|undefined) {
+  @Input() set data(data: ValidationCountStatistics[]|undefined) {
     this._data = { ...this._data };
 
     if (!data) {

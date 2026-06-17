@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
-import { IUserStat } from '../../../kerttu-global-shared/models';
+import { ValidationUserStatistics } from '../../../kerttu-global-shared/models';
 import { UserNameTemplateComponent } from '../../../kerttu-global-shared/component/user-name-template.component';
 
 @Component({
@@ -14,7 +14,7 @@ import { UserNameTemplateComponent } from '../../../kerttu-global-shared/compone
 export class UserTableComponent implements OnInit {
   @ViewChild(UserNameTemplateComponent, { static: true }) private userNameTemplate!: UserNameTemplateComponent;
 
-  @Input() data?: IUserStat[] = [];
+  @Input() data?: ValidationUserStatistics[] = [];
 
   columns: DatatableColumn[] = [];
   sorts: { prop: string; dir: 'asc'|'desc' }[] = [{ prop: 'speciesCreated', dir: 'desc' }, { prop: 'speciesValidated', dir: 'desc' }];

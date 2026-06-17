@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { PagedResult } from '../../../../../../laji/src/app/shared/model/PagedResult';
 import {
-  IGlobalSite,
-  IIdentificationHistoryQuery,
-  IIdentificationHistoryResponse,
+  Site,
+  IdentificationHistoryQuery,
+  IdentificationHistoryResponse,
   TaxonTypeEnum
 } from '../../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
@@ -14,7 +14,7 @@ import { map, switchMap, tap } from 'rxjs';
 import { IdentificationHistoryEditModalComponent } from './identification-history-edit-modal/identification-history-edit-modal.component';
 import { ModalService } from '../../../../../../laji-ui/src/lib/modal/modal.service';
 
-export interface IIdentificationHistoryResponseWithIndex extends IIdentificationHistoryResponse {
+export interface IIdentificationHistoryResponseWithIndex extends IdentificationHistoryResponse {
   index: number;
 }
 
@@ -28,13 +28,13 @@ export interface IIdentificationHistoryResponseWithIndex extends IIdentification
 export class IdentificationHistoryComponent implements OnChanges {
   @Input() taxonTypes?: TaxonTypeEnum[];
 
-  query: IIdentificationHistoryQuery = { page: 1, includeSkipped: false };
-  sites$: Observable<IGlobalSite[]>;
+  query: IdentificationHistoryQuery = { page: 1, includeSkipped: false };
+  sites$: Observable<Site[]>;
   data$: Observable<PagedResult<IIdentificationHistoryResponseWithIndex>>;
   loading = false;
 
   private results?: IIdentificationHistoryResponseWithIndex[];
-  private queryChange = new BehaviorSubject<IIdentificationHistoryQuery>(this.query);
+  private queryChange = new BehaviorSubject<IdentificationHistoryQuery>(this.query);
   private taxonTypesChange = new BehaviorSubject<TaxonTypeEnum[] | undefined>(undefined);
   private modalSub?: Subscription;
 
@@ -118,7 +118,7 @@ export class IdentificationHistoryComponent implements OnChanges {
     this.setNewQuery({ ...this.query, site });
   }
 
-  setNewQuery(newQuery: IIdentificationHistoryQuery) {
+  setNewQuery(newQuery: IdentificationHistoryQuery) {
     this.query = newQuery;
     this.queryChange.next(newQuery);
   }

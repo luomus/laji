@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IGlobalSite, TaxonTypeEnum } from '../../../kerttu-global-shared/models';
+import { Site, TaxonTypeEnum } from '../../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { map } from 'rxjs';
@@ -17,7 +17,7 @@ import { map } from 'rxjs';
     standalone: false
 })
 export class SiteSelectionComponent {
-  sites$: Observable<IGlobalSite[]>;
+  sites$: Observable<Site[]>;
 
   @Output() siteSelect = new EventEmitter<number[]>();
 

@@ -10,12 +10,12 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { IGlobalSpecies } from '../../../../../kerttu-global-shared/models';
+import { Species } from '../../../../../kerttu-global-shared/models';
 import { DatatableColumn } from '../../../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { SelectionType } from '@achimha/ngx-datatable';
 import { TranslateService } from '@ngx-translate/core';
 
-interface SpeciesTableRow extends Pick<IGlobalSpecies, 'scientificName'|'recordingCount'> {
+interface SpeciesTableRow extends Pick<Species, 'scientificName'|'recordingCount'> {
   id?: number;
 }
 
@@ -29,7 +29,7 @@ interface SpeciesTableRow extends Pick<IGlobalSpecies, 'scientificName'|'recordi
 export class SpeciesTableComponent implements OnInit, OnChanges {
   @ViewChild('selectTpl', { static: true }) selectTpl!: TemplateRef<any>;
 
-  @Input() species: IGlobalSpecies[] = [];
+  @Input() species: Species[] = [];
   @Input() unknownSpeciesRecordingCount = 0;
   @Input() loading = false;
   @Input() selectedSpecies: (number|undefined)[] = [];
@@ -86,7 +86,7 @@ export class SpeciesTableComponent implements OnInit, OnChanges {
     this.selected = this.rows.filter(s => this.selectedSpecies.includes(s.id));
   }
 
-  onSelect(event: { selected: IGlobalSpecies[] }) {
+  onSelect(event: { selected: Species[] }) {
     this.selectedSpecies = event.selected.map(row => row.id);
     this.selectedSpeciesChange.emit(this.selectedSpecies);
   }

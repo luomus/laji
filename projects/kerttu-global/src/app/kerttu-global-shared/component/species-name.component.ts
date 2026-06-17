@@ -1,5 +1,5 @@
 import { Input, Component } from '@angular/core';
-import { IGlobalSpecies, TaxonomyListEnum, TaxonTypeEnum } from '../models';
+import { Species, TaxonomyListEnum, TaxonTypeEnum } from '../models';
 
 @Component({
   selector: 'bsg-species-name',
@@ -15,7 +15,7 @@ import { IGlobalSpecies, TaxonomyListEnum, TaxonTypeEnum } from '../models';
   standalone: false
 })
 export class SpeciesNameComponent {
-  @Input() species?: IGlobalSpecies;
+  @Input() species?: Species;
 
   taxonTypeEnum = TaxonTypeEnum;
   taxonomyListEnum = TaxonomyListEnum;

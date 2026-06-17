@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IGlobalSpeciesFilters, IGlobalSpeciesQuery, IUserStat, IValidationStat } from '../../kerttu-global-shared/models';
+import { SpeciesFilters, SpeciesQuery, ValidationUserStatistics, ValidationCountStatistics } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap, startWith } from 'rxjs';
@@ -27,11 +27,11 @@ import { map, switchMap, startWith } from 'rxjs';
     standalone: false
 })
 export class ResultsComponent {
-  speciesFilters$: Observable<IGlobalSpeciesFilters>;
-  validationStats$: Observable<IValidationStat[]|null>;
-  userStats$: Observable<IUserStat[]|null>;
+  speciesFilters$: Observable<SpeciesFilters>;
+  validationStats$: Observable<ValidationCountStatistics[]|null>;
+  userStats$: Observable<ValidationUserStatistics[]|null>;
 
-  private speciesQuerySubject = new BehaviorSubject<IGlobalSpeciesQuery>({});
+  private speciesQuerySubject = new BehaviorSubject<SpeciesQuery>({});
   speciesQuery$ = this.speciesQuerySubject.asObservable();
 
   constructor(
@@ -39,20 +39,20 @@ export class ResultsComponent {
   ) {
     this.speciesFilters$ = this.kerttuGlobalApi.getSpeciesFilters();
     this.validationStats$ = this.speciesQuery$.pipe(
-      switchMap(speciesQuery => this.kerttuGlobalApi.getValidationStats(speciesQuery).pipe(
+      switchMap(speciesQuery => this.kerttuGlobalApi.getValidationCountStatistics(speciesQuery).pipe(
           map(result => result.results),
           startWith(null)
         ))
     );
     this.userStats$ = this.speciesQuery$.pipe(
-      switchMap(speciesQuery => this.kerttuGlobalApi.getUserStats(speciesQuery).pipe(
+      switchMap(speciesQuery => this.kerttuGlobalApi.getValidationUserStatistics(speciesQuery).pipe(
           map(result => result.results),
           startWith(null)
         ))
     );
   }
 
-  onSpeciesQueryChange(query: IGlobalSpeciesQuery) {
+  onSpeciesQueryChange(query: SpeciesQuery) {
     this.speciesQuerySubject.next(query);
   }
 }

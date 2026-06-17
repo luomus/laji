@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, NgZone, ViewChild, SimpleChanges, OnChanges } from '@angular/core';
-import { IGlobalSite } from '../../../../../kerttu-global-shared/models';
+import { Site } from '../../../../../kerttu-global-shared/models';
 import { LajiMapComponent } from '../../../../../../../../laji/src/app/shared-modules/laji-map/laji-map.component';
 import { Polygon } from 'geojson';
 import { GetPopupOptions, LajiMapCreateEvent, DataOptions, Options, TileLayerName } from '@luomus/laji-map/lib/defs';
@@ -19,7 +19,7 @@ interface LajiMapData extends DataOptions {
 })
 export class SiteSelectionMapComponent implements OnChanges {
   @ViewChild(LajiMapComponent, { static: true}) lajiMap!: LajiMapComponent;
-  @Input() sites: IGlobalSite[] = [];
+  @Input() sites: Site[] = [];
   @Input() selectedSites: number[] = [];
   @Input() height = '100%';
 
@@ -98,7 +98,7 @@ export class SiteSelectionMapComponent implements OnChanges {
     }
   }
 
-  private getData(sites: IGlobalSite[]): DataOptions {
+  private getData(sites: Site[]): DataOptions {
     return {
       on: {
         click: (event, data) => {
@@ -189,13 +189,13 @@ export class SiteSelectionMapComponent implements OnChanges {
     this.selectedSitesChange.emit(this.selectedSites);
   }
 
-  private getSitesInsideRectangle(rect: Polygon): IGlobalSite[] {
+  private getSitesInsideRectangle(rect: Polygon): Site[] {
     return this.sites.reduce((res, site) => {
       if (this.pointIsInsideBox(site.geometry.coordinates, rect.coordinates[0])) {
         res.push(site);
       }
       return res;
-    }, [] as IGlobalSite[]);
+    }, [] as Site[]);
   }
 
   private pointIsInsideBox(point: number[], box: number[][]): boolean {

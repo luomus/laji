@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { BehaviorSubject, map, Observable, share, switchMap, startWith } from 'rxjs';
-import { IGlobalSite, IGlobalSpecies, TaxonTypeEnum } from '../../../kerttu-global-shared/models';
+import { Site, Species, TaxonTypeEnum } from '../../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -20,8 +20,8 @@ import { TranslateService } from '@ngx-translate/core';
     standalone: false
 })
 export class SpeciesSelectionComponent {
-  sites$: Observable<IGlobalSite[]>;
-  species$: Observable<IGlobalSpecies[] | undefined>;
+  sites$: Observable<Site[]>;
+  species$: Observable<Species[] | undefined>;
   unknownSpeciesRecordingCount: Observable<number | undefined>;
   site$ = new BehaviorSubject<number | undefined>(undefined);
 

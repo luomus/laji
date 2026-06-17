@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
 import { AudioViewerMode, AudioViewerArea, SpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
-import { CommentType, IGlobalAudio, IGlobalComment, IGlobalTemplate } from '../../../../kerttu-global-shared/models';
+import { CommentType, ValidationAudio, TemplateComment, Template } from '../../../../kerttu-global-shared/models';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
@@ -12,19 +12,19 @@ import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.ser
     standalone: false
 })
 export class TemplateComponent {
-  @Input() template?: IGlobalTemplate|null;
+  @Input() template?: Template|null;
   @Input({ required: true }) templateIdx!: number;
   @Input({ required: true }) isNewTemplate!: boolean;
-  @Input({ required: true }) audio!: IGlobalAudio;
+  @Input({ required: true }) audio!: ValidationAudio;
   @Input() audioFocusTime?: number;
   @Input({ required: true }) sampleRate!: number;
   @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
   @Input() historyView?: boolean;
 
-  @Output() confirm = new EventEmitter<IGlobalTemplate>();
+  @Output() confirm = new EventEmitter<Template>();
   @Output() templateCancel = new EventEmitter();
   @Output() remove = new EventEmitter();
-  @Output() comment = new EventEmitter<IGlobalComment>();
+  @Output() comment = new EventEmitter<TemplateComment>();
 
   audioViewerMode: AudioViewerMode = 'default';
   defaultZoomFrequency = false;
@@ -38,7 +38,7 @@ export class TemplateComponent {
   @ViewChild('commentModal', { static: true }) commentModal!: TemplateRef<any>;
   @ViewChild('audioInfo', { static: true }) audioInfoTpl!: TemplateRef<any>;
 
-  private framedTemplate?: IGlobalTemplate;
+  private framedTemplate?: Template;
   private commentType: CommentType = CommentType.reframe;
   private modalRef?: ModalRef<TemplateRef<any>>;
 

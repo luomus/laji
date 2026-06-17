@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IGlobalSpecies, TaxonTypeEnum } from '../models';
+import { Species, TaxonTypeEnum } from '../models';
 
 @Pipe({
   name: 'filterNonSpecies',
@@ -7,7 +7,7 @@ import { IGlobalSpecies, TaxonTypeEnum } from '../models';
   standalone: false
 })
 export class FilterNonSpeciesPipe implements PipeTransform {
-  transform(value: IGlobalSpecies[]): IGlobalSpecies[] {
+  transform(value: Species[]): Species[] {
     return value.filter(val => val.taxonType !== TaxonTypeEnum.other);
   }
 }

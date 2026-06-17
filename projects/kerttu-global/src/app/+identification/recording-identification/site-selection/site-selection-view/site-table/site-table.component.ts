@@ -10,7 +10,7 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { IGlobalSite } from '../../../../../kerttu-global-shared/models';
+import { Site } from '../../../../../kerttu-global-shared/models';
 import { DatatableColumn } from '../../../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 
 @Component({
@@ -23,12 +23,12 @@ import { DatatableColumn } from '../../../../../../../../laji/src/app/shared-mod
 export class SiteTableComponent implements OnInit, OnChanges {
   @ViewChild('deleteTpl', { static: true }) deleteTpl!: TemplateRef<any>;
 
-  @Input() sites: IGlobalSite[] = [];
+  @Input() sites: Site[] = [];
   @Input() selectedSites: number[] = [];
   @Input() height = '100%';
 
   columns: DatatableColumn[] = [];
-  data: IGlobalSite[] = [];
+  data: Site[] = [];
 
   @Output() selectedSitesChange = new EventEmitter<number[]>();
 

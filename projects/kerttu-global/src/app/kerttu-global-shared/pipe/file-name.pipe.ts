@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IGlobalSpecies } from '../models';
+import { Species } from '../models';
 
 @Pipe({
     name: 'fileName',

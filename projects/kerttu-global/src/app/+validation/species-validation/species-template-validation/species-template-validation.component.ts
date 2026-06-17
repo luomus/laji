@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChan
 import { TranslateService } from '@ngx-translate/core';
 import { SpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
-import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGlobalSpecies } from '../../../kerttu-global-shared/models';
+import { ValidationAudio, Template, ValidationAudioData, TemplateComment, Species } from '../../../kerttu-global-shared/models';
 
 @Component({
     selector: 'bsg-species-template-validation',
@@ -12,9 +12,9 @@ import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGloba
     standalone: false
 })
 export class SpeciesTemplateValidationComponent implements OnChanges {
-  @Input() species?: IGlobalSpecies;
-  @Input() recordings?: IGlobalRecording[];
-  @Input() templates?: (IGlobalTemplate|null)[];
+  @Input() species?: Species;
+  @Input() recordings?: ValidationAudioData[];
+  @Input() templates?: (Template|null)[];
   @Input() saving = false;
   @Input() historyView? = false;
   @Input({ required: true }) sampleRate!: number;
@@ -24,19 +24,19 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   showCandidates = false;
 
   confirmedTemplates: boolean[] = [];
-  comments: IGlobalComment[] = [];
+  comments: TemplateComment[] = [];
   creatingAllTemplatesIsNotPossible = false;
 
   activeTemplateIdx?: number | null;
-  activeTemplate?: IGlobalTemplate | null;
+  activeTemplate?: Template | null;
   activeTemplateIsNew?: boolean;
-  activeAudio?: IGlobalAudio;
+  activeAudio?: ValidationAudio;
   activeAudioFocusTime?: number;
 
-  audioIdMap: {[id: number]: IGlobalAudio } = {};
-  subSpecies: IGlobalSpecies[] = [];
+  audioIdMap: {[id: number]: ValidationAudio } = {};
+  subSpecies: Species[] = [];
 
-  @Output() save = new EventEmitter<{ templates: (IGlobalTemplate|null)[]; comments: IGlobalComment[] }>();
+  @Output() save = new EventEmitter<{ templates: (Template|null)[]; comments: TemplateComment[] }>();
   @Output() validationCancel = new EventEmitter();
 
   constructor(
@@ -52,7 +52,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
       });
 
       const addedSubSpecies: number[] = [];
-      this.subSpecies = (this.recordings || []).reduce((subSpecies: IGlobalSpecies[], d) => {
+      this.subSpecies = (this.recordings || []).reduce((subSpecies: Species[], d) => {
         const species = d.audio.species;
         if (!species.isSpecies && !addedSubSpecies.includes(species.id)) {
           subSpecies.push(species);
@@ -82,7 +82,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     this.onNewTemplateClick(data.audioId, null, data.time);
   }
 
-  onCandidateClick(template: IGlobalTemplate) {
+  onCandidateClick(template: Template) {
     this.onNewTemplateClick(template.audioId, template);
   }
 
@@ -96,7 +96,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     this.activeTemplateIsNew = false;
   }
 
-  onTemplateConfirm(template: IGlobalTemplate) {
+  onTemplateConfirm(template: Template) {
     this.templates![this.activeTemplateIdx!] = template;
     this.confirmedTemplates[this.activeTemplateIdx!] = true;
     this.activeTemplateIdx = null;
@@ -112,7 +112,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     this.activeTemplateIdx = null;
   }
 
-  onComment(comment: IGlobalComment) {
+  onComment(comment: TemplateComment) {
     this.comments.push(comment);
   }
 
@@ -140,7 +140,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     });
   }
 
-  private onNewTemplateClick(audioId: number, template?: IGlobalTemplate | null, time?: number) {
+  private onNewTemplateClick(audioId: number, template?: Template | null, time?: number) {
     if (this.saving || this.historyView) {
       return;
     }

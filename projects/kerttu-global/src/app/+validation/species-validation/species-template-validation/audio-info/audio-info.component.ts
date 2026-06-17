@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { IGlobalAudio } from 'projects/kerttu-global/src/app/kerttu-global-shared/models';
+import { ValidationAudio } from 'projects/kerttu-global/src/app/kerttu-global-shared/models';
 
 @Component({
     selector: 'bsg-audio-info',
@@ -9,5 +9,5 @@ import { IGlobalAudio } from 'projects/kerttu-global/src/app/kerttu-global-share
     standalone: false
 })
 export class AudioInfoComponent {
-  @Input({ required: true }) audio!: IGlobalAudio;
+  @Input({ required: true }) audio!: ValidationAudio;
 }

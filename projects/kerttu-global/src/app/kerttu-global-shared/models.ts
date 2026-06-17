@@ -5,20 +5,20 @@ import {
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 import { Point } from 'geojson';
 
-export interface IListResult<T> {
+export interface ListResult<T> {
   results: T[];
 }
 
-export interface ISuccessResult {
+export interface SuccessResult {
   success: boolean;
 }
 
-export interface IGlobalSpeciesListResult extends PagedResult<IGlobalSpecies> {
+export interface SpeciesListResult extends PagedResult<Species> {
   hasModifications?: boolean;
   unknownSpeciesRecordingCount?: number;
 }
 
-export interface IGlobalSpeciesQuery {
+export interface SpeciesQuery {
   onlyUnvalidated?: boolean;
   onlyWithValidationAudio?: boolean;
   onlyWithSoundscapeRecordings?: boolean;
@@ -36,7 +36,7 @@ export interface IGlobalSpeciesQuery {
   taxonomyList?: TaxonomyListEnum;
 }
 
-export interface IGlobalSpecies {
+export interface Species {
   id: number;
   scientificName: string;
   commonName?: string;
@@ -54,32 +54,32 @@ export interface IGlobalSpecies {
   hasAudio?: boolean;
 }
 
-export interface IGlobalSpeciesFilters {
+export interface SpeciesFilters {
   continent: { id: number; name: string }[];
   order: { id: number; scientificName: string }[];
   family: { id: number; scientificName: string; order: number }[];
 }
 
-export interface IGlobalTemplateVersion {
+export interface TemplateVersion {
   created?: string;
   userId?: string;
-  templates: IGlobalTemplate[];
+  templates: Template[];
 }
 
-export interface IGlobalRecording {
-  audio: IGlobalAudio;
+export interface ValidationAudioData {
+  audio: ValidationAudio;
   candidates: AudioViewerArea[];
 }
 
-export interface IGlobalTemplate {
+export interface Template {
   id?: number;
   audioId: number;
   area: AudioViewerArea;
-  comment?: IGlobalComment;
+  comment?: TemplateComment;
   validatedBy?: string[];
 }
 
-export interface IGlobalComment {
+export interface TemplateComment {
   created?: string;
   userId?: string;
   templateId: number;
@@ -87,9 +87,9 @@ export interface IGlobalComment {
   comment: string;
 }
 
-export interface IGlobalAudio extends Audio {
+export interface ValidationAudio extends Audio {
   id: number;
-  species: IGlobalSpecies;
+  species: Species;
   recordist?: string;
   country?: string;
   state?: string;
@@ -105,28 +105,28 @@ export interface IGlobalAudio extends Audio {
   soundType?: string;
 }
 
-export interface IValidationStat {
+export interface ValidationCountStatistics {
   validationCount: number;
   count: number;
 }
 
-export interface IUserStat {
+export interface ValidationUserStatistics {
   userId: string;
   speciesCreated: number;
   speciesValidated: number;
 }
 
-export interface IGlobalRecording extends Audio {
+export interface Recording extends Audio {
   id: number;
   dateTime: string;
   xRange: number[];
-  site: IGlobalSite;
+  site: Site;
   locality?: string;
-  targetSpecies?: IGlobalSpecies;
+  targetSpecies?: Species;
   taxonType: TaxonTypeEnum;
 }
 
-export interface IGlobalRecordingAnnotation {
+export interface RecordingAnnotation {
   isLowQuality?: boolean;
   containsHumanSpeech?: boolean;
   containsUnknownBirds?: boolean;
@@ -136,67 +136,67 @@ export interface IGlobalRecordingAnnotation {
   hasBoxesForAllBirdSounds?: boolean;
   nonBirdArea?: AudioViewerArea;
 
-  speciesAnnotations?: IGlobalSpeciesAnnotation[];
+  speciesAnnotations?: SpeciesAnnotation[];
 }
 
-export interface IGlobalSpeciesAnnotation {
+export interface SpeciesAnnotation {
   speciesId: number;
   occurrence: SpeciesAnnotationEnum;
-  boxes?: (IGlobalSpeciesAnnotationBox|IGlobalSpeciesAnnotationBoxGroup)[];
+  boxes?: (SpeciesAnnotationBox|SpeciesAnnotationBoxGroup)[];
 }
 
-export interface IGlobalSpeciesAnnotationBox {
+export interface SpeciesAnnotationBox {
   area: AudioViewerArea;
   overlapsWithOtherSpecies?: boolean;
   soundType?: string;
 }
 
-export interface IGlobalSpeciesAnnotationBoxGroup {
-  boxes: IGlobalSpeciesAnnotationBox[];
+export interface SpeciesAnnotationBoxGroup {
+  boxes: SpeciesAnnotationBox[];
 }
 
-export interface IGlobalRecordingWithAnnotation {
-  recording: IGlobalRecording;
-  annotation: IGlobalRecordingAnnotation;
+export interface RecordingWithAnnotation {
+  recording: Recording;
+  annotation: RecordingAnnotation;
 }
 
-export interface IGlobalSpeciesWithAnnotation extends IGlobalSpecies {
-  annotation: IGlobalSpeciesAnnotation;
+export interface SpeciesWithAnnotation extends Species {
+  annotation: SpeciesAnnotation;
 }
 
-export interface IGlobalSite {
+export interface Site {
   id: number;
   name: string;
   country?: string;
   geometry: Point;
 }
 
-export interface IIdentificationSiteStat {
+export interface SiteStatistics {
   siteId: number;
   count: number;
 }
 
-export interface IIdentificationStat {
+export interface IdentificationCountStatistics {
   annotationCount: number;
   speciesCount: number;
   distinctSpeciesCount: number;
   drawnBoxesCount: number;
 }
 
-export interface IIdentificationUserStat extends IIdentificationStat {
+export interface IdentificationUserStatistics extends IdentificationCountStatistics {
   userId: string;
 }
 
-export interface IIdentificationUserStatResult extends IListResult<IIdentificationUserStat> {
+export interface IdentificationUserStatisticsData extends ListResult<IdentificationUserStatistics> {
   totalDistinctSpeciesCount: number;
 }
 
-export interface IIdentificationSpeciesStat extends IGlobalSpecies {
+export interface IdentificationSpeciesStatistics extends Species {
   count: number;
   drawnBoxesCount: number;
 }
 
-export interface IIdentificationHistoryQuery {
+export interface IdentificationHistoryQuery {
   page?: number;
   pageSize?: number;
   orderBy?: string[];
@@ -209,11 +209,11 @@ export interface IIdentificationHistoryQuery {
   taxonomyList?: TaxonomyListEnum;
 }
 
-export interface IIdentificationHistoryResponse {
+export interface IdentificationHistoryResponse {
   recording: {
     id: number;
     xenoCantoId?: number;
-    site: IGlobalSite;
+    site: Site;
   };
   annotation: {
     created: string;
@@ -222,7 +222,7 @@ export interface IIdentificationHistoryResponse {
   };
 }
 
-export interface IdentificationHistorySpecies extends IGlobalSpecies {
+export interface IdentificationHistorySpecies extends Species {
   boxCount?: number;
 }
 
@@ -288,6 +288,6 @@ export enum TaxonomyListEnum {
   xenoCanto = 1
 }
 
-export function isBoxGroup(box: IGlobalSpeciesAnnotationBox|IGlobalSpeciesAnnotationBoxGroup): box is IGlobalSpeciesAnnotationBoxGroup {
+export function isBoxGroup(box: SpeciesAnnotationBox|SpeciesAnnotationBoxGroup): box is SpeciesAnnotationBoxGroup {
   return !!(box as any).boxes;
 }

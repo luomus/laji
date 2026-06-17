@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IGlobalSpecies } from '../models';
+import { Species } from '../models';
 
 @Pipe({
     name: 'speciesName',
@@ -7,9 +7,9 @@ import { IGlobalSpecies } from '../models';
 })
 export class SpeciesNamePipe implements PipeTransform {
 
-  transform(value: IGlobalSpecies): string;
-  transform(value: IGlobalSpecies[]): string[];
-  transform(value: IGlobalSpecies|IGlobalSpecies[]): string|string[] {
+  transform(value: Species): string;
+  transform(value: Species[]): string[];
+  transform(value: Species|Species[]): string|string[] {
     if (Array.isArray(value)) {
       return value.map(v => this.transform(v));
     }

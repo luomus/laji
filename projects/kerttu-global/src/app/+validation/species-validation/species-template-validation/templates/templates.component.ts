@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { SpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
-import { IGlobalAudio, IGlobalTemplate } from '../../../../kerttu-global-shared/models';
+import { ValidationAudio, Template } from '../../../../kerttu-global-shared/models';
 
 @Component({
     selector: 'bsg-templates',
@@ -10,13 +10,13 @@ import { IGlobalAudio, IGlobalTemplate } from '../../../../kerttu-global-shared/
     standalone: false
 })
 export class TemplatesComponent {
-  @Input() templates: (IGlobalTemplate|null)[] = [];
+  @Input() templates: (Template|null)[] = [];
   @Input() confirmedTemplates: boolean[] = [];
   @Input() highlightNonConfirmed = true;
 
   @Input({ required: true }) sampleRate!: number;
   @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
-  @Input({ required: true }) audioIdMap!: { [id: number]: IGlobalAudio };
+  @Input({ required: true }) audioIdMap!: { [id: number]: ValidationAudio };
 
   @Output() templateClick = new EventEmitter<number>();
 

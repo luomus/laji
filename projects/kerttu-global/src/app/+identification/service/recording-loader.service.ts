@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { IGlobalRecordingAnnotation, IGlobalRecordingWithAnnotation } from '../../kerttu-global-shared/models';
+import { RecordingAnnotation, RecordingWithAnnotation } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -25,11 +25,11 @@ export class RecordingLoaderService implements OnDestroy {
   @LocalStorage('current_recording') private current!: number|null;
   private next: (number|null)[] = [];
 
-  private dataByRecordingId: Record<number, IGlobalRecordingWithAnnotation> = {};
+  private dataByRecordingId: Record<number, RecordingWithAnnotation> = {};
 
   private preloadNextRecordingIsActive = false;
   private preloadNextRecordingSubject = new Subject<number|null>();
-  private preloadNextRecording$!: Observable<IGlobalRecordingWithAnnotation>;
+  private preloadNextRecording$!: Observable<RecordingWithAnnotation>;
   private preloadNextRecordingSub!: Subscription;
   private preloadAudioSub?: Subscription;
 
@@ -81,9 +81,9 @@ export class RecordingLoaderService implements OnDestroy {
     return this.previous.length > 0;
   }
 
-  getCurrentRecording(): Observable<IGlobalRecordingWithAnnotation> {
+  getCurrentRecording(): Observable<RecordingWithAnnotation> {
     if (this.current !== null) {
-      let data$: Observable<IGlobalRecordingWithAnnotation>;
+      let data$: Observable<RecordingWithAnnotation>;
 
       if (this.dataByRecordingId[this.current]) {
         data$ = of(this.dataByRecordingId[this.current]);
@@ -102,7 +102,7 @@ export class RecordingLoaderService implements OnDestroy {
     return this.preloadNextRecording$.pipe(take(1));
   }
 
-  getPreviousRecording(): Observable<IGlobalRecordingWithAnnotation> {
+  getPreviousRecording(): Observable<RecordingWithAnnotation> {
     this.next = [this.current!, ...this.next];
     if (this.next.length > this.nextLimit) {
       this.next = this.next.slice(0, this.next.length - 1);
@@ -115,7 +115,7 @@ export class RecordingLoaderService implements OnDestroy {
     return this.getCurrentRecording();
   }
 
-  getNextRecording(): Observable<IGlobalRecordingWithAnnotation|NoRecordingsResult> {
+  getNextRecording(): Observable<RecordingWithAnnotation|NoRecordingsResult> {
     this.previous = [...this.previous, this.current!];
     if (this.previous.length > this.previousLimit) {
       this.previous = this.previous.slice(1);
@@ -133,7 +133,7 @@ export class RecordingLoaderService implements OnDestroy {
     return this.getCurrentRecording();
   }
 
-  setCurrentAnnotation(annotation: IGlobalRecordingAnnotation) {
+  setCurrentAnnotation(annotation: RecordingAnnotation) {
     this.dataByRecordingId[this.current!].annotation = annotation;
   }
 

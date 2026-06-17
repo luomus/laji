@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { IIdentificationSpeciesStat } from '../../../../kerttu-global-shared/models';
+import { IdentificationSpeciesStatistics } from '../../../../kerttu-global-shared/models';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
     standalone: false
 })
 export class IdentificationSpeciesTableComponent implements OnInit {
-  @Input() data: IIdentificationSpeciesStat[] = [];
+  @Input() data: IdentificationSpeciesStatistics[] = [];
   @Input() filterBy = '';
 
   columns: DatatableColumn[] = [];

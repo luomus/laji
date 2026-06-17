@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs';
 import {
-  IGlobalComment,
-  IGlobalRecording,
-  IGlobalSpecies,
-  IGlobalTemplate,
-  IGlobalTemplateVersion,
+  TemplateComment,
+  ValidationAudioData,
+  Species,
+  Template,
+  TemplateVersion,
   KerttuGlobalErrorEnum
 } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
@@ -28,10 +28,10 @@ import { defaultAudioSampleRate } from '../../kerttu-global-shared/variables';
     standalone: false
 })
 export class SpeciesValidationComponent implements OnInit, OnDestroy {
-  species$!: Observable<IGlobalSpecies>;
-  recordings$!: Observable<IGlobalRecording[]>;
-  templateVersions$!: Observable<IGlobalTemplateVersion[]>;
-  activeTemplates$!: Observable<(IGlobalTemplate|null)[]>;
+  species$!: Observable<Species>;
+  recordings$!: Observable<ValidationAudioData[]>;
+  templateVersions$!: Observable<TemplateVersion[]>;
+  activeTemplates$!: Observable<(Template|null)[]>;
   historyView$!: Observable<boolean>;
 
   saving = false;
@@ -80,7 +80,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
       switchMap(speciesId => this.kerttuGlobalApi.getSpecies(this.translate.getCurrentLang(), speciesId))
     );
     this.recordings$ = this.speciesId$.pipe(
-      switchMap(speciesId => this.kerttuGlobalApi.getRecordings(this.translate.getCurrentLang(), speciesId).pipe(
+      switchMap(speciesId => this.kerttuGlobalApi.getValidationRecordings(this.translate.getCurrentLang(), speciesId).pipe(
         map(data => data.results),
         tap(recordings => {
           this.audioService.setBufferCacheSize(recordings.length);
@@ -145,7 +145,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  saveTemplates(data: { templates: (IGlobalTemplate|null)[]; comments: IGlobalComment[] }) {
+  saveTemplates(data: { templates: (Template|null)[]; comments: TemplateComment[] }) {
     this.saving = true;
     this.kerttuGlobalApi.saveTemplates(this.userService.getToken(), this.speciesId!, data).subscribe(() => {
       this.saving = false;

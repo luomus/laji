@@ -14,8 +14,8 @@ import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-globa
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  IGlobalRecording,
-  IGlobalRecordingAnnotation, ISuccessResult,
+  Recording,
+  RecordingAnnotation, SuccessResult,
   KerttuGlobalErrorEnum, TaxonomyListEnum, XenoCantoAnnotationSet, XenoCantoExportData
 } from '../../kerttu-global-shared/models';
 import { getTranslateKeyWithTaxonType } from '../../kerttu-global-shared/pipe/translate-with-taxon-type.pipe';
@@ -42,8 +42,8 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
   @ViewChild('noApiKeyTpl', { static: true }) noApiKeyTpl!: TemplateRef<any>;
   @ViewChild('invalidApiKeyTpl', { static: true }) invalidApiKeyTpl!: TemplateRef<any>;
 
-  recording?: IGlobalRecording;
-  annotation?: IGlobalRecordingAnnotation;
+  recording?: Recording;
+  annotation?: RecordingAnnotation;
   taxonomyList = TaxonomyListEnum.xenoCanto;
 
   saving = false;
@@ -54,7 +54,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
   recordingId = '';
   hasUnsavedChanges = false;
 
-  private originalAnnotation?: IGlobalRecordingAnnotation;
+  private originalAnnotation?: RecordingAnnotation;
   private defaultAnnotationSetMetadata?: Partial<XenoCantoAnnotationSet>;
 
   private recordingSub?: Subscription;
@@ -178,7 +178,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
     this.hasUnsavedChanges = !equals(this.annotation, this.originalAnnotation);
   }
 
-  private doSave(): Observable<ISuccessResult> {
+  private doSave(): Observable<SuccessResult> {
     this.saving = true;
 
     return this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording!.id, this.annotation!).pipe(
@@ -263,7 +263,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
     });
   }
 
-  private performExport(data: XenoCantoExportData): Observable<ISuccessResult> {
+  private performExport(data: XenoCantoExportData): Observable<SuccessResult> {
     return this.getXenoCantoApiKey().pipe(
       switchMap(
         (apiKey) => this.kerttuGlobalApi.exportToXenoCanto(this.userService.getToken(), apiKey, data)

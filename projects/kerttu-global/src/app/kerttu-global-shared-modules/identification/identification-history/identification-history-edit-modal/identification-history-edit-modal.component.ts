@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, ChangeDetectorRef, EventEmitter, Output, OnDestroy, OnInit } from '@angular/core';
 import {
-  IGlobalRecording,
-  IGlobalRecordingAnnotation,
+  Recording,
+  RecordingAnnotation,
   KerttuGlobalErrorEnum,
   TaxonTypeEnum
 } from '../../../../kerttu-global-shared/models';
@@ -31,8 +31,8 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
   @Input({ required: true }) recordingId$!: Observable<number>;
   @Input({ required: true }) lastIndex!: number;
 
-  recording?: IGlobalRecording;
-  annotation?: IGlobalRecordingAnnotation;
+  recording?: Recording;
+  annotation?: RecordingAnnotation;
   selectableTaxonTypes: TaxonTypeEnum[] = [];
 
   saving = false;
@@ -41,7 +41,7 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
   @Output() modalClose = new EventEmitter<boolean>();
   @Output() indexChange = new EventEmitter<number>();
 
-  private originalAnnotation?: IGlobalRecordingAnnotation;
+  private originalAnnotation?: RecordingAnnotation;
   private hasUnsavedChanges = false;
   private hasChanges = false;
 

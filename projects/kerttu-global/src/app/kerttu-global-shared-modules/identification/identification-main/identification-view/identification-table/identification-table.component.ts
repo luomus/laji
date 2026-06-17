@@ -9,7 +9,7 @@ import {
   ViewChildren,
   QueryList
 } from '@angular/core';
-import { IGlobalRecording, IGlobalSpeciesWithAnnotation } from '../../../../../kerttu-global-shared/models';
+import { Recording, SpeciesWithAnnotation } from '../../../../../kerttu-global-shared/models';
 import { IdentificationPanelComponent } from './identification-panel/identification-panel.component';
 import { SpectrogramConfig } from '../../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
@@ -24,8 +24,8 @@ export class IdentificationTableComponent implements OnChanges {
   @ViewChildren(IdentificationPanelComponent) identificationPanels!: QueryList<IdentificationPanelComponent>;
 
   @Input() componentId = 0;
-  @Input({ required: true }) recording!: IGlobalRecording;
-  @Input({ required: true }) identifications!: IGlobalSpeciesWithAnnotation[];
+  @Input({ required: true }) recording!: Recording;
+  @Input({ required: true }) identifications!: SpeciesWithAnnotation[];
 
   @Input() loading = false;
   @Input() showOverlapsWithOtherSpeciesCheck = true;
@@ -43,7 +43,7 @@ export class IdentificationTableComponent implements OnChanges {
   drawRelatedBoxActive: boolean[][] = [];
   panelOpenById: Record<string, boolean> = {};
 
-  @Output() identificationsChange = new EventEmitter<IGlobalSpeciesWithAnnotation[]>();
+  @Output() identificationsChange = new EventEmitter<SpeciesWithAnnotation[]>();
   @Output() drawBoxClick = new EventEmitter<{drawClicked: boolean; rowIndex: number}>();
   @Output() drawRelatedBoxClick = new EventEmitter<{drawClicked: boolean; rowIndex: number; boxIndex: number}>();
   @Output() deleteBoxClick = new EventEmitter<{rowIndex: number; boxIndex: number; boxGroupIndex?: number}>();
@@ -67,7 +67,7 @@ export class IdentificationTableComponent implements OnChanges {
     }
   }
 
-  onIdentificationChange(rowIndex: number, identification: IGlobalSpeciesWithAnnotation) {
+  onIdentificationChange(rowIndex: number, identification: SpeciesWithAnnotation) {
     this.identifications[rowIndex] = identification;
     this.identificationsChange.emit(this.identifications);
   }

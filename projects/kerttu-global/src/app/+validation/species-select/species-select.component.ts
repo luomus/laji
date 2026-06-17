@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { Observable, Subscription } from 'rxjs';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
-import { IGlobalSpeciesFilters, IGlobalSpeciesListResult } from '../../kerttu-global-shared/models';
+import { SpeciesFilters, SpeciesListResult } from '../../kerttu-global-shared/models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
@@ -32,8 +32,8 @@ import { TranslateService } from '@ngx-translate/core';
     standalone: false
 })
 export class SpeciesSelectComponent implements OnInit, OnDestroy {
-  speciesFilters$: Observable<IGlobalSpeciesFilters>;
-  speciesList: IGlobalSpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0, lastPage: 0 };
+  speciesFilters$: Observable<SpeciesFilters>;
+  speciesList: SpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0, lastPage: 0 };
   loading = false;
 
   private speciesListSub?: Subscription;

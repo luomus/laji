@@ -15,12 +15,12 @@ import {
   ViewChild
 } from '@angular/core';
 import {
-  IGlobalRecording,
-  IGlobalRecordingAnnotation,
-  IGlobalSpecies,
-  IGlobalSpeciesAnnotation,
-  IGlobalSpeciesAnnotationBox,
-  IGlobalSpeciesWithAnnotation,
+  Recording,
+  RecordingAnnotation,
+  Species,
+  SpeciesAnnotation,
+  SpeciesAnnotationBox,
+  SpeciesWithAnnotation,
   isBoxGroup,
   SpeciesAnnotationEnum,
   TaxonomyListEnum,
@@ -56,7 +56,7 @@ interface InactiveDrawState {
 }
 type DrawState = ActiveDrawState|InactiveDrawState;
 
-const belongsToOtherSounds = (species: IGlobalSpecies) => (species.taxonType === TaxonTypeEnum.other && species.taxonomyList === TaxonomyListEnum.default);
+const belongsToOtherSounds = (species: Species) => (species.taxonType === TaxonTypeEnum.other && species.taxonomyList === TaxonomyListEnum.default);
 
 @Component({
     selector: 'bsg-identification-view',
@@ -71,15 +71,15 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
   @ViewChild('speciesIdentificationTable') identificationTable?: IdentificationTableComponent;
   @ViewChild('otherSoundsIdentificationTable') otherSoundsIdentificationTable?: IdentificationTableComponent;
 
-  @Input({ required: true }) recording!: IGlobalRecording;
-  @Input({ required: true }) annotation!: IGlobalRecordingAnnotation;
+  @Input({ required: true }) recording!: Recording;
+  @Input({ required: true }) annotation!: RecordingAnnotation;
   @Input() selectableTaxonTypes?: TaxonTypeEnum[];
   @Input() taxonomyList?: TaxonomyListEnum;
   @Input() buttonsDisabled = false;
   @Input() showFileName = true;
 
-  selectedSpecies: IGlobalSpeciesWithAnnotation[] = [];
-  selectedOtherSounds: IGlobalSpeciesWithAnnotation[] = [];
+  selectedSpecies: SpeciesWithAnnotation[] = [];
+  selectedOtherSounds: SpeciesWithAnnotation[] = [];
   loadingSpecies = false;
 
   sampleRate!: number;
@@ -104,7 +104,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
 
   topContentHeight = 265;
 
-  @Output() annotationChange = new EventEmitter<IGlobalRecordingAnnotation>();
+  @Output() annotationChange = new EventEmitter<RecordingAnnotation>();
 
   private selectedSpeciesSub!: Subscription;
 
@@ -133,12 +133,12 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
     this.destroyDragListeners();
   }
 
-  addToIdentifications(species: IGlobalSpecies) {
+  addToIdentifications(species: Species) {
     if (this.loadingSpecies) {
       return;
     }
 
-    const newSpecies: IGlobalSpeciesWithAnnotation = {
+    const newSpecies: SpeciesWithAnnotation = {
       ...species,
       annotation: {
         speciesId: species.id,
@@ -186,7 +186,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
 
     const selectedSpecies = Util.clone(type === 'species' ? this.selectedSpecies : this.selectedOtherSounds);
     const boxes = selectedSpecies[speciesIdx].annotation.boxes || [];
-    const newBox: IGlobalSpeciesAnnotationBox = type === 'species' ? {area, overlapsWithOtherSpecies: false} : {area};
+    const newBox: SpeciesAnnotationBox = type === 'species' ? {area, overlapsWithOtherSpecies: false} : {area};
 
     if (relatedBoxIdx !== undefined) {
       let boxGroup = boxes[relatedBoxIdx];
@@ -194,7 +194,7 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
         boxGroup = {boxes: [boxGroup]};
       }
       boxGroup.boxes.push(newBox);
-      boxGroup.boxes.sort((a: IGlobalSpeciesAnnotationBox, b: IGlobalSpeciesAnnotationBox) => a.area.xRange![0] - b.area.xRange![0]);
+      boxGroup.boxes.sort((a: SpeciesAnnotationBox, b: SpeciesAnnotationBox) => a.area.xRange![0] - b.area.xRange![0]);
       boxes[relatedBoxIdx] = boxGroup;
     } else {
       boxes.push(newBox);
@@ -243,8 +243,8 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
   }
 
   updateAnnotation() {
-    const speciesAnnotations: IGlobalSpeciesAnnotation[] = this.selectedSpecies.map(s => s.annotation);
-    const otherAnnotations: IGlobalSpeciesAnnotation[] = this.selectedOtherSounds.map(s => s.annotation);
+    const speciesAnnotations: SpeciesAnnotation[] = this.selectedSpecies.map(s => s.annotation);
+    const otherAnnotations: SpeciesAnnotation[] = this.selectedOtherSounds.map(s => s.annotation);
 
     this.annotationChange.emit({
       ...this.annotation,
@@ -295,14 +295,14 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
     const speciesAnnotations = this.annotation?.speciesAnnotations;
 
     if (speciesAnnotations && speciesAnnotations.length > 0) {
-      const observables: Observable<IGlobalSpeciesWithAnnotation>[] = speciesAnnotations!.map(
+      const observables: Observable<SpeciesWithAnnotation>[] = speciesAnnotations!.map(
         annotation => this.kerttuGlobalApi.getSpecies(this.translate.getCurrentLang(), annotation.speciesId, true).pipe(
           map(species => ({ ...species, annotation }))
         )
       );
 
       this.loadingSpecies = true;
-      this.selectedSpeciesSub = forkJoin(observables).subscribe((results: IGlobalSpeciesWithAnnotation[])  => {
+      this.selectedSpeciesSub = forkJoin(observables).subscribe((results: SpeciesWithAnnotation[])  => {
         this.selectedSpecies = results.filter(s => !belongsToOtherSounds(s));
         this.selectedOtherSounds = results.filter(s => belongsToOtherSounds(s));
         this.loadingSpecies = false;
@@ -321,8 +321,8 @@ export class IdentificationViewComponent implements OnChanges, OnDestroy {
     this.audioViewerRectangles = speciesRectangles.concat(otherRectangles);
   }
 
-  private getSpectrogramRectanglesForAnnotations(speciesAnnotations: IGlobalSpeciesWithAnnotation[], color: string, overlapColor: string) {
-    const boxToRectangle = (box: IGlobalSpeciesAnnotationBox, speciesIdx: number, idx: number, groupIdx?: number) => ({
+  private getSpectrogramRectanglesForAnnotations(speciesAnnotations: SpeciesWithAnnotation[], color: string, overlapColor: string) {
+    const boxToRectangle = (box: SpeciesAnnotationBox, speciesIdx: number, idx: number, groupIdx?: number) => ({
       label: getBoxLabel(speciesIdx, idx, groupIdx),
       area: box.area,
       color: box.overlapsWithOtherSpecies ? overlapColor : color

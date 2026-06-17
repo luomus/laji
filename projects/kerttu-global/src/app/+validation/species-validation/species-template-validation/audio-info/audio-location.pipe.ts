@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IGlobalAudio } from '../../../../kerttu-global-shared/models';
+import { ValidationAudio } from '../../../../kerttu-global-shared/models';
 
 @Pipe({
     name: 'audioLocation',
@@ -8,7 +8,7 @@ import { IGlobalAudio } from '../../../../kerttu-global-shared/models';
 export class AudioLocationPipe implements PipeTransform {
   constructor() {}
 
-  transform(value: IGlobalAudio): string {
+  transform(value: ValidationAudio): string {
     const locations = [];
     if (value.location) {
       locations.push(value.location);

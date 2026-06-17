@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { IGlobalTemplateVersion } from '../../../kerttu-global-shared/models';
+import { TemplateVersion } from '../../../kerttu-global-shared/models';
 
 @Component({
     selector: 'bsg-version-nav',
@@ -9,7 +9,7 @@ import { IGlobalTemplateVersion } from '../../../kerttu-global-shared/models';
     standalone: false
 })
 export class VersionNavComponent {
-  @Input({ required: true }) versions: IGlobalTemplateVersion[] = [];
+  @Input({ required: true }) versions: TemplateVersion[] = [];
   @Input() activeIdx?: number|null;
 
   @Output() activeIdxChange = new EventEmitter<number>();

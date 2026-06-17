@@ -10,8 +10,8 @@ import {
   ElementRef, ViewChildren, QueryList
 } from '@angular/core';
 import {
-  IGlobalRecording,
-  IGlobalSpeciesWithAnnotation,
+  Recording,
+  SpeciesWithAnnotation,
   isBoxGroup,
   SpeciesAnnotationEnum,
   TaxonTypeEnum
@@ -40,8 +40,8 @@ export class IdentificationPanelComponent implements OnChanges {
   @Input() componentId = '';
   @Input() speciesIdx?: number;
 
-  @Input({ required: true }) recording!: IGlobalRecording;
-  @Input({ required: true }) identification!: IGlobalSpeciesWithAnnotation;
+  @Input({ required: true }) recording!: Recording;
+  @Input({ required: true }) identification!: SpeciesWithAnnotation;
 
   @Input() showOverlapsWithOtherSpeciesCheck = true;
   @Input() showDrawRelatedBoxBtn = true;
@@ -74,7 +74,7 @@ export class IdentificationPanelComponent implements OnChanges {
     );
   }
 
-  @Output() identificationChange = new EventEmitter<IGlobalSpeciesWithAnnotation>();
+  @Output() identificationChange = new EventEmitter<SpeciesWithAnnotation>();
   @Output() deleteClick = new EventEmitter();
   @Output() drawBoxClick = new EventEmitter();
   @Output() drawRelatedBoxClick = new EventEmitter<BoxClickEvent>();

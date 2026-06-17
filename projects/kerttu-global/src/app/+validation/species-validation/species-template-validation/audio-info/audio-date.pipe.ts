@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { IGlobalAudio } from '../../../../kerttu-global-shared/models';
+import { ValidationAudio } from '../../../../kerttu-global-shared/models';
 
 @Pipe({
     name: 'audioDate',
@@ -9,7 +9,7 @@ import { IGlobalAudio } from '../../../../kerttu-global-shared/models';
 export class AudioDatePipe implements PipeTransform {
   constructor(private datePipe: DatePipe) {}
 
-  transform(value: IGlobalAudio): string {
+  transform(value: ValidationAudio): string {
     const formatStringParts = [];
     if (value.day) {
       formatStringParts.push('d');

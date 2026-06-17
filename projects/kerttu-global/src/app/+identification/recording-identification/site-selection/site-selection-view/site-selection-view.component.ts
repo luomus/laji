@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { IGlobalSite } from '../../../../kerttu-global-shared/models';
+import { Site } from '../../../../kerttu-global-shared/models';
 import { SiteSelectionMapComponent } from './site-selection-map/site-selection-map.component';
 
 @Component({
@@ -12,7 +12,7 @@ import { SiteSelectionMapComponent } from './site-selection-map/site-selection-m
 export class SiteSelectionViewComponent {
   @ViewChild(SiteSelectionMapComponent, { static: true }) siteMap!: SiteSelectionMapComponent;
 
-  @Input({ required: true }) sites: IGlobalSite[] = [];
+  @Input({ required: true }) sites: Site[] = [];
 
   selectedSites: number[] = [];
   drawActive = false;
