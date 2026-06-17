@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { GeneticResourcePage } from './genetic-resource.po';
-import { ERROR_DIALOG_SELECTOR } from '../../+error/error.po';
+import { ERROR_DIALOG_SELECTOR } from '../../error/error.po';
 
 test.describe('Genetic Resource page', () => {
   test.afterEach(async ({page}) => {

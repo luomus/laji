@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { SaveObservationsPage } from './save-observations.po';
 import { loginWithPermanentToken } from '../user/user.po';
-import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
+import { ERROR_DIALOG_SELECTOR } from '../error/error.po';
 
 test.describe('Save observations page', () => {
   let saveObservationsPage: SaveObservationsPage;

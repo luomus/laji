@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from './home.po';
-import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
+import { ERROR_DIALOG_SELECTOR } from '../error/error.po';
 
 test.describe('Home page', () => {
 

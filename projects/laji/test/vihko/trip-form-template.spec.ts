@@ -2,7 +2,7 @@ import { TripFormPage } from './trip-form.po';
 import { TemplatesView } from './tools.po';
 import { expect, Page, test } from '@playwright/test';
 import { loginWithPermanentToken } from '../user/user.po';
-import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
+import { ERROR_DIALOG_SELECTOR } from '../error/error.po';
 
 test.describe('Trip form template page', () => {
   test.describe.configure({ mode: 'serial' });

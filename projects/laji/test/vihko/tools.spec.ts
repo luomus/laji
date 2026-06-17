@@ -4,7 +4,7 @@ import { ToolsPage } from './tools.po';
 import { expect, test } from '@playwright/test';
 import { loginWithPermanentToken } from '../user/user.po';
 import { DocumentFormView, TripFormPage } from './trip-form.po';
-import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
+import { ERROR_DIALOG_SELECTOR } from '../error/error.po';
 
 test.describe('Trip form page', () => {
   let toolsPage: ToolsPage;
