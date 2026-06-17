@@ -332,11 +332,14 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   download(type: string) {
     this.downloadLoading = true;
     const columns = this.tableColumnService.getColumns(this._originalSelected);
+    const orderBy = [...this.orderBy];
+    if (this.defaultOrder) {
+      orderBy.push(this.defaultOrder);
+    }
     this.resultService.getAll(
       this.query,
       this.tableColumnService.getSelectFields(this.columnSelector.columns, this.query),
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      [...this.orderBy, this.defaultOrder!],
+      orderBy,
       this.mode
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data.results, columns, type as BookType, 'laji-data'))
