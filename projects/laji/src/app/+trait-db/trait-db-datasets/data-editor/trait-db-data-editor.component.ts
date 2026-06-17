@@ -2,14 +2,14 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, OnDest
 import { ActivatedRoute } from '@angular/router';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { UserService } from '../../../shared/service/user.service';
-import { map, tap, filter, switchMap } from 'rxjs';
+import { map, filter, switchMap } from 'rxjs';
 import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { cols as subjectCols } from './data-editor-search-table-columns';
 import { cols as traitCols } from './data-editor-search-table-columns-traits';
 import { FooterService } from '../../../shared/service/footer.service';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { LeafType } from 'scripts/codegen/shared';
+import { GeneratedDatatableColumn, LeafNode } from 'scripts/codegen/shared/shared';
 import { DatatableColumn } from 'projects/laji-ui/src/lib/datatable/datatable.component';
 
 type InputRow = components['schemas']['LajiBackendInputRow'];
@@ -17,6 +17,7 @@ type InputRow = components['schemas']['LajiBackendInputRow'];
 interface TableData {
   rows: FormArray<FormGroup>;
   cols: DatatableColumn<any>[];
+  defaultColumns: number[];
 }
 
 interface RowUploadInProgress {
@@ -81,46 +82,49 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
           query: { datasetId, pageSize: 1000 } })
         ),
         map(rows => {
-          const traitColsAcc: [string, LeafType][] = [];
-          rows[0].traits?.forEach((trait, idx) => {
-            traitColsAcc.push(...traitCols.map(([name, node]) => ([`traits.${idx}.${name}`, node] as [string, LeafType])));
-          });
+          const maxTraits = rows.reduce((max, row) => Math.max(max, row.traits?.length ?? 0), 0);
+          const traitColsAcc: GeneratedDatatableColumn[] = [];
+          for (let idx = 0; idx < maxTraits; idx++) {
+            traitColsAcc.push(...traitCols.map(col => ({ ...col, path: ['traits', idx, ...col.path] } as GeneratedDatatableColumn)));
+          }
+
+          const generatedCols = [...subjectCols, ...traitColsAcc] as GeneratedDatatableColumn[];
           const columns: DatatableColumn<any>[] = [{
             title: '',
             sortable: false,
             unselectable: false,
             cellTemplate: this.editCell
           } as DatatableColumn<any>];
-          columns.push(...([...subjectCols, ...traitColsAcc] as [string, LeafType][])
+          columns.push(...generatedCols
             .map(
-              ([prop, colType]) => {
-                switch (colType._tag) {
+              col => {
+                switch (col.node._tag) {
                   case 'enum':
                     return ({
-                      title: prop as string,
-                      prop: prop as string,
+                      title: col.label.join(' - '),
+                      prop: col.path.join('.'),
                       sortable: false,
                       cellTemplate: this.enumCell,
-                      variants: colType.variants
+                      variants: col.node.variants
                     } as DatatableColumn<any>);
                   case 'number':
                     return ({
-                      title: prop as string,
-                      prop: prop as string,
+                      title: col.label.join(' - '),
+                      prop: col.path.join('.'),
                       sortable: false,
                       cellTemplate: this.numberCell,
                     } as DatatableColumn<any>);
                   case 'boolean':
                     return ({
-                      title: prop as string,
-                      prop: prop as string,
+                      title: col.label.join(' - '),
+                      prop: col.path.join('.'),
                       sortable: false,
                       cellTemplate: this.booleanCell,
                     } as DatatableColumn<any>);
                   default:
                     return ({
-                      title: prop as string,
-                      prop: prop as string,
+                      title: col.label.join(' - '),
+                      prop: col.path.join('.'),
                       sortable: false,
                       cellTemplate: this.stringCell
                     } as DatatableColumn<any>);
@@ -130,9 +134,16 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
           );
 
           const formArray = this.constructFormArray(rows);
+          const defaultColumns = [
+            0, // row actions
+            ...generatedCols
+              .map((col, idx) => this.columnHasData(rows, col.path as Array<string | number>) ? idx + 1 : -1)
+              .filter(idx => idx >= 0)
+          ];
           return {
             rows: formArray,
-            cols: columns
+            cols: columns,
+            defaultColumns
           };
         })
       ).subscribe(data => {
@@ -172,7 +183,6 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
     this.rowUploadState$.next({ ...this.rowUploadState$.value, [rowIdx]: { _tag: 'in-progress' } });
     this.api.fetch('/trait/rows/{id}', 'put', params, row.value).subscribe(
       (res) => {
-        console.log('result: ', res);
         this.rowUploadState$.next({ ...this.rowUploadState$.value, [rowIdx]: { _tag: 'complete' } });
       },
       err => {
@@ -232,5 +242,23 @@ export class TraitDbDataEditorComponent implements OnInit, AfterViewInit, OnDest
       formArray.push(this.fb.group({ subject, traits }));
     });
     return formArray;
+  }
+
+  private columnHasData(rows: InputRow[], path: Array<string | number>): boolean {
+    return rows.some(row => this.hasCellData(this.getNestedValue(row, path)));
+  }
+
+  private getNestedValue(obj: any, path: Array<string | number>): any {
+    return path.reduce((acc, key) => acc?.[key], obj);
+  }
+
+  private hasCellData(value: any): boolean {
+    if (value === undefined || value === null) {
+      return false;
+    }
+    if (typeof value === 'string') {
+      return value.trim() !== '';
+    }
+    return true;
   }
 }

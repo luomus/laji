@@ -13,11 +13,8 @@ import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
 import { BaseDataService } from '../../../graph-ql/service/base-data.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { IdType, SelectOption } from '../select/select.component';
-import { components } from '../../../../../../laji-api-client-b/generated/api';
-
-type Annotation = components['schemas']['store-annotation'];
+import { LajiApiClientBService } from '../../../../../../laji-api-client-b/src/laji-api-client-b.service';
 
 export enum SelectStyle {
   basic,
@@ -88,7 +85,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
   constructor(
     public warehouseMapper: WarehouseValueMappingService,
-    private warehouseApi: WarehouseApi,
+    private api: LajiApiClientBService,
     protected adminStatusInfoPipe: AdminStatusInfoPipe,
     protected annotationService: AnnotationService,
     protected collectionService: CollectionService,
@@ -136,7 +133,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       switchMap(options => this.mapToWarehouse ? this.optionsToWarehouseID(options) : of(options)),
       map(options => this.labelAsValue ? options.map(o => ({...o, id: o.value})) : options),
       map(options => this.firstOptions?.length > 0 ? this.sortOptionsByAnotherList(options) : (
-        this._shouldSort ? options.sort((a, b) => a.value && b.value ? a.value.localeCompare(b.value) : 0) : options
+        this._shouldSort ? options.sort((a, b) => a.value && b.value ? a.value.localeCompare(b.value, 'fi') : 0) : options
       ))
     ).subscribe(options => {
         this.setOptions(options);
@@ -221,8 +218,8 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
   protected getDataObservable(): Observable<SelectOption[]> {
     if (this.useFilterApi && this.name) {
-      return this.warehouseApi.warehouseQueryFilterGet(this.name).pipe(
-        map(data => data.enumerations),
+      return this.api.get('/warehouse/filters/{filter}', { path: { filter: this.name } }).pipe(
+        map((data: any) => data.enumerations),
         map(options => options.map((o: any) => ({id: o.name, value: MultiLangService.getValue(o.label as any, this.lang)}))),
       );
     }
@@ -271,12 +268,12 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       const hasB = this.firstOptions.includes(b.id);
       if (hasA || hasB) {
         if (hasA && hasB) {
-          return a.value.localeCompare(b.value);
+          return a.value.localeCompare(b.value, 'fi');
         } else {
           return hasA ? -1 : 1;
         }
       }
-      return a.value.localeCompare(b.value);
+      return a.value.localeCompare(b.value, 'fi');
     });
   }
 

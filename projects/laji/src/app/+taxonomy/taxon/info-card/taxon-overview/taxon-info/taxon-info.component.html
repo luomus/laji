@@ -11,7 +11,7 @@
     {{ taxon.scientificNameAuthorship }}
   </laji-taxon-info-row>
 }
-@if (taxon.vernacularName) {
+@if (taxon.vernacularNameMultiLang) {
   <laji-taxon-info-row [label]="'taxonomy.vernacular.names' | translate">
     <ul>
       @if (taxon.vernacularNameMultiLang.fi) {
@@ -32,7 +32,7 @@
     </ul>
   </laji-taxon-info-row>
 }
-@if (taxon.colloquialVernacularName) {
+@if (taxon.colloquialVernacularNameMultiLang) {
   <laji-taxon-info-row [label]="'taxonomy.vernacular.colloquial' | translate">
     <ul>
       @if (taxon.colloquialVernacularNameMultiLang.fi) {

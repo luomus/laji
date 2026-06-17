@@ -78,6 +78,12 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+interface Options {
+  cacheInvalidationMs?: number;
+  /** Defaults to true */
+  langFallback?: boolean;
+};
+
 const ONE_DAY = 86400000;
 
 const sortRecordRecursively = (record: Record<string, unknown> = {}): Record<string, unknown> => (
@@ -144,7 +150,7 @@ export class LajiApiClientBService {
 >(
     path: P,
     params?: Parameters<paths[P]['get'], RT>,
-    cacheInvalidationMs = ONE_DAY
+    options?: Options
   ): Observable<
     ExtractContentByResponseType<R[IntersectUnionTypes<keyof R, HttpSuccessCodes>],
     RT>
@@ -154,7 +160,7 @@ export class LajiApiClientBService {
       'get' as any,
       params as any,
       undefined,
-      cacheInvalidationMs
+      options
     );
   }
 
@@ -166,7 +172,7 @@ export class LajiApiClientBService {
     path: P,
     params?: Parameters<paths[P]['put'], RT>,
     requestBody?: RequestBodyFor<paths[P]['put']>,
-    cacheInvalidationMs = ONE_DAY
+    options?: Options
   ): Observable<
 ExtractContentByResponseType<
     R[IntersectUnionTypes<keyof R, HttpSuccessCodes>],
@@ -178,7 +184,7 @@ ExtractContentByResponseType<
       'put' as any,
       params as any,
       requestBody as any,
-      cacheInvalidationMs
+      options
     );
   }
 
@@ -190,7 +196,7 @@ ExtractContentByResponseType<
     path: P,
     params?: Parameters<paths[P]['post'], RT>,
     requestBody?: RequestBodyFor<paths[P]['post']>,
-    cacheInvalidationMs = ONE_DAY
+    options?: Options
   ): Observable<
 ExtractContentByResponseType<
     R[IntersectUnionTypes<keyof R, HttpSuccessCodes>],
@@ -202,7 +208,7 @@ ExtractContentByResponseType<
       'post' as any,
       params as any,
       requestBody as any,
-      cacheInvalidationMs
+      options
     );
   }
 
@@ -213,7 +219,7 @@ ExtractContentByResponseType<
 >(
     path: P,
     params?: Parameters<paths[P]['delete'], RT>,
-    cacheInvalidationMs = ONE_DAY
+    options?: Options
   ): Observable<
 ExtractContentByResponseType<
     R[IntersectUnionTypes<keyof R, HttpSuccessCodes>],
@@ -225,14 +231,29 @@ ExtractContentByResponseType<
       'delete' as any,
       params as any,
       undefined,
-      cacheInvalidationMs
+      options
     );
+  }
+
+  protected getHeaders(lang: string, langFallback = true, personToken?: string) {
+    const headers: Record<string, string> = {
+			'API-Version': '1',
+			'Accept-Language': lang,
+		};
+    if (!langFallback) {
+      headers['Accept-Language'] = `${headers['Accept-Language']},*;q=0`;
+    }
+    if (personToken) {
+      headers['Person-Token'] = personToken;
+    }
+    return headers;
   }
 
   private getRequestOptions(
     queryParams: any,
     requestBody: any,
     lang: string,
+    langFallback = true,
     personToken?: string,
     responseType: ResponseType = 'json'
   ) {
@@ -245,13 +266,7 @@ ExtractContentByResponseType<
       return filteredQueryParams;
     }, {} as any);
 
-    const headers: Record<string, string> = {
-			'API-Version': '1',
-			'Accept-Language': lang,
-		};
-    if (personToken) {
-      headers['Person-Token'] = personToken;
-    }
+    const headers = this.getHeaders(lang, langFallback, personToken);
     return { params, body: requestBody, headers, responseType };
   }
 
@@ -265,7 +280,7 @@ ExtractContentByResponseType<
     method: M,
     params?: Parameters<paths[P][M], RT>,
     requestBody?: RequestBodyFor<paths[P][M]>,
-    cacheInvalidationMs = ONE_DAY
+    { cacheInvalidationMs = ONE_DAY, langFallback = true }: Options = {}
   ): Observable<
 ExtractContentByResponseType<
     R[IntersectUnionTypes<keyof R, HttpSuccessCodes>],
@@ -280,13 +295,13 @@ ExtractContentByResponseType<
       return this.http.request(
         method as string,
         requestUrl,
-        this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken, params?.responseType)
+        this.getRequestOptions((params as any)?.query, requestBody, this.lang, langFallback, this.personToken, params?.responseType)
       ) as any;
     }
 
     const cachedPath = this.getOrInitializeLastPathCacheLevel(pathSegments);
 
-    const paramsHash = hashRecord(params);
+    const paramsHash = hashRecord({ ...params || {}, langFallback });
     if (!cachedPath?.has(paramsHash)) {
       cachedPath?.set(paramsHash, { _tag: 'not-started' });
     }
@@ -305,7 +320,7 @@ ExtractContentByResponseType<
     const obs = this.http.request(
       method,
       requestUrl,
-      this.getRequestOptions((params as any)?.query, requestBody, this.lang, this.personToken, params?.responseType)
+      this.getRequestOptions((params as any)?.query, requestBody, this.lang, langFallback, this.personToken, params?.responseType)
     ).pipe(
       tap(val => {
         cachedPath?.set(paramsHash, {

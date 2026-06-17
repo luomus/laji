@@ -5,7 +5,6 @@ import { StatisticsComponent } from './statistics.component';
 import { LineTransectComponent } from './line-transect/line-transect.component';
 import { LineTransectChartComponent } from './line-transect/line-transect-chart/line-transect-chart.component';
 import { LajiMapModule } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.module';
-import { AcceptedDocumentApprovalComponent } from './common/accepted-document-approval/accepted-document-approval.component';
 import { BirdPointCountStatsComponent } from './bird-point-count-stats/bird-point-count-stats.component';
 
 @NgModule({
@@ -14,7 +13,7 @@ import { BirdPointCountStatsComponent } from './bird-point-count-stats/bird-poin
     SharedModule,
     LajiMapModule
   ],
-  declarations: [StatisticsComponent, LineTransectComponent, LineTransectChartComponent, AcceptedDocumentApprovalComponent, BirdPointCountStatsComponent],
+  declarations: [StatisticsComponent, LineTransectComponent, LineTransectChartComponent, BirdPointCountStatsComponent],
   exports: [StatisticsComponent, LineTransectChartComponent]
 })
 export class StatisticsModule { }

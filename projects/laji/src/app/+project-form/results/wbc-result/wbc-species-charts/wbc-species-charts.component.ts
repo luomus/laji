@@ -65,7 +65,7 @@ export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
       this.cd.markForCheck();
     });
 
-    this.api.get('/taxa/{id}/parents', { path: { id }, query: { selectedFields: 'id' } })
+    this.api.get('/taxa/{id}/parents', { path: { id }, query: { selectedFields: 'id' } }, { langFallback: false })
     .subscribe(data => {
       this.isMammal = false;
       data.results.map(parent => {

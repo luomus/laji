@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { DataFetchMode } from '../observation-data.service';
 
 @Component({
     selector: 'laji-observation-result-front',
@@ -9,5 +10,6 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
     standalone: false
 })
 export class ObservationResultFrontComponent {
+  @Input() dataMode: DataFetchMode = 'unit';
   @Input({ required: true }) query!: WarehouseQueryInterface;
 }

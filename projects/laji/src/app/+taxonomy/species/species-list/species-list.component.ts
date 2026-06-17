@@ -235,7 +235,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
         selectedFields: this.getSelectedFields(),
         checklist: 'MR.1,MR.2'
       },
-    }, filters).pipe(
+    }, filters, { langFallback: false }).pipe(
         map(data => {
           data.results = data.results.map(taxon => {
             if (taxon.parent && Array.isArray(taxon.nonHiddenParentsIncludeSelf)) {

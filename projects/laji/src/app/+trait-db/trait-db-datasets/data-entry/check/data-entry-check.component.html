@@ -21,6 +21,20 @@
         [columns]="table.cols"
       ></lu-datatable>
     }
+    @if (missingColumnErrors$ | async; as missingCols) {
+      @if (missingCols.length > 0) {
+        <div class="alert alert-danger">
+          <strong>Missing required columns:</strong>
+          <ul>
+            @for (missingCol of missingCols; track missingCol.key) {
+              <li>
+                <code>{{ missingCol.key }}</code>: {{ missingCol.error }}
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    }
     <button
       class="btn btn-default"
       [disabled]="!(state._tag === 'validation-complete' && state.validationResult.pass)"
@@ -45,4 +59,3 @@
 }
 
 </ng-template>
-

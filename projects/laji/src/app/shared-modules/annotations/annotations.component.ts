@@ -11,14 +11,16 @@ import {map, switchMap } from 'rxjs';
 import { Subscription, timer } from 'rxjs';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { TaxonTagEffectiveService } from '../document-viewer/taxon-tag-effective.service';
 import { LoadingElementsService } from '../document-viewer/loading-elements.service';
 import { PlatformService } from '../../root/platform.service';
 import { TranslateService } from '@ngx-translate/core';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
 import { Unsaved } from '../../shared/utils';
 import { AnnotationDW } from './annotation-list/annotation-list.component';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+
+type DocumentAggregateQueryParams = paths['/warehouse/query/document/aggregate']['get']['parameters']['query'];
 
 type Annotation = components['schemas']['store-annotation'];
 type AnnotationTag = components['schemas']['store-tag'];
@@ -83,7 +85,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     private annotationService: AnnotationService,
     private documentViewerFacade: DocumentViewerFacade,
     private cd: ChangeDetectorRef,
-    private warehouseApi: WarehouseApi,
+    private api: LajiApiClientBService,
     private taxonTagEffective: TaxonTagEffectiveService,
     private loadingElements: LoadingElementsService,
     private platformService: PlatformService,
@@ -93,7 +95,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentLang = this.translate.getCurrentLang();
     this.initEmptyAnnotation();
-    this.findRendomKey1();
+    this.findRandomKey1();
     if (this.identifying) {
       this.adding = true;
     }
@@ -196,7 +198,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   }
 
   private saveDone(annotation?: Annotation) {
-    this.findRendomKey();
+    this.findRandomKey();
     this.annotationChange.emit(annotation);
     this.closeAddForm();
     this.initEmptyAnnotation();
@@ -212,66 +214,66 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     });
   }
 
-  findRendomKey() {
+  findRandomKey() {
     this.subscribeRefreshedAnnotations = timer(0, 5000).pipe(
-      switchMap(() =>
-        this.warehouseApi.warehouseQueryDocumentAggregateGet(
-          {documentId: [this.rootID]},
-          ['document.documentId', 'document.randomKey'],
-          ['document.randomKey'],
-          10,
-          this.page
-          )
-        )
-      ).pipe(
-        map(data => data.results)
-      ).subscribe(
-        data => {
-          data.forEach((r: any) => {
-            this.randomKeyAfter = r.aggregateBy['document.randomKey'];
-          });
-        this.cd.markForCheck();
+      switchMap(() => {
+        const query: DocumentAggregateQueryParams = {
+          documentId: this.rootID,
+          aggregateBy: ['document.documentId', 'document.randomKey'],
+          orderBy: ['document.randomKey'],
+          pageSize: 10,
+          page: this.page
+        };
+        return this.api.get('/warehouse/query/document/aggregate', { query });
+      })
+    ).pipe(
+      map(data => data.results)
+    ).subscribe(
+      data => {
+        data.forEach((r: any) => {
+          this.randomKeyAfter = r.aggregateBy['document.randomKey'];
+        });
+      this.cd.markForCheck();
 
-        this.countCall++;
+      this.countCall++;
 
-        if (this.countCall > 4) {
-          this.subscribeRefreshedAnnotations?.unsubscribe();
-          this.loadingElements.emitChildEvent(true);
-        }
+      if (this.countCall > 4) {
+        this.subscribeRefreshedAnnotations?.unsubscribe();
+        this.loadingElements.emitChildEvent(true);
+      }
 
-        if (this.randomKeyAfter === undefined) {
-          this.subscribeRefreshedAnnotations?.unsubscribe();
-          this.taxonTagEffective.emitChildEvent(false);
-          this.loadingElements.emitChildEvent(false);
-          this.loadingForm.emit(false);
-        }
+      if (this.randomKeyAfter === undefined) {
+        this.subscribeRefreshedAnnotations?.unsubscribe();
+        this.taxonTagEffective.emitChildEvent(false);
+        this.loadingElements.emitChildEvent(false);
+        this.loadingForm.emit(false);
+      }
 
-        if (this.randomKeyAfter !== this.randomKeyBefore) {
-          this.subscribeRefreshedAnnotations?.unsubscribe();
-          this.taxonTagEffective.emitChildEvent(true);
-          this.loadingElements.emitChildEvent(true);
-          this.countCall = 0;
-        }
-      });
+      if (this.randomKeyAfter !== this.randomKeyBefore) {
+        this.subscribeRefreshedAnnotations?.unsubscribe();
+        this.taxonTagEffective.emitChildEvent(true);
+        this.loadingElements.emitChildEvent(true);
+        this.countCall = 0;
+      }
+    });
   }
 
-  findRendomKey1() {
-    this.subscribeRefreshedAnnotations1 = this.warehouseApi.warehouseQueryDocumentAggregateGet(
-          {documentId: [this.rootID]},
-          ['document.documentId', 'document.randomKey'],
-          ['document.randomKey'],
-          10,
-          this.page
-          ).pipe(
-            map(data => data.results)
-          ).subscribe(
-            data => {
-              data.forEach((r: any) => {
-                this.randomKeyBefore = r.aggregateBy['document.randomKey'];
-              });
-            this.cd.markForCheck();
-          });
+  findRandomKey1() {
+    const query: DocumentAggregateQueryParams = {
+      documentId: this.rootID,
+      aggregateBy: ['document.documentId', 'document.randomKey'],
+      orderBy: ['document.randomKey'],
+      pageSize: 10,
+      page: this.page
+    };
+    this.subscribeRefreshedAnnotations1 = this.api.get('/warehouse/query/document/aggregate', { query }).pipe(
+      map(data => data.results)
+    ).subscribe(
+      data => {
+        data.forEach((r: any) => {
+          this.randomKeyBefore = r.aggregateBy['document.randomKey'];
+        });
+      this.cd.markForCheck();
+    });
   }
-
-
 }

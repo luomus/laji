@@ -7,7 +7,6 @@ import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-c
 import { Subscription } from 'rxjs';
 import { tap, filter, switchMap, map } from 'rxjs';
 import { DialogService } from '../../../shared/service/dialog.service';
-import { UserService } from '../../../shared/service/user.service';
 
 export type Dataset = components['schemas']['LajiBackendDataset'];
 type ValidationResponse = components['schemas']['LajiBackendValidationResponse'];
@@ -65,7 +64,6 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private dialogService: DialogService,
     private translate: TranslateService,
-    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -127,6 +125,12 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  onDeleteClick() {
+    if (confirm(this.translate.instant('np.delete.confirm'))) {
+      this.onDelete();
+    }
+  }
+
   onSubmit() {
     if (!this.datasetForm.get('id')!.value) {
       this.submitNewDataset();
@@ -139,7 +143,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
     this.externalValidationInProgress = true;
     const form = filterNullValues(this.datasetForm.value) as Dataset;
     this.datasetForm.disable();
-    this.api.fetch('/trait/datasets/validate', 'post', undefined, form, 0).pipe(
+    this.api.fetch('/trait/datasets/validate', 'post', undefined, form, { cacheInvalidationMs: 0 }).pipe(
       tap(res => {
         this.externalValidationInProgress = false;
         this.errors = res.pass ? undefined : res.errors;
@@ -151,7 +155,7 @@ export class TraitDbDatasetEditorComponent implements OnInit, OnDestroy {
         this.uploadInProgress = true;
         this.datasetForm.disable();
       }),
-      switchMap(_ => this.api.fetch('/trait/datasets', 'post', undefined, form, 0))
+      switchMap(_ => this.api.fetch('/trait/datasets', 'post', undefined, form, { cacheInvalidationMs: 0 }))
     ).subscribe(res => {
       this.uploadInProgress = false;
       this.api.flush('/trait/dataset-permissions');

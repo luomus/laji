@@ -39,6 +39,7 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'unit.media.mediaType': ObservationTableColumn;
   'document.collectionId': ObservationTableColumn;
   'unit.notes': ObservationTableColumn;
+  'unit.sequenceText': ObservationTableColumn;
   'gathering.notes': ObservationTableColumn;
   'unit.facts.fact': ObservationTableColumn;
   'unit.facts.value': ObservationTableColumn;
@@ -283,6 +284,7 @@ export const COLUMNS: IColumns = {
   },
   'document.collectionId': {name: 'document.collectionId', cellTemplate: 'label', width: 300, sortable: false, required: true},
   'unit.notes': {name: 'unit.notes', sortable: false, label: 'result.unit.notes'},
+  'unit.sequenceText': {name: 'unit.sequenceText', sortable: false, label: 'result.unit.sequenceText', width: 300},
   'gathering.notes': {name: 'gathering.notes', sortable: false, label: 'result.gathering.notes'},
   'document.documentId': {name: 'document.documentId', required: environment.type === Global.type.vir},
   'unit.unitId': {name: 'unit.unitId'},
@@ -574,6 +576,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['unit.media.mediaType'],
     COLUMNS['document.collectionId'],
     COLUMNS['unit.notes'],
+    COLUMNS['unit.sequenceText'],
     COLUMNS['gathering.notes'],
     COLUMNS['document.secureLevel'],
     COLUMNS['document.secureReasons'],
@@ -737,6 +740,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'document.documentId',
           'unit.unitId',
           'unit.linkings.taxon.occurrenceCountFinland',
+          'unit.sequenceText'
         ].filter(field => environment.type === Global.type.vir ? true : field !== 'document.dataSource')
       }
     ].filter(set => environment.type === Global.type.vir ? true : set.header !== lajiGISSectionHeader)

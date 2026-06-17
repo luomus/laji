@@ -10,14 +10,16 @@
       <th>Description</th>
       <th>Taxonomic coverage</th>
       <th>Owner</th>
+      <th>Person responsible</th>
       <th>Citation</th>
     </tr>
     @for (dataset of datasets; track dataset) {
       <tr>
         <td><a [routerLink]="[dataset.id]">{{ dataset.name }}</a></td>
-        <td>{{ dataset.description }}</td>
+        <td>{{ dataset.description | truncate : 50 : true }}</td>
         <td>{{ dataset.taxonomicCoverage }}</td>
         <td>{{ dataset.intellectualOwner }}</td>
+        <td>{{ dataset.personResponsible }}</td>
         <td>{{ dataset.citation }}</td>
       </tr>
     }
@@ -25,5 +27,3 @@
 } @else {
   <laji-spinner class="d-block m-6"></laji-spinner>
 }
-
-

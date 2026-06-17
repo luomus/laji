@@ -22,6 +22,11 @@ import { KerttuClosedComponent } from './kerttu/kerttu-closed.component';
 const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
   {
+    path: 'sirkku',
+    pathMatch: 'full',
+    redirectTo: '/about/9219'
+  },
+  {
     path: 'luomusgrc',
     pathMatch: 'prefix',
     component: GeneticResourceLayoutComponent,

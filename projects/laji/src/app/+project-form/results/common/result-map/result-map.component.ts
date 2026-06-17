@@ -3,7 +3,6 @@ import { DataOptions, GetFeatureStyleOptions, Options } from '@luomus/laji-map';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { getPointIconAsCircle } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { LajiMapVisualization } from 'projects/laji/src/app/shared-modules/legend/laji-map-visualization';
-import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from 'projects/laji/src/app/shared/model/WarehouseQueryInterface';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
@@ -11,6 +10,10 @@ import { map, switchMap, tap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { cacheReturnObservable } from 'projects/bird-atlas/src/app/core/atlas-api.service';
 import G, { Feature, GeoJsonProperties, Polygon } from 'geojson';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { paths } from 'projects/laji-api-client-b/generated/api';
+
+type WarehouseAggregateQuery = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
 type GatheringCountType = 'ZERO' | 'ONE' | 'FIVE' | 'TEN' | 'FIFTY' | 'HUNDRED' | 'FIVE_HUNDRED';
 type ObservationProbabilityType = 'ZERO' | 'OVER_ZERO' | 'OVER_TWENTY' | 'OVER_FORTY' | 'OVER_SIXTY' | 'OVER_EIGHTY' | 'HUNDRED';
@@ -138,7 +141,7 @@ export class ResultMapComponent implements OnInit, OnChanges {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private translate: TranslateService,
-    private warehouseApi: WarehouseApi
+    private api: LajiApiClientBService,
   ) {
     this.mapOptions = {
       clickBeforeZoomAndPan: true
@@ -271,22 +274,23 @@ export class ResultMapComponent implements OnInit, OnChanges {
 
   @cacheReturnObservable(120000)
   private getGatheringCountsCached(collections: string[], taxon: string, year: string): Observable<QueryResult> {
-    return this.warehouseApi.warehouseQueryAggregateGet(
-      {
-        collectionId: collections,
-        taxonId: taxon === '' ? undefined : taxon,
-        ...this.mapQuery,
-        yearMonth: year === ''
-          ? [this.collectionStartYear + '/' + this.currentYear]
-          : [year]
-      },
-      [
-        'gathering.conversions.ykj10kmCenter.lat',
-        'gathering.conversions.ykj10kmCenter.lon'
-      ],
-      undefined,
-      10000
-    );
+    const collectionId = collections.join(',');
+    const taxonId = taxon === '' ? undefined : taxon;
+    const query: WarehouseAggregateQuery = {
+      collectionId,
+      taxonId,
+      ...this.mapQuery as any,
+      yearMonth: year === ''
+        ? this.collectionStartYear + '/' + this.currentYear
+        : year,
+        aggregateBy: [
+          'gathering.conversions.ykj10kmCenter.lat',
+          'gathering.conversions.ykj10kmCenter.lon'
+        ],
+        pageSize: 10000
+    };
+
+    return this.api.get('/warehouse/query/unit/aggregate', { query }).pipe(map(res => res as any as QueryResult));
   }
 
   private gatheringCountFeatureStyle({ feature }: GetFeatureStyleOptions) {

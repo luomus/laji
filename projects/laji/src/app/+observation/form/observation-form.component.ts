@@ -43,6 +43,7 @@ interface ISections {
   features?: Array<keyof WarehouseQueryInterface>;
   invasive?: Array<keyof WarehouseQueryInterface>;
   image: Array<keyof WarehouseQueryInterface>;
+  dna: Array<keyof WarehouseQueryInterface>;
   secure: Array<keyof WarehouseQueryInterface>;
 }
 
@@ -100,6 +101,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       'invasive', 'finnish', 'sensitive'],
     invasive: [],
     image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia', 'hasUnitImages', 'hasUnitAudio', 'hasUnitModel'],
+    dna: ['hasSequenceText'],
     secure: ['secured', 'secureLevel'],
   };
 
@@ -120,16 +122,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     time: '2022-01-01%2F2025-12-31',
     recordQuality: 'COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED',
     atlasClass: 'MY.atlasClassEnumB,MY.atlasClassEnumC,MY.atlasClassEnumD'
-  };
-
-  otsoFilterShortcutQueryParams = {
-    administrativeStatusId: 'MX.finnishEnvironmentInstitute20192021forestSpecies',
-    time: '1990-01-01%2F',
-    onlyNonStateLands: true,
-    coordinateAccuracyMax: 100,
-    // eslint-disable-next-line max-len
-    collectionAndRecordQuality: 'PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;HOBBYIST:COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED',
-    countryId: 'ML.206'
   };
 
   constructor(
@@ -490,7 +482,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       taxonIncludeLower: typeof query.includeSubTaxa !== 'undefined' ? query.includeSubTaxa : true,
       taxonUseAnnotated: typeof query.useIdentificationAnnotations !== 'undefined' ? query.useIdentificationAnnotations : true,
       coordinatesInSource: query.sourceOfCoordinates && query.sourceOfCoordinates.includes('REPORTED_VALUE'),
-      taxonAdminFiltersOperator: query.taxonAdminFiltersOperator === 'OR' ? 'OR' : undefined
+      taxonAdminFiltersOperator: query.taxonAdminFiltersOperator === 'OR' ? 'OR' : undefined,
+      hasSequenceText: query.hasSequenceText ? true : false
     };
   }
 
@@ -525,6 +518,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     query.editorOrObserverIsNotPersonToken = formQuery.asNotEditorOrObserver ? ObservationFacade.PERSON_TOKEN : undefined;
     query.includeSubTaxa = formQuery.taxonIncludeLower ? undefined : false;
     query.useIdentificationAnnotations = formQuery.taxonUseAnnotated ? undefined : false;
+    query.hasSequenceText = formQuery.hasSequenceText ? true : undefined;
     query.sourceOfCoordinates = formQuery.coordinatesInSource ? ['REPORTED_VALUE'] : undefined;
     query.taxonAdminFiltersOperator = formQuery.taxonAdminFiltersOperator === 'OR' ? 'OR' : undefined;
     this.invasiveStatuses

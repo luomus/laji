@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { UserService } from '../../shared/service/user.service';
 
 type Trait = components['schemas']['LajiBackendTrait'];
@@ -9,6 +9,7 @@ type TraitGroup = components['schemas']['LajiBackendTraitGroup'];
 
 @Component({
     templateUrl: 'trait-db-traits.component.html',
+    styleUrls: ['trait-db-traits.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
@@ -61,4 +62,3 @@ export class TraitDbTraitsComponent implements OnInit, OnDestroy {
     this.activeTraitSubscription?.unsubscribe();
   }
 }
-

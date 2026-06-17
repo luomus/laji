@@ -77,8 +77,7 @@ export class TraitDbDataEntryValidateComponent implements OnChanges, OnDestroy, 
 
       // validate tsv
       const query = {
-        datasetId: this.datasetId,
-        personToken: this.userService.getToken()
+        datasetId: this.datasetId
       };
       this.validationState$.next({ _tag: 'in-progress' });
       this.api.fetch('/trait/rows/tsv2rows/validate', 'post', { query }, this.tsv)
@@ -105,4 +104,3 @@ export class TraitDbDataEntryValidateComponent implements OnChanges, OnDestroy, 
     this.tsvChange.complete();
   }
 }
-

@@ -29,7 +29,7 @@ export class PrintTaxonHeaderComponent implements OnInit {
       query: {
         selectedFields: 'scientificName,vernacularName,cursiveName'
       }
-    }).subscribe(taxon => {
+    }, { langFallback: false }).subscribe(taxon => {
       this.taxon = taxon;
       this.cd.markForCheck();
     });

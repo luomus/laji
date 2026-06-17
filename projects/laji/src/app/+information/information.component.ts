@@ -37,7 +37,7 @@ export class InformationComponent {
       delay(0),
       tap(info => this.updateHeaders(info)),
       catchError(err => {
-        if (err?.error?.statusCode === 404 && this.platform.isBrowser) {
+        if (err?.status === 404 && this.platform.isBrowser) {
           window.location.assign('https://info.laji.fi/');
         }
         this.logger.warn('Failed to fetch root informations', err);

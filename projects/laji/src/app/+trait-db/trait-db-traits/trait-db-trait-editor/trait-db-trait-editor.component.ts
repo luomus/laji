@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client-b/generated/api';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { Observable } from 'rxjs';
 import { map, filter, switchMap, tap } from 'rxjs';
 import { MetadataService } from '../../../shared/service/metadata.service';
-import { UserService } from '../../../shared/service/user.service';
 import { filterNullValues } from '../../trait-db-datasets/trait-db-dataset-editor/trait-db-dataset-editor.component';
 
 type Trait = components['schemas']['LajiBackendTrait'];
@@ -14,6 +14,7 @@ type ValidationResponse = components['schemas']['LajiBackendValidationResponse']
 
 @Component({
     templateUrl: './trait-db-trait-editor.component.html',
+    styleUrls: ['./trait-db-trait-editor.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
@@ -25,7 +26,7 @@ export class TraitDbTraitEditorComponent implements OnInit {
     name: undefined,
     description: undefined,
     exampleValues: undefined,
-    baseUnit: undefined,
+    baseUnit: '' as any, // undefined doesn't work reliably with the html selector
     range: undefined,
     enumerations: [],
     reference: undefined,
@@ -43,7 +44,8 @@ export class TraitDbTraitEditorComponent implements OnInit {
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private metadataService: MetadataService
+    private metadataService: MetadataService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +57,7 @@ export class TraitDbTraitEditorComponent implements OnInit {
       Object.entries(trait).forEach(([key, val]) => {
         this.form.get(key)?.setValue(val);
       });
+      this.form.get('baseUnit')?.setValue((trait.baseUnit ?? '') as any);
     });
 
     this.unitOfMeasurements$ = this.metadataService.getRange('TDF.unitOfMeasurementEnum');
@@ -72,9 +75,12 @@ export class TraitDbTraitEditorComponent implements OnInit {
 
   private submitNewTrait() {
     this.submissionState = 'externalValidation';
-    const form = filterNullValues(this.form.value) as Trait;
+    const form = filterNullValues({
+      ...this.form.value,
+      baseUnit: this.form.value.baseUnit ? this.form.value.baseUnit : null
+    }) as Trait;
     this.form.disable();
-    this.api.fetch('/trait/traits/validate', 'post', {}, form, 0).pipe(
+    this.api.fetch('/trait/traits/validate', 'post', {}, form, { cacheInvalidationMs: 0 }).pipe(
       tap(res => {
         this.submissionState = 'none';
         this.errors = res.pass ? undefined : res.errors;
@@ -86,7 +92,7 @@ export class TraitDbTraitEditorComponent implements OnInit {
         this.submissionState = 'uploading';
         this.form.disable();
       }),
-      switchMap(_ => this.api.fetch('/trait/traits', 'post', {}, form, 0))
+      switchMap(_ => this.api.fetch('/trait/traits', 'post', {}, form, { cacheInvalidationMs: 0 }))
     ).subscribe(res => {
       this.submissionState = 'none';
       this.cdr.markForCheck();
@@ -96,7 +102,10 @@ export class TraitDbTraitEditorComponent implements OnInit {
 
   private updateExistingTrait() {
     this.submissionState = 'externalValidation';
-    const form = filterNullValues(this.form.value) as Trait;
+    const form = filterNullValues({
+      ...this.form.value,
+      baseUnit: this.form.value.baseUnit ? this.form.value.baseUnit : null
+    }) as Trait;
     this.form.disable();
     this.api.fetch('/trait/traits/validate-update/{id}', 'post', { path: { id: form.id } }, form).pipe(
       tap(res => {
@@ -138,5 +147,11 @@ export class TraitDbTraitEditorComponent implements OnInit {
       this.form.enable();
       this.cdr.markForCheck();
     });
+  }
+
+  onDeleteClick() {
+    if (confirm(this.translate.instant('np.delete.confirm'))) {
+      this.onDelete();
+    }
   }
 }

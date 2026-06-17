@@ -1,0 +1,9 @@
+@use 'vars' as *;
+
+form {
+  max-width: 600px;
+}
+
+form > div {
+  margin-bottom: $sp-4;
+}

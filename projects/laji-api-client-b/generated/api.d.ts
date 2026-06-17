@@ -13795,6 +13795,8 @@ export interface components {
              * @description Name of an expedition or such.
              */
             collectingEventName: string;
+            /** Tämän laskentakerran lisätiedot */
+            conditionNotes: string;
             /** Prevention measures */
             controlActivitiesNotes: string;
             /**
@@ -14330,6 +14332,11 @@ export interface components {
              * @description Additional information to the data in each section.
              */
             notes: string;
+            /**
+             * Observation status
+             * @enum {string}
+             */
+            observationStatus: "" | "MY.observationStatusIgnored" | "MY.observationStatusNotObserved" | "MY.observationStatusObservedNoCount" | "MY.observationStatusObservedPartialCount" | "MY.observationStatusObservedCompleteCount";
             /** Pair count */
             pairCount: number;
             /** Own interpretation/pairs */
@@ -14590,6 +14597,8 @@ export interface components {
              * @enum {string}
              */
             glowWormMicrohabitat: "" | "MY.glowWormMicrohabitatEnum1" | "MY.glowWormMicrohabitatEnum2" | "MY.glowWormMicrohabitatEnum3" | "MY.glowWormMicrohabitatEnum4" | "MY.glowWormMicrohabitatEnum5" | "MY.glowWormMicrohabitatEnum6" | "MY.glowWormMicrohabitatEnumOther";
+            /** Ground nest count */
+            groundNestCount: number;
             /** Parven koko */
             individualCountFlock: number;
             /** Yksilömäärä sisällä */
@@ -14649,6 +14658,8 @@ export interface components {
             taxonConfidenceDescription: string;
             /** Observed traits */
             traits: string;
+            /** Puupesien määrä */
+            treeNestCount: number;
             /**
              * Female observed
              * @enum {string}
@@ -15605,7 +15616,7 @@ export interface components {
              * @description Type of the collection within the collection hierarchy tree.
              * @enum {string}
              */
-            hierarchyType?: "" | "MY.hierarchyTypeDocumentParent" | "MY.hierarchyTypeCollectionParent";
+            hierarchyType: "MY.hierarchyTypeDocumentParent" | "MY.hierarchyTypeCollectionParent";
             /**
              * Institution code
              * @description Institution code for natural history specimen collection holding institution, such as H, MHZ or TUR

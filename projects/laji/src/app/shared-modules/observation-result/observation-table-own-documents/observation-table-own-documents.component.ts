@@ -31,15 +31,16 @@ import { ExportService } from '../../../shared/service/export.service';
 import { BookType } from 'xlsx';
 import { Global } from '../../../../environments/global';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
 import { RowDocument } from '../../own-submissions/own-datatable/own-datatable.component';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { components, paths } from 'projects/laji-api-client-b/generated/api';
+import { DataFetchMode } from '../../../+observation/observation-data.service';
+import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 
 type Document = components['schemas']['store-document'];
-
+type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
 @Component({
     selector: 'laji-observation-table-own-documents',
@@ -52,6 +53,7 @@ type Document = components['schemas']['store-document'];
 export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('dataTableOwn', { static: true }) public datatable?: DatatableOwnSubmissionsComponent;
 
+  @Input() mode: DataFetchMode = 'unit';
   @Input() query!: WarehouseQueryInterface;
   @Input() overrideInQuery!: WarehouseQueryInterface;
   @Input() pageSize?: number;
@@ -150,7 +152,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     private translate: TranslateService,
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
     private exportService: ExportService,
-    private warehouseApi: WarehouseApi,
+    private api: LajiApiClientBService,
     private toQName: ToQNamePipe,
     private formService: FormService,
     private deleteOwnDocument: DeleteOwnDocumentService,
@@ -306,25 +308,25 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     this.loading = true;
     this.changeDetectorRef.markForCheck();
 
-    this.warehouseApi.warehouseQueryAggregateGet(
-      this.query,
-      [
-      'document.createdDate',
-      'document.documentId',
-      'document.formId',
-      'document.loadDate',
-      'document.namedPlace.id',
-      'gathering.locality',
-      'gathering.municipality',
-      'gathering.team',
+    const query: AggregateQueryParams = {
+      ...this.query as any,
+      aggregateBy: [
+        'document.createdDate',
+        'document.documentId',
+        'document.formId',
+        'document.loadDate',
+        'document.namedPlace.id',
+        'gathering.locality',
+        'gathering.municipality',
+        'gathering.team',
       ],
-      ['document.loadDate DESC'],
-      100,
+      orderBy: ['document.loadDate DESC'],
+      pageSize: 100,
       page,
-      false,
-      false
-    ).pipe(
-      map(res => res.results),
+      onlyCount: false
+    };
+    this.api.get('/warehouse/query/unit/aggregate', { query }).pipe(
+      map((res: any) => res.results),
       switchMap((documents: Document[]) => this.searchDocumentsToRowDocuments(documents))
     )
     .subscribe(data => {
@@ -414,7 +416,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
       this.tableColumnService.getSelectFields(this.columnSelector.columns, this.query),
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       [...this.orderBy, this.defaultOrder!],
-      this.lang
+      this.mode
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data.results, columns, type as BookType, 'laji-data'))
     ).subscribe(

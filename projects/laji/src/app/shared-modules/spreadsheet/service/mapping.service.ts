@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { IColMap, IFormField, IUserMappings, IValueMap, TUserValueMap, VALUE_IGNORE } from '../model/excel';
 import { convertAnyToWGS84GeoJSON } from '@luomus/laji-map/lib/utils';
 import { convertYkjToGeoJsonFeature } from '../../../root/coordinate-utils';
-import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { SpreadsheetFacade } from '../spreadsheet.facade';
 import * as Util from '../../../shared/utils';
 
@@ -12,7 +11,6 @@ export enum SpecialTypes {
   person = 'person',
   taxonID = 'taxonID',
   unitTaxon = 'unitTaxon',
-  informalTaxonGroupID = 'informalTaxonGroupID',
   namedPlaceID = 'namedPlaceID',
   dateOptionalTime = 'dateOptionalTime',
   dateTime = 'dateTime',
@@ -61,8 +59,6 @@ export class MappingService {
     'gatherings[*].taxonCensus[*].censusTaxonID': SpecialTypes.taxonID,
     'gatherings[*].units[*].keywords[*]': SpecialTypes.keywords,
     'gatherings[*].units[*].hostID': SpecialTypes.taxonID,
-    'gatherings[*].units[*].informalTaxonGroup': SpecialTypes.informalTaxonGroupID,
-    'gatherings[*].units[*].informalTaxonGroups[*]': SpecialTypes.informalTaxonGroupID,
     'gatherings[*].dateBegin': SpecialTypes.dateOptionalTime,
     'gatherings[*].dateEnd': SpecialTypes.dateOptionalTime,
     'gatherings[*].units[*].identifications[*].detDate': SpecialTypes.dateOptionalTime,
@@ -71,17 +67,6 @@ export class MappingService {
     'gatherings[*].units[*].atlasCode': SpecialTypes.atlasCode,
     'gatherings[*].observationMinutes': SpecialTypes.positiveInteger
   };
-
-  static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result: string[] = [], parent = ''): string[] {
-    groups.forEach(group => {
-      const name = parent ? `${parent} — ${group.name}` : group.name;
-      result.push(`${name} (${group.id})`);
-      if (Array.isArray(group.hasSubGroup)) {
-        MappingService.informalTaxonGroupsToList(group.hasSubGroup as InformalTaxonGroup[], result, name);
-      }
-    });
-    return result;
-  }
 
   constructor(
     private translationService: TranslateService,
@@ -303,10 +288,6 @@ export class MappingService {
     return null;
   }
 
-  mapInformalTaxonGroupId(value: unknown): string|null {
-    return this.pickValue(value, /(MVL\.[0-9]+)/);
-  }
-
   mapTaxonId(value: unknown): string|null {
     return this.pickValue(value, /(MX\.[0-9]+)/);
   }
@@ -396,9 +377,6 @@ export class MappingService {
       case SpecialTypes.taxonID:
         targetValue = this.mapTaxonId(targetValue || value);
         break;
-      case SpecialTypes.informalTaxonGroupID:
-        targetValue = this.mapInformalTaxonGroupId(targetValue || value);
-        break;
       case SpecialTypes.unitTaxon:
         targetValue = this.mapUnitTaxon(targetValue || value);
         break;
@@ -446,33 +424,39 @@ export class MappingService {
   }
 
   private analyzeGeometry(value: any) {
-    if (typeof value === 'string') {
-      value = value.trim();
-      const valueWithoutSpaces = value.replace(/\s/g, '');
-      if (valueWithoutSpaces.match(/^[0-9]{3,7}(\.[0-9]+)?:[0-9]{3,7}(\.[0-9]+)?$/)) {
-        const ykjParts = valueWithoutSpaces.split(':');
-        if (ykjParts[0].length === ykjParts[1].length) {
-          try {
-            return convertYkjToGeoJsonFeature(ykjParts[0], ykjParts[1]).geometry;
-          } catch (e) {}
-        }
-      } else if (valueWithoutSpaces.match(/^-?[0-9]{1,2}(\.[0-9]+)?,-?1?[0-9]{1,2}(\.[0-9]+)?$/)) {
-        const wgsParts = valueWithoutSpaces.split(',');
-        return {
-          type: 'Point',
-          coordinates: [+wgsParts[1], +wgsParts[0]]
-        };
-      }
-      try {
-        const data: any = convertAnyToWGS84GeoJSON(value);
-        if (data && data.features && data.features[0] && data.features[0].geometry) {
-          value = data.features[0].geometry;
-        }
-      } catch (e) {
-        return null;
-      }
+    if (typeof value !== 'string') {
+      return value;
     }
-    return value;
+
+    try {
+      const asJSON = JSON.parse(value);
+      return convertAnyToWGS84GeoJSON(asJSON);
+    } catch (e) { }
+
+    value = value.trim();
+    const valueWithoutSpaces = value.replace(/\s/g, '');
+    if (valueWithoutSpaces.match(/^[0-9]{3,7}(\.[0-9]+)?:[0-9]{3,7}(\.[0-9]+)?$/)) {
+      const ykjParts = valueWithoutSpaces.split(':');
+      if (ykjParts[0].length === ykjParts[1].length) {
+        try {
+          return convertYkjToGeoJsonFeature(ykjParts[0], ykjParts[1]).geometry;
+        } catch (e) {}
+      }
+    } else if (valueWithoutSpaces.match(/^-?[0-9]{1,2}(\.[0-9]+)?,-?1?[0-9]{1,2}(\.[0-9]+)?$/)) {
+      const wgsParts = valueWithoutSpaces.split(',');
+      return {
+        type: 'Point',
+        coordinates: [+wgsParts[1], +wgsParts[0]]
+      };
+    }
+    try {
+      const data: any = convertAnyToWGS84GeoJSON(value);
+      if (data && data.features && data.features[0] && data.features[0].geometry) {
+        value = data.features[0].geometry;
+      }
+    } catch (e) {
+      return null;
+    }
   }
 
   private getMappedValue(value: any, field: IFormField) {
