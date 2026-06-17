@@ -12,7 +12,7 @@ const taxonTypeSuffix: Record<TaxonTypeEnum, string | undefined> = {
 };
 
 export const getTranslateKeyWithTaxonType = (value: string, taxonType?: TaxonTypeEnum): string => {
-  if (taxonType && taxonTypeSuffix[taxonType]) {
+  if (taxonType !== undefined && taxonTypeSuffix[taxonType]) {
     return `${value}.${taxonTypeSuffix[taxonType]}`;
   }
   return value;
