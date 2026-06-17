@@ -7,7 +7,7 @@ import { NewsListComponent } from './news-list/news-list.component';
 import { UsersPipe } from './pipe/users.pipe';
 import { LabelPipe } from './pipe/label.pipe';
 import { FormattedNumber } from './pipe/formated-number.pipe';
-import { ObservationCountComponent } from '../+observation/count/observation-count.component';
+import { ObservationCountComponent } from '../observation/count/observation-count.component';
 import { PanelComponent } from './panel/panel.component';
 import { OmniSearchComponent } from './omni-search/omni-search.component';
 import { SafePipe } from './pipe/safe.pipe';

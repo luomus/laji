@@ -29,7 +29,7 @@ import { BookType } from 'xlsx';
 import { Global } from '../../../../environments/global';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
 import { ObservationTableSettingsComponent } from './observation-table-settings.component';
-import { DataFetchMode } from '../../../+observation/observation-data.service';
+import { DataFetchMode } from '../../../observation/observation-data.service';
 
 const replaceColSortLang = (sort: string, lang: string) => (
   (sort || '').replace(/%longLang%/g, {
@@ -332,11 +332,14 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   download(type: string) {
     this.downloadLoading = true;
     const columns = this.tableColumnService.getColumns(this._originalSelected);
+    const orderBy = [...this.orderBy];
+    if (this.defaultOrder) {
+      orderBy.push(this.defaultOrder);
+    }
     this.resultService.getAll(
       this.query,
       this.tableColumnService.getSelectFields(this.columnSelector.columns, this.query),
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      [...this.orderBy, this.defaultOrder!],
+      orderBy,
       this.mode
     ).pipe(
       switchMap(data => this.exportService.exportFromData(data.results, columns, type as BookType, 'laji-data'))

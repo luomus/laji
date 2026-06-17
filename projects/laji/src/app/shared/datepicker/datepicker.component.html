@@ -6,7 +6,7 @@
     class="ng-datepicker-input form-control input-sm"
     [value]="viewValue"
     (blur)="onInputValueChange(dateInput.value)"
-    (keyup)="keyEvent($event, dateInput.value)"
+    (keyup)="keyEvent(dateInput.value)"
     #dateInput>
     @if (viewValue !== '') {
       <span class="input-group-addon link clear" (click)="onInputValueChange('')">✕</span>

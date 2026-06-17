@@ -12,14 +12,14 @@ import { Observable, of } from 'rxjs';
 import * as Util from '../../../../../../laji/src/app/shared/utils';
 import equals from 'deep-equal';
 import { BsgApi } from '../../../bsg-shared/service/bsg-api';
-import { NoRecordingsResult, RecordingLoaderService } from '../../../+identification/service/recording-loader.service';
+import { NoRecordingsResult, RecordingLoaderService } from '../../../identification/service/recording-loader.service';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { DialogService } from '../../../../../../laji/src/app/shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AudioService } from '../../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
-import { AudioCacheLoaderService } from '../../../+identification/service/audio-cache-loader.service';
-import { getTranslateKeyWithTaxonType } from '../../../bsg-shared/pipe/translate-with-taxon-type.pipe';
 import { getDefaultSelectableTaxonTypes } from '../../../bsg-shared/service/bsg-utils';
+import { AudioCacheLoaderService } from '../../../identification/service/audio-cache-loader.service';
+import { getTranslateKeyWithTaxonType } from '../../../bsg-shared/pipe/translate-with-taxon-type.pipe';
 
 @Component({
     selector: 'bsg-identification-main',

@@ -14,7 +14,7 @@ import { IdService } from '../../../shared/service/id.service';
 import { UserService } from '../../../shared/service/user.service';
 import { filter, map, switchMap, take } from 'rxjs';
 import { Global } from '../../../../environments/global';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
     selector: 'laji-document-print',
@@ -41,7 +41,7 @@ export class DocumentPrintComponent implements AfterViewInit, OnChanges, OnDestr
   private interval?: Subscription;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private userService: UserService,
     private cd: ChangeDetectorRef,
     private appRef: ApplicationRef

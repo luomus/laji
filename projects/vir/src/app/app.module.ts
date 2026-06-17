@@ -25,11 +25,11 @@ import { FooterComponent } from './component/footer/footer.component';
 import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 import { VirAuthenticatedHttpInterceptor } from './service/vir-authenticated-http.interceptor';
-import { API_BASE_URL, LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { API_BASE_URL, LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { detectLangFromPath } from 'projects/laji/src/app/app.module';
-import { setLocale } from 'projects/laji/src/app/locale/locale.component';
+import { setLocale } from 'projects/laji/src/app/app-routing.modules';
 
-export function createLoggerLoader(api: LajiApiClientBService): ILogger {
+export function createLoggerLoader(api: LajiApiClientService): ILogger {
   if (environment.production) {
     return new HttpLogger(api);
   }
@@ -78,7 +78,7 @@ export function createLoggerLoader(api: LajiApiClientBService): ILogger {
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     {
       provide: Logger,
-      deps: [LajiApiClientBService],
+      deps: [LajiApiClientService],
       useFactory: createLoggerLoader
     },
     {

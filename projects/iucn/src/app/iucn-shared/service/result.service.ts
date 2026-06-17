@@ -3,8 +3,8 @@ import { forkJoin, Observable, of as ObservableOf } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs';
 import { TriplestoreLabelService } from '../../../../../laji/src/app/shared/service/triplestore-label.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api.d';
 import { ChecklistVersion } from './taxon.service';
 
 type RedListStatus = NonNullable<paths['/taxa/species/aggregate']['post']['requestBody']['content']['application/json']['latestRedListEvaluation.redListStatus']>;
@@ -115,7 +115,7 @@ export class ResultService {
   };
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private triplestoreLabelService: TriplestoreLabelService,
     private translationService: TranslateService
   ) { }

@@ -4,8 +4,8 @@ import { distinctUntilChanged, map } from 'rxjs';
 import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
 import { IdService } from '../../shared/service/id.service';
 import { UserService } from '../../shared/service/user.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api';
 
 export type StoreDocument = components['schemas']['store-document'];
 
@@ -86,7 +86,7 @@ export class DocumentViewerFacade {
   });
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private userService: UserService
   ) {}
 

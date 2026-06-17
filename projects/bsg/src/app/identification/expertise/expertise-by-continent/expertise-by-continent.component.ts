@@ -1,0 +1,44 @@
+import { Component, ChangeDetectionStrategy, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
+import { components } from 'projects/laji-api-client/generated/api.d';
+
+type BirdSongRecognitionSkillLevel = components['schemas']['store-birdSongRecognitionSkillLevel'];
+type BirdSongRecognitionSkillLevelEnum = BirdSongRecognitionSkillLevel['birdSongRecognitionSkillLevel'];
+
+@Component({
+    selector: 'bsg-expertise-by-continent',
+    templateUrl: './expertise-by-continent.component.html',
+    styleUrls: ['./expertise-by-continent.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
+})
+export class ExpertiseByContinentComponent implements OnChanges {
+  @Input() continents: {id: string; value: string}[] = [];
+  @Input() birdSongRecognitionSkillLevels: BirdSongRecognitionSkillLevel[] = [];
+  @Input() disabled = false;
+
+  skillLevelByContinent: Record<string, BirdSongRecognitionSkillLevelEnum> = {};
+
+  birdSongRecognitionSkillLevelOptions: {id: BirdSongRecognitionSkillLevelEnum; label: string}[] = [
+    {id: 'MA.birdSongRecognitionSkillLevelEnum1', label: 'expertise.birdSongRecognitionSkillLevel1'},
+    {id: 'MA.birdSongRecognitionSkillLevelEnum2', label: 'expertise.birdSongRecognitionSkillLevel2'},
+    {id: 'MA.birdSongRecognitionSkillLevelEnum3', label: 'expertise.birdSongRecognitionSkillLevel3'},
+    {id: 'MA.birdSongRecognitionSkillLevelEnum4', label: 'expertise.birdSongRecognitionSkillLevel4'}
+  ];
+
+  @Output() birdSongRecognitionSkillLevelsChange = new EventEmitter<BirdSongRecognitionSkillLevel[]>();
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.birdSongRecognitionSkillLevels) {
+      (this.birdSongRecognitionSkillLevels || []).forEach(level => {
+        this.skillLevelByContinent[level.birdSongRecognitionArea] = level.birdSongRecognitionSkillLevel;
+      });
+    }
+  }
+
+  selectChange() {
+    (this.birdSongRecognitionSkillLevels || []).forEach(level => {
+      level.birdSongRecognitionSkillLevel = this.skillLevelByContinent[level.birdSongRecognitionArea];
+    });
+    this.birdSongRecognitionSkillLevelsChange.emit(this.birdSongRecognitionSkillLevels);
+  }
+}

@@ -1,0 +1,64 @@
+import { filter, map, startWith } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { UserService } from '../shared/service/user.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
+import { getDescription, HeaderService } from '../shared/service/header.service';
+import { TranslateService } from '@ngx-translate/core';
+import { components } from 'projects/laji-api-client/generated/api.d';
+
+type Document = components['schemas']['store-document'];
+
+/* eslint-disable @angular-eslint/component-selector */
+@Component({
+    selector: 'haseka',
+    templateUrl: './haseka.component.html',
+    styleUrls: ['./haseka.component.scss'],
+    standalone: false
+})
+export class HasekaComponent implements OnInit, OnDestroy {
+
+  public email?: string;
+  public isFront = false;
+  public showLatest = true;
+
+  private subRoute!: Subscription;
+
+  constructor(
+    public userService: UserService,
+    public router: Router,
+    private documentViewerFacade: DocumentViewerFacade,
+    private headerService: HeaderService,
+    private translate: TranslateService
+  ) {
+  }
+
+  lang = this.translate.getCurrentLang();
+
+  ngOnInit() {
+    this.subRoute = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map(() => true),
+      startWith(true)
+    ).subscribe(() => {
+      this.isFront = this.router.isActive('/vihko/home', true);
+      this.showLatest = !this.router.isActive('/vihko/tools/import', true);
+    });
+
+    this.headerService.setHeaders({
+      description: getDescription(this.translate.instant('haseka.intro'))
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.subRoute) {
+      this.subRoute.unsubscribe();
+    }
+  }
+
+  showDocumentViewer(document: Document) {
+    this.documentViewerFacade.showDocument({document, own: true});
+  }
+
+}

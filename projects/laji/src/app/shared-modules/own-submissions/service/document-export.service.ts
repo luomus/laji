@@ -13,7 +13,7 @@ import { ExportService } from '../../../shared/service/export.service';
 import { DocumentField } from '../models/document-field';
 import { FeatureCollection } from 'geojson';
 import { Injectable } from '@angular/core';
-import type { components } from 'projects/laji-api-client-b/generated/api.d';
+import type { components } from 'projects/laji-api-client/generated/api.d';
 
 type Document = components['schemas']['store-document'];
 
@@ -390,8 +390,7 @@ export class DocumentExportService {
     }
 
     if (key.match(new RegExp('^' + this.valuePrefixes.collection + '\.[0-9]+$'))) {
-      return this.collectionService
-        .getName$(key, this.translate.getCurrentLang());
+      return this.collectionService.getName$(key);
     }
 
     return ObservableOf(key);

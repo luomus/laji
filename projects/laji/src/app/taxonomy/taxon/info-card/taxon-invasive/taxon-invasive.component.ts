@@ -1,0 +1,18 @@
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { components } from 'projects/laji-api-client/generated/api.d';
+
+type Taxon = components['schemas']['LajiBackendTaxon'];
+type TaxonDescription = components['schemas']['LajiBackendContent'][number];
+
+@Component({
+    selector: 'laji-taxon-invasive',
+    templateUrl: './taxon-invasive.component.html',
+    styleUrls: ['./taxon-invasive.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
+})
+export class TaxonInvasiveComponent {
+  @Input({ required: true }) taxon!: Taxon;
+  @Input() taxonDescription!: TaxonDescription[];
+
+}

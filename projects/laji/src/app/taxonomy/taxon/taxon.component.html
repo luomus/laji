@@ -1,0 +1,59 @@
+<laji-spinner [spinning]="loading" [overlay]="true">
+  <!-- loggedIn$ doesn't emit on the server so we need an explicit check here! -->
+  @if ((loggedIn$ | async) === false || isPlatformServer()) {
+    <div class="mr-5 ml-5 mt-5">
+      <h1>
+        <laji-taxon-name [taxon]="$any(taxon$ | async)" [addLink]="false"></laji-taxon-name>
+      </h1>
+      <lu-alert>
+        <div [innerHTML]="'taxonomy.notLoggedIn' | translate"></div>
+      </lu-alert>
+      <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
+    </div>
+  }
+  @if (taxon) {
+    @if (canShowTree) {
+      <lu-sidebar [open]="showTree" (toggled)="showTree = $event; updateRoute()">
+        <nav>
+          <laji-taxon-tree
+            [activeId]="taxon.id"
+            [activeTab]="infoCardTab"
+            [showHidden]="showHidden"
+            (routeUpdate)="updateRoute(undefined, undefined, undefined, showTree, undefined, $event.showHidden)"
+          ></laji-taxon-tree>
+        </nav>
+        <main>
+          <laji-technical-news></laji-technical-news>
+          <ng-container *ngTemplateOutlet="infoCard"></ng-container>
+        </main>
+      </lu-sidebar>
+    } @else {
+      <laji-info-card
+        [taxon]="taxon!"
+        [isFromMasterChecklist]="isFromMasterChecklist!"
+        [activeTab]="infoCardTab"
+        [context]="infoCardContext"
+        (routeUpdate)="updateRoute($event.id, $event.tab, $event.context, showTree, $event.replaceUrl)"
+        [class.sidebar-hidden]="!showTree && canShowTree"
+      ></laji-info-card>
+    }
+  }
+  @if (taxon === null) {
+    <div class="container-fluid">
+      <h1>
+        {{ 'taxonomy.notFound' | translate }}
+      </h1>
+    </div>
+  }
+</laji-spinner>
+
+<ng-template #infoCard>
+  <laji-info-card
+    [taxon]="taxon!"
+    [isFromMasterChecklist]="isFromMasterChecklist!"
+    [activeTab]="infoCardTab"
+    [context]="infoCardContext"
+    (routeUpdate)="updateRoute($event.id, $event.tab, $event.context, showTree, $event.replaceUrl)"
+    [class.sidebar-hidden]="!showTree && canShowTree"
+  ></laji-info-card>
+</ng-template>

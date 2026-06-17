@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ExportService } from '../../../shared/service/export.service';
 import { map, take } from 'rxjs';
 import { ExcelToolService } from './excel-tool.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Person = components['schemas']['SensitivePerson'];
 

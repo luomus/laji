@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { map, catchError, switchMap } from 'rxjs';
 import { of } from 'rxjs';
-import { HomeDataService } from '../../+home/home-data.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { HomeDataService } from '../../home/home-data.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
     selector: 'laji-technical-news',
@@ -19,5 +19,5 @@ export class TechnicalNewsComponent {
     catchError(() => of(null))
   );
 
-  constructor(private api: LajiApiClientBService, private homeDataService: HomeDataService) {}
+  constructor(private api: LajiApiClientService, private homeDataService: HomeDataService) {}
 }

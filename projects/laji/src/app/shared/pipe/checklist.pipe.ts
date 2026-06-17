@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AbstractLabelPipe } from './abstract-label.pipe';
 import { ChecklistService } from '../service/checklist.service';
 import { Observable, of } from 'rxjs';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Checklist = components['schemas']['store-checklist'];
 

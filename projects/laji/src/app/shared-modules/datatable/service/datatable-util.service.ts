@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { IdService } from '../../../shared/service/id.service';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { AreaService } from '../../../shared/service/area.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class DatatableUtil {
     private userService: UserService,
     private translate: TranslateService,
     private warehouseValueMappingService: WarehouseValueMappingService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   getVisibleValue(value: any, row: any, templateName: string): Observable<string> {

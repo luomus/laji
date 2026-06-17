@@ -23,7 +23,7 @@ export class NotFoundComponent implements OnInit {
 
   ngOnInit() {
     const url = this.router.url;
-    if (url.startsWith('/fi/')) {
+    if (url.startsWith('/fi/') || url.startsWith('/in/')) {
       this._redirecting = true;
       this.router.navigateByUrl(url.substr(3));
     }

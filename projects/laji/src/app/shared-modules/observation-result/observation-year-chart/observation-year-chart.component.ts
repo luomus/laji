@@ -14,8 +14,8 @@ import { Subscription } from 'rxjs';
 import { ChartDataset, ChartOptions, Tooltip } from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
 import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
 
 type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
@@ -53,7 +53,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   @Output() hasData = new EventEmitter<boolean>();
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private cd: ChangeDetectorRef,
     private translate: TranslateService,
     private localSt: LocalStorageService

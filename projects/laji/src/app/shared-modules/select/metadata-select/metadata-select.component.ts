@@ -14,7 +14,7 @@ import { BaseDataService } from '../../../graph-ql/service/base-data.service';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { IdType, SelectOption } from '../select/select.component';
-import { LajiApiClientBService } from '../../../../../../laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from '../../../../../../laji-api-client/src/laji-api-client.service';
 
 export enum SelectStyle {
   basic,
@@ -85,7 +85,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
   constructor(
     public warehouseMapper: WarehouseValueMappingService,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     protected adminStatusInfoPipe: AdminStatusInfoPipe,
     protected annotationService: AnnotationService,
     protected collectionService: CollectionService,
@@ -244,7 +244,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
         case 'KE.informationSystem':
           return this.sourceService.getAllAsLookUp().pipe(
             map(system => Object.keys(system).reduce<SelectOption[]>((total, current) => {
-              total.push({id: current, value: system[current].name});
+              total.push({id: current, value: system[current].name || current});
               return total;
             }, [])));
         default:
@@ -253,7 +253,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     }
     this._shouldSort = false;
     return this.baseDataService.getBaseData().pipe(
-      map(data => data.alts || []),
+      map(data => data.alts.results || []),
       map(alts => alts.find(alt => alt.id === this.alt)),
       map(alt => (alt && alt.options || []).map(option => ({id: option.id, value: option.label, info: this.addOptionInfo(option)}))),
       map(options => this.whiteList ? options.filter(option => this.whiteList?.includes(option.id)) : options),

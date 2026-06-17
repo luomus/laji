@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { Injectable, NgModule } from '@angular/core';
-import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
+import { PreloadingStrategy, ResolveFn, Route, RouterModule, Routes } from '@angular/router';
 import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from '../../../laji/src/app/locale/locale-en.component';
 import { catchError, flatMap } from 'rxjs';
@@ -8,6 +8,8 @@ import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-fo
 import { CheckLoginGuard } from '../../../laji/src/app/shared/guards/check-login.guard';
 import { LocaleEsComponent } from './locale/locale-es.component';
 import { LocaleFrComponent } from './locale/locale-fr.component';
+import { setLocale } from 'projects/laji/src/app/app-routing.modules';
+import { mapTo, take } from 'rxjs/operators';
 
 @Injectable()
 export class PreloadSelectedModulesList implements PreloadingStrategy {
@@ -22,46 +24,51 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    loadChildren: () => import('./+about/about.module').then(m => m.AboutModule),
+    loadChildren: () => import('./about/about.module').then(m => m.AboutModule),
     data: {preload: true, title: 'Bird & Bat Sounds Global'}
   },
   {
     path: 'validation',
-    loadChildren: () => import('./+validation/validation.module').then(m => m.ValidationModule),
+    loadChildren: () => import('./validation/validation.module').then(m => m.ValidationModule),
     data: {title: 'Bird & Bat Sounds Global'}
   },
   {
     path: 'identification',
-    loadChildren: () => import('./+identification/identification.module').then(m => m.IdentificationModule),
+    loadChildren: () => import('./identification/identification.module').then(m => m.IdentificationModule),
     data: {title: 'Bird & Bat Sounds Global'}
   },
   {
     path: 'bats/identification',
-    loadChildren: () => import('./+bat-identification/bat-identification.module').then(m => m.BatIdentificationModule),
+    loadChildren: () => import('./bat-identification/bat-identification.module').then(m => m.BatIdentificationModule),
     data: {title: 'Bird & Bat Sounds Global'}
   },
   {
     path: 'xeno-canto',
-    loadChildren: () => import('./+xeno-canto-identification/xeno-canto-identification.module').then(m => m.XenoCantoIdentificationModule),
+    loadChildren: () => import('./xeno-canto-identification/xeno-canto-identification.module').then(m => m.XenoCantoIdentificationModule),
     data: {title: 'Bird & Bat Sounds Global'}
   },
   {
     path: 'user',
-    loadChildren: () => import('./+user/user.module').then(m => m.UserModule)
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule)
   },
   {path: '**', component: NotFoundComponent}
 ];
 
+const localeResolver = (lang: string): ResolveFn<boolean> => () => setLocale(lang).pipe(
+  take(1),
+  mapTo(true)
+);
+
 const routesWithLang: Routes = [
-  {path: 'es', data: {lang: 'es'}, children: [
-      ...routes
-    ], component: LocaleEsComponent},
-  {path: 'fr', data: {lang: 'fr'}, children: [
-      ...routes
-    ], component: LocaleFrComponent},
-  {path: '', data: {lang: 'en'}, children: [
-      ...routes
-    ], component: LocaleEnComponent}
+  {path: 'es', children: [
+      ...routes,
+    ], component: LocaleEsComponent, resolve: { localeReady: localeResolver('es') }},
+  {path: 'fr', children: [
+      ...routes,
+    ], component: LocaleFrComponent, resolve: { localeReady: localeResolver('fr') }},
+  {path: '', children: [
+      ...routes,
+    ], component: LocaleEnComponent, resolve: { localeReady: localeResolver('en') }}
 ];
 
 const allRoutes: Routes = [

@@ -3,7 +3,7 @@ import { Observable, Observer, of as ObservableOf, throwError as observableThrow
 import { Injectable } from '@angular/core';
 import * as MapUtil from '@luomus/laji-map/lib/utils';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { isEmptyWarehouseQuery } from '../../../shared/api/util';
 
 type Grid = '100kmCenter'
@@ -24,7 +24,7 @@ export class YkjService {
   private pendingKey?: string;
 
   constructor(
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   getGeoJson(query: WarehouseQueryInterface, grid: Grid = '10kmCenter', key?: string,
