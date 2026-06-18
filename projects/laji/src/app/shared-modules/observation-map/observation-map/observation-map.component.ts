@@ -59,6 +59,7 @@ import { Coordinates } from './observation-map-table/observation-map-table.compo
 import { BoxCache } from './box-cache';
 import { Router } from '@angular/router';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { DataFetchMode } from '../../../observation/observation-data.service';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
@@ -105,6 +106,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(LajiMapComponent) lajiMap!: LajiMapComponent;
   @ViewChild('mapContainer', { static: false }) mapContainerElem!: ElementRef;
 
+  @Input() dataMode: DataFetchMode = 'unit';
   @Input() visible = false;
   @Input() query: any;
   // Zoom levels from lowest to highest when to move to more accurate grid.
@@ -389,7 +391,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getPoints$(query: WarehouseQueryInterface): Observable<FeatureCollection> {
-    return this.api.get('/warehouse/query/unit/aggregate', {
+    const endpoint = this.dataMode === 'unit' ? '/warehouse/query/unit/aggregate' : '/warehouse/query/sample/aggregate';
+    return this.api.get(endpoint, {
       query: {
         ...query as any,
         featureType: 'CENTER_POINT',
@@ -433,7 +436,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getBoxQuery$(query: WarehouseQueryInterface, aggregateBy: string[], page: number): Observable<AggregateQueryResponse> {
-    return this.api.get('/warehouse/query/unit/aggregate', {
+    const endpoint = this.dataMode === 'unit' ? '/warehouse/query/unit/aggregate' : '/warehouse/query/sample/aggregate';
+    return this.api.get(endpoint, {
       query: {
         ...query as any,
         aggregateBy,
@@ -635,7 +639,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     this.loading = true;
     this.cdr.markForCheck();
 
-    return this.api.get('/warehouse/query/unit/count', { query: query as any }).pipe(
+    const endpoint = this.dataMode === 'unit' ? '/warehouse/query/unit/count' : '/warehouse/query/sample/count';
+    return this.api.get(endpoint, { query: query as any }).pipe(
       switchMap(res => {
         if (!res.total) {
           return of({
