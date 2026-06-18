@@ -12597,7 +12597,7 @@ export interface components {
              * Type of result service
              * @enum {string}
              */
-            resultServiceType: "" | "MHL.resultServiceTypeLineTransect" | "MHL.resultServiceTypeNafi" | "MHL.resultServiceTypeBirdPointCount" | "MHL.resultServiceTypeWinterBirdCount" | "MHL.resultServiceTypeSykeInsectProjects" | "MHL.resultServiceTypeInvasiveControl" | "MHL.resultServiceTypeCompleteLists" | "MHL.resultServiceTypeWaterBirdCount";
+            resultServiceType: "" | "MHL.resultServiceTypeLineTransect" | "MHL.resultServiceTypeNafi" | "MHL.resultServiceTypeBirdPointCount" | "MHL.resultServiceTypeWinterBirdCount" | "MHL.resultServiceTypeSykeInsectProjects" | "MHL.resultServiceTypeInvasiveControl" | "MHL.resultServiceTypeCompleteLists" | "MHL.resultServiceTypeWaterBirdCount" | "MHL.resultServiceTypeArchipelagoBirdCensus";
             /**
              * Save error message
              * @description Message shown when document save failed
