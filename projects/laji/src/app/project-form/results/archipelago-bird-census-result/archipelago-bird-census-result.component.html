@@ -1,0 +1,43 @@
+<div class="container-fluid">
+  <laji-project-form-header [form]="form"></laji-project-form-header>
+  <div class="row">
+    @if (state$ | async; as state) {
+      <laji-navigation-thumbnail
+        name="birdPointCount.stats.chart.title"
+        icon="wb_icon_laskennat"
+        iconType="png"
+        [query]="{tab: Tabs.censuses, taxon: state.taxon}"
+        >
+      </laji-navigation-thumbnail>
+      <laji-navigation-thumbnail
+        name="birdPointCount.stats.map.title"
+        icon="wb_icon_map_2"
+        iconType="png"
+        [query]="{tab: Tabs.map, taxon: state.taxon}"
+        >
+      </laji-navigation-thumbnail>
+    }
+  </div>
+  @if (state$ | async; as state) {
+    @if (state.tab === Tabs.censuses) {
+      <div>
+      </div>
+    }
+    @if (state.tab === Tabs.map) {
+      <div>
+        <laji-result-map
+          [collections]="collections"
+          [taxon]="state.taxon"
+          (taxonChange)="onTaxonChange($event)"
+          [taxonOptions]="taxonOptions$ | async"
+          [year]="state.year"
+          (yearChange)="onYearChange($event)"
+          [mapQuery]="mapQuery"
+          gatheringCountLabel="laji-map.legend.mode.birdGatheringCount"
+          [collectionStartYear]="2019"
+          >
+        </laji-result-map>
+      </div>
+    }
+  }
+</div>

@@ -51,6 +51,11 @@ type Form = components['schemas']['Form'];
             <laji-bird-point-count-result [form]="(form$ | async)!"></laji-bird-point-count-result>
           </div>
         }
+        @case ('MHL.resultServiceTypeArchipelagoBirdCensus') {
+          <div>
+            <laji-archipelago-bird-census-result [form]="(form$ | async)!"></laji-archipelago-bird-census-result>
+          </div>
+        }
       }
     </div>
     `,

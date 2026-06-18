@@ -59,6 +59,7 @@ import { BiomonResultStatisticsComponent } from './biomon-result/biomon-result-s
 import { BirdPointCountResultComponent } from './bird-point-count-result/bird-point-count-result.component';
 import { BirdPointCountResultChartComponent } from './bird-point-count-result/bird-point-count-result-chart/bird-point-count-result-chart.component';
 import { WaterBirdCountResultComponent } from './water-bird-count-result/water-bird-count-result.component';
+import { ArchipelagoBirdCensusResultComponent } from './archipelago-bird-census-result/archipelago-bird-census-result.component';
 import { ResultMapComponent } from './common/result-map/result-map.component';
 
 @NgModule({
@@ -119,6 +120,7 @@ import { ResultMapComponent } from './common/result-map/result-map.component';
     BirdPointCountResultComponent,
     BirdPointCountResultChartComponent,
     WaterBirdCountResultComponent,
+    ArchipelagoBirdCensusResultComponent,
     ResultMapComponent
   ],
   providers: [
