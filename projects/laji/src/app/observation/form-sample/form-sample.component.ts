@@ -69,4 +69,12 @@ export class FormSampleComponent extends ObservationFormComponent {
     this.query[factKey] = facts;
     super.onQueryChange();
   }
+
+  get keywords(): string {
+    return (this.query.keyword ?? []).join(',');
+  }
+
+  set keywords(k: string) {
+    this.query.keyword = k.split(',');
+  }
 }
