@@ -287,7 +287,9 @@ export class NpEditFormComponent implements OnInit {
           prepopulatedNamedPlace[area] = undefined;
         }
       });
-      prepopulatedNamedPlace.collectionID = documentForm.collectionID;
+      if (placeForm.id !== 'MHL.103') {
+        prepopulatedNamedPlace.collectionID = documentForm.collectionID;
+      }
       return prepopulatedNamedPlace;
     }
   }
