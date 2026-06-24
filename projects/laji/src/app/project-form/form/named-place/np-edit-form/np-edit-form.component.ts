@@ -287,7 +287,10 @@ export class NpEditFormComponent implements OnInit {
           prepopulatedNamedPlace[area] = undefined;
         }
       });
-      prepopulatedNamedPlace.collectionID = documentForm.collectionID;
+      const allowedCollectionIdValues = (placeForm.uiSchema?.collectionID as any)?.['ui:options']?.enumOptions?.map((o: any) => o.value);
+      if (!allowedCollectionIdValues || allowedCollectionIdValues.includes(documentForm.collectionID)) {
+        prepopulatedNamedPlace.collectionID = documentForm.collectionID;
+      }
       return prepopulatedNamedPlace;
     }
   }
