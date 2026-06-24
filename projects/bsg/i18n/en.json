@@ -315,6 +315,7 @@
   "xenoCantoExport.funding": "Funding",
   "xenoCantoExport.funding.info": "Organisations or individuals who funded the creation of the resource",
   "xenoCantoExport.includeExported": "Include already exported annotations",
+  "xenoCantoExport.includeExported.info": "Check this option to include annotations that have already been exported. This is useful if you have deleted the exported annotation sets in Xeno-Canto and want to re-export them, for example after editing your annotations.",
   "xenoCantoExport.noAnnotations": "There are no annotations to export. Either all annotations have already been exported or you haven't made any annotations yet.",
   "xenoCantoExport.projectName": "Project name",
   "xenoCantoExport.projectName.info": "Title or name of a project that contributed to the annotation set",
