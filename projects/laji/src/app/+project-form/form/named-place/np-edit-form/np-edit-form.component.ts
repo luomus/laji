@@ -286,7 +286,8 @@ export class NpEditFormComponent implements OnInit {
           prepopulatedNamedPlace[area] = undefined;
         }
       });
-      if (placeForm.id !== 'MHL.103') {
+      const allowedCollectionIdValues = (placeForm.uiSchema?.collectionID as any)?.['ui:options']?.enumOptions?.map((o: any) => o.value);
+      if (!allowedCollectionIdValues || allowedCollectionIdValues.includes(documentForm.collectionID)) {
         prepopulatedNamedPlace.collectionID = documentForm.collectionID;
       }
       return prepopulatedNamedPlace;
