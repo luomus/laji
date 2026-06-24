@@ -122,6 +122,7 @@ export interface Recording extends Audio {
   xRange: number[];
   site: Site;
   locality?: string;
+  recordist?: string;
   targetSpecies?: Species;
   taxonType: TaxonTypeEnum;
 }
@@ -206,6 +207,7 @@ export interface IdentificationHistoryQuery {
   taxonTypes?: TaxonTypeEnum[];
   hasBoxes?: boolean;
   exportedToXenoCanto?: boolean;
+  recordist?: string;
   taxonomyList?: TaxonomyListEnum;
 }
 

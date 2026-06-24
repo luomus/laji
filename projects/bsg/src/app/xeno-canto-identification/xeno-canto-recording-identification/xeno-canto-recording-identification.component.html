@@ -7,8 +7,17 @@
     <div class="identification-alert-container">
       <lu-alert type="danger" [dismissible]="false">{{ 'identification.genericError' | translate }}</lu-alert>
     </div>
-  } @else if (recording && annotation) {
+  } @else if (recording() && annotation) {
     <div class="identification-view-container">
+      @if (recordistMismatch()) {
+        <div class="identification-view-alerts">
+          <lu-alert class="mb-0" type="warning">
+            The recordist {{ recording()!.recordist }} does not match your Xeno-Canto user name in
+            <a [routerLink]="['/user'] | localize" target="_blank">the profile</a>.
+            You can annotate the recording, but you cannot export the annotation to Xeno-Canto.
+          </lu-alert>
+        </div>
+      }
       <div class="identification-nav">
         <div class="button-container">
           <button class="btn btn-success" [disabled]="saving || loading || loadingXenoCantoApiKey" (click)="saveAnnotation()">{{ 'save' | translate }}</button>
@@ -18,7 +27,7 @@
 
       <bsg-identification-view
         class="flex-container"
-        [recording]="recording"
+        [recording]="recording()!"
         [(annotation)]="annotation"
         [taxonomyList]="taxonomyList"
         [buttonsDisabled]="saving || loading || loadingXenoCantoApiKey"

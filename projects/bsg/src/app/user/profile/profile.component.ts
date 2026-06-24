@@ -10,6 +10,7 @@ import { components } from 'projects/laji-api-client/generated/api.d';
 import { XenoCantoAnnotationSet } from '../../bsg-shared/models';
 import { xenoCantoLicenses } from '../../bsg-shared/variables';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
+import { DialogService } from '../../../../../laji/src/app/shared/service/dialog.service';
 
 type Profile = components['schemas']['store-profile'];
 type Person = components['schemas']['Person'];
@@ -33,6 +34,7 @@ type ProfileWithSettings = Profile & {
 export class ProfileComponent implements OnInit, OnDestroy {
   profile?: ProfileWithSettings;
   loading = true;
+  hasError = false;
   personSelfUrl = '/';
   licenseOptions = xenoCantoLicenses;
 
@@ -43,6 +45,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private api: LajiApiClientService,
     private userService: UserService,
+    private dialogService: DialogService
   ) {
     this.personSelfUrl = environment.selfPage;
   }
@@ -59,7 +62,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.cdr.markForCheck();
       },
       error: err => {
-        this.logger.warn('Failed to init profile', err);
+        this.logger.error('Failed to init profile', err);
+        this.hasError = true;
         this.loading = false;
         this.cdr.markForCheck();
       }
@@ -80,7 +84,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.cdr.markForCheck();
       },
-      error: err => this.logger.warn('Failed to save profile', err)
+      error: err => {
+        this.logger.error('Failed to save profile', err);
+        this.dialogService.alert('identification.genericError');
+        this.loading = false;
+        this.cdr.markForCheck();
+      }
     });
   }
 
@@ -94,6 +103,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     return {
       ...profile,
+      xenoCantoUserName: profile.xenoCantoUserName || user?.fullName,
       settings: {
         ...(profile.settings || {}),
         defaultXenoCantoAnnotationSetMetadata: currentAnnotationSet || defaultAnnotationSet

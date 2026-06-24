@@ -1,8 +1,8 @@
 import {
   Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy, OutputRefSubscription, ViewChild,
-  TemplateRef
+  TemplateRef, signal, computed, effect
 } from '@angular/core';
-import { catchError, Observable, of, Subscription, switchMap, tap, throwError } from 'rxjs';
+import { catchError, combineLatest, Observable, of, Subscription, switchMap, tap, throwError } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import {
   IdentificationMainComponent
@@ -42,7 +42,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
   @ViewChild('noApiKeyTpl', { static: true }) noApiKeyTpl!: TemplateRef<any>;
   @ViewChild('invalidApiKeyTpl', { static: true }) invalidApiKeyTpl!: TemplateRef<any>;
 
-  recording?: Recording;
+  recording = signal<Recording | undefined>(undefined);
   annotation?: RecordingAnnotation;
   taxonomyList = TaxonomyListEnum.xenoCanto;
 
@@ -53,11 +53,17 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
   recordingNotFound = false;
   recordingId = '';
   hasUnsavedChanges = false;
+  recordistMismatch = computed(() => !!this.recording() && this.recording()?.recordist !== this.recordist());
 
   private originalAnnotation?: RecordingAnnotation;
+
+  private userName = signal<string | undefined>(undefined);
+  private xenoCantoUserName = signal<string | undefined>(undefined);
+  private recordist = computed(() => this.xenoCantoUserName() || this.userName());
+
   private defaultAnnotationSetMetadata?: Partial<XenoCantoAnnotationSet>;
 
-  private recordingSub?: Subscription;
+  private initSub?: Subscription;
   private exportModalRef?: ModalRef<XenoCantoExportFormComponent>;
   private exportModalSub?: OutputRefSubscription;
   private cancelModalSub?: OutputRefSubscription;
@@ -71,12 +77,19 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
     private modalService: ModalService,
     private api: LajiApiClientService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    effect(() => {
+      const recordist = this.recordist();
+      if (this.exportModalRef?.content) {
+        this.exportModalRef.content.recordist.set(recordist);
+      }
+    });
+  }
 
   ngOnInit() {
-    this.recordingSub = this.route.params.pipe(
+    const recording$ = this.route.params.pipe(
       tap(() => {
-        this.recording = undefined;
+        this.recording.set(undefined);
         this.annotation = undefined;
         this.originalAnnotation = undefined;
         this.loading = true;
@@ -95,11 +108,18 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
       switchMap(id => this.bsgApi.getIdentificationXenoCantoRecording(
         this.userService.getToken(), this.translate.getCurrentLang(), id
       ))
-  ).subscribe({
-      next: (result) => {
-        this.recording = result?.recording;
+    );
+    const userName$ = this.userService.user$.pipe(map(user => user?.fullName));
+    const xcApiKey$ = this.getXenoCantoApiKey();
+
+    this.initSub = combineLatest([recording$, userName$, xcApiKey$]).subscribe({
+      next: ([result, userName, xcApiKey]) => {
+        this.recording.set(result?.recording);
         this.annotation = result ? (result.annotation || {}) : undefined;
         this.originalAnnotation = clone(this.annotation);
+
+        this.userName.set(userName);
+
         this.loading = false;
         this.cdr.markForCheck();
       },
@@ -116,7 +136,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
   }
 
   ngOnDestroy() {
-    this.recordingSub?.unsubscribe();
+    this.initSub?.unsubscribe();
     this.exportModalSub?.unsubscribe();
     this.cancelModalSub?.unsubscribe();
     this.exportModalRef?.hide();
@@ -135,11 +155,14 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
         this.exportModalRef = this.modalService.show(XenoCantoExportFormComponent, {
           size: 'xl',
           initialState: {
-            siteId: this.recording?.site?.id,
             defaultAnnotationSetMetadata: this.defaultAnnotationSetMetadata
           },
           noClose: true
         });
+
+        const content = this.exportModalRef.content!;
+        content.siteId.set(this.recording()?.site?.id);
+        content.recordist.set(this.recordist());
 
         this.exportModalSub = this.exportModalRef.content!.submitForm.subscribe((data: XenoCantoExportData) => {
           this.exportToXenoCanto(data);
@@ -182,7 +205,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
   private doSave(): Observable<SuccessResult> {
     this.saving = true;
 
-    return this.bsgApi.saveRecordingAnnotation(this.userService.getToken(), this.recording!.id, this.annotation!).pipe(
+    return this.bsgApi.saveRecordingAnnotation(this.userService.getToken(), this.recording()!.id, this.annotation!).pipe(
       tap(() => {
         this.originalAnnotation = clone(this.annotation);
         this.hasUnsavedChanges = false;
@@ -193,7 +216,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
         const msg = BsgApi.getErrorMessage(err);
         if (msg === BsgErrorEnum.invalidRecordingAnnotation) {
           this.dialogService.alert(this.translate.instant(
-            getTranslateKeyWithTaxonType('identification.nextRecording.validation', this.recording?.taxonType)
+            getTranslateKeyWithTaxonType('identification.nextRecording.validation', this.recording()?.taxonType)
           ));
         } else {
           this.dialogService.alert(this.translate.instant('expertise.error'));
@@ -211,6 +234,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
 
     return this.api.get('/person/profile').pipe(
       tap(profile => {
+        this.xenoCantoUserName.set(profile.xenoCantoUserName);
         this.defaultAnnotationSetMetadata = profile.settings?.defaultXenoCantoAnnotationSetMetadata as Partial<XenoCantoAnnotationSet> | undefined;
       }),
       map(profile => profile.xenoCantoApiKey),
@@ -267,7 +291,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
   private performExport(data: XenoCantoExportData): Observable<SuccessResult> {
     return this.getXenoCantoApiKey().pipe(
       switchMap(
-        (apiKey) => this.bsgApi.exportToXenoCanto(this.userService.getToken(), apiKey, data)
+        (apiKey) => this.bsgApi.exportToXenoCanto(this.userService.getToken(), apiKey, this.recordist()!, data)
       )
     );
   }

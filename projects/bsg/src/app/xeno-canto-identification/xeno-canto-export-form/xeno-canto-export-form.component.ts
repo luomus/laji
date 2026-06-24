@@ -6,7 +6,8 @@ import {
   OnDestroy,
   OnInit,
   output, Signal,
-  signal
+  signal,
+  untracked
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
@@ -43,7 +44,8 @@ type ExportForm = {
     providers: [ScrollbarHelper, DimensionsHelper, ColumnChangesService]
 })
 export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
-  siteId?: number;
+  siteId = signal<number | undefined>(undefined);
+  recordist = signal<string | undefined>(undefined);
   defaultAnnotationSetMetadata?: Partial<XenoCantoAnnotationSet>;
   exportLoading = signal(false);
 
@@ -54,7 +56,11 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
   annotationsLoading = signal(false);
   annotationsError = signal(false);
 
-  query = signal<IdentificationHistoryQuery>({});
+  page = signal(1);
+  orderBy = signal<string[] | undefined>(undefined);
+  exportedToXenoCanto = signal<boolean | undefined>(false);
+
+  query: Signal<IdentificationHistoryQuery>;
   data = signal<PagedResult<IdentificationHistoryResponse> | undefined>(undefined);
 
   licenseOptions = xenoCantoLicenses;
@@ -88,12 +94,34 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
     this.totalAnnotations = computed(() => this.data()?.total);
     this.totalBoxCount = computed(() => this.getTotalBoxCount(this.data()?.results));
 
+    this.query = computed<IdentificationHistoryQuery>(() => ({
+      page: this.page(),
+      orderBy: this.orderBy(),
+      includeSkipped: false,
+      hasBoxes: true,
+      exportedToXenoCanto: this.exportedToXenoCanto(),
+      site: this.siteId(),
+      taxonomyList: TaxonomyListEnum.xenoCanto,
+      recordist: this.recordist()
+    }));
+
     effect(() => {
       if (this.annotationsLoading() || this.annotationsError()) {
         this.form.disable();
       } else {
         this.form.enable();
       }
+    });
+
+    effect(() => {
+      this.siteId();
+      this.recordist();
+      this.orderBy();
+      this.exportedToXenoCanto();
+
+      untracked(() => {
+        this.page.set(1);
+      });
     });
 
     effect(() => {
@@ -110,7 +138,6 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
         }
       }
     }
-    this.updateQuery();
   }
 
   ngOnDestroy() {
@@ -118,17 +145,17 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
   }
 
   onPageChange(page: number) {
-    this.query.set({ ...this.query(), page });
+    this.page.set(page);
   }
 
   onSortChange(sorts: DatatableSort[]) {
     const orderBy = sorts.map(sort => sort.prop + ' ' + sort.dir.toUpperCase());
-    this.query.set({ ...this.query(), page: 1, orderBy });
+    this.orderBy.set(orderBy);
   }
 
   onIncludeExportedChange() {
     const includeExported = this.form.controls.includeExported.value;
-    this.query.set({ ...this.query(), page: 1, exportedToXenoCanto: includeExported ? undefined : false });
+    this.exportedToXenoCanto.set(includeExported ? undefined : false);
   }
 
   onSubmit() {
@@ -191,16 +218,5 @@ export class XenoCantoExportFormComponent implements OnInit, OnDestroy {
 
   private getSpeciesBoxCount(species: IdentificationHistorySpecies[]): number {
     return species.reduce((sum, s) => sum + (s.boxCount || 0), 0);
-  }
-
-  private updateQuery() {
-    this.query.set({
-      page: 1,
-      includeSkipped: false,
-      hasBoxes: true,
-      exportedToXenoCanto: false,
-      site: this.siteId,
-      taxonomyList: TaxonomyListEnum.xenoCanto
-    });
   }
 }

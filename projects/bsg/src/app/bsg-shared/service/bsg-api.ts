@@ -251,9 +251,9 @@ export class BsgApi {
     return this.httpClient.get<PagedResult<IdentificationHistoryResponse>>(path, { params });
   }
 
-  public exportToXenoCanto(personToken: string, xenoCantoApiKey: string, data: XenoCantoExportData): Observable<SuccessResult> {
+  public exportToXenoCanto(personToken: string, xenoCantoApiKey: string, xenoCantoUserName: string, data: XenoCantoExportData): Observable<SuccessResult> {
     const path = this.basePath + '/identification/xeno-canto/export';
-    const params = new HttpParams().set('personToken', personToken).set('xenoCantoApiKey', xenoCantoApiKey);
+    const params = new HttpParams().set('personToken', personToken).set('xenoCantoApiKey', xenoCantoApiKey).set('xenoCantoUserName', xenoCantoUserName);
 
     return this.httpClient.post<SuccessResult>(path, data, { params });
   }
