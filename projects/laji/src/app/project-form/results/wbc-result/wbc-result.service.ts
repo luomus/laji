@@ -298,6 +298,7 @@ export class WbcResultService {
       page: 1,
       onlyCount: false
     };
+    delete unitQuery!['orderBy'];
     return this.getList(
       this.api.get('/warehouse/query/unit/statistics', { query: unitQuery })
     ).pipe(
