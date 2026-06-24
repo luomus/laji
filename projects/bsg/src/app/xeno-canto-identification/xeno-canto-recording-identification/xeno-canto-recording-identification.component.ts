@@ -119,6 +119,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
     this.recordingSub?.unsubscribe();
     this.exportModalSub?.unsubscribe();
     this.cancelModalSub?.unsubscribe();
+    this.exportModalRef?.hide();
   }
 
   openExportModal() {
