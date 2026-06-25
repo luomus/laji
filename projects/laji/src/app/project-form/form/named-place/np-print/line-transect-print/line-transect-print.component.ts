@@ -5,7 +5,7 @@ import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/
 import { convertWgs84ToYkj } from '../../../../../root/coordinate-utils';
 import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
 import { components } from 'projects/laji-api-client/generated/api.d';
-import { LineString } from 'geojson';
+import { LineString, MultiLineString, Position } from 'geojson';
 
 type NamedPlace = components['schemas']['store-namedPlace'];
 
@@ -89,7 +89,7 @@ export class LineTransectPrintComponent implements OnChanges {
 
   onMapLoad() {
     const geometries = this.getGeometry();
-    if (!Array.isArray(geometries.coordinates)) {
+    if (!Array.isArray(geometries?.coordinates)) {
       return;
     }
     const baseDoc: any = this.namedPlace.prepopulatedDocument || {};
@@ -175,13 +175,20 @@ export class LineTransectPrintComponent implements OnChanges {
   private initMapOptions() {
     const geometry = this.getGeometry();
     this.checkOrientation(geometry);
+    const lineTransect = geometry
+      ? {
+        printMode: true,
+        feature: {
+          type: 'Feature',
+          properties: {},
+          geometry
+        }
+      }
+      : undefined;
     this.lajiMapOptions = {
       tileLayerName: TileLayerName.maastokartta,
       tileLayerOpacity: 0.5,
-      lineTransect: {
-        printMode: true,
-        feature: {type: 'Feature', properties: {}, geometry}
-      }
+      lineTransect
     };
   }
 
@@ -193,9 +200,9 @@ export class LineTransectPrintComponent implements OnChanges {
     };
   }
 
-  private checkOrientation(geometries: any) {
+  private checkOrientation(geometries: MultiLineString | undefined) {
     let minX = 999, maxX = 0, minY = 999, maxY = 0;
-    geometries.coordinates.forEach((coord: any) => {
+    geometries?.coordinates.forEach((coord: any) => {
       if (Array.isArray(coord) && Array.isArray(coord[0]) && typeof coord[0][0] === 'number') {
         coord.forEach(point => {
           if (point[0] > maxX) {
@@ -219,11 +226,13 @@ export class LineTransectPrintComponent implements OnChanges {
     this.landscape = diffX > diffY;
   }
 
-  private getGeometry(): any {
+  private getGeometry(): MultiLineString | undefined {
     if (this.namedPlace.prepopulatedDocument && this.namedPlace.prepopulatedDocument.gatherings) {
-      return {type: 'MultiLineString', coordinates: this.namedPlace.prepopulatedDocument.gatherings.map(item => (item.geometry as LineString).coordinates)};
+      return {
+        type: 'MultiLineString',
+        coordinates: this.namedPlace.prepopulatedDocument.gatherings.map(item => (item.geometry as LineString).coordinates)
+      };
     }
-    return {};
+    return undefined;
   }
-
 }
