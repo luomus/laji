@@ -6,24 +6,34 @@
         name="birdPointCount.stats.chart.title"
         icon="wb_icon_laskennat"
         iconType="png"
-        [query]="{tab: Tabs.censuses, taxon: state.taxon}"
+        [query]="{tab: Tabs.statistics}"
         >
       </laji-navigation-thumbnail>
       <laji-navigation-thumbnail
         name="birdPointCount.stats.map.title"
         icon="wb_icon_map_2"
         iconType="png"
-        [query]="{tab: Tabs.map, taxon: state.taxon}"
+        [query]="{tab: Tabs.map}"
         >
       </laji-navigation-thumbnail>
     }
   </div>
   @if (state$ | async; as state) {
-    @if (state.tab === Tabs.censuses) {
+    @if (isStatisticsState(state)) {
       <div>
+        <laji-archipelago-bird-census-result-stats
+          [collectionStartYear]="2019"
+          [year]="state.year"
+          (yearChange)="onYearChange($event)"
+          [route]="state.route"
+          (routeChange)="onRouteChange($event)"
+          [namedPlace]="state.namedPlace"
+          (namedPlaceChange)="onNamedPlaceChange($event)"
+          >
+        </laji-archipelago-bird-census-result-stats>
       </div>
     }
-    @if (state.tab === Tabs.map) {
+    @if (isMapState(state)) {
       <div>
         <laji-result-map
           [collections]="collections"

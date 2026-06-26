@@ -1,0 +1,57 @@
+<div class="d-flex flex-row gap-4 mb-4">
+  @if (userData$ | async; as data) {
+    @if (data.loggedIn) {
+      <div class="select-container mr-4">
+        <label>{{ 'archipelago.stats.year.label' | translate }}</label>
+        @if (yearOptions) {
+          <select class="form-control" (change)="onYearChange($event)" [(ngModel)]="defaultYear">
+            @for (option of yearOptions; track option) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        } @else {
+          <laji-spinner class="d-block m-6"></laji-spinner>
+        }
+      </div>
+      <div class="select-container mx-4">
+        <label>{{ 'archipelago.stats.route.label' | translate }}</label>
+          @if (routeOptions$ | async; as routeOptions) {
+            <select class="form-control" (change)="onRouteChange($event)" [(ngModel)]="defaultRoute">
+              <option value="">{{ 'archipelago.stats.route.empty.label' | translate }}</option>
+              @for (option of routeOptions; track option) {
+                <option [value]="option.value">{{ option.label }}</option>
+              }
+            </select>
+          } @else {
+            <laji-spinner class="d-block m-6"></laji-spinner>
+          }
+      </div>
+      <div class="select-container mx-4">
+        <label>{{ 'archipelago.stats.namedPlaces.label' | translate }}</label>
+        @if (namedPlaceOptions$ | async; as namedPlaceOptions) {
+          <select class="form-control" (change)="onNamedPlaceChange($event)" [(ngModel)]="defaultNamedPlace">
+            <option value="">{{ 'archipelago.stats.namedPlaces.empty.label' | translate }}</option>
+            @for (option of namedPlaceOptions; track option) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        } @else {
+          <laji-spinner class="d-block m-6"></laji-spinner>
+        }
+      </div>
+    }@else {
+      <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate
+        }}</lu-button>
+    }
+  }
+</div>
+
+<div class="mt-5">
+  <laji-datatable
+    [rows]="(rows$ | async) ?? []"
+    [loading]="(loading$ | async) ?? true"
+    [columns]="columns"
+    [virtualScrolling]="false"
+  >
+  </laji-datatable>
+</div>

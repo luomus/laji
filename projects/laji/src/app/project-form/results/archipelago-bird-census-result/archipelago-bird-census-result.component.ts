@@ -7,16 +7,25 @@ import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-clie
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
 enum Tabs {
-  censuses = 'censuses',
+  statistics = 'statistics',
   // eslint-disable-next-line
   map = 'map'
 }
 
-interface State {
+interface StatisticsState {
+  tab: Tabs.statistics;
+  year: string | undefined;
+  route: string | undefined;
+  namedPlace: string | undefined;
+}
+
+interface MapState {
   tab: Tabs;
   taxon: string | undefined;
   year: string | undefined;
 }
+
+type State = StatisticsState | MapState;
 
 type Form = components['schemas']['Form'];
 
@@ -46,6 +55,8 @@ export class ArchipelagoBirdCensusResultComponent implements OnInit, OnDestroy {
   state$!: Observable<State>;
   collections: string[] = ['HR.6920'];
   taxonOptions$!: Observable<{ label: string; value: string }[]>;
+  isStatisticsState = (state: State): state is StatisticsState => state.tab === Tabs.statistics;
+  isMapState = (state: State): state is MapState => state.tab === Tabs.map;
   mapQuery: WarehouseQueryInterface = {
     includeSubCollections: false,
     gatheringCounts: true, cache: true, countryId: ['ML.206']
@@ -64,7 +75,7 @@ export class ArchipelagoBirdCensusResultComponent implements OnInit, OnDestroy {
     this.state$ = this.route.queryParams as Observable<State>;
     this.defaultTabSubscription = this.state$.subscribe(({ tab }) => {
       if (!Tabs[tab]) {
-        this.router.navigate([], { queryParams: { tab: Tabs.censuses } });
+        this.router.navigate([], { queryParams: { tab: Tabs.statistics } });
       }
     });
     this.taxonOptions$ = this.getOptionsByTaxonSet$(archipelagoTaxonSets);
@@ -121,5 +132,13 @@ export class ArchipelagoBirdCensusResultComponent implements OnInit, OnDestroy {
 
   onYearChange(year: any) {
     this.updateState({ year });
+  }
+
+  onRouteChange(route: any) {
+    this.updateState({ route, namedPlace: undefined });
+  }
+
+  onNamedPlaceChange(namedPlace: any) {
+    this.updateState({ namedPlace });
   }
 }
