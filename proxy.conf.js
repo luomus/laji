@@ -1,7 +1,10 @@
 require('dotenv').config();
 
+if (!process.env.API_BASE) {
+  throw new Error("'API_BASE' env variable not configured See README.md for instructions.")
+}
 const proxyConfig = {
-  target:  process.env.API_BASE || "https://dev.laji.fi/api",
+  target:  process.env.API_BASE,
   changeOrigin: true,
   xfwd: true,
   secure: false,
