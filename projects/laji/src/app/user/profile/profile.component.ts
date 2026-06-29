@@ -6,6 +6,11 @@ import { Observable, forkJoin as ObservableForkJoin, Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
+import { TranslatePipe } from '@ngx-translate/core';
+import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
+import { SharedModule } from '../../shared/shared.module';
+import { FindPersonModule } from '../../shared-modules/find-person/find-person.module';
+import { FriendsComponent } from '../friends/friends.component';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { components } from 'projects/laji-api-client/generated/api.d';
 import { WithNullableKeys } from '../../shared/utils';
@@ -15,10 +20,16 @@ type SensitiveProfile = components['schemas']['SensitiveProfile'];
 type MediaIntellectualRights = components['schemas']['Image']['intellectualRights'];
 
 @Component({
-    selector: 'laji-user',
-    templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.css'],
-    standalone: false
+  selector: 'laji-user',
+  templateUrl: './profile.component.html',
+  imports: [
+    TranslatePipe,
+    LajiUiModule,
+    SharedModule,
+    FindPersonModule,
+    FriendsComponent
+  ],
+  styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
 

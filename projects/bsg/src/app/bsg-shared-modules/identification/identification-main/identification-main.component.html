@@ -1,0 +1,40 @@
+<laji-spinner [spinning]="loading" [overlay]="true">
+  <div class="identification-view-container">
+    <bsg-identification-nav
+      [hasPreviousRecording]="recordingLoaderService.hasPreviousRecording()"
+      [buttonsDisabled]="loading"
+      [saveDisabled]="hasError || allRecordingsAnnotated"
+      [taxonType]="recording?.taxonType"
+      [fileNameFilter]="fileNameFilter"
+      [goBackBtnLabel]="goBackBtnLabel"
+      (nextRecordingClick)="getNextRecording()"
+      (previousRecordingClick)="getPreviousRecording()"
+      (saveClick)="save()"
+      (skipClick)="skipRecording()"
+      (goBackClick)="onGoBackClick()"
+      (fileNameFilterChange)="onFileNameFilterChange($event)"
+    ></bsg-identification-nav>
+
+    @if (hasError || allRecordingsAnnotated) {
+      <div class="identification-alert-container">
+        @if (hasError) {
+          <lu-alert type="danger" [dismissible]="false">{{ 'identification.genericError' | translate }}</lu-alert>
+        }
+        @if (allRecordingsAnnotated) {
+          <lu-alert type="success" [dismissible]="false">{{ allRecordingsAnnotatedLabel }}</lu-alert>
+        }
+      </div>
+    }
+
+    @if (recording && annotation && !hasError && !allRecordingsAnnotated) {
+      <bsg-identification-view
+        [recording]="recording"
+        [(annotation)]="annotation"
+        [taxonomyList]="taxonomyList"
+        [selectableTaxonTypes]="selectableTaxonTypes"
+        [buttonsDisabled]="loading"
+        (annotationChange)="onAnnotationChange()"
+      ></bsg-identification-view>
+    }
+  </div>
+</laji-spinner>

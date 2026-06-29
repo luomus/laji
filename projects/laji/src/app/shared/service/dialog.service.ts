@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, Injectable, TemplateRef } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { PlatformService } from '../../root/platform.service';
 import { ConfirmModalComponent } from './confirm-modal.component';
@@ -6,7 +6,7 @@ import { tap } from 'rxjs';
 import { ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 interface DialogConfig {
-  message: string;
+  message: string | TemplateRef<unknown>;
   promptValue?: string;
   showCancel?: boolean;
   prompt?: boolean;
@@ -38,21 +38,21 @@ export class DialogService {
     private modalService: ModalService,
   ) { }
 
-  alert(message: string, onServer = true): Observable<boolean> {
+  alert(message: string | TemplateRef<unknown>, onServer = true): Observable<boolean> {
     if (this.platformService.isServer) {
       return ObservableOf(onServer);
     }
     return this.createDialog<AlertConfig, boolean>({message, showCancel: false});
   }
 
-  confirm(message: string, confirmLabel?: string, onServer = false): Observable<boolean> {
+  confirm(message: string | TemplateRef<unknown>, confirmLabel?: string, onServer = false): Observable<boolean> {
     if (this.platformService.isServer) {
       return ObservableOf(onServer);
     }
     return this.createDialog<ConfirmConfig, boolean>({message, showCancel: true, confirmLabel});
   }
 
-  prompt(message: string, confirmLabel?: string, _default?: string): Observable<string | null> {
+  prompt(message: string | TemplateRef<unknown>, confirmLabel?: string, _default?: string): Observable<string | null> {
     return this.createDialog<PromptConfig, string | null>({message, showCancel: true, confirmLabel, prompt: true, promptValue: _default});
   }
 

@@ -1,0 +1,49 @@
+<laji-spinner [spinning]="loading" [overlay]="true" [hideContentWhileLoading]="true">
+  @if (recordingNotFound) {
+    <div class="identification-alert-container">
+      <lu-alert type="danger" [dismissible]="false">{{ 'identification.recordingNotFound' | translate: {id: recordingId} }}</lu-alert>
+    </div>
+  } @else if (hasError) {
+    <div class="identification-alert-container">
+      <lu-alert type="danger" [dismissible]="false">{{ 'identification.genericError' | translate }}</lu-alert>
+    </div>
+  } @else if (recording() && annotation) {
+    <div class="identification-view-container">
+      @if (recordistMismatch()) {
+        <div class="identification-view-alerts">
+          <lu-alert class="mb-0" type="warning">
+            The recordist {{ recording()!.recordist }} does not match your Xeno-Canto user name in
+            <a [routerLink]="['/user'] | localize" target="_blank">the profile</a>.
+            You can annotate the recording, but you cannot export the annotation to Xeno-Canto.
+          </lu-alert>
+        </div>
+      }
+      <div class="identification-nav">
+        <div class="button-container">
+          <button class="btn btn-success" [disabled]="saving || loading || loadingXenoCantoApiKey" (click)="saveAnnotation()">{{ 'save' | translate }}</button>
+          <button class="btn btn-default" [disabled]="saving || loading || loadingXenoCantoApiKey" (click)="openExportModal()">{{ (hasUnsavedChanges ? 'xenoCantoExport.saveAndExport' : 'xenoCantoExport.export') | translate }}</button>
+        </div>
+      </div>
+
+      <bsg-identification-view
+        class="flex-container"
+        [recording]="recording()!"
+        [(annotation)]="annotation"
+        [taxonomyList]="taxonomyList"
+        [buttonsDisabled]="saving || loading || loadingXenoCantoApiKey"
+        [showFileName]="false"
+        (annotationChange)="onAnnotationChange()"
+      ></bsg-identification-view>
+    </div>
+  }
+</laji-spinner>
+
+<ng-template #noApiKeyTpl>
+  Xeno-Canto API key is required for exporting annotations. Please set your API key in the
+  <a [routerLink]="['/user'] | localize" target="_blank">profile settings</a>.
+</ng-template>
+
+<ng-template #invalidApiKeyTpl>
+  Your Xeno-Canto API key is invalid. Please check your API key in the
+  <a [routerLink]="['/user'] | localize" target="_blank">profile settings</a>.
+</ng-template>

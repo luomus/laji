@@ -15545,6 +15545,7 @@ export interface components {
             userID: string;
             /** Xeno-Canto API key */
             xenoCantoApiKey?: string;
+            xenoCantoUserName?: string;
             /** profileKey */
             profileKey?: string;
         };

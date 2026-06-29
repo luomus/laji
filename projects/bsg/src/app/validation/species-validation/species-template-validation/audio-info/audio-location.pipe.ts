@@ -1,0 +1,25 @@
+import { Pipe, PipeTransform } from '@angular/core';
+import { ValidationAudio } from '../../../../bsg-shared/models';
+
+@Pipe({
+    name: 'audioLocation',
+    standalone: false
+})
+export class AudioLocationPipe implements PipeTransform {
+  constructor() {}
+
+  transform(value: ValidationAudio): string {
+    const locations = [];
+    if (value.location) {
+      locations.push(value.location);
+    }
+    if (value.state) {
+      locations.push(value.state);
+    }
+    if (value.country) {
+      locations.push(value.country);
+    }
+    return locations.join(', ');
+  }
+
+}

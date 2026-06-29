@@ -6,7 +6,7 @@ export const Global = { // eslint-disable-line @typescript-eslint/naming-convent
     vir: 'vir',
     embedded: 'embedded',
     iucn: 'iucn',
-    kerttuGlobal: 'kerttuGlobal',
+    bsg: 'bsg',
     birdAtlas: 'birdAtlas'
   },
   forms: {

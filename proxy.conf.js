@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: process.env.DOTENV_CONFIG_PATH || '.env' });
 
 const proxyConfig = {
   target:  process.env.API_BASE || "https://dev.laji.fi/api",

@@ -14,8 +14,6 @@ export class AudioService {
 
   private activePlayer?: AudioPlayer;
 
-  private resumeContext$?: Observable<void>|null;
-
   private bufferCacheSize = 3;
 
   constructor(
@@ -127,13 +125,7 @@ export class AudioService {
 
   public resumeAudioContext(sampleRate: number): Observable<void> {
     const audioCtx = this.getAudioContext(sampleRate);
-    if (!this.resumeContext$) {
-      this.resumeContext$ = from(audioCtx.resume()).pipe(
-        tap(() => this.resumeContext$ = null),
-        share()
-      );
-    }
-    return this.resumeContext$;
+    return from(audioCtx.resume());
   }
 
   public playAudio(buffer: AudioBuffer, playbackRate: number, frequencyRange: number[]|undefined, startTime: number, player: AudioPlayer): AudioBufferSourceNode {

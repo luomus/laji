@@ -1,0 +1,50 @@
+@use 'sass:map';
+@use 'vars' as *;
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: $sp-3 $sp-5;
+
+  @media (max-width: map.get($breakpoints, "sm")) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-grid .form-group {
+  margin-bottom: 0;
+}
+
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
+.scope-section {
+  .scope-row-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    column-gap: $sp-3;
+    margin-bottom: $sp-2;
+    align-items: center;
+
+    @media (max-width: map.get($breakpoints, "md")) {
+      grid-template-columns: 3fr 3fr 2fr;
+    }
+
+    @media (max-width: map.get($breakpoints, "sm")) {
+      grid-template-columns: 1fr 1fr auto;
+    }
+  }
+
+  .scope-field {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+
+    input {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
+

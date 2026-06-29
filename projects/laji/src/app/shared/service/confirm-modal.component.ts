@@ -1,31 +1,37 @@
-import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter, TemplateRef } from '@angular/core';
 
 @Component({
     template: `
-    <p class="laji-dialog-message" [innerHTML]="message | translate"></p>
-    @if (prompt) {
-      <input #prompt
-        class="form-control"
-        (keyup)="onPromptChange(prompt.value)"
-        (keyup.enter)="onConfirm()" />
-    }
-    <div class="lu-modal-footer">
-      <button type="button" #confirm
-        class="btn btn-primary laji-dialog-confirm"
-      (click)="onConfirm()">{{ confirmLabel | translate }}</button>
-      @if (showCancel) {
-        <button type="button"
-          class="btn btn-default laji-dialog-cancel"
-        (click)="onCancel()">{{ cancelLabel | translate }}</button>
+      @if (isTemplate(message)) {
+        <p class="laji-dialog-message">
+          <ng-template [ngTemplateOutlet]="message"></ng-template>
+        </p>
+      } @else {
+        <p class="laji-dialog-message" [innerHTML]="message | translate"></p>
       }
-    </div>
+      @if (prompt) {
+        <input #prompt
+          class="form-control"
+          (keyup)="onPromptChange(prompt.value)"
+          (keyup.enter)="onConfirm()" />
+      }
+      <div class="lu-modal-footer">
+        <button type="button" #confirm
+          class="btn btn-primary laji-dialog-confirm"
+        (click)="onConfirm()">{{ confirmLabel | translate }}</button>
+        @if (showCancel) {
+          <button type="button"
+            class="btn btn-default laji-dialog-cancel"
+          (click)="onCancel()">{{ cancelLabel | translate }}</button>
+        }
+      </div>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
 export class ConfirmModalComponent implements AfterViewInit {
 
-  message!: string;
+  message!: string | TemplateRef<unknown>;
   confirmLabel = 'OK';
   cancelLabel = 'cancel';
   prompt = false;
@@ -52,5 +58,9 @@ export class ConfirmModalComponent implements AfterViewInit {
 
   onPromptChange(value: string) {
     this.promptValue = value;
+  }
+
+  isTemplate(tpl: TemplateRef<unknown> | string): tpl is TemplateRef<unknown> {
+    return tpl instanceof TemplateRef;
   }
 }
