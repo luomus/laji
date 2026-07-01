@@ -93,6 +93,7 @@ export class WbcResultService {
     const getPage$ = (pageNumber: number) => {
       const query: UnitStatisticsQuery = {
         ...this.getFilterParams(year, season, birdAssociationArea, [this.birdId, this.mammalId]) as any,
+        aggregateBy: ['unit.linkings.taxon.speciesId', 'document.namedPlaceId'],
         pageSize: 10000,
         page: pageNumber,
       };
@@ -297,6 +298,7 @@ export class WbcResultService {
       page: 1,
       onlyCount: false
     };
+    delete unitQuery!['orderBy'];
     return this.getList(
       this.api.get('/warehouse/query/unit/statistics', { query: unitQuery })
     ).pipe(
