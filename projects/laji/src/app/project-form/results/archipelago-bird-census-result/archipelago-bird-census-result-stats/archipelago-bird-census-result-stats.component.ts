@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { BehaviorSubject, combineLatest, forkJoin, map, mergeMap, Observable, of, shareReplay, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin, map, mergeMap, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client/generated/api';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
-import { FormPermissionService } from 'projects/laji/src/app/shared/service/form-permission.service';
+import { FormPermissionService, Rights } from 'projects/laji/src/app/shared/service/form-permission.service';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { ProjectFormService } from 'projects/laji/src/app/shared/service/project-form.service';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
-import { Rights } from '../../../about/about.component';
 
 type Form = components['schemas']['Form'];
 
@@ -93,7 +92,7 @@ export class ArchipelagoBirdCensusResultStatsComponent implements OnInit, OnChan
         mergeMap(form => !form ? of(undefined) : this.formPermissionService.getRights(form).pipe(
           map((rights) => ({
             loggedIn,
-            rights: rights.edit === true ? Rights.Allowed : Rights.NotAllowed,
+            rights,
             form
           }))
         ))

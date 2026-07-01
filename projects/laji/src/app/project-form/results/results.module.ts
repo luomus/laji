@@ -32,6 +32,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { routing } from './results.routes';
+import { FormPermissionModule } from '../form-permission/form-permission.module';
 import { WbcResultService } from './wbc-result/wbc-result.service';
 import { SykeInsectResultService } from './syke-insect-result/syke-insect-result.service';
 import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
@@ -83,7 +84,8 @@ import { ResultMapComponent } from './common/result-map/result-map.component';
     TaxonSelectModule,
     LajiMapModule,
     LajiLegendModule,
-    YearSliderModule
+    YearSliderModule,
+    FormPermissionModule
   ],
   declarations: [
     ResultsComponent,

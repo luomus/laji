@@ -1,6 +1,6 @@
 <div class="d-flex flex-row gap-4 mb-4">
   @if (userData$ | async; as data) {
-    @if (data.loggedIn) {
+    @if (data.loggedIn && data.rights.edit) {
       <div class="select-container mr-4">
         <label>{{ 'archipelago.stats.year.label' | translate }}</label>
         @if (yearOptions) {
@@ -39,9 +39,15 @@
           <laji-spinner class="d-block m-6"></laji-spinner>
         }
       </div>
-    }@else {
-      <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate
-        }}</lu-button>
+    } @else if (data.loggedIn && !data.rights.edit) {
+      <laji-request
+        [collectionId]="data.form.collectionID"
+        lajiFormOption="options.disableRequestDescription">
+      </laji-request>
+    } @else {
+      <lu-button (click)="login()" role="primary" class="login-button">
+        {{ 'project-form.about.login' | translate }}
+      </lu-button>
     }
   }
 </div>
