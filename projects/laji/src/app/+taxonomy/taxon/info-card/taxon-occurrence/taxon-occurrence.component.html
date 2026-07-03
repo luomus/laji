@@ -46,16 +46,20 @@
          [open]="true"
          [autoToggle]="true"
     >
-      <p class="disclaimer">
-        {{ 'taxonomy.map.disclaimer' | translate }}
-      </p>
-      <laji-ykj-map
-        [query]="mapQuery!"
-        [height]="'600px'"
-        [type]="'count'"
-        [types]="['count']"
-        [mapOptions]="{ clickBeforeZoomAndPan: true, controls: {fullscreen: true} }"
-      ></laji-ykj-map>
+      <ng-container *ngIf="(isLoggedIn$ | async) !== undefined">
+        <ng-container *ngIf="(isLoggedIn$ | async) === true; else login">
+          <p class="disclaimer">
+            {{ 'taxonomy.map.disclaimer' | translate }}
+          </p>
+          <laji-ykj-map
+            [query]="mapQuery!"
+            [height]="'600px'"
+            [type]="'count'"
+            [types]="['count']"
+            [mapOptions]="{ clickBeforeZoomAndPan: true, controls: {fullscreen: true} }"
+          ></laji-ykj-map>
+        </ng-container>
+      </ng-container>
     </div>
   </div>
   <div class="col-xs-12 col-sm-6">
@@ -131,35 +135,66 @@
     ></laji-taxon-description>
   </div>
   <div class="col-xs-12">
-    <div [hidden]="!hasMonthDayData"
-         class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.observations.monthDayChart' | translate"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <laji-observation-month-day-chart
-        [query]="chartQuery!"
-        [useIndividualCount]="false"
-        (hasData)="hasMonthDayData = $event"
-      ></laji-observation-month-day-chart>
-    </div>
-    <div [hidden]="!hasYearData"
-         class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.observations.yearChart' | translate"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <p class="disclaimer">
-        {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
-      </p>
-      <laji-observation-year-chart
-        [query]="chartQuery"
-        [enableOnlyCount]="false"
-        (hasData)="hasYearData = $event"
-      ></laji-observation-year-chart>
-    </div>
+    <ng-container *ngIf="(isLoggedIn$ | async) !== undefined">
+      <ng-container *ngIf="(isLoggedIn$ | async) === true; else monthDayChartLogin">
+        <div [hidden]="!hasMonthDayData"
+            class="panel panel-default"
+            laji-panel
+            [title]="'taxonomy.observations.monthDayChart' | translate"
+            [open]="true"
+            [autoToggle]="true"
+        >
+          <laji-observation-month-day-chart
+            [query]="chartQuery!"
+            [useIndividualCount]="false"
+            (hasData)="hasMonthDayData = $event"
+          ></laji-observation-month-day-chart>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-template #monthDayChartLogin>
+        <div
+          class="panel panel-default"
+          laji-panel
+          [title]="'taxonomy.observations.monthDayChart' | translate"
+          [open]="true"
+          [autoToggle]="true"
+        >
+        <ng-container *ngTemplateOutlet="login"></ng-container>
+      </div>
+    </ng-template>
+
+    <ng-container *ngIf="(isLoggedIn$ | async) !== undefined">
+      <ng-container *ngIf="(isLoggedIn$ | async) === true; else yearChartLogin">
+        <div [hidden]="!hasYearData"
+            class="panel panel-default"
+            laji-panel
+            [title]="'taxonomy.observations.yearChart' | translate"
+            [open]="true"
+            [autoToggle]="true"
+        >
+          <p class="disclaimer">
+            {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
+          </p>
+          <laji-observation-year-chart
+            [query]="chartQuery"
+            [enableOnlyCount]="false"
+            (hasData)="hasYearData = $event"
+          ></laji-observation-year-chart>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-template #yearChartLogin>
+      <div
+        class="panel panel-default"
+        laji-panel
+        [title]="'taxonomy.observations.yearChart' | translate"
+        [open]="true"
+        [autoToggle]="true"
+      >
+        <ng-container *ngTemplateOutlet="login"></ng-container>
+      </div>
+    </ng-template>
   </div>
   <div class="col-xs-12 col-sm-6">
     <div [hidden]="filterHabitats.length === 0"
@@ -199,89 +234,149 @@
     ></laji-datatable>
     </div>
 
-    <div [hidden]="!filterByRecordBasisTotal"
-         class="panel panel-default"
-         laji-panel
-         [title]="'observation.filterBy.recordBasis' | translate"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <laji-observation-table
-        [showHeader]="false"
-        [showFooter]="false"
-        [virtualScrolling]="false"
-        [pageSize]="100"
-        [showSettingsMenu]="false"
-        [isAggregate]="true"
-        [selected]="['unit.superRecordBasis']"
-        [query]="chartQuery!"
-        [showRowAsLink]="false"
-        (total)="filterByRecordBasisTotal = $event"
-      ></laji-observation-table>
-    </div>
-    <div [hidden]="!filterByLifeStageTotal"
-         class="panel panel-default"
-         laji-panel
-         [title]="'MY.lifeStage' | label"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <laji-observation-table
-        [showHeader]="false"
-        [showFooter]="false"
-        [virtualScrolling]="false"
-        [pageSize]="100"
-        [showSettingsMenu]="false"
-        [isAggregate]="true"
-        [selected]="['unit.lifeStage']"
-        [query]="chartQuery!"
-        [showRowAsLink]="false"
-        (total)="filterByLifeStageTotal = $event"
-      ></laji-observation-table>
-    </div>
+    <ng-container *ngIf="(isLoggedIn$ | async) !== undefined">
+      <ng-container *ngIf="(isLoggedIn$ | async) === true; else recordBasisLogin">
+        <div [hidden]="!filterByRecordBasisTotal"
+            class="panel panel-default"
+            laji-panel
+            [title]="'observation.filterBy.recordBasis' | translate"
+            [open]="true"
+            [autoToggle]="true"
+        >
+          <laji-observation-table
+            [showHeader]="false"
+            [showFooter]="false"
+            [virtualScrolling]="false"
+            [pageSize]="100"
+            [showSettingsMenu]="false"
+            [isAggregate]="true"
+            [selected]="['unit.superRecordBasis']"
+            [query]="chartQuery!"
+            [showRowAsLink]="false"
+            (total)="filterByRecordBasisTotal = $event"
+          ></laji-observation-table>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-template #recordBasisLogin>
+      <div
+        class="panel panel-default"
+        laji-panel
+        [title]="'observation.filterBy.recordBasis' | translate"
+        [open]="true"
+        [autoToggle]="true"
+      >
+        <ng-container *ngTemplateOutlet="login"></ng-container>
+      </div>
+    </ng-template>
+
+    <ng-container *ngIf="(isLoggedIn$ | async) !== undefined">
+      <ng-container *ngIf="(isLoggedIn$ | async) === true; else lifeStageLogin">
+        <div [hidden]="!filterByLifeStageTotal"
+            class="panel panel-default"
+            laji-panel
+            [title]="'MY.lifeStage' | label"
+            [open]="true"
+            [autoToggle]="true"
+        >
+          <laji-observation-table
+            [showHeader]="false"
+            [showFooter]="false"
+            [virtualScrolling]="false"
+            [pageSize]="100"
+            [showSettingsMenu]="false"
+            [isAggregate]="true"
+            [selected]="['unit.lifeStage']"
+            [query]="chartQuery!"
+            [showRowAsLink]="false"
+            (total)="filterByLifeStageTotal = $event"
+          ></laji-observation-table>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-template #lifeStageLogin>
+      <div
+        class="panel panel-default"
+        laji-panel
+        [title]="'MY.lifeStage' | label"
+        [open]="true"
+        [autoToggle]="true"
+      >
+        <ng-container *ngTemplateOutlet="login"></ng-container>
+      </div>
+    </ng-template>
   </div>
   <div class="col-xs-12 col-sm-6">
-    <div [hidden]="!filterBySexTotal"
-         class="panel panel-default"
-         laji-panel
-         [title]="'MY.sex' | label"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <laji-observation-table
-        [showHeader]="false"
-        [showFooter]="false"
-        [virtualScrolling]="false"
-        [pageSize]="100"
-        [showSettingsMenu]="false"
-        [isAggregate]="true"
-        [selected]="['unit.sex']"
-        [query]="chartQuery!"
-        [showRowAsLink]="false"
-        (total)="filterBySexTotal = $event"
-      ></laji-observation-table>
-    </div>
+    <ng-container *ngIf="(isLoggedIn$ | async) !== undefined">
+      <ng-container *ngIf="(isLoggedIn$ | async) === true; else unitSexLogin">
+        <div [hidden]="!filterBySexTotal"
+              class="panel panel-default"
+              laji-panel
+              [title]="'MY.sex' | label"
+              [open]="true"
+              [autoToggle]="true"
+        >
+          <laji-observation-table
+            [showHeader]="false"
+            [showFooter]="false"
+            [virtualScrolling]="false"
+            [pageSize]="100"
+            [showSettingsMenu]="false"
+            [isAggregate]="true"
+            [selected]="['unit.sex']"
+            [query]="chartQuery!"
+            [showRowAsLink]="false"
+            (total)="filterBySexTotal = $event"
+          ></laji-observation-table>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-template #unitSexLogin>
+      <div class="panel panel-default"
+        laji-panel
+        [title]="'MY.sex' | label"
+        [open]="true"
+        [autoToggle]="true"
+      >
+        <ng-container *ngTemplateOutlet="login"></ng-container>
+      </div>
+    </ng-template>
   </div>
   <div class="col-xs-12">
-    <div [hidden]="!filterByCollectionIdTotal"
-         class="panel panel-default"
-         laji-panel
-         [title]="'observation.filterBy.collectionId' | translate"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <laji-observation-table
-        [height]="'350px'"
-        [pageSize]="100"
-        [showSettingsMenu]="false"
-        [showHeader]="false"
-        [isAggregate]="true"
-        [selected]="['document.collectionId']"
-        [query]="chartQuery!"
-        [showRowAsLink]="false"
-        (total)="filterByCollectionIdTotal = $event"
-      ></laji-observation-table>
-    </div>
+    <ng-container *ngIf="(isLoggedIn$ | async) !== undefined">
+      <ng-container *ngIf="(isLoggedIn$ | async) === true; else collectionsLogin">
+        <div [hidden]="!filterByCollectionIdTotal"
+            class="panel panel-default"
+            laji-panel
+            [title]="'observation.filterBy.collectionId' | translate"
+            [open]="true"
+            [autoToggle]="true"
+        >
+          <laji-observation-table
+            [height]="'350px'"
+            [pageSize]="100"
+            [showSettingsMenu]="false"
+            [showHeader]="false"
+            [isAggregate]="true"
+            [selected]="['document.collectionId']"
+            [query]="chartQuery!"
+            [showRowAsLink]="false"
+            (total)="filterByCollectionIdTotal = $event"
+          ></laji-observation-table>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-template #collectionsLogin>
+      <div
+        class="panel panel-default"
+        laji-panel
+        [title]="'observation.filterBy.collectionId' | translate"
+        [open]="true"
+        [autoToggle]="true"
+      >
+        <ng-container *ngTemplateOutlet="login"></ng-container>
+      </div>
+    </ng-template>
   </div>
   <div
     class="col-xs-12 col-sm-6"
@@ -302,3 +397,8 @@
     </div>
   </div>
 </div>
+
+<ng-template #login>
+  <lu-alert [innerHTML]="'taxonomy.notLoggedIn' | translate"></lu-alert>
+  <lu-button (click)="onLogin()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
+</ng-template>
