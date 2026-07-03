@@ -1,6 +1,7 @@
 @if (!(visible.countTaxa && visible.countHits) && visible.countHits) {
   <strong class="counts" style="padding: 0">
     <laji-observation-count
+      [dataMode]="dataMode"
       [loading]="loadingUnits"
     [value]="unitCount"></laji-observation-count>
     {{ 'observation.results.hits' | translate }}
@@ -14,6 +15,7 @@
           <strong>
             @if (visible.countHits) {
               <laji-observation-count
+                [dataMode]="dataMode"
                 [loading]="loadingUnits"
               [value]="unitCount"></laji-observation-count>
             }
@@ -24,6 +26,7 @@
           <strong>
             @if (visible.countTaxa) {
               <laji-observation-count
+                [dataMode]="dataMode"
                 [loading]="loadingTaxa"
               [value]="speciesCount"></laji-observation-count>
             }
@@ -36,6 +39,7 @@
           <strong>
             @if (visible.countHits) {
               <laji-observation-count
+                [dataMode]="dataMode"
                 [overrideInQuery]="{countryId: ['ML.206']}"
               [query]="activeQuery"></laji-observation-count>
             }
@@ -46,6 +50,7 @@
           <strong>
             @if (visible.countTaxa) {
               <laji-observation-count
+                [dataMode]="dataMode"
                 [overrideInQuery]="{countryId: ['ML.206'], includeNonValidTaxa: false}"
                 [query]="activeQuery"
               [field]="'unit.linkings.taxon.speciesId'"></laji-observation-count>
@@ -91,6 +96,7 @@
       <lu-tab [heading]="'search.result.map' | translate" headerClass="obs-filter-map">
         @if (loadedTabs.isLoaded('map')) {
           <laji-observation-map
+            [dataMode]="dataMode"
             [ready]="!loadingUnits"
             [height]="-1"
             [query]="activeQuery"
