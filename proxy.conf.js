@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: process.env.DOTENV_CONFIG_PATH || '.env' });
 
 if (!process.env.API_BASE) {
   throw new Error("'API_BASE' env variable not configured See README.md for instructions.")

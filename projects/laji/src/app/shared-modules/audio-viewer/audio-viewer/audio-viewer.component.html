@@ -35,24 +35,26 @@
 </laji-spinner>
 @if (showControls || showSpectrogramConfig || audioInfoTpl) {
   <div class="audio-controls">
-    @if (showControls) {
-      <laji-audio-viewer-controls
-        [audioPlayer]="audioPlayer"
-        [audioViewerView]="audioViewerView"
-        [disabled]="loading || hasError"
-        [controls]="controls"
-        [customControlsTpl]="customControlsTpl"
-      ></laji-audio-viewer-controls>
-    }
-    @if (showSpectrogramConfig) {
-      <div class="spectrogram-config">
-        <lu-button [disabled]="loading || hasError" (click)="openSpectrogramConfigModal()">
-          <i class="glyphicon glyphicon-cog"></i>
-        </lu-button>
-      </div>
-    }
+    <div class="controls-row">
+      @if (showControls) {
+        <laji-audio-viewer-controls
+          [audioPlayer]="audioPlayer"
+          [audioViewerView]="audioViewerView"
+          [disabled]="loading || hasError"
+          [controls]="controls"
+          [customControlsTpl]="customControlsTpl"
+        ></laji-audio-viewer-controls>
+      }
+      @if (showSpectrogramConfig) {
+        <div class="spectrogram-config">
+          <lu-button [disabled]="loading || hasError" (click)="openSpectrogramConfigModal()">
+            <i class="glyphicon glyphicon-cog"></i>
+          </lu-button>
+        </div>
+      }
+    </div>
     @if (audioInfoTpl) {
-      <div class="pull-right audio-info">
+      <div class="audio-info">
         <ng-template [ngTemplateOutlet]="audioInfoTpl" [ngTemplateOutletContext]="{audio: audio}"></ng-template>
       </div>
     }
