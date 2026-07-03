@@ -9,7 +9,6 @@ import { InfoCardTabType } from './info-card/info-card.component';
 import { getDescription, HeaderService } from '../../shared/service/header.service';
 import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { UserService } from '../../shared/service/user.service';
 
 type Taxon = components['schemas']['Taxon'];
 
@@ -28,7 +27,6 @@ export class TaxonComponent implements OnInit, OnDestroy {
   canShowTree = true;
   showHidden = false;
   loading = false;
-  loggedIn$!: Observable<boolean>;
   taxon$!: Observable<Taxon>;
 
   private initTaxonSub: Subscription | undefined;
@@ -42,18 +40,12 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private logger: Logger,
     private footerService: FooterService,
     private cdr: ChangeDetectorRef,
-    private headerService: HeaderService,
-    private userService: UserService
+    private headerService: HeaderService
   ) { }
 
   ngOnInit() {
-    this.loggedIn$ = this.userService.isLoggedIn$;
     this.footerService.footerVisible = false;
-    this.subParam = this.loggedIn$.pipe(
-      switchMap(loggedIn => loggedIn
-        ? combineLatest([this.route.params, this.route.queryParams])
-        : EMPTY
-      ),
+    this.subParam = combineLatest([this.route.params, this.route.queryParams]).pipe(
       tap(params => {
         this.infoCardTab = params[0]['tab'] || 'overview';
         this.infoCardContext = params[1]['context'] || 'default';
@@ -90,16 +82,12 @@ export class TaxonComponent implements OnInit, OnDestroy {
       })
     ).subscribe();
 
-
-    this.taxon$ = this.loggedIn$.pipe(
-      filter(loggedIn => loggedIn === false),
-      switchMap(() => this.route.params.pipe(
-        map(params => params.id),
-        switchMap(id => this.api.get(
-          '/taxa/{id}',
-          { path: { id } }
-        ))
-      )),
+    this.taxon$ = this.route.params.pipe(
+      map(params => params.id),
+      switchMap(id => this.api.get(
+        '/taxa/{id}',
+        { path: { id } }
+      ))
     );
   }
 
@@ -143,10 +131,6 @@ export class TaxonComponent implements OnInit, OnDestroy {
       ),
       extra
     );
-  }
-
-  login() {
-    this.userService.redirectToLogin();
   }
 
   private setHeaders(taxon: Taxon) {

@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
+import { UserService } from '../../../../shared/service/user.service';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
 
 type Taxon = components['schemas']['Taxon'];
@@ -17,7 +19,7 @@ type TaxonDescriptionVariable = TaxonDescription['groups'][number]['variables'][
   styleUrls: ['./taxon-overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonOverviewComponent implements OnChanges, OnDestroy {
+export class TaxonOverviewComponent implements OnChanges, OnDestroy, OnInit {
   @Input({ required: true }) taxon!: Taxon;
   @Input() isFromMasterChecklist?: boolean;
   @Input() images!: any[];
@@ -36,6 +38,9 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   queryCount!: WarehouseQueryInterface;
 
   queryKeysDeleted: (keyof WarehouseQueryInterface)[] = ['coordinateAccuracyMax', 'includeNonValidTaxa', 'cache'];
+
+  isLoggedIn$!: Observable<boolean>;
+
   private childrenSub?: Subscription;
 
   @Input() set taxonDescription(taxonDescription: TaxonDescription[]) {
@@ -45,8 +50,13 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   constructor(
     public translate: TranslateService,
     private taxonomyService: TaxonTaxonomyService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private userService: UserService
   ) { }
+
+  ngOnInit() {
+    this.isLoggedIn$ = this.userService.isLoggedIn$;
+  }
 
   ngOnChanges() {
     this.getChildren();
@@ -63,6 +73,10 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     if (this.childrenSub) {
       this.childrenSub.unsubscribe();
     }
+  }
+
+  onLogin() {
+    this.userService.redirectToLogin();
   }
 
   private getChildren() {

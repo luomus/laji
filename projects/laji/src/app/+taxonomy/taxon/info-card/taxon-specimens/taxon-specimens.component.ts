@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, OnInit } from '@angular/core';
 import { IdService } from '../../../../shared/service/id.service';
 import { DOCUMENT } from '@angular/common';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
 import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { UserService } from 'projects/laji/src/app/shared/service/user.service';
+import { Observable } from 'rxjs';
 
 type Taxon = components['schemas']['Taxon'];
 
@@ -14,7 +16,7 @@ type Taxon = components['schemas']['Taxon'];
   styleUrls: ['./taxon-specimens.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonSpecimensComponent implements OnChanges {
+export class TaxonSpecimensComponent implements OnChanges, OnInit {
   @Input({ required: true }) taxon!: Taxon;
 
   typeSpecimenQuery!: WarehouseQueryInterface;
@@ -28,10 +30,17 @@ export class TaxonSpecimensComponent implements OnChanges {
 
   documentId?: string;
 
+  isLoggedIn$!: Observable<boolean>;
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    private documentViewerFacade: DocumentViewerFacade
+    private documentViewerFacade: DocumentViewerFacade,
+    private userService: UserService,
   ) { }
+
+  ngOnInit() {
+    this.isLoggedIn$ = this.userService.isLoggedIn$;
+  }
 
   ngOnChanges() {
     this.typeSpecimenQuery = InfoCardQueryService.getSpecimenQuery(this.taxon.id, true);
@@ -64,5 +73,9 @@ export class TaxonSpecimensComponent implements OnChanges {
         }
       }, 0);
     }
+  }
+
+  onLogin() {
+    this.userService.redirectToLogin();
   }
 }

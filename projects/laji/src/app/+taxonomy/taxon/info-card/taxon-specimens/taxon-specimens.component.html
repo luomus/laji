@@ -1,49 +1,58 @@
-<div [hidden]="typeSpecimensTotal !== 0">
-  <h3 style="margin-top: 0">{{ 'taxonomy.typeSpecimensNo' | translate }}</h3>
-</div>
-<div [hidden]="typeSpecimensTotal === 0">
-  <h3 style="margin-top: 0">{{ 'taxonomy.typeSpecimens' | translate }}</h3>
-  <laji-observation-table
-    [height]="'350px'"
-    [pageSize]="100"
-    [showSettingsMenu]="false"
-    [isAggregate]="false"
-    [selected]="['document.id', 'unit.taxon', 'gathering.interpretations.countryDisplayname', 'gathering.locality', 'gathering.displayDateTime', 'document.collectionId']"
-    [query]="typeSpecimenQuery"
-    [showRowAsLink]="true"
-    (total)="typeSpecimensTotal = $event"
-    (rowSelect)="showDocument($event)"
-  ></laji-observation-table>
-</div>
-<div [hidden]="collectionsTotal !== 0">
-  <h3 style="margin-top: 0">{{ 'taxonomy.collectionsNo' | translate }}</h3>
-</div>
-<div [hidden]="collectionsTotal === 0">
-  <h3>{{ 'taxonomy.collections' | translate }}</h3>
-  <laji-observation-table
-    [height]="'350px'"
-    [pageSize]="100"
-    [showSettingsMenu]="false"
-    [showHeader]="false"
-    [isAggregate]="true"
-    [selected]="['document.collectionId']"
-    (total)="collectionsTotal = $event"
-    [query]="collectionSpecimenQuery"
-    [showRowAsLink]="true"
-    (rowSelect)="setCollectionId($event)"
-  ></laji-observation-table>
-</div>
-<ng-container *ngIf="collectionId">
-  <h3 id="collectionSpecimens">{{ 'taxonomy.specimens' | translate }}: {{ collectionId | collectionName }}</h3>
-  <laji-observation-table
-    *ngIf="collectionId"
-    [height]="'350px'"
-    [pageSize]="100"
-    [showSettingsMenu]="false"
-    [isAggregate]="false"
-    [selected]="['document.id', 'unit.taxon', 'gathering.interpretations.countryDisplayname', 'gathering.locality', 'gathering.displayDateTime']"
-    [query]="collectionQuery"
-    [showRowAsLink]="true"
-    (rowSelect)="showDocument($event)"
-  ></laji-observation-table>
+<ng-container *ngIf="(isLoggedIn$ | async) !== undefined">
+  <ng-container *ngIf="(isLoggedIn$ | async) === true; else login">
+    <div [hidden]="typeSpecimensTotal !== 0">
+      <h3 style="margin-top: 0">{{ 'taxonomy.typeSpecimensNo' | translate }}</h3>
+    </div>
+    <div [hidden]="typeSpecimensTotal === 0">
+      <h3 style="margin-top: 0">{{ 'taxonomy.typeSpecimens' | translate }}</h3>
+      <laji-observation-table
+        [height]="'350px'"
+        [pageSize]="100"
+        [showSettingsMenu]="false"
+        [isAggregate]="false"
+        [selected]="['document.id', 'unit.taxon', 'gathering.interpretations.countryDisplayname', 'gathering.locality', 'gathering.displayDateTime', 'document.collectionId']"
+        [query]="typeSpecimenQuery"
+        [showRowAsLink]="true"
+        (total)="typeSpecimensTotal = $event"
+        (rowSelect)="showDocument($event)"
+      ></laji-observation-table>
+    </div>
+    <div [hidden]="collectionsTotal !== 0">
+      <h3 style="margin-top: 0">{{ 'taxonomy.collectionsNo' | translate }}</h3>
+    </div>
+    <div [hidden]="collectionsTotal === 0">
+      <h3>{{ 'taxonomy.collections' | translate }}</h3>
+      <laji-observation-table
+        [height]="'350px'"
+        [pageSize]="100"
+        [showSettingsMenu]="false"
+        [showHeader]="false"
+        [isAggregate]="true"
+        [selected]="['document.collectionId']"
+        (total)="collectionsTotal = $event"
+        [query]="collectionSpecimenQuery"
+        [showRowAsLink]="true"
+        (rowSelect)="setCollectionId($event)"
+      ></laji-observation-table>
+    </div>
+    <ng-container *ngIf="collectionId">
+      <h3 id="collectionSpecimens">{{ 'taxonomy.specimens' | translate }}: {{ collectionId | collectionName }}</h3>
+      <laji-observation-table
+        *ngIf="collectionId"
+        [height]="'350px'"
+        [pageSize]="100"
+        [showSettingsMenu]="false"
+        [isAggregate]="false"
+        [selected]="['document.id', 'unit.taxon', 'gathering.interpretations.countryDisplayname', 'gathering.locality', 'gathering.displayDateTime']"
+        [query]="collectionQuery"
+        [showRowAsLink]="true"
+        (rowSelect)="showDocument($event)"
+      ></laji-observation-table>
+    </ng-container>
+  </ng-container>
 </ng-container>
+
+<ng-template #login>
+  <lu-alert [innerHTML]="'taxonomy.notLoggedIn' | translate"></lu-alert>
+  <lu-button (click)="onLogin()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
+</ng-template>
