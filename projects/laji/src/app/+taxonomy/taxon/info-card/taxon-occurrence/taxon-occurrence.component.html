@@ -135,32 +135,44 @@
     ></laji-taxon-description>
   </div>
   <div class="col-xs-12">
-    <div [hidden]="!hasMonthDayData"
-         class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.observations.monthDayChart' | translate"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <ng-container *ngIf="(isLoggedIn$ | async) !== undefined">
-        <ng-container *ngIf="(isLoggedIn$ | async) === true; else login">
+    <ng-container *ngIf="(isLoggedIn$ | async) !== undefined">
+      <ng-container *ngIf="(isLoggedIn$ | async) === true; else monthDayChartLogin">
+        <div [hidden]="!hasMonthDayData"
+            class="panel panel-default"
+            laji-panel
+            [title]="'taxonomy.observations.monthDayChart' | translate"
+            [open]="true"
+            [autoToggle]="true"
+        >
           <laji-observation-month-day-chart
             [query]="chartQuery!"
             [useIndividualCount]="false"
             (hasData)="hasMonthDayData = $event"
           ></laji-observation-month-day-chart>
-        </ng-container>
+        </div>
       </ng-container>
-    </div>
-    <div [hidden]="!hasYearData"
-         class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.observations.yearChart' | translate"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <ng-container *ngIf="(isLoggedIn$ | async) !== undefined">
-        <ng-container *ngIf="(isLoggedIn$ | async) === true; else login">
+    </ng-container>
+    <ng-template #monthDayChartLogin>
+        <div
+          class="panel panel-default"
+          laji-panel
+          [title]="'taxonomy.observations.monthDayChart' | translate"
+          [open]="true"
+          [autoToggle]="true"
+        >
+        <ng-container *ngTemplateOutlet="login"></ng-container>
+      </div>
+    </ng-template>
+
+    <ng-container *ngIf="(isLoggedIn$ | async) !== undefined">
+      <ng-container *ngIf="(isLoggedIn$ | async) === true; else yearChartLogin">
+        <div [hidden]="!hasYearData"
+            class="panel panel-default"
+            laji-panel
+            [title]="'taxonomy.observations.yearChart' | translate"
+            [open]="true"
+            [autoToggle]="true"
+        >
           <p class="disclaimer">
             {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
           </p>
@@ -169,9 +181,20 @@
             [enableOnlyCount]="false"
             (hasData)="hasYearData = $event"
           ></laji-observation-year-chart>
-        </ng-container>
+        </div>
       </ng-container>
-    </div>
+    </ng-container>
+    <ng-template #yearChartLogin>
+      <div
+        class="panel panel-default"
+        laji-panel
+        [title]="'taxonomy.observations.yearChart' | translate"
+        [open]="true"
+        [autoToggle]="true"
+      >
+        <ng-container *ngTemplateOutlet="login"></ng-container>
+      </div>
+    </ng-template>
   </div>
   <div class="col-xs-12 col-sm-6">
     <div [hidden]="filterHabitats.length === 0"
