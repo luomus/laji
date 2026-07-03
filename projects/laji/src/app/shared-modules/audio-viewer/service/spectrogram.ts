@@ -4,6 +4,8 @@ import { SpectrogramConfig } from '../models';
 import { defaultSpectrogramConfig } from '../variables';
 import { getSpectrogramSegmentLength } from './audio-viewer-utils';
 
+const MAX_CANVAS_WIDTH = 4096;
+
 interface CompleteSpectrogramConfig extends SpectrogramConfig {
   nbrOfRowsRemovedFromStart: number;
   maxNbrOfColsForNoiseEstimation: number;
@@ -23,20 +25,31 @@ export function getSpectrogramImageData(buffer: AudioBuffer, colormap: number[][
 
 function spectrogramToImageData(spect: Float32Array, width: number, height: number, colormap: number[][]): ImageData {
   const {minValue, maxValue} = findMinAndMaxValue(spect);
-  const data = new Uint8ClampedArray(spect.length * 4);
 
-  let offset = 0;
-  for (let value of spect) {
-    value = convertRange(value, [minValue, maxValue], [0, colormap.length - 1]);
-    const color = colormap[Math.round(value)];
+  // downsample with nearest neighbour method if the width exceeds the max canvas width
+  const targetWidth = Math.min(width, MAX_CANVAS_WIDTH);
+  const needsDownsampling = targetWidth < width;
 
-    data[offset++] = color[0] * 256;
-    data[offset++] = color[1] * 256;
-    data[offset++] = color[2] * 256;
-    data[offset++] = 256;
+  const data = new Uint8ClampedArray(targetWidth * height * 4);
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < targetWidth; x++) {
+      const srcX = needsDownsampling ? Math.round((x / targetWidth) * (width - 1)) : x;
+      let value = spect[y * width + srcX];
+
+      value = convertRange(value, [minValue, maxValue], [0, colormap.length - 1]);
+
+      const color = colormap[Math.round(value)];
+
+      const offset = (y * targetWidth + x) * 4;
+      data[offset] = color[0] * 256;
+      data[offset + 1] = color[1] * 256;
+      data[offset + 2] = color[2] * 256;
+      data[offset + 3] = 256;
+    }
   }
 
-  return new ImageData(data, width, height);
+  return new ImageData(data, targetWidth, height);
 }
 
 function computeSpectrogram(buffer: AudioBuffer, config: CompleteSpectrogramConfig): {
@@ -192,8 +205,15 @@ function getSegmentSizeAndOverlap(buffer: AudioBuffer, config: SpectrogramConfig
   } else {
     targetWindowOverlapPercentage = config.targetWindowOverlapPercentage;
   }
-  const noverlap = Math.round(targetWindowOverlapPercentage * nperseg);
+
+  let noverlap = Math.round(targetWindowOverlapPercentage * nperseg);
+
+  // if the width is larger than the max canvas width, overlap can be reduced without it affecting quality
+  const width = Math.floor(buffer.length / (nperseg - noverlap));
+  if (width > MAX_CANVAS_WIDTH) {
+    const maxStep = Math.ceil(buffer.length / MAX_CANVAS_WIDTH);
+    noverlap = Math.max(nperseg - maxStep, 0);
+  }
+
   return {nperseg, noverlap};
 }
-
-

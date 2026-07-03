@@ -7,7 +7,6 @@ import { take } from 'rxjs';
 @Component({
     selector: 'laji-logout',
     templateUrl: './user-logout.component.html',
-    standalone: false
 })
 export class UserLogoutComponent implements OnInit {
   constructor(

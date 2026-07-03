@@ -6,7 +6,7 @@ export const Global = {
     vir: 'vir',
     embedded: 'embedded',
     iucn: 'iucn',
-    kerttuGlobal: 'kerttuGlobal'
+    bsg: 'bsg'
   },
   forms: {
     datasets: 'MHL.67',
