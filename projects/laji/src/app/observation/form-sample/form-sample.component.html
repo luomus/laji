@@ -165,8 +165,7 @@
     </laji-info>
       <laji-datepicker
         [(ngModel)]="formQuery.timeStart"
-        (dateSelect)="onFormQueryChange()"
-        (change)="onFormQueryChange()"
+        (ngModelChange)="onFormQueryChange()"
         name="timeStart"></laji-datepicker>
     </div>
   </div>
@@ -174,9 +173,8 @@
     <div class="col-sm-12">
       <laji-datepicker
         [(ngModel)]="formQuery.timeEnd"
+        (ngModelChange)="onFormQueryChange()"
         [toLastOfYear]="true"
-        (dateSelect)="onFormQueryChange()"
-        (change)="onFormQueryChange()"
         name="timeEnd"></laji-datepicker>
     </div>
   </div>
