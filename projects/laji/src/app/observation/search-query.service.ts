@@ -329,6 +329,8 @@ export class SearchQueryService implements SearchQueryInterface {
       delete result.observerPersonToken;
     }
 
+    delete result._coordinatesIntersection;
+
     return result;
   }
 

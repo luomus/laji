@@ -366,8 +366,12 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       return false;
     }
 
-    const bounds = (window.L as any).geoJSON(convertLajiEtlCoordinatesToGeometry(query.coordinates)).getBounds();
-    return this.lajiMap?.map.map.getBounds().contains(bounds);
+    if (window?.L) {
+      const bounds = (window.L as any).geoJSON(convertLajiEtlCoordinatesToGeometry(query.coordinates)).getBounds();
+      return this.lajiMap?.map.map.getBounds().contains(bounds);
+    } else {
+      return false;
+    }
   }
 
   private addViewPortCoordinatesParams(query: WarehouseQueryInterface, bounds?: any) {
@@ -513,6 +517,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
 
     this.addVisualizationParams(query);
     this.addViewPortCoordinatesParams(query, bounds);
+
+    delete query._coordinatesIntersection;
 
     return query;
   }
