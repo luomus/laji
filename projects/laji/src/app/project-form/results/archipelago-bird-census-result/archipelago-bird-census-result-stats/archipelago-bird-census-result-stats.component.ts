@@ -263,7 +263,7 @@ export class ArchipelagoBirdCensusResultStatsComponent implements OnInit, OnChan
           const pull = (unit.unitFact?.pullusIndividualCount ?? 0) + ' pull';
           const brood = (unit.unitFact?.broodCount ?? 0) + ' poikue';
           const nest = (unit.nestCount ?? 0) + ' pesä';
-          const dNest = (unit.unitFact?.destroyedNestCount ?? 0) + ' tuhot.';
+          const dNest = (unit.unitFact?.destroyedNestCount ?? 0) + ' tuhout.';
           return {
             ...unit,
             observations: [ad, ratio, juv, pull, brood, nest, dNest].join(', ')
