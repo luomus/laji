@@ -32,6 +32,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { routing } from './results.routes';
+import { FormPermissionModule } from '../form-permission/form-permission.module';
 import { WbcResultService } from './wbc-result/wbc-result.service';
 import { SykeInsectResultService } from './syke-insect-result/syke-insect-result.service';
 import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
@@ -59,6 +60,8 @@ import { BiomonResultStatisticsComponent } from './biomon-result/biomon-result-s
 import { BirdPointCountResultComponent } from './bird-point-count-result/bird-point-count-result.component';
 import { BirdPointCountResultChartComponent } from './bird-point-count-result/bird-point-count-result-chart/bird-point-count-result-chart.component';
 import { WaterBirdCountResultComponent } from './water-bird-count-result/water-bird-count-result.component';
+import { ArchipelagoBirdCensusResultComponent } from './archipelago-bird-census-result/archipelago-bird-census-result.component';
+import { ArchipelagoBirdCensusResultStatsComponent } from './archipelago-bird-census-result/archipelago-bird-census-result-stats/archipelago-bird-census-result-stats.component';
 import { ResultMapComponent } from './common/result-map/result-map.component';
 
 @NgModule({
@@ -81,7 +84,8 @@ import { ResultMapComponent } from './common/result-map/result-map.component';
     TaxonSelectModule,
     LajiMapModule,
     LajiLegendModule,
-    YearSliderModule
+    YearSliderModule,
+    FormPermissionModule
   ],
   declarations: [
     ResultsComponent,
@@ -119,6 +123,8 @@ import { ResultMapComponent } from './common/result-map/result-map.component';
     BirdPointCountResultComponent,
     BirdPointCountResultChartComponent,
     WaterBirdCountResultComponent,
+    ArchipelagoBirdCensusResultComponent,
+    ArchipelagoBirdCensusResultStatsComponent,
     ResultMapComponent
   ],
   providers: [
