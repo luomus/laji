@@ -78,6 +78,7 @@
   "archipelago.stats.table.cols.notes": "Lisätiedot",
   "archipelago.stats.table.cols.observations": "Havainnot",
   "archipelago.stats.table.cols.taxon": "Laji",
+  "archipelago.stats.title": "Omien havaintojen tilastot",
   "archipelago.stats.year.empty.label": "Valitse vuosi",
   "archipelago.stats.year.label": "Vuosi",
   "area-select.all": "Kaikki",
