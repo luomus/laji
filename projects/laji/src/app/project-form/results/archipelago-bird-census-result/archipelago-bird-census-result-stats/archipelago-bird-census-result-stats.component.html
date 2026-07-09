@@ -45,9 +45,16 @@
         lajiFormOption="options.disableRequestDescription">
       </laji-request>
     } @else {
-      <lu-button (click)="login()" role="primary" class="login-button">
-        {{ 'project-form.about.login' | translate }}
-      </lu-button>
+      <div class="col-sm-8">
+        <div>
+          <lu-alert [type]="'warning'">
+            {{ 'haseka.pleaseLogin' | translate }}
+          </lu-alert>
+        </div>
+        <lu-button (click)="login()" role="primary" class="login-button">
+          {{ 'project-form.about.login' | translate }}
+        </lu-button>
+      </div>
     }
   }
 </div>

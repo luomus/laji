@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { BehaviorSubject, combineLatest, forkJoin, map, mergeMap, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin, map, mergeMap, Observable, of, shareReplay, switchMap, take, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client/generated/api';
@@ -88,10 +88,10 @@ export class ArchipelagoBirdCensusResultStatsComponent implements OnInit, OnChan
 
   ngOnInit(): void {
     this.userData$ = this.userService.isLoggedIn$.pipe(
-      mergeMap(loggedIn => this.projectFormService.getFormFromRoute$(this.activatedRoute).pipe(
+      mergeMap(_loggedIn => this.projectFormService.getFormFromRoute$(this.activatedRoute).pipe(
         mergeMap(form => !form ? of(undefined) : this.formPermissionService.getRights(form).pipe(
           map((rights) => ({
-            loggedIn,
+            loggedIn: _loggedIn,
             rights,
             form
           }))
@@ -99,55 +99,61 @@ export class ArchipelagoBirdCensusResultStatsComponent implements OnInit, OnChan
       ))
     );
 
-    this.currentYear = new Date().getFullYear();
-    this.defaultYear = this.year$.getValue() !== undefined ? this.year$.getValue() : '';
-    this.defaultRoute = this.route$.getValue() !== undefined ? this.route$.getValue() : '';
-    this.defaultNamedPlace = this.namedPlace$.getValue() !== undefined ? this.namedPlace$.getValue() : '';
-
-    const yearsFromStartYear = [''].concat(
-      Array.from(
-        { length: this.currentYear - this.collectionStartYear + 1 },
-        (_, i) => (+this.collectionStartYear + i).toString()
-      ).reverse()
-    );
-
-    this.yearOptions = yearsFromStartYear.map(v => {
-      if (v === '') {
-        return { label: this.translate.instant('archipelago.stats.year.empty.label'), value: '' };
-      } else {
-        return { label: v, value: v };
+    this.userService.isLoggedIn$.pipe(take(1)).subscribe(loggedIn => {
+      if (!loggedIn) {
+        return;
       }
-    });
 
-    const namedPlaces$ = this.getNamedPlaces$().pipe(shareReplay(1));
+      this.currentYear = new Date().getFullYear();
+      this.defaultYear = this.year$.getValue() !== undefined ? this.year$.getValue() : '';
+      this.defaultRoute = this.route$.getValue() !== undefined ? this.route$.getValue() : '';
+      this.defaultNamedPlace = this.namedPlace$.getValue() !== undefined ? this.namedPlace$.getValue() : '';
 
-    this.routeOptions$ = namedPlaces$.pipe(
-      map(_namedPlaces => {
-        const allIds = _namedPlaces.flatMap(p => p.alternativeIDs ?? []);
-        const unique = [...new Set(allIds)].sort();
-        return unique.map(id => ({ label: id, value: id }));
-      })
-    );
+      const yearsFromStartYear = [''].concat(
+        Array.from(
+          { length: this.currentYear - this.collectionStartYear + 1 },
+          (_, i) => (+this.collectionStartYear + i).toString()
+        ).reverse()
+      );
 
-    this.namedPlaceOptions$ = combineLatest([namedPlaces$, this.route$]).pipe(
-      map(([_namedPlaces, _route]) => {
-        const filtered = _route
-          ? _namedPlaces.filter(p => (p.alternativeIDs ?? []).includes(_route))
-          : _namedPlaces;
-        return filtered.map(p => ({ label: p.name, value: p.id ?? '' }));
-      })
-    );
-
-    this.taxonomicOrder$ = this.getTaxonomicOrder$().pipe(shareReplay(1));
-
-    this.rows$ = combineLatest([this.year$, this.route$, this.namedPlace$]).pipe(
-      switchMap(([_year, _route, _namedPlace]) => {
-        if (!_year || !_namedPlace) {
-          return of([] as RowItem[]);
+      this.yearOptions = yearsFromStartYear.map(v => {
+        if (v === '') {
+          return { label: this.translate.instant('archipelago.stats.year.empty.label'), value: '' };
+        } else {
+          return { label: v, value: v };
         }
-        return this.getRowItems$(_year, _namedPlace);
-      })
-    );
+      });
+
+      const namedPlaces$ = this.getNamedPlaces$().pipe(shareReplay(1));
+
+      this.routeOptions$ = namedPlaces$.pipe(
+        map(_namedPlaces => {
+          const allIds = _namedPlaces.flatMap(p => p.alternativeIDs ?? []);
+          const unique = [...new Set(allIds)].sort();
+          return unique.map(id => ({ label: id, value: id }));
+        })
+      );
+
+      this.namedPlaceOptions$ = combineLatest([namedPlaces$, this.route$]).pipe(
+        map(([_namedPlaces, _route]) => {
+          const filtered = _route
+            ? _namedPlaces.filter(p => (p.alternativeIDs ?? []).includes(_route))
+            : _namedPlaces;
+          return filtered.map(p => ({ label: p.name, value: p.id ?? '' }));
+        })
+      );
+
+      this.taxonomicOrder$ = this.getTaxonomicOrder$().pipe(shareReplay(1));
+
+      this.rows$ = combineLatest([this.year$, this.route$, this.namedPlace$]).pipe(
+        switchMap(([_year, _route, _namedPlace]) => {
+          if (!_year || !_namedPlace) {
+            return of([] as RowItem[]);
+          }
+          return this.getRowItems$(_year, _namedPlace);
+        })
+      );
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
