@@ -1,0 +1,29 @@
+<laji-datatable
+  [loading]="loading"
+  [columns]="columns"
+  [rows]="data?.results || []"
+  [virtualScrolling]="true"
+  [height]="'300px'"
+  [page]="data?.currentPage"
+  [pageSize]="data?.pageSize"
+  [count]="data?.total"
+  [showRowAsLink]="false"
+  (pageChange)="onPageChange($event.page)"
+  (sortChange)="onSortChange($event.sorts)"
+></laji-datatable>
+
+<ng-template let-value="value" #xenoCantoIdTpl>
+  XC{{ value }}
+</ng-template>
+
+<ng-template let-value="value" #speciesListTpl>
+  <span [title]="value | speciesName | values">
+    @for (species of value; track species; let isLast = $last) {
+      <bsg-species-name [species]="species"></bsg-species-name>{{ isLast ? '' : ', ' }}
+    }
+  </span>
+</ng-template>
+
+<ng-template let-value="value" #boxCountTpl>
+  {{ value | speciesBoxCount }}
+</ng-template>

@@ -1,0 +1,111 @@
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
+import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
+import { AudioViewerMode, AudioViewerArea, SpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { CommentType, ValidationAudio, TemplateComment, Template } from '../../../../bsg-shared/models';
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
+
+@Component({
+    selector: 'bsg-template',
+    templateUrl: './template.component.html',
+    styleUrls: ['./template.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
+})
+export class TemplateComponent {
+  @Input() template?: Template|null;
+  @Input({ required: true }) templateIdx!: number;
+  @Input({ required: true }) isNewTemplate!: boolean;
+  @Input({ required: true }) audio!: ValidationAudio;
+  @Input() audioFocusTime?: number;
+  @Input({ required: true }) sampleRate!: number;
+  @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
+  @Input() historyView?: boolean;
+
+  @Output() confirm = new EventEmitter<Template>();
+  @Output() templateCancel = new EventEmitter();
+  @Output() remove = new EventEmitter();
+  @Output() comment = new EventEmitter<TemplateComment>();
+
+  audioViewerMode: AudioViewerMode = 'default';
+  defaultZoomFrequency = false;
+  zoomFrequency = this.defaultZoomFrequency;
+  defaultTimePadding = 30;
+  timePadding = this.defaultTimePadding;
+
+  commentText = '';
+  commentTypeEnum = CommentType;
+
+  @ViewChild('commentModal', { static: true }) commentModal!: TemplateRef<any>;
+  @ViewChild('audioInfo', { static: true }) audioInfoTpl!: TemplateRef<any>;
+
+  private framedTemplate?: Template;
+  private commentType: CommentType = CommentType.reframe;
+  private modalRef?: ModalRef<TemplateRef<any>>;
+
+  constructor(
+    private dialogService: DialogService,
+    private modalService: ModalService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  toggleDrawMode() {
+    this.audioViewerMode = this.audioViewerMode === 'draw' ? 'default' : 'draw';
+  }
+
+  onDrawEnd(area: AudioViewerArea) {
+    this.audioViewerMode = 'default';
+    this.framedTemplate = {
+      audioId: this.audio.id,
+      area
+    };
+
+    if (this.template?.id) {
+      this.commentType = CommentType.reframe;
+      this.showCommentModal();
+    } else {
+      this.template = this.framedTemplate;
+    }
+  }
+
+  onConfirm() {
+    this.confirm.emit(this.template!);
+  }
+
+  onRemove() {
+    if (this.template!.id) {
+      this.commentType = CommentType.replace;
+      this.showCommentModal();
+    } else {
+      this.dialogService.confirm('validation.template.remove.confirm').subscribe(confirm => {
+        if (confirm) {
+          this.remove.emit();
+          this.cdr.markForCheck();
+        }
+      });
+    }
+  }
+
+  confirmComment() {
+    this.hideCommentModal();
+
+    this.comment.emit({
+      templateId:  this.template!.id!,
+      comment: this.commentText,
+      type: this.commentType
+    });
+
+    if (this.commentType === CommentType.reframe) {
+      this.template = this.framedTemplate;
+    } else {
+      this.remove.emit();
+    }
+  }
+
+  showCommentModal() {
+    this.modalRef = this.modalService.show(this.commentModal, { size: 'md' });
+  }
+
+  hideCommentModal() {
+    this.modalRef!.hide();
+  }
+}

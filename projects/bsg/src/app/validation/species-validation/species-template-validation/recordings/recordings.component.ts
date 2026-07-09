@@ -1,0 +1,71 @@
+import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
+import { SpectrogramConfig, AudioViewerRectangle, AudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { ValidationAudio, Template, ValidationAudioData } from '../../../../bsg-shared/models';
+
+@Component({
+    selector: 'bsg-recordings',
+    templateUrl: './recordings.component.html',
+    styleUrls: ['./recordings.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
+})
+export class RecordingsComponent implements OnChanges {
+  @Input() recordings?: ValidationAudioData[] = [];
+  @Input() templates?: (Template|null)[] = [];
+  @Input({ required: true }) sampleRate!: number;
+  @Input({ required: true }) spectrogramConfig!: SpectrogramConfig;
+
+  @Output() audioClick = new EventEmitter<{audioId: number; time: number}>();
+  @Output() candidateClick = new EventEmitter<Template>();
+
+  rectangles: AudioViewerRectangle[][] = [];
+
+  audioLoadingLimit = 0;
+  private maxLoadingAtTheSameTime = 5;
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.recordings || changes.templates) {
+      if (changes.recordings) {
+        this.audioLoadingLimit = this.maxLoadingAtTheSameTime;
+      }
+      this.initRectangles();
+    }
+  }
+
+  onAudioClick(audio: ValidationAudio, time: number) {
+    this.audioClick.emit({audioId: audio.id, time});
+  }
+
+  onCandidateClick(audio: ValidationAudio, area: AudioViewerArea) {
+    this.candidateClick.emit({audioId: audio.id, area});
+  }
+
+  onAudioLoadingChange(loading: boolean) {
+    if (!loading) {
+      this.audioLoadingLimit += 1;
+    }
+  }
+
+  private initRectangles() {
+    this.rectangles = (this.recordings || []).map(recording => {
+      const candidates = (recording.candidates || []).map((candidate, i) => ({
+          area: candidate,
+          color: '#26bed9',
+          label: 'C' + (i + 1)
+        })) as AudioViewerRectangle[];
+
+      const templates = (this.templates || []).reduce((result, template, i) => {
+        if (template?.audioId === recording.audio.id) {
+          result.push({
+            area: template.area,
+            color: '#d98026',
+            label: 'T' + (i + 1)
+          });
+        }
+        return result;
+      }, [] as AudioViewerRectangle[]);
+
+      return candidates.concat(templates);
+    });
+  }
+}

@@ -166,7 +166,8 @@ export class HomeDataService {
       },
       // On first load we want to use the cached data from the server. On following loads we want to load the each time.
       fetchPolicy: this.historyService.isFirstLoad() ? 'cache-first' : 'no-cache',
-      errorPolicy: 'all'
+      errorPolicy: 'all',
+      omitPersonToken: true
     }).pipe(
       map(res => res?.data),
       catchError(() => of(null)),

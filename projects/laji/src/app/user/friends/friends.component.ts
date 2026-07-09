@@ -2,15 +2,21 @@ import { switchMap } from 'rxjs';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Logger } from '../../shared/logger/logger.service';
 import { DialogService } from '../../shared/service/dialog.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { of as ObservableOf } from 'rxjs';
+import { RouterLink } from '@angular/router';
+import { SharedModule } from '../../shared/shared.module';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { ExtendedProfile } from '../../shared/service/user.service';
 
 @Component({
-    selector: 'laji-friends',
-    templateUrl: './friends.component.html',
-    standalone: false
+  selector: 'laji-friends',
+  imports: [
+    TranslatePipe,
+    RouterLink,
+    SharedModule
+  ],
+  templateUrl: './friends.component.html'
 })
 export class FriendsComponent implements OnInit, OnChanges {
   @Input() viewedUserId!: string;
