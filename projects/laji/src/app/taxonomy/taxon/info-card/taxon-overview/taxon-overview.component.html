@@ -40,27 +40,33 @@
         [open]="true"
         [autoToggle]="true"
         >
-        <p class="disclaimer">
-          {{ 'taxonomy.map.disclaimer' | translate }}
-        </p>
-        <div>{{ 'taxonomy.map.totalObservations' | translate}}
-          <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id, countryId: 'ML.206',  recordQuality: ['EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL'], needsCheck: false}">
-            <laji-observation-count [query]="queryCount"></laji-observation-count>
-            {{ 'taxonomy.map.totalObservationsNumber' | translate }}
-          </a>
-          <laji-info placement="top">{{ 'taxonomy.map.info' | translate }}</laji-info>
-        </div>
-        <laji-ykj-map
-          [query]="mapQuery"
-          [height]="'600px'"
-          [type]="'count'"
-          [types]="['count']"
-        [mapOptions]="{
-          controls: false,
-          zoom: 2,
-          viewLocked: true
-        }"
-        ></laji-ykj-map>
+        @if ((isLoggedIn$ | async) !== undefined) {
+          @if ((isLoggedIn$ | async) === true) {
+            <p class="disclaimer">
+              {{ 'taxonomy.map.disclaimer' | translate }}
+            </p>
+            <div>{{ 'taxonomy.map.totalObservations' | translate}}
+              <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id, countryId: 'ML.206',  recordQuality: ['EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL'], needsCheck: false}">
+                <laji-observation-count [query]="queryCount"></laji-observation-count>
+                {{ 'taxonomy.map.totalObservationsNumber' | translate }}
+              </a>
+              <laji-info placement="top">{{ 'taxonomy.map.info' | translate }}</laji-info>
+            </div>
+            <laji-ykj-map
+              [query]="mapQuery"
+              [height]="'600px'"
+              [type]="'count'"
+              [types]="['count']"
+            [mapOptions]="{
+              controls: false,
+              zoom: 2,
+              viewLocked: true
+            }"
+            ></laji-ykj-map>
+          } @else {
+            <ng-container [ngTemplateOutlet]="loginTmp" />
+          }
+        }
       </div>
     }
   </div>
@@ -76,11 +82,13 @@
       [autoToggle]="true"
       >
       <ul class="br-list">
-        <li>
-          <a [routerLink]="'/observation/map' | localize" [queryParams]="{taxonId: taxon.id}">
-            {{ 'taxonomy.browse' | translate }}
-          </a>
-        </li>
+        @if ((isLoggedIn$ | async) === true) {
+          <li>
+            <a [routerLink]="'/observation/map' | localize" [queryParams]="{taxonId: taxon.id}">
+              {{ 'taxonomy.browse' | translate }}
+            </a>
+          </li>
+        }
         <li [hidden]="!taxon.hasChildren">
           <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{taxonId: (taxon.id)}">
             {{ 'taxonomy.browse.downloadSpecies' | translate }}
@@ -189,4 +197,11 @@
     >
     <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
   </div>
+</ng-template>
+
+<ng-template #loginTmp>
+  <lu-alert>
+    <div [innerHTML]="'taxonomy.notLoggedIn' | translate"></div>
+  </lu-alert>
+  <button (click)="onLogin()" role="primary" class="btn btn-primary">{{ 'project-form.about.login' | translate }}</button>
 </ng-template>

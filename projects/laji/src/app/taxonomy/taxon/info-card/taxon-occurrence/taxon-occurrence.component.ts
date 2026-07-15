@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { components } from 'projects/laji-api-client/generated/api.d';
+import { Observable } from 'rxjs';
+import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 type TaxonDescription = components['schemas']['LajiBackendContent'][number];
@@ -13,7 +15,7 @@ type TaxonDescription = components['schemas']['LajiBackendContent'][number];
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class TaxonOccurrenceComponent implements OnChanges {
+export class TaxonOccurrenceComponent implements OnChanges, OnInit {
   @Input({ required: true }) taxon!: Taxon;
   @Input() taxonDescription!: TaxonDescription[];
   @Input() isFromMasterChecklist!: boolean;
@@ -37,6 +39,16 @@ export class TaxonOccurrenceComponent implements OnChanges {
     'winteringSecureLevel'
   ] as const;
 
+  isLoggedIn$!: Observable<boolean>;
+
+  constructor(
+    private userService: UserService,
+  ) { }
+
+  ngOnInit() {
+    this.isLoggedIn$ = this.userService.isLoggedIn$;
+  }
+
   ngOnChanges() {
     this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
     this.chartQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id);
@@ -50,5 +62,9 @@ export class TaxonOccurrenceComponent implements OnChanges {
     this.filterByCollectionIdTotal = undefined;
 
     this.filterHabitats = this.taxon.habitatOccurrenceCounts ?? [];
+  }
+
+  onLogin() {
+    this.userService.redirectToLogin();
   }
 }

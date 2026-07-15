@@ -9,7 +9,6 @@ import { InfoCardTabType } from './info-card/info-card.component';
 import { getDescription, HeaderService } from '../../shared/service/header.service';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { components } from 'projects/laji-api-client/generated/api.d';
-import { UserService } from '../../shared/service/user.service';
 import { PlatformService } from '../../root/platform.service';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
@@ -30,7 +29,6 @@ export class TaxonComponent implements OnInit, OnDestroy {
   canShowTree = true;
   showHidden = false;
   loading = false;
-  loggedIn$!: Observable<boolean>;
   taxon$!: Observable<Taxon>;
 
   private initTaxonSub: Subscription | undefined;
@@ -45,18 +43,12 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private footerService: FooterService,
     private cdr: ChangeDetectorRef,
     private headerService: HeaderService,
-    private userService: UserService,
     private platformService: PlatformService
   ) { }
 
   ngOnInit() {
-    this.loggedIn$ = this.userService.isLoggedIn$;
     this.footerService.footerVisible = false;
-    this.subParam = this.loggedIn$.pipe(
-      switchMap(loggedIn => loggedIn
-        ? combineLatest([this.route.params, this.route.queryParams])
-        : EMPTY
-      ),
+    this.subParam = combineLatest([this.route.params, this.route.queryParams]).pipe(
       tap(params => {
         this.infoCardTab = params[0]['tab'] || 'overview';
         this.infoCardContext = params[1]['context'] || 'default';
@@ -143,10 +135,6 @@ export class TaxonComponent implements OnInit, OnDestroy {
       ),
       extra
     );
-  }
-
-  login() {
-    this.userService.redirectToLogin();
   }
 
   isPlatformServer(): boolean {

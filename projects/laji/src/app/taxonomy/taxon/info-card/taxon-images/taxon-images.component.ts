@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Image } from '../../../../shared/gallery/image-gallery/image.interface';
 import { InfoCardQueryService } from '../shared/service/info-card-query.service';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { components } from 'projects/laji-api-client/generated/api.d';
+import { Observable } from 'rxjs';
+import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -13,12 +15,19 @@ type Taxon = components['schemas']['LajiBackendTaxon'];
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class TaxonImagesComponent implements OnChanges {
+export class TaxonImagesComponent implements OnChanges, OnInit {
   @Input({ required: true }) taxon!: Taxon;
   @Input() taxonImages!: Array<Image>;
   @Input() isFromMasterChecklist!: boolean;
 
   imageSets: { title: string; hasData?: boolean; query: WarehouseQueryInterface }[] = [];
+  isLoggedIn$!: Observable<boolean>;
+
+  constructor(private userService: UserService) {}
+
+  ngOnInit() {
+    this.isLoggedIn$ = this.userService.isLoggedIn$;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {
@@ -36,4 +45,7 @@ export class TaxonImagesComponent implements OnChanges {
     }
   }
 
+  onLogin() {
+    this.userService.redirectToLogin();
+  }
 }
