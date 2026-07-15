@@ -93,7 +93,6 @@ export class TaxonComponent implements OnInit, OnDestroy {
       })
     ).subscribe();
 
-
     this.taxon$ = this.route.params.pipe(
       map(params => params.id),
       switchMap(id => this.api.get(
