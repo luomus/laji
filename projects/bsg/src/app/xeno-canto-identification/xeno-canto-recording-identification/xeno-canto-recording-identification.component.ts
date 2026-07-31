@@ -84,6 +84,12 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
         this.exportModalRef.content.recordist.set(recordist);
       }
     });
+
+    effect(() => {
+      if (this.recordistMismatch()) {
+        this.clearProfileCache();
+      }
+    });
   }
 
   ngOnInit() {
@@ -176,7 +182,7 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
       },
       error: (err) => {
         if (err?.message === xenoCantoApiKeyMissingError) {
-          this.api.flush('/person/profile');
+          this.clearProfileCache();
           this.dialogService.alert(this.noApiKeyTpl);
         } else {
           this.dialogService.alert(this.translate.instant('identification.genericError'));
@@ -270,12 +276,12 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
       },
       error: (err) => {
         if (err?.message === xenoCantoApiKeyMissingError) {
-          this.api.flush('/person/profile');
+          this.clearProfileCache();
           this.dialogService.alert(this.noApiKeyTpl);
         } else {
           const msg = BsgApi.getErrorMessage(err);
           if (msg === BsgErrorEnum.invalidXenoCantoApiKey) {
-            this.api.flush('/person/profile');
+            this.clearProfileCache();
             this.dialogService.alert(this.invalidApiKeyTpl);
           } else {
             this.dialogService.alert(this.translate.instant('xenoCantoExport.error'));
@@ -294,5 +300,9 @@ export class XenoCantoRecordingIdentificationComponent implements OnInit, OnDest
         (apiKey) => this.bsgApi.exportToXenoCanto(this.userService.getToken(), apiKey, this.recordist()!, data)
       )
     );
+  }
+
+  private clearProfileCache() {
+    this.api.flush('/person/profile');
   }
 }
