@@ -12,9 +12,9 @@
       @if (recordistMismatch()) {
         <div class="identification-view-alerts">
           <lu-alert class="mb-0" type="warning">
-            The recordist {{ recording()!.recordist }} does not match your Xeno-Canto user name in
-            <a [routerLink]="['/user'] | localize" target="_blank">the profile</a>.
-            You can annotate the recording, but you cannot export the annotation to Xeno-Canto.
+            {{ 'identification.recordistMismatch.part1' | translate: {recordist: recording()!.recordist} }}
+            <a [routerLink]="['/user'] | localize" target="_blank">{{ 'identification.recordistMismatch.part2' | translate }}</a>.
+            {{ 'identification.recordistMismatch.part3' | translate }}
           </lu-alert>
         </div>
       }
@@ -39,11 +39,11 @@
 </laji-spinner>
 
 <ng-template #noApiKeyTpl>
-  Xeno-Canto API key is required for exporting annotations. Please set your API key in the
-  <a [routerLink]="['/user'] | localize" target="_blank">profile settings</a>.
+  {{ 'identification.noApiKey.part1' | translate }}
+  <a [routerLink]="['/user'] | localize" target="_blank">{{ 'identification.noApiKey.part2' | translate }}</a>.
 </ng-template>
 
 <ng-template #invalidApiKeyTpl>
-  Your Xeno-Canto API key is invalid. Please check your API key in the
-  <a [routerLink]="['/user'] | localize" target="_blank">profile settings</a>.
+  {{ 'identification.invalidApiKey.part1' | translate }}
+  <a [routerLink]="['/user'] | localize" target="_blank">{{ 'identification.invalidApiKey.part2' | translate }}</a>.
 </ng-template>
