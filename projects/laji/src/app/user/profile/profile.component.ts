@@ -34,7 +34,7 @@ type MediaIntellectualRights = components['schemas']['Image']['intellectualRight
 export class ProfileComponent implements OnInit, OnDestroy {
 
   viewedProfile!: WithNullableKeys<SensitiveProfile, 'profileDescription' | 'image'>;
-  loggedInProfile!: ExtendedProfile;
+  loggedInProfile?: ExtendedProfile;
 
   public viewedUserIsLoggedInUser = false;
   public viewedUserId = '';
@@ -73,12 +73,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
         map(user => ({viewedUserId, loggedInUser: user}))
       )),
       concatMap(({loggedInUser, viewedUserId}) => {
+        if (!loggedInUser) {
+          return this.api.get('/person/{id}/profile', { path: { id: viewedUserId } }).pipe(
+            map(viewedProfile => ({ viewedUserId, loggedInUser, loggedInProfile: undefined, viewedProfile }))
+          );
+        }
         const loggedInProfile$ = this.api.get('/person/profile');
         return ObservableForkJoin(
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           loggedInProfile$,
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          loggedInUser!.id === viewedUserId
+          loggedInUser.id === viewedUserId
             ? loggedInProfile$
             : this.api.get('/person/{id}/profile', { path: { id: viewedUserId } })
         ).pipe(
@@ -92,12 +95,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
       })
     ).subscribe(
       ({viewedUserId, loggedInUser, loggedInProfile, viewedProfile}) => {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          this.viewedUserIsLoggedInUser = viewedUserId === loggedInUser!.id;
+          this.viewedUserIsLoggedInUser = viewedUserId === loggedInUser?.id;
           this.viewedUserId = viewedUserId;
           this.isCreate = !loggedInProfile;
           this.viewedProfile = viewedProfile;
-          this.loggedInProfile = prepareProfile(loggedInProfile, loggedInUser);
+          if (loggedInProfile) {
+            this.loggedInProfile = prepareProfile(loggedInProfile, loggedInUser);
+          }
           this.loading = false;
           this.editing = false;
           this.cdr.detectChanges();
@@ -151,15 +155,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private getSaveProfile(): Profile {
     return {
-      ...this.loggedInProfile,
-      image: this.loggedInProfile.image,
-      profileDescription: this.loggedInProfile.profileDescription,
-      personalCollectionIdentifier: this.loggedInProfile.personalCollectionIdentifier,
+      ...this.loggedInProfile!,
+      image: this.loggedInProfile!.image,
+      profileDescription: this.loggedInProfile!.profileDescription,
+      personalCollectionIdentifier: this.loggedInProfile!.personalCollectionIdentifier,
       settings: {
-        ...this.loggedInProfile.settings,
+        ...this.loggedInProfile!.settings,
         defaultMediaMetadata: {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          ...this.loggedInProfile.settings!.defaultMediaMetadata,
+          ...this.loggedInProfile!.settings!.defaultMediaMetadata,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           capturerVerbatim: this.loggedInProfile?.settings?.defaultMediaMetadata?.capturerVerbatim!,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
