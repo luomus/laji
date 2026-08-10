@@ -235,7 +235,7 @@ ExtractContentByResponseType<
     );
   }
 
-  protected getHeaders(lang: string, langFallback = true, personToken?: string) {
+  protected getFallbackHeaders(lang: string, langFallback = true, personToken?: string) {
     const headers: Record<string, string> = {
 			'API-Version': '1',
 			'Accept-Language': lang,
@@ -250,14 +250,14 @@ ExtractContentByResponseType<
   }
 
   private getRequestOptions(
-    queryParams: any,
+    params: any,
     requestBody: any,
     lang: string,
     langFallback = true,
-    personToken?: string,
-    responseType: ResponseType = 'json'
   ) {
-    const params = Object.keys((queryParams || {})).reduce((filteredQueryParams, key) => {
+    const responseType: ResponseType = params?.responseType ?? 'json';
+    const queryParams = params?.query;
+    const newParams = Object.keys((queryParams || {})).reduce((filteredQueryParams, key) => {
       const param = (queryParams || {})[key];
       if (param === undefined) {
         return filteredQueryParams;
@@ -266,8 +266,12 @@ ExtractContentByResponseType<
       return filteredQueryParams;
     }, {} as any);
 
-    const headers = this.getHeaders(lang, langFallback, personToken);
-    return { params, body: requestBody, headers, responseType };
+    const fallbackHeaders = this.getFallbackHeaders(lang, langFallback, this.personToken);
+    const headers = params ? {
+      ...fallbackHeaders,
+      ...params.header
+    } : fallbackHeaders;
+    return { params: newParams, body: requestBody, headers, responseType };
   }
 
   fetch<
@@ -295,7 +299,7 @@ ExtractContentByResponseType<
       return this.http.request(
         method as string,
         requestUrl,
-        this.getRequestOptions((params as any)?.query, requestBody, this.lang, langFallback, this.personToken, params?.responseType)
+        this.getRequestOptions(params, requestBody, this.lang, langFallback)
       ) as any;
     }
 
@@ -320,7 +324,7 @@ ExtractContentByResponseType<
     const obs = this.http.request(
       method,
       requestUrl,
-      this.getRequestOptions((params as any)?.query, requestBody, this.lang, langFallback, this.personToken, params?.responseType)
+      this.getRequestOptions(params, requestBody, this.lang, langFallback)
     ).pipe(
       tap(val => {
         cachedPath?.set(paramsHash, {
