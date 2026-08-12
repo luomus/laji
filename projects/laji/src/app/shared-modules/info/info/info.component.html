@@ -7,14 +7,20 @@
   tabindex="0"
   luKeyboardClickable
   [class]="'no-propagation label label-' + labelType + (glyphicon ? '' : ' laji-form-help-glyph') + ' ' + (showOnHover ? 'hover-info' : 'link')"
->
-  <span [className]="'glyphicon glyphicon-' + glyphicon" *ngIf="glyphicon"></span>
-  <ng-container *ngIf="!glyphicon">?</ng-container>
+  >
+  @if (glyphicon) {
+    <span [className]="'glyphicon glyphicon-' + glyphicon"></span>
+  }
+  @if (!glyphicon) {
+    ?
+  }
 </strong>
 
 <lu-modal size="sm" #modal>
   <ng-container *ngTemplateOutlet="content"></ng-container>
 </lu-modal>
 <ng-template #content>
-  <div style="max-width: 500px;"><div style="word-break: break-word" *ngIf="html" [innerHTML]="html" lajiRouteTransformer></div><ng-content></ng-content></div>
-</ng-template>
+  <div style="max-width: 500px;">@if (html) {
+    <div style="word-break: break-word" [innerHTML]="html" lajiRouteTransformer></div>
+    }<ng-content></ng-content></div>
+  </ng-template>

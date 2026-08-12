@@ -1,4 +1,4 @@
-@import 'projects/laji-ui/src/lib/vars';
+@use 'vars' as *;
 
 .taxon-name {
     font-weight: bold;
@@ -9,6 +9,6 @@
     font-size: $fs-5;
 }
 
-.colloquialVernacularName {
+.colloquial-vernacular-name {
     color: $neutral-5;
 }

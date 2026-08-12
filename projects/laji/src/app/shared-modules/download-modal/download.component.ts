@@ -13,70 +13,86 @@ export interface DownloadParams {
 }
 
 @Component({
-  selector: 'laji-download',
-  template: `
+    selector: 'laji-download',
+    template: `
     <button [class]="'btn btn-' + role" [disabled]="disabled" (click)="openModal(modal)">
       <ng-content></ng-content>
     </button>
     <ng-template #modal>
       <h4>{{ 'haseka.submissions.chooseFormat' | translate }}</h4>
       <div>
-        <laji-download-modal-reason *ngIf="showReason"
-          [reason]="reason" [reasonEnum]="reasonEnum"
-          (reasonChange)="reasonChange.emit($event)" (reasonEnumChange)="reasonEnumChange.emit($event)">
-        </laji-download-modal-reason>
-        <ng-container *ngIf="showFileTypes">
-          <div class="radio" *ngIf="_formats.indexOf('csv') > -1">
-            <label>
-              <input type="radio" name="optradio" [(ngModel)]="fileType" value="csv">
-              {{ 'species.download.textFile' | translate }} (.csv)
-            </label>
-          </div>
-          <div class="radio" *ngIf="_formats.indexOf('tsv') > -1">
-            <label>
-              <input type="radio" name="optradio" [(ngModel)]="fileType" value="tsv">
-              {{ 'species.download.textFile' | translate }} (.tsv)
-            </label>
-          </div>
-          <div class="radio" *ngIf="_formats.indexOf('ods') > -1">
-            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="ods">OpenDocument Spreadsheet (.ods)</label>
-          </div>
-          <div class="radio" *ngIf="_formats.indexOf('xlsx') > -1">
-            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">Excel (.xlsx)</label>
-          </div>
-          <div class="radio" *ngIf="_formats.indexOf('gpkg') > -1">
-            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="gpkg">GeoPackage (.gpkg)</label>
-          </div>
-          <ng-container *ngIf="fileType === 'gpkg'">
+        @if (showReason) {
+          <laji-download-modal-reason
+            [reason]="reason" [reasonEnum]="reasonEnum"
+            (reasonChange)="reasonChange.emit($event)" (reasonEnumChange)="reasonEnumChange.emit($event)">
+          </laji-download-modal-reason>
+        }
+        @if (showFileTypes) {
+          @if (_formats.indexOf('csv') > -1) {
+            <div class="radio">
+              <label>
+                <input type="radio" name="optradio" [(ngModel)]="fileType" value="csv">
+                {{ 'species.download.textFile' | translate }} (.csv)
+              </label>
+            </div>
+          }
+          @if (_formats.indexOf('tsv') > -1) {
+            <div class="radio">
+              <label>
+                <input type="radio" name="optradio" [(ngModel)]="fileType" value="tsv">
+                {{ 'species.download.textFile' | translate }} (.tsv)
+              </label>
+            </div>
+          }
+          @if (_formats.indexOf('ods') > -1) {
+            <div class="radio">
+              <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="ods">OpenDocument Spreadsheet (.ods)</label>
+            </div>
+          }
+          @if (_formats.indexOf('xlsx') > -1) {
+            <div class="radio">
+              <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">Excel (.xlsx)</label>
+            </div>
+          }
+          @if (_formats.indexOf('gpkg') > -1) {
+            <div class="radio">
+              <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="gpkg">GeoPackage (.gpkg)</label>
+            </div>
+          }
+          @if (fileType === 'gpkg') {
             <div class="mb-3">
               <label for="geometry">{{ 'download.geometry' | translate }}:</label>
               <select id="geometry" name="geometry" class="form-control" [(ngModel)]="geometry">
-                <option *ngFor="let option of fileGeometryEnum | keyvalue: sortNull" [ngValue]="option.value">{{ option.value }}</option>
+                @for (option of fileGeometryEnum | keyvalue: sortNull; track option) {
+                  <option [ngValue]="option.value">{{ option.value }}</option>
+                }
               </select>
             </div>
             <div>
               <label for="crs">{{ 'download.crs' | translate }}:</label>
               <select id="crs" name="crs" class="form-control" [(ngModel)]="crs">
-                <option *ngFor="let option of fileCrsEnum | keyvalue: sortNull" [ngValue]="option.value">{{ option.value }}</option>
+                @for (option of fileCrsEnum | keyvalue: sortNull; track option) {
+                  <option [ngValue]="option.value">{{ option.value }}</option>
+                }
               </select>
             </div>
-          </ng-container>
-        </ng-container>
+          }
+        }
       </div>
       <div class="lu-modal-footer">
         <div class="row">
           <div class="col-sm-12">
             <laji-spinner [spinning]="downloadLoading" [overlay]="true">
               <button type="button"
-                      [luTooltip]="showReason && disableDownLoad ? ('download.reason-required' | translate) : ''"
-                      class="btn btn-default pull-right"
-                      [disabled]="disableDownLoad"
-                      (click)="onDownload()">
+                [luTooltip]="showReason && disableDownLoad ? ('download.reason-required' | translate) : ''"
+                class="btn btn-default pull-right"
+                [disabled]="disableDownLoad"
+                (click)="onDownload()">
                 <span>
                   {{ (downloadLoading ? 'haseka.submissions.downloading' : 'haseka.submissions.download') | translate }}
-                  <ng-container *ngIf="downloadLoading && progressPercent !== undefined">
+                  @if (downloadLoading && progressPercent !== undefined) {
                     {{ progressPercent }} %
-                  </ng-container>
+                  }
                 </span>
               </button>
             </laji-spinner>
@@ -84,8 +100,9 @@ export interface DownloadParams {
         </div>
       </div>
     </ng-template>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    `,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DownloadComponent implements OnChanges {
 

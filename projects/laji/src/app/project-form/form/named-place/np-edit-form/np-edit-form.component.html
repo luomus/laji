@@ -1,0 +1,32 @@
+<div class="laji-form" *lajiLoggedIn="true">
+  @if ((asyncData$) | async; as data) {
+    <laji-project-form-header [form]="data.documentForm"
+      [description]="data.description"
+      lajiFormOption="options.namedPlaceOptions.createDescription options.namedPlaceOptions.editDescription"
+    class="no-flex"></laji-project-form-header>
+    <laji-form
+      [form]="data.placeForm"
+      [formData]="data.formData"
+      (dataChange)="onChange()"
+    (dataSubmit)="onSubmit($event)"></laji-form>
+    <laji-form-footer
+      [form]="data.placeForm"
+      [status]="status"
+      [saving]="saving"
+      [edit]="!!data.namedPlace"
+      [lajiForm]="lajiForm!"
+      (submitPublic)="submitPublic()"
+      (submitPrivate)="submitPrivate()"
+      (leave)="discard()"
+    ></laji-form-footer>
+  } @else {
+    <laji-spinner></laji-spinner>
+  }
+</div>
+<div class="row" *lajiLoggedIn="false">
+  <div class="col-sm-8">
+    <lu-alert [type]="'warning'">
+      {{ 'haseka.pleaseLogin' | translate }}
+    </lu-alert>
+  </div>
+</div>

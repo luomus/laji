@@ -1,0 +1,14 @@
+@for (val of _values; track val) {
+  <h3>
+    @if (val.translate) {
+      {{ val.translate | translate }}
+    } @else {
+      {{ val.key | label }}
+    }
+  </h3>
+  <ul class="{{val.key}}">
+    @for (v of val.value; track v) {
+      <li [innerHTML]="v | label"></li>
+    }
+  </ul>
+}

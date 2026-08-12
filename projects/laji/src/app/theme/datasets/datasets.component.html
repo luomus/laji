@@ -1,0 +1,43 @@
+<div class="container mb-8">
+  <laji-theme-breadcrumb [breadcrumb]="(breadcrumb$ | async)!"></laji-theme-breadcrumb>
+  <div class="laji-page">
+    @if (instructions) {
+      <laji-info-page [rootPage]="instructions"></laji-info-page>
+    }
+    <ng-container *lajiBrowserOnly>
+      <div class="row" *lajiLoggedIn="false">
+        <div class="col-sm-8">
+          <lu-alert [type]="'warning'">
+            {{ 'haseka.pleaseLogin' | translate }}
+          </lu-alert>
+        </div>
+      </div>
+    </ng-container>
+    @if (forms$ | async; as forms) {
+      <h3>{{ 'datasets.accessTo' | translate }}</h3>
+      <ul class="dataset-items">
+        @if (forms.length === 0) {
+          <li>
+            {{ 'datasets.accessNone' | translate }}
+          </li>
+        }
+        @for (form of forms; track form) {
+          <li>
+              <a [routerLink]="['/project/', form?.id!] | localize">
+                {{ form?.collectionID! | label }},
+                @if (form?.options?.secondaryCopy) {
+                  {{ 'datasets.secondary' | translate }}
+                } @else {
+                  {{ 'datasets.primary' | translate }}
+                }
+              </a>
+          </li>
+        }
+      </ul>
+      <p>{{ 'datasets.new.help' | translate }}</p>
+      <h3>{{ 'datasets.new.title' | translate }}</h3>
+      <p>{{ 'datasets.new.intro' | translate }}</p>
+      <lu-button target="_blank" anchor="https://luomus-lv.creamailer.fi/survey/qnqqmh0tjgohg" role="primary">{{ 'datasets.new.title' | translate }}</lu-button>
+    }
+  </div>
+</div>

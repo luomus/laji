@@ -1,0 +1,58 @@
+@use "../../styles/variables" as *;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  min-height: 0;
+  z-index: auto;
+}
+
+main {
+  position: relative;
+}
+
+.sidebar-nav {
+  padding-bottom: 2px;
+}
+
+.toggle-intro {
+  padding: 10px 10px 0 0;
+  font-size: 13px;
+  color: $color-main-dark;
+}
+
+#haseka-container {
+  margin-left: 15px;
+  margin-right: 15px;
+  width: auto;
+}
+
+.active {
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #898989;
+}
+
+
+@media only screen and (min-width : 768px) {
+  .flex-column {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    min-height: 0;
+  }
+
+  .flex-row {
+    flex-flow: row;
+  }
+}
+
+
+#content-container {
+  margin-bottom: 20px;
+}
+
+main {
+  padding: 20px 40px;
+}

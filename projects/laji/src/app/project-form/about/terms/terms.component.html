@@ -1,0 +1,25 @@
+<ng-container *lajiBrowserOnly>
+  @if (!vihkoSettings.showIntro && !modal) {
+    <div class="pull-right toggle-intro">
+      <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+    </div>
+  }
+  @if (vihkoSettings.showIntro) {
+    @if (!modal) {
+      @if (vihkoSettings.showIntro) {
+        <lu-alert [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+          <div [innerHtml]="'haseka.intro2' | translate" lajiRouteTransformer></div>
+        </lu-alert>
+      }
+    } @else {
+      <lu-modal [noClose]="true" #modal>
+        <div [innerHtml]="'haseka.intro2' | translate" lajiRouteTransformer></div>
+        <button type="button"
+          class="btn btn-md btn-primary btn-block use-button"
+          (click)="toggleInfo()">
+          {{ dismissLabel | translate }}
+        </button>
+      </lu-modal>
+    }
+  }
+</ng-container>

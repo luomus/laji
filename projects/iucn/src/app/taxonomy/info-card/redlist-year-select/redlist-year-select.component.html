@@ -1,0 +1,5 @@
+<select class="form-control" style="max-width: 150px; display: inline-block" (change)="changeActive($event)">
+  @for (opt of history; track opt) {
+    <option [selected]="opt.year === active">{{ opt.year }}</option>
+  }
+</select>

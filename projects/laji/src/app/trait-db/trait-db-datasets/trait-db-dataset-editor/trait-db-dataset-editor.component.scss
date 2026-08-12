@@ -1,0 +1,9 @@
+@use 'vars' as *;
+
+.dataset-form {
+  max-width: 400px;
+}
+
+.dataset-form > div {
+  margin-bottom: $sp-4;
+}

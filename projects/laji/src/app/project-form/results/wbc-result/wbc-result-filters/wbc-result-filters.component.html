@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-sm-12 select-container">
+    <div>
+      <label for="year">{{ 'wbc.year' | translate }}</label>
+      <select
+        id="year"
+        (change)="onYearChange(toHtmlSelectElement($event.target).value !== '0' ? toHtmlSelectElement($event.target).value : undefined)"
+        name="year"
+        class="form-control"
+        style="width: 120px">
+        @if (!yearRequired) {
+          <option [value]="0" [selected]="!activeYear">{{ 'all' | translate }}</option>
+        }
+        @for (year of years; track year) {
+          <option [value]="year" [selected]="year === activeYear">
+            {{ year + '/' + (year + 1) }}
+          </option>
+        }
+      </select>
+    </div>
+    @if (showSeasonFilter) {
+      <div>
+        <label for="season">{{ 'wbc.season' | translate }}</label>
+        <select
+          id="season"
+          (change)="onSeasonChange(toHtmlSelectElement($event.target).value !== '0' ? toHtmlSelectElement($event.target).value : undefined)"
+          [disabled]="!activeYear"
+          name="season"
+          class="form-control"
+          style="width: 120px">
+          <option [value]="0" [selected]="!activeSeason">{{ 'all' | translate }}</option>
+          @for (season of seasons; track season) {
+            <option [value]="season" [selected]="season === activeSeason">
+              {{ 'wbc.season.' + season | translate }}
+            </option>
+          }
+        </select>
+      </div>
+    }
+    @if (showAreaFilter) {
+      <div>
+        <label for="birdAssociationArea">{{ 'MNP.birdAssociationArea' | label }}</label>
+        <laji-area-select id="birdAssociationArea"
+          [selectOptionEnabled]="false"
+          [allOptionEnabled]="true"
+          [field]="'ML.birdAssociationArea'"
+          [value]="[activeArea || 'all']"
+          (areaSelect)="onAreaChange($event)"
+        ></laji-area-select>
+      </div>
+    }
+  </div>
+</div>

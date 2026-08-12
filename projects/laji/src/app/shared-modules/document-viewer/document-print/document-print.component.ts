@@ -9,18 +9,19 @@ import {
   OnDestroy,
   SimpleChanges
 } from '@angular/core';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { interval as ObservableInterval, Subscription } from 'rxjs';
 import { IdService } from '../../../shared/service/id.service';
 import { UserService } from '../../../shared/service/user.service';
-import { filter, map, switchMap, take } from 'rxjs/operators';
+import { filter, map, switchMap, take } from 'rxjs';
 import { Global } from '../../../../environments/global';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
-  selector: 'laji-document-print',
-  templateUrl: './document-print.component.html',
-  styleUrls: ['../styles/document-print.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-document-print',
+    templateUrl: './document-print.component.html',
+    styleUrls: ['../styles/document-print.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DocumentPrintComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() uri?: string;
@@ -40,7 +41,7 @@ export class DocumentPrintComponent implements AfterViewInit, OnChanges, OnDestr
   private interval?: Subscription;
 
   constructor(
-    private warehouseApi: WarehouseApi,
+    private api: LajiApiClientService,
     private userService: UserService,
     private cd: ChangeDetectorRef,
     private appRef: ApplicationRef
@@ -67,11 +68,16 @@ export class DocumentPrintComponent implements AfterViewInit, OnChanges, OnDestr
     if (!this.uri) {
       return;
     }
-    const findDox$ = this.warehouseApi
-      .warehouseQuerySingleGet(this.uri, this.own ? {
-        editorOrObserverPersonToken: this.userService.getToken()
-      } : undefined)
-      .pipe(map(doc => doc.document));
+
+    const query = {
+      documentId: this.uri,
+    } as any;
+    if (this.own) {
+      query['editorOrObserverPersonToken'] = this.userService.getToken();
+    }
+
+    const findDox$ = this.api.get('/warehouse/query/single' as any, { query })
+      .pipe(map((doc: any) => doc.document));
     findDox$
       .subscribe(
         doc => this.parseDoc(doc, true),

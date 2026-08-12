@@ -9,10 +9,11 @@ interface ILabelFieldWithIdx extends ILabelField {
  * @internal
  */
 @Component({
-  selector: 'll-available-fields',
-  templateUrl: './available-fields.component.html',
-  styleUrls: ['./available-fields.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-available-fields',
+    templateUrl: './available-fields.component.html',
+    styleUrls: ['./available-fields.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AvailableFieldsComponent implements OnChanges {
   @Input() availableFields?: ILabelField[];

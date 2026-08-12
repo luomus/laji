@@ -1,0 +1,18 @@
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover">
+    <tbody>
+      <tr>
+        @for (field of ['area', 'status']; track field) {
+          <th>{{ 'MO.' + field | label }}</th>
+        }
+      </tr>
+      @for (occurrence of occurrences; track occurrence) {
+        <tr>
+          <td>{{ occurrence.area | label }}</td>
+          <td>{{ occurrence.status | label }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+

@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'laji-three-state-switch',
-  templateUrl: './three-state-switch.component.html',
-  styleUrls: ['./three-state-switch.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-three-state-switch',
+    templateUrl: './three-state-switch.component.html',
+    styleUrls: ['./three-state-switch.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ThreeStateSwitchComponent {
 

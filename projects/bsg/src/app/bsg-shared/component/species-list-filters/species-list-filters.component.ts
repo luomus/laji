@@ -1,0 +1,35 @@
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { SpeciesFilters, SpeciesQuery } from '../../models';
+
+@Component({
+    selector: 'bsg-species-list-filters',
+    templateUrl: './species-list-filters.component.html',
+    styleUrls: ['./species-list-filters.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
+})
+export class SpeciesListFiltersComponent {
+  @Input() filters?: SpeciesFilters = { continent: [], order: [], family: [] };
+  @Input() query: SpeciesQuery = {};
+  @Input() showOnlyUnvalidated = true;
+  @Input() showSearch = true;
+
+  @Output() queryChange = new EventEmitter<SpeciesQuery>();
+
+  selectChange(field: 'continent'|'order'|'family', value: string) {
+    this.query[field] = parseInt(value, 10) || undefined;
+
+    if (field === 'order' && this.query.order != null && this.query.family != null) {
+      const family = this.filters!.family.filter(f => f.id === this.query.family)[0];
+      if (family.order !== this.query.order) {
+        this.query.family = undefined;
+      }
+    }
+
+    this.onQueryChange();
+  }
+
+  onQueryChange() {
+    this.queryChange.emit(this.query);
+  }
+}

@@ -1,0 +1,5 @@
+<h1 translate>ba.species-index.title</h1>
+<p [innerHtml]="'ba.species-index.p' | translate"></p>
+@if (atlasTaxa$ | async; as atlasTaxa) {
+  <ba-species-index-list [atlasTaxa]="atlasTaxa"></ba-species-index-list>
+}

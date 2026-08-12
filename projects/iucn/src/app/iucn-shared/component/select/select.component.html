@@ -1,4 +1,8 @@
-<ng-container *ngIf="options">
-  <option *ngIf="placeholder || placeholder === ''" value="" [selected]="!value">{{ placeholder }}</option>
-  <option *ngFor="let option of options" [value]="option.value" [selected]="option.value === value" [innerHtml]="option.label"></option>
-</ng-container>
+@if (options) {
+  @if (placeholder || placeholder === '') {
+    <option value="" [selected]="!value">{{ placeholder }}</option>
+  }
+  @for (option of options; track option) {
+    <option [value]="option.value" [selected]="option.value === value" [innerHtml]="option.label"></option>
+  }
+}

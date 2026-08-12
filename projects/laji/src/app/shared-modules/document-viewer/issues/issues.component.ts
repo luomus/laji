@@ -7,10 +7,11 @@ const QUALITY_ERRORS = [
 ];
 
 @Component({
-  selector: 'laji-issues',
-  templateUrl: './issues.component.html',
-  styleUrls: ['./issues.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-issues',
+    templateUrl: './issues.component.html',
+    styleUrls: ['./issues.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IssuesComponent implements OnChanges {
 

@@ -1,0 +1,24 @@
+@for (name of names; track name; let i = $index) {
+  @if (name === 'synonyms' && taxonHasSynonymKey(_taxon)) {
+    <laji-taxon-synonyms
+      [taxon]="_taxon"
+      [synonymTypes]="synonymTypes"
+  [hasOtherNamesBefore]="hasOtherNamesBefore(['vernacularName', 'alternativeVernacularName',
+  'obsoleteVernacularName', 'colloquialVernacularName'])"
+    ></laji-taxon-synonyms>
+  }
+  @if (name !== 'synonyms') {
+    @if (availableLangs[name].length > 0) {
+      <laji-taxon-info-row
+        [label]="('MX.' + name) | label">
+        <ul>
+          @for (lang of availableLangs[name]; track lang) {
+            <li>
+              {{ $any(_taxon)[name + 'MultiLang'] | multiLang: false:lang | values }} ({{ lang }})
+            </li>
+          }
+        </ul>
+      </laji-taxon-info-row>
+    }
+  }
+}

@@ -2,52 +2,63 @@
   <tr>
     <td>
       <div class="editor-area">
-        <div class="editor" id="{{_backSide ? 'back-side-label-editor' : 'label-editor'}}" [ngStyle]="_magnifiedStyle" *ngIf="init">
-          <ll-editor-grid *ngIf="gridVisible" [grid]="grid" [magnification]="_magnification"></ll-editor-grid>
-          <ng-container *ngIf="_backSide; else frontSide">
-            <ll-editor-item
-              *ngFor="let item of _setup.backSideLabelItems; let i=index"
-              [grid]="grid"
-              [magnification]="_magnification"
-              [item]="item"
-              [boundary]="'#back-side-label-editor'"
-              (done)="done.emit()"
-              (itemClick)="setActiveItem($event)"
-              (itemChange)="onItemChange(item, $event)"
-              [active]="item === active"
-              [maxWidth]="_setup.label['width.mm']!"
-              [maxHeight]="_setup.label['height.mm']!"
-              (showSettings)="showSettings.emit($event)"
-            ></ll-editor-item>
-          </ng-container>
-          <ng-template #frontSide>
-            <ll-editor-item
-              *ngFor="let item of _setup.labelItems; let i=index"
-              [grid]="grid"
-              [magnification]="_magnification"
-              [item]="item"
-              [boundary]="'#label-editor'"
-              (done)="done.emit()"
-              (itemClick)="setActiveItem($event)"
-              (itemChange)="onItemChange(item, $event)"
-              [active]="item === active"
-              [maxWidth]="_setup.label['width.mm']!"
-              [maxHeight]="_setup.label['height.mm']!"
-              (showSettings)="showSettings.emit($event)"
-            ></ll-editor-item>
-          </ng-template>
-        </div>
+        @if (init) {
+          <div class="editor" id="{{_backSide ? 'back-side-label-editor' : 'label-editor'}}" [ngStyle]="_magnifiedStyle">
+            @if (gridVisible) {
+              <ll-editor-grid [grid]="grid" [magnification]="_magnification"></ll-editor-grid>
+            }
+            @if (_backSide) {
+              @for (item of _setup.backSideLabelItems; track item; let i = $index) {
+                <ll-editor-item
+                  [grid]="grid"
+                  [magnification]="_magnification"
+                  [item]="item"
+                  [boundary]="'#back-side-label-editor'"
+                  (done)="done.emit()"
+                  (itemClick)="setActiveItem($event)"
+                  (itemChange)="onItemChange(item, $event)"
+                  [active]="item === active"
+                  [maxWidth]="_setup.label['width.mm']!"
+                  [maxHeight]="_setup.label['height.mm']!"
+                  (showSettings)="showSettings.emit($event)"
+                ></ll-editor-item>
+              }
+            } @else {
+              @for (item of _setup.labelItems; track item; let i = $index) {
+                <ll-editor-item
+                  [grid]="grid"
+                  [magnification]="_magnification"
+                  [item]="item"
+                  [boundary]="'#label-editor'"
+                  (done)="done.emit()"
+                  (itemClick)="setActiveItem($event)"
+                  (itemChange)="onItemChange(item, $event)"
+                  [active]="item === active"
+                  [maxWidth]="_setup.label['width.mm']!"
+                  [maxHeight]="_setup.label['height.mm']!"
+                  (showSettings)="showSettings.emit($event)"
+                ></ll-editor-item>
+              }
+            }
+          </div>
+        }
       </div>
     </td>
-    <td *ngIf="!_backSide" class="height-settings">
-      <input style="width: 30px" type="text" [value]="_setup.label['height.mm']" (change)="updateDimensions($event, 'height.mm', 'label')">mm.
-    </td>
+    @if (!_backSide) {
+      <td class="height-settings">
+        <input style="width: 30px" type="text" [value]="_setup.label['height.mm']" (change)="updateDimensions($event, 'height.mm', 'label')">mm.
+      </td>
+    }
   </tr>
-  <tr *ngIf="!_backSide">
-    <td class="width-settings">
-      <input style="width: 30px" type="text" [value]="_setup.label['width.mm']" (change)="updateDimensions($event, 'width.mm', 'label')">mm.
-    </td>
-    <td></td>
-  </tr>
+  @if (!_backSide) {
+    <tr>
+      <td class="width-settings">
+        <input style="width: 30px" type="text" [value]="_setup.label['width.mm']" (change)="updateDimensions($event, 'width.mm', 'label')">mm.
+      </td>
+      <td></td>
+    </tr>
+  }
 </table>
-<ll-ruler *ngIf="!init" (measured)="init = true"></ll-ruler>
+@if (!init) {
+  <ll-ruler (measured)="init = true"></ll-ruler>
+}

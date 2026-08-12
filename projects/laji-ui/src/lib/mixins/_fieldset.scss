@@ -1,3 +1,5 @@
+@use 'vars' as *;
+
 @mixin fieldset {
   padding: 0;
   padding-left: $sp-4;

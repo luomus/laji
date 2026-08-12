@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-sample',
-  templateUrl: './sample.component.html',
-  styleUrls: ['./sample.component.scss']
+    selector: 'laji-sample',
+    templateUrl: './sample.component.html',
+    styleUrls: ['./sample.component.scss'],
+    standalone: false
 })
 export class SampleComponent {
 

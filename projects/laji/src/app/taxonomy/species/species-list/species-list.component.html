@@ -1,0 +1,62 @@
+<div id="species-table">
+  <div class="form-group mb-0 mt-2">
+    <div>
+      <label for="speciesOrder">
+        {{ 'species.order' | translate }}:
+      </label>
+      <select id="speciesOrder" class="d-inline-block ml-2 form-control" style="width: auto" [ngModel]="search.listOptions.sortOrder" (ngModelChange)="sortOrderChanged($event)">
+        <option [value]="'taxonomic'">
+          {{ 'species.order.taxonomicOrder' | translate }}
+        </option>
+        <option [value]="'scientificName'">
+          {{ 'species.order.scientificName' | translate }}
+        </option>
+        <option [value]="'finnishName'">
+          {{ 'species.order.finnishName' | translate }}
+        </option>
+      </select>
+    </div>
+    @if (countStartText) {
+      <div class="counts">
+        <strong>
+          {{ countStartText }}
+          <laji-species-count [search]="search"></laji-species-count>
+          {{ countEndText }}
+        </strong>
+      </div>
+    }
+  </div>
+  <div class="species-table-wrapper">
+    <laji-datatable-header
+      [showSettingsMenu]="true"
+      (openSettingsMenu)="openModal()"
+      [showDownloadMenu]="showDownloadAndBrowse"
+      [downloadLoading]="downloadLoading"
+      [downloadText]="'species.header.download' | translate"
+      (download)="download($event)"
+      [showBrowseObservationsButton]="showDownloadAndBrowse"
+      [browseObservationsText]="'species.header.browse' | translate"
+      (browseObservations)="browseObservations()"
+    ></laji-datatable-header>
+    <laji-datatable
+      #dataTable
+      (rowSelect)="onRowSelect($event)"
+      [virtualScrolling]="true"
+      [clientSideSorting]="speciesPage.lastPage === 1"
+      [height]="'calc(70vh - 30px)'"
+      [rows]='speciesPage.results'
+      (pageChange)="pageChanged($event)"
+      (reorder)="onReorder($event)"
+      [loading]="loading"
+      [count]="speciesPage.total"
+      [page]="speciesPage.currentPage"
+      [pageSize]="speciesPage.pageSize"
+      [columns]="columns">
+    </laji-datatable>
+  </div>
+</div>
+
+<laji-species-list-options-modal #settingsModal
+  (settingsChange)="onSettingsChange()"
+  [search]="search">
+</laji-species-list-options-modal>

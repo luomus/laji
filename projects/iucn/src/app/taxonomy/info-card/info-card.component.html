@@ -1,0 +1,99 @@
+@if (missing) {
+  <h1>{{ 'iucn.taxon.missing' | translate }} {{ year }}</h1>
+  <p>{{ 'iucn.taxon.disclaimer' | translate }}</p>
+}
+@if (!missing && taxon && !latestStatus) {
+  <div class="row">
+    <div class="col-sm-push-8 col-sm-4" style="text-align: right">
+      <h1 class="hidden-xs" style="display: inline-block">&nbsp;</h1>
+    </div>
+    <div class="col-sm-pull-4 col-sm-8">
+      <h1><laji-taxon-name [taxon]="taxon" [capitalizeName]="true" [addLink]="false"></laji-taxon-name></h1>
+      <h2>
+        {{ 'iucn.taxon.missingInSpeciesLevel' | translate }} {{ year }}
+        <div class="year-select">
+          <select iucn-dropdown [options]="(years$ | async)!" [value]="year" (valueChange)="changeYear($event)"></select>
+        </div>
+      </h2>
+      <h3>{{ 'iucn.taxon.lowerTaxons' | translate }}</h3>
+      <ul>
+        @for (species of species$ | async; track species) {
+          <li>
+            <a [routerLink]="['..', species.id]" [queryParams]="{checklist: checklistId}">
+              <laji-taxon-name [taxon]="species" [capitalizeName]="true" [addLink]="false"></laji-taxon-name>
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+}
+@if (!missing && taxon && latestStatus) {
+  <div class="row">
+    <div class="col-sm-push-8 col-sm-4" style="text-align: right">
+      <h1 class="hidden-xs" style="display: inline-block">&nbsp;</h1>
+    </div>
+    <div class="col-sm-pull-4 col-sm-8">
+      <h1><laji-taxon-name [capitalizeName]="true" [taxon]="taxon" [addLink]="false"></laji-taxon-name></h1>
+      <h2>
+        {{ 'iucn.taxon.evaluation' | translate }} {{ latestStatus.evaluationYear }}
+        <div class="year-select">
+          <select iucn-dropdown [options]="(years$ | async)!" [value]="year" (valueChange)="changeYear($event)"></select>
+        </div>
+      </h2>
+      <h3>
+        @if (isEndangered) {
+          {{ 'iucn.endangeredSingle' | translate }}: {{ ('iucn.taxon.' + latestStatus.redListStatus) | translate | lowercase }}
+        } @else {
+          @if (!!latestStatus.redListStatus) {
+            {{ ('iucn.taxon.' + latestStatus.redListStatus) | translate }}
+          }
+        }
+      </h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-9">
+      <div style="margin-left: -15px; margin-right: -15px; margin-bottom: 15px;">
+        <laji-iucn-class [includeOther]="false" [highlight]="latestStatus?.redListStatus"></laji-iucn-class>
+        <div style="clear: both;"></div>
+        <laji-status-mark [showLabels]="true" [evaluation]="{possiblyRE: latestStatus.possiblyRE}"></laji-status-mark>
+      </div>
+      @if (latestStatus.criteriaForStatus) {
+        <h3>{{ 'MKV.criteriaForStatus' | label }}</h3>
+        <p [innerHTML]="latestStatus.criteriaForStatus | explainCriteria"></p>
+        @if (latestStatus.externalPopulationImpactOnRedListStatus) {
+          <p>{{ latestStatus.externalPopulationImpactOnRedListStatus | translate }}</p>
+        }
+      }
+      @if (taxon.administrativeStatuses && taxon.administrativeStatuses.length > 0) {
+        <h3>{{ 'iucn.taxon.administrativeStatuses' | translate }}</h3>
+        <ul>
+          @for (status of taxon.administrativeStatuses; track status) {
+            <li>
+              {{ status | label }}
+            </li>
+          }
+        </ul>
+      }
+    </div>
+    <div class="col-sm-3">
+      <iucn-taxon-image [images]="taxon.multimedia!"></iucn-taxon-image>
+      <a href="https://laji.fi/taxon/{{ taxon.id }}" target="_blank" rel="noreferrer noopener">
+        <div class="to-laji" [innerHTML]="'iucn.taxon.more' | translate"></div>
+      </a>
+    </div>
+  </div>
+  <!--
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>{{ 'iucn.taxon.evaluation' | translate }} {{ latestStatus?.evaluationYear }}</h2>
+    </div>
+  </div>
+  -->
+  <div class="row">
+    <div class="col-sm-12">
+      <iucn-red-list-evaluation-info [evaluation]="latestStatus"></iucn-red-list-evaluation-info>
+    </div>
+  </div>
+}

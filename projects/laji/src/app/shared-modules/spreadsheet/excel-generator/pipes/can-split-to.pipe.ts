@@ -3,7 +3,8 @@ import { IFormField, SplitType } from '../../model/excel';
 import { GeneratorService } from '../../service/generator.service';
 
 @Pipe({
-  name: 'canSplitTo'
+    name: 'canSplitTo',
+    standalone: false
 })
 export class CanSplitToPipe implements PipeTransform {
 

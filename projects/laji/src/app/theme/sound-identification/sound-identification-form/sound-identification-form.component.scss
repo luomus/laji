@@ -1,0 +1,18 @@
+@use 'sass:map';
+@use 'vars' as *;
+
+.soundIdentificationParams > div {
+  margin-right: 8px;
+  vertical-align: top;
+
+  @media only screen and (max-width: map.get($map: $breakpoints, $key: "sm")) {
+    select.input-sm {
+      height: 36px;
+    }
+  }
+
+  @media only screen and (max-width: map.get($map: $breakpoints, $key: "xs")) {
+    display: block;
+    margin-right: auto;
+  }
+}

@@ -1,0 +1,20 @@
+<laji-observation-table
+  [mode]="resultBase"
+  [luFillHeight]="{ minHeight: 500 }"
+  class="d-block"
+  #datatable
+  [visible]="visible"
+  [showDownloadMenu]="showDownloadMenu"
+  (rowSelect)="showDocument($event)"
+  (pageSizeChange)="setPageSize($event)"
+  (selectChange)="setSelectedFields($event)"
+  (resetColumns)="resetSelectedFields()"
+  [pageSize]="pageSize"
+  [height]="'calc(100% - 50px)'"
+  [query]="query"
+  [showSettingsMenu]="true"
+  [isAggregate]="false"
+  [selected]="selectedFields"
+  [required]="requiredFields"
+  [allAggregateFields]="[]"
+></laji-observation-table>

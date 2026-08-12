@@ -1,0 +1,5 @@
+@if (_list) {
+  @for (item of _list; track item) {
+    <span class="label label-success link" (click)="remove(item)">{{ getName(item) | async }} x</span>
+  }
+}

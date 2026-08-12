@@ -1,10 +1,14 @@
 
-<lu-alert [type]="'danger'" *ngIf="missingRequiredLabels.length > 0">
-  <div>{{ 'excel.map.missingRequired' | translate}}: {{ missingRequiredLabels | values }}</div>
-</lu-alert>
-<lu-alert [type]="'danger'" *ngIf="duplicateLabels.length > 0">
-  <div>{{ 'excel.map.duplicate' | translate}}: {{ duplicateLabels | values }}</div>
-</lu-alert>
+@if (missingRequiredLabels.length > 0) {
+  <lu-alert [type]="'danger'">
+    <div>{{ 'excel.map.missingRequired' | translate}}: {{ missingRequiredLabels | values }}</div>
+  </lu-alert>
+}
+@if (duplicateLabels.length > 0) {
+  <lu-alert [type]="'danger'">
+    <div>{{ 'excel.map.duplicate' | translate}}: {{ duplicateLabels | values }}</div>
+  </lu-alert>
+}
 <div class="cell-col-map-wrap">
   <button type="button" class="btn btn-default toggle-linked" (click)="linkedVisible = !linkedVisible">
     {{ (linkedVisible ? 'excel.import.hideMappings' : 'excel.import.showMappings') | translate }}
@@ -22,16 +26,18 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let col of allCols" [class.hidden]="hasInitMapping[col] && duplicates.indexOf(colMapping[col]) === -1 && !linkedVisible">
-        <td class="field-col">
-          <div class="form-control-static">
-            <small>{{ col }}:</small>&nbsp;{{ headers[col] || '' }}
-          </div>
-        </td>
-        <td class="mapping-col">
-          <laji-mapping-select [value]="colMapping[col] || ''" [fields]="fields" (selected)="fieldSelected.emit({col: col, key: $event, userValue: headers[col]})"></laji-mapping-select>
-        </td>
-      </tr>
+      @for (col of allCols; track col) {
+        <tr [class.hidden]="hasInitMapping[col] && duplicates.indexOf(colMapping[col]) === -1 && !linkedVisible">
+          <td class="field-col">
+            <div class="form-control-static">
+              <small>{{ col }}:</small>&nbsp;{{ headers[col] || '' }}
+            </div>
+          </td>
+          <td class="mapping-col">
+            <laji-mapping-select [value]="colMapping[col] || ''" [fields]="fields" (selected)="fieldSelected.emit({col: col, key: $event, userValue: headers[col]})"></laji-mapping-select>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
   <div class="row">

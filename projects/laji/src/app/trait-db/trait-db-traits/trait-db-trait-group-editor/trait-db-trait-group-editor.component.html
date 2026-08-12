@@ -1,0 +1,27 @@
+<h3>Edit trait group</h3>
+<form [formGroup]="form" (submit)="onSubmit()">
+  <div>
+    <label for="name">Name*:</label>
+    <input id="name" class="form-control" formControlName="name" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'name' }"></ng-container>
+  </div>
+  <div>
+    <label for="description">Description*:</label>
+    <textarea id="description" class="form-control" formControlName="description"></textarea>
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'description' }"></ng-container>
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="submissionState !== 'none'">Submit</button>
+  @if (submissionState === 'externalValidation') {
+    <div>Server is validating...</div>
+  }
+  @if (submissionState === 'uploading') {
+    <div>Uploading trait group...</div>
+  }
+</form>
+
+<ng-template #errorsTmp let-prop>
+  @if (errors?.[prop]) {
+    <div class="alert alert-danger" role="alert">{{ errors?.[prop]}}</div>
+  }
+</ng-template>

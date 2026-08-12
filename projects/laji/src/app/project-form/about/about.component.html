@@ -1,0 +1,73 @@
+<laji-technical-news></laji-technical-news>
+
+@if (aboutData$ | async; as data) {
+  <div lajiFormOption="options.mobile options.dataset options.about collectionID options.disableRequestDescription">
+    @if (!data.form.options?.mobile) {
+      @if (!data.form.options?.dataset) {
+        <laji-project-form-header [form]="data.form"
+          [displayInstructions]="false"
+          lajiFormOption="logo title options.hideTES"
+        ></laji-project-form-header>
+        @if ((data.form.options?.about | multiLang)) {
+          <laji-info-page
+            [page]="data.form.options?.about | multiLang: true:undefined:'%value%'"
+            lajiFormOption="options.about"
+          ></laji-info-page>
+        }
+      } @else {
+        <laji-dataset-about [form]="data.form"></laji-dataset-about>
+      }
+      @if (data.loggedIn) {
+        @if (data.form.collectionID && data.rights === Rights.NotAllowed) {
+          <laji-request
+            [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription!"
+            lajiFormOption="options.disableRequestDescription">
+          </laji-request>
+        }
+      } @else {
+        <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
+      }
+    } @else {
+      @if (aboutData$ | async; as data) {
+        <laji-project-form-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-project-form-terms>
+        <laji-project-form-header [form]="data.form" [description]="data.form.description" lajiFormOption="description logo title options.hideTES"></laji-project-form-header>
+        @if (data.form.options?.openForm || data.loggedIn) {
+          <button type="button"
+            class="btn btn-md btn-primary btn-block use-button"
+            (click)="enterForm()">
+            {{ 'haseka.mobile.newObservation' | translate }}
+          </button>
+        } @else {
+          <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
+        }
+        @if (data.form.options?.openForm) {
+          <img src="/static/images/partner-logos/eu-funding.png" alt="Partly funded by the European Union." class="my-8">
+        }
+        <laji-haseka-latest [collectionID]="data.form.collectionID!"
+          [showFormNames]="false"
+          [complainLocality]="false"
+          (showViewer)="showDocumentViewer($event)"
+        ></laji-haseka-latest>
+        <br />
+        @if (data.form.options?.footer?.footerDescription || data.form.options?.footer?.footerLogos) {
+          <div lajiFormOption="options.footer.footerDescription options.footer.footerLogos">
+            @if (data.form.options.footer!.footerDescription) {
+              {{ data.form.options.footer!.footerDescription }}
+            }
+            <ul class="form-footer">
+              @for (logo of data.form.options.footer!.footerLogos | keyvalue; track logo) {
+                <li>
+                  <a [href]="logo.value" target="_blank">
+                    <img lajiLazyImage [src]="logo.key">
+                  </a>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      }
+    }
+  </div>
+}
+
+

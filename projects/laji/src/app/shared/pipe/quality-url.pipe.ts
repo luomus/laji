@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'qualityUrl'
+    name: 'qualityUrl',
+    standalone: false
 })
 
 export class QualityUrlPipe implements PipeTransform {

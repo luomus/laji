@@ -1,0 +1,78 @@
+@use 'vars' as *;
+@use '../../../../shared-modules/spinner/spinner/spinner.component.css' as *;
+
+:host {
+  display: block;
+  margin-bottom: $sp-9;
+}
+
+h4 {
+  margin-top: 0;
+}
+
+li {
+  max-width: 450px;
+}
+
+.child-container {
+  border-bottom: 1px solid $neutral-4;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 100%;
+  margin-bottom: $sp-6;
+  width: 100%;
+}
+
+.child-name {
+  margin-top: $sp-5;
+  margin-bottom: $sp-4;
+}
+
+.child-info {
+  color: $neutral-6;
+}
+
+.child-scientific-name-container {
+  font-size: $fs-6;
+}
+
+.child-scientific-name {
+  font-weight: 600;
+}
+
+.child-rank {
+  color: $neutral-6;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.child-vernacular-name-row {
+  font-size: $fs-4;
+  color: $neutral-6;
+}
+
+.child-vernacular-name {
+  font-size: $fs-5;
+  color: $neutral-7;
+}
+
+.cursive {
+  font-style: italic;
+}
+
+.description-container {
+  padding-right: $sp-6;
+  padding-bottom: $sp-6;
+  max-width: 500px;
+}
+
+.description-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.image-container {
+  padding-right: $sp-6;
+  max-width: 800px;
+}

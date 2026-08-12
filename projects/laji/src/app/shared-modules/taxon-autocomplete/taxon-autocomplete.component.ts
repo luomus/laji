@@ -1,7 +1,7 @@
 /**
  * TODO: Change this to use taxon-select component
  */
-import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -17,16 +17,18 @@ import {
 } from '@angular/core';
 import { Observable, of, of as ObservableOf, Subscription, timer } from 'rxjs';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { TypeaheadMatch } from 'projects/laji-ui/src/lib/typeahead/typeahead-match.class';
 
 type TaxonAutocompleteResponse = components['schemas']['TaxonAutocompleteResponse'];
 
 @Component({
-  selector: 'laji-taxon-autocomplete',
-  templateUrl: './taxon-autocomplete.component.html',
-  styleUrls: ['./taxon-autocomplete.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-taxon-autocomplete',
+    templateUrl: './taxon-autocomplete.component.html',
+    styleUrls: ['./taxon-autocomplete.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
 
@@ -35,11 +37,11 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() placeholder = '';
   @Input() taxon = '';
   @Input() allowInvalid = false;
-  @Input() informalTaxonGroup = '';
-  @Input() onlyFinnish = false;
-  @Input() excludeNameTypes = '';
-  @Input() onlyInvasive = false;
-  @Input() onlySpecies = false;
+  @Input() informalTaxonGroups = '';
+  @Input() finnish?: boolean;
+  @Input() invasiveSpecies?: boolean;
+  @Input() species?: boolean;
+  @Input() nameTypes = '';
   @Input() showResult = true;
   @Input() clearValueOnSelect = true;
   @Input() allowEmpty = false;
@@ -47,7 +49,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() useValue = '';
   @Input() whiteList?: string[];
   @Input() blackList?: string[];
-  @Output() finish = new EventEmitter<void>();
+  @Output() searchComplete = new EventEmitter<void>();
   @Output() taxonSelect = new EventEmitter<TaxonAutocompleteResponse>();
 
   @ViewChild('input') inputEl!: ElementRef;
@@ -60,9 +62,10 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
 
   private tokenMinLength = 3;
   private destroyBlurListener?: () => void;
+  private previewedTaxon?: TypeaheadMatch;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private cdr: ChangeDetectorRef,
     private taxonAutocompleteService: TaxonAutocompleteService,
     private renderer: Renderer2
@@ -122,11 +125,11 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
         query,
         limit: this.limit,
         matchType: 'exact,partial',
-        informalTaxonGroup: this.informalTaxonGroup,
-        excludeNameTypes: this.excludeNameTypes,
-        onlyFinnish: this.onlyFinnish,
-        onlyInvasive: this.onlyInvasive,
-        onlySpecies: this.onlySpecies
+        informalTaxonGroups: this.informalTaxonGroups,
+        nameTypes: this.nameTypes,
+        finnish: this.finnish,
+        invasiveSpecies: this.invasiveSpecies,
+        species: this.species
       }})),
       map(({ results }) => {
         if (this.whiteList) {
@@ -158,7 +161,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
       tap(() => {
         this.loading = false;
         this.cdr.markForCheck();
-        this.finish.emit();
+        this.searchComplete.emit();
       }));
   }
 
@@ -179,11 +182,13 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
+  onTaxonPreview(taxon: TypeaheadMatch) {
+    this.previewedTaxon = taxon;
+  }
+
   keyEvent(e: any) {
-    if (e.keyCode === 13) {
-      if (this.allowInvalid) {
-        this.useCurrentValue();
-      }
+    if (e.keyCode === 13 && !this.previewedTaxon && this.allowInvalid) {
+      this.useCurrentValue();
     }
   }
 

@@ -1,4 +1,4 @@
-import {map,  mergeMap, switchMap } from 'rxjs/operators';
+import {map,  mergeMap, switchMap } from 'rxjs';
 import { Component, EventEmitter, Input, OnInit,
 Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener,
 ChangeDetectionStrategy, AfterContentChecked } from '@angular/core';
@@ -13,16 +13,16 @@ import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { LoadingElementsService } from '../../document-viewer/loading-elements.service';
 import { CheckFocusService } from '../../document-viewer/check-focus.service';
 import { TaxonAutocompleteService } from '../../../shared/service/taxon-autocomplete.service';
-import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { TypeaheadMatch } from '../../../../../../laji-ui/src/lib/typeahead/typeahead-match.class';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { SelectStyle } from '../../select/metadata-select/metadata-select.component';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { WithNonNullableKeys } from '../../../shared/service/util.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
+import { WithNonNullableKeys } from '../../../shared/utils';
 
-type Annotation = components['schemas']['annotation'];
-type AnnotationTag = components['schemas']['tag'];
+type Annotation = components['schemas']['store-annotation'];
+type AnnotationTag = components['schemas']['store-tag'];
+type InformalTaxonGroup = components['schemas']['store-informalTaxonGroup'];
 
 export type AnnotationFormAnnotation = WithNonNullableKeys<Annotation, 'identification' | 'addedTags' | 'removedTags'>;
 
@@ -36,23 +36,23 @@ interface AnnotationTaxonomy {
 }
 
 @Component({
-  selector: 'laji-annotation-form-new',
-  templateUrl: './annotation-form-new.component.html',
-  styleUrls: ['./annotation-form-new.component.scss'],
-  providers: [LabelPipe],
-  animations: [
-    trigger('fadeInOut', [
-      transition('void => *', [
-        style({opacity: 0}),
-        animate(400, style({opacity: 1}))
-      ]),
-      transition('* => void', [
-        animate(600, style({opacity: 0}))
-      ])
-    ])
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
-
+    selector: 'laji-annotation-form-new',
+    templateUrl: './annotation-form-new.component.html',
+    styleUrls: ['./annotation-form-new.component.scss'],
+    providers: [LabelPipe],
+    animations: [
+        trigger('fadeInOut', [
+            transition('void => *', [
+                style({ opacity: 0 }),
+                animate(400, style({ opacity: 1 }))
+            ]),
+            transition('* => void', [
+                animate(600, style({ opacity: 0 }))
+            ])
+        ])
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
   static readonly lang = ['en', 'fi', 'sv'];
@@ -69,7 +69,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
   @Input() unit: any;
   @Output() save = new EventEmitter<Annotation>();
   @Output() loading = new EventEmitter<boolean>();
-  @Output() cancel = new EventEmitter<any>();
+  @Output() annotationCancel = new EventEmitter<any>();
 
   @ViewChild('taxon') taxonElement!: ElementRef;
   @ViewChild('comment') commentElement!: ElementRef;
@@ -102,7 +102,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
   constructor(
     private annotationService: AnnotationService,
     private loggerService: Logger,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private translate: TranslateService,
     private cd: ChangeDetectorRef,
     private labelPipe: LabelPipe,
@@ -131,7 +131,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
     return this.api.get('/autocomplete/taxa', { query: {
       query,
       limit: 10
-    }}).pipe(
+    }}, { langFallback: false }).pipe(
       map(data => data.results.map(item => {
         let groups = '';
         if (item.informalGroups) {
@@ -143,7 +143,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
   }
 
   public getMatchTaxon(taxonomy: string) {
-    this.annotationSub = this.api.get('/taxa/search', { query: { query: taxonomy, matchType: 'exact', limit: 5 } }).subscribe(({results}) => {
+    this.annotationSub = this.api.get('/taxa/search', { query: { query: taxonomy, matchType: 'exact', limit: 5 } }, { langFallback: false }).subscribe(({results}) => {
       results.forEach((taxon: any) => {
         if (taxon.matchingName.toLowerCase() === taxonomy.toLowerCase()) {
           this.annotation.identification.taxonID = taxon.id;
@@ -236,7 +236,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
     if (this.unit.linkings && (this.unit.linkings.originalTaxon || this.unit.linkings.taxon)) {
       const taxon = this.unit.linkings.taxon || this.unit.linkings.originalTaxon;
 
-      this.currentTaxonName = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.currentLang);
+      this.currentTaxonName = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.getCurrentLang());
     }
   }
 
@@ -244,7 +244,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
     if (this.unit.linkings && (this.unit.linkings.originalTaxon || this.unit.linkings.taxon)) {
       const taxon = this.unit.linkings.taxon || this.unit.linkings.originalTaxon;
 
-      this.annotation.identification.taxon = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.currentLang);
+      this.annotation.identification.taxon = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.getCurrentLang());
       this.annotation.identification.taxonID = IdService.getId(taxon.id);
       this.taxonomy = {
         id: this.annotation.identification.taxonID,
@@ -585,4 +585,3 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
 
 
 }
-

@@ -1,0 +1,59 @@
+<div class='form-footer'>
+  @if (isAdmin && locked !== undefined) {
+    <div class="lock-button">
+      @if (locked) {
+        <button type="button" [disabled]="saving" class="btn btn-danger" (click)="lock.emit(false)"><i class="fa fa-lock"></i></button>
+      } @else {
+        <button type="button" [disabled]="saving" class="btn btn-success" (click)="lock.emit(true)"><i class="fa fa-unlock"></i></button>
+      }
+    </div>
+  }
+  @if (show.save && !template) {
+    <button class="btn btn-success whitespace-nowrap" [disabled]="saving || disableIfOnlyWarnings()" type="submit" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</button>
+  }
+  @if (show.temp && !template) {
+    <button class="btn btn-default whitespace-nowrap" [disabled]="saving || disableIfOnlyWarnings()" type="submit" (click)="submitPrivate.emit()">{{ buttonLabel('temp') | translate }}</button>
+  }
+  @if (template) {
+    <button class="btn btn-success" [disabled]="saving || disableIfOnlyWarnings()" type="submit" (click)="submitTemplate.emit()">{{ 'haseka.form.saveTemplate' | translate }}</button>
+  }
+  <div class="flex-grow status">
+    @switch (status) {
+      @case ('success') {
+        <div class="success">
+          {{ 'haseka.form.success' | translate }}
+        </div>
+      }
+      @case ('error') {
+        <div class="error">
+          {{ 'haseka.form.error' | translate }}
+        </div>
+      }
+      @case ('unsaved') {
+        <div class="unsaved hidden-xs hidden-sm">
+          @if (dateEdited) {
+            {{ 'haseka.form.unsaved' | translate:{saveTime: dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'} }}
+          } @else {
+            {{ 'haseka.form.unsavedNever' | translate }}
+          }
+        </div>
+      }
+    }
+    @if (hasOnlyWarnings) {
+      <button type="button" class="btn btn-link" (click)="highlightErrorContainer()" style="color: #3c9cdd;">
+        {{ 'haseka.form.hasOnlyWarnings' | translate }}
+      </button>
+    }
+    @if (readonly === readonlyStates.noEdit) {
+      <span>
+        {{ 'haseka.form.readonly' | translate }}
+      </span>
+    }
+  </div>
+  @if (show.cancel) {
+    <button class="btn btn-danger whitespace-nowrap" [disabled]="saving" type="submit" (click)="leave.emit()">{{ buttonLabel('cancel') | translate }}</button>
+  }
+  @if (displayFeedback) {
+    <laji-feedback [iconOnly]="true" [fixed]="false"></laji-feedback>
+  }
+</div>

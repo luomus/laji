@@ -2,18 +2,19 @@
   <div style="max-width: 500px; height: 300px; margin-top:20px;">
     <laji-map [options]="mapOptions" (loaded)="onMapLoad()"></laji-map>
   </div>
-  <ng-container *ngIf="!hideCoordinates">
-    <laji-viewer-coordinates
-      *ngIf="data?.[active] as activeData"
-      [sourceOfCoordinates]="activeData.sourceOfCoordinates"
-      [coordinateAccuracy]="activeData.coordinateAccuracy"
-      [wgs84]="activeData.wgs84"
-      [wgs84Center]="activeData.wgs84CenterPoint"
-      [ykj]="activeData.ykj"
-      [ykj1km]="activeData.ykj1km"
-      [ykj1kmCenter]="activeData.ykj1kmCenter"
-      [ykj10km]="activeData.ykj10km"
-      [ykj10kmCenter]="activeData.ykj10kmCenter"
-    ></laji-viewer-coordinates>
-  </ng-container>
+  @if (!hideCoordinates) {
+    @if (data?.[active]; as activeData) {
+      <laji-viewer-coordinates
+        [sourceOfCoordinates]="activeData.sourceOfCoordinates"
+        [coordinateAccuracy]="activeData.coordinateAccuracy"
+        [wgs84]="activeData.wgs84"
+        [wgs84Center]="activeData.wgs84CenterPoint"
+        [ykj]="activeData.ykj"
+        [ykj1km]="activeData.ykj1km"
+        [ykj1kmCenter]="activeData.ykj1kmCenter"
+        [ykj10km]="activeData.ykj10km"
+        [ykj10kmCenter]="activeData.ykj10kmCenter"
+      ></laji-viewer-coordinates>
+    }
+  }
 </ng-container>

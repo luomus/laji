@@ -5,7 +5,8 @@ import { ILabelField } from '../../label-designer.interface';
  * @internal
  */
 @Pipe({
-  name: 'searchFields'
+    name: 'searchFields',
+    standalone: false
 })
 export class SearchFieldsPipe implements PipeTransform {
 

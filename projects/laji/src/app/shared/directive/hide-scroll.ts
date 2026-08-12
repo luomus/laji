@@ -6,7 +6,8 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
  * DO NOT USE THIS! ATM (will trigger change detection on very scroll)
  */
 @Directive({
-  selector: '[lajiHideScroll]',
+    selector: '[lajiHideScroll]',
+    standalone: false
 })
 export class HideScrollDirective {
 

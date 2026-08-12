@@ -4,13 +4,15 @@
     [ngModel]="formID"
     (ngModelChange)="formSelected($event)"
     [disabled]="!loaded || disabled"
-  >
+    >
     <option value="" selected disabled>{{ 'excel.select-form' | translate }}</option>
-    <option *ngFor="let form of forms$ | async" [value]="form.id" [disabled]="form.disabled">
-      {{ form.title }}
-      <ng-container *ngIf="form.disabled">
-        ({{ 'form.permission.no-access' | translate }})
-      </ng-container>
-    </option>
+    @for (form of forms$ | async; track form) {
+      <option [value]="form.id" [disabled]="form.disabled">
+        {{ form.title }}
+        @if (form.disabled) {
+          ({{ 'form.permission.no-access' | translate }})
+        }
+      </option>
+    }
   </select>
 </div>

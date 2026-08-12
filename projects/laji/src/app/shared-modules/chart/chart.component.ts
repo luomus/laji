@@ -3,8 +3,8 @@ import { BaseChartDirective } from 'ng2-charts';
 import { ChartType, ChartDataset, ChartEvent, ChartData, Plugin, ChartOptions } from 'chart.js';
 
 @Component({
-  selector: 'laji-chart',
-  template: `
+    selector: 'laji-chart',
+    template: `
     <canvas *lajiBrowserOnly baseChart
             [data]="data"
             [datasets]="datasets"
@@ -17,14 +17,15 @@ import { ChartType, ChartDataset, ChartEvent, ChartData, Plugin, ChartOptions } 
             (chartHover)="chartHover.emit($event)"
     ></canvas>
   `,
-  styles: [`
+    styles: [`
     :host {
       display: block;
       height: 100%;
       width: 100%;
     }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ChartComponent {
 

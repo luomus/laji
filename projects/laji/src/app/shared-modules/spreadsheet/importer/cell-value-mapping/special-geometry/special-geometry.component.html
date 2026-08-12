@@ -1,49 +1,56 @@
-<table class="table" *ngIf="mapping">
-  <thead>
-    <tr>
-      <th class="source-header">
-        {{ 'excel.map.value-user' | translate }}
-      </th>
-      <th [attr.colspan]="field && !field.required ? '3' : '2'">
-        {{ 'excel.map.value-mapped' | translate }}
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="source-cell">
-        <ul class="source-list">
-          <li
-            *ngFor="let invalidValue of invalidValues; let i = index"
-            class="link"
-            [class.active]="i === active"
-            (click)="setActive(i)"
-          >
-            <i *ngIf="i === active" class="glyphicon glyphicon-triangle-right"></i>
-            {{ invalidValue }}
-          </li>
-        </ul>
-      </td>
-      <td class="map-cell">
-        <div class="map-container">
-          <laji-map [options]="lajiMapOptions" #lajiMap (loaded)="onMapLoad()"></laji-map>
-        </div>
-      </td>
-      <td *ngIf="field && !field.required">
-        <button type="button"
-                [ngClass]="{'active btn-danger': mapping[value] === ignore}"
-                class="btn btn-sm"
-                (click)="valueMap(value, mapping[value] === ignore ? undefined : ignore)"
-        ><i class="glyphicon glyphicon-remove"></i></button>
-      </td>
-      <td>
-        <button type="button"
-                [disabled]="!mapping[value]"
-                [ngClass]="{'btn-success': mapping[value]}"
-                class="btn btn-sm pull-left"
-                (click)="setActive(active + 1)"
-        ><i class="glyphicon glyphicon-ok"></i></button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+@if (mapping) {
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="source-header">
+          {{ 'excel.map.value-user' | translate }}
+        </th>
+        <th [attr.colspan]="field && !field.required ? '3' : '2'">
+          {{ 'excel.map.value-mapped' | translate }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="source-cell">
+          <ul class="source-list">
+            @for (invalidValue of invalidValues; track invalidValue; let i = $index) {
+              <li
+                class="link"
+                [class.active]="i === active"
+                (click)="setActive(i)"
+                >
+                @if (i === active) {
+                  <i class="glyphicon glyphicon-triangle-right"></i>
+                }
+                {{ invalidValue }}
+              </li>
+            }
+          </ul>
+        </td>
+        <td class="map-cell">
+          <div class="map-container">
+            <laji-map [options]="lajiMapOptions" #lajiMap (loaded)="onMapLoad()"></laji-map>
+          </div>
+        </td>
+        @if (field && !field.required) {
+          <td>
+            <button type="button"
+              [ngClass]="{'active btn-danger': mapping[value] === ignore}"
+              class="btn btn-sm"
+              (click)="valueMap(value, mapping[value] === ignore ? undefined : ignore)"
+              ><i class="glyphicon glyphicon-remove"></i></button>
+            </td>
+          }
+          <td>
+            <button type="button"
+              [disabled]="!mapping[value]"
+              [ngClass]="{'btn-success': mapping[value]}"
+              class="btn btn-sm pull-left"
+              (click)="setActive(active + 1)"
+              ><i class="glyphicon glyphicon-ok"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    }

@@ -10,10 +10,11 @@ import { Audio, AudioViewerArea, AudioViewerFocusArea, SpectrogramConfig } from 
 import { defaultSpectrogramConfig } from '../variables';
 
 @Component({
-  selector: 'laji-small-audio-viewer',
-  templateUrl: './small-audio-viewer.component.html',
-  styleUrls: ['./small-audio-viewer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-small-audio-viewer',
+    templateUrl: './small-audio-viewer.component.html',
+    styleUrls: ['./small-audio-viewer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SmallAudioViewerComponent implements OnChanges {
   @Input() audio?: Audio;

@@ -1,4 +1,4 @@
-import { take, tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -25,6 +25,7 @@ import { DEFAULT_LANG } from '../../locale/localize-router.service';
 import type { PathOptions, DivIcon } from 'leaflet';
 import { Feature, Point } from 'geojson';
 import { PlatformService } from '../../root/platform.service';
+import type { LajiMap } from '@luomus/laji-map';
 
 const classNamesAsArr = (c?: string) => c?.split(' ') || [];
 
@@ -52,17 +53,20 @@ export const getPointIconAsCircle = (po: PathOptions & { opacity: number }, feat
 };
 
 @Component({
-  selector: 'laji-map',
-  template: `
+    selector: 'laji-map',
+    template: `
     <div class="laji-map-wrap">
       <div #lajiMap class="laji-map"></div>
-      <div class="loading-map loading" *ngIf="loading"></div>
+      @if (loading) {
+        <div class="loading-map loading"></div>
+      }
       <ng-content></ng-content>
     </div>
-  `,
-  styleUrls: ['./laji-map.component.scss'],
-  providers: [],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    `,
+    styleUrls: ['./laji-map.component.scss'],
+    providers: [],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LajiMapComponent implements OnDestroy, OnChanges {
   @Input({ required: true }) options!: Options;
@@ -109,7 +113,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    const lang = this.translate.currentLang;
+    const lang = this.translate.getCurrentLang();
     if (Global.lajiMapSupportedLanguages.includes(lang)) {
       this.lang = lang;
     }
@@ -128,7 +132,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
 
         if (this.settingsKey) {
           this.updateSettingsSub = this.updateSettings(this.settingsKey).subscribe(() => {
-            this.initMap();
+            void this.initMap();
             this.cd.markForCheck();
           });
           return;
@@ -138,53 +142,56 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
       }
 
       if (!this.updateSettingsSub || this.updateSettingsSub?.closed) {
-        this.initMap();
+        void this.initMap();
       }
     }
   }
 
-  initMap() {
+  async initMap() {
     // laji-map depends on Leaflet, which doesn't work on SSR because it uses 'window'
     if (!this.platformService.isBrowser) {
       return;
     }
-    import('@luomus/laji-map').then(({ LajiMap }) => { // eslint-disable-line @typescript-eslint/naming-convention
-      this.zone.runOutsideAngular(() => {
-        if (this.map) {
-          this.map.destroy();
-        }
-        const options: any = {
-          lang: (this.lang || DEFAULT_LANG) as Lang,
-          ...this._options,
-          ...(this.userSettings || {}),
-          rootElem: this.elemRef.nativeElement,
-          googleApiKey: Global.googleApiKey,
-          data: this.data
-        };
-        if (!this.showControls) {
-          options.controls = false;
-        }
-        try {
-          this.map = new LajiMap(options);
-          this.map.map.on('moveend', () => {
-            this.moveEvent('moveend');
-          });
+
+    // The import structure is different in local dev env / feature branches / ssr builds so need to juggle a bit.
+    const lajiMapImport = (await import('@luomus/laji-map')).default as any;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const LajiMapClass: typeof LajiMap = lajiMapImport.default || lajiMapImport;
+    this.zone.runOutsideAngular(() => {
+      if (this.map) {
+        this.map.destroy();
+      }
+      const options: any = {
+        lang: (this.lang || DEFAULT_LANG) as Lang,
+        ...this._options,
+        ...(this.userSettings || {}),
+        rootElem: this.elemRef.nativeElement,
+        googleApiKey: Global.googleApiKey,
+        data: this.data
+      };
+      if (!this.showControls) {
+        options.controls = false;
+      }
+      try {
+        this.map = new LajiMapClass(options);
+        this.map.map.on('moveend', () => {
           this.moveEvent('moveend');
-          if (this.mapData) {
-            this.setData(this.mapData);
-            this.mapData = undefined;
-          }
-          if (this.drawToMapType) {
-            this.drawToMap(this.drawToMapType);
-            this.drawToMapType = undefined;
-          }
-          this.zone.run(() => {
-            this.loaded.emit();
-          });
-        } catch (e) {
-          this.logger.error('Map initialization failed', e);
+        });
+        this.moveEvent('moveend');
+        if (this.mapData) {
+          this.setData(this.mapData);
+          this.mapData = undefined;
         }
-      });
+        if (this.drawToMapType) {
+          this.drawToMap(this.drawToMapType);
+          this.drawToMapType = undefined;
+        }
+        this.zone.run(() => {
+          this.loaded.emit();
+        });
+      } catch (e) {
+        this.logger.error('Map initialization failed', e);
+      }
     });
   }
 

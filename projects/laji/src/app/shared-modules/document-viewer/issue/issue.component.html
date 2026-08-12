@@ -1,4 +1,4 @@
-<ng-container *ngIf="error">
+@if (error) {
   {{ error.issue | label: 'warehouse' }}
   <i class="link glyphicon glyphicon-info-sign"
     [luTooltip]="('taxonomy.source' | translate) + ': ' + (error.source ?? '' | label: 'warehouse')
@@ -6,4 +6,4 @@
     placement="right" [isDisabled]="hideTooltip">
   </i>
   <br>
-</ng-container>
+  }

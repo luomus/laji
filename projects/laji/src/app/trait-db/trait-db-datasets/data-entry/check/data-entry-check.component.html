@@ -1,0 +1,61 @@
+@if ((state$ | async); as state) {
+  <div>
+    @if (state._tag === 'not-initialized') {
+      <div>Loading...</div>
+    }
+    @if (state._tag === 'tsv-in-progress') {
+      <div>Transforming rows...</div>
+    }
+    @if (state._tag === 'validation-in-progress') {
+      <div>Validating...</div>
+    }
+    @if (state._tag === 'submitting') {
+      <div>Submitting...</div>
+    }
+    @if (state._tag === 'http-error') {
+      <div>Http error!</div>
+    }
+    @if (table$ | async; as table) {
+      <lu-datatable
+        [rows]="table.rows"
+        [columns]="table.cols"
+      ></lu-datatable>
+    }
+    @if (missingColumnErrors$ | async; as missingCols) {
+      @if (missingCols.length > 0) {
+        <div class="alert alert-danger">
+          <strong>Missing required columns:</strong>
+          <ul>
+            @for (missingCol of missingCols; track missingCol.key) {
+              <li>
+                <code>{{ missingCol.key }}</code>: {{ missingCol.error }}
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    }
+    <button
+      class="btn btn-default"
+      [disabled]="!(state._tag === 'validation-complete' && state.validationResult.pass)"
+      (click)="onSubmit(state)"
+      >
+      Submit
+    </button>
+  </div>
+}
+
+<ng-template #cellTemplate let-row let-p="prop" let-rowIdx="rowIdx" let-colIdx="colIdx">
+  {{ p }} @if ((state$ | async); as state) {
+  @if (state._tag === 'validation-complete') {
+    @if (state.validationResult.rows?.[rowIdx]?.errors; as errors) {
+      @if ((table$ | async)?.cols[colIdx].title; as colTitle) {
+        @if (errors[colTitle]; as error) {
+          <span class="pill danger" [luTooltip]="error">x</span>
+        }
+      }
+    }
+  }
+}
+
+</ng-template>

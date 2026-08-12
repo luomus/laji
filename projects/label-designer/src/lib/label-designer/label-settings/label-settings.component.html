@@ -1,13 +1,14 @@
-<ng-container *ngIf="selectedLabelItem; else missingField">
+@if (selectedLabelItem) {
   <div (click)="remove(selectedLabelItem)" style="margin-top: 10px;" class="pull-right"><ll-icon [size]="20" type="close"></ll-icon></div>
   <h3 class="first">{{ 'Field' | translate }}</h3>
-  <ll-font-settings
-    *ngIf="showFieldFont"
-    [allowEmptyFontFamily]="true"
-    [fontSettings]="selectedLabelItem.style"
-    (fontSettingsChange)="changeSelectedItem('style', $event)"
-    [showUnderline]="true"
-  ></ll-font-settings>
+  @if (showFieldFont) {
+    <ll-font-settings
+      [allowEmptyFontFamily]="true"
+      [fontSettings]="selectedLabelItem.style"
+      (fontSettingsChange)="changeSelectedItem('style', $event)"
+      [showUnderline]="true"
+    ></ll-font-settings>
+  }
   <div class="position">
     <table class="margins">
       <tr>
@@ -41,20 +42,23 @@
     </table>
   </div>
   <div cdkDropList [cdkDropListLockAxis]="'y'" class="field-list" (cdkDropListDropped)="drop($event)">
-    <div cdkDrag class="field-item" *ngFor="let field of selectedLabelItem.fields; let i=index">
-      <div class="field-item-drag-handle" cdkDragHandle>
+    @for (field of selectedLabelItem.fields; track field; let i = $index) {
+      <div cdkDrag class="field-item">
+        <div class="field-item-drag-handle" cdkDragHandle>
           <ll-icon type="drag-handle"></ll-icon>
+        </div>
+        <ll-field-settings [allowDelete]="canDelete" [field]="field" (fieldChange)="fieldUpdate($event, i)" (fieldRemove)="fieldRemove(i)"></ll-field-settings>
       </div>
-      <ll-field-settings [allowDelete]="canDelete" [field]="field" (fieldChange)="fieldUpdate($event, i)" (fieldRemove)="fieldRemove(i)"></ll-field-settings>
-    </div>
+    }
   </div>
-  <ll-available-fields *ngIf="showFieldFont" [availableFields]="availableFields" (valueChange)="fieldAdd($any($event))"
-                       [includeTextField]="true"></ll-available-fields>
-</ng-container>
-<ng-template #missingField>
+  @if (showFieldFont) {
+    <ll-available-fields [availableFields]="availableFields" (valueChange)="fieldAdd($any($event))"
+    [includeTextField]="true"></ll-available-fields>
+  }
+} @else {
   <h3 class="first">{{ 'Field' | translate }}</h3>
   {{ 'No active field selected' | translate }}
-</ng-template>
+}
 <h3>{{ 'Label' | translate }}</h3>
 <ll-font-settings [fontSettings]="setup.label" (fontSettingsChange)="change('label', $event)"></ll-font-settings>
 <ll-margin-settings [style]="setup.label" (styleChange)="change('label', $event)"></ll-margin-settings>
@@ -65,7 +69,9 @@
       <td></td>
       <td>
         <select class="form-control" (change)="change('border', $any($event.target).value)">
-          <option *ngFor="let border of borders | keyvalue" [value]="border.value" [selected]="border.value === setup.border">{{ border.key | translate }}</option>
+          @for (border of borders | keyvalue; track border) {
+            <option [value]="border.value" [selected]="border.value === setup.border">{{ border.key | translate }}</option>
+          }
         </select>
       </td>
     </tr>

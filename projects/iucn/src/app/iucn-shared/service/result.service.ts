@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable, of as ObservableOf } from 'rxjs';
-import { map, share, switchMap, tap } from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs';
 import { TriplestoreLabelService } from '../../../../../laji/src/app/shared/service/triplestore-label.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api.d';
 import { ChecklistVersion } from './taxon.service';
 
 type RedListStatus = NonNullable<paths['/taxa/species/aggregate']['post']['requestBody']['content']['application/json']['latestRedListEvaluation.redListStatus']>;
@@ -115,7 +115,7 @@ export class ResultService {
   };
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private triplestoreLabelService: TriplestoreLabelService,
     private translationService: TranslateService
   ) { }
@@ -150,8 +150,8 @@ export class ResultService {
         'latestRedListEvaluation.redListStatus': ['MX.iucnEN', 'MX.iucnCR', 'MX.iucnVU', 'MX.iucnDD', 'MX.iucnRE', 'MX.iucnNT', 'MX.iucnLC', 'MX.iucnDD'],
       }).pipe(
         map(data => this.mapAgg(data)),
-        switchMap(data => forkJoin(data.map((res: any) => this.triplestoreLabelService.get(res.name, this.translationService.currentLang))).pipe(
-          map(translations => data.map((res: any, idx: number) => ({...res, name: translations[idx]})))
+        switchMap(data => forkJoin(data.map((res: any) => this.triplestoreLabelService.get(res.name))).pipe(
+          map((translations: any) => data.map((res: any, idx: number) => ({...res, name: translations[idx]})))
         )),
         tap(data => this.resultCache[year][this.translationService.currentLang] = data),
         share()

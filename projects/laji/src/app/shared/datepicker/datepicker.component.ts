@@ -36,9 +36,8 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { ENTER } from '@angular/cdk/keycodes';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as moment from 'moment';
+import moment from 'moment';
 
 export interface CalendarDate {
   day: string | null;
@@ -56,13 +55,20 @@ export const CALENDAR_VALUE_ACCESSOR: any = {
 
 const FORMAT = 'YYYY-MM-DD'; // ISO-8601 format.
 const VIEW_FORMAT = 'D.M.YYYY'; // Allows e.g. '01.9.2022" and "1.09.2022".
+const VIEW_FORMATS = [
+  'D.M.YYYY',
+  'DD.MM.YYYY',
+  'D.MM.YYYY',
+  'DD.M.YYYY'
+];
 
 @Component({
-  selector: 'laji-datepicker',
-  templateUrl: './datepicker.component.html',
-  styleUrls: ['./datepicker.component.css'],
-  providers: [CALENDAR_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-datepicker',
+    templateUrl: './datepicker.component.html',
+    styleUrls: ['./datepicker.component.css'],
+    providers: [CALENDAR_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatePickerComponent implements ControlValueAccessor {
   @Input() toLastOfYear = false;
@@ -91,8 +97,8 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.el = viewContainerRef.element.nativeElement;
   }
 
-  keyEvent(e: any, value: any) {
-    const viewFormMoment = moment(value, VIEW_FORMAT, true);
+  keyEvent(value: any) {
+    const viewFormMoment = moment(value, VIEW_FORMATS, true);
     if (viewFormMoment.isValid()) {
       this.validDate = true;
       this.onInputValueChange(value);
@@ -102,7 +108,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   onInputValueChange(viewFormatValue: string): any {
     if (viewFormatValue) {
       // First try formatting with default view format.
-      let viewFormMoment = moment(viewFormatValue, VIEW_FORMAT, true);
+      let viewFormMoment = moment(viewFormatValue, VIEW_FORMATS, true);
 
       if (viewFormMoment.isValid()) {
         this.validDate = true;

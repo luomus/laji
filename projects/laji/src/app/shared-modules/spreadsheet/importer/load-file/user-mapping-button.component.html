@@ -1,6 +1,8 @@
-<div class="btn btn-default pull-right" *ngIf="hasUserMapping" (click)="clearUserMapping.emit()" [luTooltip]="'excel.import.step1.removeUserMapping' | translate" placement="left">
-  <i class="glyphicon glyphicon-remove"></i>
-</div>
+@if (hasUserMapping) {
+  <div class="btn btn-default pull-right" (click)="clearUserMapping.emit()" [luTooltip]="'excel.import.step1.removeUserMapping' | translate" placement="left">
+    <i class="glyphicon glyphicon-remove"></i>
+  </div>
+}
 <label class="btn btn-default pull-right" for="user-mapping"  [luTooltip]="'excel.import.step1.addUserMapping' | translate" placement="left">
   <i class="glyphicon glyphicon-open"></i>
 </label>

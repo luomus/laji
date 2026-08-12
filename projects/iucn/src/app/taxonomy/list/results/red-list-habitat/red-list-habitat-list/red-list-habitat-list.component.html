@@ -1,0 +1,46 @@
+<div class="table-responsive">
+  <table class="table table-hover">
+    <tbody>
+      <tr class="title">
+        <th rowspan="2">{{ 'iucn.results.habitat.title' | translate }}</th>
+        <th class="center" [colSpan]="statuses.length">{{ 'iucn.results.habitat.primary' | translate }}</th>
+        <th class="no-border-bottom"></th>
+        <th class="center" [colSpan]="statuses.length">{{ 'iucn.results.habitat.secondary' | translate }}</th>
+        <th class="no-border-bottom"></th>
+        <th rowspan="2">{{ 'iucn.results.habitat.totalAll' | translate }}</th>
+      </tr>
+      <tr class="title">
+        @for (status of statuses; track status) {
+          <th>{{ statusLabel[status] }}</th>
+        }
+        <th>{{ 'iucn.results.habitat.total' | translate }}</th>
+        @for (status of statuses; track status) {
+          <th>{{ statusLabel[status] }}</th>
+        }
+        <th>{{ 'iucn.results.habitat.total' | translate }}</th>
+      </tr>
+      @for (row of data; track row; let l = $last) {
+        <tr [class.link]="!!row.id" [class.total-col]="row.isTotal" (click)="rowSelect(row.id)" [class.title]="l">
+          <th>
+            {{ row.name }}
+            @if (!row.isTotal && row.unspecified) {
+              ({{ 'iucn.results.unspecified' | translate }})
+            }
+            @if (row.isTotal) {
+              ({{ 'iucn.results.habitat.total' | translate | lowercase }})
+            }
+          </th>
+          @for (status of statuses; track status) {
+            <td>{{ row.primary[status] || 0 }}</td>
+          }
+          <td class="total-col">{{ row.primary.total }}</td>
+          @for (status of statuses; track status) {
+            <td>{{ row.secondary[status] || 0 }}</td>
+          }
+          <td class="total-col">{{ row.secondary.total }}</td>
+          <td>{{ row.secondary.total +  row.primary.total }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

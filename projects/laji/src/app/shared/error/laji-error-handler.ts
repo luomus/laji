@@ -3,7 +3,7 @@ import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../logger/logger.service';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { RESPONSE } from '../../../express.tokens';
 import { environment } from '../../../environments/environment';
 
 const pauseBeforeResendError = 30000;
@@ -33,7 +33,8 @@ export class LajiErrorHandler extends ErrorHandler {
     if (typeof error.message === 'string' && (
       (error.message.indexOf(`Cannot read property 'display' of undefined`) !== -1 && this.response) ||
       error.message.indexOf('QuotaExceededError') !== -1 ||
-      error.message.indexOf('ExpressionChangedAfterItHasBeenCheckedError:') !== -1
+      error.message.indexOf('ExpressionChangedAfterItHasBeenCheckedError:') !== -1 ||
+      error.message.indexOf(`can't access property "_leaflet_pos", el is undefined`) !== -1
     )) {
       return super.handleError(error);
     }

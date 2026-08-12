@@ -1,0 +1,21 @@
+<laji-spinner [spinning]="expertiseMissing == null">
+  @if (expertiseMissing != null) {
+    @if (!expertiseMissing) {
+      @if ((!selectedSites || selectedSites.length === 0)) {
+        <bsg-site-selection
+          (siteSelect)="onSiteSelect($event)"
+        ></bsg-site-selection>
+      } @else {
+        <bsg-identification-main
+          [selectedSites]="selectedSites!"
+          [goBackBtnLabel]="'identification.backToSiteSelection' | translate"
+          [allRecordingsAnnotatedLabel]="'identification.allRecordingsAnnotated' | translate"
+          (goBackClick)="onSiteSelect([])"
+        ></bsg-identification-main>
+      }
+    } @else {
+      <div [innerHTML]="'identification.taxonExpertiseMissing' | translate"></div>
+    }
+  }
+</laji-spinner>
+

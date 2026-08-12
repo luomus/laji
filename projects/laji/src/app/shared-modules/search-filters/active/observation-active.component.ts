@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from '@angular/core';
-import { SearchQueryService } from '../../../+observation/search-query.service';
+import { SearchQueryService } from '../../../observation/search-query.service';
 
 export const createActiveFiltersList = (query: Record<string, any>, skip: string[] = []) => {
   const keys = Object.keys(query);
@@ -30,10 +30,11 @@ export const createActiveFiltersList = (query: Record<string, any>, skip: string
 };
 
 @Component({
-  selector: 'laji-observation-active',
-  templateUrl: './observation-active.component.html',
-  styleUrls: ['./observation-active.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-active',
+    templateUrl: './observation-active.component.html',
+    styleUrls: ['./observation-active.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationActiveComponent {
   @Input() skip: string[] = [];

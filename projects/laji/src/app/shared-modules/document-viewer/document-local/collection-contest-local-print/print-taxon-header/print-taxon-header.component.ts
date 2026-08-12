@@ -1,13 +1,14 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import type { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import type { components } from 'projects/laji-api-client/generated/api';
 
-type Taxon = components['schemas']['Taxon'];
+type Taxon = components['schemas']['LajiBackendTaxon'];
 
 @Component({
-  selector: 'laji-print-taxon-header',
-  templateUrl: './print-taxon-header.component.html',
-  styleUrls: ['./print-taxon-header.component.css']
+    selector: 'laji-print-taxon-header',
+    templateUrl: './print-taxon-header.component.html',
+    styleUrls: ['./print-taxon-header.component.css'],
+    standalone: false
 })
 export class PrintTaxonHeaderComponent implements OnInit {
   @Input() taxonVerbatim?: string;
@@ -16,7 +17,7 @@ export class PrintTaxonHeaderComponent implements OnInit {
 
   constructor(
     private cd: ChangeDetectorRef,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   ngOnInit() {
@@ -28,7 +29,7 @@ export class PrintTaxonHeaderComponent implements OnInit {
       query: {
         selectedFields: 'scientificName,vernacularName,cursiveName'
       }
-    }).subscribe(taxon => {
+    }, { langFallback: false }).subscribe(taxon => {
       this.taxon = taxon;
       this.cd.markForCheck();
     });

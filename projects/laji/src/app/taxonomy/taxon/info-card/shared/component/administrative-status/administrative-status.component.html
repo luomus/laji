@@ -1,0 +1,4 @@
+{{ status | label }}
+@if (status$ | async | adminStatusInfo; as statusInfo) {
+  <laji-info [html]="statusInfo"></laji-info>
+}

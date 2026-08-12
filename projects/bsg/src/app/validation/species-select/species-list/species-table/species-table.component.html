@@ -1,0 +1,34 @@
+<laji-datatable
+  [height]="'calc(100% - 70px)'"
+  [columns]="columns"
+  [rows]="data.results"
+  [getRowClass]="getRowClass"
+  [striped]="false"
+  [page]="data.currentPage"
+  [pageSize]="data.pageSize"
+  [count]="data.total"
+  [loading]="loading"
+  [showRowAsLink]="false"
+  [sorts]="sorts"
+  (rowSelect)="onRowSelect($event.row)"
+  (pageChange)="pageChange.emit($event.page)"
+  (sortChange)="sortChange.emit($event.sorts)"
+></laji-datatable>
+
+<ng-template let-row="row" #notifications>
+  @if (row.hasModifications) {
+    <span class="text text-danger exclamation-icon" [luTooltip]="'speciesList.hasModifications.info' | translate">
+      <i class="fa fa-exclamation-circle"></i>
+    </span>
+  }
+  @if (row.hasNotPossibleValidations) {
+    <span class="text text-warning exclamation-icon" [luTooltip]="'speciesList.hasNotPossibleValidations.info' | translate">
+      <i class="fa fa-exclamation-triangle"></i>
+    </span>
+  }
+  @if (row.isLocked) {
+    <span class="exclamation-icon" [luTooltip]="'speciesList.isLocked.info' | translate">
+      <i class="fa fa-lock"></i>
+    </span>
+  }
+</ng-template>

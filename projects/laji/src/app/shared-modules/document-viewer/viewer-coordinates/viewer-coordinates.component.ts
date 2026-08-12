@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-viewer-coordinates',
-  templateUrl: './viewer-coordinates.component.html',
-  styleUrls: ['./viewer-coordinates.component.css'],
+    selector: 'laji-viewer-coordinates',
+    templateUrl: './viewer-coordinates.component.html',
+    styleUrls: ['./viewer-coordinates.component.css'],
+    standalone: false
 })
 export class CoordinatesViewerComponent {
   @Input() sourceOfCoordinates: any;

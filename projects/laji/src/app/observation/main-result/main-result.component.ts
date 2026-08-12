@@ -1,0 +1,241 @@
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { UserSettingsResultList, UserService } from '../../shared/service/user.service';
+import { ObservationTableComponent } from '../../shared-modules/observation-result/observation-table/observation-table.component';
+import { ObservationTableQueryService } from '../../shared-modules/observation-result/service/observation-table-query.service';
+import { BrowserService } from '../../shared/service/browser.service';
+import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
+import { Subscription } from 'rxjs';
+import { startWith, tap } from 'rxjs/operators';
+import { LocalStorageService } from 'ngx-webstorage';
+import { DataFetchMode } from '../observation-data.service';
+
+const DEFAULT_PAGE_SIZE = 1000;
+
+@Component({
+    selector: 'laji-main-result',
+    templateUrl: './main-result.component.html',
+    styleUrls: ['./main-result.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
+})
+export class MainResultComponent implements OnInit, OnChanges {
+  private static readonly defaultFields: string[] = [
+    'unit.species'
+  ];
+
+  @ViewChild('aggregatedDataTable') public aggregatedDataTable?: ObservationTableComponent;
+
+  @Input() dataMode: DataFetchMode = 'unit';
+  @Input({ required: true }) query!: WarehouseQueryInterface;
+  @Input({ required: true }) visible!: boolean;
+
+  aggrQuery?: WarehouseQueryInterface;
+  mapQuery?: WarehouseQueryInterface;
+  listQuery?: WarehouseQueryInterface;
+
+  title = '';
+
+  documentId?: string;
+  pageSize?: number;
+
+  ctrlDown = false;
+  showObservationList = false;
+  showQueryOnMap = false;
+  documentModalVisible = false;
+  initialized = false;
+
+  aggregateBy = MainResultComponent.defaultFields;
+
+  selected: string[] = [
+    'unit.taxon',
+    'unit.abundanceString',
+    'gathering.team',
+    'gathering.displayDateTime',
+    'gathering.locality',
+    'gathering.conversions.ykj10kmCenter',
+    'document.collectionId',
+    'unit.notes'
+  ];
+
+  private viewerSub?: Subscription;
+
+  constructor(
+    private userService: UserService,
+    private browserService: BrowserService,
+    private documentViewerFacade: DocumentViewerFacade,
+    private cd: ChangeDetectorRef,
+    private localStorageService: LocalStorageService
+  ) { }
+
+  @HostListener('document:keydown', ['$event'])
+  onCtrlDownHandler(event: KeyboardEvent) {
+    if (!this.visible) {
+      return;
+    }
+    if (event.keyCode === 17) {
+      this.ctrlDown = true;
+    }
+    if (event.keyCode === 27 && !this.documentModalVisible) {
+      if (this.showObservationList && this.listQuery?.ykj10kmCenter) {
+        this.removeGridFromList();
+      } else if (this.showObservationList) {
+        this.closeList();
+      } else if (this.showQueryOnMap) {
+        this.closeMap();
+      }
+    }
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  onCtrlUpHandler(event: KeyboardEvent) {
+    if (event.keyCode === 17) {
+      this.ctrlDown = false;
+    }
+  }
+
+  ngOnInit() {
+    this.viewerSub = this.documentViewerFacade.showModal$.pipe(
+      tap(visible => this.documentModalVisible = visible)
+    ).subscribe();
+
+    this.localStorageService.observe('resultList').pipe(
+      startWith(this.localStorageService.retrieve('resultList'))
+    ).subscribe((data: UserSettingsResultList) => {
+        if (data) {
+          // change aggregatedBy field to another if needed!
+          if (data.aggregateBy) {
+            const idx = data.aggregateBy.indexOf('unit.taxon');
+            if (idx > -1) {
+              data.aggregateBy[idx] = 'unit.species';
+            }
+          }
+          this.aggregateBy = data.aggregateBy || this.aggregateBy;
+          this.selected = data.selected || this.selected;
+          this.pageSize = data.pageSize || DEFAULT_PAGE_SIZE;
+        } else {
+          this.pageSize = DEFAULT_PAGE_SIZE;
+        }
+        this.initialized = true;
+        this.initInternalQueries();
+        this.cd.markForCheck();
+      });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.query && this.initialized) {
+      this.initInternalQueries();
+    }
+    if (changes.visible) {
+      this.browserService.triggerResizeEvent();
+    }
+  }
+
+  initInternalQueries() {
+    this.title = '';
+    this.showQueryOnMap = false;
+    this.aggrQuery = {...this.query};
+    if (!this.aggrQuery.countryId) {
+      this.aggrQuery.countryId = ['ML.206'];
+    }
+    this.mapQuery = {...this.aggrQuery};
+    this.listQuery = {...this.aggrQuery};
+  }
+
+  closeMap() {
+    this.title = '';
+    this.showQueryOnMap = false;
+    this.mapQuery = {...this.aggrQuery};
+    this.closeList();
+  }
+
+  closeList() {
+    this.showObservationList = false;
+    this.browserService.triggerResizeEvent();
+  }
+
+  onGridSelect(event: any) {
+    this.showObservationList = true;
+    this.listQuery = event;
+  }
+
+  removeGridFromList() {
+    const query = {...this.listQuery};
+    if (query.ykj10kmCenter) {
+      delete query.ykj10kmCenter;
+    }
+    this.listQuery = query;
+  }
+
+  onAggregateSelect(event: any) {
+    this.showQueryOnMap = true;
+    this.showObservationList = !this.ctrlDown;
+    const mapQuery = {...this.aggrQuery};
+    ObservationTableQueryService.fieldsToQuery(this.aggregateBy, event.row, mapQuery);
+    const title: string[] = [];
+    try {
+      const cells: any[] = [].slice.call(event.cellElement.parentElement.children);
+      cells.map(cellElem => {
+          const value = (cellElem.innterText || cellElem.textContent).trim();
+          if (value && !value.match(/^[0-9\-,.+\sT:]+$/)) {
+            title.push(value);
+          }
+        });
+    } catch (e) { console.log(e); }
+    this.title = title.join('; ');
+    this.mapQuery = mapQuery;
+    this.listQuery = {...mapQuery};
+  }
+
+  showDocument(event: any) {
+    const row = event.row || {};
+    const listQuery = this.listQuery;
+    if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
+      this.documentViewerFacade.showDocumentID({
+        document: row.document.documentId,
+        highlight: row.unit.unitId,
+        openAnnotation: false,
+        own: listQuery && (!!listQuery.observerPersonToken || !!listQuery.editorPersonToken || !!listQuery.editorOrObserverPersonToken),
+        result: undefined
+      });
+    }
+  }
+
+  setPageSize(event: number) {
+    this.pageSize = event;
+    this.saveSettings();
+  }
+
+  setAggregateBy(event: string[]) {
+    this.aggregateBy = [...event];
+    this.saveSettings();
+  }
+
+  setSelectedFields(event: string[]) {
+    this.selected = [...event];
+    this.saveSettings();
+  }
+
+  resetSelectedFields() {
+    this.aggregateBy = [ ...MainResultComponent.defaultFields ];
+    this.saveSettings();
+  }
+
+  private saveSettings() {
+    this.localStorageService.store('resultList', {
+      aggregateBy: this.aggregateBy,
+      selected: this.selected,
+      pageSize: this.pageSize
+    });
+  }
+}

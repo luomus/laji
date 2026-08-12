@@ -3,7 +3,8 @@ import { FilterBaseType, FilterByType, FilterService, SearchRecord } from '../se
 
 
 @Pipe({
-  name: 'filter'
+    name: 'filter',
+    standalone: false
 })
 export class FilterPipe implements PipeTransform {
 

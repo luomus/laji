@@ -1,0 +1,124 @@
+<form class="dataset-form" [formGroup]="datasetForm" (submit)="onSubmit()">
+  <div>
+    <label for="name">Name*:</label>
+    <input id="name" class="form-control" formControlName="name" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'name' }"></ng-container>
+  </div>
+  <div>
+    <label for="description">Description*:</label>
+    <input id="description" class="form-control" formControlName="description" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'description' }"></ng-container>
+  </div>
+  <div>
+    <label for="citation">Citation*:</label>
+    <input id="citation" class="form-control" formControlName="citation" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'citation' }"></ng-container>
+  </div>
+  <div>
+    <label for="intellectualOwner">Intellectual Owner*:</label>
+    <input id="intellectualOwner" class="form-control" formControlName="intellectualOwner" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'intellectualOwner' }"></ng-container>
+  </div>
+  <div>
+    <label for="personResponsible">Person Responsible*:</label>
+    <input id="personResponsible" class="form-control" formControlName="personResponsible" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'personResponsible' }"></ng-container>
+  </div>
+  <div>
+    <label for="contactEmail">Contact Email*:</label>
+    <input id="contactEmail" class="form-control" formControlName="contactEmail" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'contactEmail' }"></ng-container>
+  </div>
+  <div>
+    <label for="institutionCode">Institution Code:</label>
+    <input id="institutionCode" class="form-control" formControlName="institutionCode" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'institutionCode' }"></ng-container>
+  </div>
+  <div>
+    <label for="methods">Methods*:</label>
+    <textarea id="methods" class="form-control" formControlName="methods"></textarea>
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'methods' }"></ng-container>
+  </div>
+  <div>
+    <label for="taxonomicCoverage">Taxonomic Coverage*:</label>
+    <input id="taxonomicCoverage" class="form-control" formControlName="taxonomicCoverage" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'taxonomicCoverage' }"></ng-container>
+  </div>
+  <div>
+    <label for="temporalCoverage">Temporal Coverage*:</label>
+    <input id="temporalCoverage" class="form-control" formControlName="temporalCoverage" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'temporalCoverage' }"></ng-container>
+  </div>
+  <div>
+    <label for="geographicCoverage">Geographic Coverage*:</label>
+    <input id="geographicCoverage" class="form-control" formControlName="geographicCoverage" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'geographicCoverage' }"></ng-container>
+  </div>
+  <div>
+    <label for="coverageBasis">Coverage Basis*:</label>
+    <input id="coverageBasis" class="form-control" formControlName="coverageBasis" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'coverageBasis' }"></ng-container>
+  </div>
+  <div>
+    <label for="additionalIdentifier">Additional Identifiers:</label>
+    <lu-form-primitive-list inputId="additionalIdentifier" kind="string" formControlName="additionalIdentifier"></lu-form-primitive-list>
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'additionalIdentifier' }"></ng-container>
+  </div>
+
+  @if (datasetForm.get('id')?.value) {
+    @if (datasetForm.get('published')?.value) {
+      <div>
+        This dataset is published.
+        <p>If you unpublish the dataset, it is no-longer available publicly on the search. </p>
+      </div>
+    } @else {
+      <div>
+        <p>This dataset is not published. Trait data entered to this dataset is not shared publicly.</p>
+      </div>
+    }
+    <label>
+      Publish dataset
+      <input type="checkbox" formControlName="published" (click)="onPublishedClick($event)">
+    </label>
+    @if (datasetForm.get('shareToFinBIF')) {
+      <div>
+        <p>We can generate occurrences from your trait data. If your dataset is not derived from individuals or specimens published in occurrence databases (e.g., Kotka collection management system) and you wish to publish this data as occurrences on FinBIF occurrence search, please indicate ‘YES’.</p>
+        <label>
+          Share to FinBIF:
+          <input formControlName="shareToFinBIF" type="checkbox">
+        </label>
+      </div>
+    }
+    @if (datasetForm.get('shareToGBIF')) {
+      <div>
+        <p>If you have opted for occurrences to be generated on FinBIF, you can also specify here whether you would like these occurrences to be shared with https://GBIF.org. If you wish to share the occurrences with GBIF, please indicate ‘YES’.</p>
+        <label>
+          Share to GBIF:
+          <input formControlName="shareToGBIF" type="checkbox" [disabled]="(datasetForm.get('shareToFinBIF')?.valueChanges | async) === false">
+        </label>
+      </div>
+    }
+  }
+
+  <button type="submit" class="btn btn-primary mr-5" [disabled]="externalValidationInProgress">Submit</button>
+
+  @if (datasetForm.get('id')?.value) {
+    <button type="button" class="btn btn-danger" (click)="onDeleteClick()">Delete dataset</button>
+  }
+
+  @if (externalValidationInProgress) {
+    <div>Server is validating...</div>
+  }
+  @if (uploadInProgress) {
+    <div>Uploading dataset...</div>
+  }
+  @if (deletionInProgress) {
+    <div>Deleting dataset...</div>
+  }
+</form>
+
+<ng-template #errorsTmp let-prop>
+  @if (errors?.[prop]) {
+    <div class="alert alert-danger" role="alert">{{ errors?.[prop]}}</div>
+  }
+</ng-template>

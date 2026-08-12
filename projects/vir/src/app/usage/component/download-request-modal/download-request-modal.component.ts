@@ -1,0 +1,32 @@
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
+import {
+  getDownloadRequestType
+} from '../../../../../../laji/src/app/shared-modules/download-request/download-request/download-request.component';
+
+@Component({
+    selector: 'vir-download-request-modal',
+    template: `
+    @if (downloadRequest) {
+      <h4>
+        {{ 'downloadRequest.' + (getDownloadRequestType(downloadRequest)) | translate }}
+        {{ downloadRequest.id | toFullUri }}
+      </h4>
+      <laji-download-request
+        [downloadRequest]="downloadRequest"
+        [showPerson]="showPerson"
+        [showDownload]="showFileDownload ? 'always' : 'never'"
+      ></laji-download-request>
+    }
+    `,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
+})
+
+export class DownloadRequestModalComponent {
+  @Input() downloadRequest?: DownloadRequest | null;
+  @Input() showPerson = true;
+  @Input() showFileDownload = false;
+
+  getDownloadRequestType = getDownloadRequestType;
+}

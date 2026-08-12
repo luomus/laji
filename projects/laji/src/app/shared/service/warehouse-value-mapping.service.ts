@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { map, shareReplay, take } from 'rxjs/operators';
+import { map, shareReplay, take } from 'rxjs';
 import { BaseDataService } from '../../graph-ql/service/base-data.service';
 
 interface LabelData {
@@ -18,7 +18,7 @@ export class WarehouseValueMappingService {
   ) {
     this.labels$ = this.baseDataService.getBaseData().pipe(
       map(data => data.warehouseLabels),
-      map(data => this.parseResult(data)),
+      map(data => this.parseResult(data.results)),
       shareReplay(1)
     );
   }

@@ -1,0 +1,25 @@
+<laji-spinner [spinning]="loading">
+  @if (showPaginator && paginatorDisplay && !loading) {
+    <laji-paginator
+      [page]="page!" [count]="count!"
+      [size]="size!"
+      (pageChange)="pageChanged($event)">
+    </laji-paginator>
+  }
+
+  @if (!loading) {
+    <laji-annotations-list
+      [result]="result"
+      [annotationTags]="(annotationTags$ | async)!"
+      >
+    </laji-annotations-list>
+  }
+
+  @if (showPaginator && paginatorDisplay && !loading) {
+    <laji-paginator
+      [page]="page!" [count]="count!"
+      [size]="size!"
+      (pageChange)="pageChanged($event)">
+    </laji-paginator>
+  }
+</laji-spinner>

@@ -1,0 +1,30 @@
+<div class="container mt-5 mb-9">
+  <p>Määrät perustuvat Lajitietokeskukseen tallennettuihin havaintoihin.</p>
+  @if (societies$ | async; as societies) {
+    <select class="form-control mb-4" [formControl]="areaControl">
+      <option value="all">Koko Suomi</option>
+      @for (society of societies; track society) {
+        <option [value]="society.key">{{ society.value }}</option>
+      }
+    </select>
+  } @else {
+    <div><laji-spinner class="d-block m-6"></laji-spinner></div>
+  }
+  @if (rows$ | async; as rows) {
+    @if (!loadingRows) {
+      <ngx-datatable
+        class="material"
+        [rows]="rows"
+        [columns]="cols"
+        [sorts]="[{ prop: 'all', dir: 'desc' }]"
+        [messages]="{emptyMessage: 'Ei havainnoijia.'}"
+      ></ngx-datatable>
+    } @else {
+      <div><laji-spinner class="d-block m-6"></laji-spinner></div>
+    }
+  } @else {
+    <div><laji-spinner class="d-block m-6"></laji-spinner></div>
+  }
+</div>
+
+

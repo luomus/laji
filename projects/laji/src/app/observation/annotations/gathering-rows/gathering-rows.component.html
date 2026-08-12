@@ -1,0 +1,49 @@
+<div class="position">
+  <ul class="separated-list">
+    <div class="container-icon-text">
+      <div class="icon">@if (gathering.country || gathering.biogeographicalProvince || gathering.municipality || gathering.locality) {
+        <li class="no-comma" [luTooltip]="'result.gathering.locality' | translate"><i class="glyphicon glyphicon-map-marker"></i></li>
+      }</div>
+      <div class="text">
+        @if (gathering.country) {
+          <li>{{ gathering.country }}</li>
+        }
+        @if (gathering.biogeographicalProvince) {
+          <li>{{ gathering.biogeographicalProvince }}</li>
+        }
+        @if (gathering.municipality) {
+          <li>{{ gathering.municipality }}</li>
+        }
+        @if (gathering.locality) {
+          <li>{{ gathering.locality | truncate : 80 : true }}</li>
+        }
+      </div>
+    </div>
+  </ul>
+</div>
+
+<div class="date">
+  @if (gathering.displayDateTime) {
+    <span>
+      <div class="container-icon-text">
+        <div class="icon"><i [luTooltip]="'viewer.field.time' | translate" class="glyphicon glyphicon-time"></i></div>
+        <div class="text"> {{ date | amDateFormat:'L' }} {{ time }}</div>
+      </div>
+    </span>
+  }
+</div>
+
+@if (gathering.team) {
+  <div class="author">
+    <ul class="separated-list">
+      <div class="container-icon-text">
+        <div class="icon">@if (gathering.team.length > 0) {
+          <li [luTooltip]="'viewer.field.observer' | translate" class="no-comma"><i class="glyphicon glyphicon-user"></i></li>
+        }</div>
+        <div class="text">@for (member of gathering.team; track member) {
+          <li><span class="member">{{ member }}</span></li>
+        }</div>
+      </div>
+    </ul>
+  </div>
+}

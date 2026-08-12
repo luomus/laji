@@ -7,7 +7,8 @@ import { Pipe, PipeTransform } from '@angular/core';
  *   value | formattedNumber
  */
 @Pipe({
-  name: 'formattedNumber'
+    name: 'formattedNumber',
+    standalone: false
 })
 export class FormattedNumber implements PipeTransform {
   transform(value?: string|number|null, thousandSeparator: string = ''): string {

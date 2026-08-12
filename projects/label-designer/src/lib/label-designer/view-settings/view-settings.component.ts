@@ -5,10 +5,11 @@ import { IViewSettings } from '../../label-designer.interface';
  * @internal
  */
 @Component({
-  selector: 'll-view-settings',
-  templateUrl: './view-settings.component.html',
-  styleUrls: ['./view-settings.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-view-settings',
+    templateUrl: './view-settings.component.html',
+    styleUrls: ['./view-settings.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ViewSettingsComponent {
 

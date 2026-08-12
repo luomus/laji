@@ -1,0 +1,23 @@
+
+@switch (type) {
+  @case ('status') {
+    <iucn-red-list-regional-status (groupSelect)="changeQuery('redListGroup', $event)" [data]="(redListStatusQuery$ | async)!"></iucn-red-list-regional-status>
+  }
+  @case ('species') {
+    <iucn-species-table
+      [species]="(speciesQuery$ | async)!"
+      [defaultFields]="defaultSpeciesFields"
+      [allFields]="speciesAllFields"
+      [selected]="selectedSpeciesFields"
+      [speciesPageSize]="speciesPageSize"
+      [speciesPage]="speciesPage"
+      [speciesCount]="speciesCount"
+      [showTaxonLink]="false"
+      [year]="statusEvaluationYear"
+      [downloadLoading]="downloadLoading"
+      (pageChange)="changeSpeciesPage($event)"
+      (fieldsChange)="newFields($event)"
+      (download)="download($event)"
+    ></iucn-species-table>
+  }
+}

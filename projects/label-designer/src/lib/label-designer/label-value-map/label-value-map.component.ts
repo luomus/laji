@@ -7,10 +7,11 @@ import { TranslateService } from '../../translate/translate.service';
  * @internal
  */
 @Component({
-  selector: 'll-label-value-map',
-  templateUrl: './label-value-map.component.html',
-  styleUrls: ['./label-value-map.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-label-value-map',
+    templateUrl: './label-value-map.component.html',
+    styleUrls: ['./label-value-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelValueMapComponent {
 

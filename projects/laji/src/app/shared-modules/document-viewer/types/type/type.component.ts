@@ -1,10 +1,11 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-type',
-  templateUrl: './type.component.html',
-  styleUrls: ['./type.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-type',
+    templateUrl: './type.component.html',
+    styleUrls: ['./type.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TypeComponent {
   @Input() type: any;

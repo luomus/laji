@@ -1,12 +1,12 @@
 <button class="btn btn-default" (click)="openModal()" [disabled]="disabled">
-	<i class="glyphicon glyphicon-download-alt"></i>
-	{{ 'observation.download.api' | translate }}
+  <i class="glyphicon glyphicon-download-alt"></i>
+  {{ 'observation.download.api' | translate }}
 </button>
 
 <lu-modal [size]="modalSize" #modal>
-  <ng-container *ngIf="modalShown">
+  @if (modalShown) {
     <ng-container *ngTemplateOutlet="modalContent"></ng-container>
-  </ng-container>
+  }
 </lu-modal>
 
 <ng-template #modalContent>
@@ -25,24 +25,26 @@
     </div>
     <div class="footnote" [innerHtml]="'observation.download.api.expiration.footnote' | translate"></div>
   </div>
-	<div class="lu-modal-footer">
-		<laji-spinner [spinning]="loading" [overlay]="false" [hideContentWhileLoading]="true">
-			<div class="d-flex justify-end items-center">
-				<div class="checkbox m-0 mr-4">
-					<label><input type="checkbox" [(ngModel)]="termsAccepted">{{ 'observation.download.api.terms.1' | translate }}<a href="https://cdn.laji.fi/files/vir/vir_apikey_kayttoehdot.pdf" target="_blank">{{ 'observation.download.api.terms.2' | translate }}</a></label>
-				</div>
-				<button type="button"
-								[luTooltip]="disableRequestBtn ? ('download.reason-required' | translate) : ''"
-								class="btn btn-primary"
-								[disabled]="disableRequestBtn || !termsAccepted"
-								(click)="onRequest()">
-					<span>{{ "observation.download.api.btn" | translate }}</span>
-				</button>
-			</div>
-		</laji-spinner>
-	</div>
-	<div class="lu-modal-footer mt-3" *ngIf="apiKey">
-		<strong>{{ 'observation.download.api.clipboard' | translate }}</strong><br>
-    <laji-copy-to-clipboard [value]="apiKey" [wrapText]="true"></laji-copy-to-clipboard>
-	</div>
+  <div class="lu-modal-footer">
+    <laji-spinner [spinning]="loading" [overlay]="false" [hideContentWhileLoading]="true">
+      <div class="d-flex justify-end items-center">
+        <div class="checkbox m-0 mr-4">
+          <label><input type="checkbox" [(ngModel)]="termsAccepted">{{ 'observation.download.api.terms.1' | translate }}<a href="https://cdn.laji.fi/files/vir/vir_apikey_kayttoehdot.pdf" target="_blank">{{ 'observation.download.api.terms.2' | translate }}</a></label>
+        </div>
+        <button type="button"
+          [luTooltip]="disableRequestBtn ? ('download.reason-required' | translate) : ''"
+          class="btn btn-primary"
+          [disabled]="disableRequestBtn || !termsAccepted"
+          (click)="onRequest()">
+          <span>{{ "observation.download.api.btn" | translate }}</span>
+        </button>
+      </div>
+    </laji-spinner>
+  </div>
+  @if (apiKey) {
+    <div class="lu-modal-footer mt-3">
+      <strong>{{ 'observation.download.api.clipboard' | translate }}</strong><br>
+      <laji-copy-to-clipboard [value]="apiKey" [wrapText]="true"></laji-copy-to-clipboard>
+    </div>
+  }
 </ng-template>

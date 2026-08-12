@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { IUserMappingFile, MappingFileService } from '../../service/mapping-file.service';
 
 @Component({
-  selector: 'laji-user-mapping-button',
-  templateUrl: './user-mapping-button.component.html',
-  styleUrls: ['./user-mapping-button.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-user-mapping-button',
+    templateUrl: './user-mapping-button.component.html',
+    styleUrls: ['./user-mapping-button.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UserMappingButtonComponent {
 

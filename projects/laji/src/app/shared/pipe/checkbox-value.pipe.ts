@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { SelectOption } from '../../shared-modules/select/select/select.component';
 
 @Pipe({
-  name: 'checkboxValue'
+    name: 'checkboxValue',
+    standalone: false
 })
 export class CheckboxValuePipe implements PipeTransform {
 

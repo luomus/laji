@@ -1,10 +1,10 @@
 // Use for importing the entire library at once
 // Alternatively import each module individually
-@import 'vars';
-@import 'utils';
-@import 'base';
-@import 'buttons';
-@import 'pills';
-@import 'dropdown';
-@import 'details';
-@import 'fieldset';
+@forward 'vars';
+@forward 'utils';
+@forward 'base';
+@forward 'buttons';
+@forward 'pills';
+@forward 'dropdown';
+@forward 'details';
+@forward 'fieldset';

@@ -15,7 +15,8 @@ const breakpoints = {
 };
 
 @Directive({
-  selector: '[lajiIfWidthAboveBreakpoint]',
+    selector: '[lajiIfWidthAboveBreakpoint]',
+    standalone: false
 })
 export class IfWidthAboveBreakpointDirective implements OnDestroy {
   @Input()

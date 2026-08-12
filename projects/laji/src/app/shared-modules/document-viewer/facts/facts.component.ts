@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-facts',
-  templateUrl: './facts.component.html',
-  styleUrls: ['./facts.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-facts',
+    templateUrl: './facts.component.html',
+    styleUrls: ['./facts.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FactsComponent {
 

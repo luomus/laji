@@ -1,0 +1,14 @@
+<div class="d-flex flex-row flex-wrap">
+  <div class="map mr-4" #lajiMap></div>
+
+  <div> <!-- sidebar -->
+    @if (visualization === 'speciesCount') {
+      <ba-visualization-legend [visualization]="visualization"></ba-visualization-legend>
+    }
+    @if (visualization === 'activityCategory') {
+      <ba-grid-index-map-table [activityCategoryStats]="atlasGrid.activityCategories"></ba-grid-index-map-table>
+    }
+    <hr>
+      <ba-visualization-selector [visualization]="visualization" (visualizationChange)="onVisualizationChange($event)"></ba-visualization-selector>
+    </div>
+  </div>

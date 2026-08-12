@@ -1,0 +1,20 @@
+@if (descriptionGroup) {
+  <div class="panel panel-default description-panel"
+    laji-panel
+    [title]="title ? title : descriptionGroup.title"
+    [open]="true"
+    [autoToggle]="true"
+    >
+    <laji-taxon-description-variables [variables]="descriptionGroup.variables!"></laji-taxon-description-variables>
+  </div>
+  @if (taxonDescription) {
+    <div class="panel panel-default"
+      laji-panel
+      [title]="'taxonomy.author' | translate"
+      [open]="true"
+      [autoToggle]="true"
+      >
+      <laji-taxon-description-source [taxonDescription]="taxonDescription"></laji-taxon-description-source>
+    </div>
+  }
+}

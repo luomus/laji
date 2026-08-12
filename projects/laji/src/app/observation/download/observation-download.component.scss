@@ -1,0 +1,10 @@
+@use 'vars' as *;
+
+section {
+	margin-top: $sp-8;
+	margin-bottom: $sp-8;
+}
+
+.modal-title {
+	margin: 0;
+}

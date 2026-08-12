@@ -1,24 +1,20 @@
-# LajiApiClient
+Updating api type definitions:
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.13.
+```
+npm i
 
-## Code scaffolding
+// update types based on the new API openapi schema
+npm run updateNew
+```
 
-Run `ng generate component component-name --project laji-api-client` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project laji-api-client`.
-> Note: Don't forget to add `--project laji-api-client` or else it will be added to the default project in your `angular.json` file. 
+Usage:
+```typescript
+export class ExampleComponent {
+  constructor(private lajiApiClientService: LajiApiClientService) {}
+  function f() {
+    const a$ = this.lajiApiClientService.fetch('/collections', 'get', { query: { page: 1 } });
+  }
+}
+```
 
-## Build
-
-Run `ng build laji-api-client` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Publishing
-
-After building your library with `ng build laji-api-client`, go to the dist folder `cd dist/laji-api-client` and run `npm publish`.
-
-## Running unit tests
-
-Run `ng test laji-api-client` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Queries are cached by default based on the path and the query params. Whenever a new non-get request is sent to the same path, the cache is flushed automatically.

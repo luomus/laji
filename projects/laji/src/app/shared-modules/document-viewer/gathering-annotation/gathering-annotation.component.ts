@@ -4,24 +4,25 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Subject } from 'rxjs';
 import { LoadingElementsService } from '../loading-elements.service';
 import { TaxonTagEffectiveService } from '../taxon-tag-effective.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
-type Annotation = components['schemas']['annotation'];
-type AnnotationTag = components['schemas']['tag'];
+type Annotation = components['schemas']['store-annotation'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
-  selector: 'laji-gathering-annotation',
-  templateUrl: './gathering-annotation.component.html',
-  styleUrls: ['./gathering-annotation.component.scss'],
-  animations: [
-      trigger('message', [
-        transition(':leave', [
-          style({opacity: 1}),
-          animate('500ms', style({ opacity: 0}))
+    selector: 'laji-gathering-annotation',
+    templateUrl: './gathering-annotation.component.html',
+    styleUrls: ['./gathering-annotation.component.scss'],
+    animations: [
+        trigger('message', [
+            transition(':leave', [
+                style({ opacity: 1 }),
+                animate('500ms', style({ opacity: 0 }))
+            ])
         ])
-    ])
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GatheringAnnotationComponent implements OnDestroy {
 

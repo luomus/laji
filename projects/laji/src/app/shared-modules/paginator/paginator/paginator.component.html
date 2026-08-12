@@ -1,5 +1,5 @@
 <div class="ngx-datatable material laji-pager">
-    <div class="datatable-footer">
+  <div class="datatable-footer">
     <div class="datatable-pager">
       <ul class="pager">
         <li [class.disabled]="!canPrevious()">
@@ -16,16 +16,17 @@
             <i class="glyphicon glyphicon-chevron-left"></i>
           </a>
         </li>
-        <li
-          class="pages"
-          *ngFor="let pg of pages"
-          [class.active]="pg.number === page">
-          <a
-            href="javascript:void(0)"
-            (click)="selectPage(pg.number)">
-            {{ pg.text }}
-          </a>
-        </li>
+        @for (pg of pages; track pg) {
+          <li
+            class="pages"
+            [class.active]="pg.number === page">
+            <a
+              href="javascript:void(0)"
+              (click)="selectPage(pg.number)">
+              {{ pg.text }}
+            </a>
+          </li>
+        }
         <li [class.disabled]="!canNext()">
           <a
             href="javascript:void(0)"

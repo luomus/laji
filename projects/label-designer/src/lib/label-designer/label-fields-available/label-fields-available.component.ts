@@ -15,17 +15,18 @@ import { CdkDragRelease } from '@angular/cdk/drag-drop';
 import { LabelService } from '../../label.service';
 import { isPlatformBrowser } from '@angular/common';
 import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { LabelDesignerHelper } from '../../label-designer.helper';
 
 /**
  * @internal
  */
 @Component({
-  selector: 'll-label-fields-available',
-  templateUrl: './label-fields-available.component.html',
-  styleUrls: ['./label-fields-available.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-label-fields-available',
+    templateUrl: './label-fields-available.component.html',
+    styleUrls: ['./label-fields-available.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
 

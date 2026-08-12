@@ -1,13 +1,13 @@
 import { ILogger } from './logger.interface';
 import { Injectable } from '@angular/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import type { operations } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import type { operations } from 'projects/laji-api-client/generated/api.d';
 type LogLevel = operations['LoggerController_log']['parameters']['path']['level'];
 
 @Injectable()
 export class HttpLogger implements ILogger {
 
-  constructor(private api: LajiApiClientBService) {
+  constructor(private api: LajiApiClientService) {
   }
 
   public error(message: string, meta?: any): void {

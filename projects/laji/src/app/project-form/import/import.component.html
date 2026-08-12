@@ -1,0 +1,17 @@
+@if (projectForm$ | async; as projectForm) {
+  <h3>
+    {{ 'excel.import' | translate }}
+  </h3>
+  <div class="row">
+    <div class="col-sm-12">
+      <p>
+        {{ 'excel.import.intro' | translate:{maxUnits: maxUnitsPerDocument} }}
+      </p>
+    </div>
+  </div>
+  @if (projectForm.form.options?.secondaryCopy) {
+    <laji-importer [forms]="[projectForm.form.id]" [allowedCombineOptions]="[combineOptions.none]"></laji-importer>
+  } @else {
+    <laji-importer [forms]="projectFormService.getExcelFormIDs(projectForm)"></laji-importer>
+  }
+}

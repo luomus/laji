@@ -1,0 +1,15 @@
+@if (taxonDescription && (taxonDescription.title || taxonDescription.speciesCardAuthors)) {
+  <span class="mr-3">
+    @if (taxonDescription.title) {
+      <strong>{{ 'taxonomy.source' | translate }}:</strong> {{ taxonDescription.title }}
+    }
+    @if (taxonDescription.speciesCardAuthors) {
+      <br>
+        <strong>{{ taxonDescription.speciesCardAuthors.title }}:</strong>
+        <span [innerHTML]="taxonDescription.speciesCardAuthors.content"></span>
+      }
+    </span>
+    <span>
+      <laji-license type="MZ.intellectualRightsCC-BY-4.0"></laji-license>
+    </span>
+  }

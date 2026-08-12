@@ -1,0 +1,94 @@
+<h3>Edit trait</h3>
+<form [formGroup]="form" (submit)="onSubmit()">
+  @if (groups$ | async; as groups) {
+    <div>
+      <label for="group">Group*:</label>
+      <select id="group" class="form-control" formControlName="group">
+        @for (group of groups; track group) {
+          <option [value]="group.id">{{ group.name }}</option>
+        }
+      </select>
+      <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'group' }"></ng-container>
+    </div>
+  } @else {
+    Loading trait groups...
+  }
+  <div>
+    <label for="name">Name*:</label>
+    <input id="name" class="form-control" formControlName="name" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'name' }"></ng-container>
+  </div>
+  <div>
+    <label for="description">Description*:</label>
+    <textarea id="description" class="form-control" formControlName="description"></textarea>
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'description' }"></ng-container>
+  </div>
+  <div>
+    <label for="data-entry-name">Data entry name*:</label>
+    <input id="data-entry-name" class="form-control" formControlName="dataEntryName" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'dataEntryName' }"></ng-container>
+  </div>
+  <div>
+    <label for="range">Range*:</label>
+    <select id="range" class="form-control" formControlName="range">
+      <option value="xsd:string">String</option>
+      <option value="xsd:decimal">Decimal</option>
+      <option value="xsd:integer">Integer</option>
+      <option value="xsd:positiveInteger">Positive Integer</option>
+      <option value="xsd:nonNegativeInteger">Non-negative Integer</option>
+      <option value="xsd:boolean">Boolean</option>
+      <option value="MX.taxon">Taxon</option>
+    </select>
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'range' }"></ng-container>
+  </div>
+  <div>
+    <label for="base-unit">Base unit:</label>
+    <select
+      id="base-unit"
+      class="form-control"
+      formControlName="baseUnit"
+    >
+      <option value="">None</option>
+      <option *ngFor="let u of (unitOfMeasurements$ | async)" [value]="u.id">{{ u.label }}</option>
+    </select>
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'baseUnit' }"></ng-container>
+  </div>
+  <laji-trait-enumeration-value-list class="my-6" formControlName="enumerations"></laji-trait-enumeration-value-list>
+  <div>
+    <label for="example-values">Example values:</label>
+    <input id="example-values" class="form-control" formControlName="exampleValues" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'exampleValues' }"></ng-container>
+  </div>
+  <div>
+    <label for="reference">Reference:</label>
+    <input id="reference" class="form-control" formControlName="reference" type="text">
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'reference' }"></ng-container>
+  </div>
+  <div>
+    <label for="identifiers">Identifiers:</label>
+    <lu-form-primitive-list inputId="identifiers" kind="string" formControlName="identifiers"></lu-form-primitive-list>
+    <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'identifiers' }"></ng-container>
+  </div>
+
+  <button type="submit" class="btn btn-primary mr-4" [disabled]="submissionState !== 'none'">Submit</button>
+
+  @if (form.get('id')?.value) {
+    <button type="button" class="btn btn-danger" (click)="onDeleteClick()">Delete</button>
+  }
+
+  @if (submissionState === 'externalValidation') {
+    <div>Server is validating...</div>
+  }
+  @if (submissionState === 'uploading') {
+    <div>Uploading trait...</div>
+  }
+  @if (submissionState === 'deleting') {
+    <div>Deleting trait...</div>
+  }
+</form>
+
+<ng-template #errorsTmp let-prop>
+  @if (errors?.[prop]) {
+    <div class="alert alert-danger" role="alert">{{ errors?.[prop]}}</div>
+  }
+</ng-template>

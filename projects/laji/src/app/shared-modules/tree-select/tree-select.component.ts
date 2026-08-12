@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TreeSelectModalComponent } from './tree-select-modal/tree-select-modal.component';
-import { Util } from '../../shared/service/util.service';
+import * as Util from '../../shared/utils';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 export interface SelectedOption {
@@ -24,10 +24,11 @@ export interface TreeOptionsChangeEvent {
 }
 
 @Component({
-  selector: 'laji-tree-select',
-  templateUrl: './tree-select.component.html',
-  styleUrls: ['./tree-select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-tree-select',
+    templateUrl: './tree-select.component.html',
+    styleUrls: ['./tree-select.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 
 export class TreeSelectComponent {

@@ -1,0 +1,65 @@
+<div class="row main-result">
+  <div class="col-md-5 col-lg-4">
+    @if (mapQuery) {
+      <laji-ykj-map
+        [title]="title"
+        [height]="'calc(80vh - 30px)'"
+        [query]="mapQuery"
+      (gridClick)="onGridSelect($event)"></laji-ykj-map>
+    }
+    @if (showQueryOnMap) {
+      <div class="close-list top-button">
+        <a class="label label-danger pull-right link" (click)="closeMap()">✕</a>
+      </div>
+    }
+  </div>
+  <div class="visible-sm visible-xs list-spacer">&nbsp;</div>
+  <div class="col-md-7 col-lg-8">
+    <div [hidden]="showObservationList">
+      @if (aggrQuery) {
+        <laji-observation-table
+          #aggregatedDataTable
+          [mode]="dataMode"
+          (rowSelect)="onAggregateSelect($event)"
+          (selectChange)="setAggregateBy($event)"
+          (resetColumns)="resetSelectedFields()"
+          (pageSizeChange)="setPageSize($event)"
+          [pageSize]="pageSize"
+          [visible]="visible"
+          [height]="'calc(80vh - 30px)'"
+          [query]="aggrQuery"
+          [showSettingsMenu]="true"
+          [isAggregate]="true"
+          [selected]="aggregateBy"
+        ></laji-observation-table>
+      }
+    </div>
+    @if (showObservationList) {
+      <div>
+        @if (listQuery) {
+          <laji-observation-table
+            [mode]="dataMode"
+            (rowSelect)="showDocument($event)"
+            (selectChange)="setSelectedFields($event)"
+            (resetColumns)="resetSelectedFields()"
+            [pageSize]="pageSize"
+            [visible]="visible"
+            [height]="'calc(80vh - 30px)'"
+            [query]="listQuery"
+            [showSettingsMenu]="true"
+            [isAggregate]="false"
+            [selected]="selected"
+          ></laji-observation-table>
+        }
+        <div class="close-list top-button">
+          <a class="label label-danger pull-right link" (click)="closeList()">✕</a>
+        </div>
+        @if (listQuery?.ykj10kmCenter) {
+          <div class="close-list top-info">
+            <span class="label label-warning pull-right link" (click)="removeGridFromList()">{{ listQuery!.ykj10kmCenter }} x</span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

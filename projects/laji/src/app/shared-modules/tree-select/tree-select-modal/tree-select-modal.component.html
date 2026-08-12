@@ -6,7 +6,7 @@
 </div>
 <div class="flex-container">
   <div class="flex-container">
-    <ng-container *ngIf="optionsTree$ | async; let optionsTree; else loading">
+    @if (optionsTree$ | async; as optionsTree) {
       <ng-container *lajiIfWidthAboveBreakpoint="'md' else mobileModal;">
         <div class="row flex-container">
           <div class="col-md-8 flex-container">
@@ -31,7 +31,7 @@
                 [selectedOptions]="selectedOptions"
                 [includedTitle]="includedTitle"
                 [excludedTitle]="excludedTitle"
-                (selectedOptionsChange)="deselect($event)"></laji-selected-tree-nodes>
+              (selectedOptionsChange)="deselect($event)"></laji-selected-tree-nodes>
             </div>
           </div>
         </div>
@@ -59,16 +59,15 @@
                 [selectedOptions]="selectedOptions"
                 [includedTitle]="includedTitle"
                 [excludedTitle]="excludedTitle"
-                (selectedOptionsChange)="deselect($event)"></laji-selected-tree-nodes>
+              (selectedOptionsChange)="deselect($event)"></laji-selected-tree-nodes>
             </div>
           </div>
         </div>
       </ng-template>
-    </ng-container>
-    <ng-template #loading>
+    } @else {
       <laji-spinner [overlay]="true">
       </laji-spinner>
-    </ng-template>
+    }
   </div>
 </div>
 <div class="lu-modal-footer">

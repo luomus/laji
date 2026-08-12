@@ -3,10 +3,11 @@ import { IFormField, VALUE_AS_IS, VALUE_IGNORE } from '../../model/excel';
 import { SpreadsheetService } from '../../service/spreadsheet.service';
 
 @Component({
-  selector: 'laji-mapping-select',
-  templateUrl: './mapping-select.component.html',
-  styleUrls: ['./mapping-select.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-mapping-select',
+    templateUrl: './mapping-select.component.html',
+    styleUrls: ['./mapping-select.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MappingSelectComponent {
 

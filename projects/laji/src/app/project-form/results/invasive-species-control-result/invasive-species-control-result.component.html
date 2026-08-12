@@ -1,0 +1,38 @@
+<div class="container-fluid">
+  <laji-project-form-header [form]="form"></laji-project-form-header>
+  <div class="row">
+    <laji-navigation-thumbnail
+      name="invasiveSpeciesControl.stats.statistics.title"
+      icon="table"
+      iconType="png"
+      [query]="{tab: Tabs.statistics}"
+    ></laji-navigation-thumbnail>
+    <laji-navigation-thumbnail
+      name="invasiveSpeciesControl.stats.map.title"
+      icon="wb_icon_map_2"
+      iconType="png"
+      [query]="{tab: Tabs.map}"
+    ></laji-navigation-thumbnail>
+  </div>
+  @if (state$ | async; as state) {
+    @if (isStatisticsState(state)) {
+      <div>
+        <laji-invasive-species-control-result-statistics
+          [taxon]="state.taxon"
+          [municipality]="state.municipality"
+          (taxonChange)="onTaxonChange($event)"
+        (municipalityChange)="onMunicipalityChange($event)"></laji-invasive-species-control-result-statistics>
+      </div>
+    }
+    @if (isMapState(state)) {
+      <div>
+        <laji-invasive-species-control-result-map
+          [taxon]="state.taxon"
+          [year]="state.year"
+          (taxonChange)="onTaxonChange($event)"
+          (yearChange)="onYearChange($event)"
+        ></laji-invasive-species-control-result-map>
+      </div>
+    }
+  }
+</div>

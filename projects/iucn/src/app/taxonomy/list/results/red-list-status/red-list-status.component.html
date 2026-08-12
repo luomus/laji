@@ -1,0 +1,30 @@
+<div class="table-responsive">
+  <table class="table table-hover">
+    <tbody>
+      <tr class="title">
+        <th rowspan="2"></th>
+        <th rowspan="2">{{ 'iucn.results.evaluatedSpecies' | translate }}</th>
+        <th colspan="7" class="evaluated">{{ 'iucn.results.evaluated' | translate }}</th>
+        <th colspan="2" class="no-border-bottom"></th>
+        <th rowspan="2">{{ 'iucn.results.endangeredSpecies' | translate }}</th>
+        <th rowspan="2">{{ 'iucn.results.endangered' | translate }}</th>
+      </tr>
+      <tr class="title">
+        @for (status of statuses; track status) {
+          <th class="no-border-top">{{ statusLabel[status] }}</th>
+        }
+      </tr>
+      @for (data of _data; track data; let f = $first; let l = $last) {
+        <tr [class.link]="data.group" (click)="rowClick(data.group)" [class.title]="f || l">
+          <th>{{ data.species }}</th>
+          <td>{{ data.count }}</td>
+          @for (status of statuses; track status) {
+            <td>{{ data[status] || 0 }}</td>
+          }
+          <td>{{ data.redListCnt }}</td>
+          <td>{{ data.redListPct }}%</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

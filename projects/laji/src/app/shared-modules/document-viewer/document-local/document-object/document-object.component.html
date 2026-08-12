@@ -1,8 +1,8 @@
-<ng-container *ngFor="let field of fields">
-  <ng-container *ngIf="object[field.name] && (field.type !== 'collection' || object[field.name].length > 0)">
+@for (field of fields; track field) {
+  @if (object[field.name] && (field.type !== 'collection' || object[field.name].length > 0)) {
     <ng-container *ngTemplateOutlet="templates[field.name]; context: {'value': object[field.name], 'label': field.label, 'field': field}"></ng-container>
-  </ng-container>
-</ng-container>
+  }
+}
 
 <ng-template #checkbox let-value="value" let-label="label">
   <laji-row [title]="label" [value]="value ? ('yes' | translate) : ('no' | translate)"></laji-row>
@@ -13,48 +13,64 @@
 <ng-template #taxonCensus let-value="value">
   <laji-row [title]="'MY.taxonCensus' | label">
     <ul class="separated-list">
-      <li *ngFor="let census of value" [luTooltip]="census.taxonCensusType | label" [isDisabled]="hideTooltips">
-        {{ census.censusTaxonID ? (census.censusTaxonID | taxon) : (census.censusTaxonSetID | label) }}
-      </li>
+      @for (census of value; track census) {
+        <li [luTooltip]="census.taxonCensusType | label" [isDisabled]="hideTooltips">
+          {{ census.censusTaxonID ? (census.censusTaxonID | taxon) : (census.censusTaxonSetID | label) }}
+        </li>
+      }
     </ul>
   </laji-row>
 </ng-template>
 <ng-template #taxonID let-value="value" let-label="label">
   <laji-row [title]="label" [value]="value | taxon" ngPreserveWhitespaces>
-    <ng-container *ngIf="showFacts || showUnitId">
-      <a *ngIf="showLinks; else nonlink" target="_blank" href="http://tun.fi/{{ object.id }}">http://tun.fi/{{ object.id }}</a>
+    @if (showFacts || showUnitId) {
+      @if (showLinks) {
+        <a target="_blank" href="http://tun.fi/{{ object.id }}">http://tun.fi/{{ object.id }}</a>
+      } @else {
+        <small>(http://tun.fi/{{ object.id }})</small>
+      }
       <ng-template #nonlink>
         <small>(http://tun.fi/{{ object.id }})</small>
       </ng-template>
-    </ng-container>
+    }
   </laji-row>
 </ng-template>
 <ng-template #fieldset let-value="value" let-field="field">
   <laji-document-object [object]="value"
-                        [fields]="field.fields"
-                        [hideTooltips]="hideTooltips"
+    [fields]="field.fields"
+    [hideTooltips]="hideTooltips"
   ></laji-document-object>
 </ng-template>
 <ng-template #facts let-value="value" let-field="field">
-  <div *ngIf="showFacts && hasFacts" class="facts">
-    <table class="table table-hover table-condensed">
-      <thead>
-      <tr>
-        <th colspan="2">Lisämuuttujat</th>
-      </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngFor="let f of field.fields">
-          <tr *ngIf="value[f.name] && (f.type !== 'collection' || value[f.name].length > 0)">
-            <th class="title"><span [innerHTML]="f.label"></span></th>
-            <td *ngIf="f.type === 'checkbox'">{{ value ? ('yes' | translate) : ('no' | translate) }}</td>
-            <td *ngIf="f.type === 'select'">{{ f.options.value_options[value[f.name]] | values }}</td>
-            <td *ngIf="f.type !== 'select' && f.type !== 'checkbox'">{{ value[f.name] | label | values }}</td>
+  @if (showFacts && hasFacts) {
+    <div class="facts">
+      <table class="table table-hover table-condensed">
+        <thead>
+          <tr>
+            <th colspan="2">Lisämuuttujat</th>
           </tr>
-        </ng-container>
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          @for (f of field.fields; track f) {
+            @if (value[f.name] && (f.type !== 'collection' || value[f.name].length > 0)) {
+              <tr>
+                <th class="title"><span [innerHTML]="f.label"></span></th>
+                @if (f.type === 'checkbox') {
+                  <td>{{ value ? ('yes' | translate) : ('no' | translate) }}</td>
+                }
+                @if (f.type === 'select') {
+                  <td>{{ f.options.value_options[value[f.name]] | values }}</td>
+                }
+                @if (f.type !== 'select' && f.type !== 'checkbox') {
+                  <td>{{ value[f.name] | label | values }}</td>
+                }
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  }
 </ng-template>
 <ng-template #default let-value="value" let-label="label">
   <laji-row [title]="label" [value]="value | label"></laji-row>

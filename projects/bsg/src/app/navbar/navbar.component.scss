@@ -1,0 +1,13 @@
+@use 'sass:color';
+@use 'vars' as *;
+
+@media only screen and (max-width: 900px) {
+  .navbar-collapse .navbar-nav > li > .lu-dropdown.navbar-dropdown {
+    background-color: $primary-6;
+    position: relative !important;
+
+    & > li > a:hover {
+      background-color: color.adjust($primary-6, $lightness: 5%);
+    }
+  }
+}

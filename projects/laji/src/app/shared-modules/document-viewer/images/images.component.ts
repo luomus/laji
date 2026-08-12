@@ -4,10 +4,11 @@ import { ViewType } from '../../../shared/gallery/image-gallery';
 import { Image } from '../../../shared/gallery/image-gallery/image.interface';
 
 @Component({
-  selector: 'laji-images',
-  templateUrl: './images.component.html',
-  styleUrls: ['./images.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-images',
+    templateUrl: './images.component.html',
+    styleUrls: ['./images.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ImagesComponent implements OnChanges {
 

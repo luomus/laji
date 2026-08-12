@@ -5,10 +5,11 @@ import { LabelService } from '../../../label.service';
  * @internal
  */
 @Component({
-  selector: 'll-editor-grid',
-  templateUrl: './editor-grid.component.html',
-  styleUrls: ['./editor-grid.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-editor-grid',
+    templateUrl: './editor-grid.component.html',
+    styleUrls: ['./editor-grid.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EditorGridComponent implements OnChanges {
 

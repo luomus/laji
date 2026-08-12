@@ -23,15 +23,17 @@
     <div class="form-filters-fill"></div>
   </div>
 </div>
-<div *ngIf="!showFilter"
-     class="filter-toggle link"
-     style="right: 0"
-     (click)="toggleFilters()"
->
-  <i class="glyphicon"
+@if (!showFilter) {
+  <div
+    class="filter-toggle link"
+    style="right: 0"
+    (click)="toggleFilters()"
+    >
+    <i class="glyphicon"
      [ngClass]="{
             'glyphicon-arrow-right': showFilter,
             'glyphicon-arrow-left': !showFilter
            }"
-  ></i>
-</div>
+    ></i>
+  </div>
+}

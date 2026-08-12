@@ -1,5 +1,5 @@
 <footer class="mt-6">
-  <ng-container *ngIf="displayFull">
+  @if (displayFull) {
     <div class="container d-flex justify-center">
       <div class="d-flex flex-wrap footer-content">
         <div>
@@ -9,7 +9,7 @@
         <div>
           <ul>
             <li><a href="https://laji.fi/about/713" target="_blank" translate>ba.footer.privacy</a></li>
-  <!--           <li><a [routerLink]="'/about/'">Palaute</a></li> -->
+            <!--           <li><a [routerLink]="'/about/'">Palaute</a></li> -->
             <li><a href="https://laji.fi/about/709" target="_blank" translate>ba.footer.sensitive</a></li>
             <li><a href="https://lintuatlas.fi/" target="_blank">Lintuatlas.fi</a></li>
             <li><a href="https://www.birdlife.fi/" target="_blank">Birdlife Suomi</a></li>
@@ -30,10 +30,10 @@
         <img src="https://cms.laji.fi/wp-content/uploads/2022/03/YM_logo_official_fi_sv_en_RGB_2colour_L.png" alt="">
       </a>
     </div>
-  </ng-container>
+  }
   <div class="container d-flex flex-wrap justify-center">
-    <p>Luonnontieteellinen keskusmuseo Luomus & BirdLife Suomi: Suomen 4. lintuatlas. 
-      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.fi">Creative Commons Nimeä 4.0</a>. 
+    <p>Luonnontieteellinen keskusmuseo Luomus & BirdLife Suomi: Suomen 4. lintuatlas.
+      <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.fi">Creative Commons Nimeä 4.0</a>.
       <a href="https://tulokset.lintuatlas.fi">http://tulokset.lintuatlas.fi</a>
     </p>
   </div>

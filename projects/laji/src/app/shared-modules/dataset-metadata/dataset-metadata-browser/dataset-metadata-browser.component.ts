@@ -1,15 +1,16 @@
 import { Component, ChangeDetectionStrategy, OnChanges, Output, Input, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { zip } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { SelectedOption } from '../../tree-select/tree-select.component';
 import { CollectionService, CollectionTreeOptionsNode, ICollectionAggregate, ICollectionsTreeNode } from '../../../shared/service/collection.service';
 
 @Component({
-  selector: 'laji-dataset-metadata-browser',
-  templateUrl: './dataset-metadata-browser.component.html',
-  styleUrls: ['./dataset-metadata-browser.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-dataset-metadata-browser',
+    templateUrl: './dataset-metadata-browser.component.html',
+    styleUrls: ['./dataset-metadata-browser.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatasetMetadataBrowserComponent implements OnChanges {
   @Input() selected?: string;
@@ -24,11 +25,10 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
   showEmpty = false;
   loading = false;
   excludedTypes = [
-    'MY.collectionTypeGardenArea',
-    'MY.collectionTypeIndoorGardenArea',
-    'MY.collectionTypeOutdoorGardenArea',
-    'MY.collectionTypeGardenSublocation'
-
+    'MY_collectionTypeGardenArea',
+    'MY_collectionTypeIndoorGardenArea',
+    'MY_collectionTypeOutdoorGardenArea',
+    'MY_collectionTypeGardenSublocation'
   ];
 
   constructor(
@@ -36,7 +36,7 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
     private translate: TranslateService,
     private cd: ChangeDetectorRef
   ) {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
   }
 
   ngOnChanges() {

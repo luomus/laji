@@ -1,0 +1,37 @@
+@if ((stepStack$ | async); as stack) {
+  @if (stack.length > 0) {
+    <lu-stepper
+      [currentStep]="stack.length - 1"
+      [steps]="['Import', 'Validate', 'Check', 'Ready']"
+      (stepBack)="onStepBack($event)"
+    ></lu-stepper>
+    <laji-trait-db-data-entry-import
+      [ngClass]="{'d-none': stack.length !== 1}"
+      (traitDataTsv)="onTsvChange($event)"
+    ></laji-trait-db-data-entry-import>
+    @if (stack.length > 1) {
+      <laji-trait-db-data-entry-validate
+        [ngClass]="{'d-none': stack.length !== 2}"
+        [datasetId]="$any(stack[0]).datasetId"
+        [tsv]="$any(stack[1]).tsv"
+        (validationSuccess)="onValidationSuccess()"
+      ></laji-trait-db-data-entry-validate>
+    }
+    @if (stack.length > 2) {
+      <laji-trait-db-data-entry-check
+        [ngClass]="{'d-none': stack.length !== 3}"
+        [datasetId]="$any(stack[0]).datasetId"
+        [tsv]="$any(stack[1]).tsv"
+        (submissionSuccess)="onSubmissionSuccess()"
+      ></laji-trait-db-data-entry-check>
+    }
+    @if (stack.length > 3) {
+      <laji-trait-db-data-entry-ready
+        [ngClass]="{'d-none': stack.length !== 4}"
+        [datasetId]="$any(stack[0]).datasetId"
+      ></laji-trait-db-data-entry-ready>
+    }
+  } @else {
+    Loading...
+  }
+}

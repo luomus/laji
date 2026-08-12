@@ -1,4 +1,5 @@
-@import 'vars';
+@use 'sass:color';
+@use 'vars' as *;
 
 :host {
   display: block;
@@ -13,7 +14,7 @@
   padding-top: 15px;
   cursor: pointer;
   &:hover {
-    background-color: lighten($primary-2, 1%);
+    background-color: color.adjust($primary-2, $lightness: 1%);
   }
 }
 

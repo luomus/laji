@@ -3,7 +3,8 @@ import { Directive, Output, EventEmitter, ElementRef, HostListener } from '@angu
 /** https://willtaylor.blog/click-outside-directive/ */
 
 @Directive({
-  selector: '[luClickOutside]',
+    selector: '[luClickOutside]',
+    standalone: false
 })
 export class ClickOutsideDirective {
 

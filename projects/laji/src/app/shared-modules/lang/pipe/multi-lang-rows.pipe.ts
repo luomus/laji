@@ -2,8 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { MultiLangService } from '../service/multi-lang.service';
 
 @Pipe({
-  name: 'multiLangRows',
-  pure: true
+    name: 'multiLangRows',
+    pure: true,
+    standalone: false
 })
 export class MultiLangRowsPipe implements PipeTransform {
   public value = [];

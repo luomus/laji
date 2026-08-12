@@ -4,7 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
  * @internal
  */
 @Pipe({
-  name: 'isNumeric'
+    name: 'isNumeric',
+    standalone: false
 })
 export class IsNumericPipe implements PipeTransform {
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import { Util } from '../service/util.service';
+import { catchError, map, switchMap } from 'rxjs';
+import * as Util from '../utils';
 import { environment } from '../../../environments/environment';
 import { of } from 'rxjs';
 import { TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
@@ -14,7 +14,6 @@ export class FormApiClient {
   protected basePath = environment.apiBase;
   private _lang?: string;
   private _personToken?: string;
-  private _formID?: string;
 
   constructor(protected http: HttpClient,
               private taxonAutocompleteService: TaxonAutocompleteService) {
@@ -36,14 +35,6 @@ export class FormApiClient {
     return this._personToken;
   }
 
-  public set formID(id) {
-    this._formID = id;
-  }
-
-  public get formID() {
-    return this._formID;
-  }
-
   public fetch(
     resource: string,
     query: any,
@@ -52,8 +43,7 @@ export class FormApiClient {
     const path = this.basePath + resource;
 
     const queryParameters: Record<string, string> = Util.removeFromObject({
-      ...query,
-      formID: this.formID
+      ...query
     });
 
     if (!options) {
@@ -62,7 +52,7 @@ export class FormApiClient {
 
     switch (resource) {
       case AUTOCOMPLETE_TAXON_RESOURCE:
-        queryParameters['excludeNameTypes'] = 'MX.hasMisappliedName';
+        queryParameters['nameTypes'] = '!MX.hasMisappliedName';
     }
 
     let timeout = '120000';
@@ -73,7 +63,8 @@ export class FormApiClient {
     const headers: Record<string, string> = {
       ...options['headers'],
       timeout,
-      'Accept-language': this.lang!
+      'Accept-language': this.lang!,
+      'API-Version': '1'
     };
     if (this.personToken) {
       headers['Person-Token'] = this.personToken!;

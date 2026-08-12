@@ -1,0 +1,15 @@
+@use 'vars' as *;
+
+:host {
+  height: 100%;
+  width: 100%;
+}
+
+main {
+  padding: $sp-5 $sp-6;
+  padding-top: $sp-7;
+}
+
+::ng-deep main.trait-db-main > ng-component {
+  width: 100%;
+}

@@ -1,0 +1,14 @@
+<ng-container *lajiBrowserOnly>
+  @if (!vihkoSettings.showIntro) {
+    <div class="pull-right toggle-intro">
+      <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+    </div>
+  }
+  @if (vihkoSettings.showIntro) {
+    @if (vihkoSettings.showIntro) {
+      <lu-alert [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+        <div [innerHtml]="'haseka.intro2' | translate" lajiRouteTransformer></div>
+      </lu-alert>
+    }
+  }
+</ng-container>

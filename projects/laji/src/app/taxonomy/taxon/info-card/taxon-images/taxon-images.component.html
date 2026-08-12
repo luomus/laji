@@ -1,0 +1,50 @@
+@if ((isLoggedIn$ | async) !== undefined) {
+  @if ((isLoggedIn$ | async) === true) {
+    @if (taxonImages && taxonImages.length > 0) {
+      <laji-image-gallery
+        [modalImages]="taxonImages"
+        [view]="'full2'"
+        [showExtraInfo]="false"
+        [showOverlay]="!taxon.species"
+        [showLinkToSpeciesCard]="!taxon.species"
+        [linkOptions]="{tab: 'images', queryParams: {context: null}, queryParamsHandling: 'merge'}"
+      ></laji-image-gallery>
+      <hr>
+    }
+
+    @if (isFromMasterChecklist) {
+      @for (item of imageSets; track item) {
+        @if (item.hasData) {
+          <h3>{{ item.title | translate }}</h3>
+        }
+        <div class="gallery-container" [hidden]="item.hasData === false">
+          <laji-gallery
+            [shortPager]="true"
+            [query]="item.query"
+            [pageSize]="12"
+            [view]="'full2'"
+            [shortcut]="false"
+            [showExtraInfo]="false"
+            [showOverlay]="!taxon.species"
+            [showPaginatorOnlyWhenNeeded]="true"
+            [showLinkToSpeciesCard]="!taxon.species"
+            [linkOptions]="{tab: 'images', queryParams: {context: null}, queryParamsHandling: 'merge'}"
+            (hasData)="item.hasData = $event"
+          ></laji-gallery>
+        </div>
+        @if (item.hasData) {
+          <hr>
+        }
+      }
+    }
+  } @else {
+    <ng-container [ngTemplateOutlet]="loginTmp" />
+  }
+}
+
+<ng-template #loginTmp>
+  <lu-alert>
+    <div [innerHTML]="'taxonomy.notLoggedIn' | translate"></div>
+  </lu-alert>
+  <button (click)="onLogin()" role="primary" class="btn btn-primary">{{ 'project-form.about.login' | translate }}</button>
+</ng-template>

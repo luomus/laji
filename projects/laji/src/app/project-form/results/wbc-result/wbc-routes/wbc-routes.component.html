@@ -1,0 +1,28 @@
+@if (route$ | async) {
+  <laji-wbc-route></laji-wbc-route>
+} @else {
+  <h3>{{ 'wbc.stats.routes' | translate }}</h3>
+  <lu-tabs [selectedIndex]="activeIndex" (selectedChange)="setActive($event)">
+    <lu-tab [heading]="'np.list' | translate">
+      @if (loadedTabs.isLoaded('list')) {
+        <laji-wbc-routes-list
+          [rows]="data"
+          [loading]="!data"
+          [selected]="selected"
+          [sorts]="sorts"
+          (rowSelect)="rowSelect($event)"
+        ></laji-wbc-routes-list>
+      }
+    </lu-tab>
+    <lu-tab [heading]="'np.map' | translate">
+      @if (loadedTabs.isLoaded('map')) {
+        <laji-wbc-routes-map
+          [data]="data"
+          [loading]="!data"
+          (rowSelect)="rowSelect($event)"
+        ></laji-wbc-routes-map>
+      }
+    </lu-tab>
+  </lu-tabs>
+}
+

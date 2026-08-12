@@ -9,10 +9,11 @@ const ICON_SIZE = 24;
  * @internal
  */
 @Component({
-  selector: 'll-icon',
-  templateUrl: './icon.component.html',
-  styleUrls: ['./icon.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-icon',
+    templateUrl: './icon.component.html',
+    styleUrls: ['./icon.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class IconComponent {
   _size = ICON_SIZE;

@@ -3,10 +3,11 @@ import { FilterQuery } from '../../service/result.service';
 import { RegionalFilterQuery } from '../../service/regional.service';
 
 @Component({
-  selector: 'iucn-active-filters',
-  templateUrl: './active-filters.component.html',
-  styleUrls: ['./active-filters.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'iucn-active-filters',
+    templateUrl: './active-filters.component.html',
+    styleUrls: ['./active-filters.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ActiveFiltersComponent {
 

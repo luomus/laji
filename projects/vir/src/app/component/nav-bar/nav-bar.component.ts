@@ -3,14 +3,15 @@ import { NavbarComponent as LajiNavBarComponent } from '../../../../../laji/src/
 import { NotificationsFacade } from '../../../../../laji/src/app/shared/navbar/notifications/notifications.facade';
 
 @Component({
-  selector: 'vir-nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrls: [
-    '../../../../../laji/src/app/shared/navbar/navbar.component.scss',
-    './nav-bar.component.scss'
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NotificationsFacade]
+    selector: 'vir-nav-bar',
+    templateUrl: './nav-bar.component.html',
+    styleUrls: [
+        '../../../../../laji/src/app/shared/navbar/navbar.component.scss',
+        './nav-bar.component.scss'
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [NotificationsFacade],
+    standalone: false
 })
 export class NavBarComponent extends LajiNavBarComponent {
 }

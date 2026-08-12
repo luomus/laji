@@ -1,0 +1,78 @@
+<h3>{{ 'profile.friends' | translate }}</h3>
+@if (isCurrentUser()) {
+  <div>
+    @if (usersProfile.friends && usersProfile.friends.length > 0) {
+      <div class="friends">
+        <ul>
+          @for (id of usersProfile.friends; track id) {
+            <li>
+              <a [routerLink]="['/user/' + id] | localize">{{ id|users:'fullName' }}</a>
+              &nbsp;
+              <button class="btn btn-default btn-xs" (click)="removeFriend(id)">{{ 'friend.remove' | translate }} <i class="glyphicon glyphicon-remove"></i></button>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+    @if (usersProfile.friendRequests && usersProfile.friendRequests.length > 0) {
+      <div class="friendRequests">
+        <h4>
+          {{ 'friend.requests' | translate }}
+        </h4>
+        <ul>
+          @for (id of usersProfile.friendRequests; track id) {
+            <li>
+              <a [routerLink]="['/user/' + id] | localize">{{ id|users:'fullName' }}</a>
+              <div class="btn-group">
+                <button class="btn btn-default btn-xs" (click)="acceptFriendRequest(id)">{{ 'friend.accept'  | translate }} <i class="glyphicon glyphicon-ok"></i></button>
+                <button class="btn btn-default btn-xs" (click)="removeFriend(id)">{{ 'friend.remove' | translate }} <i class="glyphicon glyphicon-remove"></i></button>
+                <button class="btn btn-default btn-xs" (click)="removeFriend(id, true)">{{ 'friend.block' | translate }} <i class="glyphicon glyphicon-ban-circle"></i></button>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+    @if (usersProfile.blocked && usersProfile.blocked.length > 0) {
+      <div class="friendRequests">
+        <h4>
+          {{ 'friend.blocked' | translate }}
+          <small>({{ usersProfile.blocked.length }})</small>
+        </h4>
+        <ul>
+          @for (id of usersProfile.blocked; track id) {
+            <li>
+              <a [routerLink]="['/user/' + id] | localize">{{ id|users:'fullName' }}</a>
+              <button class="btn btn-default btn-xs" (click)="removeBlock(id)">{{ 'friend.removeBlock' | translate }} <i class="glyphicon glyphicon-remove"></i></button>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+    <p>{{ 'profile.friendsInfo'|translate }}</p>
+  </div>
+}
+@if (!isCurrentUser() && hasProfile()) {
+  <div>
+    @if (alreadyFriends()) {
+      <div>
+        {{ 'friend.alreadyFriends' | translate }}
+      </div>
+    }
+    @if (requestSend) {
+      <div>
+        {{ 'friend.requestSent' | translate }}
+      </div>
+    }
+    @if (!requestSend && !alreadyFriends()) {
+      <div>
+        <a class="btn btn-success" (click)="sendFriendRequest(viewedUserId!)">{{ 'friend.ask'|translate }}</a>
+      </div>
+    }
+  </div>
+}
+@if (!hasProfile()) {
+  <div>
+    {{ 'profile.friends.needProfile' | translate }}
+  </div>
+}

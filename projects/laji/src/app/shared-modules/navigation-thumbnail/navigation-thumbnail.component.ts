@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-navigation-thumbnail',
-  templateUrl: './navigation-thumbnail.component.html',
-  styleUrls: ['./navigation-thumbnail.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-navigation-thumbnail',
+    templateUrl: './navigation-thumbnail.component.html',
+    styleUrls: ['./navigation-thumbnail.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NavigationThumbnailComponent {
   @Input() icon?: string;

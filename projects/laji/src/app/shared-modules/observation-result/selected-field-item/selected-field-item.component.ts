@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'laji-selected-field-item',
-  templateUrl: './selected-field-item.component.html',
-  styleUrls: ['./selected-field-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-selected-field-item',
+    templateUrl: './selected-field-item.component.html',
+    styleUrls: ['./selected-field-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SelectedFieldItemComponent {
 
@@ -14,7 +15,7 @@ export class SelectedFieldItemComponent {
   @Input() len?: number;
   @Input() required?: boolean;
 
-  @Output() toggle = new EventEmitter<string>();
+  @Output() itemToggled = new EventEmitter<string>();
   @Output() moveUp = new EventEmitter<string[]>();
   @Output() moveDown = new EventEmitter<string[]>();
 

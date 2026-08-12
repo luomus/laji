@@ -7,9 +7,10 @@ export interface YearInfoItem {
 }
 
 @Component({
-  selector: 'laji-year-slider',
-  templateUrl: './year-slider.component.html',
-  styleUrls: ['./year-slider.component.css']
+    selector: 'laji-year-slider',
+    templateUrl: './year-slider.component.html',
+    styleUrls: ['./year-slider.component.css'],
+    standalone: false
 })
 export class YearSliderComponent implements OnInit {
   @Input() year!: string;

@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'translatableIucn'
+    name: 'translatableIucn',
+    standalone: false
 })
 export class TranslatableIucnPipe implements PipeTransform {
 

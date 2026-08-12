@@ -1,96 +1,85 @@
 import { gql, QueryRef } from 'apollo-angular';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs';
 
 import { GraphQLService } from './graph-ql.service';
 import { TranslateService } from '@ngx-translate/core';
 
 export interface IBaseData {
   classes: {
+    results: {
     id: string;
     label: string;
-  }[];
-  properties: {
-    id: string;
-    label: string;
-  }[];
-  alts: {
-    id: string;
-    options: {
-      id: string;
-      label: string;
-      description: string;
-      link: string;
     }[];
-  }[];
-  warehouseLabels: {
-    enumeration: string;
-    property: string;
-  }[];
-  information: {
+  };
+  properties: {
+    results: {
     id: string;
-    title: string;
-    children: {
+    label: string;
+    }[];
+  };
+  alts: {
+    results: {
       id: string;
-      title: string;
-      children: {
+      options: {
         id: string;
-        title: string;
+        label: string;
+        description: string;
+        link: string;
       }[];
+    }[];
+  };
+  warehouseLabels: {
+    results: {
+      enumeration: string;
+      property: string;
     }[];
   };
 }
 
 const BASE_QUERY = gql`
-  query {
-    classes {
+{
+  classes: MetadataController_getClasses {
+    results {
       id: class
       label
     }
-    properties {
+  }
+  properties: MetadataController_getProperties {
+    results {
       id: property
       label
     }
-    alts {
-      id: alt
+  }
+  alts: MetadataController_getAltsList {
+    results {
+     id
       options {
         id
         label: value
-        description
-        link
-      }
-    }
-    warehouseLabels {
-      enumeration
-      property
-    }
-    information {
-      id
-      title
-      children {
-        id
-        title
-        children {
-          id
-          title
-        }
       }
     }
   }
+  warehouseLabels: warehouse_enumeration_labels {
+    results {
+      enumeration
+      property
+    }
+  }
+}
 `;
 
 @Injectable({
   providedIn: 'root'
 })
 export class BaseDataService implements OnDestroy {
-
   private readonly query: QueryRef<IBaseData>|undefined;
-  private readonly baseDataSub = new ReplaySubject<IBaseData>(1);
+  private readonly baseDataSub = new ReplaySubject<IBaseData | undefined>(1);
   private readonly baseData$ = this.baseDataSub.asObservable();
-  private readonly labelMapSub = new ReplaySubject<Record<string, string>>(1);
+  private readonly labelMapSub = new ReplaySubject<Record<string, string> | undefined>(1);
   private readonly labelMap$ = this.labelMapSub.asObservable();
-  private unsubscribe$ = new Subject();
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     private graphQLService: GraphQLService,
@@ -110,7 +99,7 @@ export class BaseDataService implements OnDestroy {
     this.query?.valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       map(({data}) => data)
-    ).subscribe(data => this.baseDataSub.next(data));
+    ).subscribe(data => this.baseDataSub.next(data as IBaseData | undefined));
 
     this.baseData$.pipe(
       takeUntil(this.unsubscribe$)
@@ -136,19 +125,19 @@ export class BaseDataService implements OnDestroy {
     );
   }
 
-  private dataToLabelMap(data: IBaseData): Record<string, string>|undefined {
+  private dataToLabelMap(data: IBaseData | undefined): Record<string, string>|undefined {
     if (!data) {
       return undefined;
     }
 
     const labelMap: Record<string, string> = {};
-    (data.classes || []).forEach((meta) => {
+    (data.classes.results || []).forEach((meta) => {
       labelMap[meta.id] = meta.label;
     });
-    (data.properties || []).forEach((meta) => {
+    (data.properties.results || []).forEach((meta) => {
       labelMap[meta.id] = meta.label;
     });
-    (data.alts || []).forEach((meta) => {
+    (data.alts.results || []).forEach((meta) => {
       if (meta.options) {
         meta.options.forEach((option) => {
           labelMap[option.id] = option.label;

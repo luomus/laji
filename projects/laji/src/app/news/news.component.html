@@ -1,0 +1,33 @@
+<lu-sidebar position="right" [staticWidth]="280">
+  <main class="d-flex">
+    <div class="d-flex justify-center flex-grow">
+      <div class="mt-4 mb-8 mx-4 d-flex flex-col flex-nowrap width-0 news-container">
+        <ol class="breadcrumb">
+          <li class="active">{{ 'news.title' | translate }}</li>
+        </ol>
+        @if (newsItem$ | async; as newsItem) {
+          <div class="laji-page">
+            <h2 class="mb-3">{{ newsItem.title }}</h2>
+            <div class="mb-5"><small>
+              {{ (newsItem.posted ?? '') | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }} - {{ newsItem.author }}
+              @if (newsItem.modified) {
+                <span>({{ 'news.updated' | translate }}: {{ newsItem.modified | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})</span>
+              }
+            </small></div>
+            @if (newsItem.featuredImage) {
+              <img class="mb-4" [src]="getFeaturedImageUrl(newsItem)"/>
+            }
+            <div [innerHtml]="newsItem.content" lajiRouteTransformer></div>
+          </div>
+        } @else {
+          <laji-spinner>
+          </laji-spinner>
+        }
+      </div>
+    </div>
+  </main>
+  <nav>
+    <laji-news-list class="d-block mb-3"></laji-news-list>
+  </nav>
+</lu-sidebar>
+

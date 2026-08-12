@@ -1,16 +1,21 @@
-import { AfterViewInit, Directive, Input, TemplateRef, ViewContainerRef, EmbeddedViewRef,
-        ElementRef, Renderer2, ComponentRef, OnDestroy, Injector, EnvironmentInjector, ChangeDetectorRef, Inject, HostListener } from '@angular/core';
+import {
+  AfterViewInit, Directive, Input, TemplateRef, ViewContainerRef, EmbeddedViewRef,
+  ElementRef, Renderer2, ComponentRef, OnDestroy, Injector, EnvironmentInjector, ChangeDetectorRef, Inject, HostListener,
+  DOCUMENT
+} from '@angular/core';
 import { PopoverContainerComponent } from './popover-container.component';
-import { DOCUMENT } from '@angular/common';
+
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, debounceTime, filter } from 'rxjs/operators';
+import { distinctUntilChanged, debounceTime, filter } from 'rxjs';
 import { Placement, PlacementService } from '../placement/placement.service';
 
 export type PopoverMode = 'hover' | 'click' | 'disabled';
 export type PopoverRootElement = 'component' | 'body';
+export type PopoverStyleVariant = 'neutral-1' | 'neutral-2';
 
 @Directive({
-  selector: '[luPopover]'
+    selector: '[luPopover]',
+    standalone: false
 })
 export class PopoverDirective implements AfterViewInit, OnDestroy {
   @Input() luPopover!: TemplateRef<null>;
@@ -23,6 +28,7 @@ export class PopoverDirective implements AfterViewInit, OnDestroy {
   @Input() rootElement: PopoverRootElement = 'component';
   @Input() templateContext: any;
   @Input() mode: PopoverMode = 'hover';
+  @Input() styleVariant: PopoverStyleVariant = 'neutral-1';
 
   private projectedContentRef: EmbeddedViewRef<any> | undefined;
   private popoverRef: ComponentRef<PopoverContainerComponent> | undefined;
@@ -113,6 +119,7 @@ export class PopoverDirective implements AfterViewInit, OnDestroy {
     );
 
     this.popoverRef.instance.title = this.popoverTitle;
+    this.popoverRef.instance.styleVariant = this.styleVariant;
     if (this.mode === 'click') {
       this.popoverRef.instance.displayCloseBtn = true;
       this.closeSubscription = this.popoverRef.instance.closePopover.subscribe(() => this.unloadContainer());

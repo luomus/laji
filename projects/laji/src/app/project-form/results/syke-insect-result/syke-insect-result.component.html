@@ -1,0 +1,53 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8">
+      <h3>
+        @if (collectionId === bumblebeeCollectionId) {
+          <span>{{ 'kimalaisseuranta.stats.title' | translate }}</span>
+        } @else {
+          <span>{{ 'nafi.stats.title' | translate }}</span>
+        }
+      </h3>
+      @if (collectionId === bumblebeeCollectionId) {
+        <div [innerHtml]="'sykeInsect.bumblebee.intro' | translate" lajiRouteTransformer></div>
+      } @else {
+        <div [innerHtml]="'sykeInsect.butterfly.intro' | translate" lajiRouteTransformer></div>
+      }
+      <div class="row">
+        <laji-navigation-thumbnail
+          [name]="'sykeInsect.stats.allResults'"
+          [icon]="collectionId === bumblebeeCollectionId ? 'icon_bumblebee' : 'icon_butterfly'"
+          [iconType]="'png'"
+          [query]="{tab: Tabs.species}"
+        ></laji-navigation-thumbnail>
+        <laji-navigation-thumbnail
+          [name]="'sykeInsect.stats.routes'"
+          [icon]="'wb_icon_map_2'"
+          [iconType]="'png'"
+          [query]="{tab: Tabs.routes}"
+        ></laji-navigation-thumbnail>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-logo pull-right">
+        @if (form.logo) {
+          <img src="{{form.logo}}">
+        }
+      </div>
+    </div>
+  </div>
+  <hr style="width: 100%">
+  <div>
+    @switch (tab$ | async) {
+      @case (Tabs.species) {
+        <div>
+          <laji-syke-insect-all-results [collectionId]="collectionId!"></laji-syke-insect-all-results>
+        </div>
+      }
+      @case (Tabs.routes) {
+        <div>
+          <laji-syke-insect-routes [collectionId]="collectionId!"></laji-syke-insect-routes>
+        </div>
+      }
+    }
+  </div>

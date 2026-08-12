@@ -1,6 +1,8 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
-  <ng-container *ngIf="images$ | async; let images">
-    <div *ngIf="images.length === 0">{{ 'observation.form.noImages' | translate }}</div>
+  @if (images$ | async; as images) {
+    @if (images.length === 0) {
+      <div>{{ 'observation.form.noImages' | translate }}</div>
+    }
     <laji-image-gallery
       [showPopover]="showPopover"
       [showViewSwitch]="showViewSwitch"
@@ -15,10 +17,12 @@
       [eventOnClick]="eventOnImageClick"
       (imageSelect)="selected.emit($event)"
     ></laji-image-gallery>
-  </ng-container>
-  <laji-paginator *ngIf="showPaginator && (!showPaginatorOnlyWhenNeeded || paginatorNeeded)"
-                  [page]="page" [count]="total"
-                  [size]="pageSize"
-                  (pageChange)="pageChanged($event)"
-  ></laji-paginator>
+  }
+  @if (showPaginator && (!showPaginatorOnlyWhenNeeded || paginatorNeeded)) {
+    <laji-paginator
+      [page]="page" [count]="total"
+      [size]="pageSize"
+      (pageChange)="pageChanged($event)"
+    ></laji-paginator>
+  }
 </laji-spinner>

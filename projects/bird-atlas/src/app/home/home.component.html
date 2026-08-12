@@ -1,0 +1,16 @@
+<div class="hero-img"></div>
+<div class="d-flex justify-end xs:justify-start">
+  <div class="hero-caption text-align-right xs:text-align-left">Kuusitiainen ruokaa nokassaan on varman pesinnän havainto (pesimävarmuusindeksi 74). Kuva: Aleksi Lehikoinen.</div>
+</div>
+
+@if (homeContent$ | async; as information) {
+  <div class="container mb-9">
+    <main [innerHtml]="information?.content"></main>
+  </div>
+} @else {
+  <div class="container">
+    <laji-spinner class="d-block m-6"></laji-spinner>
+  </div>
+}
+
+

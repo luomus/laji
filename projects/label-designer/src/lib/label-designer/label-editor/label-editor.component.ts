@@ -8,10 +8,11 @@ import { LabelMakerFacade } from '../label-maker.facade';
  * @internal
  */
 @Component({
-  selector: 'll-label-editor',
-  templateUrl: './label-editor.component.html',
-  styleUrls: ['./label-editor.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-label-editor',
+    templateUrl: './label-editor.component.html',
+    styleUrls: ['./label-editor.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelEditorComponent {
 

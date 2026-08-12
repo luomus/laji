@@ -1,8 +1,8 @@
-import { Inject, Injectable, OnDestroy, Renderer2, RendererFactory2, ViewEncapsulation } from '@angular/core';
+import { Inject, Injectable, OnDestroy, Renderer2, RendererFactory2, ViewEncapsulation, DOCUMENT } from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
-import { DOCUMENT, Location } from '@angular/common';
+import { filter, map, switchMap } from 'rxjs';
+import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
 import { Meta, Title } from '@angular/platform-browser';
@@ -244,7 +244,7 @@ export class HeaderService implements OnDestroy {
       const titleString = Object.keys(titles).map(key => decodeURI(titles[key])).join(' | ');
       this.inferredHeaders.title = titleString;
       const c = getDeepestChildValue(this.router.routerState.snapshot.root, 'canonical', '');
-      const canonicalUrl = c ? this.localizeRouterService.translateRoute(c, this.translateService.currentLang) : newRoute;
+      const canonicalUrl = c ? this.localizeRouterService.translateRoute(c, this.translateService.getCurrentLang()) : newRoute;
       this.inferredHeaders.canonicalUrl = {href: canonicalUrl, rel: 'canonical'};
       this.inferredHeaders['og:url'] = canonicalUrl;
 

@@ -1,0 +1,26 @@
+<div>Your data has been submitted succesfully!</div>
+
+@if ((state$ | async); as state) {
+  <div>
+    @switch (state._tag) {
+      @case ('loading') {
+        Loading dataset...
+      }
+      @case ('error') {
+        Error: {{ $any(state).msg | json }}
+      }
+      @case ('uploading') {
+        Uploading dataset...
+      }
+      @case ('ready') {
+        @if ($any(state).dataset.published) {
+          <a [routerLink]="['/trait-db/datasets/', $any(state).dataset.id]">Browse data of the dataset</a>
+        } @else {
+          Your data is now saved, but the dataset is not yet published. Would you like to publish it now?
+          <button class="btn btn-default" (click)="onPublishDataset($any(state).dataset)">Publish dataset</button>
+        }
+      }
+    }
+  </div>
+}
+

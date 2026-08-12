@@ -32,7 +32,7 @@ export class LocalizeRouterService {
   translateRoute<T>(query: T, lang?: string): T;
   translateRoute(query: string | any[], lang?: string): string | any[] {
     if (!lang) {
-      lang = this.translateService.currentLang;
+      lang = this.translateService.getCurrentLang();
     }
     if (typeof query === 'string') {
       return LocalizeRouterService.translatePath(query, lang);

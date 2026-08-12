@@ -1,3 +1,5 @@
+@use 'vars' as *;
+
 @mixin pill($color, $bgColor, $bdColor) {
   color: $color;
   background-color: $bgColor;

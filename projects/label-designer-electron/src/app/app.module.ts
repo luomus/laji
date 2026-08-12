@@ -1,22 +1,25 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
-import { NgxWebstorageModule } from 'ngx-webstorage';
-import { HttpClientModule } from '@angular/common/http';
+import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSessionStorage } from 'ngx-webstorage';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { LabelDesignerModule } from '../../../label-designer/src/lib/label-designer.module';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
-    NgxWebstorageModule.forRoot({prefix: 'LM-', separator: ''}),
-    LabelDesignerModule,
-    HttpClientModule
+    LabelDesignerModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+  providers: [
+    provideHttpClient(withInterceptorsFromDi()),
+    provideNgxWebstorage(
+  		withNgxWebstorageConfig({ prefix: 'LM-', separator: '' }),
+  		withLocalStorage(),
+  		withSessionStorage()
+    ),
+  ] })
 export class AppModule { }

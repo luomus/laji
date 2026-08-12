@@ -1,16 +1,16 @@
 import { Component, Input } from '@angular/core';
-import { Document } from '../../../../shared/model/Document';
+import { StoreDocument } from '../../document-viewer.facade';
 
 @Component({
-  selector: 'laji-collection-contest-print',
-  templateUrl: './collection-contest-print.component.html',
-  styleUrls: ['./collection-contest-print.scss']
+    selector: 'laji-collection-contest-print',
+    templateUrl: './collection-contest-print.component.html',
+    styleUrls: ['./collection-contest-print.scss'],
+    standalone: false
 })
 export class CollectionContestPrintComponent {
-  @Input({ required: true }) document!: Document;
+  @Input({ required: true }) document!: StoreDocument;
   @Input() fields: any;
   @Input() mapData: any[] = [];
   @Input() imageData: {[key: string]: any} = {};
   @Input() formLogo?: string;
-
 }

@@ -4,9 +4,10 @@ import { PlatformService } from '../../../root/platform.service';
 let OpenSeadragon: any; // eslint-disable-line @typescript-eslint/naming-convention
 
 @Component({
-  selector: 'laji-image',
-  template: ' ',
-  styleUrls: ['./image.component.css']
+    selector: 'laji-image',
+    template: ' ',
+    styleUrls: ['./image.component.css'],
+    standalone: false
 })
 export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
 

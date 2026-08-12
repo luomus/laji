@@ -1,4 +1,4 @@
-@import '../vars';
+@use '../vars' as *;
 
 $selector-vertical-padding: 12px;
 $selector-horizontal-padding: 24px;

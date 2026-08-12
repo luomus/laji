@@ -1,22 +1,24 @@
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, forwardRef, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import type { EnumVariant } from 'scripts/codegen/shared/shared';
 
 type Kind = 'string' | 'number' | 'enum';
 type KindToConcreteType<K extends Kind> = K extends 'number' ? number : string;
 type ElementType<T extends { kind: Kind }> = KindToConcreteType<T['kind']>;
 
 @Component({
-  selector: 'lu-form-primitive-list',
-  templateUrl: 'primitive-list.component.html',
-  styleUrls: ['primitive-list.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => FormPrimitiveListComponent),
-      multi: true
-    }
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'lu-form-primitive-list',
+    templateUrl: 'primitive-list.component.html',
+    styleUrls: ['primitive-list.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => FormPrimitiveListComponent),
+            multi: true
+        }
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcreteType<K>> implements ControlValueAccessor {
   @Input() inputId?: string;
@@ -24,7 +26,7 @@ export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcrete
    * If kind === 'enum', then enumVariants must be defined.
    */
   @Input({ required: true }) kind!: K;
-  @Input() enumVariants!: K extends 'enum' ? string[] : undefined;
+  @Input() enumVariants!: K extends 'enum' ? EnumVariant<string>[] : undefined;
 
   valueList: T[] = [];
   onChange: (value: T[]) => void = () => {};
@@ -34,11 +36,11 @@ export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcrete
   @ViewChild('selectElem') selectElem?: ElementRef;
 
   @HostListener('keydown.enter', ['$event'])
-  onKeyDownEnter(event: KeyboardEvent) {
+  onKeyDownEnter(event: Event) {
     event.preventDefault();
   }
   @HostListener('keyup.enter', ['$event'])
-  onKeyUpEnter(event: KeyboardEvent) {
+  onKeyUpEnter(event: Event) {
     event.preventDefault();
     this.add();
   }
@@ -59,8 +61,15 @@ export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcrete
     this.onChange(this.valueList);
   }
 
-  getUnusedEnumVariants(): string[] {
-    return this.enumVariants?.filter(v => !(this.valueList as string[]).includes(v)) ?? [];
+  getUnusedEnumVariants(): EnumVariant<string>[] {
+    return this.enumVariants?.filter(v => !(this.valueList as string[]).includes(v.value)) ?? [];
+  }
+
+  getDisplayValue(v: T): string {
+    if (this.kind !== 'enum') {
+      return String(v);
+    }
+    return this.enumVariants?.find(({ value }) => value === v)?.label ?? String(v);
   }
 
   private add() {
@@ -94,4 +103,3 @@ export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcrete
   }
   // ------------------------------- //
 }
-

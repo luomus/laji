@@ -1,4 +1,4 @@
-import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, take, tap } from 'rxjs';
 import {
   AfterViewInit,
   ApplicationRef,
@@ -14,7 +14,6 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { interval as ObservableInterval, Observable, Subscription, throwError as observableThrowError, of } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
@@ -29,19 +28,20 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
-import { HistoryService } from '../../../shared/service/history.service';
+import { BrowserService } from '../../../shared/service/browser.service';
 import { DocumentPermissionService } from '../service/document-permission.service';
 import { FormService } from '../../../shared/service/form.service';
-import { Form } from '../../../shared/model/Form';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components, paths } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
-type AnnotationTag = components['schemas']['tag'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
-  selector: 'laji-document',
-  templateUrl: './document.component.html',
-  styleUrls: ['./document.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-document',
+    templateUrl: './document.component.html',
+    styleUrls: ['./document.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent) map?: ViewerMapComponent;
@@ -89,7 +89,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
 
 
   constructor(
-    private warehouseApi: WarehouseApi,
+    private api: LajiApiClientService,
     private userService: UserService,
     private cd: ChangeDetectorRef,
     private appRef: ApplicationRef,
@@ -100,7 +100,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private deleteDocumentService: DeleteOwnDocumentService,
-    private historyService: HistoryService,
+    private browserService: BrowserService,
     private documentPermissionService: DocumentPermissionService,
     private formService: FormService
   ) { }
@@ -167,10 +167,16 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       return;
     }
 
-    const findDoc$ = this.warehouseApi
-      .warehouseQuerySingleGet(this.uri, this.own ? {editorOrObserverPersonToken: this.userService.getToken()} : undefined).pipe(
-        catchError((errors) => this.own ? this.warehouseApi.warehouseQuerySingleGet(this.uri) : observableThrowError(errors)),
-        map(doc => doc.document),
+    const query = {
+      documentId: this.uri,
+    } as any;
+    if (this.own) {
+      query['editorOrObserverPersonToken'] = this.userService.getToken();
+    }
+
+    const findDoc$ = this.api.get('/warehouse/query/single' as any, { query }).pipe(
+        catchError((errors) => this.own ? this.api.get('/warehouse/query/single' as any, { query: { documentId: this.uri } }) : observableThrowError(errors)),
+        map((doc: any) => doc.document),
         tap((doc) => {
           this.highlightParents = [];
           this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight);
@@ -183,7 +189,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       )),
       switchMap(({doc, rights}) => doc.formId
         ? this.formService.getFormInListFormat(IdService.getId(doc.formId)).pipe(
-          map((form: Form.List | undefined) => {
+          map(form => {
             if (!form || !!form.options?.secondaryCopy) {
               rights.hasEditRights = false;
               rights.hasDeleteRights = false;
@@ -342,15 +348,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         return;
       }
 
-      if(this.historyService.isFirstLoad()) {
+      this.browserService.goBack(() => {
         this.router.navigate(
           this.localizeRouterService.translateRoute(['/vihko/home/'])
         );
-      } else {
-        this.router.navigate(
-          this.localizeRouterService.translateRoute([this.historyService.getPrevious()])
-        );
-      }
+      });
     }
   }
 

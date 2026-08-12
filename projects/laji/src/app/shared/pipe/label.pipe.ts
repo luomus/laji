@@ -1,8 +1,7 @@
-import { concatMap, map, switchMap, toArray } from 'rxjs/operators';
+import { concatMap, map, switchMap, toArray } from 'rxjs';
 import { Observable, from, of, Subscription } from 'rxjs';
 import { ChangeDetectorRef, Pipe, PipeTransform, OnDestroy } from '@angular/core';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
-import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../service/triplestore-label.service';
 import { IdService } from '../service/id.service';
 
@@ -15,8 +14,9 @@ type LabelType = 'qname'|'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
  *   value | label
  */
 @Pipe({
-  name: 'label',
-  pure: false
+    name: 'label',
+    pure: false,
+    standalone: false
 })
 export class LabelPipe implements PipeTransform, OnDestroy {
   private value: string|string[] = '';
@@ -24,7 +24,6 @@ export class LabelPipe implements PipeTransform, OnDestroy {
   private fetchSub?: Subscription;
 
   constructor(
-    private translate: TranslateService,
     private warehouseService: WarehouseValueMappingService,
     private triplestoreLabelService: TriplestoreLabelService,
     private cdr: ChangeDetectorRef
@@ -86,10 +85,10 @@ export class LabelPipe implements PipeTransform, OnDestroy {
         );
       case 'fullUri':
         return key.indexOf('http') === 0 ?
-          this.triplestoreLabelService.get(IdService.getId(key), this.translate.currentLang) :
+          this.triplestoreLabelService.get(IdService.getId(key)) :
           of(key);
       case 'withKey':
-        return this.triplestoreLabelService.get(key, this.translate.currentLang).pipe(
+        return this.triplestoreLabelService.get(key).pipe(
           map(value => value !== key ? `${value} (${key})` : value)
         );
       case 'emptyWhenMissing':
@@ -97,7 +96,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
           map(res => res === key ? '' : key)
         );
       default:
-        return this.triplestoreLabelService.get(key, this.translate.currentLang).pipe(
+        return this.triplestoreLabelService.get(key).pipe(
           map(res => res || key)
         );
     }

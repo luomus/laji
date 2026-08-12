@@ -66,10 +66,11 @@ export interface IRenderPageOptions {
  * do with the html received.
  */
 @Component({
-  selector: 'll-label-print',
-  templateUrl: './label-print.component.html',
-  styleUrls: ['./label-print.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-label-print',
+    templateUrl: './label-print.component.html',
+    styleUrls: ['./label-print.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LabelPrintComponent implements OnChanges {
 

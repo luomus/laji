@@ -1,0 +1,5 @@
+<laji-spinner [spinning]="loading">
+  @if (!loading) {
+    <span [innerHtml]="count | formattedNumber:'&nbsp'"></span>
+  }
+</laji-spinner>

@@ -1,0 +1,49 @@
+<div class="mb-4">
+  <label>{{ 'result.map.taxon.label' | translate }}</label>
+  @if (taxonOptions) {
+    <select
+      class="form-control"
+      (change)="onTaxonChange($event)"
+      [(ngModel)]="defaultTaxon"
+      >
+      @for (option of taxonOptions; track option) {
+        <option [value]="option.value">{{ option.label }}</option>
+      }
+    </select>
+  } @else {
+    <laji-spinner class="d-block m-6"></laji-spinner>
+  }
+</div>
+<div class="mb-4">
+  <label>{{ 'result.map.year.label' | translate }}</label>
+  @if (yearOptions) {
+    <select
+      class="form-control"
+      (change)="onYearChange($event)"
+      [(ngModel)]="defaultYear"
+      >
+      @for (option of yearOptions; track option) {
+        <option [value]="option.value">{{ option.label }}</option>
+      }
+    </select>
+  } @else {
+    <laji-spinner class="d-block m-6"></laji-spinner>
+  }
+</div>
+<div [style.position]="'relative'">
+  <laji-map
+    [ngStyle]="{display: 'block', height: '80vh'}"
+    [loading]="loading"
+    [options]="{controls: true}"
+    [data]="mapData$ | async"
+    [options]="mapOptions"
+    >
+  </laji-map>
+  <laji-legend
+    [visualization]="visualization"
+    [mode]="visualizationMode"
+    (modeChange)="onVisualizationModeChange($event)"
+    >
+  </laji-legend>
+</div>
+

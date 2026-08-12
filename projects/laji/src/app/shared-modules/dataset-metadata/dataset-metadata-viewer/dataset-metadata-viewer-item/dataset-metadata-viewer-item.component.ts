@@ -3,10 +3,11 @@ import { Component, OnChanges, ChangeDetectionStrategy, Input } from '@angular/c
 const EMPTY_VALUE = ' ';
 
 @Component({
-  selector: 'laji-dataset-metadata-viewer-item',
-  templateUrl: './dataset-metadata-viewer-item.component.html',
-  styleUrls: ['./dataset-metadata-viewer-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-dataset-metadata-viewer-item',
+    templateUrl: './dataset-metadata-viewer-item.component.html',
+    styleUrls: ['./dataset-metadata-viewer-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DatasetMetadataViewerItemComponent implements OnChanges {
   @Input({required: true}) title!: string;

@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'lu-progressbar',
-  template: `
+    selector: 'lu-progressbar',
+    template: `
     <div class="lu-progressbar-fill" [style.width]="Math.floor(value / max * 100) + '%'" role="progressbar">
       <ng-content></ng-content>
     </div>
   `,
-  styleUrls: ['./progressbar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./progressbar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ProgressbarComponent {
 

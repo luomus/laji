@@ -9,7 +9,7 @@ import {
   take,
   tap,
   timeout
-} from 'rxjs/operators';
+} from 'rxjs';
 import {
   of,
   Subscription,
@@ -35,9 +35,8 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { TranslateService } from '@ngx-translate/core';
-import { ValueDecoratorService } from '../../../+observation/result-list/value-decorator.sevice';
+import { ValueDecoratorService } from '../../../observation/result-list/value-decorator.sevice';
 import { Logger } from '../../../shared/logger/logger.service';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
@@ -59,6 +58,8 @@ import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
 import { Router } from '@angular/router';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { DataFetchMode } from '../../../observation/observation-data.service';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
@@ -94,16 +95,18 @@ const BOX_QUERY_AGGREGATE_LEVELS = [
 const ACTIVE_COLOR = '#6ca31d';
 
 @Component({
-  selector: 'laji-observation-map',
-  templateUrl: './observation-map.component.html',
-  styleUrls: ['./observation-map.component.scss'],
-  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-map',
+    templateUrl: './observation-map.component.html',
+    styleUrls: ['./observation-map.component.scss'],
+    providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(LajiMapComponent) lajiMap!: LajiMapComponent;
   @ViewChild('mapContainer', { static: false }) mapContainerElem!: ElementRef;
 
+  @Input() dataMode: DataFetchMode = 'unit';
   @Input() visible = false;
   @Input() query: any;
   // Zoom levels from lowest to highest when to move to more accurate grid.
@@ -211,7 +214,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   private activeGeometryHash!: string;
 
   constructor(
-    private warehouseService: WarehouseApi,
+    private api: LajiApiClientService,
     private platformService: PlatformService,
     public translate: TranslateService,
     private decorator: ValueDecoratorService,
@@ -251,7 +254,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.platformService.isBrowser) {
       return;
     }
-    this.decorator.lang = this.translate.currentLang;
+    this.decorator.lang = this.translate.getCurrentLang();
     if (changes['query'] || changes['ready']) {
       this.boxFeatureCollectionCache.reset();
       this.updateMap();
@@ -365,8 +368,12 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       return false;
     }
 
-    const bounds = (window.L as any).geoJSON(convertLajiEtlCoordinatesToGeometry(query.coordinates)).getBounds();
-    return this.lajiMap?.map.map.getBounds().contains(bounds);
+    if (window?.L) {
+      const bounds = (window.L as any).geoJSON(convertLajiEtlCoordinatesToGeometry(query.coordinates)).getBounds();
+      return this.lajiMap?.map.map.getBounds().contains(bounds);
+    } else {
+      return false;
+    }
   }
 
   private addViewPortCoordinatesParams(query: WarehouseQueryInterface, bounds?: any) {
@@ -388,16 +395,18 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getPoints$(query: WarehouseQueryInterface): Observable<FeatureCollection> {
-    return this.warehouseService.warehouseQueryAggregateGet(
-      { ...query, featureType: 'CENTER_POINT' },
-      [ 'gathering.interpretations.coordinateAccuracy' ],
-      undefined,
-      this.pointGeometryPageSize,
-      undefined,
-      true,
-      query.onlyCount
-    ).pipe(
-      map(data => ({
+    const endpoint = this.dataMode === 'unit' ? '/warehouse/query/unit/aggregate' : '/warehouse/query/sample/aggregate';
+    return this.api.get(endpoint, {
+      query: {
+        ...query as any,
+        featureType: 'CENTER_POINT',
+        aggregateBy: [ 'gathering.interpretations.coordinateAccuracy' ],
+        pageSize: this.pointGeometryPageSize,
+        geoJSON: true,
+        onlyCount: query.onlyCount
+      }
+    }).pipe(
+      map((data: any) => ({
         type: 'FeatureCollection' as const,
         features: data.features
       }))
@@ -431,7 +440,16 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getBoxQuery$(query: WarehouseQueryInterface, aggregateBy: string[], page: number): Observable<AggregateQueryResponse> {
-    return this.warehouseService.warehouseQueryAggregateGet(query, aggregateBy, undefined, this.boxGeometryPageSize, page, true);
+    const endpoint = this.dataMode === 'unit' ? '/warehouse/query/unit/aggregate' : '/warehouse/query/sample/aggregate';
+    return this.api.get(endpoint, {
+      query: {
+        ...query as any,
+        aggregateBy,
+        pageSize: this.boxGeometryPageSize,
+        page,
+        geoJSON: true
+      }
+    }) as any;
   }
 
   private getAllBoxes$(query: WarehouseQueryInterface, aggregateBy: string[]): Observable<FeatureCollection> {
@@ -504,12 +522,17 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     this.addVisualizationParams(query);
     this.addViewPortCoordinatesParams(query, bounds);
 
+    delete query._coordinatesIntersection;
+
     return query;
   }
 
   private getFeaturesFromQueryPolygonId(polygonId: string): Observable<Feature[]>{
     return polygonId
-      ? this.warehouseService.getPolygonFeatureCollection(polygonId.split(':')[0]).pipe(
+      ? this.api.get('/warehouse/polygon/{id}', {
+          path: { id: polygonId.split(':')[0] as any },
+          query: { format: 'geojson', crs: 'WGS84' }
+        }).pipe(
           map(featureCollection => (featureCollection as any).features)
       )
       : of([]);
@@ -622,7 +645,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     this.loading = true;
     this.cdr.markForCheck();
 
-    return this.warehouseService.warehouseQueryCountGet(query).pipe(
+    const endpoint = this.dataMode === 'unit' ? '/warehouse/query/unit/count' : '/warehouse/query/sample/count';
+    return this.api.get(endpoint, { query: query as any }).pipe(
       switchMap(res => {
         if (!res.total) {
           return of({
@@ -639,7 +663,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       filter(d => d !== null),
       tap(d => this.previousFeatureCollection = <FeatureCollection<Geometry, GeoJsonProperties>>d),
       // retry on timeout
-      timeout(WarehouseApi.longTimeout * 3),
+      timeout(30000),
       delay(100),
       retryWhen(errors => concat(errors.pipe(delay(1000), take(3)), observableThrowError(errors))),
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

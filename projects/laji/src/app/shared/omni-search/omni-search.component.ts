@@ -1,4 +1,4 @@
-import { combineLatest, debounceTime, tap, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { combineLatest, debounceTime, tap, switchMap, distinctUntilChanged, of, map } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,21 +12,24 @@ import {
 } from '@angular/core';
 import { of as ObservableOf, Subscription } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
-import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TaxaWithAutocomplete, TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
+
+type UnitCountQuery = paths['/warehouse/query/unit/count']['get']['parameters']['query'];
 
 type InternalTaxon = TaxaWithAutocomplete & {count?: number; informalTaxonGroups?: any; informalTaxonGroupsClass?: any};
 
 @Component({
-  selector: 'laji-omni-search',
-  templateUrl: './omni-search.component.html',
-  styleUrls: ['./omni-search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-omni-search',
+    templateUrl: './omni-search.component.html',
+    styleUrls: ['./omni-search.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -51,8 +54,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   private subCnt?: Subscription;
   private inputChange?: Subscription;
 
-  constructor(private api: LajiApiClientBService,
-              private warehouseApi: WarehouseApi,
+  constructor(private api: LajiApiClientService,
               private localizeRouterService: LocalizeRouterService,
               private router: Router,
               private changeDetector: ChangeDetectorRef,
@@ -97,19 +99,26 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         .reduce((p: any, c: any) => p + ' ' + c.id, '');
       this.taxon.informalTaxonGroups = this.taxon.informalGroups
         .map((group: any) => group.name);
-      this.subCnt =
-        ObservableOf(this.taxon.key).pipe(combineLatest(
-          this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key, cache: true}),
-          (id, cnt) => ({id, cnt: cnt.total})
-        )).subscribe(data => {
-          this.taxa.map(auto => {
-            if (auto.key === data.id ) {
-              auto['count'] = data.cnt;
-            }
-          });
-          this.visibleTaxon.emit(this.taxa[index]);
-          this.changeDetector.markForCheck();
+
+      const query: UnitCountQuery = {
+        taxonId: this.taxon.key,
+        cache: true
+      };
+
+      this.subCnt = combineLatest([
+        of(this.taxon.key),
+        this.api.get('/warehouse/query/unit/count', { query })
+      ]).pipe(
+        map(([id, cnt]) => ({ id, cnt: cnt.total }))
+      ).subscribe(data => {
+        this.taxa.map(auto => {
+          if (auto.key === data.id ) {
+            auto['count'] = data.cnt;
+          }
         });
+        this.visibleTaxon.emit(this.taxa[index]);
+        this.changeDetector.markForCheck();
+      });
     } else {
       this.taxon = undefined;
     }
@@ -164,7 +173,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
       limit: this.limit,
       matchType: this.matchType,
       checklist: 'MR.1,MR.2'
-    }}).pipe(
+    }}, { langFallback: false }).pipe(
         switchMap(taxa => this.taxonAutocompleteService.getInfo(taxa.results, this.search))
       )
       .subscribe(
@@ -178,7 +187,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         err => {
           this.logger.warn('OmniSearch failed to find data', {
             taxon: this.search,
-            lang: this.translate.currentLang,
+            lang: this.translate.getCurrentLang(),
             limit: this.limit,
             err
           });

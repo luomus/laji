@@ -1,0 +1,43 @@
+<div class="taxon-select-bar">
+  <laji-taxon-select
+    [placeholder]="'taxonomy.card.search' | translate"
+    [container]="'laji-taxonomy'"
+    (taxonIdChange)="taxonSelect.emit($event)"
+  ></laji-taxon-select>
+</div>
+
+<div class="d-flex items-end flex-wrap my-3 mx-5 taxon-breadcrumbs">
+  @for (parents of parent; track parents) {
+    <laji-spinner class="parents-spinner" [spinning]="loadingParent">
+      @if (parents.taxonRank==='MX.kingdom' || parents.taxonRank==='MX.phylum' || parents.taxonRank==='MX.order' || parents.taxonRank==='MX.class' || parents.taxonRank==='MX.family' || parents.taxonRank==='MX.genus' || parents.taxonRank==='MX.species') {
+        <div>
+          @if (!loadingParent && parents && taxon.hasParent) {
+            <a [routerLink]="'/taxon/' + parents.id + (activeTab === 'overview' ? '' : '/' + activeTab) | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
+              <laji-taxon-name [taxon]="parents" [capitalizeName]="true" [addLink]="false"></laji-taxon-name>
+              <i class="glyphicon glyphicon-chevron-right"></i>
+            </a>
+          }
+        </div>
+      }
+    </laji-spinner>
+  }
+  @if (taxon.hasParent || taxon.hasChildren) {
+    <div>
+      <select class="form-control input-sm" [ngModel]="taxon.id" (ngModelChange)="taxonSelect.emit($event)">
+        @for (sibling of siblings; track sibling) {
+          <option [value]="sibling.id">
+            {{ sibling.vernacularName | capitalize }}
+            @if (sibling.vernacularName && sibling.scientificName) {
+              &ndash;
+            }
+            {{ sibling.scientificName }}
+          </option>
+        }
+      </select>
+    </div>
+  }
+</div>
+
+<h1 class="d-block mx-5">
+  <laji-taxon-name [taxon]="taxon" [capitalizeName]="true" [addLink]="false" [hideObsoleteVernacularName]="true"></laji-taxon-name>
+</h1>

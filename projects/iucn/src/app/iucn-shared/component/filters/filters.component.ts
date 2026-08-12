@@ -3,18 +3,18 @@ import { FilterQuery } from '../../service/result.service';
 import { Observable } from 'rxjs';
 import { SelectOption } from '../select/select.component';
 import { TaxonService } from '../../service/taxon.service';
-import { map } from 'rxjs/operators';
-import { RedListTaxonGroup } from '../../../../../../laji/src/app/shared/model/RedListTaxonGroup';
+import { map } from 'rxjs';
 import { MetadataService } from '../../../../../../laji/src/app/shared/service/metadata.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AreaService } from '../../../../../../laji/src/app/shared/service/area.service';
-import { Area } from '../../../../../../laji/src/app/shared/model/Area';
 import { RegionalFilterQuery } from '../../service/regional.service';
+import { RedListTaxonGroupExpanded } from '../../service/taxon.service';
 
 @Component({
-  selector: 'iucn-filters',
-  templateUrl: './filters.component.html',
-  styleUrls: ['./filters.component.scss']
+    selector: 'iucn-filters',
+    templateUrl: './filters.component.html',
+    styleUrls: ['./filters.component.scss'],
+    standalone: false
 })
 export class FiltersComponent {
 
@@ -37,7 +37,7 @@ export class FiltersComponent {
     private areaService: AreaService,
     private translate: TranslateService
   ) {
-    this.lang = this.translate.currentLang;
+    this.lang = this.translate.getCurrentLang();
     this.redListStatuses$ = this.taxonService.getRedListStatusTree(this.lang).pipe(
       map(tree => this.mapStatusesToOptions(tree))
     );
@@ -50,7 +50,7 @@ export class FiltersComponent {
     this.habitatsSpecific$ = this.metadataService.getRange('MKV.habitatSpecificTypeEnum').pipe(
       map(meta => this.mapMetadataToOptions(meta))
     );
-    this.evaluationArea$ = this.areaService.getAreaType(this.translate.currentLang, Area.AreaType.IucnEvaluationArea).pipe(
+    this.evaluationArea$ = this.areaService.getAreaByType('ML.iucnEvaluationArea').pipe(
       map(meta => this.mapAreaDataToOptions(meta))
     );
    }
@@ -68,7 +68,7 @@ export class FiltersComponent {
     return area.map(options => ({value: options.id, label: options.value}));
   }
 
-  private mapStatusesToOptions(groups: RedListTaxonGroup[], result: SelectOption[] = [], level = 0): SelectOption[] {
+  private mapStatusesToOptions(groups: RedListTaxonGroupExpanded[], result: SelectOption[] = [], level = 0): SelectOption[] {
     groups.forEach(group => {
       if (typeof group === 'string') {
         group = {name: group, id: group};
@@ -76,7 +76,7 @@ export class FiltersComponent {
       const label = String.fromCharCode(160).repeat(level * 4) + (group.name || group.id);
       result.push({value: group.id, label});
       if (group.hasIucnSubGroup) {
-        this.mapStatusesToOptions(group.hasIucnSubGroup as RedListTaxonGroup[], result, level + 1);
+        this.mapStatusesToOptions(group.hasIucnSubGroup as RedListTaxonGroupExpanded[], result, level + 1);
       }
     });
     return result;

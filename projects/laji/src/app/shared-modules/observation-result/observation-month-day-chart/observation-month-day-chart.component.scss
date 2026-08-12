@@ -1,5 +1,5 @@
-@import 'projects/laji-ui/src/lib/vars';
-@import '../../../../styles/styles';
+@use 'vars' as *;
+@use '../../../../styles/styles' as *;
 
 :host ::ng-deep .chart-legend .legend-label {
   cursor: initial !important;

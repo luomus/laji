@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ApplicationRef, DoBootstrap, Injector, NgModule } from '@angular/core';
 
-import { NgxWebstorageModule } from 'ngx-webstorage';
+import { provideNgxWebstorage, withNgxWebstorageConfig, withLocalStorage, withSessionStorage } from 'ngx-webstorage';
 import { LabelDesignerModule } from '@luomus/label-designer';
 import { LabelDesignerComponent } from './label-designer/label-designer.component';
 import { createCustomElement } from '@angular/elements';
@@ -12,10 +12,15 @@ import { createCustomElement } from '@angular/elements';
     ],
     imports: [
         BrowserModule,
-        NgxWebstorageModule.forRoot({ prefix: 'LME-', separator: '' }),
         LabelDesignerModule
     ],
-    providers: []
+    providers: [
+      provideNgxWebstorage(
+    		withNgxWebstorageConfig({ prefix: 'LME-', separator: '' }),
+    		withLocalStorage(),
+    		withSessionStorage()
+      ),
+    ]
 })
 export class AppModule implements DoBootstrap {
 

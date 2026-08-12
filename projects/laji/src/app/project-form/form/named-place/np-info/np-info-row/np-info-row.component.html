@@ -1,0 +1,16 @@
+@if (value) {
+  <div class="key">
+    {{ title }}:
+  </div>
+  <div class="value">
+    @if (pipe === 'area') {
+      <span [innerHtml]="value | area | nlToBr | values"></span>
+    }
+    @if (pipe === 'label') {
+      <span [innerHtml]="value | label | nlToBr | values"></span>
+    }
+    @if (!pipe) {
+      <span [innerHtml]="value | nlToBr | values"></span>
+    }
+  </div>
+}

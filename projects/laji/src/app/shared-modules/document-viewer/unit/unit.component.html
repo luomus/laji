@@ -1,52 +1,64 @@
 <hr>
-<div class="unit" *ngIf="unit">
-  <div [ngClass]="{'highlight': highlight === unit.unitId}">
-    <laji-unit-rows [unit]="unit" [showFacts]="showFacts"></laji-unit-rows>
-    <laji-row *ngIf="unit.media" [title]="'species.images'|translate">
-      <div class="image-holder">
-        <laji-image-gallery *ngIf="unit.media" [modalImages]="unit.media" [showOverlay]="true"></laji-image-gallery>
+  @if (unit) {
+    <div class="unit">
+      <div [ngClass]="{'highlight': highlight === unit.unitId}">
+        <laji-unit-rows [unit]="unit" [showFacts]="showFacts"></laji-unit-rows>
+        @if (unit.media) {
+          <laji-row [title]="'species.images'|translate">
+            <div class="image-holder">
+              @if (unit.media) {
+                <laji-image-gallery [modalImages]="unit.media" [showOverlay]="true"></laji-image-gallery>
+              }
+            </div>
+          </laji-row>
+        }
+        @if (unit.media && mediaHasFullResolutionAvailable(unit.media)) {
+          <laji-row [title]="'document.fullResolutionMedia' | translate">
+            <div [innerHTML]="'media.fullResolutionMedia' | translate"></div>
+          </laji-row>
+        }
+        <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
       </div>
-    </laji-row>
-    <laji-row *ngIf="unit.media && mediaHasFullResolutionAvailable(unit.media)" [title]="'document.fullResolutionMedia' | translate">
-      <div [innerHTML]="'media.fullResolutionMedia' | translate"></div>
-    </laji-row>
-    <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
-  </div>
-
-  <laji-observation-effective-tags-taxon
-    [unit]="unit"
-    [showRecordQuality]="false"
-    [showTitle]="false"
-    [showEffectiveTaxon]="false"
-    [showEffectiveAtlasCode]="false"
-    [annotationTags]="annotationTags"
-  ></laji-observation-effective-tags-taxon>
-
-  <laji-row [title]="'annotation.title'|translate">
-    <a (click)="showAnnotations()" style="display: block; cursor:pointer"  *ngIf="annotations.length > 0">
-      <span>
-        <span>{{ annotations.length }} </span>
-        <span *ngIf="annotations.length === 1; else multiple" style="text-transform: lowercase;">{{ 'annotation.titleSingle' | translate }}</span>
-        <ng-template #multiple><span style="text-transform: lowercase;">{{ 'annotation.titlePlural' | translate }}</span></ng-template>
-      </span>
-    </a>
-    <a type="button" class="btn btn-sm btn-default" (click)="showAnnotations()">{{ 'annotation.button' | translate}}</a>
-  </laji-row>
-
-  <div class="samples" *ngIf="unit && unit.samples && unit.samples.length > 0">
-    <strong>{{ 'viewer.samples' | translate }}</strong>
-    <ng-container *ngFor="let sample of unit.samples">
-      <ng-container *ngIf="(showOnlyHighlighted && sample.sampleId ) || !showOnlyHighlighted">
-        <laji-sample [sample]="sample" [showFacts]="showFacts" [highlight]="highlight"></laji-sample>
-      </ng-container>
-    </ng-container>
-  </div>
-  <laji-identifications
-    [identifications]="unit.identifications"
-    [showFacts]="showFacts"
-  ></laji-identifications>
-  <laji-types
-    [types]="unit.types"
-    [showFacts]="showFacts"
-  ></laji-types>
-</div>
+      <laji-observation-effective-tags-taxon
+        [unit]="unit"
+        [showRecordQuality]="false"
+        [showTitle]="false"
+        [showEffectiveTaxon]="false"
+        [showEffectiveAtlasCode]="false"
+        [annotationTags]="annotationTags"
+      ></laji-observation-effective-tags-taxon>
+      <laji-row [title]="'annotation.title'|translate">
+        @if (annotations.length > 0) {
+          <a (click)="showAnnotations()" style="display: block; cursor:pointer" >
+            <span>
+              <span>{{ annotations.length }} </span>
+              @if (annotations.length === 1) {
+                <span style="text-transform: lowercase;">{{ 'annotation.titleSingle' | translate }}</span>
+              } @else {
+                <span style="text-transform: lowercase;">{{ 'annotation.titlePlural' | translate }}</span>
+              }
+            </span>
+          </a>
+        }
+        <a type="button" class="btn btn-sm btn-default" (click)="showAnnotations()">{{ 'annotation.button' | translate}}</a>
+      </laji-row>
+      @if (unit && unit.samples && unit.samples.length > 0) {
+        <div class="samples">
+          <strong>{{ 'viewer.samples' | translate }}</strong>
+          @for (sample of unit.samples; track sample) {
+            @if ((showOnlyHighlighted && sample.sampleId ) || !showOnlyHighlighted) {
+              <laji-sample [sample]="sample" [showFacts]="showFacts" [highlight]="highlight"></laji-sample>
+            }
+          }
+        </div>
+      }
+      <laji-identifications
+        [identifications]="unit.identifications"
+        [showFacts]="showFacts"
+      ></laji-identifications>
+      <laji-types
+        [types]="unit.types"
+        [showFacts]="showFacts"
+      ></laji-types>
+    </div>
+  }

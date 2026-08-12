@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
 import { DocumentViewerFacade, IViewerState } from '../document-viewer.facade';
 import { Observable, Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
-import { Document } from '../../../shared/model/Document';
+import { filter, tap } from 'rxjs';
 import {ModalComponent} from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 @Component({
-  selector: 'laji-viewer-modal',
-  templateUrl: './viewer-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-viewer-modal',
+    templateUrl: './viewer-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ViewerModalComponent implements OnDestroy {
 
-  publicityRestrictionsPublic = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
-  publicityRestrictionsPrivate = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
+  publicityRestrictionsPublic = 'MZ.publicityRestrictionsPublic';
+  publicityRestrictionsPrivate = 'MZ.publicityRestrictionsPrivate';
 
   readonly vm$: Observable<IViewerState>;
 

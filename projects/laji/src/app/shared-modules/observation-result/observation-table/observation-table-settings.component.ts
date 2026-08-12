@@ -1,14 +1,15 @@
 import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
-import { filter, take } from 'rxjs/operators';
+import { filter, take } from 'rxjs';
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
 import { IColumnGroup, IGenericColumn } from '../../datatable/service/table-column.service';
 import { DatatableColumn } from '../../datatable/model/datatable-column';
 import {ModalRef, ModalService} from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
-  selector: 'laji-observation-table-settings',
-  templateUrl: './observation-table-settings.component.html',
-  styleUrls: ['./observation-table-settings.component.scss']
+    selector: 'laji-observation-table-settings',
+    templateUrl: './observation-table-settings.component.html',
+    styleUrls: ['./observation-table-settings.component.scss'],
+    standalone: false
 })
 export class ObservationTableSettingsComponent<T extends IGenericColumn<DatatableColumn> = IGenericColumn<DatatableColumn>> {
 

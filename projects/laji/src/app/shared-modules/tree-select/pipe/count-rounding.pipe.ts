@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'countRounding'
+    name: 'countRounding',
+    standalone: false
 })
 export class CountRoundingPipe implements PipeTransform {
 

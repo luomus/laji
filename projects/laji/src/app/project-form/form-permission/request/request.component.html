@@ -1,0 +1,15 @@
+@if ((vm$ | async); as vm) {
+  @if (vm.loggedIn) {
+    @if (!disableDescription) {
+      <laji-request-description
+        [accessLevel]="vm.accessLevel!"
+      ></laji-request-description>
+    }
+    <button [disabled]="clicked || vm.accessLevel === AccessLevel.Allowed || vm.accessLevel === AccessLevel.Requested"
+    class="btn btn-success" (click)="makeAccessRequest()">{{ 'np.requestAccess' | translate }}</button>
+  } @else {
+    <h3>
+      {{ 'force.login' | translate }}
+    </h3>
+  }
+}

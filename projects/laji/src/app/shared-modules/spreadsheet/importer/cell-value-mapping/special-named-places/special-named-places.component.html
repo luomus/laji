@@ -10,19 +10,21 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let value of invalidValues">
-      <td>
-        <div class="form-control-static">
-          {{ value }}
-        </div>
-      </td>
-      <td>
-        <laji-mapping-select
-          [disabledWhenNoOptions]="true"
-          [value]="mapping && mapping[value] || ''"
-          [options]="(namedPlaces$ | async) ?? []"
+    @for (value of invalidValues; track value) {
+      <tr>
+        <td>
+          <div class="form-control-static">
+            {{ value }}
+          </div>
+        </td>
+        <td>
+          <laji-mapping-select
+            [disabledWhenNoOptions]="true"
+            [value]="mapping && mapping[value] || ''"
+            [options]="(namedPlaces$ | async) ?? []"
           (selected)="valueMapped(value, $event)"></laji-mapping-select>
-      </td>
-    </tr>
+        </td>
+      </tr>
+    }
   </tbody>
 </table>

@@ -1,0 +1,220 @@
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnChanges,
+  SimpleChanges, ChangeDetectorRef, OnDestroy, AfterViewInit, ViewChild, TemplateRef } from '@angular/core';
+import { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { UserService } from 'projects/laji/src/app/shared/service/user.service';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { tap, map, switchMap } from 'rxjs';
+
+interface NotInitialized {
+  _tag: 'not-initialized';
+}
+
+interface Tsv2RowsInProgress {
+  _tag: 'tsv-in-progress';
+}
+
+interface RequestHttpError {
+  _tag: 'http-error';
+  error: string;
+}
+
+interface ValidationInProgress {
+  _tag: 'validation-in-progress';
+}
+
+interface ValidationComplete {
+  _tag: 'validation-complete';
+  result: components['schemas']['LajiBackendInputRow'][];
+  validationResult: components['schemas']['LajiBackendTraitMultiValidationResponse'];
+}
+
+interface SubmissionInProgress {
+  _tag: 'submitting';
+}
+
+type State = NotInitialized | Tsv2RowsInProgress | ValidationInProgress | ValidationComplete | RequestHttpError | SubmissionInProgress;
+
+const apiInputRowsToTable = (res: components['schemas']['LajiBackendInputRow'][]): { cols: string[]; rows: any[][] } => {
+  // Transform subjects to column-major sparse table
+  const subjectAcc: Record<string, Array<any>> = {};
+  res.forEach((row, index) => {
+    Object.entries(row.subject).forEach(([key, value]) => {
+      if (key in subjectAcc) {
+        subjectAcc[key].push(...(new Array((index + 1) - subjectAcc[key].length).fill(undefined)));
+        subjectAcc[key][index] = value;
+      } else {
+        subjectAcc[key] = new Array(index + 1).fill(undefined);
+        subjectAcc[key][index] = value;
+      }
+    });
+  });
+
+  // ensure each column is the same length
+  Object.values(subjectAcc).forEach(arr => {
+    if (arr.length < res.length) {
+      arr.push(...(new Array(res.length - arr.length).fill(undefined)));
+    }
+  });
+
+  // Traits to column-major sparse table
+  const traits = {} as Record<string, Record<string, Array<any>>>;
+  res.forEach((row, index) => {
+    row.traits?.forEach(trait => {
+      if (!(trait.traitId in traits)) {
+        traits[trait.traitId] = {} as Record<string, Array<any>>;
+      }
+      Object.entries(trait).forEach(([key, value]) => {
+        if (key in traits[trait.traitId]) {
+          traits[trait.traitId][key].push(...(new Array((index + 1) - traits[trait.traitId][key].length).fill(undefined)));
+          traits[trait.traitId][key][index] = value;
+        } else {
+          traits[trait.traitId][key] = new Array(index + 1).fill(undefined);
+          traits[trait.traitId][key][index] = value;
+        }
+      });
+    });
+  });
+
+  // ensure each column is the same length
+  Object.values(traits).forEach(trait => {
+    Object.values(trait).forEach(arr => {
+      if (arr.length < res.length) {
+        arr.push(...(new Array(res.length - arr.length).fill(undefined)));
+      }
+    });
+  });
+
+  // flatten
+  const flattenedTraits = {} as Record<string, Array<any>>;
+  Object.values(traits).forEach((trait, index) => {
+    Object.entries(trait).forEach(([key, value]) => {
+      flattenedTraits[`Trait ${index + 1}: ${key}`] = value;
+    });
+  });
+
+  // Transform to row-major
+  const cols = [] as string[];
+  const rows = new Array(res.length).fill(undefined).map(_ => [] as any[]);
+  [...Object.entries(subjectAcc), ...Object.entries(flattenedTraits)].forEach(([key, value]) => {
+    cols.push(key);
+    rows.forEach((row, idx) => {
+      row.push(value[idx]);
+    });
+  });
+
+  return { cols, rows };
+};
+
+@Component({
+    selector: 'laji-trait-db-data-entry-check',
+    templateUrl: './data-entry-check.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
+})
+export class TraitDbDataEntryCheckComponent implements OnChanges, AfterViewInit, OnDestroy {
+  @Input({ required: true }) datasetId!: string;
+  @Input({ required: true }) tsv!: string;
+
+  @Output() submissionSuccess = new EventEmitter<null>();
+
+  @ViewChild('cellTemplate') cellTemplate!: TemplateRef<any>;
+
+  state$ = new BehaviorSubject<State>({ _tag: 'not-initialized' });
+  table$ = new BehaviorSubject<{ rows: any; cols: any } | undefined>(undefined);
+  missingColumnErrors$ = combineLatest([this.state$, this.table$]).pipe(
+    map(([state, table]) => {
+      if (state._tag !== 'validation-complete' || !table) {
+        return [] as Array<{ key: string; error: string }>;
+      }
+
+      const existingCols = new Set((table.cols as Array<{ title: string }>).map(col => col.title));
+      const missing = new Map<string, string>();
+
+      (state.validationResult.rows ?? []).forEach(row => {
+        Object.entries(row.errors ?? {}).forEach(([key, error]) => {
+          if (!existingCols.has(key)) {
+            missing.set(key, error);
+          }
+        });
+      });
+
+      return Array.from(missing.entries()).map(([key, error]) => ({ key, error }));
+    })
+  );
+  objectEntries = Object.entries;
+
+  private tsvChange = new BehaviorSubject<null>(null);
+
+  constructor(
+    private api: LajiApiClientService,
+    private userService: UserService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  onSubmit(state: State) {
+    if (!(state._tag === 'validation-complete' && state.validationResult.pass)) {
+      return;
+    }
+    this.state$.next({ _tag: 'submitting' });
+    this.api.fetch('/trait/rows/multi', 'post', undefined, state.result).subscribe(
+      () => {
+        this.submissionSuccess.emit();
+      },
+      err => {
+        console.error(err);
+        this.state$.next({ _tag: 'http-error', error: JSON.stringify(err) });
+      }
+    );
+  }
+
+  ngAfterViewInit() {
+    this.tsvChange.subscribe(() => {
+      // transform tsv to rows
+      const query = {
+        datasetId: this.datasetId
+      };
+      this.state$.next({ _tag: 'tsv-in-progress' });
+      this.api.fetch('/trait/rows/tsv2rows', 'post', { query }, this.tsv)
+        .pipe(
+          tap(res => {
+            const table = apiInputRowsToTable(res);
+            this.table$.next({
+              cols: table.cols.map((col, index) => ({
+                title: col,
+                prop: index,
+                cellTemplate: this.cellTemplate
+              })),
+              rows: table.rows
+            });
+            this.state$.next({ _tag: 'validation-in-progress' });
+            this.cdr.markForCheck();
+          }),
+          switchMap(res =>
+            this.api.fetch('/trait/rows/multi/validate', 'post', undefined, res).pipe(
+              map(validationRes => ({_tag: 'validation-complete', result: res, validationResult: validationRes}) as ValidationComplete)
+            )
+          )
+        )
+        .subscribe(
+          res => {
+            this.state$.next(res);
+          },
+          err => {
+            console.error(err);
+            this.state$.next({ _tag: 'http-error', error: JSON.stringify(err) });
+          }
+        );
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.tsv) {
+      this.tsvChange.next(null);
+    }
+  }
+
+  ngOnDestroy() {
+    this.tsvChange.complete();
+  }
+}

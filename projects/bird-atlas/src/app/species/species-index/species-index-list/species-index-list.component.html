@@ -1,0 +1,14 @@
+<input class="form-control d-block my-4"
+  type='text'
+  placeholder="{{'ba.species-index.filter' | translate}}"
+  [value]="searchVal"
+  (keyup)="onSearchKeyUp($event)">
+  @if (filteredSpecies$ | async; as speciesList) {
+    <ul>
+      @for (species of speciesList; track species) {
+        <li><a [routerLink]="[species.id]">{{ species.vernacularName | multiLang }}</a></li>
+      }
+    </ul>
+  } @else {
+    <laji-spinner class="d-block m-6"></laji-spinner>
+  }

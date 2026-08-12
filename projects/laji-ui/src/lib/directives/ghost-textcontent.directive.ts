@@ -5,7 +5,8 @@ import { isPlatformBrowser } from '@angular/common';
  * Adds .lu-ghost-textcontent class whenever textContent is missing or empty
  */
 @Directive({
-  selector: '[luGhostTextContent]'
+    selector: '[luGhostTextContent]',
+    standalone: false
 })
 export class GhostTextContentDirective implements OnInit, OnDestroy {
   @Input() disableTextContentGhost = false;
@@ -27,7 +28,7 @@ export class GhostTextContentDirective implements OnInit, OnDestroy {
           mutationObserver.disconnect();
         }
       });
-      this.mutationObserver.observe(this.el.nativeElement, { characterData: true, subtree: true });
+      this.mutationObserver.observe(this.el.nativeElement, { characterData: true, childList: true, subtree: true });
     }
   }
 

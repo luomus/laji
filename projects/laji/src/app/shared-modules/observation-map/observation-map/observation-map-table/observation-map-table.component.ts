@@ -8,16 +8,19 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from 'projects/laji/src/app/shared/model/WarehouseQueryInterface';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs';
 import { IColumns } from '../../../datatable/service/observation-table-column.service';
 import { TableColumnService } from '../../../datatable/service/table-column.service';
 import { DocumentViewerFacade } from '../../../document-viewer/document-viewer.facade';
 import { ObservationTableColumn } from '../../../observation-result/model/observation-table-column';
 import { getSortsFromCols } from '../../../observation-result/observation-table/observation-table.component';
 import { ObservationVisualizationMode } from '../observation-visualization';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
+
+type QueryListQuery = paths['/warehouse/query/unit/list']['get']['parameters']['query'];
 
 export interface Coordinates {
   type: 'wgs84' | 'ykj';
@@ -46,10 +49,11 @@ const visualizationModeColNames = {
 };
 
 @Component({
-  selector: 'laji-observation-map-table',
-  templateUrl: './observation-map-table.component.html',
-  styleUrls: ['./observation-map-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-observation-map-table',
+    templateUrl: './observation-map-table.component.html',
+    styleUrls: ['./observation-map-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
   export class ObservationMapTableComponent implements OnInit, OnChanges {
   @Input() query!: WarehouseQueryInterface;
@@ -66,7 +70,7 @@ const visualizationModeColNames = {
 
   constructor(
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
-    private warehouse: WarehouseApi,
+    private api: LajiApiClientService,
     private cdr: ChangeDetectorRef,
     private documentViewerFacade: DocumentViewerFacade,
     private translate: TranslateService
@@ -111,7 +115,7 @@ const visualizationModeColNames = {
   }
 
   onServerSort(event: any) {
-    this.orderBy = getSortsFromCols(event, this.columns, this.translate.currentLang);
+    this.orderBy = getSortsFromCols(event, this.columns, this.translate.getCurrentLang());
     this.updateRows();
   }
 
@@ -148,7 +152,14 @@ const visualizationModeColNames = {
       query['ykj10kmCenter'] = ykj;
     }
     this.loading = true;
-    this.rows$ = this.warehouse.warehouseQueryListGet(query, selected, this.orderBy, this.pageSize, page).pipe(
+    const listQuery: QueryListQuery = {
+      ...query as any,
+      selected,
+      orderBy: this.orderBy,
+      pageSize: this.pageSize,
+      page
+    };
+    this.rows$ = this.api.get('/warehouse/query/unit/list', { query: listQuery }).pipe(
       tap(d => {
         this.loading = false;
         setTimeout(() => {

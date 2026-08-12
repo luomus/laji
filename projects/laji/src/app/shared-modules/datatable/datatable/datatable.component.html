@@ -38,16 +38,17 @@
     [summaryRow]="summaryRow"
     [summaryPosition]="'bottom'"
     [summaryHeight]="38"
-  >
+    >
   </ngx-datatable>
-  <laji-data-table-footer
-    *ngIf="showFooter"
-    [totalMessage]="totalMessage"
-    [page]="_page!"
-    [pageSize]="pageSize!"
-    [count]="_count!"
-    (pageChange)="onPage($event)"
-  ></laji-data-table-footer>
+  @if (showFooter) {
+    <laji-data-table-footer
+      [totalMessage]="totalMessage"
+      [page]="_page!"
+      [pageSize]="pageSize!"
+      [count]="_count!"
+      (pageChange)="onPage($event)"
+    ></laji-data-table-footer>
+  }
 </laji-spinner>
 
 <laji-datatable-templates #dataTableTemplates></laji-datatable-templates>

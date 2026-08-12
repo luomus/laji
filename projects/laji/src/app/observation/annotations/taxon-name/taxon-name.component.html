@@ -1,0 +1,37 @@
+@if (unit) {
+  <div class="unit">
+    @if (unit.media) {
+      <div class="image">
+        <img [src]="unit.media[0].thumbnailURL" />
+        @if (unit.media.length > 1) {
+          <div class="number-images"><span>{{ unit.media.length }}</span></div>
+        }
+      </div>
+    }
+    @if (!unit.media) {
+      <div class="image no-media"><span>{{ 'annotation.noImages' | translate }}</span></div>
+    }
+    @if (unit.status) {
+      <div class="status-annotation"><span class="need-id"></span></div>
+    }
+    @if ((unit.linkings && (unit.linkings.taxon || unit.linkings.originalTaxon))) {
+      <div>
+        <div class="taxon">
+          @if (unit.linkings.taxon) {
+            <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
+          } @else {
+            <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
+          }
+        </div>
+      </div>
+    } @else {
+      <div class="taxon">{{ unit.reportedInformalTaxonGroup | toQName | label }}</div>
+    }
+    @if (unit.interpretations && (unit.interpretations.needsCheck || unit.interpretations.needsIdentification)) {
+      <laji-annotation-item-status
+        [interpretation]="unit.interpretations"
+        [text]="true"
+      ></laji-annotation-item-status>
+    }
+  </div>
+}

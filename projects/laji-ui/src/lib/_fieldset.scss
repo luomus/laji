@@ -1,4 +1,4 @@
-@import 'mixins/fieldset';
+@use 'mixins/fieldset' as *;
 
 fieldset.lu-fieldset {
   @include fieldset();

@@ -1,5 +1,5 @@
 
-import { tap, map, filter, switchMap, take, catchError } from 'rxjs/operators';
+import { tap, map, filter, switchMap, take, catchError } from 'rxjs';
 import {
   AfterViewInit,
   ApplicationRef,
@@ -14,7 +14,6 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { interval as ObservableInterval, Subscription, throwError as observableThrowError, Observable } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
@@ -32,26 +31,28 @@ import { DocumentToolsService } from '../document-tools.service';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { DocumentPermissionService } from '../service/document-permission.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
-type Annotation = components['schemas']['annotation'];
-type AnnotationTag = components['schemas']['tag'];
+type Annotation = components['schemas']['store-annotation'];
+type AnnotationTag = components['schemas']['store-tag'];
 
 @Component({
-  selector: 'laji-document-annotation',
-  templateUrl: './document-annotation.component.html',
-  styleUrls: ['./document-annotation.component.scss'],
-  animations: [
-    trigger('shortcutsInOut', [
-        transition('void => *', [
-           style({opacity: 0, transform: 'translateX(-30px)'}),
-            animate(400, style({transform: 'translateX(0px)', opacity: 1 }))
-        ]),
-        transition('* => void', [
-            animate(400, style({opacity: 0, transform: 'translateX(-30px)'}))
+    selector: 'laji-document-annotation',
+    templateUrl: './document-annotation.component.html',
+    styleUrls: ['./document-annotation.component.scss'],
+    animations: [
+        trigger('shortcutsInOut', [
+            transition('void => *', [
+                style({ opacity: 0, transform: 'translateX(-30px)' }),
+                animate(400, style({ transform: 'translateX(0px)', opacity: 1 }))
+            ]),
+            transition('* => void', [
+                animate(400, style({ opacity: 0, transform: 'translateX(-30px)' }))
+            ])
         ])
-    ])
-  ]
+    ],
+    standalone: false
 })
 export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent) map?: ViewerMapComponent;
@@ -111,7 +112,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
 
   constructor(
-    private warehouseApi: WarehouseApi,
+    private api: LajiApiClientService,
     private userService: UserService,
     private cd: ChangeDetectorRef,
     private appRef: ApplicationRef,
@@ -128,7 +129,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   ngOnInit() {
     this.annotationTags$ = this.annotationService.getAllTags();
-    this.currentLang = this.translate.currentLang;
+    this.currentLang = this.translate.getCurrentLang();
     this.metaFetch = this.userService.user$.subscribe(person => {
       if (!person) {
         this.personRoleAnnotation = 'MMAN.basic';
@@ -221,10 +222,17 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     if (!this.uri) {
       return;
     }
-    const findDoc$ = this.warehouseApi
-      .warehouseQuerySingleGet(this.uri, this.own ? {editorOrObserverPersonToken: this.userService.getToken()} : undefined).pipe(
-        catchError((errors) => this.own ? this.warehouseApi.warehouseQuerySingleGet(this.uri) : observableThrowError(errors)),
-        map((doc) => doc.document),
+
+    const query = {
+      documentId: this.uri,
+    } as any;
+    if (this.own) {
+      query['editorOrObserverPersonToken'] = this.userService.getToken();
+    }
+
+    const findDoc$ = this.api.get('/warehouse/query/single' as any, { query }).pipe(
+        catchError((errors) => this.own ? this.api.get('/warehouse/query/single' as any, { query: { documentId: this.uri } }) : observableThrowError(errors)),
+        map((doc: any) => doc.document),
         tap((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight))
       );
 
@@ -441,5 +449,3 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   }
 
 }
-
-

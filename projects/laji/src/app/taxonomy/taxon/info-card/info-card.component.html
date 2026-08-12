@@ -1,0 +1,97 @@
+@if (taxon) {
+  <laji-info-card-header
+    [taxon]="taxon"
+    [activeTab]="activeTab"
+    (taxonSelect)="updateRoute($event)"
+  ></laji-info-card-header>
+  <lu-tabs class="d-block mx-5" [selectedIndex]="getVisibleTabIndexFromTabName(selectedTab)" (selectedChange)="onSelect($event)">
+    <lu-tab [heading]="'taxonomy.overview' | translate">
+      @if (loadedTabs.isLoaded('overview')) {
+        <laji-taxon-overview
+          [taxon]="taxon"
+          [isFromMasterChecklist]="isFromMasterChecklist"
+          [taxonDescription]="taxonDescription"
+          [images]="images"
+          (taxonSelect)="updateRoute($event)"
+        ></laji-taxon-overview>
+      }
+    </lu-tab>
+    @if (hasImageData) {
+      <lu-tab [heading]="'species.images' | translate">
+        @if (loadedTabs.isLoaded('images')) {
+          <laji-taxon-images
+            [taxon]="taxon"
+            [taxonImages]="taxonImages"
+            [isFromMasterChecklist]="isFromMasterChecklist"
+          ></laji-taxon-images>
+        }
+      </lu-tab>
+    }
+    <lu-tab [heading]="'taxonomy.identification' | translate">
+      @if (loadedTabs.isLoaded('identification')) {
+        <laji-taxon-identification
+          [taxon]="taxon"
+        ></laji-taxon-identification>
+      }
+    </lu-tab>
+    @if (hasBiologyData) {
+      <lu-tab [heading]="'taxonomy.biology' | translate">
+        @if (loadedTabs.isLoaded('biology')) {
+          <laji-taxon-biology
+            [taxon]="taxon"
+            [taxonDescription]="taxonDescription"
+            [context]="context"
+            (contextChange)="updateRoute(taxon.id, activeTab, $event)"
+          ></laji-taxon-biology>
+        }
+      </lu-tab>
+    }
+    <lu-tab [heading]="'taxonomy.taxonomy' | translate">
+      @if (loadedTabs.isLoaded('taxonomy')) {
+        <laji-taxon-taxonomy
+          [taxon]="taxon"
+          [taxonDescription]="taxonDescription"
+          (taxonSelect)="updateRoute($event)"
+        ></laji-taxon-taxonomy>
+      }
+    </lu-tab>
+    <lu-tab [heading]="'taxonomy.occurrence' | translate">
+      @if (loadedTabs.isLoaded('occurrence')) {
+        <laji-taxon-occurrence
+          [taxon]="taxon"
+          [taxonDescription]="taxonDescription"
+          [isFromMasterChecklist]="isFromMasterChecklist"
+        ></laji-taxon-occurrence>
+      }
+    </lu-tab>
+    @if (isFromMasterChecklist) {
+      <lu-tab [heading]="'taxonomy.specimens' | translate">
+        @if (loadedTabs.isLoaded('specimens')) {
+          <laji-taxon-specimens
+            [taxon]="taxon"
+          ></laji-taxon-specimens>
+        }
+      </lu-tab>
+    }
+    @if (isEndangered) {
+      <lu-tab [heading]="'taxonomy.endangerment' | translate">
+        @if (loadedTabs.isLoaded('endangerment')) {
+          <laji-taxon-endangerment
+            [taxon]="taxon"
+          ></laji-taxon-endangerment>
+        }
+      </lu-tab>
+    }
+    @if (isInvasive) {
+      <lu-tab [heading]="'taxonomy.invasive' | translate">
+        @if (loadedTabs.isLoaded('invasive')) {
+          <laji-taxon-invasive
+            [taxon]="taxon"
+            [taxonDescription]="taxonDescription"
+          ></laji-taxon-invasive>
+        }
+      </lu-tab>
+    }
+  </lu-tabs>
+}
+

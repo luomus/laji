@@ -1,0 +1,19 @@
+@if (informalGroup && informalGroup.id) {
+  <ol class="breadcrumb">
+    <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <a [routerLink]="'/taxon/browse'"
+      tabindex="0" role="button" luKeyboardClickable>{{ 'observation.active.informalTaxonGroupAll' | translate }}</a>
+    </li>
+    @if (parentGroup) {
+      <li>
+        <a [routerLink]="'/taxon/browse'" [queryParams]="{ informalTaxonGroups: parentGroup.id }"
+        tabindex="0" role="button" luKeyboardClickable>{{ parentGroup.name }}</a>
+      </li>
+    }
+    @if (informalGroup) {
+      <li class="active">
+        <span>{{ informalGroup.name }}</span>
+      </li>
+    }
+  </ol>
+}

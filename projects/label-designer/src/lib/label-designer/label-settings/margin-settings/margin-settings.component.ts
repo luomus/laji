@@ -5,10 +5,11 @@ import { ILabelStyle, IPageStyle } from '../../../label-designer.interface';
  * @internal
  */
 @Component({
-  selector: 'll-margin-settings',
-  templateUrl: './margin-settings.component.html',
-  styleUrls: ['./margin-settings.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'll-margin-settings',
+    templateUrl: './margin-settings.component.html',
+    styleUrls: ['./margin-settings.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MarginSettingsComponent {
 

@@ -8,10 +8,11 @@ export interface Breadcrumb {
 }
 
 @Component({
-  selector: 'laji-theme-breadcrumb',
-  templateUrl: './theme-breadcrumb.component.html',
-  styleUrls: ['./theme-breadcrumb.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'laji-theme-breadcrumb',
+    templateUrl: './theme-breadcrumb.component.html',
+    styleUrls: ['./theme-breadcrumb.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ThemeBreadcrumbComponent {
 

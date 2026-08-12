@@ -2,7 +2,8 @@ import { Directive, Input, OnChanges, SimpleChanges, TemplateRef, ViewContainerR
 import { environment } from '../../../../../environments/environment';
 
 @Directive({
-  selector: '[lajiForTypes]'
+    selector: '[lajiForTypes]',
+    standalone: false
 })
 export class ForTypesDirective implements OnChanges {
 

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, NgZone } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
-import { map, share, switchMap, tap } from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs';
 import { PlatformService } from '../../../root/platform.service';
 import { AudioPlayer } from './audio-player';
 
@@ -13,8 +13,6 @@ export class AudioService {
   private buffer: { [url: string]: { buffer: AudioBuffer; time: number } } = {};
 
   private activePlayer?: AudioPlayer;
-
-  private resumeContext$?: Observable<void>|null;
 
   private bufferCacheSize = 3;
 
@@ -127,13 +125,7 @@ export class AudioService {
 
   public resumeAudioContext(sampleRate: number): Observable<void> {
     const audioCtx = this.getAudioContext(sampleRate);
-    if (!this.resumeContext$) {
-      this.resumeContext$ = from(audioCtx.resume()).pipe(
-        tap(() => this.resumeContext$ = null),
-        share()
-      );
-    }
-    return this.resumeContext$;
+    return from(audioCtx.resume());
   }
 
   public playAudio(buffer: AudioBuffer, playbackRate: number, frequencyRange: number[]|undefined, startTime: number, player: AudioPlayer): AudioBufferSourceNode {

@@ -12,11 +12,13 @@ export class AcceptLanguageInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    req = req.clone({
-      setHeaders: {
-        'Accept-Language': `${this.translateService.currentLang}`
-      }
-    });
+    if (!req.headers.get('accept-language')) {
+      req = req.clone({
+        setHeaders: {
+          'Accept-Language': `${this.translateService.getCurrentLang()}`
+        }
+      });
+    }
     return next.handle(req);
   }
 }

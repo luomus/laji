@@ -1,0 +1,15 @@
+@use 'vars' as *;
+
+ul {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+ul li {
+  min-height: 40px;
+}
+
+.form-control-static {
+  color: $neutral-7;
+}

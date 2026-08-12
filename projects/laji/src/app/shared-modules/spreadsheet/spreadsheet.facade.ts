@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import {
   distinctUntilChanged,
   map,
-} from 'rxjs/operators';
+} from 'rxjs';
 import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
 
 export enum Step {

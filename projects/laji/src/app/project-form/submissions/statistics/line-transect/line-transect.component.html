@@ -1,0 +1,129 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h3>Laskennan tulokset linjalta {{ namedPlace.name }}</h3>
+  </div>
+</div>
+@if (missingNS) {
+  <lu-alert [type]="'danger'">
+    Havaintoerässä käytettyä nimettyä paikkaa ei löytynyt!
+  </lu-alert>
+}
+<div class="edit-container">
+  <a [routerLink]="path | localize" class="btn btn-primary">Siirry muokkaamaan <i class="glyphicon glyphicon-edit"></i></a>
+</div>
+<div class="row">
+  <div class="col-sm-6">
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>Lajimäärä</th>
+          <td>{{ counts.species.length }}</td>
+        </tr>
+        <tr>
+          <th>Pääsaran parisumma</th>
+          <td>{{ counts.psCouples }}</td>
+        </tr>
+        <tr>
+          <th>Parisumma yhteensä</th>
+          <td>{{ counts.tsCouples + counts.psCouples }}</td>
+        </tr>
+        <tr>
+          <th>Pääsarkaprosentti</th>
+          <td>{{ counts.onPsPros }}%</td>
+        </tr>
+        <tr>
+          <th>Laskentanopeus</th>
+          <td>
+            {{ counts.minPerKm }}min/km
+            (@if (counts.minPerKm > 50) {
+            <span class="speed-warning">keskimääräistä hitaampi</span>
+          } @else {
+            @if (counts.minPerKm < 35) {
+              <span class="speed-warning">keskimääräistä nopeampi</span>
+            } @else {
+              <span class="speed-ok">normaali</span>
+            }
+            })
+          </td>
+        </tr>
+        @if (stats$ | async; as diff) {
+          <tr>
+            <th>Poikkeama laskentapäivän mediaanista</th>
+            <td>
+              {{ diff }}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Laji</th>
+          <th>Pääsaran parisumma</th>
+          <th>Parisumma yhteensä</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (species of counts.species | sort:'name'; track species) {
+          <tr>
+            <td>{{ species.name || species.id }}</td>
+            <td>{{ species.psCouples }}</td>
+            <td>{{ species.tsCouples + species.psCouples }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  @if (counts.onPsPros && ykj10kmN) {
+    <div class="col-sm-6 col-md-5 col-lg-4">
+      <div class="row">
+        <div class="col-sm-12" style="height: 250px">
+          <laji-line-transect-chart
+            [terms]="onMainTerms"
+            [yRange]="[0, 50]"
+            [xValue]="ykj10kmN"
+            [yValue]="counts.onPsPros"
+            [title]="'Pääsarkaprosentti'"
+            [xLabel]="'ykj n'"
+            [yLabel]="'%'"
+          ></laji-line-transect-chart>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12" style="height: 250px; margin-top: 15px;">
+          <laji-line-transect-chart
+            [terms]="perKmTerms"
+            [xValue]="ykj10kmN"
+            [yValue]="counts.couplesPerKm"
+            [title]="'Parihavaintoja / km'"
+            [xLabel]="'ykj n'"
+            [yLabel]="'lkm'"
+          ></laji-line-transect-chart>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+@if (warnings.length > 0) {
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Kuitattu virhe</th>
+            <th>lkm</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (warning of warnings; track warning) {
+            <tr>
+              <td>{{ warning.message }}</td>
+              <td>{{ warning.cnt }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}

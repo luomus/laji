@@ -3,7 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 
 
 @Pipe({
-  name: 'adminStatusInfo'
+    name: 'adminStatusInfo',
+    standalone: false
 })
 export class AdminStatusInfoPipe implements PipeTransform {
 

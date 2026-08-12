@@ -1,0 +1,14 @@
+<h3>{{ 'haseka.templates.title' | translate }}</h3>
+<div class="row">
+  @if (!showTemplateIntro) {
+    <div class="pull-right toggle-intro" (click)="toggleInfo()" >
+      <i class="link glyphicon glyphicon-info-sign"></i>
+    </div>
+  }
+</div>
+@if (showTemplateIntro) {
+  <lu-alert [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+    <p>{{ 'haseka.templates.intro' | translate }}</p>
+  </lu-alert>
+}
+<laji-own-submissions [onlyTemplates]="true"></laji-own-submissions>

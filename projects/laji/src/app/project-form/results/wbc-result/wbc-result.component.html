@@ -1,0 +1,42 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8">
+      <h3>
+        {{ 'wbc.title' | translate }}
+      </h3>
+      <div [innerHtml]="'wbc.stats.intro' | translate" lajiRouteTransformer></div>
+      <div class="row">
+        <laji-navigation-thumbnail [name]="'wbc.stats.species'" [icon]="'wb_icon_bird'" [iconType]="'png'" [query]="{tab: Tabs.species}"></laji-navigation-thumbnail>
+        <laji-navigation-thumbnail [name]="'wbc.stats.routes'" [icon]="'wb_icon_map_2'" [iconType]="'png'" [query]="{tab: Tabs.routes}"></laji-navigation-thumbnail>
+        <laji-navigation-thumbnail [name]="'wbc.stats.censuses'" [icon]="'wb_icon_laskennat'" [iconType]="'png'" [query]="{tab: Tabs.censuses}"></laji-navigation-thumbnail>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-logo pull-right">
+        @if (form.logo) {
+          <img src="{{form.logo}}">
+        }
+      </div>
+    </div>
+  </div>
+  <hr style="width: 100%">
+  <div>
+    @switch (tab$ | async) {
+      @case (Tabs.species) {
+        <div>
+          <laji-wbc-species></laji-wbc-species>
+        </div>
+      }
+      @case (Tabs.routes) {
+        <div>
+          <laji-wbc-routes></laji-wbc-routes>
+        </div>
+      }
+      @case (Tabs.censuses) {
+        <div>
+          <laji-wbc-censuses></laji-wbc-censuses>
+        </div>
+      }
+    }
+  </div>
+</div>
