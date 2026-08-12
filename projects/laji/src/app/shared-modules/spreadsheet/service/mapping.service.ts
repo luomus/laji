@@ -457,6 +457,7 @@ export class MappingService {
     } catch (e) {
       return null;
     }
+    return value;
   }
 
   private getMappedValue(value: any, field: IFormField) {
