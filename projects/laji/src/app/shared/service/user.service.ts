@@ -212,9 +212,8 @@ export class UserService implements OnDestroy {
       this.setNotLoggedIn();
       return of(false);
     }
-    this.api.setPersonToken(token);
     this.store.next({ ...this.store.value, loginState: { _tag: 'loading' }, user: { _tag: 'loading' } });
-    return this.api.get('/person').pipe(
+    return this.api.get('/person', { header: { 'Person-Token': token } }).pipe(
       httpOkError([404, 400], null),
       retryWithBackoff(300),
       tap(person => {
@@ -224,6 +223,7 @@ export class UserService implements OnDestroy {
         }
         // if person is valid, we have succesfully logged in
         this.persistentState = { ...this.persistentState, loginState: { _tag: 'logged_in', token }};
+        this.api.setPersonToken(token);
         this.store.next({
           ...this.store.value,
           ...this.persistentState,
