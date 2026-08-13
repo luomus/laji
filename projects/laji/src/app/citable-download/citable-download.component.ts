@@ -44,8 +44,7 @@ export class CitableDownloadComponent implements OnInit {
   ngOnInit() {
     this.downloadRequest$ = this.route.params.pipe(
       map(params => params['id']),
-      tap(id => { this.id = id; }),
-      switchMap(id => this.api.get('/warehouse/downloads/' as any, { path: { id } })),
+      switchMap(id => this.api.get(`/warehouse/downloads/${id}` as any)),
       tap((response: any) => this.updateHeaders(response))
     );
   }
