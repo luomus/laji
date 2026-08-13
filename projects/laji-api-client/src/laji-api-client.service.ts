@@ -293,19 +293,20 @@ ExtractContentByResponseType<
 > {
     const pathSegments = splitAndResolvePath(path, params);
     const requestUrl = this.baseUrl + pathSegments.join('');
+    const requestOptions = this.getRequestOptions(params, requestBody, this.lang, langFallback);
 
     if (method !== 'get') {
       this._flush(pathSegments);
       return this.http.request(
         method as string,
         requestUrl,
-        this.getRequestOptions(params, requestBody, this.lang, langFallback)
+        requestOptions
       ) as any;
     }
 
     const cachedPath = this.getOrInitializeLastPathCacheLevel(pathSegments);
 
-    const paramsHash = hashRecord({ ...params || {}, langFallback });
+    const paramsHash = hashRecord({ ...requestOptions || {} });
     if (!cachedPath?.has(paramsHash)) {
       cachedPath?.set(paramsHash, { _tag: 'not-started' });
     }
@@ -324,7 +325,7 @@ ExtractContentByResponseType<
     const obs = this.http.request(
       method,
       requestUrl,
-      this.getRequestOptions(params, requestBody, this.lang, langFallback)
+      requestOptions
     ).pipe(
       tap(val => {
         cachedPath?.set(paramsHash, {
