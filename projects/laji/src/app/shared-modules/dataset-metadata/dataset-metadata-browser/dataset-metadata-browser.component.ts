@@ -25,10 +25,10 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
   showEmpty = false;
   loading = false;
   excludedTypes = [
-    'MY_collectionTypeGardenArea',
-    'MY_collectionTypeIndoorGardenArea',
-    'MY_collectionTypeOutdoorGardenArea',
-    'MY_collectionTypeGardenSublocation'
+    'MY.collectionTypeGardenArea',
+    'MY.collectionTypeIndoorGardenArea',
+    'MY.collectionTypeOutdoorGardenArea',
+    'MY.collectionTypeGardenSublocation'
   ];
 
   constructor(
