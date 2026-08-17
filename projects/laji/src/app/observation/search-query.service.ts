@@ -257,7 +257,7 @@ export class SearchQueryService implements SearchQueryInterface {
     return result;
   }
 
-  public getQueryObject(query: WarehouseSearchQuery, skipParams: string[] = [], obscure = true) {
+  private getNormalizedRouterQuery(query: WarehouseSearchQuery, skipParams: string[] = [], obscure = true) {
     const result: {[field: string]: string | string[]}  = {};
     if (query) {
       this.forEachType({
@@ -299,10 +299,58 @@ export class SearchQueryService implements SearchQueryInterface {
       }});
     }
 
-    return this.getQuery(result, query);
+    return this.normalizeQueryForInternalURL(result, query);
   }
 
-  public getQuery(result: any, query: WarehouseQueryInterface) {
+  /**
+   * Provided just in case for compatibility with observation-download.
+   * For some reason it uses an object with string values for an API call (I.e. an URL/router sorta query),
+   * I played it safe and kept it as is, but that component should be refactored sometime.
+   */
+  public prepareDownloadApiQueryObject(
+    query: WarehouseSearchQuery,
+    skipParams: string[] = [],
+    obscure = true
+  ) {
+    return this.getNormalizedRouterQuery(query, skipParams, obscure);
+  }
+
+  public prepareRouterQueryObject(
+    query: WarehouseSearchQuery,
+    skipParams: string[] = ['selected', 'pageSize', 'page']
+  ) {
+    return this.getNormalizedRouterQuery(query, skipParams, true);
+  }
+
+  private prepareInternalFields<T extends WarehouseQueryInterface>(internalQuery: T) {
+    if (Array.isArray(internalQuery.target)) {
+      internalQuery.target = internalQuery.target.map(target => target.replace(/http:\/\/tun\.fi\//g, ''));
+    }
+
+    if (
+      (internalQuery.editorOrObserverPersonToken && (internalQuery.editorPersonToken || internalQuery.observerPersonToken))
+      || internalQuery.editorOrObserverIsNotPersonToken
+    ) {
+      delete internalQuery.editorOrObserverPersonToken;
+    } else if (
+      internalQuery.editorPersonToken
+      && internalQuery.observerPersonToken
+      && internalQuery.observerPersonToken === internalQuery.editorPersonToken
+    ) {
+      internalQuery.editorOrObserverPersonToken = internalQuery.observerPersonToken;
+      delete internalQuery.editorPersonToken;
+      delete internalQuery.observerPersonToken;
+    }
+
+    delete internalQuery._coordinatesIntersection;
+
+    return internalQuery;
+  }
+
+  /**
+   * Mutates `result` to prepare internal query model into internal router query params
+   */
+  public normalizeQueryForInternalURL(result: any, query: WarehouseQueryInterface) {
     ['coordinates'].forEach(key => {
       const last = (query as any)[key]?.[0]?.split(':').pop();
       if (result[key] && typeof query._coordinatesIntersection !== 'undefined' && last !== undefined && isNaN(last)) {
@@ -310,26 +358,27 @@ export class SearchQueryService implements SearchQueryInterface {
       }
     });
 
-    if (Array.isArray(result['target'])) {
-      result['target'] = (result['target'] as string[]).map(target => target.replace(/http:\/\/tun\.fi\//g, ''));
+    this.prepareInternalFields(result);
+
+    return result;
+  }
+
+  /**
+   * Takes an internal observation search query object and returns a new query object that is ready for API calls
+   */
+  public getNormalizedApiQuery<T extends WarehouseQueryInterface>(internalQuery: T): T {
+    const result = { ...internalQuery };
+
+    if (Array.isArray(result.coordinates) && typeof internalQuery._coordinatesIntersection !== 'undefined') {
+      result.coordinates = result.coordinates.map((coordinate) => {
+        const last = coordinate.split(':').pop();
+        return last !== undefined && isNaN(parseFloat(last))
+          ? `${coordinate}:${internalQuery._coordinatesIntersection! / 100}`
+          : coordinate;
+      });
     }
 
-    if (
-      (result.editorOrObserverPersonToken && (result.editorPersonToken || result.observerPersonToken))
-      || result.editorOrObserverIsNotPersonToken
-    ) {
-      delete result.editorOrObserverPersonToken;
-    } else if (
-      result.editorPersonToken
-      && result.observerPersonToken
-      && result.observerPersonToken === result.editorPersonToken
-    ) {
-      result.editorOrObserverPersonToken = result.observerPersonToken;
-      delete result.editorPersonToken;
-      delete result.observerPersonToken;
-    }
-
-    delete result._coordinatesIntersection;
+    this.prepareInternalFields(result);
 
     return result;
   }
@@ -338,7 +387,7 @@ export class SearchQueryService implements SearchQueryInterface {
     if (!queryParameters) {
       queryParameters = {};
     }
-    const query = this.getQueryObject(dwQuery, skipParams, false);
+    const query = this.prepareDownloadApiQueryObject(dwQuery, skipParams, false);
     Object.keys(query).map((key) => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       queryParameters![key] = query[key];
@@ -348,7 +397,7 @@ export class SearchQueryService implements SearchQueryInterface {
   }
 
   public updateUrl(query: WarehouseQueryInterface, skipParams: string[]): void {
-    const queryParams = this.getQueryObject(query, skipParams);
+    const queryParams = this.prepareRouterQueryObject(query, skipParams);
     const extra: NavigationExtras = {};
     if (Object.keys(queryParams).length > 0) {
       extra['queryParams'] = queryParams;

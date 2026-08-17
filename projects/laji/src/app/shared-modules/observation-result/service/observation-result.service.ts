@@ -83,8 +83,9 @@ export class ObservationResultService {
     }
 
     if (!this.aggregateData) {
+      const normalizedQuery = this.searchQuery.getNormalizedApiQuery(query);
       const queryParams = {
-        ...query,
+        ...normalizedQuery,
         cache: (query.cache || isEmptyWarehouseQuery(query)),
         aggregateBy: [..._aggregateBy],
         orderBy,
@@ -123,10 +124,11 @@ export class ObservationResultService {
       this.data = undefined;
     }
     if (!this.data) {
+      const normalizedQuery = this.searchQuery.getNormalizedApiQuery(query);
       const cache = (query.cache || isEmptyWarehouseQuery(query));
       const preparedFields = [...this.prepareFields(selected), ...this.idFields];
       const queryParams = {
-        ...query,
+        ...normalizedQuery,
         cache,
         aggregateBy: preparedFields,
         selected: preparedFields,

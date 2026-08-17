@@ -38,6 +38,7 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
 import { components, paths } from 'projects/laji-api-client/generated/api';
 import { DataFetchMode } from '../../../observation/observation-data.service';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { SearchQueryService } from '../../../observation/search-query.service';
 
 type Document = components['schemas']['store-document'];
 type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
@@ -156,6 +157,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     private toQName: ToQNamePipe,
     private formService: FormService,
     private deleteOwnDocument: DeleteOwnDocumentService,
+    private searchQuery: SearchQueryService,
   ) {
     this.allColumns = tableColumnService.getAllColumns();
     this.columnGroups = tableColumnService.getColumnGroups();
@@ -309,7 +311,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     this.changeDetectorRef.markForCheck();
 
     const query: AggregateQueryParams = {
-      ...this.query as any,
+      ...this.searchQuery.getNormalizedApiQuery(this.query) as any,
       aggregateBy: [
         'document.createdDate',
         'document.documentId',

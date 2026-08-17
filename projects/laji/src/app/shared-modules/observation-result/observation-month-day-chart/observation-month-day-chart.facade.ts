@@ -7,6 +7,7 @@ import { WarehouseValueMappingService } from '../../../shared/service/warehouse-
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { paths } from 'projects/laji-api-client/generated/api';
+import { SearchQueryService } from '../../../observation/search-query.service';
 
 type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
@@ -29,12 +30,13 @@ export class ObservationMonthDayChartFacade {
     private api: LajiApiClientService,
     private valueMappingService: WarehouseValueMappingService,
     private triplestoreLabelService: TriplestoreLabelService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private searchQuery: SearchQueryService
   ) {}
 
   loadChartData(query: WarehouseQueryInterface, useIndividualCount: boolean) {
     const aggregateQuery: AggregateQueryParams = {
-      ...query as any,
+      ...this.searchQuery.getNormalizedApiQuery(query) as any,
       aggregateBy: ['gathering.conversions.month', 'gathering.conversions.day', 'unit.lifeStage'],
       orderBy: ['unit.lifeStage'],
       pageSize: 10000,
