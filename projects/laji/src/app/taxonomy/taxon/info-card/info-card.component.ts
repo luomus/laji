@@ -22,6 +22,7 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderService } from '../../../shared/service/header.service';
 import { components } from 'projects/laji-api-client/generated/api.d';
+import { UserService } from '../../../shared/service/user.service';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 type TaxonDescription = components['schemas']['LajiBackendContent'][number];
@@ -78,7 +79,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private router: Router,
     private headerService: HeaderService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -162,34 +164,36 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
     let missingImages = nbrOfImages - taxonImages.length;
 
-    let imageObs: Observable<any[]>;
-    if (missingImages > 0 && this.isFromMasterChecklist) {
-      imageObs = this.getImages(
-        InfoCardQueryService.getReliableHumanObservationQuery(this.taxon.id),
-        missingImages
-      ).pipe(
-        switchMap(observationImages => {
-          const images = taxonImages.concat(observationImages);
-          if (images.length > 0) {
-            this.hasImageData = true;
-            this.cd.markForCheck();
-          }
-          missingImages = nbrOfImages - images.length;
+    const imageObs = this.userService.isLoggedIn$.pipe(
+      switchMap(loggedIn => (
+        loggedIn && missingImages > 0 && this.isFromMasterChecklist
+        ? this.getImages(
+          InfoCardQueryService.getReliableHumanObservationQuery(this.taxon.id),
+          missingImages
+        ).pipe(
+          switchMap(observationImages => {
+            const images = taxonImages.concat(observationImages);
+            if (images.length > 0) {
+              this.hasImageData = true;
+              this.cd.markForCheck();
+            }
+            missingImages = nbrOfImages - images.length;
 
-          if (missingImages > 0) {
-            return this.getImages(
-              InfoCardQueryService.getSpecimenQuery(this.taxon.id),
-              missingImages
-            ).pipe(
-              map(collectionImages => images.concat(collectionImages))
-            );
-          } else {
-            return of(images);
-          }
-        }));
-    } else {
-      imageObs = of(taxonImages);
-    }
+            if (missingImages > 0) {
+              return this.getImages(
+                InfoCardQueryService.getSpecimenQuery(this.taxon.id),
+                missingImages
+              ).pipe(
+                map(collectionImages => images.concat(collectionImages))
+              );
+            } else {
+              return of(images);
+            }
+          })
+        )
+        : of(taxonImages)
+      ))
+    );
 
     this.imageSub = imageObs.subscribe(images => {
       this.hasImageData = images.length > 0;
