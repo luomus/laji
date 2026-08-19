@@ -176,7 +176,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
               goalImagesCount - images.length <= 0
               ? of(images)
               : this.getImages(
-                InfoCardQueryService.getSpecimenQuery(this.taxon.id, true),
+                InfoCardQueryService.getExpertVerifiedObservationQuery(this.taxon.id),
                 IMAGES_QUERY_PAGE_SIZE
               ).pipe(
                 map(images2 => { images.push(...images2); return images; })
@@ -186,7 +186,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
               goalImagesCount - images.length <= 0
               ? of(images)
               : this.getImages(
-                InfoCardQueryService.getExpertVerifiedObservationQuery(this.taxon.id),
+                InfoCardQueryService.getSpecimenQuery(this.taxon.id, true),
                 IMAGES_QUERY_PAGE_SIZE
               ).pipe(
                 map(images2 => { images.push(...images2); return images; })
