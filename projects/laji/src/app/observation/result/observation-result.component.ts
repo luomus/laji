@@ -128,7 +128,7 @@ export class ObservationResultComponent implements OnChanges {
     this.router.navigate(
       this.localizeRouterService.translateRoute([this.basePath, tabName]), {
         // Query object should not be but directly to the request params! It can include person token and we don't want that to be visible!
-        queryParams: this.searchQueryService.getQueryObject(this.activeQuery, ['selected', 'pageSize', 'page'])
+        queryParams: this.searchQueryService.prepareRouterQueryObject(this.activeQuery, ['selected', 'pageSize', 'page'])
       }
     );
   }

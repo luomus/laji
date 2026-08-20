@@ -6,6 +6,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { paths } from 'projects/laji-api-client/generated/api';
 import { DataFetchMode } from '../observation-data.service';
+import { SearchQueryService } from '../search-query.service';
 
 type NormalCountQueryParams = paths['/warehouse/query/unit/count']['get']['parameters']['query'];
 type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
@@ -33,7 +34,8 @@ export class ObservationCountComponent implements OnChanges {
   constructor(
     private api: LajiApiClientService,
     private logger: Logger,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private searchQuery: SearchQueryService
   ) {
   }
 
@@ -50,7 +52,9 @@ export class ObservationCountComponent implements OnChanges {
       return;
     }
 
-    const query = this.overrideInQuery ? {...this.query, ...this.overrideInQuery} : this.query;
+    const query = this.searchQuery.getNormalizedApiQuery(
+      this.overrideInQuery ? {...this.query, ...this.overrideInQuery} : this.query
+    );
     this.loading = true;
     this.count$ = (this.field ? this.aggregatedCount(query) : this.normalCount(query)).pipe(
       map(val => '' + val),

@@ -16,7 +16,7 @@ export class ToSafeQueryPipe implements PipeTransform {
     if (!value) {
       return value;
     }
-    return this.searchQueryService.getQueryObject(value, skip);
+    return this.searchQueryService.prepareRouterQueryObject(value, skip);
   }
 
 }

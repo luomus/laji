@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HorizontalChartDataService, MAX_TAXA_SIZE } from './horizontal-chart-data.service';
 import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { SearchQueryService } from '../search-query.service';
 
 @Component({
     selector: 'laji-horizontal-chart',
@@ -66,14 +67,15 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   subBackgroundColors: string[] = [];
   allBackgroundColors: string[] = [];
 
-  constructor(private api: LajiApiClientService,
-              private cd: ChangeDetectorRef,
-              private toQname: ToQNamePipe,
-              private translate: TranslateService,
-              private horizontalDataService: HorizontalChartDataService,
-              private localSt: LocalStorageService
-  ) {
-  }
+  constructor(
+    private api: LajiApiClientService,
+    private cd: ChangeDetectorRef,
+    private toQname: ToQNamePipe,
+    private translate: TranslateService,
+    private horizontalDataService: HorizontalChartDataService,
+    private localSt: LocalStorageService,
+    private searchQuery: SearchQueryService
+  ) { }
 
   ngOnInit() {
     (Tooltip.positioners as any).cursor = function(chartElements: any, coordinates: any) {
@@ -112,11 +114,12 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
     this.barChartData = [{ data: [], backgroundColor: [], label: this.translate.instant('all') }];
 
     this.loading = true;
+    const apiQuery = this.searchQuery.getNormalizedApiQuery(this.query);
     this.api.get(
       '/warehouse/query/unit/aggregate',
       {
         query: {
-          ...this.query as any,
+          ...apiQuery as any,
           aggregateBy: ['unit.linkings.taxon.' + this.classificationValue],
           orderBy: [this.onlyCount === null ? 'count DESC' : this.onlyCount ? 'count DESC' : 'individualCountSum DESC'],
           pageSize: MAX_TAXA_SIZE,

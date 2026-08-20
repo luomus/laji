@@ -45,12 +45,12 @@ export class ObservationDataService {
       return this.cacheCount$!;
     }
 
-    query = this.searchQueryService.getQuery({
+    query = this.searchQueryService.getNormalizedApiQuery({
       ...query,
       onlyCount: false,
       taxonCounts: true,
       cache: typeof query.cache === 'undefined' ? isEmptyWarehouseQuery(query) : query.cache
-    }, query);
+    });
 
     this.lastQuery = newQuery;
     const obs$ = this.dataFetchMode === 'unit'

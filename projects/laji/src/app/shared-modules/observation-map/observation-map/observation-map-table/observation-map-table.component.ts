@@ -19,6 +19,7 @@ import { getSortsFromCols } from '../../../observation-result/observation-table/
 import { ObservationVisualizationMode } from '../observation-visualization';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { paths } from 'projects/laji-api-client/generated/api';
+import { SearchQueryService } from '../../../../observation/search-query.service';
 
 type QueryListQuery = paths['/warehouse/query/unit/list']['get']['parameters']['query'];
 
@@ -73,7 +74,8 @@ const visualizationModeColNames = {
     private api: LajiApiClientService,
     private cdr: ChangeDetectorRef,
     private documentViewerFacade: DocumentViewerFacade,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private searchQuery: SearchQueryService
   ) {
     this.columnLookup = this.tableColumnService.getAllColumnLookup();
   }
@@ -153,7 +155,7 @@ const visualizationModeColNames = {
     }
     this.loading = true;
     const listQuery: QueryListQuery = {
-      ...query as any,
+      ...this.searchQuery.getNormalizedApiQuery(query) as any,
       selected,
       orderBy: this.orderBy,
       pageSize: this.pageSize,
