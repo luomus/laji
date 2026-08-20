@@ -164,8 +164,7 @@ export class HomeDataService {
         after: HomeDataService.getRecentDate(),
         week: HomeDataService.getLastWeek()
       },
-      // On first load we want to use the cached data from the server. On following loads we want to load the each time.
-      fetchPolicy: this.historyService.isFirstLoad() ? 'cache-first' : 'no-cache',
+      fetchPolicy: 'cache-first',
       errorPolicy: 'all',
       omitPersonToken: true
     }).pipe(

@@ -20,7 +20,6 @@ export class GalleryService {
   getList(rawQuery: WarehouseQueryInterface, sort: string[] | undefined, pageSize: number, page: number): Observable<PagedResult<any>> {
     const query: MediaListQuery = {
       ...this.searchQuery.getNormalizedApiQuery(rawQuery) as any,
-      hasUnitMedia: true,
       selected: [
         'unit.taxonVerbatim,unit.linkings.taxon.id,unit.linkings.taxon.vernacularName,'
           + 'unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',
