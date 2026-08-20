@@ -8,9 +8,8 @@ export class InfoCardQueryService {
       superRecordBasis: ['PRESERVED_SPECIMEN'],
       sourceId: ['KE.3', 'KE.167'],
       // eslint-disable-next-line max-len
-      collectionAndRecordQuality: 'PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;HOBBYIST:EXPERT_VERIFIED,COMMUNITY_VERIFIED;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;',
+      collectionQuality: ['PROFESSIONAL'],
       typeSpecimen,
-      includeNonValidTaxa: false,
       cache: true,
       needsCheck: false
     };
@@ -21,7 +20,6 @@ export class InfoCardQueryService {
       taxonId: [taxonId],
       superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'],
       recordQuality: ['EXPERT_VERIFIED'],
-      includeNonValidTaxa: false,
       cache: true
     };
   }
@@ -31,7 +29,6 @@ export class InfoCardQueryService {
       taxonId: [taxonId],
       superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'],
       reliability: ['RELIABLE'],
-      includeNonValidTaxa: false,
       cache: true
     };
   }
