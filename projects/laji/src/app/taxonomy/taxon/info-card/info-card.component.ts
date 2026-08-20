@@ -1,4 +1,4 @@
-import { map, switchMap } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs';
 import { Observable, of, Subscription } from 'rxjs';
 import {
   ChangeDetectionStrategy,
@@ -22,6 +22,8 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderService } from '../../../shared/service/header.service';
 import { components } from 'projects/laji-api-client/generated/api.d';
+import { UserService } from '../../../shared/service/user.service';
+import { IMAGES_QUERY_PAGE_SIZE } from './taxon-images/taxon-images.component';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 type TaxonDescription = components['schemas']['LajiBackendContent'][number];
@@ -78,7 +80,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private router: Router,
     private headerService: HeaderService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -154,42 +157,59 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
     this.images = [];
 
-    const nbrOfImages = this.taxon.species ? 1 : 9;
+    const goalImagesCount = this.taxon.species ? 1 : 9;
 
-    const taxonImages = (this.taxonImages || []).filter(image => !image['keywords']?.includes('skeletal')).slice(0, nbrOfImages);
+    const taxonImages = (this.taxonImages || []).filter(image => !image['keywords']?.includes('skeletal')).slice(0, goalImagesCount);
     if (taxonImages.length > 0) {
       this.hasImageData = true;
     }
-    let missingImages = nbrOfImages - taxonImages.length;
 
-    let imageObs: Observable<any[]>;
-    if (missingImages > 0 && this.isFromMasterChecklist) {
-      imageObs = this.getImages(
-        InfoCardQueryService.getReliableHumanObservationQuery(this.taxon.id),
-        missingImages
-      ).pipe(
-        switchMap(observationImages => {
-          const images = taxonImages.concat(observationImages);
-          if (images.length > 0) {
-            this.hasImageData = true;
-            this.cd.markForCheck();
-          }
-          missingImages = nbrOfImages - images.length;
-
-          if (missingImages > 0) {
-            return this.getImages(
-              InfoCardQueryService.getSpecimenQuery(this.taxon.id),
-              missingImages
-            ).pipe(
-              map(collectionImages => images.concat(collectionImages))
-            );
-          } else {
-            return of(images);
-          }
-        }));
-    } else {
-      imageObs = of(taxonImages);
-    }
+    const imageObs = this.userService.isLoggedIn$.pipe(
+      switchMap(loggedIn => (
+        !(loggedIn && goalImagesCount - taxonImages.length > 0 && this.isFromMasterChecklist)
+          // default to images from parent
+          ? of(taxonImages)
+          // attempt to fill the rest of goal images count
+          : of(taxonImages).pipe(
+            // fallback 1
+            switchMap(images =>
+              goalImagesCount - images.length <= 0
+              ? of(images)
+              : this.getImages(
+                InfoCardQueryService.getExpertVerifiedObservationQuery(this.taxon.id),
+                IMAGES_QUERY_PAGE_SIZE
+              ).pipe(
+                map(images2 => { images.push(...images2); return images; })
+              )),
+            // fallback 2
+            switchMap(images =>
+              goalImagesCount - images.length <= 0
+              ? of(images)
+              : this.getImages(
+                InfoCardQueryService.getSpecimenQuery(this.taxon.id, true),
+                IMAGES_QUERY_PAGE_SIZE
+              ).pipe(
+                map(images2 => { images.push(...images2); return images; })
+              )),
+            // fallback 3
+            switchMap(images =>
+              goalImagesCount - images.length <= 0
+              ? of(images)
+              : this.getImages(
+                InfoCardQueryService.getSpecimenQuery(this.taxon.id, false),
+                IMAGES_QUERY_PAGE_SIZE
+              ).pipe(
+                map(images2 => { images.push(...images2); return images; })
+              )),
+          )
+      )),
+      tap(images => {
+        if (images.length > 0) {
+          this.hasImageData = true;
+          this.cd.markForCheck();
+        }
+      }),
+    );
 
     this.imageSub = imageObs.subscribe(images => {
       this.hasImageData = images.length > 0;

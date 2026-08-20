@@ -8,6 +8,8 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
+export const IMAGES_QUERY_PAGE_SIZE = 12;
+
 @Component({
     selector: 'laji-taxon-images',
     templateUrl: './taxon-images.component.html',
@@ -20,6 +22,7 @@ export class TaxonImagesComponent implements OnChanges, OnInit {
   @Input() taxonImages!: Array<Image>;
   @Input() isFromMasterChecklist!: boolean;
 
+  imagesQueryPageSize = IMAGES_QUERY_PAGE_SIZE;
   imageSets: { title: string; hasData?: boolean; query: WarehouseQueryInterface }[] = [];
   isLoggedIn$!: Observable<boolean>;
 

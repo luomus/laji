@@ -6,17 +6,20 @@ import { Image } from '../image-gallery/image.interface';
 import { IdService } from '../../service/id.service';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { paths } from 'projects/laji-api-client/generated/api';
+import { SearchQueryService } from '../../../observation/search-query.service';
 
 type MediaListQuery = paths['/warehouse/query/unitMedia/list']['get']['parameters']['query'];
 
 @Injectable({providedIn: 'root'})
 export class GalleryService {
-  constructor(private api: LajiApiClientService) {}
+  constructor(
+    private api: LajiApiClientService,
+    private searchQuery: SearchQueryService
+  ) {}
 
   getList(rawQuery: WarehouseQueryInterface, sort: string[] | undefined, pageSize: number, page: number): Observable<PagedResult<any>> {
     const query: MediaListQuery = {
-      ...rawQuery as any,
-      hasUnitMedia: true,
+      ...this.searchQuery.getNormalizedApiQuery(rawQuery) as any,
       selected: [
         'unit.taxonVerbatim,unit.linkings.taxon.id,unit.linkings.taxon.vernacularName,'
           + 'unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',

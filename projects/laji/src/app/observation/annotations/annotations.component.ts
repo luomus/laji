@@ -8,6 +8,7 @@ import { AnnotationService } from '../../shared-modules/document-viewer/service/
 import { DeleteOwnDocumentService } from '../../shared/service/delete-own-document.service';
 import { components, paths } from 'projects/laji-api-client/generated/api.d';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { SearchQueryService } from '../search-query.service';
 
 type AnnotationTag = components['schemas']['store-tag'];
 type WarehouseQueryListQuery = paths['/warehouse/query/unit/list']['get']['parameters']['query'];
@@ -52,7 +53,8 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
     private translations: TranslateService,
     private cd: ChangeDetectorRef,
     private annotationService: AnnotationService,
-    private deleteOwnDocument: DeleteOwnDocumentService
+    private deleteOwnDocument: DeleteOwnDocumentService,
+    private searchQuery: SearchQueryService
   ) { }
 
   ngOnInit() {
@@ -126,7 +128,7 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
       'unit.unitId'
     ];
     const query: WarehouseQueryListQuery = {
-      ...this.query as any,
+      ...this.searchQuery.getNormalizedApiQuery(this.query) as any,
       selected,
       orderBy: ['document.createdDate DESC', 'unit.unitId ASC'],
       pageSize: 18,
