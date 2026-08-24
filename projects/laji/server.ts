@@ -5,6 +5,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import AppServerModule from './src/main.server';
 import cacheMiddleware from './server-cache';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+require('dotenv').config();
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -17,6 +19,20 @@ export function app(): express.Express {
 
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
+
+  if (process.env.LOCAL_BUILD === 'true') {
+    server.use('/api', createProxyMiddleware({
+      target: process.env.API_BASE,
+      changeOrigin: true,
+      followRedirects: true,
+      pathRewrite: {
+        '^/api': '',
+      },
+      headers: {
+        Authorization: `Bearer ${process.env.ACCESS_TOKEN}`
+      }
+    }));
+  }
 
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
