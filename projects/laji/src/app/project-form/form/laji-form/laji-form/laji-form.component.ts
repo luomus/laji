@@ -15,10 +15,10 @@ import {
   ViewChild
 } from '@angular/core';
 import { FormApiClient } from '../../../../shared/api/FormApiClient';
-import { UserSettings, UserService, ExtendedProfile } from '../../../../shared/service/user.service';
+import { UserSettings, UserService, getDefaultMediaMetadata, DefaultMediaMetadata } from '../../../../shared/service/user.service';
 import { Logger } from '../../../../shared/logger/logger.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
-import { map, take } from 'rxjs';
+import { map, of, switchMap, take } from 'rxjs';
 import { Global } from '../../../../../environments/global';
 import { combineLatest, Subscription } from 'rxjs';
 import type LajiForm from '@luomus/laji-form/lib/index';
@@ -31,7 +31,6 @@ import { ErrorSchema } from '@rjsf/utils';
 import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Form = components['schemas']['Form'];
-type DefaultMediaMetadata = ExtendedProfile['settings']['defaultMediaMetadata'];
 
 interface ErrorModal {
   description: string;
@@ -278,8 +277,11 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
       this.userService.getUserSetting<any>(this.settingsKey).pipe(
         take(1)
       ),
-      this.userService.getProfile().pipe(map(profile => profile.settings?.defaultMediaMetadata))
-    ).subscribe(([settings, defaultMediaMetadata]) => {
+      this.userService.isLoggedIn$.pipe(switchMap(isLoggedIn =>
+        isLoggedIn
+          ? this.userService.getProfile().pipe(map(profile => profile.settings?.defaultMediaMetadata))
+          : of(getDefaultMediaMetadata()))
+      )).subscribe(([settings, defaultMediaMetadata]) => {
       this.lajiFormWrapperProto = LajiFormClass;
       this.lajiFormBs3Theme = LajiFormTheme;
       this.defaultMediaMetadata = defaultMediaMetadata;

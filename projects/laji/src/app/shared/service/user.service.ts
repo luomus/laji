@@ -95,26 +95,33 @@ interface UserServiceState extends PersistentState {
 
 export type ExtendedProfile = Omit<Profile, 'settings'>  & {
   settings: {
-    defaultMediaMetadata: {
-      capturerVerbatim: string;
-      intellectualOwner: string;
-      intellectualRights: MediaIntellectualRights;
-    };
+    defaultMediaMetadata: DefaultMediaMetadata;
   };
 };
 
-export const prepareProfile = (profile: Profile, user?: Person): ExtendedProfile => ({
+export const getDefaultMediaMetadata = () => ({
+  capturerVerbatim: '',
+  intellectualOwner: '',
+  intellectualRights: 'MZ.intellectualRightsARR',
+});
+
+export type DefaultMediaMetadata = ReturnType<typeof getDefaultMediaMetadata>;
+
+export const prepareProfile = (profile: Profile, user?: Person): ExtendedProfile => {
+  const defaultMediaMetadata = getDefaultMediaMetadata();
+  return {
     ...profile,
     settings: {
       ...(profile.settings || {}),
       defaultMediaMetadata: {
-        capturerVerbatim: user?.fullName ?? '',
-        intellectualOwner: user?.fullName ?? '',
-        intellectualRights: 'MZ.intellectualRightsARR',
+        ...getDefaultMediaMetadata(),
+        capturerVerbatim: user?.fullName ?? defaultMediaMetadata.capturerVerbatim,
+        intellectualOwner: user?.fullName ?? defaultMediaMetadata.intellectualOwner,
         ...(profile.settings?.defaultMediaMetadata || {}),
       }
     }
-  });
+  }
+};
 
 export const getLoginUrl = (next = '', lang = DEFAULT_LANG, base = '') => {
   if (!Global.lajiAuthSupportedLanguages.includes(lang)) {
