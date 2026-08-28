@@ -224,7 +224,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
           pageSize: 10,
           page: this.page
         };
-        return this.api.get('/warehouse/query/document/aggregate', { query });
+        return this.api.get('/warehouse/query/document/aggregate', { query }, { cacheInvalidationMs: 0 });
       })
     ).pipe(
       map(data => data.results)
@@ -266,7 +266,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
       pageSize: 10,
       page: this.page
     };
-    this.subscribeRefreshedAnnotations1 = this.api.get('/warehouse/query/document/aggregate', { query }).pipe(
+    this.subscribeRefreshedAnnotations1 = this.api.get('/warehouse/query/document/aggregate', { query }, { cacheInvalidationMs: 0 }).pipe(
       map(data => data.results)
     ).subscribe(
       data => {

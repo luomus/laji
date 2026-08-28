@@ -134,7 +134,7 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
       pageSize: 18,
       page: this.page
     };
-    this.api.get('/warehouse/query/unit/list', { query }).subscribe(data => {
+    this.api.get('/warehouse/query/unit/list', { query }, { cacheInvalidationMs: 0 }).subscribe(data => {
       this.cd.markForCheck();
       this.result = data;
       this.paginatorDisplay = this.result.total > this.result.pageSize;
