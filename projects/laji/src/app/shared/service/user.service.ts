@@ -27,7 +27,6 @@ import { components } from 'projects/laji-api-client/generated/api.d';
 type Person = components['schemas']['Person'];
 type SensitivePerson = Omit<components['schemas']['SensitivePerson'], '@context'>;
 type Profile = components['schemas']['store-profile'];
-type MediaIntellectualRights = components['schemas']['Image']['intellectualRights'];
 
 export interface UserSettingsResultList {
   aggregateBy?: string[];
@@ -120,7 +119,7 @@ export const prepareProfile = (profile: Profile, user?: Person): ExtendedProfile
         ...(profile.settings?.defaultMediaMetadata || {}),
       }
     }
-  }
+  };
 };
 
 export const getLoginUrl = (next = '', lang = DEFAULT_LANG, base = '') => {
