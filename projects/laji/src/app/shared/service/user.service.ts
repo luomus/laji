@@ -114,7 +114,7 @@ export const prepareProfile = (profile: Profile, user?: Person): ExtendedProfile
     settings: {
       ...(profile.settings || {}),
       defaultMediaMetadata: {
-        ...getDefaultMediaMetadata(),
+        ...defaultMediaMetadata,
         capturerVerbatim: user?.fullName ?? defaultMediaMetadata.capturerVerbatim,
         intellectualOwner: user?.fullName ?? defaultMediaMetadata.intellectualOwner,
         ...(profile.settings?.defaultMediaMetadata || {}),
