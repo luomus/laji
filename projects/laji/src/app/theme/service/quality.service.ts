@@ -23,7 +23,7 @@ export class QualityService {
       orderBy: orderBy as any,
       pageSize,
       page
-    } });
+    } }, { cacheInvalidationMs: 0 });
   }
 
   getMostActiveUsers(pageSize = 50, informalTaxonGroupId?: string, lastDate?: string): Observable<any> {
@@ -36,7 +36,7 @@ export class QualityService {
       pageSize,
       page: 1,
       onlyCount: true
-    } }).pipe(
+    } }, { cacheInvalidationMs: 0 }).pipe(
       map(data => data.results),
       map(data => data.map((row: any) => {
           row.userId = row.aggregateBy['unit.annotations.annotationByPersonName'] || '';

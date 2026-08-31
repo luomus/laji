@@ -174,8 +174,12 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       query['editorOrObserverPersonToken'] = this.userService.getToken();
     }
 
-    const findDoc$ = this.api.get('/warehouse/query/single' as any, { query }).pipe(
-        catchError((errors) => this.own ? this.api.get('/warehouse/query/single' as any, { query: { documentId: this.uri } }) : observableThrowError(errors)),
+    const findDoc$ = this.api.get('/warehouse/query/single' as any, { query }, { cacheInvalidationMs: 0 }).pipe(
+        catchError((errors) => this.own
+          ? this.api.get('/warehouse/query/single' as any,
+            { query: { documentId: this.uri } },
+            { cacheInvalidationMs: 0 }
+          ) : observableThrowError(errors)),
         map((doc: any) => doc.document),
         tap((doc) => {
           this.highlightParents = [];
