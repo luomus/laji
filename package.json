@@ -146,7 +146,7 @@
     "leaflet.sync": "^0.2.4",
     "localforage": "^1.10.0",
     "moment": "^2.29.4",
-    "ng2-charts": "^5.0.3",
+    "ng2-charts": "^10.0.0",
     "ngx-clipboard": "^16.0.0",
     "ngx-moment": "^6.0.2",
     "ngx-quicklink": "0.4.9",

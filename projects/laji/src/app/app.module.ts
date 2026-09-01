@@ -20,6 +20,7 @@ import { GraphQLModule } from './graph-ql/graph-ql.module';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { BrowserModule, provideClientHydration, Title } from '@angular/platform-browser';
 import { LajiTitle } from './shared/service/laji-title';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { LocaleModule } from './locale/locale.module';
 import { API_BASE_URL, LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { setLocale } from './app-routing.modules';
@@ -96,6 +97,7 @@ export function detectLangFromPath(pathname: string, langs = ['en', 'sv'], defau
   		withLocalStorage(),
   		withSessionStorage()
     ),
+    provideCharts(withDefaultRegisterables()),
   ]
 })
 export class AppModule {
