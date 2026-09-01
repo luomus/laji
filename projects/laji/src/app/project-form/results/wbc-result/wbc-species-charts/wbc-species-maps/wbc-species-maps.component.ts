@@ -65,12 +65,13 @@ export class WbcSpeciesMapsComponent implements OnChanges {
     if (!this.platformService.isBrowser) {
       return;
     }
-    require('leaflet.sync');
-    const maps = this.mapComponents.map(mapComponent => mapComponent.mapComponent.map);
-    if (maps.every(mapComponents => mapComponents)) {
-      this.maps = maps;
-      maps.forEach(m => this.initEventListeners(m));
-    }
+    import('leaflet.sync').then(() => {
+      const maps = this.mapComponents.map(mapComponent => mapComponent.mapComponent.map);
+      if (maps.every(mapComponents => mapComponents)) {
+        this.maps = maps;
+        maps.forEach(m => this.initEventListeners(m));
+      }
+    });
   }
 
 
