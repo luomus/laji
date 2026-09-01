@@ -275,6 +275,7 @@ export class WbcResultService {
       ...this.getFilterParams(undefined, undefined, birdAssociationArea) as any,
       taxonId,
       taxonCensus: taxonCensus ? taxonCensus : undefined,
+      aggregateBy: ['gathering.conversions.year', 'gathering.conversions.month'],
       pageSize: 10000,
       page: 1,
       onlyCount: false
