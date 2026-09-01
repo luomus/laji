@@ -5,6 +5,7 @@ import { Logger } from '../logger/logger.service';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { RESPONSE } from '../../../express.tokens';
 import { environment } from '../../../environments/environment';
+import { UserService } from '../service/user.service';
 
 const pauseBeforeResendError = 30000;
 const enabledEnvs = ['dev', 'beta'];
@@ -14,18 +15,29 @@ let errorSent = false;
 export class LajiErrorHandler extends ErrorHandler {
 
   private toastsService?: ToastsService;
-  private translate?: TranslateService;
   private logger?: Logger;
   private pause = false;
 
   constructor(
     private injector: Injector,
     @Optional() @Inject(RESPONSE) private response: any,
+    private userService: UserService,
+    private translate: TranslateService,
   ) {
     super();
   }
 
   handleError(error: any) {
+    if ((error as any)?.error?.code === 'INVALID TOKEN') {
+      this.userService.logout();
+      this.getToastsService().showError(
+        this.translate!.instant('error.youHaveBeenLoggedOut'),
+        undefined,
+        { closeButton: true }
+      );
+      return;
+    }
+
     if (this.pause || !error || (typeof error === 'object' && typeof error.message === 'string' && error.message.length === 0)) {
       return super.handleError(error);
     }
@@ -50,8 +62,8 @@ export class LajiErrorHandler extends ErrorHandler {
 
       if (enabledEnvs.includes(environment.type)) {
         this.getToastsService().showWarning(
-          this.getTranslateService().instant('error.scheduled.intro'),
-          this.getTranslateService().instant('error.scheduled.title'),
+          this.translate.instant('error.scheduled.intro'),
+          this.translate.instant('error.scheduled.title'),
         );
       }
 
@@ -72,8 +84,8 @@ export class LajiErrorHandler extends ErrorHandler {
           title: (error as any)?.error?.errorCode,
           message: (error as any)?.error?.message
         } : {
-          title: this.getTranslateService().instant('error.500.title'),
-          message: this.getTranslateService().instant('error.500.intro')
+          title: this.translate.instant('error.500.title'),
+          message: this.translate.instant('error.500.intro')
         };
 
         this.getToastsService().showError(message, title, { tapToDismiss: false, disableTimeOut: true, closeButton: true });
@@ -105,13 +117,6 @@ export class LajiErrorHandler extends ErrorHandler {
       this.toastsService = this.injector.get(ToastsService);
     }
     return this.toastsService;
-  }
-
-  private getTranslateService(): TranslateService {
-    if (!this.translate) {
-      this.translate = this.injector.get(TranslateService);
-    }
-    return this.translate;
   }
 
   private getLogger(): Logger {

@@ -269,6 +269,7 @@
   "error.logout": "Uloskirjautuminen epäonnistui. Yritä hetken kuluttua uudelleen.",
   "error.scheduled.intro": "Katko kestää noin kymmenen minuuttia ja sijoittuu klo 8-10 välille. Tämän aikana useimmat Lajitietokeskuksen palvelut eivät toimi.",
   "error.scheduled.title": "Huoltokatko joka kuukauden ensimmäinen torstai",
+  "error.youHaveBeenLoggedOut": "Istuntosi on vanhentunut, kirjasimme sinut ulos",
   "excel.batch": "erä",
   "excel.combine.all": "Kaikki yhteen havaintoerään, jos mahdollista",
   "excel.combine.gathering": "Päivän ja paikan yhdistelmästä erillinen havaintoerä",
