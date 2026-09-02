@@ -45,7 +45,7 @@
             <li>{{ 'saveObservations.easy.3' | translate }}</li>
           </ul>
         </div>
-        <div><a href="https://loydos.luomus.fi/loydos/forms/luontohavainto?language=fi" target="_blank" class="btn btn-primary">{{ 'saveObservations.easy.report' | translate }}</a></div>
+        <div><a [routerLink]="['/project', 'MHL.1222'] | localize" class="btn btn-primary">{{ 'saveObservations.easy.report' | translate }}</a></div>
       </div>
     </div>
   </section>
