@@ -84,7 +84,7 @@
       <ul class="br-list">
         @if ((isLoggedIn$ | async) === true) {
           <li>
-            <a [routerLink]="'/observation/map' | localize" [queryParams]="{taxonId: taxon.id}">
+            <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id}">
               {{ 'taxonomy.browse' | translate }}
             </a>
           </li>
