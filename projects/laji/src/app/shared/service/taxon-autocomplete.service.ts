@@ -114,12 +114,15 @@ export class TaxonAutocompleteService {
       case 'MX.euringCode':
         return taxon['matchingName'].toLowerCase();
       case 'MX.vernacularName':
-        return taxon['vernacularName'] !== '' ? taxon['vernacularName'] : taxon['scientificName'];
       case 'MX.alternativeVernacularName':
       case 'MX.obsoleteVernacularName':
       case 'MX.tradeName':
       case 'MX.colloquialVernacularName':
-        return taxon['vernacularName'] !== '' ? taxon['vernacularName'] : taxon['scientificName'];
+        return (taxon['vernacularName'] && taxon['vernacularName'] !== '')
+          ? taxon['vernacularName']
+          : (taxon['scientificName'] && taxon['scientificName'] !== '')
+            ? taxon['scientificName']
+            : taxon['id'];
       default:
         return taxon['scientificName'];
     }
