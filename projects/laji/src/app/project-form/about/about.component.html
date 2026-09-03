@@ -40,9 +40,6 @@
         } @else {
           <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
         }
-        @if (data.form.options?.openForm) {
-          <img src="/static/images/partner-logos/eu-funding.png" alt="Partly funded by the European Union." class="my-8">
-        }
         <laji-haseka-latest [collectionID]="data.form.collectionID!"
           [showFormNames]="false"
           [complainLocality]="false"
