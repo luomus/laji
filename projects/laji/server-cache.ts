@@ -20,9 +20,9 @@ const getQueryStr = (req: Request) => {
   return Object.keys(queryObj).sort().reduce((str, k) => str += `${str.length ? '&' : ''}${k}=${queryObj[k]}`, '');
 };
 
-const getCacheKey = (req: Request) => {
+const getCacheKey = (req: Request, buildId: string) => {
   const queryStr = getQueryStr(req);
-  return `page:${req.path}?${queryStr}`;
+  return `${buildId}:page:${req.path}?${queryStr}`;
 };
 
 interface CacheLocals {
@@ -42,12 +42,14 @@ export class SSRCache {
   private redisTTL = promisify(this.redisClient.TTL).bind(this.redisClient);
   private redisDel: (key: string) => Promise<number> = promisify(this.redisClient.del).bind(this.redisClient);
 
+  constructor(private buildId: string) { }
+
   private async serializeResponse(response: Response): Promise<string> {
     const cloned = response.clone();
     const entry: CacheEntry = {
       body: await cloned.text(),
       headers: Object.fromEntries(response.headers.entries()),
-    }
+    };
     return JSON.stringify(entry);
   }
 
@@ -59,7 +61,7 @@ export class SSRCache {
   makeLookupMiddleware(): RequestHandler {
     const cacheLookupMiddleware: RequestHandler = async (req, res, next) => {
       const shouldCache_ = this.redisClient.connected && shouldCache(req);
-      const cacheKey = getCacheKey(req);
+      const cacheKey = getCacheKey(req, this.buildId);
       res.locals.cache = {
         shouldCache: shouldCache_,
         key: cacheKey,
@@ -87,7 +89,7 @@ export class SSRCache {
           try {
             await this.redisDel(cacheKey);
           } catch (e1) {
-            console.error('Failed to delete Redis key', e1)
+            console.error('Failed to delete Redis key', e1);
           }
           next();
         }
@@ -108,7 +110,7 @@ export class SSRCache {
 
     let ttl: number | undefined;
     try {
-      ttl = await this.redisTTL(locals.key)
+      ttl = await this.redisTTL(locals.key);
     } catch (e) {
       ttl = undefined;
     }

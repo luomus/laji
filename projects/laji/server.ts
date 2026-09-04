@@ -2,18 +2,34 @@ import { AngularNodeAppEngine, writeResponseToNodeResponse } from '@angular/ssr/
 import express, { ErrorRequestHandler } from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { readFileSync } from 'node:fs';
 import { SSRCache } from './server-cache';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 require('dotenv').config();
+
+function readBuildId(serverDistFolder: string): string {
+  const buildIdPath = resolve(serverDistFolder, 'build_id.txt');
+
+  try {
+    return readFileSync(buildIdPath, 'utf8').trim();
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+      console.warn(`Could not find build ID: ${buildIdPath}`);
+      return '';
+    }
+
+    throw error;
+  }
+}
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
   const appEngine = new AngularNodeAppEngine();
-  const cache = new SSRCache();
 
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
   const browserDistFolder = resolve(serverDistFolder, '../browser');
+  const cache = new SSRCache(readBuildId(serverDistFolder));
 
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
