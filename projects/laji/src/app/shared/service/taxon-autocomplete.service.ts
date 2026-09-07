@@ -147,7 +147,7 @@ export class TaxonAutocompleteService {
         }
       }
     });
-    return boldedWords.reduce((joined, [w]) => joined.concat(' ', w), '');
+    return boldedWords.map(([w]) => w).join(' ');
 
     // https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
     function escapeRegexp(regexpString: string) {
