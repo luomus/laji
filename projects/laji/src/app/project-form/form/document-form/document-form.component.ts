@@ -133,10 +133,6 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   successNavigation() {
     if (this.vm.form.options?.simple) {
       this.router.navigate(this.localizeRouterService.translateRoute([this.vm.form.category ? '/save-observations' : '/vihko']));
-    } else if (this.vm.form.options?.openForm) {
-      this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(projectRoute => {
-        this.router.navigate(['./thank-you'], {relativeTo: projectRoute});
-      });
     } else if (this.vm.form.options?.resultServiceType) {
       this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(projectRoute => {
         this.router.navigate(['./stats'], {relativeTo: projectRoute});
