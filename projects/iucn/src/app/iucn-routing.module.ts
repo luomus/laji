@@ -7,6 +7,7 @@ import { LocaleSvComponent } from '../../../laji/src/app/locale/locale-sv.compon
 import { LocaleFiComponent } from '../../../laji/src/app/locale/locale-fi.component';
 import { catchError, flatMap } from 'rxjs';
 import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-found.component';
+import { CheckLoginGuard } from 'projects/laji/src/app/shared/guards/check-login.guard';
 
 @Injectable()
 export class PreloadSelectedModulesList implements PreloadingStrategy {
@@ -17,7 +18,7 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
   }
 }
 
-const routes: Routes = [
+const baseRoutes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./home/iucn-home.module').then(m => m.IucnHomeModule), data: {preload: true}},
   {path: 'about', loadChildren: () => import('./about/about.module').then(m => m.AboutModule), data: {title: 'iucn.about.title'}},
   {path: 'regional', loadChildren: () => import('./regional/regional.module')
@@ -32,21 +33,29 @@ const routes: Routes = [
 
 const routesWithLang: Routes = [
   {path: 'en', children: [
-      ...routes,
+      ...baseRoutes,
       {path: '**', component: NotFoundComponent}
     ], component: LocaleEnComponent},
   {path: 'sv', children: [
-      ...routes,
+      ...baseRoutes,
       {path: '**', component: NotFoundComponent}
     ], component: LocaleSvComponent},
   {path: '', children: [
-      ...routes,
+      ...baseRoutes,
       {path: '**', component: NotFoundComponent}
     ], component: LocaleFiComponent}
 ];
 
+export const routes: Routes = [
+  {
+    path: '',
+    children: routesWithLang,
+    canActivate: [CheckLoginGuard]
+  }
+];
+
 @NgModule({
-  imports: [RouterModule.forRoot(routesWithLang, {
+  imports: [RouterModule.forRoot(routes, {
     enableTracing: false,
     preloadingStrategy: PreloadSelectedModulesList,
 })],
