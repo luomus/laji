@@ -4,6 +4,7 @@ import { UserService } from '../service/user.service';
 import { Observable } from 'rxjs';
 import { Location } from '@angular/common';
 import { PlatformService } from '../../root/platform.service';
+import { environment } from 'projects/laji/src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,11 @@ export class CheckLoginGuard  {
     }
     this.isLoginChecked = true;
 
-    this.userService.login(route.queryParams['token']).subscribe();
+    if (environment.type === 'iucn') {
+      this.userService.setNotLoggedIn();
+    } else {
+      this.userService.login(route.queryParams['token']).subscribe();
+    }
 
     if (route.queryParams['token'] && this.userService.hasReturnUrl()) {
       return this.router.parseUrl(this.userService.getReturnUrl());
