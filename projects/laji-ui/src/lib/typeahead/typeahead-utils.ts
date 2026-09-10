@@ -10,13 +10,6 @@ export function latinize(str: string): string {
   });
 }
 
-export function escapeRegexp(queryToEscape: string): string {
-  // Regex: capture the whole query string and replace it with the string
-  // that will be used to match the results, for example if the capture is
-  // 'a' the result will be \a
-  return queryToEscape.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1');
-}
-
 export function tokenize(str: string,
                          wordRegexDelimiters = ' ',
                          phraseRegexDelimiters = '', delimitersForMultipleSearch?: string): Array<string> {
