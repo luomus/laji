@@ -48,10 +48,13 @@ let nextWindowId = 0;
       height: 100px;
     }
 
+    .dropdown-item {
+      display: block;
+    }
+
     :host {
       top: 0;
       left: 0;
-      width: 600px;
       z-index: 10000 !important;
     }
   `
