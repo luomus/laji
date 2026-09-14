@@ -79,15 +79,10 @@ export class DocumentPermissionService {
         const isFormAdmin$ = this.userIsFormAdmin(user, doc.collectionID);
 
         return isFormAdmin$.pipe(
-          map(isFormAdmin => {
-            console.log('right', {
+          map(isFormAdmin => ({
             hasEditRights: isFormAdmin || doc.editors?.includes(user.id) || false,
             hasDeleteRights: isFormAdmin || doc.creator === user.id
-          });
-            return {
-            hasEditRights: isFormAdmin || doc.editors?.includes(user.id) || false,
-            hasDeleteRights: isFormAdmin || doc.creator === user.id
-          }})
+          }))
         );
       })
     );
