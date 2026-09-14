@@ -29,8 +29,8 @@ import { Global } from '../../../environments/global';
 import { DocumentViewerFacade } from '../document-viewer/document-viewer.facade';
 import { LatestDocumentsFacade } from '../latest-documents/latest-documents.facade';
 import { DeleteOwnDocumentService } from '../../shared/service/delete-own-document.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import type { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import type { components } from 'projects/laji-api-client/generated/api.d';
 
 type Document = components['schemas']['store-document'];
 
@@ -115,7 +115,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     private documentViewerFacade: DocumentViewerFacade,
     private latestFacade: LatestDocumentsFacade,
     private deleteOwnDocument: DeleteOwnDocumentService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {
     this.selectedMap.taxon += ',' + Global.documentCountUnitProperties.map(prop => 'gatherings.units.' + prop).join(',');
     if (!this.year) {

@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter, OnDestroy,
 ChangeDetectionStrategy} from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Annotation = components['schemas']['store-annotation'];
 type AnnotationTag = components['schemas']['store-tag'];

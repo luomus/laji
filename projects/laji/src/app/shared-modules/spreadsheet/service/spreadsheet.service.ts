@@ -10,7 +10,7 @@ import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 import { GeneratorService } from './generator.service';
 import * as Util from '../../../shared/utils';
 import { FormService } from '../../../shared/service/form.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Form = components['schemas']['Form'];
 

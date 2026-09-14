@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { IdService } from '../service/id.service';
 
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Annotation = components['schemas']['store-annotation'];
 type AnnotationTag = components['schemas']['store-tag'];

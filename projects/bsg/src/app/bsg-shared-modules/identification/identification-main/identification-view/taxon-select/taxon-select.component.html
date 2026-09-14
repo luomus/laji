@@ -1,0 +1,32 @@
+@if (showContinentSelect) {
+  <select class="form-control d-inline continent-select" [(ngModel)]="continent">
+    <option [value]="undefined">{{ 'identification.allContinents' | translate }}</option>
+    @for (continent of (filters$ | async)?.continent; track continent.id) {
+      <option [ngValue]="continent.id">{{ ('continents.' + continent.name) | translate }}</option>
+    }
+  </select>
+}
+<input
+  type="text"
+  class="form-control d-inline"
+  [class.input-with-select]="showContinentSelect"
+  [class.loading]="loading"
+  name="target"
+  [placeholder]="placeholder"
+  [(ngModel)]="value"
+  [luTypeahead]="dataSource"
+  [luTypeaheadOptionsLimit]="limit"
+  [luTypeaheadWaitMs]="200"
+  [luTypeaheadMinLength]="0"
+  [luTypeaheadOptionField]="'commonName'"
+  [luTypeaheadItemTemplate]="taxonItem"
+  (luTypeaheadOnSelect)="onTaxonSelect($event)"
+  [luTypeaheadSelectFirstItem]="true"
+  [luTypeaheadIsFirstItemActive]="true"
+  autocomplete="off"
+  autocorrect="off"
+>
+
+<ng-template #taxonItem let-item="item">
+  <span class="autocomplete-container" [innerHTML]="item['autocompleteDisplayName']"></span>
+</ng-template>

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { Image } from './image.interface';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { components } from 'projects/laji-api-client/generated/api';
 
 type IntellectualRightsEnum = components['schemas']['Image']['intellectualRights'];
 

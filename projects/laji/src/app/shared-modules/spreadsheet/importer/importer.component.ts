@@ -22,7 +22,7 @@ import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { LocalStorage } from 'ngx-webstorage';
 import Hash from 'object-hash';
-import { ImportTableColumn } from '../../../+haseka/tools/model/import-table-column';
+import { ImportTableColumn } from '../../../haseka/tools/model/import-table-column';
 import { catchError, concatMap, filter, map, switchMap, takeUntil, tap, toArray } from 'rxjs';
 import { ExcelToolService } from '../service/excel-tool.service';
 import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.facade';
@@ -33,8 +33,8 @@ import { Logger } from '../../../shared/logger';
 import { toHtmlSelectElement } from '../../../shared/service/html-element.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
-import type { components } from 'projects/laji-api-client-b/generated/api';
-import type { paths } from 'projects/laji-api-client-b/generated/api';
+import type { components } from 'projects/laji-api-client/generated/api';
+import type { paths } from 'projects/laji-api-client/generated/api';
 
 type Form = components['schemas']['Form'];
 type PublicityRestrictions = NonNullable<paths['/documents/batch/{jobID}']['post']['parameters']['query']>['publicityRestrictions'];

@@ -15,7 +15,7 @@ import { Global } from '../../../../environments/global';
 import { DocumentViewerFacade } from '../document-viewer.facade';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 import {Subject, Subscription} from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
     selector: 'laji-user-document-tools',
@@ -62,7 +62,7 @@ export class UserDocumentToolsComponent implements OnInit {
     private logger: Logger,
     private reloadObservationView: ReloadObservationViewService,
     private documentViewerFacade: DocumentViewerFacade,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   @Input()

@@ -17,8 +17,8 @@ import {
 } from '@angular/core';
 import { Observable, of, of as ObservableOf, Subscription, timer } from 'rxjs';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { TypeaheadMatch } from 'projects/laji-ui/src/lib/typeahead/typeahead-match.class';
 
 type TaxonAutocompleteResponse = components['schemas']['TaxonAutocompleteResponse'];
@@ -65,7 +65,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   private previewedTaxon?: TypeaheadMatch;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private cdr: ChangeDetectorRef,
     private taxonAutocompleteService: TaxonAutocompleteService,
     private renderer: Renderer2

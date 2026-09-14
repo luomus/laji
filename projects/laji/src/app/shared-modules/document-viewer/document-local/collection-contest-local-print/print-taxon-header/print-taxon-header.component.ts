@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import type { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import type { components } from 'projects/laji-api-client/generated/api';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -17,7 +17,7 @@ export class PrintTaxonHeaderComponent implements OnInit {
 
   constructor(
     private cd: ChangeDetectorRef,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   ngOnInit() {

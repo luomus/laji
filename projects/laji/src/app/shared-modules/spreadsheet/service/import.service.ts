@@ -11,9 +11,9 @@ import {
 import { MappingService } from './mapping.service';
 import Hash from 'object-hash';
 import { delay, expand } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import type { components } from 'projects/laji-api-client-b/generated/api';
-import type { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import type { components } from 'projects/laji-api-client/generated/api';
+import type { paths } from 'projects/laji-api-client/generated/api';
 
 type Document = components['schemas']['store-document'];
 type BatchJob = components['schemas']['BatchJobValidationStatusResponse'];
@@ -77,7 +77,7 @@ export class ImportService {
 
   constructor(
     private mappingService: MappingService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   hasInvalidValue(value: unknown, field: IFormField) {

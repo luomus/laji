@@ -27,9 +27,9 @@ import { TableColumnService } from '../../datatable/service/table-column.service
 import { ObservationTableColumn } from '../model/observation-table-column';
 import { DatatableUtil } from '../../datatable/service/datatable-util.service';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { SearchQueryService } from '../../../+observation/search-query.service';
-import { DataFetchMode } from '../../../+observation/observation-data.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { SearchQueryService } from '../../../observation/search-query.service';
+import { DataFetchMode } from '../../../observation/observation-data.service';
 import { isEmptyWarehouseQuery } from '../../../shared/api/util';
 
 interface IInternalObservationTableColumn extends ObservationTableColumn {
@@ -58,7 +58,7 @@ export class ObservationResultService {
   }
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private searchQuery: SearchQueryService,
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
     private datatableUtil: DatatableUtil,
@@ -83,8 +83,9 @@ export class ObservationResultService {
     }
 
     if (!this.aggregateData) {
+      const normalizedQuery = this.searchQuery.getNormalizedApiQuery(query);
       const queryParams = {
-        ...query,
+        ...normalizedQuery,
         cache: (query.cache || isEmptyWarehouseQuery(query)),
         aggregateBy: [..._aggregateBy],
         orderBy,
@@ -123,10 +124,11 @@ export class ObservationResultService {
       this.data = undefined;
     }
     if (!this.data) {
+      const normalizedQuery = this.searchQuery.getNormalizedApiQuery(query);
       const cache = (query.cache || isEmptyWarehouseQuery(query));
       const preparedFields = [...this.prepareFields(selected), ...this.idFields];
       const queryParams = {
-        ...query,
+        ...normalizedQuery,
         cache,
         aggregateBy: preparedFields,
         selected: preparedFields,

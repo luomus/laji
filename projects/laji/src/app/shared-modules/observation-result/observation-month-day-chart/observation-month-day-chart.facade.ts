@@ -5,8 +5,9 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
+import { SearchQueryService } from '../../../observation/search-query.service';
 
 type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
@@ -26,15 +27,16 @@ export class ObservationMonthDayChartFacade {
   chartData$ = new BehaviorSubject<ChartData>({yearChartData: [], monthChartDataArr: []});
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private valueMappingService: WarehouseValueMappingService,
     private triplestoreLabelService: TriplestoreLabelService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private searchQuery: SearchQueryService
   ) {}
 
   loadChartData(query: WarehouseQueryInterface, useIndividualCount: boolean) {
     const aggregateQuery: AggregateQueryParams = {
-      ...query as any,
+      ...this.searchQuery.getNormalizedApiQuery(query) as any,
       aggregateBy: ['gathering.conversions.month', 'gathering.conversions.day', 'unit.lifeStage'],
       orderBy: ['unit.lifeStage'],
       pageSize: 10000,

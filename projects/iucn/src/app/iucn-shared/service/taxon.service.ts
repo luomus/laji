@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components, operations, paths } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components, operations, paths } from 'projects/laji-api-client/generated/api.d';
 
 export type TaxonQuery = operations['TaxaController_getPageWithFilters']['parameters']['query'];
 export type TaxonFilters = NonNullable<operations['TaxaController_getPageWithFilters']['requestBody']>['content']['application/json'];
@@ -22,7 +22,7 @@ export class TaxonService {
   private treeRequest: {[key: string]: Observable<RedListTaxonGroupExpanded[]>} = {};
 
   constructor(
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   getTaxon(id: string, checklistVersion?: ChecklistVersion): Observable<Taxon> {

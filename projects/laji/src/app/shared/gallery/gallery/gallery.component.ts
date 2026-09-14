@@ -16,7 +16,7 @@ import {catchError, delay, map, tap} from 'rxjs';
 import { IImageSelectEvent } from '../image-gallery/image.interface';
 import { QueryParamsHandling } from '@angular/router';
 import { ViewType } from '../image-gallery';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type TaxonImage = components['schemas']['LajiBackendImage'];
 

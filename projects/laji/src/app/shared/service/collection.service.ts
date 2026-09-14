@@ -7,10 +7,10 @@ import { GraphQLService } from '../../graph-ql/service/graph-ql.service';
 import { gql } from 'apollo-angular';
 import { WarehouseQueryInterface } from '../model/WarehouseQueryInterface';
 import { UserService } from './user.service';
-import { ObservationFacade } from '../../+observation/observation.facade';
+import { ObservationFacade } from '../../observation/observation.facade';
 import { TreeOptionsNode } from '../../shared-modules/tree-select/tree-select.component';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components, paths } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components, paths } from 'projects/laji-api-client/generated/api.d';
 
 type Collection = components['schemas']['SensitiveCollection'];
 type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
@@ -39,8 +39,10 @@ export interface ICollectionsTreeNode {
 }
 
 interface IQueryResult {
-  collection: ICollectionsTreeNode[];
-}
+  collection: {
+    results: ICollectionsTreeNode[];
+  };
+};
 
 export interface ICollectionCounts {
   specimen?: number;
@@ -53,20 +55,9 @@ export class CollectionService {
 
   private allWarehouseCollection$?: Observable<string[]>;
   private TREE_QUERY = gql`
-  query {
-    collection {
-      id
-      longName
-      hasChildren
-      collectionType
-      collectionQuality
-      children {
-        id
-        longName
-        hasChildren
-        collectionType
-        collectionQuality
-        children {
+    query {
+      collection: CollectionsController_getTree {
+        results {
           id
           longName
           hasChildren
@@ -90,24 +81,34 @@ export class CollectionService {
                 hasChildren
                 collectionType
                 collectionQuality
+                children {
+                  id
+                  longName
+                  hasChildren
+                  children {
+                    id
+                    longName
+                    hasChildren
+                  }
+                }
               }
             }
           }
         }
       }
     }
-  }`;
+  `;
 
   constructor(
     private graphQlService: GraphQLService,
     private userService: UserService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {
   }
 
   getAllAsKeyValue$(mustHaveWarehouseData = false) {
     const all$ = this.api.get('/collections', { query: { selectedFields: 'id,collectionName', pageSize: 100000 } })
-    .pipe(map(({results}) => results.map(({id, collectionName}) => ({ id, value: collectionName }))));
+    .pipe(map(({results}) => results.map(({id, collectionName}) => ({ id, value: collectionName || id }))));
     if (mustHaveWarehouseData) {
       return this.getAllWarehouseCollections$().pipe(
         switchMap(warehouseCollection => all$.pipe(
@@ -122,10 +123,10 @@ export class CollectionService {
     return this.api.get('/collections/{id}', { path: { id } });
   }
 
-  getName$(id: string, empty: null|string = null): Observable<string> {
+  getName$(id: string): Observable<string> {
     return this.getAllAsKeyValue$().pipe(
       map(data => data.find(col => col.id === id)),
-      map(col => col ? col.value : (empty === null ? id : empty))
+      map(col => col?.value ? col.value : id)
     );
   }
 
@@ -167,9 +168,9 @@ export class CollectionService {
     }).pipe(
       catchError((err, caught) => {
         console.error('GraphQL error when getting collections tree: ', err, caught);
-        return of({data: { collection: [] }});
+        return of({data: { collection: { results: [] } }});
       }),
-      map(result => (result?.data?.collection ?? []).filter((node): node is ICollectionsTreeNode => !!node))
+      map(result => (result?.data?.collection?.results ?? []).filter((node): node is ICollectionsTreeNode => !!node))
     );
   }
 

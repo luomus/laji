@@ -4,7 +4,7 @@ import { LocalDb } from '../shared/local-db/local-db.abstract';
 import { EMPTY, from, Observable, of, Subject } from 'rxjs';
 import { catchError, map, mergeMap, switchMap, tap, toArray } from 'rxjs';
 import { FormService } from '../shared/service/form.service';
-import type { components } from 'projects/laji-api-client-b/generated/api';
+import type { components } from 'projects/laji-api-client/generated/api';
 
 type Document = components['schemas']['store-document'];
 type Person = components['schemas']['Person'];

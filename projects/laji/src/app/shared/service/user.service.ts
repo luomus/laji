@@ -21,13 +21,12 @@ import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
 import { Global } from '../../../environments/global';
 import { RegistrationContact } from './project-form.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Person = components['schemas']['Person'];
 type SensitivePerson = Omit<components['schemas']['SensitivePerson'], '@context'>;
 type Profile = components['schemas']['store-profile'];
-type MediaIntellectualRights = components['schemas']['Image']['intellectualRights'];
 
 export interface UserSettingsResultList {
   aggregateBy?: string[];
@@ -95,26 +94,33 @@ interface UserServiceState extends PersistentState {
 
 export type ExtendedProfile = Omit<Profile, 'settings'>  & {
   settings: {
-    defaultMediaMetadata: {
-      capturerVerbatim: string;
-      intellectualOwner: string;
-      intellectualRights: MediaIntellectualRights;
-    };
+    defaultMediaMetadata: DefaultMediaMetadata;
   };
 };
 
-export const prepareProfile = (profile: Profile, user?: Person): ExtendedProfile => ({
+export const getDefaultMediaMetadata = () => ({
+  capturerVerbatim: '',
+  intellectualOwner: '',
+  intellectualRights: 'MZ.intellectualRightsARR',
+});
+
+export type DefaultMediaMetadata = ReturnType<typeof getDefaultMediaMetadata>;
+
+export const prepareProfile = (profile: Profile, user?: Person): ExtendedProfile => {
+  const defaultMediaMetadata = getDefaultMediaMetadata();
+  return {
     ...profile,
     settings: {
       ...(profile.settings || {}),
       defaultMediaMetadata: {
-        capturerVerbatim: user?.fullName ?? '',
-        intellectualOwner: user?.fullName ?? '',
-        intellectualRights: 'MZ.intellectualRightsARR',
+        ...defaultMediaMetadata,
+        capturerVerbatim: user?.fullName ?? defaultMediaMetadata.capturerVerbatim,
+        intellectualOwner: user?.fullName ?? defaultMediaMetadata.intellectualOwner,
         ...(profile.settings?.defaultMediaMetadata || {}),
       }
     }
-  });
+  };
+};
 
 export const getLoginUrl = (next = '', lang = DEFAULT_LANG, base = '') => {
   if (!Global.lajiAuthSupportedLanguages.includes(lang)) {
@@ -191,7 +197,7 @@ export class UserService implements OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private platformService: PlatformService,
     private storage: LocalStorageService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {}
 
   /**
@@ -212,9 +218,8 @@ export class UserService implements OnDestroy {
       this.setNotLoggedIn();
       return of(false);
     }
-    this.api.setPersonToken(token);
     this.store.next({ ...this.store.value, loginState: { _tag: 'loading' }, user: { _tag: 'loading' } });
-    return this.api.get('/person').pipe(
+    return this.api.get('/person', { header: { 'Person-Token': token } }).pipe(
       httpOkError([404, 400], null),
       retryWithBackoff(300),
       tap(person => {
@@ -224,6 +229,7 @@ export class UserService implements OnDestroy {
         }
         // if person is valid, we have succesfully logged in
         this.persistentState = { ...this.persistentState, loginState: { _tag: 'logged_in', token }};
+        this.api.setPersonToken(token);
         this.store.next({
           ...this.store.value,
           ...this.persistentState,
@@ -376,6 +382,16 @@ export class UserService implements OnDestroy {
     );
   }
 
+  setNotLoggedIn() {
+    this.persistentState = { ...this.persistentState, loginState: { _tag: 'not_logged_in' }};
+    this.store.next({
+      ...this.store.value,
+      ...this.persistentState,
+      user: { _tag: 'not_logged_in' }
+    });
+    this.api.setPersonToken(undefined);
+  }
+
   ngOnDestroy() {
     this.subLogout?.unsubscribe();
   }
@@ -397,15 +413,5 @@ export class UserService implements OnDestroy {
     } else {
       return this.inMemoryPersistentState;
     }
-  }
-
-  private setNotLoggedIn() {
-      this.persistentState = { ...this.persistentState, loginState: { _tag: 'not_logged_in' }};
-      this.store.next({
-        ...this.store.value,
-        ...this.persistentState,
-        user: { _tag: 'not_logged_in' }
-      });
-      this.api.setPersonToken(undefined);
   }
 }

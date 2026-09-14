@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { map, tap } from 'rxjs';
 import { MultiLanguage } from '../../shared/model/MultiLanguage';
 import { Subscription } from 'rxjs';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type InformationChild = components['schemas']['InformationChild'];
 
@@ -56,7 +56,7 @@ export class InfoPageComponent implements OnChanges, OnDestroy {
 
   constructor(
     private translateService: TranslateService,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private cdr: ChangeDetectorRef
   ) { }
 

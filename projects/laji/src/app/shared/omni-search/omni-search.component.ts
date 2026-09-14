@@ -17,8 +17,8 @@ import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TaxaWithAutocomplete, TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
 
 type UnitCountQuery = paths['/warehouse/query/unit/count']['get']['parameters']['query'];
 
@@ -54,7 +54,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   private subCnt?: Subscription;
   private inputChange?: Subscription;
 
-  constructor(private api: LajiApiClientBService,
+  constructor(private api: LajiApiClientService,
               private localizeRouterService: LocalizeRouterService,
               private router: Router,
               private changeDetector: ChangeDetectorRef,

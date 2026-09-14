@@ -7,6 +7,7 @@ import { LocaleSvComponent } from '../../../laji/src/app/locale/locale-sv.compon
 import { LocaleFiComponent } from '../../../laji/src/app/locale/locale-fi.component';
 import { catchError, flatMap } from 'rxjs';
 import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-found.component';
+import { CheckLoginGuard } from 'projects/laji/src/app/shared/guards/check-login.guard';
 
 @Injectable()
 export class PreloadSelectedModulesList implements PreloadingStrategy {
@@ -17,36 +18,44 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
   }
 }
 
-const routes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: () => import('./+home/iucn-home.module').then(m => m.IucnHomeModule), data: {preload: true}},
-  {path: 'about', loadChildren: () => import('./+about/about.module').then(m => m.AboutModule), data: {title: 'iucn.about.title'}},
-  {path: 'regional', loadChildren: () => import('./+regional/regional.module')
+const baseRoutes: Routes = [
+  {path: '', pathMatch: 'full', loadChildren: () => import('./home/iucn-home.module').then(m => m.IucnHomeModule), data: {preload: true}},
+  {path: 'about', loadChildren: () => import('./about/about.module').then(m => m.AboutModule), data: {title: 'iucn.about.title'}},
+  {path: 'regional', loadChildren: () => import('./regional/regional.module')
       .then(m => m.RegionalModule), data: {title: 'iucn.regional.title'}},
-  {path: 'publications', loadChildren: () => import('./+publications/publications.module')
+  {path: 'publications', loadChildren: () => import('./publications/publications.module')
       .then(m => m.PublicationsModule), data: {title: 'iucn.publications.title'}},
-  {path: 'user', loadChildren: () => import('../../../laji/src/app/+user/user.module').then(m => m.UserModule)},
-  {path: 'view', loadChildren: () => import('../../../laji/src/app/+viewer/viewer.module')
+  {path: 'user', loadChildren: () => import('../../../laji/src/app/user/user.module').then(m => m.UserModule)},
+  {path: 'view', loadChildren: () => import('../../../laji/src/app/viewer/viewer.module')
       .then(m => m.ViewerModule), data: {title: 'viewer.document'}},
-  {path: 'results', loadChildren: () => import('./+taxonomy/iucn-taxonomy.module').then(m => m.IucnTaxonomyModule), data: {preload: true}},
+  {path: 'results', loadChildren: () => import('./taxonomy/iucn-taxonomy.module').then(m => m.IucnTaxonomyModule), data: {preload: true}},
 ];
 
 const routesWithLang: Routes = [
   {path: 'en', children: [
-      ...routes,
+      ...baseRoutes,
       {path: '**', component: NotFoundComponent}
     ], component: LocaleEnComponent},
   {path: 'sv', children: [
-      ...routes,
+      ...baseRoutes,
       {path: '**', component: NotFoundComponent}
     ], component: LocaleSvComponent},
   {path: '', children: [
-      ...routes,
+      ...baseRoutes,
       {path: '**', component: NotFoundComponent}
     ], component: LocaleFiComponent}
 ];
 
+export const routes: Routes = [
+  {
+    path: '',
+    children: routesWithLang,
+    canActivate: [CheckLoginGuard]
+  }
+];
+
 @NgModule({
-  imports: [RouterModule.forRoot(routesWithLang, {
+  imports: [RouterModule.forRoot(routes, {
     enableTracing: false,
     preloadingStrategy: PreloadSelectedModulesList,
 })],

@@ -23,7 +23,7 @@ import { PlatformService } from '../../../root/platform.service';
 import { SelectionType } from '@achimha/ngx-datatable';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type FormListing = components['schemas']['FormListing'];
 

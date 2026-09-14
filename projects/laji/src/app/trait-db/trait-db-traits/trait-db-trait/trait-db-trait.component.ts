@@ -1,0 +1,36 @@
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { Observable } from 'rxjs';
+import { map, filter, distinctUntilChanged, switchMap } from 'rxjs';
+import { UserService } from '../../../shared/service/user.service';
+
+export type Trait = components['schemas']['LajiBackendTrait'];
+
+@Component({
+  standalone: false,
+  templateUrl: './trait-db-trait.component.html',
+  styleUrls: ['./trait-db-trait.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class TraitDbTraitComponent implements OnInit {
+  trait$!: Observable<Trait>;
+  loggedIn$!: Observable<boolean>;
+
+  constructor(
+    private route: ActivatedRoute,
+    private api: LajiApiClientService,
+    private userService: UserService
+  ) {}
+
+  ngOnInit() {
+    this.trait$ = this.route.paramMap.pipe(
+      map(m => m.get('id')),
+      filter(id => !!id),
+      distinctUntilChanged(),
+      switchMap(id => this.api.fetch('/trait/traits/{id}', 'get', { path: { id: id! } }))
+    );
+    this.loggedIn$ = this.userService.isLoggedIn$;
+  }
+}

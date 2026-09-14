@@ -36,7 +36,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ValueDecoratorService } from '../../../+observation/result-list/value-decorator.sevice';
+import { ValueDecoratorService } from '../../../observation/result-list/value-decorator.sevice';
 import { Logger } from '../../../shared/logger/logger.service';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
@@ -58,7 +58,9 @@ import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
 import { Router } from '@angular/router';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { DataFetchMode } from '../../../observation/observation-data.service';
+import { SearchQueryService } from '../../../observation/search-query.service';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
@@ -105,6 +107,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(LajiMapComponent) lajiMap!: LajiMapComponent;
   @ViewChild('mapContainer', { static: false }) mapContainerElem!: ElementRef;
 
+  @Input() dataMode: DataFetchMode = 'unit';
   @Input() visible = false;
   @Input() query: any;
   // Zoom levels from lowest to highest when to move to more accurate grid.
@@ -212,14 +215,15 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   private activeGeometryHash!: string;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private platformService: PlatformService,
     public translate: TranslateService,
     private decorator: ValueDecoratorService,
     private logger: Logger,
     private cdr: ChangeDetectorRef,
     private zone: NgZone,
-    private router: Router
+    private router: Router,
+    private searchQueryService: SearchQueryService
   ) {
     this.mapOptions = {
       controls: {
@@ -366,8 +370,12 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       return false;
     }
 
-    const bounds = (window.L as any).geoJSON(convertLajiEtlCoordinatesToGeometry(query.coordinates)).getBounds();
-    return this.lajiMap?.map.map.getBounds().contains(bounds);
+    if (window?.L) {
+      const bounds = (window.L as any).geoJSON(convertLajiEtlCoordinatesToGeometry(query.coordinates)).getBounds();
+      return this.lajiMap?.map.map.getBounds().contains(bounds);
+    } else {
+      return false;
+    }
   }
 
   private addViewPortCoordinatesParams(query: WarehouseQueryInterface, bounds?: any) {
@@ -389,9 +397,11 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getPoints$(query: WarehouseQueryInterface): Observable<FeatureCollection> {
-    return this.api.get('/warehouse/query/unit/aggregate', {
+    const endpoint = this.dataMode === 'unit' ? '/warehouse/query/unit/aggregate' : '/warehouse/query/sample/aggregate';
+    const apiQuery = this.searchQueryService.getNormalizedApiQuery(query);
+    return this.api.get(endpoint, {
       query: {
-        ...query as any,
+        ...apiQuery as any,
         featureType: 'CENTER_POINT',
         aggregateBy: [ 'gathering.interpretations.coordinateAccuracy' ],
         pageSize: this.pointGeometryPageSize,
@@ -433,9 +443,11 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getBoxQuery$(query: WarehouseQueryInterface, aggregateBy: string[], page: number): Observable<AggregateQueryResponse> {
-    return this.api.get('/warehouse/query/unit/aggregate', {
+    const endpoint = this.dataMode === 'unit' ? '/warehouse/query/unit/aggregate' : '/warehouse/query/sample/aggregate';
+    const apiQuery = this.searchQueryService.getNormalizedApiQuery(query);
+    return this.api.get(endpoint, {
       query: {
-        ...query as any,
+        ...apiQuery as any,
         aggregateBy,
         pageSize: this.boxGeometryPageSize,
         page,
@@ -635,7 +647,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     this.loading = true;
     this.cdr.markForCheck();
 
-    return this.api.get('/warehouse/query/unit/count', { query: query as any }).pipe(
+    const endpoint = this.dataMode === 'unit' ? '/warehouse/query/unit/count' : '/warehouse/query/sample/count';
+    const apiQuery = this.searchQueryService.getNormalizedApiQuery(query);
+    return this.api.get(endpoint, { query: apiQuery as any }).pipe(
       switchMap(res => {
         if (!res.total) {
           return of({
