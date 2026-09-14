@@ -3,8 +3,8 @@ import { DownloadRequest, DownloadRequestType } from '../models';
 import { toHtmlInputElement } from '../../../shared/service/html-element.service';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { switchMap, map, tap } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Collection = components['schemas']['SensitiveCollection'];
 
@@ -31,7 +31,7 @@ export class DownloadRequestComponent implements OnChanges {
   private collectionIds$ = new BehaviorSubject<string[]>([]);
 
   constructor(
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {
     this.collections$ = this.collectionIds$.pipe(
       switchMap(collectionIds => {

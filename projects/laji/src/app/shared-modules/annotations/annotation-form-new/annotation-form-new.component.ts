@@ -16,8 +16,8 @@ import { TaxonAutocompleteService } from '../../../shared/service/taxon-autocomp
 import { TypeaheadMatch } from '../../../../../../laji-ui/src/lib/typeahead/typeahead-match.class';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { SelectStyle } from '../../select/metadata-select/metadata-select.component';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 import { WithNonNullableKeys } from '../../../shared/utils';
 
 type Annotation = components['schemas']['store-annotation'];
@@ -102,7 +102,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
   constructor(
     private annotationService: AnnotationService,
     private loggerService: Logger,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private translate: TranslateService,
     private cd: ChangeDetectorRef,
     private labelPipe: LabelPipe,
@@ -131,7 +131,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
     return this.api.get('/autocomplete/taxa', { query: {
       query,
       limit: 10
-    }}).pipe(
+    }}, { langFallback: false }).pipe(
       map(data => data.results.map(item => {
         let groups = '';
         if (item.informalGroups) {
@@ -143,7 +143,7 @@ export class AnnotationFormNewComponent implements OnInit, AfterContentChecked {
   }
 
   public getMatchTaxon(taxonomy: string) {
-    this.annotationSub = this.api.get('/taxa/search', { query: { query: taxonomy, matchType: 'exact', limit: 5 } }).subscribe(({results}) => {
+    this.annotationSub = this.api.get('/taxa/search', { query: { query: taxonomy, matchType: 'exact', limit: 5 } }, { langFallback: false }).subscribe(({results}) => {
       results.forEach((taxon: any) => {
         if (taxon.matchingName.toLowerCase() === taxonomy.toLowerCase()) {
           this.annotation.identification.taxonID = taxon.id;

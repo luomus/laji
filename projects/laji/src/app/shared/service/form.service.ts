@@ -4,8 +4,8 @@ import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
 import { map, shareReplay } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type FormListing = components['schemas']['FormListing'];
 type Form = components['schemas']['Form'];
@@ -31,7 +31,7 @@ export class FormService {
   protected basePath = environment.apiBase;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private translate: TranslateService
   ) {
     this.translate.onLangChange.subscribe(e => this.setLang(e.lang));

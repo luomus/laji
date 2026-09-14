@@ -1,0 +1,48 @@
+<h1>Traits</h1>
+<p>Explore the traits defined by our experts, along with their measurement methods, and create your own traits. </p>
+
+@if ({ val: loggedIn$ | async }; as loggedIn) {
+  <div>
+    @if (loggedIn.val) {
+      <div>
+        <a class="btn btn-default mr-4" [routerLink]="['new']"><i class="glyphicon glyphicon-plus"></i> Create a new trait</a>
+        <a class="btn btn-default" routerLink="/trait-db/trait-groups/new"><i class="glyphicon glyphicon-plus"></i> Create a new trait group</a>
+      </div>
+    } @else {
+      Please sign in...
+    }
+  </div>
+} @else {
+  <laji-spinner class="d-block m-6"></laji-spinner>
+}
+
+<p>Traits – Click on a trait to access detailed information about it and browse its contained trait data.</p>
+
+<div>
+  <label for="trait-group-select">Filter by trait group:</label>
+  <select class="form-control" id="trait-group-select" (change)="onSelectedGroupChange($event)">
+    <option [value]="''">All</option>
+    @for (group of (traitGroups | keyvalue); track group) {
+      <option [value]="group.value.id">{{ group.value.name }}</option>
+    }
+  </select>
+</div>
+
+<table>
+  <tr>
+    <th>Group</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Reference</th>
+    <th>External Identifiers</th>
+  </tr>
+  @for (trait of (filteredTraits$ | async); track trait) {
+    <tr>
+      <td>{{ traitGroups[trait.group]?.name }}</td>
+      <td><a [routerLink]="[trait.id]">{{ trait.name }}</a></td>
+      <td>{{ trait.description }}</td>
+      <td>{{ trait.reference }}</td>
+      <td>{{ trait.identifiers }}</td>
+    </tr>
+  }
+</table>

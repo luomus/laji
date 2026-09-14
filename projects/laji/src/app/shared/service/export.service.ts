@@ -26,7 +26,7 @@ export class ExportService {
   ) { }
 
   exportFromData(data: any[], cols: DatatableColumn[], type: ExportFileType, filename: string, firstRow?: string[]): Observable<void> {
-    return this.getAoa<any>(cols, data, firstRow).pipe(
+    return this.getAoa<any>(cols, data, type, firstRow).pipe(
       switchMap((aoa) => this.export(aoa, type, filename))
     );
   }
@@ -44,7 +44,7 @@ export class ExportService {
   }
 
   getBlobFromData(data: any[], cols: DatatableColumn[], type: ExportFileType, filename: string, firstRow?: string[]): Observable<Blob> {
-    return this.getAoa<any>(cols, data, firstRow).pipe(
+    return this.getAoa<any>(cols, data, type, firstRow).pipe(
       map(aoa => this.getBufferFromAoa(aoa, type)),
       map(buffer => this.createBlob(buffer, type))
     );
@@ -71,7 +71,7 @@ export class ExportService {
    * @returns An array of arrays representation of the datatable
    *          where the values correspond to datatable cells
    */
-  private getAoa<T>(cols: DatatableColumn[], data: T[], firstRow?: string[]): Observable<string[][]> {
+  private getAoa<T>(cols: DatatableColumn[], data: T[], type: ExportFileType, firstRow?: string[]): Observable<string[][]> {
     const aoa: any = firstRow ? [firstRow, []] : [[]];
     const labelRow = firstRow ? 1 : 0;
     const observables = [];
@@ -86,7 +86,7 @@ export class ExportService {
         const key = i + (firstRow ? 2 : 1);
 
         const template = cols[j].cellTemplate;
-        aoa[key][j] = this.hasScalarValue(value) ? value : (Array.isArray(value) ? value.join('; ') : '');
+        aoa[key][j] = this.getAoaCellValue(value, type);
 
         if (!template) {
           continue;
@@ -94,9 +94,7 @@ export class ExportService {
 
         const observable = this.datatableUtil.getVisibleValue(value, data[i], template);
         observables.push(observable.pipe(map(((val) => {
-          if (this.hasScalarValue(val)) {
-            aoa[key][j] = val;
-          }
+          aoa[key][j] = this.getAoaCellValue(val, type);
         }))));
       }
     }
@@ -114,6 +112,24 @@ export class ExportService {
       }
     }
     return nameValue;
+  }
+
+  private getAoaCellValue(value: any, type: ExportFileType): boolean|number|string {
+    let result;
+
+    if (this.hasScalarValue(value)) {
+      result = value;
+    } else if (Array.isArray(value)) {
+      result = value.join('; ');
+    } else {
+      result = '';
+    }
+
+    if (typeof result === 'string' && ['csv', 'tsv'].includes(type)) {
+      result = result.replace(/\r?\n/g, ' ');
+    }
+
+    return result;
   }
 
   private hasScalarValue(value: any): boolean {

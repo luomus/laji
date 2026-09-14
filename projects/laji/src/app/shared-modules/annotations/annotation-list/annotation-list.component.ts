@@ -9,7 +9,7 @@ import {
   Output
 } from '@angular/core';
 import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 export type AnnotationTag = components['schemas']['store-tag'];
 export type AnnotationDW = components['schemas']['WarehouseDwQuery_Annotation'];

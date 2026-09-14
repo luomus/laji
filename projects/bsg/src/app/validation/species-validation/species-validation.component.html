@@ -1,0 +1,29 @@
+@if (hasLock) {
+  <ng-container *lajiRequiresAudioSupport="audioSampleRate">
+    <bsg-version-nav
+      class="pull-right"
+      [versions]="(templateVersions$ | async) ?? []"
+      [activeIdx]="activeVersionIdx$ | async"
+      (activeIdxChange)="activeVersionIdxChange($event)"
+    ></bsg-version-nav>
+    <bsg-species-template-validation
+      [species]="(species$ | async) ?? undefined"
+      [recordings]="(recordings$ | async) ?? undefined"
+      [templates]="(activeTemplates$ | async) ?? undefined"
+      [historyView]="(historyView$ | async) ?? undefined"
+      [saving]="saving"
+      [sampleRate]="audioSampleRate"
+      [spectrogramConfig]="spectrogramConfig"
+      (save)="saveTemplates($event)"
+      (validationCancel)="goToSpeciesList()"
+    ></bsg-species-template-validation>
+  </ng-container>
+} @else {
+  @if (hasLock === false) {
+    <div class="alert alert-danger">
+      {{ 'validation.noLock' | translate }}
+    </div>
+  } @else {
+    <laji-spinner></laji-spinner>
+  }
+}

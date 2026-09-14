@@ -14,7 +14,6 @@ export class FormApiClient {
   protected basePath = environment.apiBase;
   private _lang?: string;
   private _personToken?: string;
-  private _formID?: string;
 
   constructor(protected http: HttpClient,
               private taxonAutocompleteService: TaxonAutocompleteService) {
@@ -36,14 +35,6 @@ export class FormApiClient {
     return this._personToken;
   }
 
-  public set formID(id) {
-    this._formID = id;
-  }
-
-  public get formID() {
-    return this._formID;
-  }
-
   public fetch(
     resource: string,
     query: any,
@@ -52,8 +43,7 @@ export class FormApiClient {
     const path = this.basePath + resource;
 
     const queryParameters: Record<string, string> = Util.removeFromObject({
-      ...query,
-      formID: this.formID
+      ...query
     });
 
     if (!options) {

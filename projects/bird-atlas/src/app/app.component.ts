@@ -5,8 +5,8 @@ import { HeaderService } from '../../../laji/src/app/shared/service/header.servi
 import { PopstateService } from './core/popstate.service';
 import { FooterService } from './core/footer.service';
 import { tap } from 'rxjs';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api';
 
 type News = components['schemas']['NewsPagedDto'];
 
@@ -52,7 +52,7 @@ export class AppComponent {
   constructor(
     private breadcrumbs: BreadcrumbService,
     private headerService: HeaderService,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private footerService: FooterService,
     private cdr: ChangeDetectorRef,
     popstateService: PopstateService // has to be injected for the service to initialize

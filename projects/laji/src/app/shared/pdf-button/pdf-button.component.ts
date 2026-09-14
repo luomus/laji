@@ -6,7 +6,7 @@ import { PlatformService } from '../../root/platform.service';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { LajiApiClientBService } from '../../../../../laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from '../../../../../laji-api-client/src/laji-api-client.service';
 
 @Component({
     selector: 'laji-pdf-button',
@@ -23,7 +23,7 @@ export class PdfButtonComponent {
   public loading = false;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private httpClient: HttpClient,
     private platformService: PlatformService,
     private cdr: ChangeDetectorRef

@@ -1,0 +1,40 @@
+@use 'sass:map';
+@import '../../../../../laji-ui/src/lib/vars';
+
+@media only screen and (min-width: map.get($map: $breakpoints, $key: "sm")) {
+  .identification-view-container {
+    margin: -20px -40px;
+    height: calc(100vh - 50px);
+    display: flex;
+    flex-direction: column;
+
+    .identification-view-alerts {
+      background-color: #dde1e3;
+    }
+
+    .identification-nav {
+      flex: 0 0 auto;
+      padding: 8px 40px;
+      background-color: #dde1e3;
+
+      .button-container {
+        float: right;
+        margin-right: 0.5em;
+
+        button {
+          margin-left: 0.5em;
+        }
+      }
+    }
+
+    .identification-alert-container {
+      margin: 20px 40px;
+    }
+
+    bsg-identification-view {
+      margin-top: -$sp-3;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+  }
+}

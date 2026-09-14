@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
 import * as FileSaver from 'file-saver';
 import { SchemaService } from '../../../label-designer/src/lib/schema.service';
-import { LajiApiClientBService } from '../../../laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from '../../../laji-api-client/src/laji-api-client.service';
 
 const NEW_SETUP: ISetup = {
   page: {
@@ -74,7 +74,7 @@ export class AppComponent implements OnInit {
     private http: HttpClient,
     private formService: SchemaService,
     @Inject(PLATFORM_ID) private platformId: any,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private cdr: ChangeDetectorRef
   ) {}
 

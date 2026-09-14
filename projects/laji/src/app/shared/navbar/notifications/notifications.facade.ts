@@ -4,8 +4,8 @@ import { distinctUntilChanged, map, switchMap, tap, take, concatMap, toArray, fi
 import { GraphQLService } from '../../../graph-ql/service/graph-ql.service';
 import gql from 'graphql-tag';
 import { UserService } from '../../service/user.service';
-import { LajiApiClientBService } from '../../../../../../laji-api-client-b/src/laji-api-client-b.service';
-import type { components, paths } from 'projects/laji-api-client-b/generated/api';
+import { LajiApiClientService } from '../../../../../../laji-api-client/src/laji-api-client.service';
+import type { components, paths } from 'projects/laji-api-client/generated/api';
 
 type Notification = components['schemas']['store-notification'];
 type NotificationResponse = paths['/notifications']['get']['responses']['200']['content']['application/json'];
@@ -28,14 +28,14 @@ interface IRefreshDataResult {
 const NOTIFICATION_MAX_PAGESIZE = 100;
 
 const REFRESH_QUERY = gql`
-  query($pageSize: Int, $personToken: String = "") {
-    notifications(personToken: $personToken, pageSize: $pageSize) {
+  query {
+    notifications: NotificationsController_getPage(pageSize: 1) {
       total
       results {
         id
       }
     }
-    unseenCount: notifications(personToken: $personToken, onlyUnSeen: true, pageSize: 0) {
+    unseenCount: NotificationsController_getPage(onlyUnSeen: true, pageSize: 0) {
       total
     }
   }
@@ -77,7 +77,7 @@ export class NotificationsFacade {
   constructor(
     private userService: UserService,
     private graphQLService: GraphQLService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) {}
 
   private notificationsReducer(notifications: NotificationResponse) {
@@ -116,8 +116,7 @@ export class NotificationsFacade {
   checkForNewNotifications() {
     this.graphQLService.query<IRefreshDataResult>({
       query: REFRESH_QUERY,
-      fetchPolicy: 'network-only',
-      variables: {personToken: this.userService.getToken(), pageSize: 1}
+      fetchPolicy: 'network-only'
     }).pipe(
       map(({data}) => data),
       catchError(() => of({unseenCount: {total: 0}, notifications: {total: 0, results: []}}))

@@ -1,0 +1,15 @@
+@if ((!selectedSpeciesIds?.length && !unknownSpecies)) {
+  <bsg-species-selection
+    (siteChange)="onSiteChange($event)"
+    (speciesSelect)="onSpeciesSelect($event)"
+  ></bsg-species-selection>
+} @else {
+  <bsg-identification-main
+    [selectedSites]="selectedSiteIds"
+    [selectedSpecies]="selectedSpeciesIds!"
+    [unknownSpecies]="unknownSpecies"
+    [goBackBtnLabel]="'identification.backToSpeciesSelection' | translate"
+    [allRecordingsAnnotatedLabel]="'identification.allRecordingsAnnotatedForSpecies' | translate"
+    (goBackClick)="onSpeciesSelect([])"
+  ></bsg-identification-main>
+}

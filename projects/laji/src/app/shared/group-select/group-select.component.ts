@@ -6,7 +6,7 @@ import { Logger } from '../logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../model/PagedResult';
 import { ArrayResult } from '../model/ArrayResult';
-import { components } from 'projects/laji-api-client-b/generated/api';
+import { components } from 'projects/laji-api-client/generated/api';
 
 type RedListTaxonGroup= components['schemas']['store-iucnRedListTaxonGroup'];
 type InformalTaxonGroup = components['schemas']['store-informalTaxonGroup'];

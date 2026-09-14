@@ -1,0 +1,9 @@
+@use 'vars' as *;
+
+.glyphicon-plus {
+  color: $primary-5;
+}
+
+#trait-group-select {
+  max-width: 300px;
+}

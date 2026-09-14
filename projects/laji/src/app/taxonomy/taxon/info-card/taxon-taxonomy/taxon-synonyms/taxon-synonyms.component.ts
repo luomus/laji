@@ -1,0 +1,23 @@
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { components } from 'projects/laji-api-client/generated/api.d';
+
+type Taxon = components['schemas']['LajiBackendTaxon'];
+type SimpleTaxon = components['schemas']['LajiBackendSimpleTaxon'];
+
+type SimpleTaxonArrayKeys = {
+  [K in keyof Taxon]-?: Taxon[K] extends SimpleTaxon[] ? K : never
+}[keyof Taxon];
+
+@Component({
+    selector: 'laji-taxon-synonyms',
+    templateUrl: './taxon-synonyms.component.html',
+    styleUrls: ['./taxon-synonyms.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
+})
+export class TaxonSynonymsComponent {
+  @Input() taxon!: Taxon;
+  @Input() synonymTypes: SimpleTaxonArrayKeys[] = [];
+  @Input() hasOtherNamesBefore = false;
+
+}

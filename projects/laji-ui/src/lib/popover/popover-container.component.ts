@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 
 @Component({
     template: `
@@ -19,5 +19,16 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 export class PopoverContainerComponent {
   @Input() title = '';
   @Input() displayCloseBtn = false;
+  @Input() styleVariant: 'neutral-1' | 'neutral-2' = 'neutral-1';
   @Output() closePopover = new EventEmitter<void>();
+
+  @HostBinding('class.style-variant-neutral-1')
+  get neutral1Variant(): boolean {
+    return this.styleVariant === 'neutral-1';
+  }
+
+  @HostBinding('class.style-variant-neutral-2')
+  get neutral2Variant(): boolean {
+    return this.styleVariant === 'neutral-2';
+  }
 }

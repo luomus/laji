@@ -45,7 +45,7 @@ export class AudioViewerView {
         this.playAreaSignal.set(undefined);
       }
       this.modeSignal.set('default');
-    }, { allowSignalWrites: true });
+    });
   }
 
   setMode(mode: AudioViewerMode) {

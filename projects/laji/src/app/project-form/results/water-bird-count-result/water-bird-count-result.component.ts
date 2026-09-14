@@ -1,0 +1,76 @@
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { map } from 'rxjs';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { components } from 'projects/laji-api-client/generated/api.d';
+
+type Form = components['schemas']['Form'];
+
+interface State {
+  taxon: string | undefined;
+  year: string | undefined;
+}
+
+@Component({
+    selector: 'laji-water-bird-count-result',
+    templateUrl: './water-bird-count-result.component.html',
+    styleUrls: ['./water-bird-count-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
+})
+export class WaterBirdCountResultComponent implements OnInit {
+  @Input() form!: Form;
+
+  state$!: Observable<State>;
+  collections: string[] = ['HR.62', 'HR.3991', 'HR.3992'];
+  taxonOptions$!: Observable<{ label: string; value: string }[]>;
+  mapQuery: WarehouseQueryInterface = {
+    includeSubCollections: false,
+    gatheringCounts: true, cache: true, countryId: ['ML.206']
+  };
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private api: LajiApiClientService,
+    private translate: TranslateService
+  ) { }
+
+  ngOnInit(): void {
+    this.state$ = this.route.queryParams as Observable<State>;
+    this.taxonOptions$ = this.getTaxonOptions$();
+  }
+
+  getTaxonOptions$(): Observable<{ label: string; value: string }[]> {
+    return this.api.post('/taxa', { query: {
+        selectedFields: 'id,vernacularName,scientificName',
+        pageSize: 10000
+      } }, {
+        taxonSets: 'MX.taxonSetWaterbirdWaterbirds',
+      }, { langFallback: false }).pipe(
+      map(res => res.results),
+      map(taxa => taxa.map(t => ({
+        label: (t.vernacularName ? t.vernacularName + ' - ' : '') + (t.scientificName ? t.scientificName : ''),
+        value: t.id ?? ''
+      }))),
+      map(pairs => [{ label: this.translate.instant('result.map.taxon.empty.label'), value: '' }].concat(pairs))
+    );
+  }
+
+  updateState(query: any) {
+    const currentState = this.route.snapshot.queryParams;
+    const nextState = { ...currentState, ...query };
+    this.router.navigate([], { queryParams: nextState });
+  }
+
+  onTaxonChange(taxon: any) {
+    this.updateState({ taxon });
+  }
+
+  onYearChange(year: any) {
+    this.updateState({ year });
+  }
+}

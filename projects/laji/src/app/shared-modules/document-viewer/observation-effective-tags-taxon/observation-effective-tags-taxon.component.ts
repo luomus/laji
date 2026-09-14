@@ -6,7 +6,7 @@ import { AnnotationService } from '../service/annotation.service';
 import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { switchMap, toArray, concatMap } from 'rxjs';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type AnnotationTag = components['schemas']['store-tag'];
 

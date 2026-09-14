@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import type { components } from 'projects/laji-api-client-b/generated/api.d';
+import type { components } from 'projects/laji-api-client/generated/api.d';
 
 type FormListing = components['schemas']['FormListing'];
 type Document = components['schemas']['store-document'];

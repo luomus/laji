@@ -4,7 +4,7 @@ import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, take } from 'rxjs';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 
 @Component({
@@ -64,7 +64,7 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
   public screenWidthSub?: Subscription;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private cdr: ChangeDetectorRef,
     private browserService: BrowserService,
     private taxonAutocompleteService: TaxonAutocompleteService
@@ -168,6 +168,6 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
       limit: this.typeaheadLimit,
       checklist: 'MR.1,MR.2',
       ...this.searchParams
-    } }).pipe(map(({results}) => results));
+    } }, { langFallback: false }).pipe(map(({results}) => results));
   }
 }
