@@ -382,6 +382,16 @@ export class UserService implements OnDestroy {
     );
   }
 
+  setNotLoggedIn() {
+    this.persistentState = { ...this.persistentState, loginState: { _tag: 'not_logged_in' }};
+    this.store.next({
+      ...this.store.value,
+      ...this.persistentState,
+      user: { _tag: 'not_logged_in' }
+    });
+    this.api.setPersonToken(undefined);
+  }
+
   ngOnDestroy() {
     this.subLogout?.unsubscribe();
   }
@@ -403,15 +413,5 @@ export class UserService implements OnDestroy {
     } else {
       return this.inMemoryPersistentState;
     }
-  }
-
-  private setNotLoggedIn() {
-      this.persistentState = { ...this.persistentState, loginState: { _tag: 'not_logged_in' }};
-      this.store.next({
-        ...this.store.value,
-        ...this.persistentState,
-        user: { _tag: 'not_logged_in' }
-      });
-      this.api.setPersonToken(undefined);
   }
 }
