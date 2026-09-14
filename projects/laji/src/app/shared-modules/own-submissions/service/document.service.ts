@@ -8,8 +8,8 @@ import { switchMap, tap, take } from 'rxjs';
 import { Rights } from '../../../shared/service/form-permission.service';
 import { JSONPath } from 'jsonpath-plus';
 import { FormService } from '../../../shared/service/form.service';
-import type { components } from 'projects/laji-api-client-b/generated/api.d';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import type { components } from 'projects/laji-api-client/generated/api.d';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 type Document = components['schemas']['store-document'];
 type Person = components['schemas']['SensitivePerson'];
@@ -28,7 +28,7 @@ export class DocumentService {
     private userService: UserService,
     private documentStorage: DocumentStorage,
     private formService: FormService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   findById(id: string): Observable<Document> {

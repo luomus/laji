@@ -4,7 +4,7 @@ import { SessionStorage } from 'ngx-webstorage';
 import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 import { PlatformService } from '../../root/platform.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
@@ -36,7 +36,7 @@ export class FeedbackComponent {
 		private platformService: PlatformService,
     public userService: UserService,
     public translate: TranslateService,
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private toastsService: ToastsService,
     private location: Location,
     private modalService: ModalService

@@ -1,0 +1,29 @@
+<h3>Trait Datasets</h3>
+<p>Browse published datasets, including details on sampling protocols, methods, data origins, and authors. Create your own dataset and share your trait data with the community. </p>
+
+<laji-trait-db-my-datasets></laji-trait-db-my-datasets>
+
+@if (datasets$ | async; as datasets) {
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Taxonomic coverage</th>
+      <th>Owner</th>
+      <th>Person responsible</th>
+      <th>Citation</th>
+    </tr>
+    @for (dataset of datasets; track dataset) {
+      <tr>
+        <td><a [routerLink]="[dataset.id]">{{ dataset.name }}</a></td>
+        <td>{{ dataset.description | truncate : 50 : true }}</td>
+        <td>{{ dataset.taxonomicCoverage }}</td>
+        <td>{{ dataset.intellectualOwner }}</td>
+        <td>{{ dataset.personResponsible }}</td>
+        <td>{{ dataset.citation }}</td>
+      </tr>
+    }
+  </table>
+} @else {
+  <laji-spinner class="d-block m-6"></laji-spinner>
+}

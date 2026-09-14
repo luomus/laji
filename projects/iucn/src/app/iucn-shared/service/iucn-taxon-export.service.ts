@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ISelectFields } from '../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
-import { TaxonomyColumns } from '../../../../../laji/src/app/+taxonomy/species/service/taxonomy-columns';
+import { TaxonomyColumns } from '../../../../../laji/src/app/taxonomy/species/service/taxonomy-columns';
 import { DatatableColumn } from '../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
-import { TaxonExportService } from '../../../../../laji/src/app/+taxonomy/species/service/taxon-export.service';
+import { TaxonExportService } from '../../../../../laji/src/app/taxonomy/species/service/taxon-export.service';
 import { Observable } from 'rxjs';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 

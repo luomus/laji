@@ -4,7 +4,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Subject } from 'rxjs';
 import { LoadingElementsService } from '../loading-elements.service';
 import { TaxonTagEffectiveService } from '../taxon-tag-effective.service';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Annotation = components['schemas']['store-annotation'];
 type AnnotationTag = components['schemas']['store-tag'];

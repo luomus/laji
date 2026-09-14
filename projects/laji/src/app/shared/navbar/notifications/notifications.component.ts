@@ -6,7 +6,7 @@ import { NotificationDataSource } from './notification-data-source';
 import { TranslateService } from '@ngx-translate/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { DialogService } from '../../service/dialog.service';
-import type { components } from '../../../../../../laji-api-client-b/generated/api';
+import type { components } from '../../../../../../laji-api-client/generated/api';
 
 type Notification = components['schemas']['store-notification'];
 

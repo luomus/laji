@@ -4,7 +4,7 @@ import { NotificationsFacade } from './notifications.facade';
 import { takeUntil } from 'rxjs';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
-import type { components } from '../../../../../../laji-api-client-b/generated/api';
+import type { components } from '../../../../../../laji-api-client/generated/api';
 
 type Notification = components['schemas']['store-notification'];
 

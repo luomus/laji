@@ -257,6 +257,7 @@ export interface WarehouseQueryInterface {
   sensitive?: boolean;
   primarySpecimen?: boolean;
   hasValue?: string;
+  hasSequenceText?: boolean;
 }
 
 

@@ -3,7 +3,7 @@ import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/sel
 import { IPageChange } from '../../../../../../laji/src/app/shared-modules/datatable/data-table-footer/data-table-footer.component';
 import { Params } from '@angular/router';
 import { DownloadComponent } from '../../../../../../laji/src/app/shared-modules/download-modal/download.component';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 

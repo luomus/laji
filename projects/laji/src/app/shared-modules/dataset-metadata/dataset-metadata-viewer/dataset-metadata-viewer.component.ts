@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { ICollectionCounts } from '../../../shared/service/collection.service';
 import { Observable } from 'rxjs';
-import { components } from 'projects/laji-api-client-b/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Collection = components['schemas']['SensitiveCollection'];
 

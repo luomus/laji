@@ -1,47 +1,81 @@
-import { Route, RouterModule, Routes } from '@angular/router';
+import { Route, ResolveFn, RouterModule, Routes } from '@angular/router';
 import { ForumComponent } from './forum/forum.component';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { CheckLoginGuard } from './shared/guards/check-login.guard';
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import { Global } from '../environments/global';
 import { ExternalRedirectComponent } from './shared/external-redirect/external-redirect.component';
+import { TranslateService } from '@ngx-translate/core';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { PlatformService } from './root/platform.service';
+import { LocalStorageService } from 'ngx-webstorage';
+import { LAST_LANG_KEY } from './locale/localize-router.service';
+import { map, of, take } from 'rxjs';
+
+import moment from 'moment';
+import 'moment/locale/fi';
+import 'moment/locale/sv';
+
+export function setLocale(lang: string) {
+  const platform = inject(PlatformService);
+  const translate = inject(TranslateService);
+  const api = inject(LajiApiClientService);
+  const localStorage = inject(LocalStorageService);
+
+  moment.locale(lang);
+  api.setLang(lang);
+  if (platform.isBrowser) {
+    window.document.documentElement.lang = lang;
+    localStorage.store(LAST_LANG_KEY, lang);
+  }
+  if (lang !== translate.getCurrentLang()) {
+    return translate.use(lang).pipe(
+      map(() => true),
+      take(1)
+    );
+  } else {
+    return of(true);
+  }
+}
+
+const localeResolver = (lang: string): ResolveFn<boolean> => () => setLocale(lang);
 
 const baseRoutes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule)},
-  {path: 'news', loadChildren: () => import('./+news/news.module').then(m => m.NewsModule), data: {title: 'news.title', preload: false}},
-  {path: 'about', loadChildren: () => import('./+information/information.module').then(m => m.InformationModule), data: {preload: false}},
-  {path: 'user', loadChildren: () => import('./+user/user.module').then(m => m.UserModule), data: {preload: false}},
-  {path: 'view', loadChildren: () => import('./+viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document', preload: false}},
-  {path: 'vihko', loadChildren: () => import('./+haseka/haseka.module').then(m => m.HasekaModule), data: {title: 'haseka.title', preload: false}},
-  {path: 'observation', loadChildren: () => import('./+observation/observation.module').then(m => m.ObservationModule), data: {
+  {path: '', pathMatch: 'full', loadChildren: () => import('./home/home.module').then(m => m.HomeModule)},
+  {path: 'news', loadChildren: () => import('./news/news.module').then(m => m.NewsModule), data: {title: 'news.title', preload: false}},
+  {path: 'about', loadChildren: () => import('./information/information.module').then(m => m.InformationModule), data: {preload: false}},
+  {path: 'user', loadChildren: () => import('./user/user.module').then(m => m.UserModule), data: {preload: false}},
+  {path: 'view', loadChildren: () => import('./viewer/viewer.module').then(m => m.ViewerModule), data: {title: 'viewer.document', preload: false}},
+  {path: 'vihko', loadChildren: () => import('./haseka/haseka.module').then(m => m.HasekaModule), data: {title: 'haseka.title', preload: false}},
+  {path: 'observation', loadChildren: () => import('./observation/observation.module').then(m => m.ObservationModule), data: {
     title: 'navigation.observation'
   }},
-  {path: 'taxon', loadChildren: () => import('./+taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {
+  {path: 'taxon', loadChildren: () => import('./taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {
     title: 'navigation.taxonomy'
   }},
-  {path: 'kartta', loadChildren: () => import('./+map/map.module').then(m => m.MapModule), data: {preload: false, canonical: '/map'}},
+  {path: 'kartta', loadChildren: () => import('./map/map.module').then(m => m.MapModule), data: {preload: false, canonical: '/map'}},
   {
-    path: 'map', loadChildren: () => import('./+map/map.module').then(m => m.MapModule),
+    path: 'map', loadChildren: () => import('./map/map.module').then(m => m.MapModule),
     data: {title: 'navigation.map', preload: false }
   },
   {path: 'error/404', pathMatch: 'full', component: NotFoundComponent},
   {path: 'theme/checklist', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.checklist'}, pathMatch: 'full'},
   {path: 'theme/ykj', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.ykj'}, pathMatch: 'full'},
   {path: 'theme/emk', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.biogeographicalProvinces'}, pathMatch: 'full'},
-  {path: 'theme', loadChildren: () => import('./+theme/theme.module').then(m => m.ThemeModule), data: {preload: false}},
+  {path: 'theme', loadChildren: () => import('./theme/theme.module').then(m => m.ThemeModule), data: {preload: false}},
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
   // {path: 'shell', component: ForumComponent},
   {path: 'forum', component: ForumComponent},
-  {path: 'ui-components', loadChildren: () => import('./+ui-components/ui-components.module').then(m => m.UiComponentsModule), data: {preload: false}},
-  {path: 'trait-db', loadChildren: () => import('./+trait-db/trait-db.module').then(m => m.TraitDbModule)},
-  {path: 'save-observations', loadChildren: () => import('./+save-observations/save-observations.module').then(m => m.SaveObservationsModule)},
-  {path: 'project', loadChildren: () => import('./+project-form/project-form.module').then(m => m.ProjectFormModule)},
-  {path: 'project-edit', loadChildren: () => import('./+project-form-edit/project-form-edit.module').then(m => m.ProjectFormEditModule)},
-  {path: 'citation', loadChildren: () => import('./+citable-download/citable-download.module').then(m => m.CitableDownloadModule), data: {preload: false}}
+  {path: 'ui-components', loadChildren: () => import('./ui-components/ui-components.module').then(m => m.UiComponentsModule), data: {preload: false}},
+  {path: 'trait-db', loadChildren: () => import('./trait-db/trait-db.module').then(m => m.TraitDbModule)},
+  {path: 'save-observations', loadChildren: () => import('./save-observations/save-observations.module').then(m => m.SaveObservationsModule)},
+  {path: 'project', loadChildren: () => import('./project-form/project-form.module').then(m => m.ProjectFormModule)},
+  {path: 'project-edit', loadChildren: () => import('./project-form-edit/project-form-edit.module').then(m => m.ProjectFormEditModule)},
+  {path: 'citation', loadChildren: () => import('./citable-download/citable-download.module').then(m => m.CitableDownloadModule), data: {preload: false}}
 ];
 
 const rootRouting = {
@@ -66,17 +100,17 @@ redirectsFi.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirect
 const routesWithLang: Routes = [
   {path: 'in', children: [
     {path: '**', component: NotFoundComponent}
-  ], component: LocaleEnComponent},
+  ], component: LocaleEnComponent, resolve: { localeReady: localeResolver('en') }},
   {path: 'en', children: [
     ...redirectsEn,
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
-  ], component: LocaleEnComponent},
+  ], component: LocaleEnComponent, resolve: { localeReady: localeResolver('en') }},
   {path: 'sv', children: [
     ...redirectsFi,
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
-  ], component: LocaleSvComponent},
+  ], component: LocaleSvComponent, resolve: { localeReady: localeResolver('sv') }},
   {path: '', children: [
       ...redirectsFi,
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
@@ -94,7 +128,7 @@ const routesWithLang: Routes = [
     {path: 'selaa', redirectTo: '/observation/list', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
-  ], component: LocaleFiComponent}
+  ], component: LocaleFiComponent, resolve: { localeReady: localeResolver('fi') }}
 ];
 
 export const routes: Routes = [

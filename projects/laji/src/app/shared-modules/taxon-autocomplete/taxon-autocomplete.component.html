@@ -2,7 +2,7 @@
   <div class="col-md-6">
     <div [ngClass]="{'input-group': allowInvalid}">
       <input
-        (keyup)="keyEvent($event)"
+        (keypress)="keyEvent($event)"
         type="text"
         class="form-control input-sm"
         [class.loading]="loading"
@@ -16,6 +16,7 @@
         [luTypeaheadOptionField]="'autocompleteSelectedName'"
         [luTypeaheadItemTemplate]="taxonItem"
         (luTypeaheadOnSelect)="onTaxonSelect($event)"
+        (luTypeaheadOnPreview)="onTaxonPreview($event)"
         [luTypeaheadSelectFirstItem]="!allowInvalid"
         [luTypeaheadIsFirstItemActive]="!allowInvalid"
         autocomplete="off"

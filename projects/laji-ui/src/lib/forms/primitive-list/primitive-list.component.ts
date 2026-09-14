@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, forwardRef, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import type { EnumVariant } from 'scripts/codegen/shared/shared';
 
 type Kind = 'string' | 'number' | 'enum';
 type KindToConcreteType<K extends Kind> = K extends 'number' ? number : string;
@@ -25,7 +26,7 @@ export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcrete
    * If kind === 'enum', then enumVariants must be defined.
    */
   @Input({ required: true }) kind!: K;
-  @Input() enumVariants!: K extends 'enum' ? string[] : undefined;
+  @Input() enumVariants!: K extends 'enum' ? EnumVariant<string>[] : undefined;
 
   valueList: T[] = [];
   onChange: (value: T[]) => void = () => {};
@@ -60,8 +61,15 @@ export class FormPrimitiveListComponent<K extends Kind, T extends KindToConcrete
     this.onChange(this.valueList);
   }
 
-  getUnusedEnumVariants(): string[] {
-    return this.enumVariants?.filter(v => !(this.valueList as string[]).includes(v)) ?? [];
+  getUnusedEnumVariants(): EnumVariant<string>[] {
+    return this.enumVariants?.filter(v => !(this.valueList as string[]).includes(v.value)) ?? [];
+  }
+
+  getDisplayValue(v: T): string {
+    if (this.kind !== 'enum') {
+      return String(v);
+    }
+    return this.enumVariants?.find(({ value }) => value === v)?.label ?? String(v);
   }
 
   private add() {

@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { defaultIfEmpty, map, switchMap, tap } from 'rxjs';
 import { BehaviorSubject, Observable, forkJoin } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { paths } from 'projects/laji-api-client/generated/api';
+import { SearchQueryService } from '../../../observation/search-query.service';
+
+type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['parameters']['query'];
 
 interface ChartDataElement {label: string; data: number[]}
 
@@ -23,22 +27,23 @@ export class ObservationMonthDayChartFacade {
   chartData$ = new BehaviorSubject<ChartData>({yearChartData: [], monthChartDataArr: []});
 
   constructor(
-    private warehouse: WarehouseApi,
+    private api: LajiApiClientService,
     private valueMappingService: WarehouseValueMappingService,
     private triplestoreLabelService: TriplestoreLabelService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private searchQuery: SearchQueryService
   ) {}
 
   loadChartData(query: WarehouseQueryInterface, useIndividualCount: boolean) {
-    this.warehouse.warehouseQueryAggregateGet(
-      query,
-      ['gathering.conversions.month', 'gathering.conversions.day', 'unit.lifeStage'],
-      ['unit.lifeStage'],
-      10000,
-      1,
-      undefined,
-      !useIndividualCount
-    ).pipe(
+    const aggregateQuery: AggregateQueryParams = {
+      ...this.searchQuery.getNormalizedApiQuery(query) as any,
+      aggregateBy: ['gathering.conversions.month', 'gathering.conversions.day', 'unit.lifeStage'],
+      orderBy: ['unit.lifeStage'],
+      pageSize: 10000,
+      page: 1,
+      onlyCount: !useIndividualCount
+    };
+    this.api.get('/warehouse/query/unit/aggregate', { query: aggregateQuery }).pipe(
       map(res => res.results),
       switchMap(res => this.parseChartData(res, useIndividualCount))
     ).subscribe(chartData => {

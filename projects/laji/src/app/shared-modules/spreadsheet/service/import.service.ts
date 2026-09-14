@@ -10,11 +10,10 @@ import {
 } from '../model/excel';
 import { MappingService } from './mapping.service';
 import Hash from 'object-hash';
-import { catchError, delay, switchMap, expand } from 'rxjs';
-import { ArrayType } from '@angular/compiler';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
-import type { components } from 'projects/laji-api-client-b/generated/api';
-import type { paths } from 'projects/laji-api-client-b/generated/api';
+import { delay, expand } from 'rxjs';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import type { components } from 'projects/laji-api-client/generated/api';
+import type { paths } from 'projects/laji-api-client/generated/api';
 
 type Document = components['schemas']['store-document'];
 type BatchJob = components['schemas']['BatchJobValidationStatusResponse'];
@@ -78,7 +77,7 @@ export class ImportService {
 
   constructor(
     private mappingService: MappingService,
-    private api: LajiApiClientBService
+    private api: LajiApiClientService
   ) { }
 
   hasInvalidValue(value: unknown, field: IFormField) {
@@ -91,7 +90,7 @@ export class ImportService {
   }
 
   waitToComplete(job: BatchJob, processCB: (status: BatchJob['status']) => void): Observable<BatchJob> {
-    const req$ = () => this.api.get('/documents/batch/{jobID}', { path: { jobID: job.id }, query: { timestamp: Date.now() } as any }, 0);
+    const req$ = () => this.api.get('/documents/batch/{jobID}', { path: { jobID: job.id }, query: { timestamp: Date.now() } as any }, { cacheInvalidationMs: 0 });
     return req$().pipe(
       expand(response => {
         processCB(response.status);

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
 import { map, concatMap, toArray } from 'rxjs';
 import { TriplestoreLabelService } from './triplestore-label.service';
-import type { components } from 'projects/laji-api-client-b/generated/api';
+import type { components } from 'projects/laji-api-client/generated/api';
 
 type TaxonAutocompleteResponse = components['schemas']['TaxonAutocompleteResponse'];
 

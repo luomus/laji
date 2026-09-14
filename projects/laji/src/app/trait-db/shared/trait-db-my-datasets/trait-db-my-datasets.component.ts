@@ -1,0 +1,41 @@
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { tap, map, switchMap, filter } from 'rxjs';
+import { UserService } from '../../../shared/service/user.service';
+import { components } from 'projects/laji-api-client/generated/api';
+
+export type Dataset = components['schemas']['LajiBackendDataset'];
+
+@Component({
+    selector: 'laji-trait-db-my-datasets',
+    templateUrl: './trait-db-my-datasets.component.html',
+    styleUrls: ['./trait-db-my-datasets.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
+})
+export class TraitDbMyDatasetsComponent implements OnInit {
+  loggedIn$!: Observable<boolean>;
+  datasets$!: Observable<Dataset[]>;
+
+  constructor(
+    private api: LajiApiClientService,
+    private userService: UserService
+  ) {}
+
+  ngOnInit() {
+    this.loggedIn$ = this.userService.isLoggedIn$;
+    this.datasets$ = this.loggedIn$.pipe(
+      filter(loggedIn => loggedIn),
+      switchMap(_ => this.api.fetch('/trait/dataset-permissions', 'get')),
+      switchMap(perms => this.api.fetch('/trait/datasets', 'get', {}).pipe(
+        map(datasets => datasets.filter(dataset => perms.some(perm => perm.datasetId === dataset.id)))
+      ))
+    );
+  }
+
+  onLogin(event: Event) {
+    event.preventDefault();
+    this.userService.redirectToLogin();
+  }
+}

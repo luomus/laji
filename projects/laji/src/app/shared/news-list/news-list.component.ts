@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NewsFacade, PagedNews } from '../../+news/news.facade';
+import { NewsFacade, PagedNews } from '../../news/news.facade';
 
 @Component({
     selector: 'laji-news-list',

@@ -1,0 +1,157 @@
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { components } from 'projects/laji-api-client/generated/api';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
+import { Observable } from 'rxjs';
+import { map, filter, switchMap, tap } from 'rxjs';
+import { MetadataService } from '../../../shared/service/metadata.service';
+import { filterNullValues } from '../../trait-db-datasets/trait-db-dataset-editor/trait-db-dataset-editor.component';
+
+type Trait = components['schemas']['LajiBackendTrait'];
+type ValidationResponse = components['schemas']['LajiBackendValidationResponse'];
+
+@Component({
+    templateUrl: './trait-db-trait-editor.component.html',
+    styleUrls: ['./trait-db-trait-editor.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
+})
+export class TraitDbTraitEditorComponent implements OnInit {
+  form = this.fb.group<Partial<Trait>>({
+    id: undefined, // hidden + uneditable
+    group: undefined,
+    dataEntryName: undefined,
+    name: undefined,
+    description: undefined,
+    exampleValues: undefined,
+    baseUnit: '' as any, // undefined doesn't work reliably with the html selector
+    range: undefined,
+    enumerations: [],
+    reference: undefined,
+    identifiers: undefined
+  });
+  submissionState: 'none' | 'externalValidation' | 'uploading' | 'deleting' = 'none';
+  errors: ValidationResponse['errors'] | undefined;
+
+  groups$!: Observable<components['schemas']['LajiBackendTraitGroup'][]>;
+  unitOfMeasurements$!: Observable<{id: string; label: string }[]>;
+
+  constructor(
+    private route: ActivatedRoute,
+    private api: LajiApiClientService,
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    private metadataService: MetadataService,
+    private translate: TranslateService
+  ) {}
+
+  ngOnInit(): void {
+    this.route.paramMap.pipe(
+      map(paramMap => paramMap.get('id')),
+      filter(id => id !== null),
+      switchMap(id => this.api.fetch('/trait/traits/{id}', 'get', { path: { id: id! } }))
+    ).subscribe(trait => {
+      Object.entries(trait).forEach(([key, val]) => {
+        this.form.get(key)?.setValue(val);
+      });
+      this.form.get('baseUnit')?.setValue((trait.baseUnit ?? '') as any);
+    });
+
+    this.unitOfMeasurements$ = this.metadataService.getRange('TDF.unitOfMeasurementEnum');
+
+    this.groups$ = this.api.fetch('/trait/trait-groups', 'get', {});
+  }
+
+  onSubmit() {
+    if (!this.form.get('id')!.value) {
+      this.submitNewTrait();
+    } else {
+      this.updateExistingTrait();
+    }
+  }
+
+  private submitNewTrait() {
+    this.submissionState = 'externalValidation';
+    const form = filterNullValues({
+      ...this.form.value,
+      baseUnit: this.form.value.baseUnit ? this.form.value.baseUnit : null
+    }) as Trait;
+    this.form.disable();
+    this.api.fetch('/trait/traits/validate', 'post', {}, form, { cacheInvalidationMs: 0 }).pipe(
+      tap(res => {
+        this.submissionState = 'none';
+        this.errors = res.pass ? undefined : res.errors;
+        this.form.enable();
+        this.cdr.markForCheck();
+      }),
+      filter(res => !!res?.pass),
+      tap(_ => {
+        this.submissionState = 'uploading';
+        this.form.disable();
+      }),
+      switchMap(_ => this.api.fetch('/trait/traits', 'post', {}, form, { cacheInvalidationMs: 0 }))
+    ).subscribe(res => {
+      this.submissionState = 'none';
+      this.cdr.markForCheck();
+      this.router.navigate(['../', res.id], { relativeTo: this.route });
+    }, err => { this.form.enable(); });
+  }
+
+  private updateExistingTrait() {
+    this.submissionState = 'externalValidation';
+    const form = filterNullValues({
+      ...this.form.value,
+      baseUnit: this.form.value.baseUnit ? this.form.value.baseUnit : null
+    }) as Trait;
+    this.form.disable();
+    this.api.fetch('/trait/traits/validate-update/{id}', 'post', { path: { id: form.id } }, form).pipe(
+      tap(res => {
+        this.submissionState = 'none';
+        this.errors = res.pass ? undefined : res.errors;
+        this.form.enable();
+        this.cdr.markForCheck();
+      }),
+      filter(res => !!res?.pass),
+      tap(_ => {
+        this.submissionState = 'uploading';
+        this.form.disable();
+      }),
+      switchMap(_ => this.api.fetch('/trait/traits/{id}', 'put', { path: { id: form.id } }, form))
+    ).subscribe(res => {
+      this.submissionState = 'none';
+      this.cdr.markForCheck();
+      this.router.navigate(['../'], { relativeTo: this.route });
+    }, err => { this.form.enable(); });
+  }
+
+  onDelete() {
+    this.submissionState = 'deleting';
+    const form = filterNullValues(this.form.value) as Trait;
+    this.form.disable();
+    this.api.fetch('/trait/traits/validate-delete/{id}', 'post', { path: { id: form.id } }).pipe(
+      tap(res => {
+        this.errors = res.pass ? undefined : res.errors;
+        this.form.enable();
+        this.cdr.markForCheck();
+      }),
+      filter(res => !!res?.pass),
+      tap(_ => { this.form.disable(); }),
+      switchMap(_ => this.api.fetch('/trait/traits/{id}', 'delete', { path: { id: form.id } }))
+    ).subscribe(_ => {
+      this.router.navigate(['../../'], { relativeTo: this.route });
+    }, () => {
+      this.submissionState = 'none';
+      this.form.enable();
+      this.cdr.markForCheck();
+    });
+  }
+
+  onDeleteClick() {
+    if (confirm(this.translate.instant('np.delete.confirm'))) {
+      this.onDelete();
+    }
+  }
+}

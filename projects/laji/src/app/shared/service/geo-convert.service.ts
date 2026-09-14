@@ -3,7 +3,7 @@ import { Observable, interval, throwError } from 'rxjs';
 import { switchMap, concatMap, map, catchError, takeWhile } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
-import { LajiApiClientBService } from 'projects/laji-api-client-b/src/laji-api-client-b.service';
+import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 export type GeoConversionStatus = 'pending'|'complete';
 
@@ -46,7 +46,7 @@ export class GeoConvertService {
   private pollInterval = 5000;
 
   constructor(
-    private api: LajiApiClientBService,
+    private api: LajiApiClientService,
     private translate: TranslateService
   ) {}
 

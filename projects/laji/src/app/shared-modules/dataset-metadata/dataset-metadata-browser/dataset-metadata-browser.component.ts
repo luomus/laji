@@ -29,7 +29,6 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
     'MY.collectionTypeIndoorGardenArea',
     'MY.collectionTypeOutdoorGardenArea',
     'MY.collectionTypeGardenSublocation'
-
   ];
 
   constructor(
