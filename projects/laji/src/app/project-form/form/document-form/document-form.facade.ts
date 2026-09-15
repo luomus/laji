@@ -378,9 +378,7 @@ export class DocumentFormFacade {
           map((document: Document) => {
             if (document.isTemplate) {
               let doc = this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
-              if (!doc.id) {
-                doc = { ...doc, id: this.getNewTmpId() };
-              }
+              doc = { ...doc, id: this.getNewTmpId() };
               return {
                 document: form.options?.prepopulatedDocument
                   ? deepmerge(form.options?.prepopulatedDocument, doc, { arrayMerge: Util.arrayCombineMerge })
