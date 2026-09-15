@@ -51,7 +51,7 @@ export class TaxonAutocompleteService {
         `;
       case 'MX.vernacularName':
         return `
-          ${(taxon['vernacularName'] && taxon['vernacularName'] !== '')
+          ${taxon['vernacularName']
             ? `${vernacularName} <span class="taxon-second-element">- ${scientificName}</span>`
             : `${scientificName} <span class="taxon-second-element">(${matchingName}) - </span><span class="taxon-third-element">${scientificName}</span>`
           }
@@ -61,7 +61,7 @@ export class TaxonAutocompleteService {
       case 'MX.obsoleteVernacularName':
       case 'MX.tradeName':
         return `
-          ${(taxon['vernacularName'] && taxon['vernacularName'] !== '')
+          ${taxon['vernacularName']
             ? `${vernacularName} <span class="taxon-second-element">- (${matchingName}) - </span><span class="taxon-third-element">${scientificName}</span>`
             : `${scientificName} <span class="taxon-second-element">(${matchingName}) - </span><span class="taxon-third-element">${scientificName}</span>`
           }
@@ -69,7 +69,7 @@ export class TaxonAutocompleteService {
         `;
       case 'MX.colloquialVernacularName':
         return `
-          ${(taxon['vernacularName'] && taxon['vernacularName'] !== '')
+          ${taxon['vernacularName']
             ? `${vernacularName} <span class="taxon-second-element">- ${scientificName}</span><span class="taxon-third-element"> (${matchingName}) </span>`
             : `${scientificName} <span class="taxon-second-element">(${matchingName})</span>`}
           ${this.createAutocompleteDisplayNameRow(taxon, rank)}
@@ -118,9 +118,9 @@ export class TaxonAutocompleteService {
       case 'MX.obsoleteVernacularName':
       case 'MX.tradeName':
       case 'MX.colloquialVernacularName':
-        return (taxon['vernacularName'] && taxon['vernacularName'] !== '')
+        return taxon['vernacularName']
           ? taxon['vernacularName']
-          : (taxon['scientificName'] && taxon['scientificName'] !== '')
+          : taxon['scientificName']
             ? taxon['scientificName']
             : taxon['id'];
       default:
