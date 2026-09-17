@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { mergeMap, take, tap, delay, map, scan, filter, switchMap } from 'rxjs';
+import { mergeMap, take, tap, delay, map, scan, switchMap } from 'rxjs';
 import { combineLatest, Observable, of, Subject, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../../shared/service/user.service';
 import { DocumentStorage } from '../../../storage/document.storage';
 import { LajiFormComponent } from 'projects/laji/src/app/project-form/form/laji-form/laji-form/laji-form.component';
-import { DocumentFormFacade, FormError, isFormError, SaneViewModel, isSaneViewModel, ViewModel } from './document-form.facade';
+import { DocumentFormFacade, ViewModel } from './document-form.facade';
 import { ProjectFormService, RegistrationContact } from '../../../shared/service/project-form.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 import { LocalStorage } from 'ngx-webstorage';
@@ -55,11 +55,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   };
   savingFromLocalStorage = false;
 
-  isFormError = isFormError;
-  isSaneViewModel = isSaneViewModel;
-  errors = FormError;
-
-  private vm!: SaneViewModel;
+  private vm!: ViewModel;
   private vmSub!: Subscription;
   private tmpID: string | undefined;
   private isFromCancel = false;
@@ -95,8 +91,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 
     this.vm$ = this.documentFormFacade.getViewModel(this.formID, this.documentID, this.namedPlaceID, this.template);
     this.vmSub = this.vm$.pipe(
-      filter(isSaneViewModel),
-      tap(_ => {
+      tap(() => {
         if (this.savingFromLocalStorage) {
           this.saveDocumentFromLocalStorage();
         }

@@ -13,7 +13,7 @@ import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { LoadingElementsService } from '../../document-viewer/loading-elements.service';
 import { CheckFocusService } from '../../document-viewer/check-focus.service';
 import { TaxonAutocompleteService } from '../../../shared/service/taxon-autocomplete.service';
-import { TypeaheadMatch } from '../../../../../../laji-ui/src/lib/typeahead/typeahead-match.class';
+import { TypeaheadMatch } from '../../../../../../laji-ui/src/lib/typeahead/typeahead-match';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { SelectStyle } from '../../select/metadata-select/metadata-select.component';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
