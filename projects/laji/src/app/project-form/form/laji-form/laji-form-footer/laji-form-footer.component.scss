@@ -2,9 +2,6 @@
 @use '../../../../../styles/variables' as *;
 
 .form-footer {
-  overflow: auto;
-  position: fixed;
-  z-index: 5;
   bottom: 0;
   left: 0;
   right: 0;
@@ -14,6 +11,8 @@
   box-shadow: 0 2px 6px 1px rgb(36 97 5 / 30%);
   display: flex;
   flex-flow: row nowrap;
+  margin-left: -15px;
+  margin-right: -15px;
   > div, > button, > lu-button {
     margin-right: $sp-1;
   }
@@ -22,6 +21,15 @@
     height: 27px;
     align-self: center;
   }
+}
+
+
+.form-footer-sticky {
+  overflow: auto;
+  position: fixed;
+  z-index: 5;
+  margin-left: initial;
+  margin-right: initial;
 }
 
 .status {
