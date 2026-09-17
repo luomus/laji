@@ -68,7 +68,11 @@ export class PlacementService {
     const attached: AttachedElement = { element, target, placement, mutationObserver, resizeObserver, change$, renderingContext };
     this.attachedElements[id] = attached;
 
-    const destructors = addScrollListenerToAllParents(target, renderingContext, () => change$.next());
+    const destructors = [
+      ...addScrollListenerToAllParents(target, renderingContext, () => change$.next()),
+      renderingContext.renderer.listen(renderingContext.window, 'scroll', () => change$.next()),
+      renderingContext.renderer.listen(renderingContext.window, 'resize', () => change$.next())
+    ];
     // unsubscribe unnecessary, because scrolled completes on detach
     change$.pipe(
       // because we are listening to all the parents at once, multiple scroll events

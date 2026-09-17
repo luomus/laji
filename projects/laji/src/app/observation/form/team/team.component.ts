@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter,
-Input, OnInit, Output, OnDestroy } from '@angular/core';
-import { map, Observable, of as ObservableOf, Subscription } from 'rxjs';
+Input, Output } from '@angular/core';
+import { map, Observable, of as ObservableOf } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs';
-import { BrowserService } from '../../../shared/service/browser.service';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 @Component({
@@ -12,12 +11,10 @@ import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-clie
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class TeamComponent implements OnInit, OnDestroy {
+export class TeamComponent {
 
   value?: string;
   typeaheadLoading?: boolean;
-  screenWidthSub?: Subscription;
-  containerTypeAhead?: string;
   dataSource: Observable<any>;
 
   _members: string[] = [];
@@ -28,8 +25,7 @@ export class TeamComponent implements OnInit, OnDestroy {
   @Output() memberIdsChange = new EventEmitter<string[]>();
 
   constructor(
-    private api: LajiApiClientService,
-    private browserService: BrowserService
+    private api: LajiApiClientService
   ) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.value);
@@ -53,22 +49,6 @@ export class TeamComponent implements OnInit, OnDestroy {
         return ObservableOf([]);
       })
     );
-  }
-
-  ngOnInit() {
-    this.screenWidthSub = this.browserService.lgScreen$.subscribe(data => {
-      if (data === true) {
-        this.containerTypeAhead = 'body';
-      } else {
-        this.containerTypeAhead = 'laji-observation-form';
-      }
-    });
-  }
-
-  ngOnDestroy(): void {
-    if (this.screenWidthSub) {
-      this.screenWidthSub.unsubscribe();
-    }
   }
 
   @Input()
