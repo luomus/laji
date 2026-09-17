@@ -86,12 +86,12 @@ export class LajiErrorHandler extends ErrorHandler {
           message: (error as any)?.error?.message
         } : error instanceof LocalizedError
         ? {
-          title: this.getTranslateService().instant('error.500.title'),
-          message: this.getTranslateService().instant(error.message)
+          title: this.translate.instant('error.500.title'),
+          message: this.translate.instant(error.message)
         }
         : {
-          title: this.getTranslateService().instant('error.500.title'),
-          message: this.getTranslateService().instant('error.500.intro')
+          title: this.translate.instant('error.500.title'),
+          message: this.translate.instant('error.500.intro')
         };
 
         this.getToastsService().showError(message, title, { tapToDismiss: false, disableTimeOut: true, closeButton: true });
