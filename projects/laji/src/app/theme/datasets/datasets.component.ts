@@ -42,12 +42,11 @@ export class DatasetsComponent {
         fs.filter(f =>
           f.options?.dataset && ![Global.forms.databankPrimary, Global.forms.databankSecondary].includes(f.id)
         ).map(f => this.formPermissionService.getRights(f).pipe(
-          map(rights => (rights.view || rights.ictAdmin) && f),
+          map(rights => (rights.view || rights.ictAdmin) && f)
         ))
       ).pipe(
-        map(_fs => _fs.filter(f => f) as FormListing[]),
-      )),
+        map(_fs => _fs.filter(Boolean) as FormListing[])
+      ))
     );
   }
-
 }

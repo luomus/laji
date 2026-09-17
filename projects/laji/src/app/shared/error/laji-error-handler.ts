@@ -6,6 +6,7 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { RESPONSE } from '../../../express.tokens';
 import { environment } from '../../../environments/environment';
 import { UserService } from '../service/user.service';
+import { LocalizedError } from './localized-error';
 
 const pauseBeforeResendError = 30000;
 const enabledEnvs = ['dev', 'beta'];
@@ -83,9 +84,14 @@ export class LajiErrorHandler extends ErrorHandler {
         ? {
           title: (error as any)?.error?.errorCode,
           message: (error as any)?.error?.message
-        } : {
-          title: this.translate.instant('error.500.title'),
-          message: this.translate.instant('error.500.intro')
+        } : error instanceof LocalizedError
+        ? {
+          title: this.getTranslateService().instant('error.500.title'),
+          message: this.getTranslateService().instant(error.message)
+        }
+        : {
+          title: this.getTranslateService().instant('error.500.title'),
+          message: this.getTranslateService().instant('error.500.intro')
         };
 
         this.getToastsService().showError(message, title, { tapToDismiss: false, disableTimeOut: true, closeButton: true });
