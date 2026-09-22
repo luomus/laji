@@ -64,7 +64,7 @@ export class ProjectFormService {
   }
 
   private currentFormID?: string;
-  private form$?: ReplaySubject<Form | undefined>;
+  private form$?: ReplaySubject<Form>;
   private registrationContacts?: RegistrationContact[];
 
   /** LajiFormBuilder can change the language of the form, without changing the lang of the whole page. */
@@ -75,7 +75,7 @@ export class ProjectFormService {
     return this.getFormID(route).pipe(switchMap(formID => this.getForm$(formID)));
   }
 
-  getForm$(id: string): Observable<Form | undefined> {
+  getForm$(id: string): Observable<Form> {
     if (Global.formAliasMap[id]) {
       id = Global.formAliasMap[id];
     }

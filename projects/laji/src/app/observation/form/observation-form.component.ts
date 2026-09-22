@@ -8,7 +8,6 @@ import moment from 'moment';
 import { ObservationFacade } from '../observation.facade';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
-import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
 import { UserService } from '../../shared/service/user.service';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
@@ -107,8 +106,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   delayedSearch = new Subject<void>();
   delayedSub: Subscription;
-  screenWidthSub?: Subscription;
-  containerTypeAhead?: string;
   collectionAndRecordQualityString?: string;
   isLoggedIn$ = this.userService.isLoggedIn$;
 
@@ -127,7 +124,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   constructor(
     private observationFacade: ObservationFacade,
     private taxonAutocompleteService: TaxonAutocompleteService,
-    private browserService: BrowserService,
     private userService: UserService
   ) {
     this.dataSource = new Observable((subscriber: any) => {
@@ -151,22 +147,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.updateVisibleSections();
-    this.screenWidthSub = this.browserService.lgScreen$.subscribe(data => {
-      if (data === true) {
-        this.containerTypeAhead = 'body';
-      } else {
-        this.containerTypeAhead = 'laji-observation-form';
-      }
-    });
   }
 
   ngOnDestroy(): void {
     if (this.delayedSub) {
       this.delayedSub.unsubscribe();
-    }
-
-    if (this.screenWidthSub) {
-      this.screenWidthSub.unsubscribe();
     }
   }
 
@@ -513,8 +498,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       query.sourceId = ['KE.167', 'KE.3'];
       query.superRecordBasis = ['PRESERVED_SPECIMEN'];
     }
-    query.editorPersonToken = formQuery.asEditor ? ObservationFacade.PERSON_TOKEN : undefined;
-    query.observerPersonToken = formQuery.asObserver ? ObservationFacade.PERSON_TOKEN : undefined;
+    query.editorPersonToken = formQuery.asEditor && !formQuery.asObserver ? ObservationFacade.PERSON_TOKEN : undefined;
+    query.observerPersonToken = formQuery.asObserver && !formQuery.asEditor ? ObservationFacade.PERSON_TOKEN : undefined;
+    query.editorOrObserverPersonToken = formQuery.asEditor && formQuery.asObserver ? ObservationFacade.PERSON_TOKEN : undefined;
     query.editorOrObserverIsNotPersonToken = formQuery.asNotEditorOrObserver ? ObservationFacade.PERSON_TOKEN : undefined;
     query.includeSubTaxa = formQuery.taxonIncludeLower ? undefined : false;
     query.useIdentificationAnnotations = formQuery.taxonUseAnnotated ? undefined : false;

@@ -657,7 +657,7 @@ export interface paths {
         /** Update an existing document */
         put: operations["DocumentsController_update"];
         post?: never;
-        /** Update an existing document */
+        /** Delete a document */
         delete: operations["DocumentsController_delete"];
         options?: never;
         head?: never;
@@ -11491,39 +11491,44 @@ export interface components {
             results: components["schemas"]["WarehouseDwEnumerationLabel"][];
         };
         LajiBackendTaxonSearchResponse: {
-            /** @description Name that matched the search word */
+            /** @description The name that matched the search query. */
             matchingName: string;
             /**
-             * @description Type of the name.
+             * @description The type of the matching name for the taxon.
              * @enum {string}
              */
             nameType: "MX.scientificName" | "MX.vernacularName" | "MX.hasSynonym" | "MX.hasBasionym" | "MX.alternativeVernacularName" | "MX.hasMisappliedName" | "MX.birdlifeCode" | "MX.obsoleteVernacularName" | "MX.euringCode" | "MX.hasSubjectiveSynonym" | "MX.hasAlternativeName" | "MX.hasOrthographicVariant" | "MX.hasObjectiveSynonym" | "MX.hasMisspelledName" | "MX.colloquialVernacularName" | "MX.hasUncertainSynonym" | "MX.hasHomotypicSynonym" | "MX.tradeName" | "MX.hasHeterotypicSynonym";
-            /** @description Taxon identifier of the taxon that has the matching name; in the short Qname format, for example 'MX.123' */
+            /** @description Identifier of the taxon with the matching name, in short QName format (for example 'MX.123' or 'gbif:123'). */
             id: string;
-            /** @description Checklist identifier of the matching taxon; in the short Qname format, for example 'MR.1'. For taxa not part of any checklist the value is 'undefined'. */
+            /** @description Identifier of the checklist containing the taxon, in short QName format (for example 'MR.1'). Returns 'undefined' if the taxon does not belong to any checklist. */
             checklist: string;
-            /** @description Accepted scientific name of the taxon that has the matching name */
+            /** @description Accepted scientific name of the taxon associated with the matching name. */
             scientificName: string;
-            /** @description Author of the above mentioned scientific name */
+            /** @description Scientific authorship of the accepted scientific name. */
             scientificNameAuthorship: string;
-            /** @description Taxonomic rank of the taxon that has the matching name; in the short Qname format, for example 'MX.genus' */
+            /** @description Taxonomic rank of the taxon, in short QName format (for example 'MX.genus'). */
             taxonRank: string;
-            /** @description Should the matching name be cursived */
+            /** @description Whether the matching name should be displayed in italics. */
             cursiveName: boolean;
-            /** @description Is the taxon that has the mathing name marked as a Finnish taxon */
+            /** @description Whether the taxon is designated as a Finnish taxon. */
             finnish: boolean;
-            /** @description Is the taxon that has the mathing name species level or lower, or a higher taxon */
+            /** @description Whether the taxon is at species rank or below (true), or above species rank (false). */
             species: boolean;
+            /** @description Whether the taxon is classified as an invasive species. */
+            invasiveSpecies: boolean;
+            /** @description Localized vernacular (common) name of the taxon in the provided locale. */
             vernacularName: components["schemas"]["LajiBackendLocalizedText"];
+            /** @description Informal taxon groups that the taxon belongs to. */
             informalGroups: {
-                /** @description Identifier of the informal taxon group that the matching taxon belongs to); in the short Qname format, for example 'MVL.1' */
+                /** @description Identifier of the group, in short QName format (for example 'MVL.1'). */
                 id: string;
+                /** @description Localized name of the group in the provided locale. */
                 name: components["schemas"]["LajiBackendLocalizedText"];
             }[];
-            /** @description Scientific name of the kingdom that the matching taxon belongs to */
+            /** @description Scientific name of the kingdom the taxon belongs to. */
             kingdomScientificName: string;
             /**
-             * @description Type of the matching name
+             * @description Match category indicating how the name matched the search query: 'exactMatches', 'partialMatches' or 'likelyMatches'.
              * @enum {string}
              */
             type: "exactMatches" | "partialMatches" | "likelyMatches";
@@ -11651,6 +11656,7 @@ export interface components {
             invasiveSpeciesMainGroups: string[];
             taxonSets: string[];
             notes: string;
+            referenceSequences: components["schemas"]["LajiBackendReferenceSequence"][];
             taxonomicOrder: number;
             parent: {
                 domain: components["schemas"]["LajiBackendSimpleTaxon"];
@@ -11731,6 +11737,16 @@ export interface components {
             /** @description Qname identifier */
             id: string;
             order: number;
+        };
+        LajiBackendReferenceSequence: {
+            externalSequenceId: string;
+            /** @description Qname identifier */
+            id: string;
+            /** @description Qname identifier */
+            locus: string;
+            order: number;
+            sequenceText: string;
+            specimenId: string;
         };
         LajiBackendOccurrence: {
             /** @description Qname identifier */
@@ -12120,8 +12136,8 @@ export interface components {
              * @description Qname identifier
              * @enum {string}
              */
-            primaryHabitat: "MKV.habitatM" | "MKV.habitatMk" | "MKV.habitatMkk" | "MKV.habitatMkt" | "MKV.habitatMl" | "MKV.habitatMlt" | "MKV.habitatMlk" | "MKV.habitatMt" | "MKV.habitatMtl" | "MKV.habitatS" | "MKV.habitatSl" | "MKV.habitatSla" | "MKV.habitatSlr" | "MKV.habitatSlk" | "MKV.habitatSn" | "MKV.habitatSnk" | "MKV.habitatSnr" | "MKV.habitatSr" | "MKV.habitatSrk" | "MKV.habitatSrr" | "MKV.habitatSk" | "MKV.habitatSkk" | "MKV.habitatSkr" | "MKV.habitatV" | "MKV.habitatVi" | "MKV.habitatVik" | "MKV.habitatVim" | "MKV.habitatVis" | "MKV.habitatVih" | "MKV.habitatVie" | "MKV.habitatVip" | "MKV.habitatVs" | "MKV.habitatVsk" | "MKV.habitatVsr" | "MKV.habitatVa" | "MKV.habitatVj" | "MKV.habitatVp" | "MKV.habitatVk" | "MKV.habitatVl" | "MKV.habitatR" | "MKV.habitatRi" | "MKV.habitatRim" | "MKV.habitatRimt" | "MKV.habitatRiml" | "MKV.habitatRip" | "MKV.habitatRin" | "MKV.habitatRil" | "MKV.habitatRir" | "MKV.habitatRis" | "MKV.habitatRih" | "MKV.habitatRit" | "MKV.habitatRj" | "MKV.habitatRjm" | "MKV.habitatRjmt" | "MKV.habitatRjml" | "MKV.habitatRjp" | "MKV.habitatRjn" | "MKV.habitatRjl" | "MKV.habitatRjr" | "MKV.habitatRjs" | "MKV.habitatRjh" | "MKV.habitatRjt" | "MKV.habitatK" | "MKV.habitatKk" | "MKV.habitatKs" | "MKV.habitatKr" | "MKV.habitatKl" | "MKV.habitatKm" | "MKV.habitatT" | "MKV.habitatTk" | "MKV.habitatTn" | "MKV.habitatTu" | "MKV.habitatTp" | "MKV.habitatTl" | "MKV.habitatTll" | "MKV.habitatTlk" | "MKV.habitatTls" | "MKV.habitatTlr" | "MKV.habitatTlä" | "MKV.habitatTs" | "MKV.habitatTj" | "MKV.habitatTv" | "MKV.habitatTa" | "MKV.habitatI" | "MKV.habitatIn" | "MKV.habitatIt" | "MKV.habitatIh" | "MKV.habitatIk" | "MKV.habitatIo" | "MKV.habitatIv" | "MKV.habitatIp" | "MKV.habitatIu" | "MKV.habitatIr" | "MKV.habitatU";
-            habitatSpecifiers: ("MKV.habitatSpecificTypeV" | "MKV.habitatSpecificTypeH" | "MKV.habitatSpecificTypeP" | "MKV.habitatSpecificTypeJ" | "MKV.habitatSpecificTypePAK" | "MKV.habitatSpecificTypeVAK" | "MKV.habitatSpecificTypeRA" | "MKV.habitatSpecificTypeKA" | "MKV.habitatSpecificTypeKE" | "MKV.habitatSpecificTypeCA")[];
+            primaryHabitat: "MKV.habitatM" | "MKV.habitatMk" | "MKV.habitatMkk" | "MKV.habitatMkt" | "MKV.habitatMl" | "MKV.habitatMlt" | "MKV.habitatMlk" | "MKV.habitatMt" | "MKV.habitatMtl" | "MKV.habitatMtm" | "MKV.habitatS" | "MKV.habitatSl" | "MKV.habitatSla" | "MKV.habitatSlr" | "MKV.habitatSlk" | "MKV.habitatSn" | "MKV.habitatSnk" | "MKV.habitatSnr" | "MKV.habitatSr" | "MKV.habitatSrk" | "MKV.habitatSrr" | "MKV.habitatSk" | "MKV.habitatSkk" | "MKV.habitatSkr" | "MKV.habitatV" | "MKV.habitatVi" | "MKV.habitatVik" | "MKV.habitatVis" | "MKV.habitatVim" | "MKV.habitatVia" | "MKV.habitatVie" | "MKV.habitatVip" | "MKV.habitatVs" | "MKV.habitatVsk" | "MKV.habitatVsr" | "MKV.habitatVa" | "MKV.habitatVj" | "MKV.habitatVp" | "MKV.habitatVk" | "MKV.habitatVl" | "MKV.habitatR" | "MKV.habitatRi" | "MKV.habitatRim" | "MKV.habitatRimt" | "MKV.habitatRiml" | "MKV.habitatRip" | "MKV.habitatRin" | "MKV.habitatRil" | "MKV.habitatRir" | "MKV.habitatRis" | "MKV.habitatRih" | "MKV.habitatRit" | "MKV.habitatRj" | "MKV.habitatRjm" | "MKV.habitatRjmt" | "MKV.habitatRjml" | "MKV.habitatRjp" | "MKV.habitatRjn" | "MKV.habitatRjl" | "MKV.habitatRjr" | "MKV.habitatRjs" | "MKV.habitatRjh" | "MKV.habitatRjt" | "MKV.habitatK" | "MKV.habitatKk" | "MKV.habitatKs" | "MKV.habitatKr" | "MKV.habitatKl" | "MKV.habitatKm" | "MKV.habitatT" | "MKV.habitatTk" | "MKV.habitatTn" | "MKV.habitatTu" | "MKV.habitatTp" | "MKV.habitatTl" | "MKV.habitatTll" | "MKV.habitatTlk" | "MKV.habitatTls" | "MKV.habitatTlr" | "MKV.habitatTlä" | "MKV.habitatTs" | "MKV.habitatTj" | "MKV.habitatTv" | "MKV.habitatTa" | "MKV.habitatI" | "MKV.habitatIn" | "MKV.habitatIt" | "MKV.habitatIk" | "MKV.habitatIh" | "MKV.habitatIo" | "MKV.habitatIv" | "MKV.habitatIp" | "MKV.habitatIj" | "MKV.habitatIr" | "MKV.habitatU";
+            habitatSpecifiers: ("MKV.habitatSpecificTypeV" | "MKV.habitatSpecificTypeLU" | "MKV.habitatSpecificTypeH" | "MKV.habitatSpecificTypeP" | "MKV.habitatSpecificTypeJ" | "MKV.habitatSpecificTypePAK" | "MKV.habitatSpecificTypeVAK" | "MKV.habitatSpecificTypeCA" | "MKV.habitatSpecificTypeRA" | "MKV.habitatSpecificTypeLK" | "MKV.habitatSpecificTypeKA" | "MKV.habitatSpecificTypeKE")[];
             sensitive: boolean;
         };
         LajiBackendTraitSearchSubject: {
@@ -12543,6 +12559,11 @@ export interface components {
              */
             navigationTitle: string;
             /**
+             * New observation label
+             * @description Shown on the about page for forms with MHL.mobile
+             */
+            newObservationLabel: string;
+            /**
              * Open form
              * @description Allows creating documents without a person token. Utilizes open form login system, hides navbar.
              */
@@ -12624,6 +12645,11 @@ export interface components {
              * @description Makes the documents reported with the form secondary
              */
             secondaryCopy: boolean;
+            /**
+             * Send to warehouse
+             * @description Defaults to true. If false, the resource is not sent to warehouse.
+             */
+            sendToWarehouse: boolean;
             /**
              * Short title from collection name
              * @description Overrides MHL.shortTitle usage
@@ -13107,6 +13133,7 @@ export interface components {
              * @description ID for the observation in another system, e.g. Vihko/Notebook. Format System:identifier.
              */
             observationID?: string;
+            observerContacts?: components["schemas"]["store-contact"][];
             /**
              * Original catalogue number
              * @description Original catalogue number or other  original identifier of the specimen. E.g. H9000000
@@ -13255,6 +13282,8 @@ export interface components {
             phoneNumber: string;
             /** Postal code */
             postalCode: string;
+            /** Ringer number */
+            ringerNumber: number;
             /** Street address */
             streetAddress: string;
         };
@@ -13451,6 +13480,11 @@ export interface components {
              * @enum {string}
              */
             pointCountHabitat: "" | "MY.pointCountHabitat0" | "MY.pointCountHabitat1" | "MY.pointCountHabitat2" | "MY.pointCountHabitat3" | "MY.pointCountHabitat4" | "MY.pointCountHabitat5" | "MY.pointCountHabitat6" | "MY.pointCountHabitat7" | "MY.pointCountHabitat8" | "MY.pointCountHabitat9" | "MY.pointCountHabitat10" | "MY.pointCountHabitat11" | "MY.pointCountHabitat12" | "MY.pointCountHabitat13" | "MY.pointCountHabitat14" | "MY.pointCountHabitat15" | "MY.pointCountHabitat16" | "MY.pointCountHabitat17";
+            /**
+             * Date accuracy
+             * @enum {string}
+             */
+            ringRecoveryFormDateAccuracy: "" | "MY.ringRecoveryFormDateAccuracy0" | "MY.ringRecoveryFormDateAccuracy1" | "MY.ringRecoveryFormDateAccuracy2" | "MY.ringRecoveryFormDateAccuracy3" | "MY.ringRecoveryFormDateAccuracy4" | "MY.ringRecoveryFormDateAccuracy5" | "MY.ringRecoveryFormDateAccuracy6" | "MY.ringRecoveryFormDateAccuracy7" | "MY.ringRecoveryFormDateAccuracy8";
             /** Shoreline length/m */
             shorelineLengthMeters: number;
             /** Spotting scope */
@@ -14485,7 +14519,7 @@ export interface components {
             seedMorphology: "" | "MY.seedMorphologyBent" | "MY.seedMorphologyBroad" | "MY.seedMorphologyCapitate" | "MY.seedMorphologyFolded" | "MY.seedMorphologyLateral" | "MY.seedMorphologyLinearFullyDeveloped" | "MY.seedMorphologyLinearUnderdeveloped" | "MY.seedMorphologyPeripheral" | "MY.seedMorphologyRudimentary" | "MY.seedMorphologySpatulateFullyDeveloped" | "MY.seedMorphologySpatulateUnderdeveloped" | "MY.seedMorphologyUndifferentiated" | "MY.seedMorphologyInvesting";
             /**
              * DNA sequence (FASTA)
-             * @description DNA sequence associated with the occurrence, stored in FASTA format.
+             * @description DNA sequence stored in FASTA format.
              */
             sequenceText: string[];
             /**
@@ -14641,6 +14675,8 @@ export interface components {
             "@type": string;
             /** Adult individual count */
             adultIndividualCount: number;
+            /** autocompleteSelectedInvasive */
+            autocompleteSelectedInvasive: boolean;
             /** Taxon ID selected from autocomplete */
             autocompleteSelectedTaxonID: string;
             /** K-multiplier */
@@ -14668,6 +14704,13 @@ export interface components {
             glowWormMicrohabitat: "" | "MY.glowWormMicrohabitatEnum1" | "MY.glowWormMicrohabitatEnum2" | "MY.glowWormMicrohabitatEnum3" | "MY.glowWormMicrohabitatEnum4" | "MY.glowWormMicrohabitatEnum5" | "MY.glowWormMicrohabitatEnum6" | "MY.glowWormMicrohabitatEnumOther";
             /** Ground nest count */
             groundNestCount: number;
+            /**
+             * Assessment of population change
+             * @enum {string}
+             */
+            herpFormPopulationChange: "" | "MY.herpFormPopulationChangeNotEvaluated" | "MY.herpFormPopulationChangeEnumLargeIncrease" | "MY.herpFormPopulationChangeEnumSmallIncrease" | "MY.herpFormPopulationChangeEnumStable" | "MY.herpFormPopulationChangeEnumSmallDecrease" | "MY.herpFormPopulationChangeEnumLargeDecrease" | "MY.herpFormPopulationChangeEnumLocallyExtinct";
+            /** Notes about population changes */
+            herpFormPopulationChangeNotes: string;
             /** Parven koko */
             individualCountFlock: number;
             /** Yksilömäärä sisällä */
@@ -14718,6 +14761,15 @@ export interface components {
             pointCountFlock: string;
             /** Pullus individual count */
             pullusIndividualCount: number;
+            /**
+             * Birds state when found
+             * @enum {string}
+             */
+            ringRecoveryFormBirdState: "" | "MY.ringRecoveryFormBirdState0" | "MY.ringRecoveryFormBirdState1" | "MY.ringRecoveryFormBirdState2" | "MY.ringRecoveryFormBirdState3" | "MY.ringRecoveryFormBirdState4" | "MY.ringRecoveryFormBirdState5" | "MY.ringRecoveryFormBirdState6" | "MY.ringRecoveryFormBirdState7_1" | "MY.ringRecoveryFormBirdState7_2" | "MY.ringRecoveryFormBirdState8" | "MY.ringRecoveryFormBirdState9";
+            /** Description of the found ring */
+            ringRecoveryFormNotes: string;
+            /** Manner of discovery or death of the bird */
+            ringRecoveryFormRecoveryNotes: string;
             /** Is the plant growing next to running water? */
             runningWaterInVicinity: boolean;
             /**
@@ -15545,6 +15597,7 @@ export interface components {
             userID: string;
             /** Xeno-Canto API key */
             xenoCantoApiKey?: string;
+            /** Xeno-Canto user name */
             xenoCantoUserName?: string;
             /** profileKey */
             profileKey?: string;
@@ -16499,39 +16552,43 @@ export interface components {
             name?: string;
         };
         TaxonAutocompleteResponse: {
-            /** @description Name that matched the search word */
+            /** @description The name that matched the search query. */
             matchingName: string;
             /**
-             * @description Type of the name.
+             * @description The type of the matching name for the taxon.
              * @enum {string}
              */
             nameType: "MX.scientificName" | "MX.vernacularName" | "MX.hasSynonym" | "MX.hasBasionym" | "MX.alternativeVernacularName" | "MX.hasMisappliedName" | "MX.birdlifeCode" | "MX.obsoleteVernacularName" | "MX.euringCode" | "MX.hasSubjectiveSynonym" | "MX.hasAlternativeName" | "MX.hasOrthographicVariant" | "MX.hasObjectiveSynonym" | "MX.hasMisspelledName" | "MX.colloquialVernacularName" | "MX.hasUncertainSynonym" | "MX.hasHomotypicSynonym" | "MX.tradeName" | "MX.hasHeterotypicSynonym";
-            /** @description Taxon identifier of the taxon that has the matching name; in the short Qname format, for example 'MX.123' */
+            /** @description Identifier of the taxon with the matching name, in short QName format (for example 'MX.123' or 'gbif:123'). */
             id: string;
-            /** @description Checklist identifier of the matching taxon; in the short Qname format, for example 'MR.1'. For taxa not part of any checklist the value is 'undefined'. */
+            /** @description Identifier of the checklist containing the taxon, in short QName format (for example 'MR.1'). Returns 'undefined' if the taxon does not belong to any checklist. */
             checklist: string;
-            /** @description Accepted scientific name of the taxon that has the matching name */
+            /** @description Accepted scientific name of the taxon associated with the matching name. */
             scientificName: string;
-            /** @description Author of the above mentioned scientific name */
+            /** @description Scientific authorship of the accepted scientific name. */
             scientificNameAuthorship: string;
-            /** @description Taxonomic rank of the taxon that has the matching name; in the short Qname format, for example 'MX.genus' */
+            /** @description Taxonomic rank of the taxon, in short QName format (for example 'MX.genus'). */
             taxonRank: string;
-            /** @description Should the matching name be cursived */
+            /** @description Whether the matching name should be displayed in italics. */
             cursiveName: boolean;
-            /** @description Is the taxon that has the mathing name marked as a Finnish taxon */
+            /** @description Whether the taxon is designated as a Finnish taxon. */
             finnish: boolean;
-            /** @description Is the taxon that has the mathing name species level or lower, or a higher taxon */
+            /** @description Whether the taxon is at species rank or below (true), or above species rank (false). */
             species: boolean;
+            /** @description Whether the taxon is classified as an invasive species. */
+            invasiveSpecies: boolean;
             vernacularName?: string;
+            /** @description Informal taxon groups that the taxon belongs to. */
             informalGroups: {
-                /** @description Identifier of the informal taxon group that the matching taxon belongs to); in the short Qname format, for example 'MVL.1' */
+                /** @description Identifier of the group, in short QName format (for example 'MVL.1'). */
                 id: string;
+                /** @description Localized name of the group in the provided locale. */
                 name: components["schemas"]["LajiBackendLocalizedText"];
             }[];
-            /** @description Scientific name of the kingdom that the matching taxon belongs to */
+            /** @description Scientific name of the kingdom the taxon belongs to. */
             kingdomScientificName: string;
             /**
-             * @description Type of the matching name
+             * @description Match category indicating how the name matched the search query: 'exactMatches', 'partialMatches' or 'likelyMatches'.
              * @enum {string}
              */
             type: "exactMatches" | "partialMatches" | "likelyMatches";
@@ -18628,7 +18685,8 @@ export interface operations {
             query?: {
                 page?: number;
                 pageSize?: number;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
                 /** @description Return only notifications that have not been marked as seen. */
                 onlyUnSeen?: boolean;
@@ -19928,7 +19986,8 @@ export interface operations {
                 pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
             };
             header?: never;
@@ -23309,7 +23368,8 @@ export interface operations {
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
@@ -23451,7 +23511,8 @@ export interface operations {
                 checklist?: string;
                 page?: number;
                 pageSize?: number;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
@@ -23780,6 +23841,11 @@ export interface operations {
                     invasiveSpeciesMainGroups?: string | string[];
                     taxonSets?: string | string[];
                     notes?: string | string[];
+                    "referenceSequences.externalSequenceId"?: string | string[];
+                    "referenceSequences.id"?: string | string[];
+                    "referenceSequences.locus"?: string | string[];
+                    "referenceSequences.sequenceText"?: string | string[];
+                    "referenceSequences.specimenId"?: string | string[];
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
@@ -24584,6 +24650,11 @@ export interface operations {
                     invasiveSpeciesMainGroups?: string | string[];
                     taxonSets?: string | string[];
                     notes?: string | string[];
+                    "referenceSequences.externalSequenceId"?: string | string[];
+                    "referenceSequences.id"?: string | string[];
+                    "referenceSequences.locus"?: string | string[];
+                    "referenceSequences.sequenceText"?: string | string[];
+                    "referenceSequences.specimenId"?: string | string[];
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
@@ -24931,7 +25002,8 @@ export interface operations {
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
@@ -25073,7 +25145,8 @@ export interface operations {
                 checklist?: string;
                 page?: number;
                 pageSize?: number;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
@@ -25402,6 +25475,11 @@ export interface operations {
                     invasiveSpeciesMainGroups?: string | string[];
                     taxonSets?: string | string[];
                     notes?: string | string[];
+                    "referenceSequences.externalSequenceId"?: string | string[];
+                    "referenceSequences.id"?: string | string[];
+                    "referenceSequences.locus"?: string | string[];
+                    "referenceSequences.sequenceText"?: string | string[];
+                    "referenceSequences.specimenId"?: string | string[];
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
@@ -26191,6 +26269,11 @@ export interface operations {
                     invasiveSpeciesMainGroups?: string | string[];
                     taxonSets?: string | string[];
                     notes?: string | string[];
+                    "referenceSequences.externalSequenceId"?: string | string[];
+                    "referenceSequences.id"?: string | string[];
+                    "referenceSequences.locus"?: string | string[];
+                    "referenceSequences.sequenceText"?: string | string[];
+                    "referenceSequences.specimenId"?: string | string[];
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
@@ -26530,7 +26613,8 @@ export interface operations {
     TaxaController_get: {
         parameters: {
             query?: {
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
                 /** @description Include media objects in the response. Defaults to false. */
                 includeMedia?: boolean;
@@ -26652,7 +26736,8 @@ export interface operations {
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
@@ -26793,7 +26878,8 @@ export interface operations {
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
@@ -26938,7 +27024,8 @@ export interface operations {
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
@@ -27079,7 +27166,8 @@ export interface operations {
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
@@ -27391,6 +27479,11 @@ export interface operations {
                     invasiveSpeciesMainGroups?: string | string[];
                     taxonSets?: string | string[];
                     notes?: string | string[];
+                    "referenceSequences.externalSequenceId"?: string | string[];
+                    "referenceSequences.id"?: string | string[];
+                    "referenceSequences.locus"?: string | string[];
+                    "referenceSequences.sequenceText"?: string | string[];
+                    "referenceSequences.specimenId"?: string | string[];
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
@@ -27741,7 +27834,8 @@ export interface operations {
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
@@ -27889,7 +27983,8 @@ export interface operations {
                 informalTaxonGroups?: string;
                 /** @description Filter by comma separated ids */
                 id?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
                 /** @description Checklist version to be used. Defaults to the latest version. */
                 checklistVersion?: "current" | "MR.424" | "MR.425" | "MR.426" | "MR.427" | "MR.428" | "MR.484";
@@ -28226,6 +28321,11 @@ export interface operations {
                     invasiveSpeciesMainGroups?: string | string[];
                     taxonSets?: string | string[];
                     notes?: string | string[];
+                    "referenceSequences.externalSequenceId"?: string | string[];
+                    "referenceSequences.id"?: string | string[];
+                    "referenceSequences.locus"?: string | string[];
+                    "referenceSequences.sequenceText"?: string | string[];
+                    "referenceSequences.specimenId"?: string | string[];
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
@@ -29019,6 +29119,11 @@ export interface operations {
                     invasiveSpeciesMainGroups?: string | string[];
                     taxonSets?: string | string[];
                     notes?: string | string[];
+                    "referenceSequences.externalSequenceId"?: string | string[];
+                    "referenceSequences.id"?: string | string[];
+                    "referenceSequences.locus"?: string | string[];
+                    "referenceSequences.sequenceText"?: string | string[];
+                    "referenceSequences.specimenId"?: string | string[];
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
@@ -30235,7 +30340,8 @@ export interface operations {
                 pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
             };
             header?: never;
@@ -31217,7 +31323,8 @@ export interface operations {
                 pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
             };
             header?: never;
@@ -32958,7 +33065,8 @@ export interface operations {
                 pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
             };
             header?: never;
@@ -33293,7 +33401,8 @@ export interface operations {
     OrganizationsController_getPage: {
         parameters: {
             query?: {
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
                 page?: number;
                 pageSize?: number;
@@ -33518,7 +33627,8 @@ export interface operations {
                 pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
             };
             header?: never;
@@ -34746,7 +34856,10 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["TripReportUnitShorthandResponseDto"][];
+                    "application/json": {
+                        results: components["schemas"]["LajiBackendTaxonSearchResponse"][];
+                        "@context": string;
+                    };
                 };
             };
             400: {
@@ -35806,7 +35919,8 @@ export interface operations {
                 pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
             };
             header?: never;
@@ -35924,7 +36038,8 @@ export interface operations {
                 pageSize?: number;
                 /** @description Comma separated ids */
                 idIn?: string;
-                /** @description Select fields to include in the result. Multiple values are separated by a comma (,) */
+                /** @description Select fields to include in the result. Multiple values are separated by a comma (,). Allows any value in the
+                 *     schema. If the response is a page-like object (has "results"), it allows any field in the results' schema */
                 selectedFields?: string;
             };
             header?: never;
