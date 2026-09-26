@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, forwardRef, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, OnDestroy, OnInit, Input } from '@angular/core';
 import { ControlValueAccessor, FormArray, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { components } from 'projects/laji-api-client/generated/api';
 import { Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ type TraitEnumerationValue = components['schemas']['LajiBackendTraitEnumerationV
 type TraitEnumerationValueFormGroup = FormGroup<{
   [K in keyof TraitEnumerationValue]: FormControl<TraitEnumerationValue[K]>;
 }>;
+type ValidationResponse = components['schemas']['LajiBackendValidationResponse'];
 
 @Component({
     selector: 'laji-trait-enumeration-value-list',
@@ -23,6 +24,8 @@ type TraitEnumerationValueFormGroup = FormGroup<{
     standalone: false
 })
 export class TraitEnumerationValueListComponent implements ControlValueAccessor, OnInit, OnDestroy {
+  @Input() errors: ValidationResponse['errors'] | undefined;
+
   form = this.fb.array<TraitEnumerationValueFormGroup>([]);
   onChange: (value: TraitEnumerationValue[]) => void = () => {};
   onTouched: () => void = () => {};
@@ -77,6 +80,10 @@ export class TraitEnumerationValueListComponent implements ControlValueAccessor,
     }
   }
 
+  getDataEntryNameError(index: number): string | undefined {
+    return this.errors?.[`enumerations[${index}].dataEntryName`];
+  }
+
   private addElem(elem?: TraitEnumerationValue) {
     const group = this.fb.group({
       id: new FormControl(elem?.id ?? '', { nonNullable: true }),
@@ -87,4 +94,3 @@ export class TraitEnumerationValueListComponent implements ControlValueAccessor,
     this.form.push(group);
   }
 }
-

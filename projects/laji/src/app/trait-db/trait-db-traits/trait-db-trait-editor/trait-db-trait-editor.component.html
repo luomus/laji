@@ -53,7 +53,7 @@
     </select>
     <ng-container *ngTemplateOutlet="errorsTmp; context: { $implicit: 'baseUnit' }"></ng-container>
   </div>
-  <laji-trait-enumeration-value-list class="my-6" formControlName="enumerations"></laji-trait-enumeration-value-list>
+  <laji-trait-enumeration-value-list class="my-6" [errors]="errors" formControlName="enumerations"></laji-trait-enumeration-value-list>
   <div>
     <label for="example-values">Example values:</label>
     <input id="example-values" class="form-control" formControlName="exampleValues" type="text">
