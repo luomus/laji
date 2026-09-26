@@ -3,10 +3,6 @@ import { Injectable } from '@angular/core';
 /** Default values provider for typeahead */
 @Injectable({ providedIn: 'root' })
 export class TypeaheadConfig {
-  /** sets use adaptive position */
-  adaptivePosition = false;
-  /** turn on/off animation */
-  isAnimated = false;
   /** used to hide results on blur */
   hideResultsOnBlur = true;
   /** if true, typeahead will cancel async request on blur */

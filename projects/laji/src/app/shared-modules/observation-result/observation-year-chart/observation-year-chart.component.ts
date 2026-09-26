@@ -7,13 +7,13 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Output
+  Output,
+  SimpleChanges
 } from '@angular/core';
 import { map } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { ChartDataset, ChartOptions, Tooltip } from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
-import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { paths } from 'projects/laji-api-client/generated/api';
 import { SearchQueryService } from '../../../observation/search-query.service';
@@ -30,6 +30,7 @@ type AggregateQueryParams = paths['/warehouse/query/unit/aggregate']['get']['par
 export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnInit {
   @Input() query: any;
   @Input() enableOnlyCount = true;
+  @Input() onlyCount = true;
   newData: ChartDataset[] = [{data: [],  label: this.translate.instant('all')}];
   splitIdx = 0;
 
@@ -48,8 +49,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   private subBarChartLabels!: string[];
   private allBarChartsLabel!: string[];
   resultList: any[] = [];
-  @LocalStorage('onlycount') onlyCount?: any;
-
 
   @Output() hasData = new EventEmitter<boolean>();
 
@@ -57,7 +56,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
     private api: LajiApiClientService,
     private cd: ChangeDetectorRef,
     private translate: TranslateService,
-    private localSt: LocalStorageService,
     private searchQuery: SearchQueryService
   ) { }
 
@@ -66,17 +64,14 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       (Tooltip.positioners as any).cursor = function(chartElements: any, coordinates: any) {
         return coordinates;
       };
-      this.localSt.observe('onlycount')
-            .subscribe((value) => {
-              this.onlyCount = value;
-              this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
-              this.initializeArrays(this.resultList);
-              this.cd.markForCheck();
-            });
   }
 
-  ngOnChanges() {
-    this.updateData();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['query'] || changes['enableOnlyCount']) {
+      this.updateData();
+    } else if (changes['onlyCount']) {
+      this.initializeArrays(this.resultList);
+    }
   }
 
   ngOnDestroy() {
@@ -173,20 +168,12 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   }
 
   private addYearToResults(year: number, count: number, individual: number) {
-    this.allSubData.push(this.onlyCount === null ? count : this.onlyCount ? count : individual);
+    this.allSubData.push(this.onlyCount ? count : individual);
     this.subBarChartLabels.push('' + year);
     this.resultList.push({count, individualCountSum: individual, year});
     if (year < 1970) {
       this.splitIdx++;
     }
-  }
-
-  xAxisTickFormatting(value: number) {
-    return value + '';
-  }
-
-  yAxisTickFormatting(value: number) {
-    return value.toLocaleString('fi');
   }
 
   toggleShowAllData() {
@@ -218,7 +205,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   fillDataGraph(list: any) {
     this.splitIdx = 0;
     list.map((r: any) =>  {
-      this.allSubData.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
+      this.allSubData.push(this.onlyCount ? r.count : r.individualCountSum);
       this.subBarChartLabels.push('' + r.year);
       if (r.year < 1970) {
         this.splitIdx++;
@@ -242,11 +229,5 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       this.newData = this.allDataNew;
       this.barChartLabels = this.allBarChartsLabel;
     }
-  }
-
-
-  toggleOnlyCount() {
-    this.onlyCount = !this.onlyCount;
-    this.updateData();
   }
 }

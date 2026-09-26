@@ -14,7 +14,7 @@ import { StoreDocument } from '../../document-viewer.facade';
 export class DocumentLocalViewerViewComponent implements OnChanges {
   @ViewChild(ViewerMapComponent) map?: ViewerMapComponent;
 
-  @Input() document?: StoreDocument;
+  @Input({ required: true }) document!: StoreDocument;
   @Input() fields: any;
   @Input() mapData: any[] = [];
   @Input() imageData: {[key: string]: any} = {};

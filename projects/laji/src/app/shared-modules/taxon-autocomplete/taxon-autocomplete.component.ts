@@ -19,7 +19,7 @@ import { Observable, of, of as ObservableOf, Subscription, timer } from 'rxjs';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { components } from 'projects/laji-api-client/generated/api.d';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
-import { TypeaheadMatch } from 'projects/laji-ui/src/lib/typeahead/typeahead-match.class';
+import { TypeaheadMatch } from 'projects/laji-ui/src/lib/typeahead/typeahead-match';
 
 type TaxonAutocompleteResponse = components['schemas']['TaxonAutocompleteResponse'];
 

@@ -56,7 +56,6 @@ export class DatatableTemplatesComponent {
   @ViewChild('copyToClipboard', {static: true }) copyToClipboard!: TemplateRef<any>;
   @ViewChild('biogeographicalProvinceOccurrence', { static: true }) biogeographicalProvinceOccurrence!: TemplateRef<any>;
   @ViewChild('fullUriLink', {static: true }) fullUriLink!: TemplateRef<any>;
-  @ViewChild('pluckValueSemiColonArray', {static: true }) pluckValueSemiColonArray!: TemplateRef<any>;
 
   synonymKeys = SYNONYM_KEYS;
   annotationTagsObservation: any = Global.annotationTags;

@@ -122,12 +122,13 @@ export class FormPermissionService {
     const {collectionID} = form;
 
     if (!collectionID) {
-      return this.userService.user$.pipe(switchMap(user => user ? of({
-        edit: true,
-        view: true,
-        admin: false,
-        ictAdmin: isIctAdmin(user)
-      }) : of({ edit: false, admin: false, ictAdmin: false, view: true })));
+      return this.userService.user$.pipe(
+        take(1),
+        map(user => user
+          ? { edit: true, view: true, admin: false, ictAdmin: isIctAdmin(user) }
+          : { edit: false, view: true, admin: false, ictAdmin: false }
+        )
+      );
     }
 
     const notLoggedInRights$ = this.getFormPermission(collectionID).pipe(
@@ -141,29 +142,24 @@ export class FormPermissionService {
 
     return this.userService.isLoggedIn$.pipe(
       take(1),
-      switchMap(loggedIn => {
-        if (!loggedIn || this.platformService.isServer) {
-          return notLoggedInRights$;
-        }
-        return this.userService.user$.pipe(
+      switchMap(loggedIn => !loggedIn || this.platformService.isServer
+        ? notLoggedInRights$
+        : this.userService.user$.pipe(
           take(1),
-          switchMap(person => this.getFormPermission(collectionID).pipe(
-            catchError(() => of({
-              collectionID,
-              admins: [],
-              editors: []
-            } as unknown as FormPermission)),
-            map((formPermission: FormPermission) => ({person, formPermission}))
-          )),
-          switchMap(({person, formPermission}) => person ? of({
-            view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === 'MHL.restrictAccessLoose',
-            edit: this.isEditAllowed(formPermission, person, form),
-            admin: this.isAdmin(formPermission, person),
-            ictAdmin: isIctAdmin(person)
-          }) : notLoggedInRights$),
-          catchError(() => notLoggedInRights$)
-        );
-      })
+          switchMap(person => this.api.get('/form-permissions').pipe(
+            map(formPermissions => ({
+              view: !form.options.restrictAccess
+                || form.options.restrictAccess === 'MHL.restrictAccessLoose'
+                || [formPermissions.admins, formPermissions.editors].some(list => list.includes(collectionID)),
+              edit: !form.options.restrictAccess
+                || [formPermissions.admins, formPermissions.editors].some(list => list.includes(collectionID)),
+              admin: formPermissions.admins.includes(collectionID),
+              ictAdmin: isIctAdmin(person)
+            }))
+          )
+        ))
+      )
     );
   }
 }
+

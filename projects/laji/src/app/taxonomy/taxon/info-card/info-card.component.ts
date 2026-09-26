@@ -203,6 +203,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
               )),
           )
       )),
+      map(images => images.slice(0, goalImagesCount)),
       tap(images => {
         if (images.length > 0) {
           this.hasImageData = true;

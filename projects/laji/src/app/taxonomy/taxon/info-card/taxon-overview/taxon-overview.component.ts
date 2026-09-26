@@ -35,9 +35,6 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy, OnInit {
   totalObservations = 0;
 
   mapQuery!: WarehouseQueryInterface;
-  queryCount!: WarehouseQueryInterface;
-
-  queryKeysDeleted: (keyof WarehouseQueryInterface)[] = ['coordinateAccuracyMax', 'includeNonValidTaxa', 'cache'];
 
   isLoggedIn$!: Observable<boolean>;
 
@@ -61,12 +58,6 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy, OnInit {
   ngOnChanges() {
     this.getChildren();
     this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
-    this.queryCount = (Object.keys(this.mapQuery) as (keyof WarehouseQueryInterface & string)[]).reduce((object, key) => {
-      if (this.queryKeysDeleted.indexOf(key) === -1) {
-        (object as any)[key] = this.mapQuery[key];
-      }
-      return object;
-    }, {} as WarehouseQueryInterface);
   }
 
   ngOnDestroy() {

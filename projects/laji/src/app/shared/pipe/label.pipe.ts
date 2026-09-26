@@ -85,7 +85,9 @@ export class LabelPipe implements PipeTransform, OnDestroy {
         );
       case 'fullUri':
         return key.indexOf('http') === 0 ?
-          this.triplestoreLabelService.get(IdService.getId(key)) :
+          this.triplestoreLabelService.get(IdService.getId(key)).pipe(
+            map(value => value || key)
+          ) :
           of(key);
       case 'withKey':
         return this.triplestoreLabelService.get(key).pipe(

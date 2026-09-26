@@ -280,6 +280,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     const queryParams = {
       downloadFormat: 'TSV_FLAT',
       downloadIncludes: 'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
+      downloadType: 'CITABLE',
       dataUsePurpose: [this.reasonEnum, this.reason].filter(r => !!r).join(': ')
     };
     this.searchQuery.getURLSearchParams(this.query, queryParams);

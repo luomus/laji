@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component,
-EventEmitter, Input, Output, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { Observable, of as ObservableOf, Subscription } from 'rxjs';
+EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, take } from 'rxjs';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
-import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
 
@@ -18,7 +17,6 @@ import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-clie
     [placeholder]="placeholder"
     [(ngModel)]="_taxonName"
     [luTypeahead]="dataSource"
-    luTypeaheadContainer="{{containerTypeAhead}}"
     [luTypeaheadOptionsLimit]="typeaheadLimit"
     [luTypeaheadWaitMs]="200"
     [luTypeaheadMinLength]="3"
@@ -39,7 +37,7 @@ import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-clie
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class TaxonSelectComponent implements OnInit, OnDestroy {
+export class TaxonSelectComponent {
   @Input() searchParams = {};
   @Input() name = 'target';
   @Input() placeholder = '';
@@ -58,15 +56,12 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
   public _taxonName?: string;
   public typeaheadLimit = 10;
   public typeaheadLoading = false;
-  public containerTypeAhead?: string;
   public dataSource: Observable<any>;
   currentLang?: string;
-  public screenWidthSub?: Subscription;
 
   constructor(
     private api: LajiApiClientService,
     private cdr: ChangeDetectorRef,
-    private browserService: BrowserService,
     private taxonAutocompleteService: TaxonAutocompleteService
   ) {
     this.dataSource = Observable.create((observer: any) => {
@@ -93,22 +88,6 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
           return ObservableOf([]);
         })
       );
-  }
-
-  ngOnInit() {
-    this.screenWidthSub = this.browserService.lgScreen$.subscribe(data => {
-      if (data === true) {
-        this.containerTypeAhead = this.container ? this.container : '';
-      } else {
-        this.containerTypeAhead = this.container === 'laji-taxon-browse' ? 'laji-species-form' : 'body';
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.screenWidthSub) {
-      this.screenWidthSub.unsubscribe();
-    }
   }
 
   @Input() set taxonId(id: string|undefined) {
