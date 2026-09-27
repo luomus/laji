@@ -21,7 +21,7 @@
     [rows]="$any(searchResult?.res?.results) ?? []"
     [columns]="columns"
     [defaultColumns]="[0, 1, 2, 3, 4, 5, 6]"
-    [totalPages]="searchResult?.res?.total ?? 1"
+    [totalPages]="getDisplayedPageTotal()"
     [currentPageIdx]="currentPageIdx"
     [loading]="loading"
     [ghostCount]="pageSize"
@@ -29,6 +29,12 @@
     (pageChange)="onChangePageIdx($event)"
     (sortChange)="onSort($event)"
   ></lu-datatable>
+}
+
+@if (getPageTotal() > getDisplayedPageTotal()) {
+  <div role="alert" class="alert alert-info">
+    There is more data available, but a maximum of {{ maxPages }} are displayed.
+  </div>
 }
 
 <ng-template #searchFilters>

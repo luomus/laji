@@ -28,6 +28,7 @@ interface SearchResult {
 }
 
 const PAGE_SIZE = 20;
+const MAX_PAGES = 100;
 
 const formValueToSearchParams = (form: Partial<FormValue>): SearchParams => {
   const searchParams: SearchParams = {};
@@ -114,6 +115,7 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
   initialFilters: FormValue | undefined;
   searchResult: SearchResult | undefined;
   pageSize = PAGE_SIZE;
+  maxPages = MAX_PAGES;
   currentPageIdx = 0;
   loading = false;
 
@@ -161,6 +163,7 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
       tap(res => {
         this.loading = false;
         this.searchResult = res;
+        console.log(this.searchResult);
         this.cdr.markForCheck();
       })
     );
@@ -257,6 +260,16 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
 
     this.queryParamChangeId = Math.random() * Number.MAX_SAFE_INTEGER;
     this.router.navigate([], { queryParams: q, state: { 'trait-search-ignore': this.queryParamChangeId } });
+  }
+
+  getPageTotal() {
+    return Math.ceil(
+      (this.searchResult?.res?.total ?? 1) / (this.searchResult?.res?.pageSize ?? 1)
+    );
+  }
+
+  getDisplayedPageTotal() {
+    return Math.min(MAX_PAGES, this.getPageTotal());
   }
 
   private generatedColToDatatableCol(col: GeneratedDatatableColumn): DatatableColumn<any> {
