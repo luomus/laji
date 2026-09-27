@@ -163,7 +163,6 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
       tap(res => {
         this.loading = false;
         this.searchResult = res;
-        console.log(this.searchResult);
         this.cdr.markForCheck();
       })
     );
