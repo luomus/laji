@@ -18,7 +18,7 @@
 
 @if (columns) {
   <lu-datatable
-    [rows]="$any(searchResult?.res?.results) ?? []"
+    [rows]="searchResult?.res?.results ?? []"
     [columns]="columns"
     [defaultColumns]="[0, 1, 2, 3, 4, 5, 6]"
     [totalPages]="getDisplayedPageTotal()"
@@ -26,6 +26,8 @@
     [loading]="loading"
     [ghostCount]="pageSize"
     [sorts]="searchResult?.sorts ?? []"
+    [clickableRows]="true"
+    (rowClick)="onRowClick($event)"
     (pageChange)="onChangePageIdx($event)"
     (sortChange)="onSort($event)"
   ></lu-datatable>
@@ -49,4 +51,21 @@
 
 <ng-template #enumCellTemplate let-col="col" let-prop="prop">
   {{ col?.variants[prop]?.label }}
+</ng-template>
+
+<ng-template #rowModalTemplate let-row="row">
+  <div class="laji-page">
+    <table>
+      <tr>
+        <th>Property</th>
+        <th>Value</th>
+      </tr>
+      @for (item of flattenRow(row); track item[0]) {
+        <tr>
+          <td>{{ item[0] }}</td>
+          <td>{{ item[1] }}</td>
+        </tr>
+      }
+    </table>
+  </div>
 </ng-template>

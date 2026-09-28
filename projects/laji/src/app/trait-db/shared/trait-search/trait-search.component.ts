@@ -13,6 +13,7 @@ import { environment } from 'projects/laji/src/environments/environment';
 import { cols } from './trait-search-table-columns';
 import { Location } from '@angular/common';
 import { GeneratedDatatableColumn } from 'scripts/codegen/shared/shared';
+import { ModalService } from '../../../../../../laji-ui/src/lib/modal/modal.service';
 
 type ApiQueryParams = paths['/trait/search']['get']['parameters']['query'];
 type SearchResponse = paths['/trait/search']['get']['responses']['200']['content']['application/json'];
@@ -97,6 +98,24 @@ const queryParamsToFormValue = (queryParams: QueryParams): FormValue => {
   return form;
 };
 
+const flattenObjToStrRecord = (obj: any): Record<string, string> =>
+  Object.entries(obj).reduce((p, c) => {
+    const key = c[0];
+    const value = c[1];
+
+    if (Array.isArray(value)) {
+      value.forEach((v, idx) => {
+        p[`${key}.${idx}`] = v;
+      });
+    } else if (value !== null && typeof value === 'object') {
+      Object.entries(flattenObjToStrRecord(value)).forEach(([k, v]) => {
+        p[`${key}.${k}`] = v;
+      });
+    } else {
+      p[key] = (value as any).toString();
+    }
+    return p;
+  }, {} as Record<string, string>);
 
 @Component({
     selector: 'laji-trait-search',
@@ -110,6 +129,7 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
   @Input() traitId?: string;
 
   @ViewChild('enumCellTemplate') enumCellTemplate!: TemplateRef<any>;
+  @ViewChild('rowModalTemplate') rowModalTemplate!: TemplateRef<any>;
 
   columns?: DatatableColumn<any>[];
   initialFilters: FormValue | undefined;
@@ -131,7 +151,8 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private modalService: ModalService
   ) {
     this.searchResult$ = combineLatest([this.pageIdxSubject, this.sortSubject]).pipe(
       withLatestFrom(this.filterChangeSubject),
@@ -234,6 +255,14 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
     this.sortSubject.next(sorts);
   }
 
+  onRowClick(row: SearchResponse['results'][number]) {
+    this.modalService.show(this.rowModalTemplate, { initialState: { row }, size: 'lg' });
+  }
+
+  flattenRow(elem: SearchResponse['results'][number]): [string, string][] {
+    return Object.entries(flattenObjToStrRecord(elem));
+  }
+
   getDisabledFilters(): Set<keyof FormValue> {
     const disabled = new Set<keyof FormValue>();
     if (this.datasetId) {
@@ -252,15 +281,6 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
     return environment.apiBase + '/trait/search/download?' + queryParamString;
   }
 
-  private setQueryParams(pageIdx: number, sorts: Sort[], form: Partial<FormValue>) {
-    // TODO sorts
-    const q: QueryParams = formValueToSearchParams(form);
-    if (pageIdx > 0) { q.page = pageIdx + 1; }
-
-    this.queryParamChangeId = Math.random() * Number.MAX_SAFE_INTEGER;
-    this.router.navigate([], { queryParams: q, state: { 'trait-search-ignore': this.queryParamChangeId } });
-  }
-
   getPageTotal() {
     return Math.ceil(
       (this.searchResult?.res?.total ?? 1) / (this.searchResult?.res?.pageSize ?? 1)
@@ -269,6 +289,15 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
 
   getDisplayedPageTotal() {
     return Math.min(MAX_PAGES, this.getPageTotal());
+  }
+
+  private setQueryParams(pageIdx: number, sorts: Sort[], form: Partial<FormValue>) {
+    // TODO sorts
+    const q: QueryParams = formValueToSearchParams(form);
+    if (pageIdx > 0) { q.page = pageIdx + 1; }
+
+    this.queryParamChangeId = Math.random() * Number.MAX_SAFE_INTEGER;
+    this.router.navigate([], { queryParams: q, state: { 'trait-search-ignore': this.queryParamChangeId } });
   }
 
   private generatedColToDatatableCol(col: GeneratedDatatableColumn): DatatableColumn<any> {

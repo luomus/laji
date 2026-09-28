@@ -108,8 +108,11 @@ export interface Sort {
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
-  @Input({ required: true }) rows!: DatatableRow<RowProp>[];
+export class DatatableComponent<
+  RowProp extends Keyable,
+  Row extends DatatableRow<RowProp> = DatatableRow<RowProp>
+> implements OnChanges {
+  @Input({ required: true }) rows!: Row[];
   @Input({ required: true }) columns!: DatatableColumn<RowProp>[];
 
   /**
@@ -127,6 +130,8 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
   @Input() totalPages = 1;
   @Input() loading = false;
 
+  @Input() clickableRows = false;
+
   /**
    * The number of ghost rows to render when `loading === true`.
    * Should probably be equal to the number of rows expected
@@ -143,6 +148,8 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
    * Fired when user attempts to change the sorting, but page count is > 1.
    */
   @Output() sortChange = new EventEmitter<Sort[]>();
+
+  @Output() rowClick = new EventEmitter<Row>();
 
   @ViewChildren('headerRef') headerEls!: QueryList<ElementRef>;
 
@@ -280,6 +287,10 @@ export class DatatableComponent<RowProp extends Keyable> implements OnChanges {
     } else {
       this.sortChange.emit(newSorts);
     }
+  }
+
+  onRowClick(rowIdx: number) {
+    this.rowClick.next(this.rows[rowIdx]);
   }
 
   getSortBtnChar(colIdx: number) {

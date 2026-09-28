@@ -103,3 +103,12 @@ th:hover {
     animation-iteration-count: infinite;
   }
 }
+
+tr.clickable {
+  cursor: pointer;
+}
+
+tr.clickable:hover {
+  background-color: $primary-2;
+  color: $primary-8;
+}

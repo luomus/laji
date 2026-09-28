@@ -39,7 +39,7 @@ export class ModalService {
     const modal = modalComponent.instance as ModalRef<EmbeddedViewRef<T> | ComponentRef<T>>;
     let content: EmbeddedViewRef<T> | ComponentRef<T>;
     if (componentClassOrTemplateRef instanceof TemplateRef) {
-      content = this.injectTemplate(componentClassOrTemplateRef, contentNode);
+      content = this.injectTemplate(componentClassOrTemplateRef, contentNode, options?.initialState as T);
     } else  {
        content = this.injectComponent(componentClassOrTemplateRef as Type<T>, contentNode, options);
     }
@@ -65,8 +65,8 @@ export class ModalService {
     return modalComponent;
   }
 
-  private injectTemplate<T>(templateRef: TemplateRef<T>, contentNode: HTMLElement) {
-    const embeddedView = templateRef.createEmbeddedView(templateRef as any);
+  private injectTemplate<T>(templateRef: TemplateRef<T>, contentNode: HTMLElement, context: T) {
+    const embeddedView = templateRef.createEmbeddedView(context);
     embeddedView.rootNodes.forEach(node => {
       this.renderer.appendChild(contentNode, node);
     });
