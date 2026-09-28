@@ -16,7 +16,7 @@
         </div>
         <div class="species">
           <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'"
-                                  [query]="{taxonRankId: 'MX.species', cache: true}">
+                                  [query]="{taxonRankId: ['MX.species'], cache: true}">
           </laji-observation-count>&nbsp;{{ 'observation.results.species' | translate }}
         </div>
       </div>
