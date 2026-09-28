@@ -6,7 +6,7 @@ import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-clie
 import { paths } from 'projects/laji-api-client/generated/api.d';
 import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs';
 import { DatatableColumn, Sort } from 'projects/laji-ui/src/lib/datatable/datatable.component';
-import { FormValue } from './trait-search-filters/trait-search-filters.component';
+import { formDefaultValues, FormValue } from './trait-search-filters/trait-search-filters.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { propIsArray } from './trait-search-filters/additional-filters.component';
 import { environment } from 'projects/laji/src/environments/environment';
@@ -243,6 +243,12 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
   }
 
   onFilterSearchClicked() {
+    this.initialFilters = {
+      ...formDefaultValues,
+      ...this.initialFilters,
+      ...this.filterChangeSubject.getValue()
+    };
+
     this.currentPageIdx = 0;
     this.pageIdxSubject.next(0);
   }
