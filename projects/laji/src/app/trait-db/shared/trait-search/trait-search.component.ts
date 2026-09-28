@@ -243,6 +243,7 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
   }
 
   onFilterSearchClicked() {
+    this.currentPageIdx = 0;
     this.pageIdxSubject.next(0);
   }
 
