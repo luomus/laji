@@ -256,17 +256,18 @@ export class DocumentFormFacade {
 
   private saveDocument(document: Document): Observable<Document> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const tmpId = FormService.isTmpId(document.id!) && document.id;
-    if (tmpId) { delete document.id; }
+    const { id } = document;
+    const isTmpId = id && FormService.isTmpId(id);
+    if (isTmpId) { delete document.id; }
 
-    return (tmpId || !document.id
+    return (isTmpId || !id
       ? this.documentService.create(document)
-      : this.documentService.update(document.id, document)
+      : this.documentService.update(id, document)
     ).pipe(
       switchMap(doc =>
         this.userService.user$.pipe(
           take(1),
-          switchMap(p => this.documentStorage.removeItem(tmpId as string, p)),
+          switchMap(p => id ? this.documentStorage.removeItem(id, p) : of()),
           tap(() => {
             this.onSaved$.next();
             this.latestFacade.update();
@@ -330,8 +331,7 @@ export class DocumentFormFacade {
                 hasChanges: false
               };
             }
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            if (Util.isLocalNewestDocument(local!, document)) {
+            if (local && Util.isLocalNewestDocument(local, document)) {
               return {hasChanges: true, document: local};
             }
             return {document, hasChanges: false};

@@ -158,13 +158,13 @@ export class LatestDocumentsFacade implements OnDestroy {
           take(1),
           mergeMap(person => this.documentStorage.getItem(document.id!, person).pipe(
             map(local => {
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              if (Util.isLocalNewestDocument(local!, document)) {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                return {document: local!, form: forms[document.formID!]};
+              if (!local) {
+                return {document, form: forms[document.formID!]};
+              }
+              if (Util.isLocalNewestDocument(local, document)) {
+                return {document: local, form: forms[document.formID!]};
               }
               if (local) {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 this.documentStorage.removeItem(local!.id!, person);
               }
               return {document, form: forms[document.formID!]};

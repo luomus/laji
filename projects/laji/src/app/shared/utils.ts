@@ -173,13 +173,7 @@ export const arrayCombineMerge = (target: any[], source: any[], options: any) =>
 export const eventIsNavigationEnd = (event: Event): event is NavigationEnd => event instanceof NavigationEnd;
 
 export const isLocalNewestDocument = (local: Document, remote: Document): boolean => {
-  if (remote && remote.dateEdited) {
-    if (!local || !local.dateEdited ||
-      new Date(local.dateEdited) < new Date(remote.dateEdited)) {
-      return false;
-    }
-  }
-  return true;
+  return new Date(local.dateEdited!) > new Date(remote.dateEdited!);
 };
 
 export const hasOwnProperty = <X extends Record<string, unknown>, Y extends PropertyKey>(obj: X, prop: Y): obj is X & Record<Y, unknown> => obj.hasOwnProperty(prop);
