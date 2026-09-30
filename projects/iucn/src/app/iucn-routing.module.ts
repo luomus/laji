@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { Injectable, NgModule } from '@angular/core';
-import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
+import { PreloadingStrategy, ResolveFn, Route, RouterModule, Routes } from '@angular/router';
 import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from '../../../laji/src/app/locale/locale-en.component';
 import { LocaleSvComponent } from '../../../laji/src/app/locale/locale-sv.component';
@@ -8,6 +8,9 @@ import { LocaleFiComponent } from '../../../laji/src/app/locale/locale-fi.compon
 import { catchError, flatMap } from 'rxjs';
 import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-found.component';
 import { CheckLoginGuard } from 'projects/laji/src/app/shared/guards/check-login.guard';
+import { setLocale } from 'projects/laji/src/app/app-routing.modules';
+
+const localeResolver = (lang: string): ResolveFn<boolean> => () => setLocale(lang);
 
 @Injectable()
 export class PreloadSelectedModulesList implements PreloadingStrategy {
@@ -35,15 +38,15 @@ const routesWithLang: Routes = [
   {path: 'en', children: [
       ...baseRoutes,
       {path: '**', component: NotFoundComponent}
-    ], component: LocaleEnComponent},
+    ], component: LocaleEnComponent, resolve: { localeReady: localeResolver('en') }},
   {path: 'sv', children: [
       ...baseRoutes,
       {path: '**', component: NotFoundComponent}
-    ], component: LocaleSvComponent},
+    ], component: LocaleSvComponent, resolve: { localeReady: localeResolver('sv') }},
   {path: '', children: [
       ...baseRoutes,
       {path: '**', component: NotFoundComponent}
-    ], component: LocaleFiComponent}
+    ], component: LocaleFiComponent, resolve: { localeReady: localeResolver('fi') }}
 ];
 
 export const routes: Routes = [
