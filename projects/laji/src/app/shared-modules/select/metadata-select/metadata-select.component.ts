@@ -59,6 +59,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   @Input() labelAsValue = false;
   @Input() selectStyle = SelectStyle.advanced;
   @Input() useFilterApi = false;
+  @Input() truncate = false;
 
   selectStyles = SelectStyle;
   lang!: string;
