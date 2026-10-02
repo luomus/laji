@@ -86,4 +86,7 @@
   </table>
 </div>
 
-<lu-datatable-paginator [totalPages]="totalPages" [currentPageIdx]="currentPageIdx" (pageChange)="onPageChange($event)"></lu-datatable-paginator>
+<div class="d-flex justify-between">
+  <lu-datatable-paginator [totalPages]="totalPages" [currentPageIdx]="currentPageIdx" (pageChange)="onPageChange($event)"></lu-datatable-paginator>
+  <button class="btn btn-default" (click)="onOpenColConfigModal()">Open column configurator</button>
+</div>

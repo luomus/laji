@@ -83,7 +83,7 @@ export class ModalService {
 
     (Object.keys(options.initialState || {}) as (keyof T)[]).forEach(option => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      (contentComponent.instance as any)[option] = options.initialState![option];
+      contentComponent.setInput(option as string, options.initialState![option]);
     });
     contentComponent.changeDetectorRef.detectChanges();
     this.appRef.attachView(contentComponent.hostView);

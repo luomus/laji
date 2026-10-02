@@ -2,11 +2,15 @@
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input,
   OnChanges, Output, QueryList, Renderer2, RendererStyleFlags2, SimpleChanges, TemplateRef, ViewChild, ViewChildren,
-  DOCUMENT
+  DOCUMENT,
+  OnDestroy
 } from '@angular/core';
+import { ModalService } from '../modal/modal.service';
+import { ColumnConfiguratorComponent } from './column-configurator/column-configurator.component';
+import { Subscription, takeUntil } from 'rxjs';
 
-type Keyable = string | number | symbol;
-type SortFn<T extends Keyable> = <U extends DatatableRow<T>>(rowA: U, rowB: U) => number;
+export type Keyable = string | number | symbol;
+export type SortFn<T extends Keyable> = <U extends DatatableRow<T>>(rowA: U, rowB: U) => number;
 export type DatatableRow<T extends Keyable> = Record<T, any>;
 interface BasicColumn<T extends Keyable> {
   title: string;
@@ -111,7 +115,7 @@ export interface Sort {
 export class DatatableComponent<
   RowProp extends Keyable,
   Row extends DatatableRow<RowProp> = DatatableRow<RowProp>
-> implements OnChanges {
+> implements OnChanges, OnDestroy {
   @Input({ required: true }) rows!: Row[];
   @Input({ required: true }) columns!: DatatableColumn<RowProp>[];
 
@@ -159,8 +163,10 @@ export class DatatableComponent<
   columnHasTemplate = columnHasTemplate;
 
   private draggedColumnHeaderIdx = 0;
+  private colConfigModalSubscription: Subscription | undefined;
 
   constructor(
+    private modalService: ModalService,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     @Inject(DOCUMENT) private document: Document
@@ -174,11 +180,12 @@ export class DatatableComponent<
 
     if (changes.defaultColumns && this.defaultColumns) {
       this.selectedColumns = this.defaultColumns;
-      this.columns
-        .map((c, idx) => idx)
-        .filter(i => !this.selectedColumns.includes(i))
-        .forEach(i => this.unselectedColumns.add(i));
+      this.computeUnselectedColumns();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.colConfigModalSubscription?.unsubscribe();
   }
 
   onAddColumn(event: InputEvent) {
@@ -293,6 +300,24 @@ export class DatatableComponent<
     this.rowClick.next(this.rows[rowIdx]);
   }
 
+  onOpenColConfigModal() {
+    const ref = this.modalService.show(
+      ColumnConfiguratorComponent,
+      { size: 'lg', initialState: { columns: this.columns, initialSelection: this.selectedColumns } }
+    );
+
+    this.colConfigModalSubscription?.unsubscribe();
+    this.colConfigModalSubscription = new Subscription();
+
+    this.colConfigModalSubscription.add(
+      ref.content?.selectionSubmit.subscribe(selection => {
+        this.selectedColumns = selection;
+        this.computeUnselectedColumns();
+        this.cdr.markForCheck();
+      })
+    );
+  }
+
   getSortBtnChar(colIdx: number) {
     const t = this.colSortType(colIdx);
     return t === 'ASC' ? '^' : t === 'DESC' ? 'v' : '-';
@@ -337,5 +362,13 @@ export class DatatableComponent<
   private moveColumn(fromIdx: number, toIdx: number) {
     const from = this.selectedColumns.splice(fromIdx, 1);
     this.selectedColumns.splice(toIdx, 0, from[0]);
+  }
+
+  private computeUnselectedColumns() {
+    this.unselectedColumns.clear();
+    this.columns
+      .map((c, idx) => idx)
+      .filter(i => !this.selectedColumns.includes(i))
+      .forEach(i => this.unselectedColumns.add(i));
   }
 }
