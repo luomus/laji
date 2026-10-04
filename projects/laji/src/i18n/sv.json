@@ -2247,7 +2247,7 @@
   "vihko.home.form.save": "Spara med en fil",
   "vihko.home.form.save.1": "Skapa en mallfil",
   "vihko.home.form.save.2": "Manual",
-  "vihko.home.form.save.desc": "Spara observationer med en kalkylbladsfil (Excel eller liknande).",
+  "vihko.home.form.save.desc": "Spara observationer som tabellfil eller geodatafil.",
   "vihko.home.form.trip": "Fältbesöksformulär",
   "vihko.home.form.trip.1": "Manual",
   "vihko.home.form.trip.desc": "Ett mångsidigt formulär för att registrera observationer från en eller flera platser.",
