@@ -81,13 +81,7 @@
     </table>
 
     @if (data.perms !== undefined && data.perms !== null) {
-      <h3>Permissions</h3>
-      <ul>
-        @for (userId of data.perms.userIds; track userId) {
-          <li>{{ userId }}</li>
-        }
-      </ul>
-      <button class="btn btn-default">Edit permissions</button>
+      <laji-dataset-permissions-editor [perms]="data.perms" (permsChanged)="onPermsChanged($event)"></laji-dataset-permissions-editor>
     } @else {
       <laji-spinner class="d-block m-6"></laji-spinner>
     }
