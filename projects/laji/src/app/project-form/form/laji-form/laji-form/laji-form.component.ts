@@ -140,6 +140,13 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
         });
       });
     }
+    if (changes['formData']) {
+      this.ngZone.runOutsideAngular(() => {
+        this.lajiFormWrapper.setState({
+          formData: this.formData,
+        });
+      });
+    }
   }
 
   block() {

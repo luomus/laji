@@ -47,6 +47,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 
   private touched$ = new Subject<void>();
   touchedCounter$ = this.touched$.pipe(map(() => 1), scan((acc, curr) => acc + curr));
+  private broadcastChannel!: BroadcastChannel;
 
   validationErrors: any;
   templateForm: TemplateForm = {
@@ -98,6 +99,10 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       })
     ).subscribe(vm => {
       this.vm = vm;
+      this.broadcastChannel = new BroadcastChannel(vm.formData.id);
+      this.broadcastChannel.onmessage = (event) => {
+        this.documentFormFacade.onChange(event.data);
+      };
     });
 
     this.footerService.footerVisible = false;
@@ -184,6 +189,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 
   onChange(formData: Document) {
     this.documentFormFacade.onChange(formData);
+    this.broadcastChannel.postMessage(formData)
     this.touched$.next();
   }
 
