@@ -1,9 +1,4 @@
-import {
-  AngularNodeAppEngine,
-  createNodeRequestHandler,
-  isMainModule,
-  writeResponseToNodeResponse,
-} from '@angular/ssr/node';
+import { AngularNodeAppEngine, writeResponseToNodeResponse } from '@angular/ssr/node';
 import express, { ErrorRequestHandler } from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
@@ -115,16 +110,10 @@ function run(): void {
   const port = process.env['PORT'] || 4000;
 
   // Start up the Node server
-  expressApp.listen(port, () => {
+  const server = app();
+  server.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
   });
 }
 
-const expressApp = app();
-
-// Only launch a new server when the file is run directly, otherwise expose NodeRequestHandler to importers
-if (isMainModule(import.meta.url)) {
-  run();
-}
-
-export const reqHandler = createNodeRequestHandler(expressApp);
+run();

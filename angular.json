@@ -15,6 +15,7 @@
             "loader": {
               ".d.ts": "empty"
             },
+            "outputMode": "server",
             "outputPath": {
               "base": "dist"
             },
@@ -62,17 +63,14 @@
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true,
-            "browser": "projects/laji/src/main.ts"
+            "browser": "projects/laji/src/main.ts",
+            "server": "projects/laji/src/main.server.ts",
+            "prerender": true,
+            "ssr": {
+              "entry": "projects/laji/server.ts"
+            }
           },
           "configurations": {
-            "ssr": {
-              "outputMode": "server",
-              "server": "projects/laji/src/main.server.ts",
-              "prerender": true,
-              "ssr": {
-                "entry": "projects/laji/server.ts"
-              }
-            },
             "production": {
               "index": {
                 "input": "projects/laji/src/index.prod.html",
@@ -245,13 +243,13 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "laji:build:production,ssr"
+              "buildTarget": "laji:build:production"
             },
             "dev-embedded": {
               "buildTarget": "laji:build:dev-embedded"
             },
             "beta": {
-              "buildTarget": "laji:build:beta,ssr"
+              "buildTarget": "laji:build:beta"
             },
             "embedded": {
               "buildTarget": "laji:build:embedded"
@@ -263,11 +261,11 @@
             },
             "local-beta": {
               "port": 3000,
-              "buildTarget": "laji:build:local-beta,ssr"
+              "buildTarget": "laji:build:local-beta"
             },
             "local-prod": {
               "port": 3000,
-              "buildTarget": "laji:build:local-prod,ssr"
+              "buildTarget": "laji:build:local-prod"
             },
             "strict": {
               "proxyConfig": "proxy.conf.js",
