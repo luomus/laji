@@ -207,6 +207,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
         formData.append('file', new Blob([content.content], { type: content.type }), content.filename);
         return this.geoConvertService.geoConvertToCSV(formData).pipe(
           switchMap((res: Blob) => this.fileService.loadFile(res as File)),
+          map(file => ({ ...file, filename: content.filename })),
           tap(() => this.isGisImport = true)
         );
       }),
