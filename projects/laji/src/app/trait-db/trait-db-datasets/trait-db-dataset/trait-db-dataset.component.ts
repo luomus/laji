@@ -30,6 +30,14 @@ export class TraitDbDatasetComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.updateData$();
+  }
+
+  onPermsChanged(perms: DatasetPermissions) {
+    this.updateData$();
+  }
+
+  private updateData$() {
     this.data$ = this.route.paramMap.pipe(
       map(m => m.get('id')),
       filter(id => !!id),

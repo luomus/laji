@@ -6,13 +6,14 @@ import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-clie
 import { paths } from 'projects/laji-api-client/generated/api.d';
 import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs';
 import { DatatableColumn, Sort } from 'projects/laji-ui/src/lib/datatable/datatable.component';
-import { FormValue } from './trait-search-filters/trait-search-filters.component';
+import { formDefaultValues, FormValue } from './trait-search-filters/trait-search-filters.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { propIsArray } from './trait-search-filters/additional-filters.component';
 import { environment } from 'projects/laji/src/environments/environment';
 import { cols } from './trait-search-table-columns';
 import { Location } from '@angular/common';
 import { GeneratedDatatableColumn } from 'scripts/codegen/shared/shared';
+import { ModalService } from '../../../../../../laji-ui/src/lib/modal/modal.service';
 
 type ApiQueryParams = paths['/trait/search']['get']['parameters']['query'];
 type SearchResponse = paths['/trait/search']['get']['responses']['200']['content']['application/json'];
@@ -28,6 +29,7 @@ interface SearchResult {
 }
 
 const PAGE_SIZE = 20;
+const MAX_PAGES = 100;
 
 const formValueToSearchParams = (form: Partial<FormValue>): SearchParams => {
   const searchParams: SearchParams = {};
@@ -96,6 +98,24 @@ const queryParamsToFormValue = (queryParams: QueryParams): FormValue => {
   return form;
 };
 
+const flattenObjToStrRecord = (obj: any): Record<string, string> =>
+  Object.entries(obj).reduce((p, c) => {
+    const key = c[0];
+    const value = c[1];
+
+    if (Array.isArray(value)) {
+      value.forEach((v, idx) => {
+        p[`${key}.${idx}`] = v;
+      });
+    } else if (value !== null && typeof value === 'object') {
+      Object.entries(flattenObjToStrRecord(value)).forEach(([k, v]) => {
+        p[`${key}.${k}`] = v;
+      });
+    } else {
+      p[key] = (value as any).toString();
+    }
+    return p;
+  }, {} as Record<string, string>);
 
 @Component({
     selector: 'laji-trait-search',
@@ -109,11 +129,13 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
   @Input() traitId?: string;
 
   @ViewChild('enumCellTemplate') enumCellTemplate!: TemplateRef<any>;
+  @ViewChild('rowModalTemplate') rowModalTemplate!: TemplateRef<any>;
 
   columns?: DatatableColumn<any>[];
   initialFilters: FormValue | undefined;
   searchResult: SearchResult | undefined;
   pageSize = PAGE_SIZE;
+  maxPages = MAX_PAGES;
   currentPageIdx = 0;
   loading = false;
 
@@ -129,7 +151,8 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private modalService: ModalService
   ) {
     this.searchResult$ = combineLatest([this.pageIdxSubject, this.sortSubject]).pipe(
       withLatestFrom(this.filterChangeSubject),
@@ -220,6 +243,13 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
   }
 
   onFilterSearchClicked() {
+    this.initialFilters = {
+      ...formDefaultValues,
+      ...this.initialFilters,
+      ...this.filterChangeSubject.getValue()
+    };
+
+    this.currentPageIdx = 0;
     this.pageIdxSubject.next(0);
   }
 
@@ -230,6 +260,14 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
 
   onSort(sorts: Sort[]) {
     this.sortSubject.next(sorts);
+  }
+
+  onRowClick(row: SearchResponse['results'][number]) {
+    this.modalService.show(this.rowModalTemplate, { initialState: { row }, size: 'lg' });
+  }
+
+  flattenRow(elem: SearchResponse['results'][number]): [string, string][] {
+    return Object.entries(flattenObjToStrRecord(elem));
   }
 
   getDisabledFilters(): Set<keyof FormValue> {
@@ -248,6 +286,16 @@ export class TraitSearchComponent implements OnInit, AfterViewInit, OnDestroy, O
     const queryParamString = Object.entries(queryParams)
       .map(([k, v]) => k + '=' + v).join('&');
     return environment.apiBase + '/trait/search/download?' + queryParamString;
+  }
+
+  getPageTotal() {
+    return Math.ceil(
+      (this.searchResult?.res?.total ?? 1) / (this.searchResult?.res?.pageSize ?? 1)
+    );
+  }
+
+  getDisplayedPageTotal() {
+    return Math.min(MAX_PAGES, this.getPageTotal());
   }
 
   private setQueryParams(pageIdx: number, sorts: Sort[], form: Partial<FormValue>) {
