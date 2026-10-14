@@ -41,8 +41,25 @@ export class SSRCache {
   private redisSetEx = promisify(this.redisClient.setex).bind(this.redisClient);
   private redisTTL = promisify(this.redisClient.TTL).bind(this.redisClient);
   private redisDel: (key: string) => Promise<number> = promisify(this.redisClient.del).bind(this.redisClient);
+  private redisUnavailableLogged = false;
 
-  constructor(private buildId: string) { }
+  constructor(private buildId: string) {
+    // It suffices to let errors fall through, because later we check if redisClient is connected
+    // before doing any operations
+    this.redisClient.on('error', (error: Error) => {
+      if (!this.redisUnavailableLogged) {
+        console.warn(`Redis SSR cache unavailable; continuing without cache: ${error.message}`);
+        this.redisUnavailableLogged = true;
+      }
+    });
+
+    this.redisClient.on('ready', () => {
+      if (this.redisUnavailableLogged) {
+        console.log('Redis SSR cache connected');
+        this.redisUnavailableLogged = false;
+      }
+    });
+  }
 
   private async serializeResponse(response: Response): Promise<string> {
     const cloned = response.clone();
