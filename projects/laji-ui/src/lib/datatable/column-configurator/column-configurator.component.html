@@ -1,0 +1,26 @@
+<input type="text" (input)="onNameFilterInput($event)" class="lu-form-control mb-4 mr-3" placeholder="Filter columns by name">
+<label class="lu-checkbox"><input type="checkbox" (change)="onShowOnlySelectedToggle($event)"> Display only selected columns</label>
+
+<ul class="d-flex flex-gap-3 flex-wrap">
+  @for (entry of filteredColumns$ | async; track entry[0]) {
+    @let colIdx = entry[0];
+    @let column = entry[1];
+    @let selectionIdx = getSelectionIdx(colIdx);
+    <li class="d-flex justify-between basis-0" [class.active]="selectionIdx >= 0" (click)="onColToggle(colIdx, selectionIdx)">
+      <div class="col-title" [title]="$any(column).prop ?? ''">{{ column.title }}</div>
+      @if (selectionIdx >= 0) {
+        <div class="d-flex">
+          <button class="btn-col-move btn btn-default" [disabled]="!getCanBeMovedDown(selectionIdx)" (click)="onColMoveDown($event, selectionIdx)">◀</button>
+          <div class="d-flex flex-wrap">
+            <div class="col-idx basis-5">
+              {{ selectionIdx + 1 }}.
+            </div>
+          </div>
+          <button class="btn-col-move btn btn-default" [disabled]="!getCanBeMovedUp(selectionIdx)" (click)="onColMoveUp($event, selectionIdx)">▶</button>
+        </div>
+      }
+    </li>
+  }
+</ul>
+
+<button class="btn btn-primary" (click)="onSubmit()">Submit</button>

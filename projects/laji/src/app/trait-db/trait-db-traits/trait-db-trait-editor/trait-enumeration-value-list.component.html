@@ -19,6 +19,9 @@
           Data entry name:
           <input class="form-control" type="text" formControlName="dataEntryName">
         </label>
+        @if (getDataEntryNameError(index); as error) {
+          <div class="alert alert-danger" role="alert">{{ error }}</div>
+        }
       </div>
     </form>
     <button class="btn btn-default" (click)="onRemoveElem($event, index)">Remove trait enumeration value</button>
