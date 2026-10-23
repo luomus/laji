@@ -50,6 +50,23 @@ export class GeoConvertService {
     private translate: TranslateService
   ) {}
 
+  public validTypes() {
+    return [
+      'application/geopackage+sqlite3',
+      'application/geo+json',
+      'application/json',
+      'application/vnd.google-earth.kmz',
+      'application/vnd.google-earth.kml+xml',
+      'application/gml+xml',
+      'application/zip',
+      'application/x-zip-compressed'
+    ];
+  }
+
+  public geoConvertToCSV(data: FormData): Observable<any> {
+    return this.api.post('/geo-convert/convert-to-table', { responseType: 'blob' }, data);
+  }
+
   public geoConvertFile(
     fileId: string, geometry: FileGeometry, crs: FileCrs, personToken?: string | null): Observable<GeoConversionResponse> {
     return this.startGeoConversion(fileId, geometry, crs).pipe(
