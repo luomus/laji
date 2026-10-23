@@ -28,7 +28,11 @@
       }
       @if (_options) {
         @for (option of _options; track trackingBy($index, option)) {
-          <option [value]="option.id">{{ option.value }}</option>
+          @if (truncate) {
+            <option [value]="option.id">{{ option.value | truncate: 65 }}</option>
+          } @else {
+            <option [value]="option.id">{{ option.value }}</option>
+          }
         }
       }
     </select>
