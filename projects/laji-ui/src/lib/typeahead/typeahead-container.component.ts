@@ -3,7 +3,6 @@ import {
   Component,
   ElementRef,
   HostListener,
-  OnDestroy,
   QueryList,
   Renderer2,
   TemplateRef,
@@ -14,13 +13,11 @@ import {
 } from '@angular/core';
 
 import { Utils } from './utils';
-import { PositioningService } from './positioning/positioning.service';
-import { Subscription } from 'rxjs';
+import { Placement } from '../placement/placement.service';
 
 import { latinize } from './typeahead-utils';
-import { TypeaheadMatch } from './typeahead-match.class';
+import { TypeaheadMatch } from './typeahead-match';
 import { TypeaheadDirective } from './typeahead.directive';
-import { typeaheadAnimation } from './typeahead-animations';
 import { TypeaheadOptionItemContext, TypeaheadOptionListContext, TypeaheadTemplateMethods } from './models';
 
 let nextWindowId = 0;
@@ -29,10 +26,14 @@ let nextWindowId = 0;
     selector: 'typeahead-container',
     templateUrl: './typeahead-container.component.html',
     host: {
-        class: 'dropdown open bottom dropdown-menu',
+        class: 'dropdown open dropdown-menu',
         '[style.height]': `needScrollbar ? guiHeight: 'auto'`,
         '[style.visibility]': `'inherit'`,
-        '[class.dropup]': 'dropup',
+        '[class.dropup]': 'placement === "top"',
+        '[class.top]': 'placement === "top"',
+        '[class.bottom]': 'placement === "bottom"',
+        '[class.left]': 'placement === "left"',
+        '[class.right]': 'placement === "right"',
         style: 'position: absolute;display: block;',
         '[attr.role]': `'listbox'`
     },
@@ -47,34 +48,30 @@ let nextWindowId = 0;
       height: 100px;
     }
 
+    .dropdown-item {
+      display: block;
+    }
+
     :host {
       top: 0;
-      width: 600px;
+      left: 0;
       z-index: 10000 !important;
     }
   `
     ],
-    animations: [typeaheadAnimation],
     standalone: false
 })
 
-export class TypeaheadContainerComponent implements OnDestroy {
+export class TypeaheadContainerComponent {
   // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('activeChange') activeChangeEvent = new EventEmitter();
 
   parent?: TypeaheadDirective;
   query?: string[] | string;
   isFocused = false;
-  top?: string;
-  left?: string;
-  display?: string;
-  placemen?: string;
-  dropup?: boolean;
+  placement: Placement = 'bottom';
   guiHeight?: string;
   needScrollbar?: boolean;
-  animationState?: string;
-  positionServiceSubscription = new Subscription();
-  height = 0;
   popupId = `ngb-typeahead-${nextWindowId++}`;
 
   get typeaheadTemplateMethods(): TypeaheadTemplateMethods {
@@ -95,25 +92,11 @@ export class TypeaheadContainerComponent implements OnDestroy {
   private liElements?: QueryList<ElementRef>;
 
   constructor(
-    private positionService: PositioningService,
     private renderer: Renderer2,
     public element: ElementRef,
     private changeDetectorRef: ChangeDetectorRef
   ) {
     this.renderer.setAttribute(this.element.nativeElement, 'id', this.popupId);
-    this.positionServiceSubscription.add(this.positionService.event$?.subscribe(
-      () => {
-        if (this.isAnimated) {
-          this.animationState = this.isTopPosition ? 'animated-up' : 'animated-down';
-          this.changeDetectorRef.detectChanges();
-
-          return;
-        }
-
-        this.animationState = 'unanimated';
-        this.changeDetectorRef.detectChanges();
-      }
-    ));
   }
 
   get active(): TypeaheadMatch | undefined {
@@ -130,12 +113,8 @@ export class TypeaheadContainerComponent implements OnDestroy {
   }
 
   set matches(value: TypeaheadMatch[]) {
-    this.positionService.setOptions({
-      modifiers: { flip: { enabled: this.adaptivePosition } },
-      allowedPositions: ['top', 'bottom']
-    });
-
     this._matches = value;
+    this.changeDetectorRef.markForCheck();
 
     this.needScrollbar = this.typeaheadScrollable && this.typeaheadOptionsInScrollableView < this.matches.length;
 
@@ -166,20 +145,8 @@ export class TypeaheadContainerComponent implements OnDestroy {
     }
   }
 
-  get isTopPosition(): boolean {
-    return this.element.nativeElement.classList.contains('top');
-  }
-
   get optionsListTemplate(): TemplateRef<TypeaheadOptionListContext> | undefined {
     return this.parent ? this.parent.optionsListTemplate : undefined;
-  }
-
-  get isAnimated(): boolean {
-    return this.parent ? this.parent.isAnimated : false;
-  }
-
-  get adaptivePosition(): boolean {
-    return this.parent ? this.parent.adaptivePosition : false;
   }
 
   get typeaheadScrollable(): boolean {
@@ -339,6 +306,7 @@ export class TypeaheadContainerComponent implements OnDestroy {
     }
 
     this.renderer.setStyle(this.element.nativeElement, 'visibility', 'visible');
+    this.changeDetectorRef.markForCheck();
   }
 
   scrollPrevious(index: number): void {
@@ -370,10 +338,6 @@ export class TypeaheadContainerComponent implements OnDestroy {
           Number(liElement.nativeElement.offsetHeight);
       }
     }
-  }
-
-  ngOnDestroy(): void {
-    this.positionServiceSubscription.unsubscribe();
   }
 
   protected setActive(value?: TypeaheadMatch): void {

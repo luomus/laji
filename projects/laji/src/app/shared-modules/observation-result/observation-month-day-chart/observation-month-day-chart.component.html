@@ -6,6 +6,7 @@
         [datasets]="chartData!.yearChartData"
         [labels]="yearChartLabels"
         [options]="barChartOptions"
+        [plugins]="plugins"
         [legend]="true"
         chartType="bar"
         (barClick)="onYearChartBarClick($event)"
@@ -22,6 +23,7 @@
         [datasets]="chartData!.monthChartDataArr[activeMonthIdx!]"
         [labels]="monthChartLabels"
         [options]="barChartOptions"
+        [plugins]="plugins"
         [legend]="true"
         chartType="bar"
       ></laji-chart>

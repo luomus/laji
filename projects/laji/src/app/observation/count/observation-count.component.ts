@@ -22,7 +22,7 @@ export class ObservationCountComponent implements OnChanges {
   @Input() value?: null | number | string; // If this is set this will be always used (null means that the value is loading)
   @Input() field!: string;
   @Input() pick: any;
-  @Input() query: any;
+  @Input() query?: WarehouseQueryInterface;
   @Input() overrideInQuery!: WarehouseQueryInterface;
   @Input() lightLoader = false;
   @Input() loading = false;
@@ -56,7 +56,7 @@ export class ObservationCountComponent implements OnChanges {
       this.overrideInQuery ? {...this.query, ...this.overrideInQuery} : this.query
     );
     this.loading = true;
-    this.count$ = (this.field ? this.aggregatedCount(query) : this.normalCount(query)).pipe(
+    this.count$ = (this.field ? this.aggregatedCount(query as AggregateQueryParams) : this.normalCount(query as NormalCountQueryParams)).pipe(
       map(val => '' + val),
       catchError(err => {
         this.logger.warn('Failed to update count', err);

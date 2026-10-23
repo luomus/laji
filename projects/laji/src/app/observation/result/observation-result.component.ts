@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { UserSettingsResultList, UserService } from '../../shared/service/user.service';
+import { UserSettingsResultList } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { VisibleSections } from '../view/observation-view.component';
 import { ObservationDownloadComponent } from '../download/observation-download.component';
@@ -95,7 +95,7 @@ export class ObservationResultComponent implements OnChanges {
   hasTaxonData?: boolean;
 
   selectedTabIdx = 0; // stores which tab index was provided by @Input active
-  onlyCount = this.storage.retrieve('onlycount') === null ? true : this.storage.retrieve('onlycount');
+  onlyCount = this.storage.retrieve('onlycount') !== false;
 
   constructor(
     private router: Router,
@@ -104,7 +104,6 @@ export class ObservationResultComponent implements OnChanges {
     private storage: LocalStorageService,
     private route: ActivatedRoute,
     private api: LajiApiClientService,
-    private userService: UserService,
     private toastsService: ToastsService,
     private translate: TranslateService
   ) { }

@@ -24,15 +24,6 @@ export class InfoCardQueryService {
     };
   }
 
-  static getReliableHumanObservationQuery(taxonId: string): WarehouseQueryInterface {
-    return {
-      taxonId: [taxonId],
-      superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'],
-      reliability: ['RELIABLE'],
-      cache: true
-    };
-  }
-
   static getFinnishObservationQuery(taxonId: string, mapQuery?: boolean): WarehouseQueryInterface {
     return {
       taxonId: [taxonId],
@@ -40,18 +31,6 @@ export class InfoCardQueryService {
       coordinateAccuracyMax: mapQuery ? 10000 : undefined,
       recordQuality: ['EXPERT_VERIFIED', 'COMMUNITY_VERIFIED', 'NEUTRAL'],
       needsCheck: false,
-      includeNonValidTaxa: false,
-      cache: true
-    };
-  }
-
-  static getFinnishObservationHabitatQuery(taxonId: string, mapQuery?: boolean): WarehouseQueryInterface {
-    return {
-      taxonId: [taxonId],
-      countryId: ['ML.206'],
-      coordinateAccuracyMax: mapQuery ? 10000 : undefined,
-      recordQuality: ['NEUTRAL', 'COMMUNITY_VERIFIED', 'EXPERT_VERIFIED'],
-      unitFact: ['http://tun.fi/MY.habitatIUCN'],
       includeNonValidTaxa: false,
       cache: true
     };

@@ -28,6 +28,7 @@ import { VirAuthenticatedHttpInterceptor } from './service/vir-authenticated-htt
 import { API_BASE_URL, LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { detectLangFromPath } from 'projects/laji/src/app/app.module';
 import { setLocale } from 'projects/laji/src/app/app-routing.modules';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export function createLoggerLoader(api: LajiApiClientService): ILogger {
   if (environment.production) {
@@ -92,6 +93,7 @@ export function createLoggerLoader(api: LajiApiClientService): ILogger {
       withLocalStorage(),
       withSessionStorage()
     ),
+    provideCharts(withDefaultRegisterables()),
   ]
 })
 export class AppModule { }

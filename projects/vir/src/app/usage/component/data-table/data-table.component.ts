@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-modules/datatable/datatable-header/datatable-header.component';
 import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';
@@ -29,7 +29,7 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin';
                   [clientSideSorting]="true"
                   [showRowAsLink]="showRowAsLink"
                   [height]="height"
-                  [rows]='data'
+                  [rows]='rows'
                   (rowSelect)="rowSelect.emit($event)"
                   (datatableSelect)="datatableSelect.emit($event)"
                   [count]="0"
@@ -46,7 +46,7 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin';
   `,
     standalone: false
 })
-export class DataTableComponent implements AfterViewInit {
+export class DataTableComponent implements AfterViewInit, OnChanges {
   @ViewChild(DatatableHeaderComponent) header!: DatatableHeaderComponent;
 
   @Input() showDownloadMenu = true;
@@ -61,19 +61,19 @@ export class DataTableComponent implements AfterViewInit {
   @Output() datatableSelect = new EventEmitter<any>();
 
   downloadLoading = false;
-
+  rows: any[] | null = null;
   cols:  DatatableColumn[] = [];
   private allCols: DatatableColumn[] = [
     {
       name: 'organisation',
       label: 'usage.organisation',
-      cellTemplate: 'pluckValueSemiColonArray',
+      cellTemplate: 'toSemicolon',
       canAutoResize: true,
     },
     {
       name: 'section',
       label: 'usage.section',
-      cellTemplate: 'pluckValueSemiColonArray',
+      cellTemplate: 'toSemicolon',
       canAutoResize: true
     },
     {
@@ -156,15 +156,27 @@ export class DataTableComponent implements AfterViewInit {
     this.cols = this.getColsFromType(this._type);
   }
 
+  ngOnChanges() {
+    this.rows = this.data ? this.data.map(row => this.mapObjectsToStrings(row)) : this.data;
+  }
+
   download(type: string) {
     this.downloadLoading = true;
-    this.exportService.exportFromData(this.data!, this.getColsFromType(this._type), type as BookType, this.exportFileName)
+    this.exportService.exportFromData(this.rows!, this.getColsFromType(this._type), type as BookType, this.exportFileName)
       .subscribe(() => {
         this.downloadLoading = false;
         this.header.downloadComponent!.closeModal();
       }, () => {
         this.downloadLoading = false;
       });
+  }
+
+  private mapObjectsToStrings(row: any) {
+    return {
+      ...row,
+      organisation: Array.isArray(row.organisation) ? row.organisation.map((o: any) => o?.value) : row.organisation,
+      section: Array.isArray(row.section) ? row.section.map((s: any) => s?.value) : row.section,
+    };
   }
 
   @Input()

@@ -60,7 +60,9 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
         },
         point: {
           radius: 3,
-          hitRadius: 6
+          hitRadius: 6,
+          backgroundColor: 'rgb(70,130,180)',
+          borderColor: 'rgb(70,130,180)'
         }
       },
       hover: {

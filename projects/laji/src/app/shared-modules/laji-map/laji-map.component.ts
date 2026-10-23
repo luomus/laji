@@ -19,7 +19,6 @@ import { Logger } from '../../shared/logger/logger.service';
 import type { Options, Lang, TileLayersOptions } from '@luomus/laji-map/lib/defs';
 import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
-import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
 import { DEFAULT_LANG } from '../../locale/localize-router.service';
 import type { PathOptions, DivIcon } from 'leaflet';
@@ -86,7 +85,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   lang?: string;
   map: any;
   _options: Options = {};
-  @LocalStorage('onlycount') onlyCount?: any;
 
   private updateSettingsSub?: Subscription;
   private userSettings: Options = {};

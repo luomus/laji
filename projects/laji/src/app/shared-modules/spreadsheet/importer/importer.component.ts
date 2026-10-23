@@ -213,7 +213,6 @@ export class ImporterComponent implements OnInit, OnDestroy {
       }),
       switchMap(content => forkJoin([
         of(content),
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.spreadSheetService.findFormIdFromFilename(content?.filename!),
         this._forms
       ]))

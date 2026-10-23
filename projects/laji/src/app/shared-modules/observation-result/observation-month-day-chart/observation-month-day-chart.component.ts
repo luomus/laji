@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions, Tooltip } from 'chart.js';
+import autocolors from 'chartjs-plugin-autocolors';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { ChartData, ObservationMonthDayChartFacade, getNbrOfDaysInMonth } from './observation-month-day-chart.facade';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
@@ -74,6 +75,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   yearChartLabels = this.getYearChartLabels();
   monthChartLabels: string[] = [];
   barChartOptions = BAR_CHART_OPTIONS;
+  plugins = [autocolors];
   activeMonthIdx?: number;
   monthFormatting = this.getMonthLabel.bind(this);
 

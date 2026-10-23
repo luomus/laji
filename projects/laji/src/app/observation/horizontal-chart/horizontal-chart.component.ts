@@ -7,7 +7,6 @@ import { ChartDataset, ChartOptions, Tooltip } from 'chart.js';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import { HorizontalChartDataService, MAX_TAXA_SIZE } from './horizontal-chart-data.service';
-import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { SearchQueryService } from '../search-query.service';
 
@@ -26,17 +25,16 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   @Input() legendPosition = 'top';
   @Input() visible = true;
   @Input({ required: true }) lang!: string;
+  @Input() onlyCount = true;
 
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() hasData = new EventEmitter<boolean>();
 
 
   loading = false;
-  queryQL?: Subscription;
   dataClasses?: Subscription;
   taxa?: string;
   componentHeight?: number;
-  loadLabels = false;
   barChartOptions?: ChartOptions;
   subscription?: Subscription;
   timer?: Observable<any>;
@@ -52,7 +50,6 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   ];
 
   classificationValue = 'classId';
-  @LocalStorage('onlycount') onlyCount?: boolean;
 
   public barChartData: ChartDataset[] = [
     { data: [], label: this.translate.instant('all') },
@@ -73,7 +70,6 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
     private toQname: ToQNamePipe,
     private translate: TranslateService,
     private horizontalDataService: HorizontalChartDataService,
-    private localSt: LocalStorageService,
     private searchQuery: SearchQueryService
   ) { }
 
@@ -81,19 +77,14 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
     (Tooltip.positioners as any).cursor = function(chartElements: any, coordinates: any) {
       return coordinates;
     };
-    this.localSt.observe('onlycount')
-            .subscribe((value) => {
-              this.onlyCount = value;
-              this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
-              this.loading = true;
-              this.initializeArrays(this.resultList);
-              this.cd.markForCheck();
-            });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['query']) {
       this.updateClasses();
+    } else if (changes['onlyCount']) {
+      this.loading = true;
+      this.initializeArrays(this.resultList);
     }
   }
 
@@ -121,7 +112,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
         query: {
           ...apiQuery as any,
           aggregateBy: ['unit.linkings.taxon.' + this.classificationValue],
-          orderBy: [this.onlyCount === null ? 'count DESC' : this.onlyCount ? 'count DESC' : 'individualCountSum DESC'],
+          orderBy: [this.onlyCount ? 'count DESC' : 'individualCountSum DESC'],
           pageSize: MAX_TAXA_SIZE,
           onlyCount: false
         }
@@ -139,7 +130,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
       }),
       map(res => res.map((r: any) => {
         this.resultList.push(r);
-        this.subDataBarChart.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
+        this.subDataBarChart.push(this.onlyCount ? r.count : r.individualCountSum);
         this.subBackgroundColors.push('#3498db');
         this.subLabelBarChart.push(r.label ? (r.label.vernacularName || r.label.scientificName) : '');
       }))
@@ -241,10 +232,10 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   }
 
   fillDataGraph(list: any[]) {
-    const field = this.onlyCount === null ? 'count' : this.onlyCount ? 'count' : 'individualCountSum';
+    const field = this.onlyCount ? 'count' : 'individualCountSum';
     list.sort((a, b) => (a[field] > b[field]) ? -1 : ((b[field] > a[field]) ? 1 : 0));
     list.map(r =>  {
-      this.subDataBarChart.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
+      this.subDataBarChart.push(this.onlyCount ? r.count : r.individualCountSum);
       this.subBackgroundColors.push('#3498db');
       this.subLabelBarChart.push(r.label ? (r.label.vernacularName || r.label.scientificName) : '');
     });
@@ -267,13 +258,4 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
     this.cd.markForCheck();
     this.loading = false;
   }
-
-
-
-  toggleOnlyCount() {
-    this.onlyCount = !this.onlyCount;
-    this.changeClassification();
-  }
-
-
 }

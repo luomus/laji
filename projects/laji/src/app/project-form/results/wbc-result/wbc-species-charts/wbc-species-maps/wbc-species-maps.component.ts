@@ -65,12 +65,13 @@ export class WbcSpeciesMapsComponent implements OnChanges {
     if (!this.platformService.isBrowser) {
       return;
     }
-    require('leaflet.sync');
-    const maps = this.mapComponents.map(mapComponent => mapComponent.mapComponent.map);
-    if (maps.every(mapComponents => mapComponents)) {
-      this.maps = maps;
-      maps.forEach(m => this.initEventListeners(m));
-    }
+    import('leaflet.sync').then(() => {
+      const maps = this.mapComponents.map(mapComponent => mapComponent.mapComponent.map);
+      if (maps.every(mapComponents => mapComponents)) {
+        this.maps = maps;
+        maps.forEach(m => this.initEventListeners(m));
+      }
+    });
   }
 
 
@@ -91,8 +92,8 @@ export class WbcSpeciesMapsComponent implements OnChanges {
 
   private setQuery(nbr: number, season: SEASON) {
     const querys = this.getQuerys(season);
-    this.querys[nbr] = querys.query as WarehouseQueryInterface;
-    this.zeroQuerys[nbr] = querys.zeroQuery as WarehouseQueryInterface;
+    this.querys[nbr] = querys.query;
+    this.zeroQuerys[nbr] = querys.zeroQuery;
   }
 
   private setYearComparisonData() {
@@ -178,9 +179,12 @@ export class WbcSpeciesMapsComponent implements OnChanges {
     return this.ykjService.resultToGeoJson(result, '10kmCenter', zeroObservations);
   }
 
-  private getQuerys(season = this.season, year: number|number[] = this.year!) {
+  private getQuerys(season = this.season, year: number|number[] = this.year!): {query: WarehouseQueryInterface; zeroQuery: WarehouseQueryInterface} {
     const filterParams = this.resultService.getFilterParams(year, season, this.birdAssociationArea);
-    return {query: {...filterParams, taxonId: [this.taxonId]}, zeroQuery: {...filterParams, taxonCensus: [this.taxonCensus]}};
+    return {
+      query: {...filterParams, taxonId: this.taxonId},
+      zeroQuery: {...filterParams, taxonCensus: this.taxonCensus ? [this.taxonCensus] : undefined}
+    };
   }
 
   private initEventListeners(lajiMap: any) {
