@@ -11,7 +11,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { forkJoin, from as ObservableFrom, Observable, of } from 'rxjs';
+import { forkJoin, from as ObservableFrom, Observable, of, Subscription } from 'rxjs';
 import { FormService } from '../../../shared/service/form.service';
 import { IFormField, VALUE_IGNORE } from '../model/excel';
 import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
@@ -28,7 +28,7 @@ import { catchError, concatMap, filter, map, switchMap, takeUntil, tap, toArray 
 import { ExcelToolService } from '../service/excel-tool.service';
 import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.facade';
 import { ISpreadsheetState, SpreadsheetFacade, Step } from '../spreadsheet.facade';
-import { FileService, instanceOfFileLoad } from '../service/file.service';
+import { FileService, instanceOfFileLoad, IFileLoad } from '../service/file.service';
 import { IUserMappingFile, MappingFileService } from '../service/mapping-file.service';
 import { Logger } from '../../../shared/logger';
 import { toHtmlSelectElement } from '../../../shared/service/html-element.service';
@@ -40,6 +40,15 @@ import type { paths } from 'projects/laji-api-client/generated/api';
 type Form = components['schemas']['Form'];
 type PublicityRestrictions = NonNullable<paths['/documents/batch/{jobID}']['post']['parameters']['query']>['publicityRestrictions'];
 type BatchJob = components['schemas']['BatchJobValidationStatusResponse'];
+type FileLoad = IFileLoad & { isGIS?: boolean };
+
+const gisCoordinateField = 'footprintWKT';
+const coordinateField = 'gatherings[*].geometry';
+const namedPlaceField = 'gatherings[*].namedPlaceID';
+const externalLabel = [
+  'editors[*]',
+  'gatheringEvent.leg[*]'
+];
 
 @Component({
     selector: 'laji-importer',
@@ -112,13 +121,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   vm$: Observable<ISpreadsheetState>;
 
-  private gisCoordinateField = 'footprintWKT';
-  private coordinateField = 'gatherings[*].geometry';
-  private namedPlaceField = 'gatherings[*].namedPlaceID';
-  private externalLabel = [
-    'editors[*]',
-    'gatheringEvent.leg[*]'
-  ];
+  private fileLoaderSub?: Subscription;
 
   showOnlyErroneous = false;
   sheetLoadErrorMsg = '';
@@ -154,6 +157,10 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.spreadsheetFacade.goToStep(Step.empty);
+
+    if (this.fileLoaderSub) {
+      this.fileLoaderSub.unsubscribe();
+    }
   }
 
   /*
@@ -193,7 +200,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
     this.isGisImport = undefined;
 
     this.spreadsheetFacade.goToStep(Step.importingFile);
-    this.fileService.load(event, [ ...this.spreadSheetService.validTypes(), ...this.geoConvertService.validTypes() ] ).pipe(
+    this.fileLoaderSub = this.fileService.load(event, [ ...this.spreadSheetService.validTypes(), ...GeoConvertService.validTypes ] ).pipe(
       catchError((e) => {
         this.spreadsheetFacade.goToStep(e === FileService.ERROR_INVALID_TYPE ? Step.invalidFileType : Step.empty);
         return of(null);
@@ -205,13 +212,12 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
         const formData = new FormData();
         formData.append('file', new Blob([content.content], { type: content.type }), content.filename);
-        return this.geoConvertService.geoConvertToCSV(formData).pipe(
+        return this.geoConvertService.geoConvertToCSV$(formData).pipe(
           switchMap((res: Blob) => this.fileService.loadFile(res as File)),
-          map(file => ({ ...file, filename: content.filename })),
-          tap(() => this.isGisImport = true)
+          map(file => ({ ...file, filename: content.filename, isGIS: true })),
         );
       }),
-      switchMap(content => forkJoin([
+      switchMap((content: FileLoad | null) => forkJoin([
         of(content),
         this.spreadSheetService.findFormIdFromFilename(content?.filename!),
         this._forms
@@ -223,6 +229,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
       } else if (instanceOfFileLoad(content)) {
         this.bstr = content.content;
         this.mimeType = content.type;
+        this.isGisImport = !!content.isGIS;
         this.spreadsheetFacade.setFilename(content.filename);
         this.initForm();
       }
@@ -281,13 +288,12 @@ export class ImporterComponent implements OnInit, OnDestroy {
         this.excludedFromCopy = form.excludeFromCopy;
         this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, baseFields);
         if (this.isGisImport) {
-          const tempHeader = {...this.header};
+          const tempHeader: {[key: string]: string} =  {};
 
-          Object.keys(tempHeader).forEach(key => {
-            if (tempHeader[key] === this.gisCoordinateField) {
-              tempHeader[key] = this.coordinateField;
-            }
+          Object.entries(this.header || {}).forEach(([key, value]) => {
+            tempHeader[key] = value === gisCoordinateField ? coordinateField : value;
           });
+
           this.colMap = this.spreadSheetService.getColMapFromSheet(tempHeader, this.fields);
         } else {
           this.colMap = this.spreadSheetService.getColMapFromSheet(this.header!, this.fields);
@@ -328,7 +334,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
             label: this.header![address],
             sortable: false,
             cellTemplate: this.valueColTpl,
-            externalLabel: this.externalLabel.indexOf(this.colMap![address]) !== -1
+            externalLabel: externalLabel.indexOf(this.colMap![address]) !== -1
           });
         });
         this.dataColumns = columns;
@@ -424,11 +430,11 @@ export class ImporterComponent implements OnInit, OnDestroy {
     let namedPlaceCol: string;
 
     Object.keys(this.colMap!).forEach(col => {
-      if (this.colMap![col] === this.coordinateField) {
+      if (this.colMap![col] === coordinateField) {
         coordinateCol = col;
       }
 
-      if (this.colMap![col] === this.namedPlaceField) {
+      if (this.colMap![col] === namedPlaceField) {
         namedPlaceCol = col;
       }
     });
