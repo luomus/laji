@@ -42,7 +42,7 @@ export function setLocale(lang: string) {
   }
 }
 
-const localeResolver = (lang: string): ResolveFn<boolean> => () => setLocale(lang);
+export const localeResolver = (lang: string): ResolveFn<boolean> => () => setLocale(lang);
 
 const baseRoutes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./home/home.module').then(m => m.HomeModule)},

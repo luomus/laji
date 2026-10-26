@@ -8,9 +8,7 @@ import { LocaleFiComponent } from '../../../laji/src/app/locale/locale-fi.compon
 import { catchError, flatMap } from 'rxjs';
 import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-found.component';
 import { CheckLoginGuard } from 'projects/laji/src/app/shared/guards/check-login.guard';
-import { setLocale } from 'projects/laji/src/app/app-routing.modules';
-
-const localeResolver = (lang: string): ResolveFn<boolean> => () => setLocale(lang);
+import { localeResolver } from 'projects/laji/src/app/app-routing.modules';
 
 @Injectable()
 export class PreloadSelectedModulesList implements PreloadingStrategy {
