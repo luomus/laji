@@ -42,10 +42,10 @@ type PublicityRestrictions = NonNullable<paths['/documents/batch/{jobID}']['post
 type BatchJob = components['schemas']['BatchJobValidationStatusResponse'];
 type FileLoad = IFileLoad & { isGIS?: boolean };
 
-const gisCoordinateField = 'footprintWKT';
-const coordinateField = 'gatherings[*].geometry';
-const namedPlaceField = 'gatherings[*].namedPlaceID';
-const externalLabel = [
+const GIS_COORDINATE_FIELD = 'footprintWKT';
+const COORDINATE_FIELD = 'gatherings[*].geometry';
+const NAMEDPLACE_FIELD = 'gatherings[*].namedPlaceID';
+const EXTERNAL_LABEL = [
   'editors[*]',
   'gatheringEvent.leg[*]'
 ];
@@ -291,7 +291,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
           const tempHeader: {[key: string]: string} =  {};
 
           Object.entries(this.header || {}).forEach(([key, value]) => {
-            tempHeader[key] = value === gisCoordinateField ? coordinateField : value;
+            tempHeader[key] = value === GIS_COORDINATE_FIELD ? COORDINATE_FIELD : value;
           });
 
           this.colMap = this.spreadSheetService.getColMapFromSheet(tempHeader, this.fields);
@@ -334,7 +334,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
             label: this.header![address],
             sortable: false,
             cellTemplate: this.valueColTpl,
-            externalLabel: externalLabel.indexOf(this.colMap![address]) !== -1
+            externalLabel: EXTERNAL_LABEL.indexOf(this.colMap![address]) !== -1
           });
         });
         this.dataColumns = columns;
@@ -430,11 +430,11 @@ export class ImporterComponent implements OnInit, OnDestroy {
     let namedPlaceCol: string;
 
     Object.keys(this.colMap!).forEach(col => {
-      if (this.colMap![col] === coordinateField) {
+      if (this.colMap![col] === COORDINATE_FIELD) {
         coordinateCol = col;
       }
 
-      if (this.colMap![col] === namedPlaceField) {
+      if (this.colMap![col] === NAMEDPLACE_FIELD) {
         namedPlaceCol = col;
       }
     });
