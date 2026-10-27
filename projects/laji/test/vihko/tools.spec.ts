@@ -33,7 +33,7 @@ test.describe('Trip form page', () => {
   });
 
 
-  test.describe('Importing', () => {
+  test.describe('Importing valid excel', () => {
     test.describe.configure({mode: 'serial'});
 
     test.beforeAll(async () => {
@@ -44,13 +44,12 @@ test.describe('Trip form page', () => {
       await expect(spreadsheet.$fileInput).toBeVisible();
     });
 
-    // skip these for now, sometimes the metadata fetched with graphql has a wrong language for some reason and the tests fail
-    test.skip('should be able to upload valid file', async () => {
+    test('should be able to upload valid file', async () => {
       await spreadsheet.uploadFile(path.resolve(__dirname, 'ValidRows(JX.519).xlsx'));
       await expect(spreadsheet.$completed).toHaveCount(2);
     });
 
-    test.skip('should be able to link all valid taxon names', async () => {
+    test('should be able to link all valid taxon names', async () => {
       await expect(spreadsheet.$nextValue).toBeVisible();
       await spreadsheet.$nextValue.click();
       await expect(spreadsheet.$completed).toHaveCount(3);
@@ -61,7 +60,7 @@ test.describe('Trip form page', () => {
       expect(await spreadsheet.countCellWithValue('TEST')).toBe(1);
     });
 
-    test.skip('should be able to skip row with no numbers', async () => {
+    test('should be able to skip row with no numbers', async () => {
       await spreadsheet.$countFilterSelect.selectOption('true');
       await spreadsheet.waitForDataTableData();
       await expect(spreadsheet.$error).toHaveCount(0);
@@ -69,15 +68,118 @@ test.describe('Trip form page', () => {
       expect(await spreadsheet.getDocumentCountText()).toBe('2');
     });
 
-    test.skip('should be able save document', async () => {
+    test('should be able save document', async () => {
       await spreadsheet.$countFilterSelect.selectOption('false');
       await spreadsheet.$saveWithoutPublishing.click();
       await spreadsheet.waitForDataTableData();
       await expect(spreadsheet.$error).toHaveCount(0);
       await expect(spreadsheet.$warning).toHaveCount(0);
     });
-
   });
+
+test.describe('Faulty excel gives errors', () => {
+    test.describe.configure({mode: 'serial'});
+
+    test.beforeAll(async () => {
+      await toolsPage.$importLink.click();
+    });
+
+    test('should show file import', async () => {
+      await expect(spreadsheet.$fileInput).toBeVisible();
+    });
+
+    test('should be able to upload valid file', async () => {
+      await spreadsheet.uploadFile(path.resolve(__dirname, 'InvalidRows(JX.519).xlsx'));
+      await expect(spreadsheet.$completed).toHaveCount(2);
+    });
+
+    test('should end up with errors', async () => {
+      await expect(spreadsheet.$nextValue).toBeVisible();
+      await spreadsheet.$nextValue.click();
+      await expect(spreadsheet.$completed).toHaveCount(3);
+      await spreadsheet.waitForDataTableData();
+      await expect(spreadsheet.$error).toHaveCount(1);
+      await expect(spreadsheet.$warning).toHaveCount(0);
+      await expect(spreadsheet.$saveWithoutPublishing).not.toBeVisible();
+      expect(await spreadsheet.countCellWithValue('2020-03-01')).toBe(4);
+      expect(await spreadsheet.countCellWithValue('TEST')).toBe(1);
+    });
+  });
+
+  test.describe('Importing valid geopackage', () => {
+  test.describe.configure({mode: 'serial'});
+
+    test.beforeAll(async () => {
+      await toolsPage.$importLink.click();
+    });
+
+    test('should show file import', async () => {
+      await expect(spreadsheet.$fileInput).toBeVisible();
+    });
+
+    // skip these for now, sometimes the metadata fetched with graphql has a wrong language for some reason and the tests fail
+    test('should be able to upload valid file', async () => {
+      await spreadsheet.uploadFile(path.resolve(__dirname, 'ValidRows(JX.519).gpkg'));
+      await expect(spreadsheet.$completed).toHaveCount(2);
+    });
+
+    test('should be able to link all valid taxon names', async () => {
+      await expect(spreadsheet.$nextValue).toBeVisible();
+      await spreadsheet.$nextValue.click();
+      await expect(spreadsheet.$completed).toHaveCount(3);
+      await spreadsheet.waitForDataTableData();
+      await expect(spreadsheet.$error).not.toBeVisible();
+      expect(await spreadsheet.getDocumentCountText()).toBe('2');
+      expect(await spreadsheet.countCellWithValue('2020-03-01')).toBe(3);
+      expect(await spreadsheet.countCellWithValue('TEST')).toBe(1);
+    });
+
+    test('should be able to skip row with no numbers', async () => {
+      await spreadsheet.$countFilterSelect.selectOption('true');
+      await spreadsheet.waitForDataTableData();
+      await expect(spreadsheet.$error).toHaveCount(0);
+      await expect(spreadsheet.$warning).toHaveCount(1);
+      expect(await spreadsheet.getDocumentCountText()).toBe('2');
+    });
+
+    test('should be able save document', async () => {
+      await spreadsheet.$countFilterSelect.selectOption('false');
+      await spreadsheet.$saveWithoutPublishing.click();
+      await spreadsheet.waitForDataTableData();
+      await expect(spreadsheet.$error).toHaveCount(0);
+      await expect(spreadsheet.$warning).toHaveCount(0);
+    });
+  });
+
+test.describe('Faulty gpkg gives errors', () => {
+    test.describe.configure({mode: 'serial'});
+
+    test.beforeAll(async () => {
+      await toolsPage.$importLink.click();
+    });
+
+    test('should show file import', async () => {
+      await expect(spreadsheet.$fileInput).toBeVisible();
+    });
+
+    test('should be able to upload valid file', async () => {
+      await spreadsheet.uploadFile(path.resolve(__dirname, 'InvalidRows(JX.519).xlsx'));
+      await expect(spreadsheet.$completed).toHaveCount(2);
+    });
+
+    test('should end up with errors', async () => {
+      await expect(spreadsheet.$nextValue).toBeVisible();
+      await spreadsheet.$nextValue.click();
+      await expect(spreadsheet.$completed).toHaveCount(3);
+      await spreadsheet.waitForDataTableData();
+      await expect(spreadsheet.$error).toHaveCount(1);
+      await expect(spreadsheet.$warning).toHaveCount(0);
+      await expect(spreadsheet.$saveWithoutPublishing).not.toBeVisible();
+      expect(await spreadsheet.countCellWithValue('2020-03-01')).toBe(4);
+      expect(await spreadsheet.countCellWithValue('TEST')).toBe(1);
+    });
+  });
+
 
   test.describe('Templates', () => {
     test.describe.configure({mode: 'serial'});

@@ -6,7 +6,7 @@ export class SpreadsheetPage {
   public $warning = this.page.locator('.datatable-body .label.label-warning');
   public $countFilterSelect = this.page.locator('select[name="count-handling"]');
   public $nextValue = this.page.locator(':not([disabled]).next-value-map');
-  public $completed = this.page.locator('.completed.link');
+  public $completed = this.page.locator('.completed');
   private $docCounts = this.page.locator('.doc-count');
   private $dataTableCells = this.page.locator('.datatable-body-cell-label');
   public $saveWithoutPublishing = this.page.locator('.no-public');
