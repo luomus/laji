@@ -56,10 +56,9 @@ export class SoundIdentificationTableComponent implements OnInit {
 
   getVernacularName(scientificName: string) {
     if (!this.vernacularCache[scientificName]) {
-      this.vernacularCache[scientificName] = this.api.get('/autocomplete/taxa', { query: {
-            query: scientificName,
-            matchType: 'exact',
-        selectedFields: 'vernacularName'
+      this.vernacularCache[scientificName] = this.api.get('/taxa/search', { query: {
+        query: scientificName,
+        matchType: 'exact',
       }}, { langFallback: false }).pipe(
           map(data => data.results[0]?.vernacularName),
           shareReplay(1)
