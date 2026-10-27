@@ -30,18 +30,16 @@
     } @else {
       @if (aboutData$ | async; as data) {
         <laji-project-form-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-project-form-terms>
-        <laji-project-form-header [form]="data.form" [description]="data.form.description" lajiFormOption="description logo title options.hideTES"></laji-project-form-header>
+        <laji-project-form-header [form]="data.form" [description]="data.form.description" lajiFormOption="description logo title options.hideTES options.newObservationLabel"></laji-project-form-header>
         @if (data.form.options?.openForm || data.loggedIn) {
           <button type="button"
-            class="btn btn-md btn-primary btn-block use-button"
-            (click)="enterForm()">
-            {{ 'haseka.mobile.newObservation' | translate }}
+            class="btn btn-md btn-primary btn use-button"
+            (click)="enterForm()"
+            lajiFormOption="options.newObservationLabel">
+            {{ data.form.options.newObservationLabel || ('haseka.mobile.newObservation' | translate) }}
           </button>
         } @else {
           <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
-        }
-        @if (data.form.options?.openForm) {
-          <img src="/static/images/partner-logos/eu-funding.png" alt="Partly funded by the European Union." class="my-8">
         }
         <laji-haseka-latest [collectionID]="data.form.collectionID!"
           [showFormNames]="false"
@@ -69,5 +67,3 @@
     }
   </div>
 }
-
-

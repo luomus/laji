@@ -126,6 +126,7 @@ const routesWithLang: Routes = [
     {path: 'mobiilivihko',  component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.notebook.mobileNotebook'}, pathMatch: 'full'},
     {path: 'ilmoita', redirectTo: '/save-observations', pathMatch: 'full'},
     {path: 'selaa', redirectTo: '/observation/list', pathMatch: 'full'},
+    {path: 'rengaslomake', redirectTo: '/project/rengasloyto', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleFiComponent, resolve: { localeReady: localeResolver('fi') }}
