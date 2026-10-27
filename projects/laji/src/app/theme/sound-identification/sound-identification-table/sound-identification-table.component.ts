@@ -60,7 +60,7 @@ export class SoundIdentificationTableComponent implements OnInit {
         query: scientificName,
         matchType: 'exact',
       }}, { langFallback: false }).pipe(
-          map(data => data.results[0]?.vernacularName),
+          map((data: any) => data.results[0]?.vernacularName),
           shareReplay(1)
         );
     }
