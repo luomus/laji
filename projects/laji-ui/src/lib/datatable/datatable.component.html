@@ -53,7 +53,7 @@
     </tr>
     @if (!loading) {
       @for (row of rows; track row; let rowIdx = $index) {
-        <tr>
+        <tr (click)="onRowClick(rowIdx)" [class.clickable]="clickableRows">
           @for (colIdx of selectedColumns; track colIdx) {
             <td #rowRef>
               @if (columns[colIdx]; as col) {
@@ -86,5 +86,7 @@
   </table>
 </div>
 
-<lu-datatable-paginator [totalPages]="totalPages" [currentPageIdx]="currentPageIdx" (pageChange)="onPageChange($event)"></lu-datatable-paginator>
-
+<div class="d-flex justify-between">
+  <lu-datatable-paginator [totalPages]="totalPages" [currentPageIdx]="currentPageIdx" (pageChange)="onPageChange($event)"></lu-datatable-paginator>
+  <button class="btn btn-default" (click)="onOpenColConfigModal()">Open column configurator</button>
+</div>

@@ -1,0 +1,6 @@
+@use 'mixins/checkbox' as *;
+@forward 'mixins/checkbox';
+
+.lu-checkbox {
+  @include checkbox();
+}

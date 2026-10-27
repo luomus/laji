@@ -3,6 +3,11 @@ import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 
+export interface SelectedPerson {
+  id: string;
+  fullName: string;
+}
+
 @Component({
     selector: 'laji-find-person',
     templateUrl: './find-person.component.html',
@@ -14,7 +19,7 @@ export class FindPersonComponent implements OnInit {
   @Input() limit = 10;
   @Input() showUserID = false;
   @Input() inputId = '';
-  @Output() selectChange = new EventEmitter<{ id: string; fullName: string }>();
+  @Output() selectChange = new EventEmitter<SelectedPerson>();
 
   dataSource!: Observable<any>;
   typeaheadLoading = false;

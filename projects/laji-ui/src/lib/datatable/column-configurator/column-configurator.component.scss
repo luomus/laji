@@ -1,0 +1,60 @@
+@use 'vars' as *;
+
+input[type='text'] {
+  max-width: 400px;
+  width: 100%;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  max-width: 400px;
+  box-shadow: 0px 1px 3px 0 rgba($primary-8, .3);
+  padding: $sp-3 $sp-4;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+li.active {
+  background-color: $primary-6;
+  box-shadow: 1px 2px 3px inset rgba($primary-8, .4);
+}
+
+.col-title {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+li.active .col-title {
+  color: $primary-1;
+}
+
+li .btn-col-move {
+  color: $primary-9;
+  box-shadow: 0 1px 3px 0 rgba($primary-8, .8);
+  background-color: $neutral-1;
+  border: 1px solid $neutral-6;
+
+  font-size: 11px;
+  height: 20px;
+
+  padding: 3px 6px;
+  padding-top: 2px;
+}
+
+li.active .btn-col-move:disabled {
+  background-color: $primary-7;
+  border: 1px solid $primary-6;
+  color: $primary-2;
+}
+
+.col-idx {
+  min-width: 32px;
+  text-align: center;
+}
+
+li.active .col-idx {
+  color: $primary-1;
+}
