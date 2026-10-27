@@ -89,8 +89,22 @@ export class FormApiClient {
         ) :
         of(response)
       ),
-      map((response) => ({...response, json: () => response.body})),
-      catchError(err => of({...err, json: () => err.error}))
+      map((response) => ({
+          ...response,
+          json: () => response.body,
+          text: () =>
+            typeof response.body === 'string'
+              ? response.body
+              : JSON.stringify(response)
+      })),
+      catchError(err => of({
+        ...err,
+        json: () => err.error,
+        text: () =>
+          typeof err.error === 'string'
+            ? err.error
+            : JSON.stringify(err.error)
+      })),
     ).toPromise(Promise);
   }
 }
