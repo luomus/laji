@@ -38,7 +38,7 @@ export class FormService {
   }
 
   static isTmpId(id: string): boolean {
-    return id?.indexOf(FormService.tmpNs + ':') === 0;
+    return id.startsWith(FormService.tmpNs + ':');
   }
 
   private getFormAlias(formId: string) {
