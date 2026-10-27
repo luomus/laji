@@ -386,17 +386,21 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 }
 
 interface ApiValidationErrors {
-  [field: string]: Record<string, ApiValidationErrors | string[]>;
+  [jsonPointer: string]: string[];
 };
 
-const apiValidationErrorsToRJSFErrorSchema = (errors: ApiValidationErrors) => Object.keys(errors).reduce((errorSchema, property) => {
-  const propertyErrors = errors[property];
-  if (Array.isArray(propertyErrors)) {
-    errorSchema[property] = {
-      __errors: [ ...(errorSchema[property]?.__errors || []), ...(propertyErrors as string[]) ]
-    } as ErrorSchema;
-  } else {
-    errorSchema[property] = apiValidationErrorsToRJSFErrorSchema(propertyErrors as ApiValidationErrors);
-  }
+const apiValidationErrorsToRJSFErrorSchema = (errors: ApiValidationErrors) => Object.keys(errors).reduce((errorSchema, propertyJsonPointer) => {
+    let splits = propertyJsonPointer.split('/');
+    splits = splits.splice(1);
+    let errorSchemaPointer = errorSchema;
+    splits.forEach((split, i) => {
+      if (!errorSchemaPointer[split]) {
+        errorSchemaPointer[split] = {};
+      }
+      if (i === splits.length - 1) {
+        errorSchemaPointer[split].__errors = [...(errorSchemaPointer?.[split]?.__errors || []),  ...errors[propertyJsonPointer] ];
+      }
+      errorSchemaPointer = errorSchemaPointer[split];
+    });
   return errorSchema;
 }, {} as ErrorSchema);
