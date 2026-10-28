@@ -1799,7 +1799,7 @@
   "species.taxa": "Taxonomy",
   "species.title.long": "The Finnish Biodiversity Information Facility maintains the national checklist of Finnish species. With the help of versatile search tool, you can familiarize with species information including e.g. descriptions, distribution maps, occurrence data, images and taxonomic relationships.",
   "species.title.short": "Browse and discover species information, descriptions and pictures.",
-  "species.tree.gbif.help": "GBIF Backbone Taxonomy: Taxa that have recorded occurrences, but are missing from Master checklist of Finnish Biodiversity Information Facility – retrieved from GBIF Taxonomy",
+  "species.tree.gbif.help": "Taxa missing from the Master checklist of the Finnish Biodiversity Information Facility, for which occurrences are recorded in the Finnish Biodiversity Information Facility, identified using the Catalogue of Life taxonomy used by GBIF",
   "species.tree.info.showHidden": "Shows taxa that are hidden from the taxonomy.",
   "species.tree.info.showMainLevels": "Hides taxa from classification, whose taxonomic level does not belong to the main levels. Main levels are biota, domain, kingdom, phylum, class, order, family, genus and species.",
   "species.tree.showHidden": "Show hidden taxa",
