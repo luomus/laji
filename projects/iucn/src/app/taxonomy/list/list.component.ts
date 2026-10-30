@@ -98,7 +98,11 @@ export class ListComponent implements OnInit, OnDestroy {
     });
     for (const i in queryParams) {
       if (queryParams.hasOwnProperty(i) && Array.isArray(queryParams[i])) {
-        queryParams[i] = queryParams[i].join(',');
+        if (queryParams[i].length === 0) {
+          delete queryParams[i];
+        } else {
+          queryParams[i] = queryParams[i].join(',');
+        }
       }
     }
     if (queryParams['page'] && toFirstPage) {
